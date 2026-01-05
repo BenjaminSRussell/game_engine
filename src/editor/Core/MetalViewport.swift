@@ -1,5 +1,6 @@
 import SwiftUI
 import MetalKit
+import CEngineCore
 
 /// SwiftUI wrapper for Metal viewport rendering voxel engine output
 public struct MetalViewport: NSViewRepresentable {
@@ -63,7 +64,8 @@ public struct MetalViewport: NSViewRepresentable {
             
             // Render frame via C bridge
             if let bridge = parent.rendererBridge {
-                renderer_bridge_render_frame(bridge, view, Float(deltaTime))
+                let viewPointer = Unmanaged.passUnretained(view).toOpaque()
+                renderer_bridge_render_frame(bridge, viewPointer, Float(deltaTime))
             }
             
             // Update parent binding

@@ -36,6 +36,28 @@ uint64_t memory_bridge_get_total_used(void);
 void memory_bridge_start_profiling(void);
 void memory_bridge_stop_profiling(void);
 
+// Chunk API for Voxel Renderer
+extern const uint32_t CHUNK_SIZE;
+
+typedef struct Chunk Chunk;
+typedef struct ChunkManager ChunkManager;
+
+// Vertex definition matching engine/renderer/mesh.h
+typedef struct VertexBridge {
+    float position[3];
+    float normal[3];
+    float uv[2];
+    uint8_t ao;
+    uint8_t light;
+    uint8_t texture_id;
+    uint8_t padding; // Align to 4 bytes
+    float wave_phase;
+} VertexBridge;
+
+ChunkManager* world_bridge_get_chunk_manager(World* world);
+Chunk** chunk_bridge_get_loaded_chunks(ChunkManager* manager, uint32_t* count);
+bool chunk_bridge_get_mesh(Chunk* chunk, VertexBridge** out_vertices, uint32_t* out_v_count, uint32_t** out_indices, uint32_t* out_i_count);
+
 // AI/GOAP API for debugging
 typedef struct GOAPState {
     const char* current_goal;

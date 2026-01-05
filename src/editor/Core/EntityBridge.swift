@@ -1,11 +1,12 @@
 import Foundation
+import CEngineCore
 
 // MARK: - Swift Wrapper for C Entity
 
 /// Swift-native representation of the C Entity struct from ECS
 public struct SwiftEntity: Hashable, Identifiable {
     public let id: UInt32
-    public let generation: UInt8
+    public let generation: UInt32
     
     /// Unique identifier for SwiftUI compatibility
     public var identifier: String {

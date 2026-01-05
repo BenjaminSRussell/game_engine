@@ -63,24 +63,20 @@ bool gltf_load_material_textures(const GLTFMaterial *gltf_mat,
   // This requires Vulkan backend integration
   
   // Helper macro to load a texture type
-  #define LOAD_TEXTURE(gltf_tex, binding_field) \
-    if (gltf_tex.texture_index != -1) { \
+  // Helper macro to load a texture type
+  #define LOAD_TEXTURE(tex_field, binding_field) \
+    if (tex_field[0] != '\0') { \
         char tex_path[512]; \
-        snprintf(tex_path, sizeof(tex_path), "%s/%s", gltf_base_path, gltf_tex.uri); \
-        /* In a real engine, we would call the texture manager here */ \
-        /* VkImageView view = texture_manager_get_view(tex_path); */ \
-        /* VkSampler sampler = texture_manager_get_sampler(tex_path); */ \
-        /* For now, we flag it as available so the renderer knows to use the error texture or fallback */ \
-        /* tex_bindings->binding_field = view; */ \
-        /* tex_bindings->binding_field##_sampler = sampler; */ \
+        snprintf(tex_path, sizeof(tex_path), "%s/%s", gltf_base_path, tex_field); \
         LOG_INFO("  - Found texture for " #binding_field ": %s", tex_path); \
     }
 
-  LOAD_TEXTURE(gltf_mat->base_color_texture, albedo);
+  LOAD_TEXTURE(gltf_mat->albedo_texture, albedo);
   LOAD_TEXTURE(gltf_mat->metallic_roughness_texture, metallic_roughness);
   LOAD_TEXTURE(gltf_mat->normal_texture, normal);
-  LOAD_TEXTURE(gltf_mat->occlusion_texture, occlusion);
-  LOAD_TEXTURE(gltf_mat->emissive_texture, emissive);
+  LOAD_TEXTURE(gltf_mat->ao_texture, occlusion);
+  // Emissive not supported in current GLTFMaterial struct
+  // LOAD_TEXTURE(gltf_mat->emissive_texture, emissive);
   
   return true;
 }

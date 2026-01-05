@@ -38,6 +38,10 @@
 #include <common.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Forward declarations
 typedef struct World {
   // Public configuration
@@ -461,5 +465,9 @@ void ecs_world_free(World *world);
  * @param delta_time Time elapsed since last update in seconds
  */
 void ecs_update_systems(World *world, f32 delta_time);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // ECS_H

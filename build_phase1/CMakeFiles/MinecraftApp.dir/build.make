@@ -96,7 +96,7 @@ MinecraftApp_EXTERNAL_OBJECTS =
 MinecraftApp: CMakeFiles/MinecraftApp.dir/src/engine/core/main.c.o
 MinecraftApp: CMakeFiles/MinecraftApp.dir/build.make
 MinecraftApp: libGame.a
-MinecraftApp: libEngineLib.a
+MinecraftApp: libEngine.a
 MinecraftApp: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/libz.tbd
 MinecraftApp: /opt/homebrew/lib/libglfw.3.4.dylib
 MinecraftApp: /opt/homebrew/lib/libvulkan.dylib

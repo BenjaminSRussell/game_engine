@@ -84,13 +84,33 @@ void memory_bridge_stop_profiling(void) {
 
 // GOAP Bridge Implementation (stub for now)
 GOAPState ecs_bridge_get_goap_state(World* world, Entity entity) {
-    GOAPState state = {0};
-    state.current_goal = "Idle";
-    state.plan_step_count = 0;
-    state.planning_time_ms = 0.0f;
-    state.is_planning = false;
-    
-    // TODO: Integrate with actual GOAP system in ai/goap.c
-    
+    GOAPState state = {
+        .current_goal = "None",
+        .plan_step_count = 0,
+        .planning_time_ms = 0.0f,
+        .is_planning = false
+    };
     return state;
 }
+
+// Chunk Bridge Implementation
+// Note: We need to include internal headers here to access Chunk/World internals
+// Assuming compatible layout or using opaque pointers where possible
+// #include <chunk/chunk.h> 
+// #include <renderer/mesh.h>
+
+const uint32_t CHUNK_SIZE_VAL = 32; // Hardcoded for bridge, should match engine
+
+// Forward declaration if not in public headers
+ChunkManager* world_get_chunk_manager(World* world); 
+
+ChunkManager* world_bridge_get_chunk_manager(World* world) {
+    // This assumes world_get_chunk_manager exists or we access it directly
+    // Since we don't have world.h visible here yet, we'll placeholder it
+    // In a real implementation this would link to the actual engine function
+    return NULL; // TODO: Implement when world.h is available
+}
+
+// Chunk Bridge Implementation
+// Handled by engine library (chunk_api_bridge.c)
+// but ensure engine_bridge.h is included for types.

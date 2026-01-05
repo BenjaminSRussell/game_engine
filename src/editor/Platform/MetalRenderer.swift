@@ -5,7 +5,7 @@ import MetalPerformanceShaders
 /// Metal 4 renderer with unified memory optimization for Apple Silicon
 @available(macOS 14.0, *)
 public class MetalRenderer {
-    private let device: MTLDevice
+    public let device: MTLDevice
     private let commandQueue: MTLCommandQueue
     private var sharedBuffers: [MTLBuffer] = []
     
@@ -28,9 +28,8 @@ public class MetalRenderer {
         self.commandQueue = queue
         
         // Initialize MetalFX upscaler for 5K rendering
-        if #available(macOS 13.0, *) {
-            setupMetalFXUpscaling()
-        }
+        // Initialize MetalFX upscaler for 5K rendering
+        setupMetalFXUpscaling()
     }
     
     /// Create shared buffer for voxel data (zero-copy with C engine)
@@ -52,7 +51,6 @@ public class MetalRenderer {
     }
     
     /// Setup MetalFX temporal upscaling for high-resolution rendering
-    @available(macOS 13.0, *)
     private func setupMetalFXUpscaling() {
         // MetalFX integration for upscaling from 1440p to 5K
         // This provides ML-augmented upscaling with minimal GPU overhead

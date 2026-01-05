@@ -95,6 +95,9 @@ test_asset_instances_EXTERNAL_OBJECTS =
 
 test_asset_instances: CMakeFiles/test_asset_instances.dir/test/test_asset_instances.c.o
 test_asset_instances: CMakeFiles/test_asset_instances.dir/build.make
+test_asset_instances: libEngine.a
+test_asset_instances: /opt/homebrew/lib/libglfw.3.4.dylib
+test_asset_instances: /opt/homebrew/lib/libvulkan.dylib
 test_asset_instances: CMakeFiles/test_asset_instances.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_phase1/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable test_asset_instances"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_asset_instances.dir/link.txt --verbose=$(VERBOSE)

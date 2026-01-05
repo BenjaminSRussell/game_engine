@@ -16,7 +16,9 @@
       "Bash(do wc -l \"$f\")",
       "Bash(for:*)",
       "Bash(done)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(rm -rf tests/comprehensive tests/physics_verification tests/physics tests/audio src/game/minecraftv2/tests demos editor/demos demo_sandbox demo_terrain demo_sandbox.dSYM demo_terrain.dSYM src/game/demo src/game/demo_physics_sandbox.c src/game/demo_simple_terrain.c assets/downloaded/beach_demo_scene.json)",
+      "Bash(rm -rf build_phase1/CMakeFiles/demo_sandbox.dir build_phase1/CMakeFiles/demo_terrain.dir build_runtime/CMakeFiles/demo_sandbox.dir build_runtime/CMakeFiles/demo_terrain.dir build_tests/CMakeFiles/demo_sandbox.dir build_tests/CMakeFiles/demo_terrain.dir)"
     ]
   }
 }

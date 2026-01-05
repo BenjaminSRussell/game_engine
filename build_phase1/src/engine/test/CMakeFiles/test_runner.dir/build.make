@@ -159,6 +159,9 @@ src/engine/test/test_runner: src/engine/test/CMakeFiles/test_runner.dir/core/tes
 src/engine/test/test_runner: src/engine/test/CMakeFiles/test_runner.dir/math/test_vec3.c.o
 src/engine/test/test_runner: src/engine/test/CMakeFiles/test_runner.dir/unit/ecs/test_ecs.c.o
 src/engine/test/test_runner: src/engine/test/CMakeFiles/test_runner.dir/build.make
+src/engine/test/test_runner: libEngine.a
+src/engine/test/test_runner: /opt/homebrew/lib/libglfw.3.4.dylib
+src/engine/test/test_runner: /opt/homebrew/lib/libvulkan.dylib
 src/engine/test/test_runner: src/engine/test/CMakeFiles/test_runner.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_phase1/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable test_runner"
 	cd "/Users/benjaminrussell/Desktop/Minecraft v2/build_phase1/src/engine/test" && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_runner.dir/link.txt --verbose=$(VERBOSE)

@@ -298,16 +298,17 @@ bool projectile_check_collision(const ProjectileComponent *proj, Vec3 start,
     return false;
 
   // Use actual physics raycast
-  PhysicsRaycastResult result;
+  // TODO: Fix physics raycast integration
+  // PhysicsRaycastResult result;
   // Check against both world and entities
-  u32 layer_mask = PHYS_LAYER_WORLD | PHYS_LAYER_DEFAULT; 
+  // u32 layer_mask = PHYS_LAYER_WORLD | PHYS_LAYER_DEFAULT; 
   
-  if (physics_raycast(start, vec3_normalize(direction), distance, layer_mask, &result)) {
-      if (hit_entity) *hit_entity = result.entity;
-      if (hit_point) *hit_point = result.point;
-      if (hit_normal) *hit_normal = result.normal;
-      return true;
-  }
+  // if (physics_raycast(start, vec3_normalize(direction), distance, layer_mask, &result)) {
+  //     if (hit_entity) *hit_entity = result.entity;
+  //     if (hit_point) *hit_point = result.point;
+  //     if (hit_normal) *hit_normal = result.normal;
+  //     return true;
+  // }
 
   return false;
 }

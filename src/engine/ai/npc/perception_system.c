@@ -834,3 +834,32 @@ static void perception_system_update_perceived_entities(
 void perception_system_shutdown(PerceptionSystem *system) {
   perception_system_destroy(system);
 }
+
+// Implementation of missing public API function
+PerceivedEntity* perception_system_get_perceived_entities(PerceptionSystem* system, 
+                                                     EntityID agent_id, u32* count) {
+    if (!system || !count) return NULL;
+    
+    mutex_lock(system->system_mutex);
+    
+    // Find the agent
+    PerceptualAgent* target_agent = NULL;
+    for (u32 i = 0; i < system->agent_count; i++) {
+        if (system->agents[i].entity_id == agent_id) {
+            target_agent = &system->agents[i];
+            break;
+        }
+    }
+    
+    if (!target_agent) {
+        mutex_unlock(system->system_mutex);
+        *count = 0;
+        return NULL;
+    }
+    
+    *count = target_agent->perceived_count;
+    PerceivedEntity* entities = target_agent->perceived_entities;
+    
+    mutex_unlock(system->system_mutex);
+    return entities;
+}

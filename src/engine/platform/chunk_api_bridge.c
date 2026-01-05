@@ -1,6 +1,7 @@
 #include "platform/chunk_api_bridge.h"
 #include "core/logger.h"
 #include "world/chunk/chunk_system.h"
+#include "../../../editor/Core/Bridges/include/engine_bridge.h"
 
 void chunk_set_load_distance(float distance) {
   chunk_sys_set_load_distance(distance);
@@ -34,4 +35,22 @@ void chunk_set_async_loading_enabled(bool enabled) {
 
 bool chunk_is_async_loading_enabled(void) {
   return chunk_sys_is_async_loading_enabled();
+}
+
+// -- Bridge Implementations --
+
+ChunkManager* world_bridge_get_chunk_manager(World* world) {
+    // TODO: Implement proper access to internal chunk manager
+    return NULL;
+}
+
+Chunk** chunk_bridge_get_loaded_chunks(ChunkManager* manager, uint32_t* count) {
+    if (count) *count = 0;
+    // TODO: Implement proper retrieval of loaded chunks
+    return NULL;
+}
+
+bool chunk_bridge_get_mesh(Chunk* chunk, VertexBridge** out_vertices, uint32_t* out_v_count, uint32_t** out_indices, uint32_t* out_i_count) {
+    // TODO: Implement proper mesh data extraction from Chunk
+    return false;
 }

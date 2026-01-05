@@ -121,6 +121,30 @@ static inline void v4f_zero(v4f *dst) {
     dst->x = dst->y = dst->z = dst->w = 0.0f;
 }
 
+/**
+ * Rotate vector by quaternion
+ * v' = q * v * q^-1
+ */
+/**
+ * Rotate vector by quaternion
+ * v' = v + 2 * cross(q.xyz, cross(q.xyz, v) + q.w * v)
+ */
+static inline void v4f_rotate_quat(v4f *dst, const v4f *v, const v4f *q) {
+    float qx = q->x, qy = q->y, qz = q->z, qw = q->w;
+    float vx = v->x, vy = v->y, vz = v->z;
+    
+    // t = 2 * cross(q.xyz, v)
+    float tx = 2.0f * (qy * vz - qz * vy);
+    float ty = 2.0f * (qz * vx - qx * vz);
+    float tz = 2.0f * (qx * vy - qy * vx);
+    
+    // v' = v + q.w * t + cross(q.xyz, t)
+    dst->x = vx + qw * tx + (qy * tz - qz * ty);
+    dst->y = vy + qw * ty + (qz * tx - qx * tz);
+    dst->z = vz + qw * tz + (qx * ty - qy * tx);
+    dst->w = 0.0f;
+}
+
 #ifdef __cplusplus
 }
 #endif

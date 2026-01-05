@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/benjaminrussell/Desktop/Minecraft v2/build_tests/cmake_install.cmake",
+		"/Users/benjaminrussell/Desktop/Minecraft v2/build_tests/src/engine/test/cmake_install.cmake",
+		"/Users/benjaminrussell/Desktop/Minecraft v2/build_tests/Vendor/Catch2/cmake_install.cmake",
+		"/Users/benjaminrussell/Desktop/Minecraft v2/build_tests/Vendor/Catch2/src/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

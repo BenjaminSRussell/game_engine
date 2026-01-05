@@ -38,15 +38,7 @@ void combat_system_bind_world(CombatSystem *combat_system, World *world) {
   (void)world;
 }
 
-void combat_system_init(CombatSystem *system) {
-  (void)system;
-  LOG_INFO("combat_system_init stub called");
-}
-
-void combat_system_update(CombatSystem *system, float delta_time) {
-  (void)system;
-  (void)delta_time;
-}
+// combat_system_init and combat_system_update moved to combat_system_impl.c
 
 static bool stub_input_init(InputSystem *sys, const InputConfig *cfg) {
   LOG_INFO("Input System Stub Initialized");

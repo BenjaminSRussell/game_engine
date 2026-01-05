@@ -357,10 +357,8 @@ typedef struct {
   bool enabled;
 } VulkanAllocatorStats;
 
-// Initialize Vulkan allocation callbacks
-void* vulkan_alloc_callback(void* user_data, size_t size, size_t alignment, int allocation_scope);
-void* vulkan_realloc_callback(void* user_data, void* original, size_t size, size_t alignment, int allocation_scope);
-void vulkan_free_callback(void* user_data, void* memory);
+// Initialize Vulkan allocation system (internal)
+// Callbacks are exposed via memory_get_vulkan_callbacks()
 
 // Get VkAllocationCallbacks structure (opaque pointer to avoid Vulkan dependency in this header)
 void* memory_get_vulkan_callbacks(void);
