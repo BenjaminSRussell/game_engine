@@ -1,40 +1,67 @@
-/**
- * @file particle_rendering.h
- * @brief Particle rendering
+/*
+ * particle_rendering.h
+ * Particle billboard rendering
  *
- * TODO: Complete implementation
-  * TODO: Sprite rendering
- * TODO: Mesh particles
+ * Part of the Effects subsystem
+ * Advanced 3D Rendering Engine
  */
 
-#ifndef RENDER_PARTICLE_RENDERING_H
-#define RENDER_PARTICLE_RENDERING_H
+#ifndef EFFECTS_PARTICLE_RENDERING_H
+#define EFFECTS_PARTICLE_RENDERING_H
+
+#include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stdint.h>
-#include <stdbool.h>
+/* ============================================================================
+ * TYPES
+ * ============================================================================ */
 
-/* TODO: Add type definitions */
+typedef struct effects_particle_rendering_handle {
+    uint32_t id;
+} effects_particle_rendering_handle_t;
 
-/* TODO: Add structure definitions */
+typedef struct effects_particle_rendering_desc {
+    uint32_t flags;
+    void* user_data;
+} effects_particle_rendering_desc_t;
 
-/* TODO: Add function declarations */
+typedef struct effects_particle_rendering_info {
+    uint32_t id;
+    uint32_t flags;
+    bool initialized;
+} effects_particle_rendering_info_t;
 
-/* TODO: Add callback definitions */
+/* ============================================================================
+ * API
+ * ============================================================================ */
 
-/* TODO: Add initialization functions */
+/* Initialization */
+int effects_particle_rendering_init(void);
+void effects_particle_rendering_shutdown(void);
 
-/* TODO: Add destruction functions */
+/* Lifecycle */
+int effects_particle_rendering_create(effects_particle_rendering_handle_t* out_handle, const effects_particle_rendering_desc_t* desc);
+void effects_particle_rendering_destroy(effects_particle_rendering_handle_t handle);
 
-/* TODO: Add query functions */
+/* Operations */
+int effects_particle_rendering_update(effects_particle_rendering_handle_t handle, const void* data, size_t size);
+bool effects_particle_rendering_is_valid(effects_particle_rendering_handle_t handle);
+int effects_particle_rendering_get_info(effects_particle_rendering_handle_t handle, effects_particle_rendering_info_t* out_info);
+void effects_particle_rendering_mark_dirty(effects_particle_rendering_handle_t handle);
+int effects_particle_rendering_process_pending(void);
 
-/* TODO: Add update functions */
+/* Statistics */
+uint32_t effects_particle_rendering_get_count(void);
+size_t effects_particle_rendering_get_memory_usage(void);
+void effects_particle_rendering_debug_print(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* RENDER_PARTICLE_RENDERING_H */
+#endif /* EFFECTS_PARTICLE_RENDERING_H */

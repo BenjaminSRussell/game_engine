@@ -783,7 +783,7 @@ SUBSYSTEMS = {
             ("timeline_view", "Timeline visualization"),
             ("resource_viewer", "Resource viewer"),
         ],
-    ],
+    },
 }
 
 # TODO templates per category
