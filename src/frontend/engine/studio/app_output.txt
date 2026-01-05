@@ -1,0 +1,12 @@
+warning: 'studio': found 1 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/engine/studio/Tests/VoxelForgeStudioTests/VoxelForgeStudioTests.swift
+warning: 'studio': found 4 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/engine/studio/app_output.txt
+    /Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/engine/studio/swift_build.log
+    /Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/engine/studio/build_final.log
+    /Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/engine/studio/final_build.log
+[0/1] Planning build
+Building for debugging...
+[0/3] Write swift-version--58304C5D6DBC2206.txt
+[2/4] Emitting module VoxelForgeStudio
+Build of product 'VoxelForgeStudio' complete! (1.05s)

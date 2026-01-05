@@ -1,0 +1,191 @@
+// Weather particle effects and rendering system
+#include <weather/weather.h>
+#include "../../include/game_common.h"
+#include "../../include/math/vec3.h"
+#include "../../include/render/vulkan.h"
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+// Particle system for weather effects
+#define MAX_WEATHER_PARTICLES 10000
+#define PARTICLE_SPAWN_RATE 100 // particles per second
+
+typedef struct {
+    Vec3 position;
+    Vec3 velocity;
+    f32 life;
+    f32 max_life;
+    f32 size;
+    u32 type; // 0=rain, 1=snow, 2=fog
+} WeatherParticle;
+
+static WeatherParticle g_particles[MAX_WEATHER_PARTICLES];
+static u32 g_particle_count = 0;
+static f32 g_spawn_accumulator = 0.0f;
+
+// Initialize particle system
+void legacy_weather_particles_init(void) {
+    memset(g_particles, 0, sizeof(g_particles));
+    g_particle_count = 0;
+    g_spawn_accumulator = 0.0f;
+}
+
+// Cleanup particle system
+void legacy_weather_particles_cleanup(void) {
+    g_particle_count = 0;
+    g_spawn_accumulator = 0.0f;
+}
+
+// Spawn new particles based on weather conditions
+static void spawn_particles(f32 delta_time) {
+    if (!g_weather.initialized) return;
+    
+    g_spawn_accumulator += delta_time;
+    f32 spawn_interval = 1.0f / PARTICLE_SPAWN_RATE;
+    
+    u32 particles_to_spawn = (u32)(g_spawn_accumulator / spawn_interval);
+    g_spawn_accumulator -= particles_to_spawn * spawn_interval;
+    
+    // Adjust spawn rate based on weather intensity
+    particles_to_spawn = (u32)(particles_to_spawn * g_weather.weather_intensity);
+    
+    for (u32 i = 0; i < particles_to_spawn && g_particle_count < MAX_WEATHER_PARTICLES; i++) {
+        WeatherParticle *particle = &g_particles[g_particle_count];
+        
+        // Random spawn position within player vicinity
+        f32 spawn_radius = 50.0f; // 50 meter radius around player
+        f32 angle = (f32)(rand() % 360) * 3.14159f / 180.0f;
+        f32 distance = (f32)(rand() % 1000) / 1000.0f * spawn_radius;
+        
+        particle->position.x = cosf(angle) * distance;
+        particle->position.y = 30.0f + (f32)(rand() % 1000) / 1000.0f * 20.0f; // 30-50m high
+        particle->position.z = sinf(angle) * distance;
+        
+        // Set particle properties based on weather type
+        switch (g_weather.current_weather) {
+            case WEATHER_RAIN:
+                particle->type = 0;
+                particle->velocity.x = g_weather.wind_direction.x * g_weather.wind_speed * 0.1f;
+                particle->velocity.y = -15.0f; // Rain falls fast
+                particle->velocity.z = g_weather.wind_direction.z * g_weather.wind_speed * 0.1f;
+                particle->size = 0.05f + (f32)(rand() % 100) / 10000.0f; // 0.05-0.06m
+                particle->max_life = 3.0f; // 3 seconds lifetime
+                break;
+                
+            case WEATHER_SNOW:
+                particle->type = 1;
+                particle->velocity.x = g_weather.wind_direction.x * g_weather.wind_speed * 0.05f;
+                particle->velocity.y = -2.0f; // Snow falls slowly
+                particle->velocity.z = g_weather.wind_direction.z * g_weather.wind_speed * 0.05f;
+                particle->size = 0.1f + (f32)(rand() % 100) / 1000.0f; // 0.1-0.2m
+                particle->max_life = 8.0f; // 8 seconds lifetime
+                break;
+                
+            case WEATHER_FOG:
+                particle->type = 2;
+                particle->velocity.x = g_weather.wind_direction.x * g_weather.wind_speed * 0.02f;
+                particle->velocity.y = 0.0f; // Fog drifts horizontally
+                particle->velocity.z = g_weather.wind_direction.z * g_weather.wind_speed * 0.02f;
+                particle->size = 2.0f + (f32)(rand() % 100) / 100.0f; // 2-3m
+                particle->max_life = 20.0f; // 20 seconds lifetime
+                break;
+                
+            default:
+                continue; // Don't spawn particles for clear weather
+        }
+        
+        particle->life = particle->max_life;
+        g_particle_count++;
+    }
+}
+
+// Update particle positions and remove dead particles
+static void update_particles(f32 delta_time) {
+    for (u32 i = 0; i < g_particle_count; ) {
+        WeatherParticle *particle = &g_particles[i];
+        
+        // Update position
+        particle->position.x += particle->velocity.x * delta_time;
+        particle->position.y += particle->velocity.y * delta_time;
+        particle->position.z += particle->velocity.z * delta_time;
+        
+        // Update life
+        particle->life -= delta_time;
+        
+        // Remove dead particles or particles that fell too far
+        if (particle->life <= 0.0f || particle->position.y < -10.0f) {
+            // Move last particle to this position
+            if (i < g_particle_count - 1) {
+                g_particles[i] = g_particles[g_particle_count - 1];
+            }
+            g_particle_count--;
+        } else {
+            i++;
+        }
+    }
+}
+
+// Render particles using Vulkan
+void legacy_weather_particles_render(VulkanRenderer *renderer) {
+    if (!renderer || g_particle_count == 0) return;
+    
+    // Create vertex data for particles
+    typedef struct {
+        Vec3 position;
+        f32 size;
+        u32 type;
+        f32 alpha;
+    } ParticleVertex;
+    
+    ParticleVertex *vertices = malloc(sizeof(ParticleVertex) * g_particle_count);
+    if (!vertices) return;
+    
+    // Convert particles to vertices
+    for (u32 i = 0; i < g_particle_count; i++) {
+        WeatherParticle *particle = &g_particles[i];
+        vertices[i].position = particle->position;
+        vertices[i].size = particle->size;
+        vertices[i].type = particle->type;
+        vertices[i].alpha = particle->life / particle->max_life; // Fade out over lifetime
+    }
+    
+    // Create vertex buffer
+    VkBuffer vertex_buffer;
+    VkDeviceMemory vertex_buffer_memory;
+    VkDeviceSize buffer_size = sizeof(ParticleVertex) * g_particle_count;
+    
+    if (vulkan_create_buffer(renderer, buffer_size,
+                              VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+                              VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                              &vertex_buffer, &vertex_buffer_memory)) {
+        
+        // Map and copy vertex data
+        void *data;
+        vkMapMemory(renderer->device, vertex_buffer_memory, 0, buffer_size, 0, &data);
+        memcpy(data, vertices, buffer_size);
+        vkUnmapMemory(renderer->device, vertex_buffer_memory);
+        
+        // Bind vertex buffer and issue draw call
+        // This would integrate with the existing Vulkan render pipeline
+        // For now, we'll just log the particle count
+        LOG_INFO("Rendering %u weather particles", g_particle_count);
+        
+        // Cleanup
+        vkDestroyBuffer(renderer->device, vertex_buffer, NULL);
+        vkFreeMemory(renderer->device, vertex_buffer_memory, NULL);
+    }
+    
+    free(vertices);
+}
+
+// Main update function
+void legacy_weather_particles_update(f32 delta_time) {
+    spawn_particles(delta_time);
+    update_particles(delta_time);
+}
+
+// Get particle count for debugging
+u32 legacy_weather_particles_get_count(void) {
+    return g_particle_count;
+}

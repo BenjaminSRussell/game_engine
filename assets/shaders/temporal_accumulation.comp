@@ -1,0 +1,181 @@
+#version 460
+#extension GL_EXT_ray_tracing : require
+
+// Temporal accumulation shader - stabilizes raytraced results over time
+// Used for GI, reflections, and other raytraced effects
+
+layout(local_size_x = 8, local_size_y = 8) in;
+
+// Input/output images
+layout(binding = 0, rgba16f) uniform image2D current_frame;
+layout(binding = 1, rgba16f) uniform image2D history_frame;
+layout(binding = 2, rgba16f) uniform image2D output_frame;
+
+// G-buffer data for reprojection
+layout(binding = 3, r16f) uniform sampler2D depth_buffer;
+layout(binding = 4, rgba16f) uniform sampler2D normal_buffer;
+layout(binding = 5, rg16f) uniform sampler2D motion_vector_buffer;
+
+// Temporal accumulation parameters
+layout(binding = 6) uniform TemporalParams {
+    vec2 resolution;
+    float alpha;           // Blend factor for history
+    float depth_threshold;
+    float normal_threshold;
+    float velocity_threshold;
+    uint frame_count;
+    uint max_history_frames;
+    bool enable_clamping;
+    bool enable_variance_filter;
+} temporal_params;
+
+// Helper functions
+vec3 world_position_from_depth(vec2 uv, float depth) {
+    // This would typically use the inverse projection matrix
+    // For now, we'll use a simplified approach
+    vec4 clip_space = vec4(uv * 2.0 - 1.0, depth * 2.0 - 1.0, 1.0);
+    vec4 view_space = inverse_projection_matrix * clip_space;
+    view_space /= view_space.w;
+    return (inverse_view_matrix * view_space).xyz;
+}
+
+vec2 reproject_uv(vec2 current_uv, vec2 motion_vector) {
+    // Reproject current UV to previous frame using motion vectors
+    return current_uv - motion_vector;
+}
+
+bool is_valid_sample(vec3 current_pos, vec3 history_pos, vec3 current_normal, vec3 history_normal, 
+                    float current_depth, float history_depth) {
+    // Check depth difference
+    float depth_diff = abs(current_depth - history_depth);
+    if (depth_diff > temporal_params.depth_threshold) {
+        return false;
+    }
+    
+    // Check position difference
+    float pos_diff = length(current_pos - history_pos);
+    if (pos_diff > temporal_params.velocity_threshold) {
+        return false;
+    }
+    
+    // Check normal difference
+    float normal_diff = dot(current_normal, history_normal);
+    if (normal_diff < temporal_params.normal_threshold) {
+        return false;
+    }
+    
+    return true;
+}
+
+vec3 calculate_variance(vec3 color, vec2 uv) {
+    // Calculate local variance for adaptive blending
+    vec3 sum = vec3(0.0);
+    vec3 sum_sq = vec3(0.0);
+    int count = 0;
+    
+    // Sample neighboring pixels
+    for (int x = -1; x <= 1; ++x) {
+        for (int y = -1; y <= 1; ++y) {
+            vec2 sample_uv = uv + vec2(x, y) / temporal_params.resolution;
+            if (sample_uv.x >= 0.0 && sample_uv.x <= 1.0 && 
+                sample_uv.y >= 0.0 && sample_uv.y <= 1.0) {
+                vec3 sample_color = imageLoad(current_frame, ivec2(sample_uv * temporal_params.resolution)).rgb;
+                sum += sample_color;
+                sum_sq += sample_color * sample_color;
+                count++;
+            }
+        }
+    }
+    
+    if (count > 0) {
+        vec3 mean = sum / float(count);
+        vec3 mean_sq = sum_sq / float(count);
+        return mean_sq - mean * mean;
+    }
+    
+    return vec3(0.0);
+}
+
+vec3 clamp_to_history(vec3 current_color, vec3 history_color, vec3 variance) {
+    // Clamp current color to reasonable range based on history and variance
+    vec3 min_color = history_color - variance * 2.0;
+    vec3 max_color = history_color + variance * 2.0;
+    return clamp(current_color, min_color, max_color);
+}
+
+void main() {
+    ivec2 pixel_coord = ivec2(gl_GlobalInvocationID.xy);
+    vec2 uv = (vec2(pixel_coord) + 0.5) / temporal_params.resolution;
+    
+    // Check if we're within bounds
+    if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
+        return;
+    }
+    
+    // Get current frame data
+    vec3 current_color = imageLoad(current_frame, pixel_coord).rgb;
+    float current_depth = texture(depth_buffer, uv).r;
+    vec3 current_normal = normalize(texture(normal_buffer, uv).rgb);
+    vec2 motion_vector = texture(motion_vector_buffer, uv).rg;
+    
+    // Skip if no valid depth (background)
+    if (current_depth >= 1.0) {
+        imageStore(output_frame, pixel_coord, vec4(current_color, 1.0));
+        return;
+    }
+    
+    // Reproject to previous frame
+    vec2 history_uv = reproject_uv(uv, motion_vector);
+    
+    // Check if reprojected UV is valid
+    if (history_uv.x < 0.0 || history_uv.x > 1.0 || 
+        history_uv.y < 0.0 || history_uv.y > 1.0) {
+        // No valid history, just output current frame
+        imageStore(output_frame, pixel_coord, vec4(current_color, 1.0));
+        return;
+    }
+    
+    // Get history frame data
+    ivec2 history_coord = ivec2(history_uv * temporal_params.resolution);
+    vec3 history_color = imageLoad(history_frame, history_coord).rgb;
+    float history_depth = texelFetch(depth_buffer, history_coord, 0).r;
+    vec3 history_normal = normalize(texelFetch(normal_buffer, history_coord, 0).rgb);
+    
+    // Calculate world positions for validation
+    vec3 current_world_pos = world_position_from_depth(uv, current_depth);
+    vec3 history_world_pos = world_position_from_depth(history_uv, history_depth);
+    
+    // Validate sample
+    bool valid_sample = is_valid_sample(current_world_pos, history_world_pos, 
+                                      current_normal, history_normal, 
+                                      current_depth, history_depth);
+    
+    // Calculate adaptive alpha based on frame count and validity
+    float adaptive_alpha = temporal_params.alpha;
+    if (!valid_sample) {
+        adaptive_alpha = 1.0; // Don't use history if invalid
+    } else if (temporal_params.frame_count < 16) {
+        // Increase alpha for first few frames to converge faster
+        adaptive_alpha = mix(1.0, temporal_params.alpha, temporal_params.frame_count / 16.0);
+    }
+    
+    // Apply variance filtering if enabled
+    if (temporal_params.enable_variance_filter) {
+        vec3 variance = calculate_variance(current_color, uv);
+        
+        // Clamp current color to prevent outliers
+        if (temporal_params.enable_clamping) {
+            current_color = clamp_to_history(current_color, history_color, variance);
+        }
+        
+        // Adjust alpha based on variance
+        float variance_magnitude = length(variance);
+        adaptive_alpha = mix(adaptive_alpha, 1.0, clamp(variance_magnitude * 2.0, 0.0, 1.0));
+    }
+    
+    // Blend current and history
+    vec3 accumulated_color = mix(history_color, current_color, adaptive_alpha);
+    
+    // Store result
+    imageStore(output_frame, pixel_coord, vec4(accumulated_color, 1.0));
+}

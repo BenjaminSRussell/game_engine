@@ -1,0 +1,238 @@
+{
+  "modpacks": [
+    {
+      "name": "AllTheMods",
+      "description": "Massive collection, good for general items and magic",
+      "curseforge_id": null,
+      "modrinth_id": null,
+      "download_url": null,
+      "priority": 1
+    },
+    {
+      "name": "RLCraft",
+      "description": "Excellent for RPG/Magic assets and mobs",
+      "curseforge_id": null,
+      "modrinth_id": null,
+      "download_url": null,
+      "priority": 2
+    },
+    {
+      "name": "SevTechAges",
+      "description": "Good for progression-based assets and primitive to high-tech vehicles",
+      "curseforge_id": null,
+      "modrinth_id": null,
+      "download_url": null,
+      "priority": 3
+    },
+    {
+      "name": "FTBInfinityEvolved",
+      "description": "Classic huge packs with tech and magic",
+      "curseforge_id": null,
+      "modrinth_id": null,
+      "download_url": null,
+      "priority": 4
+    },
+    {
+      "name": "BetterMinecraft",
+      "description": "Vanilla+ style assets",
+      "curseforge_id": null,
+      "modrinth_id": null,
+      "download_url": null,
+      "priority": 5
+    },
+    {
+      "name": "GregTechNewHorizons",
+      "description": "Extensive industrial and chemistry assets",
+      "curseforge_id": null,
+      "modrinth_id": null,
+      "download_url": null,
+      "priority": 6
+    },
+    {
+      "name": "VaultHunters",
+      "description": "Custom RPG models, gear, and UI assets",
+      "curseforge_id": null,
+      "modrinth_id": null,
+      "download_url": null,
+      "priority": 7
+    },
+    {
+      "name": "DawnCraft",
+      "description": "Souls-like combat assets and animations",
+      "curseforge_id": null,
+      "modrinth_id": null,
+      "download_url": null,
+      "priority": 8
+    },
+    {
+      "name": "CrazyCraft",
+      "description": "High variety of chaotic mobs and items",
+      "curseforge_id": null,
+      "modrinth_id": null,
+      "download_url": null,
+      "priority": 9
+    },
+    {
+      "name": "SkyFactory4",
+      "description": "Unique resource generation assets",
+      "curseforge_id": null,
+      "modrinth_id": null,
+      "download_url": null,
+      "priority": 10
+    }
+  ],
+  "standalone_mods": {
+    "vehicles": [
+      {
+        "name": "MrCrayfishVehicleMod",
+        "description": "Standard cars, ATVs",
+        "download_url": null
+      },
+      {
+        "name": "FlansMod",
+        "description": "Planes, Tanks, heavy vehicles",
+        "download_url": null
+      },
+      {
+        "name": "ImmersiveRailroading",
+        "description": "Trains",
+        "download_url": null
+      },
+      {
+        "name": "Create",
+        "description": "Contraptions, moving parts",
+        "download_url": null
+      },
+      {
+        "name": "DavincisVessels",
+        "description": "Ships",
+        "download_url": null
+      },
+      {
+        "name": "UltimateCarMod",
+        "description": "Road construction, variety of cars",
+        "download_url": null
+      },
+      {
+        "name": "SmallShips",
+        "description": "Historical boats",
+        "download_url": null
+      },
+      {
+        "name": "Trackwork",
+        "description": "Physics-based vehicle parts",
+        "download_url": null
+      }
+    ],
+    "magic": [
+      {
+        "name": "Thaumcraft",
+        "description": "Wands, nodes, eldritch assets",
+        "download_url": null
+      },
+      {
+        "name": "Botania",
+        "description": "Nature magic, flowers, particles",
+        "download_url": null
+      },
+      {
+        "name": "ArsNouveau",
+        "description": "Spell books, glyphs",
+        "download_url": null
+      },
+      {
+        "name": "ElectroblobsWizardry",
+        "description": "Wands, spell effects",
+        "download_url": null
+      },
+      {
+        "name": "BloodMagic",
+        "description": "Altars, runes",
+        "download_url": null
+      },
+      {
+        "name": "AstralSorcery",
+        "description": "Starlight effects, marble structures",
+        "download_url": null
+      },
+      {
+        "name": "MahouTsukai",
+        "description": "High-fidelity spell effects",
+        "download_url": null
+      },
+      {
+        "name": "Eidolon",
+        "description": "Dark magic, rituals",
+        "download_url": null
+      }
+    ],
+    "tech": [
+      {
+        "name": "ImmersiveEngineering",
+        "description": "Dieselpunk, multiblock structures",
+        "download_url": null
+      },
+      {
+        "name": "Mekanism",
+        "description": "Futuristic machines, factories",
+        "download_url": null
+      },
+      {
+        "name": "GregTech",
+        "description": "Industrial machinery, chemistry sets",
+        "download_url": null
+      },
+      {
+        "name": "AppliedEnergistics2",
+        "description": "Network cables, digital terminals",
+        "download_url": null
+      }
+    ],
+    "mobs": [
+      {
+        "name": "IceAndFire",
+        "description": "Dragons, mythological beasts",
+        "download_url": null
+      },
+      {
+        "name": "AlexsMobs",
+        "description": "High-quality vanilla-style animals",
+        "download_url": null
+      },
+      {
+        "name": "MowziesMobs",
+        "description": "Bosses with complex animations",
+        "download_url": null
+      },
+      {
+        "name": "LycanitesMobs",
+        "description": "Alien/Demon style creatures",
+        "download_url": null
+      }
+    ],
+    "dimensions": [
+      {
+        "name": "TwilightForest",
+        "description": "Bosses, dungeons, forest assets",
+        "download_url": null
+      },
+      {
+        "name": "TheAether",
+        "description": "Sky dimension assets",
+        "download_url": null
+      },
+      {
+        "name": "BiomesOPlenty",
+        "description": "Flora, terrain textures",
+        "download_url": null
+      }
+    ]
+  },
+  "download_settings": {
+    "concurrent_downloads": 3,
+    "retry_attempts": 3,
+    "timeout_seconds": 300,
+    "user_agent": "Mozilla/5.0 (compatible; AssetDownloader/1.0)"
+  }
+}
+

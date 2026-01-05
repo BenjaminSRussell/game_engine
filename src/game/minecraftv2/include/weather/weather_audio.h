@@ -1,0 +1,97 @@
+// Weather audio system - manages all audio effects related to weather
+// Integrates with audio engine for rain, wind, thunder, and weather ambience
+#ifndef WEATHER_AUDIO_H
+#define WEATHER_AUDIO_H
+
+#include "../game_common.h"
+#include "weather.h"
+
+// Forward declarations
+typedef struct AudioSystem AudioSystem;
+
+// Audio sound IDs (would map to actual audio resources)
+typedef enum {
+  WEATHER_SOUND_RAIN_LIGHT = 0,
+  WEATHER_SOUND_RAIN_HEAVY = 1,
+  WEATHER_SOUND_WIND_SOFT = 2,
+  WEATHER_SOUND_WIND_STRONG = 3,
+  WEATHER_SOUND_THUNDER_DISTANT = 4,
+  WEATHER_SOUND_THUNDER_CLOSE = 5,
+  WEATHER_SOUND_HAIL = 6,
+  WEATHER_SOUND_SNOW_AMBIENT = 7,
+  WEATHER_SOUND_FOG_AMBIENCE = 8,
+  WEATHER_SOUND_COUNT = 9
+} WeatherSoundID;
+
+// Audio configuration for weather effects
+typedef struct {
+  f32 master_volume;
+  f32 rain_volume;
+  f32 wind_volume;
+  f32 thunder_volume;
+  f32 hail_volume;
+  f32 snow_volume;
+  f32 fog_volume;
+  bool use_3d_audio;
+  f32 max_audio_distance;
+  f32 rain_crossfade_time;
+  f32 wind_modulation_speed;
+} WeatherAudioConfig;
+
+// Thunder state tracking
+typedef struct {
+  bool lightning_active;
+  Vec3 last_lightning_pos;
+  f32 time_since_lightning;
+  f32 thunder_delay;
+  bool played_sound;
+} ThunderState;
+
+// Weather audio system
+typedef struct WeatherAudioSystem {
+  AudioSystem *audio_engine;
+  WeatherAudioConfig config;
+  ThunderState thunder;
+  u32 active_rain_channel;
+  u32 active_wind_channel;
+  f32 current_rain_intensity;
+  f32 target_rain_intensity;
+  f32 current_wind_intensity;
+  f32 target_wind_intensity;
+  bool rain_playing;
+  bool wind_playing;
+  bool initialized;
+} WeatherAudioSystem;
+
+// Initialization and cleanup
+void weather_audio_init(WeatherAudioSystem *audio, AudioSystem *engine);
+void weather_audio_free(WeatherAudioSystem *audio);
+
+// Update weather audio based on weather state
+void weather_audio_update(WeatherAudioSystem *audio,
+                          const WeatherSystem *weather, f32 delta_time);
+
+// Sound control
+void weather_audio_play_rain(WeatherAudioSystem *audio, f32 intensity);
+void weather_audio_stop_rain(WeatherAudioSystem *audio);
+void weather_audio_play_wind(WeatherAudioSystem *audio, f32 speed,
+                             const Vec3 *direction);
+void weather_audio_stop_wind(WeatherAudioSystem *audio);
+void weather_audio_play_thunder(WeatherAudioSystem *audio, const Vec3 *position,
+                                f32 distance);
+void weather_audio_stop_thunder(WeatherAudioSystem *audio);
+
+// Configuration
+void weather_audio_set_config(WeatherAudioSystem *audio,
+                              const WeatherAudioConfig *config);
+WeatherAudioConfig weather_audio_get_default_config(void);
+
+// Utility functions
+f32 weather_audio_get_rain_intensity(const WeatherSystem *weather);
+f32 weather_audio_get_wind_intensity(const WeatherSystem *weather);
+bool weather_audio_should_have_thunder(const WeatherSystem *weather);
+f32 weather_audio_calculate_thunder_distance(f32 flash_position,
+                                             f32 listener_position);
+f32 weather_audio_calculate_sound_delay(f32 distance);
+
+#endif // WEATHER_AUDIO_H

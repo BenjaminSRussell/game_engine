@@ -1,0 +1,25 @@
+{
+  "name": "water",
+  "shader": "pbr_standard",
+  "properties": {
+    "albedo_texture": "textures/blocks/water_albedo.png",
+    "normal_texture": "textures/blocks/water_normal.png",
+    "metallic_texture": "textures/blocks/water_metallic.png",
+    "roughness_texture": "textures/blocks/water_roughness.png",
+    "ao_texture": "textures/blocks/water_ao.png",
+    "metallic_factor": 0.0,
+    "roughness_factor": 0.5,
+    "emissive_factor": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "alpha_mode": "opaque",
+    "double_sided": false
+  },
+  "tags": [
+    "water",
+    "block",
+    "generated"
+  ]
+}

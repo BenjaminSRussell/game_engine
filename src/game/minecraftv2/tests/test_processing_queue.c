@@ -1,0 +1,36 @@
+#include <assert.h>
+#include <stdio.h>
+#include "crafting/resource_processing.h>
+#include "inventory/inventory.h>
+
+int main(void) {
+    ProcessingMachine m;
+    processing_machine_init(&m, 100.0f);
+    m.input_slot = 0;
+    m.output_slot = 1;
+
+    Inventory inv;
+    inventory_init(&inv);
+
+    // Enqueue two items of id 20 (Iron Ore)
+    bool ok = processing_machine_enqueue(&m, 20);
+    assert(ok);
+    ok = processing_machine_enqueue(&m, 20);
+    assert(ok);
+
+    // Provide energy and tick enough time to process both items
+    float dt = 5.0f; // each iron takes 5s
+
+    // First update: should move item into input_slot and process it
+    processing_machine_update(&m, &inv, 100.0f, dt);
+    // After first process, output slot should have iron ingot (id 27)
+    assert(inv.slots[m.output_slot].item_id == 27);
+
+    // Second update: process next queued item
+    processing_machine_update(&m, &inv, 100.0f, dt);
+    // Output count should be 2 now (two ingots)
+    assert(inv.slots[m.output_slot].count >= 2);
+
+    printf("test_processing_queue: OK\n");
+    return 0;
+}

@@ -1,0 +1,38 @@
+#include "combat/damage_calc.h>
+#include <math.h>
+
+static const f32 ARMOR_PROTECTION_TABLE[ARMOR_TYPE_COUNT][DAMAGE_TYPE_COUNT] = {
+    {0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f},
+    {0.08f, 0.06f, 0.04f, 0.04f, 0.12f, 0.04f, 0.08f, 0.04f, 0.06f, 0.04f, 0.04f, 0.04f, 0.06f},
+    {0.12f, 0.04f, 0.04f, 0.04f, 0.08f, 0.04f, 0.10f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f},
+    {0.16f, 0.08f, 0.04f, 0.04f, 0.08f, 0.04f, 0.12f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f},
+    {0.12f, 0.08f, 0.06f, 0.06f, 0.08f, 0.04f, 0.08f, 0.06f, 0.06f, 0.04f, 0.04f, 0.04f, 0.06f},
+    {0.20f, 0.08f, 0.04f, 0.04f, 0.12f, 0.04f, 0.16f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f},
+    {0.22f, 0.08f, 0.04f, 0.04f, 0.12f, 0.04f, 0.16f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f}
+};
+
+static const f32 ARMOR_TOUGHNESS[ARMOR_TYPE_COUNT] = {
+    0.0f, 0.0f, 2.0f, 2.0f, 2.0f, 3.0f, 3.0f
+};
+
+f32 damage_calc_armor_mitigation(ArmorType armor, f32 durability_ratio, DamageType dtype) {
+    if (armor < 0 || armor >= ARMOR_TYPE_COUNT || dtype < 0 || dtype >= DAMAGE_TYPE_COUNT) {
+        return 0.0f;
+    }
+
+    f32 base_mitigation = ARMOR_PROTECTION_TABLE[armor][dtype];
+    f32 toughness_bonus = ARMOR_TOUGHNESS[armor] * 0.05f;
+
+    /* Durability affects protection: damaged armor is less effective */
+    f32 durability_factor = fmaxf(0.3f, durability_ratio);
+
+    f32 total_mitigation = (base_mitigation + toughness_bonus) * durability_factor;
+
+    /* Cap at 90% mitigation */
+    return fminf(total_mitigation, 0.9f);
+}
+
+f32 damage_apply_armor(f32 raw_damage, ArmorType armor, f32 durability_ratio, DamageType dtype) {
+    f32 mitigation = damage_calc_armor_mitigation(armor, durability_ratio, dtype);
+    return raw_damage * (1.0f - mitigation);
+}

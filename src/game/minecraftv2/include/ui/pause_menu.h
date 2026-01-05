@@ -1,0 +1,265 @@
+// include/ui/pause_menu.h
+//
+// Purpose: Comprehensive pause menu system with settings access, world
+// management, and game control options. This header defines the complete
+// in-game pause experience including quick settings, world save management,
+// multiplayer options, and system controls while maintaining game state.
+//
+// Features:
+// - Quick access to common settings (volume, brightness, difficulty)
+// - World save and backup management
+// - Multiplayer session controls
+// - Screenshot and recording tools
+// - Accessibility quick options
+// - Game mode switching
+// - Return to main menu with save confirmation
+// - Quit game with proper cleanup
+//
+#ifndef PAUSE_MENU_H
+#define PAUSE_MENU_H
+
+#include "../game_common.h"
+#include "menu.h"
+#include <math/vec2.h>
+#include <math/vec3.h>
+
+// Forward declarations
+struct VulkanRenderer;
+struct SaveSystem;
+struct NetworkSystem;
+struct AudioSystem;
+struct GameWorld;
+
+// Pause menu sections
+typedef enum {
+  PAUSE_MENU_CONTINUE,
+  PAUSE_MENU_SETTINGS,
+  PAUSE_MENU_SAVE_GAME,
+  PAUSE_MENU_MULTIPLAYER,
+  PAUSE_MENU_SCREENSHOTS,
+  PAUSE_MENU_ACCESSIBILITY,
+  PAUSE_MENU_HELP,
+  PAUSE_MENU_ADVANCEMENTS,
+  PAUSE_MENU_STATISTICS,
+  PAUSE_MENU_RETURN_TO_TITLE,
+  PAUSE_MENU_QUIT_GAME,
+  PAUSE_MENU_COUNT
+} PauseMenuSection;
+
+// Quick setting item
+typedef struct {
+  char name[64];
+  char description[128];
+  f32 current_value;
+  f32 min_value;
+  f32 max_value;
+  f32 step;
+  bool is_boolean;
+  u32 setting_id;
+  void (*on_change)(f32 new_value);
+} QuickSetting;
+
+// World save slot
+typedef struct {
+  char name[64];
+  u32 save_time;
+  u32 file_size_kb;
+  bool is_auto_save;
+  bool is_backup;
+  u32 screenshot_texture_id;
+  char description[128];
+} WorldSaveSlot;
+
+// Multiplayer session info
+typedef struct {
+  char server_name[64];
+  u32 players_online;
+  u32 max_players;
+  f32 ping_ms;
+  bool is_host;
+  bool voice_chat_enabled;
+  char current_dimension[32];
+} MultiplayerSession;
+
+// Screenshot entry
+typedef struct {
+  char filename[128];
+  u32 timestamp;
+  u32 file_size_kb;
+  u32 thumbnail_texture_id;
+  Vec3 player_position;
+  char biome[32];
+} ScreenshotEntry;
+
+// Pause menu system
+typedef struct {
+  MenuSystem base_menu;
+
+  // Current section
+  PauseMenuSection current_section;
+
+  // Game state reference
+  struct GameWorld *game_world;
+
+  // Quick settings
+  struct {
+    QuickSetting *settings;
+    u32 setting_count;
+    u32 selected_index;
+    bool show_advanced;
+  } quick_settings;
+
+  // World management
+  struct {
+    WorldSaveSlot *save_slots;
+    u32 slot_count;
+    u32 selected_slot;
+    bool creating_save;
+    bool loading_save;
+    bool auto_save_enabled;
+    u32 auto_save_interval_minutes;
+    f32 last_auto_save_time;
+    char new_save_name[64];
+  } world_management;
+
+  // Multiplayer
+  struct {
+    MultiplayerSession session;
+    bool in_multiplayer_world;
+    bool show_player_list;
+    u32 selected_player;
+    char chat_message[256];
+    bool chat_input_active;
+  } multiplayer;
+
+  // Screenshots
+  struct {
+    ScreenshotEntry *screenshots;
+    u32 screenshot_count;
+    u32 selected_index;
+    bool viewing_fullscreen;
+    bool taking_screenshot;
+    f32 screenshot_delay;
+  } screenshots;
+
+  // Accessibility quick options
+  struct {
+    bool high_contrast;
+    f32 text_scale;
+    bool colorblind_mode;
+    bool screen_reader;
+    bool reduced_motion;
+    bool show_subtitles;
+  } accessibility;
+
+  // UI state
+  struct {
+    bool show_confirm_dialog;
+    char confirm_message[256];
+    char confirm_action[64];
+    void (*confirm_callback)(bool confirmed);
+    bool show_save_progress;
+    f32 save_progress;
+    char save_status[128];
+    f32 notification_timer;
+    char notification_text[128];
+  } ui_state;
+
+  // Menu animation
+  struct {
+    bool is_opening;
+    bool is_closing;
+    f32 animation_progress;
+    f32 animation_duration;
+    Vec2 background_blur_amount;
+  } animation;
+} PauseMenuSystem;
+
+// Initialize pause menu system
+void pause_menu_init(PauseMenuSystem *menu, struct GameWorld *game_world,
+                     struct VulkanRenderer *renderer,
+                     struct SaveSystem *save_system,
+                     struct NetworkSystem *network, struct AudioSystem *audio);
+
+// Free pause menu system
+void pause_menu_free(PauseMenuSystem *menu);
+
+// Update pause menu (called each frame when paused)
+void pause_menu_update(PauseMenuSystem *menu, f32 delta_time);
+
+// Render pause menu
+void pause_menu_render(PauseMenuSystem *menu, struct VulkanRenderer *renderer);
+
+// Menu control
+void pause_menu_open(PauseMenuSystem *menu);
+void pause_menu_close(PauseMenuSystem *menu);
+bool pause_menu_is_open(const PauseMenuSystem *menu);
+void pause_menu_toggle(PauseMenuSystem *menu);
+
+// Navigation
+void pause_menu_set_section(PauseMenuSystem *menu, PauseMenuSection section);
+PauseMenuSection pause_menu_get_section(PauseMenuSystem *menu);
+
+// Quick settings
+void pause_menu_update_quick_settings(PauseMenuSystem *menu);
+void pause_menu_set_setting_value(PauseMenuSystem *menu, u32 setting_id,
+                                  f32 value);
+f32 pause_menu_get_setting_value(PauseMenuSystem *menu, u32 setting_id);
+void pause_menu_reset_settings(PauseMenuSystem *menu);
+
+// World management
+void pause_menu_refresh_save_slots(PauseMenuSystem *menu);
+void pause_menu_create_save(PauseMenuSystem *menu, const char *name);
+void pause_menu_load_save(PauseMenuSystem *menu, u32 slot_index);
+void pause_menu_delete_save(PauseMenuSystem *menu, u32 slot_index);
+void pause_menu_toggle_auto_save(PauseMenuSystem *menu);
+void pause_menu_save_now(PauseMenuSystem *menu);
+
+// Multiplayer
+void pause_menu_update_session_info(PauseMenuSystem *menu);
+void pause_menu_open_player_list(PauseMenuSystem *menu);
+void pause_menu_send_chat_message(PauseMenuSystem *menu, const char *message);
+void pause_menu_toggle_voice_chat(PauseMenuSystem *menu);
+void pause_menu_leave_server(PauseMenuSystem *menu);
+
+// Screenshots
+void pause_menu_refresh_screenshots(PauseMenuSystem *menu);
+void pause_menu_take_screenshot(PauseMenuSystem *menu, f32 delay);
+void pause_menu_view_screenshot(PauseMenuSystem *menu, u32 index);
+void pause_menu_delete_screenshot(PauseMenuSystem *menu, u32 index);
+void pause_menu_share_screenshot(PauseMenuSystem *menu, u32 index);
+
+// Accessibility
+void pause_menu_update_accessibility(PauseMenuSystem *menu);
+void pause_menu_toggle_high_contrast(PauseMenuSystem *menu);
+void pause_menu_adjust_text_scale(PauseMenuSystem *menu, f32 delta);
+void pause_menu_toggle_colorblind_mode(PauseMenuSystem *menu);
+
+// Confirmation dialogs
+void pause_menu_show_confirm_dialog(PauseMenuSystem *menu, const char *message,
+                                    const char *action,
+                                    void (*callback)(bool confirmed));
+void pause_menu_hide_confirm_dialog(PauseMenuSystem *menu);
+
+// Notifications
+void pause_menu_show_notification(PauseMenuSystem *menu, const char *text,
+                                  f32 duration);
+
+// Input handling
+void pause_menu_handle_mouse_move(PauseMenuSystem *menu, f32 x, f32 y);
+void pause_menu_handle_mouse_click(PauseMenuSystem *menu, f32 x, f32 y,
+                                   bool pressed);
+void pause_menu_handle_key(PauseMenuSystem *menu, u32 key, bool pressed);
+void pause_menu_handle_scroll(PauseMenuSystem *menu, f32 scroll_delta);
+
+// Game actions
+void pause_menu_continue_game(PauseMenuSystem *menu);
+void pause_menu_return_to_title(PauseMenuSystem *menu);
+void pause_menu_quit_game(PauseMenuSystem *menu);
+
+// Save progress
+void pause_menu_set_save_progress(PauseMenuSystem *menu, f32 progress,
+                                  const char *status);
+void pause_menu_complete_save(PauseMenuSystem *menu, bool success);
+
+#endif // PAUSE_MENU_H

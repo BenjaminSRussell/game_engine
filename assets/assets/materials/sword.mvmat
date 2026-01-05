@@ -1,0 +1,25 @@
+{
+  "name": "sword",
+  "shader": "pbr_standard",
+  "properties": {
+    "albedo_texture": "textures/blocks/sword_albedo.png",
+    "normal_texture": "textures/blocks/sword_normal.png",
+    "metallic_texture": "textures/blocks/sword_metallic.png",
+    "roughness_texture": "textures/blocks/sword_roughness.png",
+    "ao_texture": "textures/blocks/sword_ao.png",
+    "metallic_factor": 1.0,
+    "roughness_factor": 0.5,
+    "emissive_factor": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "alpha_mode": "opaque",
+    "double_sided": false
+  },
+  "tags": [
+    "sword",
+    "block",
+    "generated"
+  ]
+}

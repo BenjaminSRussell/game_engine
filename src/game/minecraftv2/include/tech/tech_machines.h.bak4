@@ -1,0 +1,205 @@
+// include/tech/tech_machines.h
+//
+// Purpose: Defines the technology machine system including energy networks,
+// machine types, and redstone logic for automated crafting and processing.
+//
+// Features:
+// - 5+ machine types (Electric Furnace, Crusher, Auto-Crafter, Pump, Mixer)
+// - Energy network system with transmission and consumption
+// - Redstone-like logic (repeaters, comparators, power levels)
+// - Machine state tracking (idle, processing, complete)
+// - Inventory integration for input/output handling
+//
+// Public APIs:
+// - `TechMachineType`: Enumeration of machine types
+// - `TechMachine`: Individual machine state and properties
+// - `EnergyNetwork`: Energy transmission and distribution
+// - `tech_machine_init`: Initialize machine at position
+// - `tech_machine_update`: Process machine state each frame
+// - `tech_network_init`: Create energy network
+// - `tech_network_add_machine`: Register machine to network
+// - `tech_network_update`: Distribute energy to machines
+// - `tech_network_get_power_level`: Query power on wire
+//
+
+#ifndef TECH_MACHINES_H
+#define TECH_MACHINES_H
+
+#include "../game_common.h"
+#include "../ecs/ecs.h"
+#include "../inventory/inventory.h"
+#include "energy_system.h"
+#include <math/vec3.h>
+
+// Machine types
+typedef enum {
+  TECH_MACHINE_NONE = 0,
+  TECH_MACHINE_ELECTRIC_FURNACE, // Smelts ore (faster than furnace)
+  TECH_MACHINE_CRUSHER,          // Crushes ore into dust (2x output)
+  TECH_MACHINE_AUTO_CRAFTER,     // Automated crafting station
+  TECH_MACHINE_PUMP,             // Fluid extraction/transfer
+  TECH_MACHINE_MIXER,            // Combines items
+  TECH_MACHINE_CONDUIT,          // Energy transmission wire
+  TECH_MACHINE_BATTERY,          // Energy storage block
+  TECH_MACHINE_COUNT
+} TechMachineType;
+
+// Machine state
+typedef enum {
+  MACHINE_STATE_IDLE,       // No process active
+  MACHINE_STATE_PROCESSING, // Currently processing
+  MACHINE_STATE_COMPLETE,   // Process complete, ready for output
+  MACHINE_STATE_ERROR,      // Error state (no input, no power, etc)
+  MACHINE_STATE_OFF         // Powered off / insufficient power
+} MachineState;
+
+// Individual machine
+typedef struct {
+  TechMachineType type;
+  EntityID entity_id;
+  Vec3 position;
+  MachineState state;
+
+  // Energy (integrated with energy system)
+  f32 power_stored;      // Current energy stored (legacy, for compatibility)
+  f32 max_power;         // Energy capacity (legacy)
+  f32 power_consumption; // Energy per second when active (legacy)
+  u8 power_level;        // 0-15 redstone-like power level
+  void *energy_node;     // EnergyNode from energy system (NULL if not using new
+                         // system)
+  VoltageTier voltage_tier; // Voltage tier for this machine
+
+  // Processing
+  f32 process_time;     // Time to complete current process
+  f32 process_progress; // 0.0 to 1.0
+  u32 input_item_id;    // What's being processed
+  u16 input_count;      // Input item count
+  u16 output_count;     // Expected output count
+
+  // Inventory
+  Inventory *inventory; // Machine inventory (input/output slots)
+  bool input_dirty;     // Input changed
+  bool output_ready;    // Output ready to extract
+
+  // Configuration
+  bool is_powered;      // Has power available
+  bool is_enabled;      // User has enabled this machine
+  f32 speed_multiplier; // 1.0 = normal, 2.0 = 2x speed (more power)
+} TechMachine;
+
+// Energy network (distribution system)
+// Energy network (distribution system)
+typedef struct {
+  TechMachine **machines; // Connected machines
+  u32 machine_count;
+  u32 machine_capacity;
+
+  f32 total_energy;  // Total energy in network
+  f32 max_energy;    // Network capacity
+  f32 transfer_rate; // Energy per second flow rate
+
+  Vec3 *wire_nodes; // Redstone-like wires in world
+  u32 wire_count;
+  u8 *power_levels; // Power level at each wire node (0-15)
+} TechEnergyNetwork;
+
+// ============= Machine Functions =============
+
+// Initialize machine
+void tech_machine_init(TechMachine *machine, TechMachineType type,
+                       Vec3 position, EntityID entity_id);
+
+// Free machine
+void tech_machine_free(TechMachine *machine);
+
+// Update machine state each frame
+void tech_machine_update(TechMachine *machine, f32 delta_time);
+
+// Supply power to machine
+void tech_machine_supply_power(TechMachine *machine, f32 power_amount);
+
+// Extract power from machine
+f32 tech_machine_extract_power(TechMachine *machine, f32 power_requested);
+
+// Set input items for processing
+bool tech_machine_set_input(TechMachine *machine, u32 item_id, u16 count);
+
+// Get output items (after processing complete)
+bool tech_machine_get_output(TechMachine *machine, u32 *out_item_id,
+                             u16 *out_count);
+
+// Query functions
+MachineState tech_machine_get_state(const TechMachine *machine);
+f32 tech_machine_get_progress(const TechMachine *machine);
+f32 tech_machine_get_power_stored(const TechMachine *machine);
+u8 tech_machine_get_power_level(const TechMachine *machine);
+const char *tech_machine_get_type_name(TechMachineType type);
+
+// ============= Energy Network Functions =============
+
+// Initialize energy network
+void tech_network_init(TechEnergyNetwork *network, u32 max_machines,
+                       u32 max_wires);
+
+// Free network
+void tech_network_free(TechEnergyNetwork *network);
+
+// Add machine to network
+bool tech_network_add_machine(TechEnergyNetwork *network, TechMachine *machine);
+
+// Remove machine from network
+void tech_network_remove_machine(TechEnergyNetwork *network,
+                                 EntityID entity_id);
+
+// Add wire node (redstone-like power line)
+u32 tech_network_add_wire(TechEnergyNetwork *network, Vec3 position);
+
+// Update energy distribution each frame
+void tech_network_update(TechEnergyNetwork *network, f32 delta_time);
+
+// Supply energy to network (from generator/solar panel)
+void tech_network_supply_energy(TechEnergyNetwork *network, f32 power_amount);
+
+// Get power level at wire position (0-15)
+u8 tech_network_get_power_level(const TechEnergyNetwork *network,
+                                Vec3 position);
+
+// Get total available energy
+f32 tech_network_get_total_energy(const TechEnergyNetwork *network);
+
+// ============= Machine Processing Recipes =============
+
+// Get recipe info for a machine type
+typedef struct {
+  u32 input_item_id;
+  u16 input_count;
+  u32 output_item_id;
+  u16 output_count;
+  f32 process_time; // Seconds to complete
+} TechMachineRecipe;
+
+// Get number of recipes for machine type
+u32 tech_machine_get_recipe_count(TechMachineType type);
+
+// Get recipe by index
+const TechMachineRecipe *tech_machine_get_recipe(TechMachineType type,
+                                                 u32 index);
+
+// Find recipe for input item
+const TechMachineRecipe *tech_machine_find_recipe(TechMachineType type,
+                                                  u32 input_item_id);
+
+// ============= Redstone Utilities =============
+
+// Power level constants
+#define REDSTONE_POWER_OFF 0
+#define REDSTONE_POWER_MAX 15
+#define REDSTONE_POWER_STRONG_THRESHOLD 8
+
+// Convert energy level to redstone power (0-15)
+u8 tech_energy_to_power_level(f32 energy, f32 max_energy);
+
+// Convert redstone power (0-15) to energy
+f32 tech_power_level_to_energy(u8 power_level, f32 machine_power_draw);
+
+#endif // TECH_MACHINES_H

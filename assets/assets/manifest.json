@@ -1,0 +1,510 @@
+{
+  "assets": [
+    {
+      "id": "shader_basic_vs",
+      "type": "shader",
+      "path": "assets/shaders/basic.vert"
+    },
+    {
+      "id": "shader_basic_fs",
+      "type": "shader",
+      "path": "assets/shaders/basic.frag"
+    },
+    {
+      "id": "texture_dirt",
+      "type": "texture",
+      "path": "assets/textures/blocks/block_gen_001.png"
+    },
+    {
+      "id": "ui_button_normal",
+      "type": "texture",
+      "path": "assets/textures/ui/button_normal.png",
+      "width": 200,
+      "height": 44
+    },
+    {
+      "id": "ui_button_pressed",
+      "type": "texture",
+      "path": "assets/textures/ui/button_pressed.png",
+      "width": 200,
+      "height": 44
+    },
+    {
+      "id": "ui_button_hover",
+      "type": "texture",
+      "path": "assets/textures/ui/button_hover.png",
+      "width": 200,
+      "height": 44
+    },
+    {
+      "id": "ui_panel_background",
+      "type": "texture",
+      "path": "assets/textures/ui/panel_background.png",
+      "width": 400,
+      "height": 300
+    },
+    {
+      "id": "ui_inventory_slot",
+      "type": "texture",
+      "path": "assets/textures/ui/inventory_slot.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "ui_inventory_slot_selected",
+      "type": "texture",
+      "path": "assets/textures/ui/inventory_slot_selected.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "ui_hotbar_slot",
+      "type": "texture",
+      "path": "assets/textures/ui/hotbar_slot.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "ui_hotbar_slot_selected",
+      "type": "texture",
+      "path": "assets/textures/ui/hotbar_slot_selected.png",
+      "width": 40,
+      "height": 40
+    },
+    {
+      "id": "ui_health_bar",
+      "type": "texture",
+      "path": "assets/textures/ui/health_bar.png",
+      "width": 100,
+      "height": 8
+    },
+    {
+      "id": "ui_hunger_bar",
+      "type": "texture",
+      "path": "assets/textures/ui/hunger_bar.png",
+      "width": 100,
+      "height": 8
+    },
+    {
+      "id": "ui_armor_bar",
+      "type": "texture",
+      "path": "assets/textures/ui/armor_bar.png",
+      "width": 100,
+      "height": 8
+    },
+    {
+      "id": "ui_experience_bar",
+      "type": "texture",
+      "path": "assets/textures/ui/experience_bar.png",
+      "width": 200,
+      "height": 6
+    },
+    {
+      "id": "ui_crosshair",
+      "type": "texture",
+      "path": "assets/textures/ui/crosshair.png",
+      "width": 20,
+      "height": 20
+    },
+    {
+      "id": "ui_loading_bar",
+      "type": "texture",
+      "path": "assets/textures/ui/loading_bar.png",
+      "width": 300,
+      "height": 20
+    },
+    {
+      "id": "ui_loading_bar_fill",
+      "type": "texture",
+      "path": "assets/textures/ui/loading_bar_fill.png",
+      "width": 300,
+      "height": 20
+    },
+    {
+      "id": "block_grass",
+      "type": "texture",
+      "path": "assets/textures/blocks/grass.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_dirt",
+      "type": "texture",
+      "path": "assets/textures/blocks/dirt.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_stone",
+      "type": "texture",
+      "path": "assets/textures/blocks/stone.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_cobblestone",
+      "type": "texture",
+      "path": "assets/textures/blocks/cobblestone.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_wood",
+      "type": "texture",
+      "path": "assets/textures/blocks/wood.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_leaves",
+      "type": "texture",
+      "path": "assets/textures/blocks/leaves.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_sand",
+      "type": "texture",
+      "path": "assets/textures/blocks/sand.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_gravel",
+      "type": "texture",
+      "path": "assets/textures/blocks/gravel.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_coal_ore",
+      "type": "texture",
+      "path": "assets/textures/blocks/coal_ore.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_iron_ore",
+      "type": "texture",
+      "path": "assets/textures/blocks/iron_ore.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_gold_ore",
+      "type": "texture",
+      "path": "assets/textures/blocks/gold_ore.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_diamond_ore",
+      "type": "texture",
+      "path": "assets/textures/blocks/diamond_ore.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_water",
+      "type": "texture",
+      "path": "assets/textures/blocks/water.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_lava",
+      "type": "texture",
+      "path": "assets/textures/blocks/lava.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_glass",
+      "type": "texture",
+      "path": "assets/textures/blocks/glass.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_brick",
+      "type": "texture",
+      "path": "assets/textures/blocks/brick.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_ice",
+      "type": "texture",
+      "path": "assets/textures/blocks/ice.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_snow",
+      "type": "texture",
+      "path": "assets/textures/blocks/snow.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_obsidian",
+      "type": "texture",
+      "path": "assets/textures/blocks/obsidian.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "block_bedrock",
+      "type": "texture",
+      "path": "assets/textures/blocks/bedrock.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_sword",
+      "type": "texture",
+      "path": "assets/textures/items/sword.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_pickaxe",
+      "type": "texture",
+      "path": "assets/textures/items/pickaxe.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_axe",
+      "type": "texture",
+      "path": "assets/textures/items/axe.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_shovel",
+      "type": "texture",
+      "path": "assets/textures/items/shovel.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_apple",
+      "type": "texture",
+      "path": "assets/textures/items/apple.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_bread",
+      "type": "texture",
+      "path": "assets/textures/items/bread.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_coal",
+      "type": "texture",
+      "path": "assets/textures/items/coal.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_iron_ingot",
+      "type": "texture",
+      "path": "assets/textures/items/iron_ingot.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_gold_ingot",
+      "type": "texture",
+      "path": "assets/textures/items/gold_ingot.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_diamond",
+      "type": "texture",
+      "path": "assets/textures/items/diamond.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_torch",
+      "type": "texture",
+      "path": "assets/textures/items/torch.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_bow",
+      "type": "texture",
+      "path": "assets/textures/items/bow.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_arrow",
+      "type": "texture",
+      "path": "assets/textures/items/arrow.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "item_bucket",
+      "type": "texture",
+      "path": "assets/textures/items/bucket.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "id": "model_player",
+      "type": "model",
+      "path": "assets/models/characters/player.obj"
+    },
+    {
+      "id": "model_zombie",
+      "type": "model",
+      "path": "assets/models/characters/zombie.obj"
+    },
+    {
+      "id": "model_skeleton",
+      "type": "model",
+      "path": "assets/models/characters/skeleton.obj"
+    },
+    {
+      "id": "model_creeper",
+      "type": "model",
+      "path": "assets/models/characters/creeper.obj"
+    },
+    {
+      "id": "model_oak_tree",
+      "type": "model",
+      "path": "assets/models/environment/oak_tree.obj"
+    },
+    {
+      "id": "model_basic_house",
+      "type": "model",
+      "path": "assets/models/environment/basic_house.obj"
+    },
+    {
+      "id": "model_sword_3d",
+      "type": "model",
+      "path": "assets/models/items/sword.obj"
+    },
+    {
+      "id": "model_pickaxe_3d",
+      "type": "model",
+      "path": "assets/models/items/pickaxe.obj"
+    },
+    {
+      "id": "texture_player",
+      "type": "texture",
+      "path": "assets/textures/entities/player.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "id": "texture_zombie",
+      "type": "texture",
+      "path": "assets/textures/entities/zombie.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "id": "texture_skeleton",
+      "type": "texture",
+      "path": "assets/textures/entities/skeleton.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "id": "texture_creeper",
+      "type": "texture",
+      "path": "assets/textures/entities/creeper.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "id": "texture_chicken",
+      "type": "texture",
+      "path": "assets/textures/entities/chicken.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "id": "texture_cow",
+      "type": "texture",
+      "path": "assets/textures/entities/cow.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "id": "texture_pig",
+      "type": "texture",
+      "path": "assets/textures/entities/pig.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "id": "texture_villager",
+      "type": "texture",
+      "path": "assets/textures/entities/villager.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "id": "particle_rain",
+      "type": "texture",
+      "path": "assets/textures/particles/rain.png",
+      "width": 8,
+      "height": 8
+    },
+    {
+      "id": "particle_snow",
+      "type": "texture",
+      "path": "assets/textures/particles/snow.png",
+      "width": 8,
+      "height": 8
+    },
+    {
+      "id": "particle_fog",
+      "type": "texture",
+      "path": "assets/textures/particles/fog.png",
+      "width": 8,
+      "height": 8
+    },
+    {
+      "id": "particle_lightning",
+      "type": "texture",
+      "path": "assets/textures/particles/lightning.png",
+      "width": 8,
+      "height": 8
+    },
+    {
+      "id": "model_player",
+      "type": "model",
+      "path": "assets/models/characters/player.obj",
+      "format": "obj"
+    },
+    {
+      "id": "model_zombie",
+      "type": "model",
+      "path": "assets/models/characters/zombie.obj",
+      "format": "obj"
+    },
+    {
+      "id": "model_creeper",
+      "type": "model",
+      "path": "assets/models/characters/creeper.obj",
+      "format": "obj"
+    },
+    {
+      "id": "model_pig",
+      "type": "model",
+      "path": "assets/models/characters/pig.obj",
+      "format": "obj"
+    }
+  ]
+}

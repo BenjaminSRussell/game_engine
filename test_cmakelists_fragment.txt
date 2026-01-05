@@ -1,0 +1,28 @@
+# CMakeLists.txt for Tests
+
+# Enable testing
+enable_testing()
+
+# Helper macro to add test
+macro(add_engine_test name source)
+    add_executable(${name} ${source})
+    target_link_libraries(${name} PRIVATE Engine)  # Link against main engine lib
+    # Add includes (reuse main project includes)
+    target_include_directories(${name} PRIVATE 
+        ${CMAKE_SOURCE_DIR}/src/engine/include
+        ${CMAKE_SOURCE_DIR}/src/engine
+        ${CMAKE_SOURCE_DIR}/test
+    )
+    add_test(NAME ${name} COMMAND ${name})
+endmacro()
+
+# Render Graph Tests
+add_engine_test(test_render_graph test/test_render_graph.c)
+
+# Material System Tests
+add_engine_test(test_material_system test/test_material_system.c)
+
+# Post-Processing Tests
+add_engine_test(test_post_processing test/test_post_processing.c)
+
+# Build command: cd build && ctest

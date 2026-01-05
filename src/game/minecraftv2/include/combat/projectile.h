@@ -1,0 +1,165 @@
+// include/combat/projectile.h
+//
+// Purpose: Defines the projectile system for handling arrows, crossbow bolts,
+// and other ranged projectiles in the game. Includes physics simulation,
+// collision detection, and damage application.
+//
+// Public APIs:
+// - `ProjectileType`: Enumeration of projectile types
+// - `Projectile`: Complete projectile entity with physics and state
+// - `ProjectileManager`: System for managing all active projectiles
+// - `projectile_manager_init`: Initialize the projectile system
+// - `projectile_manager_update`: Update all projectiles
+// - `projectile_spawn`: Create a new projectile
+// - `projectile_destroy`: Remove a projectile
+//
+#ifndef PROJECTILE_H
+#define PROJECTILE_H
+
+#include "../game_common.h"
+#include <ecs/ecs.h>
+#include <physics/physics.h>
+#include <math/vec3.h>
+
+typedef struct ChunkManager ChunkManager;
+typedef struct BlockRegistry BlockRegistry;
+
+// Projectile types
+typedef enum {
+  PROJECTILE_ARROW,
+  PROJECTILE_SPECTRAL_ARROW,
+  PROJECTILE_TIPPED_ARROW,
+  PROJECTILE_CROSSBOW_BOLT,
+  PROJECTILE_FIREBALL,
+  PROJECTILE_SNOWBALL,
+  PROJECTILE_EGG,
+  PROJECTILE_ENDER_PEARL,
+  PROJECTILE_TRIDENT,
+  PROJECTILE_COUNT
+} ProjectileType;
+
+// Projectile state
+typedef enum {
+  PROJECTILE_STATE_FLYING,
+  PROJECTILE_STATE_STUCK,
+  PROJECTILE_STATE_GROUND,
+  PROJECTILE_STATE_DESTROYED
+} ProjectileState;
+
+// Projectile entity
+typedef struct {
+  EntityID entity_id;
+  ProjectileType type;
+  ProjectileState state;
+
+  // Physics
+  Vec3 position;
+  Vec3 velocity;
+  Vec3 acceleration;
+  f32 gravity;
+  f32 drag; // Air resistance
+  f32 rotation_yaw;
+  f32 rotation_pitch;
+
+  // Collision
+  f32 radius; // Collision radius
+  bool collides_with_blocks;
+  bool collides_with_entities;
+
+  // Damage
+  f32 damage;
+  f32 knockback;
+  bool is_critical; // Critical hit (2x damage, particles)
+  EntityID shooter; // Who shot this projectile
+
+  // Lifetime
+  f32 lifetime;     // Time since spawn
+  f32 max_lifetime; // Despawn after this time
+  f32 stuck_timer;  // Time stuck in block/entity
+
+  // Stuck state
+  Vec3 stuck_position;
+  EntityID stuck_entity; // Entity projectile is stuck in
+  Vec3 stuck_offset;     // Offset from entity origin when stuck in entity
+  Vec3 stuck_block;      // Block position projectile is stuck in
+  BlockID stuck_block_id;
+
+  // Visual effects
+  bool has_trail;
+  bool has_glow;
+  u32 trail_color; // RGBA color for particle trail
+
+  // Special properties
+  u32 potion_effect_id; // For tipped arrows
+  f32 potion_duration;
+  bool is_on_fire;
+  f32 fire_duration;
+
+  // Pickup
+  bool can_be_picked_up;
+  f32 pickup_delay; // Can't be picked up immediately after firing
+} Projectile;
+
+// Projectile manager
+typedef struct {
+  Projectile *projectiles;
+  u32 count;
+  u32 capacity;
+  ECSWorld *ecs_world;
+  PhysicsWorld *physics_world;
+  ChunkManager *chunk_manager;
+  BlockRegistry *block_registry;
+} ProjectileManager;
+
+// Initialize projectile manager
+void projectile_manager_init(ProjectileManager *manager, u32 capacity,
+                             ECSWorld *ecs, PhysicsWorld *physics,
+                             ChunkManager *chunks, BlockRegistry *blocks);
+
+// Free projectile manager
+void projectile_manager_free(ProjectileManager *manager);
+
+// Update all projectiles
+void projectile_manager_update(ProjectileManager *manager, f32 delta_time);
+
+// Spawn a projectile
+Projectile *projectile_spawn(ProjectileManager *manager, ProjectileType type,
+                             Vec3 position, Vec3 velocity, f32 damage,
+                             EntityID shooter);
+
+// Destroy a projectile
+void projectile_destroy(ProjectileManager *manager, u32 index);
+
+// Update single projectile
+void projectile_update(Projectile *projectile, f32 delta_time,
+                       ProjectileManager *manager);
+
+// Check projectile collision with blocks
+bool projectile_check_block_collision(Projectile *projectile,
+                                      ChunkManager *chunk_manager,
+                                      BlockRegistry *block_registry);
+
+// Check projectile collision with entities
+bool projectile_check_entity_collision(Projectile *projectile,
+                                       ECSWorld *ecs_world,
+                                       ProjectileManager *manager);
+
+// Apply projectile damage to entity
+void projectile_apply_damage(Projectile *projectile, EntityID target,
+                             ECSWorld *ecs_world);
+
+// Make projectile stick to block
+void projectile_stick_to_block(Projectile *projectile, Vec3 block_pos,
+                               BlockID block_id);
+
+// Make projectile stick to entity
+void projectile_stick_to_entity(Projectile *projectile, EntityID entity);
+
+// Helper: Calculate arrow trajectory with gravity
+Vec3 projectile_calculate_velocity(Vec3 start, Vec3 target, f32 speed,
+                                   f32 gravity);
+
+// Helper: Calculate critical hit chance based on charge/conditions
+bool projectile_is_critical(f32 charge_time, bool fully_charged);
+
+#endif // PROJECTILE_H

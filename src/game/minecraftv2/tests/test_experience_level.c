@@ -1,0 +1,20 @@
+#include <assert.h>
+#include <stdio.h>
+#include "player/experience_test.h>
+
+int main(void) {
+    EntityID player = 42;
+    exp_test_reset();
+    bool ok = exp_test_add_experience_to_player(player, 100.0f);
+    assert(ok);
+
+    ExperiencePlayerEntry *e = exp_test_get_player_entry(player);
+    assert(e != NULL);
+    // With 100 exp, expect some level > 0
+    assert(e->level > 0);
+    assert(e->skill_points > 0);
+
+    printf("test_experience_level: OK (level=%d, points=%d)\n", e->level, e->skill_points);
+    exp_test_reset();
+    return 0;
+}

@@ -1,0 +1,26 @@
+Sound Credits
+
+Kenney.nl Sound Packs:
+- RPG Audio Pack by Kenney (kenney.nl)
+- Digital Audio Pack by Kenney (kenney.nl)
+- Interface Sounds by Kenney (kenney.nl)
+Licensed under CC0 1.0 Universal (Public Domain)
+No attribution required, but appreciated!
+Website: https://kenney.nl
+
+These sound packs are free to use in any project, commercial or non-commercial.
+
+---
+
+Freesound.org Sounds (to be added):
+When you download individual sounds from Freesound.org, add their credits here.
+
+Example format:
+- [Sound Name] by [Username] (https://freesound.org/people/[Username]/)
+  Licensed under CC-BY 3.0 or CC0 (check each sound)
+
+---
+
+For more information about Creative Commons licenses:
+- CC0: https://creativecommons.org/publicdomain/zero/1.0/
+- CC-BY 3.0: https://creativecommons.org/licenses/by/3.0/

@@ -1,0 +1,3502 @@
+[
+  {
+    "id": 0,
+    "type": "block",
+    "material": "wood",
+    "base": "#3A2414",
+    "file": "block_gen_000.png"
+  },
+  {
+    "id": 1,
+    "type": "block",
+    "material": "clay",
+    "base": "#A08A4A",
+    "file": "block_gen_001.png"
+  },
+  {
+    "id": 2,
+    "type": "block",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_gen_002.png"
+  },
+  {
+    "id": 3,
+    "type": "block",
+    "material": "dirt",
+    "base": "#6D4427",
+    "file": "block_gen_003.png"
+  },
+  {
+    "id": 4,
+    "type": "block",
+    "material": "wood",
+    "base": "#6D4427",
+    "file": "block_gen_004.png"
+  },
+  {
+    "id": 5,
+    "type": "block",
+    "material": "clay",
+    "base": "#6D4427",
+    "file": "block_gen_005.png"
+  },
+  {
+    "id": 6,
+    "type": "block",
+    "material": "dirt",
+    "base": "#8F5C39",
+    "file": "block_gen_006.png"
+  },
+  {
+    "id": 7,
+    "type": "block",
+    "material": "grass",
+    "base": "#3A2414",
+    "file": "block_gen_007.png"
+  },
+  {
+    "id": 8,
+    "type": "block",
+    "material": "clay",
+    "base": "#D6BA6D",
+    "file": "block_gen_008.png"
+  },
+  {
+    "id": 9,
+    "type": "block",
+    "material": "grass",
+    "base": "#7E5030",
+    "file": "block_gen_009.png"
+  },
+  {
+    "id": 10,
+    "type": "block",
+    "material": "sand",
+    "base": "#E8CA79",
+    "file": "block_gen_010.png"
+  },
+  {
+    "id": 11,
+    "type": "block",
+    "material": "wood",
+    "base": "#8F5C39",
+    "file": "block_gen_011.png"
+  },
+  {
+    "id": 12,
+    "type": "block",
+    "material": "grass",
+    "base": "#A06842",
+    "file": "block_gen_012.png"
+  },
+  {
+    "id": 13,
+    "type": "block",
+    "material": "gravel",
+    "base": "#D6BA6D",
+    "file": "block_gen_013.png"
+  },
+  {
+    "id": 14,
+    "type": "block",
+    "material": "wood",
+    "base": "#2A1B10",
+    "file": "block_gen_014.png"
+  },
+  {
+    "id": 15,
+    "type": "block",
+    "material": "grass",
+    "base": "#7E5030",
+    "file": "block_gen_015.png"
+  },
+  {
+    "id": 16,
+    "type": "block",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_gen_016.png"
+  },
+  {
+    "id": 17,
+    "type": "block",
+    "material": "gravel",
+    "base": "#C4AA61",
+    "file": "block_gen_017.png"
+  },
+  {
+    "id": 18,
+    "type": "block",
+    "material": "wood",
+    "base": "#8F5C39",
+    "file": "block_gen_018.png"
+  },
+  {
+    "id": 19,
+    "type": "block",
+    "material": "gravel",
+    "base": "#414141",
+    "file": "block_gen_019.png"
+  },
+  {
+    "id": 20,
+    "type": "block",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_gen_020.png"
+  },
+  {
+    "id": 21,
+    "type": "block",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_gen_021.png"
+  },
+  {
+    "id": 22,
+    "type": "block",
+    "material": "grass",
+    "base": "#4B2E19",
+    "file": "block_gen_022.png"
+  },
+  {
+    "id": 23,
+    "type": "block",
+    "material": "clay",
+    "base": "#A06842",
+    "file": "block_gen_023.png"
+  },
+  {
+    "id": 24,
+    "type": "block",
+    "material": "wood",
+    "base": "#7E5030",
+    "file": "block_gen_024.png"
+  },
+  {
+    "id": 25,
+    "type": "block",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_gen_025.png"
+  },
+  {
+    "id": 26,
+    "type": "block",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_gen_026.png"
+  },
+  {
+    "id": 27,
+    "type": "block",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_gen_027.png"
+  },
+  {
+    "id": 28,
+    "type": "block",
+    "material": "sand",
+    "base": "#B29A55",
+    "file": "block_gen_028.png"
+  },
+  {
+    "id": 29,
+    "type": "block",
+    "material": "grass",
+    "base": "#5C3820",
+    "file": "block_gen_029.png"
+  },
+  {
+    "id": 30,
+    "type": "block",
+    "material": "sand",
+    "base": "#8E7A3F",
+    "file": "block_gen_030.png"
+  },
+  {
+    "id": 31,
+    "type": "block",
+    "material": "clay",
+    "base": "#E8CA79",
+    "file": "block_gen_031.png"
+  },
+  {
+    "id": 32,
+    "type": "block",
+    "material": "wood",
+    "base": "#A06842",
+    "file": "block_gen_032.png"
+  },
+  {
+    "id": 33,
+    "type": "block",
+    "material": "gravel",
+    "base": "#232323",
+    "file": "block_gen_033.png"
+  },
+  {
+    "id": 34,
+    "type": "block",
+    "material": "sand",
+    "base": "#D6BA6D",
+    "file": "block_gen_034.png"
+  },
+  {
+    "id": 35,
+    "type": "block",
+    "material": "clay",
+    "base": "#6D4427",
+    "file": "block_gen_035.png"
+  },
+  {
+    "id": 36,
+    "type": "block",
+    "material": "dirt",
+    "base": "#8F5C39",
+    "file": "block_gen_036.png"
+  },
+  {
+    "id": 37,
+    "type": "block",
+    "material": "grass",
+    "base": "#5C3820",
+    "file": "block_gen_037.png"
+  },
+  {
+    "id": 38,
+    "type": "block",
+    "material": "sand",
+    "base": "#E8CA79",
+    "file": "block_gen_038.png"
+  },
+  {
+    "id": 39,
+    "type": "block",
+    "material": "clay",
+    "base": "#A08A4A",
+    "file": "block_gen_039.png"
+  },
+  {
+    "id": 40,
+    "type": "block",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_gen_040.png"
+  },
+  {
+    "id": 41,
+    "type": "block",
+    "material": "gravel",
+    "base": "#B29A55",
+    "file": "block_gen_041.png"
+  },
+  {
+    "id": 42,
+    "type": "block",
+    "material": "grass",
+    "base": "#2A1B10",
+    "file": "block_gen_042.png"
+  },
+  {
+    "id": 43,
+    "type": "block",
+    "material": "gravel",
+    "base": "#2D2D2D",
+    "file": "block_gen_043.png"
+  },
+  {
+    "id": 44,
+    "type": "block",
+    "material": "gravel",
+    "base": "#4B4B4B",
+    "file": "block_gen_044.png"
+  },
+  {
+    "id": 45,
+    "type": "block",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_gen_045.png"
+  },
+  {
+    "id": 46,
+    "type": "block",
+    "material": "sand",
+    "base": "#C4AA61",
+    "file": "block_gen_046.png"
+  },
+  {
+    "id": 47,
+    "type": "block",
+    "material": "sand",
+    "base": "#8E7A3F",
+    "file": "block_gen_047.png"
+  },
+  {
+    "id": 48,
+    "type": "block",
+    "material": "gravel",
+    "base": "#B29A55",
+    "file": "block_gen_048.png"
+  },
+  {
+    "id": 49,
+    "type": "block",
+    "material": "dirt",
+    "base": "#2A1B10",
+    "file": "block_gen_049.png"
+  },
+  {
+    "id": 50,
+    "type": "block",
+    "material": "dirt",
+    "base": "#7E5030",
+    "file": "block_gen_050.png"
+  },
+  {
+    "id": 51,
+    "type": "block",
+    "material": "sand",
+    "base": "#C4AA61",
+    "file": "block_gen_051.png"
+  },
+  {
+    "id": 52,
+    "type": "block",
+    "material": "wood",
+    "base": "#5C3820",
+    "file": "block_gen_052.png"
+  },
+  {
+    "id": 53,
+    "type": "block",
+    "material": "sand",
+    "base": "#B29A55",
+    "file": "block_gen_053.png"
+  },
+  {
+    "id": 54,
+    "type": "block",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_gen_054.png"
+  },
+  {
+    "id": 55,
+    "type": "block",
+    "material": "sand",
+    "base": "#C4AA61",
+    "file": "block_gen_055.png"
+  },
+  {
+    "id": 56,
+    "type": "block",
+    "material": "gravel",
+    "base": "#565656",
+    "file": "block_gen_056.png"
+  },
+  {
+    "id": 57,
+    "type": "block",
+    "material": "dirt",
+    "base": "#2A1B10",
+    "file": "block_gen_057.png"
+  },
+  {
+    "id": 58,
+    "type": "block",
+    "material": "sand",
+    "base": "#D6BA6D",
+    "file": "block_gen_058.png"
+  },
+  {
+    "id": 59,
+    "type": "block",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_gen_059.png"
+  },
+  {
+    "id": 60,
+    "type": "block",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_gen_060.png"
+  },
+  {
+    "id": 61,
+    "type": "block",
+    "material": "dirt",
+    "base": "#5C3820",
+    "file": "block_gen_061.png"
+  },
+  {
+    "id": 62,
+    "type": "block",
+    "material": "gravel",
+    "base": "#B29A55",
+    "file": "block_gen_062.png"
+  },
+  {
+    "id": 63,
+    "type": "block",
+    "material": "grass",
+    "base": "#6D4427",
+    "file": "block_gen_063.png"
+  },
+  {
+    "id": 64,
+    "type": "block",
+    "material": "dirt",
+    "base": "#6D4427",
+    "file": "block_gen_064.png"
+  },
+  {
+    "id": 65,
+    "type": "block",
+    "material": "gravel",
+    "base": "#232323",
+    "file": "block_gen_065.png"
+  },
+  {
+    "id": 66,
+    "type": "block",
+    "material": "sand",
+    "base": "#D6BA6D",
+    "file": "block_gen_066.png"
+  },
+  {
+    "id": 67,
+    "type": "block",
+    "material": "dirt",
+    "base": "#8F5C39",
+    "file": "block_gen_067.png"
+  },
+  {
+    "id": 68,
+    "type": "block",
+    "material": "sand",
+    "base": "#E8CA79",
+    "file": "block_gen_068.png"
+  },
+  {
+    "id": 69,
+    "type": "block",
+    "material": "grass",
+    "base": "#A06842",
+    "file": "block_gen_069.png"
+  },
+  {
+    "id": 70,
+    "type": "block",
+    "material": "gravel",
+    "base": "#373737",
+    "file": "block_gen_070.png"
+  },
+  {
+    "id": 71,
+    "type": "block",
+    "material": "gravel",
+    "base": "#565656",
+    "file": "block_gen_071.png"
+  },
+  {
+    "id": 72,
+    "type": "block",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_gen_072.png"
+  },
+  {
+    "id": 73,
+    "type": "block",
+    "material": "dirt",
+    "base": "#5C3820",
+    "file": "block_gen_073.png"
+  },
+  {
+    "id": 74,
+    "type": "block",
+    "material": "dirt",
+    "base": "#A06842",
+    "file": "block_gen_074.png"
+  },
+  {
+    "id": 75,
+    "type": "block",
+    "material": "wood",
+    "base": "#7E5030",
+    "file": "block_gen_075.png"
+  },
+  {
+    "id": 76,
+    "type": "block",
+    "material": "gravel",
+    "base": "#8E7A3F",
+    "file": "block_gen_076.png"
+  },
+  {
+    "id": 77,
+    "type": "block",
+    "material": "wood",
+    "base": "#2A1B10",
+    "file": "block_gen_077.png"
+  },
+  {
+    "id": 78,
+    "type": "block",
+    "material": "sand",
+    "base": "#A08A4A",
+    "file": "block_gen_078.png"
+  },
+  {
+    "id": 79,
+    "type": "block",
+    "material": "clay",
+    "base": "#A08A4A",
+    "file": "block_gen_079.png"
+  },
+  {
+    "id": 80,
+    "type": "block",
+    "material": "sand",
+    "base": "#C4AA61",
+    "file": "block_gen_080.png"
+  },
+  {
+    "id": 81,
+    "type": "block",
+    "material": "gravel",
+    "base": "#414141",
+    "file": "block_gen_081.png"
+  },
+  {
+    "id": 82,
+    "type": "block",
+    "material": "wood",
+    "base": "#A06842",
+    "file": "block_gen_082.png"
+  },
+  {
+    "id": 83,
+    "type": "block",
+    "material": "dirt",
+    "base": "#3A2414",
+    "file": "block_gen_083.png"
+  },
+  {
+    "id": 84,
+    "type": "block",
+    "material": "clay",
+    "base": "#8E7A3F",
+    "file": "block_gen_084.png"
+  },
+  {
+    "id": 85,
+    "type": "block",
+    "material": "grass",
+    "base": "#8F5C39",
+    "file": "block_gen_085.png"
+  },
+  {
+    "id": 86,
+    "type": "block",
+    "material": "gravel",
+    "base": "#232323",
+    "file": "block_gen_086.png"
+  },
+  {
+    "id": 87,
+    "type": "block",
+    "material": "wood",
+    "base": "#A06842",
+    "file": "block_gen_087.png"
+  },
+  {
+    "id": 88,
+    "type": "block",
+    "material": "clay",
+    "base": "#C4AA61",
+    "file": "block_gen_088.png"
+  },
+  {
+    "id": 89,
+    "type": "block",
+    "material": "grass",
+    "base": "#8F5C39",
+    "file": "block_gen_089.png"
+  },
+  {
+    "id": 90,
+    "type": "block",
+    "material": "gravel",
+    "base": "#B29A55",
+    "file": "block_gen_090.png"
+  },
+  {
+    "id": 91,
+    "type": "block",
+    "material": "grass",
+    "base": "#3A2414",
+    "file": "block_gen_091.png"
+  },
+  {
+    "id": 92,
+    "type": "block",
+    "material": "dirt",
+    "base": "#4B2E19",
+    "file": "block_gen_092.png"
+  },
+  {
+    "id": 93,
+    "type": "block",
+    "material": "wood",
+    "base": "#7E5030",
+    "file": "block_gen_093.png"
+  },
+  {
+    "id": 94,
+    "type": "block",
+    "material": "dirt",
+    "base": "#4B2E19",
+    "file": "block_gen_094.png"
+  },
+  {
+    "id": 95,
+    "type": "block",
+    "material": "clay",
+    "base": "#A08A4A",
+    "file": "block_gen_095.png"
+  },
+  {
+    "id": 96,
+    "type": "block",
+    "material": "sand",
+    "base": "#D6BA6D",
+    "file": "block_gen_096.png"
+  },
+  {
+    "id": 97,
+    "type": "block",
+    "material": "wood",
+    "base": "#7E5030",
+    "file": "block_gen_097.png"
+  },
+  {
+    "id": 98,
+    "type": "block",
+    "material": "grass",
+    "base": "#A06842",
+    "file": "block_gen_098.png"
+  },
+  {
+    "id": 99,
+    "type": "block",
+    "material": "gravel",
+    "base": "#373737",
+    "file": "block_gen_099.png"
+  },
+  {
+    "id": 100,
+    "type": "block",
+    "material": "grass",
+    "base": "#7E5030",
+    "file": "block_gen_100.png"
+  },
+  {
+    "id": 101,
+    "type": "block",
+    "material": "sand",
+    "base": "#A08A4A",
+    "file": "block_gen_101.png"
+  },
+  {
+    "id": 102,
+    "type": "block",
+    "material": "clay",
+    "base": "#8E7A3F",
+    "file": "block_gen_102.png"
+  },
+  {
+    "id": 103,
+    "type": "block",
+    "material": "gravel",
+    "base": "#D6BA6D",
+    "file": "block_gen_103.png"
+  },
+  {
+    "id": 104,
+    "type": "block",
+    "material": "grass",
+    "base": "#2A1B10",
+    "file": "block_gen_104.png"
+  },
+  {
+    "id": 105,
+    "type": "block",
+    "material": "dirt",
+    "base": "#3A2414",
+    "file": "block_gen_105.png"
+  },
+  {
+    "id": 106,
+    "type": "block",
+    "material": "gravel",
+    "base": "#414141",
+    "file": "block_gen_106.png"
+  },
+  {
+    "id": 107,
+    "type": "block",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_gen_107.png"
+  },
+  {
+    "id": 108,
+    "type": "block",
+    "material": "gravel",
+    "base": "#E8CA79",
+    "file": "block_gen_108.png"
+  },
+  {
+    "id": 109,
+    "type": "block",
+    "material": "dirt",
+    "base": "#3A2414",
+    "file": "block_gen_109.png"
+  },
+  {
+    "id": 110,
+    "type": "block",
+    "material": "gravel",
+    "base": "#A08A4A",
+    "file": "block_gen_110.png"
+  },
+  {
+    "id": 111,
+    "type": "block",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_gen_111.png"
+  },
+  {
+    "id": 112,
+    "type": "block",
+    "material": "sand",
+    "base": "#8E7A3F",
+    "file": "block_gen_112.png"
+  },
+  {
+    "id": 113,
+    "type": "block",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_gen_113.png"
+  },
+  {
+    "id": 114,
+    "type": "block",
+    "material": "grass",
+    "base": "#7E5030",
+    "file": "block_gen_114.png"
+  },
+  {
+    "id": 115,
+    "type": "block",
+    "material": "wood",
+    "base": "#5C3820",
+    "file": "block_gen_115.png"
+  },
+  {
+    "id": 116,
+    "type": "block",
+    "material": "sand",
+    "base": "#A08A4A",
+    "file": "block_gen_116.png"
+  },
+  {
+    "id": 117,
+    "type": "block",
+    "material": "sand",
+    "base": "#E8CA79",
+    "file": "block_gen_117.png"
+  },
+  {
+    "id": 118,
+    "type": "block",
+    "material": "sand",
+    "base": "#E8CA79",
+    "file": "block_gen_118.png"
+  },
+  {
+    "id": 119,
+    "type": "block",
+    "material": "clay",
+    "base": "#4B2E19",
+    "file": "block_gen_119.png"
+  },
+  {
+    "id": 120,
+    "type": "block",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_gen_120.png"
+  },
+  {
+    "id": 121,
+    "type": "block",
+    "material": "grass",
+    "base": "#6D4427",
+    "file": "block_gen_121.png"
+  },
+  {
+    "id": 122,
+    "type": "block",
+    "material": "clay",
+    "base": "#2A1B10",
+    "file": "block_gen_122.png"
+  },
+  {
+    "id": 123,
+    "type": "block",
+    "material": "grass",
+    "base": "#3A2414",
+    "file": "block_gen_123.png"
+  },
+  {
+    "id": 124,
+    "type": "block",
+    "material": "dirt",
+    "base": "#3A2414",
+    "file": "block_gen_124.png"
+  },
+  {
+    "id": 125,
+    "type": "block",
+    "material": "wood",
+    "base": "#7E5030",
+    "file": "block_gen_125.png"
+  },
+  {
+    "id": 126,
+    "type": "block",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_gen_126.png"
+  },
+  {
+    "id": 127,
+    "type": "block",
+    "material": "wood",
+    "base": "#6D4427",
+    "file": "block_gen_127.png"
+  },
+  {
+    "id": 128,
+    "type": "block",
+    "material": "dirt",
+    "base": "#A06842",
+    "file": "block_gen_128.png"
+  },
+  {
+    "id": 129,
+    "type": "block",
+    "material": "clay",
+    "base": "#E8CA79",
+    "file": "block_gen_129.png"
+  },
+  {
+    "id": 130,
+    "type": "block",
+    "material": "wood",
+    "base": "#A06842",
+    "file": "block_gen_130.png"
+  },
+  {
+    "id": 131,
+    "type": "block",
+    "material": "clay",
+    "base": "#A06842",
+    "file": "block_gen_131.png"
+  },
+  {
+    "id": 132,
+    "type": "block",
+    "material": "clay",
+    "base": "#D6BA6D",
+    "file": "block_gen_132.png"
+  },
+  {
+    "id": 133,
+    "type": "block",
+    "material": "clay",
+    "base": "#2A1B10",
+    "file": "block_gen_133.png"
+  },
+  {
+    "id": 134,
+    "type": "block",
+    "material": "gravel",
+    "base": "#D6BA6D",
+    "file": "block_gen_134.png"
+  },
+  {
+    "id": 135,
+    "type": "block",
+    "material": "clay",
+    "base": "#2A1B10",
+    "file": "block_gen_135.png"
+  },
+  {
+    "id": 136,
+    "type": "block",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_gen_136.png"
+  },
+  {
+    "id": 137,
+    "type": "block",
+    "material": "sand",
+    "base": "#A08A4A",
+    "file": "block_gen_137.png"
+  },
+  {
+    "id": 138,
+    "type": "block",
+    "material": "sand",
+    "base": "#E8CA79",
+    "file": "block_gen_138.png"
+  },
+  {
+    "id": 139,
+    "type": "block",
+    "material": "sand",
+    "base": "#B29A55",
+    "file": "block_gen_139.png"
+  },
+  {
+    "id": 140,
+    "type": "block",
+    "material": "clay",
+    "base": "#B29A55",
+    "file": "block_gen_140.png"
+  },
+  {
+    "id": 141,
+    "type": "block",
+    "material": "gravel",
+    "base": "#B29A55",
+    "file": "block_gen_141.png"
+  },
+  {
+    "id": 142,
+    "type": "block",
+    "material": "sand",
+    "base": "#8E7A3F",
+    "file": "block_gen_142.png"
+  },
+  {
+    "id": 143,
+    "type": "block",
+    "material": "wood",
+    "base": "#5C3820",
+    "file": "block_gen_143.png"
+  },
+  {
+    "id": 144,
+    "type": "block",
+    "material": "grass",
+    "base": "#8F5C39",
+    "file": "block_gen_144.png"
+  },
+  {
+    "id": 145,
+    "type": "block",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_gen_145.png"
+  },
+  {
+    "id": 146,
+    "type": "block",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_gen_146.png"
+  },
+  {
+    "id": 147,
+    "type": "block",
+    "material": "wood",
+    "base": "#A06842",
+    "file": "block_gen_147.png"
+  },
+  {
+    "id": 148,
+    "type": "block",
+    "material": "sand",
+    "base": "#A08A4A",
+    "file": "block_gen_148.png"
+  },
+  {
+    "id": 149,
+    "type": "block",
+    "material": "dirt",
+    "base": "#8F5C39",
+    "file": "block_gen_149.png"
+  },
+  {
+    "id": 150,
+    "type": "block",
+    "material": "clay",
+    "base": "#5C3820",
+    "file": "block_gen_150.png"
+  },
+  {
+    "id": 151,
+    "type": "block",
+    "material": "dirt",
+    "base": "#8F5C39",
+    "file": "block_gen_151.png"
+  },
+  {
+    "id": 152,
+    "type": "block",
+    "material": "dirt",
+    "base": "#7E5030",
+    "file": "block_gen_152.png"
+  },
+  {
+    "id": 153,
+    "type": "block",
+    "material": "grass",
+    "base": "#4B2E19",
+    "file": "block_gen_153.png"
+  },
+  {
+    "id": 154,
+    "type": "block",
+    "material": "dirt",
+    "base": "#7E5030",
+    "file": "block_gen_154.png"
+  },
+  {
+    "id": 155,
+    "type": "block",
+    "material": "gravel",
+    "base": "#232323",
+    "file": "block_gen_155.png"
+  },
+  {
+    "id": 156,
+    "type": "block",
+    "material": "sand",
+    "base": "#C4AA61",
+    "file": "block_gen_156.png"
+  },
+  {
+    "id": 157,
+    "type": "block",
+    "material": "clay",
+    "base": "#3A2414",
+    "file": "block_gen_157.png"
+  },
+  {
+    "id": 158,
+    "type": "block",
+    "material": "gravel",
+    "base": "#4B4B4B",
+    "file": "block_gen_158.png"
+  },
+  {
+    "id": 159,
+    "type": "block",
+    "material": "grass",
+    "base": "#2A1B10",
+    "file": "block_gen_159.png"
+  },
+  {
+    "id": 160,
+    "type": "block",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_gen_160.png"
+  },
+  {
+    "id": 161,
+    "type": "block",
+    "material": "dirt",
+    "base": "#A06842",
+    "file": "block_gen_161.png"
+  },
+  {
+    "id": 162,
+    "type": "block",
+    "material": "grass",
+    "base": "#4B2E19",
+    "file": "block_gen_162.png"
+  },
+  {
+    "id": 163,
+    "type": "block",
+    "material": "sand",
+    "base": "#8E7A3F",
+    "file": "block_gen_163.png"
+  },
+  {
+    "id": 164,
+    "type": "block",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_gen_164.png"
+  },
+  {
+    "id": 165,
+    "type": "block",
+    "material": "wood",
+    "base": "#4B2E19",
+    "file": "block_gen_165.png"
+  },
+  {
+    "id": 166,
+    "type": "block",
+    "material": "dirt",
+    "base": "#7E5030",
+    "file": "block_gen_166.png"
+  },
+  {
+    "id": 167,
+    "type": "block",
+    "material": "gravel",
+    "base": "#C4AA61",
+    "file": "block_gen_167.png"
+  },
+  {
+    "id": 168,
+    "type": "block",
+    "material": "sand",
+    "base": "#D6BA6D",
+    "file": "block_gen_168.png"
+  },
+  {
+    "id": 169,
+    "type": "block",
+    "material": "grass",
+    "base": "#8F5C39",
+    "file": "block_gen_169.png"
+  },
+  {
+    "id": 170,
+    "type": "block",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_gen_170.png"
+  },
+  {
+    "id": 171,
+    "type": "block",
+    "material": "gravel",
+    "base": "#4B4B4B",
+    "file": "block_gen_171.png"
+  },
+  {
+    "id": 172,
+    "type": "block",
+    "material": "clay",
+    "base": "#7E5030",
+    "file": "block_gen_172.png"
+  },
+  {
+    "id": 173,
+    "type": "block",
+    "material": "dirt",
+    "base": "#2A1B10",
+    "file": "block_gen_173.png"
+  },
+  {
+    "id": 174,
+    "type": "block",
+    "material": "wood",
+    "base": "#2A1B10",
+    "file": "block_gen_174.png"
+  },
+  {
+    "id": 175,
+    "type": "block",
+    "material": "sand",
+    "base": "#B29A55",
+    "file": "block_gen_175.png"
+  },
+  {
+    "id": 176,
+    "type": "block",
+    "material": "grass",
+    "base": "#8F5C39",
+    "file": "block_gen_176.png"
+  },
+  {
+    "id": 177,
+    "type": "block",
+    "material": "grass",
+    "base": "#3A2414",
+    "file": "block_gen_177.png"
+  },
+  {
+    "id": 178,
+    "type": "block",
+    "material": "grass",
+    "base": "#A06842",
+    "file": "block_gen_178.png"
+  },
+  {
+    "id": 179,
+    "type": "block",
+    "material": "dirt",
+    "base": "#4B2E19",
+    "file": "block_gen_179.png"
+  },
+  {
+    "id": 180,
+    "type": "block",
+    "material": "sand",
+    "base": "#C4AA61",
+    "file": "block_gen_180.png"
+  },
+  {
+    "id": 181,
+    "type": "block",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_gen_181.png"
+  },
+  {
+    "id": 182,
+    "type": "block",
+    "material": "gravel",
+    "base": "#4B4B4B",
+    "file": "block_gen_182.png"
+  },
+  {
+    "id": 183,
+    "type": "block",
+    "material": "dirt",
+    "base": "#A06842",
+    "file": "block_gen_183.png"
+  },
+  {
+    "id": 184,
+    "type": "block",
+    "material": "wood",
+    "base": "#6D4427",
+    "file": "block_gen_184.png"
+  },
+  {
+    "id": 185,
+    "type": "block",
+    "material": "grass",
+    "base": "#A06842",
+    "file": "block_gen_185.png"
+  },
+  {
+    "id": 186,
+    "type": "block",
+    "material": "gravel",
+    "base": "#414141",
+    "file": "block_gen_186.png"
+  },
+  {
+    "id": 187,
+    "type": "block",
+    "material": "sand",
+    "base": "#D6BA6D",
+    "file": "block_gen_187.png"
+  },
+  {
+    "id": 188,
+    "type": "block",
+    "material": "gravel",
+    "base": "#A08A4A",
+    "file": "block_gen_188.png"
+  },
+  {
+    "id": 189,
+    "type": "block",
+    "material": "clay",
+    "base": "#E8CA79",
+    "file": "block_gen_189.png"
+  },
+  {
+    "id": 190,
+    "type": "block",
+    "material": "dirt",
+    "base": "#3A2414",
+    "file": "block_gen_190.png"
+  },
+  {
+    "id": 191,
+    "type": "block",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_gen_191.png"
+  },
+  {
+    "id": 192,
+    "type": "block",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_gen_192.png"
+  },
+  {
+    "id": 193,
+    "type": "block",
+    "material": "grass",
+    "base": "#6D4427",
+    "file": "block_gen_193.png"
+  },
+  {
+    "id": 194,
+    "type": "block",
+    "material": "dirt",
+    "base": "#3A2414",
+    "file": "block_gen_194.png"
+  },
+  {
+    "id": 195,
+    "type": "block",
+    "material": "grass",
+    "base": "#4B2E19",
+    "file": "block_gen_195.png"
+  },
+  {
+    "id": 196,
+    "type": "block",
+    "material": "clay",
+    "base": "#E8CA79",
+    "file": "block_gen_196.png"
+  },
+  {
+    "id": 197,
+    "type": "block",
+    "material": "dirt",
+    "base": "#4B2E19",
+    "file": "block_gen_197.png"
+  },
+  {
+    "id": 198,
+    "type": "block",
+    "material": "dirt",
+    "base": "#5C3820",
+    "file": "block_gen_198.png"
+  },
+  {
+    "id": 199,
+    "type": "block",
+    "material": "wood",
+    "base": "#6D4427",
+    "file": "block_gen_199.png"
+  },
+  {
+    "id": 200,
+    "type": "block",
+    "material": "wood",
+    "base": "#3A2414",
+    "file": "block_gen_200.png"
+  },
+  {
+    "id": 201,
+    "type": "block",
+    "material": "gravel",
+    "base": "#C4AA61",
+    "file": "block_gen_201.png"
+  },
+  {
+    "id": 202,
+    "type": "block",
+    "material": "sand",
+    "base": "#E8CA79",
+    "file": "block_gen_202.png"
+  },
+  {
+    "id": 203,
+    "type": "block",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_gen_203.png"
+  },
+  {
+    "id": 204,
+    "type": "block",
+    "material": "clay",
+    "base": "#3A2414",
+    "file": "block_gen_204.png"
+  },
+  {
+    "id": 205,
+    "type": "block",
+    "material": "grass",
+    "base": "#3A2414",
+    "file": "block_gen_205.png"
+  },
+  {
+    "id": 206,
+    "type": "block",
+    "material": "wood",
+    "base": "#5C3820",
+    "file": "block_gen_206.png"
+  },
+  {
+    "id": 207,
+    "type": "block",
+    "material": "gravel",
+    "base": "#1A1A1A",
+    "file": "block_gen_207.png"
+  },
+  {
+    "id": 208,
+    "type": "block",
+    "material": "clay",
+    "base": "#7E5030",
+    "file": "block_gen_208.png"
+  },
+  {
+    "id": 209,
+    "type": "block",
+    "material": "wood",
+    "base": "#2A1B10",
+    "file": "block_gen_209.png"
+  },
+  {
+    "id": 210,
+    "type": "block",
+    "material": "sand",
+    "base": "#E8CA79",
+    "file": "block_gen_210.png"
+  },
+  {
+    "id": 211,
+    "type": "block",
+    "material": "gravel",
+    "base": "#C4AA61",
+    "file": "block_gen_211.png"
+  },
+  {
+    "id": 212,
+    "type": "block",
+    "material": "wood",
+    "base": "#3A2414",
+    "file": "block_gen_212.png"
+  },
+  {
+    "id": 213,
+    "type": "block",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_gen_213.png"
+  },
+  {
+    "id": 214,
+    "type": "block",
+    "material": "grass",
+    "base": "#7E5030",
+    "file": "block_gen_214.png"
+  },
+  {
+    "id": 215,
+    "type": "block",
+    "material": "grass",
+    "base": "#A06842",
+    "file": "block_gen_215.png"
+  },
+  {
+    "id": 216,
+    "type": "block",
+    "material": "clay",
+    "base": "#8E7A3F",
+    "file": "block_gen_216.png"
+  },
+  {
+    "id": 217,
+    "type": "block",
+    "material": "sand",
+    "base": "#A08A4A",
+    "file": "block_gen_217.png"
+  },
+  {
+    "id": 218,
+    "type": "block",
+    "material": "gravel",
+    "base": "#565656",
+    "file": "block_gen_218.png"
+  },
+  {
+    "id": 219,
+    "type": "block",
+    "material": "grass",
+    "base": "#A06842",
+    "file": "block_gen_219.png"
+  },
+  {
+    "id": 220,
+    "type": "block",
+    "material": "gravel",
+    "base": "#D6BA6D",
+    "file": "block_gen_220.png"
+  },
+  {
+    "id": 221,
+    "type": "block",
+    "material": "wood",
+    "base": "#8F5C39",
+    "file": "block_gen_221.png"
+  },
+  {
+    "id": 222,
+    "type": "block",
+    "material": "sand",
+    "base": "#E8CA79",
+    "file": "block_gen_222.png"
+  },
+  {
+    "id": 223,
+    "type": "block",
+    "material": "wood",
+    "base": "#3A2414",
+    "file": "block_gen_223.png"
+  },
+  {
+    "id": 224,
+    "type": "block",
+    "material": "clay",
+    "base": "#B29A55",
+    "file": "block_gen_224.png"
+  },
+  {
+    "id": 225,
+    "type": "block",
+    "material": "sand",
+    "base": "#A08A4A",
+    "file": "block_gen_225.png"
+  },
+  {
+    "id": 226,
+    "type": "block",
+    "material": "sand",
+    "base": "#A08A4A",
+    "file": "block_gen_226.png"
+  },
+  {
+    "id": 227,
+    "type": "block",
+    "material": "sand",
+    "base": "#C4AA61",
+    "file": "block_gen_227.png"
+  },
+  {
+    "id": 228,
+    "type": "block",
+    "material": "grass",
+    "base": "#7E5030",
+    "file": "block_gen_228.png"
+  },
+  {
+    "id": 229,
+    "type": "block",
+    "material": "clay",
+    "base": "#6D4427",
+    "file": "block_gen_229.png"
+  },
+  {
+    "id": 230,
+    "type": "block",
+    "material": "sand",
+    "base": "#C4AA61",
+    "file": "block_gen_230.png"
+  },
+  {
+    "id": 231,
+    "type": "block",
+    "material": "wood",
+    "base": "#5C3820",
+    "file": "block_gen_231.png"
+  },
+  {
+    "id": 232,
+    "type": "block",
+    "material": "wood",
+    "base": "#5C3820",
+    "file": "block_gen_232.png"
+  },
+  {
+    "id": 233,
+    "type": "block",
+    "material": "gravel",
+    "base": "#8E7A3F",
+    "file": "block_gen_233.png"
+  },
+  {
+    "id": 234,
+    "type": "block",
+    "material": "wood",
+    "base": "#2A1B10",
+    "file": "block_gen_234.png"
+  },
+  {
+    "id": 235,
+    "type": "block",
+    "material": "sand",
+    "base": "#A08A4A",
+    "file": "block_gen_235.png"
+  },
+  {
+    "id": 236,
+    "type": "block",
+    "material": "gravel",
+    "base": "#616161",
+    "file": "block_gen_236.png"
+  },
+  {
+    "id": 237,
+    "type": "block",
+    "material": "sand",
+    "base": "#C4AA61",
+    "file": "block_gen_237.png"
+  },
+  {
+    "id": 238,
+    "type": "block",
+    "material": "sand",
+    "base": "#B29A55",
+    "file": "block_gen_238.png"
+  },
+  {
+    "id": 239,
+    "type": "block",
+    "material": "grass",
+    "base": "#8F5C39",
+    "file": "block_gen_239.png"
+  },
+  {
+    "id": 240,
+    "type": "block",
+    "material": "wood",
+    "base": "#7E5030",
+    "file": "block_gen_240.png"
+  },
+  {
+    "id": 241,
+    "type": "block",
+    "material": "clay",
+    "base": "#8E7A3F",
+    "file": "block_gen_241.png"
+  },
+  {
+    "id": 242,
+    "type": "block",
+    "material": "gravel",
+    "base": "#616161",
+    "file": "block_gen_242.png"
+  },
+  {
+    "id": 243,
+    "type": "block",
+    "material": "wood",
+    "base": "#2A1B10",
+    "file": "block_gen_243.png"
+  },
+  {
+    "id": 244,
+    "type": "block",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_gen_244.png"
+  },
+  {
+    "id": 245,
+    "type": "block",
+    "material": "sand",
+    "base": "#8E7A3F",
+    "file": "block_gen_245.png"
+  },
+  {
+    "id": 246,
+    "type": "block",
+    "material": "sand",
+    "base": "#D6BA6D",
+    "file": "block_gen_246.png"
+  },
+  {
+    "id": 247,
+    "type": "block",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_gen_247.png"
+  },
+  {
+    "id": 248,
+    "type": "block",
+    "material": "grass",
+    "base": "#A06842",
+    "file": "block_gen_248.png"
+  },
+  {
+    "id": 249,
+    "type": "block",
+    "material": "dirt",
+    "base": "#4B2E19",
+    "file": "block_gen_249.png"
+  },
+  {
+    "id": 0,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_000.png"
+  },
+  {
+    "id": 1,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_001.png"
+  },
+  {
+    "id": 2,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_002.png"
+  },
+  {
+    "id": 3,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_003.png"
+  },
+  {
+    "id": 4,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_004.png"
+  },
+  {
+    "id": 5,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_005.png"
+  },
+  {
+    "id": 6,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_006.png"
+  },
+  {
+    "id": 7,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_007.png"
+  },
+  {
+    "id": 8,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_008.png"
+  },
+  {
+    "id": 9,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_009.png"
+  },
+  {
+    "id": 10,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_010.png"
+  },
+  {
+    "id": 11,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_011.png"
+  },
+  {
+    "id": 12,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_012.png"
+  },
+  {
+    "id": 13,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_013.png"
+  },
+  {
+    "id": 14,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_014.png"
+  },
+  {
+    "id": 15,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_015.png"
+  },
+  {
+    "id": 16,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_016.png"
+  },
+  {
+    "id": 17,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_017.png"
+  },
+  {
+    "id": 18,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_018.png"
+  },
+  {
+    "id": 19,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_019.png"
+  },
+  {
+    "id": 20,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_020.png"
+  },
+  {
+    "id": 21,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_021.png"
+  },
+  {
+    "id": 22,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_022.png"
+  },
+  {
+    "id": 23,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_023.png"
+  },
+  {
+    "id": 24,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_024.png"
+  },
+  {
+    "id": 25,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_025.png"
+  },
+  {
+    "id": 26,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_026.png"
+  },
+  {
+    "id": 27,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_027.png"
+  },
+  {
+    "id": 28,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_028.png"
+  },
+  {
+    "id": 29,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_029.png"
+  },
+  {
+    "id": 30,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_030.png"
+  },
+  {
+    "id": 31,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_031.png"
+  },
+  {
+    "id": 32,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_032.png"
+  },
+  {
+    "id": 33,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_033.png"
+  },
+  {
+    "id": 34,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_034.png"
+  },
+  {
+    "id": 35,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_035.png"
+  },
+  {
+    "id": 36,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_036.png"
+  },
+  {
+    "id": 37,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_037.png"
+  },
+  {
+    "id": 38,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_038.png"
+  },
+  {
+    "id": 39,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_039.png"
+  },
+  {
+    "id": 40,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_040.png"
+  },
+  {
+    "id": 41,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_041.png"
+  },
+  {
+    "id": 42,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_042.png"
+  },
+  {
+    "id": 43,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_043.png"
+  },
+  {
+    "id": 44,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_044.png"
+  },
+  {
+    "id": 45,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_045.png"
+  },
+  {
+    "id": 46,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_046.png"
+  },
+  {
+    "id": 47,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_047.png"
+  },
+  {
+    "id": 48,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_048.png"
+  },
+  {
+    "id": 49,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_049.png"
+  },
+  {
+    "id": 50,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_050.png"
+  },
+  {
+    "id": 51,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_051.png"
+  },
+  {
+    "id": 52,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_052.png"
+  },
+  {
+    "id": 53,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_053.png"
+  },
+  {
+    "id": 54,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_054.png"
+  },
+  {
+    "id": 55,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_055.png"
+  },
+  {
+    "id": 56,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_056.png"
+  },
+  {
+    "id": 57,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_057.png"
+  },
+  {
+    "id": 58,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_058.png"
+  },
+  {
+    "id": 59,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_059.png"
+  },
+  {
+    "id": 60,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_060.png"
+  },
+  {
+    "id": 61,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_061.png"
+  },
+  {
+    "id": 62,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_062.png"
+  },
+  {
+    "id": 63,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_063.png"
+  },
+  {
+    "id": 64,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_064.png"
+  },
+  {
+    "id": 65,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_065.png"
+  },
+  {
+    "id": 66,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_066.png"
+  },
+  {
+    "id": 67,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_067.png"
+  },
+  {
+    "id": 68,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_068.png"
+  },
+  {
+    "id": 69,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_069.png"
+  },
+  {
+    "id": 70,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_070.png"
+  },
+  {
+    "id": 71,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_071.png"
+  },
+  {
+    "id": 72,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_072.png"
+  },
+  {
+    "id": 73,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_073.png"
+  },
+  {
+    "id": 74,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_074.png"
+  },
+  {
+    "id": 75,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_075.png"
+  },
+  {
+    "id": 76,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_076.png"
+  },
+  {
+    "id": 77,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_077.png"
+  },
+  {
+    "id": 78,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_078.png"
+  },
+  {
+    "id": 79,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_079.png"
+  },
+  {
+    "id": 80,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_080.png"
+  },
+  {
+    "id": 81,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_081.png"
+  },
+  {
+    "id": 82,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_082.png"
+  },
+  {
+    "id": 83,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_083.png"
+  },
+  {
+    "id": 84,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_084.png"
+  },
+  {
+    "id": 85,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_085.png"
+  },
+  {
+    "id": 86,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_086.png"
+  },
+  {
+    "id": 87,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_087.png"
+  },
+  {
+    "id": 88,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_088.png"
+  },
+  {
+    "id": 89,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_089.png"
+  },
+  {
+    "id": 90,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_090.png"
+  },
+  {
+    "id": 91,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_091.png"
+  },
+  {
+    "id": 92,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_092.png"
+  },
+  {
+    "id": 93,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_093.png"
+  },
+  {
+    "id": 94,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_094.png"
+  },
+  {
+    "id": 95,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_095.png"
+  },
+  {
+    "id": 96,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_096.png"
+  },
+  {
+    "id": 97,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_097.png"
+  },
+  {
+    "id": 98,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_098.png"
+  },
+  {
+    "id": 99,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_099.png"
+  },
+  {
+    "id": 100,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_100.png"
+  },
+  {
+    "id": 101,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_101.png"
+  },
+  {
+    "id": 102,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_102.png"
+  },
+  {
+    "id": 103,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_103.png"
+  },
+  {
+    "id": 104,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_104.png"
+  },
+  {
+    "id": 105,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_105.png"
+  },
+  {
+    "id": 106,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_106.png"
+  },
+  {
+    "id": 107,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_107.png"
+  },
+  {
+    "id": 108,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_108.png"
+  },
+  {
+    "id": 109,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_109.png"
+  },
+  {
+    "id": 110,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_110.png"
+  },
+  {
+    "id": 111,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_111.png"
+  },
+  {
+    "id": 112,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_112.png"
+  },
+  {
+    "id": 113,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_113.png"
+  },
+  {
+    "id": 114,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_114.png"
+  },
+  {
+    "id": 115,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_115.png"
+  },
+  {
+    "id": 116,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_116.png"
+  },
+  {
+    "id": 117,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_117.png"
+  },
+  {
+    "id": 118,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_118.png"
+  },
+  {
+    "id": 119,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_119.png"
+  },
+  {
+    "id": 120,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_120.png"
+  },
+  {
+    "id": 121,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_121.png"
+  },
+  {
+    "id": 122,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_122.png"
+  },
+  {
+    "id": 123,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_123.png"
+  },
+  {
+    "id": 124,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_124.png"
+  },
+  {
+    "id": 125,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_125.png"
+  },
+  {
+    "id": 126,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_126.png"
+  },
+  {
+    "id": 127,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_127.png"
+  },
+  {
+    "id": 128,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_128.png"
+  },
+  {
+    "id": 129,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_129.png"
+  },
+  {
+    "id": 130,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_130.png"
+  },
+  {
+    "id": 131,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_131.png"
+  },
+  {
+    "id": 132,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_132.png"
+  },
+  {
+    "id": 133,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_133.png"
+  },
+  {
+    "id": 134,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_134.png"
+  },
+  {
+    "id": 135,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_135.png"
+  },
+  {
+    "id": 136,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_136.png"
+  },
+  {
+    "id": 137,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_137.png"
+  },
+  {
+    "id": 138,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_138.png"
+  },
+  {
+    "id": 139,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_139.png"
+  },
+  {
+    "id": 140,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_140.png"
+  },
+  {
+    "id": 141,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_141.png"
+  },
+  {
+    "id": 142,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_142.png"
+  },
+  {
+    "id": 143,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_143.png"
+  },
+  {
+    "id": 144,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_144.png"
+  },
+  {
+    "id": 145,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_145.png"
+  },
+  {
+    "id": 146,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_146.png"
+  },
+  {
+    "id": 147,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_147.png"
+  },
+  {
+    "id": 148,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_148.png"
+  },
+  {
+    "id": 149,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_149.png"
+  },
+  {
+    "id": 150,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_150.png"
+  },
+  {
+    "id": 151,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_151.png"
+  },
+  {
+    "id": 152,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_152.png"
+  },
+  {
+    "id": 153,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_153.png"
+  },
+  {
+    "id": 154,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_154.png"
+  },
+  {
+    "id": 155,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_155.png"
+  },
+  {
+    "id": 156,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_156.png"
+  },
+  {
+    "id": 157,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_157.png"
+  },
+  {
+    "id": 158,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_158.png"
+  },
+  {
+    "id": 159,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_159.png"
+  },
+  {
+    "id": 160,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_160.png"
+  },
+  {
+    "id": 161,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_161.png"
+  },
+  {
+    "id": 162,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_162.png"
+  },
+  {
+    "id": 163,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_163.png"
+  },
+  {
+    "id": 164,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_164.png"
+  },
+  {
+    "id": 165,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_165.png"
+  },
+  {
+    "id": 166,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_166.png"
+  },
+  {
+    "id": 167,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_167.png"
+  },
+  {
+    "id": 168,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_168.png"
+  },
+  {
+    "id": 169,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_169.png"
+  },
+  {
+    "id": 170,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_170.png"
+  },
+  {
+    "id": 171,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_171.png"
+  },
+  {
+    "id": 172,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_172.png"
+  },
+  {
+    "id": 173,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_173.png"
+  },
+  {
+    "id": 174,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_174.png"
+  },
+  {
+    "id": 175,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_175.png"
+  },
+  {
+    "id": 176,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_176.png"
+  },
+  {
+    "id": 177,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_177.png"
+  },
+  {
+    "id": 178,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_178.png"
+  },
+  {
+    "id": 179,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_179.png"
+  },
+  {
+    "id": 180,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_180.png"
+  },
+  {
+    "id": 181,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_181.png"
+  },
+  {
+    "id": 182,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_182.png"
+  },
+  {
+    "id": 183,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_183.png"
+  },
+  {
+    "id": 184,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_184.png"
+  },
+  {
+    "id": 185,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_185.png"
+  },
+  {
+    "id": 186,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_186.png"
+  },
+  {
+    "id": 187,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_187.png"
+  },
+  {
+    "id": 188,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_188.png"
+  },
+  {
+    "id": 189,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_189.png"
+  },
+  {
+    "id": 190,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_190.png"
+  },
+  {
+    "id": 191,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_191.png"
+  },
+  {
+    "id": 192,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_192.png"
+  },
+  {
+    "id": 193,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_193.png"
+  },
+  {
+    "id": 194,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_194.png"
+  },
+  {
+    "id": 195,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_195.png"
+  },
+  {
+    "id": 196,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_196.png"
+  },
+  {
+    "id": 197,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_197.png"
+  },
+  {
+    "id": 198,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_198.png"
+  },
+  {
+    "id": 199,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_199.png"
+  },
+  {
+    "id": 200,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_200.png"
+  },
+  {
+    "id": 201,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_201.png"
+  },
+  {
+    "id": 202,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_202.png"
+  },
+  {
+    "id": 203,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_203.png"
+  },
+  {
+    "id": 204,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_204.png"
+  },
+  {
+    "id": 205,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_205.png"
+  },
+  {
+    "id": 206,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_206.png"
+  },
+  {
+    "id": 207,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_207.png"
+  },
+  {
+    "id": 208,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_208.png"
+  },
+  {
+    "id": 209,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_209.png"
+  },
+  {
+    "id": 210,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_210.png"
+  },
+  {
+    "id": 211,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_211.png"
+  },
+  {
+    "id": 212,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_212.png"
+  },
+  {
+    "id": 213,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_213.png"
+  },
+  {
+    "id": 214,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_214.png"
+  },
+  {
+    "id": 215,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_215.png"
+  },
+  {
+    "id": 216,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_216.png"
+  },
+  {
+    "id": 217,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_217.png"
+  },
+  {
+    "id": 218,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_218.png"
+  },
+  {
+    "id": 219,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_219.png"
+  },
+  {
+    "id": 220,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_220.png"
+  },
+  {
+    "id": 221,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_221.png"
+  },
+  {
+    "id": 222,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_222.png"
+  },
+  {
+    "id": 223,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_223.png"
+  },
+  {
+    "id": 224,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_224.png"
+  },
+  {
+    "id": 225,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_225.png"
+  },
+  {
+    "id": 226,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_226.png"
+  },
+  {
+    "id": 227,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_227.png"
+  },
+  {
+    "id": 228,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_228.png"
+  },
+  {
+    "id": 229,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_229.png"
+  },
+  {
+    "id": 230,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_230.png"
+  },
+  {
+    "id": 231,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_231.png"
+  },
+  {
+    "id": 232,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_232.png"
+  },
+  {
+    "id": 233,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_233.png"
+  },
+  {
+    "id": 234,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_234.png"
+  },
+  {
+    "id": 235,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_235.png"
+  },
+  {
+    "id": 236,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_236.png"
+  },
+  {
+    "id": 237,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_237.png"
+  },
+  {
+    "id": 238,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_238.png"
+  },
+  {
+    "id": 239,
+    "type": "ore",
+    "material": "stone",
+    "base": "#616161",
+    "file": "block_ore_gen_239.png"
+  },
+  {
+    "id": 240,
+    "type": "ore",
+    "material": "stone",
+    "base": "#4B4B4B",
+    "file": "block_ore_gen_240.png"
+  },
+  {
+    "id": 241,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_241.png"
+  },
+  {
+    "id": 242,
+    "type": "ore",
+    "material": "stone",
+    "base": "#565656",
+    "file": "block_ore_gen_242.png"
+  },
+  {
+    "id": 243,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_243.png"
+  },
+  {
+    "id": 244,
+    "type": "ore",
+    "material": "stone",
+    "base": "#414141",
+    "file": "block_ore_gen_244.png"
+  },
+  {
+    "id": 245,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_245.png"
+  },
+  {
+    "id": 246,
+    "type": "ore",
+    "material": "stone",
+    "base": "#373737",
+    "file": "block_ore_gen_246.png"
+  },
+  {
+    "id": 247,
+    "type": "ore",
+    "material": "stone",
+    "base": "#2D2D2D",
+    "file": "block_ore_gen_247.png"
+  },
+  {
+    "id": 248,
+    "type": "ore",
+    "material": "stone",
+    "base": "#1A1A1A",
+    "file": "block_ore_gen_248.png"
+  },
+  {
+    "id": 249,
+    "type": "ore",
+    "material": "stone",
+    "base": "#232323",
+    "file": "block_ore_gen_249.png"
+  }
+]

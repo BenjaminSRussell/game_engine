@@ -1,0 +1,25 @@
+-- GLFW3 found and will be linked
+--   glfw3_FOUND: 1
+--   GLFW3_FOUND: 
+--   glfw3_LIBRARIES: 
+--   GLFW3_LIBRARIES: 
+--   GLWF3_INCLUDE_DIRS: 
+--   glfw3_INCLUDE_DIRS: 
+-- Demo applications configured: demo_sandbox, demo_terrain
+-- Configuring done (0.1s)
+CMake Error at CMakeLists.txt:492 (add_library):
+  Cannot find source file:
+
+    src/engine/physics/physics_api_impl.c
+
+
+CMake Error at CMakeLists.txt:492 (add_library):
+  No SOURCES given to target: Engine
+
+
+CMake Error at CMakeLists.txt:576 (add_executable):
+  No SOURCES given to target: demo_sandbox
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.
+make: *** [cmake_check_build_system] Error 1

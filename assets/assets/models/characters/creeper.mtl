@@ -1,0 +1,24 @@
+# Minecraft v2 Creeper Model Materials
+newmtl creeper_body
+Ka 0.0 0.0 0.0
+Kd 0.1 0.4 0.1
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/entities/creeper.png
+
+newmtl creeper_head
+Ka 0.0 0.0 0.0
+Kd 0.05 0.3 0.05
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/entities/creeper.png
+
+newmtl creeper_legs
+Ka 0.0 0.0 0.0
+Kd 0.08 0.35 0.08
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/entities/creeper.png

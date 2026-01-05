@@ -1,0 +1,55 @@
+#version 460
+#extension GL_EXT_ray_tracing : require
+
+// Ray generation shader - generates primary rays from camera
+layout(binding = 0, set = 0) uniform accelerationStructureEXT topLevelAS;
+layout(binding = 1, set = 0, rgba32f) uniform image2D outputImage;
+
+layout(binding = 2, set = 0) uniform CameraProperties {
+    vec3 position;
+    vec3 direction;
+    vec3 up;
+    float fov;
+    float aspect;
+} camera;
+
+layout(location = 0) rayPayloadEXT vec3 hitValue;
+
+void main() {
+    const vec2 pixelCenter = vec2(gl_LaunchIDEXT.xy) + vec2(0.5);
+    const vec2 inUV = pixelCenter / vec2(gl_LaunchSizeEXT.xy);
+    vec2 d = inUV * 2.0 - 1.0;
+
+    // Calculate ray direction based on camera
+    vec3 right = normalize(cross(camera.direction, camera.up));
+    vec3 cameraUp = cross(right, camera.direction);
+
+    float tanHalfFov = tan(camera.fov * 0.5);
+    vec3 rayDir = normalize(
+        camera.direction +
+        right * d.x * tanHalfFov * camera.aspect +
+        cameraUp * d.y * tanHalfFov
+    );
+
+    // Ray parameters
+    float tMin = 0.001;
+    float tMax = 10000.0;
+
+    // Trace ray
+    traceRayEXT(
+        topLevelAS,           // acceleration structure
+        gl_RayFlagsOpaqueEXT, // ray flags
+        0xFF,                 // cull mask
+        0,                    // sbt record offset
+        0,                    // sbt record stride
+        0,                    // miss index
+        camera.position,      // ray origin
+        tMin,                 // ray min range
+        rayDir,               // ray direction
+        tMax,                 // ray max range
+        0                     // payload location
+    );
+
+    // Write result to output image
+    imageStore(outputImage, ivec2(gl_LaunchIDEXT.xy), vec4(hitValue, 1.0));
+}

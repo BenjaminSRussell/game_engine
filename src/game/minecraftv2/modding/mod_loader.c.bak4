@@ -1,0 +1,174 @@
+// Mod loader implementation and discovery.
+// TODO: Implement mod loader dependency resolution system.
+// TODO: Add mod loader validation system for corrupted mods.
+// TODO: Implement mod loader version checking system.
+// TODO: Add mod loader conflict detection system.
+// TODO: Implement mod loader load order optimization.
+// TODO: Add mod loader error reporting system.
+// TODO: Implement mod loader hot-reload system.
+// TODO: Add mod loader statistics tracking.
+// TODO: Implement mod loader security sandboxing.
+// TODO: Add mod loader documentation system.
+#include "../../include/modding/mod_loader.h"
+#include <stdlib.h>
+#include <string.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include "../../include/core/logger.h"
+
+ModLoader *mod_loader_create(const char *mod_dir) {
+    if (!mod_dir) {
+        LOG_ERROR("Invalid mod directory");
+        return NULL;
+    }
+    
+    ModLoader *loader = (ModLoader *)malloc(sizeof(ModLoader));
+    if (!loader) {
+        LOG_ERROR("Failed to allocate mod loader");
+        return NULL;
+    }
+    
+    loader->registry = mod_registry_create();
+    if (!loader->registry) {
+        LOG_ERROR("Failed to create mod registry");
+        free(loader);
+        return NULL;
+    }
+    
+    strncpy(loader->mod_directory, mod_dir, 255);
+    loader->mod_directory[255] = '\0';
+    loader->auto_load = true;
+    
+    // Create mods directory if it doesn't exist
+    mkdir(mod_dir, 0755);
+    
+    LOG_INFO("Mod loader created for directory: %s", mod_dir);
+    return loader;
+}
+
+void mod_loader_destroy(ModLoader *loader) {
+    if (!loader) return;
+    
+    if (loader->registry) {
+        mod_registry_destroy(loader->registry);
+    }
+    
+    free(loader);
+    LOG_INFO("Mod loader destroyed");
+}
+
+bool mod_loader_discover_mods(ModLoader *loader) {
+    if (!loader) return false;
+    
+    DIR *dir = opendir(loader->mod_directory);
+    if (!dir) {
+        LOG_WARN("Could not open mods directory: %s", loader->mod_directory);
+        return false;
+    }
+    
+    struct dirent *entry;
+    u32 found_count = 0;
+    
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_type != DT_REG) continue;
+        
+        const char *name = entry->d_name;
+        size_t len = strlen(name);
+        
+        if (len > 6 && strcmp(name + len - 3, ".so") == 0) {
+            char full_path[512];
+            snprintf(full_path, 511, "%s/%s", loader->mod_directory, name);
+            
+            LOG_DEBUG("Discovered mod: %s", name);
+            found_count++;
+        }
+    }
+    
+    closedir(dir);
+    LOG_INFO("Found %u mods in directory", found_count);
+    return true;
+}
+
+bool mod_loader_load_all_mods(ModLoader *loader) {
+    if (!loader) return false;
+    
+    DIR *dir = opendir(loader->mod_directory);
+    if (!dir) {
+        LOG_WARN("Could not open mods directory: %s", loader->mod_directory);
+        return false;
+    }
+    
+    struct dirent *entry;
+    u32 loaded_count = 0;
+    u32 failed_count = 0;
+    
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_type != DT_REG) continue;
+        
+        const char *name = entry->d_name;
+        size_t len = strlen(name);
+        
+        if (len > 6 && strcmp(name + len - 3, ".so") == 0) {
+            char full_path[512];
+            snprintf(full_path, 511, "%s/%s", loader->mod_directory, name);
+            
+            if (mod_registry_load_mod(loader->registry, full_path)) {
+                loaded_count++;
+            } else {
+                failed_count++;
+            }
+        }
+    }
+    
+    closedir(dir);
+    LOG_INFO("Loaded %u mods, %u failed", loaded_count, failed_count);
+    return failed_count == 0;
+}
+
+bool mod_loader_reload_mod(ModLoader *loader, const char *mod_name) {
+    if (!loader || !mod_name) return false;
+    
+    Mod *mod = mod_registry_get_mod(loader->registry, mod_name);
+    if (!mod) {
+        LOG_ERROR("Mod not found: %s", mod_name);
+        return false;
+    }
+    
+    // Find and unload
+    for (u32 i = 0; i < loader->registry->mod_count; i++) {
+        if (strcmp(loader->registry->mods[i].info.name, mod_name) == 0) {
+            mod_registry_unload_mod(loader->registry, i);
+            
+            // Reload from disk
+            char full_path[512];
+            snprintf(full_path, 511, "%s/%s.so", loader->mod_directory, mod_name);
+            return mod_registry_load_mod(loader->registry, full_path);
+        }
+    }
+    
+    return false;
+}
+
+void mod_loader_list_mods(ModLoader *loader) {
+    if (!loader || !loader->registry) return;
+    
+    LOG_INFO("=== Loaded Mods (%u) ===", loader->registry->mod_count);
+    
+    for (u32 i = 0; i < loader->registry->mod_count; i++) {
+        Mod *mod = &loader->registry->mods[i];
+        LOG_INFO("[%u] %s v%d.%d.%d - %s", 
+                 i, 
+                 mod->info.name, 
+                 mod->info.version_major, 
+                 mod->info.version_minor, 
+                 mod->info.version_patch, 
+                 mod->info.description);
+        LOG_INFO("    Author: %s | Status: %s", 
+                 mod->info.author, 
+                 mod->enabled ? "Enabled" : "Disabled");
+    }
+}
+
+ModRegistry *mod_loader_get_registry(ModLoader *loader) {
+    return loader ? loader->registry : NULL;
+}

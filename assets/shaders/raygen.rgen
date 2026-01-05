@@ -1,0 +1,192 @@
+#version 460
+#extension GL_EXT_ray_tracing : require
+#extension GL_EXT_ray_query : require
+#extension GL_EXT_nonuniform_qualifier : require
+
+// Ray tracing layout
+layout(location = 0) rayPayloadEXT RayPayload payload;
+layout(location = 1) rayPayloadEXT ShadowPayload shadow_payload;
+
+// Descriptor bindings
+layout(set = 0, binding = 0, rgba32f) uniform image2D outputImage;
+layout(set = 0, binding = 1) uniform accelerationStructureEXT topLevelAS;
+layout(set = 0, binding = 2) uniform CameraProperties {
+    vec3 position;
+    vec3 direction;
+    vec3 up;
+    float fov;
+    float aspect;
+    float near_plane;
+    float far_plane;
+    float time;
+    uint frame_count;
+    uint max_bounces;
+    uint samples_per_pixel;
+} camera;
+
+layout(set = 0, binding = 3) uniform sampler2D textures[256];
+
+// Light data
+layout(set = 0, binding = 4) readonly buffer LightBuffer {
+    LightData lights[];
+} light_buffer;
+
+// Material data
+layout(set = 0, binding = 5) readonly buffer MaterialBuffer {
+    MaterialData materials[];
+} material_buffer;
+
+// Payload structures
+struct RayPayload {
+    vec3 radiance;
+    vec3 throughput;
+    vec3 origin;
+    vec3 direction;
+    uint depth;
+    uint seed;
+    float t;
+    uint hit_id;
+    uint material_id;
+};
+
+struct ShadowPayload {
+    float visibility;
+};
+
+struct LightData {
+    vec3 position;
+    vec3 color;
+    float intensity;
+    uint type;
+    float radius;
+    uint padding;
+};
+
+struct MaterialData {
+    vec3 albedo;
+    vec3 normal;
+    float metallic;
+    float roughness;
+    float ao;
+    vec3 emission;
+    uint material_id;
+};
+
+// Random number generator
+uint rand_state;
+uint wang_hash(uint seed) {
+    seed = (seed ^ 61) ^ (seed >> 16);
+    seed *= 9;
+    seed = seed ^ (seed >> 4);
+    seed *= 0x27d4eb2d;
+    seed = seed ^ (seed >> 15);
+    return seed;
+}
+
+float rand_float() {
+    rand_state = wang_hash(rand_state);
+    return float(rand_state) / 4294967296.0;
+}
+
+vec2 rand_vec2() {
+    return vec2(rand_float(), rand_float());
+}
+
+// Generate camera ray with anti-aliasing jitter
+vec3 generate_camera_ray(vec2 pixel_ndc, vec2 jitter) {
+    // Apply jitter for anti-aliasing
+    pixel_ndc += jitter / vec2(imageSize(outputImage));
+    
+    // Calculate ray direction
+    float tan_half_fov = tan(camera.fov * 0.5);
+    vec3 right = normalize(cross(camera.direction, camera.up));
+    vec3 camera_up = cross(right, camera.direction);
+    
+    vec3 ray_dir = normalize(
+        camera.direction +
+        right * pixel_ndc.x * tan_half_fov * camera.aspect +
+        camera_up * pixel_ndc.y * tan_half_fov
+    );
+    
+    return ray_dir;
+}
+
+// Trace ray with proper payload handling
+vec3 trace_ray(vec3 origin, vec3 direction, uint depth, uint seed) {
+    payload.radiance = vec3(0.0);
+    payload.throughput = vec3(1.0);
+    payload.origin = origin;
+    payload.direction = direction;
+    payload.depth = depth;
+    payload.seed = seed;
+    payload.t = -1.0;
+    payload.hit_id = 0;
+    payload.material_id = 0;
+    
+    uint ray_flags = gl_RayFlagsNoneEXT;
+    uint cull_mask = 0xFF;
+    float tmin = 0.001;
+    float tmax = camera.far_plane;
+    
+    traceRayEXT(topLevelAS, ray_flags, cull_mask, 0, 0, 0, origin, tmin, direction, tmax, 0);
+    
+    return payload.radiance;
+}
+
+// Check shadow visibility
+float trace_shadow(vec3 origin, vec3 direction, float max_distance) {
+    shadow_payload.visibility = 1.0;
+    
+    uint ray_flags = gl_RayFlagsTerminateOnFirstHitEXT | gl_RayFlagsSkipClosestHitShaderEXT;
+    uint cull_mask = 0xFF;
+    float tmin = 0.001;
+    float tmax = max_distance - 0.001;
+    
+    traceRayEXT(topLevelAS, ray_flags, cull_mask, 1, 0, 1, origin, tmin, direction, tmax, 1);
+    
+    return shadow_payload.visibility;
+}
+
+// Main ray generation shader
+void main() {
+    // Initialize random state
+    rand_state = wang_hash(gl_LaunchIDEXT.y * imageSize(outputImage).x + gl_LaunchIDEXT.x + camera.frame_count);
+    
+    // Calculate pixel coordinates
+    ivec2 pixel_coord = ivec2(gl_LaunchIDEXT.xy);
+    vec2 image_size = vec2(imageSize(outputImage));
+    
+    // Normalize pixel coordinates to [-1, 1]
+    vec2 pixel_ndc = (vec2(pixel_coord) + 0.5) / image_size * 2.0 - 1.0;
+    pixel_ndc.y *= -1.0; // Flip Y for Vulkan coordinate system
+    
+    vec3 final_color = vec3(0.0);
+    
+    // Multiple samples per pixel for anti-aliasing
+    for (uint sample = 0; sample < camera.samples_per_pixel; ++sample) {
+        // Generate jitter for anti-aliasing
+        vec2 jitter = rand_vec2() - 0.5;
+        
+        // Generate primary ray
+        vec3 ray_origin = camera.position;
+        vec3 ray_direction = generate_camera_ray(pixel_ndc, jitter);
+        
+        // Trace primary ray
+        vec3 sample_color = trace_ray(ray_origin, ray_direction, 0, rand_state);
+        
+        // Accumulate color
+        final_color += sample_color;
+    }
+    
+    // Average samples
+    final_color /= float(camera.samples_per_pixel);
+    
+    // Apply tone mapping (simple Reinhard)
+    final_color = final_color / (final_color + vec3(1.0));
+    
+    // Gamma correction
+    final_color = pow(final_color, vec3(1.0 / 2.2));
+    
+    // Store result
+    imageStore(outputImage, pixel_coord, vec4(final_color, 1.0));
+}

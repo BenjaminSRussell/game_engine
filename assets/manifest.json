@@ -1,0 +1,111 @@
+{
+    "version": "2.0.0",
+    "schema_version": "1.0",
+    "generated": "2025-12-29T20:44:00-05:00",
+    "description": "Comprehensive asset manifest with dependency tracking and metadata",
+    "assets": [
+        {
+            "id": "env_skybox_hdr",
+            "type": "texture",
+            "category": "environment",
+            "path": "assets/textures/environment/skybox.hdr",
+            "format": "hdr",
+            "metadata": {
+                "width": 2048,
+                "height": 1024,
+                "channels": 3,
+                "is_hdr": true,
+                "use_case": "environment_map"
+            },
+            "dependencies": [],
+            "tags": [
+                "skybox",
+                "hdr",
+                "ibl"
+            ]
+        },
+        {
+            "id": "mat_pbr_metal",
+            "type": "material",
+            "category": "materials",
+            "dependencies": [
+                "tex_metal_albedo",
+                "tex_metal_normal",
+                "tex_metal_metallic_roughness"
+            ],
+            "metadata": {
+                "shader": "pbr_standard",
+                "double_sided": false,
+                "alpha_mode": "opaque"
+            }
+        },
+        {
+            "id": "tex_metal_albedo",
+            "type": "texture",
+            "category": "materials",
+            "path": "assets/textures/materials/metal_albedo.png",
+            "format": "png",
+            "metadata": {
+                "srgb": true,
+                "generate_mips": true,
+                "compression": "bc7"
+            }
+        },
+        {
+            "id": "model_character_hero",
+            "type": "model",
+            "category": "characters",
+            "path": "assets/models/characters/hero.gltf",
+            "format": "gltf",
+            "dependencies": [
+                "tex_hero_albedo",
+                "tex_hero_normal",
+                "anim_hero_idle"
+            ],
+            "metadata": {
+                "vertex_count": 15420,
+                "triangle_count": 8960,
+                "material_count": 3,
+                "has_animations": true,
+                "has_skeleton": true
+            }
+        },
+        {
+            "id": "audio_ambient_wind",
+            "type": "audio",
+            "category": "sfx",
+            "path": "assets/sounds/ambient/wind.wav",
+            "format": "wav",
+            "metadata": {
+                "sample_rate": 48000,
+                "channels": 2,
+                "duration_seconds": 12.5,
+                "streaming": true,
+                "loop": true
+            }
+        }
+    ],
+    "preload_groups": {
+        "core": [
+            "env_skybox_hdr",
+            "mat_pbr_metal"
+        ],
+        "level_1": [
+            "model_character_hero",
+            "audio_ambient_wind"
+        ]
+    },
+    "validation": {
+        "check_integrity": true,
+        "warn_missing": true,
+        "warn_unregistered": true,
+        "verify_dependencies": true,
+        "check_file_sizes": true
+    },
+    "build_settings": {
+        "compress_textures": true,
+        "generate_mipmaps": true,
+        "optimize_meshes": true,
+        "strip_debug_data": false
+    }
+}

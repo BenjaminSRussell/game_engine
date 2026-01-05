@@ -1,0 +1,201 @@
+{
+  "metadata": {
+    "title": "Phase 1 & 2 Core Systems - Progress Tracker",
+    "total_todos": 269,
+    "estimated_hours": 750,
+    "created_date": "2026-01-04",
+    "last_updated": "2026-01-04"
+  },
+  "phase_1": {
+    "name": "Core Infrastructure",
+    "total": 142,
+    "completed": 0,
+    "sections": {
+      "memory_management": {
+        "name": "Memory Management",
+        "total": 23,
+        "completed": 0,
+        "subsections": {
+          "stack_allocator": {
+            "file": "src/engine/core/memory/stack_allocator.c",
+            "total": 11,
+            "completed": 0,
+            "todos": [
+              { "id": "P1.1.1.1", "text": "Implement stack_create()", "difficulty": 3, "status": "pending" },
+              { "id": "P1.1.1.2", "text": "Implement stack_push()", "difficulty": 3, "status": "pending" },
+              { "id": "P1.1.1.3", "text": "Implement stack_pop()", "difficulty": 3, "status": "pending" },
+              { "id": "P1.1.1.4", "text": "Implement stack_marker_get()", "difficulty": 2, "status": "pending" },
+              { "id": "P1.1.1.5", "text": "Implement stack_marker_rewind()", "difficulty": 2, "status": "pending" },
+              { "id": "P1.1.1.6", "text": "Add double-ended stack support", "difficulty": 5, "status": "pending" },
+              { "id": "P1.1.1.7", "text": "Implement aligned allocations", "difficulty": 4, "status": "pending" },
+              { "id": "P1.1.1.8", "text": "Add boundary checks", "difficulty": 3, "status": "pending" },
+              { "id": "P1.1.1.9", "text": "Implement thread-local instances", "difficulty": 5, "status": "pending" },
+              { "id": "P1.1.1.10", "text": "Add debug memory viewing", "difficulty": 4, "status": "pending" },
+              { "id": "P1.1.1.11", "text": "Write unit tests", "difficulty": 4, "status": "pending" }
+            ]
+          },
+          "arena_allocator": {
+            "file": "src/engine/core/memory/arena_allocator.c",
+            "total": 8,
+            "completed": 0,
+            "todos": [
+              { "id": "P1.1.2.1", "text": "Implement arena_init()", "difficulty": 3, "status": "pending" },
+              { "id": "P1.1.2.2", "text": "Implement arena_alloc() (pointer bump)", "difficulty": 2, "status": "pending" },
+              { "id": "P1.1.2.3", "text": "Add arena_reset()", "difficulty": 2, "status": "pending" },
+              { "id": "P1.1.2.4", "text": "Implement arena_checkpoint() (save state)", "difficulty": 3, "status": "pending" },
+              { "id": "P1.1.2.5", "text": "Add arena_rewind()", "difficulty": 3, "status": "pending" },
+              { "id": "P1.1.2.6", "text": "Implement thread-local arena cache", "difficulty": 5, "status": "pending" },
+              { "id": "P1.1.2.7", "text": "Add overflow protection (growing)", "difficulty": 4, "status": "pending" },
+              { "id": "P1.1.2.8", "text": "Write benchmark vs malloc", "difficulty": 3, "status": "pending" }
+            ]
+          },
+          "fragmentation_metric": {
+            "file": "src/engine/core/memory/fragmentation_metric.c",
+            "total": 4,
+            "completed": 0,
+            "todos": [
+              { "id": "P1.1.3.1", "text": "Implement calc_fragmentation()", "difficulty": 5, "status": "pending" },
+              { "id": "P1.1.3.2", "text": "Implement largest_free_block_search()", "difficulty": 4, "status": "pending" },
+              { "id": "P1.1.3.3", "text": "Add histogram generation (block sizes)", "difficulty": 4, "status": "pending" },
+              { "id": "P1.1.3.4", "text": "Write allocator stress test", "difficulty": 4, "status": "pending" }
+            ]
+          }
+        }
+      },
+      "serialization": {
+        "name": "Serialization",
+        "total": 23,
+        "completed": 0,
+        "subsections": {
+          "json_parser": {
+            "file": "src/engine/core/serialization/json_parser.c",
+            "total": 8,
+            "completed": 0,
+            "todos": [
+              { "id": "P1.2.1.1", "text": "Implement json_parse()", "difficulty": 7, "status": "pending" },
+              { "id": "P1.2.1.2", "text": "Implement SIMD string scanning (AVX2/NEON)", "difficulty": 9, "status": "pending" },
+              { "id": "P1.2.1.3", "text": "Add DOM-based allocation strategy", "difficulty": 6, "status": "pending" },
+              { "id": "P1.2.1.4", "text": "Implement SAX-style callback mode", "difficulty": 7, "status": "pending" },
+              { "id": "P1.2.1.5", "text": "Add unicode validation", "difficulty": 6, "status": "pending" },
+              { "id": "P1.2.1.6", "text": "Implement number parsing optimization", "difficulty": 7, "status": "pending" },
+              { "id": "P1.2.1.7", "text": "Add serialization (writer)", "difficulty": 6, "status": "pending" },
+              { "id": "P1.2.1.8", "text": "Write fuzzing tests", "difficulty": 6, "status": "pending" }
+            ]
+          },
+          "json_validator": {
+            "file": "src/engine/core/serialization/json_validator.c",
+            "total": 7,
+            "completed": 0,
+            "todos": [
+              { "id": "P1.2.2.1", "text": "Implement validate_schema()", "difficulty": 5, "status": "pending" },
+              { "id": "P1.2.2.2", "text": "Implement recursive type checking", "difficulty": 5, "status": "pending" },
+              { "id": "P1.2.2.3", "text": "Add required field enforcement", "difficulty": 4, "status": "pending" },
+              { "id": "P1.2.2.4", "text": "Implement range/enum validation", "difficulty": 4, "status": "pending" },
+              { "id": "P1.2.2.5", "text": "Add default value injection", "difficulty": 5, "status": "pending" },
+              { "id": "P1.2.2.6", "text": "Implement helpful error reporting (path)", "difficulty": 4, "status": "pending" },
+              { "id": "P1.2.2.7", "text": "Write schema mismatch test", "difficulty": 4, "status": "pending" }
+            ]
+          },
+          "schema_validator": {
+            "file": "src/engine/core/serialization/schema_validator.c",
+            "total": 7,
+            "completed": 0,
+            "todos": [
+              { "id": "P1.2.3.1", "text": "Implement validator_create()", "difficulty": 6, "status": "pending" },
+              { "id": "P1.2.3.2", "text": "Implement type checking", "difficulty": 5, "status": "pending" },
+              { "id": "P1.2.3.3", "text": "Add range/enum constraints", "difficulty": 5, "status": "pending" },
+              { "id": "P1.2.3.4", "text": "Implement required field checking", "difficulty": 5, "status": "pending" },
+              { "id": "P1.2.3.5", "text": "Add recursive schema validation", "difficulty": 7, "status": "pending" },
+              { "id": "P1.2.3.6", "text": "Implement informative error messages", "difficulty": 5, "status": "pending" },
+              { "id": "P1.2.3.7", "text": "Write tests", "difficulty": 5, "status": "pending" }
+            ]
+          }
+        }
+      },
+      "containers": {
+        "name": "Advanced Containers",
+        "total": 48,
+        "completed": 0,
+        "note": "See markdown file for full details"
+      },
+      "threading": {
+        "name": "Threading & Fiber System",
+        "total": 8,
+        "completed": 0,
+        "note": "See markdown file for full details"
+      }
+    }
+  },
+  "phase_2": {
+    "name": "Physics Engine",
+    "total": 127,
+    "completed": 0,
+    "sections": {
+      "constraint_solver": {
+        "name": "Constraint Solver",
+        "total": 39,
+        "completed": 0,
+        "note": "See markdown file for full details"
+      },
+      "broadphase": {
+        "name": "Broadphase Collision",
+        "total": 17,
+        "completed": 0,
+        "note": "See markdown file for full details"
+      },
+      "narrowphase": {
+        "name": "Narrowphase & Ballistics",
+        "total": 8,
+        "completed": 0,
+        "note": "See markdown file for full details"
+      },
+      "softbody": {
+        "name": "Soft Body & Cloth",
+        "total": 19,
+        "completed": 0,
+        "note": "See markdown file for full details"
+      },
+      "character_physics": {
+        "name": "Character Physics",
+        "total": 19,
+        "completed": 0,
+        "note": "See markdown file for full details"
+      },
+      "aerodynamics_vehicle": {
+        "name": "Aerodynamics & Vehicle Physics",
+        "total": 25,
+        "completed": 0,
+        "note": "See markdown file for full details"
+      }
+    }
+  },
+  "statistics": {
+    "total_todos": 269,
+    "by_difficulty": {
+      "trivial_1_2": 8,
+      "easy_3_4": 35,
+      "medium_5_6": 85,
+      "hard_7_8": 115,
+      "expert_9_10": 26
+    },
+    "estimated_hours_by_difficulty": {
+      "trivial": 8,
+      "easy": 70,
+      "medium": 255,
+      "hard": 345,
+      "expert": 78
+    }
+  },
+  "quick_reference": {
+    "start_here": [
+      "P1.1.1 - Stack Allocator (11 TODOs)",
+      "P1.1.2 - Arena Allocator (8 TODOs)",
+      "P1.2.1 - JSON Parser (8 TODOs)"
+    ],
+    "critical_path": [
+      "Phase 1.1 Memory Management (23 TODOs) - ~60 hours",
+      "Phase 1.3 Advanced Containers (48 TODOs) - ~150 hours",
+      "Phase 2.1 Constraint Solver (39 TODOs) - ~180 hours"
+    ]
+  }
+}

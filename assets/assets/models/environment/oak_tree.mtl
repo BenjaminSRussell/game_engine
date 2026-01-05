@@ -1,0 +1,16 @@
+# Minecraft v2 Oak Tree Materials
+newmtl tree_trunk
+Ka 0.0 0.0 0.0
+Kd 0.4 0.3 0.2
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/blocks/block_log_side_oak.png
+
+newmtl tree_leaves
+Ka 0.0 0.0 0.0
+Kd 0.1 0.4 0.1
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/blocks/leaves.png

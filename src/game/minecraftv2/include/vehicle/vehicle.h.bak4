@@ -1,0 +1,151 @@
+// include/vehicle/vehicle.h
+//
+// Purpose: Defines the public API and data structures for a comprehensive vehicle system.
+// This header provides the framework for creating, managing, and interacting with
+// various types of vehicles within the game world, including cars, trucks, trains,
+// boats, and airplanes. It encapsulates vehicle-specific data in the `VehicleComponent`
+// and offers a `VehicleSystem` for overall management and physics integration.
+//
+// Public APIs:
+// - `VehicleType`: Enumeration categorizing different classes of vehicles.
+// - `TrainCarType`: Enumeration for specialized types of train cars (locomotive, passenger, cargo).
+// - `VehicleComponent`: A detailed structure holding all data for an individual vehicle,
+//   including its `type`, `entity_id`, a reference to its `physics_vehicle` and `chassis`
+//   (from the physics system), movement parameters (`throttle`, `steering`, `brake`, `speed`),
+//   train-specific data (`next_car`, `prev_car`, `coupling_distance`), state (`is_driving`, `driver`),
+//   fuel/energy, health, and `cargo` inventory.
+// - `VehicleSystem`: The main structure managing a collection of `VehicleComponent` instances,
+//   and holding a reference to the `PhysicsWorld` for vehicle physics simulation.
+// - `vehicle_system_init`: Initializes the vehicle system, linking it to the physics engine.
+// - `vehicle_system_free`: Frees resources held by the vehicle system.
+// - Vehicle creation functions: `vehicle_create_car`, `vehicle_create_truck`,
+//   `vehicle_create_train_locomotive`, `vehicle_create_train_car`, `vehicle_create_boat`
+//   for spawning specific vehicle types.
+// - `vehicle_enter`, `vehicle_exit`: Functions for a player or entity to get into or out of a vehicle.
+// - `vehicle_update`: Updates the state of an individual vehicle based on driver input.
+// - `vehicle_update_system`: Updates all vehicles managed by the system, including their physics.
+// - Train operations: `train_attach_car`, `train_detach_car`, `train_update_coupling`
+//   for managing connected train cars.
+// - Vehicle physics helpers: `vehicle_get_position`, `vehicle_get_rotation`, `vehicle_get_velocity`
+//   to query vehicle's physical state.
+//
+// Ownership: The `VehicleSystem` owns the collection of `VehicleComponent` instances.
+// Each `VehicleComponent` holds references to physics bodies (`physics_vehicle`, `chassis`)
+// but the physics engine manages their lifecycle.
+//
+// Invariants:
+// - A `VehicleSystem` must be initialized with `vehicle_system_init` before creating or managing vehicles.
+// - `entity_id` within `VehicleComponent` must be a valid ECS entity ID.
+// - The `PhysicsWorld` and `ECSWorld` instances must be valid and initialized.
+// - `delta_time` should be consistently passed to update functions for accurate simulation.
+//
+#ifndef VEHICLE_H
+#define VEHICLE_H
+
+
+
+#include "../game_common.h"
+#include "../ecs/ecs.h"
+#include "../physics/physics.h"
+#include <math/vec3.h>
+
+// Vehicle types
+typedef enum {
+    VEHICLE_TYPE_CAR,
+    VEHICLE_TYPE_TRUCK,
+    VEHICLE_TYPE_TRAIN,
+    VEHICLE_TYPE_BOAT,
+    VEHICLE_TYPE_AIRPLANE,
+    VEHICLE_TYPE_COUNT
+} VehicleType;
+
+// Train car types
+typedef enum {
+    TRAIN_CAR_LOCOMOTIVE,
+    TRAIN_CAR_PASSENGER,
+    TRAIN_CAR_CARGO,
+    TRAIN_CAR_COUNT
+} TrainCarType;
+
+// Vehicle component
+typedef struct {
+    VehicleType type;
+    EntityID entity_id;
+    
+    // Physics
+    Vehicle *physics_vehicle;
+    RigidBody *chassis;
+    
+    // Movement
+    f32 throttle;      // -1.0 to 1.0
+    f32 steering;      // -1.0 to 1.0
+    f32 brake;         // 0.0 to 1.0
+    f32 speed;
+    f32 max_speed;
+    f32 acceleration;
+    f32 turn_rate;
+    
+    // Train-specific
+    struct {
+        TrainCarType car_type;
+        struct VehicleComponent *next_car;
+        struct VehicleComponent *prev_car;
+        f32 coupling_distance;
+    } train_data;
+    
+    // State
+    bool is_driving;
+    EntityID driver;
+    Vec3 driver_position;
+    
+    // Fuel/energy
+    f32 fuel;
+    f32 max_fuel;
+    f32 fuel_consumption_rate;
+    
+    // Health
+    f32 health;
+    f32 max_health;
+    
+    // Inventory (for cargo vehicles)
+    u32 cargo[32];
+    u32 cargo_count;
+} VehicleComponent;
+
+// Vehicle system
+typedef struct {
+    VehicleComponent *vehicles;
+    u32 count;
+    u32 capacity;
+    PhysicsWorld *physics_world;
+} VehicleSystem;
+
+// Initialize vehicle system
+void vehicle_system_init(VehicleSystem *system, PhysicsWorld *physics, u32 capacity);
+void vehicle_system_free(VehicleSystem *system);
+
+// Create vehicles
+EntityID vehicle_create_car(VehicleSystem *system, ECSWorld *ecs, Vec3 position);
+EntityID vehicle_create_truck(VehicleSystem *system, ECSWorld *ecs, Vec3 position);
+EntityID vehicle_create_train_locomotive(VehicleSystem *system, ECSWorld *ecs, Vec3 position);
+EntityID vehicle_create_train_car(VehicleSystem *system, ECSWorld *ecs, Vec3 position, TrainCarType type);
+EntityID vehicle_create_boat(VehicleSystem *system, ECSWorld *ecs, Vec3 position);
+
+// Vehicle operations
+void vehicle_enter(VehicleComponent *vehicle, EntityID driver);
+void vehicle_exit(VehicleComponent *vehicle);
+void vehicle_update(VehicleComponent *vehicle, f32 delta_time, f32 throttle, f32 steering, bool brake);
+void vehicle_update_system(VehicleSystem *system, ECSWorld *ecs, f32 delta_time);
+
+// Train operations
+void train_attach_car(VehicleComponent *locomotive, VehicleComponent *car);
+void train_detach_car(VehicleComponent *car);
+void train_update_coupling(VehicleComponent *locomotive, f32 delta_time);
+
+// Vehicle physics helpers
+Vec3 vehicle_get_position(VehicleComponent *vehicle);
+Quat vehicle_get_rotation(VehicleComponent *vehicle);
+Vec3 vehicle_get_velocity(VehicleComponent *vehicle);
+
+#endif // VEHICLE_H
+

@@ -1,0 +1,107 @@
+#version 450
+layout(local_size_x = 256) in;
+
+struct Particle {
+    vec3 position;
+    float life;
+    vec3 velocity;
+    float size;
+    vec3 acceleration;
+    float rotation;
+    vec4 color;
+    float age;
+    uint flags;
+    uint emitterId;
+    float mass;
+    float padding; // Alignment
+};
+
+struct Emitter {
+    vec3 position;
+    vec3 direction;     // 12 bytes + 4 pad = 16
+    vec3 spread;
+    float rate;
+    float lifetime;
+    float initialSpeed;
+    float initialSize;
+    float padding;
+    vec4 initialColor;
+    vec4 finalColor;
+    uint type;
+    uint blendMode;
+    uint space;
+    uint enabled;
+    uint maxParticles;
+    uint particlesPerEmission;
+    float emissionRadius;
+    float rotationSpeed;
+};
+
+layout(std140, binding = 0) buffer ParticleBuffer {
+    Particle particles[];
+};
+
+layout(std140, binding = 1) buffer EmitterBuffer {
+    Emitter emitters[256];
+};
+
+layout(push_constant) uniform PushConstants {
+    float deltaTime;
+    uint particleCount;
+} u_PushConstants;
+
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+void main() {
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= u_PushConstants.particleCount) return;
+
+    // Load particle
+    Particle p = particles[idx];
+    
+    if (p.life > 0.0) {
+        // Update physics
+        p.velocity += p.acceleration * u_PushConstants.deltaTime;
+        p.velocity += vec3(0, -9.8, 0) * u_PushConstants.deltaTime * p.mass; // Gravity
+        p.position += p.velocity * u_PushConstants.deltaTime;
+        p.rotation += 1.0 * u_PushConstants.deltaTime; // Simple rotation
+        p.life -= u_PushConstants.deltaTime;
+        p.age += u_PushConstants.deltaTime;
+        
+        // Color fade
+        // (Simplified for now)
+        p.color.a = clamp(p.life, 0.0, 1.0);
+    } else {
+        // Respawn logic (Simple Loop for demo)
+        // In a real system, we'd use a spawn queue or atomic counter
+        uint emitterId = p.emitterId;
+        if (emitterId < 256 && emitters[emitterId].enabled != 0) {
+            // Respawn
+            Emitter e = emitters[emitterId];
+            p.life = e.lifetime;
+            p.age = 0.0;
+            p.position = e.position + vec3(
+                (rand(vec2(idx, u_PushConstants.deltaTime)) - 0.5) * e.emissionRadius,
+                0,
+                (rand(vec2(idx + 1, u_PushConstants.deltaTime)) - 0.5) * e.emissionRadius
+            );
+            
+            vec3 dir = normalize(e.direction + vec3(
+                (rand(vec2(idx + 2, u_PushConstants.deltaTime)) - 0.5) * e.spread.x,
+                (rand(vec2(idx + 3, u_PushConstants.deltaTime)) - 0.5) * e.spread.y,
+                (rand(vec2(idx + 4, u_PushConstants.deltaTime)) - 0.5) * e.spread.z
+            ));
+            
+            p.velocity = dir * e.initialSpeed;
+            p.acceleration = vec3(0); // Reset accel
+            p.color = e.initialColor;
+            p.size = e.initialSize;
+            p.mass = 1.0;
+        }
+    }
+    
+    // Store back
+    particles[idx] = p;
+}

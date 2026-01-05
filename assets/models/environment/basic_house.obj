@@ -1,0 +1,72 @@
+# Minecraft v2 Basic House Model
+# Simple structure with walls, roof, and door
+
+# Foundation vertices
+v 0.0 0.0 0.0
+v 4.0 0.0 0.0
+v 4.0 3.0 0.0
+v 0.0 3.0 0.0
+v 0.0 0.0 4.0
+v 4.0 0.0 4.0
+v 4.0 3.0 4.0
+v 0.0 3.0 4.0
+
+# Roof vertices (triangular)
+v -0.5 3.0 -0.5
+v 4.5 3.0 -0.5
+v 4.5 5.0 2.0
+v -0.5 5.0 2.0
+v -0.5 3.0 4.5
+v 4.5 3.0 4.5
+
+# Door vertices
+v 1.5 0.0 4.01
+v 2.5 0.0 4.01
+v 2.5 2.0 4.01
+v 1.5 2.0 4.01
+
+# Window vertices
+v 0.5 1.5 4.01
+v 1.0 1.5 4.01
+v 1.0 2.0 4.01
+v 0.5 2.0 4.01
+
+v 3.0 1.5 4.01
+v 3.5 1.5 4.01
+v 3.5 2.0 4.01
+v 3.0 2.0 4.01
+
+# Texture coordinates
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+vt 0.0 1.0
+
+# Wall faces
+usemtl house_walls
+f 1/1 2/2 3/3 4/4
+f 5/1 6/2 7/3 8/4
+f 1/1 5/2 6/3 2/4
+f 2/1 6/2 7/3 3/4
+f 3/1 7/2 8/3 4/4
+f 4/1 8/2 5/3 1/4
+
+# Front wall with door and windows cutouts
+usemtl house_walls
+f 8/1 5/2 6/3 7/4
+
+# Roof faces
+usemtl house_roof
+f 9/1 10/2 11/3 12/4
+f 10/1 14/2 11/3 13/4
+f 12/1 11/2 15/3 16/4
+f 11/1 15/2 14/3 13/4
+
+# Door
+usemtl house_door
+f 17/1 18/2 19/3 20/4
+
+# Windows
+usemtl house_window
+f 21/1 22/2 23/3 24/4
+f 25/1 26/2 27/3 28/4

@@ -1,0 +1,91 @@
+# Sound Mapping Configuration
+# Maps SoundType enum values to actual audio file paths
+# Format: SOUND_TYPE_NAME = relative/path/to/file.{ogg|mp3|wav}
+
+# Footsteps (from kenney_rpg)
+SOUND_FOOTSTEP_GRASS = kenney_rpg/Audio/footstep00.ogg
+SOUND_FOOTSTEP_STONE = kenney_rpg/Audio/footstep01.ogg
+SOUND_FOOTSTEP_WOOD = kenney_rpg/Audio/footstep02.ogg
+SOUND_FOOTSTEP_SAND = kenney_rpg/Audio/footstep03.ogg
+SOUND_FOOTSTEP_GRAVEL = kenney_rpg/Audio/footstep04.ogg
+SOUND_FOOTSTEP_SNOW = kenney_rpg/Audio/footstep05.ogg
+
+# Block interactions (from kenney_rpg)
+SOUND_BLOCK_BREAK = kenney_rpg/Audio/chop.ogg
+SOUND_BLOCK_PLACE = kenney_rpg/Audio/bookPlace1.ogg
+
+# Combat (from kenney_rpg and kenney_digital)
+SOUND_SWORD_SWING = kenney_rpg/Audio/drawKnife1.ogg
+SOUND_SWORD_HIT = kenney_digital/Audio/hit1.ogg
+SOUND_BOW_DRAW = kenney_rpg/Audio/handleSmallLeather.ogg
+SOUND_BOW_FIRE = kenney_digital/Audio/laser1.ogg
+
+# Items (from kenney_rpg)
+SOUND_ITEM_PICKUP = kenney_rpg/Audio/handleCoins.ogg
+SOUND_ITEM_DROP = kenney_rpg/Audio/dropLeather.ogg
+
+# Player actions (from kenney_digital)
+SOUND_PLAYER_JUMP = kenney_digital/Audio/jump1.ogg
+SOUND_PLAYER_HURT = kenney_digital/Audio/hit2.ogg
+SOUND_PLAYER_HEAL = kenney_digital/Audio/powerUp1.ogg
+
+# Magic/Effects (from kenney_digital)
+SOUND_MAGIC_CAST = kenney_digital/Audio/laser2.ogg
+SOUND_MAGIC_HEAL = kenney_digital/Audio/powerUp2.ogg
+SOUND_MAGIC_TELEPORT = kenney_digital/Audio/laser3.ogg
+SOUND_EXPLOSION = kenney_digital/Audio/explosion1.ogg
+
+# Water (from kenney_rpg)
+SOUND_WATER_SPLASH = kenney_rpg/Audio/metalPot1.ogg
+
+# UI (from kenney_ui)
+SOUND_UI_CLICK = kenney_ui/Audio/click_001.ogg
+SOUND_UI_HOVER = kenney_ui/Audio/click_002.ogg
+SOUND_CRAFTING_SUCCESS = kenney_ui/Audio/click_003.ogg
+
+# Ambient/Environment (UPDATED - authentic sounds from Freesound.org CC0)
+SOUND_FIRE_BURN = kenney_digital/Audio/laser4.ogg
+SOUND_AMBIENT_WIND = ambient/wind_light.mp3
+SOUND_AMBIENT_CAVE = ambient/cave_ambient.mp3
+
+# Mob sounds (UPDATED - authentic sounds from Freesound.org CC0)
+SOUND_MOB_ZOMBIE_GROAN = mobs/zombie_groan_01.mp3
+SOUND_MOB_SKELETON_RATTLE = mobs/skeleton_rattle_01.mp3
+SOUND_MOB_CREEPER_HISS = mobs/creeper_hiss.mp3
+SOUND_MOB_SPIDER_SKITTER = mobs/spider_skitter.mp3
+SOUND_MOB_COW_MOO = mobs/cow_moo.mp3
+SOUND_MOB_PIG_OINK = mobs/pig_oink.mp3
+
+# Weather sounds (UPDATED - authentic sounds from Freesound.org CC0)
+SOUND_RAIN_LIGHT = ambient/rain_light.mp3
+SOUND_RAIN_MODERATE = ambient/rain_moderate.mp3
+SOUND_RAIN_HEAVY = ambient/rain_heavy.mp3
+SOUND_WIND_LIGHT = ambient/wind_light.mp3
+SOUND_WIND_MODERATE = ambient/wind_moderate.mp3
+SOUND_WIND_HEAVY = ambient/wind_heavy.mp3
+SOUND_THUNDER_01 = ambient/thunder_01.mp3
+SOUND_THUNDER_02 = ambient/thunder_02.mp3
+SOUND_SNOW_LIGHT = kenney_rpg/Audio/cloth1.ogg
+SOUND_SNOW_MODERATE = kenney_rpg/Audio/cloth2.ogg
+SOUND_SNOW_HEAVY = kenney_rpg/Audio/cloth3.ogg
+SOUND_FOG_LIGHT = kenney_digital/Audio/laser6.ogg
+SOUND_FOG_MODERATE = kenney_digital/Audio/laser6.ogg
+SOUND_FOG_HEAVY = kenney_digital/Audio/laser6.ogg
+
+# Music (UPDATED - Kevin MacLeod tracks from incompetech.com CC-BY 3.0)
+# Note: Music files use streaming (MA_SOUND_FLAG_STREAM) for memory efficiency
+SOUND_MUSIC_CALM = ../music/overworld/calm_04_wallpaper.mp3
+SOUND_MUSIC_ACTION = ../music/combat/battle_03_volatile_reaction.mp3
+
+# Additional music tracks available (not mapped to enum yet):
+# Calm/Exploration:
+#   - ../music/overworld/calm_05_carefree.mp3
+#   - ../music/overworld/calm_06_floating_cities.mp3
+#   - ../music/overworld/calm_07_cipher.mp3
+#   - ../music/overworld/adventure_01_ascending_vale.mp3
+#   - ../music/overworld/adventure_02_enchanted_journey.mp3
+# Combat:
+#   - ../music/combat/battle_04_darkest_child.mp3
+#   - ../music/combat/battle_05_teller_tales.mp3
+# Menu:
+#   - ../music/menu/menu_02_meditation.mp3

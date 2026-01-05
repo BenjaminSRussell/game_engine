@@ -1,0 +1,32 @@
+# Minecraft v2 Basic House Materials
+newmtl house_walls
+Ka 0.0 0.0 0.0
+Kd 0.8 0.7 0.5
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/blocks/cobblestone.png
+
+newmtl house_roof
+Ka 0.0 0.0 0.0
+Kd 0.6 0.3 0.1
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/blocks/brick.png
+
+newmtl house_door
+Ka 0.0 0.0 0.0
+Kd 0.4 0.2 0.1
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/blocks/wood.png
+
+newmtl house_window
+Ka 0.0 0.0 0.0
+Kd 0.7 0.7 0.9
+Ks 0.3 0.3 0.3
+Ns 20
+illum 2
+map_Kd ../textures/blocks/glass.png
