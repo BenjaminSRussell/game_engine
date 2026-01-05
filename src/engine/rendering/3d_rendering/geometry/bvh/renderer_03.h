@@ -1,0 +1,55 @@
+/*
+ * geometry_bvh_renderer_03.h
+ *
+ * Header file for geometry_bvh_renderer_03 implementation
+ * Part of the Advanced 3D Rendering Engine
+ */
+
+#ifndef GEOMETRY_BVH_RENDERER_03_H
+#define GEOMETRY_BVH_RENDERER_03_H
+
+#include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Forward declarations */
+typedef struct geometry_bvh_renderer_03 geometry_bvh_renderer_03_t;
+typedef struct geometry_bvh_renderer_03_desc geometry_bvh_renderer_03_desc_t;
+typedef struct geometry_bvh_renderer_03_stats geometry_bvh_renderer_03_stats_t;
+
+/* Creation and destruction */
+int geometry_bvh_renderer_03_create(geometry_bvh_renderer_03_t** out_ctx, const geometry_bvh_renderer_03_desc_t* desc);
+int geometry_bvh_renderer_03_destroy(geometry_bvh_renderer_03_t* ctx);
+
+/* Core operations */
+int geometry_bvh_renderer_03_render(geometry_bvh_renderer_03_t* ctx, void* params);
+int geometry_bvh_renderer_03_prepare(geometry_bvh_renderer_03_t* ctx, void* params);
+int geometry_bvh_renderer_03_bind(geometry_bvh_renderer_03_t* ctx, void* params);
+int geometry_bvh_renderer_03_draw(geometry_bvh_renderer_03_t* ctx, void* params);
+int geometry_bvh_renderer_03_dispatch(geometry_bvh_renderer_03_t* ctx, void* params);
+int geometry_bvh_renderer_03_submit_commands(geometry_bvh_renderer_03_t* ctx, void* params);
+int geometry_bvh_renderer_03_build_commands(geometry_bvh_renderer_03_t* ctx, void* params);
+int geometry_bvh_renderer_03_sort(geometry_bvh_renderer_03_t* ctx, void* params);
+int geometry_bvh_renderer_03_batch(geometry_bvh_renderer_03_t* ctx, void* params);
+int geometry_bvh_renderer_03_cull(geometry_bvh_renderer_03_t* ctx, void* params);
+
+/* Utility functions */
+int geometry_bvh_renderer_03_get_stats(geometry_bvh_renderer_03_t* ctx);
+int geometry_bvh_renderer_03_set_callback(geometry_bvh_renderer_03_t* ctx);
+int geometry_bvh_renderer_03_get_memory_usage(geometry_bvh_renderer_03_t* ctx);
+int geometry_bvh_renderer_03_optimize(geometry_bvh_renderer_03_t* ctx);
+int geometry_bvh_renderer_03_debug_print(geometry_bvh_renderer_03_t* ctx);
+
+/* Module functions */
+int geometry_bvh_renderer_03_module_init(void);
+int geometry_bvh_renderer_03_module_shutdown(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* GEOMETRY_BVH_RENDERER_03_H */
