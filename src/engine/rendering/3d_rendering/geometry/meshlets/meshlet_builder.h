@@ -1,67 +1,54 @@
 /*
  * meshlet_builder.h
- * Meshlet generation from mesh
- *
- * Part of the Geometry subsystem
- * Advanced 3D Rendering Engine
+ * Meshlet generation and structures for efficient geometry processing
  */
 
-#ifndef GEOMETRY_MESHLET_BUILDER_H
-#define GEOMETRY_MESHLET_BUILDER_H
+#ifndef MESHLET_BUILDER_H
+#define MESHLET_BUILDER_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// Simple math structures (to be replaced by engine math headers if available)
+typedef struct vec3 {
+    float x, y, z;
+} vec3_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+typedef struct sphere {
+    vec3_t center;
+    float radius;
+} sphere_t;
 
-typedef struct geometry_meshlet_builder_handle {
-    uint32_t id;
-} geometry_meshlet_builder_handle_t;
+// Meshlet structure as requested
+typedef struct meshlet {
+    uint32_t vertex_offset;
+    uint32_t vertex_count;
+    uint32_t triangle_offset;
+    uint32_t triangle_count;
+    vec3_t cone_apex;
+    vec3_t cone_axis;
+    float cone_cutoff;
+    sphere_t bounding_sphere;
+} meshlet_t;
 
-typedef struct geometry_meshlet_builder_desc {
-    uint32_t flags;
-    void* user_data;
-} geometry_meshlet_builder_desc_t;
+// Meshlet generation limits
+#define MAX_MESHLET_VERTICES 64
+#define MAX_MESHLET_TRIANGLES 124
 
-typedef struct geometry_meshlet_builder_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} geometry_meshlet_builder_info_t;
+// Result of meshlet building
+typedef struct meshlet_result {
+    meshlet_t* meshlets;
+    uint32_t count;
+    uint32_t* vertices;     // Local vertex indices
+    uint32_t vertex_count;
+    uint8_t* triangles;     // 3 * triangle_count indices (8-bit if local)
+    uint32_t triangle_count;
+} meshlet_result_t;
 
-/* ============================================================================
- * API
- * ============================================================================ */
+// Generation API
+meshlet_result_t* build_meshlets(const float* vertices, uint32_t vertex_stride, uint32_t vertex_count,
+                               const uint32_t* indices, uint32_t index_count);
 
-/* Initialization */
-int geometry_meshlet_builder_init(void);
-void geometry_meshlet_builder_shutdown(void);
+void meshlet_result_free(meshlet_result_t* result);
 
-/* Lifecycle */
-int geometry_meshlet_builder_create(geometry_meshlet_builder_handle_t* out_handle, const geometry_meshlet_builder_desc_t* desc);
-void geometry_meshlet_builder_destroy(geometry_meshlet_builder_handle_t handle);
-
-/* Operations */
-int geometry_meshlet_builder_update(geometry_meshlet_builder_handle_t handle, const void* data, size_t size);
-bool geometry_meshlet_builder_is_valid(geometry_meshlet_builder_handle_t handle);
-int geometry_meshlet_builder_get_info(geometry_meshlet_builder_handle_t handle, geometry_meshlet_builder_info_t* out_info);
-void geometry_meshlet_builder_mark_dirty(geometry_meshlet_builder_handle_t handle);
-int geometry_meshlet_builder_process_pending(void);
-
-/* Statistics */
-uint32_t geometry_meshlet_builder_get_count(void);
-size_t geometry_meshlet_builder_get_memory_usage(void);
-void geometry_meshlet_builder_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* GEOMETRY_MESHLET_BUILDER_H */
+#endif // MESHLET_BUILDER_H

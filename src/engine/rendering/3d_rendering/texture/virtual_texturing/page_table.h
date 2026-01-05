@@ -1,6 +1,6 @@
 /*
  * page_table.h
- * Virtual texture page table
+ * Virtual texture page table management
  *
  * Part of the Texture subsystem
  * Advanced 3D Rendering Engine
@@ -21,47 +21,40 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
-typedef struct texture_page_table_handle {
-    uint32_t id;
-} texture_page_table_handle_t;
+typedef struct page_entry {
+    uint16_t physical_x;
+    uint16_t physical_y;
+    uint8_t mip_level;
+    uint8_t flags;
+} page_entry_t;
 
-typedef struct texture_page_table_desc {
-    uint32_t flags;
-    void* user_data;
-} texture_page_table_desc_t;
-
-typedef struct texture_page_table_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} texture_page_table_info_t;
+typedef struct page_table {
+    page_entry_t* entries;
+    uint32_t width;
+    uint32_t height;
+    uint32_t gpu_buffer_handle;
+} page_table_t;
 
 /* ============================================================================
  * API
  * ============================================================================ */
 
-/* Initialization */
-int texture_page_table_init(void);
-void texture_page_table_shutdown(void);
-
 /* Lifecycle */
-int texture_page_table_create(texture_page_table_handle_t* out_handle, const texture_page_table_desc_t* desc);
-void texture_page_table_destroy(texture_page_table_handle_t handle);
+int page_table_init(page_table_t* pt, uint32_t width, uint32_t height);
+void page_table_shutdown(page_table_t* pt);
 
 /* Operations */
-int texture_page_table_update(texture_page_table_handle_t handle, const void* data, size_t size);
-bool texture_page_table_is_valid(texture_page_table_handle_t handle);
-int texture_page_table_get_info(texture_page_table_handle_t handle, texture_page_table_info_t* out_info);
-void texture_page_table_mark_dirty(texture_page_table_handle_t handle);
-int texture_page_table_process_pending(void);
+void page_table_map(page_table_t* pt, uint32_t virtual_x, uint32_t virtual_y, uint32_t physical_x, uint32_t physical_y, uint32_t mip);
+void page_table_unmap(page_table_t* pt, uint32_t virtual_x, uint32_t virtual_y);
+void page_table_update_gpu(page_table_t* pt);
 
-/* Statistics */
-uint32_t texture_page_table_get_count(void);
-size_t texture_page_table_get_memory_usage(void);
-void texture_page_table_debug_print(void);
+/* Original stub compatibility */
+int texture_page_table_init(void);
+void texture_page_table_shutdown(void);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* TEXTURE_PAGE_TABLE_H */
+

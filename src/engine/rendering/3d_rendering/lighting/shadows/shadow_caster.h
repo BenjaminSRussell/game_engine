@@ -60,6 +60,20 @@ uint32_t lighting_shadow_caster_get_count(void);
 size_t lighting_shadow_caster_get_memory_usage(void);
 void lighting_shadow_caster_debug_print(void);
 
+/* Shadow Pass Rendering */
+int lighting_shadow_caster_begin_pass(uint32_t light_id, uint32_t atlas_x, uint32_t atlas_y, uint32_t resolution);
+void lighting_shadow_caster_set_view_matrix(const float* view_matrix);
+void lighting_shadow_caster_set_proj_matrix(const float* proj_matrix);
+void lighting_shadow_caster_set_directional_light(const float* light_dir, const float* scene_center, float scene_radius);
+void lighting_shadow_caster_set_spot_light(const float* light_pos, const float* light_dir, float fov, float near, float far);
+void lighting_shadow_caster_set_bias(float depth_bias, float slope_bias);
+void lighting_shadow_caster_end_pass(void);
+void lighting_shadow_caster_render_all(void);
+void lighting_shadow_caster_clear_passes(void);
+uint32_t lighting_shadow_caster_get_pass_count(void);
+int lighting_shadow_caster_get_pass_matrix(uint32_t pass_index, float* out_matrix);
+
+
 #ifdef __cplusplus
 }
 #endif

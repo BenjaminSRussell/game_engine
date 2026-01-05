@@ -21,19 +21,35 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
+typedef enum rendering_resource_type {
+    RENDERING_RESOURCE_TYPE_TEXTURE,
+    RENDERING_RESOURCE_TYPE_BUFFER
+} rendering_resource_type_t;
+
 typedef struct rendering_resource_node_handle {
     uint32_t id;
 } rendering_resource_node_handle_t;
 
 typedef struct rendering_resource_node_desc {
+    const char* name;
+    rendering_resource_type_t type;
+    uint32_t width;
+    uint32_t height;
+    uint32_t depth;
+    uint32_t format; // Cast to appropriate format enum
+    uint32_t usage;
     uint32_t flags;
     void* user_data;
+    bool is_transient;
 } rendering_resource_node_desc_t;
 
 typedef struct rendering_resource_node_info {
     uint32_t id;
+    const char* name;
+    rendering_resource_type_t type;
     uint32_t flags;
     bool initialized;
+    bool is_transient;
 } rendering_resource_node_info_t;
 
 /* ============================================================================

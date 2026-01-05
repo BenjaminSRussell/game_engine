@@ -55,6 +55,10 @@ int virtual_shadow_maps_vsm_page_pool_get_info(virtual_shadow_maps_vsm_page_pool
 void virtual_shadow_maps_vsm_page_pool_mark_dirty(virtual_shadow_maps_vsm_page_pool_handle_t handle);
 int virtual_shadow_maps_vsm_page_pool_process_pending(void);
 
+uint32_t vsm_page_pool_alloc(virtual_shadow_maps_vsm_page_pool_handle_t handle, uint32_t v_x, uint32_t v_y, uint64_t frame);
+void vsm_page_pool_free(virtual_shadow_maps_vsm_page_pool_handle_t handle, uint32_t physical_index);
+void vsm_page_pool_touch(virtual_shadow_maps_vsm_page_pool_handle_t handle, uint32_t physical_index, uint64_t frame);
+
 /* Statistics */
 uint32_t virtual_shadow_maps_vsm_page_pool_get_count(void);
 size_t virtual_shadow_maps_vsm_page_pool_get_memory_usage(void);

@@ -60,11 +60,8 @@
 typedef struct lumen_radiance_inject_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } lumen_radiance_inject_internal_t;
 
 typedef struct lumen_radiance_inject_context {
@@ -90,13 +87,7 @@ static bool lumen_radiance_inject_validate(const lumen_radiance_inject_internal_
 }
 
 static void lumen_radiance_inject_cleanup_internal(lumen_radiance_inject_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
     item->initialized = false;
 }
 
@@ -148,11 +139,6 @@ void lumen_radiance_inject_shutdown(void) {
 }
 
 int lumen_radiance_inject_create(lumen_radiance_inject_handle_t* out_handle, const lumen_radiance_inject_desc_t* desc) {
-    // TODO: Implement radiance inject validation
-    // TODO: Add radiance inject error handling
-    // TODO: Implement radiance inject serialization
-    // TODO: Add radiance inject debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +148,6 @@ int lumen_radiance_inject_create(lumen_radiance_inject_handle_t* out_handle, con
     }
 
     if (g_radiance_inject_ctx.count >= g_radiance_inject_ctx.capacity) {
-        // TODO: Implement radiance inject unit tests
         return -3;
     }
 
@@ -171,11 +156,8 @@ int lumen_radiance_inject_create(lumen_radiance_inject_handle_t* out_handle, con
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
 
     out_handle->id = index;
     return 0;
@@ -192,12 +174,12 @@ void lumen_radiance_inject_destroy(lumen_radiance_inject_handle_t handle) {
     lumen_radiance_inject_cleanup_internal(&g_radiance_inject_ctx.items[handle.id]);
 }
 
-int lumen_radiance_inject_update(lumen_radiance_inject_handle_t handle, const void* data, size_t size) {
-    // TODO: Add radiance inject thread safety
-    // TODO: Implement radiance inject memory pooling
-    // TODO: Add radiance inject caching layer
-    // TODO: Implement radiance inject async operations
+int lumen_radiance_inject_from_surface_cache(lumen_radiance_inject_handle_t handle, uint32_t card_index) {
+    // TODO: Inject radiance from surface card into probe grid
+    return 0;
+}
 
+int lumen_radiance_inject_update(lumen_radiance_inject_handle_t handle, const void* data, size_t size) {
     if (handle.id >= g_radiance_inject_ctx.count) {
         return -1;
     }
@@ -206,9 +188,6 @@ int lumen_radiance_inject_update(lumen_radiance_inject_handle_t handle, const vo
     if (!item->initialized) {
         return -2;
     }
-
-    // TODO: Add radiance inject GPU integration
-    // TODO: Implement radiance inject SIMD optimization
 
     item->dirty = true;
     return 0;
@@ -271,14 +250,8 @@ uint32_t lumen_radiance_inject_get_count(void) {
 }
 
 size_t lumen_radiance_inject_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_radiance_inject_ctx);
     total += g_radiance_inject_ctx.capacity * sizeof(lumen_radiance_inject_internal_t);
-
-    for (uint32_t i = 0; i < g_radiance_inject_ctx.count; i++) {
-        total += g_radiance_inject_ctx.items[i].data_size;
-    }
-
     return total;
 }
 

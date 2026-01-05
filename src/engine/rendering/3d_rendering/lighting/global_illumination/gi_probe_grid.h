@@ -1,6 +1,6 @@
 /*
  * gi_probe_grid.h
- * Irradiance probe grid
+ * Irradiance probe grid data
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+
+#include "../../../../include/math/vec3.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,6 +56,9 @@ bool lighting_gi_probe_grid_is_valid(lighting_gi_probe_grid_handle_t handle);
 int lighting_gi_probe_grid_get_info(lighting_gi_probe_grid_handle_t handle, lighting_gi_probe_grid_info_t* out_info);
 void lighting_gi_probe_grid_mark_dirty(lighting_gi_probe_grid_handle_t handle);
 int lighting_gi_probe_grid_process_pending(void);
+
+/* Sampling */
+Vec3 lighting_gi_probe_grid_sample(lighting_gi_probe_grid_handle_t handle, Vec3 position, Vec3 normal);
 
 /* Statistics */
 uint32_t lighting_gi_probe_grid_get_count(void);

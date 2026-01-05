@@ -60,11 +60,8 @@
 typedef struct lumen_final_gather_rays_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } lumen_final_gather_rays_internal_t;
 
 typedef struct lumen_final_gather_rays_context {
@@ -90,13 +87,7 @@ static bool lumen_final_gather_rays_validate(const lumen_final_gather_rays_inter
 }
 
 static void lumen_final_gather_rays_cleanup_internal(lumen_final_gather_rays_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
     item->initialized = false;
 }
 
@@ -148,11 +139,6 @@ void lumen_final_gather_rays_shutdown(void) {
 }
 
 int lumen_final_gather_rays_create(lumen_final_gather_rays_handle_t* out_handle, const lumen_final_gather_rays_desc_t* desc) {
-    // TODO: Implement final gather rays validation
-    // TODO: Add final gather rays error handling
-    // TODO: Implement final gather rays serialization
-    // TODO: Add final gather rays debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +148,6 @@ int lumen_final_gather_rays_create(lumen_final_gather_rays_handle_t* out_handle,
     }
 
     if (g_final_gather_rays_ctx.count >= g_final_gather_rays_ctx.capacity) {
-        // TODO: Implement final gather rays unit tests
         return -3;
     }
 
@@ -171,11 +156,8 @@ int lumen_final_gather_rays_create(lumen_final_gather_rays_handle_t* out_handle,
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
 
     out_handle->id = index;
     return 0;
@@ -192,12 +174,12 @@ void lumen_final_gather_rays_destroy(lumen_final_gather_rays_handle_t handle) {
     lumen_final_gather_rays_cleanup_internal(&g_final_gather_rays_ctx.items[handle.id]);
 }
 
-int lumen_final_gather_rays_update(lumen_final_gather_rays_handle_t handle, const void* data, size_t size) {
-    // TODO: Add final gather rays thread safety
-    // TODO: Implement final gather rays memory pooling
-    // TODO: Add final gather rays caching layer
-    // TODO: Implement final gather rays async operations
+int lumen_final_gather_rays_dispatch(lumen_final_gather_rays_handle_t handle) {
+    // TODO: Dispatch compute shader to generate rays from G-buffer
+    return 0;
+}
 
+int lumen_final_gather_rays_update(lumen_final_gather_rays_handle_t handle, const void* data, size_t size) {
     if (handle.id >= g_final_gather_rays_ctx.count) {
         return -1;
     }
@@ -206,9 +188,6 @@ int lumen_final_gather_rays_update(lumen_final_gather_rays_handle_t handle, cons
     if (!item->initialized) {
         return -2;
     }
-
-    // TODO: Add final gather rays GPU integration
-    // TODO: Implement final gather rays SIMD optimization
 
     item->dirty = true;
     return 0;
@@ -271,14 +250,8 @@ uint32_t lumen_final_gather_rays_get_count(void) {
 }
 
 size_t lumen_final_gather_rays_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_final_gather_rays_ctx);
     total += g_final_gather_rays_ctx.capacity * sizeof(lumen_final_gather_rays_internal_t);
-
-    for (uint32_t i = 0; i < g_final_gather_rays_ctx.count; i++) {
-        total += g_final_gather_rays_ctx.items[i].data_size;
-    }
-
     return total;
 }
 

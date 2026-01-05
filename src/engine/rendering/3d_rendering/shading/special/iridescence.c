@@ -1,145 +1,73 @@
 /*
  * iridescence.c
- * Thin-film iridescence
+ * Thin-film iridescence implementation
  *
  * Part of the Shading subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement GGX BRDF
- * TODO: Add multi-scatter GGX
- * TODO: Implement subsurface scattering
- * TODO: Add cloth shading
- * TODO: Implement hair shading
- * TODO: Add clearcoat layer
- * TODO: Implement anisotropy
- * TODO: Add transmission
- * TODO: Implement iridescence
- * TODO: Add eye shading
- * TODO: Implement iridescence initialization
- * TODO: Add iridescence cleanup/shutdown
- * TODO: Implement iridescence validation
- * TODO: Add iridescence error handling
- * TODO: Implement iridescence serialization
- * TODO: Add iridescence debug output
- * TODO: Implement iridescence unit tests
- * TODO: Add iridescence performance counters
- * TODO: Implement iridescence hot-reload
- * TODO: Add iridescence thread safety
- * TODO: Implement iridescence memory pooling
- * TODO: Add iridescence caching layer
- * TODO: Implement iridescence async operations
- * TODO: Add iridescence GPU integration
- * TODO: Implement iridescence SIMD optimization
- * TODO: Add iridescence batch processing
- * TODO: Implement iridescence streaming support
- * TODO: Add iridescence LOD support
- * TODO: Implement iridescence culling integration
- * TODO: Add iridescence render graph node
  */
 
 #include "iridescence.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include "../../math/vec3.h"
+#include "../../../include/math/math.h"
 #include <stdlib.h>
+#include <string.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
  * ============================================================================ */
 
-#define SHADING_IRIDESCENCE_MAX_COUNT 4096
-#define SHADING_IRIDESCENCE_DEFAULT_CAPACITY 256
-#define SHADING_IRIDESCENCE_ALIGNMENT 16
+#define SHADING_IRIDESCENCE_MAX_COUNT 64
+#define SHADING_IRIDESCENCE_DEFAULT_CAPACITY 16
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
+typedef struct iridescence_params {
+    float thickness; // in nanometers (e.g. 300-800)
+    float ior;       // film index of refraction
+    float k;         // extinction coefficient
+} iridescence_params_t;
+
 typedef struct shading_iridescence_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    iridescence_params_t params;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } shading_iridescence_internal_t;
 
 typedef struct shading_iridescence_context {
     shading_iridescence_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } shading_iridescence_context_t;
 
 static shading_iridescence_context_t g_iridescence_ctx = {0};
 
 /* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool shading_iridescence_validate(const shading_iridescence_internal_t* item) {
-    // TODO: Implement GGX BRDF
-    // TODO: Add multi-scatter GGX
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void shading_iridescence_cleanup_internal(shading_iridescence_internal_t* item) {
-    // TODO: Implement subsurface scattering
-    // TODO: Add cloth shading
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
-}
-
-/* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
 int shading_iridescence_init(void) {
-    // TODO: Implement hair shading
-    // TODO: Add clearcoat layer
-    // TODO: Implement anisotropy
-    // TODO: Add transmission
-
-    if (g_iridescence_ctx.initialized) {
-        return 0; // Already initialized
-    }
+    if (g_iridescence_ctx.initialized) return 0;
 
     g_iridescence_ctx.capacity = SHADING_IRIDESCENCE_DEFAULT_CAPACITY;
     g_iridescence_ctx.items = calloc(g_iridescence_ctx.capacity, sizeof(shading_iridescence_internal_t));
-    if (!g_iridescence_ctx.items) {
-        return -1;
-    }
-
+    
+    if (!g_iridescence_ctx.items) return -1;
+    
     g_iridescence_ctx.count = 0;
     g_iridescence_ctx.initialized = true;
-
+    
     return 0;
 }
 
 void shading_iridescence_shutdown(void) {
-    // TODO: Implement iridescence
-    // TODO: Add eye shading
-    // TODO: Implement iridescence initialization
-    // TODO: Add iridescence cleanup/shutdown
-
-    if (!g_iridescence_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_iridescence_ctx.count; i++) {
-        shading_iridescence_cleanup_internal(&g_iridescence_ctx.items[i]);
-    }
-
+    if (!g_iridescence_ctx.initialized) return;
+    
     free(g_iridescence_ctx.items);
     g_iridescence_ctx.items = NULL;
     g_iridescence_ctx.count = 0;
@@ -148,122 +76,107 @@ void shading_iridescence_shutdown(void) {
 }
 
 int shading_iridescence_create(shading_iridescence_handle_t* out_handle, const shading_iridescence_desc_t* desc) {
-    // TODO: Implement iridescence validation
-    // TODO: Add iridescence error handling
-    // TODO: Implement iridescence serialization
-    // TODO: Add iridescence debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_iridescence_ctx.initialized) {
-        return -2;
-    }
-
+    if (!out_handle || !desc) return -1;
+    if (!g_iridescence_ctx.initialized) return -2;
+    
     if (g_iridescence_ctx.count >= g_iridescence_ctx.capacity) {
-        // TODO: Implement iridescence unit tests
-        return -3;
+        uint32_t new_capacity = g_iridescence_ctx.capacity * 2;
+        if (new_capacity > SHADING_IRIDESCENCE_MAX_COUNT) new_capacity = SHADING_IRIDESCENCE_MAX_COUNT;
+        
+        if (new_capacity == g_iridescence_ctx.capacity) return -3;
+        
+        void* new_items = realloc(g_iridescence_ctx.items, new_capacity * sizeof(shading_iridescence_internal_t));
+        if (!new_items) return -4;
+        
+        g_iridescence_ctx.items = new_items;
+        g_iridescence_ctx.capacity = new_capacity;
     }
-
+    
     uint32_t index = g_iridescence_ctx.count++;
     shading_iridescence_internal_t* item = &g_iridescence_ctx.items[index];
-
+    
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    
+    // Default thin film
+    item->params.thickness = 500.0f; // nm
+    item->params.ior = 1.33f;        // soap bubble
+    item->params.k = 0.0f; 
+    
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
-
+    
     out_handle->id = index;
     return 0;
 }
 
 void shading_iridescence_destroy(shading_iridescence_handle_t handle) {
-    // TODO: Add iridescence performance counters
-    // TODO: Implement iridescence hot-reload
-
-    if (handle.id >= g_iridescence_ctx.count) {
-        return;
-    }
-
-    shading_iridescence_cleanup_internal(&g_iridescence_ctx.items[handle.id]);
+    if (handle.id >= g_iridescence_ctx.count) return;
+    g_iridescence_ctx.items[handle.id].initialized = false;
 }
 
 int shading_iridescence_update(shading_iridescence_handle_t handle, const void* data, size_t size) {
-    // TODO: Add iridescence thread safety
-    // TODO: Implement iridescence memory pooling
-    // TODO: Add iridescence caching layer
-    // TODO: Implement iridescence async operations
-
-    if (handle.id >= g_iridescence_ctx.count) {
-        return -1;
-    }
-
+    if (handle.id >= g_iridescence_ctx.count) return -1;
+    
     shading_iridescence_internal_t* item = &g_iridescence_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
+    if (!item->initialized) return -2;
+    
+    if (size == sizeof(iridescence_params_t)) {
+        memcpy(&item->params, data, sizeof(iridescence_params_t));
+        item->dirty = true;
     }
-
-    // TODO: Add iridescence GPU integration
-    // TODO: Implement iridescence SIMD optimization
-
-    item->dirty = true;
+    
     return 0;
 }
 
 bool shading_iridescence_is_valid(shading_iridescence_handle_t handle) {
-    // TODO: Add iridescence batch processing
-    if (handle.id >= g_iridescence_ctx.count) {
-        return false;
-    }
+    if (handle.id >= g_iridescence_ctx.count) return false;
     return g_iridescence_ctx.items[handle.id].initialized;
 }
 
-int shading_iridescence_get_info(shading_iridescence_handle_t handle, shading_iridescence_info_t* out_info) {
-    // TODO: Implement iridescence streaming support
-    // TODO: Add iridescence LOD support
-
-    if (!out_info) {
-        return -1;
+// Evaluate Thin-Film Interference
+// Returns factor to modulate F0
+void evaluate_iridescence(shading_iridescence_handle_t handle,
+                         float NdotV,
+                         vec3_t* out_iridescence_f0) {
+    
+    if (!g_iridescence_ctx.initialized || handle.id >= g_iridescence_ctx.count) return;
+    shading_iridescence_internal_t* item = &g_iridescence_ctx.items[handle.id];
+    
+    // Approximation of thin-film interference
+    // Phase difference delta = 4 * PI * d * cos(theta_film) / lambda
+    
+    // Refraction angle in film (Snell's law)
+    float eta_1 = 1.0f; // air
+    float eta_2 = item->params.ior;
+    float sin_theta_1 = sqrtf(MAX(0.0f, 1.0f - NdotV * NdotV));
+    float sin_theta_2 = (eta_1 / eta_2) * sin_theta_1;
+    float cos_theta_2 = sqrtf(MAX(0.0f, 1.0f - sin_theta_2 * sin_theta_2));
+    
+    float d = item->params.thickness;
+    
+    // Calculate interference for R, G, B wavelengths (approx 650, 510, 475 nm)
+    float lambda_r = 650.0f;
+    float lambda_g = 510.0f;
+    float lambda_b = 475.0f;
+    
+    float path_diff = 2.0f * eta_2 * d * cos_theta_2;
+    
+    float phase_r = (2.0f * PI * path_diff) / lambda_r; // + shift if needed
+    float phase_g = (2.0f * PI * path_diff) / lambda_g;
+    float phase_b = (2.0f * PI * path_diff) / lambda_b;
+    
+    // Constructive/Destructive interference factor (0 to 1) or modulation
+    // Intensity ~ cos(phase/2)^2
+    float I_r = cosf(phase_r * 0.5f); I_r *= I_r;
+    float I_g = cosf(phase_g * 0.5f); I_g *= I_g;
+    float I_b = cosf(phase_b * 0.5f); I_b *= I_b;
+    
+    if (out_iridescence_f0) {
+        out_iridescence_f0->x = I_r;
+        out_iridescence_f0->y = I_g;
+        out_iridescence_f0->z = I_b;
     }
-
-    if (handle.id >= g_iridescence_ctx.count) {
-        return -2;
-    }
-
-    const shading_iridescence_internal_t* item = &g_iridescence_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void shading_iridescence_mark_dirty(shading_iridescence_handle_t handle) {
-    // TODO: Implement iridescence culling integration
-    if (handle.id < g_iridescence_ctx.count) {
-        g_iridescence_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int shading_iridescence_process_pending(void) {
-    // TODO: Add iridescence render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_iridescence_ctx.count; i++) {
-        shading_iridescence_internal_t* item = &g_iridescence_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
 }
 
 uint32_t shading_iridescence_get_count(void) {
@@ -271,20 +184,11 @@ uint32_t shading_iridescence_get_count(void) {
 }
 
 size_t shading_iridescence_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_iridescence_ctx);
     total += g_iridescence_ctx.capacity * sizeof(shading_iridescence_internal_t);
-
-    for (uint32_t i = 0; i < g_iridescence_ctx.count; i++) {
-        total += g_iridescence_ctx.items[i].data_size;
-    }
-
     return total;
 }
 
 void shading_iridescence_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    // Debug print
 }
-
-/* End of iridescence.c */

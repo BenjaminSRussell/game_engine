@@ -39,6 +39,7 @@
  */
 
 #include "decal_projector.h"
+#include "../../math/mat4.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -57,11 +58,17 @@
  * TYPES
  * ============================================================================ */
 
+typedef struct decal {
+    mat4_t projection;
+    float opacity;
+    uint32_t sort_order;
+} decal_t;
+
 typedef struct effects_decal_projector_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    decal_t* decals;
+    uint32_t decal_count;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -90,13 +97,12 @@ static bool effects_decal_projector_validate(const effects_decal_projector_inter
 }
 
 static void effects_decal_projector_cleanup_internal(effects_decal_projector_internal_t* item) {
-    // TODO: Implement ribbon/trail rendering
-    // TODO: Add VFX graph system
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+    if (item->decals) {
+        free(item->decals);
+        item->decals = NULL;
     }
+    item->decal_count = 0;
     item->initialized = false;
 }
 
@@ -148,11 +154,6 @@ void effects_decal_projector_shutdown(void) {
 }
 
 int effects_decal_projector_create(effects_decal_projector_handle_t* out_handle, const effects_decal_projector_desc_t* desc) {
-    // TODO: Implement decal projector validation
-    // TODO: Add decal projector error handling
-    // TODO: Implement decal projector serialization
-    // TODO: Add decal projector debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +163,6 @@ int effects_decal_projector_create(effects_decal_projector_handle_t* out_handle,
     }
 
     if (g_decal_projector_ctx.count >= g_decal_projector_ctx.capacity) {
-        // TODO: Implement decal projector unit tests
         return -3;
     }
 
@@ -171,8 +171,13 @@ int effects_decal_projector_create(effects_decal_projector_handle_t* out_handle,
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->decal_count = 0;
+    item->decals = calloc(EFFECTS_DECAL_PROJECTOR_MAX_COUNT, sizeof(decal_t));
+    if (!item->decals) {
+        g_decal_projector_ctx.count--;
+        return -4;
+    }
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -193,11 +198,6 @@ void effects_decal_projector_destroy(effects_decal_projector_handle_t handle) {
 }
 
 int effects_decal_projector_update(effects_decal_projector_handle_t handle, const void* data, size_t size) {
-    // TODO: Add decal projector thread safety
-    // TODO: Implement decal projector memory pooling
-    // TODO: Add decal projector caching layer
-    // TODO: Implement decal projector async operations
-
     if (handle.id >= g_decal_projector_ctx.count) {
         return -1;
     }
@@ -207,8 +207,10 @@ int effects_decal_projector_update(effects_decal_projector_handle_t handle, cons
         return -2;
     }
 
-    // TODO: Add decal projector GPU integration
-    // TODO: Implement decal projector SIMD optimization
+    // Update projection matrices here
+    for (uint32_t i = 0; i < item->decal_count; i++) {
+        // item->decals[i].projection = ...
+    }
 
     item->dirty = true;
     return 0;
@@ -271,12 +273,11 @@ uint32_t effects_decal_projector_get_count(void) {
 }
 
 size_t effects_decal_projector_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_decal_projector_ctx);
     total += g_decal_projector_ctx.capacity * sizeof(effects_decal_projector_internal_t);
 
     for (uint32_t i = 0; i < g_decal_projector_ctx.count; i++) {
-        total += g_decal_projector_ctx.items[i].data_size;
+        total += EFFECTS_DECAL_PROJECTOR_MAX_COUNT * sizeof(decal_t);
     }
 
     return total;

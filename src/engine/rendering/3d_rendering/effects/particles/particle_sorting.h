@@ -9,6 +9,7 @@
 #ifndef EFFECTS_PARTICLE_SORTING_H
 #define EFFECTS_PARTICLE_SORTING_H
 
+#include "../gpu_particles/particle_buffer.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -26,13 +27,17 @@ typedef struct effects_particle_sorting_handle {
 } effects_particle_sorting_handle_t;
 
 typedef struct effects_particle_sorting_desc {
+    // Sorting configuration
+    bool enable_gpu_sort;
+    uint32_t max_particles;
+    
     uint32_t flags;
     void* user_data;
 } effects_particle_sorting_desc_t;
 
 typedef struct effects_particle_sorting_info {
     uint32_t id;
-    uint32_t flags;
+    bool sorted;
     bool initialized;
 } effects_particle_sorting_info_t;
 

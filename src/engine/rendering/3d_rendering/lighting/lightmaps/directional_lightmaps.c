@@ -38,12 +38,21 @@
  * TODO: Add directional lightmaps render graph node
  */
 
-#include "directional_lightmaps.h"
-#include <stdint.h>
+#ifndef __STDC_FORMAT_MACROS
+#define __STDC_FORMAT_MACROS
+#endif
+#include <inttypes.h>
+#include <math.h>
 #include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "directional_lightmaps.h"
+#include "../../../../include/common.h"
+#include "../../../../include/core/types.h"
+#include "../../../../include/math/vec3.h"
+#include "../../../../include/math/vec2.h"
 
 /* ============================================================================
  * CONSTANTS

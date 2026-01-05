@@ -1,103 +1,78 @@
 /*
  * atmospheric_scattering.c
- * Atmospheric scattering
+ * Atmospheric scattering integration
  *
  * Part of the Atmosphere subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement atmospheric scattering
- * TODO: Add volumetric clouds
- * TODO: Implement sky LUT
- * TODO: Add aerial perspective
- * TODO: Implement sun/moon rendering
- * TODO: Add star field
- * TODO: Implement time-of-day
- * TODO: Add weather transitions
- * TODO: Implement cloud shadows
- * TODO: Add god rays
- * TODO: Implement atmospheric scattering initialization
- * TODO: Add atmospheric scattering cleanup/shutdown
- * TODO: Implement atmospheric scattering validation
- * TODO: Add atmospheric scattering error handling
- * TODO: Implement atmospheric scattering serialization
- * TODO: Add atmospheric scattering debug output
- * TODO: Implement atmospheric scattering unit tests
- * TODO: Add atmospheric scattering performance counters
- * TODO: Implement atmospheric scattering hot-reload
- * TODO: Add atmospheric scattering thread safety
- * TODO: Implement atmospheric scattering memory pooling
- * TODO: Add atmospheric scattering caching layer
- * TODO: Implement atmospheric scattering async operations
- * TODO: Add atmospheric scattering GPU integration
- * TODO: Implement atmospheric scattering SIMD optimization
- * TODO: Add atmospheric scattering batch processing
- * TODO: Implement atmospheric scattering streaming support
- * TODO: Add atmospheric scattering LOD support
- * TODO: Implement atmospheric scattering culling integration
- * TODO: Add atmospheric scattering render graph node
  */
 
 #include "atmospheric_scattering.h"
+#include "rayleigh_mie.h"
+#include "../../math/vec3.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
  * ============================================================================ */
 
-#define ATMOSPHERE_ATMOSPHERIC_SCATTERING_MAX_COUNT 4096
-#define ATMOSPHERE_ATMOSPHERIC_SCATTERING_DEFAULT_CAPACITY 256
-#define ATMOSPHERE_ATMOSPHERIC_SCATTERING_ALIGNMENT 16
+#define ATMOSPHERE_PLANET_RADIUS 6360000.0f
+#define ATMOSPHERE_LIMIT 6460000.0f // 100km atmosphere
+#define ATMOSPHERE_DENSITY_FALLOFF_RAYLEIGH 8000.0f
+#define ATMOSPHERE_DENSITY_FALLOFF_MIE 1200.0f
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
-typedef struct atmosphere_atmospheric_scattering_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} atmosphere_atmospheric_scattering_internal_t;
+typedef struct atmosphere_parameters {
+    float planet_radius;
+    float atmosphere_limit;
+    float rayleigh_height;
+    float mie_height;
+    
+    vec3_t sun_direction;
+    float sun_intensity;
+    
+    // Coefficients
+    vec3_t beta_rayleigh;
+    vec3_t beta_mie;
+} atmosphere_parameters_t;
 
-typedef struct atmosphere_atmospheric_scattering_context {
-    atmosphere_atmospheric_scattering_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} atmosphere_atmospheric_scattering_context_t;
-
-static atmosphere_atmospheric_scattering_context_t g_atmospheric_scattering_ctx = {0};
+static atmosphere_parameters_t g_atmosphere_params;
+static bool g_atmosphere_initialized = false;
 
 /* ============================================================================
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool atmosphere_atmospheric_scattering_validate(const atmosphere_atmospheric_scattering_internal_t* item) {
-    // TODO: Implement atmospheric scattering
-    // TODO: Add volumetric clouds
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+static float get_density_ratio(float height, float scale_height) {
+    return expf(-height / scale_height);
 }
 
-static void atmosphere_atmospheric_scattering_cleanup_internal(atmosphere_atmospheric_scattering_internal_t* item) {
-    // TODO: Implement sky LUT
-    // TODO: Add aerial perspective
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
+// Intersect ray with sphere
+// Returns distance to intersection or -1 if no intersection
+static float ray_sphere_intersect(vec3_t ray_origin, vec3_t ray_dir, float sphere_radius) {
+    // Simple ray-sphere intersection, assumign sphere at (0,0,0) usually
+    // |o + d*t|^2 = r^2
+    float a = vec3_dot(ray_dir, ray_dir);
+    float b = 2.0f * vec3_dot(ray_origin, ray_dir);
+    float c = vec3_dot(ray_origin, ray_origin) - sphere_radius * sphere_radius;
+    
+    float d = b*b - 4.0f*a*c;
+    if (d < 0.0f) return -1.0f;
+    
+    d = sqrtf(d);
+    float t1 = (-b - d) / (2.0f * a);
+    float t2 = (-b + d) / (2.0f * a);
+    
+    if (t1 >= 0.0f) return t1;
+    if (t2 >= 0.0f) return t2;
+    return -1.0f;
 }
 
 /* ============================================================================
@@ -105,186 +80,53 @@ static void atmosphere_atmospheric_scattering_cleanup_internal(atmosphere_atmosp
  * ============================================================================ */
 
 int atmosphere_atmospheric_scattering_init(void) {
-    // TODO: Implement sun/moon rendering
-    // TODO: Add star field
-    // TODO: Implement time-of-day
-    // TODO: Add weather transitions
-
-    if (g_atmospheric_scattering_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_atmospheric_scattering_ctx.capacity = ATMOSPHERE_ATMOSPHERIC_SCATTERING_DEFAULT_CAPACITY;
-    g_atmospheric_scattering_ctx.items = calloc(g_atmospheric_scattering_ctx.capacity, sizeof(atmosphere_atmospheric_scattering_internal_t));
-    if (!g_atmospheric_scattering_ctx.items) {
-        return -1;
-    }
-
-    g_atmospheric_scattering_ctx.count = 0;
-    g_atmospheric_scattering_ctx.initialized = true;
-
+    if (g_atmosphere_initialized) return 0;
+    
+    g_atmosphere_params.planet_radius = ATMOSPHERE_PLANET_RADIUS;
+    g_atmosphere_params.atmosphere_limit = ATMOSPHERE_LIMIT;
+    g_atmosphere_params.rayleigh_height = ATMOSPHERE_DENSITY_FALLOFF_RAYLEIGH;
+    g_atmosphere_params.mie_height = ATMOSPHERE_DENSITY_FALLOFF_MIE;
+    g_atmosphere_params.sun_intensity = 1.0f;
+    g_atmosphere_params.sun_direction = vec3_normalize(vec3_set(0.0f, 1.0f, 0.5f));
+    
+    // Sea level scattering coefficients
+    g_atmosphere_params.beta_rayleigh = vec3_set(5.8e-6f, 13.5e-6f, 33.1e-6f);
+    g_atmosphere_params.beta_mie = vec3_set(21.0e-6f, 21.0e-6f, 21.0e-6f);
+    
+    g_atmosphere_initialized = true;
     return 0;
 }
 
 void atmosphere_atmospheric_scattering_shutdown(void) {
-    // TODO: Implement cloud shadows
-    // TODO: Add god rays
-    // TODO: Implement atmospheric scattering initialization
-    // TODO: Add atmospheric scattering cleanup/shutdown
-
-    if (!g_atmospheric_scattering_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_atmospheric_scattering_ctx.count; i++) {
-        atmosphere_atmospheric_scattering_cleanup_internal(&g_atmospheric_scattering_ctx.items[i]);
-    }
-
-    free(g_atmospheric_scattering_ctx.items);
-    g_atmospheric_scattering_ctx.items = NULL;
-    g_atmospheric_scattering_ctx.count = 0;
-    g_atmospheric_scattering_ctx.capacity = 0;
-    g_atmospheric_scattering_ctx.initialized = false;
+    g_atmosphere_initialized = false;
 }
 
-int atmosphere_atmospheric_scattering_create(atmosphere_atmospheric_scattering_handle_t* out_handle, const atmosphere_atmospheric_scattering_desc_t* desc) {
-    // TODO: Implement atmospheric scattering validation
-    // TODO: Add atmospheric scattering error handling
-    // TODO: Implement atmospheric scattering serialization
-    // TODO: Add atmospheric scattering debug output
-
-    if (!out_handle || !desc) {
-        return -1;
+// Integrate optical depth along a ray
+// Simplified version for CPU-side reference/testing
+float atmosphere_integrate_optical_depth(vec3_t start, vec3_t end) {
+    int samples = 10;
+    float step = 1.0f / samples;
+    float optical_depth = 0.0f;
+    
+    vec3_t delta = vec3_sub(end, start);
+    float len = sqrtf(vec3_dot(delta, delta));
+    
+    for (int i = 0; i < samples; i++) {
+        float t = (float)i * step;
+        vec3_t pos = vec3_add(start, (vec3_t){.x=delta.x*t, .y=delta.y*t, .z=delta.z*t});
+        
+        // Height above surface (assuming planet center 0, -Radius, 0 relative to camera 0 if on ground)
+        // Here assuming positions are relative to planet center
+        float r = sqrtf(vec3_dot(pos, pos));
+        float h = r - g_atmosphere_params.planet_radius;
+        if (h < 0) h = 0;
+        
+        optical_depth += get_density_ratio(h, g_atmosphere_params.rayleigh_height) * (len / samples);
     }
-
-    if (!g_atmospheric_scattering_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_atmospheric_scattering_ctx.count >= g_atmospheric_scattering_ctx.capacity) {
-        // TODO: Implement atmospheric scattering unit tests
-        return -3;
-    }
-
-    uint32_t index = g_atmospheric_scattering_ctx.count++;
-    atmosphere_atmospheric_scattering_internal_t* item = &g_atmospheric_scattering_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
+    
+    return optical_depth;
 }
 
-void atmosphere_atmospheric_scattering_destroy(atmosphere_atmospheric_scattering_handle_t handle) {
-    // TODO: Add atmospheric scattering performance counters
-    // TODO: Implement atmospheric scattering hot-reload
-
-    if (handle.id >= g_atmospheric_scattering_ctx.count) {
-        return;
-    }
-
-    atmosphere_atmospheric_scattering_cleanup_internal(&g_atmospheric_scattering_ctx.items[handle.id]);
+void atmosphere_set_sun_direction(vec3_t direction) {
+    g_atmosphere_params.sun_direction = vec3_normalize(direction);
 }
-
-int atmosphere_atmospheric_scattering_update(atmosphere_atmospheric_scattering_handle_t handle, const void* data, size_t size) {
-    // TODO: Add atmospheric scattering thread safety
-    // TODO: Implement atmospheric scattering memory pooling
-    // TODO: Add atmospheric scattering caching layer
-    // TODO: Implement atmospheric scattering async operations
-
-    if (handle.id >= g_atmospheric_scattering_ctx.count) {
-        return -1;
-    }
-
-    atmosphere_atmospheric_scattering_internal_t* item = &g_atmospheric_scattering_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add atmospheric scattering GPU integration
-    // TODO: Implement atmospheric scattering SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool atmosphere_atmospheric_scattering_is_valid(atmosphere_atmospheric_scattering_handle_t handle) {
-    // TODO: Add atmospheric scattering batch processing
-    if (handle.id >= g_atmospheric_scattering_ctx.count) {
-        return false;
-    }
-    return g_atmospheric_scattering_ctx.items[handle.id].initialized;
-}
-
-int atmosphere_atmospheric_scattering_get_info(atmosphere_atmospheric_scattering_handle_t handle, atmosphere_atmospheric_scattering_info_t* out_info) {
-    // TODO: Implement atmospheric scattering streaming support
-    // TODO: Add atmospheric scattering LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_atmospheric_scattering_ctx.count) {
-        return -2;
-    }
-
-    const atmosphere_atmospheric_scattering_internal_t* item = &g_atmospheric_scattering_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void atmosphere_atmospheric_scattering_mark_dirty(atmosphere_atmospheric_scattering_handle_t handle) {
-    // TODO: Implement atmospheric scattering culling integration
-    if (handle.id < g_atmospheric_scattering_ctx.count) {
-        g_atmospheric_scattering_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int atmosphere_atmospheric_scattering_process_pending(void) {
-    // TODO: Add atmospheric scattering render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_atmospheric_scattering_ctx.count; i++) {
-        atmosphere_atmospheric_scattering_internal_t* item = &g_atmospheric_scattering_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
-}
-
-uint32_t atmosphere_atmospheric_scattering_get_count(void) {
-    return g_atmospheric_scattering_ctx.count;
-}
-
-size_t atmosphere_atmospheric_scattering_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_atmospheric_scattering_ctx);
-    total += g_atmospheric_scattering_ctx.capacity * sizeof(atmosphere_atmospheric_scattering_internal_t);
-
-    for (uint32_t i = 0; i < g_atmospheric_scattering_ctx.count; i++) {
-        total += g_atmospheric_scattering_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void atmosphere_atmospheric_scattering_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of atmospheric_scattering.c */

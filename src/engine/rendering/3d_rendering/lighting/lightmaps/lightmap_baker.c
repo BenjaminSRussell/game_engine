@@ -38,12 +38,22 @@
  * TODO: Add lightmap baker render graph node
  */
 
-#include "lightmap_baker.h"
-#include <stdint.h>
+#ifndef __STDC_FORMAT_MACROS
+#define __STDC_FORMAT_MACROS
+#endif
+#include <inttypes.h>
+#include <math.h>
 #include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "lightmap_baker.h"
+#include "../../../../include/common.h"
+#include "../../../../include/core/types.h"
+#include "../../../../include/math/vec3.h"
+#include "../../../../include/math/vec2.h"
+#include "../../../../include/renderer/global_illumination.h"
 
 /* ============================================================================
  * CONSTANTS
@@ -192,25 +202,50 @@ void lighting_lightmap_baker_destroy(lighting_lightmap_baker_handle_t handle) {
     lighting_lightmap_baker_cleanup_internal(&g_lightmap_baker_ctx.items[handle.id]);
 }
 
-int lighting_lightmap_baker_update(lighting_lightmap_baker_handle_t handle, const void* data, size_t size) {
-    // TODO: Add lightmap baker thread safety
-    // TODO: Implement lightmap baker memory pooling
-    // TODO: Add lightmap baker caching layer
-    // TODO: Implement lightmap baker async operations
+typedef struct {
+    Vec3* positions;
+    Vec3* normals;
+    Vec2* uvs;
+    uint32_t vertex_count;
+    uint32_t* indices;
+    uint32_t index_count;
+} bake_mesh_t;
 
-    if (handle.id >= g_lightmap_baker_ctx.count) {
-        return -1;
+int lighting_lightmap_baker_bake_texel(Vec3 world_pos, Vec3 normal, const PathTracingConfig* config, uint32_t* seed, Vec3* out_irradiance) {
+    Vec3 direct = vec3_zero();
+    Vec3 indirect = vec3_zero();
+    gi_path_trace_nee(world_pos, normal, config, seed, &direct, &indirect);
+    *out_irradiance = vec3_add(direct, indirect);
+    return 0;
+}
+
+int lighting_lightmap_baker_bake(const bake_mesh_t* mesh, uint32_t width, uint32_t height, uint32_t samples, Vec3* out_data) {
+    if (!mesh || !out_data) return -1;
+
+    PathTracingConfig config = {0};
+    config.max_bounces = 8;
+    config.samples_per_pixel = samples;
+    config.use_next_event_estimation = true;
+    config.use_russian_roulette = true;
+
+    uint32_t seed = 12345;
+
+    for (uint32_t y = 0; y < height; y++) {
+        for (uint32_t x = 0; x < width; x++) {
+            // Simplified: In a real engine, we'd rasterize the mesh triangles into UV space
+            // to find the world position and normal for each texel.
+            // For now, we'll assume a skeletal implementation or placeholder.
+            
+            Vec3 world_pos = vec3_zero(); // TODO: Get from UV rasterization
+            Vec3 normal = vec3_up();      // TODO: Get from UV rasterization
+
+            Vec3 irradiance = vec3_zero();
+            lighting_lightmap_baker_bake_texel(world_pos, normal, &config, &seed, &irradiance);
+            
+            out_data[y * width + x] = irradiance;
+        }
     }
 
-    lighting_lightmap_baker_internal_t* item = &g_lightmap_baker_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add lightmap baker GPU integration
-    // TODO: Implement lightmap baker SIMD optimization
-
-    item->dirty = true;
     return 0;
 }
 

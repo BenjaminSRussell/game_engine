@@ -9,6 +9,7 @@
 #include "core/render_pipeline_core.h"
 #include "core/render_command.h"
 #include "resource_management/render_resource.h"
+#include "resource_management/resource_lifetime.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -114,6 +115,9 @@ RenderHandle rendering_pipeline_create(const RenderPipelineConfig* config)
         return INVALID_HANDLE;
     }
 
+    /* Initialize resource lifetime system (default to max_frame_buffering latency) */
+    resource_lifetime_init(config->max_frame_buffering);
+
     /* Create command queues */
     pipeline->graphics_queue = render_command_queue_create(QUEUE_TYPE_GRAPHICS, 64);
     pipeline->compute_queue = render_command_queue_create(QUEUE_TYPE_COMPUTE, 32);
@@ -170,6 +174,8 @@ void rendering_pipeline_destroy(RenderHandle pipeline_handle)
         render_device_destroy(pipeline->device);
     }
 
+    resource_lifetime_shutdown();
+
     free(pipeline);
     g_pipelines[pipeline_handle] = NULL;
 }
@@ -199,6 +205,10 @@ bool rendering_frame_end(RenderHandle pipeline_handle)
 
     pipeline->is_recording = false;
     pipeline->frame_index++;
+    
+    /* Advance resource lifetime system */
+    resource_lifetime_next_frame();
+    
     return render_pipeline_core_submit(pipeline->core);
 }
 

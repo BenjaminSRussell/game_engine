@@ -1,290 +1,122 @@
-/*
- * descriptor_set_layout.c
- * Descriptor set layout creation
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement Vulkan backend
- * TODO: Implement Metal backend
- * TODO: Implement D3D12 backend
- * TODO: Add thread-safe access patterns
- * TODO: Implement proper error handling with error codes
- * TODO: Add memory tracking and leak detection
- * TODO: Implement hot-reload support
- * TODO: Add validation layer integration
- * TODO: Implement resource state tracking
- * TODO: Add GPU debugging markers
- * TODO: Implement descriptor set layout initialization
- * TODO: Add descriptor set layout cleanup/shutdown
- * TODO: Implement descriptor set layout validation
- * TODO: Add descriptor set layout error handling
- * TODO: Implement descriptor set layout serialization
- * TODO: Add descriptor set layout debug output
- * TODO: Implement descriptor set layout unit tests
- * TODO: Add descriptor set layout performance counters
- * TODO: Implement descriptor set layout hot-reload
- * TODO: Add descriptor set layout thread safety
- * TODO: Implement descriptor set layout memory pooling
- * TODO: Add descriptor set layout caching layer
- * TODO: Implement descriptor set layout async operations
- * TODO: Add descriptor set layout GPU integration
- * TODO: Implement descriptor set layout SIMD optimization
- * TODO: Add descriptor set layout batch processing
- * TODO: Implement descriptor set layout streaming support
- * TODO: Add descriptor set layout LOD support
- * TODO: Implement descriptor set layout culling integration
- * TODO: Add descriptor set layout render graph node
- */
-
 #include "descriptor_set_layout.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
+#define MAX_CACHED_LAYOUTS 64
+#define MAX_BINDINGS_PER_LAYOUT 32
 
-#define CORE_DESCRIPTOR_SET_LAYOUT_MAX_COUNT 4096
-#define CORE_DESCRIPTOR_SET_LAYOUT_DEFAULT_CAPACITY 256
-#define CORE_DESCRIPTOR_SET_LAYOUT_ALIGNMENT 16
+typedef struct {
+    descriptor_binding_t bindings[MAX_BINDINGS_PER_LAYOUT];
+    uint32_t binding_count;
+    uint64_t hash;
+    void* vk_layout; // Placeholder for Vulkan handle
+    uint32_t ref_count;
+} cached_layout_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct core_descriptor_set_layout_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} core_descriptor_set_layout_internal_t;
-
-typedef struct core_descriptor_set_layout_context {
-    core_descriptor_set_layout_internal_t* items;
+static struct {
+    cached_layout_t layouts[MAX_CACHED_LAYOUTS];
     uint32_t count;
-    uint32_t capacity;
-    void* allocator;
     bool initialized;
-} core_descriptor_set_layout_context_t;
+} g_layout_cache = {0};
 
-static core_descriptor_set_layout_context_t g_descriptor_set_layout_ctx = {0};
-
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool core_descriptor_set_layout_validate(const core_descriptor_set_layout_internal_t* item) {
-    // TODO: Implement Vulkan backend
-    // TODO: Implement Metal backend
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+void descriptor_set_layout_init_system(void) {
+    g_layout_cache.count = 0;
+    g_layout_cache.initialized = true;
+    memset(g_layout_cache.layouts, 0, sizeof(g_layout_cache.layouts));
 }
 
-static void core_descriptor_set_layout_cleanup_internal(core_descriptor_set_layout_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+void descriptor_set_layout_shutdown_system(void) {
+    if (!g_layout_cache.initialized) return;
+    
+    // Destroy all layouts (internal vulkan handles, etc)
+    for (uint32_t i = 0; i < g_layout_cache.count; ++i) {
+        // TODO: vkDestroyDescriptorSetLayout(...)
     }
-    item->initialized = false;
+    
+    g_layout_cache.count = 0;
+    g_layout_cache.initialized = false;
 }
 
-/* ============================================================================
- * PUBLIC API
- * ============================================================================ */
-
-int core_descriptor_set_layout_init(void) {
-    // TODO: Implement proper error handling with error codes
-    // TODO: Add memory tracking and leak detection
-    // TODO: Implement hot-reload support
-    // TODO: Add validation layer integration
-
-    if (g_descriptor_set_layout_ctx.initialized) {
-        return 0; // Already initialized
+// Simple FNV-1a hash
+static uint64_t hash_bindings(const descriptor_binding_t* bindings, uint32_t count) {
+    uint64_t hash = 14695981039346656037ULL;
+    for (uint32_t i = 0; i < count; ++i) {
+        const uint8_t* p = (const uint8_t*)&bindings[i];
+        for (size_t j = 0; j < sizeof(descriptor_binding_t); ++j) {
+            hash ^= p[j];
+            hash *= 1099511628211ULL;
+        }
     }
+    return hash;
+}
 
-    g_descriptor_set_layout_ctx.capacity = CORE_DESCRIPTOR_SET_LAYOUT_DEFAULT_CAPACITY;
-    g_descriptor_set_layout_ctx.items = calloc(g_descriptor_set_layout_ctx.capacity, sizeof(core_descriptor_set_layout_internal_t));
-    if (!g_descriptor_set_layout_ctx.items) {
-        return -1;
-    }
-
-    g_descriptor_set_layout_ctx.count = 0;
-    g_descriptor_set_layout_ctx.initialized = true;
-
+static int compare_bindings(const void* a, const void* b) {
+    const descriptor_binding_t* ba = (const descriptor_binding_t*)a;
+    const descriptor_binding_t* bb = (const descriptor_binding_t*)b;
+    if (ba->binding < bb->binding) return -1;
+    if (ba->binding > bb->binding) return 1;
     return 0;
 }
 
-void core_descriptor_set_layout_shutdown(void) {
-    // TODO: Implement resource state tracking
-    // TODO: Add GPU debugging markers
-    // TODO: Implement descriptor set layout initialization
-    // TODO: Add descriptor set layout cleanup/shutdown
-
-    if (!g_descriptor_set_layout_ctx.initialized) {
-        return;
+descriptor_set_layout_handle_t descriptor_set_layout_get(const descriptor_layout_info_t* info) {
+    if (!g_layout_cache.initialized || !info || info->binding_count > MAX_BINDINGS_PER_LAYOUT) {
+        descriptor_set_layout_handle_t invalid = {0};
+        return invalid;
     }
 
-    for (uint32_t i = 0; i < g_descriptor_set_layout_ctx.count; i++) {
-        core_descriptor_set_layout_cleanup_internal(&g_descriptor_set_layout_ctx.items[i]);
-    }
+    // Create a local copy of bindings to sort them
+    descriptor_binding_t sorted_bindings[MAX_BINDINGS_PER_LAYOUT];
+    memcpy(sorted_bindings, info->bindings, info->binding_count * sizeof(descriptor_binding_t));
+    qsort(sorted_bindings, info->binding_count, sizeof(descriptor_binding_t), compare_bindings);
 
-    free(g_descriptor_set_layout_ctx.items);
-    g_descriptor_set_layout_ctx.items = NULL;
-    g_descriptor_set_layout_ctx.count = 0;
-    g_descriptor_set_layout_ctx.capacity = 0;
-    g_descriptor_set_layout_ctx.initialized = false;
-}
+    uint64_t hash = hash_bindings(sorted_bindings, info->binding_count);
 
-int core_descriptor_set_layout_create(core_descriptor_set_layout_handle_t* out_handle, const core_descriptor_set_layout_desc_t* desc) {
-    // TODO: Implement descriptor set layout validation
-    // TODO: Add descriptor set layout error handling
-    // TODO: Implement descriptor set layout serialization
-    // TODO: Add descriptor set layout debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_descriptor_set_layout_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_descriptor_set_layout_ctx.count >= g_descriptor_set_layout_ctx.capacity) {
-        // TODO: Implement descriptor set layout unit tests
-        return -3;
-    }
-
-    uint32_t index = g_descriptor_set_layout_ctx.count++;
-    core_descriptor_set_layout_internal_t* item = &g_descriptor_set_layout_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
-}
-
-void core_descriptor_set_layout_destroy(core_descriptor_set_layout_handle_t handle) {
-    // TODO: Add descriptor set layout performance counters
-    // TODO: Implement descriptor set layout hot-reload
-
-    if (handle.id >= g_descriptor_set_layout_ctx.count) {
-        return;
-    }
-
-    core_descriptor_set_layout_cleanup_internal(&g_descriptor_set_layout_ctx.items[handle.id]);
-}
-
-int core_descriptor_set_layout_update(core_descriptor_set_layout_handle_t handle, const void* data, size_t size) {
-    // TODO: Add descriptor set layout thread safety
-    // TODO: Implement descriptor set layout memory pooling
-    // TODO: Add descriptor set layout caching layer
-    // TODO: Implement descriptor set layout async operations
-
-    if (handle.id >= g_descriptor_set_layout_ctx.count) {
-        return -1;
-    }
-
-    core_descriptor_set_layout_internal_t* item = &g_descriptor_set_layout_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add descriptor set layout GPU integration
-    // TODO: Implement descriptor set layout SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool core_descriptor_set_layout_is_valid(core_descriptor_set_layout_handle_t handle) {
-    // TODO: Add descriptor set layout batch processing
-    if (handle.id >= g_descriptor_set_layout_ctx.count) {
-        return false;
-    }
-    return g_descriptor_set_layout_ctx.items[handle.id].initialized;
-}
-
-int core_descriptor_set_layout_get_info(core_descriptor_set_layout_handle_t handle, core_descriptor_set_layout_info_t* out_info) {
-    // TODO: Implement descriptor set layout streaming support
-    // TODO: Add descriptor set layout LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_descriptor_set_layout_ctx.count) {
-        return -2;
-    }
-
-    const core_descriptor_set_layout_internal_t* item = &g_descriptor_set_layout_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void core_descriptor_set_layout_mark_dirty(core_descriptor_set_layout_handle_t handle) {
-    // TODO: Implement descriptor set layout culling integration
-    if (handle.id < g_descriptor_set_layout_ctx.count) {
-        g_descriptor_set_layout_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int core_descriptor_set_layout_process_pending(void) {
-    // TODO: Add descriptor set layout render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_descriptor_set_layout_ctx.count; i++) {
-        core_descriptor_set_layout_internal_t* item = &g_descriptor_set_layout_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
+    // Search cache
+    for (uint32_t i = 0; i < g_layout_cache.count; ++i) {
+        if (g_layout_cache.layouts[i].hash == hash) {
+            // Verify exact match (using sorted bindings)
+            if (g_layout_cache.layouts[i].binding_count == info->binding_count &&
+                memcmp(g_layout_cache.layouts[i].bindings, sorted_bindings, info->binding_count * sizeof(descriptor_binding_t)) == 0) {
+                
+                g_layout_cache.layouts[i].ref_count++;
+                descriptor_set_layout_handle_t h = {i + 1}; // 1-based handle
+                return h;
+            }
         }
     }
 
-    return processed;
-}
-
-uint32_t core_descriptor_set_layout_get_count(void) {
-    return g_descriptor_set_layout_ctx.count;
-}
-
-size_t core_descriptor_set_layout_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_descriptor_set_layout_ctx);
-    total += g_descriptor_set_layout_ctx.capacity * sizeof(core_descriptor_set_layout_internal_t);
-
-    for (uint32_t i = 0; i < g_descriptor_set_layout_ctx.count; i++) {
-        total += g_descriptor_set_layout_ctx.items[i].data_size;
+    // Create new
+    if (g_layout_cache.count >= MAX_CACHED_LAYOUTS) {
+        // Cache full - simple strategy: fail or evict? layout creation usually static, should verify size.
+        descriptor_set_layout_handle_t invalid = {0};
+        return invalid;
     }
 
-    return total;
+    uint32_t index = g_layout_cache.count++;
+    cached_layout_t* layout = &g_layout_cache.layouts[index];
+    
+    layout->binding_count = info->binding_count;
+    memcpy(layout->bindings, sorted_bindings, info->binding_count * sizeof(descriptor_binding_t));
+    layout->hash = hash;
+    layout->ref_count = 1;
+    layout->vk_layout = NULL; // TODO: Create actual Vulkan layout
+
+    descriptor_set_layout_handle_t h = {index + 1};
+    return h;
 }
 
-void core_descriptor_set_layout_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+void descriptor_set_layout_destroy(descriptor_set_layout_handle_t handle) {
+    if (handle.id == 0 || handle.id > g_layout_cache.count) return;
+    
+    // Decrement ref count. Real destruction usually happens at shutdown for layouts, 
+    // unless we implement aggressive caching eviction.
+    uint32_t index = handle.id - 1;
+    if (g_layout_cache.layouts[index].ref_count > 0) {
+        g_layout_cache.layouts[index].ref_count--;
+    }
 }
 
-/* End of descriptor_set_layout.c */
+bool descriptor_set_layout_is_valid(descriptor_set_layout_handle_t handle) {
+    return handle.id != 0 && handle.id <= g_layout_cache.count;
+}

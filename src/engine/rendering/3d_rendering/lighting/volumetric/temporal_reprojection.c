@@ -1,290 +1,151 @@
 /*
  * temporal_reprojection.c
- * Volumetric temporal AA
+ * Temporal filtering for volumetric lighting
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement clustered light culling
- * TODO: Add ray-traced shadows
- * TODO: Implement cascaded shadow maps
- * TODO: Add area light support
- * TODO: Implement global illumination
- * TODO: Add volumetric lighting
- * TODO: Implement light probes
- * TODO: Add IES profile support
- * TODO: Implement lightmap baking
- * TODO: Add real-time GI
- * TODO: Implement temporal reprojection initialization
- * TODO: Add temporal reprojection cleanup/shutdown
- * TODO: Implement temporal reprojection validation
- * TODO: Add temporal reprojection error handling
- * TODO: Implement temporal reprojection serialization
- * TODO: Add temporal reprojection debug output
- * TODO: Implement temporal reprojection unit tests
- * TODO: Add temporal reprojection performance counters
- * TODO: Implement temporal reprojection hot-reload
- * TODO: Add temporal reprojection thread safety
- * TODO: Implement temporal reprojection memory pooling
- * TODO: Add temporal reprojection caching layer
- * TODO: Implement temporal reprojection async operations
- * TODO: Add temporal reprojection GPU integration
- * TODO: Implement temporal reprojection SIMD optimization
- * TODO: Add temporal reprojection batch processing
- * TODO: Implement temporal reprojection streaming support
- * TODO: Add temporal reprojection LOD support
- * TODO: Implement temporal reprojection culling integration
- * TODO: Add temporal reprojection render graph node
  */
 
 #include "temporal_reprojection.h"
+#include "../../math/vec3.h"
+#include "../../math/vec2.h"
+#include "../../math/mat4.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
  * ============================================================================ */
 
-#define LIGHTING_TEMPORAL_REPROJECTION_MAX_COUNT 4096
-#define LIGHTING_TEMPORAL_REPROJECTION_DEFAULT_CAPACITY 256
-#define LIGHTING_TEMPORAL_REPROJECTION_ALIGNMENT 16
+#define LIGHTING_TEMPORAL_HISTORY_MAX 2
+#define MAX_JITTER_SAMPLES 16
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
-typedef struct lighting_temporal_reprojection_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
+typedef struct lighting_temporal_context {
+    uint32_t width;
+    uint32_t height;
+    uint32_t frame_index;
+    
+    // History buffers (texture IDs)
+    uint32_t history_buffers[LIGHTING_TEMPORAL_HISTORY_MAX];
+    uint32_t current_history_index;
+    
+    // Jitter sequence
+    vec2_t jitter_samples[MAX_JITTER_SAMPLES];
+    
+    // Settings
+    float blend_weight; // 0.95 usually
+    bool enable_reprojection;
+    
     bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} lighting_temporal_reprojection_internal_t;
+} lighting_temporal_context_t;
 
-typedef struct lighting_temporal_reprojection_context {
-    lighting_temporal_reprojection_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} lighting_temporal_reprojection_context_t;
-
-static lighting_temporal_reprojection_context_t g_temporal_reprojection_ctx = {0};
+static lighting_temporal_context_t g_temporal_ctx = {0};
 
 /* ============================================================================
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool lighting_temporal_reprojection_validate(const lighting_temporal_reprojection_internal_t* item) {
-    // TODO: Implement clustered light culling
-    // TODO: Add ray-traced shadows
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+// Halton Sequence Generator (Base 2, 3)
+static float halton(int index, int base) {
+    float f = 1.0f;
+    float r = 0.0f;
+    while (index > 0) {
+        f = f / (float)base;
+        r = r + f * (float)(index % base);
+        index = index / base;
+    }
+    return r;
 }
 
-static void lighting_temporal_reprojection_cleanup_internal(lighting_temporal_reprojection_internal_t* item) {
-    // TODO: Implement cascaded shadow maps
-    // TODO: Add area light support
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+static void generate_jitter_sequence(void) {
+    for (int i = 0; i < MAX_JITTER_SAMPLES; i++) {
+        // Offset by 1 to avoid 0,0 alignment if desired, widely used pattern
+        g_temporal_ctx.jitter_samples[i].x = halton(i + 1, 2) - 0.5f;
+        g_temporal_ctx.jitter_samples[i].y = halton(i + 1, 3) - 0.5f;
     }
-    item->initialized = false;
 }
 
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
-int lighting_temporal_reprojection_init(void) {
-    // TODO: Implement global illumination
-    // TODO: Add volumetric lighting
-    // TODO: Implement light probes
-    // TODO: Add IES profile support
-
-    if (g_temporal_reprojection_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_temporal_reprojection_ctx.capacity = LIGHTING_TEMPORAL_REPROJECTION_DEFAULT_CAPACITY;
-    g_temporal_reprojection_ctx.items = calloc(g_temporal_reprojection_ctx.capacity, sizeof(lighting_temporal_reprojection_internal_t));
-    if (!g_temporal_reprojection_ctx.items) {
-        return -1;
-    }
-
-    g_temporal_reprojection_ctx.count = 0;
-    g_temporal_reprojection_ctx.initialized = true;
-
+int lighting_temporal_reprojection_init(uint32_t width, uint32_t height) {
+    if (g_temporal_ctx.initialized) return 0;
+    
+    g_temporal_ctx.width = width;
+    g_temporal_ctx.height = height;
+    g_temporal_ctx.frame_index = 0;
+    g_temporal_ctx.current_history_index = 0;
+    g_temporal_ctx.blend_weight = 0.90f;
+    g_temporal_ctx.enable_reprojection = true;
+    
+    generate_jitter_sequence();
+    
+    g_temporal_ctx.initialized = true;
     return 0;
 }
 
 void lighting_temporal_reprojection_shutdown(void) {
-    // TODO: Implement lightmap baking
-    // TODO: Add real-time GI
-    // TODO: Implement temporal reprojection initialization
-    // TODO: Add temporal reprojection cleanup/shutdown
-
-    if (!g_temporal_reprojection_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_temporal_reprojection_ctx.count; i++) {
-        lighting_temporal_reprojection_cleanup_internal(&g_temporal_reprojection_ctx.items[i]);
-    }
-
-    free(g_temporal_reprojection_ctx.items);
-    g_temporal_reprojection_ctx.items = NULL;
-    g_temporal_reprojection_ctx.count = 0;
-    g_temporal_reprojection_ctx.capacity = 0;
-    g_temporal_reprojection_ctx.initialized = false;
+    g_temporal_ctx.initialized = false;
 }
 
-int lighting_temporal_reprojection_create(lighting_temporal_reprojection_handle_t* out_handle, const lighting_temporal_reprojection_desc_t* desc) {
-    // TODO: Implement temporal reprojection validation
-    // TODO: Add temporal reprojection error handling
-    // TODO: Implement temporal reprojection serialization
-    // TODO: Add temporal reprojection debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_temporal_reprojection_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_temporal_reprojection_ctx.count >= g_temporal_reprojection_ctx.capacity) {
-        // TODO: Implement temporal reprojection unit tests
-        return -3;
-    }
-
-    uint32_t index = g_temporal_reprojection_ctx.count++;
-    lighting_temporal_reprojection_internal_t* item = &g_temporal_reprojection_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
+// Get jitter offset for current frame
+vec2_t lighting_temporal_reprojection_get_jitter(void) {
+    if (!g_temporal_ctx.initialized) return (vec2_t){0};
+    int idx = g_temporal_ctx.frame_index % MAX_JITTER_SAMPLES;
+    return g_temporal_ctx.jitter_samples[idx];
 }
 
-void lighting_temporal_reprojection_destroy(lighting_temporal_reprojection_handle_t handle) {
-    // TODO: Add temporal reprojection performance counters
-    // TODO: Implement temporal reprojection hot-reload
-
-    if (handle.id >= g_temporal_reprojection_ctx.count) {
-        return;
+// Logic to blend current frame color with history
+// returns blended color
+// This is CPU simulation of the shader logic
+vec3_t lighting_temporal_reprojection_resolve(
+    vec3_t current_color, 
+    vec3_t history_color, 
+    vec2_t velocity_vector,
+    bool history_valid
+) {
+    if (!g_temporal_ctx.enable_reprojection || !history_valid) {
+        return current_color;
     }
-
-    lighting_temporal_reprojection_cleanup_internal(&g_temporal_reprojection_ctx.items[handle.id]);
+    
+    // Simple exponential moving average (EMA)
+    // History weight depends on velocity validity usually (clamping/rectification)
+    // Here using fixed weight for simplicity
+    
+    float alpha = g_temporal_ctx.blend_weight;
+    
+    // color = current * (1 - alpha) + history * alpha
+    vec3_t result;
+    result.x = current_color.x * (1.0f - alpha) + history_color.x * alpha;
+    result.y = current_color.y * (1.0f - alpha) + history_color.y * alpha;
+    result.z = current_color.z * (1.0f - alpha) + history_color.z * alpha;
+    
+    return result;
 }
 
-int lighting_temporal_reprojection_update(lighting_temporal_reprojection_handle_t handle, const void* data, size_t size) {
-    // TODO: Add temporal reprojection thread safety
-    // TODO: Implement temporal reprojection memory pooling
-    // TODO: Add temporal reprojection caching layer
-    // TODO: Implement temporal reprojection async operations
-
-    if (handle.id >= g_temporal_reprojection_ctx.count) {
-        return -1;
-    }
-
-    lighting_temporal_reprojection_internal_t* item = &g_temporal_reprojection_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add temporal reprojection GPU integration
-    // TODO: Implement temporal reprojection SIMD optimization
-
-    item->dirty = true;
-    return 0;
+void lighting_temporal_reprojection_advance_frame(void) {
+    if (!g_temporal_ctx.initialized) return;
+    
+    g_temporal_ctx.frame_index++;
+    g_temporal_ctx.current_history_index = (g_temporal_ctx.current_history_index + 1) % LIGHTING_TEMPORAL_HISTORY_MAX;
 }
 
-bool lighting_temporal_reprojection_is_valid(lighting_temporal_reprojection_handle_t handle) {
-    // TODO: Add temporal reprojection batch processing
-    if (handle.id >= g_temporal_reprojection_ctx.count) {
-        return false;
-    }
-    return g_temporal_reprojection_ctx.items[handle.id].initialized;
+void lighting_temporal_reprojection_set_history_buffer(uint32_t texture_id) {
+    if (!g_temporal_ctx.initialized) return;
+    g_temporal_ctx.history_buffers[g_temporal_ctx.current_history_index] = texture_id;
 }
 
-int lighting_temporal_reprojection_get_info(lighting_temporal_reprojection_handle_t handle, lighting_temporal_reprojection_info_t* out_info) {
-    // TODO: Implement temporal reprojection streaming support
-    // TODO: Add temporal reprojection LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_temporal_reprojection_ctx.count) {
-        return -2;
-    }
-
-    const lighting_temporal_reprojection_internal_t* item = &g_temporal_reprojection_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
+uint32_t lighting_temporal_reprojection_get_previous_history_buffer(void) {
+    if (!g_temporal_ctx.initialized) return 0;
+    int prev_idx = (g_temporal_ctx.current_history_index + LIGHTING_TEMPORAL_HISTORY_MAX - 1) % LIGHTING_TEMPORAL_HISTORY_MAX;
+    return g_temporal_ctx.history_buffers[prev_idx];
 }
-
-void lighting_temporal_reprojection_mark_dirty(lighting_temporal_reprojection_handle_t handle) {
-    // TODO: Implement temporal reprojection culling integration
-    if (handle.id < g_temporal_reprojection_ctx.count) {
-        g_temporal_reprojection_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int lighting_temporal_reprojection_process_pending(void) {
-    // TODO: Add temporal reprojection render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_temporal_reprojection_ctx.count; i++) {
-        lighting_temporal_reprojection_internal_t* item = &g_temporal_reprojection_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
-}
-
-uint32_t lighting_temporal_reprojection_get_count(void) {
-    return g_temporal_reprojection_ctx.count;
-}
-
-size_t lighting_temporal_reprojection_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_temporal_reprojection_ctx);
-    total += g_temporal_reprojection_ctx.capacity * sizeof(lighting_temporal_reprojection_internal_t);
-
-    for (uint32_t i = 0; i < g_temporal_reprojection_ctx.count; i++) {
-        total += g_temporal_reprojection_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void lighting_temporal_reprojection_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of temporal_reprojection.c */

@@ -44,6 +44,8 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -52,9 +54,10 @@
 #define POSTPROCESSING_HISTOGRAM_COMPUTE_MAX_COUNT 4096
 #define POSTPROCESSING_HISTOGRAM_COMPUTE_DEFAULT_CAPACITY 256
 #define POSTPROCESSING_HISTOGRAM_COMPUTE_ALIGNMENT 16
+#define HISTOGRAM_EPSILON 0.0001f
 
 /* ============================================================================
- * TYPES
+ * INTERNAL STRUCTURES
  * ============================================================================ */
 
 typedef struct postprocessing_histogram_compute_internal {
@@ -65,6 +68,8 @@ typedef struct postprocessing_histogram_compute_internal {
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
+    histogram_params_t params;
+    float computed_average;
 } postprocessing_histogram_compute_internal_t;
 
 typedef struct postprocessing_histogram_compute_context {
@@ -81,17 +86,7 @@ static postprocessing_histogram_compute_context_t g_histogram_compute_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool postprocessing_histogram_compute_validate(const postprocessing_histogram_compute_internal_t* item) {
-    // TODO: Implement ACES tonemapping
-    // TODO: Add physically-based bloom
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
 static void postprocessing_histogram_compute_cleanup_internal(postprocessing_histogram_compute_internal_t* item) {
-    // TODO: Implement TAA
-    // TODO: Add depth of field
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -100,16 +95,15 @@ static void postprocessing_histogram_compute_cleanup_internal(postprocessing_his
     item->initialized = false;
 }
 
+static float get_luminance(float r, float g, float b) {
+    return 0.2126f * r + 0.7152f * g + 0.0722f * b;
+}
+
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
 int postprocessing_histogram_compute_init(void) {
-    // TODO: Implement motion blur
-    // TODO: Add GTAO
-    // TODO: Implement SSR
-    // TODO: Add color grading
-
     if (g_histogram_compute_ctx.initialized) {
         return 0; // Already initialized
     }
@@ -127,11 +121,6 @@ int postprocessing_histogram_compute_init(void) {
 }
 
 void postprocessing_histogram_compute_shutdown(void) {
-    // TODO: Implement lens effects
-    // TODO: Add film grain
-    // TODO: Implement histogram compute initialization
-    // TODO: Add histogram compute cleanup/shutdown
-
     if (!g_histogram_compute_ctx.initialized) {
         return;
     }
@@ -148,11 +137,6 @@ void postprocessing_histogram_compute_shutdown(void) {
 }
 
 int postprocessing_histogram_compute_create(postprocessing_histogram_compute_handle_t* out_handle, const postprocessing_histogram_compute_desc_t* desc) {
-    // TODO: Implement histogram compute validation
-    // TODO: Add histogram compute error handling
-    // TODO: Implement histogram compute serialization
-    // TODO: Add histogram compute debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +146,6 @@ int postprocessing_histogram_compute_create(postprocessing_histogram_compute_han
     }
 
     if (g_histogram_compute_ctx.count >= g_histogram_compute_ctx.capacity) {
-        // TODO: Implement histogram compute unit tests
         return -3;
     }
 
@@ -171,6 +154,8 @@ int postprocessing_histogram_compute_create(postprocessing_histogram_compute_han
 
     item->id = index;
     item->flags = desc->flags;
+    item->params = desc->initial_params;
+    item->computed_average = 0.5f; // Default
     item->data = NULL;
     item->data_size = 0;
     item->initialized = true;
@@ -182,9 +167,6 @@ int postprocessing_histogram_compute_create(postprocessing_histogram_compute_han
 }
 
 void postprocessing_histogram_compute_destroy(postprocessing_histogram_compute_handle_t handle) {
-    // TODO: Add histogram compute performance counters
-    // TODO: Implement histogram compute hot-reload
-
     if (handle.id >= g_histogram_compute_ctx.count) {
         return;
     }
@@ -193,11 +175,6 @@ void postprocessing_histogram_compute_destroy(postprocessing_histogram_compute_h
 }
 
 int postprocessing_histogram_compute_update(postprocessing_histogram_compute_handle_t handle, const void* data, size_t size) {
-    // TODO: Add histogram compute thread safety
-    // TODO: Implement histogram compute memory pooling
-    // TODO: Add histogram compute caching layer
-    // TODO: Implement histogram compute async operations
-
     if (handle.id >= g_histogram_compute_ctx.count) {
         return -1;
     }
@@ -207,15 +184,20 @@ int postprocessing_histogram_compute_update(postprocessing_histogram_compute_han
         return -2;
     }
 
-    // TODO: Add histogram compute GPU integration
-    // TODO: Implement histogram compute SIMD optimization
-
     item->dirty = true;
     return 0;
 }
 
+void postprocessing_histogram_compute_set_params(postprocessing_histogram_compute_handle_t handle, const histogram_params_t* params) {
+    if (handle.id >= g_histogram_compute_ctx.count || !params) return;
+    postprocessing_histogram_compute_internal_t* item = &g_histogram_compute_ctx.items[handle.id];
+    if (item->initialized) {
+        item->params = *params;
+        item->dirty = true;
+    }
+}
+
 bool postprocessing_histogram_compute_is_valid(postprocessing_histogram_compute_handle_t handle) {
-    // TODO: Add histogram compute batch processing
     if (handle.id >= g_histogram_compute_ctx.count) {
         return false;
     }
@@ -223,9 +205,6 @@ bool postprocessing_histogram_compute_is_valid(postprocessing_histogram_compute_
 }
 
 int postprocessing_histogram_compute_get_info(postprocessing_histogram_compute_handle_t handle, postprocessing_histogram_compute_info_t* out_info) {
-    // TODO: Implement histogram compute streaming support
-    // TODO: Add histogram compute LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -238,53 +217,128 @@ int postprocessing_histogram_compute_get_info(postprocessing_histogram_compute_h
     out_info->id = item->id;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
+    out_info->current_params = item->params;
+    out_info->computed_average_luminance = item->computed_average;
 
     return 0;
 }
 
 void postprocessing_histogram_compute_mark_dirty(postprocessing_histogram_compute_handle_t handle) {
-    // TODO: Implement histogram compute culling integration
     if (handle.id < g_histogram_compute_ctx.count) {
         g_histogram_compute_ctx.items[handle.id].dirty = true;
     }
 }
 
 int postprocessing_histogram_compute_process_pending(void) {
-    // TODO: Add histogram compute render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_histogram_compute_ctx.count; i++) {
         postprocessing_histogram_compute_internal_t* item = &g_histogram_compute_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
     }
-
     return processed;
 }
+
+void postprocessing_histogram_compute_cpu(const histogram_params_t* params, const float* input_rgb, size_t pixel_count, uint32_t* out_histogram) {
+    if (!params || !input_rgb || !out_histogram) return;
+
+    memset(out_histogram, 0, sizeof(uint32_t) * HISTOGRAM_BIN_COUNT);
+
+    float min_log = params->min_log_lum;
+    float range_inv = 1.0f / (params->log_lum_range > 0.0001f ? params->log_lum_range : 1.0f);
+
+    for (size_t i = 0; i < pixel_count; ++i) {
+        float r = input_rgb[i * 3];
+        float g = input_rgb[i * 3 + 1];
+        float b = input_rgb[i * 3 + 2];
+        float lum = get_luminance(r, g, b);
+
+        if (lum < HISTOGRAM_EPSILON) lum = HISTOGRAM_EPSILON;
+
+        float log_lum = log2f(lum);
+        float normalized = (log_lum - min_log) * range_inv;
+        
+        int bin = (int)(normalized * HISTOGRAM_BIN_COUNT);
+        if (bin < 0) bin = 0;
+        if (bin >= HISTOGRAM_BIN_COUNT) bin = HISTOGRAM_BIN_COUNT - 1;
+
+        out_histogram[bin]++;
+    }
+}
+
+float postprocessing_histogram_get_average_luminance(const histogram_params_t* params, const uint32_t* histogram, size_t total_pixels) {
+    if (!params || !histogram || total_pixels == 0) return 0.5f;
+
+    float min_log = params->min_log_lum;
+    float range = params->log_lum_range;
+    
+    // Ignore params->low_percentile pixels from bottom
+    // Ignore params->high_percentile pixels from top (meaning keep up to high_percentile)
+    
+    // Convert percentiles to pixel counts
+    uint32_t low_cutoff = (uint32_t)(params->low_percentile * total_pixels);
+    uint32_t high_cutoff = (uint32_t)(params->high_percentile * total_pixels);
+    
+    if (high_cutoff <= low_cutoff) high_cutoff = total_pixels;
+
+    uint32_t current_count = 0;
+    double total_log_lum = 0.0;
+    uint32_t used_pixels = 0;
+
+    for (int i = 0; i < HISTOGRAM_BIN_COUNT; ++i) {
+        uint32_t count = histogram[i];
+        uint32_t next_count = current_count + count;
+        
+        // Check finding intersection with range [low_cutoff, high_cutoff]
+        uint32_t start_idx = current_count;
+        uint32_t end_idx = next_count;
+        
+        // Clamp interval to valid range
+        if (start_idx < low_cutoff) start_idx = low_cutoff;
+        if (end_idx > high_cutoff) end_idx = high_cutoff;
+
+        if (start_idx < end_idx) {
+            uint32_t pixels_in_bin = end_idx - start_idx;
+            
+            // Calculate representative luminance for this bin
+            float t = (i + 0.5f) / HISTOGRAM_BIN_COUNT;
+            float log_lum = min_log + t * range;
+            
+            total_log_lum += log_lum * pixels_in_bin;
+            used_pixels += pixels_in_bin;
+        }
+
+        current_count = next_count;
+    }
+
+    if (used_pixels == 0) return 0.5f; // Fallback
+
+    float avg_log_lum = (float)(total_log_lum / used_pixels);
+    return exp2f(avg_log_lum);
+}
+
 
 uint32_t postprocessing_histogram_compute_get_count(void) {
     return g_histogram_compute_ctx.count;
 }
 
 size_t postprocessing_histogram_compute_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_histogram_compute_ctx);
     total += g_histogram_compute_ctx.capacity * sizeof(postprocessing_histogram_compute_internal_t);
 
     for (uint32_t i = 0; i < g_histogram_compute_ctx.count; i++) {
-        total += g_histogram_compute_ctx.items[i].data_size;
+        if (g_histogram_compute_ctx.items[i].initialized) {
+            total += g_histogram_compute_ctx.items[i].data_size;
+        }
     }
 
     return total;
 }
 
 void postprocessing_histogram_compute_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    printf("Histogram Compute Context: %u/%u items\n", g_histogram_compute_ctx.count, g_histogram_compute_ctx.capacity);
 }
 
 /* End of histogram_compute.c */

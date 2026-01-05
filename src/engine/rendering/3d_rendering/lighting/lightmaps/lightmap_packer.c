@@ -38,12 +38,19 @@
  * TODO: Add lightmap packer render graph node
  */
 
-#include "lightmap_packer.h"
-#include <stdint.h>
+#ifndef __STDC_FORMAT_MACROS
+#define __STDC_FORMAT_MACROS
+#endif
+#include <inttypes.h>
 #include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "lightmap_packer.h"
+#include "../../../../include/core/types.h"
+#include "../../../../include/math/vec2.h"
+#include "../../../../include/math/rect.h"
 
 /* ============================================================================
  * CONSTANTS
@@ -81,23 +88,59 @@ static lighting_lightmap_packer_context_t g_lightmap_packer_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool lighting_lightmap_packer_validate(const lighting_lightmap_packer_internal_t* item) {
-    // TODO: Implement clustered light culling
-    // TODO: Add ray-traced shadows
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+typedef struct pack_node {
+    uint32_t x, y, w, h;
+    bool occupied;
+    struct pack_node* left;
+    struct pack_node* right;
+} pack_node_t;
+
+static pack_node_t* pack_node_create(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
+    pack_node_t* node = (pack_node_t*)malloc(sizeof(pack_node_t));
+    if (node) {
+        node->x = x; node->y = y; node->w = w; node->h = h;
+        node->occupied = false;
+        node->left = NULL; node->right = NULL;
+    }
+    return node;
 }
 
-static void lighting_lightmap_packer_cleanup_internal(lighting_lightmap_packer_internal_t* item) {
-    // TODO: Implement cascaded shadow maps
-    // TODO: Add area light support
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+static void pack_node_destroy(pack_node_t* node) {
+    if (!node) return;
+    pack_node_destroy(node->left);
+    pack_node_destroy(node->right);
+    free(node);
+}
+
+static pack_node_t* pack_node_insert(pack_node_t* node, uint32_t w, uint32_t h) {
+    if (node->left || node->right) {
+        pack_node_t* newNode = pack_node_insert(node->left, w, h);
+        if (newNode) return newNode;
+        return pack_node_insert(node->right, w, h);
     }
-    item->initialized = false;
+
+    if (node->occupied || node->w < w || node->h < h) {
+        return NULL;
+    }
+
+    if (node->w == w && node->h == h) {
+        node->occupied = true;
+        return node;
+    }
+
+    // Split
+    uint32_t dw = node->w - w;
+    uint32_t dh = node->h - h;
+
+    if (dw > dh) {
+        node->left = pack_node_create(node->x, node->y, w, node->h);
+        node->right = pack_node_create(node->x + w, node->y, dw, node->h);
+    } else {
+        node->left = pack_node_create(node->x, node->y, node->w, h);
+        node->right = pack_node_create(node->x, node->y + h, node->w, dh);
+    }
+
+    return pack_node_insert(node->left, w, h);
 }
 
 /* ============================================================================
@@ -192,26 +235,28 @@ void lighting_lightmap_packer_destroy(lighting_lightmap_packer_handle_t handle) 
     lighting_lightmap_packer_cleanup_internal(&g_lightmap_packer_ctx.items[handle.id]);
 }
 
-int lighting_lightmap_packer_update(lighting_lightmap_packer_handle_t handle, const void* data, size_t size) {
-    // TODO: Add lightmap packer thread safety
-    // TODO: Implement lightmap packer memory pooling
-    // TODO: Add lightmap packer caching layer
-    // TODO: Implement lightmap packer async operations
+int lighting_lightmap_packer_pack(uint32_t atlas_w, uint32_t atlas_h, uint32_t rect_count, uint32_t* rect_ws, uint32_t* rect_hs, uint32_t* out_xs, uint32_t* out_ys) {
+    if (rect_count == 0) return 0;
+    
+    pack_node_t* root = pack_node_create(0, 0, atlas_w, atlas_h);
+    if (!root) return -1;
 
-    if (handle.id >= g_lightmap_packer_ctx.count) {
-        return -1;
+    int packed_count = 0;
+    for (uint32_t i = 0; i < rect_count; i++) {
+        pack_node_t* node = pack_node_insert(root, rect_ws[i], rect_hs[i]);
+        if (node) {
+            out_xs[i] = node->x;
+            out_ys[i] = node->y;
+            packed_count++;
+        } else {
+            // Failed to pack this rect
+            out_xs[i] = 0;
+            out_ys[i] = 0;
+        }
     }
 
-    lighting_lightmap_packer_internal_t* item = &g_lightmap_packer_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add lightmap packer GPU integration
-    // TODO: Implement lightmap packer SIMD optimization
-
-    item->dirty = true;
-    return 0;
+    pack_node_destroy(root);
+    return packed_count;
 }
 
 bool lighting_lightmap_packer_is_valid(lighting_lightmap_packer_handle_t handle) {

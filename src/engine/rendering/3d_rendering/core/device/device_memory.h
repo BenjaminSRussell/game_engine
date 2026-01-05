@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "../memory/gpu_allocator.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,6 +50,11 @@ int core_device_memory_create(core_device_memory_handle_t* out_handle, const cor
 void core_device_memory_destroy(core_device_memory_handle_t handle);
 
 /* Operations */
+int core_device_memory_allocate(gpu_allocation_t* out_allocation, uint64_t size, uint32_t flags);
+void core_device_memory_free(gpu_allocation_t* allocation);
+void* core_device_memory_map(gpu_allocation_t* allocation);
+void core_device_memory_unmap(gpu_allocation_t* allocation);
+
 int core_device_memory_update(core_device_memory_handle_t handle, const void* data, size_t size);
 bool core_device_memory_is_valid(core_device_memory_handle_t handle);
 int core_device_memory_get_info(core_device_memory_handle_t handle, core_device_memory_info_t* out_info);

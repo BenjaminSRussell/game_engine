@@ -1,13 +1,13 @@
 /*
  * texture_encoder.h
- * Runtime texture encoding
+ * Texture compression and encoding management
  *
  * Part of the Texture subsystem
  * Advanced 3D Rendering Engine
  */
 
-#ifndef TEXTURE_TEXTURE_ENCODER_H
-#define TEXTURE_TEXTURE_ENCODER_H
+#ifndef TEXTURE_ENCODER_H
+#define TEXTURE_ENCODER_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -18,50 +18,53 @@ extern "C" {
 #endif
 
 /* ============================================================================
+ * CONSTANTS & ENUMS
+ * ============================================================================ */
+
+typedef enum texture_format {
+    TEXTURE_FORMAT_RGBA8,
+    TEXTURE_FORMAT_BC1,
+    TEXTURE_FORMAT_BC3,
+    TEXTURE_FORMAT_BC7,
+    TEXTURE_FORMAT_ASTC_4x4,
+    TEXTURE_FORMAT_ASTC_8x8
+} texture_format_t;
+
+typedef enum compression_quality {
+    COMPRESSION_QUALITY_FAST,
+    COMPRESSION_QUALITY_BALANCED,
+    COMPRESSION_QUALITY_BEST
+} compression_quality_t;
+
+/* ============================================================================
  * TYPES
  * ============================================================================ */
 
-typedef struct texture_texture_encoder_handle {
-    uint32_t id;
-} texture_texture_encoder_handle_t;
-
-typedef struct texture_texture_encoder_desc {
-    uint32_t flags;
-    void* user_data;
-} texture_texture_encoder_desc_t;
-
-typedef struct texture_texture_encoder_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} texture_texture_encoder_info_t;
+typedef struct texture_encoder_config {
+    texture_format_t format;
+    compression_quality_t quality;
+    bool generate_mips;
+} texture_encoder_config_t;
 
 /* ============================================================================
  * API
  * ============================================================================ */
 
-/* Initialization */
-int texture_texture_encoder_init(void);
-void texture_texture_encoder_shutdown(void);
-
 /* Lifecycle */
-int texture_texture_encoder_create(texture_texture_encoder_handle_t* out_handle, const texture_texture_encoder_desc_t* desc);
-void texture_texture_encoder_destroy(texture_texture_encoder_handle_t handle);
+int texture_encoder_init(void);
+void texture_encoder_shutdown(void);
 
 /* Operations */
-int texture_texture_encoder_update(texture_texture_encoder_handle_t handle, const void* data, size_t size);
-bool texture_texture_encoder_is_valid(texture_texture_encoder_handle_t handle);
-int texture_texture_encoder_get_info(texture_texture_encoder_handle_t handle, texture_texture_encoder_info_t* out_info);
-void texture_texture_encoder_mark_dirty(texture_texture_encoder_handle_t handle);
-int texture_texture_encoder_process_pending(void);
+int texture_encoder_compress(const void* src_data, uint32_t width, uint32_t height, 
+                            void** out_data, size_t* out_size, const texture_encoder_config_t* config);
 
-/* Statistics */
-uint32_t texture_texture_encoder_get_count(void);
-size_t texture_texture_encoder_get_memory_usage(void);
-void texture_texture_encoder_debug_print(void);
+/* Original stub compatibility */
+int texture_texture_encoder_init(void);
+void texture_texture_encoder_shutdown(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* TEXTURE_TEXTURE_ENCODER_H */
+#endif /* TEXTURE_ENCODER_H */
+

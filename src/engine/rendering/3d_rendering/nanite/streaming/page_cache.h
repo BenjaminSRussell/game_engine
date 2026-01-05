@@ -1,67 +1,41 @@
 /*
  * page_cache.h
- * Cluster page caching
- *
- * Part of the Nanite subsystem
- * Advanced 3D Rendering Engine
+ * LRU cache for Nanite cluster data
  */
 
-#ifndef NANITE_PAGE_CACHE_H
-#define NANITE_PAGE_CACHE_H
+#ifndef PAGE_CACHE_H
+#define PAGE_CACHE_H
 
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// Cache settings
+#define MAX_CACHE_PAGES 1024
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+// Page status
+typedef enum page_status {
+    PAGE_EMPTY,
+    PAGE_LOADING,
+    PAGE_RESIDENT
+} page_status_t;
 
-typedef struct nanite_page_cache_handle {
-    uint32_t id;
-} nanite_page_cache_handle_t;
+// Cache entry
+typedef struct cache_entry {
+    uint32_t page_id;
+    page_status_t status;
+    uint32_t last_used_frame;
+} cache_entry_t;
 
-typedef struct nanite_page_cache_desc {
-    uint32_t flags;
-    void* user_data;
-} nanite_page_cache_desc_t;
+// Cache API
+void page_cache_init(size_t total_memory);
+void page_cache_shutdown(void);
 
-typedef struct nanite_page_cache_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} nanite_page_cache_info_t;
+// Request a page from cache
+void* page_cache_acquire(uint32_t page_id);
+void page_cache_release(uint32_t page_id);
 
-/* ============================================================================
- * API
- * ============================================================================ */
+// Eviction
+void page_cache_evict_lru(void);
 
-/* Initialization */
-int nanite_page_cache_init(void);
-void nanite_page_cache_shutdown(void);
-
-/* Lifecycle */
-int nanite_page_cache_create(nanite_page_cache_handle_t* out_handle, const nanite_page_cache_desc_t* desc);
-void nanite_page_cache_destroy(nanite_page_cache_handle_t handle);
-
-/* Operations */
-int nanite_page_cache_update(nanite_page_cache_handle_t handle, const void* data, size_t size);
-bool nanite_page_cache_is_valid(nanite_page_cache_handle_t handle);
-int nanite_page_cache_get_info(nanite_page_cache_handle_t handle, nanite_page_cache_info_t* out_info);
-void nanite_page_cache_mark_dirty(nanite_page_cache_handle_t handle);
-int nanite_page_cache_process_pending(void);
-
-/* Statistics */
-uint32_t nanite_page_cache_get_count(void);
-size_t nanite_page_cache_get_memory_usage(void);
-void nanite_page_cache_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* NANITE_PAGE_CACHE_H */
+#endif // PAGE_CACHE_H

@@ -1,64 +1,57 @@
 /*
  * descriptor_pool.h
  * Descriptor pool management
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
  */
 
 #ifndef CORE_DESCRIPTOR_POOL_H
 #define CORE_DESCRIPTOR_POOL_H
 
+#include "descriptor_set_layout.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct core_descriptor_pool_handle {
+typedef struct {
     uint32_t id;
-} core_descriptor_pool_handle_t;
+} descriptor_pool_handle_t;
 
-typedef struct core_descriptor_pool_desc {
-    uint32_t flags;
-    void* user_data;
-} core_descriptor_pool_desc_t;
+typedef struct {
+    descriptor_type_t type;
+    uint32_t count;
+} descriptor_pool_size_t;
 
-typedef struct core_descriptor_pool_info {
+typedef struct {
+    uint32_t max_sets;
+    const descriptor_pool_size_t* pool_sizes;
+    uint32_t pool_size_count;
+} descriptor_pool_desc_t;
+
+// Opaque handle for a descriptor set allocated from the pool
+typedef struct {
     uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_descriptor_pool_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
+} descriptor_set_handle_t;
 
 /* Initialization */
-int core_descriptor_pool_init(void);
-void core_descriptor_pool_shutdown(void);
+void descriptor_pool_init_system(void);
+void descriptor_pool_shutdown_system(void);
 
 /* Lifecycle */
-int core_descriptor_pool_create(core_descriptor_pool_handle_t* out_handle, const core_descriptor_pool_desc_t* desc);
-void core_descriptor_pool_destroy(core_descriptor_pool_handle_t handle);
+descriptor_pool_handle_t descriptor_pool_create(const descriptor_pool_desc_t* desc);
+void descriptor_pool_destroy(descriptor_pool_handle_t pool);
 
 /* Operations */
-int core_descriptor_pool_update(core_descriptor_pool_handle_t handle, const void* data, size_t size);
-bool core_descriptor_pool_is_valid(core_descriptor_pool_handle_t handle);
-int core_descriptor_pool_get_info(core_descriptor_pool_handle_t handle, core_descriptor_pool_info_t* out_info);
-void core_descriptor_pool_mark_dirty(core_descriptor_pool_handle_t handle);
-int core_descriptor_pool_process_pending(void);
+void descriptor_pool_reset(descriptor_pool_handle_t pool);
 
-/* Statistics */
-uint32_t core_descriptor_pool_get_count(void);
-size_t core_descriptor_pool_get_memory_usage(void);
-void core_descriptor_pool_debug_print(void);
+// Allocate a descriptor set from the pool using the given layout
+bool descriptor_pool_allocate(descriptor_pool_handle_t pool, 
+                              descriptor_set_layout_handle_t layout, 
+                              descriptor_set_handle_t* out_set);
+
+// Statistics
+uint32_t descriptor_pool_get_allocated_sets(descriptor_pool_handle_t pool);
 
 #ifdef __cplusplus
 }

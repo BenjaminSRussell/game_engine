@@ -1,290 +1,57 @@
 /*
  * cluster_dag.c
- * Cluster DAG construction
- *
- * Part of the Nanite subsystem
- * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement Vulkan backend
- * TODO: Implement Metal backend
- * TODO: Implement D3D12 backend
- * TODO: Add thread-safe access patterns
- * TODO: Implement proper error handling with error codes
- * TODO: Add memory tracking and leak detection
- * TODO: Implement hot-reload support
- * TODO: Add validation layer integration
- * TODO: Implement resource state tracking
- * TODO: Add GPU debugging markers
- * TODO: Implement cluster dag initialization
- * TODO: Add cluster dag cleanup/shutdown
- * TODO: Implement cluster dag validation
- * TODO: Add cluster dag error handling
- * TODO: Implement cluster dag serialization
- * TODO: Add cluster dag debug output
- * TODO: Implement cluster dag unit tests
- * TODO: Add cluster dag performance counters
- * TODO: Implement cluster dag hot-reload
- * TODO: Add cluster dag thread safety
- * TODO: Implement cluster dag memory pooling
- * TODO: Add cluster dag caching layer
- * TODO: Implement cluster dag async operations
- * TODO: Add cluster dag GPU integration
- * TODO: Implement cluster dag SIMD optimization
- * TODO: Add cluster dag batch processing
- * TODO: Implement cluster dag streaming support
- * TODO: Add cluster dag LOD support
- * TODO: Implement cluster dag culling integration
- * TODO: Add cluster dag render graph node
+ * Implementation of cluster DAG management
  */
 
 #include "cluster_dag.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
+void cluster_dag_traverse_depth_first(const cluster_result_t* dag, uint32_t cluster_idx, cluster_visitor_t visitor, void* user_data) {
+    if (!dag || cluster_idx >= dag->count || !visitor) return;
 
-#define NANITE_CLUSTER_DAG_MAX_COUNT 4096
-#define NANITE_CLUSTER_DAG_DEFAULT_CAPACITY 256
-#define NANITE_CLUSTER_DAG_ALIGNMENT 16
+    const cluster_t* cluster = &dag->clusters[cluster_idx];
+    visitor(cluster, user_data);
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+    for (int i = 0; i < 8; ++i) {
+        uint32_t child_idx = cluster->child_clusters[i];
+        if (child_idx != 0xFFFFFFFF) {
+            cluster_dag_traverse_depth_first(dag, child_idx, visitor, user_data);
+        }
+    }
+}
 
-typedef struct nanite_cluster_dag_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} nanite_cluster_dag_internal_t;
+bool cluster_dag_serialize(const cluster_result_t* dag, const char* filename) {
+    if (!dag || !filename) return false;
 
-typedef struct nanite_cluster_dag_context {
-    nanite_cluster_dag_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} nanite_cluster_dag_context_t;
+    FILE* f = fopen(filename, "wb");
+    if (!f) return false;
 
-static nanite_cluster_dag_context_t g_cluster_dag_ctx = {0};
+    fwrite(&dag->count, sizeof(uint32_t), 1, f);
+    fwrite(&dag->root_cluster, sizeof(uint32_t), 1, f);
+    fwrite(dag->clusters, sizeof(cluster_t), dag->count, f);
 
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool nanite_cluster_dag_validate(const nanite_cluster_dag_internal_t* item) {
-    // TODO: Implement Vulkan backend
-    // TODO: Implement Metal backend
-    if (!item) return false;
-    if (!item->initialized) return false;
+    fclose(f);
     return true;
 }
 
-static void nanite_cluster_dag_cleanup_internal(nanite_cluster_dag_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
+cluster_result_t* cluster_dag_deserialize(const char* filename) {
+    if (!filename) return NULL;
+
+    FILE* f = fopen(filename, "rb");
+    if (!f) return NULL;
+
+    cluster_result_t* dag = (cluster_result_t*)malloc(sizeof(cluster_result_t));
+    if (!dag) { fclose(f); return NULL; }
+
+    fread(&dag->count, sizeof(uint32_t), 1, f);
+    fread(&dag->root_cluster, sizeof(uint32_t), 1, f);
+    
+    dag->clusters = (cluster_t*)malloc(dag->count * sizeof(cluster_t));
+    if (!dag->clusters) { free(dag); fclose(f); return NULL; }
+
+    fread(dag->clusters, sizeof(cluster_t), dag->count, f);
+
+    fclose(f);
+    return dag;
 }
-
-/* ============================================================================
- * PUBLIC API
- * ============================================================================ */
-
-int nanite_cluster_dag_init(void) {
-    // TODO: Implement proper error handling with error codes
-    // TODO: Add memory tracking and leak detection
-    // TODO: Implement hot-reload support
-    // TODO: Add validation layer integration
-
-    if (g_cluster_dag_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_cluster_dag_ctx.capacity = NANITE_CLUSTER_DAG_DEFAULT_CAPACITY;
-    g_cluster_dag_ctx.items = calloc(g_cluster_dag_ctx.capacity, sizeof(nanite_cluster_dag_internal_t));
-    if (!g_cluster_dag_ctx.items) {
-        return -1;
-    }
-
-    g_cluster_dag_ctx.count = 0;
-    g_cluster_dag_ctx.initialized = true;
-
-    return 0;
-}
-
-void nanite_cluster_dag_shutdown(void) {
-    // TODO: Implement resource state tracking
-    // TODO: Add GPU debugging markers
-    // TODO: Implement cluster dag initialization
-    // TODO: Add cluster dag cleanup/shutdown
-
-    if (!g_cluster_dag_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_cluster_dag_ctx.count; i++) {
-        nanite_cluster_dag_cleanup_internal(&g_cluster_dag_ctx.items[i]);
-    }
-
-    free(g_cluster_dag_ctx.items);
-    g_cluster_dag_ctx.items = NULL;
-    g_cluster_dag_ctx.count = 0;
-    g_cluster_dag_ctx.capacity = 0;
-    g_cluster_dag_ctx.initialized = false;
-}
-
-int nanite_cluster_dag_create(nanite_cluster_dag_handle_t* out_handle, const nanite_cluster_dag_desc_t* desc) {
-    // TODO: Implement cluster dag validation
-    // TODO: Add cluster dag error handling
-    // TODO: Implement cluster dag serialization
-    // TODO: Add cluster dag debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_cluster_dag_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_cluster_dag_ctx.count >= g_cluster_dag_ctx.capacity) {
-        // TODO: Implement cluster dag unit tests
-        return -3;
-    }
-
-    uint32_t index = g_cluster_dag_ctx.count++;
-    nanite_cluster_dag_internal_t* item = &g_cluster_dag_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
-}
-
-void nanite_cluster_dag_destroy(nanite_cluster_dag_handle_t handle) {
-    // TODO: Add cluster dag performance counters
-    // TODO: Implement cluster dag hot-reload
-
-    if (handle.id >= g_cluster_dag_ctx.count) {
-        return;
-    }
-
-    nanite_cluster_dag_cleanup_internal(&g_cluster_dag_ctx.items[handle.id]);
-}
-
-int nanite_cluster_dag_update(nanite_cluster_dag_handle_t handle, const void* data, size_t size) {
-    // TODO: Add cluster dag thread safety
-    // TODO: Implement cluster dag memory pooling
-    // TODO: Add cluster dag caching layer
-    // TODO: Implement cluster dag async operations
-
-    if (handle.id >= g_cluster_dag_ctx.count) {
-        return -1;
-    }
-
-    nanite_cluster_dag_internal_t* item = &g_cluster_dag_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add cluster dag GPU integration
-    // TODO: Implement cluster dag SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool nanite_cluster_dag_is_valid(nanite_cluster_dag_handle_t handle) {
-    // TODO: Add cluster dag batch processing
-    if (handle.id >= g_cluster_dag_ctx.count) {
-        return false;
-    }
-    return g_cluster_dag_ctx.items[handle.id].initialized;
-}
-
-int nanite_cluster_dag_get_info(nanite_cluster_dag_handle_t handle, nanite_cluster_dag_info_t* out_info) {
-    // TODO: Implement cluster dag streaming support
-    // TODO: Add cluster dag LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_cluster_dag_ctx.count) {
-        return -2;
-    }
-
-    const nanite_cluster_dag_internal_t* item = &g_cluster_dag_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void nanite_cluster_dag_mark_dirty(nanite_cluster_dag_handle_t handle) {
-    // TODO: Implement cluster dag culling integration
-    if (handle.id < g_cluster_dag_ctx.count) {
-        g_cluster_dag_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int nanite_cluster_dag_process_pending(void) {
-    // TODO: Add cluster dag render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_cluster_dag_ctx.count; i++) {
-        nanite_cluster_dag_internal_t* item = &g_cluster_dag_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
-}
-
-uint32_t nanite_cluster_dag_get_count(void) {
-    return g_cluster_dag_ctx.count;
-}
-
-size_t nanite_cluster_dag_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_cluster_dag_ctx);
-    total += g_cluster_dag_ctx.capacity * sizeof(nanite_cluster_dag_internal_t);
-
-    for (uint32_t i = 0; i < g_cluster_dag_ctx.count; i++) {
-        total += g_cluster_dag_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void nanite_cluster_dag_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of cluster_dag.c */

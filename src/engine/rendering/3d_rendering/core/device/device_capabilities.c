@@ -49,67 +49,31 @@
  * CONSTANTS
  * ============================================================================ */
 
-#define CORE_DEVICE_CAPABILITIES_MAX_COUNT 4096
 #define CORE_DEVICE_CAPABILITIES_DEFAULT_CAPACITY 256
-#define CORE_DEVICE_CAPABILITIES_ALIGNMENT 16
 
 /* ============================================================================
- * TYPES
+ * INTERNAL TYPES
  * ============================================================================ */
 
 typedef struct core_device_capabilities_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
+    render_device_caps_t caps;
     bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
 } core_device_capabilities_internal_t;
 
 typedef struct core_device_capabilities_context {
     core_device_capabilities_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } core_device_capabilities_context_t;
 
 static core_device_capabilities_context_t g_device_capabilities_ctx = {0};
 
 /* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool core_device_capabilities_validate(const core_device_capabilities_internal_t* item) {
-    // TODO: Implement Vulkan backend
-    // TODO: Implement Metal backend
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void core_device_capabilities_cleanup_internal(core_device_capabilities_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
-}
-
-/* ============================================================================
- * PUBLIC API
+ * API
  * ============================================================================ */
 
 int core_device_capabilities_init(void) {
-    // TODO: Implement proper error handling with error codes
-    // TODO: Add memory tracking and leak detection
-    // TODO: Implement hot-reload support
-    // TODO: Add validation layer integration
-
     if (g_device_capabilities_ctx.initialized) {
         return 0; // Already initialized
     }
@@ -120,24 +84,14 @@ int core_device_capabilities_init(void) {
         return -1;
     }
 
-    g_device_capabilities_ctx.count = 0;
     g_device_capabilities_ctx.initialized = true;
 
     return 0;
 }
 
 void core_device_capabilities_shutdown(void) {
-    // TODO: Implement resource state tracking
-    // TODO: Add GPU debugging markers
-    // TODO: Implement device capabilities initialization
-    // TODO: Add device capabilities cleanup/shutdown
-
     if (!g_device_capabilities_ctx.initialized) {
         return;
-    }
-
-    for (uint32_t i = 0; i < g_device_capabilities_ctx.count; i++) {
-        core_device_capabilities_cleanup_internal(&g_device_capabilities_ctx.items[i]);
     }
 
     free(g_device_capabilities_ctx.items);
@@ -147,12 +101,32 @@ void core_device_capabilities_shutdown(void) {
     g_device_capabilities_ctx.initialized = false;
 }
 
-int core_device_capabilities_create(core_device_capabilities_handle_t* out_handle, const core_device_capabilities_desc_t* desc) {
-    // TODO: Implement device capabilities validation
-    // TODO: Add device capabilities error handling
-    // TODO: Implement device capabilities serialization
-    // TODO: Add device capabilities debug output
+int core_device_capabilities_query(render_device_caps_t* out_caps, void* backend_handle) {
+    if (!out_caps) {
+        return -1;
+    }
 
+    // Default capabilities (minimum requirements)
+    memset(out_caps, 0, sizeof(render_device_caps_t));
+    strncpy(out_caps->device_name, "Generic GPU", sizeof(out_caps->device_name));
+    
+    out_caps->limits.max_texture_dimension_2d = 4096;
+    out_caps->limits.max_texture_dimension_3d = 256;
+    out_caps->limits.max_texture_dimension_cube = 4096;
+    out_caps->limits.max_texture_array_layers = 256;
+    out_caps->limits.max_uniform_buffer_range = 16384;
+    out_caps->limits.max_storage_buffer_range = 1024 * 1024 * 128;
+    out_caps->limits.max_push_constants_size = 128;
+
+    // TODO: Actually query backend for features
+    if (backend_handle) {
+        // backend_fill_caps(backend_handle, out_caps);
+    }
+
+    return 0;
+}
+
+int core_device_capabilities_create(core_device_capabilities_handle_t* out_handle, const core_device_capabilities_desc_t* desc) {
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,108 +136,41 @@ int core_device_capabilities_create(core_device_capabilities_handle_t* out_handl
     }
 
     if (g_device_capabilities_ctx.count >= g_device_capabilities_ctx.capacity) {
-        // TODO: Implement device capabilities unit tests
         return -3;
     }
 
     uint32_t index = g_device_capabilities_ctx.count++;
     core_device_capabilities_internal_t* item = &g_device_capabilities_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    
+    // Initial query
+    core_device_capabilities_query(&item->caps, NULL);
     item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
 
     out_handle->id = index;
     return 0;
 }
 
 void core_device_capabilities_destroy(core_device_capabilities_handle_t handle) {
-    // TODO: Add device capabilities performance counters
-    // TODO: Implement device capabilities hot-reload
-
-    if (handle.id >= g_device_capabilities_ctx.count) {
-        return;
+    if (handle.id < g_device_capabilities_ctx.count) {
+        g_device_capabilities_ctx.items[handle.id].initialized = false;
     }
-
-    core_device_capabilities_cleanup_internal(&g_device_capabilities_ctx.items[handle.id]);
 }
 
 int core_device_capabilities_update(core_device_capabilities_handle_t handle, const void* data, size_t size) {
-    // TODO: Add device capabilities thread safety
-    // TODO: Implement device capabilities memory pooling
-    // TODO: Add device capabilities caching layer
-    // TODO: Implement device capabilities async operations
-
-    if (handle.id >= g_device_capabilities_ctx.count) {
-        return -1;
-    }
-
-    core_device_capabilities_internal_t* item = &g_device_capabilities_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add device capabilities GPU integration
-    // TODO: Implement device capabilities SIMD optimization
-
-    item->dirty = true;
+    if (handle.id >= g_device_capabilities_ctx.count) return -1;
     return 0;
 }
 
 bool core_device_capabilities_is_valid(core_device_capabilities_handle_t handle) {
-    // TODO: Add device capabilities batch processing
-    if (handle.id >= g_device_capabilities_ctx.count) {
-        return false;
-    }
+    if (handle.id >= g_device_capabilities_ctx.count) return false;
     return g_device_capabilities_ctx.items[handle.id].initialized;
 }
 
 int core_device_capabilities_get_info(core_device_capabilities_handle_t handle, core_device_capabilities_info_t* out_info) {
-    // TODO: Implement device capabilities streaming support
-    // TODO: Add device capabilities LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_device_capabilities_ctx.count) {
-        return -2;
-    }
-
-    const core_device_capabilities_internal_t* item = &g_device_capabilities_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
+    if (!out_info || handle.id >= g_device_capabilities_ctx.count) return -1;
+    out_info->id = handle.id;
+    out_info->initialized = g_device_capabilities_ctx.items[handle.id].initialized;
     return 0;
-}
-
-void core_device_capabilities_mark_dirty(core_device_capabilities_handle_t handle) {
-    // TODO: Implement device capabilities culling integration
-    if (handle.id < g_device_capabilities_ctx.count) {
-        g_device_capabilities_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int core_device_capabilities_process_pending(void) {
-    // TODO: Add device capabilities render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_device_capabilities_ctx.count; i++) {
-        core_device_capabilities_internal_t* item = &g_device_capabilities_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
 }
 
 uint32_t core_device_capabilities_get_count(void) {
@@ -271,20 +178,13 @@ uint32_t core_device_capabilities_get_count(void) {
 }
 
 size_t core_device_capabilities_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_device_capabilities_ctx);
-    total += g_device_capabilities_ctx.capacity * sizeof(core_device_capabilities_internal_t);
-
-    for (uint32_t i = 0; i < g_device_capabilities_ctx.count; i++) {
-        total += g_device_capabilities_ctx.items[i].data_size;
-    }
-
-    return total;
+    return g_device_capabilities_ctx.capacity * sizeof(core_device_capabilities_internal_t);
 }
 
 void core_device_capabilities_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
 }
+
+void core_device_capabilities_mark_dirty(core_device_capabilities_handle_t handle) {}
+int core_device_capabilities_process_pending(void) { return 0; }
 
 /* End of device_capabilities.c */

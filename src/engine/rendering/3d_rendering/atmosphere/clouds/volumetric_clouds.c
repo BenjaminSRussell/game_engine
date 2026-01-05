@@ -1,103 +1,76 @@
 /*
  * volumetric_clouds.c
- * Volumetric cloud rendering
+ * Main volume cloud rendering system
  *
  * Part of the Atmosphere subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement atmospheric scattering
- * TODO: Add volumetric clouds
- * TODO: Implement sky LUT
- * TODO: Add aerial perspective
- * TODO: Implement sun/moon rendering
- * TODO: Add star field
- * TODO: Implement time-of-day
- * TODO: Add weather transitions
- * TODO: Implement cloud shadows
- * TODO: Add god rays
- * TODO: Implement volumetric clouds initialization
- * TODO: Add volumetric clouds cleanup/shutdown
- * TODO: Implement volumetric clouds validation
- * TODO: Add volumetric clouds error handling
- * TODO: Implement volumetric clouds serialization
- * TODO: Add volumetric clouds debug output
- * TODO: Implement volumetric clouds unit tests
- * TODO: Add volumetric clouds performance counters
- * TODO: Implement volumetric clouds hot-reload
- * TODO: Add volumetric clouds thread safety
- * TODO: Implement volumetric clouds memory pooling
- * TODO: Add volumetric clouds caching layer
- * TODO: Implement volumetric clouds async operations
- * TODO: Add volumetric clouds GPU integration
- * TODO: Implement volumetric clouds SIMD optimization
- * TODO: Add volumetric clouds batch processing
- * TODO: Implement volumetric clouds streaming support
- * TODO: Add volumetric clouds LOD support
- * TODO: Implement volumetric clouds culling integration
- * TODO: Add volumetric clouds render graph node
  */
 
 #include "volumetric_clouds.h"
+#include "cloud_density.h"
+#include "cloud_lighting.h"
+#include "../../math/vec3.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
  * ============================================================================ */
 
-#define ATMOSPHERE_VOLUMETRIC_CLOUDS_MAX_COUNT 4096
-#define ATMOSPHERE_VOLUMETRIC_CLOUDS_DEFAULT_CAPACITY 256
-#define ATMOSPHERE_VOLUMETRIC_CLOUDS_ALIGNMENT 16
+#define MAX_CLOUD_STEPS 64
+#define MAX_LIGHT_STEPS 6
+#define CLOUD_STEP_SIZE 150.0f
+#define PLANET_RADIUS 6360000.0f
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
-typedef struct atmosphere_volumetric_clouds_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
+typedef struct volumetric_cloud_context {
+    int quality_level;
+    bool enable_shadows;
     bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} atmosphere_volumetric_clouds_internal_t;
+    
+    // Cache for optimization
+    vec3_t sun_direction;
+} volumetric_cloud_context_t;
 
-typedef struct atmosphere_volumetric_clouds_context {
-    atmosphere_volumetric_clouds_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} atmosphere_volumetric_clouds_context_t;
-
-static atmosphere_volumetric_clouds_context_t g_volumetric_clouds_ctx = {0};
+static volumetric_cloud_context_t g_cloud_ctx = {0};
 
 /* ============================================================================
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool atmosphere_volumetric_clouds_validate(const atmosphere_volumetric_clouds_internal_t* item) {
-    // TODO: Implement atmospheric scattering
-    // TODO: Add volumetric clouds
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void atmosphere_volumetric_clouds_cleanup_internal(atmosphere_volumetric_clouds_internal_t* item) {
-    // TODO: Implement sky LUT
-    // TODO: Add aerial perspective
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+static void get_cloud_shell_intersections(
+    vec3_t origin, 
+    vec3_t dir, 
+    float start_height, 
+    float end_height, 
+    float* dist_to_start, 
+    float* dist_to_end
+) {
+    // Ray-Sphere intersection logic for cloud layer shells
+    // Simple planar approximation for local area usually suffices, but spherical is better for horizon
+    // Here using simple planar for implementation brevity if not spherical
+    
+    // Assuming flat earth for local cloud layer for now to save math complexity in this snippet
+    // In full engine, use sphere intersection
+    
+    if (dir.y <= 0.0f) {
+        *dist_to_start = -1.0f;
+        *dist_to_end = -1.0f;
+        return;
     }
-    item->initialized = false;
+    
+    // dist = (target_y - origin_y) / dir_y
+    *dist_to_start = (start_height - origin.y) / dir.y;
+    *dist_to_end = (end_height - origin.y) / dir.y;
+    
+    if (*dist_to_start < 0.0f) *dist_to_start = 0.0f;
 }
 
 /* ============================================================================
@@ -105,186 +78,118 @@ static void atmosphere_volumetric_clouds_cleanup_internal(atmosphere_volumetric_
  * ============================================================================ */
 
 int atmosphere_volumetric_clouds_init(void) {
-    // TODO: Implement sun/moon rendering
-    // TODO: Add star field
-    // TODO: Implement time-of-day
-    // TODO: Add weather transitions
-
-    if (g_volumetric_clouds_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_volumetric_clouds_ctx.capacity = ATMOSPHERE_VOLUMETRIC_CLOUDS_DEFAULT_CAPACITY;
-    g_volumetric_clouds_ctx.items = calloc(g_volumetric_clouds_ctx.capacity, sizeof(atmosphere_volumetric_clouds_internal_t));
-    if (!g_volumetric_clouds_ctx.items) {
-        return -1;
-    }
-
-    g_volumetric_clouds_ctx.count = 0;
-    g_volumetric_clouds_ctx.initialized = true;
-
+    if (g_cloud_ctx.initialized) return 0;
+    
+    atmosphere_cloud_density_init();
+    atmosphere_cloud_lighting_init();
+    
+    g_cloud_ctx.quality_level = 1;
+    g_cloud_ctx.enable_shadows = true;
+    g_cloud_ctx.sun_direction = vec3_set(0.0f, 1.0f, 0.0f);
+    
+    g_cloud_ctx.initialized = true;
     return 0;
 }
 
 void atmosphere_volumetric_clouds_shutdown(void) {
-    // TODO: Implement cloud shadows
-    // TODO: Add god rays
-    // TODO: Implement volumetric clouds initialization
-    // TODO: Add volumetric clouds cleanup/shutdown
+    atmosphere_cloud_density_shutdown();
+    atmosphere_cloud_lighting_shutdown();
+    g_cloud_ctx.initialized = false;
+}
 
-    if (!g_volumetric_clouds_ctx.initialized) {
+// Main render function for clouds
+// Returns accumulated color and alpha/transmittance
+void atmosphere_volumetric_clouds_render(
+    vec3_t cam_pos, 
+    vec3_t view_dir, 
+    vec3_t sun_dir, 
+    vec3_t* out_color, 
+    float* out_alpha
+) {
+    if (!g_cloud_ctx.initialized) {
+        *out_color = vec3_zero();
+        *out_alpha = 0.0f;
         return;
     }
-
-    for (uint32_t i = 0; i < g_volumetric_clouds_ctx.count; i++) {
-        atmosphere_volumetric_clouds_cleanup_internal(&g_volumetric_clouds_ctx.items[i]);
-    }
-
-    free(g_volumetric_clouds_ctx.items);
-    g_volumetric_clouds_ctx.items = NULL;
-    g_volumetric_clouds_ctx.count = 0;
-    g_volumetric_clouds_ctx.capacity = 0;
-    g_volumetric_clouds_ctx.initialized = false;
-}
-
-int atmosphere_volumetric_clouds_create(atmosphere_volumetric_clouds_handle_t* out_handle, const atmosphere_volumetric_clouds_desc_t* desc) {
-    // TODO: Implement volumetric clouds validation
-    // TODO: Add volumetric clouds error handling
-    // TODO: Implement volumetric clouds serialization
-    // TODO: Add volumetric clouds debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_volumetric_clouds_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_volumetric_clouds_ctx.count >= g_volumetric_clouds_ctx.capacity) {
-        // TODO: Implement volumetric clouds unit tests
-        return -3;
-    }
-
-    uint32_t index = g_volumetric_clouds_ctx.count++;
-    atmosphere_volumetric_clouds_internal_t* item = &g_volumetric_clouds_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
-}
-
-void atmosphere_volumetric_clouds_destroy(atmosphere_volumetric_clouds_handle_t handle) {
-    // TODO: Add volumetric clouds performance counters
-    // TODO: Implement volumetric clouds hot-reload
-
-    if (handle.id >= g_volumetric_clouds_ctx.count) {
+    
+    float start_height = 1500.0f; // Sync with density.c constants ideally via getter
+    float end_height = 5500.0f;
+    
+    float dist_start, dist_end;
+    get_cloud_shell_intersections(cam_pos, view_dir, start_height, end_height, &dist_start, &dist_end);
+    
+    if (dist_end < 0.0f || dist_start > dist_end) {
+        *out_color = vec3_zero();
+        *out_alpha = 0.0f;
         return;
     }
-
-    atmosphere_volumetric_clouds_cleanup_internal(&g_volumetric_clouds_ctx.items[handle.id]);
-}
-
-int atmosphere_volumetric_clouds_update(atmosphere_volumetric_clouds_handle_t handle, const void* data, size_t size) {
-    // TODO: Add volumetric clouds thread safety
-    // TODO: Implement volumetric clouds memory pooling
-    // TODO: Add volumetric clouds caching layer
-    // TODO: Implement volumetric clouds async operations
-
-    if (handle.id >= g_volumetric_clouds_ctx.count) {
-        return -1;
-    }
-
-    atmosphere_volumetric_clouds_internal_t* item = &g_volumetric_clouds_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add volumetric clouds GPU integration
-    // TODO: Implement volumetric clouds SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool atmosphere_volumetric_clouds_is_valid(atmosphere_volumetric_clouds_handle_t handle) {
-    // TODO: Add volumetric clouds batch processing
-    if (handle.id >= g_volumetric_clouds_ctx.count) {
-        return false;
-    }
-    return g_volumetric_clouds_ctx.items[handle.id].initialized;
-}
-
-int atmosphere_volumetric_clouds_get_info(atmosphere_volumetric_clouds_handle_t handle, atmosphere_volumetric_clouds_info_t* out_info) {
-    // TODO: Implement volumetric clouds streaming support
-    // TODO: Add volumetric clouds LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_volumetric_clouds_ctx.count) {
-        return -2;
-    }
-
-    const atmosphere_volumetric_clouds_internal_t* item = &g_volumetric_clouds_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void atmosphere_volumetric_clouds_mark_dirty(atmosphere_volumetric_clouds_handle_t handle) {
-    // TODO: Implement volumetric clouds culling integration
-    if (handle.id < g_volumetric_clouds_ctx.count) {
-        g_volumetric_clouds_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int atmosphere_volumetric_clouds_process_pending(void) {
-    // TODO: Add volumetric clouds render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_volumetric_clouds_ctx.count; i++) {
-        atmosphere_volumetric_clouds_internal_t* item = &g_volumetric_clouds_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
+    
+    vec3_t current_pos;
+    // current_pos = cam_pos + view_dir * dist_start
+    current_pos.x = cam_pos.x + view_dir.x * dist_start;
+    current_pos.y = cam_pos.y + view_dir.y * dist_start;
+    current_pos.z = cam_pos.z + view_dir.z * dist_start;
+    
+    float remaining_dist = dist_end - dist_start;
+    int steps = MAX_CLOUD_STEPS;
+    float step_size = remaining_dist / (float)steps;
+    
+    // Dynamic step size optimization is common
+    
+    vec3_t accum_color = vec3_zero();
+    float transmittance = 1.0f;
+    
+    vec3_t step_vec;
+    step_vec.x = view_dir.x * step_size;
+    step_vec.y = view_dir.y * step_size;
+    step_vec.z = view_dir.z * step_size;
+    
+    for (int i = 0; i < steps; i++) {
+        if (transmittance < 0.01f) break;
+        
+        float density = atmosphere_cloud_density_sample(current_pos);
+        
+        if (density > 0.0f) {
+            // Lighting MARCH towards sun
+            float light_od = 0.0f;
+            vec3_t light_pos = current_pos;
+            // Simplified light march usually uses fewer steps and larger stride / cone step
+            for (int j = 0; j < MAX_LIGHT_STEPS; j++) {
+                vec3_t l_step = vec3_set(sun_dir.x * (step_size * 2.0f), sun_dir.y * (step_size * 2.0f), sun_dir.z * (step_size * 2.0f));
+                light_pos = vec3_add(light_pos, l_step);
+                
+                // break if out of bounds (simplified check)
+                if (light_pos.y > end_height) break;
+                
+                float l_density = atmosphere_cloud_density_sample(light_pos);
+                light_od += l_density * (step_size * 2.0f);
+            }
+            
+            float height_fraction = (current_pos.y - start_height) / (end_height - start_height);
+            vec3_t light_res = atmosphere_cloud_lighting_compute(density, light_od, height_fraction, view_dir, sun_dir);
+            
+            // Accumulate
+            // Beer's law for this step transm
+            float step_transmittance = expf(-density * step_size * 0.1f); // 0.1 extinction coeff
+            
+            // color += light * transmittance * (1 - step_transmittance)
+            // (Standard volume integration)
+            float coverage = (1.0f - step_transmittance);
+            
+            accum_color.x += light_res.x * transmittance * coverage;
+            accum_color.y += light_res.y * transmittance * coverage;
+            accum_color.z += light_res.z * transmittance * coverage;
+            
+            transmittance *= step_transmittance;
         }
+        
+        current_pos = vec3_add(current_pos, step_vec);
     }
-
-    return processed;
+    
+    *out_color = accum_color;
+    *out_alpha = 1.0f - transmittance;
 }
 
-uint32_t atmosphere_volumetric_clouds_get_count(void) {
-    return g_volumetric_clouds_ctx.count;
+void atmosphere_volumetric_clouds_set_quality(int quality) {
+    g_cloud_ctx.quality_level = quality;
 }
-
-size_t atmosphere_volumetric_clouds_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_volumetric_clouds_ctx);
-    total += g_volumetric_clouds_ctx.capacity * sizeof(atmosphere_volumetric_clouds_internal_t);
-
-    for (uint32_t i = 0; i < g_volumetric_clouds_ctx.count; i++) {
-        total += g_volumetric_clouds_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void atmosphere_volumetric_clouds_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of volumetric_clouds.c */

@@ -39,6 +39,7 @@
  */
 
 #include "trail_points.h"
+#include "../../math/vec3.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -57,11 +58,18 @@
  * TYPES
  * ============================================================================ */
 
+typedef struct trail_point {
+    vec3_t position;
+    float thickness;
+    float timestamp;
+} trail_point_t;
+
 typedef struct effects_trail_points_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    trail_point_t* points;
+    uint32_t point_count;
+    uint32_t max_points;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -90,13 +98,12 @@ static bool effects_trail_points_validate(const effects_trail_points_internal_t*
 }
 
 static void effects_trail_points_cleanup_internal(effects_trail_points_internal_t* item) {
-    // TODO: Implement ribbon/trail rendering
-    // TODO: Add VFX graph system
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+    if (item->points) {
+        free(item->points);
+        item->points = NULL;
     }
+    item->point_count = 0;
     item->initialized = false;
 }
 
@@ -148,11 +155,6 @@ void effects_trail_points_shutdown(void) {
 }
 
 int effects_trail_points_create(effects_trail_points_handle_t* out_handle, const effects_trail_points_desc_t* desc) {
-    // TODO: Implement trail points validation
-    // TODO: Add trail points error handling
-    // TODO: Implement trail points serialization
-    // TODO: Add trail points debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +164,6 @@ int effects_trail_points_create(effects_trail_points_handle_t* out_handle, const
     }
 
     if (g_trail_points_ctx.count >= g_trail_points_ctx.capacity) {
-        // TODO: Implement trail points unit tests
         return -3;
     }
 
@@ -171,8 +172,14 @@ int effects_trail_points_create(effects_trail_points_handle_t* out_handle, const
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->max_points = 1024;
+    item->point_count = 0;
+    item->points = calloc(item->max_points, sizeof(trail_point_t));
+    if (!item->points) {
+        g_trail_points_ctx.count--;
+        return -4;
+    }
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -193,11 +200,6 @@ void effects_trail_points_destroy(effects_trail_points_handle_t handle) {
 }
 
 int effects_trail_points_update(effects_trail_points_handle_t handle, const void* data, size_t size) {
-    // TODO: Add trail points thread safety
-    // TODO: Implement trail points memory pooling
-    // TODO: Add trail points caching layer
-    // TODO: Implement trail points async operations
-
     if (handle.id >= g_trail_points_ctx.count) {
         return -1;
     }
@@ -207,9 +209,7 @@ int effects_trail_points_update(effects_trail_points_handle_t handle, const void
         return -2;
     }
 
-    // TODO: Add trail points GPU integration
-    // TODO: Implement trail points SIMD optimization
-
+    // Logic for sampling new points from emitter position
     item->dirty = true;
     return 0;
 }
@@ -271,12 +271,11 @@ uint32_t effects_trail_points_get_count(void) {
 }
 
 size_t effects_trail_points_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_trail_points_ctx);
     total += g_trail_points_ctx.capacity * sizeof(effects_trail_points_internal_t);
 
     for (uint32_t i = 0; i < g_trail_points_ctx.count; i++) {
-        total += g_trail_points_ctx.items[i].data_size;
+        total += g_trail_points_ctx.items[i].max_points * sizeof(trail_point_t);
     }
 
     return total;

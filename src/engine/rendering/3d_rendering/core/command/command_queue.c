@@ -1,290 +1,52 @@
 /*
  * command_queue.c
- * Queue submission and synchronization
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement Vulkan backend
- * TODO: Implement Metal backend
- * TODO: Implement D3D12 backend
- * TODO: Add thread-safe access patterns
- * TODO: Implement proper error handling with error codes
- * TODO: Add memory tracking and leak detection
- * TODO: Implement hot-reload support
- * TODO: Add validation layer integration
- * TODO: Implement resource state tracking
- * TODO: Add GPU debugging markers
- * TODO: Implement command queue initialization
- * TODO: Add command queue cleanup/shutdown
- * TODO: Implement command queue validation
- * TODO: Add command queue error handling
- * TODO: Implement command queue serialization
- * TODO: Add command queue debug output
- * TODO: Implement command queue unit tests
- * TODO: Add command queue performance counters
- * TODO: Implement command queue hot-reload
- * TODO: Add command queue thread safety
- * TODO: Implement command queue memory pooling
- * TODO: Add command queue caching layer
- * TODO: Implement command queue async operations
- * TODO: Add command queue GPU integration
- * TODO: Implement command queue SIMD optimization
- * TODO: Add command queue batch processing
- * TODO: Implement command queue streaming support
- * TODO: Add command queue LOD support
- * TODO: Implement command queue culling integration
- * TODO: Add command queue render graph node
+ * Implementation of command queue submission
  */
 
 #include "command_queue.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
+struct command_queue {
+    void* backend_handle; // VkQueue
+    uint32_t family_index;
+    uint32_t index;
+};
 
-#define CORE_COMMAND_QUEUE_MAX_COUNT 4096
-#define CORE_COMMAND_QUEUE_DEFAULT_CAPACITY 256
-#define CORE_COMMAND_QUEUE_ALIGNMENT 16
+// Global queue registry (simplification)
+static command_queue_t g_main_queue = {0};
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct core_command_queue_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} core_command_queue_internal_t;
-
-typedef struct core_command_queue_context {
-    core_command_queue_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} core_command_queue_context_t;
-
-static core_command_queue_context_t g_command_queue_ctx = {0};
-
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool core_command_queue_validate(const core_command_queue_internal_t* item) {
-    // TODO: Implement Vulkan backend
-    // TODO: Implement Metal backend
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+command_queue_t* command_queue_get(uint32_t queue_family_index, uint32_t queue_index) {
+    // In a real engine, this would retrieve from the logical device
+    if (g_main_queue.backend_handle == NULL) {
+        g_main_queue.backend_handle = (void*)0x01234567; // Fake handle
+        g_main_queue.family_index = queue_family_index;
+        g_main_queue.index = queue_index;
+    }
+    return &g_main_queue;
 }
 
-static void core_command_queue_cleanup_internal(core_command_queue_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
-}
+int command_queue_submit(command_queue_t* queue, const queue_submit_info_t* submit_info) {
+    if (!queue || !submit_info) return -1;
 
-/* ============================================================================
- * PUBLIC API
- * ============================================================================ */
+    // Backend submission logic:
+    // VkSubmitInfo vk_submit = { ... };
+    // vkQueueSubmit(queue->backend_handle, 1, &vk_submit, fence);
 
-int core_command_queue_init(void) {
-    // TODO: Implement proper error handling with error codes
-    // TODO: Add memory tracking and leak detection
-    // TODO: Implement hot-reload support
-    // TODO: Add validation layer integration
-
-    if (g_command_queue_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_command_queue_ctx.capacity = CORE_COMMAND_QUEUE_DEFAULT_CAPACITY;
-    g_command_queue_ctx.items = calloc(g_command_queue_ctx.capacity, sizeof(core_command_queue_internal_t));
-    if (!g_command_queue_ctx.items) {
-        return -1;
-    }
-
-    g_command_queue_ctx.count = 0;
-    g_command_queue_ctx.initialized = true;
-
-    return 0;
-}
-
-void core_command_queue_shutdown(void) {
-    // TODO: Implement resource state tracking
-    // TODO: Add GPU debugging markers
-    // TODO: Implement command queue initialization
-    // TODO: Add command queue cleanup/shutdown
-
-    if (!g_command_queue_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_command_queue_ctx.count; i++) {
-        core_command_queue_cleanup_internal(&g_command_queue_ctx.items[i]);
-    }
-
-    free(g_command_queue_ctx.items);
-    g_command_queue_ctx.items = NULL;
-    g_command_queue_ctx.count = 0;
-    g_command_queue_ctx.capacity = 0;
-    g_command_queue_ctx.initialized = false;
-}
-
-int core_command_queue_create(core_command_queue_handle_t* out_handle, const core_command_queue_desc_t* desc) {
-    // TODO: Implement command queue validation
-    // TODO: Add command queue error handling
-    // TODO: Implement command queue serialization
-    // TODO: Add command queue debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_command_queue_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_command_queue_ctx.count >= g_command_queue_ctx.capacity) {
-        // TODO: Implement command queue unit tests
-        return -3;
-    }
-
-    uint32_t index = g_command_queue_ctx.count++;
-    core_command_queue_internal_t* item = &g_command_queue_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
-}
-
-void core_command_queue_destroy(core_command_queue_handle_t handle) {
-    // TODO: Add command queue performance counters
-    // TODO: Implement command queue hot-reload
-
-    if (handle.id >= g_command_queue_ctx.count) {
-        return;
-    }
-
-    core_command_queue_cleanup_internal(&g_command_queue_ctx.items[handle.id]);
-}
-
-int core_command_queue_update(core_command_queue_handle_t handle, const void* data, size_t size) {
-    // TODO: Add command queue thread safety
-    // TODO: Implement command queue memory pooling
-    // TODO: Add command queue caching layer
-    // TODO: Implement command queue async operations
-
-    if (handle.id >= g_command_queue_ctx.count) {
-        return -1;
-    }
-
-    core_command_queue_internal_t* item = &g_command_queue_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add command queue GPU integration
-    // TODO: Implement command queue SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool core_command_queue_is_valid(core_command_queue_handle_t handle) {
-    // TODO: Add command queue batch processing
-    if (handle.id >= g_command_queue_ctx.count) {
-        return false;
-    }
-    return g_command_queue_ctx.items[handle.id].initialized;
-}
-
-int core_command_queue_get_info(core_command_queue_handle_t handle, core_command_queue_info_t* out_info) {
-    // TODO: Implement command queue streaming support
-    // TODO: Add command queue LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_command_queue_ctx.count) {
-        return -2;
-    }
-
-    const core_command_queue_internal_t* item = &g_command_queue_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void core_command_queue_mark_dirty(core_command_queue_handle_t handle) {
-    // TODO: Implement command queue culling integration
-    if (handle.id < g_command_queue_ctx.count) {
-        g_command_queue_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int core_command_queue_process_pending(void) {
-    // TODO: Add command queue render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_command_queue_ctx.count; i++) {
-        core_command_queue_internal_t* item = &g_command_queue_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
+    // Validate states
+    for (uint32_t i = 0; i < submit_info->command_buffer_count; ++i) {
+        command_buffer_t* cmd = submit_info->command_buffers[i];
+        if (cmd->state != COMMAND_BUFFER_STATE_EXECUTABLE) {
+            // Error: buffer not ready
+            return -2;
         }
+        cmd->state = COMMAND_BUFFER_STATE_PENDING;
     }
 
-    return processed;
+    return 0;
 }
 
-uint32_t core_command_queue_get_count(void) {
-    return g_command_queue_ctx.count;
+void command_queue_wait_idle(command_queue_t* queue) {
+    if (!queue) return;
+    // backend_queue_wait_idle(queue->backend_handle);
 }
-
-size_t core_command_queue_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_command_queue_ctx);
-    total += g_command_queue_ctx.capacity * sizeof(core_command_queue_internal_t);
-
-    for (uint32_t i = 0; i < g_command_queue_ctx.count; i++) {
-        total += g_command_queue_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void core_command_queue_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of command_queue.c */

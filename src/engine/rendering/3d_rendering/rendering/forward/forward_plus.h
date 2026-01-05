@@ -1,67 +1,41 @@
 /*
  * forward_plus.h
- * Forward+ light culling
- *
+ * Forward+ rendering API
+ * 
  * Part of the Rendering subsystem
  * Advanced 3D Rendering Engine
  */
 
-#ifndef RENDERING_FORWARD_PLUS_H
-#define RENDERING_FORWARD_PLUS_H
+#ifndef FORWARD_PLUS_H
+#define FORWARD_PLUS_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/**
+ * @brief Initialize Forward+ lighting system
+ * @param width Screen width
+ * @param height Screen height
+ * @return 0 on success
+ */
+int rendering_forward_plus_init(uint32_t width, uint32_t height);
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct rendering_forward_plus_handle {
-    uint32_t id;
-} rendering_forward_plus_handle_t;
-
-typedef struct rendering_forward_plus_desc {
-    uint32_t flags;
-    void* user_data;
-} rendering_forward_plus_desc_t;
-
-typedef struct rendering_forward_plus_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} rendering_forward_plus_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
-
-/* Initialization */
-int rendering_forward_plus_init(void);
+/**
+ * @brief Shutdown Forward+ lighting system
+ */
 void rendering_forward_plus_shutdown(void);
 
-/* Lifecycle */
-int rendering_forward_plus_create(rendering_forward_plus_handle_t* out_handle, const rendering_forward_plus_desc_t* desc);
-void rendering_forward_plus_destroy(rendering_forward_plus_handle_t handle);
+/**
+ * @brief Perform light culling compute pass
+ * @param cmd_buffer Command buffer
+ * @param camera_data Camera constant buffer/descriptor
+ * @param light_data Light buffer/descriptor
+ */
+void rendering_forward_plus_cull_lights(void* cmd_buffer, void* camera_data, void* light_data);
 
-/* Operations */
-int rendering_forward_plus_update(rendering_forward_plus_handle_t handle, const void* data, size_t size);
-bool rendering_forward_plus_is_valid(rendering_forward_plus_handle_t handle);
-int rendering_forward_plus_get_info(rendering_forward_plus_handle_t handle, rendering_forward_plus_info_t* out_info);
-void rendering_forward_plus_mark_dirty(rendering_forward_plus_handle_t handle);
-int rendering_forward_plus_process_pending(void);
+/**
+ * @brief Get computed grid dimensions
+ */
+void rendering_forward_plus_get_grid_dims(uint32_t* width, uint32_t* height);
 
-/* Statistics */
-uint32_t rendering_forward_plus_get_count(void);
-size_t rendering_forward_plus_get_memory_usage(void);
-void rendering_forward_plus_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* RENDERING_FORWARD_PLUS_H */
+#endif /* FORWARD_PLUS_H */

@@ -1,41 +1,6 @@
 /*
  * vsm_culling.c
- * VSM culling
- *
- * Part of the Virtual Shadow Maps subsystem
- * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement Vulkan backend
- * TODO: Implement Metal backend
- * TODO: Implement D3D12 backend
- * TODO: Add thread-safe access patterns
- * TODO: Implement proper error handling with error codes
- * TODO: Add memory tracking and leak detection
- * TODO: Implement hot-reload support
- * TODO: Add validation layer integration
- * TODO: Implement resource state tracking
- * TODO: Add GPU debugging markers
- * TODO: Implement vsm culling initialization
- * TODO: Add vsm culling cleanup/shutdown
- * TODO: Implement vsm culling validation
- * TODO: Add vsm culling error handling
- * TODO: Implement vsm culling serialization
- * TODO: Add vsm culling debug output
- * TODO: Implement vsm culling unit tests
- * TODO: Add vsm culling performance counters
- * TODO: Implement vsm culling hot-reload
- * TODO: Add vsm culling thread safety
- * TODO: Implement vsm culling memory pooling
- * TODO: Add vsm culling caching layer
- * TODO: Implement vsm culling async operations
- * TODO: Add vsm culling GPU integration
- * TODO: Implement vsm culling SIMD optimization
- * TODO: Add vsm culling batch processing
- * TODO: Implement vsm culling streaming support
- * TODO: Add vsm culling LOD support
- * TODO: Implement vsm culling culling integration
- * TODO: Add vsm culling render graph node
+ * VSM geometry culling
  */
 
 #include "vsm_culling.h"
@@ -45,246 +10,93 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
-
-#define VIRTUAL_SHADOW_MAPS_VSM_CULLING_MAX_COUNT 4096
-#define VIRTUAL_SHADOW_MAPS_VSM_CULLING_DEFAULT_CAPACITY 256
-#define VIRTUAL_SHADOW_MAPS_VSM_CULLING_ALIGNMENT 16
-
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+typedef struct vsm_culled_list {
+    uint32_t* object_indices;
+    uint32_t count;
+    uint32_t capacity;
+} vsm_culled_list_t;
 
 typedef struct virtual_shadow_maps_vsm_culling_internal {
     uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
+    vsm_culled_list_t page_culling[128 * 128];
     bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
 } virtual_shadow_maps_vsm_culling_internal_t;
 
 typedef struct virtual_shadow_maps_vsm_culling_context {
     virtual_shadow_maps_vsm_culling_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } virtual_shadow_maps_vsm_culling_context_t;
 
 static virtual_shadow_maps_vsm_culling_context_t g_vsm_culling_ctx = {0};
 
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool virtual_shadow_maps_vsm_culling_validate(const virtual_shadow_maps_vsm_culling_internal_t* item) {
-    // TODO: Implement Vulkan backend
-    // TODO: Implement Metal backend
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void virtual_shadow_maps_vsm_culling_cleanup_internal(virtual_shadow_maps_vsm_culling_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
-}
-
-/* ============================================================================
- * PUBLIC API
- * ============================================================================ */
-
 int virtual_shadow_maps_vsm_culling_init(void) {
-    // TODO: Implement proper error handling with error codes
-    // TODO: Add memory tracking and leak detection
-    // TODO: Implement hot-reload support
-    // TODO: Add validation layer integration
-
-    if (g_vsm_culling_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_vsm_culling_ctx.capacity = VIRTUAL_SHADOW_MAPS_VSM_CULLING_DEFAULT_CAPACITY;
+    if (g_vsm_culling_ctx.initialized) return 0;
+    g_vsm_culling_ctx.capacity = 16;
     g_vsm_culling_ctx.items = calloc(g_vsm_culling_ctx.capacity, sizeof(virtual_shadow_maps_vsm_culling_internal_t));
-    if (!g_vsm_culling_ctx.items) {
-        return -1;
-    }
-
-    g_vsm_culling_ctx.count = 0;
+    if (!g_vsm_culling_ctx.items) return -1;
     g_vsm_culling_ctx.initialized = true;
-
     return 0;
 }
 
 void virtual_shadow_maps_vsm_culling_shutdown(void) {
-    // TODO: Implement resource state tracking
-    // TODO: Add GPU debugging markers
-    // TODO: Implement vsm culling initialization
-    // TODO: Add vsm culling cleanup/shutdown
-
-    if (!g_vsm_culling_ctx.initialized) {
-        return;
-    }
-
+    if (!g_vsm_culling_ctx.initialized) return;
     for (uint32_t i = 0; i < g_vsm_culling_ctx.count; i++) {
-        virtual_shadow_maps_vsm_culling_cleanup_internal(&g_vsm_culling_ctx.items[i]);
+        for (uint32_t j = 0; j < 128 * 128; j++) {
+            free(g_vsm_culling_ctx.items[i].page_culling[j].object_indices);
+        }
     }
-
     free(g_vsm_culling_ctx.items);
     g_vsm_culling_ctx.items = NULL;
-    g_vsm_culling_ctx.count = 0;
-    g_vsm_culling_ctx.capacity = 0;
     g_vsm_culling_ctx.initialized = false;
 }
 
 int virtual_shadow_maps_vsm_culling_create(virtual_shadow_maps_vsm_culling_handle_t* out_handle, const virtual_shadow_maps_vsm_culling_desc_t* desc) {
-    // TODO: Implement vsm culling validation
-    // TODO: Add vsm culling error handling
-    // TODO: Implement vsm culling serialization
-    // TODO: Add vsm culling debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_vsm_culling_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_vsm_culling_ctx.count >= g_vsm_culling_ctx.capacity) {
-        // TODO: Implement vsm culling unit tests
-        return -3;
-    }
-
+    if (!out_handle || !g_vsm_culling_ctx.initialized) return -1;
+    if (g_vsm_culling_ctx.count >= g_vsm_culling_ctx.capacity) return -2;
     uint32_t index = g_vsm_culling_ctx.count++;
-    virtual_shadow_maps_vsm_culling_internal_t* item = &g_vsm_culling_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
+    virtual_shadow_maps_vsm_culling_internal_t* cull = &g_vsm_culling_ctx.items[index];
+    cull->id = index;
+    cull->initialized = true;
     out_handle->id = index;
     return 0;
 }
 
 void virtual_shadow_maps_vsm_culling_destroy(virtual_shadow_maps_vsm_culling_handle_t handle) {
-    // TODO: Add vsm culling performance counters
-    // TODO: Implement vsm culling hot-reload
-
-    if (handle.id >= g_vsm_culling_ctx.count) {
-        return;
-    }
-
-    virtual_shadow_maps_vsm_culling_cleanup_internal(&g_vsm_culling_ctx.items[handle.id]);
+    if (handle.id >= g_vsm_culling_ctx.count) return;
+    g_vsm_culling_ctx.items[handle.id].initialized = false;
 }
 
-int virtual_shadow_maps_vsm_culling_update(virtual_shadow_maps_vsm_culling_handle_t handle, const void* data, size_t size) {
-    // TODO: Add vsm culling thread safety
-    // TODO: Implement vsm culling memory pooling
-    // TODO: Add vsm culling caching layer
-    // TODO: Implement vsm culling async operations
-
-    if (handle.id >= g_vsm_culling_ctx.count) {
-        return -1;
+void vsm_cull_page(virtual_shadow_maps_vsm_culling_handle_t handle, uint32_t v_x, uint32_t v_y, void* scene_ptr) {
+    if (handle.id >= g_vsm_culling_ctx.count) return;
+    virtual_shadow_maps_vsm_culling_internal_t* cull = &g_vsm_culling_ctx.items[handle.id];
+    uint32_t page_idx = v_y * 128 + v_x;
+    vsm_culled_list_t* list = &cull->page_culling[page_idx];
+    
+    // Clear previous list
+    list->count = 0;
+    
+    // TODO: Implement actual frustum vs AABB culling logic here
+    // For now, assume a few placeholder indices
+    if (list->capacity < 16) {
+        list->capacity = 16;
+        list->object_indices = realloc(list->object_indices, list->capacity * sizeof(uint32_t));
     }
-
-    virtual_shadow_maps_vsm_culling_internal_t* item = &g_vsm_culling_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
+    
+    // Placeholder: add some objects
+    for (uint32_t i = 0; i < 5; i++) {
+        list->object_indices[list->count++] = i;
     }
-
-    // TODO: Add vsm culling GPU integration
-    // TODO: Implement vsm culling SIMD optimization
-
-    item->dirty = true;
-    return 0;
 }
 
+int virtual_shadow_maps_vsm_culling_update(virtual_shadow_maps_vsm_culling_handle_t handle, const void* data, size_t size) { return 0; }
 bool virtual_shadow_maps_vsm_culling_is_valid(virtual_shadow_maps_vsm_culling_handle_t handle) {
-    // TODO: Add vsm culling batch processing
-    if (handle.id >= g_vsm_culling_ctx.count) {
-        return false;
-    }
-    return g_vsm_culling_ctx.items[handle.id].initialized;
+    return handle.id < g_vsm_culling_ctx.count && g_vsm_culling_ctx.items[handle.id].initialized;
 }
-
-int virtual_shadow_maps_vsm_culling_get_info(virtual_shadow_maps_vsm_culling_handle_t handle, virtual_shadow_maps_vsm_culling_info_t* out_info) {
-    // TODO: Implement vsm culling streaming support
-    // TODO: Add vsm culling LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_vsm_culling_ctx.count) {
-        return -2;
-    }
-
-    const virtual_shadow_maps_vsm_culling_internal_t* item = &g_vsm_culling_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void virtual_shadow_maps_vsm_culling_mark_dirty(virtual_shadow_maps_vsm_culling_handle_t handle) {
-    // TODO: Implement vsm culling culling integration
-    if (handle.id < g_vsm_culling_ctx.count) {
-        g_vsm_culling_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int virtual_shadow_maps_vsm_culling_process_pending(void) {
-    // TODO: Add vsm culling render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_vsm_culling_ctx.count; i++) {
-        virtual_shadow_maps_vsm_culling_internal_t* item = &g_vsm_culling_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
-}
-
-uint32_t virtual_shadow_maps_vsm_culling_get_count(void) {
-    return g_vsm_culling_ctx.count;
-}
-
-size_t virtual_shadow_maps_vsm_culling_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_vsm_culling_ctx);
-    total += g_vsm_culling_ctx.capacity * sizeof(virtual_shadow_maps_vsm_culling_internal_t);
-
-    for (uint32_t i = 0; i < g_vsm_culling_ctx.count; i++) {
-        total += g_vsm_culling_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void virtual_shadow_maps_vsm_culling_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of vsm_culling.c */
+int virtual_shadow_maps_vsm_culling_get_info(virtual_shadow_maps_vsm_culling_handle_t handle, virtual_shadow_maps_vsm_culling_info_t* out_info) { return 0; }
+void virtual_shadow_maps_vsm_culling_mark_dirty(virtual_shadow_maps_vsm_culling_handle_t handle) {}
+int virtual_shadow_maps_vsm_culling_process_pending(void) { return 0; }
+uint32_t virtual_shadow_maps_vsm_culling_get_count(void) { return g_vsm_culling_ctx.count; }
+size_t virtual_shadow_maps_vsm_culling_get_memory_usage(void) { return g_vsm_culling_ctx.count * sizeof(virtual_shadow_maps_vsm_culling_internal_t); }
+void virtual_shadow_maps_vsm_culling_debug_print(void) {}

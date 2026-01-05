@@ -49,6 +49,7 @@ int core_heap_manager_create(core_heap_manager_handle_t* out_handle, const core_
 void core_heap_manager_destroy(core_heap_manager_handle_t handle);
 
 /* Operations */
+int core_heap_manager_add_heap(core_heap_manager_handle_t handle, uint64_t size, uint32_t flags);
 int core_heap_manager_update(core_heap_manager_handle_t handle, const void* data, size_t size);
 bool core_heap_manager_is_valid(core_heap_manager_handle_t handle);
 int core_heap_manager_get_info(core_heap_manager_handle_t handle, core_heap_manager_info_t* out_info);

@@ -39,11 +39,14 @@
  */
 
 #include "snow_system.h"
+#include "../../math/vec3.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -57,11 +60,19 @@
  * TYPES
  * ============================================================================ */
 
+typedef struct snow_particle {
+    vec3_t position;
+    vec3_t velocity;
+    float sway_offset;
+    float life;
+} snow_particle_t;
+
 typedef struct effects_snow_system_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    snow_particle_t* particles;
+    uint32_t particle_count;
+    float accumulation_rate;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -90,13 +101,12 @@ static bool effects_snow_system_validate(const effects_snow_system_internal_t* i
 }
 
 static void effects_snow_system_cleanup_internal(effects_snow_system_internal_t* item) {
-    // TODO: Implement ribbon/trail rendering
-    // TODO: Add VFX graph system
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+    if (item->particles) {
+        free(item->particles);
+        item->particles = NULL;
     }
+    item->particle_count = 0;
     item->initialized = false;
 }
 
@@ -148,11 +158,6 @@ void effects_snow_system_shutdown(void) {
 }
 
 int effects_snow_system_create(effects_snow_system_handle_t* out_handle, const effects_snow_system_desc_t* desc) {
-    // TODO: Implement snow system validation
-    // TODO: Add snow system error handling
-    // TODO: Implement snow system serialization
-    // TODO: Add snow system debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +167,6 @@ int effects_snow_system_create(effects_snow_system_handle_t* out_handle, const e
     }
 
     if (g_snow_system_ctx.count >= g_snow_system_ctx.capacity) {
-        // TODO: Implement snow system unit tests
         return -3;
     }
 
@@ -171,8 +175,23 @@ int effects_snow_system_create(effects_snow_system_handle_t* out_handle, const e
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->particle_count = EFFECTS_SNOW_SYSTEM_MAX_COUNT;
+    item->particles = calloc(item->particle_count, sizeof(snow_particle_t));
+    if (!item->particles) {
+        g_snow_system_ctx.count--;
+        return -4;
+    }
+
+    item->accumulation_rate = 0.01f;
+
+    // Initialize particles
+    for (uint32_t i = 0; i < item->particle_count; i++) {
+        item->particles[i].position = vec3_set((float)(rand() % 100) - 50.0f, 50.0f + (float)(rand() % 50), (float)(rand() % 100) - 50.0f);
+        item->particles[i].velocity = vec3_set(0.0f, -2.0f - (float)(rand() % 2), 0.0f);
+        item->particles[i].sway_offset = (float)(rand() % 1000) / 100.0f;
+        item->particles[i].life = 1.0f;
+    }
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -193,11 +212,6 @@ void effects_snow_system_destroy(effects_snow_system_handle_t handle) {
 }
 
 int effects_snow_system_update(effects_snow_system_handle_t handle, const void* data, size_t size) {
-    // TODO: Add snow system thread safety
-    // TODO: Implement snow system memory pooling
-    // TODO: Add snow system caching layer
-    // TODO: Implement snow system async operations
-
     if (handle.id >= g_snow_system_ctx.count) {
         return -1;
     }
@@ -207,8 +221,27 @@ int effects_snow_system_update(effects_snow_system_handle_t handle, const void* 
         return -2;
     }
 
-    // TODO: Add snow system GPU integration
-    // TODO: Implement snow system SIMD optimization
+    float dt = 0.016f;
+    static float time = 0.0f;
+    time += dt;
+
+    for (uint32_t i = 0; i < item->particle_count; i++) {
+        snow_particle_t* p = &item->particles[i];
+        
+        // Swaying motion
+        float sway = sinf(time + p->sway_offset) * 0.5f;
+        vec3_t velocity = p->velocity;
+        velocity.x += sway;
+        velocity.z += cosf(time * 0.5f + p->sway_offset) * 0.3f;
+
+        p->position = vec3_add(p->position, vec3_scale(velocity, dt));
+
+        if (p->position.y < 0.0f) {
+            p->position.y = 50.0f + (float)(rand() % 20);
+            p->position.x = (float)(rand() % 100) - 50.0f;
+            p->position.z = (float)(rand() % 100) - 50.0f;
+        }
+    }
 
     item->dirty = true;
     return 0;
@@ -271,12 +304,11 @@ uint32_t effects_snow_system_get_count(void) {
 }
 
 size_t effects_snow_system_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_snow_system_ctx);
     total += g_snow_system_ctx.capacity * sizeof(effects_snow_system_internal_t);
 
     for (uint32_t i = 0; i < g_snow_system_ctx.count; i++) {
-        total += g_snow_system_ctx.items[i].data_size;
+        total += g_snow_system_ctx.items[i].particle_count * sizeof(snow_particle_t);
     }
 
     return total;

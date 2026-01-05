@@ -1,67 +1,39 @@
 /*
  * barrier_batch.h
  * Resource barrier batching
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
  */
 
-#ifndef CORE_BARRIER_BATCH_H
-#define CORE_BARRIER_BATCH_H
+#ifndef BARRIER_BATCH_H
+#define BARRIER_BATCH_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
+#include "command_buffer.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+typedef struct barrier_batch barrier_batch_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+// Simplified barrier structures
+typedef struct buffer_barrier {
+    void* buffer;
+    // offsets, sizes, access masks
+} buffer_barrier_t;
 
-typedef struct core_barrier_batch_handle {
-    uint32_t id;
-} core_barrier_batch_handle_t;
+typedef struct image_barrier {
+    void* image;
+    // layouts, subresource ranges
+} image_barrier_t;
 
-typedef struct core_barrier_batch_desc {
-    uint32_t flags;
-    void* user_data;
-} core_barrier_batch_desc_t;
+// Lifecycle
+barrier_batch_t* barrier_batch_create(void);
+void barrier_batch_destroy(barrier_batch_t* batch);
+void barrier_batch_reset(barrier_batch_t* batch);
 
-typedef struct core_barrier_batch_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_barrier_batch_info_t;
+// Accumulation
+void barrier_batch_add_buffer(barrier_batch_t* batch, const buffer_barrier_t* barrier);
+void barrier_batch_add_image(barrier_batch_t* batch, const image_barrier_t* barrier);
+void barrier_batch_add_global(barrier_batch_t* batch); // Memory barrier
 
-/* ============================================================================
- * API
- * ============================================================================ */
+// Flush
+void barrier_batch_flush(barrier_batch_t* batch, command_buffer_t* cmd);
 
-/* Initialization */
-int core_barrier_batch_init(void);
-void core_barrier_batch_shutdown(void);
-
-/* Lifecycle */
-int core_barrier_batch_create(core_barrier_batch_handle_t* out_handle, const core_barrier_batch_desc_t* desc);
-void core_barrier_batch_destroy(core_barrier_batch_handle_t handle);
-
-/* Operations */
-int core_barrier_batch_update(core_barrier_batch_handle_t handle, const void* data, size_t size);
-bool core_barrier_batch_is_valid(core_barrier_batch_handle_t handle);
-int core_barrier_batch_get_info(core_barrier_batch_handle_t handle, core_barrier_batch_info_t* out_info);
-void core_barrier_batch_mark_dirty(core_barrier_batch_handle_t handle);
-int core_barrier_batch_process_pending(void);
-
-/* Statistics */
-uint32_t core_barrier_batch_get_count(void);
-size_t core_barrier_batch_get_memory_usage(void);
-void core_barrier_batch_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* CORE_BARRIER_BATCH_H */
+#endif // BARRIER_BATCH_H

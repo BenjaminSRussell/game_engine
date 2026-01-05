@@ -44,6 +44,8 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -52,9 +54,10 @@
 #define POSTPROCESSING_EXPOSURE_ADAPTATION_MAX_COUNT 4096
 #define POSTPROCESSING_EXPOSURE_ADAPTATION_DEFAULT_CAPACITY 256
 #define POSTPROCESSING_EXPOSURE_ADAPTATION_ALIGNMENT 16
+#define DEFAULT_KEY_VALUE 0.18f // 18% middle gray
 
 /* ============================================================================
- * TYPES
+ * INTERNAL STRUCTURES
  * ============================================================================ */
 
 typedef struct postprocessing_exposure_adaptation_internal {
@@ -65,6 +68,8 @@ typedef struct postprocessing_exposure_adaptation_internal {
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
+    exposure_params_t params;
+    float current_exposure;
 } postprocessing_exposure_adaptation_internal_t;
 
 typedef struct postprocessing_exposure_adaptation_context {
@@ -81,17 +86,7 @@ static postprocessing_exposure_adaptation_context_t g_exposure_adaptation_ctx = 
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool postprocessing_exposure_adaptation_validate(const postprocessing_exposure_adaptation_internal_t* item) {
-    // TODO: Implement ACES tonemapping
-    // TODO: Add physically-based bloom
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
 static void postprocessing_exposure_adaptation_cleanup_internal(postprocessing_exposure_adaptation_internal_t* item) {
-    // TODO: Implement TAA
-    // TODO: Add depth of field
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -100,16 +95,21 @@ static void postprocessing_exposure_adaptation_cleanup_internal(postprocessing_e
     item->initialized = false;
 }
 
+static float clamp(float v, float min, float max) {
+    if (v < min) return min;
+    if (v > max) return max;
+    return v;
+}
+
+static float lerp(float a, float b, float t) {
+    return a + (b - a) * t;
+}
+
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
 int postprocessing_exposure_adaptation_init(void) {
-    // TODO: Implement motion blur
-    // TODO: Add GTAO
-    // TODO: Implement SSR
-    // TODO: Add color grading
-
     if (g_exposure_adaptation_ctx.initialized) {
         return 0; // Already initialized
     }
@@ -127,11 +127,6 @@ int postprocessing_exposure_adaptation_init(void) {
 }
 
 void postprocessing_exposure_adaptation_shutdown(void) {
-    // TODO: Implement lens effects
-    // TODO: Add film grain
-    // TODO: Implement exposure adaptation initialization
-    // TODO: Add exposure adaptation cleanup/shutdown
-
     if (!g_exposure_adaptation_ctx.initialized) {
         return;
     }
@@ -148,11 +143,6 @@ void postprocessing_exposure_adaptation_shutdown(void) {
 }
 
 int postprocessing_exposure_adaptation_create(postprocessing_exposure_adaptation_handle_t* out_handle, const postprocessing_exposure_adaptation_desc_t* desc) {
-    // TODO: Implement exposure adaptation validation
-    // TODO: Add exposure adaptation error handling
-    // TODO: Implement exposure adaptation serialization
-    // TODO: Add exposure adaptation debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +152,6 @@ int postprocessing_exposure_adaptation_create(postprocessing_exposure_adaptation
     }
 
     if (g_exposure_adaptation_ctx.count >= g_exposure_adaptation_ctx.capacity) {
-        // TODO: Implement exposure adaptation unit tests
         return -3;
     }
 
@@ -171,6 +160,8 @@ int postprocessing_exposure_adaptation_create(postprocessing_exposure_adaptation
 
     item->id = index;
     item->flags = desc->flags;
+    item->params = desc->initial_params;
+    item->current_exposure = 1.0f; // Default start
     item->data = NULL;
     item->data_size = 0;
     item->initialized = true;
@@ -182,9 +173,6 @@ int postprocessing_exposure_adaptation_create(postprocessing_exposure_adaptation
 }
 
 void postprocessing_exposure_adaptation_destroy(postprocessing_exposure_adaptation_handle_t handle) {
-    // TODO: Add exposure adaptation performance counters
-    // TODO: Implement exposure adaptation hot-reload
-
     if (handle.id >= g_exposure_adaptation_ctx.count) {
         return;
     }
@@ -193,11 +181,6 @@ void postprocessing_exposure_adaptation_destroy(postprocessing_exposure_adaptati
 }
 
 int postprocessing_exposure_adaptation_update(postprocessing_exposure_adaptation_handle_t handle, const void* data, size_t size) {
-    // TODO: Add exposure adaptation thread safety
-    // TODO: Implement exposure adaptation memory pooling
-    // TODO: Add exposure adaptation caching layer
-    // TODO: Implement exposure adaptation async operations
-
     if (handle.id >= g_exposure_adaptation_ctx.count) {
         return -1;
     }
@@ -207,15 +190,20 @@ int postprocessing_exposure_adaptation_update(postprocessing_exposure_adaptation
         return -2;
     }
 
-    // TODO: Add exposure adaptation GPU integration
-    // TODO: Implement exposure adaptation SIMD optimization
-
     item->dirty = true;
     return 0;
 }
 
+void postprocessing_exposure_adaptation_set_params(postprocessing_exposure_adaptation_handle_t handle, const exposure_params_t* params) {
+    if (handle.id >= g_exposure_adaptation_ctx.count || !params) return;
+    postprocessing_exposure_adaptation_internal_t* item = &g_exposure_adaptation_ctx.items[handle.id];
+    if (item->initialized) {
+        item->params = *params;
+        item->dirty = true;
+    }
+}
+
 bool postprocessing_exposure_adaptation_is_valid(postprocessing_exposure_adaptation_handle_t handle) {
-    // TODO: Add exposure adaptation batch processing
     if (handle.id >= g_exposure_adaptation_ctx.count) {
         return false;
     }
@@ -223,9 +211,6 @@ bool postprocessing_exposure_adaptation_is_valid(postprocessing_exposure_adaptat
 }
 
 int postprocessing_exposure_adaptation_get_info(postprocessing_exposure_adaptation_handle_t handle, postprocessing_exposure_adaptation_info_t* out_info) {
-    // TODO: Implement exposure adaptation streaming support
-    // TODO: Add exposure adaptation LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -238,32 +223,60 @@ int postprocessing_exposure_adaptation_get_info(postprocessing_exposure_adaptati
     out_info->id = item->id;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
+    out_info->current_params = item->params;
+    out_info->current_exposure = item->current_exposure;
 
     return 0;
 }
 
 void postprocessing_exposure_adaptation_mark_dirty(postprocessing_exposure_adaptation_handle_t handle) {
-    // TODO: Implement exposure adaptation culling integration
     if (handle.id < g_exposure_adaptation_ctx.count) {
         g_exposure_adaptation_ctx.items[handle.id].dirty = true;
     }
 }
 
 int postprocessing_exposure_adaptation_process_pending(void) {
-    // TODO: Add exposure adaptation render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_exposure_adaptation_ctx.count; i++) {
         postprocessing_exposure_adaptation_internal_t* item = &g_exposure_adaptation_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
     }
-
     return processed;
+}
+
+float postprocessing_exposure_compute_target(const exposure_params_t* params, float avg_luminance) {
+    if (!params) return 1.0f;
+    float key_value = params->target_luminance > 0.0001f ? params->target_luminance : DEFAULT_KEY_VALUE;
+    
+    // Avoid division by zero
+    float lum = avg_luminance > 0.0001f ? avg_luminance : 0.0001f;
+    
+    float target = key_value / lum;
+    
+    // Clamp
+    if (params->use_ev) {
+        // Convert EV to linear multiplier: pow(2, EV)
+        float min_mult = powf(2.0f, params->min_exposure);
+        float max_mult = powf(2.0f, params->max_exposure);
+        return clamp(target, min_mult, max_mult);
+    } else {
+        return clamp(target, params->min_exposure, params->max_exposure);
+    }
+}
+
+float postprocessing_exposure_adapt(const exposure_params_t* params, float current_exposure, float target_exposure, float dt) {
+    if (!params) return target_exposure;
+    
+    // Smooth adaptation
+    // exposure = lerp(current, target, 1 - exp(-speed * dt))
+    
+    float speed = params->adaptation_speed > 0.0f ? params->adaptation_speed : 1.0f;
+    float alpha = 1.0f - expf(-speed * dt);
+    
+    return lerp(current_exposure, target_exposure, alpha);
 }
 
 uint32_t postprocessing_exposure_adaptation_get_count(void) {
@@ -271,20 +284,20 @@ uint32_t postprocessing_exposure_adaptation_get_count(void) {
 }
 
 size_t postprocessing_exposure_adaptation_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_exposure_adaptation_ctx);
     total += g_exposure_adaptation_ctx.capacity * sizeof(postprocessing_exposure_adaptation_internal_t);
 
     for (uint32_t i = 0; i < g_exposure_adaptation_ctx.count; i++) {
-        total += g_exposure_adaptation_ctx.items[i].data_size;
+        if (g_exposure_adaptation_ctx.items[i].initialized) {
+            total += g_exposure_adaptation_ctx.items[i].data_size;
+        }
     }
 
     return total;
 }
 
 void postprocessing_exposure_adaptation_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    printf("Exposure Adaptation Context: %u/%u items\n", g_exposure_adaptation_ctx.count, g_exposure_adaptation_ctx.capacity);
 }
 
 /* End of exposure_adaptation.c */

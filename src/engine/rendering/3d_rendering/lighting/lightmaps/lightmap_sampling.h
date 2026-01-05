@@ -13,6 +13,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include "../../../../include/math/vec3.h"
+#include "../../../../include/math/vec2.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,6 +23,12 @@ extern "C" {
 /* ============================================================================
  * TYPES
  * ============================================================================ */
+
+typedef struct {
+    Vec3* data;
+    uint32_t width;
+    uint32_t height;
+} lightmap_texture_t;
 
 typedef struct lighting_lightmap_sampling_handle {
     uint32_t id;
@@ -49,6 +58,7 @@ int lighting_lightmap_sampling_create(lighting_lightmap_sampling_handle_t* out_h
 void lighting_lightmap_sampling_destroy(lighting_lightmap_sampling_handle_t handle);
 
 /* Operations */
+Vec3 lighting_lightmap_sample_bilinear(const lightmap_texture_t* texture, Vec2 uv);
 int lighting_lightmap_sampling_update(lighting_lightmap_sampling_handle_t handle, const void* data, size_t size);
 bool lighting_lightmap_sampling_is_valid(lighting_lightmap_sampling_handle_t handle);
 int lighting_lightmap_sampling_get_info(lighting_lightmap_sampling_handle_t handle, lighting_lightmap_sampling_info_t* out_info);

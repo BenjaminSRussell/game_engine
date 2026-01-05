@@ -1,64 +1,53 @@
 /*
  * descriptor_writer.h
- * Descriptor update batching
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
+ * Batched descriptor updates
  */
 
 #ifndef CORE_DESCRIPTOR_WRITER_H
 #define CORE_DESCRIPTOR_WRITER_H
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
+#include "descriptor_pool.h"
+#include "../../resource_management/resource_handle.h"
+#include "descriptor_set_layout.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct core_descriptor_writer_handle {
+typedef struct {
     uint32_t id;
-} core_descriptor_writer_handle_t;
-
-typedef struct core_descriptor_writer_desc {
-    uint32_t flags;
-    void* user_data;
-} core_descriptor_writer_desc_t;
-
-typedef struct core_descriptor_writer_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_descriptor_writer_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
+} descriptor_writer_handle_t;
 
 /* Initialization */
-int core_descriptor_writer_init(void);
-void core_descriptor_writer_shutdown(void);
+void descriptor_writer_init_system(void);
+void descriptor_writer_shutdown_system(void);
 
 /* Lifecycle */
-int core_descriptor_writer_create(core_descriptor_writer_handle_t* out_handle, const core_descriptor_writer_desc_t* desc);
-void core_descriptor_writer_destroy(core_descriptor_writer_handle_t handle);
+descriptor_writer_handle_t descriptor_writer_create(void);
+void descriptor_writer_destroy(descriptor_writer_handle_t writer);
 
-/* Operations */
-int core_descriptor_writer_update(core_descriptor_writer_handle_t handle, const void* data, size_t size);
-bool core_descriptor_writer_is_valid(core_descriptor_writer_handle_t handle);
-int core_descriptor_writer_get_info(core_descriptor_writer_handle_t handle, core_descriptor_writer_info_t* out_info);
-void core_descriptor_writer_mark_dirty(core_descriptor_writer_handle_t handle);
-int core_descriptor_writer_process_pending(void);
+/* Write Operations */
+void descriptor_writer_write_buffer(descriptor_writer_handle_t writer, 
+                                    uint32_t binding, 
+                                    buffer_handle_t buffer, 
+                                    size_t offset, 
+                                    size_t range, 
+                                    descriptor_type_t type);
 
-/* Statistics */
-uint32_t core_descriptor_writer_get_count(void);
-size_t core_descriptor_writer_get_memory_usage(void);
-void core_descriptor_writer_debug_print(void);
+void descriptor_writer_write_image(descriptor_writer_handle_t writer, 
+                                   uint32_t binding, 
+                                   texture_handle_t texture, 
+                                   sampler_handle_t sampler, 
+                                   descriptor_type_t type); // type: usually COMBINED_IMAGE_SAMPLER
+
+/* Flush */
+// Applies all pending writes to the target set
+// Returns true on success
+bool descriptor_writer_build(descriptor_writer_handle_t writer, 
+                             descriptor_set_handle_t target_set);
+
+// Clears pending writes without applying them
+void descriptor_writer_clear(descriptor_writer_handle_t writer);
 
 #ifdef __cplusplus
 }

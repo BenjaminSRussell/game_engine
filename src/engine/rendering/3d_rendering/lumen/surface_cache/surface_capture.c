@@ -39,6 +39,7 @@
  */
 
 #include "surface_capture.h"
+#include "surface_card.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -59,12 +60,9 @@
 
 typedef struct lumen_surface_capture_internal {
     uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
+    lumen_surface_card_handle_t card_handle;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } lumen_surface_capture_internal_t;
 
 typedef struct lumen_surface_capture_context {
@@ -90,13 +88,7 @@ static bool lumen_surface_capture_validate(const lumen_surface_capture_internal_
 }
 
 static void lumen_surface_capture_cleanup_internal(lumen_surface_capture_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
     item->initialized = false;
 }
 
@@ -148,11 +140,6 @@ void lumen_surface_capture_shutdown(void) {
 }
 
 int lumen_surface_capture_create(lumen_surface_capture_handle_t* out_handle, const lumen_surface_capture_desc_t* desc) {
-    // TODO: Implement surface capture validation
-    // TODO: Add surface capture error handling
-    // TODO: Implement surface capture serialization
-    // TODO: Add surface capture debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +149,6 @@ int lumen_surface_capture_create(lumen_surface_capture_handle_t* out_handle, con
     }
 
     if (g_surface_capture_ctx.count >= g_surface_capture_ctx.capacity) {
-        // TODO: Implement surface capture unit tests
         return -3;
     }
 
@@ -170,12 +156,9 @@ int lumen_surface_capture_create(lumen_surface_capture_handle_t* out_handle, con
     lumen_surface_capture_internal_t* item = &g_surface_capture_ctx.items[index];
 
     item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    // item->card_handle = desc->card_handle; // TODO: update desc
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
 
     out_handle->id = index;
     return 0;
@@ -192,12 +175,20 @@ void lumen_surface_capture_destroy(lumen_surface_capture_handle_t handle) {
     lumen_surface_capture_cleanup_internal(&g_surface_capture_ctx.items[handle.id]);
 }
 
-int lumen_surface_capture_update(lumen_surface_capture_handle_t handle, const void* data, size_t size) {
-    // TODO: Add surface capture thread safety
-    // TODO: Implement surface capture memory pooling
-    // TODO: Add surface capture caching layer
-    // TODO: Implement surface capture async operations
+int lumen_surface_capture_update_card(lumen_surface_card_handle_t card_handle) {
+    lumen_surface_card_info_t info;
+    if (lumen_surface_card_get_info(card_handle, &info) != 0) return -1;
 
+    // TODO: Render scene from card's viewpoint
+    // vec3_t up = (vec3_t){0, 1, 0};
+    // if (fabsf(info.normal.y) > 0.9f) up = (vec3_t){1, 0, 0};
+    // mat4_t view = mat4_look_at(info.position, vec3_add(info.position, info.normal), up);
+    // render_to_card(scene, view, info.atlas_region);
+
+    return 0;
+}
+
+int lumen_surface_capture_update(lumen_surface_capture_handle_t handle, const void* data, size_t size) {
     if (handle.id >= g_surface_capture_ctx.count) {
         return -1;
     }
@@ -206,9 +197,6 @@ int lumen_surface_capture_update(lumen_surface_capture_handle_t handle, const vo
     if (!item->initialized) {
         return -2;
     }
-
-    // TODO: Add surface capture GPU integration
-    // TODO: Implement surface capture SIMD optimization
 
     item->dirty = true;
     return 0;
@@ -223,9 +211,6 @@ bool lumen_surface_capture_is_valid(lumen_surface_capture_handle_t handle) {
 }
 
 int lumen_surface_capture_get_info(lumen_surface_capture_handle_t handle, lumen_surface_capture_info_t* out_info) {
-    // TODO: Implement surface capture streaming support
-    // TODO: Add surface capture LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -236,7 +221,6 @@ int lumen_surface_capture_get_info(lumen_surface_capture_handle_t handle, lumen_
 
     const lumen_surface_capture_internal_t* item = &g_surface_capture_ctx.items[handle.id];
     out_info->id = item->id;
-    out_info->flags = item->flags;
     out_info->initialized = item->initialized;
 
     return 0;
@@ -271,14 +255,8 @@ uint32_t lumen_surface_capture_get_count(void) {
 }
 
 size_t lumen_surface_capture_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_surface_capture_ctx);
     total += g_surface_capture_ctx.capacity * sizeof(lumen_surface_capture_internal_t);
-
-    for (uint32_t i = 0; i < g_surface_capture_ctx.count; i++) {
-        total += g_surface_capture_ctx.items[i].data_size;
-    }
-
     return total;
 }
 

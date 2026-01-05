@@ -1,11 +1,6 @@
 /**
  * @file debug_shapes.h
  * @brief Debug shape rendering
- *
- * TODO: Complete implementation
-  * TODO: Lines
- * TODO: Boxes
- * TODO: Spheres
  */
 
 #ifndef RENDER_DEBUG_SHAPES_H
@@ -17,22 +12,31 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "../../math/vec3.h"
+#include "../../math/vec4.h"
+#include "../../math/aabb.h"
+#include "../../math/mat4.h"
 
-/* TODO: Add type definitions */
+/* Type definitions */
+typedef struct debug_shape_desc {
+    vec4_t color;
+    float duration;
+    bool depth_test;
+} debug_shape_desc_t;
 
-/* TODO: Add structure definitions */
+/* Function declarations */
+void debug_shapes_init(void);
+void debug_shapes_shutdown(void);
 
-/* TODO: Add function declarations */
+void debug_draw_line(vec3_t start, vec3_t end, vec4_t color);
+void debug_draw_box(vec3_t center, vec3_t extents, vec4_t color);
+void debug_draw_aabb(aabb_t aabb, vec4_t color);
+void debug_draw_sphere(vec3_t center, float radius, vec4_t color);
+void debug_draw_cone(vec3_t base, vec3_t dir, float radius, float height, vec4_t color);
+void debug_draw_axes(mat4_t transform, float size);
 
-/* TODO: Add callback definitions */
-
-/* TODO: Add initialization functions */
-
-/* TODO: Add destruction functions */
-
-/* TODO: Add query functions */
-
-/* TODO: Add update functions */
+void debug_shapes_clear(void);
+void debug_shapes_update(float delta_time);
 
 #ifdef __cplusplus
 }

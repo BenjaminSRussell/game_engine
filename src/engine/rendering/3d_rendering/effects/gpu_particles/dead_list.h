@@ -9,6 +9,7 @@
 #ifndef EFFECTS_DEAD_LIST_H
 #define EFFECTS_DEAD_LIST_H
 
+#include "../../resource_management/resource_handle.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -26,13 +27,14 @@ typedef struct effects_dead_list_handle {
 } effects_dead_list_handle_t;
 
 typedef struct effects_dead_list_desc {
+    uint32_t max_particles;
     uint32_t flags;
     void* user_data;
 } effects_dead_list_desc_t;
 
 typedef struct effects_dead_list_info {
     uint32_t id;
-    uint32_t flags;
+    uint32_t max_particles;
     bool initialized;
 } effects_dead_list_info_t;
 

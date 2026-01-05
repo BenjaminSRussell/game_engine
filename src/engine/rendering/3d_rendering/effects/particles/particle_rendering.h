@@ -9,6 +9,7 @@
 #ifndef EFFECTS_PARTICLE_RENDERING_H
 #define EFFECTS_PARTICLE_RENDERING_H
 
+#include "../gpu_particles/particle_buffer.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -26,13 +27,20 @@ typedef struct effects_particle_rendering_handle {
 } effects_particle_rendering_handle_t;
 
 typedef struct effects_particle_rendering_desc {
+    // Pipeline configuration
+    bool enable_depth_write;
+    bool enable_depth_test;
+    bool enable_bending;
+    // ... other render states
+    
     uint32_t flags;
     void* user_data;
 } effects_particle_rendering_desc_t;
 
 typedef struct effects_particle_rendering_info {
     uint32_t id;
-    uint32_t flags;
+    uint32_t draw_calls;
+    uint32_t visible_particles;
     bool initialized;
 } effects_particle_rendering_info_t;
 

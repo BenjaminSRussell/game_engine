@@ -60,6 +60,16 @@ uint32_t lighting_pcf_filter_get_count(void);
 size_t lighting_pcf_filter_get_memory_usage(void);
 void lighting_pcf_filter_debug_print(void);
 
+/* PCF Sampling */
+typedef struct { struct { uint32_t handle; } id; } texture_handle_t;
+float lighting_pcf_sample_shadow(texture_handle_t shadow_map, const float* shadow_coord, float bias);
+float lighting_pcf_sample_shadow_3x3(texture_handle_t shadow_map, const float* shadow_coord, float bias);
+float lighting_pcf_sample_shadow_5x5(texture_handle_t shadow_map, const float* shadow_coord, float bias);
+float lighting_pcf_sample_shadow_poisson(texture_handle_t shadow_map, const float* shadow_coord, float bias, uint32_t sample_count);
+void lighting_pcf_set_kernel_size(uint32_t size);
+void lighting_pcf_set_filter_radius(float radius);
+
+
 #ifdef __cplusplus
 }
 #endif

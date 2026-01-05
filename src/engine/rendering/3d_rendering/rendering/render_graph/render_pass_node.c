@@ -59,9 +59,24 @@
 
 typedef struct rendering_render_pass_node_internal {
     uint32_t id;
+    const char* name;
+    rendering_render_pass_type_t type;
+    
+    rg_resource_handle_t color_outputs[8];
+    uint32_t color_output_count;
+    rg_resource_handle_t depth_output;
+    bool resolve_depth;
+    
+    rg_resource_handle_t texture_inputs[16];
+    uint32_t texture_input_count;
+    
+    rg_resource_handle_t storage_outputs[8];
+    uint32_t storage_output_count;
+    
+    rendering_render_pass_execute_fn execute;
+    void* user_data;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -90,13 +105,7 @@ static bool rendering_render_pass_node_validate(const rendering_render_pass_node
 }
 
 static void rendering_render_pass_node_cleanup_internal(rendering_render_pass_node_internal_t* item) {
-    // TODO: Implement visibility buffer
-    // TODO: Add GPU-driven pipeline
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
     item->initialized = false;
 }
 
@@ -170,9 +179,24 @@ int rendering_render_pass_node_create(rendering_render_pass_node_handle_t* out_h
     rendering_render_pass_node_internal_t* item = &g_render_pass_node_ctx.items[index];
 
     item->id = index;
+    item->name = desc->name;
+    item->type = desc->type;
+    
+    memcpy(item->color_outputs, desc->color_outputs, sizeof(item->color_outputs));
+    item->color_output_count = desc->color_output_count;
+    item->depth_output = desc->depth_output;
+    item->resolve_depth = desc->resolve_depth;
+    
+    memcpy(item->texture_inputs, desc->texture_inputs, sizeof(item->texture_inputs));
+    item->texture_input_count = desc->texture_input_count;
+    
+    memcpy(item->storage_outputs, desc->storage_outputs, sizeof(item->storage_outputs));
+    item->storage_output_count = desc->storage_output_count;
+    
+    item->execute = desc->execute;
+    item->user_data = desc->user_data;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -236,6 +260,8 @@ int rendering_render_pass_node_get_info(rendering_render_pass_node_handle_t hand
 
     const rendering_render_pass_node_internal_t* item = &g_render_pass_node_ctx.items[handle.id];
     out_info->id = item->id;
+    out_info->name = item->name;
+    out_info->type = item->type;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
 
@@ -249,20 +275,24 @@ void rendering_render_pass_node_mark_dirty(rendering_render_pass_node_handle_t h
     }
 }
 
-int rendering_render_pass_node_process_pending(void) {
-    // TODO: Add render pass node render graph node
-    // TODO: Implement batch processing
+void rendering_render_pass_node_execute(rendering_render_pass_node_handle_t handle, void* cmd) {
+    if (handle.id >= g_render_pass_node_ctx.count) return;
+    
+    rendering_render_pass_node_internal_t* item = &g_render_pass_node_ctx.items[handle.id];
+    if (item->initialized && item->execute) {
+        item->execute(cmd, item->user_data);
+    }
+}
 
+int rendering_render_pass_node_process_pending(void) {
     int processed = 0;
     for (uint32_t i = 0; i < g_render_pass_node_ctx.count; i++) {
         rendering_render_pass_node_internal_t* item = &g_render_pass_node_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
     }
-
     return processed;
 }
 
@@ -271,19 +301,12 @@ uint32_t rendering_render_pass_node_get_count(void) {
 }
 
 size_t rendering_render_pass_node_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_render_pass_node_ctx);
     total += g_render_pass_node_ctx.capacity * sizeof(rendering_render_pass_node_internal_t);
-
-    for (uint32_t i = 0; i < g_render_pass_node_ctx.count; i++) {
-        total += g_render_pass_node_ctx.items[i].data_size;
-    }
-
     return total;
 }
 
 void rendering_render_pass_node_debug_print(void) {
-    // TODO: Implement debug output
     // Debug printing implementation
 }
 

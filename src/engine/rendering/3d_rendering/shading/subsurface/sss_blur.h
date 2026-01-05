@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "../../math/vec2.h"
+#include "sss_profile.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,13 +23,15 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
+typedef uint32_t texture_handle_t;
+
 typedef struct shading_sss_blur_handle {
     uint32_t id;
 } shading_sss_blur_handle_t;
 
 typedef struct shading_sss_blur_desc {
     uint32_t flags;
-    void* user_data;
+    float max_dd; // Maximum derivative of depth for edge stopping
 } shading_sss_blur_desc_t;
 
 typedef struct shading_sss_blur_info {
@@ -48,16 +52,13 @@ void shading_sss_blur_shutdown(void);
 int shading_sss_blur_create(shading_sss_blur_handle_t* out_handle, const shading_sss_blur_desc_t* desc);
 void shading_sss_blur_destroy(shading_sss_blur_handle_t handle);
 
-/* Operations */
-int shading_sss_blur_update(shading_sss_blur_handle_t handle, const void* data, size_t size);
-bool shading_sss_blur_is_valid(shading_sss_blur_handle_t handle);
-int shading_sss_blur_get_info(shading_sss_blur_handle_t handle, shading_sss_blur_info_t* out_info);
-void shading_sss_blur_mark_dirty(shading_sss_blur_handle_t handle);
-int shading_sss_blur_process_pending(void);
+/* Rendering Pass */
+// Separable SSS blur pass (horizontal or vertical depending on direction)
+void sss_blur_pass(texture_handle_t color, texture_handle_t depth,
+                   shading_sss_profile_handle_t profile_handle, vec2_t direction);
 
 /* Statistics */
 uint32_t shading_sss_blur_get_count(void);
-size_t shading_sss_blur_get_memory_usage(void);
 void shading_sss_blur_debug_print(void);
 
 #ifdef __cplusplus

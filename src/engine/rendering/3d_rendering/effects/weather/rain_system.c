@@ -39,11 +39,13 @@
  */
 
 #include "rain_system.h"
+#include "../../math/vec3.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -57,11 +59,18 @@
  * TYPES
  * ============================================================================ */
 
+typedef struct rain_particle {
+    vec3_t position;
+    vec3_t velocity;
+    float life;
+    float scale;
+} rain_particle_t;
+
 typedef struct effects_rain_system_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    rain_particle_t* particles;
+    uint32_t particle_count;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -90,13 +99,12 @@ static bool effects_rain_system_validate(const effects_rain_system_internal_t* i
 }
 
 static void effects_rain_system_cleanup_internal(effects_rain_system_internal_t* item) {
-    // TODO: Implement ribbon/trail rendering
-    // TODO: Add VFX graph system
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+    if (item->particles) {
+        free(item->particles);
+        item->particles = NULL;
     }
+    item->particle_count = 0;
     item->initialized = false;
 }
 
@@ -148,11 +156,6 @@ void effects_rain_system_shutdown(void) {
 }
 
 int effects_rain_system_create(effects_rain_system_handle_t* out_handle, const effects_rain_system_desc_t* desc) {
-    // TODO: Implement rain system validation
-    // TODO: Add rain system error handling
-    // TODO: Implement rain system serialization
-    // TODO: Add rain system debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +165,6 @@ int effects_rain_system_create(effects_rain_system_handle_t* out_handle, const e
     }
 
     if (g_rain_system_ctx.count >= g_rain_system_ctx.capacity) {
-        // TODO: Implement rain system unit tests
         return -3;
     }
 
@@ -171,8 +173,21 @@ int effects_rain_system_create(effects_rain_system_handle_t* out_handle, const e
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->particle_count = EFFECTS_RAIN_SYSTEM_MAX_COUNT;
+    item->particles = calloc(item->particle_count, sizeof(rain_particle_t));
+    if (!item->particles) {
+        g_rain_system_ctx.count--;
+        return -4;
+    }
+
+    // Initialize particles
+    for (uint32_t i = 0; i < item->particle_count; i++) {
+        item->particles[i].position = vec3_set((float)(rand() % 100) - 50.0f, 50.0f + (float)(rand() % 50), (float)(rand() % 100) - 50.0f);
+        item->particles[i].velocity = vec3_set(0.0f, -20.0f - (float)(rand() % 10), 0.0f);
+        item->particles[i].life = 1.0f;
+        item->particles[i].scale = 1.0f;
+    }
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -193,11 +208,6 @@ void effects_rain_system_destroy(effects_rain_system_handle_t handle) {
 }
 
 int effects_rain_system_update(effects_rain_system_handle_t handle, const void* data, size_t size) {
-    // TODO: Add rain system thread safety
-    // TODO: Implement rain system memory pooling
-    // TODO: Add rain system caching layer
-    // TODO: Implement rain system async operations
-
     if (handle.id >= g_rain_system_ctx.count) {
         return -1;
     }
@@ -207,8 +217,17 @@ int effects_rain_system_update(effects_rain_system_handle_t handle, const void* 
         return -2;
     }
 
-    // TODO: Add rain system GPU integration
-    // TODO: Implement rain system SIMD optimization
+    float dt = 0.016f; // Assume 60fps for now, ideally passed in
+    for (uint32_t i = 0; i < item->particle_count; i++) {
+        rain_particle_t* p = &item->particles[i];
+        p->position = vec3_add(p->position, vec3_scale(p->velocity, dt));
+
+        if (p->position.y < 0.0f) {
+            p->position.y = 50.0f + (float)(rand() % 20);
+            p->position.x = (float)(rand() % 100) - 50.0f;
+            p->position.z = (float)(rand() % 100) - 50.0f;
+        }
+    }
 
     item->dirty = true;
     return 0;
@@ -271,12 +290,11 @@ uint32_t effects_rain_system_get_count(void) {
 }
 
 size_t effects_rain_system_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_rain_system_ctx);
     total += g_rain_system_ctx.capacity * sizeof(effects_rain_system_internal_t);
 
     for (uint32_t i = 0; i < g_rain_system_ctx.count; i++) {
-        total += g_rain_system_ctx.items[i].data_size;
+        total += g_rain_system_ctx.items[i].particle_count * sizeof(rain_particle_t);
     }
 
     return total;

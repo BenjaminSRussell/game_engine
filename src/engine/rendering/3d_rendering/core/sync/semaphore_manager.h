@@ -1,67 +1,26 @@
 /*
  * semaphore_manager.h
  * Timeline semaphore management
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
  */
 
-#ifndef CORE_SEMAPHORE_MANAGER_H
-#define CORE_SEMAPHORE_MANAGER_H
+#ifndef SEMAPHORE_MANAGER_H
+#define SEMAPHORE_MANAGER_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+typedef struct semaphore semaphore_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+// Creation
+semaphore_t* semaphore_create(uint64_t initial_value);
+void semaphore_destroy(semaphore_t* semaphore);
 
-typedef struct core_semaphore_manager_handle {
-    uint32_t id;
-} core_semaphore_manager_handle_t;
+// Operations
+uint64_t semaphore_get_value(semaphore_t* semaphore);
+void semaphore_signal(semaphore_t* semaphore, uint64_t value);
+void semaphore_wait(semaphore_t* semaphore, uint64_t value, uint64_t timeout_ns);
 
-typedef struct core_semaphore_manager_desc {
-    uint32_t flags;
-    void* user_data;
-} core_semaphore_manager_desc_t;
+// Backend handle accessor
+void* semaphore_get_handle(semaphore_t* semaphore);
 
-typedef struct core_semaphore_manager_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_semaphore_manager_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
-
-/* Initialization */
-int core_semaphore_manager_init(void);
-void core_semaphore_manager_shutdown(void);
-
-/* Lifecycle */
-int core_semaphore_manager_create(core_semaphore_manager_handle_t* out_handle, const core_semaphore_manager_desc_t* desc);
-void core_semaphore_manager_destroy(core_semaphore_manager_handle_t handle);
-
-/* Operations */
-int core_semaphore_manager_update(core_semaphore_manager_handle_t handle, const void* data, size_t size);
-bool core_semaphore_manager_is_valid(core_semaphore_manager_handle_t handle);
-int core_semaphore_manager_get_info(core_semaphore_manager_handle_t handle, core_semaphore_manager_info_t* out_info);
-void core_semaphore_manager_mark_dirty(core_semaphore_manager_handle_t handle);
-int core_semaphore_manager_process_pending(void);
-
-/* Statistics */
-uint32_t core_semaphore_manager_get_count(void);
-size_t core_semaphore_manager_get_memory_usage(void);
-void core_semaphore_manager_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* CORE_SEMAPHORE_MANAGER_H */
+#endif // SEMAPHORE_MANAGER_H

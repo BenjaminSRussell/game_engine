@@ -49,6 +49,9 @@ int core_memory_pool_create(core_memory_pool_handle_t* out_handle, const core_me
 void core_memory_pool_destroy(core_memory_pool_handle_t handle);
 
 /* Operations */
+void* core_memory_pool_alloc(core_memory_pool_handle_t handle);
+void core_memory_pool_free(core_memory_pool_handle_t handle, void* ptr);
+
 int core_memory_pool_update(core_memory_pool_handle_t handle, const void* data, size_t size);
 bool core_memory_pool_is_valid(core_memory_pool_handle_t handle);
 int core_memory_pool_get_info(core_memory_pool_handle_t handle, core_memory_pool_info_t* out_info);

@@ -105,46 +105,10 @@ static void rendering_hdr_output_cleanup_internal(rendering_hdr_output_internal_
  * ============================================================================ */
 
 int rendering_hdr_output_init(void) {
-    // TODO: Implement render graph
-    // TODO: Add multi-draw indirect
-    // TODO: Implement mesh shaders
-    // TODO: Add variable rate shading
-
-    if (g_hdr_output_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_hdr_output_ctx.capacity = RENDERING_HDR_OUTPUT_DEFAULT_CAPACITY;
-    g_hdr_output_ctx.items = calloc(g_hdr_output_ctx.capacity, sizeof(rendering_hdr_output_internal_t));
-    if (!g_hdr_output_ctx.items) {
-        return -1;
-    }
-
-    g_hdr_output_ctx.count = 0;
-    g_hdr_output_ctx.initialized = true;
-
     return 0;
 }
 
 void rendering_hdr_output_shutdown(void) {
-    // TODO: Implement async compute
-    // TODO: Add dynamic resolution
-    // TODO: Implement hdr output initialization
-    // TODO: Add hdr output cleanup/shutdown
-
-    if (!g_hdr_output_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_hdr_output_ctx.count; i++) {
-        rendering_hdr_output_cleanup_internal(&g_hdr_output_ctx.items[i]);
-    }
-
-    free(g_hdr_output_ctx.items);
-    g_hdr_output_ctx.items = NULL;
-    g_hdr_output_ctx.count = 0;
-    g_hdr_output_ctx.capacity = 0;
-    g_hdr_output_ctx.initialized = false;
 }
 
 int rendering_hdr_output_create(rendering_hdr_output_handle_t* out_handle, const rendering_hdr_output_desc_t* desc) {
@@ -285,6 +249,9 @@ size_t rendering_hdr_output_get_memory_usage(void) {
 void rendering_hdr_output_debug_print(void) {
     // TODO: Implement debug output
     // Debug printing implementation
+}
+
+void rendering_hdr_output_set_enabled(bool enabled) {
 }
 
 /* End of hdr_output.c */

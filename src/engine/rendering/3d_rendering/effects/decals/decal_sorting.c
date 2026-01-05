@@ -57,11 +57,17 @@
  * TYPES
  * ============================================================================ */
 
+typedef struct decal_sort_entry {
+    uint32_t decal_id;
+    float depth;
+    uint32_t priority;
+} decal_sort_entry_t;
+
 typedef struct effects_decal_sorting_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    decal_sort_entry_t* entries;
+    uint32_t entry_count;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -90,13 +96,12 @@ static bool effects_decal_sorting_validate(const effects_decal_sorting_internal_
 }
 
 static void effects_decal_sorting_cleanup_internal(effects_decal_sorting_internal_t* item) {
-    // TODO: Implement ribbon/trail rendering
-    // TODO: Add VFX graph system
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+    if (item->entries) {
+        free(item->entries);
+        item->entries = NULL;
     }
+    item->entry_count = 0;
     item->initialized = false;
 }
 
@@ -148,11 +153,6 @@ void effects_decal_sorting_shutdown(void) {
 }
 
 int effects_decal_sorting_create(effects_decal_sorting_handle_t* out_handle, const effects_decal_sorting_desc_t* desc) {
-    // TODO: Implement decal sorting validation
-    // TODO: Add decal sorting error handling
-    // TODO: Implement decal sorting serialization
-    // TODO: Add decal sorting debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +162,6 @@ int effects_decal_sorting_create(effects_decal_sorting_handle_t* out_handle, con
     }
 
     if (g_decal_sorting_ctx.count >= g_decal_sorting_ctx.capacity) {
-        // TODO: Implement decal sorting unit tests
         return -3;
     }
 
@@ -171,8 +170,13 @@ int effects_decal_sorting_create(effects_decal_sorting_handle_t* out_handle, con
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->entry_count = 0;
+    item->entries = calloc(EFFECTS_DECAL_SORTING_MAX_COUNT, sizeof(decal_sort_entry_t));
+    if (!item->entries) {
+        g_decal_sorting_ctx.count--;
+        return -4;
+    }
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -192,12 +196,14 @@ void effects_decal_sorting_destroy(effects_decal_sorting_handle_t handle) {
     effects_decal_sorting_cleanup_internal(&g_decal_sorting_ctx.items[handle.id]);
 }
 
-int effects_decal_sorting_update(effects_decal_sorting_handle_t handle, const void* data, size_t size) {
-    // TODO: Add decal sorting thread safety
-    // TODO: Implement decal sorting memory pooling
-    // TODO: Add decal sorting caching layer
-    // TODO: Implement decal sorting async operations
+static int decal_compare(const void* a, const void* b) {
+    const decal_sort_entry_t* ea = (const decal_sort_entry_t*)a;
+    const decal_sort_entry_t* eb = (const decal_sort_entry_t*)b;
+    if (ea->priority != eb->priority) return (int)eb->priority - (int)ea->priority;
+    return (ea->depth < eb->depth) ? -1 : 1;
+}
 
+int effects_decal_sorting_update(effects_decal_sorting_handle_t handle, const void* data, size_t size) {
     if (handle.id >= g_decal_sorting_ctx.count) {
         return -1;
     }
@@ -207,8 +213,9 @@ int effects_decal_sorting_update(effects_decal_sorting_handle_t handle, const vo
         return -2;
     }
 
-    // TODO: Add decal sorting GPU integration
-    // TODO: Implement decal sorting SIMD optimization
+    if (item->entry_count > 1) {
+        qsort(item->entries, item->entry_count, sizeof(decal_sort_entry_t), decal_compare);
+    }
 
     item->dirty = true;
     return 0;
@@ -271,12 +278,11 @@ uint32_t effects_decal_sorting_get_count(void) {
 }
 
 size_t effects_decal_sorting_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_decal_sorting_ctx);
     total += g_decal_sorting_ctx.capacity * sizeof(effects_decal_sorting_internal_t);
 
     for (uint32_t i = 0; i < g_decal_sorting_ctx.count; i++) {
-        total += g_decal_sorting_ctx.items[i].data_size;
+        total += EFFECTS_DECAL_SORTING_MAX_COUNT * sizeof(decal_sort_entry_t);
     }
 
     return total;

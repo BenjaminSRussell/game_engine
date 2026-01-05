@@ -1,67 +1,31 @@
 /*
  * command_pool.h
- * Command pool allocation and recycling
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
+ * Thread-local command pool management
  */
 
-#ifndef CORE_COMMAND_POOL_H
-#define CORE_COMMAND_POOL_H
+#ifndef COMMAND_POOL_H
+#define COMMAND_POOL_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+typedef struct command_pool command_pool_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct core_command_pool_handle {
-    uint32_t id;
-} core_command_pool_handle_t;
-
-typedef struct core_command_pool_desc {
+typedef struct command_pool_desc {
+    uint32_t queue_family_index;
     uint32_t flags;
-    void* user_data;
-} core_command_pool_desc_t;
+} command_pool_desc_t;
 
-typedef struct core_command_pool_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_command_pool_info_t;
+// Creates a new command pool for the current thread
+command_pool_t* command_pool_create(const command_pool_desc_t* desc);
 
-/* ============================================================================
- * API
- * ============================================================================ */
+// Destroys a command pool
+void command_pool_destroy(command_pool_t* pool);
 
-/* Initialization */
-int core_command_pool_init(void);
-void core_command_pool_shutdown(void);
+// Resets a command pool, releasing all resources allocated from it
+void command_pool_reset(command_pool_t* pool);
 
-/* Lifecycle */
-int core_command_pool_create(core_command_pool_handle_t* out_handle, const core_command_pool_desc_t* desc);
-void core_command_pool_destroy(core_command_pool_handle_t handle);
+// Gets the native backend handle (e.g., VkCommandPool)
+void* command_pool_get_handle(command_pool_t* pool);
 
-/* Operations */
-int core_command_pool_update(core_command_pool_handle_t handle, const void* data, size_t size);
-bool core_command_pool_is_valid(core_command_pool_handle_t handle);
-int core_command_pool_get_info(core_command_pool_handle_t handle, core_command_pool_info_t* out_info);
-void core_command_pool_mark_dirty(core_command_pool_handle_t handle);
-int core_command_pool_process_pending(void);
-
-/* Statistics */
-uint32_t core_command_pool_get_count(void);
-size_t core_command_pool_get_memory_usage(void);
-void core_command_pool_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* CORE_COMMAND_POOL_H */
+#endif // COMMAND_POOL_H

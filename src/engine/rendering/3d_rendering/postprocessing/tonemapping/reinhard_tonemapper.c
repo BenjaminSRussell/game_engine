@@ -40,10 +40,8 @@
 
 #include "reinhard_tonemapper.h"
 #include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -54,7 +52,7 @@
 #define POSTPROCESSING_REINHARD_TONEMAPPER_ALIGNMENT 16
 
 /* ============================================================================
- * TYPES
+ * INTERNAL STRUCTURES
  * ============================================================================ */
 
 typedef struct postprocessing_reinhard_tonemapper_internal {
@@ -65,6 +63,7 @@ typedef struct postprocessing_reinhard_tonemapper_internal {
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
+    reinhard_tonemap_params_t params;
 } postprocessing_reinhard_tonemapper_internal_t;
 
 typedef struct postprocessing_reinhard_tonemapper_context {
@@ -81,17 +80,7 @@ static postprocessing_reinhard_tonemapper_context_t g_reinhard_tonemapper_ctx = 
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool postprocessing_reinhard_tonemapper_validate(const postprocessing_reinhard_tonemapper_internal_t* item) {
-    // TODO: Implement ACES tonemapping
-    // TODO: Add physically-based bloom
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
 static void postprocessing_reinhard_tonemapper_cleanup_internal(postprocessing_reinhard_tonemapper_internal_t* item) {
-    // TODO: Implement TAA
-    // TODO: Add depth of field
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -100,16 +89,16 @@ static void postprocessing_reinhard_tonemapper_cleanup_internal(postprocessing_r
     item->initialized = false;
 }
 
+// Helper to get luminance
+static float get_luminance(float r, float g, float b) {
+    return 0.2126f * r + 0.7152f * g + 0.0722f * b;
+}
+
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
 int postprocessing_reinhard_tonemapper_init(void) {
-    // TODO: Implement motion blur
-    // TODO: Add GTAO
-    // TODO: Implement SSR
-    // TODO: Add color grading
-
     if (g_reinhard_tonemapper_ctx.initialized) {
         return 0; // Already initialized
     }
@@ -127,11 +116,6 @@ int postprocessing_reinhard_tonemapper_init(void) {
 }
 
 void postprocessing_reinhard_tonemapper_shutdown(void) {
-    // TODO: Implement lens effects
-    // TODO: Add film grain
-    // TODO: Implement reinhard tonemapper initialization
-    // TODO: Add reinhard tonemapper cleanup/shutdown
-
     if (!g_reinhard_tonemapper_ctx.initialized) {
         return;
     }
@@ -148,11 +132,6 @@ void postprocessing_reinhard_tonemapper_shutdown(void) {
 }
 
 int postprocessing_reinhard_tonemapper_create(postprocessing_reinhard_tonemapper_handle_t* out_handle, const postprocessing_reinhard_tonemapper_desc_t* desc) {
-    // TODO: Implement reinhard tonemapper validation
-    // TODO: Add reinhard tonemapper error handling
-    // TODO: Implement reinhard tonemapper serialization
-    // TODO: Add reinhard tonemapper debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +141,6 @@ int postprocessing_reinhard_tonemapper_create(postprocessing_reinhard_tonemapper
     }
 
     if (g_reinhard_tonemapper_ctx.count >= g_reinhard_tonemapper_ctx.capacity) {
-        // TODO: Implement reinhard tonemapper unit tests
         return -3;
     }
 
@@ -171,6 +149,7 @@ int postprocessing_reinhard_tonemapper_create(postprocessing_reinhard_tonemapper
 
     item->id = index;
     item->flags = desc->flags;
+    item->params = desc->initial_params;
     item->data = NULL;
     item->data_size = 0;
     item->initialized = true;
@@ -182,9 +161,6 @@ int postprocessing_reinhard_tonemapper_create(postprocessing_reinhard_tonemapper
 }
 
 void postprocessing_reinhard_tonemapper_destroy(postprocessing_reinhard_tonemapper_handle_t handle) {
-    // TODO: Add reinhard tonemapper performance counters
-    // TODO: Implement reinhard tonemapper hot-reload
-
     if (handle.id >= g_reinhard_tonemapper_ctx.count) {
         return;
     }
@@ -193,11 +169,6 @@ void postprocessing_reinhard_tonemapper_destroy(postprocessing_reinhard_tonemapp
 }
 
 int postprocessing_reinhard_tonemapper_update(postprocessing_reinhard_tonemapper_handle_t handle, const void* data, size_t size) {
-    // TODO: Add reinhard tonemapper thread safety
-    // TODO: Implement reinhard tonemapper memory pooling
-    // TODO: Add reinhard tonemapper caching layer
-    // TODO: Implement reinhard tonemapper async operations
-
     if (handle.id >= g_reinhard_tonemapper_ctx.count) {
         return -1;
     }
@@ -207,15 +178,20 @@ int postprocessing_reinhard_tonemapper_update(postprocessing_reinhard_tonemapper
         return -2;
     }
 
-    // TODO: Add reinhard tonemapper GPU integration
-    // TODO: Implement reinhard tonemapper SIMD optimization
-
     item->dirty = true;
     return 0;
 }
 
+void postprocessing_reinhard_tonemapper_set_params(postprocessing_reinhard_tonemapper_handle_t handle, const reinhard_tonemap_params_t* params) {
+    if (handle.id >= g_reinhard_tonemapper_ctx.count || !params) return;
+    postprocessing_reinhard_tonemapper_internal_t* item = &g_reinhard_tonemapper_ctx.items[handle.id];
+    if (item->initialized) {
+        item->params = *params;
+        item->dirty = true;
+    }
+}
+
 bool postprocessing_reinhard_tonemapper_is_valid(postprocessing_reinhard_tonemapper_handle_t handle) {
-    // TODO: Add reinhard tonemapper batch processing
     if (handle.id >= g_reinhard_tonemapper_ctx.count) {
         return false;
     }
@@ -223,9 +199,6 @@ bool postprocessing_reinhard_tonemapper_is_valid(postprocessing_reinhard_tonemap
 }
 
 int postprocessing_reinhard_tonemapper_get_info(postprocessing_reinhard_tonemapper_handle_t handle, postprocessing_reinhard_tonemapper_info_t* out_info) {
-    // TODO: Implement reinhard tonemapper streaming support
-    // TODO: Add reinhard tonemapper LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -238,32 +211,62 @@ int postprocessing_reinhard_tonemapper_get_info(postprocessing_reinhard_tonemapp
     out_info->id = item->id;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
+    out_info->current_params = item->params;
 
     return 0;
 }
 
 void postprocessing_reinhard_tonemapper_mark_dirty(postprocessing_reinhard_tonemapper_handle_t handle) {
-    // TODO: Implement reinhard tonemapper culling integration
     if (handle.id < g_reinhard_tonemapper_ctx.count) {
         g_reinhard_tonemapper_ctx.items[handle.id].dirty = true;
     }
 }
 
 int postprocessing_reinhard_tonemapper_process_pending(void) {
-    // TODO: Add reinhard tonemapper render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_reinhard_tonemapper_ctx.count; i++) {
         postprocessing_reinhard_tonemapper_internal_t* item = &g_reinhard_tonemapper_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
     }
-
     return processed;
+}
+
+void postprocessing_reinhard_tonemap_color(const reinhard_tonemap_params_t* params, float r, float g, float b, float* out_r, float* out_g, float* out_b) {
+    float exposure = params ? params->exposure : 1.0f;
+    float white_sq = params ? params->white_point : 100.0f; // Default high white point
+    
+    // Safety check for white point
+    if (white_sq < 0.001f) white_sq = 100.0f;
+
+    // Apply exposure
+    r *= exposure;
+    g *= exposure;
+    b *= exposure;
+
+    float l_old = get_luminance(r, g, b);
+    
+    // Reinhard extended:
+    // L_new = (L_old * (1 + L_old / L_white^2)) / (1 + L_old)
+    float l_new = (l_old * (1.0f + (l_old / white_sq))) / (1.0f + l_old);
+    
+    // Color scaling
+    // c_new = c_old * (L_new / L_old)
+    float scale = (l_old > 1e-6f) ? (l_new / l_old) : 1.0f;
+    
+    *out_r = r * scale;
+    *out_g = g * scale;
+    *out_b = b * scale;
+}
+
+void postprocessing_reinhard_tonemap_buffer(const reinhard_tonemap_params_t* params, const float* input_rgb, float* output_rgb, size_t pixel_count) {
+    for (size_t i = 0; i < pixel_count; i++) {
+        postprocessing_reinhard_tonemap_color(params, 
+            input_rgb[i*3], input_rgb[i*3+1], input_rgb[i*3+2],
+            &output_rgb[i*3], &output_rgb[i*3+1], &output_rgb[i*3+2]);
+    }
 }
 
 uint32_t postprocessing_reinhard_tonemapper_get_count(void) {
@@ -271,20 +274,20 @@ uint32_t postprocessing_reinhard_tonemapper_get_count(void) {
 }
 
 size_t postprocessing_reinhard_tonemapper_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_reinhard_tonemapper_ctx);
     total += g_reinhard_tonemapper_ctx.capacity * sizeof(postprocessing_reinhard_tonemapper_internal_t);
 
     for (uint32_t i = 0; i < g_reinhard_tonemapper_ctx.count; i++) {
-        total += g_reinhard_tonemapper_ctx.items[i].data_size;
+        if (g_reinhard_tonemapper_ctx.items[i].initialized) {
+            total += g_reinhard_tonemapper_ctx.items[i].data_size;
+        }
     }
 
     return total;
 }
 
 void postprocessing_reinhard_tonemapper_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    printf("Reinhard Tonemapper Context: %u/%u items\n", g_reinhard_tonemapper_ctx.count, g_reinhard_tonemapper_ctx.capacity);
 }
 
 /* End of reinhard_tonemapper.c */

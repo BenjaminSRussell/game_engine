@@ -1,41 +1,9 @@
 /*
  * cascade_blending.c
- * Inter-cascade blending
+ * Blend between cascades
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement clustered light culling
- * TODO: Add ray-traced shadows
- * TODO: Implement cascaded shadow maps
- * TODO: Add area light support
- * TODO: Implement global illumination
- * TODO: Add volumetric lighting
- * TODO: Implement light probes
- * TODO: Add IES profile support
- * TODO: Implement lightmap baking
- * TODO: Add real-time GI
- * TODO: Implement cascade blending initialization
- * TODO: Add cascade blending cleanup/shutdown
- * TODO: Implement cascade blending validation
- * TODO: Add cascade blending error handling
- * TODO: Implement cascade blending serialization
- * TODO: Add cascade blending debug output
- * TODO: Implement cascade blending unit tests
- * TODO: Add cascade blending performance counters
- * TODO: Implement cascade blending hot-reload
- * TODO: Add cascade blending thread safety
- * TODO: Implement cascade blending memory pooling
- * TODO: Add cascade blending caching layer
- * TODO: Implement cascade blending async operations
- * TODO: Add cascade blending GPU integration
- * TODO: Implement cascade blending SIMD optimization
- * TODO: Add cascade blending batch processing
- * TODO: Implement cascade blending streaming support
- * TODO: Add cascade blending LOD support
- * TODO: Implement cascade blending culling integration
- * TODO: Add cascade blending render graph node
  */
 
 #include "cascade_blending.h"
@@ -44,247 +12,146 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
-
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
-
-#define LIGHTING_CASCADE_BLENDING_MAX_COUNT 4096
-#define LIGHTING_CASCADE_BLENDING_DEFAULT_CAPACITY 256
-#define LIGHTING_CASCADE_BLENDING_ALIGNMENT 16
+#include <math.h>
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
-typedef struct lighting_cascade_blending_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
+typedef struct cascade_blending_context {
+    float blend_range;  // Percentage of cascade range to blend
+    bool enabled;
     bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} lighting_cascade_blending_internal_t;
+} cascade_blending_context_t;
 
-typedef struct lighting_cascade_blending_context {
-    lighting_cascade_blending_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} lighting_cascade_blending_context_t;
-
-static lighting_cascade_blending_context_t g_cascade_blending_ctx = {0};
+static cascade_blending_context_t g_blending_ctx = {0};
 
 /* ============================================================================
- * PRIVATE FUNCTIONS
+ * CASCADE BLENDING
  * ============================================================================ */
 
-static bool lighting_cascade_blending_validate(const lighting_cascade_blending_internal_t* item) {
-    // TODO: Implement clustered light culling
-    // TODO: Add ray-traced shadows
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+float lighting_cascade_compute_blend_factor(float view_depth, float split_near, float split_far) {
+    if (!g_blending_ctx.enabled) {
+        return 0.0f;
+    }
+    
+    float range = split_far - split_near;
+    float blend_distance = range * g_blending_ctx.blend_range;
+    
+    // Blend in the last portion of the cascade
+    float blend_start = split_far - blend_distance;
+    
+    if (view_depth < blend_start) {
+        return 0.0f;  // No blending
+    }
+    
+    if (view_depth >= split_far) {
+        return 1.0f;  // Full blend to next cascade
+    }
+    
+    // Linear blend
+    float factor = (view_depth - blend_start) / blend_distance;
+    return fmaxf(0.0f, fminf(1.0f, factor));
 }
 
-static void lighting_cascade_blending_cleanup_internal(lighting_cascade_blending_internal_t* item) {
-    // TODO: Implement cascaded shadow maps
-    // TODO: Add area light support
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+float lighting_cascade_blend_shadows(float shadow0, float shadow1, float blend_factor) {
+    // Linear interpolation between two shadow values
+    return shadow0 * (1.0f - blend_factor) + shadow1 * blend_factor;
+}
+
+void lighting_cascade_set_blend_range(float range) {
+    if (g_blending_ctx.initialized) {
+        g_blending_ctx.blend_range = fmaxf(0.0f, fminf(1.0f, range));
     }
-    item->initialized = false;
+}
+
+float lighting_cascade_get_blend_range(void) {
+    return g_blending_ctx.blend_range;
+}
+
+void lighting_cascade_enable_blending(bool enabled) {
+    if (g_blending_ctx.initialized) {
+        g_blending_ctx.enabled = enabled;
+    }
+}
+
+bool lighting_cascade_is_blending_enabled(void) {
+    return g_blending_ctx.enabled;
 }
 
 /* ============================================================================
- * PUBLIC API
+ * PUBLIC API (Compatibility)
  * ============================================================================ */
 
 int lighting_cascade_blending_init(void) {
-    // TODO: Implement global illumination
-    // TODO: Add volumetric lighting
-    // TODO: Implement light probes
-    // TODO: Add IES profile support
-
-    if (g_cascade_blending_ctx.initialized) {
-        return 0; // Already initialized
+    if (g_blending_ctx.initialized) {
+        return 0;
     }
-
-    g_cascade_blending_ctx.capacity = LIGHTING_CASCADE_BLENDING_DEFAULT_CAPACITY;
-    g_cascade_blending_ctx.items = calloc(g_cascade_blending_ctx.capacity, sizeof(lighting_cascade_blending_internal_t));
-    if (!g_cascade_blending_ctx.items) {
-        return -1;
-    }
-
-    g_cascade_blending_ctx.count = 0;
-    g_cascade_blending_ctx.initialized = true;
-
+    
+    g_blending_ctx.blend_range = 0.1f;  // 10% of cascade range
+    g_blending_ctx.enabled = true;
+    g_blending_ctx.initialized = true;
+    
     return 0;
 }
 
 void lighting_cascade_blending_shutdown(void) {
-    // TODO: Implement lightmap baking
-    // TODO: Add real-time GI
-    // TODO: Implement cascade blending initialization
-    // TODO: Add cascade blending cleanup/shutdown
-
-    if (!g_cascade_blending_ctx.initialized) {
+    if (!g_blending_ctx.initialized) {
         return;
     }
-
-    for (uint32_t i = 0; i < g_cascade_blending_ctx.count; i++) {
-        lighting_cascade_blending_cleanup_internal(&g_cascade_blending_ctx.items[i]);
-    }
-
-    free(g_cascade_blending_ctx.items);
-    g_cascade_blending_ctx.items = NULL;
-    g_cascade_blending_ctx.count = 0;
-    g_cascade_blending_ctx.capacity = 0;
-    g_cascade_blending_ctx.initialized = false;
+    
+    g_blending_ctx.initialized = false;
 }
 
-int lighting_cascade_blending_create(lighting_cascade_blending_handle_t* out_handle, const lighting_cascade_blending_desc_t* desc) {
-    // TODO: Implement cascade blending validation
-    // TODO: Add cascade blending error handling
-    // TODO: Implement cascade blending serialization
-    // TODO: Add cascade blending debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_cascade_blending_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_cascade_blending_ctx.count >= g_cascade_blending_ctx.capacity) {
-        // TODO: Implement cascade blending unit tests
-        return -3;
-    }
-
-    uint32_t index = g_cascade_blending_ctx.count++;
-    lighting_cascade_blending_internal_t* item = &g_cascade_blending_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
+int lighting_cascade_blending_create(lighting_cascade_blending_handle_t* out_handle, 
+                                     const lighting_cascade_blending_desc_t* desc) {
+    if (!out_handle || !desc) return -1;
+    out_handle->id = 0;
     return 0;
 }
 
 void lighting_cascade_blending_destroy(lighting_cascade_blending_handle_t handle) {
-    // TODO: Add cascade blending performance counters
-    // TODO: Implement cascade blending hot-reload
-
-    if (handle.id >= g_cascade_blending_ctx.count) {
-        return;
-    }
-
-    lighting_cascade_blending_cleanup_internal(&g_cascade_blending_ctx.items[handle.id]);
+    (void)handle;
 }
 
-int lighting_cascade_blending_update(lighting_cascade_blending_handle_t handle, const void* data, size_t size) {
-    // TODO: Add cascade blending thread safety
-    // TODO: Implement cascade blending memory pooling
-    // TODO: Add cascade blending caching layer
-    // TODO: Implement cascade blending async operations
-
-    if (handle.id >= g_cascade_blending_ctx.count) {
-        return -1;
-    }
-
-    lighting_cascade_blending_internal_t* item = &g_cascade_blending_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add cascade blending GPU integration
-    // TODO: Implement cascade blending SIMD optimization
-
-    item->dirty = true;
+int lighting_cascade_blending_update(lighting_cascade_blending_handle_t handle, 
+                                     const void* data, size_t size) {
+    (void)handle; (void)data; (void)size;
     return 0;
 }
 
 bool lighting_cascade_blending_is_valid(lighting_cascade_blending_handle_t handle) {
-    // TODO: Add cascade blending batch processing
-    if (handle.id >= g_cascade_blending_ctx.count) {
-        return false;
-    }
-    return g_cascade_blending_ctx.items[handle.id].initialized;
+    (void)handle;
+    return g_blending_ctx.initialized;
 }
 
-int lighting_cascade_blending_get_info(lighting_cascade_blending_handle_t handle, lighting_cascade_blending_info_t* out_info) {
-    // TODO: Implement cascade blending streaming support
-    // TODO: Add cascade blending LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_cascade_blending_ctx.count) {
-        return -2;
-    }
-
-    const lighting_cascade_blending_internal_t* item = &g_cascade_blending_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
+int lighting_cascade_blending_get_info(lighting_cascade_blending_handle_t handle, 
+                                       lighting_cascade_blending_info_t* out_info) {
+    if (!out_info) return -1;
+    out_info->id = handle.id;
+    out_info->flags = 0;
+    out_info->initialized = g_blending_ctx.initialized;
     return 0;
 }
 
 void lighting_cascade_blending_mark_dirty(lighting_cascade_blending_handle_t handle) {
-    // TODO: Implement cascade blending culling integration
-    if (handle.id < g_cascade_blending_ctx.count) {
-        g_cascade_blending_ctx.items[handle.id].dirty = true;
-    }
+    (void)handle;
 }
 
 int lighting_cascade_blending_process_pending(void) {
-    // TODO: Add cascade blending render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_cascade_blending_ctx.count; i++) {
-        lighting_cascade_blending_internal_t* item = &g_cascade_blending_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
+    return 0;
 }
 
 uint32_t lighting_cascade_blending_get_count(void) {
-    return g_cascade_blending_ctx.count;
+    return g_blending_ctx.initialized ? 1 : 0;
 }
 
 size_t lighting_cascade_blending_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_cascade_blending_ctx);
-    total += g_cascade_blending_ctx.capacity * sizeof(lighting_cascade_blending_internal_t);
-
-    for (uint32_t i = 0; i < g_cascade_blending_ctx.count; i++) {
-        total += g_cascade_blending_ctx.items[i].data_size;
-    }
-
-    return total;
+    return sizeof(cascade_blending_context_t);
 }
 
 void lighting_cascade_blending_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    // Debug output
 }
 
 /* End of cascade_blending.c */

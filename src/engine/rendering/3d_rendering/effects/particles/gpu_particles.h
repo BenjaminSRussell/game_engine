@@ -9,6 +9,7 @@
 #ifndef EFFECTS_GPU_PARTICLES_H
 #define EFFECTS_GPU_PARTICLES_H
 
+#include "../gpu_particles/particle_buffer.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -26,13 +27,15 @@ typedef struct effects_gpu_particles_handle {
 } effects_gpu_particles_handle_t;
 
 typedef struct effects_gpu_particles_desc {
+    uint32_t max_particles;
     uint32_t flags;
     void* user_data;
 } effects_gpu_particles_desc_t;
 
 typedef struct effects_gpu_particles_info {
     uint32_t id;
-    uint32_t flags;
+    uint32_t active_particles;
+    uint32_t max_particles;
     bool initialized;
 } effects_gpu_particles_info_t;
 

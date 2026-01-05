@@ -1,67 +1,42 @@
 /*
  * command_queue.h
- * Queue submission and synchronization
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
+ * Command queue submission and synchronization
  */
 
-#ifndef CORE_COMMAND_QUEUE_H
-#define CORE_COMMAND_QUEUE_H
+#ifndef COMMAND_QUEUE_H
+#define COMMAND_QUEUE_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
+#include "command_buffer.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// Forward declarations
+typedef struct command_queue command_queue_t;
+typedef struct fence fence_t;
+typedef struct semaphore semaphore_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+typedef struct queue_submit_info {
+    command_buffer_t** command_buffers;
+    uint32_t command_buffer_count;
+    
+    semaphore_t** wait_semaphores;
+    uint64_t* wait_values;
+    uint32_t wait_semaphore_count;
+    
+    semaphore_t** signal_semaphores;
+    uint64_t* signal_values;
+    uint32_t signal_semaphore_count;
+    
+    fence_t* signal_fence;
+} queue_submit_info_t;
 
-typedef struct core_command_queue_handle {
-    uint32_t id;
-} core_command_queue_handle_t;
+// Queue retrieval (simplification: assume global or device-retrieved)
+command_queue_t* command_queue_get(uint32_t queue_family_index, uint32_t queue_index);
 
-typedef struct core_command_queue_desc {
-    uint32_t flags;
-    void* user_data;
-} core_command_queue_desc_t;
+// Submission
+int command_queue_submit(command_queue_t* queue, const queue_submit_info_t* submit_info);
 
-typedef struct core_command_queue_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_command_queue_info_t;
+// Wait idle
+void command_queue_wait_idle(command_queue_t* queue);
 
-/* ============================================================================
- * API
- * ============================================================================ */
-
-/* Initialization */
-int core_command_queue_init(void);
-void core_command_queue_shutdown(void);
-
-/* Lifecycle */
-int core_command_queue_create(core_command_queue_handle_t* out_handle, const core_command_queue_desc_t* desc);
-void core_command_queue_destroy(core_command_queue_handle_t handle);
-
-/* Operations */
-int core_command_queue_update(core_command_queue_handle_t handle, const void* data, size_t size);
-bool core_command_queue_is_valid(core_command_queue_handle_t handle);
-int core_command_queue_get_info(core_command_queue_handle_t handle, core_command_queue_info_t* out_info);
-void core_command_queue_mark_dirty(core_command_queue_handle_t handle);
-int core_command_queue_process_pending(void);
-
-/* Statistics */
-uint32_t core_command_queue_get_count(void);
-size_t core_command_queue_get_memory_usage(void);
-void core_command_queue_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* CORE_COMMAND_QUEUE_H */
+#endif // COMMAND_QUEUE_H

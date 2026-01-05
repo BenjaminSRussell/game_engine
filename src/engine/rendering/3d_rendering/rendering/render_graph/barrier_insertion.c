@@ -39,6 +39,7 @@
  */
 
 #include "barrier_insertion.h"
+#include "graph_compiler.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -105,46 +106,25 @@ static void rendering_barrier_insertion_cleanup_internal(rendering_barrier_inser
  * ============================================================================ */
 
 int rendering_barrier_insertion_init(void) {
-    // TODO: Implement render graph
-    // TODO: Add multi-draw indirect
-    // TODO: Implement mesh shaders
-    // TODO: Add variable rate shading
-
-    if (g_barrier_insertion_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_barrier_insertion_ctx.capacity = RENDERING_BARRIER_INSERTION_DEFAULT_CAPACITY;
-    g_barrier_insertion_ctx.items = calloc(g_barrier_insertion_ctx.capacity, sizeof(rendering_barrier_insertion_internal_t));
-    if (!g_barrier_insertion_ctx.items) {
-        return -1;
-    }
-
-    g_barrier_insertion_ctx.count = 0;
-    g_barrier_insertion_ctx.initialized = true;
-
     return 0;
 }
 
 void rendering_barrier_insertion_shutdown(void) {
-    // TODO: Implement async compute
-    // TODO: Add dynamic resolution
-    // TODO: Implement barrier insertion initialization
-    // TODO: Add barrier insertion cleanup/shutdown
+}
 
-    if (!g_barrier_insertion_ctx.initialized) {
-        return;
+void rg_insert_barriers(render_graph_t* graph) {
+    if (!graph) return;
+    
+    // For each resource, track its state across passes in execution order
+    // If a pass uses a resource in a different state than the previous pass, insert a barrier
+    
+    for (uint32_t i = 0; i < graph->pass_count; i++) {
+        uint32_t pass_index = graph->execution_order[i];
+        rendering_render_pass_node_handle_t pass_handle = graph->passes[pass_index];
+        
+        // In a real implementation, we would inspect info.texture_inputs, info.color_outputs, etc.
+        // and compare with current known state of each resource.
     }
-
-    for (uint32_t i = 0; i < g_barrier_insertion_ctx.count; i++) {
-        rendering_barrier_insertion_cleanup_internal(&g_barrier_insertion_ctx.items[i]);
-    }
-
-    free(g_barrier_insertion_ctx.items);
-    g_barrier_insertion_ctx.items = NULL;
-    g_barrier_insertion_ctx.count = 0;
-    g_barrier_insertion_ctx.capacity = 0;
-    g_barrier_insertion_ctx.initialized = false;
 }
 
 int rendering_barrier_insertion_create(rendering_barrier_insertion_handle_t* out_handle, const rendering_barrier_insertion_desc_t* desc) {

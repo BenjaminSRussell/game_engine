@@ -1,103 +1,60 @@
 /*
  * cloud_lighting.c
- * Cloud lighting/shadows
+ * Cloud lighting and scattering models
  *
  * Part of the Atmosphere subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement atmospheric scattering
- * TODO: Add volumetric clouds
- * TODO: Implement sky LUT
- * TODO: Add aerial perspective
- * TODO: Implement sun/moon rendering
- * TODO: Add star field
- * TODO: Implement time-of-day
- * TODO: Add weather transitions
- * TODO: Implement cloud shadows
- * TODO: Add god rays
- * TODO: Implement cloud lighting initialization
- * TODO: Add cloud lighting cleanup/shutdown
- * TODO: Implement cloud lighting validation
- * TODO: Add cloud lighting error handling
- * TODO: Implement cloud lighting serialization
- * TODO: Add cloud lighting debug output
- * TODO: Implement cloud lighting unit tests
- * TODO: Add cloud lighting performance counters
- * TODO: Implement cloud lighting hot-reload
- * TODO: Add cloud lighting thread safety
- * TODO: Implement cloud lighting memory pooling
- * TODO: Add cloud lighting caching layer
- * TODO: Implement cloud lighting async operations
- * TODO: Add cloud lighting GPU integration
- * TODO: Implement cloud lighting SIMD optimization
- * TODO: Add cloud lighting batch processing
- * TODO: Implement cloud lighting streaming support
- * TODO: Add cloud lighting LOD support
- * TODO: Implement cloud lighting culling integration
- * TODO: Add cloud lighting render graph node
  */
 
 #include "cloud_lighting.h"
+#include "../../math/vec3.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
  * ============================================================================ */
 
-#define ATMOSPHERE_CLOUD_LIGHTING_MAX_COUNT 4096
-#define ATMOSPHERE_CLOUD_LIGHTING_DEFAULT_CAPACITY 256
-#define ATMOSPHERE_CLOUD_LIGHTING_ALIGNMENT 16
+#define PI 3.14159265359f
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
-typedef struct atmosphere_cloud_lighting_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} atmosphere_cloud_lighting_internal_t;
+typedef struct cloud_lighting_params {
+    vec3_t sun_color;
+    float sun_intensity;
+    vec3_t ambient_color_top;
+    vec3_t ambient_color_bottom;
+    
+    // Phase function
+    float eccentricity; // First phase lobe g
+    float silver_lining_spread; // Second lobe g
+    float silver_lining_intensity;
+    
+    // Powder effect
+    float powder_scale;
+    
+    // Attenuation
+    float absorption_coeff;
+} cloud_lighting_params_t;
 
-typedef struct atmosphere_cloud_lighting_context {
-    atmosphere_cloud_lighting_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} atmosphere_cloud_lighting_context_t;
-
-static atmosphere_cloud_lighting_context_t g_cloud_lighting_ctx = {0};
+static cloud_lighting_params_t g_cloud_light = {0};
 
 /* ============================================================================
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool atmosphere_cloud_lighting_validate(const atmosphere_cloud_lighting_internal_t* item) {
-    // TODO: Implement atmospheric scattering
-    // TODO: Add volumetric clouds
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void atmosphere_cloud_lighting_cleanup_internal(atmosphere_cloud_lighting_internal_t* item) {
-    // TODO: Implement sky LUT
-    // TODO: Add aerial perspective
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
+// Dual-lobe Henyey-Greenstein phase function
+static float hg_phase(float g, float cos_theta) {
+    float g2 = g * g;
+    float num = 1.0f - g2;
+    float denom = 1.0f + g2 - 2.0f * g * cos_theta;
+    return (1.0f / (4.0f * PI)) * (num / powf(denom, 1.5f));
 }
 
 /* ============================================================================
@@ -105,186 +62,80 @@ static void atmosphere_cloud_lighting_cleanup_internal(atmosphere_cloud_lighting
  * ============================================================================ */
 
 int atmosphere_cloud_lighting_init(void) {
-    // TODO: Implement sun/moon rendering
-    // TODO: Add star field
-    // TODO: Implement time-of-day
-    // TODO: Add weather transitions
-
-    if (g_cloud_lighting_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_cloud_lighting_ctx.capacity = ATMOSPHERE_CLOUD_LIGHTING_DEFAULT_CAPACITY;
-    g_cloud_lighting_ctx.items = calloc(g_cloud_lighting_ctx.capacity, sizeof(atmosphere_cloud_lighting_internal_t));
-    if (!g_cloud_lighting_ctx.items) {
-        return -1;
-    }
-
-    g_cloud_lighting_ctx.count = 0;
-    g_cloud_lighting_ctx.initialized = true;
-
+    g_cloud_light.sun_color = vec3_set(1.0f, 0.98f, 0.95f);
+    g_cloud_light.sun_intensity = 1.0f;
+    g_cloud_light.ambient_color_top = vec3_set(0.6f, 0.7f, 0.9f);
+    g_cloud_light.ambient_color_bottom = vec3_set(0.2f, 0.25f, 0.3f);
+    
+    g_cloud_light.eccentricity = 0.6f; // Forward scattering
+    g_cloud_light.silver_lining_spread = -0.2f; // Back scattering lobe
+    g_cloud_light.silver_lining_intensity = 0.5f;
+    
+    g_cloud_light.powder_scale = 1.0f;
+    g_cloud_light.absorption_coeff = 0.5f; // Beers law scaling
+    
     return 0;
 }
 
 void atmosphere_cloud_lighting_shutdown(void) {
-    // TODO: Implement cloud shadows
-    // TODO: Add god rays
-    // TODO: Implement cloud lighting initialization
-    // TODO: Add cloud lighting cleanup/shutdown
-
-    if (!g_cloud_lighting_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_cloud_lighting_ctx.count; i++) {
-        atmosphere_cloud_lighting_cleanup_internal(&g_cloud_lighting_ctx.items[i]);
-    }
-
-    free(g_cloud_lighting_ctx.items);
-    g_cloud_lighting_ctx.items = NULL;
-    g_cloud_lighting_ctx.count = 0;
-    g_cloud_lighting_ctx.capacity = 0;
-    g_cloud_lighting_ctx.initialized = false;
+    // Cleanup
 }
 
-int atmosphere_cloud_lighting_create(atmosphere_cloud_lighting_handle_t* out_handle, const atmosphere_cloud_lighting_desc_t* desc) {
-    // TODO: Implement cloud lighting validation
-    // TODO: Add cloud lighting error handling
-    // TODO: Implement cloud lighting serialization
-    // TODO: Add cloud lighting debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_cloud_lighting_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_cloud_lighting_ctx.count >= g_cloud_lighting_ctx.capacity) {
-        // TODO: Implement cloud lighting unit tests
-        return -3;
-    }
-
-    uint32_t index = g_cloud_lighting_ctx.count++;
-    atmosphere_cloud_lighting_internal_t* item = &g_cloud_lighting_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
+// Calculate lighting at a point within the cloud
+// density: current sampled density
+// optical_depth_to_sun: accumulated density towards light
+vec3_t atmosphere_cloud_lighting_compute(
+    float density, 
+    float optical_depth_to_sun, 
+    float height_fraction,
+    vec3_t view_dir, 
+    vec3_t sun_dir
+) {
+    float cos_theta = vec3_dot(view_dir, sun_dir);
+    
+    // 1. Direct Lighting (Beer's Law)
+    // T = exp(-optical_depth * coeff)
+    float transmittance = expf(-optical_depth_to_sun * g_cloud_light.absorption_coeff);
+    
+    // 2. Powder Effect (Beer's Powder)
+    // Clouds are darker at edges where density is lower but also scatter more?
+    // Powder effect approximates multiple scattering making edges darker/more contrasty
+    // F = 1 - exp(-depth * 2)
+    float powder = 1.0f - expf(-optical_depth_to_sun * 2.0f * g_cloud_light.powder_scale);
+    float light_energy = transmittance * powder; 
+    
+    // 3. Phase Function
+    float phase1 = hg_phase(g_cloud_light.eccentricity, cos_theta);
+    float phase2 = hg_phase(g_cloud_light.silver_lining_spread, cos_theta);
+    float phase = phase1 + phase2 * g_cloud_light.silver_lining_intensity;
+    
+    // Direct contribution
+    vec3_t direct_light;
+    direct_light.x = g_cloud_light.sun_color.x * g_cloud_light.sun_intensity * light_energy * phase;
+    direct_light.y = g_cloud_light.sun_color.y * g_cloud_light.sun_intensity * light_energy * phase;
+    direct_light.z = g_cloud_light.sun_color.z * g_cloud_light.sun_intensity * light_energy * phase;
+    
+    // 4. Ambient Lighting
+    // Gradient based on height
+    vec3_t ambient;
+    float amb_factor = 0.6f + 0.4f * height_fraction;
+    // Blend top/bottom
+    ambient.x = g_cloud_light.ambient_color_bottom.x * (1.0f - height_fraction) + g_cloud_light.ambient_color_top.x * height_fraction;
+    ambient.y = g_cloud_light.ambient_color_bottom.y * (1.0f - height_fraction) + g_cloud_light.ambient_color_top.y * height_fraction;
+    ambient.z = g_cloud_light.ambient_color_bottom.z * (1.0f - height_fraction) + g_cloud_light.ambient_color_top.z * height_fraction;
+    
+    // Ambient is less affected by directional transmittance but still absorbed by density
+    float ambient_transmittance = expf(-density * 0.5f);
+    
+    vec3_t result;
+    result.x = (direct_light.x + ambient.x * ambient_transmittance) * density;
+    result.y = (direct_light.y + ambient.y * ambient_transmittance) * density;
+    result.z = (direct_light.z + ambient.z * ambient_transmittance) * density;
+    
+    return result;
 }
 
-void atmosphere_cloud_lighting_destroy(atmosphere_cloud_lighting_handle_t handle) {
-    // TODO: Add cloud lighting performance counters
-    // TODO: Implement cloud lighting hot-reload
-
-    if (handle.id >= g_cloud_lighting_ctx.count) {
-        return;
-    }
-
-    atmosphere_cloud_lighting_cleanup_internal(&g_cloud_lighting_ctx.items[handle.id]);
+void atmosphere_cloud_lighting_set_sun(vec3_t color, float intensity) {
+    g_cloud_light.sun_color = color;
+    g_cloud_light.sun_intensity = intensity;
 }
-
-int atmosphere_cloud_lighting_update(atmosphere_cloud_lighting_handle_t handle, const void* data, size_t size) {
-    // TODO: Add cloud lighting thread safety
-    // TODO: Implement cloud lighting memory pooling
-    // TODO: Add cloud lighting caching layer
-    // TODO: Implement cloud lighting async operations
-
-    if (handle.id >= g_cloud_lighting_ctx.count) {
-        return -1;
-    }
-
-    atmosphere_cloud_lighting_internal_t* item = &g_cloud_lighting_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add cloud lighting GPU integration
-    // TODO: Implement cloud lighting SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool atmosphere_cloud_lighting_is_valid(atmosphere_cloud_lighting_handle_t handle) {
-    // TODO: Add cloud lighting batch processing
-    if (handle.id >= g_cloud_lighting_ctx.count) {
-        return false;
-    }
-    return g_cloud_lighting_ctx.items[handle.id].initialized;
-}
-
-int atmosphere_cloud_lighting_get_info(atmosphere_cloud_lighting_handle_t handle, atmosphere_cloud_lighting_info_t* out_info) {
-    // TODO: Implement cloud lighting streaming support
-    // TODO: Add cloud lighting LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_cloud_lighting_ctx.count) {
-        return -2;
-    }
-
-    const atmosphere_cloud_lighting_internal_t* item = &g_cloud_lighting_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void atmosphere_cloud_lighting_mark_dirty(atmosphere_cloud_lighting_handle_t handle) {
-    // TODO: Implement cloud lighting culling integration
-    if (handle.id < g_cloud_lighting_ctx.count) {
-        g_cloud_lighting_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int atmosphere_cloud_lighting_process_pending(void) {
-    // TODO: Add cloud lighting render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_cloud_lighting_ctx.count; i++) {
-        atmosphere_cloud_lighting_internal_t* item = &g_cloud_lighting_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
-}
-
-uint32_t atmosphere_cloud_lighting_get_count(void) {
-    return g_cloud_lighting_ctx.count;
-}
-
-size_t atmosphere_cloud_lighting_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_cloud_lighting_ctx);
-    total += g_cloud_lighting_ctx.capacity * sizeof(atmosphere_cloud_lighting_internal_t);
-
-    for (uint32_t i = 0; i < g_cloud_lighting_ctx.count; i++) {
-        total += g_cloud_lighting_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void atmosphere_cloud_lighting_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of cloud_lighting.c */

@@ -39,6 +39,8 @@
  */
 
 #include "particle_simulation.h"
+#include "../../math/vec3.h"
+#include "../../math/vec4.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -60,11 +62,13 @@
 typedef struct effects_particle_simulation_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    particle_t* particles;
+    uint32_t active_count;
+    uint32_t max_particles;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
+    bool enable_gpu;
+    // For simple CPU pool management, we just track active count and swap-remove
 } effects_particle_simulation_internal_t;
 
 typedef struct effects_particle_simulation_context {
@@ -81,23 +85,14 @@ static effects_particle_simulation_context_t g_particle_simulation_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool effects_particle_simulation_validate(const effects_particle_simulation_internal_t* item) {
-    // TODO: Implement GPU particle system
-    // TODO: Add particle collision
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+static float random_float(float min, float max) {
+    return min + (float)rand() / (float)RAND_MAX * (max - min);
 }
 
-static void effects_particle_simulation_cleanup_internal(effects_particle_simulation_internal_t* item) {
-    // TODO: Implement ribbon/trail rendering
-    // TODO: Add VFX graph system
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
+static void random_vec3(vec3_t* v, float min, float max) {
+    v->x = random_float(min, max);
+    v->y = random_float(min, max);
+    v->z = random_float(min, max);
 }
 
 /* ============================================================================
@@ -105,13 +100,8 @@ static void effects_particle_simulation_cleanup_internal(effects_particle_simula
  * ============================================================================ */
 
 int effects_particle_simulation_init(void) {
-    // TODO: Implement decal rendering
-    // TODO: Add weather effects
-    // TODO: Implement particle sorting
-    // TODO: Add particle LOD
-
     if (g_particle_simulation_ctx.initialized) {
-        return 0; // Already initialized
+        return 0;
     }
 
     g_particle_simulation_ctx.capacity = EFFECTS_PARTICLE_SIMULATION_DEFAULT_CAPACITY;
@@ -127,17 +117,17 @@ int effects_particle_simulation_init(void) {
 }
 
 void effects_particle_simulation_shutdown(void) {
-    // TODO: Implement force fields
-    // TODO: Add particle events
-    // TODO: Implement particle simulation initialization
-    // TODO: Add particle simulation cleanup/shutdown
-
     if (!g_particle_simulation_ctx.initialized) {
         return;
     }
 
     for (uint32_t i = 0; i < g_particle_simulation_ctx.count; i++) {
-        effects_particle_simulation_cleanup_internal(&g_particle_simulation_ctx.items[i]);
+        effects_particle_simulation_internal_t* item = &g_particle_simulation_ctx.items[i];
+        if (item->particles) {
+            free(item->particles);
+            item->particles = NULL;
+        }
+        item->initialized = false;
     }
 
     free(g_particle_simulation_ctx.items);
@@ -148,11 +138,6 @@ void effects_particle_simulation_shutdown(void) {
 }
 
 int effects_particle_simulation_create(effects_particle_simulation_handle_t* out_handle, const effects_particle_simulation_desc_t* desc) {
-    // TODO: Implement particle simulation validation
-    // TODO: Add particle simulation error handling
-    // TODO: Implement particle simulation serialization
-    // TODO: Add particle simulation debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +147,6 @@ int effects_particle_simulation_create(effects_particle_simulation_handle_t* out
     }
 
     if (g_particle_simulation_ctx.count >= g_particle_simulation_ctx.capacity) {
-        // TODO: Implement particle simulation unit tests
         return -3;
     }
 
@@ -171,33 +155,35 @@ int effects_particle_simulation_create(effects_particle_simulation_handle_t* out
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->max_particles = desc->max_particles > 0 ? desc->max_particles : 1000;
+    item->enable_gpu = desc->enable_gpu_simulation;
+    item->particles = calloc(item->max_particles, sizeof(particle_t));
+    if (!item->particles) {
+        return -4;
+    }
+    
+    item->active_count = 0;
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
 
     out_handle->id = index;
     return 0;
 }
 
 void effects_particle_simulation_destroy(effects_particle_simulation_handle_t handle) {
-    // TODO: Add particle simulation performance counters
-    // TODO: Implement particle simulation hot-reload
-
     if (handle.id >= g_particle_simulation_ctx.count) {
         return;
     }
 
-    effects_particle_simulation_cleanup_internal(&g_particle_simulation_ctx.items[handle.id]);
+    effects_particle_simulation_internal_t* item = &g_particle_simulation_ctx.items[handle.id];
+    if (item->particles) {
+        free(item->particles);
+        item->particles = NULL;
+    }
+    item->initialized = false;
 }
 
-int effects_particle_simulation_update(effects_particle_simulation_handle_t handle, const void* data, size_t size) {
-    // TODO: Add particle simulation thread safety
-    // TODO: Implement particle simulation memory pooling
-    // TODO: Add particle simulation caching layer
-    // TODO: Implement particle simulation async operations
-
+int effects_particle_simulation_update(effects_particle_simulation_handle_t handle, float dt) {
     if (handle.id >= g_particle_simulation_ctx.count) {
         return -1;
     }
@@ -206,64 +192,116 @@ int effects_particle_simulation_update(effects_particle_simulation_handle_t hand
     if (!item->initialized) {
         return -2;
     }
+    
+    // CPU Update
+    uint32_t active = item->active_count;
+    for (uint32_t i = 0; i < active; ) {
+        particle_t* p = &item->particles[i];
+        
+        p->age += dt;
+        if (p->age >= p->lifetime) {
+            // Kill particle: swap with last active
+            *p = item->particles[active - 1];
+            active--;
+            continue;
+        }
+        
+        // Physics
+        p->velocity.y += -9.8f * dt; // Simple gravity
+        
+        p->position.x += p->velocity.x * dt;
+        p->position.y += p->velocity.y * dt;
+        p->position.z += p->velocity.z * dt;
+        
+        p->rotation += p->rotation_speed * dt;
+        
+        i++;
+    }
+    item->active_count = active;
 
-    // TODO: Add particle simulation GPU integration
-    // TODO: Implement particle simulation SIMD optimization
+    return 0;
+}
 
-    item->dirty = true;
+int effects_particle_simulation_spawn(effects_particle_simulation_handle_t handle, const emitter_params_t* emitter, float dt) {
+    if (handle.id >= g_particle_simulation_ctx.count) return -1;
+    effects_particle_simulation_internal_t* item = &g_particle_simulation_ctx.items[handle.id];
+    
+    // Calculate how many particles to spawn
+    float spawn_count = emitter->spawn_rate * dt;
+    uint32_t count = (uint32_t)spawn_count;
+    if (random_float(0, 1) < (spawn_count - count)) {
+        count++;
+    }
+    
+    for (uint32_t i = 0; i < count; i++) {
+        if (item->active_count >= item->max_particles) break;
+        
+        particle_t* p = &item->particles[item->active_count++];
+        
+        // Initialize particle from emitter params
+        // Position validation based on shape
+        p->position = emitter->position; // Simplification, need shape logic
+        if (emitter->shape == EMITTER_SHAPE_SPHERE) {
+             vec3_t offset;
+             random_vec3(&offset, -emitter->shape_radius, emitter->shape_radius);
+             p->position.x += offset.x; 
+             p->position.y += offset.y; 
+             p->position.z += offset.z; 
+        }
+        
+        p->velocity.x = random_float(emitter->initial_speed.min, emitter->initial_speed.max); // Random dir
+        p->velocity.y = random_float(emitter->initial_speed.min, emitter->initial_speed.max);
+        p->velocity.z = random_float(emitter->initial_speed.min, emitter->initial_speed.max);
+        
+        p->color = emitter->start_color;
+        p->lifetime = random_float(emitter->initial_lifetime.min, emitter->initial_lifetime.max);
+        p->age = 0;
+        p->size = random_float(emitter->initial_size.min, emitter->initial_size.max);
+        p->rotation = random_float(emitter->initial_rotation.min, emitter->initial_rotation.max);
+        p->rotation_speed = random_float(emitter->initial_rotation_speed.min, emitter->initial_rotation_speed.max);
+        p->scale.x = p->scale.y = p->scale.z = 1.0f;
+    }
+    
     return 0;
 }
 
 bool effects_particle_simulation_is_valid(effects_particle_simulation_handle_t handle) {
-    // TODO: Add particle simulation batch processing
-    if (handle.id >= g_particle_simulation_ctx.count) {
-        return false;
-    }
+    if (handle.id >= g_particle_simulation_ctx.count) return false;
     return g_particle_simulation_ctx.items[handle.id].initialized;
 }
 
 int effects_particle_simulation_get_info(effects_particle_simulation_handle_t handle, effects_particle_simulation_info_t* out_info) {
-    // TODO: Implement particle simulation streaming support
-    // TODO: Add particle simulation LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_particle_simulation_ctx.count) {
-        return -2;
-    }
+    if (!out_info) return -1;
+    if (handle.id >= g_particle_simulation_ctx.count) return -2;
 
     const effects_particle_simulation_internal_t* item = &g_particle_simulation_ctx.items[handle.id];
     out_info->id = item->id;
-    out_info->flags = item->flags;
+    out_info->active_particle_count = item->active_count;
+    out_info->max_particles = item->max_particles;
+    out_info->using_gpu = item->enable_gpu;
     out_info->initialized = item->initialized;
 
     return 0;
 }
 
 void effects_particle_simulation_mark_dirty(effects_particle_simulation_handle_t handle) {
-    // TODO: Implement particle simulation culling integration
     if (handle.id < g_particle_simulation_ctx.count) {
         g_particle_simulation_ctx.items[handle.id].dirty = true;
     }
 }
 
 int effects_particle_simulation_process_pending(void) {
-    // TODO: Add particle simulation render graph node
-    // TODO: Implement batch processing
+    return 0;
+}
 
-    int processed = 0;
-    for (uint32_t i = 0; i < g_particle_simulation_ctx.count; i++) {
-        effects_particle_simulation_internal_t* item = &g_particle_simulation_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
+const particle_t* effects_particle_simulation_get_particles(effects_particle_simulation_handle_t handle, uint32_t* out_count) {
+    if (handle.id >= g_particle_simulation_ctx.count) {
+        if (out_count) *out_count = 0;
+        return NULL;
     }
-
-    return processed;
+    const effects_particle_simulation_internal_t* item = &g_particle_simulation_ctx.items[handle.id];
+    if (out_count) *out_count = item->active_count;
+    return item->particles;
 }
 
 uint32_t effects_particle_simulation_get_count(void) {
@@ -271,14 +309,13 @@ uint32_t effects_particle_simulation_get_count(void) {
 }
 
 size_t effects_particle_simulation_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_particle_simulation_ctx);
     total += g_particle_simulation_ctx.capacity * sizeof(effects_particle_simulation_internal_t);
-
     for (uint32_t i = 0; i < g_particle_simulation_ctx.count; i++) {
-        total += g_particle_simulation_ctx.items[i].data_size;
+        if (g_particle_simulation_ctx.items[i].particles) {
+            total += g_particle_simulation_ctx.items[i].max_particles * sizeof(particle_t);
+        }
     }
-
     return total;
 }
 

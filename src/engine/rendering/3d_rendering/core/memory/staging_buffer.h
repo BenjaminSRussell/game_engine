@@ -49,6 +49,7 @@ int core_staging_buffer_create(core_staging_buffer_handle_t* out_handle, const c
 void core_staging_buffer_destroy(core_staging_buffer_handle_t handle);
 
 /* Operations */
+int core_staging_buffer_push(core_staging_buffer_handle_t handle, const void* data, uint64_t size, uint64_t* out_offset);
 int core_staging_buffer_update(core_staging_buffer_handle_t handle, const void* data, size_t size);
 bool core_staging_buffer_is_valid(core_staging_buffer_handle_t handle);
 int core_staging_buffer_get_info(core_staging_buffer_handle_t handle, core_staging_buffer_info_t* out_info);

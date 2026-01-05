@@ -21,6 +21,29 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
+#include "render_pass_node.h"
+#include "resource_node.h"
+
+typedef struct rendering_render_graph {
+    char name[128];
+    
+    rendering_render_pass_node_handle_t* passes;
+    uint32_t pass_count;
+    uint32_t pass_capacity;
+    
+    rendering_resource_node_handle_t* resources;
+    uint32_t resource_count;
+    uint32_t resource_capacity;
+    
+    uint32_t* adjacency_list; // For topological sort
+    uint32_t* execution_order;
+    
+    bool compiled;
+} rendering_render_graph_t;
+
+// Shorthand alias for user convenience
+typedef rendering_render_graph_t render_graph_t;
+
 typedef struct rendering_graph_compiler_handle {
     uint32_t id;
 } rendering_graph_compiler_handle_t;
@@ -40,19 +63,20 @@ typedef struct rendering_graph_compiler_info {
  * API
  * ============================================================================ */
 
-/* Initialization */
+/* Render Graph Management */
+render_graph_t* render_graph_create(const char* name);
+void render_graph_destroy(render_graph_t* graph);
+
+rg_resource_handle_t rg_create_texture(render_graph_t* graph, const char* name, const rendering_resource_node_desc_t* desc);
+rg_resource_handle_t rg_create_buffer(render_graph_t* graph, const char* name, const rendering_resource_node_desc_t* desc);
+
+void rg_add_pass(render_graph_t* graph, const char* name, rendering_render_pass_type_t type, const rendering_render_pass_node_desc_t* desc);
+
+int rg_compile(render_graph_t* graph);
+
+/* Graph Compiler API */
 int rendering_graph_compiler_init(void);
 void rendering_graph_compiler_shutdown(void);
-
-/* Lifecycle */
-int rendering_graph_compiler_create(rendering_graph_compiler_handle_t* out_handle, const rendering_graph_compiler_desc_t* desc);
-void rendering_graph_compiler_destroy(rendering_graph_compiler_handle_t handle);
-
-/* Operations */
-int rendering_graph_compiler_update(rendering_graph_compiler_handle_t handle, const void* data, size_t size);
-bool rendering_graph_compiler_is_valid(rendering_graph_compiler_handle_t handle);
-int rendering_graph_compiler_get_info(rendering_graph_compiler_handle_t handle, rendering_graph_compiler_info_t* out_info);
-void rendering_graph_compiler_mark_dirty(rendering_graph_compiler_handle_t handle);
 int rendering_graph_compiler_process_pending(void);
 
 /* Statistics */

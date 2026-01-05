@@ -21,43 +21,78 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
-typedef struct geometry_mesh_bounds_handle {
-    uint32_t id;
-} geometry_mesh_bounds_handle_t;
+#include "mesh_data.h"
 
-typedef struct geometry_mesh_bounds_desc {
-    uint32_t flags;
-    void* user_data;
-} geometry_mesh_bounds_desc_t;
-
-typedef struct geometry_mesh_bounds_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} geometry_mesh_bounds_info_t;
+/* Bounding volume utilities for mesh optimization */
 
 /* ============================================================================
- * API
+ * API - AABB OPERATIONS
  * ============================================================================ */
 
-/* Initialization */
-int geometry_mesh_bounds_init(void);
-void geometry_mesh_bounds_shutdown(void);
+// Compute AABB from vertex data
+// vertex_stride: bytes between each vertex
+// position_offset: offset of position in each vertex (usually 0)
+int geometry_bounds_compute_aabb(
+    const void* vertex_data,
+    uint32_t vertex_count,
+    uint32_t vertex_stride,
+    uint32_t position_offset,  // Offset to position data within vertex
+    aabb_t* out_aabb
+);
 
-/* Lifecycle */
-int geometry_mesh_bounds_create(geometry_mesh_bounds_handle_t* out_handle, const geometry_mesh_bounds_desc_t* desc);
-void geometry_mesh_bounds_destroy(geometry_mesh_bounds_handle_t handle);
+// Compute AABB from multiple AABBs (union of all bounds)
+int geometry_bounds_merge_aabbs(
+    const aabb_t* aabbs,
+    uint32_t count,
+    aabb_t* out_merged
+);
 
-/* Operations */
-int geometry_mesh_bounds_update(geometry_mesh_bounds_handle_t handle, const void* data, size_t size);
-bool geometry_mesh_bounds_is_valid(geometry_mesh_bounds_handle_t handle);
-int geometry_mesh_bounds_get_info(geometry_mesh_bounds_handle_t handle, geometry_mesh_bounds_info_t* out_info);
-void geometry_mesh_bounds_mark_dirty(geometry_mesh_bounds_handle_t handle);
-int geometry_mesh_bounds_process_pending(void);
+// Check if point is inside AABB
+bool geometry_bounds_point_in_aabb(const aabb_t* aabb, float x, float y, float z);
 
-/* Statistics */
+// Check if two AABBs intersect
+bool geometry_bounds_aabb_intersect(const aabb_t* aabb1, const aabb_t* aabb2);
+
+// Transform AABB by a uniform scale
+void geometry_bounds_aabb_scale(aabb_t* aabb, float scale);
+
+// Get AABB size (half-extents)
+void geometry_bounds_aabb_half_extents(const aabb_t* aabb, float* out_hx, float* out_hy, float* out_hz);
+
+/* ============================================================================
+ * API - BOUNDING SPHERE OPERATIONS
+ * ============================================================================ */
+
+// Compute bounding sphere from AABB (fast, axis-aligned)
+void geometry_bounds_sphere_from_aabb(const aabb_t* aabb, bounding_sphere_t* out_sphere);
+
+// Compute optimal bounding sphere from vertex data (Ritter's algorithm)
+int geometry_bounds_compute_sphere(
+    const void* vertex_data,
+    uint32_t vertex_count,
+    uint32_t vertex_stride,
+    uint32_t position_offset,
+    bounding_sphere_t* out_sphere
+);
+
+// Merge two bounding spheres
+void geometry_bounds_sphere_merge(
+    const bounding_sphere_t* sphere1,
+    const bounding_sphere_t* sphere2,
+    bounding_sphere_t* out_merged
+);
+
+// Check if point is inside bounding sphere
+bool geometry_bounds_point_in_sphere(const bounding_sphere_t* sphere, float x, float y, float z);
+
+// Check if two spheres intersect
+bool geometry_bounds_sphere_intersect(const bounding_sphere_t* sphere1, const bounding_sphere_t* sphere2);
+
+/* ============================================================================
+ * STATISTICS
+ * ============================================================================ */
+
 uint32_t geometry_mesh_bounds_get_count(void);
-size_t geometry_mesh_bounds_get_memory_usage(void);
 void geometry_mesh_bounds_debug_print(void);
 
 #ifdef __cplusplus

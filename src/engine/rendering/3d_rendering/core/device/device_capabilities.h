@@ -21,6 +21,43 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
+typedef enum render_queue_type {
+    RENDER_QUEUE_TYPE_GRAPHICS = 0,
+    RENDER_QUEUE_TYPE_COMPUTE,
+    RENDER_QUEUE_TYPE_TRANSFER,
+    RENDER_QUEUE_TYPE_COUNT
+} render_queue_type_t;
+
+typedef struct render_device_caps {
+    char device_name[256];
+    uint32_t api_version;
+    uint32_t driver_version;
+    uint32_t vendor_id;
+    uint32_t device_id;
+    
+    struct {
+        uint32_t max_texture_dimension_2d;
+        uint32_t max_texture_dimension_3d;
+        uint32_t max_texture_dimension_cube;
+        uint32_t max_texture_array_layers;
+        uint64_t max_memory_allocation_count;
+        uint64_t max_uniform_buffer_range;
+        uint64_t max_storage_buffer_range;
+        uint32_t max_push_constants_size;
+    } limits;
+
+    struct {
+        bool ray_tracing;
+        bool async_compute;
+        bool mesh_shaders;
+        bool variable_rate_shading;
+        bool bindless_sampling;
+        bool sampler_anisotropy;
+        bool geometry_shader;
+        bool tessellation_shader;
+    } features;
+} render_device_caps_t;
+
 typedef struct core_device_capabilities_handle {
     uint32_t id;
 } core_device_capabilities_handle_t;
@@ -49,6 +86,7 @@ int core_device_capabilities_create(core_device_capabilities_handle_t* out_handl
 void core_device_capabilities_destroy(core_device_capabilities_handle_t handle);
 
 /* Operations */
+int core_device_capabilities_query(render_device_caps_t* out_caps, void* backend_handle);
 int core_device_capabilities_update(core_device_capabilities_handle_t handle, const void* data, size_t size);
 bool core_device_capabilities_is_valid(core_device_capabilities_handle_t handle);
 int core_device_capabilities_get_info(core_device_capabilities_handle_t handle, core_device_capabilities_info_t* out_info);

@@ -1,67 +1,48 @@
 /*
  * command_encoder.h
  * High-level command encoding
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
  */
 
-#ifndef CORE_COMMAND_ENCODER_H
-#define CORE_COMMAND_ENCODER_H
+#ifndef COMMAND_ENCODER_H
+#define COMMAND_ENCODER_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
+#include "command_buffer.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// Forward declarations
+typedef struct render_pass_info render_pass_info_t;
+typedef struct pipeline pipeline_t;
+typedef struct buffer buffer_t;
+typedef struct descriptor_set descriptor_set_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+// Render Pass Info (Simplified)
+struct render_pass_info {
+    // Attachments, clear values, etc.
+    void* backend_handle;
+};
 
-typedef struct core_command_encoder_handle {
-    uint32_t id;
-} core_command_encoder_handle_t;
+// Pipeline (Simplified)
+struct pipeline {
+    void* backend_handle;
+    // Bind point (Graphics/Compute)
+};
 
-typedef struct core_command_encoder_desc {
-    uint32_t flags;
-    void* user_data;
-} core_command_encoder_desc_t;
+// Command Buffer specific high-level functions
+// Note: cmd_begin and cmd_end are in command_buffer.h/c
 
-typedef struct core_command_encoder_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_command_encoder_info_t;
+// Render Pass
+void cmd_begin_render_pass(command_buffer_t* cmd, const render_pass_info_t* pass_info);
+void cmd_end_render_pass(command_buffer_t* cmd);
 
-/* ============================================================================
- * API
- * ============================================================================ */
+// Pipeline
+void cmd_bind_pipeline(command_buffer_t* cmd, pipeline_t* pipeline);
 
-/* Initialization */
-int core_command_encoder_init(void);
-void core_command_encoder_shutdown(void);
+// Drawing
+void cmd_draw(command_buffer_t* cmd, uint32_t vertex_count, uint32_t instance_count, uint32_t first_vertex, uint32_t first_instance);
+void cmd_draw_indexed(command_buffer_t* cmd, uint32_t index_count, uint32_t instance_count, uint32_t first_index, int32_t vertex_offset, uint32_t first_instance);
 
-/* Lifecycle */
-int core_command_encoder_create(core_command_encoder_handle_t* out_handle, const core_command_encoder_desc_t* desc);
-void core_command_encoder_destroy(core_command_encoder_handle_t handle);
+// Compute
+void cmd_dispatch(command_buffer_t* cmd, uint32_t group_count_x, uint32_t group_count_y, uint32_t group_count_z);
 
-/* Operations */
-int core_command_encoder_update(core_command_encoder_handle_t handle, const void* data, size_t size);
-bool core_command_encoder_is_valid(core_command_encoder_handle_t handle);
-int core_command_encoder_get_info(core_command_encoder_handle_t handle, core_command_encoder_info_t* out_info);
-void core_command_encoder_mark_dirty(core_command_encoder_handle_t handle);
-int core_command_encoder_process_pending(void);
-
-/* Statistics */
-uint32_t core_command_encoder_get_count(void);
-size_t core_command_encoder_get_memory_usage(void);
-void core_command_encoder_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* CORE_COMMAND_ENCODER_H */
+#endif // COMMAND_ENCODER_H

@@ -38,12 +38,21 @@
  * TODO: Add lightmap uvs render graph node
  */
 
-#include "lightmap_uvs.h"
-#include <stdint.h>
+#ifndef __STDC_FORMAT_MACROS
+#define __STDC_FORMAT_MACROS
+#endif
+#include <inttypes.h>
+#include <math.h>
 #include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "lightmap_uvs.h"
+#include "../../../../include/common.h"
+#include "../../../../include/core/types.h"
+#include "../../../../include/math/vec3.h"
+#include "../../../../include/math/vec2.h"
 
 /* ============================================================================
  * CONSTANTS
@@ -192,25 +201,44 @@ void lighting_lightmap_uvs_destroy(lighting_lightmap_uvs_handle_t handle) {
     lighting_lightmap_uvs_cleanup_internal(&g_lightmap_uvs_ctx.items[handle.id]);
 }
 
-int lighting_lightmap_uvs_update(lighting_lightmap_uvs_handle_t handle, const void* data, size_t size) {
-    // TODO: Add lightmap uvs thread safety
-    // TODO: Implement lightmap uvs memory pooling
-    // TODO: Add lightmap uvs caching layer
-    // TODO: Implement lightmap uvs async operations
+typedef struct {
+    Vec3 position;
+    Vec3 normal;
+    Vec2 uv;
+} lightmap_vertex_t;
 
-    if (handle.id >= g_lightmap_uvs_ctx.count) {
+int lighting_lightmap_uvs_generate(Vec3* positions, Vec3* normals, uint32_t vertex_count, Vec2* out_uvs) {
+    if (!positions || !normals || !out_uvs || vertex_count == 0) {
         return -1;
     }
 
-    lighting_lightmap_uvs_internal_t* item = &g_lightmap_uvs_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
+    // Basic Box Mapping (Planar projection based on dominant normal axis)
+    for (uint32_t i = 0; i < vertex_count; i++) {
+        Vec3 n = normals[i];
+        Vec3 p = positions[i];
+        
+        float abs_x = fabsf(n.x);
+        float abs_y = fabsf(n.y);
+        float abs_z = fabsf(n.z);
+
+        Vec2 uv;
+        if (abs_x > abs_y && abs_x > abs_z) {
+            // X-dominant
+            uv.x = p.y;
+            uv.y = p.z;
+        } else if (abs_y > abs_x && abs_y > abs_z) {
+            // Y-dominant
+            uv.x = p.x;
+            uv.y = p.z;
+        } else {
+            // Z-dominant
+            uv.x = p.x;
+            uv.y = p.y;
+        }
+
+        out_uvs[i] = uv;
     }
 
-    // TODO: Add lightmap uvs GPU integration
-    // TODO: Implement lightmap uvs SIMD optimization
-
-    item->dirty = true;
     return 0;
 }
 

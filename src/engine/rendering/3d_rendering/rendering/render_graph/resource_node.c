@@ -59,9 +59,16 @@
 
 typedef struct rendering_resource_node_internal {
     uint32_t id;
+    const char* name;
+    rendering_resource_type_t type;
+    uint32_t width;
+    uint32_t height;
+    uint32_t depth;
+    uint32_t format;
+    uint32_t usage;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    void* user_data;
+    bool is_transient;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -90,13 +97,7 @@ static bool rendering_resource_node_validate(const rendering_resource_node_inter
 }
 
 static void rendering_resource_node_cleanup_internal(rendering_resource_node_internal_t* item) {
-    // TODO: Implement visibility buffer
-    // TODO: Add GPU-driven pipeline
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
     item->initialized = false;
 }
 
@@ -170,9 +171,17 @@ int rendering_resource_node_create(rendering_resource_node_handle_t* out_handle,
     rendering_resource_node_internal_t* item = &g_resource_node_ctx.items[index];
 
     item->id = index;
+    item->name = desc->name;
+    item->type = desc->type;
+    item->width = desc->width;
+    item->height = desc->height;
+    item->depth = desc->depth;
+    item->format = desc->format;
+    item->usage = desc->usage;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->user_data = desc->user_data;
+    item->is_transient = desc->is_transient;
+    
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -236,8 +245,11 @@ int rendering_resource_node_get_info(rendering_resource_node_handle_t handle, re
 
     const rendering_resource_node_internal_t* item = &g_resource_node_ctx.items[handle.id];
     out_info->id = item->id;
+    out_info->name = item->name;
+    out_info->type = item->type;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
+    out_info->is_transient = item->is_transient;
 
     return 0;
 }
@@ -271,14 +283,8 @@ uint32_t rendering_resource_node_get_count(void) {
 }
 
 size_t rendering_resource_node_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_resource_node_ctx);
     total += g_resource_node_ctx.capacity * sizeof(rendering_resource_node_internal_t);
-
-    for (uint32_t i = 0; i < g_resource_node_ctx.count; i++) {
-        total += g_resource_node_ctx.items[i].data_size;
-    }
-
     return total;
 }
 

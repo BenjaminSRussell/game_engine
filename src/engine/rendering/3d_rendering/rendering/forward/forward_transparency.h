@@ -1,67 +1,42 @@
 /*
  * forward_transparency.h
- * Forward transparent pass
+ * Forward transparency pass API
  *
  * Part of the Rendering subsystem
  * Advanced 3D Rendering Engine
  */
 
-#ifndef RENDERING_FORWARD_TRANSPARENCY_H
-#define RENDERING_FORWARD_TRANSPARENCY_H
+#ifndef FORWARD_TRANSPARENCY_H
+#define FORWARD_TRANSPARENCY_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/* Forward declarations */
+typedef struct static_mesh_draw_info static_mesh_draw_info_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct rendering_forward_transparency_handle {
-    uint32_t id;
-} rendering_forward_transparency_handle_t;
-
-typedef struct rendering_forward_transparency_desc {
-    uint32_t flags;
-    void* user_data;
-} rendering_forward_transparency_desc_t;
-
-typedef struct rendering_forward_transparency_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} rendering_forward_transparency_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
-
-/* Initialization */
+/**
+ * @brief Initialize the transparency pass
+ * @return 0 on success
+ */
 int rendering_forward_transparency_init(void);
+
+/**
+ * @brief Shutdown the transparency pass
+ */
 void rendering_forward_transparency_shutdown(void);
 
-/* Lifecycle */
-int rendering_forward_transparency_create(rendering_forward_transparency_handle_t* out_handle, const rendering_forward_transparency_desc_t* desc);
-void rendering_forward_transparency_destroy(rendering_forward_transparency_handle_t handle);
+/**
+ * @brief Submit a transparent mesh to be drawn
+ * @param info Draw information
+ */
+void rendering_forward_transparency_submit(const static_mesh_draw_info_t* info);
 
-/* Operations */
-int rendering_forward_transparency_update(rendering_forward_transparency_handle_t handle, const void* data, size_t size);
-bool rendering_forward_transparency_is_valid(rendering_forward_transparency_handle_t handle);
-int rendering_forward_transparency_get_info(rendering_forward_transparency_handle_t handle, rendering_forward_transparency_info_t* out_info);
-void rendering_forward_transparency_mark_dirty(rendering_forward_transparency_handle_t handle);
-int rendering_forward_transparency_process_pending(void);
+/**
+ * @brief Execute the transparency pass
+ * @param cmd_buffer Command buffer
+ * @param camera_pos Camera position for back-to-front sorting
+ */
+void rendering_forward_transparency_execute(void* cmd_buffer, const float camera_pos[3]);
 
-/* Statistics */
-uint32_t rendering_forward_transparency_get_count(void);
-size_t rendering_forward_transparency_get_memory_usage(void);
-void rendering_forward_transparency_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* RENDERING_FORWARD_TRANSPARENCY_H */
+#endif /* FORWARD_TRANSPARENCY_H */

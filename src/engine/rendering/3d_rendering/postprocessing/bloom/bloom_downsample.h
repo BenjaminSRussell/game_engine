@@ -21,6 +21,10 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
+/* ============================================================================
+ * TYPES
+ * ============================================================================ */
+
 typedef struct postprocessing_bloom_downsample_handle {
     uint32_t id;
 } postprocessing_bloom_downsample_handle_t;
@@ -54,6 +58,10 @@ bool postprocessing_bloom_downsample_is_valid(postprocessing_bloom_downsample_ha
 int postprocessing_bloom_downsample_get_info(postprocessing_bloom_downsample_handle_t handle, postprocessing_bloom_downsample_info_t* out_info);
 void postprocessing_bloom_downsample_mark_dirty(postprocessing_bloom_downsample_handle_t handle);
 int postprocessing_bloom_downsample_process_pending(void);
+
+/* Processing */
+// Downsamples input buffer to output buffer (half size) using 13-tap filter
+void postprocessing_bloom_downsample_buffer(const float* input_rgb, uint32_t in_width, uint32_t in_height, float* output_rgb, uint32_t out_width, uint32_t out_height);
 
 /* Statistics */
 uint32_t postprocessing_bloom_downsample_get_count(void);

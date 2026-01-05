@@ -1,6 +1,6 @@
 /*
  * feedback_buffer.h
- * VT feedback buffer
+ * GPU feedback buffer management
  *
  * Part of the Texture subsystem
  * Advanced 3D Rendering Engine
@@ -21,47 +21,40 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
-typedef struct texture_feedback_buffer_handle {
-    uint32_t id;
-} texture_feedback_buffer_handle_t;
+typedef struct feedback_request {
+    uint32_t texture_handle;
+    uint16_t x, y;
+    uint8_t mip;
+    uint8_t flags;
+} feedback_request_t;
 
-typedef struct texture_feedback_buffer_desc {
-    uint32_t flags;
-    void* user_data;
-} texture_feedback_buffer_desc_t;
-
-typedef struct texture_feedback_buffer_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} texture_feedback_buffer_info_t;
+typedef struct feedback_buffer {
+    uint32_t gpu_buffer_handle;
+    uint32_t resolve_target_handle;
+    uint32_t buffer_size;
+    bool active;
+} feedback_buffer_t;
 
 /* ============================================================================
  * API
  * ============================================================================ */
 
-/* Initialization */
-int texture_feedback_buffer_init(void);
-void texture_feedback_buffer_shutdown(void);
-
 /* Lifecycle */
-int texture_feedback_buffer_create(texture_feedback_buffer_handle_t* out_handle, const texture_feedback_buffer_desc_t* desc);
-void texture_feedback_buffer_destroy(texture_feedback_buffer_handle_t handle);
+int feedback_buffer_init(feedback_buffer_t* fb, uint32_t width, uint32_t height);
+void feedback_buffer_shutdown(feedback_buffer_t* fb);
 
 /* Operations */
-int texture_feedback_buffer_update(texture_feedback_buffer_handle_t handle, const void* data, size_t size);
-bool texture_feedback_buffer_is_valid(texture_feedback_buffer_handle_t handle);
-int texture_feedback_buffer_get_info(texture_feedback_buffer_handle_t handle, texture_feedback_buffer_info_t* out_info);
-void texture_feedback_buffer_mark_dirty(texture_feedback_buffer_handle_t handle);
-int texture_feedback_buffer_process_pending(void);
+void feedback_buffer_begin(feedback_buffer_t* fb);
+void feedback_buffer_end(feedback_buffer_t* fb);
+int feedback_buffer_read(feedback_buffer_t* fb, void* out_data, uint32_t* out_count);
 
-/* Statistics */
-uint32_t texture_feedback_buffer_get_count(void);
-size_t texture_feedback_buffer_get_memory_usage(void);
-void texture_feedback_buffer_debug_print(void);
+/* Original stub compatibility */
+int texture_feedback_buffer_init(void);
+void texture_feedback_buffer_shutdown(void);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* TEXTURE_FEEDBACK_BUFFER_H */
+

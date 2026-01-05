@@ -59,19 +59,20 @@
 
 typedef struct lumen_surface_atlas_internal {
     uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
+    uint32_t size;
+    uint32_t region_size;
+    uint32_t regions_per_row;
+    bool* region_mask;        // Bitmask or bool array for allocation
+    uint32_t used_regions;
+    uint32_t total_regions;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } lumen_surface_atlas_internal_t;
 
 typedef struct lumen_surface_atlas_context {
     lumen_surface_atlas_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } lumen_surface_atlas_context_t;
 
@@ -90,12 +91,10 @@ static bool lumen_surface_atlas_validate(const lumen_surface_atlas_internal_t* i
 }
 
 static void lumen_surface_atlas_cleanup_internal(lumen_surface_atlas_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+    if (item->region_mask) {
+        free(item->region_mask);
+        item->region_mask = NULL;
     }
     item->initialized = false;
 }
@@ -148,11 +147,6 @@ void lumen_surface_atlas_shutdown(void) {
 }
 
 int lumen_surface_atlas_create(lumen_surface_atlas_handle_t* out_handle, const lumen_surface_atlas_desc_t* desc) {
-    // TODO: Implement surface atlas validation
-    // TODO: Add surface atlas error handling
-    // TODO: Implement surface atlas serialization
-    // TODO: Add surface atlas debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +156,6 @@ int lumen_surface_atlas_create(lumen_surface_atlas_handle_t* out_handle, const l
     }
 
     if (g_surface_atlas_ctx.count >= g_surface_atlas_ctx.capacity) {
-        // TODO: Implement surface atlas unit tests
         return -3;
     }
 
@@ -170,12 +163,19 @@ int lumen_surface_atlas_create(lumen_surface_atlas_handle_t* out_handle, const l
     lumen_surface_atlas_internal_t* item = &g_surface_atlas_ctx.items[index];
 
     item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->size = desc->size;
+    item->region_size = desc->region_size;
+    item->regions_per_row = desc->size / desc->region_size;
+    item->total_regions = item->regions_per_row * item->regions_per_row;
+    item->used_regions = 0;
+    item->region_mask = calloc(item->total_regions, sizeof(bool));
+    if (!item->region_mask) {
+        g_surface_atlas_ctx.count--;
+        return -4;
+    }
+    
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
 
     out_handle->id = index;
     return 0;
@@ -192,13 +192,8 @@ void lumen_surface_atlas_destroy(lumen_surface_atlas_handle_t handle) {
     lumen_surface_atlas_cleanup_internal(&g_surface_atlas_ctx.items[handle.id]);
 }
 
-int lumen_surface_atlas_update(lumen_surface_atlas_handle_t handle, const void* data, size_t size) {
-    // TODO: Add surface atlas thread safety
-    // TODO: Implement surface atlas memory pooling
-    // TODO: Add surface atlas caching layer
-    // TODO: Implement surface atlas async operations
-
-    if (handle.id >= g_surface_atlas_ctx.count) {
+int lumen_surface_atlas_alloc_region(lumen_surface_atlas_handle_t handle, lumen_surface_atlas_region_t* out_region) {
+    if (handle.id >= g_surface_atlas_ctx.count || !out_region) {
         return -1;
     }
 
@@ -207,8 +202,54 @@ int lumen_surface_atlas_update(lumen_surface_atlas_handle_t handle, const void* 
         return -2;
     }
 
-    // TODO: Add surface atlas GPU integration
-    // TODO: Implement surface atlas SIMD optimization
+    for (uint32_t i = 0; i < item->total_regions; i++) {
+        if (!item->region_mask[i]) {
+            item->region_mask[i] = true;
+            item->used_regions++;
+            
+            out_region->x = (i % item->regions_per_row) * item->region_size;
+            out_region->y = (i / item->regions_per_row) * item->region_size;
+            out_region->size = item->region_size;
+            out_region->allocated = true;
+            
+            item->dirty = true;
+            return 0;
+        }
+    }
+
+    return -3; // No regions left
+}
+
+void lumen_surface_atlas_free_region(lumen_surface_atlas_handle_t handle, const lumen_surface_atlas_region_t* region) {
+    if (handle.id >= g_surface_atlas_ctx.count || !region) {
+        return;
+    }
+
+    lumen_surface_atlas_internal_t* item = &g_surface_atlas_ctx.items[handle.id];
+    if (!item->initialized) {
+        return;
+    }
+
+    uint32_t ix = region->x / item->region_size;
+    uint32_t iy = region->y / item->region_size;
+    uint32_t index = iy * item->regions_per_row + ix;
+
+    if (index < item->total_regions && item->region_mask[index]) {
+        item->region_mask[index] = false;
+        item->used_regions--;
+        item->dirty = true;
+    }
+}
+
+int lumen_surface_atlas_update(lumen_surface_atlas_handle_t handle, const void* data, size_t size) {
+    if (handle.id >= g_surface_atlas_ctx.count) {
+        return -1;
+    }
+
+    lumen_surface_atlas_internal_t* item = &g_surface_atlas_ctx.items[handle.id];
+    if (!item->initialized) {
+        return -2;
+    }
 
     item->dirty = true;
     return 0;
@@ -223,9 +264,6 @@ bool lumen_surface_atlas_is_valid(lumen_surface_atlas_handle_t handle) {
 }
 
 int lumen_surface_atlas_get_info(lumen_surface_atlas_handle_t handle, lumen_surface_atlas_info_t* out_info) {
-    // TODO: Implement surface atlas streaming support
-    // TODO: Add surface atlas LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -236,7 +274,9 @@ int lumen_surface_atlas_get_info(lumen_surface_atlas_handle_t handle, lumen_surf
 
     const lumen_surface_atlas_internal_t* item = &g_surface_atlas_ctx.items[handle.id];
     out_info->id = item->id;
-    out_info->flags = item->flags;
+    out_info->size = item->size;
+    out_info->used_regions = item->used_regions;
+    out_info->total_regions = item->total_regions;
     out_info->initialized = item->initialized;
 
     return 0;
@@ -271,12 +311,13 @@ uint32_t lumen_surface_atlas_get_count(void) {
 }
 
 size_t lumen_surface_atlas_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_surface_atlas_ctx);
     total += g_surface_atlas_ctx.capacity * sizeof(lumen_surface_atlas_internal_t);
 
     for (uint32_t i = 0; i < g_surface_atlas_ctx.count; i++) {
-        total += g_surface_atlas_ctx.items[i].data_size;
+        if (g_surface_atlas_ctx.items[i].initialized) {
+            total += g_surface_atlas_ctx.items[i].total_regions * sizeof(bool);
+        }
     }
 
     return total;

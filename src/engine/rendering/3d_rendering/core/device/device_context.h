@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "device_capabilities.h"
+#include "../memory/gpu_allocator.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,6 +22,13 @@ extern "C" {
 /* ============================================================================
  * TYPES
  * ============================================================================ */
+
+typedef struct render_device {
+    void* backend_handle;  // VkDevice, id<MTLDevice>, ID3D12Device*
+    render_device_caps_t caps;
+    render_memory_allocator_t* allocator;
+    uint32_t queue_family_indices[RENDER_QUEUE_TYPE_COUNT];
+} render_device_t;
 
 typedef struct core_device_context_handle {
     uint32_t id;

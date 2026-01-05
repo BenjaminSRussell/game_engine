@@ -105,46 +105,16 @@ static void rendering_frame_pacing_cleanup_internal(rendering_frame_pacing_inter
  * ============================================================================ */
 
 int rendering_frame_pacing_init(void) {
-    // TODO: Implement render graph
-    // TODO: Add multi-draw indirect
-    // TODO: Implement mesh shaders
-    // TODO: Add variable rate shading
-
-    if (g_frame_pacing_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_frame_pacing_ctx.capacity = RENDERING_FRAME_PACING_DEFAULT_CAPACITY;
-    g_frame_pacing_ctx.items = calloc(g_frame_pacing_ctx.capacity, sizeof(rendering_frame_pacing_internal_t));
-    if (!g_frame_pacing_ctx.items) {
-        return -1;
-    }
-
-    g_frame_pacing_ctx.count = 0;
-    g_frame_pacing_ctx.initialized = true;
-
     return 0;
 }
 
 void rendering_frame_pacing_shutdown(void) {
-    // TODO: Implement async compute
-    // TODO: Add dynamic resolution
-    // TODO: Implement frame pacing initialization
-    // TODO: Add frame pacing cleanup/shutdown
+}
 
-    if (!g_frame_pacing_ctx.initialized) {
-        return;
-    }
+void rendering_frame_pacing_begin_frame(void) {
+}
 
-    for (uint32_t i = 0; i < g_frame_pacing_ctx.count; i++) {
-        rendering_frame_pacing_cleanup_internal(&g_frame_pacing_ctx.items[i]);
-    }
-
-    free(g_frame_pacing_ctx.items);
-    g_frame_pacing_ctx.items = NULL;
-    g_frame_pacing_ctx.count = 0;
-    g_frame_pacing_ctx.capacity = 0;
-    g_frame_pacing_ctx.initialized = false;
+void rendering_frame_pacing_end_frame(void) {
 }
 
 int rendering_frame_pacing_create(rendering_frame_pacing_handle_t* out_handle, const rendering_frame_pacing_desc_t* desc) {

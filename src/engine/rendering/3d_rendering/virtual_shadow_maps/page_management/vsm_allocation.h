@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "vsm_page_table.h"
+#include "vsm_page_pool.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,6 +56,8 @@ bool virtual_shadow_maps_vsm_allocation_is_valid(virtual_shadow_maps_vsm_allocat
 int virtual_shadow_maps_vsm_allocation_get_info(virtual_shadow_maps_vsm_allocation_handle_t handle, virtual_shadow_maps_vsm_allocation_info_t* out_info);
 void virtual_shadow_maps_vsm_allocation_mark_dirty(virtual_shadow_maps_vsm_allocation_handle_t handle);
 int virtual_shadow_maps_vsm_allocation_process_pending(void);
+
+uint32_t vsm_request_page(virtual_shadow_maps_vsm_page_table_handle_t table, virtual_shadow_maps_vsm_page_pool_handle_t pool, uint32_t v_x, uint32_t v_y, uint64_t frame);
 
 /* Statistics */
 uint32_t virtual_shadow_maps_vsm_allocation_get_count(void);

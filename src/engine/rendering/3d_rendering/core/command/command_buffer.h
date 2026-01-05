@@ -1,67 +1,51 @@
 /*
  * command_buffer.h
  * Command buffer recording and management
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
  */
 
-#ifndef CORE_COMMAND_BUFFER_H
-#define CORE_COMMAND_BUFFER_H
+#ifndef COMMAND_BUFFER_H
+#define COMMAND_BUFFER_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
+#include "command_pool.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+typedef struct command_buffer command_buffer_t;
+typedef struct resource_state_tracker resource_state_tracker_t; // Forward declaration
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+typedef enum command_buffer_state {
+    COMMAND_BUFFER_STATE_INITIAL,
+    COMMAND_BUFFER_STATE_RECORDING,
+    COMMAND_BUFFER_STATE_EXECUTABLE,
+    COMMAND_BUFFER_STATE_PENDING,
+    COMMAND_BUFFER_STATE_INVALID
+} command_buffer_state_t;
 
-typedef struct core_command_buffer_handle {
-    uint32_t id;
-} core_command_buffer_handle_t;
+typedef enum command_buffer_level {
+    COMMAND_BUFFER_LEVEL_PRIMARY,
+    COMMAND_BUFFER_LEVEL_SECONDARY
+} command_buffer_level_t;
 
-typedef struct core_command_buffer_desc {
-    uint32_t flags;
-    void* user_data;
-} core_command_buffer_desc_t;
+// Structure definition (exposed as requested)
+struct command_buffer {
+    void* backend_handle;
+    command_pool_t* pool;
+    command_buffer_state_t state;
+    resource_state_tracker_t* state_tracker;
+};
 
-typedef struct core_command_buffer_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_command_buffer_info_t;
+// Allocation
+command_buffer_t* command_buffer_allocate(command_pool_t* pool, command_buffer_level_t level);
 
-/* ============================================================================
- * API
- * ============================================================================ */
+// Lifecycle
+void command_buffer_free(command_buffer_t* cmd);
+void command_buffer_reset(command_buffer_t* cmd);
 
-/* Initialization */
-int core_command_buffer_init(void);
-void core_command_buffer_shutdown(void);
+// Recording
+int command_buffer_begin(command_buffer_t* cmd);
+int command_buffer_end(command_buffer_t* cmd);
 
-/* Lifecycle */
-int core_command_buffer_create(core_command_buffer_handle_t* out_handle, const core_command_buffer_desc_t* desc);
-void core_command_buffer_destroy(core_command_buffer_handle_t handle);
+// Accessors
+bool command_buffer_is_recording(command_buffer_t* cmd);
 
-/* Operations */
-int core_command_buffer_update(core_command_buffer_handle_t handle, const void* data, size_t size);
-bool core_command_buffer_is_valid(core_command_buffer_handle_t handle);
-int core_command_buffer_get_info(core_command_buffer_handle_t handle, core_command_buffer_info_t* out_info);
-void core_command_buffer_mark_dirty(core_command_buffer_handle_t handle);
-int core_command_buffer_process_pending(void);
-
-/* Statistics */
-uint32_t core_command_buffer_get_count(void);
-size_t core_command_buffer_get_memory_usage(void);
-void core_command_buffer_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* CORE_COMMAND_BUFFER_H */
+#endif // COMMAND_BUFFER_H

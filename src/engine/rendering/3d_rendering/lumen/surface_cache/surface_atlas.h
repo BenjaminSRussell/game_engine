@@ -26,13 +26,22 @@ typedef struct lumen_surface_atlas_handle {
 } lumen_surface_atlas_handle_t;
 
 typedef struct lumen_surface_atlas_desc {
+    uint32_t size;            // Total atlas size (square)
+    uint32_t region_size;     // Default region size for cards
     uint32_t flags;
-    void* user_data;
 } lumen_surface_atlas_desc_t;
+
+typedef struct lumen_surface_atlas_region {
+    uint32_t x, y;
+    uint32_t size;
+    bool allocated;
+} lumen_surface_atlas_region_t;
 
 typedef struct lumen_surface_atlas_info {
     uint32_t id;
-    uint32_t flags;
+    uint32_t size;
+    uint32_t used_regions;
+    uint32_t total_regions;
     bool initialized;
 } lumen_surface_atlas_info_t;
 
@@ -49,6 +58,8 @@ int lumen_surface_atlas_create(lumen_surface_atlas_handle_t* out_handle, const l
 void lumen_surface_atlas_destroy(lumen_surface_atlas_handle_t handle);
 
 /* Operations */
+int lumen_surface_atlas_alloc_region(lumen_surface_atlas_handle_t handle, lumen_surface_atlas_region_t* out_region);
+void lumen_surface_atlas_free_region(lumen_surface_atlas_handle_t handle, const lumen_surface_atlas_region_t* region);
 int lumen_surface_atlas_update(lumen_surface_atlas_handle_t handle, const void* data, size_t size);
 bool lumen_surface_atlas_is_valid(lumen_surface_atlas_handle_t handle);
 int lumen_surface_atlas_get_info(lumen_surface_atlas_handle_t handle, lumen_surface_atlas_info_t* out_info);

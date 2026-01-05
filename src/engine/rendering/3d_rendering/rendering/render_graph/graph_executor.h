@@ -40,19 +40,13 @@ typedef struct rendering_graph_executor_info {
  * API
  * ============================================================================ */
 
-/* Initialization */
+#include "graph_compiler.h"
+
+/* Graph Execution API */
+void rg_execute(render_graph_t* graph, void* cmd);
+
 int rendering_graph_executor_init(void);
 void rendering_graph_executor_shutdown(void);
-
-/* Lifecycle */
-int rendering_graph_executor_create(rendering_graph_executor_handle_t* out_handle, const rendering_graph_executor_desc_t* desc);
-void rendering_graph_executor_destroy(rendering_graph_executor_handle_t handle);
-
-/* Operations */
-int rendering_graph_executor_update(rendering_graph_executor_handle_t handle, const void* data, size_t size);
-bool rendering_graph_executor_is_valid(rendering_graph_executor_handle_t handle);
-int rendering_graph_executor_get_info(rendering_graph_executor_handle_t handle, rendering_graph_executor_info_t* out_info);
-void rendering_graph_executor_mark_dirty(rendering_graph_executor_handle_t handle);
 int rendering_graph_executor_process_pending(void);
 
 /* Statistics */

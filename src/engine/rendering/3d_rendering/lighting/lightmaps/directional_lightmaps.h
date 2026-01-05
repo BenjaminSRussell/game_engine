@@ -13,6 +13,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include "../../../../include/math/vec3.h"
+#include "../../../../include/math/vec2.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,6 +23,10 @@ extern "C" {
 /* ============================================================================
  * TYPES
  * ============================================================================ */
+
+typedef struct {
+    Vec3 basis_irradiance[3];
+} directional_texel_t;
 
 typedef struct lighting_directional_lightmaps_handle {
     uint32_t id;
@@ -49,6 +56,8 @@ int lighting_directional_lightmaps_create(lighting_directional_lightmaps_handle_
 void lighting_directional_lightmaps_destroy(lighting_directional_lightmaps_handle_t handle);
 
 /* Operations */
+int lighting_directional_lightmap_encode(Vec3 color, Vec3 direction, Vec3 normal, directional_texel_t* out_texel);
+Vec3 lighting_directional_lightmap_sample(const directional_texel_t* texel, Vec3 normal, Vec3 tangent, Vec3 bitangent, Vec3 surface_normal);
 int lighting_directional_lightmaps_update(lighting_directional_lightmaps_handle_t handle, const void* data, size_t size);
 bool lighting_directional_lightmaps_is_valid(lighting_directional_lightmaps_handle_t handle);
 int lighting_directional_lightmaps_get_info(lighting_directional_lightmaps_handle_t handle, lighting_directional_lightmaps_info_t* out_info);

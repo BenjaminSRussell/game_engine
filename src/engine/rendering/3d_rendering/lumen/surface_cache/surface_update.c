@@ -60,11 +60,8 @@
 typedef struct lumen_surface_update_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } lumen_surface_update_internal_t;
 
 typedef struct lumen_surface_update_context {
@@ -90,13 +87,7 @@ static bool lumen_surface_update_validate(const lumen_surface_update_internal_t*
 }
 
 static void lumen_surface_update_cleanup_internal(lumen_surface_update_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
     item->initialized = false;
 }
 
@@ -148,11 +139,6 @@ void lumen_surface_update_shutdown(void) {
 }
 
 int lumen_surface_update_create(lumen_surface_update_handle_t* out_handle, const lumen_surface_update_desc_t* desc) {
-    // TODO: Implement surface update validation
-    // TODO: Add surface update error handling
-    // TODO: Implement surface update serialization
-    // TODO: Add surface update debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +148,6 @@ int lumen_surface_update_create(lumen_surface_update_handle_t* out_handle, const
     }
 
     if (g_surface_update_ctx.count >= g_surface_update_ctx.capacity) {
-        // TODO: Implement surface update unit tests
         return -3;
     }
 
@@ -171,11 +156,8 @@ int lumen_surface_update_create(lumen_surface_update_handle_t* out_handle, const
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
 
     out_handle->id = index;
     return 0;
@@ -223,9 +205,6 @@ bool lumen_surface_update_is_valid(lumen_surface_update_handle_t handle) {
 }
 
 int lumen_surface_update_get_info(lumen_surface_update_handle_t handle, lumen_surface_update_info_t* out_info) {
-    // TODO: Implement surface update streaming support
-    // TODO: Add surface update LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -271,14 +250,8 @@ uint32_t lumen_surface_update_get_count(void) {
 }
 
 size_t lumen_surface_update_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_surface_update_ctx);
     total += g_surface_update_ctx.capacity * sizeof(lumen_surface_update_internal_t);
-
-    for (uint32_t i = 0; i < g_surface_update_ctx.count; i++) {
-        total += g_surface_update_ctx.items[i].data_size;
-    }
-
     return total;
 }
 

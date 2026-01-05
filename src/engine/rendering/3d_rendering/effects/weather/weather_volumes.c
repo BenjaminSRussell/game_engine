@@ -39,6 +39,7 @@
  */
 
 #include "weather_volumes.h"
+#include "../../math/aabb.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -57,11 +58,18 @@
  * TYPES
  * ============================================================================ */
 
+typedef struct weather_volume {
+    aabb_t bounds;
+    float intensity;
+    float fade_distance;
+    uint32_t weather_type;
+} weather_volume_t;
+
 typedef struct effects_weather_volumes_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    weather_volume_t* volumes;
+    uint32_t volume_count;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -90,13 +98,12 @@ static bool effects_weather_volumes_validate(const effects_weather_volumes_inter
 }
 
 static void effects_weather_volumes_cleanup_internal(effects_weather_volumes_internal_t* item) {
-    // TODO: Implement ribbon/trail rendering
-    // TODO: Add VFX graph system
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+    if (item->volumes) {
+        free(item->volumes);
+        item->volumes = NULL;
     }
+    item->volume_count = 0;
     item->initialized = false;
 }
 
@@ -148,11 +155,6 @@ void effects_weather_volumes_shutdown(void) {
 }
 
 int effects_weather_volumes_create(effects_weather_volumes_handle_t* out_handle, const effects_weather_volumes_desc_t* desc) {
-    // TODO: Implement weather volumes validation
-    // TODO: Add weather volumes error handling
-    // TODO: Implement weather volumes serialization
-    // TODO: Add weather volumes debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +164,6 @@ int effects_weather_volumes_create(effects_weather_volumes_handle_t* out_handle,
     }
 
     if (g_weather_volumes_ctx.count >= g_weather_volumes_ctx.capacity) {
-        // TODO: Implement weather volumes unit tests
         return -3;
     }
 
@@ -171,8 +172,13 @@ int effects_weather_volumes_create(effects_weather_volumes_handle_t* out_handle,
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->volume_count = 0;
+    item->volumes = calloc(EFFECTS_WEATHER_VOLUMES_MAX_COUNT, sizeof(weather_volume_t));
+    if (!item->volumes) {
+        g_weather_volumes_ctx.count--;
+        return -4;
+    }
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -193,11 +199,6 @@ void effects_weather_volumes_destroy(effects_weather_volumes_handle_t handle) {
 }
 
 int effects_weather_volumes_update(effects_weather_volumes_handle_t handle, const void* data, size_t size) {
-    // TODO: Add weather volumes thread safety
-    // TODO: Implement weather volumes memory pooling
-    // TODO: Add weather volumes caching layer
-    // TODO: Implement weather volumes async operations
-
     if (handle.id >= g_weather_volumes_ctx.count) {
         return -1;
     }
@@ -207,8 +208,10 @@ int effects_weather_volumes_update(effects_weather_volumes_handle_t handle, cons
         return -2;
     }
 
-    // TODO: Add weather volumes GPU integration
-    // TODO: Implement weather volumes SIMD optimization
+    // Update logic for transitions (e.g. smoothing intensities)
+    for (uint32_t i = 0; i < item->volume_count; i++) {
+        // Transition logic here if needed
+    }
 
     item->dirty = true;
     return 0;
@@ -271,12 +274,11 @@ uint32_t effects_weather_volumes_get_count(void) {
 }
 
 size_t effects_weather_volumes_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_weather_volumes_ctx);
     total += g_weather_volumes_ctx.capacity * sizeof(effects_weather_volumes_internal_t);
 
     for (uint32_t i = 0; i < g_weather_volumes_ctx.count; i++) {
-        total += g_weather_volumes_ctx.items[i].data_size;
+        total += EFFECTS_WEATHER_VOLUMES_MAX_COUNT * sizeof(weather_volume_t);
     }
 
     return total;

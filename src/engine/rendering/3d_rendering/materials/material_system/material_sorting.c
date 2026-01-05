@@ -1,41 +1,9 @@
 /*
  * material_sorting.c
- * Material render ordering
+ * Sort materials for batching
  *
  * Part of the Materials subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement PBR material model
- * TODO: Add material instancing
- * TODO: Implement shader permutation system
- * TODO: Add material hot-reload
- * TODO: Implement texture binding
- * TODO: Add material LOD
- * TODO: Implement layered materials
- * TODO: Add procedural materials
- * TODO: Implement material graph compilation
- * TODO: Add material parameter animation
- * TODO: Implement material sorting initialization
- * TODO: Add material sorting cleanup/shutdown
- * TODO: Implement material sorting validation
- * TODO: Add material sorting error handling
- * TODO: Implement material sorting serialization
- * TODO: Add material sorting debug output
- * TODO: Implement material sorting unit tests
- * TODO: Add material sorting performance counters
- * TODO: Implement material sorting hot-reload
- * TODO: Add material sorting thread safety
- * TODO: Implement material sorting memory pooling
- * TODO: Add material sorting caching layer
- * TODO: Implement material sorting async operations
- * TODO: Add material sorting GPU integration
- * TODO: Implement material sorting SIMD optimization
- * TODO: Add material sorting batch processing
- * TODO: Implement material sorting streaming support
- * TODO: Add material sorting LOD support
- * TODO: Implement material sorting culling integration
- * TODO: Add material sorting render graph node
  */
 
 #include "material_sorting.h"
@@ -44,34 +12,28 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /* ============================================================================
  * CONSTANTS
  * ============================================================================ */
 
-#define MATERIALS_MATERIAL_SORTING_MAX_COUNT 4096
-#define MATERIALS_MATERIAL_SORTING_DEFAULT_CAPACITY 256
-#define MATERIALS_MATERIAL_SORTING_ALIGNMENT 16
+#define MATERIALS_MATERIAL_SORTING_DEFAULT_CAPACITY 1024
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
-typedef struct materials_material_sorting_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} materials_material_sorting_internal_t;
+typedef struct {
+    uint64_t key;
+    uint32_t material_id;
+    uint32_t distance_packed; // for depth sorting
+} material_sort_entry_t;
 
 typedef struct materials_material_sorting_context {
-    materials_material_sorting_internal_t* items;
+    material_sort_entry_t* sort_buffer;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } materials_material_sorting_context_t;
 
@@ -81,23 +43,13 @@ static materials_material_sorting_context_t g_material_sorting_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool materials_material_sorting_validate(const materials_material_sorting_internal_t* item) {
-    // TODO: Implement PBR material model
-    // TODO: Add material instancing
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void materials_material_sorting_cleanup_internal(materials_material_sorting_internal_t* item) {
-    // TODO: Implement shader permutation system
-    // TODO: Add material hot-reload
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
+// Simple radix sort or qsort wrapper
+static int compare_sort_entries(const void* a, const void* b) {
+    const material_sort_entry_t* sa = a;
+    const material_sort_entry_t* sb = b;
+    if (sa->key < sb->key) return -1;
+    if (sa->key > sb->key) return 1;
+    return 0;
 }
 
 /* ============================================================================
@@ -105,165 +57,64 @@ static void materials_material_sorting_cleanup_internal(materials_material_sorti
  * ============================================================================ */
 
 int materials_material_sorting_init(void) {
-    // TODO: Implement texture binding
-    // TODO: Add material LOD
-    // TODO: Implement layered materials
-    // TODO: Add procedural materials
-
-    if (g_material_sorting_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
+    if (g_material_sorting_ctx.initialized) return 0;
+    
     g_material_sorting_ctx.capacity = MATERIALS_MATERIAL_SORTING_DEFAULT_CAPACITY;
-    g_material_sorting_ctx.items = calloc(g_material_sorting_ctx.capacity, sizeof(materials_material_sorting_internal_t));
-    if (!g_material_sorting_ctx.items) {
-        return -1;
-    }
-
+    g_material_sorting_ctx.sort_buffer = malloc(g_material_sorting_ctx.capacity * sizeof(material_sort_entry_t));
+    if (!g_material_sorting_ctx.sort_buffer) return -1;
+    
     g_material_sorting_ctx.count = 0;
     g_material_sorting_ctx.initialized = true;
-
     return 0;
 }
 
 void materials_material_sorting_shutdown(void) {
-    // TODO: Implement material graph compilation
-    // TODO: Add material parameter animation
-    // TODO: Implement material sorting initialization
-    // TODO: Add material sorting cleanup/shutdown
-
-    if (!g_material_sorting_ctx.initialized) {
-        return;
+    if (g_material_sorting_ctx.initialized) {
+        free(g_material_sorting_ctx.sort_buffer);
+        g_material_sorting_ctx.sort_buffer = NULL;
+        g_material_sorting_ctx.initialized = false;
     }
-
-    for (uint32_t i = 0; i < g_material_sorting_ctx.count; i++) {
-        materials_material_sorting_cleanup_internal(&g_material_sorting_ctx.items[i]);
-    }
-
-    free(g_material_sorting_ctx.items);
-    g_material_sorting_ctx.items = NULL;
-    g_material_sorting_ctx.count = 0;
-    g_material_sorting_ctx.capacity = 0;
-    g_material_sorting_ctx.initialized = false;
 }
 
 int materials_material_sorting_create(materials_material_sorting_handle_t* out_handle, const materials_material_sorting_desc_t* desc) {
-    // TODO: Implement material sorting validation
-    // TODO: Add material sorting error handling
-    // TODO: Implement material sorting serialization
-    // TODO: Add material sorting debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_material_sorting_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_material_sorting_ctx.count >= g_material_sorting_ctx.capacity) {
-        // TODO: Implement material sorting unit tests
-        return -3;
-    }
-
-    uint32_t index = g_material_sorting_ctx.count++;
-    materials_material_sorting_internal_t* item = &g_material_sorting_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
+    if (!out_handle) return -1;
+    // For sorting, the "handle" might just represent a sort bucket or group
+    out_handle->id = 0; // Stub
     return 0;
 }
 
 void materials_material_sorting_destroy(materials_material_sorting_handle_t handle) {
-    // TODO: Add material sorting performance counters
-    // TODO: Implement material sorting hot-reload
-
-    if (handle.id >= g_material_sorting_ctx.count) {
-        return;
-    }
-
-    materials_material_sorting_cleanup_internal(&g_material_sorting_ctx.items[handle.id]);
+    // No-op for now
 }
 
 int materials_material_sorting_update(materials_material_sorting_handle_t handle, const void* data, size_t size) {
-    // TODO: Add material sorting thread safety
-    // TODO: Implement material sorting memory pooling
-    // TODO: Add material sorting caching layer
-    // TODO: Implement material sorting async operations
-
-    if (handle.id >= g_material_sorting_ctx.count) {
-        return -1;
-    }
-
-    materials_material_sorting_internal_t* item = &g_material_sorting_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add material sorting GPU integration
-    // TODO: Implement material sorting SIMD optimization
-
-    item->dirty = true;
+    // Update sort keys?
     return 0;
 }
 
 bool materials_material_sorting_is_valid(materials_material_sorting_handle_t handle) {
-    // TODO: Add material sorting batch processing
-    if (handle.id >= g_material_sorting_ctx.count) {
-        return false;
-    }
-    return g_material_sorting_ctx.items[handle.id].initialized;
+    return true;
 }
 
 int materials_material_sorting_get_info(materials_material_sorting_handle_t handle, materials_material_sorting_info_t* out_info) {
-    // TODO: Implement material sorting streaming support
-    // TODO: Add material sorting LOD support
-
-    if (!out_info) {
-        return -1;
+    if (out_info) {
+        out_info->id = handle.id;
+        out_info->flags = 0;
+        out_info->initialized = true;
     }
-
-    if (handle.id >= g_material_sorting_ctx.count) {
-        return -2;
-    }
-
-    const materials_material_sorting_internal_t* item = &g_material_sorting_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
     return 0;
 }
 
 void materials_material_sorting_mark_dirty(materials_material_sorting_handle_t handle) {
-    // TODO: Implement material sorting culling integration
-    if (handle.id < g_material_sorting_ctx.count) {
-        g_material_sorting_ctx.items[handle.id].dirty = true;
-    }
+    // Trigger re-sort next frame
 }
 
 int materials_material_sorting_process_pending(void) {
-    // TODO: Add material sorting render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_material_sorting_ctx.count; i++) {
-        materials_material_sorting_internal_t* item = &g_material_sorting_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
+    // Perform sort here
+    if (g_material_sorting_ctx.count > 0) {
+        qsort(g_material_sorting_ctx.sort_buffer, g_material_sorting_ctx.count, sizeof(material_sort_entry_t), compare_sort_entries);
     }
-
-    return processed;
+    return g_material_sorting_ctx.count;
 }
 
 uint32_t materials_material_sorting_get_count(void) {
@@ -271,20 +122,39 @@ uint32_t materials_material_sorting_get_count(void) {
 }
 
 size_t materials_material_sorting_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_material_sorting_ctx);
-    total += g_material_sorting_ctx.capacity * sizeof(materials_material_sorting_internal_t);
-
-    for (uint32_t i = 0; i < g_material_sorting_ctx.count; i++) {
-        total += g_material_sorting_ctx.items[i].data_size;
-    }
-
-    return total;
+    return g_material_sorting_ctx.capacity * sizeof(material_sort_entry_t);
 }
 
 void materials_material_sorting_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    printf("Material Sorting: %u items sorted\n", g_material_sorting_ctx.count);
 }
 
-/* End of material_sorting.c */
+/* Helper to generate sort key */
+uint64_t materials_material_sorting_generate_key(uint32_t shader_id, uint32_t texture_id, uint8_t depth_layer) {
+    // Key format: [Depth: 8] [Shader: 24] [Texture: 32]
+    uint64_t key = 0;
+    key |= ((uint64_t)depth_layer) << 56;
+    key |= ((uint64_t)shader_id & 0xFFFFFF) << 32;
+    key |= ((uint64_t)texture_id & 0xFFFFFFFF);
+    return key;
+}
+
+void materials_material_sorting_add_entry(uint32_t material_id, uint64_t sort_key) {
+    if (g_material_sorting_ctx.count >= g_material_sorting_ctx.capacity) {
+        uint32_t new_cap = g_material_sorting_ctx.capacity * 2;
+        void* new_buf = realloc(g_material_sorting_ctx.sort_buffer, new_cap * sizeof(material_sort_entry_t));
+        if (new_buf) {
+            g_material_sorting_ctx.sort_buffer = new_buf;
+            g_material_sorting_ctx.capacity = new_cap;
+        } else {
+            return; 
+        }
+    }
+    g_material_sorting_ctx.sort_buffer[g_material_sorting_ctx.count].material_id = material_id;
+    g_material_sorting_ctx.sort_buffer[g_material_sorting_ctx.count].key = sort_key;
+    g_material_sorting_ctx.count++;
+}
+
+void materials_material_sorting_clear(void) {
+    g_material_sorting_ctx.count = 0;
+}

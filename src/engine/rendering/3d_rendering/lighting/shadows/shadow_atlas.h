@@ -60,6 +60,16 @@ uint32_t lighting_shadow_atlas_get_count(void);
 size_t lighting_shadow_atlas_get_memory_usage(void);
 void lighting_shadow_atlas_debug_print(void);
 
+/* Shadow slot allocation */
+int lighting_shadow_atlas_allocate_slot(uint32_t light_id, uint32_t shadow_map_size,
+                                        uint32_t* out_x, uint32_t* out_y);
+void lighting_shadow_atlas_free_slot(uint32_t light_id);
+
+/* Atlas access */
+typedef struct { struct { uint32_t handle; } id; } texture_handle_t;
+texture_handle_t lighting_shadow_atlas_get_texture(void);
+uint32_t lighting_shadow_atlas_get_size(void);
+
 #ifdef __cplusplus
 }
 #endif

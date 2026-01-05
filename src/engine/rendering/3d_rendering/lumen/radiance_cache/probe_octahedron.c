@@ -39,11 +39,14 @@
  */
 
 #include "probe_octahedron.h"
+#include "../../math/vec3.h"
+#include "../../math/vec2.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -59,12 +62,9 @@
 
 typedef struct lumen_probe_octahedron_internal {
     uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
+    uint32_t resolution;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } lumen_probe_octahedron_internal_t;
 
 typedef struct lumen_probe_octahedron_context {
@@ -90,13 +90,7 @@ static bool lumen_probe_octahedron_validate(const lumen_probe_octahedron_interna
 }
 
 static void lumen_probe_octahedron_cleanup_internal(lumen_probe_octahedron_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
     item->initialized = false;
 }
 
@@ -148,11 +142,6 @@ void lumen_probe_octahedron_shutdown(void) {
 }
 
 int lumen_probe_octahedron_create(lumen_probe_octahedron_handle_t* out_handle, const lumen_probe_octahedron_desc_t* desc) {
-    // TODO: Implement probe octahedron validation
-    // TODO: Add probe octahedron error handling
-    // TODO: Implement probe octahedron serialization
-    // TODO: Add probe octahedron debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +151,6 @@ int lumen_probe_octahedron_create(lumen_probe_octahedron_handle_t* out_handle, c
     }
 
     if (g_probe_octahedron_ctx.count >= g_probe_octahedron_ctx.capacity) {
-        // TODO: Implement probe octahedron unit tests
         return -3;
     }
 
@@ -170,12 +158,9 @@ int lumen_probe_octahedron_create(lumen_probe_octahedron_handle_t* out_handle, c
     lumen_probe_octahedron_internal_t* item = &g_probe_octahedron_ctx.items[index];
 
     item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->resolution = 16; // Default resolution
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
 
     out_handle->id = index;
     return 0;
@@ -192,12 +177,28 @@ void lumen_probe_octahedron_destroy(lumen_probe_octahedron_handle_t handle) {
     lumen_probe_octahedron_cleanup_internal(&g_probe_octahedron_ctx.items[handle.id]);
 }
 
-int lumen_probe_octahedron_update(lumen_probe_octahedron_handle_t handle, const void* data, size_t size) {
-    // TODO: Add probe octahedron thread safety
-    // TODO: Implement probe octahedron memory pooling
-    // TODO: Add probe octahedron caching layer
-    // TODO: Implement probe octahedron async operations
+vec2_t lumen_probe_octahedron_encode(vec3_t d) {
+    float l1 = fabsf(d.x) + fabsf(d.y) + fabsf(d.z);
+    vec2_t res = {d.x / l1, d.y / l1};
+    if (d.z < 0.0f) {
+        res.x = (1.0f - fabsf(res.y)) * (res.x >= 0.0f ? 1.0f : -1.0f);
+        res.y = (1.0f - fabsf(res.x)) * (res.y >= 0.0f ? 1.0f : -1.0f);
+    }
+    return (vec2_t){res.x * 0.5f + 0.5f, res.y * 0.5f + 0.5f};
+}
 
+vec3_t lumen_probe_octahedron_decode(vec2_t f) {
+    f = (vec2_t){f.x * 2.0f - 1.0f, f.y * 2.0f - 1.0f};
+    vec3_t n = {f.x, f.y, 1.0f - fabsf(f.x) - fabsf(f.y)};
+    float t = fmaxf(-n.z, 0.0f);
+    n.x += n.x >= 0.0f ? -t : t;
+    n.y += n.y >= 0.0f ? -t : t;
+    // Normalize n
+    float len = sqrtf(n.x * n.x + n.y * n.y + n.z * n.z);
+    return (vec3_t){n.x / len, n.y / len, n.z / len};
+}
+
+int lumen_probe_octahedron_update(lumen_probe_octahedron_handle_t handle, const void* data, size_t size) {
     if (handle.id >= g_probe_octahedron_ctx.count) {
         return -1;
     }
@@ -206,9 +207,6 @@ int lumen_probe_octahedron_update(lumen_probe_octahedron_handle_t handle, const 
     if (!item->initialized) {
         return -2;
     }
-
-    // TODO: Add probe octahedron GPU integration
-    // TODO: Implement probe octahedron SIMD optimization
 
     item->dirty = true;
     return 0;
@@ -223,9 +221,6 @@ bool lumen_probe_octahedron_is_valid(lumen_probe_octahedron_handle_t handle) {
 }
 
 int lumen_probe_octahedron_get_info(lumen_probe_octahedron_handle_t handle, lumen_probe_octahedron_info_t* out_info) {
-    // TODO: Implement probe octahedron streaming support
-    // TODO: Add probe octahedron LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -236,7 +231,6 @@ int lumen_probe_octahedron_get_info(lumen_probe_octahedron_handle_t handle, lume
 
     const lumen_probe_octahedron_internal_t* item = &g_probe_octahedron_ctx.items[handle.id];
     out_info->id = item->id;
-    out_info->flags = item->flags;
     out_info->initialized = item->initialized;
 
     return 0;
@@ -271,14 +265,8 @@ uint32_t lumen_probe_octahedron_get_count(void) {
 }
 
 size_t lumen_probe_octahedron_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_probe_octahedron_ctx);
     total += g_probe_octahedron_ctx.capacity * sizeof(lumen_probe_octahedron_internal_t);
-
-    for (uint32_t i = 0; i < g_probe_octahedron_ctx.count; i++) {
-        total += g_probe_octahedron_ctx.items[i].data_size;
-    }
-
     return total;
 }
 

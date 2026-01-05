@@ -60,11 +60,8 @@
 typedef struct lumen_denoise_lumen_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } lumen_denoise_lumen_internal_t;
 
 typedef struct lumen_denoise_lumen_context {
@@ -90,13 +87,7 @@ static bool lumen_denoise_lumen_validate(const lumen_denoise_lumen_internal_t* i
 }
 
 static void lumen_denoise_lumen_cleanup_internal(lumen_denoise_lumen_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
     item->initialized = false;
 }
 
@@ -148,11 +139,6 @@ void lumen_denoise_lumen_shutdown(void) {
 }
 
 int lumen_denoise_lumen_create(lumen_denoise_lumen_handle_t* out_handle, const lumen_denoise_lumen_desc_t* desc) {
-    // TODO: Implement denoise lumen validation
-    // TODO: Add denoise lumen error handling
-    // TODO: Implement denoise lumen serialization
-    // TODO: Add denoise lumen debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +148,6 @@ int lumen_denoise_lumen_create(lumen_denoise_lumen_handle_t* out_handle, const l
     }
 
     if (g_denoise_lumen_ctx.count >= g_denoise_lumen_ctx.capacity) {
-        // TODO: Implement denoise lumen unit tests
         return -3;
     }
 
@@ -171,11 +156,8 @@ int lumen_denoise_lumen_create(lumen_denoise_lumen_handle_t* out_handle, const l
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
 
     out_handle->id = index;
     return 0;
@@ -192,12 +174,12 @@ void lumen_denoise_lumen_destroy(lumen_denoise_lumen_handle_t handle) {
     lumen_denoise_lumen_cleanup_internal(&g_denoise_lumen_ctx.items[handle.id]);
 }
 
-int lumen_denoise_lumen_update(lumen_denoise_lumen_handle_t handle, const void* data, size_t size) {
-    // TODO: Add denoise lumen thread safety
-    // TODO: Implement denoise lumen memory pooling
-    // TODO: Add denoise lumen caching layer
-    // TODO: Implement denoise lumen async operations
+int lumen_denoise_lumen_apply(lumen_denoise_lumen_handle_t handle) {
+    // TODO: Apply temporal denoising filter to GI buffers
+    return 0;
+}
 
+int lumen_denoise_lumen_update(lumen_denoise_lumen_handle_t handle, const void* data, size_t size) {
     if (handle.id >= g_denoise_lumen_ctx.count) {
         return -1;
     }
@@ -206,9 +188,6 @@ int lumen_denoise_lumen_update(lumen_denoise_lumen_handle_t handle, const void* 
     if (!item->initialized) {
         return -2;
     }
-
-    // TODO: Add denoise lumen GPU integration
-    // TODO: Implement denoise lumen SIMD optimization
 
     item->dirty = true;
     return 0;
@@ -271,14 +250,8 @@ uint32_t lumen_denoise_lumen_get_count(void) {
 }
 
 size_t lumen_denoise_lumen_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_denoise_lumen_ctx);
     total += g_denoise_lumen_ctx.capacity * sizeof(lumen_denoise_lumen_internal_t);
-
-    for (uint32_t i = 0; i < g_denoise_lumen_ctx.count; i++) {
-        total += g_denoise_lumen_ctx.items[i].data_size;
-    }
-
     return total;
 }
 

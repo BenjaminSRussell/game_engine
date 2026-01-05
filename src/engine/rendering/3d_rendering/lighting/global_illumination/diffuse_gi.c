@@ -4,46 +4,25 @@
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement clustered light culling
- * TODO: Add ray-traced shadows
- * TODO: Implement cascaded shadow maps
- * TODO: Add area light support
- * TODO: Implement global illumination
- * TODO: Add volumetric lighting
- * TODO: Implement light probes
- * TODO: Add IES profile support
- * TODO: Implement lightmap baking
- * TODO: Add real-time GI
- * TODO: Implement diffuse gi initialization
- * TODO: Add diffuse gi cleanup/shutdown
- * TODO: Implement diffuse gi validation
- * TODO: Add diffuse gi error handling
- * TODO: Implement diffuse gi serialization
- * TODO: Add diffuse gi debug output
- * TODO: Implement diffuse gi unit tests
- * TODO: Add diffuse gi performance counters
- * TODO: Implement diffuse gi hot-reload
- * TODO: Add diffuse gi thread safety
- * TODO: Implement diffuse gi memory pooling
- * TODO: Add diffuse gi caching layer
- * TODO: Implement diffuse gi async operations
- * TODO: Add diffuse gi GPU integration
- * TODO: Implement diffuse gi SIMD optimization
- * TODO: Add diffuse gi batch processing
- * TODO: Implement diffuse gi streaming support
- * TODO: Add diffuse gi LOD support
- * TODO: Implement diffuse gi culling integration
- * TODO: Add diffuse gi render graph node
  */
 
-#include "diffuse_gi.h"
-#include <stdint.h>
+#ifndef __STDC_FORMAT_MACROS
+#define __STDC_FORMAT_MACROS
+#endif
+#include <inttypes.h>
+#include <math.h>
 #include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "diffuse_gi.h"
+#include "gi_probe_grid.h"
+#include "../lightmaps/lightmap_sampling.h"
+#include "../../../../include/common.h"
+#include "../../../../include/core/types.h"
+#include "../../../../include/math/vec3.h"
+#include "../../../../include/math/vec2.h"
 
 /* ============================================================================
  * CONSTANTS
@@ -81,17 +60,7 @@ static lighting_diffuse_gi_context_t g_diffuse_gi_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool lighting_diffuse_gi_validate(const lighting_diffuse_gi_internal_t* item) {
-    // TODO: Implement clustered light culling
-    // TODO: Add ray-traced shadows
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
 static void lighting_diffuse_gi_cleanup_internal(lighting_diffuse_gi_internal_t* item) {
-    // TODO: Implement cascaded shadow maps
-    // TODO: Add area light support
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -105,11 +74,6 @@ static void lighting_diffuse_gi_cleanup_internal(lighting_diffuse_gi_internal_t*
  * ============================================================================ */
 
 int lighting_diffuse_gi_init(void) {
-    // TODO: Implement global illumination
-    // TODO: Add volumetric lighting
-    // TODO: Implement light probes
-    // TODO: Add IES profile support
-
     if (g_diffuse_gi_ctx.initialized) {
         return 0; // Already initialized
     }
@@ -127,11 +91,6 @@ int lighting_diffuse_gi_init(void) {
 }
 
 void lighting_diffuse_gi_shutdown(void) {
-    // TODO: Implement lightmap baking
-    // TODO: Add real-time GI
-    // TODO: Implement diffuse gi initialization
-    // TODO: Add diffuse gi cleanup/shutdown
-
     if (!g_diffuse_gi_ctx.initialized) {
         return;
     }
@@ -148,11 +107,6 @@ void lighting_diffuse_gi_shutdown(void) {
 }
 
 int lighting_diffuse_gi_create(lighting_diffuse_gi_handle_t* out_handle, const lighting_diffuse_gi_desc_t* desc) {
-    // TODO: Implement diffuse gi validation
-    // TODO: Add diffuse gi error handling
-    // TODO: Implement diffuse gi serialization
-    // TODO: Add diffuse gi debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +116,6 @@ int lighting_diffuse_gi_create(lighting_diffuse_gi_handle_t* out_handle, const l
     }
 
     if (g_diffuse_gi_ctx.count >= g_diffuse_gi_ctx.capacity) {
-        // TODO: Implement diffuse gi unit tests
         return -3;
     }
 
@@ -182,9 +135,6 @@ int lighting_diffuse_gi_create(lighting_diffuse_gi_handle_t* out_handle, const l
 }
 
 void lighting_diffuse_gi_destroy(lighting_diffuse_gi_handle_t handle) {
-    // TODO: Add diffuse gi performance counters
-    // TODO: Implement diffuse gi hot-reload
-
     if (handle.id >= g_diffuse_gi_ctx.count) {
         return;
     }
@@ -192,30 +142,21 @@ void lighting_diffuse_gi_destroy(lighting_diffuse_gi_handle_t handle) {
     lighting_diffuse_gi_cleanup_internal(&g_diffuse_gi_ctx.items[handle.id]);
 }
 
-int lighting_diffuse_gi_update(lighting_diffuse_gi_handle_t handle, const void* data, size_t size) {
-    // TODO: Add diffuse gi thread safety
-    // TODO: Implement diffuse gi memory pooling
-    // TODO: Add diffuse gi caching layer
-    // TODO: Implement diffuse gi async operations
-
-    if (handle.id >= g_diffuse_gi_ctx.count) {
-        return -1;
+Vec3 lighting_diffuse_gi_sample(Vec3 position, Vec3 normal, bool is_static, Vec2 lightmap_uv, lighting_gi_probe_grid_handle_t probe_handle, const lightmap_texture_t* lightmap) {
+    if (is_static && lightmap) {
+        return lighting_lightmap_sample_bilinear(lightmap, lightmap_uv);
+    } else if (lighting_gi_probe_grid_is_valid(probe_handle)) {
+        return lighting_gi_probe_grid_sample(probe_handle, position, normal);
     }
+    
+    return vec3_zero();
+}
 
-    lighting_diffuse_gi_internal_t* item = &g_diffuse_gi_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add diffuse gi GPU integration
-    // TODO: Implement diffuse gi SIMD optimization
-
-    item->dirty = true;
+int lighting_diffuse_gi_evaluate_scene(void) {
     return 0;
 }
 
 bool lighting_diffuse_gi_is_valid(lighting_diffuse_gi_handle_t handle) {
-    // TODO: Add diffuse gi batch processing
     if (handle.id >= g_diffuse_gi_ctx.count) {
         return false;
     }
@@ -223,9 +164,6 @@ bool lighting_diffuse_gi_is_valid(lighting_diffuse_gi_handle_t handle) {
 }
 
 int lighting_diffuse_gi_get_info(lighting_diffuse_gi_handle_t handle, lighting_diffuse_gi_info_t* out_info) {
-    // TODO: Implement diffuse gi streaming support
-    // TODO: Add diffuse gi LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -243,21 +181,16 @@ int lighting_diffuse_gi_get_info(lighting_diffuse_gi_handle_t handle, lighting_d
 }
 
 void lighting_diffuse_gi_mark_dirty(lighting_diffuse_gi_handle_t handle) {
-    // TODO: Implement diffuse gi culling integration
     if (handle.id < g_diffuse_gi_ctx.count) {
         g_diffuse_gi_ctx.items[handle.id].dirty = true;
     }
 }
 
 int lighting_diffuse_gi_process_pending(void) {
-    // TODO: Add diffuse gi render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_diffuse_gi_ctx.count; i++) {
         lighting_diffuse_gi_internal_t* item = &g_diffuse_gi_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
@@ -271,7 +204,6 @@ uint32_t lighting_diffuse_gi_get_count(void) {
 }
 
 size_t lighting_diffuse_gi_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_diffuse_gi_ctx);
     total += g_diffuse_gi_ctx.capacity * sizeof(lighting_diffuse_gi_internal_t);
 
@@ -283,8 +215,6 @@ size_t lighting_diffuse_gi_get_memory_usage(void) {
 }
 
 void lighting_diffuse_gi_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
 }
 
 /* End of diffuse_gi.c */

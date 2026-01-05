@@ -39,6 +39,7 @@
  */
 
 #include "screen_trace.h"
+#include "../../math/vec3.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -60,11 +61,8 @@
 typedef struct lumen_screen_trace_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } lumen_screen_trace_internal_t;
 
 typedef struct lumen_screen_trace_context {
@@ -90,13 +88,7 @@ static bool lumen_screen_trace_validate(const lumen_screen_trace_internal_t* ite
 }
 
 static void lumen_screen_trace_cleanup_internal(lumen_screen_trace_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
     item->initialized = false;
 }
 
@@ -148,11 +140,6 @@ void lumen_screen_trace_shutdown(void) {
 }
 
 int lumen_screen_trace_create(lumen_screen_trace_handle_t* out_handle, const lumen_screen_trace_desc_t* desc) {
-    // TODO: Implement screen trace validation
-    // TODO: Add screen trace error handling
-    // TODO: Implement screen trace serialization
-    // TODO: Add screen trace debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +149,6 @@ int lumen_screen_trace_create(lumen_screen_trace_handle_t* out_handle, const lum
     }
 
     if (g_screen_trace_ctx.count >= g_screen_trace_ctx.capacity) {
-        // TODO: Implement screen trace unit tests
         return -3;
     }
 
@@ -171,11 +157,8 @@ int lumen_screen_trace_create(lumen_screen_trace_handle_t* out_handle, const lum
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
 
     out_handle->id = index;
     return 0;
@@ -192,12 +175,13 @@ void lumen_screen_trace_destroy(lumen_screen_trace_handle_t handle) {
     lumen_screen_trace_cleanup_internal(&g_screen_trace_ctx.items[handle.id]);
 }
 
-int lumen_screen_trace_update(lumen_screen_trace_handle_t handle, const void* data, size_t size) {
-    // TODO: Add screen trace thread safety
-    // TODO: Implement screen trace memory pooling
-    // TODO: Add screen trace caching layer
-    // TODO: Implement screen trace async operations
+bool lumen_screen_trace_ray(vec3_t origin, vec3_t direction, float max_dist, vec3_t* out_hit_pos) {
+    // TODO: Implement hierarchical Z-buffer ray marching
+    // For now, return false
+    return false;
+}
 
+int lumen_screen_trace_update(lumen_screen_trace_handle_t handle, const void* data, size_t size) {
     if (handle.id >= g_screen_trace_ctx.count) {
         return -1;
     }
@@ -206,9 +190,6 @@ int lumen_screen_trace_update(lumen_screen_trace_handle_t handle, const void* da
     if (!item->initialized) {
         return -2;
     }
-
-    // TODO: Add screen trace GPU integration
-    // TODO: Implement screen trace SIMD optimization
 
     item->dirty = true;
     return 0;
@@ -271,14 +252,8 @@ uint32_t lumen_screen_trace_get_count(void) {
 }
 
 size_t lumen_screen_trace_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_screen_trace_ctx);
     total += g_screen_trace_ctx.capacity * sizeof(lumen_screen_trace_internal_t);
-
-    for (uint32_t i = 0; i < g_screen_trace_ctx.count; i++) {
-        total += g_screen_trace_ctx.items[i].data_size;
-    }
-
     return total;
 }
 

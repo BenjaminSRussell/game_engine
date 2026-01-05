@@ -1,9 +1,6 @@
 /*
  * push_constants.h
  * Push constant management
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
  */
 
 #ifndef CORE_PUSH_CONSTANTS_H
@@ -11,54 +8,26 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+#define MAX_PUSH_CONSTANT_SIZE 128
 
-typedef struct core_push_constants_handle {
-    uint32_t id;
-} core_push_constants_handle_t;
+typedef struct {
+    uint32_t stage_flags; // Shader stages that can access this range
+    uint32_t offset;
+    uint32_t size;
+} push_constant_range_t;
 
-typedef struct core_push_constants_desc {
-    uint32_t flags;
-    void* user_data;
-} core_push_constants_desc_t;
+typedef struct {
+    push_constant_range_t ranges[4]; // Usually only need a few ranges
+    uint32_t range_count;
+} push_constant_layout_t;
 
-typedef struct core_push_constants_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_push_constants_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
-
-/* Initialization */
-int core_push_constants_init(void);
-void core_push_constants_shutdown(void);
-
-/* Lifecycle */
-int core_push_constants_create(core_push_constants_handle_t* out_handle, const core_push_constants_desc_t* desc);
-void core_push_constants_destroy(core_push_constants_handle_t handle);
-
-/* Operations */
-int core_push_constants_update(core_push_constants_handle_t handle, const void* data, size_t size);
-bool core_push_constants_is_valid(core_push_constants_handle_t handle);
-int core_push_constants_get_info(core_push_constants_handle_t handle, core_push_constants_info_t* out_info);
-void core_push_constants_mark_dirty(core_push_constants_handle_t handle);
-int core_push_constants_process_pending(void);
-
-/* Statistics */
-uint32_t core_push_constants_get_count(void);
-size_t core_push_constants_get_memory_usage(void);
-void core_push_constants_debug_print(void);
+// Validate a push constant update against a layout
+bool push_constants_validate(const push_constant_layout_t* layout, uint32_t offset, uint32_t size);
 
 #ifdef __cplusplus
 }

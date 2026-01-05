@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "vsm_page_table.h"
+#include "vsm_page_pool.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,6 +56,8 @@ bool virtual_shadow_maps_vsm_invalidation_is_valid(virtual_shadow_maps_vsm_inval
 int virtual_shadow_maps_vsm_invalidation_get_info(virtual_shadow_maps_vsm_invalidation_handle_t handle, virtual_shadow_maps_vsm_invalidation_info_t* out_info);
 void virtual_shadow_maps_vsm_invalidation_mark_dirty(virtual_shadow_maps_vsm_invalidation_handle_t handle);
 int virtual_shadow_maps_vsm_invalidation_process_pending(void);
+
+void vsm_invalidate_page(virtual_shadow_maps_vsm_page_table_handle_t table, virtual_shadow_maps_vsm_page_pool_handle_t pool, uint32_t v_x, uint32_t v_y);
 
 /* Statistics */
 uint32_t virtual_shadow_maps_vsm_invalidation_get_count(void);

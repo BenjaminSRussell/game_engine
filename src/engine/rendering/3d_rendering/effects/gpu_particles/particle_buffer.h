@@ -9,6 +9,7 @@
 #ifndef EFFECTS_PARTICLE_BUFFER_H
 #define EFFECTS_PARTICLE_BUFFER_H
 
+#include "../../resource_management/resource_handle.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -25,14 +26,30 @@ typedef struct effects_particle_buffer_handle {
     uint32_t id;
 } effects_particle_buffer_handle_t;
 
+/**
+ * GPU Particle System Buffer Collection
+ */
+typedef struct gpu_particle_system {
+    buffer_handle_t particle_buffer;      // SoA particle data (pos, vel, color, active)
+    buffer_handle_t dead_list;            // Append/Consume buffer for dead particle indices
+    buffer_handle_t alive_list;           // Append/Consume buffer for active particle indices (rendering)
+    buffer_handle_t indirect_args;        // Indirect draw/dispatch arguments
+    buffer_handle_t counter_buffer;       // Atomic counters
+    
+    uint32_t max_particles;
+    size_t particle_stride;               // Size of single particle data in SoA layout
+} gpu_particle_system_t;
+
 typedef struct effects_particle_buffer_desc {
+    uint32_t max_particles;
     uint32_t flags;
     void* user_data;
 } effects_particle_buffer_desc_t;
 
 typedef struct effects_particle_buffer_info {
     uint32_t id;
-    uint32_t flags;
+    uint32_t max_particles;
+    uint32_t allocated_size;
     bool initialized;
 } effects_particle_buffer_info_t;
 

@@ -1,290 +1,110 @@
 /*
  * stream_priority.c
- * Streaming priority
- *
- * Part of the Texture subsystem
- * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement texture streaming
- * TODO: Add virtual texturing
- * TODO: Implement BC/ASTC compression
- * TODO: Add mipmap generation
- * TODO: Implement bindless textures
- * TODO: Add texture arrays
- * TODO: Implement feedback analysis
- * TODO: Add residency management
- * TODO: Implement format conversion
- * TODO: Add anisotropic filtering
- * TODO: Implement stream priority initialization
- * TODO: Add stream priority cleanup/shutdown
- * TODO: Implement stream priority validation
- * TODO: Add stream priority error handling
- * TODO: Implement stream priority serialization
- * TODO: Add stream priority debug output
- * TODO: Implement stream priority unit tests
- * TODO: Add stream priority performance counters
- * TODO: Implement stream priority hot-reload
- * TODO: Add stream priority thread safety
- * TODO: Implement stream priority memory pooling
- * TODO: Add stream priority caching layer
- * TODO: Implement stream priority async operations
- * TODO: Add stream priority GPU integration
- * TODO: Implement stream priority SIMD optimization
- * TODO: Add stream priority batch processing
- * TODO: Implement stream priority streaming support
- * TODO: Add stream priority LOD support
- * TODO: Implement stream priority culling integration
- * TODO: Add stream priority render graph node
+ * Streaming priority calculation implementation
  */
 
 #include "stream_priority.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include "texture_streamer.h"
+#include <math.h>
 #include <stdlib.h>
-
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
-
-#define TEXTURE_STREAM_PRIORITY_MAX_COUNT 4096
-#define TEXTURE_STREAM_PRIORITY_DEFAULT_CAPACITY 256
-#define TEXTURE_STREAM_PRIORITY_ALIGNMENT 16
-
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct texture_stream_priority_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} texture_stream_priority_internal_t;
-
-typedef struct texture_stream_priority_context {
-    texture_stream_priority_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} texture_stream_priority_context_t;
-
-static texture_stream_priority_context_t g_stream_priority_ctx = {0};
-
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool texture_stream_priority_validate(const texture_stream_priority_internal_t* item) {
-    // TODO: Implement texture streaming
-    // TODO: Add virtual texturing
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void texture_stream_priority_cleanup_internal(texture_stream_priority_internal_t* item) {
-    // TODO: Implement BC/ASTC compression
-    // TODO: Add mipmap generation
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
-}
 
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
+float texture_priority_calculate_screen_coverage(const float* bounds_min, const float* bounds_max, const void* camera) {
+    if (!camera) return 1.0f;
+    
+    // Simplified screen coverage calculation:
+    // 1. Calculate distance to camera
+    // 2. Estimate projected area based on distance and FOV
+    
+    // Note: Assuming camera is a pointer to the Camera struct from camera.c
+    // We'll treat it as a void pointer and cast if we have access to the struct definition.
+    // For now, let's assume some offsets or just a simplified version.
+    
+    float pos[3] = {
+        (bounds_min[0] + bounds_max[0]) * 0.5f,
+        (bounds_min[1] + bounds_max[1]) * 0.5f,
+        (bounds_min[2] + bounds_max[2]) * 0.5f
+    };
+    
+    float dx = pos[0]; // Assuming camera is at origin for this simplified calculation
+    float dy = pos[1];
+    float dz = pos[2];
+    
+    float dist_sq = dx*dx + dy*dy + dz*dz;
+    float dist = sqrtf(dist_sq);
+    
+    if (dist < 0.1f) return 1.0f;
+    
+    // Projected size decreases with square of distance
+    // A simplified model: scale factor / distance
+    float size_scale = 100.0f; 
+    float coverage = size_scale / dist;
+    
+    if (coverage > 1.0f) coverage = 1.0f;
+    if (coverage < 0.0f) coverage = 0.0f;
+    
+    return coverage;
+}
+
+uint32_t texture_priority_calculate_target_mip(float screen_coverage, uint32_t max_mips, float mip_bias) {
+    // coverage: 1.0 (very close) -> mip 0
+    // coverage: 0.0 (very far) -> mip max_mips - 1
+    
+    if (screen_coverage >= 1.0f) return 0;
+    if (screen_coverage <= 0.0f) return max_mips - 1;
+    
+    // Logarithmic relationship between screen size and mip level
+    float mip = -log2f(screen_coverage) + mip_bias;
+    uint32_t mip_int = (uint32_t)mip;
+    
+    if (mip_int >= max_mips) mip_int = max_mips - 1;
+    
+    return mip_int;
+}
+
+float texture_priority_calculate_distance_score(const float* position, const void* camera) {
+    if (!camera || !position) return 0.0f;
+    
+    float dx = position[0];
+    float dy = position[1];
+    float dz = position[2];
+    
+    float dist_sq = dx*dx + dy*dy + dz*dz;
+    return 1.0f / (1.0f + dist_sq);
+}
+
+float texture_priority_calculate_final_score(float coverage, float distance, uint32_t current_mip, uint32_t target_mip) {
+    // Higher score = higher priority
+    // 1. Difference between current and target (more difference = more priority)
+    // 2. Screen coverage (bigger on screen = more priority)
+    // 3. Distance (closer = more priority)
+    
+    float mip_diff = (float)(current_mip - target_mip);
+    if (mip_diff < 0) mip_diff = 0; // Don't prioritize unloading for now
+    
+    return (mip_diff * 10.0f) + (coverage * 5.0f) + (distance * 2.0f);
+}
+
+void texture_priority_sort_requests(struct stream_request* requests, uint32_t count) {
+    // Simple insertion sort for request priority
+    for (uint32_t i = 1; i < count; i++) {
+        stream_request_t key = requests[i];
+        int j = i - 1;
+        while (j >= 0 && requests[j].priority < key.priority) {
+            requests[j + 1] = requests[j];
+            j = j - 1;
+        }
+        requests[j + 1] = key;
+    }
+}
+
 int texture_stream_priority_init(void) {
-    // TODO: Implement bindless textures
-    // TODO: Add texture arrays
-    // TODO: Implement feedback analysis
-    // TODO: Add residency management
-
-    if (g_stream_priority_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_stream_priority_ctx.capacity = TEXTURE_STREAM_PRIORITY_DEFAULT_CAPACITY;
-    g_stream_priority_ctx.items = calloc(g_stream_priority_ctx.capacity, sizeof(texture_stream_priority_internal_t));
-    if (!g_stream_priority_ctx.items) {
-        return -1;
-    }
-
-    g_stream_priority_ctx.count = 0;
-    g_stream_priority_ctx.initialized = true;
-
     return 0;
 }
 
 void texture_stream_priority_shutdown(void) {
-    // TODO: Implement format conversion
-    // TODO: Add anisotropic filtering
-    // TODO: Implement stream priority initialization
-    // TODO: Add stream priority cleanup/shutdown
-
-    if (!g_stream_priority_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_stream_priority_ctx.count; i++) {
-        texture_stream_priority_cleanup_internal(&g_stream_priority_ctx.items[i]);
-    }
-
-    free(g_stream_priority_ctx.items);
-    g_stream_priority_ctx.items = NULL;
-    g_stream_priority_ctx.count = 0;
-    g_stream_priority_ctx.capacity = 0;
-    g_stream_priority_ctx.initialized = false;
 }
 
-int texture_stream_priority_create(texture_stream_priority_handle_t* out_handle, const texture_stream_priority_desc_t* desc) {
-    // TODO: Implement stream priority validation
-    // TODO: Add stream priority error handling
-    // TODO: Implement stream priority serialization
-    // TODO: Add stream priority debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_stream_priority_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_stream_priority_ctx.count >= g_stream_priority_ctx.capacity) {
-        // TODO: Implement stream priority unit tests
-        return -3;
-    }
-
-    uint32_t index = g_stream_priority_ctx.count++;
-    texture_stream_priority_internal_t* item = &g_stream_priority_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
-}
-
-void texture_stream_priority_destroy(texture_stream_priority_handle_t handle) {
-    // TODO: Add stream priority performance counters
-    // TODO: Implement stream priority hot-reload
-
-    if (handle.id >= g_stream_priority_ctx.count) {
-        return;
-    }
-
-    texture_stream_priority_cleanup_internal(&g_stream_priority_ctx.items[handle.id]);
-}
-
-int texture_stream_priority_update(texture_stream_priority_handle_t handle, const void* data, size_t size) {
-    // TODO: Add stream priority thread safety
-    // TODO: Implement stream priority memory pooling
-    // TODO: Add stream priority caching layer
-    // TODO: Implement stream priority async operations
-
-    if (handle.id >= g_stream_priority_ctx.count) {
-        return -1;
-    }
-
-    texture_stream_priority_internal_t* item = &g_stream_priority_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add stream priority GPU integration
-    // TODO: Implement stream priority SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool texture_stream_priority_is_valid(texture_stream_priority_handle_t handle) {
-    // TODO: Add stream priority batch processing
-    if (handle.id >= g_stream_priority_ctx.count) {
-        return false;
-    }
-    return g_stream_priority_ctx.items[handle.id].initialized;
-}
-
-int texture_stream_priority_get_info(texture_stream_priority_handle_t handle, texture_stream_priority_info_t* out_info) {
-    // TODO: Implement stream priority streaming support
-    // TODO: Add stream priority LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_stream_priority_ctx.count) {
-        return -2;
-    }
-
-    const texture_stream_priority_internal_t* item = &g_stream_priority_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void texture_stream_priority_mark_dirty(texture_stream_priority_handle_t handle) {
-    // TODO: Implement stream priority culling integration
-    if (handle.id < g_stream_priority_ctx.count) {
-        g_stream_priority_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int texture_stream_priority_process_pending(void) {
-    // TODO: Add stream priority render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_stream_priority_ctx.count; i++) {
-        texture_stream_priority_internal_t* item = &g_stream_priority_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
-}
-
-uint32_t texture_stream_priority_get_count(void) {
-    return g_stream_priority_ctx.count;
-}
-
-size_t texture_stream_priority_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_stream_priority_ctx);
-    total += g_stream_priority_ctx.capacity * sizeof(texture_stream_priority_internal_t);
-
-    for (uint32_t i = 0; i < g_stream_priority_ctx.count; i++) {
-        total += g_stream_priority_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void texture_stream_priority_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of stream_priority.c */

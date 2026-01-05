@@ -38,12 +38,21 @@
  * TODO: Add lightmap sampling render graph node
  */
 
-#include "lightmap_sampling.h"
-#include <stdint.h>
+#ifndef __STDC_FORMAT_MACROS
+#define __STDC_FORMAT_MACROS
+#endif
+#include <inttypes.h>
+#include <math.h>
 #include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "lightmap_sampling.h"
+#include "../../../../include/common.h"
+#include "../../../../include/core/types.h"
+#include "../../../../include/math/vec3.h"
+#include "../../../../include/math/vec2.h"
 
 /* ============================================================================
  * CONSTANTS
@@ -192,26 +201,37 @@ void lighting_lightmap_sampling_destroy(lighting_lightmap_sampling_handle_t hand
     lighting_lightmap_sampling_cleanup_internal(&g_lightmap_sampling_ctx.items[handle.id]);
 }
 
-int lighting_lightmap_sampling_update(lighting_lightmap_sampling_handle_t handle, const void* data, size_t size) {
-    // TODO: Add lightmap sampling thread safety
-    // TODO: Implement lightmap sampling memory pooling
-    // TODO: Add lightmap sampling caching layer
-    // TODO: Implement lightmap sampling async operations
+// Redundant type replaced by lightmap_sampling.h
 
-    if (handle.id >= g_lightmap_sampling_ctx.count) {
-        return -1;
-    }
+Vec3 lighting_lightmap_sample_bilinear(const lightmap_texture_t* texture, Vec2 uv) {
+    if (!texture || !texture->data) return vec3_zero();
 
-    lighting_lightmap_sampling_internal_t* item = &g_lightmap_sampling_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
+    float px = uv.x * (float)texture->width - 0.5f;
+    float py = uv.y * (float)texture->height - 0.5f;
 
-    // TODO: Add lightmap sampling GPU integration
-    // TODO: Implement lightmap sampling SIMD optimization
+    int x0 = (int)floorf(px);
+    int y0 = (int)floorf(py);
+    int x1 = x0 + 1;
+    int y1 = y0 + 1;
 
-    item->dirty = true;
-    return 0;
+    float tx = px - (float)x0;
+    float ty = py - (float)y0;
+
+    // Clamp
+    if (x0 < 0) x0 = 0; if (x0 >= (int)texture->width) x0 = texture->width - 1;
+    if (y0 < 0) y0 = 0; if (y0 >= (int)texture->height) y0 = texture->height - 1;
+    if (x1 < 0) x1 = 0; if (x1 >= (int)texture->width) x1 = texture->width - 1;
+    if (y1 < 0) y1 = 0; if (y1 >= (int)texture->height) y1 = texture->height - 1;
+
+    Vec3 c00 = texture->data[y0 * texture->width + x0];
+    Vec3 c10 = texture->data[y0 * texture->width + x1];
+    Vec3 c01 = texture->data[y1 * texture->width + x0];
+    Vec3 c11 = texture->data[y1 * texture->width + x1];
+
+    Vec3 r0 = vec3_lerp(c00, c10, tx);
+    Vec3 r1 = vec3_lerp(c01, c11, tx);
+
+    return vec3_lerp(r0, r1, ty);
 }
 
 bool lighting_lightmap_sampling_is_valid(lighting_lightmap_sampling_handle_t handle) {

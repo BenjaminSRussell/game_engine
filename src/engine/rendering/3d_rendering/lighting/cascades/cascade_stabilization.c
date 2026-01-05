@@ -1,41 +1,9 @@
 /*
  * cascade_stabilization.c
- * Temporal stabilization
+ * Stabilize cascade movement (prevent shimmering)
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement clustered light culling
- * TODO: Add ray-traced shadows
- * TODO: Implement cascaded shadow maps
- * TODO: Add area light support
- * TODO: Implement global illumination
- * TODO: Add volumetric lighting
- * TODO: Implement light probes
- * TODO: Add IES profile support
- * TODO: Implement lightmap baking
- * TODO: Add real-time GI
- * TODO: Implement cascade stabilization initialization
- * TODO: Add cascade stabilization cleanup/shutdown
- * TODO: Implement cascade stabilization validation
- * TODO: Add cascade stabilization error handling
- * TODO: Implement cascade stabilization serialization
- * TODO: Add cascade stabilization debug output
- * TODO: Implement cascade stabilization unit tests
- * TODO: Add cascade stabilization performance counters
- * TODO: Implement cascade stabilization hot-reload
- * TODO: Add cascade stabilization thread safety
- * TODO: Implement cascade stabilization memory pooling
- * TODO: Add cascade stabilization caching layer
- * TODO: Implement cascade stabilization async operations
- * TODO: Add cascade stabilization GPU integration
- * TODO: Implement cascade stabilization SIMD optimization
- * TODO: Add cascade stabilization batch processing
- * TODO: Implement cascade stabilization streaming support
- * TODO: Add cascade stabilization LOD support
- * TODO: Implement cascade stabilization culling integration
- * TODO: Add cascade stabilization render graph node
  */
 
 #include "cascade_stabilization.h"
@@ -44,247 +12,184 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
-
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
-
-#define LIGHTING_CASCADE_STABILIZATION_MAX_COUNT 4096
-#define LIGHTING_CASCADE_STABILIZATION_DEFAULT_CAPACITY 256
-#define LIGHTING_CASCADE_STABILIZATION_ALIGNMENT 16
+#include <math.h>
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
-typedef struct lighting_cascade_stabilization_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} lighting_cascade_stabilization_internal_t;
+typedef struct mat4 {
+    float m[16];
+} mat4_t;
 
-typedef struct lighting_cascade_stabilization_context {
-    lighting_cascade_stabilization_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
+typedef struct cascade_stabilization_context {
+    bool texel_snapping_enabled;
     bool initialized;
-} lighting_cascade_stabilization_context_t;
+} cascade_stabilization_context_t;
 
-static lighting_cascade_stabilization_context_t g_cascade_stabilization_ctx = {0};
+static cascade_stabilization_context_t g_stabilization_ctx = {0};
 
 /* ============================================================================
- * PRIVATE FUNCTIONS
+ * MATRIX HELPERS
  * ============================================================================ */
 
-static bool lighting_cascade_stabilization_validate(const lighting_cascade_stabilization_internal_t* item) {
-    // TODO: Implement clustered light culling
-    // TODO: Add ray-traced shadows
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void lighting_cascade_stabilization_cleanup_internal(lighting_cascade_stabilization_internal_t* item) {
-    // TODO: Implement cascaded shadow maps
-    // TODO: Add area light support
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
+static void mat4_identity(mat4_t* mat) {
+    memset(mat->m, 0, sizeof(mat->m));
+    mat->m[0] = mat->m[5] = mat->m[10] = mat->m[15] = 1.0f;
 }
 
 /* ============================================================================
- * PUBLIC API
+ * CASCADE STABILIZATION
+ * ============================================================================ */
+
+void lighting_cascade_stabilize_matrix(float* view_proj_matrix, uint32_t shadow_map_size) {
+    if (!g_stabilization_ctx.texel_snapping_enabled || !view_proj_matrix) {
+        return;
+    }
+    
+    // Transform origin to shadow space
+    float shadow_origin[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+    float transformed[4];
+    
+    // Matrix-vector multiply (simplified for origin)
+    transformed[0] = view_proj_matrix[12];
+    transformed[1] = view_proj_matrix[13];
+    transformed[2] = view_proj_matrix[14];
+    transformed[3] = view_proj_matrix[15];
+    
+    // Perspective divide
+    if (fabsf(transformed[3]) > 0.0001f) {
+        transformed[0] /= transformed[3];
+        transformed[1] /= transformed[3];
+    }
+    
+    // Convert to texel space
+    transformed[0] *= (float)shadow_map_size / 2.0f;
+    transformed[1] *= (float)shadow_map_size / 2.0f;
+    
+    // Round to nearest texel
+    transformed[0] = floorf(transformed[0]);
+    transformed[1] = floorf(transformed[1]);
+    
+    // Convert back to normalized space
+    transformed[0] /= (float)shadow_map_size / 2.0f;
+    transformed[1] /= (float)shadow_map_size / 2.0f;
+    
+    // Compute offset
+    float offset_x = transformed[0] - (view_proj_matrix[12] / view_proj_matrix[15]);
+    float offset_y = transformed[1] - (view_proj_matrix[13] / view_proj_matrix[15]);
+    
+    // Apply offset to translation component
+    view_proj_matrix[12] += offset_x * view_proj_matrix[15];
+    view_proj_matrix[13] += offset_y * view_proj_matrix[15];
+}
+
+void lighting_cascade_snap_to_texels(float* shadow_matrix, uint32_t shadow_map_size, 
+                                     float texel_size) {
+    if (!shadow_matrix) return;
+    
+    // Snap translation to texel grid
+    float texel_world_size = texel_size;
+    
+    shadow_matrix[12] = floorf(shadow_matrix[12] / texel_world_size) * texel_world_size;
+    shadow_matrix[13] = floorf(shadow_matrix[13] / texel_world_size) * texel_world_size;
+    shadow_matrix[14] = floorf(shadow_matrix[14] / texel_world_size) * texel_world_size;
+}
+
+void lighting_cascade_enable_stabilization(bool enabled) {
+    if (g_stabilization_ctx.initialized) {
+        g_stabilization_ctx.texel_snapping_enabled = enabled;
+    }
+}
+
+bool lighting_cascade_is_stabilization_enabled(void) {
+    return g_stabilization_ctx.texel_snapping_enabled;
+}
+
+void lighting_cascade_compute_stable_bounds(const float* camera_pos, const float* light_dir,
+                                            float cascade_radius, float* out_center) {
+    if (!camera_pos || !light_dir || !out_center) return;
+    
+    // Round camera position to world grid
+    float grid_size = cascade_radius * 2.0f / 1024.0f;  // Assuming 1024 shadow map
+    
+    out_center[0] = floorf(camera_pos[0] / grid_size) * grid_size;
+    out_center[1] = floorf(camera_pos[1] / grid_size) * grid_size;
+    out_center[2] = floorf(camera_pos[2] / grid_size) * grid_size;
+}
+
+/* ============================================================================
+ * PUBLIC API (Compatibility)
  * ============================================================================ */
 
 int lighting_cascade_stabilization_init(void) {
-    // TODO: Implement global illumination
-    // TODO: Add volumetric lighting
-    // TODO: Implement light probes
-    // TODO: Add IES profile support
-
-    if (g_cascade_stabilization_ctx.initialized) {
-        return 0; // Already initialized
+    if (g_stabilization_ctx.initialized) {
+        return 0;
     }
-
-    g_cascade_stabilization_ctx.capacity = LIGHTING_CASCADE_STABILIZATION_DEFAULT_CAPACITY;
-    g_cascade_stabilization_ctx.items = calloc(g_cascade_stabilization_ctx.capacity, sizeof(lighting_cascade_stabilization_internal_t));
-    if (!g_cascade_stabilization_ctx.items) {
-        return -1;
-    }
-
-    g_cascade_stabilization_ctx.count = 0;
-    g_cascade_stabilization_ctx.initialized = true;
-
+    
+    g_stabilization_ctx.texel_snapping_enabled = true;
+    g_stabilization_ctx.initialized = true;
+    
     return 0;
 }
 
 void lighting_cascade_stabilization_shutdown(void) {
-    // TODO: Implement lightmap baking
-    // TODO: Add real-time GI
-    // TODO: Implement cascade stabilization initialization
-    // TODO: Add cascade stabilization cleanup/shutdown
-
-    if (!g_cascade_stabilization_ctx.initialized) {
+    if (!g_stabilization_ctx.initialized) {
         return;
     }
-
-    for (uint32_t i = 0; i < g_cascade_stabilization_ctx.count; i++) {
-        lighting_cascade_stabilization_cleanup_internal(&g_cascade_stabilization_ctx.items[i]);
-    }
-
-    free(g_cascade_stabilization_ctx.items);
-    g_cascade_stabilization_ctx.items = NULL;
-    g_cascade_stabilization_ctx.count = 0;
-    g_cascade_stabilization_ctx.capacity = 0;
-    g_cascade_stabilization_ctx.initialized = false;
+    
+    g_stabilization_ctx.initialized = false;
 }
 
-int lighting_cascade_stabilization_create(lighting_cascade_stabilization_handle_t* out_handle, const lighting_cascade_stabilization_desc_t* desc) {
-    // TODO: Implement cascade stabilization validation
-    // TODO: Add cascade stabilization error handling
-    // TODO: Implement cascade stabilization serialization
-    // TODO: Add cascade stabilization debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_cascade_stabilization_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_cascade_stabilization_ctx.count >= g_cascade_stabilization_ctx.capacity) {
-        // TODO: Implement cascade stabilization unit tests
-        return -3;
-    }
-
-    uint32_t index = g_cascade_stabilization_ctx.count++;
-    lighting_cascade_stabilization_internal_t* item = &g_cascade_stabilization_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
+int lighting_cascade_stabilization_create(lighting_cascade_stabilization_handle_t* out_handle, 
+                                          const lighting_cascade_stabilization_desc_t* desc) {
+    if (!out_handle || !desc) return -1;
+    out_handle->id = 0;
     return 0;
 }
 
 void lighting_cascade_stabilization_destroy(lighting_cascade_stabilization_handle_t handle) {
-    // TODO: Add cascade stabilization performance counters
-    // TODO: Implement cascade stabilization hot-reload
-
-    if (handle.id >= g_cascade_stabilization_ctx.count) {
-        return;
-    }
-
-    lighting_cascade_stabilization_cleanup_internal(&g_cascade_stabilization_ctx.items[handle.id]);
+    (void)handle;
 }
 
-int lighting_cascade_stabilization_update(lighting_cascade_stabilization_handle_t handle, const void* data, size_t size) {
-    // TODO: Add cascade stabilization thread safety
-    // TODO: Implement cascade stabilization memory pooling
-    // TODO: Add cascade stabilization caching layer
-    // TODO: Implement cascade stabilization async operations
-
-    if (handle.id >= g_cascade_stabilization_ctx.count) {
-        return -1;
-    }
-
-    lighting_cascade_stabilization_internal_t* item = &g_cascade_stabilization_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add cascade stabilization GPU integration
-    // TODO: Implement cascade stabilization SIMD optimization
-
-    item->dirty = true;
+int lighting_cascade_stabilization_update(lighting_cascade_stabilization_handle_t handle, 
+                                          const void* data, size_t size) {
+    (void)handle; (void)data; (void)size;
     return 0;
 }
 
 bool lighting_cascade_stabilization_is_valid(lighting_cascade_stabilization_handle_t handle) {
-    // TODO: Add cascade stabilization batch processing
-    if (handle.id >= g_cascade_stabilization_ctx.count) {
-        return false;
-    }
-    return g_cascade_stabilization_ctx.items[handle.id].initialized;
+    (void)handle;
+    return g_stabilization_ctx.initialized;
 }
 
-int lighting_cascade_stabilization_get_info(lighting_cascade_stabilization_handle_t handle, lighting_cascade_stabilization_info_t* out_info) {
-    // TODO: Implement cascade stabilization streaming support
-    // TODO: Add cascade stabilization LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_cascade_stabilization_ctx.count) {
-        return -2;
-    }
-
-    const lighting_cascade_stabilization_internal_t* item = &g_cascade_stabilization_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
+int lighting_cascade_stabilization_get_info(lighting_cascade_stabilization_handle_t handle, 
+                                            lighting_cascade_stabilization_info_t* out_info) {
+    if (!out_info) return -1;
+    out_info->id = handle.id;
+    out_info->flags = 0;
+    out_info->initialized = g_stabilization_ctx.initialized;
     return 0;
 }
 
 void lighting_cascade_stabilization_mark_dirty(lighting_cascade_stabilization_handle_t handle) {
-    // TODO: Implement cascade stabilization culling integration
-    if (handle.id < g_cascade_stabilization_ctx.count) {
-        g_cascade_stabilization_ctx.items[handle.id].dirty = true;
-    }
+    (void)handle;
 }
 
 int lighting_cascade_stabilization_process_pending(void) {
-    // TODO: Add cascade stabilization render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_cascade_stabilization_ctx.count; i++) {
-        lighting_cascade_stabilization_internal_t* item = &g_cascade_stabilization_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
+    return 0;
 }
 
 uint32_t lighting_cascade_stabilization_get_count(void) {
-    return g_cascade_stabilization_ctx.count;
+    return g_stabilization_ctx.initialized ? 1 : 0;
 }
 
 size_t lighting_cascade_stabilization_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_cascade_stabilization_ctx);
-    total += g_cascade_stabilization_ctx.capacity * sizeof(lighting_cascade_stabilization_internal_t);
-
-    for (uint32_t i = 0; i < g_cascade_stabilization_ctx.count; i++) {
-        total += g_cascade_stabilization_ctx.items[i].data_size;
-    }
-
-    return total;
+    return sizeof(cascade_stabilization_context_t);
 }
 
 void lighting_cascade_stabilization_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    // Debug output
 }
 
 /* End of cascade_stabilization.c */

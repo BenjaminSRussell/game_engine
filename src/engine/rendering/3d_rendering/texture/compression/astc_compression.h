@@ -1,6 +1,6 @@
 /*
  * astc_compression.h
- * ASTC compression
+ * ASTC compression support
  *
  * Part of the Texture subsystem
  * Advanced 3D Rendering Engine
@@ -21,47 +21,28 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
-typedef struct texture_astc_compression_handle {
-    uint32_t id;
-} texture_astc_compression_handle_t;
-
-typedef struct texture_astc_compression_desc {
-    uint32_t flags;
-    void* user_data;
-} texture_astc_compression_desc_t;
-
-typedef struct texture_astc_compression_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} texture_astc_compression_info_t;
+typedef enum astc_block_size {
+    ASTC_BLOCK_4x4,
+    ASTC_BLOCK_5x5,
+    ASTC_BLOCK_6x6,
+    ASTC_BLOCK_8x8
+} astc_block_size_t;
 
 /* ============================================================================
  * API
  * ============================================================================ */
 
-/* Initialization */
+/* Operations */
+int astc_compress_block(const uint32_t* rgba, uint32_t block_w, uint32_t block_h, void* out_block);
+int astc_compress_image(const uint32_t* rgba, uint32_t width, uint32_t height, void* out_data, astc_block_size_t block_size);
+
+/* Original stub compatibility */
 int texture_astc_compression_init(void);
 void texture_astc_compression_shutdown(void);
-
-/* Lifecycle */
-int texture_astc_compression_create(texture_astc_compression_handle_t* out_handle, const texture_astc_compression_desc_t* desc);
-void texture_astc_compression_destroy(texture_astc_compression_handle_t handle);
-
-/* Operations */
-int texture_astc_compression_update(texture_astc_compression_handle_t handle, const void* data, size_t size);
-bool texture_astc_compression_is_valid(texture_astc_compression_handle_t handle);
-int texture_astc_compression_get_info(texture_astc_compression_handle_t handle, texture_astc_compression_info_t* out_info);
-void texture_astc_compression_mark_dirty(texture_astc_compression_handle_t handle);
-int texture_astc_compression_process_pending(void);
-
-/* Statistics */
-uint32_t texture_astc_compression_get_count(void);
-size_t texture_astc_compression_get_memory_usage(void);
-void texture_astc_compression_debug_print(void);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* TEXTURE_ASTC_COMPRESSION_H */
+

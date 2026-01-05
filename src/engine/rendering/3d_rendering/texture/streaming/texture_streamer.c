@@ -1,290 +1,237 @@
 /*
  * texture_streamer.c
- * Texture streaming system
- *
- * Part of the Texture subsystem
- * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement texture streaming
- * TODO: Add virtual texturing
- * TODO: Implement BC/ASTC compression
- * TODO: Add mipmap generation
- * TODO: Implement bindless textures
- * TODO: Add texture arrays
- * TODO: Implement feedback analysis
- * TODO: Add residency management
- * TODO: Implement format conversion
- * TODO: Add anisotropic filtering
- * TODO: Implement texture streamer initialization
- * TODO: Add texture streamer cleanup/shutdown
- * TODO: Implement texture streamer validation
- * TODO: Add texture streamer error handling
- * TODO: Implement texture streamer serialization
- * TODO: Add texture streamer debug output
- * TODO: Implement texture streamer unit tests
- * TODO: Add texture streamer performance counters
- * TODO: Implement texture streamer hot-reload
- * TODO: Add texture streamer thread safety
- * TODO: Implement texture streamer memory pooling
- * TODO: Add texture streamer caching layer
- * TODO: Implement texture streamer async operations
- * TODO: Add texture streamer GPU integration
- * TODO: Implement texture streamer SIMD optimization
- * TODO: Add texture streamer batch processing
- * TODO: Implement texture streamer streaming support
- * TODO: Add texture streamer LOD support
- * TODO: Implement texture streamer culling integration
- * TODO: Add texture streamer render graph node
+ * Texture streaming system implementation
  */
 
 #include "texture_streamer.h"
+#include "stream_priority.h"
+#include "resident_mips.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /* ============================================================================
- * CONSTANTS
+ * GLOBAL STATE
  * ============================================================================ */
 
-#define TEXTURE_TEXTURE_STREAMER_MAX_COUNT 4096
-#define TEXTURE_TEXTURE_STREAMER_DEFAULT_CAPACITY 256
-#define TEXTURE_TEXTURE_STREAMER_ALIGNMENT 16
-
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct texture_texture_streamer_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} texture_texture_streamer_internal_t;
-
-typedef struct texture_texture_streamer_context {
-    texture_texture_streamer_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} texture_texture_streamer_context_t;
-
-static texture_texture_streamer_context_t g_texture_streamer_ctx = {0};
+static texture_streamer_t g_global_streamer = {0};
 
 /* ============================================================================
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool texture_texture_streamer_validate(const texture_texture_streamer_internal_t* item) {
-    // TODO: Implement texture streaming
-    // TODO: Add virtual texturing
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+static void priority_queue_push(priority_queue_t* queue, stream_request_t request) {
+    if (queue->count >= queue->capacity) {
+        uint32_t new_capacity = queue->capacity == 0 ? 16 : queue->capacity * 2;
+        stream_request_t* new_requests = realloc(queue->requests, new_capacity * sizeof(stream_request_t));
+        if (!new_requests) return;
+        queue->requests = new_requests;
+        queue->capacity = new_capacity;
+    }
+
+    // Simple insertion sort for priority (for now, could be a heap)
+    uint32_t i = queue->count;
+    while (i > 0 && queue->requests[i - 1].priority < request.priority) {
+        queue->requests[i] = queue->requests[i - 1];
+        i--;
+    }
+    queue->requests[i] = request;
+    queue->count++;
 }
 
-static void texture_texture_streamer_cleanup_internal(texture_texture_streamer_internal_t* item) {
-    // TODO: Implement BC/ASTC compression
-    // TODO: Add mipmap generation
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+static stream_request_t priority_queue_pop(priority_queue_t* queue) {
+    if (queue->count == 0) {
+        return (stream_request_t){0};
     }
-    item->initialized = false;
+    return queue->requests[--queue->count];
 }
 
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
-int texture_texture_streamer_init(void) {
-    // TODO: Implement bindless textures
-    // TODO: Add texture arrays
-    // TODO: Implement feedback analysis
-    // TODO: Add residency management
+texture_streamer_t* texture_streamer_get_global(void) {
+    return &g_global_streamer;
+}
 
-    if (g_texture_streamer_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_texture_streamer_ctx.capacity = TEXTURE_TEXTURE_STREAMER_DEFAULT_CAPACITY;
-    g_texture_streamer_ctx.items = calloc(g_texture_streamer_ctx.capacity, sizeof(texture_texture_streamer_internal_t));
-    if (!g_texture_streamer_ctx.items) {
-        return -1;
-    }
-
-    g_texture_streamer_ctx.count = 0;
-    g_texture_streamer_ctx.initialized = true;
-
+int texture_streamer_init(texture_streamer_t* streamer, const texture_texture_streamer_desc_t* desc) {
+    if (!streamer) return -1;
+    
+    memset(streamer, 0, sizeof(texture_streamer_t));
+    
+    streamer->texture_capacity = desc->max_textures > 0 ? desc->max_textures : 1024;
+    streamer->textures = calloc(streamer->texture_capacity, sizeof(texture_entry_t));
+    if (!streamer->textures) return -2;
+    
+    streamer->memory_budget = desc->memory_budget > 0 ? desc->memory_budget : DEFAULT_STREAMING_BUDGET;
+    streamer->memory_used = 0;
+    
+    streamer->request_queue.capacity = MAX_STREAMING_REQUESTS;
+    streamer->request_queue.requests = malloc(streamer->request_queue.capacity * sizeof(stream_request_t));
+    streamer->request_queue.count = 0;
+    
+    streamer->initialized = true;
     return 0;
 }
 
+void texture_streamer_shutdown(texture_streamer_t* streamer) {
+    if (!streamer || !streamer->initialized) return;
+    
+    if (streamer->textures) free(streamer->textures);
+    if (streamer->request_queue.requests) free(streamer->request_queue.requests);
+    
+    memset(streamer, 0, sizeof(texture_streamer_t));
+}
+
+int texture_streamer_register_texture(texture_streamer_t* streamer, uint32_t handle, uint32_t max_mips) {
+    if (!streamer || !streamer->initialized) return -1;
+    
+    if (streamer->texture_count >= streamer->texture_capacity) return -2;
+    
+    uint32_t index = streamer->texture_count++;
+    texture_entry_t* entry = &streamer->textures[index];
+    
+    entry->handle = handle;
+    entry->max_mips = max_mips;
+    entry->current_mip = max_mips - 1; // Start at lowest mip
+    entry->target_mip = max_mips - 1;
+    entry->is_streaming = false;
+    
+    return (int)index;
+}
+
+void texture_streamer_unregister_texture(texture_streamer_t* streamer, uint32_t handle) {
+    if (!streamer || !streamer->initialized) return;
+    
+    for (uint32_t i = 0; i < streamer->texture_count; i++) {
+        if (streamer->textures[i].handle == handle) {
+            // Swap with last and decrement count
+            streamer->textures[i] = streamer->textures[--streamer->texture_count];
+            return;
+        }
+    }
+}
+
+void texture_streamer_update(texture_streamer_t* streamer, void* camera) {
+    if (!streamer || !streamer->initialized) return;
+    
+    streamer->request_queue.count = 0; // Clear queue for new frame
+    
+    for (uint32_t i = 0; i < streamer->texture_count; i++) {
+        texture_entry_t* entry = &streamer->textures[i];
+        
+        // Calculate screen coverage and target mip
+        entry->screen_coverage = texture_streamer_calculate_screen_coverage(entry->handle, camera);
+        entry->target_mip = texture_streamer_calculate_target_mip(entry->screen_coverage, entry->max_mips);
+        
+        // Calculate distance score for priority
+        float distance_score = texture_priority_calculate_distance_score(NULL, camera); // Simplified
+        entry->priority = texture_priority_calculate_final_score(entry->screen_coverage, distance_score, entry->current_mip, entry->target_mip);
+        
+        if (entry->target_mip < entry->current_mip && !entry->is_streaming) {
+            texture_streamer_queue_request(streamer, i, entry->target_mip, entry->priority);
+        }
+    }
+    
+    texture_streamer_process_requests(streamer);
+}
+
+void texture_streamer_queue_request(texture_streamer_t* streamer, uint32_t texture_index, uint32_t target_mip, float priority) {
+    stream_request_t req = {
+        .texture_index = texture_index,
+        .target_mip = target_mip,
+        .priority = priority
+    };
+    priority_queue_push(&streamer->request_queue, req);
+}
+
+void texture_streamer_process_requests(texture_streamer_t* streamer) {
+    while (streamer->request_queue.count > 0 && streamer->memory_used < streamer->memory_budget) {
+        stream_request_t req = priority_queue_pop(&streamer->request_queue);
+        texture_entry_t* entry = &streamer->textures[req.texture_index];
+        
+        size_t mip_size = texture_residency_get_mip_memory_size(entry->handle, req.target_mip);
+        if (streamer->memory_used + mip_size <= streamer->memory_budget) {
+            if (texture_streamer_load_mip(entry->handle, req.target_mip) == 0) {
+                streamer->memory_used += mip_size;
+                entry->current_mip = req.target_mip;
+            }
+        } else {
+            // Out of budget, stop processing
+            break;
+        }
+    }
+}
+
+float texture_streamer_calculate_screen_coverage(uint32_t handle, void* camera) {
+    // Placeholder: Use bounds from handle to calculate coverage
+    float bounds_min[3] = {-1, -1, -1};
+    float bounds_max[3] = {1, 1, 1};
+    return texture_priority_calculate_screen_coverage(bounds_min, bounds_max, camera);
+}
+
+uint32_t texture_streamer_calculate_target_mip(float screen_coverage, uint32_t max_mips) {
+    return texture_priority_calculate_target_mip(screen_coverage, max_mips, 0.0f);
+}
+
+int texture_streamer_load_mip(uint32_t handle, uint32_t mip) {
+    return texture_residency_set_mip_status(handle, mip, true);
+}
+
+int texture_streamer_unload_mip(uint32_t handle, uint32_t mip) {
+    return texture_residency_set_mip_status(handle, mip, false);
+}
+
+/* Statistics */
+int texture_streamer_get_info(const texture_streamer_t* streamer, texture_texture_streamer_info_t* out_info) {
+    if (!streamer || !out_info) return -1;
+    out_info->texture_count = streamer->texture_count;
+    out_info->memory_budget = streamer->memory_budget;
+    out_info->memory_used = streamer->memory_used;
+    out_info->pending_requests = streamer->request_queue.count;
+    return 0;
+}
+
+void texture_streamer_debug_print(const texture_streamer_t* streamer) {
+    printf("Texture Streamer Debug:\n");
+    printf("  Textures: %u / %u\n", streamer->texture_count, streamer->texture_capacity);
+    printf("  Memory: %u MB / %u MB\n", streamer->memory_used / (1024*1024), streamer->memory_budget / (1024*1024));
+    printf("  Pending Requests: %u\n", streamer->request_queue.count);
+}
+
+/* Core API compatibility */
+int texture_texture_streamer_init(void) {
+    texture_texture_streamer_desc_t desc = {
+        .memory_budget = DEFAULT_STREAMING_BUDGET,
+        .max_textures = 1024
+    };
+    return texture_streamer_init(&g_global_streamer, &desc);
+}
+
 void texture_texture_streamer_shutdown(void) {
-    // TODO: Implement format conversion
-    // TODO: Add anisotropic filtering
-    // TODO: Implement texture streamer initialization
-    // TODO: Add texture streamer cleanup/shutdown
-
-    if (!g_texture_streamer_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_texture_streamer_ctx.count; i++) {
-        texture_texture_streamer_cleanup_internal(&g_texture_streamer_ctx.items[i]);
-    }
-
-    free(g_texture_streamer_ctx.items);
-    g_texture_streamer_ctx.items = NULL;
-    g_texture_streamer_ctx.count = 0;
-    g_texture_streamer_ctx.capacity = 0;
-    g_texture_streamer_ctx.initialized = false;
+    texture_streamer_shutdown(&g_global_streamer);
 }
 
 int texture_texture_streamer_create(texture_texture_streamer_handle_t* out_handle, const texture_texture_streamer_desc_t* desc) {
-    // TODO: Implement texture streamer validation
-    // TODO: Add texture streamer error handling
-    // TODO: Implement texture streamer serialization
-    // TODO: Add texture streamer debug output
-
-    if (!out_handle || !desc) {
-        return -1;
+    // For original API, we still use the global instance
+    if (!g_global_streamer.initialized) {
+        texture_streamer_init(&g_global_streamer, desc);
     }
-
-    if (!g_texture_streamer_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_texture_streamer_ctx.count >= g_texture_streamer_ctx.capacity) {
-        // TODO: Implement texture streamer unit tests
-        return -3;
-    }
-
-    uint32_t index = g_texture_streamer_ctx.count++;
-    texture_texture_streamer_internal_t* item = &g_texture_streamer_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
+    out_handle->id = 0; // Fixed ID for global instance
     return 0;
 }
 
 void texture_texture_streamer_destroy(texture_texture_streamer_handle_t handle) {
-    // TODO: Add texture streamer performance counters
-    // TODO: Implement texture streamer hot-reload
-
-    if (handle.id >= g_texture_streamer_ctx.count) {
-        return;
-    }
-
-    texture_texture_streamer_cleanup_internal(&g_texture_streamer_ctx.items[handle.id]);
-}
-
-int texture_texture_streamer_update(texture_texture_streamer_handle_t handle, const void* data, size_t size) {
-    // TODO: Add texture streamer thread safety
-    // TODO: Implement texture streamer memory pooling
-    // TODO: Add texture streamer caching layer
-    // TODO: Implement texture streamer async operations
-
-    if (handle.id >= g_texture_streamer_ctx.count) {
-        return -1;
-    }
-
-    texture_texture_streamer_internal_t* item = &g_texture_streamer_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add texture streamer GPU integration
-    // TODO: Implement texture streamer SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool texture_texture_streamer_is_valid(texture_texture_streamer_handle_t handle) {
-    // TODO: Add texture streamer batch processing
-    if (handle.id >= g_texture_streamer_ctx.count) {
-        return false;
-    }
-    return g_texture_streamer_ctx.items[handle.id].initialized;
-}
-
-int texture_texture_streamer_get_info(texture_texture_streamer_handle_t handle, texture_texture_streamer_info_t* out_info) {
-    // TODO: Implement texture streamer streaming support
-    // TODO: Add texture streamer LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_texture_streamer_ctx.count) {
-        return -2;
-    }
-
-    const texture_texture_streamer_internal_t* item = &g_texture_streamer_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void texture_texture_streamer_mark_dirty(texture_texture_streamer_handle_t handle) {
-    // TODO: Implement texture streamer culling integration
-    if (handle.id < g_texture_streamer_ctx.count) {
-        g_texture_streamer_ctx.items[handle.id].dirty = true;
-    }
+    (void)handle;
+    // Don't shut down global streamer on destroy handle
 }
 
 int texture_texture_streamer_process_pending(void) {
-    // TODO: Add texture streamer render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_texture_streamer_ctx.count; i++) {
-        texture_texture_streamer_internal_t* item = &g_texture_streamer_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
+    if (!g_global_streamer.initialized) return 0;
+    texture_streamer_process_requests(&g_global_streamer);
+    return g_global_streamer.request_queue.count;
 }
 
-uint32_t texture_texture_streamer_get_count(void) {
-    return g_texture_streamer_ctx.count;
-}
-
-size_t texture_texture_streamer_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_texture_streamer_ctx);
-    total += g_texture_streamer_ctx.capacity * sizeof(texture_texture_streamer_internal_t);
-
-    for (uint32_t i = 0; i < g_texture_streamer_ctx.count; i++) {
-        total += g_texture_streamer_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void texture_texture_streamer_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of texture_streamer.c */

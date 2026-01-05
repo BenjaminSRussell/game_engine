@@ -159,7 +159,18 @@ set(RENDERER_ADVANCED_SOURCES
     renderer/advanced/normal_mapping.c
     renderer/advanced/hdr_tonemap.c
     renderer/advanced/material_reflection.c
+
     renderer/pbr/pbr_brdf.c
+)
+
+# Renderer - New 3D Lighting (Sources & Culling)
+set(RENDERER_LIGHTING_SOURCES
+    rendering/3d_rendering/lighting/sources/point_light.c
+    rendering/3d_rendering/lighting/sources/spot_light.c
+    rendering/3d_rendering/lighting/sources/directional_light.c
+    rendering/3d_rendering/lighting/sources/rect_light.c
+    rendering/3d_rendering/lighting/sources/spherical_light.c
+    rendering/3d_rendering/lighting/culling/light_culling.c
 )
 
 # Renderer - Core
@@ -387,6 +398,7 @@ set(ENGINE_RENDERER_OPTIMIZATION_SOURCES
 set(ENGINE_ALL_SOURCES
     ${ENGINE_CORE_SOURCES}
     ${ENGINE_MATH_SOURCES}
+    ${RENDERER_LIGHTING_SOURCES}
     ${ENGINE_INPUT_SOURCES}
     ${ENGINE_RESOURCE_SOURCES}
     ${ENGINE_ECS_SOURCES}

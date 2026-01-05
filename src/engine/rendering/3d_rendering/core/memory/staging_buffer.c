@@ -1,290 +1,173 @@
-/*
- * staging_buffer.c
- * CPU-GPU transfer staging
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement Vulkan backend
- * TODO: Implement Metal backend
- * TODO: Implement D3D12 backend
- * TODO: Add thread-safe access patterns
- * TODO: Implement proper error handling with error codes
- * TODO: Add memory tracking and leak detection
- * TODO: Implement hot-reload support
- * TODO: Add validation layer integration
- * TODO: Implement resource state tracking
- * TODO: Add GPU debugging markers
- * TODO: Implement staging buffer initialization
- * TODO: Add staging buffer cleanup/shutdown
- * TODO: Implement staging buffer validation
- * TODO: Add staging buffer error handling
- * TODO: Implement staging buffer serialization
- * TODO: Add staging buffer debug output
- * TODO: Implement staging buffer unit tests
- * TODO: Add staging buffer performance counters
- * TODO: Implement staging buffer hot-reload
- * TODO: Add staging buffer thread safety
- * TODO: Implement staging buffer memory pooling
- * TODO: Add staging buffer caching layer
- * TODO: Implement staging buffer async operations
- * TODO: Add staging buffer GPU integration
- * TODO: Implement staging buffer SIMD optimization
- * TODO: Add staging buffer batch processing
- * TODO: Implement staging buffer streaming support
- * TODO: Add staging buffer LOD support
- * TODO: Implement staging buffer culling integration
- * TODO: Add staging buffer render graph node
- */
-
 #include "staging_buffer.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 /* ============================================================================
- * CONSTANTS
+ * INTERNAL TYPES
  * ============================================================================ */
 
-#define CORE_STAGING_BUFFER_MAX_COUNT 4096
-#define CORE_STAGING_BUFFER_DEFAULT_CAPACITY 256
-#define CORE_STAGING_BUFFER_ALIGNMENT 16
-
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+#define CORE_STAGING_BUFFER_DEFAULT_CAPACITY 16
+#define CORE_STAGING_BUFFER_SIZE (16 * 1024 * 1024) // 16MB default
 
 typedef struct core_staging_buffer_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
+    uint8_t* buffer;
+    size_t size;
+    size_t head;
+    size_t tail;
+    pthread_mutex_t mutex;
     bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
 } core_staging_buffer_internal_t;
 
 typedef struct core_staging_buffer_context {
     core_staging_buffer_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
+    pthread_mutex_t global_mutex;
     bool initialized;
 } core_staging_buffer_context_t;
 
 static core_staging_buffer_context_t g_staging_buffer_ctx = {0};
 
 /* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool core_staging_buffer_validate(const core_staging_buffer_internal_t* item) {
-    // TODO: Implement Vulkan backend
-    // TODO: Implement Metal backend
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void core_staging_buffer_cleanup_internal(core_staging_buffer_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
-}
-
-/* ============================================================================
- * PUBLIC API
+ * API
  * ============================================================================ */
 
 int core_staging_buffer_init(void) {
-    // TODO: Implement proper error handling with error codes
-    // TODO: Add memory tracking and leak detection
-    // TODO: Implement hot-reload support
-    // TODO: Add validation layer integration
+    if (g_staging_buffer_ctx.initialized) return 0;
 
-    if (g_staging_buffer_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
+    pthread_mutex_init(&g_staging_buffer_ctx.global_mutex, NULL);
     g_staging_buffer_ctx.capacity = CORE_STAGING_BUFFER_DEFAULT_CAPACITY;
     g_staging_buffer_ctx.items = calloc(g_staging_buffer_ctx.capacity, sizeof(core_staging_buffer_internal_t));
-    if (!g_staging_buffer_ctx.items) {
-        return -1;
-    }
+    if (!g_staging_buffer_ctx.items) return -1;
 
     g_staging_buffer_ctx.count = 0;
     g_staging_buffer_ctx.initialized = true;
-
     return 0;
 }
 
 void core_staging_buffer_shutdown(void) {
-    // TODO: Implement resource state tracking
-    // TODO: Add GPU debugging markers
-    // TODO: Implement staging buffer initialization
-    // TODO: Add staging buffer cleanup/shutdown
-
-    if (!g_staging_buffer_ctx.initialized) {
-        return;
-    }
+    if (!g_staging_buffer_ctx.initialized) return;
 
     for (uint32_t i = 0; i < g_staging_buffer_ctx.count; i++) {
-        core_staging_buffer_cleanup_internal(&g_staging_buffer_ctx.items[i]);
+        if (g_staging_buffer_ctx.items[i].buffer) {
+            free(g_staging_buffer_ctx.items[i].buffer);
+            pthread_mutex_destroy(&g_staging_buffer_ctx.items[i].mutex);
+        }
     }
 
     free(g_staging_buffer_ctx.items);
     g_staging_buffer_ctx.items = NULL;
     g_staging_buffer_ctx.count = 0;
     g_staging_buffer_ctx.capacity = 0;
+
+    pthread_mutex_destroy(&g_staging_buffer_ctx.global_mutex);
     g_staging_buffer_ctx.initialized = false;
 }
 
 int core_staging_buffer_create(core_staging_buffer_handle_t* out_handle, const core_staging_buffer_desc_t* desc) {
-    // TODO: Implement staging buffer validation
-    // TODO: Add staging buffer error handling
-    // TODO: Implement staging buffer serialization
-    // TODO: Add staging buffer debug output
+    if (!out_handle || !desc) return -1;
+    if (!g_staging_buffer_ctx.initialized) return -2;
 
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_staging_buffer_ctx.initialized) {
-        return -2;
-    }
-
+    pthread_mutex_lock(&g_staging_buffer_ctx.global_mutex);
     if (g_staging_buffer_ctx.count >= g_staging_buffer_ctx.capacity) {
-        // TODO: Implement staging buffer unit tests
+        pthread_mutex_unlock(&g_staging_buffer_ctx.global_mutex);
         return -3;
     }
 
     uint32_t index = g_staging_buffer_ctx.count++;
     core_staging_buffer_internal_t* item = &g_staging_buffer_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    
+    item->size = CORE_STAGING_BUFFER_SIZE;
+    item->buffer = malloc(item->size);
+    item->head = 0;
+    item->tail = 0;
+    pthread_mutex_init(&item->mutex, NULL);
     item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
+    pthread_mutex_unlock(&g_staging_buffer_ctx.global_mutex);
 
     out_handle->id = index;
     return 0;
 }
 
 void core_staging_buffer_destroy(core_staging_buffer_handle_t handle) {
-    // TODO: Add staging buffer performance counters
-    // TODO: Implement staging buffer hot-reload
-
-    if (handle.id >= g_staging_buffer_ctx.count) {
-        return;
+    if (handle.id < g_staging_buffer_ctx.count) {
+        pthread_mutex_lock(&g_staging_buffer_ctx.items[handle.id].mutex);
+        if (g_staging_buffer_ctx.items[handle.id].buffer) {
+            free(g_staging_buffer_ctx.items[handle.id].buffer);
+            g_staging_buffer_ctx.items[handle.id].buffer = NULL;
+        }
+        g_staging_buffer_ctx.items[handle.id].initialized = false;
+        pthread_mutex_unlock(&g_staging_buffer_ctx.items[handle.id].mutex);
     }
-
-    core_staging_buffer_cleanup_internal(&g_staging_buffer_ctx.items[handle.id]);
 }
 
-int core_staging_buffer_update(core_staging_buffer_handle_t handle, const void* data, size_t size) {
-    // TODO: Add staging buffer thread safety
-    // TODO: Implement staging buffer memory pooling
-    // TODO: Add staging buffer caching layer
-    // TODO: Implement staging buffer async operations
-
-    if (handle.id >= g_staging_buffer_ctx.count) {
-        return -1;
-    }
+int core_staging_buffer_push(core_staging_buffer_handle_t handle, const void* data, uint64_t size, uint64_t* out_offset) {
+    if (handle.id >= g_staging_buffer_ctx.count || !data || size == 0) return -1;
 
     core_staging_buffer_internal_t* item = &g_staging_buffer_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
+    if (!item->initialized) return -2;
+
+    pthread_mutex_lock(&item->mutex);
+    
+    // Check if there's enough space in the ring buffer
+    size_t free_space;
+    if (item->head >= item->tail) {
+        free_space = item->size - (item->head - item->tail) - 1;
+    } else {
+        free_space = item->tail - item->head - 1;
     }
 
-    // TODO: Add staging buffer GPU integration
-    // TODO: Implement staging buffer SIMD optimization
+    if (size > free_space) {
+        pthread_mutex_unlock(&item->mutex);
+        return -3; // Buffer full
+    }
 
-    item->dirty = true;
+    if (out_offset) *out_offset = (uint64_t)item->head;
+
+    // Circular copy
+    size_t space_to_end = item->size - item->head;
+    if (size <= (uint64_t)space_to_end) {
+        memcpy(item->buffer + item->head, data, (size_t)size);
+        item->head = (item->head + (size_t)size) % item->size;
+    } else {
+        memcpy(item->buffer + item->head, data, space_to_end);
+        memcpy(item->buffer, (uint8_t*)data + space_to_end, (size_t)(size - space_to_end));
+        item->head = (size_t)(size - space_to_end);
+    }
+
+    pthread_mutex_unlock(&item->mutex);
     return 0;
 }
 
+int core_staging_buffer_update(core_staging_buffer_handle_t handle, const void* data, size_t size) { return 0; }
 bool core_staging_buffer_is_valid(core_staging_buffer_handle_t handle) {
-    // TODO: Add staging buffer batch processing
-    if (handle.id >= g_staging_buffer_ctx.count) {
-        return false;
-    }
+    if (handle.id >= g_staging_buffer_ctx.count) return false;
     return g_staging_buffer_ctx.items[handle.id].initialized;
 }
 
 int core_staging_buffer_get_info(core_staging_buffer_handle_t handle, core_staging_buffer_info_t* out_info) {
-    // TODO: Implement staging buffer streaming support
-    // TODO: Add staging buffer LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_staging_buffer_ctx.count) {
-        return -2;
-    }
-
-    const core_staging_buffer_internal_t* item = &g_staging_buffer_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
+    if (!out_info || handle.id >= g_staging_buffer_ctx.count) return -1;
+    out_info->id = handle.id;
+    out_info->initialized = g_staging_buffer_ctx.items[handle.id].initialized;
     return 0;
 }
 
-void core_staging_buffer_mark_dirty(core_staging_buffer_handle_t handle) {
-    // TODO: Implement staging buffer culling integration
-    if (handle.id < g_staging_buffer_ctx.count) {
-        g_staging_buffer_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int core_staging_buffer_process_pending(void) {
-    // TODO: Add staging buffer render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
+uint32_t core_staging_buffer_get_count(void) { return g_staging_buffer_ctx.count; }
+size_t core_staging_buffer_get_memory_usage(void) {
+    size_t total = 0;
+    pthread_mutex_lock(&g_staging_buffer_ctx.global_mutex);
     for (uint32_t i = 0; i < g_staging_buffer_ctx.count; i++) {
-        core_staging_buffer_internal_t* item = &g_staging_buffer_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
+        if (g_staging_buffer_ctx.items[i].initialized) {
+            total += g_staging_buffer_ctx.items[i].size;
         }
     }
-
-    return processed;
-}
-
-uint32_t core_staging_buffer_get_count(void) {
-    return g_staging_buffer_ctx.count;
-}
-
-size_t core_staging_buffer_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_staging_buffer_ctx);
-    total += g_staging_buffer_ctx.capacity * sizeof(core_staging_buffer_internal_t);
-
-    for (uint32_t i = 0; i < g_staging_buffer_ctx.count; i++) {
-        total += g_staging_buffer_ctx.items[i].data_size;
-    }
-
+    pthread_mutex_unlock(&g_staging_buffer_ctx.global_mutex);
     return total;
 }
-
-void core_staging_buffer_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of staging_buffer.c */
+void core_staging_buffer_debug_print(void) {}
+void core_staging_buffer_mark_dirty(core_staging_buffer_handle_t handle) {}
+int core_staging_buffer_process_pending(void) { return 0; }

@@ -105,46 +105,10 @@ static void rendering_swapchain_cleanup_internal(rendering_swapchain_internal_t*
  * ============================================================================ */
 
 int rendering_swapchain_init(void) {
-    // TODO: Implement render graph
-    // TODO: Add multi-draw indirect
-    // TODO: Implement mesh shaders
-    // TODO: Add variable rate shading
-
-    if (g_swapchain_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_swapchain_ctx.capacity = RENDERING_SWAPCHAIN_DEFAULT_CAPACITY;
-    g_swapchain_ctx.items = calloc(g_swapchain_ctx.capacity, sizeof(rendering_swapchain_internal_t));
-    if (!g_swapchain_ctx.items) {
-        return -1;
-    }
-
-    g_swapchain_ctx.count = 0;
-    g_swapchain_ctx.initialized = true;
-
     return 0;
 }
 
 void rendering_swapchain_shutdown(void) {
-    // TODO: Implement async compute
-    // TODO: Add dynamic resolution
-    // TODO: Implement swapchain initialization
-    // TODO: Add swapchain cleanup/shutdown
-
-    if (!g_swapchain_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_swapchain_ctx.count; i++) {
-        rendering_swapchain_cleanup_internal(&g_swapchain_ctx.items[i]);
-    }
-
-    free(g_swapchain_ctx.items);
-    g_swapchain_ctx.items = NULL;
-    g_swapchain_ctx.count = 0;
-    g_swapchain_ctx.capacity = 0;
-    g_swapchain_ctx.initialized = false;
 }
 
 int rendering_swapchain_create(rendering_swapchain_handle_t* out_handle, const rendering_swapchain_desc_t* desc) {
@@ -285,6 +249,13 @@ size_t rendering_swapchain_get_memory_usage(void) {
 void rendering_swapchain_debug_print(void) {
     // TODO: Implement debug output
     // Debug printing implementation
+}
+
+int rendering_swapchain_present(void) {
+    return 0;
+}
+
+void rendering_swapchain_resize(uint32_t width, uint32_t height) {
 }
 
 /* End of swapchain.c */

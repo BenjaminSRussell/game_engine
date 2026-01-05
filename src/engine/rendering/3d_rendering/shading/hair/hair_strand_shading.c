@@ -1,77 +1,49 @@
 /*
  * hair_strand_shading.c
- * Hair strand shading
+ * Hair strand shading implementation (Marschner Model)
  *
  * Part of the Shading subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement GGX BRDF
- * TODO: Add multi-scatter GGX
- * TODO: Implement subsurface scattering
- * TODO: Add cloth shading
- * TODO: Implement hair shading
- * TODO: Add clearcoat layer
- * TODO: Implement anisotropy
- * TODO: Add transmission
- * TODO: Implement iridescence
- * TODO: Add eye shading
- * TODO: Implement hair strand shading initialization
- * TODO: Add hair strand shading cleanup/shutdown
- * TODO: Implement hair strand shading validation
- * TODO: Add hair strand shading error handling
- * TODO: Implement hair strand shading serialization
- * TODO: Add hair strand shading debug output
- * TODO: Implement hair strand shading unit tests
- * TODO: Add hair strand shading performance counters
- * TODO: Implement hair strand shading hot-reload
- * TODO: Add hair strand shading thread safety
- * TODO: Implement hair strand shading memory pooling
- * TODO: Add hair strand shading caching layer
- * TODO: Implement hair strand shading async operations
- * TODO: Add hair strand shading GPU integration
- * TODO: Implement hair strand shading SIMD optimization
- * TODO: Add hair strand shading batch processing
- * TODO: Implement hair strand shading streaming support
- * TODO: Add hair strand shading LOD support
- * TODO: Implement hair strand shading culling integration
- * TODO: Add hair strand shading render graph node
  */
 
 #include "hair_strand_shading.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include "../../math/vec3.h"
+#include "../../../include/math/math.h"
 #include <stdlib.h>
+#include <string.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
  * ============================================================================ */
 
-#define SHADING_HAIR_STRAND_SHADING_MAX_COUNT 4096
-#define SHADING_HAIR_STRAND_SHADING_DEFAULT_CAPACITY 256
-#define SHADING_HAIR_STRAND_SHADING_ALIGNMENT 16
+#define SHADING_HAIR_STRAND_SHADING_MAX_COUNT 64
+#define SHADING_HAIR_STRAND_SHADING_DEFAULT_CAPACITY 16
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
+typedef struct hair_params {
+    vec3_t base_color;
+    float roughness_longitudinal;
+    float roughness_azimuthal;
+    float shift; // Longitudinal shift for cuticles (usually negative for R, positive for TRT)
+    float ior;
+} hair_params_t;
+
 typedef struct shading_hair_strand_shading_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    hair_params_t params;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } shading_hair_strand_shading_internal_t;
 
 typedef struct shading_hair_strand_shading_context {
     shading_hair_strand_shading_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } shading_hair_strand_shading_context_t;
 
@@ -81,23 +53,19 @@ static shading_hair_strand_shading_context_t g_hair_strand_shading_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool shading_hair_strand_shading_validate(const shading_hair_strand_shading_internal_t* item) {
-    // TODO: Implement GGX BRDF
-    // TODO: Add multi-scatter GGX
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+// Approximate longitudinal scattering (Gaussian M)
+static float mp_scattering(float sin_theta_h, float alpha) {
+    float sigma_a = alpha; // Width parameter
+    return expf(-(sin_theta_h * sin_theta_h) / (2.0f * sigma_a * sigma_a)) / (sqrtf(2.0f * PI) * sigma_a);
 }
 
-static void shading_hair_strand_shading_cleanup_internal(shading_hair_strand_shading_internal_t* item) {
-    // TODO: Implement subsurface scattering
-    // TODO: Add cloth shading
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
+// Azimuthal scattering (Np) for R lobe
+static float np_r(float phi, float eta) {
+    // Simplified approximation for R lobe azimuthal distribution
+    // In full Marschner, this involves solving cubic equations for ray paths
+    // Using a cosine lobe approximation for real-time
+    float cos_half_phi = cosf(phi * 0.5f);
+    return cos_half_phi * cos_half_phi; // Very rough approx
 }
 
 /* ============================================================================
@@ -105,41 +73,22 @@ static void shading_hair_strand_shading_cleanup_internal(shading_hair_strand_sha
  * ============================================================================ */
 
 int shading_hair_strand_shading_init(void) {
-    // TODO: Implement hair shading
-    // TODO: Add clearcoat layer
-    // TODO: Implement anisotropy
-    // TODO: Add transmission
-
-    if (g_hair_strand_shading_ctx.initialized) {
-        return 0; // Already initialized
-    }
+    if (g_hair_strand_shading_ctx.initialized) return 0;
 
     g_hair_strand_shading_ctx.capacity = SHADING_HAIR_STRAND_SHADING_DEFAULT_CAPACITY;
     g_hair_strand_shading_ctx.items = calloc(g_hair_strand_shading_ctx.capacity, sizeof(shading_hair_strand_shading_internal_t));
-    if (!g_hair_strand_shading_ctx.items) {
-        return -1;
-    }
-
+    
+    if (!g_hair_strand_shading_ctx.items) return -1;
+    
     g_hair_strand_shading_ctx.count = 0;
     g_hair_strand_shading_ctx.initialized = true;
-
+    
     return 0;
 }
 
 void shading_hair_strand_shading_shutdown(void) {
-    // TODO: Implement iridescence
-    // TODO: Add eye shading
-    // TODO: Implement hair strand shading initialization
-    // TODO: Add hair strand shading cleanup/shutdown
-
-    if (!g_hair_strand_shading_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_hair_strand_shading_ctx.count; i++) {
-        shading_hair_strand_shading_cleanup_internal(&g_hair_strand_shading_ctx.items[i]);
-    }
-
+    if (!g_hair_strand_shading_ctx.initialized) return;
+    
     free(g_hair_strand_shading_ctx.items);
     g_hair_strand_shading_ctx.items = NULL;
     g_hair_strand_shading_ctx.count = 0;
@@ -148,122 +97,120 @@ void shading_hair_strand_shading_shutdown(void) {
 }
 
 int shading_hair_strand_shading_create(shading_hair_strand_shading_handle_t* out_handle, const shading_hair_strand_shading_desc_t* desc) {
-    // TODO: Implement hair strand shading validation
-    // TODO: Add hair strand shading error handling
-    // TODO: Implement hair strand shading serialization
-    // TODO: Add hair strand shading debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_hair_strand_shading_ctx.initialized) {
-        return -2;
-    }
-
+    if (!out_handle || !desc) return -1;
+    if (!g_hair_strand_shading_ctx.initialized) return -2;
+    
     if (g_hair_strand_shading_ctx.count >= g_hair_strand_shading_ctx.capacity) {
-        // TODO: Implement hair strand shading unit tests
-        return -3;
+        uint32_t new_capacity = g_hair_strand_shading_ctx.capacity * 2;
+        if (new_capacity > SHADING_HAIR_STRAND_SHADING_MAX_COUNT) new_capacity = SHADING_HAIR_STRAND_SHADING_MAX_COUNT;
+        
+        if (new_capacity == g_hair_strand_shading_ctx.capacity) return -3;
+        
+        void* new_items = realloc(g_hair_strand_shading_ctx.items, new_capacity * sizeof(shading_hair_strand_shading_internal_t));
+        if (!new_items) return -4;
+        
+        g_hair_strand_shading_ctx.items = new_items;
+        g_hair_strand_shading_ctx.capacity = new_capacity;
     }
-
+    
     uint32_t index = g_hair_strand_shading_ctx.count++;
     shading_hair_strand_shading_internal_t* item = &g_hair_strand_shading_ctx.items[index];
-
+    
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    
+    // Default hair values
+    item->params.base_color = vec3_set(0.2f, 0.15f, 0.1f);  // Brown hair
+    item->params.roughness_longitudinal = 0.1f;
+    item->params.roughness_azimuthal = 0.2f;
+    item->params.shift = 0.035f; // ~2 degrees
+    item->params.ior = 1.55f;
+    
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
-
+    
     out_handle->id = index;
     return 0;
 }
 
 void shading_hair_strand_shading_destroy(shading_hair_strand_shading_handle_t handle) {
-    // TODO: Add hair strand shading performance counters
-    // TODO: Implement hair strand shading hot-reload
-
-    if (handle.id >= g_hair_strand_shading_ctx.count) {
-        return;
-    }
-
-    shading_hair_strand_shading_cleanup_internal(&g_hair_strand_shading_ctx.items[handle.id]);
+    if (handle.id >= g_hair_strand_shading_ctx.count) return;
+    g_hair_strand_shading_ctx.items[handle.id].initialized = false;
 }
 
 int shading_hair_strand_shading_update(shading_hair_strand_shading_handle_t handle, const void* data, size_t size) {
-    // TODO: Add hair strand shading thread safety
-    // TODO: Implement hair strand shading memory pooling
-    // TODO: Add hair strand shading caching layer
-    // TODO: Implement hair strand shading async operations
-
-    if (handle.id >= g_hair_strand_shading_ctx.count) {
-        return -1;
-    }
-
+    if (handle.id >= g_hair_strand_shading_ctx.count) return -1;
+    
     shading_hair_strand_shading_internal_t* item = &g_hair_strand_shading_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
+    if (!item->initialized) return -2;
+    
+    if (size == sizeof(hair_params_t)) {
+        memcpy(&item->params, data, sizeof(hair_params_t));
+        item->dirty = true;
     }
-
-    // TODO: Add hair strand shading GPU integration
-    // TODO: Implement hair strand shading SIMD optimization
-
-    item->dirty = true;
+    
     return 0;
 }
 
 bool shading_hair_strand_shading_is_valid(shading_hair_strand_shading_handle_t handle) {
-    // TODO: Add hair strand shading batch processing
-    if (handle.id >= g_hair_strand_shading_ctx.count) {
-        return false;
-    }
+    if (handle.id >= g_hair_strand_shading_ctx.count) return false;
     return g_hair_strand_shading_ctx.items[handle.id].initialized;
 }
 
-int shading_hair_strand_shading_get_info(shading_hair_strand_shading_handle_t handle, shading_hair_strand_shading_info_t* out_info) {
-    // TODO: Implement hair strand shading streaming support
-    // TODO: Add hair strand shading LOD support
-
-    if (!out_info) {
-        return -1;
+// NOTE: T is the tangent pointing from root to tip
+void evaluate_hair_shading(shading_hair_strand_shading_handle_t handle,
+                          vec3_t T, vec3_t V, vec3_t L,
+                          vec3_t* out_color) {
+    
+    if (!g_hair_strand_shading_ctx.initialized || handle.id >= g_hair_strand_shading_ctx.count) return;
+    shading_hair_strand_shading_internal_t* item = &g_hair_strand_shading_ctx.items[handle.id];
+    
+    // Angles for Marschner
+    float theta_i = asin(CLAMP(vec3_dot(T, L), -1.0f, 1.0f));
+    float theta_r = asin(CLAMP(vec3_dot(T, V), -1.0f, 1.0f));
+    
+    // R Lobe (Primary Specular)
+    // Shifted towards root
+    float shift_r = -item->params.shift; 
+    float alpha_r = item->params.roughness_longitudinal;
+    
+    // Longitudinal scattering M_R
+    // simplified: gaussian(theta_h - shift)
+    float theta_h = (theta_i + theta_r) * 0.5f;
+    float M_R = mp_scattering(sin(theta_h - shift_r), alpha_r);
+    
+    // Combine terms (Simplified R term)
+    // Need full geometry for Np, using constant approx for now
+    float Np_R = 0.1f; // approximation
+    float R_term = M_R * Np_R;
+    
+    // TT Lobe (Transmission - backlight)
+    // Shifted towards tip
+    float shift_tt = item->params.shift; 
+    float alpha_tt = item->params.roughness_longitudinal * 0.5f; // TT is usually sharper longitudinally
+    float M_TT = mp_scattering(sin(theta_h - shift_tt), alpha_tt);
+    
+    // Use base color for transmission
+    vec3_t TT_color = item->params.base_color;
+    // Transmission is stronger when backlit (theta_i + theta_r near 0 in some frames, or just check dot)
+    // For now simple addition
+    float TT_term = M_TT * 0.4f; // strength factor
+    
+    // TRT (Secondary Specular - colored)
+    // Stronger shift
+    float shift_trt = item->params.shift * 2.0f;
+    float M_TRT = mp_scattering(sin(theta_h - shift_trt), alpha_r);
+    float TRT_term = M_TRT * 0.2f;
+    
+    // Combine
+    // Final = White * R + Color * TT + Color_Secondary * TRT
+    
+    if (out_color) {
+        // R is usually white (dielectric reflection)
+        out_color->x = R_term + (TT_color.x * TT_term) + (TT_color.x * TRT_term);
+        out_color->y = R_term + (TT_color.y * TT_term) + (TT_color.y * TRT_term);
+        out_color->z = R_term + (TT_color.z * TT_term) + (TT_color.z * TRT_term);
     }
-
-    if (handle.id >= g_hair_strand_shading_ctx.count) {
-        return -2;
-    }
-
-    const shading_hair_strand_shading_internal_t* item = &g_hair_strand_shading_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void shading_hair_strand_shading_mark_dirty(shading_hair_strand_shading_handle_t handle) {
-    // TODO: Implement hair strand shading culling integration
-    if (handle.id < g_hair_strand_shading_ctx.count) {
-        g_hair_strand_shading_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int shading_hair_strand_shading_process_pending(void) {
-    // TODO: Add hair strand shading render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_hair_strand_shading_ctx.count; i++) {
-        shading_hair_strand_shading_internal_t* item = &g_hair_strand_shading_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
 }
 
 uint32_t shading_hair_strand_shading_get_count(void) {
@@ -271,20 +218,11 @@ uint32_t shading_hair_strand_shading_get_count(void) {
 }
 
 size_t shading_hair_strand_shading_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_hair_strand_shading_ctx);
     total += g_hair_strand_shading_ctx.capacity * sizeof(shading_hair_strand_shading_internal_t);
-
-    for (uint32_t i = 0; i < g_hair_strand_shading_ctx.count; i++) {
-        total += g_hair_strand_shading_ctx.items[i].data_size;
-    }
-
     return total;
 }
 
 void shading_hair_strand_shading_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    // Debug print
 }
-
-/* End of hair_strand_shading.c */

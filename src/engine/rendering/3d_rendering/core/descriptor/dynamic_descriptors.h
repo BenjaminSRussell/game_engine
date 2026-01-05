@@ -1,64 +1,42 @@
 /*
  * dynamic_descriptors.h
- * Dynamic uniform/storage buffers
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
+ * Dynamic uniform/storage buffer management
  */
 
 #ifndef CORE_DYNAMIC_DESCRIPTORS_H
 #define CORE_DYNAMIC_DESCRIPTORS_H
 
+#include "../../resource_management/resource_handle.h"
 #include <stdint.h>
-#include <stdbool.h>
 #include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+// Allocator for dynamic UBOs (linear ring buffer strategy)
+typedef struct dynamic_allocator_t dynamic_allocator_t;
 
-typedef struct core_dynamic_descriptors_handle {
-    uint32_t id;
-} core_dynamic_descriptors_handle_t;
+// Initialize a new allocator
+// buffer_size: Total size of the underlying GPU buffer (e.g., 64MB)
+dynamic_allocator_t* dynamic_allocator_create(size_t buffer_size);
 
-typedef struct core_dynamic_descriptors_desc {
-    uint32_t flags;
-    void* user_data;
-} core_dynamic_descriptors_desc_t;
+void dynamic_allocator_destroy(dynamic_allocator_t* allocator);
 
-typedef struct core_dynamic_descriptors_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_dynamic_descriptors_info_t;
+// Reset allocator at start of frame (or when wrapping)
+void dynamic_allocator_reset(dynamic_allocator_t* allocator);
 
-/* ============================================================================
- * API
- * ============================================================================ */
+// Allocate a slice of memory
+// Returns true on success, populating out_offset
+// Returns false if out of memory (caller should flush or error)
+bool dynamic_allocator_alloc(dynamic_allocator_t* allocator, 
+                             size_t size, 
+                             size_t alignment, 
+                             uint32_t* out_offset,
+                             void** out_mapped_ptr);
 
-/* Initialization */
-int core_dynamic_descriptors_init(void);
-void core_dynamic_descriptors_shutdown(void);
-
-/* Lifecycle */
-int core_dynamic_descriptors_create(core_dynamic_descriptors_handle_t* out_handle, const core_dynamic_descriptors_desc_t* desc);
-void core_dynamic_descriptors_destroy(core_dynamic_descriptors_handle_t handle);
-
-/* Operations */
-int core_dynamic_descriptors_update(core_dynamic_descriptors_handle_t handle, const void* data, size_t size);
-bool core_dynamic_descriptors_is_valid(core_dynamic_descriptors_handle_t handle);
-int core_dynamic_descriptors_get_info(core_dynamic_descriptors_handle_t handle, core_dynamic_descriptors_info_t* out_info);
-void core_dynamic_descriptors_mark_dirty(core_dynamic_descriptors_handle_t handle);
-int core_dynamic_descriptors_process_pending(void);
-
-/* Statistics */
-uint32_t core_dynamic_descriptors_get_count(void);
-size_t core_dynamic_descriptors_get_memory_usage(void);
-void core_dynamic_descriptors_debug_print(void);
+// Get the underlying buffer handle
+buffer_handle_t dynamic_allocator_get_buffer(dynamic_allocator_t* allocator);
 
 #ifdef __cplusplus
 }

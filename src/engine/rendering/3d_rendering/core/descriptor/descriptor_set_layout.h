@@ -21,44 +21,61 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
-typedef struct core_descriptor_set_layout_handle {
+typedef struct {
     uint32_t id;
-} core_descriptor_set_layout_handle_t;
+} descriptor_set_layout_handle_t;
 
-typedef struct core_descriptor_set_layout_desc {
-    uint32_t flags;
-    void* user_data;
-} core_descriptor_set_layout_desc_t;
+typedef enum {
+    DESCRIPTOR_TYPE_SAMPLER = 0,
+    DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER = 1,
+    DESCRIPTOR_TYPE_SAMPLED_IMAGE = 2,
+    DESCRIPTOR_TYPE_STORAGE_IMAGE = 3,
+    DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER = 4,
+    DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER = 5,
+    DESCRIPTOR_TYPE_UNIFORM_BUFFER = 6,
+    DESCRIPTOR_TYPE_STORAGE_BUFFER = 7,
+    DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC = 8,
+    DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC = 9,
+    DESCRIPTOR_TYPE_INPUT_ATTACHMENT = 10
+} descriptor_type_t;
 
-typedef struct core_descriptor_set_layout_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} core_descriptor_set_layout_info_t;
+typedef enum {
+    SHADER_STAGE_VERTEX_BIT = 0x00000001,
+    SHADER_STAGE_FRAGMENT_BIT = 0x00000010,
+    SHADER_STAGE_COMPUTE_BIT = 0x00000020,
+    SHADER_STAGE_ALL_GRAPHICS = 0x0000001F,
+    SHADER_STAGE_ALL = 0x7FFFFFFF
+} shader_stage_flags_t;
+
+typedef struct {
+    uint32_t binding;
+    descriptor_type_t descriptor_type;
+    uint32_t descriptor_count;
+    shader_stage_flags_t stage_flags;
+    const void* p_immutable_samplers; // Optional
+} descriptor_binding_t;
+
+typedef struct {
+    const descriptor_binding_t* bindings;
+    uint32_t binding_count;
+} descriptor_layout_info_t;
 
 /* ============================================================================
  * API
  * ============================================================================ */
 
 /* Initialization */
-int core_descriptor_set_layout_init(void);
-void core_descriptor_set_layout_shutdown(void);
+void descriptor_set_layout_init_system(void);
+void descriptor_set_layout_shutdown_system(void);
 
-/* Lifecycle */
-int core_descriptor_set_layout_create(core_descriptor_set_layout_handle_t* out_handle, const core_descriptor_set_layout_desc_t* desc);
-void core_descriptor_set_layout_destroy(core_descriptor_set_layout_handle_t handle);
+/* layout creation (cached) */
+descriptor_set_layout_handle_t descriptor_set_layout_get(const descriptor_layout_info_t* info);
 
-/* Operations */
-int core_descriptor_set_layout_update(core_descriptor_set_layout_handle_t handle, const void* data, size_t size);
-bool core_descriptor_set_layout_is_valid(core_descriptor_set_layout_handle_t handle);
-int core_descriptor_set_layout_get_info(core_descriptor_set_layout_handle_t handle, core_descriptor_set_layout_info_t* out_info);
-void core_descriptor_set_layout_mark_dirty(core_descriptor_set_layout_handle_t handle);
-int core_descriptor_set_layout_process_pending(void);
+/* Lifecycle - primarily handled by system shutdown, but specific destroy available */
+void descriptor_set_layout_destroy(descriptor_set_layout_handle_t handle);
 
-/* Statistics */
-uint32_t core_descriptor_set_layout_get_count(void);
-size_t core_descriptor_set_layout_get_memory_usage(void);
-void core_descriptor_set_layout_debug_print(void);
+/* Access */
+bool descriptor_set_layout_is_valid(descriptor_set_layout_handle_t handle);
 
 #ifdef __cplusplus
 }
