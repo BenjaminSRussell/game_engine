@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <math/math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,6 +51,7 @@ void water_ocean_displacement_destroy(water_ocean_displacement_handle_t handle);
 
 /* Operations */
 int water_ocean_displacement_update(water_ocean_displacement_handle_t handle, const void* data, size_t size);
+Vec3 water_ocean_displacement_sample(water_ocean_displacement_handle_t handle, Vec2 world_pos, float time);
 bool water_ocean_displacement_is_valid(water_ocean_displacement_handle_t handle);
 int water_ocean_displacement_get_info(water_ocean_displacement_handle_t handle, water_ocean_displacement_info_t* out_info);
 void water_ocean_displacement_mark_dirty(water_ocean_displacement_handle_t handle);

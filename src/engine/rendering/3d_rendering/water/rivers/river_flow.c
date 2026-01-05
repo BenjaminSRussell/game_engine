@@ -4,41 +4,10 @@
  *
  * Part of the Water subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement FFT ocean simulation
- * TODO: Add Gerstner waves
- * TODO: Implement foam rendering
- * TODO: Add caustics
- * TODO: Implement underwater rendering
- * TODO: Add planar reflections
- * TODO: Implement river rendering
- * TODO: Add buoyancy physics
- * TODO: Implement wake simulation
- * TODO: Add shore waves
- * TODO: Implement river flow initialization
- * TODO: Add river flow cleanup/shutdown
- * TODO: Implement river flow validation
- * TODO: Add river flow error handling
- * TODO: Implement river flow serialization
- * TODO: Add river flow debug output
- * TODO: Implement river flow unit tests
- * TODO: Add river flow performance counters
- * TODO: Implement river flow hot-reload
- * TODO: Add river flow thread safety
- * TODO: Implement river flow memory pooling
- * TODO: Add river flow caching layer
- * TODO: Implement river flow async operations
- * TODO: Add river flow GPU integration
- * TODO: Implement river flow SIMD optimization
- * TODO: Add river flow batch processing
- * TODO: Implement river flow streaming support
- * TODO: Add river flow LOD support
- * TODO: Implement river flow culling integration
- * TODO: Add river flow render graph node
  */
 
 #include "river_flow.h"
+#include "../../../../include/math/math.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -51,17 +20,22 @@
 
 #define WATER_RIVER_FLOW_MAX_COUNT 4096
 #define WATER_RIVER_FLOW_DEFAULT_CAPACITY 256
-#define WATER_RIVER_FLOW_ALIGNMENT 16
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
+typedef struct river_flow_data {
+    float flow_speed;
+    float turbulence_strength;
+    float foam_threshold;
+    Vec2 flow_direction_bias;
+} river_flow_data_t;
+
 typedef struct water_river_flow_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    river_flow_data_t* data;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -71,7 +45,6 @@ typedef struct water_river_flow_context {
     water_river_flow_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } water_river_flow_context_t;
 
@@ -82,16 +55,13 @@ static water_river_flow_context_t g_river_flow_ctx = {0};
  * ============================================================================ */
 
 static bool water_river_flow_validate(const water_river_flow_internal_t* item) {
-    // TODO: Implement FFT ocean simulation
-    // TODO: Add Gerstner waves
     if (!item) return false;
     if (!item->initialized) return false;
+    if (!item->data) return false;
     return true;
 }
 
 static void water_river_flow_cleanup_internal(water_river_flow_internal_t* item) {
-    // TODO: Implement foam rendering
-    // TODO: Add caustics
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -105,13 +75,8 @@ static void water_river_flow_cleanup_internal(water_river_flow_internal_t* item)
  * ============================================================================ */
 
 int water_river_flow_init(void) {
-    // TODO: Implement underwater rendering
-    // TODO: Add planar reflections
-    // TODO: Implement river rendering
-    // TODO: Add buoyancy physics
-
     if (g_river_flow_ctx.initialized) {
-        return 0; // Already initialized
+        return 0;
     }
 
     g_river_flow_ctx.capacity = WATER_RIVER_FLOW_DEFAULT_CAPACITY;
@@ -127,11 +92,6 @@ int water_river_flow_init(void) {
 }
 
 void water_river_flow_shutdown(void) {
-    // TODO: Implement wake simulation
-    // TODO: Add shore waves
-    // TODO: Implement river flow initialization
-    // TODO: Add river flow cleanup/shutdown
-
     if (!g_river_flow_ctx.initialized) {
         return;
     }
@@ -148,11 +108,6 @@ void water_river_flow_shutdown(void) {
 }
 
 int water_river_flow_create(water_river_flow_handle_t* out_handle, const water_river_flow_desc_t* desc) {
-    // TODO: Implement river flow validation
-    // TODO: Add river flow error handling
-    // TODO: Implement river flow serialization
-    // TODO: Add river flow debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,8 +117,13 @@ int water_river_flow_create(water_river_flow_handle_t* out_handle, const water_r
     }
 
     if (g_river_flow_ctx.count >= g_river_flow_ctx.capacity) {
-        // TODO: Implement river flow unit tests
-        return -3;
+        uint32_t new_capacity = g_river_flow_ctx.capacity * 2;
+        water_river_flow_internal_t* new_items = realloc(g_river_flow_ctx.items, new_capacity * sizeof(water_river_flow_internal_t));
+        if (!new_items) return -3;
+        
+        memset(new_items + g_river_flow_ctx.capacity, 0, (new_capacity - g_river_flow_ctx.capacity) * sizeof(water_river_flow_internal_t));
+        g_river_flow_ctx.items = new_items;
+        g_river_flow_ctx.capacity = new_capacity;
     }
 
     uint32_t index = g_river_flow_ctx.count++;
@@ -171,8 +131,18 @@ int water_river_flow_create(water_river_flow_handle_t* out_handle, const water_r
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->data = calloc(1, sizeof(river_flow_data_t));
+    if (!item->data) {
+        g_river_flow_ctx.count--;
+        return -4;
+    }
+    
+    // Default values
+    item->data->flow_speed = 1.0f;
+    item->data->turbulence_strength = 0.5f;
+    item->data->foam_threshold = 0.8f;
+    item->data->flow_direction_bias = vec2(1.0f, 0.0f);
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -182,9 +152,6 @@ int water_river_flow_create(water_river_flow_handle_t* out_handle, const water_r
 }
 
 void water_river_flow_destroy(water_river_flow_handle_t handle) {
-    // TODO: Add river flow performance counters
-    // TODO: Implement river flow hot-reload
-
     if (handle.id >= g_river_flow_ctx.count) {
         return;
     }
@@ -193,11 +160,6 @@ void water_river_flow_destroy(water_river_flow_handle_t handle) {
 }
 
 int water_river_flow_update(water_river_flow_handle_t handle, const void* data, size_t size) {
-    // TODO: Add river flow thread safety
-    // TODO: Implement river flow memory pooling
-    // TODO: Add river flow caching layer
-    // TODO: Implement river flow async operations
-
     if (handle.id >= g_river_flow_ctx.count) {
         return -1;
     }
@@ -207,15 +169,16 @@ int water_river_flow_update(water_river_flow_handle_t handle, const void* data, 
         return -2;
     }
 
-    // TODO: Add river flow GPU integration
-    // TODO: Implement river flow SIMD optimization
+    if (data && size == sizeof(river_flow_data_t)) {
+        memcpy(item->data, data, size);
+        item->dirty = false;
+        item->frame_updated++;
+    }
 
-    item->dirty = true;
     return 0;
 }
 
 bool water_river_flow_is_valid(water_river_flow_handle_t handle) {
-    // TODO: Add river flow batch processing
     if (handle.id >= g_river_flow_ctx.count) {
         return false;
     }
@@ -223,9 +186,6 @@ bool water_river_flow_is_valid(water_river_flow_handle_t handle) {
 }
 
 int water_river_flow_get_info(water_river_flow_handle_t handle, water_river_flow_info_t* out_info) {
-    // TODO: Implement river flow streaming support
-    // TODO: Add river flow LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -243,21 +203,16 @@ int water_river_flow_get_info(water_river_flow_handle_t handle, water_river_flow
 }
 
 void water_river_flow_mark_dirty(water_river_flow_handle_t handle) {
-    // TODO: Implement river flow culling integration
     if (handle.id < g_river_flow_ctx.count) {
         g_river_flow_ctx.items[handle.id].dirty = true;
     }
 }
 
 int water_river_flow_process_pending(void) {
-    // TODO: Add river flow render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_river_flow_ctx.count; i++) {
         water_river_flow_internal_t* item = &g_river_flow_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
@@ -271,20 +226,18 @@ uint32_t water_river_flow_get_count(void) {
 }
 
 size_t water_river_flow_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_river_flow_ctx);
     total += g_river_flow_ctx.capacity * sizeof(water_river_flow_internal_t);
 
     for (uint32_t i = 0; i < g_river_flow_ctx.count; i++) {
-        total += g_river_flow_ctx.items[i].data_size;
+        if (g_river_flow_ctx.items[i].data) {
+            total += sizeof(river_flow_data_t);
+        }
     }
 
     return total;
 }
 
 void water_river_flow_debug_print(void) {
-    // TODO: Implement debug output
     // Debug printing implementation
 }
-
-/* End of river_flow.c */

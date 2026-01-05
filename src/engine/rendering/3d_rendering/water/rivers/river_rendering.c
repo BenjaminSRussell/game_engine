@@ -4,41 +4,12 @@
  *
  * Part of the Water subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement FFT ocean simulation
- * TODO: Add Gerstner waves
- * TODO: Implement foam rendering
- * TODO: Add caustics
- * TODO: Implement underwater rendering
- * TODO: Add planar reflections
- * TODO: Implement river rendering
- * TODO: Add buoyancy physics
- * TODO: Implement wake simulation
- * TODO: Add shore waves
- * TODO: Implement river rendering initialization
- * TODO: Add river rendering cleanup/shutdown
- * TODO: Implement river rendering validation
- * TODO: Add river rendering error handling
- * TODO: Implement river rendering serialization
- * TODO: Add river rendering debug output
- * TODO: Implement river rendering unit tests
- * TODO: Add river rendering performance counters
- * TODO: Implement river rendering hot-reload
- * TODO: Add river rendering thread safety
- * TODO: Implement river rendering memory pooling
- * TODO: Add river rendering caching layer
- * TODO: Implement river rendering async operations
- * TODO: Add river rendering GPU integration
- * TODO: Implement river rendering SIMD optimization
- * TODO: Add river rendering batch processing
- * TODO: Implement river rendering streaming support
- * TODO: Add river rendering LOD support
- * TODO: Implement river rendering culling integration
- * TODO: Add river rendering render graph node
  */
 
 #include "river_rendering.h"
+#include "river_spline.h"
+#include "river_flow.h"
+#include "../../../../include/math/math.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -51,17 +22,26 @@
 
 #define WATER_RIVER_RENDERING_MAX_COUNT 4096
 #define WATER_RIVER_RENDERING_DEFAULT_CAPACITY 256
-#define WATER_RIVER_RENDERING_ALIGNMENT 16
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
+typedef struct river_rendering_data {
+    water_river_spline_handle_t spline_handle;
+    water_river_flow_handle_t flow_handle;
+    Vec3 surface_color;
+    float roughness;
+    float metallic;
+    float specular;
+    float alpha;
+    bool cast_shadows;
+} river_rendering_data_t;
+
 typedef struct water_river_rendering_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    river_rendering_data_t* data;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -71,7 +51,6 @@ typedef struct water_river_rendering_context {
     water_river_rendering_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } water_river_rendering_context_t;
 
@@ -82,16 +61,13 @@ static water_river_rendering_context_t g_river_rendering_ctx = {0};
  * ============================================================================ */
 
 static bool water_river_rendering_validate(const water_river_rendering_internal_t* item) {
-    // TODO: Implement FFT ocean simulation
-    // TODO: Add Gerstner waves
     if (!item) return false;
     if (!item->initialized) return false;
+    if (!item->data) return false;
     return true;
 }
 
 static void water_river_rendering_cleanup_internal(water_river_rendering_internal_t* item) {
-    // TODO: Implement foam rendering
-    // TODO: Add caustics
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -105,13 +81,8 @@ static void water_river_rendering_cleanup_internal(water_river_rendering_interna
  * ============================================================================ */
 
 int water_river_rendering_init(void) {
-    // TODO: Implement underwater rendering
-    // TODO: Add planar reflections
-    // TODO: Implement river rendering
-    // TODO: Add buoyancy physics
-
     if (g_river_rendering_ctx.initialized) {
-        return 0; // Already initialized
+        return 0;
     }
 
     g_river_rendering_ctx.capacity = WATER_RIVER_RENDERING_DEFAULT_CAPACITY;
@@ -127,11 +98,6 @@ int water_river_rendering_init(void) {
 }
 
 void water_river_rendering_shutdown(void) {
-    // TODO: Implement wake simulation
-    // TODO: Add shore waves
-    // TODO: Implement river rendering initialization
-    // TODO: Add river rendering cleanup/shutdown
-
     if (!g_river_rendering_ctx.initialized) {
         return;
     }
@@ -148,11 +114,6 @@ void water_river_rendering_shutdown(void) {
 }
 
 int water_river_rendering_create(water_river_rendering_handle_t* out_handle, const water_river_rendering_desc_t* desc) {
-    // TODO: Implement river rendering validation
-    // TODO: Add river rendering error handling
-    // TODO: Implement river rendering serialization
-    // TODO: Add river rendering debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,8 +123,13 @@ int water_river_rendering_create(water_river_rendering_handle_t* out_handle, con
     }
 
     if (g_river_rendering_ctx.count >= g_river_rendering_ctx.capacity) {
-        // TODO: Implement river rendering unit tests
-        return -3;
+        uint32_t new_capacity = g_river_rendering_ctx.capacity * 2;
+        water_river_rendering_internal_t* new_items = realloc(g_river_rendering_ctx.items, new_capacity * sizeof(water_river_rendering_internal_t));
+        if (!new_items) return -3;
+        
+        memset(new_items + g_river_rendering_ctx.capacity, 0, (new_capacity - g_river_rendering_ctx.capacity) * sizeof(water_river_rendering_internal_t));
+        g_river_rendering_ctx.items = new_items;
+        g_river_rendering_ctx.capacity = new_capacity;
     }
 
     uint32_t index = g_river_rendering_ctx.count++;
@@ -171,8 +137,20 @@ int water_river_rendering_create(water_river_rendering_handle_t* out_handle, con
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->data = calloc(1, sizeof(river_rendering_data_t));
+    if (!item->data) {
+        g_river_rendering_ctx.count--;
+        return -4;
+    }
+
+    // Default parameters
+    item->data->surface_color = vec3(0.0f, 0.2f, 0.4f);
+    item->data->roughness = 0.1f;
+    item->data->metallic = 0.0f;
+    item->data->specular = 0.5f;
+    item->data->alpha = 0.9f;
+    item->data->cast_shadows = false;
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -182,9 +160,6 @@ int water_river_rendering_create(water_river_rendering_handle_t* out_handle, con
 }
 
 void water_river_rendering_destroy(water_river_rendering_handle_t handle) {
-    // TODO: Add river rendering performance counters
-    // TODO: Implement river rendering hot-reload
-
     if (handle.id >= g_river_rendering_ctx.count) {
         return;
     }
@@ -193,11 +168,6 @@ void water_river_rendering_destroy(water_river_rendering_handle_t handle) {
 }
 
 int water_river_rendering_update(water_river_rendering_handle_t handle, const void* data, size_t size) {
-    // TODO: Add river rendering thread safety
-    // TODO: Implement river rendering memory pooling
-    // TODO: Add river rendering caching layer
-    // TODO: Implement river rendering async operations
-
     if (handle.id >= g_river_rendering_ctx.count) {
         return -1;
     }
@@ -207,15 +177,16 @@ int water_river_rendering_update(water_river_rendering_handle_t handle, const vo
         return -2;
     }
 
-    // TODO: Add river rendering GPU integration
-    // TODO: Implement river rendering SIMD optimization
+    if (data && size == sizeof(river_rendering_data_t)) {
+        memcpy(item->data, data, size);
+        item->dirty = false;
+        item->frame_updated++;
+    }
 
-    item->dirty = true;
     return 0;
 }
 
 bool water_river_rendering_is_valid(water_river_rendering_handle_t handle) {
-    // TODO: Add river rendering batch processing
     if (handle.id >= g_river_rendering_ctx.count) {
         return false;
     }
@@ -223,9 +194,6 @@ bool water_river_rendering_is_valid(water_river_rendering_handle_t handle) {
 }
 
 int water_river_rendering_get_info(water_river_rendering_handle_t handle, water_river_rendering_info_t* out_info) {
-    // TODO: Implement river rendering streaming support
-    // TODO: Add river rendering LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -243,21 +211,16 @@ int water_river_rendering_get_info(water_river_rendering_handle_t handle, water_
 }
 
 void water_river_rendering_mark_dirty(water_river_rendering_handle_t handle) {
-    // TODO: Implement river rendering culling integration
     if (handle.id < g_river_rendering_ctx.count) {
         g_river_rendering_ctx.items[handle.id].dirty = true;
     }
 }
 
 int water_river_rendering_process_pending(void) {
-    // TODO: Add river rendering render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_river_rendering_ctx.count; i++) {
         water_river_rendering_internal_t* item = &g_river_rendering_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
@@ -271,20 +234,18 @@ uint32_t water_river_rendering_get_count(void) {
 }
 
 size_t water_river_rendering_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_river_rendering_ctx);
     total += g_river_rendering_ctx.capacity * sizeof(water_river_rendering_internal_t);
 
     for (uint32_t i = 0; i < g_river_rendering_ctx.count; i++) {
-        total += g_river_rendering_ctx.items[i].data_size;
+        if (g_river_rendering_ctx.items[i].data) {
+            total += sizeof(river_rendering_data_t);
+        }
     }
 
     return total;
 }
 
 void water_river_rendering_debug_print(void) {
-    // TODO: Implement debug output
     // Debug printing implementation
 }
-
-/* End of river_rendering.c */

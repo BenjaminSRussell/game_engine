@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <math/math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,7 +50,7 @@ int water_water_caustics_create(water_water_caustics_handle_t* out_handle, const
 void water_water_caustics_destroy(water_water_caustics_handle_t handle);
 
 /* Operations */
-int water_water_caustics_update(water_water_caustics_handle_t handle, const void* data, size_t size);
+int water_water_caustics_update(water_water_caustics_handle_t handle, float time);
 bool water_water_caustics_is_valid(water_water_caustics_handle_t handle);
 int water_water_caustics_get_info(water_water_caustics_handle_t handle, water_water_caustics_info_t* out_info);
 void water_water_caustics_mark_dirty(water_water_caustics_handle_t handle);

@@ -81,17 +81,19 @@ static landscape_foliage_wind_context_t g_foliage_wind_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
+#include <math.h>
+
+/* ============================================================================
+ * PRIVATE FUNCTIONS
+ * ============================================================================ */
+
 static bool landscape_foliage_wind_validate(const landscape_foliage_wind_internal_t* item) {
-    // TODO: Implement terrain LOD
-    // TODO: Add terrain tessellation
     if (!item) return false;
     if (!item->initialized) return false;
     return true;
 }
 
 static void landscape_foliage_wind_cleanup_internal(landscape_foliage_wind_internal_t* item) {
-    // TODO: Implement heightmap streaming
-    // TODO: Add splat map rendering
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -100,16 +102,21 @@ static void landscape_foliage_wind_cleanup_internal(landscape_foliage_wind_inter
     item->initialized = false;
 }
 
+// Internal state
+typedef struct foliage_wind_state {
+    Vec3 direction;
+    float strength;
+    float frequency;
+    float turbulence_scale;
+    float turbulence_speed;
+    float time_accumulator;
+} foliage_wind_state_t;
+
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
 int landscape_foliage_wind_init(void) {
-    // TODO: Implement vegetation instancing
-    // TODO: Add grass rendering
-    // TODO: Implement procedural terrain
-    // TODO: Add erosion simulation
-
     if (g_foliage_wind_ctx.initialized) {
         return 0; // Already initialized
     }
@@ -127,11 +134,6 @@ int landscape_foliage_wind_init(void) {
 }
 
 void landscape_foliage_wind_shutdown(void) {
-    // TODO: Implement virtual heightmaps
-    // TODO: Add terrain holes
-    // TODO: Implement foliage wind initialization
-    // TODO: Add foliage wind cleanup/shutdown
-
     if (!g_foliage_wind_ctx.initialized) {
         return;
     }
@@ -148,11 +150,6 @@ void landscape_foliage_wind_shutdown(void) {
 }
 
 int landscape_foliage_wind_create(landscape_foliage_wind_handle_t* out_handle, const landscape_foliage_wind_desc_t* desc) {
-    // TODO: Implement foliage wind validation
-    // TODO: Add foliage wind error handling
-    // TODO: Implement foliage wind serialization
-    // TODO: Add foliage wind debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +159,6 @@ int landscape_foliage_wind_create(landscape_foliage_wind_handle_t* out_handle, c
     }
 
     if (g_foliage_wind_ctx.count >= g_foliage_wind_ctx.capacity) {
-        // TODO: Implement foliage wind unit tests
         return -3;
     }
 
@@ -171,8 +167,21 @@ int landscape_foliage_wind_create(landscape_foliage_wind_handle_t* out_handle, c
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    
+    // Initialize internal state
+    foliage_wind_state_t* state = malloc(sizeof(foliage_wind_state_t));
+    if (!state) return -4;
+    
+    state->direction = desc->direction;
+    state->strength = desc->strength;
+    state->frequency = desc->frequency > 0.0f ? desc->frequency : 1.0f;
+    state->turbulence_scale = desc->turbulence_scale > 0.0f ? desc->turbulence_scale : 1.0f;
+    state->turbulence_speed = desc->turbulence_speed > 0.0f ? desc->turbulence_speed : 1.0f;
+    state->time_accumulator = 0.0f;
+    
+    item->data = state;
+    item->data_size = sizeof(foliage_wind_state_t);
+    
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -182,9 +191,6 @@ int landscape_foliage_wind_create(landscape_foliage_wind_handle_t* out_handle, c
 }
 
 void landscape_foliage_wind_destroy(landscape_foliage_wind_handle_t handle) {
-    // TODO: Add foliage wind performance counters
-    // TODO: Implement foliage wind hot-reload
-
     if (handle.id >= g_foliage_wind_ctx.count) {
         return;
     }
@@ -192,12 +198,7 @@ void landscape_foliage_wind_destroy(landscape_foliage_wind_handle_t handle) {
     landscape_foliage_wind_cleanup_internal(&g_foliage_wind_ctx.items[handle.id]);
 }
 
-int landscape_foliage_wind_update(landscape_foliage_wind_handle_t handle, const void* data, size_t size) {
-    // TODO: Add foliage wind thread safety
-    // TODO: Implement foliage wind memory pooling
-    // TODO: Add foliage wind caching layer
-    // TODO: Implement foliage wind async operations
-
+int landscape_foliage_wind_update(landscape_foliage_wind_handle_t handle, float delta_time) {
     if (handle.id >= g_foliage_wind_ctx.count) {
         return -1;
     }
@@ -206,16 +207,46 @@ int landscape_foliage_wind_update(landscape_foliage_wind_handle_t handle, const 
     if (!item->initialized) {
         return -2;
     }
-
-    // TODO: Add foliage wind GPU integration
-    // TODO: Implement foliage wind SIMD optimization
+    
+    foliage_wind_state_t* state = (foliage_wind_state_t*)item->data;
+    state->time_accumulator += delta_time;
 
     item->dirty = true;
     return 0;
 }
 
+Vec3 landscape_foliage_wind_get_displacement(
+    landscape_foliage_wind_handle_t handle,
+    const Vec3* position,
+    float stiffness
+) {
+    Vec3 displacement = {0, 0, 0};
+    
+    if (handle.id >= g_foliage_wind_ctx.count) return displacement;
+    landscape_foliage_wind_internal_t* item = &g_foliage_wind_ctx.items[handle.id];
+    if (!item->initialized) return displacement;
+    
+    foliage_wind_state_t* state = (foliage_wind_state_t*)item->data;
+    
+    // Simple wind simulation
+    float time = state->time_accumulator;
+    
+    // Low frequency sway
+    float sway = sinf(time * state->frequency + position->x * 0.1f + position->z * 0.1f);
+    
+    // High frequency turbulence
+    float turbulence = sinf(time * state->frequency * 3.0f * state->turbulence_speed + position->x * 0.5f + position->z * 0.5f);
+    
+    float total_strength = (sway * 0.7f + turbulence * 0.3f) * state->strength * (1.0f - stiffness);
+    
+    displacement.x = state->direction.x * total_strength;
+    displacement.y = state->direction.y * total_strength * 0.2f; // Less vertical movement
+    displacement.z = state->direction.z * total_strength;
+    
+    return displacement;
+}
+
 bool landscape_foliage_wind_is_valid(landscape_foliage_wind_handle_t handle) {
-    // TODO: Add foliage wind batch processing
     if (handle.id >= g_foliage_wind_ctx.count) {
         return false;
     }
@@ -223,9 +254,6 @@ bool landscape_foliage_wind_is_valid(landscape_foliage_wind_handle_t handle) {
 }
 
 int landscape_foliage_wind_get_info(landscape_foliage_wind_handle_t handle, landscape_foliage_wind_info_t* out_info) {
-    // TODO: Implement foliage wind streaming support
-    // TODO: Add foliage wind LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -243,26 +271,20 @@ int landscape_foliage_wind_get_info(landscape_foliage_wind_handle_t handle, land
 }
 
 void landscape_foliage_wind_mark_dirty(landscape_foliage_wind_handle_t handle) {
-    // TODO: Implement foliage wind culling integration
     if (handle.id < g_foliage_wind_ctx.count) {
         g_foliage_wind_ctx.items[handle.id].dirty = true;
     }
 }
 
 int landscape_foliage_wind_process_pending(void) {
-    // TODO: Add foliage wind render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_foliage_wind_ctx.count; i++) {
         landscape_foliage_wind_internal_t* item = &g_foliage_wind_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
     }
-
     return processed;
 }
 
@@ -271,7 +293,6 @@ uint32_t landscape_foliage_wind_get_count(void) {
 }
 
 size_t landscape_foliage_wind_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_foliage_wind_ctx);
     total += g_foliage_wind_ctx.capacity * sizeof(landscape_foliage_wind_internal_t);
 
@@ -283,8 +304,7 @@ size_t landscape_foliage_wind_get_memory_usage(void) {
 }
 
 void landscape_foliage_wind_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    // Debug output
 }
 
 /* End of foliage_wind.c */

@@ -1,6 +1,7 @@
 #ifndef RENDERING_MAT4_H
 #define RENDERING_MAT4_H
 
+#include "common.h"
 #include "vec3.h"
 #include "vec4.h"
 
@@ -8,7 +9,9 @@
 typedef union ALIGN(16) mat4 {
     float m[16];
     float e[4][4]; // [col][row]
+#ifdef __SSE__
     __m128 columns[4];
+#endif
 } mat4_t;
 
 mat4_t mat4_identity(void);

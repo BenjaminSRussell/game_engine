@@ -1,17 +1,10 @@
-/*
- * foliage_wind.h
- * Wind animation
- *
- * Part of the Landscape subsystem
- * Advanced 3D Rendering Engine
- */
-
 #ifndef LANDSCAPE_FOLIAGE_WIND_H
 #define LANDSCAPE_FOLIAGE_WIND_H
 
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <math/vec3.h> 
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,6 +21,11 @@ typedef struct landscape_foliage_wind_handle {
 typedef struct landscape_foliage_wind_desc {
     uint32_t flags;
     void* user_data;
+    Vec3 direction;
+    float strength;
+    float frequency;
+    float turbulence_scale;
+    float turbulence_speed;
 } landscape_foliage_wind_desc_t;
 
 typedef struct landscape_foliage_wind_info {
@@ -49,7 +47,18 @@ int landscape_foliage_wind_create(landscape_foliage_wind_handle_t* out_handle, c
 void landscape_foliage_wind_destroy(landscape_foliage_wind_handle_t handle);
 
 /* Operations */
-int landscape_foliage_wind_update(landscape_foliage_wind_handle_t handle, const void* data, size_t size);
+
+// Update wind simulation state
+int landscape_foliage_wind_update(landscape_foliage_wind_handle_t handle, float delta_time);
+
+// Calculate wind displacement for a given position
+// Used for CPU-side simulation or debug, GPU usually handles this
+Vec3 landscape_foliage_wind_get_displacement(
+    landscape_foliage_wind_handle_t handle,
+    const Vec3* position,
+    float stiffness
+);
+
 bool landscape_foliage_wind_is_valid(landscape_foliage_wind_handle_t handle);
 int landscape_foliage_wind_get_info(landscape_foliage_wind_handle_t handle, landscape_foliage_wind_info_t* out_info);
 void landscape_foliage_wind_mark_dirty(landscape_foliage_wind_handle_t handle);

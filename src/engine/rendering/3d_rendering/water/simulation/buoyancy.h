@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <math/math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,7 +50,7 @@ int water_buoyancy_create(water_buoyancy_handle_t* out_handle, const water_buoya
 void water_buoyancy_destroy(water_buoyancy_handle_t handle);
 
 /* Operations */
-int water_buoyancy_update(water_buoyancy_handle_t handle, const void* data, size_t size);
+int water_buoyancy_update(water_buoyancy_handle_t handle, float delta_time, float water_level);
 bool water_buoyancy_is_valid(water_buoyancy_handle_t handle);
 int water_buoyancy_get_info(water_buoyancy_handle_t handle, water_buoyancy_info_t* out_info);
 void water_buoyancy_mark_dirty(water_buoyancy_handle_t handle);

@@ -1,103 +1,123 @@
 /*
  * frustum_planes.c
- * Frustum plane extraction
+ * Frustum plane extraction from view-projection matrix
  *
  * Part of the Culling subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement frustum culling (SIMD)
- * TODO: Add HZB occlusion culling
- * TODO: Implement GPU culling
- * TODO: Add temporal reprojection culling
- * TODO: Implement meshlet culling
- * TODO: Add two-phase occlusion
- * TODO: Implement software rasterizer
- * TODO: Add portal culling
- * TODO: Implement LOD selection
- * TODO: Add streaming priority
- * TODO: Implement frustum planes initialization
- * TODO: Add frustum planes cleanup/shutdown
- * TODO: Implement frustum planes validation
- * TODO: Add frustum planes error handling
- * TODO: Implement frustum planes serialization
- * TODO: Add frustum planes debug output
- * TODO: Implement frustum planes unit tests
- * TODO: Add frustum planes performance counters
- * TODO: Implement frustum planes hot-reload
- * TODO: Add frustum planes thread safety
- * TODO: Implement frustum planes memory pooling
- * TODO: Add frustum planes caching layer
- * TODO: Implement frustum planes async operations
- * TODO: Add frustum planes GPU integration
- * TODO: Implement frustum planes SIMD optimization
- * TODO: Add frustum planes batch processing
- * TODO: Implement frustum planes streaming support
- * TODO: Add frustum planes LOD support
- * TODO: Implement frustum planes culling integration
- * TODO: Add frustum planes render graph node
  */
 
 #include "frustum_planes.h"
+#include "../../math/vec3.h"
+#include "../../math/vec4.h"
+#include "../../math/mat4.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
+#include <math.h>
 #include <string.h>
 #include <stdlib.h>
-
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
-
-#define CULLING_FRUSTUM_PLANES_MAX_COUNT 4096
-#define CULLING_FRUSTUM_PLANES_DEFAULT_CAPACITY 256
-#define CULLING_FRUSTUM_PLANES_ALIGNMENT 16
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
+typedef struct frustum_planes {
+    vec4_t planes[6];  // left, right, bottom, top, near, far
+    bool normalized;
+} frustum_planes_t;
+
 typedef struct culling_frustum_planes_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    frustum_planes_t frustum;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
 } culling_frustum_planes_internal_t;
 
 typedef struct culling_frustum_planes_context {
     culling_frustum_planes_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } culling_frustum_planes_context_t;
 
 static culling_frustum_planes_context_t g_frustum_planes_ctx = {0};
 
 /* ============================================================================
- * PRIVATE FUNCTIONS
+ * PRIVATE HELPER FUNCTIONS
  * ============================================================================ */
 
-static bool culling_frustum_planes_validate(const culling_frustum_planes_internal_t* item) {
-    // TODO: Implement frustum culling (SIMD)
-    // TODO: Add HZB occlusion culling
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+static inline vec4_t normalize_plane(vec4_t plane) {
+    float length = sqrtf(plane.x * plane.x + plane.y * plane.y + plane.z * plane.z);
+    if (length < 1e-6f) {
+        return plane;
+    }
+    float inv_length = 1.0f / length;
+    return (vec4_t){
+        .x = plane.x * inv_length,
+        .y = plane.y * inv_length,
+        .z = plane.z * inv_length,
+        .w = plane.w * inv_length
+    };
 }
 
-static void culling_frustum_planes_cleanup_internal(culling_frustum_planes_internal_t* item) {
-    // TODO: Implement GPU culling
-    // TODO: Add temporal reprojection culling
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+// Extract frustum planes from view-projection matrix (Gribb-Hartmann method)
+static void extract_frustum_planes(const mat4_t* vp_matrix, frustum_planes_t* frustum) {
+    const float* m = (const float*)vp_matrix;
+    
+    // Left plane: m[3] + m[0]
+    frustum->planes[0] = (vec4_t){
+        .x = m[3] + m[0],
+        .y = m[7] + m[4],
+        .z = m[11] + m[8],
+        .w = m[15] + m[12]
+    };
+    
+    // Right plane: m[3] - m[0]
+    frustum->planes[1] = (vec4_t){
+        .x = m[3] - m[0],
+        .y = m[7] - m[4],
+        .z = m[11] - m[8],
+        .w = m[15] - m[12]
+    };
+    
+    // Bottom plane: m[3] + m[1]
+    frustum->planes[2] = (vec4_t){
+        .x = m[3] + m[1],
+        .y = m[7] + m[5],
+        .z = m[11] + m[9],
+        .w = m[15] + m[13]
+    };
+    
+    // Top plane: m[3] - m[1]
+    frustum->planes[3] = (vec4_t){
+        .x = m[3] - m[1],
+        .y = m[7] - m[5],
+        .z = m[11] - m[9],
+        .w = m[15] - m[13]
+    };
+    
+    // Near plane: m[3] + m[2]
+    frustum->planes[4] = (vec4_t){
+        .x = m[3] + m[2],
+        .y = m[7] + m[6],
+        .z = m[11] + m[10],
+        .w = m[15] + m[14]
+    };
+    
+    // Far plane: m[3] - m[2]
+    frustum->planes[5] = (vec4_t){
+        .x = m[3] - m[2],
+        .y = m[7] - m[6],
+        .z = m[11] - m[10],
+        .w = m[15] - m[14]
+    };
+    
+    // Normalize all planes
+    for (int i = 0; i < 6; i++) {
+        frustum->planes[i] = normalize_plane(frustum->planes[i]);
     }
-    item->initialized = false;
+    
+    frustum->normalized = true;
 }
 
 /* ============================================================================
@@ -105,41 +125,28 @@ static void culling_frustum_planes_cleanup_internal(culling_frustum_planes_inter
  * ============================================================================ */
 
 int culling_frustum_planes_init(void) {
-    // TODO: Implement meshlet culling
-    // TODO: Add two-phase occlusion
-    // TODO: Implement software rasterizer
-    // TODO: Add portal culling
-
     if (g_frustum_planes_ctx.initialized) {
-        return 0; // Already initialized
+        return 0;
     }
-
-    g_frustum_planes_ctx.capacity = CULLING_FRUSTUM_PLANES_DEFAULT_CAPACITY;
-    g_frustum_planes_ctx.items = calloc(g_frustum_planes_ctx.capacity, sizeof(culling_frustum_planes_internal_t));
+    
+    g_frustum_planes_ctx.capacity = 64;
+    g_frustum_planes_ctx.items = calloc(g_frustum_planes_ctx.capacity,
+                                        sizeof(culling_frustum_planes_internal_t));
     if (!g_frustum_planes_ctx.items) {
         return -1;
     }
-
+    
     g_frustum_planes_ctx.count = 0;
     g_frustum_planes_ctx.initialized = true;
-
+    
     return 0;
 }
 
 void culling_frustum_planes_shutdown(void) {
-    // TODO: Implement LOD selection
-    // TODO: Add streaming priority
-    // TODO: Implement frustum planes initialization
-    // TODO: Add frustum planes cleanup/shutdown
-
     if (!g_frustum_planes_ctx.initialized) {
         return;
     }
-
-    for (uint32_t i = 0; i < g_frustum_planes_ctx.count; i++) {
-        culling_frustum_planes_cleanup_internal(&g_frustum_planes_ctx.items[i]);
-    }
-
+    
     free(g_frustum_planes_ctx.items);
     g_frustum_planes_ctx.items = NULL;
     g_frustum_planes_ctx.count = 0;
@@ -147,144 +154,94 @@ void culling_frustum_planes_shutdown(void) {
     g_frustum_planes_ctx.initialized = false;
 }
 
-int culling_frustum_planes_create(culling_frustum_planes_handle_t* out_handle, const culling_frustum_planes_desc_t* desc) {
-    // TODO: Implement frustum planes validation
-    // TODO: Add frustum planes error handling
-    // TODO: Implement frustum planes serialization
-    // TODO: Add frustum planes debug output
-
+int culling_frustum_planes_create(culling_frustum_planes_handle_t* out_handle,
+                                   const culling_frustum_planes_desc_t* desc) {
     if (!out_handle || !desc) {
         return -1;
     }
-
+    
     if (!g_frustum_planes_ctx.initialized) {
         return -2;
     }
-
+    
     if (g_frustum_planes_ctx.count >= g_frustum_planes_ctx.capacity) {
-        // TODO: Implement frustum planes unit tests
         return -3;
     }
-
+    
     uint32_t index = g_frustum_planes_ctx.count++;
     culling_frustum_planes_internal_t* item = &g_frustum_planes_ctx.items[index];
-
+    
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
-
+    memset(&item->frustum, 0, sizeof(frustum_planes_t));
+    
     out_handle->id = index;
     return 0;
 }
 
 void culling_frustum_planes_destroy(culling_frustum_planes_handle_t handle) {
-    // TODO: Add frustum planes performance counters
-    // TODO: Implement frustum planes hot-reload
-
     if (handle.id >= g_frustum_planes_ctx.count) {
         return;
     }
-
-    culling_frustum_planes_cleanup_internal(&g_frustum_planes_ctx.items[handle.id]);
+    
+    g_frustum_planes_ctx.items[handle.id].initialized = false;
 }
 
-int culling_frustum_planes_update(culling_frustum_planes_handle_t handle, const void* data, size_t size) {
-    // TODO: Add frustum planes thread safety
-    // TODO: Implement frustum planes memory pooling
-    // TODO: Add frustum planes caching layer
-    // TODO: Implement frustum planes async operations
-
+int culling_frustum_planes_extract(culling_frustum_planes_handle_t handle,
+                                    const mat4_t* view_projection_matrix) {
     if (handle.id >= g_frustum_planes_ctx.count) {
         return -1;
     }
-
-    culling_frustum_planes_internal_t* item = &g_frustum_planes_ctx.items[handle.id];
-    if (!item->initialized) {
+    
+    if (!view_projection_matrix) {
         return -2;
     }
+    
+    culling_frustum_planes_internal_t* item = &g_frustum_planes_ctx.items[handle.id];
+    if (!item->initialized) {
+        return -3;
+    }
+    
+    extract_frustum_planes(view_projection_matrix, &item->frustum);
+    item->dirty = false;
+    
+    return 0;
+}
 
-    // TODO: Add frustum planes GPU integration
-    // TODO: Implement frustum planes SIMD optimization
-
-    item->dirty = true;
+int culling_frustum_planes_get_planes(culling_frustum_planes_handle_t handle,
+                                       vec4_t* out_planes, uint32_t max_planes) {
+    if (!out_planes || max_planes < 6) {
+        return -1;
+    }
+    
+    if (handle.id >= g_frustum_planes_ctx.count) {
+        return -2;
+    }
+    
+    const culling_frustum_planes_internal_t* item = &g_frustum_planes_ctx.items[handle.id];
+    if (!item->initialized) {
+        return -3;
+    }
+    
+    memcpy(out_planes, item->frustum.planes, 6 * sizeof(vec4_t));
     return 0;
 }
 
 bool culling_frustum_planes_is_valid(culling_frustum_planes_handle_t handle) {
-    // TODO: Add frustum planes batch processing
     if (handle.id >= g_frustum_planes_ctx.count) {
         return false;
     }
     return g_frustum_planes_ctx.items[handle.id].initialized;
 }
 
-int culling_frustum_planes_get_info(culling_frustum_planes_handle_t handle, culling_frustum_planes_info_t* out_info) {
-    // TODO: Implement frustum planes streaming support
-    // TODO: Add frustum planes LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_frustum_planes_ctx.count) {
-        return -2;
-    }
-
-    const culling_frustum_planes_internal_t* item = &g_frustum_planes_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void culling_frustum_planes_mark_dirty(culling_frustum_planes_handle_t handle) {
-    // TODO: Implement frustum planes culling integration
-    if (handle.id < g_frustum_planes_ctx.count) {
-        g_frustum_planes_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int culling_frustum_planes_process_pending(void) {
-    // TODO: Add frustum planes render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_frustum_planes_ctx.count; i++) {
-        culling_frustum_planes_internal_t* item = &g_frustum_planes_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
-}
-
 uint32_t culling_frustum_planes_get_count(void) {
     return g_frustum_planes_ctx.count;
 }
 
-size_t culling_frustum_planes_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_frustum_planes_ctx);
-    total += g_frustum_planes_ctx.capacity * sizeof(culling_frustum_planes_internal_t);
-
-    for (uint32_t i = 0; i < g_frustum_planes_ctx.count; i++) {
-        total += g_frustum_planes_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
 void culling_frustum_planes_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    printf("[Frustum Planes] Total frustums: %u\n", g_frustum_planes_ctx.count);
 }
 
 /* End of frustum_planes.c */

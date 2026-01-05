@@ -37,8 +37,24 @@ typedef struct postprocessing_taa_resolve_info {
 } postprocessing_taa_resolve_info_t;
 
 /* ============================================================================
+ * PARAMETERS
+ * ============================================================================ */
+
+typedef struct postprocessing_taa_resolve_params {
+    float jitter_scale;
+    float blend_factor;
+    float sharpness;
+    bool use_bicubic;
+    bool use_ycgco;
+    float variance_clipping_gamma;
+} postprocessing_taa_resolve_params_t;
+
+/* ============================================================================
  * API
  * ============================================================================ */
+
+/* Core Logic (Software Implementation / Shader equiv) */
+void postprocessing_taa_resolve_compute_jitter(int frame_index, int render_width, int render_height, float* out_jitter_x, float* out_jitter_y);
 
 /* Initialization */
 int postprocessing_taa_resolve_init(void);

@@ -1,78 +1,58 @@
 /*
- * surface_atlas.h
- * Surface cache atlas
+ * surface_atlas.c
+ * Lumen Surface Cache Atlas Management
  *
- * Part of the Lumen subsystem
+ * Part of the Lumen GI subsystem
  * Advanced 3D Rendering Engine
  */
 
-#ifndef LUMEN_SURFACE_ATLAS_H
-#define LUMEN_SURFACE_ATLAS_H
-
+#include "surface_atlas.h"
+#include "../../lighting/lightmaps/lightmap_packer.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/*
+ * Manages the large texture atlas that stores surface radiance/albedo/normals
+ * for "Surface Cards".
+ */
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct lumen_surface_atlas_handle {
-    uint32_t id;
-} lumen_surface_atlas_handle_t;
-
-typedef struct lumen_surface_atlas_desc {
-    uint32_t size;            // Total atlas size (square)
-    uint32_t region_size;     // Default region size for cards
-    uint32_t flags;
-} lumen_surface_atlas_desc_t;
-
-typedef struct lumen_surface_atlas_region {
-    uint32_t x, y;
-    uint32_t size;
-    bool allocated;
-} lumen_surface_atlas_region_t;
-
-typedef struct lumen_surface_atlas_info {
-    uint32_t id;
-    uint32_t size;
-    uint32_t used_regions;
-    uint32_t total_regions;
+typedef struct surface_atlas_ctx {
+    uint32_t width; 
+    uint32_t height;
+    void* albedo_atlas;
+    void* emission_atlas;
+    void* depth_atlas;
     bool initialized;
-} lumen_surface_atlas_info_t;
+} surface_atlas_ctx_t;
 
-/* ============================================================================
- * API
- * ============================================================================ */
+static surface_atlas_ctx_t g_atlas = {0};
 
-/* Initialization */
-int lumen_surface_atlas_init(void);
-void lumen_surface_atlas_shutdown(void);
-
-/* Lifecycle */
-int lumen_surface_atlas_create(lumen_surface_atlas_handle_t* out_handle, const lumen_surface_atlas_desc_t* desc);
-void lumen_surface_atlas_destroy(lumen_surface_atlas_handle_t handle);
-
-/* Operations */
-int lumen_surface_atlas_alloc_region(lumen_surface_atlas_handle_t handle, lumen_surface_atlas_region_t* out_region);
-void lumen_surface_atlas_free_region(lumen_surface_atlas_handle_t handle, const lumen_surface_atlas_region_t* region);
-int lumen_surface_atlas_update(lumen_surface_atlas_handle_t handle, const void* data, size_t size);
-bool lumen_surface_atlas_is_valid(lumen_surface_atlas_handle_t handle);
-int lumen_surface_atlas_get_info(lumen_surface_atlas_handle_t handle, lumen_surface_atlas_info_t* out_info);
-void lumen_surface_atlas_mark_dirty(lumen_surface_atlas_handle_t handle);
-int lumen_surface_atlas_process_pending(void);
-
-/* Statistics */
-uint32_t lumen_surface_atlas_get_count(void);
-size_t lumen_surface_atlas_get_memory_usage(void);
-void lumen_surface_atlas_debug_print(void);
-
-#ifdef __cplusplus
+int surface_atlas_init(uint32_t size) {
+    g_atlas.width = size;
+    g_atlas.height = size;
+    // Create textures
+    
+    // Init Packer
+    lightmap_packer_init(size, size);
+    
+    g_atlas.initialized = true;
+    return 0;
 }
-#endif
 
-#endif /* LUMEN_SURFACE_ATLAS_H */
+bool surface_atlas_allocate(uint32_t w, uint32_t h, uint32_t* out_x, uint32_t* out_y) {
+    if (!g_atlas.initialized) return false;
+    
+    int x, y;
+    if (lightmap_packer_pack((int)w, (int)h, &x, &y)) {
+        *out_x = (uint32_t)x;
+        *out_y = (uint32_t)y;
+        return true;
+    }
+    return false;
+}
+
+void surface_atlas_shutdown(void) {
+    lightmap_packer_shutdown();
+    // Destroy textures
+    g_atlas.initialized = false;
+}

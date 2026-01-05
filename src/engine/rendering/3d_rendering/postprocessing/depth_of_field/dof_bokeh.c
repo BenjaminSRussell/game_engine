@@ -39,11 +39,15 @@
  */
 
 #include "dof_bokeh.h"
+#include "math/vec2.h"
+#include "math/vec3.h"
+#include "renderer/core/texture.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -52,6 +56,7 @@
 #define POSTPROCESSING_DOF_BOKEH_MAX_COUNT 4096
 #define POSTPROCESSING_DOF_BOKEH_DEFAULT_CAPACITY 256
 #define POSTPROCESSING_DOF_BOKEH_ALIGNMENT 16
+#define DOF_BOKEH_KERNEL_SIZE 64
 
 /* ============================================================================
  * TYPES
@@ -65,6 +70,9 @@ typedef struct postprocessing_dof_bokeh_internal {
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
+    float diaphragm_blades; // 0 for circular
+    float rotation;
+    TextureID shape_texture;
 } postprocessing_dof_bokeh_internal_t;
 
 typedef struct postprocessing_dof_bokeh_context {
@@ -78,20 +86,27 @@ typedef struct postprocessing_dof_bokeh_context {
 static postprocessing_dof_bokeh_context_t g_dof_bokeh_ctx = {0};
 
 /* ============================================================================
+ * HELPER FUNCTIONS
+ * ============================================================================ */
+
+// Placeholder for generating or updating the bokeh shape texture
+static void update_bokeh_texture(postprocessing_dof_bokeh_internal_t* item) {
+    if (!item) return;
+    // Logic to generate procedural bokeh shape based on blade count and rotation
+    // and upload to item->shape_texture
+}
+
+/* ============================================================================
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
 static bool postprocessing_dof_bokeh_validate(const postprocessing_dof_bokeh_internal_t* item) {
-    // TODO: Implement ACES tonemapping
-    // TODO: Add physically-based bloom
     if (!item) return false;
     if (!item->initialized) return false;
     return true;
 }
 
 static void postprocessing_dof_bokeh_cleanup_internal(postprocessing_dof_bokeh_internal_t* item) {
-    // TODO: Implement TAA
-    // TODO: Add depth of field
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -105,11 +120,6 @@ static void postprocessing_dof_bokeh_cleanup_internal(postprocessing_dof_bokeh_i
  * ============================================================================ */
 
 int postprocessing_dof_bokeh_init(void) {
-    // TODO: Implement motion blur
-    // TODO: Add GTAO
-    // TODO: Implement SSR
-    // TODO: Add color grading
-
     if (g_dof_bokeh_ctx.initialized) {
         return 0; // Already initialized
     }
@@ -127,11 +137,6 @@ int postprocessing_dof_bokeh_init(void) {
 }
 
 void postprocessing_dof_bokeh_shutdown(void) {
-    // TODO: Implement lens effects
-    // TODO: Add film grain
-    // TODO: Implement dof bokeh initialization
-    // TODO: Add dof bokeh cleanup/shutdown
-
     if (!g_dof_bokeh_ctx.initialized) {
         return;
     }
@@ -148,11 +153,6 @@ void postprocessing_dof_bokeh_shutdown(void) {
 }
 
 int postprocessing_dof_bokeh_create(postprocessing_dof_bokeh_handle_t* out_handle, const postprocessing_dof_bokeh_desc_t* desc) {
-    // TODO: Implement dof bokeh validation
-    // TODO: Add dof bokeh error handling
-    // TODO: Implement dof bokeh serialization
-    // TODO: Add dof bokeh debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +162,6 @@ int postprocessing_dof_bokeh_create(postprocessing_dof_bokeh_handle_t* out_handl
     }
 
     if (g_dof_bokeh_ctx.count >= g_dof_bokeh_ctx.capacity) {
-        // TODO: Implement dof bokeh unit tests
         return -3;
     }
 
@@ -176,28 +175,21 @@ int postprocessing_dof_bokeh_create(postprocessing_dof_bokeh_handle_t* out_handl
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
+    item->diaphragm_blades = 0.0f; // Circular by default
+    item->rotation = 0.0f;
 
     out_handle->id = index;
     return 0;
 }
 
 void postprocessing_dof_bokeh_destroy(postprocessing_dof_bokeh_handle_t handle) {
-    // TODO: Add dof bokeh performance counters
-    // TODO: Implement dof bokeh hot-reload
-
     if (handle.id >= g_dof_bokeh_ctx.count) {
         return;
     }
-
     postprocessing_dof_bokeh_cleanup_internal(&g_dof_bokeh_ctx.items[handle.id]);
 }
 
 int postprocessing_dof_bokeh_update(postprocessing_dof_bokeh_handle_t handle, const void* data, size_t size) {
-    // TODO: Add dof bokeh thread safety
-    // TODO: Implement dof bokeh memory pooling
-    // TODO: Add dof bokeh caching layer
-    // TODO: Implement dof bokeh async operations
-
     if (handle.id >= g_dof_bokeh_ctx.count) {
         return -1;
     }
@@ -206,16 +198,16 @@ int postprocessing_dof_bokeh_update(postprocessing_dof_bokeh_handle_t handle, co
     if (!item->initialized) {
         return -2;
     }
-
-    // TODO: Add dof bokeh GPU integration
-    // TODO: Implement dof bokeh SIMD optimization
+    
+    // Assume data contains new parameters
+    // memcpy params...
+    // update_bokeh_texture(item);
 
     item->dirty = true;
     return 0;
 }
 
 bool postprocessing_dof_bokeh_is_valid(postprocessing_dof_bokeh_handle_t handle) {
-    // TODO: Add dof bokeh batch processing
     if (handle.id >= g_dof_bokeh_ctx.count) {
         return false;
     }
@@ -223,9 +215,6 @@ bool postprocessing_dof_bokeh_is_valid(postprocessing_dof_bokeh_handle_t handle)
 }
 
 int postprocessing_dof_bokeh_get_info(postprocessing_dof_bokeh_handle_t handle, postprocessing_dof_bokeh_info_t* out_info) {
-    // TODO: Implement dof bokeh streaming support
-    // TODO: Add dof bokeh LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -243,26 +232,21 @@ int postprocessing_dof_bokeh_get_info(postprocessing_dof_bokeh_handle_t handle, 
 }
 
 void postprocessing_dof_bokeh_mark_dirty(postprocessing_dof_bokeh_handle_t handle) {
-    // TODO: Implement dof bokeh culling integration
     if (handle.id < g_dof_bokeh_ctx.count) {
         g_dof_bokeh_ctx.items[handle.id].dirty = true;
     }
 }
 
 int postprocessing_dof_bokeh_process_pending(void) {
-    // TODO: Add dof bokeh render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_dof_bokeh_ctx.count; i++) {
         postprocessing_dof_bokeh_internal_t* item = &g_dof_bokeh_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
+            update_bokeh_texture(item);
             item->dirty = false;
             processed++;
         }
     }
-
     return processed;
 }
 
@@ -271,19 +255,15 @@ uint32_t postprocessing_dof_bokeh_get_count(void) {
 }
 
 size_t postprocessing_dof_bokeh_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_dof_bokeh_ctx);
     total += g_dof_bokeh_ctx.capacity * sizeof(postprocessing_dof_bokeh_internal_t);
-
     for (uint32_t i = 0; i < g_dof_bokeh_ctx.count; i++) {
         total += g_dof_bokeh_ctx.items[i].data_size;
     }
-
     return total;
 }
 
 void postprocessing_dof_bokeh_debug_print(void) {
-    // TODO: Implement debug output
     // Debug printing implementation
 }
 

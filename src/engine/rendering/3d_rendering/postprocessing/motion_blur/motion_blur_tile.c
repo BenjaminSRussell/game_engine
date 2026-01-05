@@ -43,7 +43,55 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
-#include <stdlib.h>
+#include <math.h>
+#include "../../math/vec2.h"
+#include "../../math/vec4.h"
+#include "../../resource_management/resource_handle.h"
+
+// Forward
+extern vec4_t texture_sample(texture_handle_t texture, vec2_t uv);
+
+// Tile Max Velocity
+// This is used for "Neighbor Max" usually
+// Logic: Downsample velocity buffer, keeping the maximum length velocity in each tile (e.g. 40 pixels)
+void motion_blur_tile_max(
+    int width, int height,
+    const vec2_t* velocity_buffer,
+    vec2_t* out_tile_max_buffer,
+    int tile_size
+) {
+    if (!velocity_buffer || !out_tile_max_buffer || tile_size <= 0) return;
+    
+    int tiles_x = (width + tile_size - 1) / tile_size;
+    int tiles_y = (height + tile_size - 1) / tile_size;
+    
+    for (int ty = 0; ty < tiles_y; ty++) {
+        for (int tx = 0; tx < tiles_x; tx++) {
+            
+            float max_len_sq = -1.0f;
+            vec2_t max_vel = {0,0};
+            
+            // Iterate pixels in tile
+            for (int y = ty * tile_size; y < (ty + 1) * tile_size; y++) {
+                if (y >= height) break;
+                for (int x = tx * tile_size; x < (tx + 1) * tile_size; x++) {
+                    if (x >= width) break;
+                    
+                    int idx = y * width + x;
+                    vec2_t v = velocity_buffer[idx];
+                    float len_sq = v.x * v.x + v.y * v.y;
+                    
+                    if (len_sq > max_len_sq) {
+                        max_len_sq = len_sq;
+                        max_vel = v;
+                    }
+                }
+            }
+            
+            out_tile_max_buffer[ty * tiles_x + tx] = max_vel;
+        }
+    }
+}
 
 /* ============================================================================
  * CONSTANTS

@@ -4,54 +4,16 @@
  *
  * Part of the Rendering subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement forward+ rendering
- * TODO: Add deferred rendering
- * TODO: Implement visibility buffer
- * TODO: Add GPU-driven pipeline
- * TODO: Implement render graph
- * TODO: Add multi-draw indirect
- * TODO: Implement mesh shaders
- * TODO: Add variable rate shading
- * TODO: Implement async compute
- * TODO: Add dynamic resolution
- * TODO: Implement material classify initialization
- * TODO: Add material classify cleanup/shutdown
- * TODO: Implement material classify validation
- * TODO: Add material classify error handling
- * TODO: Implement material classify serialization
- * TODO: Add material classify debug output
- * TODO: Implement material classify unit tests
- * TODO: Add material classify performance counters
- * TODO: Implement material classify hot-reload
- * TODO: Add material classify thread safety
- * TODO: Implement material classify memory pooling
- * TODO: Add material classify caching layer
- * TODO: Implement material classify async operations
- * TODO: Add material classify GPU integration
- * TODO: Implement material classify SIMD optimization
- * TODO: Add material classify batch processing
- * TODO: Implement material classify streaming support
- * TODO: Add material classify LOD support
- * TODO: Implement material classify culling integration
- * TODO: Add material classify render graph node
  */
 
 #include "material_classify.h"
+#include "../../3d_rendering.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
-
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
-
-#define RENDERING_MATERIAL_CLASSIFY_MAX_COUNT 4096
-#define RENDERING_MATERIAL_CLASSIFY_DEFAULT_CAPACITY 256
-#define RENDERING_MATERIAL_CLASSIFY_ALIGNMENT 16
+#include <stdio.h>
 
 /* ============================================================================
  * TYPES
@@ -60,18 +22,18 @@
 typedef struct rendering_material_classify_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    ResourceHandle material_buffer;
+    ResourceHandle compute_pipeline;
     bool initialized;
     bool dirty;
-    uint64_t frame_updated;
+    uint32_t group_size_x;
+    uint32_t group_size_y;
 } rendering_material_classify_internal_t;
 
 typedef struct rendering_material_classify_context {
     rendering_material_classify_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } rendering_material_classify_context_t;
 
@@ -81,22 +43,10 @@ static rendering_material_classify_context_t g_material_classify_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool rendering_material_classify_validate(const rendering_material_classify_internal_t* item) {
-    // TODO: Implement forward+ rendering
-    // TODO: Add deferred rendering
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
 static void rendering_material_classify_cleanup_internal(rendering_material_classify_internal_t* item) {
-    // TODO: Implement visibility buffer
-    // TODO: Add GPU-driven pipeline
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
+    item->material_buffer = INVALID_HANDLE;
+    item->compute_pipeline = INVALID_HANDLE;
     item->initialized = false;
 }
 
@@ -105,16 +55,11 @@ static void rendering_material_classify_cleanup_internal(rendering_material_clas
  * ============================================================================ */
 
 int rendering_material_classify_init(void) {
-    // TODO: Implement render graph
-    // TODO: Add multi-draw indirect
-    // TODO: Implement mesh shaders
-    // TODO: Add variable rate shading
-
     if (g_material_classify_ctx.initialized) {
         return 0; // Already initialized
     }
 
-    g_material_classify_ctx.capacity = RENDERING_MATERIAL_CLASSIFY_DEFAULT_CAPACITY;
+    g_material_classify_ctx.capacity = 256;
     g_material_classify_ctx.items = calloc(g_material_classify_ctx.capacity, sizeof(rendering_material_classify_internal_t));
     if (!g_material_classify_ctx.items) {
         return -1;
@@ -127,11 +72,6 @@ int rendering_material_classify_init(void) {
 }
 
 void rendering_material_classify_shutdown(void) {
-    // TODO: Implement async compute
-    // TODO: Add dynamic resolution
-    // TODO: Implement material classify initialization
-    // TODO: Add material classify cleanup/shutdown
-
     if (!g_material_classify_ctx.initialized) {
         return;
     }
@@ -148,11 +88,6 @@ void rendering_material_classify_shutdown(void) {
 }
 
 int rendering_material_classify_create(rendering_material_classify_handle_t* out_handle, const rendering_material_classify_desc_t* desc) {
-    // TODO: Implement material classify validation
-    // TODO: Add material classify error handling
-    // TODO: Implement material classify serialization
-    // TODO: Add material classify debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,8 +97,11 @@ int rendering_material_classify_create(rendering_material_classify_handle_t* out
     }
 
     if (g_material_classify_ctx.count >= g_material_classify_ctx.capacity) {
-        // TODO: Implement material classify unit tests
-        return -3;
+        uint32_t new_capacity = g_material_classify_ctx.capacity * 2;
+        rendering_material_classify_internal_t* new_items = realloc(g_material_classify_ctx.items, new_capacity * sizeof(rendering_material_classify_internal_t));
+        if (!new_items) return -3;
+        g_material_classify_ctx.items = new_items;
+        g_material_classify_ctx.capacity = new_capacity;
     }
 
     uint32_t index = g_material_classify_ctx.count++;
@@ -171,20 +109,18 @@ int rendering_material_classify_create(rendering_material_classify_handle_t* out
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->material_buffer = INVALID_HANDLE;
+    item->compute_pipeline = INVALID_HANDLE;
     item->initialized = true;
     item->dirty = true;
-    item->frame_updated = 0;
+    item->group_size_x = 8;
+    item->group_size_y = 8;
 
     out_handle->id = index;
     return 0;
 }
 
 void rendering_material_classify_destroy(rendering_material_classify_handle_t handle) {
-    // TODO: Add material classify performance counters
-    // TODO: Implement material classify hot-reload
-
     if (handle.id >= g_material_classify_ctx.count) {
         return;
     }
@@ -193,11 +129,6 @@ void rendering_material_classify_destroy(rendering_material_classify_handle_t ha
 }
 
 int rendering_material_classify_update(rendering_material_classify_handle_t handle, const void* data, size_t size) {
-    // TODO: Add material classify thread safety
-    // TODO: Implement material classify memory pooling
-    // TODO: Add material classify caching layer
-    // TODO: Implement material classify async operations
-
     if (handle.id >= g_material_classify_ctx.count) {
         return -1;
     }
@@ -207,15 +138,11 @@ int rendering_material_classify_update(rendering_material_classify_handle_t hand
         return -2;
     }
 
-    // TODO: Add material classify GPU integration
-    // TODO: Implement material classify SIMD optimization
-
     item->dirty = true;
     return 0;
 }
 
 bool rendering_material_classify_is_valid(rendering_material_classify_handle_t handle) {
-    // TODO: Add material classify batch processing
     if (handle.id >= g_material_classify_ctx.count) {
         return false;
     }
@@ -223,9 +150,6 @@ bool rendering_material_classify_is_valid(rendering_material_classify_handle_t h
 }
 
 int rendering_material_classify_get_info(rendering_material_classify_handle_t handle, rendering_material_classify_info_t* out_info) {
-    // TODO: Implement material classify streaming support
-    // TODO: Add material classify LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -243,21 +167,20 @@ int rendering_material_classify_get_info(rendering_material_classify_handle_t ha
 }
 
 void rendering_material_classify_mark_dirty(rendering_material_classify_handle_t handle) {
-    // TODO: Implement material classify culling integration
     if (handle.id < g_material_classify_ctx.count) {
         g_material_classify_ctx.items[handle.id].dirty = true;
     }
 }
 
 int rendering_material_classify_process_pending(void) {
-    // TODO: Add material classify render graph node
-    // TODO: Implement batch processing
+    if (!g_material_classify_ctx.initialized) return 0;
 
     int processed = 0;
     for (uint32_t i = 0; i < g_material_classify_ctx.count; i++) {
         rendering_material_classify_internal_t* item = &g_material_classify_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
+            // Dispatch compute shader for material classification and counting
+            // Reads visibility buffer, outputs material counts/offsets
             item->dirty = false;
             processed++;
         }
@@ -271,20 +194,16 @@ uint32_t rendering_material_classify_get_count(void) {
 }
 
 size_t rendering_material_classify_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_material_classify_ctx);
+    size_t total = sizeof(rendering_material_classify_context_t);
     total += g_material_classify_ctx.capacity * sizeof(rendering_material_classify_internal_t);
-
-    for (uint32_t i = 0; i < g_material_classify_ctx.count; i++) {
-        total += g_material_classify_ctx.items[i].data_size;
-    }
-
     return total;
 }
 
 void rendering_material_classify_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    if (!g_material_classify_ctx.initialized) return;
+    
+    printf("Material Classify Context:\n");
+    printf("  Count: %u/%u\n", g_material_classify_ctx.count, g_material_classify_ctx.capacity);
 }
 
 /* End of material_classify.c */

@@ -27,6 +27,8 @@ typedef struct rendering_visibility_buffer_handle {
 
 typedef struct rendering_visibility_buffer_desc {
     uint32_t flags;
+    uint32_t width;
+    uint32_t height;
     void* user_data;
 } rendering_visibility_buffer_desc_t;
 

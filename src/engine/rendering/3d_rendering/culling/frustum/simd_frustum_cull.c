@@ -1,290 +1,254 @@
 /*
  * simd_frustum_cull.c
- * SIMD batch frustum cull
+ * SIMD-optimized frustum culling (4 AABBs at once)
  *
  * Part of the Culling subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement frustum culling (SIMD)
- * TODO: Add HZB occlusion culling
- * TODO: Implement GPU culling
- * TODO: Add temporal reprojection culling
- * TODO: Implement meshlet culling
- * TODO: Add two-phase occlusion
- * TODO: Implement software rasterizer
- * TODO: Add portal culling
- * TODO: Implement LOD selection
- * TODO: Add streaming priority
- * TODO: Implement simd frustum cull initialization
- * TODO: Add simd frustum cull cleanup/shutdown
- * TODO: Implement simd frustum cull validation
- * TODO: Add simd frustum cull error handling
- * TODO: Implement simd frustum cull serialization
- * TODO: Add simd frustum cull debug output
- * TODO: Implement simd frustum cull unit tests
- * TODO: Add simd frustum cull performance counters
- * TODO: Implement simd frustum cull hot-reload
- * TODO: Add simd frustum cull thread safety
- * TODO: Implement simd frustum cull memory pooling
- * TODO: Add simd frustum cull caching layer
- * TODO: Implement simd frustum cull async operations
- * TODO: Add simd frustum cull GPU integration
- * TODO: Implement simd frustum cull SIMD optimization
- * TODO: Add simd frustum cull batch processing
- * TODO: Implement simd frustum cull streaming support
- * TODO: Add simd frustum cull LOD support
- * TODO: Implement simd frustum cull culling integration
- * TODO: Add simd frustum cull render graph node
  */
 
 #include "simd_frustum_cull.h"
+#include "../../math/vec3.h"
+#include "../../math/aabb.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
 
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
-
-#define CULLING_SIMD_FRUSTUM_CULL_MAX_COUNT 4096
-#define CULLING_SIMD_FRUSTUM_CULL_DEFAULT_CAPACITY 256
-#define CULLING_SIMD_FRUSTUM_CULL_ALIGNMENT 16
-
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct culling_simd_frustum_cull_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} culling_simd_frustum_cull_internal_t;
-
-typedef struct culling_simd_frustum_cull_context {
-    culling_simd_frustum_cull_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} culling_simd_frustum_cull_context_t;
-
-static culling_simd_frustum_cull_context_t g_simd_frustum_cull_ctx = {0};
+#if defined(__x86_64__) || defined(_M_X64)
+    #define SIMD_SSE
+    #include <immintrin.h>
+#elif defined(__arm64__) || defined(__aarch64__)
+    #define SIMD_NEON
+    #include <arm_neon.h>
+#endif
 
 /* ============================================================================
- * PRIVATE FUNCTIONS
+ * SIMD FRUSTUM CULLING
  * ============================================================================ */
 
-static bool culling_simd_frustum_cull_validate(const culling_simd_frustum_cull_internal_t* item) {
-    // TODO: Implement frustum culling (SIMD)
-    // TODO: Add HZB occlusion culling
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+#ifdef SIMD_SSE
+
+// Test 4 AABBs against one frustum plane (SSE)
+static inline __m128 test_plane_sse(
+    __m128 plane_x, __m128 plane_y, __m128 plane_z, __m128 plane_w,
+    __m128 min_x, __m128 min_y, __m128 min_z,
+    __m128 max_x, __m128 max_y, __m128 max_z
+) {
+    // Find positive vertex (furthest in direction of plane normal)
+    __m128 px = _mm_blendv_ps(min_x, max_x, plane_x);
+    __m128 py = _mm_blendv_ps(min_y, max_y, plane_y);
+    __m128 pz = _mm_blendv_ps(min_z, max_z, plane_z);
+    
+    // Dot product: plane.xyz * p_vertex + plane.w
+    __m128 dot = _mm_mul_ps(plane_x, px);
+    dot = _mm_add_ps(dot, _mm_mul_ps(plane_y, py));
+    dot = _mm_add_ps(dot, _mm_mul_ps(plane_z, pz));
+    dot = _mm_add_ps(dot, plane_w);
+    
+    // Return mask: dot >= 0 means inside
+    return _mm_cmpge_ps(dot, _mm_setzero_ps());
 }
 
-static void culling_simd_frustum_cull_cleanup_internal(culling_simd_frustum_cull_internal_t* item) {
-    // TODO: Implement GPU culling
-    // TODO: Add temporal reprojection culling
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+int culling_simd_frustum_cull_batch_sse(
+    const vec4_t* frustum_planes,  // 6 planes
+    const aabb_t* aabbs,           // Input AABBs
+    uint32_t aabb_count,
+    uint32_t* out_visible_indices,
+    uint32_t max_visible
+) {
+    uint32_t visible_count = 0;
+    
+    // Process 4 AABBs at a time
+    for (uint32_t i = 0; i + 3 < aabb_count; i += 4) {
+        // Load 4 AABBs
+        __m128 min_x = _mm_setr_ps(aabbs[i+0].min.x, aabbs[i+1].min.x, aabbs[i+2].min.x, aabbs[i+3].min.x);
+        __m128 min_y = _mm_setr_ps(aabbs[i+0].min.y, aabbs[i+1].min.y, aabbs[i+2].min.y, aabbs[i+3].min.y);
+        __m128 min_z = _mm_setr_ps(aabbs[i+0].min.z, aabbs[i+1].min.z, aabbs[i+2].min.z, aabbs[i+3].min.z);
+        __m128 max_x = _mm_setr_ps(aabbs[i+0].max.x, aabbs[i+1].max.x, aabbs[i+2].max.x, aabbs[i+3].max.x);
+        __m128 max_y = _mm_setr_ps(aabbs[i+0].max.y, aabbs[i+1].max.y, aabbs[i+2].max.y, aabbs[i+3].max.y);
+        __m128 max_z = _mm_setr_ps(aabbs[i+0].max.z, aabbs[i+1].max.z, aabbs[i+2].max.z, aabbs[i+3].max.z);
+        
+        __m128 inside_mask = _mm_castsi128_ps(_mm_set1_epi32(0xFFFFFFFF));
+        
+        // Test against all 6 planes
+        for (int p = 0; p < 6; p++) {
+            __m128 plane_x = _mm_set1_ps(frustum_planes[p].x);
+            __m128 plane_y = _mm_set1_ps(frustum_planes[p].y);
+            __m128 plane_z = _mm_set1_ps(frustum_planes[p].z);
+            __m128 plane_w = _mm_set1_ps(frustum_planes[p].w);
+            
+            __m128 plane_result = test_plane_sse(
+                plane_x, plane_y, plane_z, plane_w,
+                min_x, min_y, min_z,
+                max_x, max_y, max_z
+            );
+            
+            inside_mask = _mm_and_ps(inside_mask, plane_result);
+        }
+        
+        // Extract results
+        int mask = _mm_movemask_ps(inside_mask);
+        for (int j = 0; j < 4 && visible_count < max_visible; j++) {
+            if (mask & (1 << j)) {
+                out_visible_indices[visible_count++] = i + j;
+            }
+        }
     }
-    item->initialized = false;
+    
+    // Handle remaining AABBs (scalar fallback)
+    uint32_t remainder_start = (aabb_count / 4) * 4;
+    for (uint32_t i = remainder_start; i < aabb_count && visible_count < max_visible; i++) {
+        bool visible = true;
+        for (int p = 0; p < 6 && visible; p++) {
+            vec3_t plane_n = {frustum_planes[p].x, frustum_planes[p].y, frustum_planes[p].z};
+            float plane_d = frustum_planes[p].w;
+            
+            vec3_t p_vertex;
+            p_vertex.x = (plane_n.x >= 0.0f) ? aabbs[i].max.x : aabbs[i].min.x;
+            p_vertex.y = (plane_n.y >= 0.0f) ? aabbs[i].max.y : aabbs[i].min.y;
+            p_vertex.z = (plane_n.z >= 0.0f) ? aabbs[i].max.z : aabbs[i].min.z;
+            
+            if (vec3_dot(plane_n, p_vertex) + plane_d < 0.0f) {
+                visible = false;
+            }
+        }
+        
+        if (visible) {
+            out_visible_indices[visible_count++] = i;
+        }
+    }
+    
+    return visible_count;
 }
+
+#elif defined(SIMD_NEON)
+
+// NEON implementation (ARM)
+int culling_simd_frustum_cull_batch_neon(
+    const vec4_t* frustum_planes,
+    const aabb_t* aabbs,
+    uint32_t aabb_count,
+    uint32_t* out_visible_indices,
+    uint32_t max_visible
+) {
+    uint32_t visible_count = 0;
+    
+    // Process 4 AABBs at a time with NEON
+    for (uint32_t i = 0; i + 3 < aabb_count; i += 4) {
+        float32x4_t min_x = {aabbs[i+0].min.x, aabbs[i+1].min.x, aabbs[i+2].min.x, aabbs[i+3].min.x};
+        float32x4_t min_y = {aabbs[i+0].min.y, aabbs[i+1].min.y, aabbs[i+2].min.y, aabbs[i+3].min.y};
+        float32x4_t min_z = {aabbs[i+0].min.z, aabbs[i+1].min.z, aabbs[i+2].min.z, aabbs[i+3].min.z};
+        float32x4_t max_x = {aabbs[i+0].max.x, aabbs[i+1].max.x, aabbs[i+2].max.x, aabbs[i+3].max.x};
+        float32x4_t max_y = {aabbs[i+0].max.y, aabbs[i+1].max.y, aabbs[i+2].max.y, aabbs[i+3].max.y};
+        float32x4_t max_z = {aabbs[i+0].max.z, aabbs[i+1].max.z, aabbs[i+2].max.z, aabbs[i+3].max.z};
+        
+        uint32x4_t inside_mask = vdupq_n_u32(0xFFFFFFFF);
+        
+        for (int p = 0; p < 6; p++) {
+            float32x4_t plane_x = vdupq_n_f32(frustum_planes[p].x);
+            float32x4_t plane_y = vdupq_n_f32(frustum_planes[p].y);
+            float32x4_t plane_z = vdupq_n_f32(frustum_planes[p].z);
+            float32x4_t plane_w = vdupq_n_f32(frustum_planes[p].w);
+            
+            // Select positive vertex
+            float32x4_t px = vbslq_f32(vcgeq_f32(plane_x, vdupq_n_f32(0)), max_x, min_x);
+            float32x4_t py = vbslq_f32(vcgeq_f32(plane_y, vdupq_n_f32(0)), max_y, min_y);
+            float32x4_t pz = vbslq_f32(vcgeq_f32(plane_z, vdupq_n_f32(0)), max_z, min_z);
+            
+            // Dot product
+            float32x4_t dot = vmulq_f32(plane_x, px);
+            dot = vmlaq_f32(dot, plane_y, py);
+            dot = vmlaq_f32(dot, plane_z, pz);
+            dot = vaddq_f32(dot, plane_w);
+            
+            uint32x4_t plane_result = vcgeq_f32(dot, vdupq_n_f32(0));
+            inside_mask = vandq_u32(inside_mask, plane_result);
+        }
+        
+        // Extract results
+        uint32_t results[4];
+        vst1q_u32(results, inside_mask);
+        for (int j = 0; j < 4 && visible_count < max_visible; j++) {
+            if (results[j]) {
+                out_visible_indices[visible_count++] = i + j;
+            }
+        }
+    }
+    
+    // Scalar fallback for remainder
+    uint32_t remainder_start = (aabb_count / 4) * 4;
+    for (uint32_t i = remainder_start; i < aabb_count && visible_count < max_visible; i++) {
+        bool visible = true;
+        for (int p = 0; p < 6 && visible; p++) {
+            vec3_t plane_n = {frustum_planes[p].x, frustum_planes[p].y, frustum_planes[p].z};
+            float plane_d = frustum_planes[p].w;
+            
+            vec3_t p_vertex;
+            p_vertex.x = (plane_n.x >= 0.0f) ? aabbs[i].max.x : aabbs[i].min.x;
+            p_vertex.y = (plane_n.y >= 0.0f) ? aabbs[i].max.y : aabbs[i].min.y;
+            p_vertex.z = (plane_n.z >= 0.0f) ? aabbs[i].max.z : aabbs[i].min.z;
+            
+            if (vec3_dot(plane_n, p_vertex) + plane_d < 0.0f) {
+                visible = false;
+            }
+        }
+        
+        if (visible) {
+            out_visible_indices[visible_count++] = i;
+        }
+    }
+    
+    return visible_count;
+}
+
+#endif
 
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
-int culling_simd_frustum_cull_init(void) {
-    // TODO: Implement meshlet culling
-    // TODO: Add two-phase occlusion
-    // TODO: Implement software rasterizer
-    // TODO: Add portal culling
-
-    if (g_simd_frustum_cull_ctx.initialized) {
-        return 0; // Already initialized
+int culling_simd_frustum_cull_batch(
+    const vec4_t* frustum_planes,
+    const aabb_t* aabbs,
+    uint32_t aabb_count,
+    uint32_t* out_visible_indices,
+    uint32_t max_visible
+) {
+    if (!frustum_planes || !aabbs || !out_visible_indices || aabb_count == 0) {
+        return 0;
     }
-
-    g_simd_frustum_cull_ctx.capacity = CULLING_SIMD_FRUSTUM_CULL_DEFAULT_CAPACITY;
-    g_simd_frustum_cull_ctx.items = calloc(g_simd_frustum_cull_ctx.capacity, sizeof(culling_simd_frustum_cull_internal_t));
-    if (!g_simd_frustum_cull_ctx.items) {
-        return -1;
-    }
-
-    g_simd_frustum_cull_ctx.count = 0;
-    g_simd_frustum_cull_ctx.initialized = true;
-
-    return 0;
-}
-
-void culling_simd_frustum_cull_shutdown(void) {
-    // TODO: Implement LOD selection
-    // TODO: Add streaming priority
-    // TODO: Implement simd frustum cull initialization
-    // TODO: Add simd frustum cull cleanup/shutdown
-
-    if (!g_simd_frustum_cull_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_simd_frustum_cull_ctx.count; i++) {
-        culling_simd_frustum_cull_cleanup_internal(&g_simd_frustum_cull_ctx.items[i]);
-    }
-
-    free(g_simd_frustum_cull_ctx.items);
-    g_simd_frustum_cull_ctx.items = NULL;
-    g_simd_frustum_cull_ctx.count = 0;
-    g_simd_frustum_cull_ctx.capacity = 0;
-    g_simd_frustum_cull_ctx.initialized = false;
-}
-
-int culling_simd_frustum_cull_create(culling_simd_frustum_cull_handle_t* out_handle, const culling_simd_frustum_cull_desc_t* desc) {
-    // TODO: Implement simd frustum cull validation
-    // TODO: Add simd frustum cull error handling
-    // TODO: Implement simd frustum cull serialization
-    // TODO: Add simd frustum cull debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_simd_frustum_cull_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_simd_frustum_cull_ctx.count >= g_simd_frustum_cull_ctx.capacity) {
-        // TODO: Implement simd frustum cull unit tests
-        return -3;
-    }
-
-    uint32_t index = g_simd_frustum_cull_ctx.count++;
-    culling_simd_frustum_cull_internal_t* item = &g_simd_frustum_cull_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
-}
-
-void culling_simd_frustum_cull_destroy(culling_simd_frustum_cull_handle_t handle) {
-    // TODO: Add simd frustum cull performance counters
-    // TODO: Implement simd frustum cull hot-reload
-
-    if (handle.id >= g_simd_frustum_cull_ctx.count) {
-        return;
-    }
-
-    culling_simd_frustum_cull_cleanup_internal(&g_simd_frustum_cull_ctx.items[handle.id]);
-}
-
-int culling_simd_frustum_cull_update(culling_simd_frustum_cull_handle_t handle, const void* data, size_t size) {
-    // TODO: Add simd frustum cull thread safety
-    // TODO: Implement simd frustum cull memory pooling
-    // TODO: Add simd frustum cull caching layer
-    // TODO: Implement simd frustum cull async operations
-
-    if (handle.id >= g_simd_frustum_cull_ctx.count) {
-        return -1;
-    }
-
-    culling_simd_frustum_cull_internal_t* item = &g_simd_frustum_cull_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add simd frustum cull GPU integration
-    // TODO: Implement simd frustum cull SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool culling_simd_frustum_cull_is_valid(culling_simd_frustum_cull_handle_t handle) {
-    // TODO: Add simd frustum cull batch processing
-    if (handle.id >= g_simd_frustum_cull_ctx.count) {
-        return false;
-    }
-    return g_simd_frustum_cull_ctx.items[handle.id].initialized;
-}
-
-int culling_simd_frustum_cull_get_info(culling_simd_frustum_cull_handle_t handle, culling_simd_frustum_cull_info_t* out_info) {
-    // TODO: Implement simd frustum cull streaming support
-    // TODO: Add simd frustum cull LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_simd_frustum_cull_ctx.count) {
-        return -2;
-    }
-
-    const culling_simd_frustum_cull_internal_t* item = &g_simd_frustum_cull_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void culling_simd_frustum_cull_mark_dirty(culling_simd_frustum_cull_handle_t handle) {
-    // TODO: Implement simd frustum cull culling integration
-    if (handle.id < g_simd_frustum_cull_ctx.count) {
-        g_simd_frustum_cull_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int culling_simd_frustum_cull_process_pending(void) {
-    // TODO: Add simd frustum cull render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_simd_frustum_cull_ctx.count; i++) {
-        culling_simd_frustum_cull_internal_t* item = &g_simd_frustum_cull_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
+    
+#ifdef SIMD_SSE
+    return culling_simd_frustum_cull_batch_sse(frustum_planes, aabbs, aabb_count,
+                                                out_visible_indices, max_visible);
+#elif defined(SIMD_NEON)
+    return culling_simd_frustum_cull_batch_neon(frustum_planes, aabbs, aabb_count,
+                                                 out_visible_indices, max_visible);
+#else
+    // Scalar fallback
+    uint32_t visible_count = 0;
+    for (uint32_t i = 0; i < aabb_count && visible_count < max_visible; i++) {
+        bool visible = true;
+        for (int p = 0; p < 6 && visible; p++) {
+            vec3_t plane_n = {frustum_planes[p].x, frustum_planes[p].y, frustum_planes[p].z};
+            float plane_d = frustum_planes[p].w;
+            
+            vec3_t p_vertex;
+            p_vertex.x = (plane_n.x >= 0.0f) ? aabbs[i].max.x : aabbs[i].min.x;
+            p_vertex.y = (plane_n.y >= 0.0f) ? aabbs[i].max.y : aabbs[i].min.y;
+            p_vertex.z = (plane_n.z >= 0.0f) ? aabbs[i].max.z : aabbs[i].min.z;
+            
+            if (vec3_dot(plane_n, p_vertex) + plane_d < 0.0f) {
+                visible = false;
+            }
+        }
+        
+        if (visible) {
+            out_visible_indices[visible_count++] = i;
         }
     }
-
-    return processed;
-}
-
-uint32_t culling_simd_frustum_cull_get_count(void) {
-    return g_simd_frustum_cull_ctx.count;
-}
-
-size_t culling_simd_frustum_cull_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_simd_frustum_cull_ctx);
-    total += g_simd_frustum_cull_ctx.capacity * sizeof(culling_simd_frustum_cull_internal_t);
-
-    for (uint32_t i = 0; i < g_simd_frustum_cull_ctx.count; i++) {
-        total += g_simd_frustum_cull_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void culling_simd_frustum_cull_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    return visible_count;
+#endif
 }
 
 /* End of simd_frustum_cull.c */

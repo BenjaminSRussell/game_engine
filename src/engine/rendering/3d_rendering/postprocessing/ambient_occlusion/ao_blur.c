@@ -43,7 +43,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -54,7 +56,7 @@
 #define POSTPROCESSING_AO_BLUR_ALIGNMENT 16
 
 /* ============================================================================
- * TYPES
+ * INTERNAL STRUCTURES
  * ============================================================================ */
 
 typedef struct postprocessing_ao_blur_internal {
@@ -65,6 +67,7 @@ typedef struct postprocessing_ao_blur_internal {
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
+    ao_blur_params_t params;
 } postprocessing_ao_blur_internal_t;
 
 typedef struct postprocessing_ao_blur_context {
@@ -81,17 +84,11 @@ static postprocessing_ao_blur_context_t g_ao_blur_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool postprocessing_ao_blur_validate(const postprocessing_ao_blur_internal_t* item) {
-    // TODO: Implement ACES tonemapping
-    // TODO: Add physically-based bloom
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+static float gaussian(float x, float sigma) {
+    return expf(-(x*x) / (2.0f * sigma * sigma));
 }
 
 static void postprocessing_ao_blur_cleanup_internal(postprocessing_ao_blur_internal_t* item) {
-    // TODO: Implement TAA
-    // TODO: Add depth of field
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -105,11 +102,6 @@ static void postprocessing_ao_blur_cleanup_internal(postprocessing_ao_blur_inter
  * ============================================================================ */
 
 int postprocessing_ao_blur_init(void) {
-    // TODO: Implement motion blur
-    // TODO: Add GTAO
-    // TODO: Implement SSR
-    // TODO: Add color grading
-
     if (g_ao_blur_ctx.initialized) {
         return 0; // Already initialized
     }
@@ -127,11 +119,6 @@ int postprocessing_ao_blur_init(void) {
 }
 
 void postprocessing_ao_blur_shutdown(void) {
-    // TODO: Implement lens effects
-    // TODO: Add film grain
-    // TODO: Implement ao blur initialization
-    // TODO: Add ao blur cleanup/shutdown
-
     if (!g_ao_blur_ctx.initialized) {
         return;
     }
@@ -148,11 +135,6 @@ void postprocessing_ao_blur_shutdown(void) {
 }
 
 int postprocessing_ao_blur_create(postprocessing_ao_blur_handle_t* out_handle, const postprocessing_ao_blur_desc_t* desc) {
-    // TODO: Implement ao blur validation
-    // TODO: Add ao blur error handling
-    // TODO: Implement ao blur serialization
-    // TODO: Add ao blur debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +144,6 @@ int postprocessing_ao_blur_create(postprocessing_ao_blur_handle_t* out_handle, c
     }
 
     if (g_ao_blur_ctx.count >= g_ao_blur_ctx.capacity) {
-        // TODO: Implement ao blur unit tests
         return -3;
     }
 
@@ -171,6 +152,7 @@ int postprocessing_ao_blur_create(postprocessing_ao_blur_handle_t* out_handle, c
 
     item->id = index;
     item->flags = desc->flags;
+    item->params = desc->initial_params;
     item->data = NULL;
     item->data_size = 0;
     item->initialized = true;
@@ -182,9 +164,6 @@ int postprocessing_ao_blur_create(postprocessing_ao_blur_handle_t* out_handle, c
 }
 
 void postprocessing_ao_blur_destroy(postprocessing_ao_blur_handle_t handle) {
-    // TODO: Add ao blur performance counters
-    // TODO: Implement ao blur hot-reload
-
     if (handle.id >= g_ao_blur_ctx.count) {
         return;
     }
@@ -193,11 +172,6 @@ void postprocessing_ao_blur_destroy(postprocessing_ao_blur_handle_t handle) {
 }
 
 int postprocessing_ao_blur_update(postprocessing_ao_blur_handle_t handle, const void* data, size_t size) {
-    // TODO: Add ao blur thread safety
-    // TODO: Implement ao blur memory pooling
-    // TODO: Add ao blur caching layer
-    // TODO: Implement ao blur async operations
-
     if (handle.id >= g_ao_blur_ctx.count) {
         return -1;
     }
@@ -207,15 +181,20 @@ int postprocessing_ao_blur_update(postprocessing_ao_blur_handle_t handle, const 
         return -2;
     }
 
-    // TODO: Add ao blur GPU integration
-    // TODO: Implement ao blur SIMD optimization
-
     item->dirty = true;
     return 0;
 }
 
+void postprocessing_ao_blur_set_params(postprocessing_ao_blur_handle_t handle, const ao_blur_params_t* params) {
+    if (handle.id >= g_ao_blur_ctx.count || !params) return;
+    postprocessing_ao_blur_internal_t* item = &g_ao_blur_ctx.items[handle.id];
+    if (item->initialized) {
+        item->params = *params;
+        item->dirty = true;
+    }
+}
+
 bool postprocessing_ao_blur_is_valid(postprocessing_ao_blur_handle_t handle) {
-    // TODO: Add ao blur batch processing
     if (handle.id >= g_ao_blur_ctx.count) {
         return false;
     }
@@ -223,9 +202,6 @@ bool postprocessing_ao_blur_is_valid(postprocessing_ao_blur_handle_t handle) {
 }
 
 int postprocessing_ao_blur_get_info(postprocessing_ao_blur_handle_t handle, postprocessing_ao_blur_info_t* out_info) {
-    // TODO: Implement ao blur streaming support
-    // TODO: Add ao blur LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -238,32 +214,112 @@ int postprocessing_ao_blur_get_info(postprocessing_ao_blur_handle_t handle, post
     out_info->id = item->id;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
+    out_info->current_params = item->params;
 
     return 0;
 }
 
 void postprocessing_ao_blur_mark_dirty(postprocessing_ao_blur_handle_t handle) {
-    // TODO: Implement ao blur culling integration
     if (handle.id < g_ao_blur_ctx.count) {
         g_ao_blur_ctx.items[handle.id].dirty = true;
     }
 }
 
 int postprocessing_ao_blur_process_pending(void) {
-    // TODO: Add ao blur render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_ao_blur_ctx.count; i++) {
         postprocessing_ao_blur_internal_t* item = &g_ao_blur_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
     }
-
     return processed;
+}
+
+void postprocessing_ao_blur_buffer(
+    const ao_blur_params_t* params,
+    const float* input_ao,
+    const float* input_depth,
+    const float* input_normals,
+    float* output_ao,
+    uint32_t width,
+    uint32_t height
+) {
+    if (!input_ao || !input_depth || !output_ao || !params) return;
+    
+    int radius = params->radius > 0 ? params->radius : 2;
+    float sharpness = params->sharpness > 0.0f ? params->sharpness : 40.0f; // Default sharpness
+    float sigma = (float)radius / 2.0f; // Spatial sigma
+    
+    for (uint32_t y = 0; y < height; y++) {
+        for (uint32_t x = 0; x < width; x++) {
+            uint32_t center_idx = y * width + x;
+            
+            float center_depth = input_depth[center_idx];
+            float center_ao = input_ao[center_idx];
+            
+            // Skip background, dont blur across large depth gaps
+            if (center_depth > 1000.0f) {
+                output_ao[center_idx] = center_ao;
+                continue;
+            }
+            
+            float weight_sum = 0.0f;
+            float ao_sum = 0.0f;
+            
+            // Get center normal
+            float nx = 0.0f, ny = 0.0f, nz = 1.0f;
+            if (params->use_normals && input_normals) {
+                nx = input_normals[center_idx*3 + 0];
+                ny = input_normals[center_idx*3 + 1];
+                nz = input_normals[center_idx*3 + 2];
+            }
+            
+            for (int dy = -radius; dy <= radius; dy++) {
+                for (int dx = -radius; dx <= radius; dx++) {
+                    int nx_coord = (int)x + dx;
+                    int ny_coord = (int)y + dy;
+                    
+                    if (nx_coord < 0 || nx_coord >= (int)width || ny_coord < 0 || ny_coord >= (int)height) {
+                        continue;
+                    }
+                    
+                    uint32_t neighbor_idx = ny_coord * width + nx_coord;
+                    float neighbor_depth = input_depth[neighbor_idx];
+                    
+                    // Spatial weight
+                    float w_s = gaussian((float)dx, sigma) * gaussian((float)dy, sigma);
+                    
+                    // Range weight (depth difference)
+                    float depth_diff = fabsf(center_depth - neighbor_depth);
+                    float w_r = expf(-(depth_diff * depth_diff * sharpness));
+                    
+                    // Normal weight
+                    float w_n = 1.0f;
+                    if (params->use_normals && input_normals) {
+                        float nnx = input_normals[neighbor_idx*3 + 0];
+                        float nny = input_normals[neighbor_idx*3 + 1];
+                        float nnz = input_normals[neighbor_idx*3 + 2];
+                        float dot = nx*nnx + ny*nny + nz*nnz;
+                        if (dot < 0.0f) dot = 0.0f;
+                        w_n = powf(dot, 4.0f); // Power ensures strict adherence to planar surfaces
+                    }
+                    
+                    float w = w_s * w_r * w_n;
+                    
+                    ao_sum += input_ao[neighbor_idx] * w;
+                    weight_sum += w;
+                }
+            }
+            
+            if (weight_sum > 0.0001f) {
+                output_ao[center_idx] = ao_sum / weight_sum;
+            } else {
+                output_ao[center_idx] = center_ao;
+            }
+        }
+    }
 }
 
 uint32_t postprocessing_ao_blur_get_count(void) {
@@ -271,7 +327,6 @@ uint32_t postprocessing_ao_blur_get_count(void) {
 }
 
 size_t postprocessing_ao_blur_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_ao_blur_ctx);
     total += g_ao_blur_ctx.capacity * sizeof(postprocessing_ao_blur_internal_t);
 
@@ -283,8 +338,7 @@ size_t postprocessing_ao_blur_get_memory_usage(void) {
 }
 
 void postprocessing_ao_blur_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    printf("AO Blur Context: %u/%u items\n", g_ao_blur_ctx.count, g_ao_blur_ctx.capacity);
 }
 
 /* End of ao_blur.c */

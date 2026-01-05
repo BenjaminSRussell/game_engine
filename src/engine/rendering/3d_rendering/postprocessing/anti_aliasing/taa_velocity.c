@@ -43,7 +43,68 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
-#include <stdlib.h>
+#include <math.h>
+#include <immintrin.h>
+#include "../../math/vec2.h"
+#include "../../math/vec3.h"
+#include "../../math/vec4.h"
+#include "../../math/mat4.h"
+#include "../../resource_management/resource_handle.h"
+
+/* ============================================================================
+ * HELPER FUNCTIONS
+ * ============================================================================ */
+
+// Calculate motion vector (velocity) for TAA
+// Returns velocity in UV space (0..1)
+// Non-static to be used by other systems if needed
+vec2_t taa_velocity_calculate_motion_vector(vec3_t world_pos, mat4_t current_view_proj, mat4_t prev_view_proj) {
+    // Current Clip Position
+    vec4_t world_pos4;
+    world_pos4.x = world_pos.x;
+    world_pos4.y = world_pos.y;
+    world_pos4.z = world_pos.z;
+    world_pos4.w = 1.0f;
+    
+    vec4_t clip_pos = mat4_mul_vec4(current_view_proj, world_pos4);
+    
+    // Previous Clip Position
+    vec4_t prev_clip_pos = mat4_mul_vec4(prev_view_proj, world_pos4);
+    
+    // Perspective Divide
+    vec2_t screen_pos;
+    if (clip_pos.w != 0.0f) {
+        screen_pos.x = clip_pos.x / clip_pos.w;
+        screen_pos.y = clip_pos.y / clip_pos.w;
+    } else {
+        screen_pos.x = 0.0f;
+        screen_pos.y = 0.0f;
+    }
+    
+    vec2_t prev_screen_pos;
+    if (prev_clip_pos.w != 0.0f) {
+        prev_screen_pos.x = prev_clip_pos.x / prev_clip_pos.w;
+        prev_screen_pos.y = prev_clip_pos.y / prev_clip_pos.w;
+    } else {
+        prev_screen_pos.x = 0.0f;
+        prev_screen_pos.y = 0.0f;
+    }
+    
+    // Convert to UV space (0 to 1) from NDC (-1 to 1)
+    // 0.5 * NDC + 0.5
+    screen_pos.x = screen_pos.x * 0.5f + 0.5f;
+    screen_pos.y = screen_pos.y * 0.5f + 0.5f;
+    
+    prev_screen_pos.x = prev_screen_pos.x * 0.5f + 0.5f;
+    prev_screen_pos.y = prev_screen_pos.y * 0.5f + 0.5f;
+    
+    // Velocity = Current - Previous
+    vec2_t velocity;
+    velocity.x = screen_pos.x - prev_screen_pos.x;
+    velocity.y = screen_pos.y - prev_screen_pos.y;
+    
+    return velocity;
+}
 
 /* ============================================================================
  * CONSTANTS

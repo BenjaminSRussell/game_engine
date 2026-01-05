@@ -4,41 +4,10 @@
  *
  * Part of the Water subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement FFT ocean simulation
- * TODO: Add Gerstner waves
- * TODO: Implement foam rendering
- * TODO: Add caustics
- * TODO: Implement underwater rendering
- * TODO: Add planar reflections
- * TODO: Implement river rendering
- * TODO: Add buoyancy physics
- * TODO: Implement wake simulation
- * TODO: Add shore waves
- * TODO: Implement waterfall initialization
- * TODO: Add waterfall cleanup/shutdown
- * TODO: Implement waterfall validation
- * TODO: Add waterfall error handling
- * TODO: Implement waterfall serialization
- * TODO: Add waterfall debug output
- * TODO: Implement waterfall unit tests
- * TODO: Add waterfall performance counters
- * TODO: Implement waterfall hot-reload
- * TODO: Add waterfall thread safety
- * TODO: Implement waterfall memory pooling
- * TODO: Add waterfall caching layer
- * TODO: Implement waterfall async operations
- * TODO: Add waterfall GPU integration
- * TODO: Implement waterfall SIMD optimization
- * TODO: Add waterfall batch processing
- * TODO: Implement waterfall streaming support
- * TODO: Add waterfall LOD support
- * TODO: Implement waterfall culling integration
- * TODO: Add waterfall render graph node
  */
 
 #include "waterfall.h"
+#include "../../../../include/math/math.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -51,17 +20,24 @@
 
 #define WATER_WATERFALL_MAX_COUNT 4096
 #define WATER_WATERFALL_DEFAULT_CAPACITY 256
-#define WATER_WATERFALL_ALIGNMENT 16
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
+typedef struct waterfall_data {
+    Vec3 top_position;
+    Vec3 bottom_position;
+    float width;
+    float speed;
+    float thickness;
+    Vec3 color;
+} waterfall_data_t;
+
 typedef struct water_waterfall_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    waterfall_data_t* data;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -71,7 +47,6 @@ typedef struct water_waterfall_context {
     water_waterfall_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } water_waterfall_context_t;
 
@@ -82,16 +57,13 @@ static water_waterfall_context_t g_waterfall_ctx = {0};
  * ============================================================================ */
 
 static bool water_waterfall_validate(const water_waterfall_internal_t* item) {
-    // TODO: Implement FFT ocean simulation
-    // TODO: Add Gerstner waves
     if (!item) return false;
     if (!item->initialized) return false;
+    if (!item->data) return false;
     return true;
 }
 
 static void water_waterfall_cleanup_internal(water_waterfall_internal_t* item) {
-    // TODO: Implement foam rendering
-    // TODO: Add caustics
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -105,13 +77,8 @@ static void water_waterfall_cleanup_internal(water_waterfall_internal_t* item) {
  * ============================================================================ */
 
 int water_waterfall_init(void) {
-    // TODO: Implement underwater rendering
-    // TODO: Add planar reflections
-    // TODO: Implement river rendering
-    // TODO: Add buoyancy physics
-
     if (g_waterfall_ctx.initialized) {
-        return 0; // Already initialized
+        return 0;
     }
 
     g_waterfall_ctx.capacity = WATER_WATERFALL_DEFAULT_CAPACITY;
@@ -127,11 +94,6 @@ int water_waterfall_init(void) {
 }
 
 void water_waterfall_shutdown(void) {
-    // TODO: Implement wake simulation
-    // TODO: Add shore waves
-    // TODO: Implement waterfall initialization
-    // TODO: Add waterfall cleanup/shutdown
-
     if (!g_waterfall_ctx.initialized) {
         return;
     }
@@ -148,11 +110,6 @@ void water_waterfall_shutdown(void) {
 }
 
 int water_waterfall_create(water_waterfall_handle_t* out_handle, const water_waterfall_desc_t* desc) {
-    // TODO: Implement waterfall validation
-    // TODO: Add waterfall error handling
-    // TODO: Implement waterfall serialization
-    // TODO: Add waterfall debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,8 +119,13 @@ int water_waterfall_create(water_waterfall_handle_t* out_handle, const water_wat
     }
 
     if (g_waterfall_ctx.count >= g_waterfall_ctx.capacity) {
-        // TODO: Implement waterfall unit tests
-        return -3;
+        uint32_t new_capacity = g_waterfall_ctx.capacity * 2;
+        water_waterfall_internal_t* new_items = realloc(g_waterfall_ctx.items, new_capacity * sizeof(water_waterfall_internal_t));
+        if (!new_items) return -3;
+        
+        memset(new_items + g_waterfall_ctx.capacity, 0, (new_capacity - g_waterfall_ctx.capacity) * sizeof(water_waterfall_internal_t));
+        g_waterfall_ctx.items = new_items;
+        g_waterfall_ctx.capacity = new_capacity;
     }
 
     uint32_t index = g_waterfall_ctx.count++;
@@ -171,8 +133,18 @@ int water_waterfall_create(water_waterfall_handle_t* out_handle, const water_wat
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->data = calloc(1, sizeof(waterfall_data_t));
+    if (!item->data) {
+        g_waterfall_ctx.count--;
+        return -4;
+    }
+
+    // Default parameters
+    item->data->width = 1.0f;
+    item->data->speed = 2.0f;
+    item->data->thickness = 0.2f;
+    item->data->color = vec3(0.8f, 0.9f, 1.0f);
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -182,9 +154,6 @@ int water_waterfall_create(water_waterfall_handle_t* out_handle, const water_wat
 }
 
 void water_waterfall_destroy(water_waterfall_handle_t handle) {
-    // TODO: Add waterfall performance counters
-    // TODO: Implement waterfall hot-reload
-
     if (handle.id >= g_waterfall_ctx.count) {
         return;
     }
@@ -193,11 +162,6 @@ void water_waterfall_destroy(water_waterfall_handle_t handle) {
 }
 
 int water_waterfall_update(water_waterfall_handle_t handle, const void* data, size_t size) {
-    // TODO: Add waterfall thread safety
-    // TODO: Implement waterfall memory pooling
-    // TODO: Add waterfall caching layer
-    // TODO: Implement waterfall async operations
-
     if (handle.id >= g_waterfall_ctx.count) {
         return -1;
     }
@@ -207,15 +171,16 @@ int water_waterfall_update(water_waterfall_handle_t handle, const void* data, si
         return -2;
     }
 
-    // TODO: Add waterfall GPU integration
-    // TODO: Implement waterfall SIMD optimization
+    if (data && size == sizeof(waterfall_data_t)) {
+        memcpy(item->data, data, size);
+        item->dirty = false;
+        item->frame_updated++;
+    }
 
-    item->dirty = true;
     return 0;
 }
 
 bool water_waterfall_is_valid(water_waterfall_handle_t handle) {
-    // TODO: Add waterfall batch processing
     if (handle.id >= g_waterfall_ctx.count) {
         return false;
     }
@@ -223,9 +188,6 @@ bool water_waterfall_is_valid(water_waterfall_handle_t handle) {
 }
 
 int water_waterfall_get_info(water_waterfall_handle_t handle, water_waterfall_info_t* out_info) {
-    // TODO: Implement waterfall streaming support
-    // TODO: Add waterfall LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -243,21 +205,16 @@ int water_waterfall_get_info(water_waterfall_handle_t handle, water_waterfall_in
 }
 
 void water_waterfall_mark_dirty(water_waterfall_handle_t handle) {
-    // TODO: Implement waterfall culling integration
     if (handle.id < g_waterfall_ctx.count) {
         g_waterfall_ctx.items[handle.id].dirty = true;
     }
 }
 
 int water_waterfall_process_pending(void) {
-    // TODO: Add waterfall render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_waterfall_ctx.count; i++) {
         water_waterfall_internal_t* item = &g_waterfall_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
@@ -271,20 +228,18 @@ uint32_t water_waterfall_get_count(void) {
 }
 
 size_t water_waterfall_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_waterfall_ctx);
     total += g_waterfall_ctx.capacity * sizeof(water_waterfall_internal_t);
 
     for (uint32_t i = 0; i < g_waterfall_ctx.count; i++) {
-        total += g_waterfall_ctx.items[i].data_size;
+        if (g_waterfall_ctx.items[i].data) {
+            total += sizeof(waterfall_data_t);
+        }
     }
 
     return total;
 }
 
 void water_waterfall_debug_print(void) {
-    // TODO: Implement debug output
     // Debug printing implementation
 }
-
-/* End of waterfall.c */

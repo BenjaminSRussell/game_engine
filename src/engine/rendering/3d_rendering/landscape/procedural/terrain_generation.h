@@ -1,11 +1,3 @@
-/*
- * terrain_generation.h
- * Procedural terrain
- *
- * Part of the Landscape subsystem
- * Advanced 3D Rendering Engine
- */
-
 #ifndef LANDSCAPE_TERRAIN_GENERATION_H
 #define LANDSCAPE_TERRAIN_GENERATION_H
 
@@ -28,6 +20,12 @@ typedef struct landscape_terrain_generation_handle {
 typedef struct landscape_terrain_generation_desc {
     uint32_t flags;
     void* user_data;
+    uint32_t seed;
+    float scale;
+    float persistence;
+    float lacunarity;
+    int octaves;
+    float height_scale;
 } landscape_terrain_generation_desc_t;
 
 typedef struct landscape_terrain_generation_info {
@@ -47,6 +45,23 @@ void landscape_terrain_generation_shutdown(void);
 /* Lifecycle */
 int landscape_terrain_generation_create(landscape_terrain_generation_handle_t* out_handle, const landscape_terrain_generation_desc_t* desc);
 void landscape_terrain_generation_destroy(landscape_terrain_generation_handle_t handle);
+
+/* Generation Operations */
+
+/*
+ * Generate heightmap data for a specific region.
+ * region_x, region_z: Coordinates of the region (e.g., chunk coordinates)
+ * width, height: Dimensions of the output buffer
+ * out_heightmap: float buffer to fill (must be width * height)
+ */
+int landscape_terrain_generation_fill_heightmap(
+    landscape_terrain_generation_handle_t handle,
+    int region_x,
+    int region_z,
+    int width,
+    int height,
+    float* out_heightmap
+);
 
 /* Operations */
 int landscape_terrain_generation_update(landscape_terrain_generation_handle_t handle, const void* data, size_t size);

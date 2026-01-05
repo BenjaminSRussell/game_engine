@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <math/math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,7 +50,7 @@ int water_ocean_foam_create(water_ocean_foam_handle_t* out_handle, const water_o
 void water_ocean_foam_destroy(water_ocean_foam_handle_t handle);
 
 /* Operations */
-int water_ocean_foam_update(water_ocean_foam_handle_t handle, const void* data, size_t size);
+int water_ocean_foam_update(water_ocean_foam_handle_t handle, float delta_time);
 bool water_ocean_foam_is_valid(water_ocean_foam_handle_t handle);
 int water_ocean_foam_get_info(water_ocean_foam_handle_t handle, water_ocean_foam_info_t* out_info);
 void water_ocean_foam_mark_dirty(water_ocean_foam_handle_t handle);

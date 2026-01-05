@@ -4,41 +4,10 @@
  *
  * Part of the Water subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement FFT ocean simulation
- * TODO: Add Gerstner waves
- * TODO: Implement foam rendering
- * TODO: Add caustics
- * TODO: Implement underwater rendering
- * TODO: Add planar reflections
- * TODO: Implement river rendering
- * TODO: Add buoyancy physics
- * TODO: Implement wake simulation
- * TODO: Add shore waves
- * TODO: Implement water normals initialization
- * TODO: Add water normals cleanup/shutdown
- * TODO: Implement water normals validation
- * TODO: Add water normals error handling
- * TODO: Implement water normals serialization
- * TODO: Add water normals debug output
- * TODO: Implement water normals unit tests
- * TODO: Add water normals performance counters
- * TODO: Implement water normals hot-reload
- * TODO: Add water normals thread safety
- * TODO: Implement water normals memory pooling
- * TODO: Add water normals caching layer
- * TODO: Implement water normals async operations
- * TODO: Add water normals GPU integration
- * TODO: Implement water normals SIMD optimization
- * TODO: Add water normals batch processing
- * TODO: Implement water normals streaming support
- * TODO: Add water normals LOD support
- * TODO: Implement water normals culling integration
- * TODO: Add water normals render graph node
  */
 
 #include "water_normals.h"
+#include <math/math.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -51,17 +20,22 @@
 
 #define WATER_WATER_NORMALS_MAX_COUNT 4096
 #define WATER_WATER_NORMALS_DEFAULT_CAPACITY 256
-#define WATER_WATER_NORMALS_ALIGNMENT 16
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
+typedef struct water_normals_data {
+    float strength;
+    float scale;
+    float speed;
+    Vec2 tiling;
+} water_normals_data_t;
+
 typedef struct water_water_normals_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    water_normals_data_t* data;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -71,7 +45,6 @@ typedef struct water_water_normals_context {
     water_water_normals_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } water_water_normals_context_t;
 
@@ -82,16 +55,13 @@ static water_water_normals_context_t g_water_normals_ctx = {0};
  * ============================================================================ */
 
 static bool water_water_normals_validate(const water_water_normals_internal_t* item) {
-    // TODO: Implement FFT ocean simulation
-    // TODO: Add Gerstner waves
     if (!item) return false;
     if (!item->initialized) return false;
+    if (!item->data) return false;
     return true;
 }
 
 static void water_water_normals_cleanup_internal(water_water_normals_internal_t* item) {
-    // TODO: Implement foam rendering
-    // TODO: Add caustics
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -105,13 +75,8 @@ static void water_water_normals_cleanup_internal(water_water_normals_internal_t*
  * ============================================================================ */
 
 int water_water_normals_init(void) {
-    // TODO: Implement underwater rendering
-    // TODO: Add planar reflections
-    // TODO: Implement river rendering
-    // TODO: Add buoyancy physics
-
     if (g_water_normals_ctx.initialized) {
-        return 0; // Already initialized
+        return 0;
     }
 
     g_water_normals_ctx.capacity = WATER_WATER_NORMALS_DEFAULT_CAPACITY;
@@ -127,11 +92,6 @@ int water_water_normals_init(void) {
 }
 
 void water_water_normals_shutdown(void) {
-    // TODO: Implement wake simulation
-    // TODO: Add shore waves
-    // TODO: Implement water normals initialization
-    // TODO: Add water normals cleanup/shutdown
-
     if (!g_water_normals_ctx.initialized) {
         return;
     }
@@ -148,11 +108,6 @@ void water_water_normals_shutdown(void) {
 }
 
 int water_water_normals_create(water_water_normals_handle_t* out_handle, const water_water_normals_desc_t* desc) {
-    // TODO: Implement water normals validation
-    // TODO: Add water normals error handling
-    // TODO: Implement water normals serialization
-    // TODO: Add water normals debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,8 +117,13 @@ int water_water_normals_create(water_water_normals_handle_t* out_handle, const w
     }
 
     if (g_water_normals_ctx.count >= g_water_normals_ctx.capacity) {
-        // TODO: Implement water normals unit tests
-        return -3;
+        uint32_t new_capacity = g_water_normals_ctx.capacity * 2;
+        water_water_normals_internal_t* new_items = realloc(g_water_normals_ctx.items, new_capacity * sizeof(water_water_normals_internal_t));
+        if (!new_items) return -3;
+        
+        memset(new_items + g_water_normals_ctx.capacity, 0, (new_capacity - g_water_normals_ctx.capacity) * sizeof(water_water_normals_internal_t));
+        g_water_normals_ctx.items = new_items;
+        g_water_normals_ctx.capacity = new_capacity;
     }
 
     uint32_t index = g_water_normals_ctx.count++;
@@ -171,8 +131,18 @@ int water_water_normals_create(water_water_normals_handle_t* out_handle, const w
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->data = calloc(1, sizeof(water_normals_data_t));
+    if (!item->data) {
+        g_water_normals_ctx.count--;
+        return -4;
+    }
+
+    // Default parameters
+    item->data->strength = 1.0f;
+    item->data->scale = 1.0f;
+    item->data->speed = 1.0f;
+    item->data->tiling = vec2(1.0f, 1.0f);
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -182,9 +152,6 @@ int water_water_normals_create(water_water_normals_handle_t* out_handle, const w
 }
 
 void water_water_normals_destroy(water_water_normals_handle_t handle) {
-    // TODO: Add water normals performance counters
-    // TODO: Implement water normals hot-reload
-
     if (handle.id >= g_water_normals_ctx.count) {
         return;
     }
@@ -193,11 +160,6 @@ void water_water_normals_destroy(water_water_normals_handle_t handle) {
 }
 
 int water_water_normals_update(water_water_normals_handle_t handle, const void* data, size_t size) {
-    // TODO: Add water normals thread safety
-    // TODO: Implement water normals memory pooling
-    // TODO: Add water normals caching layer
-    // TODO: Implement water normals async operations
-
     if (handle.id >= g_water_normals_ctx.count) {
         return -1;
     }
@@ -207,15 +169,16 @@ int water_water_normals_update(water_water_normals_handle_t handle, const void* 
         return -2;
     }
 
-    // TODO: Add water normals GPU integration
-    // TODO: Implement water normals SIMD optimization
+    if (data && size == sizeof(water_normals_data_t)) {
+        memcpy(item->data, data, size);
+        item->dirty = false;
+        item->frame_updated++;
+    }
 
-    item->dirty = true;
     return 0;
 }
 
 bool water_water_normals_is_valid(water_water_normals_handle_t handle) {
-    // TODO: Add water normals batch processing
     if (handle.id >= g_water_normals_ctx.count) {
         return false;
     }
@@ -223,9 +186,6 @@ bool water_water_normals_is_valid(water_water_normals_handle_t handle) {
 }
 
 int water_water_normals_get_info(water_water_normals_handle_t handle, water_water_normals_info_t* out_info) {
-    // TODO: Implement water normals streaming support
-    // TODO: Add water normals LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -243,21 +203,16 @@ int water_water_normals_get_info(water_water_normals_handle_t handle, water_wate
 }
 
 void water_water_normals_mark_dirty(water_water_normals_handle_t handle) {
-    // TODO: Implement water normals culling integration
     if (handle.id < g_water_normals_ctx.count) {
         g_water_normals_ctx.items[handle.id].dirty = true;
     }
 }
 
 int water_water_normals_process_pending(void) {
-    // TODO: Add water normals render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_water_normals_ctx.count; i++) {
         water_water_normals_internal_t* item = &g_water_normals_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
@@ -271,20 +226,18 @@ uint32_t water_water_normals_get_count(void) {
 }
 
 size_t water_water_normals_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_water_normals_ctx);
     total += g_water_normals_ctx.capacity * sizeof(water_water_normals_internal_t);
 
     for (uint32_t i = 0; i < g_water_normals_ctx.count; i++) {
-        total += g_water_normals_ctx.items[i].data_size;
+        if (g_water_normals_ctx.items[i].data) {
+            total += sizeof(water_normals_data_t);
+        }
     }
 
     return total;
 }
 
 void water_water_normals_debug_print(void) {
-    // TODO: Implement debug output
     // Debug printing implementation
 }
-
-/* End of water_normals.c */

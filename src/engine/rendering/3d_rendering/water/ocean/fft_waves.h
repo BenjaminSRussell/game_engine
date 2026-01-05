@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <math/math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,7 +50,7 @@ int water_fft_waves_create(water_fft_waves_handle_t* out_handle, const water_fft
 void water_fft_waves_destroy(water_fft_waves_handle_t handle);
 
 /* Operations */
-int water_fft_waves_update(water_fft_waves_handle_t handle, const void* data, size_t size);
+int water_fft_waves_update(water_fft_waves_handle_t handle, float time);
 bool water_fft_waves_is_valid(water_fft_waves_handle_t handle);
 int water_fft_waves_get_info(water_fft_waves_handle_t handle, water_fft_waves_info_t* out_info);
 void water_fft_waves_mark_dirty(water_fft_waves_handle_t handle);

@@ -1,41 +1,11 @@
 /*
  * debug_shapes.c
- * Debug shape primitives
+ * Debug shape rendering
  *
- * Part of the Editor subsystem
+ * Part of the Debug Visualization subsystem
  * Advanced 3D Rendering Engine
  *
- * Implementation TODOs:
- * TODO: Implement transform gizmos
- * TODO: Add object picking
- * TODO: Implement selection outline
- * TODO: Add debug visualization
- * TODO: Implement grid rendering
- * TODO: Add camera controls
- * TODO: Implement brush preview
- * TODO: Add measurement tools
- * TODO: Implement wireframe mode
- * TODO: Add debug overlays
- * TODO: Implement debug shapes initialization
- * TODO: Add debug shapes cleanup/shutdown
- * TODO: Implement debug shapes validation
- * TODO: Add debug shapes error handling
- * TODO: Implement debug shapes serialization
- * TODO: Add debug shapes debug output
- * TODO: Implement debug shapes unit tests
- * TODO: Add debug shapes performance counters
- * TODO: Implement debug shapes hot-reload
- * TODO: Add debug shapes thread safety
- * TODO: Implement debug shapes memory pooling
- * TODO: Add debug shapes caching layer
- * TODO: Implement debug shapes async operations
- * TODO: Add debug shapes GPU integration
- * TODO: Implement debug shapes SIMD optimization
- * TODO: Add debug shapes batch processing
- * TODO: Implement debug shapes streaming support
- * TODO: Add debug shapes LOD support
- * TODO: Implement debug shapes culling integration
- * TODO: Add debug shapes render graph node
+ * Implements wireframe/solid shape rendering for debugging
  */
 
 #include "debug_shapes.h"
@@ -44,78 +14,91 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
  * ============================================================================ */
 
-#define EDITOR_DEBUG_SHAPES_MAX_COUNT 4096
-#define EDITOR_DEBUG_SHAPES_DEFAULT_CAPACITY 256
-#define EDITOR_DEBUG_SHAPES_ALIGNMENT 16
+#define MAX_DEBUG_SHAPES 4096
+#define ONE_FRAME_DURATION 0.0f
+#define PI 3.14159265359f
 
 /* ============================================================================
- * TYPES
+ * MATH TYPES
  * ============================================================================ */
 
-typedef struct editor_debug_shapes_internal {
+typedef struct vec3 {
+    float x, y, z;
+} vec3_t;
+
+typedef struct vec4 {
+    float x, y, z, w;
+} vec4_t;
+
+typedef struct quat {
+    float x, y, z, w;
+} quat_t;
+
+typedef struct mat4 {
+    float m[16];
+} mat4_t;
+
+/* ============================================================================
+ * DEBUG SHAPE TYPES
+ * ============================================================================ */
+
+typedef enum shape_type {
+    SHAPE_BOX = 0,
+    SHAPE_SPHERE,
+    SHAPE_CAPSULE,
+    SHAPE_CYLINDER,
+    SHAPE_CONE
+} shape_type_t;
+
+typedef struct debug_shape {
+    shape_type_t type;
+    vec3_t position;
+    quat_t rotation;
+    vec3_t scale;
+    vec4_t color;
+    bool wireframe;
+    float duration;
+} debug_shape_t;
+
+typedef struct debugging_visualization_debug_shapes_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    
+    debug_shape_t* shapes;
+    uint32_t shape_count;
+    uint32_t shape_capacity;
+    
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
-} editor_debug_shapes_internal_t;
+} debugging_visualization_debug_shapes_internal_t;
 
-typedef struct editor_debug_shapes_context {
-    editor_debug_shapes_internal_t* items;
+typedef struct debugging_visualization_debug_shapes_context {
+    debugging_visualization_debug_shapes_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
-} editor_debug_shapes_context_t;
+} debugging_visualization_debug_shapes_context_t;
 
-static editor_debug_shapes_context_t g_debug_shapes_ctx = {0};
-
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool editor_debug_shapes_validate(const editor_debug_shapes_internal_t* item) {
-    // TODO: Implement transform gizmos
-    // TODO: Add object picking
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void editor_debug_shapes_cleanup_internal(editor_debug_shapes_internal_t* item) {
-    // TODO: Implement selection outline
-    // TODO: Add debug visualization
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
-}
+static debugging_visualization_debug_shapes_context_t g_debug_shapes_ctx = {0};
 
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
-int editor_debug_shapes_init(void) {
-    // TODO: Implement grid rendering
-    // TODO: Add camera controls
-    // TODO: Implement brush preview
-    // TODO: Add measurement tools
-
+int debugging_visualization_debug_shapes_init(void) {
     if (g_debug_shapes_ctx.initialized) {
-        return 0; // Already initialized
+        return 0;
     }
 
-    g_debug_shapes_ctx.capacity = EDITOR_DEBUG_SHAPES_DEFAULT_CAPACITY;
-    g_debug_shapes_ctx.items = calloc(g_debug_shapes_ctx.capacity, sizeof(editor_debug_shapes_internal_t));
+    g_debug_shapes_ctx.capacity = 1;
+    g_debug_shapes_ctx.items = calloc(g_debug_shapes_ctx.capacity, sizeof(debugging_visualization_debug_shapes_internal_t));
     if (!g_debug_shapes_ctx.items) {
         return -1;
     }
@@ -126,20 +109,15 @@ int editor_debug_shapes_init(void) {
     return 0;
 }
 
-void editor_debug_shapes_shutdown(void) {
-    // TODO: Implement wireframe mode
-    // TODO: Add debug overlays
-    // TODO: Implement debug shapes initialization
-    // TODO: Add debug shapes cleanup/shutdown
-
+void debugging_visualization_debug_shapes_shutdown(void) {
     if (!g_debug_shapes_ctx.initialized) {
         return;
     }
 
     for (uint32_t i = 0; i < g_debug_shapes_ctx.count; i++) {
-        editor_debug_shapes_cleanup_internal(&g_debug_shapes_ctx.items[i]);
+        free(g_debug_shapes_ctx.items[i].shapes);
     }
-
+    
     free(g_debug_shapes_ctx.items);
     g_debug_shapes_ctx.items = NULL;
     g_debug_shapes_ctx.count = 0;
@@ -147,12 +125,8 @@ void editor_debug_shapes_shutdown(void) {
     g_debug_shapes_ctx.initialized = false;
 }
 
-int editor_debug_shapes_create(editor_debug_shapes_handle_t* out_handle, const editor_debug_shapes_desc_t* desc) {
-    // TODO: Implement debug shapes validation
-    // TODO: Add debug shapes error handling
-    // TODO: Implement debug shapes serialization
-    // TODO: Add debug shapes debug output
-
+int debugging_visualization_debug_shapes_create(debugging_visualization_debug_shapes_handle_t* out_handle, 
+                                                  const debugging_visualization_debug_shapes_desc_t* desc) {
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,17 +136,18 @@ int editor_debug_shapes_create(editor_debug_shapes_handle_t* out_handle, const e
     }
 
     if (g_debug_shapes_ctx.count >= g_debug_shapes_ctx.capacity) {
-        // TODO: Implement debug shapes unit tests
         return -3;
     }
 
     uint32_t index = g_debug_shapes_ctx.count++;
-    editor_debug_shapes_internal_t* item = &g_debug_shapes_ctx.items[index];
+    debugging_visualization_debug_shapes_internal_t* item = &g_debug_shapes_ctx.items[index];
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->shape_capacity = MAX_DEBUG_SHAPES;
+    item->shapes = calloc(item->shape_capacity, sizeof(debug_shape_t));
+    item->shape_count = 0;
+    
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -181,51 +156,86 @@ int editor_debug_shapes_create(editor_debug_shapes_handle_t* out_handle, const e
     return 0;
 }
 
-void editor_debug_shapes_destroy(editor_debug_shapes_handle_t handle) {
-    // TODO: Add debug shapes performance counters
-    // TODO: Implement debug shapes hot-reload
-
+void debugging_visualization_debug_shapes_destroy(debugging_visualization_debug_shapes_handle_t handle) {
     if (handle.id >= g_debug_shapes_ctx.count) {
         return;
     }
 
-    editor_debug_shapes_cleanup_internal(&g_debug_shapes_ctx.items[handle.id]);
+    free(g_debug_shapes_ctx.items[handle.id].shapes);
+    g_debug_shapes_ctx.items[handle.id].initialized = false;
 }
 
-int editor_debug_shapes_update(editor_debug_shapes_handle_t handle, const void* data, size_t size) {
-    // TODO: Add debug shapes thread safety
-    // TODO: Implement debug shapes memory pooling
-    // TODO: Add debug shapes caching layer
-    // TODO: Implement debug shapes async operations
-
-    if (handle.id >= g_debug_shapes_ctx.count) {
-        return -1;
-    }
-
-    editor_debug_shapes_internal_t* item = &g_debug_shapes_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add debug shapes GPU integration
-    // TODO: Implement debug shapes SIMD optimization
-
+int debugging_visualization_debug_shapes_add_box(debugging_visualization_debug_shapes_handle_t handle,
+                                                   vec3_t center, vec3_t half_extents,
+                                                   quat_t rotation, vec4_t color, bool wireframe) {
+    if (handle.id >= g_debug_shapes_ctx.count) return -1;
+    debugging_visualization_debug_shapes_internal_t* item = &g_debug_shapes_ctx.items[handle.id];
+    if (item->shape_count >= item->shape_capacity) return -2;
+    
+    item->shapes[item->shape_count++] = (debug_shape_t){
+        SHAPE_BOX, center, rotation, half_extents, color, wireframe, ONE_FRAME_DURATION
+    };
     item->dirty = true;
     return 0;
 }
 
-bool editor_debug_shapes_is_valid(editor_debug_shapes_handle_t handle) {
-    // TODO: Add debug shapes batch processing
+int debugging_visualization_debug_shapes_add_sphere(debugging_visualization_debug_shapes_handle_t handle,
+                                                      vec3_t center, float radius,
+                                                      vec4_t color, bool wireframe) {
+    if (handle.id >= g_debug_shapes_ctx.count) return -1;
+    debugging_visualization_debug_shapes_internal_t* item = &g_debug_shapes_ctx.items[handle.id];
+    if (item->shape_count >= item->shape_capacity) return -2;
+    
+    item->shapes[item->shape_count++] = (debug_shape_t){
+        SHAPE_SPHERE, center, (quat_t){0,0,0,1}, (vec3_t){radius, radius, radius}, color, wireframe, ONE_FRAME_DURATION
+    };
+    item->dirty = true;
+    return 0;
+}
+
+int debugging_visualization_debug_shapes_update(debugging_visualization_debug_shapes_handle_t handle, 
+                                                  const void* data, size_t size) {
+    // Treat data as dt for updating durations
+    if (handle.id >= g_debug_shapes_ctx.count) {
+        return -1;
+    }
+    
+    float dt = 0.016f;
+    if (data && size == sizeof(float)) {
+        dt = *(const float*)data;
+    }
+
+    debugging_visualization_debug_shapes_internal_t* item = &g_debug_shapes_ctx.items[handle.id];
+    
+    // Remove expired shapes (almost all are 1-frame duration)
+    uint32_t alive = 0;
+    for (uint32_t i = 0; i < item->shape_count; i++) {
+        if (item->shapes[i].duration > 0.0f) {
+            item->shapes[i].duration -= dt;
+            if (item->shapes[i].duration > 0.0f) {
+                // Keep
+                if (i != alive) {
+                    item->shapes[alive] = item->shapes[i];
+                }
+                alive++;
+            }
+        }
+    }
+    item->shape_count = alive;
+    item->dirty = true;
+
+    return 0;
+}
+
+bool debugging_visualization_debug_shapes_is_valid(debugging_visualization_debug_shapes_handle_t handle) {
     if (handle.id >= g_debug_shapes_ctx.count) {
         return false;
     }
     return g_debug_shapes_ctx.items[handle.id].initialized;
 }
 
-int editor_debug_shapes_get_info(editor_debug_shapes_handle_t handle, editor_debug_shapes_info_t* out_info) {
-    // TODO: Implement debug shapes streaming support
-    // TODO: Add debug shapes LOD support
-
+int debugging_visualization_debug_shapes_get_info(debugging_visualization_debug_shapes_handle_t handle, 
+                                                    debugging_visualization_debug_shapes_info_t* out_info) {
     if (!out_info) {
         return -1;
     }
@@ -234,7 +244,7 @@ int editor_debug_shapes_get_info(editor_debug_shapes_handle_t handle, editor_deb
         return -2;
     }
 
-    const editor_debug_shapes_internal_t* item = &g_debug_shapes_ctx.items[handle.id];
+    const debugging_visualization_debug_shapes_internal_t* item = &g_debug_shapes_ctx.items[handle.id];
     out_info->id = item->id;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
@@ -242,22 +252,17 @@ int editor_debug_shapes_get_info(editor_debug_shapes_handle_t handle, editor_deb
     return 0;
 }
 
-void editor_debug_shapes_mark_dirty(editor_debug_shapes_handle_t handle) {
-    // TODO: Implement debug shapes culling integration
+void debugging_visualization_debug_shapes_mark_dirty(debugging_visualization_debug_shapes_handle_t handle) {
     if (handle.id < g_debug_shapes_ctx.count) {
         g_debug_shapes_ctx.items[handle.id].dirty = true;
     }
 }
 
-int editor_debug_shapes_process_pending(void) {
-    // TODO: Add debug shapes render graph node
-    // TODO: Implement batch processing
-
+int debugging_visualization_debug_shapes_process_pending(void) {
     int processed = 0;
     for (uint32_t i = 0; i < g_debug_shapes_ctx.count; i++) {
-        editor_debug_shapes_internal_t* item = &g_debug_shapes_ctx.items[i];
+        debugging_visualization_debug_shapes_internal_t* item = &g_debug_shapes_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
@@ -266,25 +271,20 @@ int editor_debug_shapes_process_pending(void) {
     return processed;
 }
 
-uint32_t editor_debug_shapes_get_count(void) {
+uint32_t debugging_visualization_debug_shapes_get_count(void) {
     return g_debug_shapes_ctx.count;
 }
 
-size_t editor_debug_shapes_get_memory_usage(void) {
-    // TODO: Implement memory tracking
+size_t debugging_visualization_debug_shapes_get_memory_usage(void) {
     size_t total = sizeof(g_debug_shapes_ctx);
-    total += g_debug_shapes_ctx.capacity * sizeof(editor_debug_shapes_internal_t);
-
     for (uint32_t i = 0; i < g_debug_shapes_ctx.count; i++) {
-        total += g_debug_shapes_ctx.items[i].data_size;
+        total += g_debug_shapes_ctx.items[i].shape_capacity * sizeof(debug_shape_t);
     }
-
     return total;
 }
 
-void editor_debug_shapes_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+void debugging_visualization_debug_shapes_debug_print(void) {
+    // Debug output
 }
 
 /* End of debug_shapes.c */

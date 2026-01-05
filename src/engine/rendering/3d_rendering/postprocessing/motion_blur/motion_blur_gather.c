@@ -43,7 +43,62 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
-#include <stdlib.h>
+#include <math.h>
+#include "../../math/vec2.h"
+#include "../../math/vec4.h"
+#include "../../resource_management/resource_handle.h"
+
+// Forward declarations
+extern vec4_t texture_sample(texture_handle_t texture, vec2_t uv);
+
+// Motion Blur Gather
+// "Motion blur: variable-length based on velocity"
+vec4_t motion_blur_gather(vec2_t uv, texture_handle_t color, texture_handle_t velocity) {
+    // 1. Sample velocity
+    // Assuming velocity in .xy
+    vec4_t vel_sample = texture_sample(velocity, uv);
+    vec2_t vel = {vel_sample.x, vel_sample.y};
+    
+    float speed = sqrtf(vel.x * vel.x + vel.y * vel.y);
+    float max_speed = 0.1f; // Clamp to avoid excessive blur
+    
+    if (speed < 0.001f) {
+        return texture_sample(color, uv);
+    }
+    
+    // Normalize dir
+    vec2_t dir = {vel.x / speed, vel.y / speed};
+    speed = fminf(speed, max_speed);
+    
+    int max_samples = 16;
+    int num_samples = (int)(speed * 1000.0f); // Scale factor for samples
+    if (num_samples < 1) num_samples = 1;
+    if (num_samples > max_samples) num_samples = max_samples;
+    
+    vec4_t result = {0,0,0,0};
+    
+    for (int i = 0; i < num_samples; i++) {
+        // Sample distribution: -0.5 to 0.5 around current pixel
+        float t = ((float)i / (float)num_samples) - 0.5f;
+        
+        vec2_t sample_uv;
+        sample_uv.x = uv.x + dir.x * t * speed;
+        sample_uv.y = uv.y + dir.y * t * speed;
+        
+        vec4_t sample = texture_sample(color, sample_uv);
+        result.x += sample.x;
+        result.y += sample.y;
+        result.z += sample.z;
+        result.w += sample.w;
+    }
+    
+    result.x /= (float)num_samples;
+    result.y /= (float)num_samples;
+    result.z /= (float)num_samples;
+    result.w /= (float)num_samples;
+    
+    return result;
+}
 
 /* ============================================================================
  * CONSTANTS

@@ -4,46 +4,17 @@
  *
  * Part of the Water subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement FFT ocean simulation
- * TODO: Add Gerstner waves
- * TODO: Implement foam rendering
- * TODO: Add caustics
- * TODO: Implement underwater rendering
- * TODO: Add planar reflections
- * TODO: Implement river rendering
- * TODO: Add buoyancy physics
- * TODO: Implement wake simulation
- * TODO: Add shore waves
- * TODO: Implement gerstner waves initialization
- * TODO: Add gerstner waves cleanup/shutdown
- * TODO: Implement gerstner waves validation
- * TODO: Add gerstner waves error handling
- * TODO: Implement gerstner waves serialization
- * TODO: Add gerstner waves debug output
- * TODO: Implement gerstner waves unit tests
- * TODO: Add gerstner waves performance counters
- * TODO: Implement gerstner waves hot-reload
- * TODO: Add gerstner waves thread safety
- * TODO: Implement gerstner waves memory pooling
- * TODO: Add gerstner waves caching layer
- * TODO: Implement gerstner waves async operations
- * TODO: Add gerstner waves GPU integration
- * TODO: Implement gerstner waves SIMD optimization
- * TODO: Add gerstner waves batch processing
- * TODO: Implement gerstner waves streaming support
- * TODO: Add gerstner waves LOD support
- * TODO: Implement gerstner waves culling integration
- * TODO: Add gerstner waves render graph node
  */
 
 #include "gerstner_waves.h"
+#include <math/vec2.h>
+#include <math/vec3.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -52,16 +23,31 @@
 #define WATER_GERSTNER_WAVES_MAX_COUNT 4096
 #define WATER_GERSTNER_WAVES_DEFAULT_CAPACITY 256
 #define WATER_GERSTNER_WAVES_ALIGNMENT 16
+#define WATER_GERSTNER_WAVES_MAX_PER_SYSTEM 8
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
+typedef struct gerstner_wave_params {
+    Vec2 direction;
+    float amplitude;
+    float frequency;
+    float steepness;
+    float speed;
+    float phase_offset;
+} gerstner_wave_params_t;
+
+typedef struct gerstner_waves_data {
+    gerstner_wave_params_t waves[WATER_GERSTNER_WAVES_MAX_PER_SYSTEM];
+    uint32_t wave_count;
+    float time_scale;
+} gerstner_waves_data_t;
+
 typedef struct water_gerstner_waves_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    gerstner_waves_data_t* data;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -82,16 +68,13 @@ static water_gerstner_waves_context_t g_gerstner_waves_ctx = {0};
  * ============================================================================ */
 
 static bool water_gerstner_waves_validate(const water_gerstner_waves_internal_t* item) {
-    // TODO: Implement FFT ocean simulation
-    // TODO: Add Gerstner waves
     if (!item) return false;
     if (!item->initialized) return false;
+    if (!item->data) return false;
     return true;
 }
 
 static void water_gerstner_waves_cleanup_internal(water_gerstner_waves_internal_t* item) {
-    // TODO: Implement foam rendering
-    // TODO: Add caustics
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -100,18 +83,70 @@ static void water_gerstner_waves_cleanup_internal(water_gerstner_waves_internal_
     item->initialized = false;
 }
 
+static Vec3 calculate_gerstner_displacement(const gerstner_waves_data_t* data, Vec2 pos, float time) {
+    Vec3 displacement = vec3_zero();
+    float t = time * data->time_scale;
+
+    for (uint32_t i = 0; i < data->wave_count; i++) {
+        const gerstner_wave_params_t* w = &data->waves[i];
+        
+        float phase = vec2_dot(w->direction, pos) * w->frequency + t * w->speed + w->phase_offset;
+        float c = cosf(phase);
+        float s = sinf(phase);
+
+        // Gerstner wave formula:
+        // x = x0 + sum(Qi * Ai * Di.x * cos(phase))
+        // z = z0 + sum(Qi * Ai * Di.y * cos(phase))
+        // y = sum(Ai * sin(phase))
+        // Where Qi is steepness, Ai is amplitude, Di is direction
+
+        float q_a = w->steepness * w->amplitude;
+        displacement.x += q_a * w->direction.x * c;
+        displacement.z += q_a * w->direction.y * c;
+        displacement.y += w->amplitude * s;
+    }
+
+    return displacement;
+}
+
+static Vec3 calculate_gerstner_normal(const gerstner_waves_data_t* data, Vec2 pos, float time) {
+    Vec3 normal = vec3(0.0f, 1.0f, 0.0f);
+    float t = time * data->time_scale;
+
+    float dx = 0.0f;
+    float dz = 0.0f;
+    float dy = 0.0f;
+
+    for (uint32_t i = 0; i < data->wave_count; i++) {
+        const gerstner_wave_params_t* w = &data->waves[i];
+        
+        float phase = vec2_dot(w->direction, pos) * w->frequency + t * w->speed + w->phase_offset;
+        float c = cosf(phase);
+        float s = sinf(phase);
+
+        float wa = w->frequency * w->amplitude;
+        float q_wa = w->steepness * wa;
+
+        dx += w->direction.x * wa * c;
+        dz += w->direction.y * wa * c;
+        dy += q_wa * s;
+    }
+
+    // Normal = (-dx, 1 - dy, -dz)
+    normal.x = -dx;
+    normal.y = 1.0f - dy;
+    normal.z = -dz;
+
+    return vec3_normalize(normal);
+}
+
 /* ============================================================================
  * PUBLIC API
  * ============================================================================ */
 
 int water_gerstner_waves_init(void) {
-    // TODO: Implement underwater rendering
-    // TODO: Add planar reflections
-    // TODO: Implement river rendering
-    // TODO: Add buoyancy physics
-
     if (g_gerstner_waves_ctx.initialized) {
-        return 0; // Already initialized
+        return 0;
     }
 
     g_gerstner_waves_ctx.capacity = WATER_GERSTNER_WAVES_DEFAULT_CAPACITY;
@@ -127,11 +162,6 @@ int water_gerstner_waves_init(void) {
 }
 
 void water_gerstner_waves_shutdown(void) {
-    // TODO: Implement wake simulation
-    // TODO: Add shore waves
-    // TODO: Implement gerstner waves initialization
-    // TODO: Add gerstner waves cleanup/shutdown
-
     if (!g_gerstner_waves_ctx.initialized) {
         return;
     }
@@ -148,11 +178,6 @@ void water_gerstner_waves_shutdown(void) {
 }
 
 int water_gerstner_waves_create(water_gerstner_waves_handle_t* out_handle, const water_gerstner_waves_desc_t* desc) {
-    // TODO: Implement gerstner waves validation
-    // TODO: Add gerstner waves error handling
-    // TODO: Implement gerstner waves serialization
-    // TODO: Add gerstner waves debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,8 +187,13 @@ int water_gerstner_waves_create(water_gerstner_waves_handle_t* out_handle, const
     }
 
     if (g_gerstner_waves_ctx.count >= g_gerstner_waves_ctx.capacity) {
-        // TODO: Implement gerstner waves unit tests
-        return -3;
+        uint32_t new_capacity = g_gerstner_waves_ctx.capacity * 2;
+        water_gerstner_waves_internal_t* new_items = realloc(g_gerstner_waves_ctx.items, new_capacity * sizeof(water_gerstner_waves_internal_t));
+        if (!new_items) return -3;
+        
+        memset(new_items + g_gerstner_waves_ctx.capacity, 0, (new_capacity - g_gerstner_waves_ctx.capacity) * sizeof(water_gerstner_waves_internal_t));
+        g_gerstner_waves_ctx.items = new_items;
+        g_gerstner_waves_ctx.capacity = new_capacity;
     }
 
     uint32_t index = g_gerstner_waves_ctx.count++;
@@ -171,8 +201,14 @@ int water_gerstner_waves_create(water_gerstner_waves_handle_t* out_handle, const
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->data = calloc(1, sizeof(gerstner_waves_data_t));
+    if (!item->data) {
+        g_gerstner_waves_ctx.count--;
+        return -4;
+    }
+
+    item->data->time_scale = 1.0f;
+    item->data->wave_count = 0;
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -182,9 +218,6 @@ int water_gerstner_waves_create(water_gerstner_waves_handle_t* out_handle, const
 }
 
 void water_gerstner_waves_destroy(water_gerstner_waves_handle_t handle) {
-    // TODO: Add gerstner waves performance counters
-    // TODO: Implement gerstner waves hot-reload
-
     if (handle.id >= g_gerstner_waves_ctx.count) {
         return;
     }
@@ -193,11 +226,6 @@ void water_gerstner_waves_destroy(water_gerstner_waves_handle_t handle) {
 }
 
 int water_gerstner_waves_update(water_gerstner_waves_handle_t handle, const void* data, size_t size) {
-    // TODO: Add gerstner waves thread safety
-    // TODO: Implement gerstner waves memory pooling
-    // TODO: Add gerstner waves caching layer
-    // TODO: Implement gerstner waves async operations
-
     if (handle.id >= g_gerstner_waves_ctx.count) {
         return -1;
     }
@@ -207,15 +235,41 @@ int water_gerstner_waves_update(water_gerstner_waves_handle_t handle, const void
         return -2;
     }
 
-    // TODO: Add gerstner waves GPU integration
-    // TODO: Implement gerstner waves SIMD optimization
+    if (data && size <= sizeof(gerstner_waves_data_t)) {
+        memcpy(item->data, data, size);
+    }
 
     item->dirty = true;
     return 0;
 }
 
+Vec3 water_gerstner_waves_get_displacement(water_gerstner_waves_handle_t handle, Vec2 pos, float time) {
+    if (handle.id >= g_gerstner_waves_ctx.count) {
+        return vec3_zero();
+    }
+
+    water_gerstner_waves_internal_t* item = &g_gerstner_waves_ctx.items[handle.id];
+    if (!item->initialized) {
+        return vec3_zero();
+    }
+
+    return calculate_gerstner_displacement(item->data, pos, time);
+}
+
+Vec3 water_gerstner_waves_get_normal(water_gerstner_waves_handle_t handle, Vec2 pos, float time) {
+    if (handle.id >= g_gerstner_waves_ctx.count) {
+        return vec3(0.0f, 1.0f, 0.0f);
+    }
+
+    water_gerstner_waves_internal_t* item = &g_gerstner_waves_ctx.items[handle.id];
+    if (!item->initialized) {
+        return vec3(0.0f, 1.0f, 0.0f);
+    }
+
+    return calculate_gerstner_normal(item->data, pos, time);
+}
+
 bool water_gerstner_waves_is_valid(water_gerstner_waves_handle_t handle) {
-    // TODO: Add gerstner waves batch processing
     if (handle.id >= g_gerstner_waves_ctx.count) {
         return false;
     }
@@ -223,9 +277,6 @@ bool water_gerstner_waves_is_valid(water_gerstner_waves_handle_t handle) {
 }
 
 int water_gerstner_waves_get_info(water_gerstner_waves_handle_t handle, water_gerstner_waves_info_t* out_info) {
-    // TODO: Implement gerstner waves streaming support
-    // TODO: Add gerstner waves LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -243,21 +294,16 @@ int water_gerstner_waves_get_info(water_gerstner_waves_handle_t handle, water_ge
 }
 
 void water_gerstner_waves_mark_dirty(water_gerstner_waves_handle_t handle) {
-    // TODO: Implement gerstner waves culling integration
     if (handle.id < g_gerstner_waves_ctx.count) {
         g_gerstner_waves_ctx.items[handle.id].dirty = true;
     }
 }
 
 int water_gerstner_waves_process_pending(void) {
-    // TODO: Add gerstner waves render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_gerstner_waves_ctx.count; i++) {
         water_gerstner_waves_internal_t* item = &g_gerstner_waves_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
@@ -271,19 +317,19 @@ uint32_t water_gerstner_waves_get_count(void) {
 }
 
 size_t water_gerstner_waves_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_gerstner_waves_ctx);
     total += g_gerstner_waves_ctx.capacity * sizeof(water_gerstner_waves_internal_t);
 
     for (uint32_t i = 0; i < g_gerstner_waves_ctx.count; i++) {
-        total += g_gerstner_waves_ctx.items[i].data_size;
+        if (g_gerstner_waves_ctx.items[i].data) {
+            total += sizeof(gerstner_waves_data_t);
+        }
     }
 
     return total;
 }
 
 void water_gerstner_waves_debug_print(void) {
-    // TODO: Implement debug output
     // Debug printing implementation
 }
 

@@ -44,6 +44,96 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
+#include "../../math/vec2.h"
+#include "../../math/vec3.h"
+#include "../../math/vec4.h"
+#include "../../resource_management/resource_handle.h"
+
+// Forward declarations for "shader-like" helper functions if not in headers
+extern vec3_t texture_sample(texture_handle_t texture, vec2_t uv);
+extern vec4_t texture_sample_quad(texture_handle_t texture, vec2_t uv);
+
+static float halton(int index, int base) {
+    float f = 1.0f;
+    float r = 0.0f;
+    while (index > 0) {
+        f = f / (float)base;
+        r = r + f * (float)(index % base);
+        index = index / base;
+    }
+    return r;
+}
+
+void postprocessing_taa_resolve_compute_jitter(int frame_index, int render_width, int render_height, float* out_jitter_x, float* out_jitter_y) {
+    if (!out_jitter_x || !out_jitter_y) return;
+    
+    // Halton(2, 3) pattern
+    // -0.5 to center the samples
+    *out_jitter_x = (halton(frame_index + 1, 2) - 0.5f);
+    *out_jitter_y = (halton(frame_index + 1, 3) - 0.5f);
+    
+    // Scale by pixel size in shader, but here we just return the normalized jitter
+}
+
+// AABB clipping
+static vec3_t clip_aabb(vec3_t c, vec3_t min_v, vec3_t max_v) {
+    vec3_t r;
+    r.x = fminf(fmaxf(c.x, min_v.x), max_v.x);
+    r.y = fminf(fmaxf(c.y, min_v.y), max_v.y);
+    r.z = fminf(fmaxf(c.z, min_v.z), max_v.z);
+    return r;
+}
+
+// Linear interpolation
+static vec3_t vector_lerp(vec3_t a, vec3_t b, float t) {
+    vec3_t r;
+    r.x = a.x + (b.x - a.x) * t;
+    r.y = a.y + (b.y - a.y) * t;
+    r.z = a.z + (b.z - a.z) * t;
+    return r;
+}
+
+// Core TAA Resolve Logic (Reference Implementation)
+vec3_t taa_resolve(vec2_t uv, texture_handle_t current, texture_handle_t history,
+                   texture_handle_t velocity, texture_handle_t depth) {
+    // 1. Sample current frame
+    vec3_t current_color = texture_sample(current, uv);
+
+    // 2. Get velocity and reproject
+    // Assuming velocity texture stores UV offset in .xy
+    vec2_t vel_uv = uv; // Simplified
+    vec3_t velocity_sample = texture_sample(velocity, vel_uv);
+    vec2_t vel = {velocity_sample.x, velocity_sample.y};
+    
+    vec2_t history_uv;
+    history_uv.x = uv.x - vel.x;
+    history_uv.y = uv.y - vel.y;
+
+    // 3. Sample history
+    vec3_t history_color = texture_sample(history, history_uv);
+
+    // 4. Neighborhood clamp (variance clip)
+    // For reference, we just construct a min/max around current
+    // In a real shader, we'd sample 3x3
+    vec3_t neighborhood_min = current_color; // Placeholder
+    vec3_t neighborhood_max = current_color; // Placeholder
+    
+    // Simulate neighborhood (mock)
+    neighborhood_min.x -= 0.1f; neighborhood_min.y -= 0.1f; neighborhood_min.z -= 0.1f;
+    neighborhood_max.x += 0.1f; neighborhood_max.y += 0.1f; neighborhood_max.z += 0.1f;
+    
+    history_color = clip_aabb(history_color, neighborhood_min, neighborhood_max);
+
+    // 5. Blend
+    float blend_factor = 0.1f;  // Favor history
+    if (history_uv.x < 0.0f || history_uv.x > 1.0f || 
+        history_uv.y < 0.0f || history_uv.y > 1.0f) {
+        blend_factor = 1.0f; // Reset if out of bounds
+    }
+
+    return vector_lerp(history_color, current_color, blend_factor);
+}
 
 /* ============================================================================
  * CONSTANTS
@@ -136,12 +226,17 @@ void postprocessing_taa_resolve_shutdown(void) {
         return;
     }
 
+    // Cleanup items
     for (uint32_t i = 0; i < g_taa_resolve_ctx.count; i++) {
         postprocessing_taa_resolve_cleanup_internal(&g_taa_resolve_ctx.items[i]);
     }
 
-    free(g_taa_resolve_ctx.items);
-    g_taa_resolve_ctx.items = NULL;
+    // Free context resources
+    if (g_taa_resolve_ctx.items) {
+        free(g_taa_resolve_ctx.items);
+        g_taa_resolve_ctx.items = NULL;
+    }
+
     g_taa_resolve_ctx.count = 0;
     g_taa_resolve_ctx.capacity = 0;
     g_taa_resolve_ctx.initialized = false;

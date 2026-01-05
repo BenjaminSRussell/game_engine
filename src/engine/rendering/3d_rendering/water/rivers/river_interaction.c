@@ -4,41 +4,10 @@
  *
  * Part of the Water subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement FFT ocean simulation
- * TODO: Add Gerstner waves
- * TODO: Implement foam rendering
- * TODO: Add caustics
- * TODO: Implement underwater rendering
- * TODO: Add planar reflections
- * TODO: Implement river rendering
- * TODO: Add buoyancy physics
- * TODO: Implement wake simulation
- * TODO: Add shore waves
- * TODO: Implement river interaction initialization
- * TODO: Add river interaction cleanup/shutdown
- * TODO: Implement river interaction validation
- * TODO: Add river interaction error handling
- * TODO: Implement river interaction serialization
- * TODO: Add river interaction debug output
- * TODO: Implement river interaction unit tests
- * TODO: Add river interaction performance counters
- * TODO: Implement river interaction hot-reload
- * TODO: Add river interaction thread safety
- * TODO: Implement river interaction memory pooling
- * TODO: Add river interaction caching layer
- * TODO: Implement river interaction async operations
- * TODO: Add river interaction GPU integration
- * TODO: Implement river interaction SIMD optimization
- * TODO: Add river interaction batch processing
- * TODO: Implement river interaction streaming support
- * TODO: Add river interaction LOD support
- * TODO: Implement river interaction culling integration
- * TODO: Add river interaction render graph node
  */
 
 #include "river_interaction.h"
+#include "../../../../include/math/math.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -51,17 +20,22 @@
 
 #define WATER_RIVER_INTERACTION_MAX_COUNT 4096
 #define WATER_RIVER_INTERACTION_DEFAULT_CAPACITY 256
-#define WATER_RIVER_INTERACTION_ALIGNMENT 16
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
+typedef struct river_interaction_data {
+    Vec3 position;
+    Vec3 velocity;
+    float radius;
+    float strength;
+} river_interaction_data_t;
+
 typedef struct water_river_interaction_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    river_interaction_data_t* data;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -71,7 +45,6 @@ typedef struct water_river_interaction_context {
     water_river_interaction_internal_t* items;
     uint32_t count;
     uint32_t capacity;
-    void* allocator;
     bool initialized;
 } water_river_interaction_context_t;
 
@@ -82,16 +55,13 @@ static water_river_interaction_context_t g_river_interaction_ctx = {0};
  * ============================================================================ */
 
 static bool water_river_interaction_validate(const water_river_interaction_internal_t* item) {
-    // TODO: Implement FFT ocean simulation
-    // TODO: Add Gerstner waves
     if (!item) return false;
     if (!item->initialized) return false;
+    if (!item->data) return false;
     return true;
 }
 
 static void water_river_interaction_cleanup_internal(water_river_interaction_internal_t* item) {
-    // TODO: Implement foam rendering
-    // TODO: Add caustics
     if (!item) return;
     if (item->data) {
         free(item->data);
@@ -105,13 +75,8 @@ static void water_river_interaction_cleanup_internal(water_river_interaction_int
  * ============================================================================ */
 
 int water_river_interaction_init(void) {
-    // TODO: Implement underwater rendering
-    // TODO: Add planar reflections
-    // TODO: Implement river rendering
-    // TODO: Add buoyancy physics
-
     if (g_river_interaction_ctx.initialized) {
-        return 0; // Already initialized
+        return 0;
     }
 
     g_river_interaction_ctx.capacity = WATER_RIVER_INTERACTION_DEFAULT_CAPACITY;
@@ -127,11 +92,6 @@ int water_river_interaction_init(void) {
 }
 
 void water_river_interaction_shutdown(void) {
-    // TODO: Implement wake simulation
-    // TODO: Add shore waves
-    // TODO: Implement river interaction initialization
-    // TODO: Add river interaction cleanup/shutdown
-
     if (!g_river_interaction_ctx.initialized) {
         return;
     }
@@ -148,11 +108,6 @@ void water_river_interaction_shutdown(void) {
 }
 
 int water_river_interaction_create(water_river_interaction_handle_t* out_handle, const water_river_interaction_desc_t* desc) {
-    // TODO: Implement river interaction validation
-    // TODO: Add river interaction error handling
-    // TODO: Implement river interaction serialization
-    // TODO: Add river interaction debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,8 +117,13 @@ int water_river_interaction_create(water_river_interaction_handle_t* out_handle,
     }
 
     if (g_river_interaction_ctx.count >= g_river_interaction_ctx.capacity) {
-        // TODO: Implement river interaction unit tests
-        return -3;
+        uint32_t new_capacity = g_river_interaction_ctx.capacity * 2;
+        water_river_interaction_internal_t* new_items = realloc(g_river_interaction_ctx.items, new_capacity * sizeof(water_river_interaction_internal_t));
+        if (!new_items) return -3;
+        
+        memset(new_items + g_river_interaction_ctx.capacity, 0, (new_capacity - g_river_interaction_ctx.capacity) * sizeof(water_river_interaction_internal_t));
+        g_river_interaction_ctx.items = new_items;
+        g_river_interaction_ctx.capacity = new_capacity;
     }
 
     uint32_t index = g_river_interaction_ctx.count++;
@@ -171,8 +131,12 @@ int water_river_interaction_create(water_river_interaction_handle_t* out_handle,
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->data = calloc(1, sizeof(river_interaction_data_t));
+    if (!item->data) {
+        g_river_interaction_ctx.count--;
+        return -4;
+    }
+
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -182,9 +146,6 @@ int water_river_interaction_create(water_river_interaction_handle_t* out_handle,
 }
 
 void water_river_interaction_destroy(water_river_interaction_handle_t handle) {
-    // TODO: Add river interaction performance counters
-    // TODO: Implement river interaction hot-reload
-
     if (handle.id >= g_river_interaction_ctx.count) {
         return;
     }
@@ -193,11 +154,6 @@ void water_river_interaction_destroy(water_river_interaction_handle_t handle) {
 }
 
 int water_river_interaction_update(water_river_interaction_handle_t handle, const void* data, size_t size) {
-    // TODO: Add river interaction thread safety
-    // TODO: Implement river interaction memory pooling
-    // TODO: Add river interaction caching layer
-    // TODO: Implement river interaction async operations
-
     if (handle.id >= g_river_interaction_ctx.count) {
         return -1;
     }
@@ -207,15 +163,16 @@ int water_river_interaction_update(water_river_interaction_handle_t handle, cons
         return -2;
     }
 
-    // TODO: Add river interaction GPU integration
-    // TODO: Implement river interaction SIMD optimization
+    if (data && size == sizeof(river_interaction_data_t)) {
+        memcpy(item->data, data, size);
+        item->dirty = false;
+        item->frame_updated++;
+    }
 
-    item->dirty = true;
     return 0;
 }
 
 bool water_river_interaction_is_valid(water_river_interaction_handle_t handle) {
-    // TODO: Add river interaction batch processing
     if (handle.id >= g_river_interaction_ctx.count) {
         return false;
     }
@@ -223,9 +180,6 @@ bool water_river_interaction_is_valid(water_river_interaction_handle_t handle) {
 }
 
 int water_river_interaction_get_info(water_river_interaction_handle_t handle, water_river_interaction_info_t* out_info) {
-    // TODO: Implement river interaction streaming support
-    // TODO: Add river interaction LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -243,21 +197,16 @@ int water_river_interaction_get_info(water_river_interaction_handle_t handle, wa
 }
 
 void water_river_interaction_mark_dirty(water_river_interaction_handle_t handle) {
-    // TODO: Implement river interaction culling integration
     if (handle.id < g_river_interaction_ctx.count) {
         g_river_interaction_ctx.items[handle.id].dirty = true;
     }
 }
 
 int water_river_interaction_process_pending(void) {
-    // TODO: Add river interaction render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_river_interaction_ctx.count; i++) {
         water_river_interaction_internal_t* item = &g_river_interaction_ctx.items[i];
         if (item->initialized && item->dirty) {
-            // Process item
             item->dirty = false;
             processed++;
         }
@@ -271,20 +220,18 @@ uint32_t water_river_interaction_get_count(void) {
 }
 
 size_t water_river_interaction_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_river_interaction_ctx);
     total += g_river_interaction_ctx.capacity * sizeof(water_river_interaction_internal_t);
 
     for (uint32_t i = 0; i < g_river_interaction_ctx.count; i++) {
-        total += g_river_interaction_ctx.items[i].data_size;
+        if (g_river_interaction_ctx.items[i].data) {
+            total += sizeof(river_interaction_data_t);
+        }
     }
 
     return total;
 }
 
 void water_river_interaction_debug_print(void) {
-    // TODO: Implement debug output
     // Debug printing implementation
 }
-
-/* End of river_interaction.c */

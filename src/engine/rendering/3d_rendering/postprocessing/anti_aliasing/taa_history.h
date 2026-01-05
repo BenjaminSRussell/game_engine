@@ -55,6 +55,10 @@ int postprocessing_taa_history_get_info(postprocessing_taa_history_handle_t hand
 void postprocessing_taa_history_mark_dirty(postprocessing_taa_history_handle_t handle);
 int postprocessing_taa_history_process_pending(void);
 
+/* TAA History Specific */
+void postprocessing_taa_history_reset(postprocessing_taa_history_handle_t handle);
+void postprocessing_taa_history_swap(postprocessing_taa_history_handle_t handle);
+
 /* Statistics */
 uint32_t postprocessing_taa_history_get_count(void);
 size_t postprocessing_taa_history_get_memory_usage(void);

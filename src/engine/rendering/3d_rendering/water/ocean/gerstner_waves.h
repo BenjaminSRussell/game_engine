@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <math/vec2.h>
+#include <math/vec3.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,6 +52,8 @@ void water_gerstner_waves_destroy(water_gerstner_waves_handle_t handle);
 
 /* Operations */
 int water_gerstner_waves_update(water_gerstner_waves_handle_t handle, const void* data, size_t size);
+Vec3 water_gerstner_waves_get_displacement(water_gerstner_waves_handle_t handle, Vec2 pos, float time);
+Vec3 water_gerstner_waves_get_normal(water_gerstner_waves_handle_t handle, Vec2 pos, float time);
 bool water_gerstner_waves_is_valid(water_gerstner_waves_handle_t handle);
 int water_gerstner_waves_get_info(water_gerstner_waves_handle_t handle, water_gerstner_waves_info_t* out_info);
 void water_gerstner_waves_mark_dirty(water_gerstner_waves_handle_t handle);

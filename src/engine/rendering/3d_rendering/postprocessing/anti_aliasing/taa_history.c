@@ -43,7 +43,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
+#include <math.h>
 #include <stdlib.h>
+#include "../../resource_management/resource_handle.h"
 
 /* ============================================================================
  * CONSTANTS
@@ -60,8 +62,8 @@
 typedef struct postprocessing_taa_history_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    texture_handle_t current_texture;
+    texture_handle_t history_texture;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -82,22 +84,39 @@ static postprocessing_taa_history_context_t g_taa_history_ctx = {0};
  * ============================================================================ */
 
 static bool postprocessing_taa_history_validate(const postprocessing_taa_history_internal_t* item) {
-    // TODO: Implement ACES tonemapping
-    // TODO: Add physically-based bloom
     if (!item) return false;
     if (!item->initialized) return false;
     return true;
 }
 
 static void postprocessing_taa_history_cleanup_internal(postprocessing_taa_history_internal_t* item) {
-    // TODO: Implement TAA
-    // TODO: Add depth of field
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
+    // Note: Textures are usually owned by resource manager, we just hold handles.
+    // referencing INVALID_HANDLE_VALUE logic if desired, but 0/null usually fine in C structs if cleared.
     item->initialized = false;
+}
+
+/* ============================================================================
+ * PUBLIC API
+ * ============================================================================ */
+
+void postprocessing_taa_history_reset(postprocessing_taa_history_handle_t handle) {
+    if (handle.id >= g_taa_history_ctx.count) return;
+    postprocessing_taa_history_internal_t* item = &g_taa_history_ctx.items[handle.id];
+    
+    // Invalidate history texture or clear it to black
+    // For now, we just flag it as dirty or similar.
+    // Real implementation might clear the GPU resource.
+    item->dirty = true;
+}
+
+void postprocessing_taa_history_swap(postprocessing_taa_history_handle_t handle) {
+    if (handle.id >= g_taa_history_ctx.count) return;
+    postprocessing_taa_history_internal_t* item = &g_taa_history_ctx.items[handle.id];
+    
+    texture_handle_t temp = item->current_texture;
+    item->current_texture = item->history_texture;
+    item->history_texture = temp;
 }
 
 /* ============================================================================
@@ -171,8 +190,8 @@ int postprocessing_taa_history_create(postprocessing_taa_history_handle_t* out_h
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    // item->data = NULL; // Removed
+    // item->data_size = 0; // Removed
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
@@ -276,7 +295,7 @@ size_t postprocessing_taa_history_get_memory_usage(void) {
     total += g_taa_history_ctx.capacity * sizeof(postprocessing_taa_history_internal_t);
 
     for (uint32_t i = 0; i < g_taa_history_ctx.count; i++) {
-        total += g_taa_history_ctx.items[i].data_size;
+        // total += g_taa_history_ctx.items[i].data_size;
     }
 
     return total;

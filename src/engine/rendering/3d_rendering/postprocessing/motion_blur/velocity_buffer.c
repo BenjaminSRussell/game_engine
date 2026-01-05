@@ -43,7 +43,82 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
-#include <stdlib.h>
+#include <math.h>
+#include <immintrin.h>
+#include "../../math/vec2.h"
+#include "../../math/vec3.h"
+#include "../../math/vec4.h"
+#include "../../math/mat4.h"
+#include "../../resource_management/resource_handle.h"
+
+// Forward declaration if needed, or re-implement
+extern vec2_t taa_velocity_calculate_motion_vector(vec3_t world_pos, mat4_t current_view_proj, mat4_t prev_view_proj);
+
+// Velocity Buffer Generation Logic
+// This usually runs in a compute shader or pixel shader, but here is the CPU equivalent logic
+void postprocessing_velocity_buffer_generate(
+    int width, int height, 
+    const float* depth_buffer, 
+    mat4_t current_inv_view_proj, 
+    mat4_t prev_view_proj, 
+    vec2_t* out_velocity_buffer
+) {
+    if (!depth_buffer || !out_velocity_buffer) return;
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            int index = y * width + x;
+            float depth = depth_buffer[index];
+            
+            // Reconstruct World Position
+            vec2_t uv = { (float)x / width, (float)y / height };
+            vec4_t clip_pos;
+            clip_pos.x = uv.x * 2.0f - 1.0f;
+            clip_pos.y = uv.y * 2.0f - 1.0f; // Invert Y if needed
+            clip_pos.z = depth;
+            clip_pos.w = 1.0f;
+            
+            vec4_t world_pos4 = mat4_mul_vec4(current_inv_view_proj, clip_pos);
+            world_pos4.x /= world_pos4.w;
+            world_pos4.y /= world_pos4.w;
+            world_pos4.z /= world_pos4.w;
+            // world_pos4.w is 1.0
+            
+            vec3_t world_pos = {world_pos4.x, world_pos4.y, world_pos4.z};
+            
+            // Calculate Velocity
+            // Simulating current VP as identity for the reconstructed pos, and prev VP
+            // Wait, we need Current VP to project back?
+            // "Velocity: current - previous position in screen space"
+            // We have current screen pos (clip_pos).
+            // We need previous screen pos.
+            
+            vec4_t prev_clip_pos = mat4_mul_vec4(prev_view_proj, world_pos4);
+            vec2_t prev_screen_pos;
+            if (prev_clip_pos.w != 0.0f) {
+                prev_screen_pos.x = prev_clip_pos.x / prev_clip_pos.w;
+                prev_screen_pos.y = prev_clip_pos.y / prev_clip_pos.w;
+            } else {
+                prev_screen_pos.x = 0.0f;
+                prev_screen_pos.y = 0.0f;
+            }
+            
+            // Convert to UV space? TAA usually likes screen space offset in pixels or UV.
+            // Let's stick to UV space diff.
+            vec2_t current_screen_pos = {clip_pos.x, clip_pos.y};
+            
+            // NDC to UV
+            vec2_t curr_uv = {current_screen_pos.x * 0.5f + 0.5f, current_screen_pos.y * 0.5f + 0.5f};
+            vec2_t prev_uv = {prev_screen_pos.x * 0.5f + 0.5f, prev_screen_pos.y * 0.5f + 0.5f};
+            
+            vec2_t velocity;
+            velocity.x = curr_uv.x - prev_uv.x;
+            velocity.y = curr_uv.y - prev_uv.y;
+            
+            out_velocity_buffer[index] = velocity;
+        }
+    }
+}
 
 /* ============================================================================
  * CONSTANTS

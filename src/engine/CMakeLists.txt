@@ -173,6 +173,20 @@ set(RENDERER_LIGHTING_SOURCES
     rendering/3d_rendering/lighting/culling/light_culling.c
 )
 
+# Renderer - Screen Space Effects
+set(RENDERER_SCREEN_SPACE_SOURCES
+    rendering/3d_rendering/postprocessing/screen_space/ssr_trace.c
+    rendering/3d_rendering/postprocessing/screen_space/ssr_resolve.c
+    rendering/3d_rendering/postprocessing/screen_space/ssr_fallback.c
+    rendering/3d_rendering/postprocessing/screen_space/ss_gi.c
+    rendering/3d_rendering/postprocessing/screen_space/ss_shadows.c
+    rendering/3d_rendering/postprocessing/depth_of_field/dof_coc.c
+    rendering/3d_rendering/postprocessing/depth_of_field/dof_bokeh.c
+    rendering/3d_rendering/postprocessing/depth_of_field/dof_gather.c
+    rendering/3d_rendering/postprocessing/depth_of_field/dof_combine.c
+    rendering/3d_rendering/postprocessing/lens_flare/lens_flare.c
+)
+
 # Renderer - Core
 set(RENDERER_CORE_SOURCES
     renderer/core/chunk_mesh_generator.c
@@ -399,6 +413,7 @@ set(ENGINE_ALL_SOURCES
     ${ENGINE_CORE_SOURCES}
     ${ENGINE_MATH_SOURCES}
     ${RENDERER_LIGHTING_SOURCES}
+    ${RENDERER_SCREEN_SPACE_SOURCES}
     ${ENGINE_INPUT_SOURCES}
     ${ENGINE_RESOURCE_SOURCES}
     ${ENGINE_ECS_SOURCES}

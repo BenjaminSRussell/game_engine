@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <math/math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,7 +50,7 @@ int water_underwater_fog_create(water_underwater_fog_handle_t* out_handle, const
 void water_underwater_fog_destroy(water_underwater_fog_handle_t handle);
 
 /* Operations */
-int water_underwater_fog_update(water_underwater_fog_handle_t handle, const void* data, size_t size);
+int water_underwater_fog_update(water_underwater_fog_handle_t handle, float time);
 bool water_underwater_fog_is_valid(water_underwater_fog_handle_t handle);
 int water_underwater_fog_get_info(water_underwater_fog_handle_t handle, water_underwater_fog_info_t* out_info);
 void water_underwater_fog_mark_dirty(water_underwater_fog_handle_t handle);
