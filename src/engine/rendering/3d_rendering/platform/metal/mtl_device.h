@@ -1,6 +1,6 @@
 /*
  * mtl_device.h
- * Metal device
+ * Metal device interface
  *
  * Part of the Platform subsystem
  * Advanced 3D Rendering Engine
@@ -21,44 +21,44 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
-typedef struct platform_mtl_device_handle {
-    uint32_t id;
-} platform_mtl_device_handle_t;
-
-typedef struct platform_mtl_device_desc {
-    uint32_t flags;
-    void* user_data;
-} platform_mtl_device_desc_t;
-
-typedef struct platform_mtl_device_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} platform_mtl_device_info_t;
+/* Opaque types for C compatibility */
+typedef struct metal_device metal_device_t;
+typedef void* mtl_command_buffer_t; /* Maps to id<MTLCommandBuffer> */
 
 /* ============================================================================
  * API
  * ============================================================================ */
 
-/* Initialization */
-int platform_mtl_device_init(void);
-void platform_mtl_device_shutdown(void);
+/**
+ * Creates a Metal device instance.
+ * Initializes the system default device and standard command queue.
+ * @return Pointer to the new device, or NULL on failure.
+ */
+metal_device_t* metal_device_create(void);
 
-/* Lifecycle */
-int platform_mtl_device_create(platform_mtl_device_handle_t* out_handle, const platform_mtl_device_desc_t* desc);
-void platform_mtl_device_destroy(platform_mtl_device_handle_t handle);
+/**
+ * Destroys a Metal device instance.
+ * Releases all resources associated with the device.
+ * @param dev Pointer to the device to destroy.
+ */
+void metal_device_destroy(metal_device_t* dev);
 
-/* Operations */
-int platform_mtl_device_update(platform_mtl_device_handle_t handle, const void* data, size_t size);
-bool platform_mtl_device_is_valid(platform_mtl_device_handle_t handle);
-int platform_mtl_device_get_info(platform_mtl_device_handle_t handle, platform_mtl_device_info_t* out_info);
-void platform_mtl_device_mark_dirty(platform_mtl_device_handle_t handle);
-int platform_mtl_device_process_pending(void);
+/**
+ * Creates a new command buffer from the device's command queue.
+ * @param dev Pointer to the device.
+ * @return A new autoreleased command buffer (cast to void* for C).
+ */
+mtl_command_buffer_t metal_create_command_buffer(metal_device_t* dev);
 
-/* Statistics */
-uint32_t platform_mtl_device_get_count(void);
-size_t platform_mtl_device_get_memory_usage(void);
-void platform_mtl_device_debug_print(void);
+/**
+ * Returns the maximum number of threads per threadgroup.
+ */
+uint32_t metal_device_get_max_threads_per_group(metal_device_t* dev);
+
+/**
+ * Checks if the device supports ray tracing.
+ */
+bool metal_device_supports_raytracing(metal_device_t* dev);
 
 #ifdef __cplusplus
 }

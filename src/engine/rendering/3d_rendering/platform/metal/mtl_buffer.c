@@ -1,290 +1,247 @@
 /*
  * mtl_buffer.c
- * Metal buffers
+ * Metal buffer implementation
  *
  * Part of the Platform subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement Vulkan backend
- * TODO: Implement Metal backend
- * TODO: Implement D3D12 backend
- * TODO: Add thread-safe access patterns
- * TODO: Implement proper error handling with error codes
- * TODO: Add memory tracking and leak detection
- * TODO: Implement hot-reload support
- * TODO: Add validation layer integration
- * TODO: Implement resource state tracking
- * TODO: Add GPU debugging markers
- * TODO: Implement mtl buffer initialization
- * TODO: Add mtl buffer cleanup/shutdown
- * TODO: Implement mtl buffer validation
- * TODO: Add mtl buffer error handling
- * TODO: Implement mtl buffer serialization
- * TODO: Add mtl buffer debug output
- * TODO: Implement mtl buffer unit tests
- * TODO: Add mtl buffer performance counters
- * TODO: Implement mtl buffer hot-reload
- * TODO: Add mtl buffer thread safety
- * TODO: Implement mtl buffer memory pooling
- * TODO: Add mtl buffer caching layer
- * TODO: Implement mtl buffer async operations
- * TODO: Add mtl buffer GPU integration
- * TODO: Implement mtl buffer SIMD optimization
- * TODO: Add mtl buffer batch processing
- * TODO: Implement mtl buffer streaming support
- * TODO: Add mtl buffer LOD support
- * TODO: Implement mtl buffer culling integration
- * TODO: Add mtl buffer render graph node
  */
 
+#import <Metal/Metal.h>
 #include "mtl_buffer.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <assert.h>
 
 /* ============================================================================
- * CONSTANTS
+ * INTERNAL HELPERS
  * ============================================================================ */
 
-#define PLATFORM_MTL_BUFFER_MAX_COUNT 4096
-#define PLATFORM_MTL_BUFFER_DEFAULT_CAPACITY 256
-#define PLATFORM_MTL_BUFFER_ALIGNMENT 16
+// Forward declaration for device structure
+typedef struct metal_device {
+    id<MTLDevice> device;
+    id<MTLCommandQueue> command_queue;
+} metal_device_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct platform_mtl_buffer_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} platform_mtl_buffer_internal_t;
-
-typedef struct platform_mtl_buffer_context {
-    platform_mtl_buffer_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} platform_mtl_buffer_context_t;
-
-static platform_mtl_buffer_context_t g_mtl_buffer_ctx = {0};
-
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool platform_mtl_buffer_validate(const platform_mtl_buffer_internal_t* item) {
-    // TODO: Implement Vulkan backend
-    // TODO: Implement Metal backend
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+static inline size_t align_size(size_t size, size_t alignment) {
+    return (size + alignment - 1) & ~(alignment - 1);
 }
 
-static void platform_mtl_buffer_cleanup_internal(platform_mtl_buffer_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+static MTLResourceOptions storage_mode_to_mtl_options(metal_storage_mode_t mode) {
+    switch (mode) {
+        case METAL_STORAGE_SHARED:
+            return MTLResourceStorageModeShared;
+        case METAL_STORAGE_PRIVATE:
+            return MTLResourceStorageModePrivate;
+        case METAL_STORAGE_MEMORYLESS:
+#if TARGET_OS_IOS || TARGET_OS_TV
+            return MTLResourceStorageModeMemoryless;
+#else
+            // Memoryless not supported on macOS, fall back to private
+            return MTLResourceStorageModePrivate;
+#endif
+        default:
+            return MTLResourceStorageModeShared;
     }
-    item->initialized = false;
 }
 
 /* ============================================================================
- * PUBLIC API
+ * BUFFER MANAGEMENT
  * ============================================================================ */
 
-int platform_mtl_buffer_init(void) {
-    // TODO: Implement proper error handling with error codes
-    // TODO: Add memory tracking and leak detection
-    // TODO: Implement hot-reload support
-    // TODO: Add validation layer integration
-
-    if (g_mtl_buffer_ctx.initialized) {
-        return 0; // Already initialized
+metal_buffer_t* metal_buffer_create(metal_device_t* device, const metal_buffer_desc_t* desc) {
+    if (!device || !desc || desc->size == 0) {
+        return NULL;
     }
 
-    g_mtl_buffer_ctx.capacity = PLATFORM_MTL_BUFFER_DEFAULT_CAPACITY;
-    g_mtl_buffer_ctx.items = calloc(g_mtl_buffer_ctx.capacity, sizeof(platform_mtl_buffer_internal_t));
-    if (!g_mtl_buffer_ctx.items) {
-        return -1;
+    metal_buffer_t* buffer = (metal_buffer_t*)calloc(1, sizeof(metal_buffer_t));
+    if (!buffer) {
+        return NULL;
     }
 
-    g_mtl_buffer_ctx.count = 0;
-    g_mtl_buffer_ctx.initialized = true;
+    MTLResourceOptions options = storage_mode_to_mtl_options(desc->storage_mode);
+    
+    // Create the Metal buffer
+    if (desc->initial_data) {
+        buffer->buffer = [device->device newBufferWithBytes:desc->initial_data
+                                                     length:desc->size
+                                                    options:options];
+    } else {
+        buffer->buffer = [device->device newBufferWithLength:desc->size
+                                                     options:options];
+    }
 
-    return 0;
+    if (!buffer->buffer) {
+        free(buffer);
+        return NULL;
+    }
+
+    buffer->storage_mode = desc->storage_mode;
+    buffer->usage = desc->usage;
+    buffer->size = desc->size;
+
+    // Map pointer for shared storage mode
+    if (desc->storage_mode == METAL_STORAGE_SHARED) {
+        buffer->mapped_ptr = [buffer->buffer contents];
+    } else {
+        buffer->mapped_ptr = NULL;
+    }
+
+    return buffer;
 }
 
-void platform_mtl_buffer_shutdown(void) {
-    // TODO: Implement resource state tracking
-    // TODO: Add GPU debugging markers
-    // TODO: Implement mtl buffer initialization
-    // TODO: Add mtl buffer cleanup/shutdown
-
-    if (!g_mtl_buffer_ctx.initialized) {
+void metal_buffer_destroy(metal_buffer_t* buffer) {
+    if (!buffer) {
         return;
     }
 
-    for (uint32_t i = 0; i < g_mtl_buffer_ctx.count; i++) {
-        platform_mtl_buffer_cleanup_internal(&g_mtl_buffer_ctx.items[i]);
+    if (buffer->buffer) {
+        buffer->buffer = nil;  // ARC will handle release
     }
 
-    free(g_mtl_buffer_ctx.items);
-    g_mtl_buffer_ctx.items = NULL;
-    g_mtl_buffer_ctx.count = 0;
-    g_mtl_buffer_ctx.capacity = 0;
-    g_mtl_buffer_ctx.initialized = false;
+    free(buffer);
 }
 
-int platform_mtl_buffer_create(platform_mtl_buffer_handle_t* out_handle, const platform_mtl_buffer_desc_t* desc) {
-    // TODO: Implement mtl buffer validation
-    // TODO: Add mtl buffer error handling
-    // TODO: Implement mtl buffer serialization
-    // TODO: Add mtl buffer debug output
-
-    if (!out_handle || !desc) {
-        return -1;
+void* metal_buffer_map(metal_buffer_t* buffer) {
+    if (!buffer) {
+        return NULL;
     }
 
-    if (!g_mtl_buffer_ctx.initialized) {
-        return -2;
+    // Only shared storage mode can be mapped
+    if (buffer->storage_mode != METAL_STORAGE_SHARED) {
+        return NULL;
     }
 
-    if (g_mtl_buffer_ctx.count >= g_mtl_buffer_ctx.capacity) {
-        // TODO: Implement mtl buffer unit tests
-        return -3;
-    }
-
-    uint32_t index = g_mtl_buffer_ctx.count++;
-    platform_mtl_buffer_internal_t* item = &g_mtl_buffer_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
+    return buffer->mapped_ptr;
 }
 
-void platform_mtl_buffer_destroy(platform_mtl_buffer_handle_t handle) {
-    // TODO: Add mtl buffer performance counters
-    // TODO: Implement mtl buffer hot-reload
+void metal_buffer_unmap(metal_buffer_t* buffer) {
+    // No-op for Metal (included for API consistency with other backends)
+    (void)buffer;
+}
 
-    if (handle.id >= g_mtl_buffer_ctx.count) {
+void metal_buffer_update(metal_buffer_t* buffer, const void* data, size_t size, size_t offset) {
+    if (!buffer || !data || size == 0) {
         return;
     }
 
-    platform_mtl_buffer_cleanup_internal(&g_mtl_buffer_ctx.items[handle.id]);
-}
-
-int platform_mtl_buffer_update(platform_mtl_buffer_handle_t handle, const void* data, size_t size) {
-    // TODO: Add mtl buffer thread safety
-    // TODO: Implement mtl buffer memory pooling
-    // TODO: Add mtl buffer caching layer
-    // TODO: Implement mtl buffer async operations
-
-    if (handle.id >= g_mtl_buffer_ctx.count) {
-        return -1;
+    if (offset + size > buffer->size) {
+        return;  // Out of bounds
     }
 
-    platform_mtl_buffer_internal_t* item = &g_mtl_buffer_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add mtl buffer GPU integration
-    // TODO: Implement mtl buffer SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool platform_mtl_buffer_is_valid(platform_mtl_buffer_handle_t handle) {
-    // TODO: Add mtl buffer batch processing
-    if (handle.id >= g_mtl_buffer_ctx.count) {
-        return false;
-    }
-    return g_mtl_buffer_ctx.items[handle.id].initialized;
-}
-
-int platform_mtl_buffer_get_info(platform_mtl_buffer_handle_t handle, platform_mtl_buffer_info_t* out_info) {
-    // TODO: Implement mtl buffer streaming support
-    // TODO: Add mtl buffer LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_mtl_buffer_ctx.count) {
-        return -2;
-    }
-
-    const platform_mtl_buffer_internal_t* item = &g_mtl_buffer_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void platform_mtl_buffer_mark_dirty(platform_mtl_buffer_handle_t handle) {
-    // TODO: Implement mtl buffer culling integration
-    if (handle.id < g_mtl_buffer_ctx.count) {
-        g_mtl_buffer_ctx.items[handle.id].dirty = true;
+    if (buffer->storage_mode == METAL_STORAGE_SHARED) {
+        // Direct memory copy for shared buffers
+        void* dest = (uint8_t*)buffer->mapped_ptr + offset;
+        memcpy(dest, data, size);
+    } else {
+        // For private buffers, would need a blit command encoder
+        // This is a simplified version - in production, you'd use a staging buffer
+        // and a blit command encoder to transfer data
+        // For now, we'll just assert this shouldn't be called on private buffers
+        assert(buffer->storage_mode == METAL_STORAGE_SHARED && 
+               "Direct update not supported for private buffers - use staging buffer");
     }
 }
 
-int platform_mtl_buffer_process_pending(void) {
-    // TODO: Add mtl buffer render graph node
-    // TODO: Implement batch processing
+/* ============================================================================
+ * RING BUFFER IMPLEMENTATION
+ * ============================================================================ */
 
-    int processed = 0;
-    for (uint32_t i = 0; i < g_mtl_buffer_ctx.count; i++) {
-        platform_mtl_buffer_internal_t* item = &g_mtl_buffer_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
+metal_ring_buffer_t* metal_ring_buffer_create(metal_device_t* device, size_t frame_size, uint32_t frame_count) {
+    if (!device || frame_size == 0 || frame_count == 0) {
+        return NULL;
     }
 
-    return processed;
-}
-
-uint32_t platform_mtl_buffer_get_count(void) {
-    return g_mtl_buffer_ctx.count;
-}
-
-size_t platform_mtl_buffer_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_mtl_buffer_ctx);
-    total += g_mtl_buffer_ctx.capacity * sizeof(platform_mtl_buffer_internal_t);
-
-    for (uint32_t i = 0; i < g_mtl_buffer_ctx.count; i++) {
-        total += g_mtl_buffer_ctx.items[i].data_size;
+    metal_ring_buffer_t* ring_buffer = (metal_ring_buffer_t*)calloc(1, sizeof(metal_ring_buffer_t));
+    if (!ring_buffer) {
+        return NULL;
     }
 
-    return total;
+    // Align frame size to 256 bytes (Metal constant buffer alignment)
+    size_t aligned_frame_size = align_size(frame_size, 256);
+    size_t total_size = aligned_frame_size * frame_count;
+
+    // Create underlying buffer (always shared for CPU writes)
+    metal_buffer_desc_t buffer_desc = {
+        .size = total_size,
+        .storage_mode = METAL_STORAGE_SHARED,
+        .usage = METAL_BUFFER_USAGE_UNIFORM,
+        .initial_data = NULL
+    };
+
+    ring_buffer->buffer = metal_buffer_create(device, &buffer_desc);
+    if (!ring_buffer->buffer) {
+        free(ring_buffer);
+        return NULL;
+    }
+
+    ring_buffer->capacity = total_size;
+    ring_buffer->frame_size = aligned_frame_size;
+    ring_buffer->offset = 0;
+    ring_buffer->frame_index = 0;
+
+    return ring_buffer;
 }
 
-void platform_mtl_buffer_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+void metal_ring_buffer_destroy(metal_ring_buffer_t* ring_buffer) {
+    if (!ring_buffer) {
+        return;
+    }
+
+    if (ring_buffer->buffer) {
+        metal_buffer_destroy(ring_buffer->buffer);
+    }
+
+    free(ring_buffer);
+}
+
+void* metal_ring_buffer_alloc(metal_ring_buffer_t* ring_buffer, size_t size, size_t alignment, size_t* out_offset) {
+    if (!ring_buffer || size == 0) {
+        return NULL;
+    }
+
+    // Align the current offset
+    size_t aligned_offset = align_size(ring_buffer->offset, alignment);
+    
+    // Check if allocation fits in current frame
+    size_t frame_start = ring_buffer->frame_index * ring_buffer->frame_size;
+    size_t frame_end = frame_start + ring_buffer->frame_size;
+    
+    if (aligned_offset + size > frame_end) {
+        // Doesn't fit in current frame
+        return NULL;
+    }
+
+    // Calculate pointer
+    void* ptr = (uint8_t*)ring_buffer->buffer->mapped_ptr + aligned_offset;
+    
+    if (out_offset) {
+        *out_offset = aligned_offset;
+    }
+
+    // Advance offset for next allocation
+    ring_buffer->offset = aligned_offset + size;
+
+    return ptr;
+}
+
+void metal_ring_buffer_next_frame(metal_ring_buffer_t* ring_buffer) {
+    if (!ring_buffer) {
+        return;
+    }
+
+    // Move to next frame
+    uint32_t max_frames = (uint32_t)(ring_buffer->capacity / ring_buffer->frame_size);
+    ring_buffer->frame_index = (ring_buffer->frame_index + 1) % max_frames;
+    ring_buffer->offset = ring_buffer->frame_index * ring_buffer->frame_size;
+}
+
+void metal_ring_buffer_reset(metal_ring_buffer_t* ring_buffer) {
+    if (!ring_buffer) {
+        return;
+    }
+
+    ring_buffer->offset = 0;
+    ring_buffer->frame_index = 0;
 }
 
 /* End of mtl_buffer.c */

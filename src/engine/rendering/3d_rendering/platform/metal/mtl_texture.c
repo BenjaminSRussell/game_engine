@@ -1,290 +1,350 @@
 /*
  * mtl_texture.c
- * Metal textures
+ * Metal texture implementation
  *
  * Part of the Platform subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement Vulkan backend
- * TODO: Implement Metal backend
- * TODO: Implement D3D12 backend
- * TODO: Add thread-safe access patterns
- * TODO: Implement proper error handling with error codes
- * TODO: Add memory tracking and leak detection
- * TODO: Implement hot-reload support
- * TODO: Add validation layer integration
- * TODO: Implement resource state tracking
- * TODO: Add GPU debugging markers
- * TODO: Implement mtl texture initialization
- * TODO: Add mtl texture cleanup/shutdown
- * TODO: Implement mtl texture validation
- * TODO: Add mtl texture error handling
- * TODO: Implement mtl texture serialization
- * TODO: Add mtl texture debug output
- * TODO: Implement mtl texture unit tests
- * TODO: Add mtl texture performance counters
- * TODO: Implement mtl texture hot-reload
- * TODO: Add mtl texture thread safety
- * TODO: Implement mtl texture memory pooling
- * TODO: Add mtl texture caching layer
- * TODO: Implement mtl texture async operations
- * TODO: Add mtl texture GPU integration
- * TODO: Implement mtl texture SIMD optimization
- * TODO: Add mtl texture batch processing
- * TODO: Implement mtl texture streaming support
- * TODO: Add mtl texture LOD support
- * TODO: Implement mtl texture culling integration
- * TODO: Add mtl texture render graph node
  */
 
+#import <Metal/Metal.h>
 #include "mtl_texture.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <math.h>
 
 /* ============================================================================
- * CONSTANTS
+ * INTERNAL HELPERS
  * ============================================================================ */
 
-#define PLATFORM_MTL_TEXTURE_MAX_COUNT 4096
-#define PLATFORM_MTL_TEXTURE_DEFAULT_CAPACITY 256
-#define PLATFORM_MTL_TEXTURE_ALIGNMENT 16
+// Forward declaration for device structure
+typedef struct metal_device {
+    id<MTLDevice> device;
+    id<MTLCommandQueue> command_queue;
+} metal_device_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct platform_mtl_texture_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} platform_mtl_texture_internal_t;
-
-typedef struct platform_mtl_texture_context {
-    platform_mtl_texture_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} platform_mtl_texture_context_t;
-
-static platform_mtl_texture_context_t g_mtl_texture_ctx = {0};
-
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool platform_mtl_texture_validate(const platform_mtl_texture_internal_t* item) {
-    // TODO: Implement Vulkan backend
-    // TODO: Implement Metal backend
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+MTLPixelFormat metal_pixel_format_to_mtl(metal_pixel_format_t format) {
+    switch (format) {
+        case METAL_PIXEL_FORMAT_RGBA8_UNORM:
+            return MTLPixelFormatRGBA8Unorm;
+        case METAL_PIXEL_FORMAT_RGBA8_SRGB:
+            return MTLPixelFormatRGBA8Unorm_sRGB;
+        case METAL_PIXEL_FORMAT_BGRA8_UNORM:
+            return MTLPixelFormatBGRA8Unorm;
+        case METAL_PIXEL_FORMAT_BGRA8_SRGB:
+            return MTLPixelFormatBGRA8Unorm_sRGB;
+        case METAL_PIXEL_FORMAT_RGBA16_FLOAT:
+            return MTLPixelFormatRGBA16Float;
+        case METAL_PIXEL_FORMAT_RGBA32_FLOAT:
+            return MTLPixelFormatRGBA32Float;
+        case METAL_PIXEL_FORMAT_R8_UNORM:
+            return MTLPixelFormatR8Unorm;
+        case METAL_PIXEL_FORMAT_R16_FLOAT:
+            return MTLPixelFormatR16Float;
+        case METAL_PIXEL_FORMAT_R32_FLOAT:
+            return MTLPixelFormatR32Float;
+        case METAL_PIXEL_FORMAT_DEPTH32_FLOAT:
+            return MTLPixelFormatDepth32Float;
+        case METAL_PIXEL_FORMAT_DEPTH24_STENCIL8:
+#if TARGET_OS_OSX
+            return MTLPixelFormatDepth24Unorm_Stencil8;
+#else
+            return MTLPixelFormatDepth32Float_Stencil8;  // iOS doesn't support Depth24
+#endif
+        // Compressed formats
+        case METAL_PIXEL_FORMAT_BC1_RGBA:
+            return MTLPixelFormatBC1_RGBA;
+        case METAL_PIXEL_FORMAT_BC3_RGBA:
+            return MTLPixelFormatBC3_RGBA;
+        case METAL_PIXEL_FORMAT_BC5_RG:
+            return MTLPixelFormatBC5_RGUnorm;
+        case METAL_PIXEL_FORMAT_BC7_RGBA:
+            return MTLPixelFormatBC7_RGBAUnorm;
+        case METAL_PIXEL_FORMAT_ASTC_4x4_SRGB:
+            return MTLPixelFormatASTC_4x4_sRGB;
+        case METAL_PIXEL_FORMAT_ASTC_8x8_SRGB:
+            return MTLPixelFormatASTC_8x8_sRGB;
+        default:
+            return MTLPixelFormatRGBA8Unorm;
+    }
 }
 
-static void platform_mtl_texture_cleanup_internal(platform_mtl_texture_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
+static MTLTextureType texture_type_to_mtl(metal_texture_type_t type) {
+    switch (type) {
+        case METAL_TEXTURE_TYPE_2D:
+            return MTLTextureType2D;
+        case METAL_TEXTURE_TYPE_3D:
+            return MTLTextureType3D;
+        case METAL_TEXTURE_TYPE_CUBE:
+            return MTLTextureTypeCube;
+        case METAL_TEXTURE_TYPE_2D_ARRAY:
+            return MTLTextureType2DArray;
+        case METAL_TEXTURE_TYPE_CUBE_ARRAY:
+            return MTLTextureTypeCubeArray;
+        default:
+            return MTLTextureType2D;
     }
-    item->initialized = false;
+}
+
+static MTLTextureUsage texture_usage_to_mtl(uint32_t usage) {
+    MTLTextureUsage mtl_usage = 0;
+    
+    if (usage & METAL_TEXTURE_USAGE_SHADER_READ) {
+        mtl_usage |= MTLTextureUsageShaderRead;
+    }
+    if (usage & METAL_TEXTURE_USAGE_SHADER_WRITE) {
+        mtl_usage |= MTLTextureUsageShaderWrite;
+    }
+    if (usage & METAL_TEXTURE_USAGE_RENDER_TARGET) {
+        mtl_usage |= MTLTextureUsageRenderTarget;
+    }
+    if (usage & METAL_TEXTURE_USAGE_PIXEL_FORMAT_VIEW) {
+        mtl_usage |= MTLTextureUsagePixelFormatView;
+    }
+    
+    return mtl_usage;
+}
+
+static uint32_t calculate_mip_levels(uint32_t width, uint32_t height, uint32_t depth) {
+    uint32_t max_dim = width > height ? width : height;
+    max_dim = max_dim > depth ? max_dim : depth;
+    
+    uint32_t mip_levels = 1;
+    while (max_dim > 1) {
+        max_dim >>= 1;
+        mip_levels++;
+    }
+    
+    return mip_levels;
 }
 
 /* ============================================================================
- * PUBLIC API
+ * TEXTURE MANAGEMENT
  * ============================================================================ */
 
-int platform_mtl_texture_init(void) {
-    // TODO: Implement proper error handling with error codes
-    // TODO: Add memory tracking and leak detection
-    // TODO: Implement hot-reload support
-    // TODO: Add validation layer integration
-
-    if (g_mtl_texture_ctx.initialized) {
-        return 0; // Already initialized
+metal_texture_t* metal_texture_create(metal_device_t* device, const metal_texture_desc_t* desc) {
+    if (!device || !desc || desc->width == 0 || desc->height == 0) {
+        return NULL;
     }
 
-    g_mtl_texture_ctx.capacity = PLATFORM_MTL_TEXTURE_DEFAULT_CAPACITY;
-    g_mtl_texture_ctx.items = calloc(g_mtl_texture_ctx.capacity, sizeof(platform_mtl_texture_internal_t));
-    if (!g_mtl_texture_ctx.items) {
-        return -1;
+    metal_texture_t* texture = (metal_texture_t*)calloc(1, sizeof(metal_texture_t));
+    if (!texture) {
+        return NULL;
     }
 
-    g_mtl_texture_ctx.count = 0;
-    g_mtl_texture_ctx.initialized = true;
+    // Convert formats
+    MTLPixelFormat mtl_format = metal_pixel_format_to_mtl(desc->format);
+    MTLTextureType mtl_type = texture_type_to_mtl(desc->type);
+    MTLTextureUsage mtl_usage = texture_usage_to_mtl(desc->usage);
 
-    return 0;
+    // Calculate mip levels
+    uint32_t mip_levels = desc->mip_levels;
+    if (mip_levels == 0) {
+        mip_levels = calculate_mip_levels(desc->width, desc->height, 
+                                         desc->type == METAL_TEXTURE_TYPE_3D ? desc->depth : 1);
+    }
+
+    // Create descriptor
+    MTLTextureDescriptor* mtl_desc = [[MTLTextureDescriptor alloc] init];
+    mtl_desc.textureType = mtl_type;
+    mtl_desc.pixelFormat = mtl_format;
+    mtl_desc.width = desc->width;
+    mtl_desc.height = desc->height;
+    mtl_desc.mipmapLevelCount = mip_levels;
+    mtl_desc.usage = mtl_usage;
+    mtl_desc.storageMode = MTLStorageModePrivate;  // Default to private for GPU-only access
+
+    // Set depth for 3D textures
+    if (desc->type == METAL_TEXTURE_TYPE_3D) {
+        mtl_desc.depth = desc->depth;
+    } else {
+        mtl_desc.depth = 1;
+    }
+
+    // Set array length for array textures
+    if (desc->type == METAL_TEXTURE_TYPE_2D_ARRAY || desc->type == METAL_TEXTURE_TYPE_CUBE_ARRAY) {
+        mtl_desc.arrayLength = desc->array_length;
+    } else if (desc->type == METAL_TEXTURE_TYPE_CUBE) {
+        mtl_desc.arrayLength = 6;  // Cube maps always have 6 faces
+    } else {
+        mtl_desc.arrayLength = 1;
+    }
+
+    // Create the texture
+    texture->texture = [device->device newTextureWithDescriptor:mtl_desc];
+    if (!texture->texture) {
+        free(texture);
+        return NULL;
+    }
+
+    // Store metadata
+    texture->format = desc->format;
+    texture->type = desc->type;
+    texture->width = desc->width;
+    texture->height = desc->height;
+    texture->depth = desc->depth;
+    texture->mip_levels = mip_levels;
+    texture->array_length = mtl_desc.arrayLength;
+    texture->usage = desc->usage;
+
+    return texture;
 }
 
-void platform_mtl_texture_shutdown(void) {
-    // TODO: Implement resource state tracking
-    // TODO: Add GPU debugging markers
-    // TODO: Implement mtl texture initialization
-    // TODO: Add mtl texture cleanup/shutdown
-
-    if (!g_mtl_texture_ctx.initialized) {
+void metal_texture_destroy(metal_texture_t* texture) {
+    if (!texture) {
         return;
     }
 
-    for (uint32_t i = 0; i < g_mtl_texture_ctx.count; i++) {
-        platform_mtl_texture_cleanup_internal(&g_mtl_texture_ctx.items[i]);
+    if (texture->texture) {
+        texture->texture = nil;  // ARC will handle release
     }
 
-    free(g_mtl_texture_ctx.items);
-    g_mtl_texture_ctx.items = NULL;
-    g_mtl_texture_ctx.count = 0;
-    g_mtl_texture_ctx.capacity = 0;
-    g_mtl_texture_ctx.initialized = false;
+    free(texture);
 }
 
-int platform_mtl_texture_create(platform_mtl_texture_handle_t* out_handle, const platform_mtl_texture_desc_t* desc) {
-    // TODO: Implement mtl texture validation
-    // TODO: Add mtl texture error handling
-    // TODO: Implement mtl texture serialization
-    // TODO: Add mtl texture debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_mtl_texture_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_mtl_texture_ctx.count >= g_mtl_texture_ctx.capacity) {
-        // TODO: Implement mtl texture unit tests
-        return -3;
-    }
-
-    uint32_t index = g_mtl_texture_ctx.count++;
-    platform_mtl_texture_internal_t* item = &g_mtl_texture_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
-}
-
-void platform_mtl_texture_destroy(platform_mtl_texture_handle_t handle) {
-    // TODO: Add mtl texture performance counters
-    // TODO: Implement mtl texture hot-reload
-
-    if (handle.id >= g_mtl_texture_ctx.count) {
+void metal_texture_upload(metal_texture_t* texture, const void* data, size_t data_size,
+                         const metal_texture_region_t* region) {
+    if (!texture || !data || data_size == 0) {
         return;
     }
 
-    platform_mtl_texture_cleanup_internal(&g_mtl_texture_ctx.items[handle.id]);
-}
+    MTLRegion mtl_region;
+    uint32_t mip_level = 0;
+    uint32_t array_slice = 0;
 
-int platform_mtl_texture_update(platform_mtl_texture_handle_t handle, const void* data, size_t size) {
-    // TODO: Add mtl texture thread safety
-    // TODO: Implement mtl texture memory pooling
-    // TODO: Add mtl texture caching layer
-    // TODO: Implement mtl texture async operations
-
-    if (handle.id >= g_mtl_texture_ctx.count) {
-        return -1;
+    if (region) {
+        mtl_region = MTLRegionMake3D(region->x, region->y, region->z,
+                                     region->width, region->height, region->depth);
+        mip_level = region->mip_level;
+        array_slice = region->array_slice;
+    } else {
+        // Upload to entire texture at mip 0
+        mtl_region = MTLRegionMake3D(0, 0, 0, texture->width, texture->height, 
+                                     texture->type == METAL_TEXTURE_TYPE_3D ? texture->depth : 1);
     }
 
-    platform_mtl_texture_internal_t* item = &g_mtl_texture_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
+    // Calculate bytes per row
+    size_t bytes_per_pixel = metal_pixel_format_bytes_per_pixel(texture->format);
+    size_t bytes_per_row = mtl_region.size.width * bytes_per_pixel;
+    size_t bytes_per_image = bytes_per_row * mtl_region.size.height;
 
-    // TODO: Add mtl texture GPU integration
-    // TODO: Implement mtl texture SIMD optimization
-
-    item->dirty = true;
-    return 0;
+    // Upload data
+    [texture->texture replaceRegion:mtl_region
+                        mipmapLevel:mip_level
+                              slice:array_slice
+                          withBytes:data
+                        bytesPerRow:bytes_per_row
+                      bytesPerImage:bytes_per_image];
 }
 
-bool platform_mtl_texture_is_valid(platform_mtl_texture_handle_t handle) {
-    // TODO: Add mtl texture batch processing
-    if (handle.id >= g_mtl_texture_ctx.count) {
-        return false;
-    }
-    return g_mtl_texture_ctx.items[handle.id].initialized;
-}
-
-int platform_mtl_texture_get_info(platform_mtl_texture_handle_t handle, platform_mtl_texture_info_t* out_info) {
-    // TODO: Implement mtl texture streaming support
-    // TODO: Add mtl texture LOD support
-
-    if (!out_info) {
-        return -1;
+metal_texture_t* metal_texture_create_view(metal_texture_t* source, metal_pixel_format_t format,
+                                          uint32_t base_mip, uint32_t mip_count) {
+    if (!source) {
+        return NULL;
     }
 
-    if (handle.id >= g_mtl_texture_ctx.count) {
-        return -2;
+    metal_texture_t* view = (metal_texture_t*)calloc(1, sizeof(metal_texture_t));
+    if (!view) {
+        return NULL;
     }
 
-    const platform_mtl_texture_internal_t* item = &g_mtl_texture_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
+    MTLPixelFormat mtl_format = metal_pixel_format_to_mtl(format);
+    
+    // Create texture view
+    view->texture = [source->texture newTextureViewWithPixelFormat:mtl_format
+                                                       textureType:source->texture.textureType
+                                                            levels:NSMakeRange(base_mip, mip_count)
+                                                            slices:NSMakeRange(0, source->array_length)];
 
-    return 0;
+    if (!view->texture) {
+        free(view);
+        return NULL;
+    }
+
+    // Copy metadata
+    view->format = format;
+    view->type = source->type;
+    view->width = source->width >> base_mip;
+    view->height = source->height >> base_mip;
+    view->depth = source->depth;
+    view->mip_levels = mip_count;
+    view->array_length = source->array_length;
+    view->usage = source->usage;
+
+    return view;
 }
 
-void platform_mtl_texture_mark_dirty(platform_mtl_texture_handle_t handle) {
-    // TODO: Implement mtl texture culling integration
-    if (handle.id < g_mtl_texture_ctx.count) {
-        g_mtl_texture_ctx.items[handle.id].dirty = true;
+void metal_texture_generate_mipmaps(metal_texture_t* texture, void* command_buffer) {
+    if (!texture || !command_buffer) {
+        return;
+    }
+
+    id<MTLCommandBuffer> mtl_cmd_buffer = (__bridge id<MTLCommandBuffer>)command_buffer;
+    
+    // Create blit command encoder
+    id<MTLBlitCommandEncoder> blit_encoder = [mtl_cmd_buffer blitCommandEncoder];
+    
+    // Generate mipmaps
+    [blit_encoder generateMipmapsForTexture:texture->texture];
+    
+    // End encoding
+    [blit_encoder endEncoding];
+}
+
+/* ============================================================================
+ * HELPER FUNCTIONS
+ * ============================================================================ */
+
+size_t metal_pixel_format_bytes_per_pixel(metal_pixel_format_t format) {
+    switch (format) {
+        case METAL_PIXEL_FORMAT_RGBA8_UNORM:
+        case METAL_PIXEL_FORMAT_RGBA8_SRGB:
+        case METAL_PIXEL_FORMAT_BGRA8_UNORM:
+        case METAL_PIXEL_FORMAT_BGRA8_SRGB:
+        case METAL_PIXEL_FORMAT_DEPTH32_FLOAT:
+        case METAL_PIXEL_FORMAT_R32_FLOAT:
+            return 4;
+            
+        case METAL_PIXEL_FORMAT_RGBA16_FLOAT:
+            return 8;
+            
+        case METAL_PIXEL_FORMAT_RGBA32_FLOAT:
+            return 16;
+            
+        case METAL_PIXEL_FORMAT_R8_UNORM:
+            return 1;
+            
+        case METAL_PIXEL_FORMAT_R16_FLOAT:
+            return 2;
+            
+        case METAL_PIXEL_FORMAT_DEPTH24_STENCIL8:
+            return 4;
+            
+        // Compressed formats - return 0 (need special handling)
+        case METAL_PIXEL_FORMAT_BC1_RGBA:
+        case METAL_PIXEL_FORMAT_BC3_RGBA:
+        case METAL_PIXEL_FORMAT_BC5_RG:
+        case METAL_PIXEL_FORMAT_BC7_RGBA:
+        case METAL_PIXEL_FORMAT_ASTC_4x4_SRGB:
+        case METAL_PIXEL_FORMAT_ASTC_8x8_SRGB:
+            return 0;  // Compressed formats need block-based calculation
+            
+        default:
+            return 4;
     }
 }
 
-int platform_mtl_texture_process_pending(void) {
-    // TODO: Add mtl texture render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_mtl_texture_ctx.count; i++) {
-        platform_mtl_texture_internal_t* item = &g_mtl_texture_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
+bool metal_pixel_format_is_compressed(metal_pixel_format_t format) {
+    switch (format) {
+        case METAL_PIXEL_FORMAT_BC1_RGBA:
+        case METAL_PIXEL_FORMAT_BC3_RGBA:
+        case METAL_PIXEL_FORMAT_BC5_RG:
+        case METAL_PIXEL_FORMAT_BC7_RGBA:
+        case METAL_PIXEL_FORMAT_ASTC_4x4_SRGB:
+        case METAL_PIXEL_FORMAT_ASTC_8x8_SRGB:
+            return true;
+        default:
+            return false;
     }
-
-    return processed;
-}
-
-uint32_t platform_mtl_texture_get_count(void) {
-    return g_mtl_texture_ctx.count;
-}
-
-size_t platform_mtl_texture_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_mtl_texture_ctx);
-    total += g_mtl_texture_ctx.capacity * sizeof(platform_mtl_texture_internal_t);
-
-    for (uint32_t i = 0; i < g_mtl_texture_ctx.count; i++) {
-        total += g_mtl_texture_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void platform_mtl_texture_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
 }
 
 /* End of mtl_texture.c */
