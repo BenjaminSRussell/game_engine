@@ -336,9 +336,8 @@ class ReorganizationScript:
             self.log(f"Would generate mapping file: {output_path}", "DRY-RUN")
             print("\nMapping preview:")
             print(json.dumps(mapping_data, indent=2))
-        else:
             with open(output_path, 'w') as f:
-                json.dumps(mapping_data, f, indent=2)
+                json.dump(mapping_data, f, indent=2)
             self.log(f"Generated mapping file: {output_path}", "SUCCESS")
     
     def execute_reorganization(self):
