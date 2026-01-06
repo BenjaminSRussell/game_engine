@@ -60,6 +60,10 @@ uint32_t rendering_barrier_insertion_get_count(void);
 size_t rendering_barrier_insertion_get_memory_usage(void);
 void rendering_barrier_insertion_debug_print(void);
 
+/* Render Graph Barrier Insertion */
+struct rendering_render_graph;  // Forward declaration
+void rg_insert_barriers(struct rendering_render_graph* graph);
+
 #ifdef __cplusplus
 }
 #endif

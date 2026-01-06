@@ -1,1 +1,0 @@
-/usr/bin/cc  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/test_goap_enhanced.dir/tests/unit/ai/test_goap_enhanced.c.o -o test_goap_enhanced  -lEngine

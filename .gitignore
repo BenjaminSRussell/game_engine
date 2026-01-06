@@ -45,3 +45,11 @@ project.yml
 *.log
 *.trace
 
+# Local Binaries and Folders
+*.dSYM/
+example_physics
+city_generator.o
+ecosystem.o
+weather_system.o
+build_output.log
+

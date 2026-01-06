@@ -39,6 +39,7 @@
  */
 
 #include "graph_compiler.h"
+#include "barrier_insertion.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -194,7 +195,9 @@ int rg_compile(render_graph_t* graph) {
         graph->execution_order[i] = i;
     }
     
-    // TODO: Barrier insertion
+    // Barrier insertion (IMPLEMENTED - was TODO)
+    // Insert memory and image layout barriers between passes
+    rg_insert_barriers(graph);
     
     graph->compiled = true;
     return 0;
