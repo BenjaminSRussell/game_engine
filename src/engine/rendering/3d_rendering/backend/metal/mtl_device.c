@@ -98,15 +98,6 @@ metal_device_t* metal_device_get_default(void) {
 #endif
 }
 
-void* metal_device_get_mtl_device(metal_device_t* dev) {
-#if defined(__OBJC__)
-    if (!dev) return NULL;
-    return (__bridge void*)dev->device;
-#else
-    return NULL;
-#endif
-}
-
 void metal_device_destroy(metal_device_t* dev) {
 #if defined(__OBJC__)
     if (!dev) return;
@@ -164,67 +155,3 @@ bool metal_device_supports_raytracing(metal_device_t* dev) {
 #endif
 }
 
-/* ============================================================================
- * MULTI-QUEUE SUPPORT
- * ============================================================================ */
-
-mtl_command_queue_t metal_device_create_command_queue(metal_device_t* dev, int priority) {
-#if defined(__OBJC__)
-    if (!dev || !dev->device) return NULL;
-    
-    id<MTLCommandQueue> queue = [dev->device newCommandQueue];
-    if (!queue) return NULL;
-    
-    // Set priority if requested (only some devices support this)
-    if (priority > 0) {
-        if (@available(macOS 10.13, *)) {
-            // Priority is a hint, not guaranteed
-            // MTLCommandQueue doesn't directly expose priority,
-            // but you can create with descriptor for max buffer count
-        }
-    }
-    
-    return (__bridge_retained void*)queue;
-#else
-    return NULL;
-#endif
-}
-
-void metal_command_queue_destroy(mtl_command_queue_t queue) {
-#if defined(__OBJC__)
-    if (queue) {
-        CFRelease(queue);
-    }
-#endif
-}
-
-mtl_command_buffer_t metal_command_queue_create_command_buffer(mtl_command_queue_t queue) {
-#if defined(__OBJC__)
-    if (!queue) return NULL;
-    
-    id<MTLCommandQueue> mtl_queue = (__bridge id<MTLCommandQueue>)queue;
-    id<MTLCommandBuffer> buffer = [mtl_queue commandBuffer];
-    
-    return (__bridge void*)buffer;
-#else
-    return NULL;
-#endif
-}
-
-void metal_command_queue_set_label(mtl_command_queue_t queue, const char* label) {
-#if defined(__OBJC__)
-    if (queue && label) {
-        id<MTLCommandQueue> mtl_queue = (__bridge id<MTLCommandQueue>)queue;
-        [mtl_queue setLabel:[NSString stringWithUTF8String:label]];
-    }
-#endif
-}
-
-mtl_command_queue_t metal_device_get_default_queue(metal_device_t* dev) {
-#if defined(__OBJC__)
-    if (!dev) return NULL;
-    return (__bridge void*)dev->command_queue;
-#else
-    return NULL;
-#endif
-}

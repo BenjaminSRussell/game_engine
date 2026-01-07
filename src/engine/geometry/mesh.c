@@ -536,7 +536,7 @@ mesh_validation_error_e mesh_validate_detailed(const mesh_t* mesh, char* error_m
             if (error_msg && msg_size > 0) {
                 snprintf(error_msg, msg_size, 
                     "Mesh '%s' has degenerate triangle at index %u", 
-                    mesh->name, i);
+                    i);
             }
             return MESH_VALIDATION_DEGENERATE_TRIANGLE;
         }
@@ -576,26 +576,10 @@ void mesh_unload(mesh_t* mesh) {
     // mesh->is_uploaded = false;
 }
 
-bool mesh_update_gpu(mesh_t* mesh) {
-    // TODO: Update dynamic mesh data on GPU
-    return true;
-}
-
 void mesh_print_stats(const mesh_t* mesh) {
     if (!mesh) return;
-    
-    // Update stats if dirty
-    if (mesh->stats_dirty) {
-        mesh_calculate_stats((mesh_t*)mesh);
-    }
-    
     LOG_INFO("Mesh Stats - Name: %s, ID: %d", mesh->name, mesh->id);
-    LOG_INFO("  Vertices: %d, Indices: %d, Triangles: %d", 
-        mesh->stats.vertex_count, mesh->stats.index_count, mesh->stats.triangle_count);
-    LOG_INFO("  Surface Area: %.2f, Volume: %.2f", 
-        mesh->stats.surface_area, mesh->stats.volume);
-    LOG_INFO("  CPU Memory: %llu bytes, GPU Memory: %llu bytes", 
-        mesh->stats.cpu_memory_bytes, mesh->stats.gpu_memory_bytes);
+    LOG_INFO("  Vertices: %d, Indices: %d", mesh->vertex_count, mesh->index_count);
     LOG_INFO("  Submeshes: %d, Materials: %d", mesh->submesh_count, mesh->material_count);
     LOG_INFO("  Bounds Center: (%.2f, %.2f, %.2f) Radius: %.2f", 
         mesh->bounds.sphere_center.x, mesh->bounds.sphere_center.y, mesh->bounds.sphere_center.z, 

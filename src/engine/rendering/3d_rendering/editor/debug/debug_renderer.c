@@ -1,7 +1,6 @@
 #include "debug_renderer.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 // Force ObjC syntax if compiling as C but needing Metal
 // In a real project, build rules would handle this.

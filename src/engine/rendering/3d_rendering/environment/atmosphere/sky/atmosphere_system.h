@@ -51,8 +51,6 @@ typedef struct atmosphere_system {
     float mie_g;                   // Asymmetry factor
     simd_float3 sun_direction;
     simd_float3 sun_intensity;
-    simd_float3 moon_direction; // new
-    float moon_phase;           // new
 } atmosphere_system_t;
 
 // API

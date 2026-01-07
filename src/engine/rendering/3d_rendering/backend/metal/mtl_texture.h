@@ -50,26 +50,16 @@ typedef enum metal_pixel_format {
     METAL_PIXEL_FORMAT_R16_FLOAT = 7,
     METAL_PIXEL_FORMAT_R32_FLOAT = 8,
     METAL_PIXEL_FORMAT_RG16_FLOAT = 9,
-    METAL_PIXEL_FORMAT_RG32_FLOAT = 10,
-    METAL_PIXEL_FORMAT_DEPTH32_FLOAT = 11,
-    METAL_PIXEL_FORMAT_DEPTH24_STENCIL8 = 12,
-    // Compressed formats (BC - Desktop)
-    METAL_PIXEL_FORMAT_BC1_RGBA = 13,
-    METAL_PIXEL_FORMAT_BC3_RGBA = 14,
-    METAL_PIXEL_FORMAT_BC5_RG = 15,
-    METAL_PIXEL_FORMAT_BC7_RGBA = 16,
-    // Compressed formats (ASTC - Mobile/Desktop)
-    METAL_PIXEL_FORMAT_ASTC_4x4_SRGB = 17,
-    METAL_PIXEL_FORMAT_ASTC_8x8_SRGB = 18,
-    // Additional depth formats
-    METAL_PIXEL_FORMAT_DEPTH16_UNORM = 19,
-    METAL_PIXEL_FORMAT_DEPTH32_FLOAT_STENCIL8 = 20,
-    // Additional compressed formats (ETC2 - Mobile)
-    METAL_PIXEL_FORMAT_ETC2_RGB8 = 21,
-    METAL_PIXEL_FORMAT_ETC2_RGB8_SRGB = 22,
-    // Additional compressed formats (PVRTC - Legacy iOS)
-    METAL_PIXEL_FORMAT_PVRTC_RGB_4BPP = 23,
-    METAL_PIXEL_FORMAT_PVRTC_RGBA_4BPP = 24
+    METAL_PIXEL_FORMAT_DEPTH32_FLOAT = 10,
+    METAL_PIXEL_FORMAT_DEPTH24_STENCIL8 = 11,
+    // Compressed formats
+    METAL_PIXEL_FORMAT_BC1_RGBA = 12,
+    METAL_PIXEL_FORMAT_BC3_RGBA = 13,
+    METAL_PIXEL_FORMAT_BC5_RG = 14,
+    METAL_PIXEL_FORMAT_BC7_RGBA = 15,
+    METAL_PIXEL_FORMAT_ASTC_4x4_SRGB = 16,
+    METAL_PIXEL_FORMAT_ASTC_8x8_SRGB = 17,
+    METAL_PIXEL_FORMAT_DEPTH16_UNORM = 18
 } metal_pixel_format_t;
 
 typedef enum metal_texture_usage {
@@ -118,9 +108,6 @@ typedef struct metal_texture_desc {
     metal_storage_mode_texture_t storage_mode;
     bool generate_mipmaps;
     const char* label;
-    
-    // MSAA support
-    uint32_t sample_count;    // 1 (default), 2, 4, or 8
 } metal_texture_desc_t;
 
 typedef struct metal_texture_view_desc {
@@ -153,29 +140,12 @@ void metal_texture_destroy(metal_texture_t* texture);
 void metal_texture_upload(metal_texture_t* texture, const void* data, size_t data_size, 
                          const metal_texture_region_t* region);
 
-/* Upload data to specific mip level */
-void metal_texture_upload_mip(metal_texture_t* texture, const void* data, size_t data_size,
-                               uint32_t mip_level, uint32_t array_slice);
-
-/* Upload data to specific array slice */
-void metal_texture_upload_slice(metal_texture_t* texture, const void* data, size_t data_size,
-                                uint32_t array_slice, uint32_t mip_level);
-
 /* Create a texture view (different pixel format or mip range) */
 metal_texture_t* metal_texture_create_view(metal_texture_t* source, metal_pixel_format_t format,
                                           uint32_t base_mip, uint32_t mip_count);
 
 /* Generate mipmaps for texture (requires command buffer) */
 void metal_texture_generate_mipmaps(metal_texture_t* texture, void* command_buffer);
-
-/* Check if device supports sparse textures */
-bool metal_texture_is_sparse_supported(metal_device_t* device);
-
-/* Create sparse texture (iOS 13+, macOS 11+) */
-metal_texture_t* metal_texture_create_sparse(metal_device_t* device, const metal_texture_desc_t* desc);
-
-/* Set LOD clamp range */
-void metal_texture_set_lod_clamp(metal_texture_t* texture, float min_lod, float max_lod);
 
 /* ============================================================================
  * HELPERS

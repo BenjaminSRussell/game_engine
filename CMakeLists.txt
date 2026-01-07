@@ -60,7 +60,7 @@ include_directories(
     src/game/minecraftv2/include
     src/engine
     src
-    src/editor/Core/Bridges/include
+    src/frontend/Core/Bridges/include
 )
 
 

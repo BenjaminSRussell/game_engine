@@ -51,8 +51,6 @@ typedef struct {
     float padding0;
     simd_float3 sun_intensity;
     float padding1;
-    simd_float3 moon_direction;
-    float moon_phase; // 0.0 = New, 0.5 = Full, 1.0 = New
     simd_float2 screen_size;
 } SkyUniforms;
 

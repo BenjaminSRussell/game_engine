@@ -38,7 +38,6 @@ static inline void convert_format(metal_pixel_format_t fmt, MTLPixelFormat* mtl_
         case METAL_PIXEL_FORMAT_R16_FLOAT: *mtl_fmt = MTLPixelFormatR16Float; break;
         case METAL_PIXEL_FORMAT_R32_FLOAT: *mtl_fmt = MTLPixelFormatR32Float; break;
         case METAL_PIXEL_FORMAT_RG16_FLOAT: *mtl_fmt = MTLPixelFormatRG16Float; break;
-        case METAL_PIXEL_FORMAT_RG32_FLOAT: *mtl_fmt = MTLPixelFormatRG32Float; break;
         case METAL_PIXEL_FORMAT_DEPTH32_FLOAT: *mtl_fmt = MTLPixelFormatDepth32Float; break;
         case METAL_PIXEL_FORMAT_DEPTH24_STENCIL8:
 #if TARGET_OS_OSX
@@ -163,20 +162,6 @@ metal_texture_t* metal_texture_create(metal_device_t* device, const metal_textur
         mtl_desc.arrayLength = 6;  // Cube maps always have 6 faces
     } else {
         mtl_desc.arrayLength = 1;
-    }
-    
-    // Set MSAA sample count
-    uint32_t sample_count = desc->sample_count > 0 ? desc->sample_count : 1;
-    if (sample_count > 1) {
-        // Validate sample count (must be power of 2: 1, 2, 4, 8)
-        if (sample_count != 2 && sample_count != 4 && sample_count != 8) {
-            sample_count = 1;
-        }
-        // MSAA textures must be 2D and marked as  render target
-        if (desc->type == METAL_TEXTURE_TYPE_2D) {
-            mtl_desc.sampleCount = sample_count;
-            mtl_desc.textureType = MTLTextureType2DMultisample;
-        }
     }
 
     // Create the texture
@@ -328,9 +313,6 @@ size_t metal_pixel_format_bytes_per_pixel(metal_pixel_format_t format) {
 
         case METAL_PIXEL_FORMAT_RG16_FLOAT:
             return 4;
-
-        case METAL_PIXEL_FORMAT_RG32_FLOAT:
-            return 8;
             
         case METAL_PIXEL_FORMAT_DEPTH24_STENCIL8:
             return 4;
@@ -357,102 +339,10 @@ bool metal_pixel_format_is_compressed(metal_pixel_format_t format) {
         case METAL_PIXEL_FORMAT_BC7_RGBA:
         case METAL_PIXEL_FORMAT_ASTC_4x4_SRGB:
         case METAL_PIXEL_FORMAT_ASTC_8x8_SRGB:
-        case METAL_PIXEL_FORMAT_ETC2_RGB8:
-        case METAL_PIXEL_FORMAT_ETC2_RGB8_SRGB:
-        case METAL_PIXEL_FORMAT_PVRTC_RGB_4BPP:
-        case METAL_PIXEL_FORMAT_PVRTC_RGBA_4BPP:
             return true;
         default:
             return false;
     }
-}
-
-/* ============================================================================
- * ADVANCED TEXTURE FUNCTIONS
- * ============================================================================ */
-
-void metal_texture_upload_mip(metal_texture_t* texture, const void* data, size_t data_size,
-                               uint32_t mip_level, uint32_t array_slice) {
-    if (!texture || !data || data_size == 0) {
-        return;
-    }
-    
-    // Calculate mip dimensions
-    uint32_t mip_width = texture->width >> mip_level;
-    uint32_t mip_height = texture->height >> mip_level;
-    if (mip_width < 1) mip_width = 1;
-    if (mip_height < 1) mip_height = 1;
-    
-    MTLRegion region = MTLRegionMake2D(0, 0, mip_width, mip_height);
-    
-    size_t bytes_per_pixel = metal_pixel_format_bytes_per_pixel(texture->format);
-    size_t bytes_per_row = mip_width * bytes_per_pixel;
-    size_t bytes_per_image = bytes_per_row * mip_height;
-    
-    [texture->texture replaceRegion:region
-                        mipmapLevel:mip_level
-                              slice:array_slice
-                          withBytes:data
-                        bytesPerRow:bytes_per_row
-                      bytesPerImage:bytes_per_image];
-}
-
-void metal_texture_upload_slice(metal_texture_t* texture, const void* data, size_t data_size,
-                                uint32_t array_slice, uint32_t mip_level) {
-    // Same as upload_mip but with swapped parameter order for convenience
-    metal_texture_upload_mip(texture, data, data_size, mip_level, array_slice);
-}
-
-bool metal_texture_is_sparse_supported(metal_device_t* device) {
-    if (!device || !device->device) {
-        return false;
-    }
-    
-    // Sparse textures require macOS 11+ or iOS 13+
-    #if TARGET_OS_IOS || TARGET_OS_TV
-        if (@available(iOS 13.0, tvOS 13.0, *)) {
-            return [device->device supportsFamily:MTLGPUFamilyApple4];
-        }
-    #else
-        if (@available(macOS 11.0, *)) {
-            return [device->device supportsFamily:MTLGPUFamilyMac2];
-        }
-    #endif
-    
-    return false;
-}
-
-metal_texture_t* metal_texture_create_sparse(metal_device_t* device, const metal_texture_desc_t* desc) {
-    if (!metal_texture_is_sparse_supported(device)) {
-        return NULL;  // Sparse textures not supported
-    }
-    
-    // Create texture normally but mark as sparse
-    metal_texture_t* texture = metal_texture_create(device, desc);
-    if (!texture) {
-        return NULL;
-    }
-    
-    // Note: Sparse texture tile allocation would be done separately via:
-    // - makeAliasable (to mark texture memory as re-claimable)
-    // - Tile mapping API (iOS 16.4+/macOS 13.3+)
-    // This is a simplified implementation
-    
-    return texture;
-}
-
-void metal_texture_set_lod_clamp(metal_texture_t* texture, float min_lod, float max_lod) {
-    // Note: LOD clamping in Metal is typically done via sampler states, not textures
-    // This function is included for API completeness but has limited functionality
-    // The actual LOD clamping should be configured in metal_sampler_desc_t
-    
-    if (!texture) {
-        return;
-    }
-    
-    // Metal doesn't support per-texture LOD clamping directly
-    // This would need to be implemented via texture views if specific mip ranges are needed
-    // Or via sampler state configuration
 }
 
 /* End of mtl_texture.c */
