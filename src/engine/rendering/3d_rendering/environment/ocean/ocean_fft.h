@@ -4,12 +4,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-// Forward declarations for Metal types (defined in backend)
-typedef struct MTLDevice* MTLDeviceRef;
-typedef struct MTLCommandQueue* MTLCommandQueueRef;
-typedef struct MTLTexture* MTLTextureRef;
-typedef struct MTLComputePipelineState* MTLComputePipelineRef;
-typedef struct MTLBuffer* MTLBufferRef;
+// Forward declarations for Metal backend wrappers
+typedef struct metal_device metal_device_t;
+typedef struct metal_texture metal_texture_t;
+typedef struct metal_buffer metal_buffer_t;
+typedef struct metal_compute_pipeline metal_compute_pipeline_t;
+typedef void* mtl_command_queue_t; // Command queue is usually just a pointer/id
 
 #ifdef __cplusplus
 extern "C" {
@@ -65,22 +65,22 @@ typedef struct PhillipsSpectrumParams {
 
 typedef struct OceanFFTCascade {
     // Spectrum textures (complex, RG32F)
-    MTLTextureRef h0_texture;           // Initial spectrum h0(k)
-    MTLTextureRef h0_conj_texture;      // Conjugate h0*(-k)
-    MTLTextureRef omega_texture;        // Dispersion ω(k)
+    metal_texture_t* h0_texture;           // Initial spectrum h0(k)
+    metal_texture_t* h0_conj_texture;      // Conjugate h0*(-k)
+    metal_texture_t* omega_texture;        // Dispersion ω(k)
     
     // Time-varying spectrum (complex, RG32F)
-    MTLTextureRef ht_height;            // h(k,t) for height
-    MTLTextureRef ht_displacement_x;    // h(k,t) for Dx
-    MTLTextureRef ht_displacement_z;    // h(k,t) for Dz
+    metal_texture_t* ht_height;            // h(k,t) for height
+    metal_texture_t* ht_displacement_x;    // h(k,t) for Dx
+    metal_texture_t* ht_displacement_z;    // h(k,t) for Dz
     
     // FFT ping-pong buffers (complex, RG32F)
-    MTLTextureRef fft_ping;
-    MTLTextureRef fft_pong;
+    metal_texture_t* fft_ping;
+    metal_texture_t* fft_pong;
     
     // Final displacement outputs (real domain)
-    MTLTextureRef displacement_map;     // RGB32F: (Dx, height, Dz)
-    MTLTextureRef normal_map;           // RGBA16F: (Nx, Ny, Nz, foam)
+    metal_texture_t* displacement_map;     // RGB32F: (Dx, height, Dz)
+    metal_texture_t* normal_map;           // RGBA16F: (Nx, Ny, Nz, foam)
     
     // Cascade configuration
     float tile_size;                    // Physical tile size in world units
@@ -94,21 +94,21 @@ typedef struct OceanFFTSystem {
     PhillipsSpectrumParams spectrum_params;
     
     // Metal resources
-    MTLDeviceRef device;
-    MTLCommandQueueRef command_queue;
+    metal_device_t* device;
+    mtl_command_queue_t command_queue;
     
     // Compute pipelines
-    MTLComputePipelineRef spectrum_init_pipeline;
-    MTLComputePipelineRef spectrum_update_pipeline;
-    MTLComputePipelineRef fft_horizontal_pipeline;
-    MTLComputePipelineRef fft_vertical_pipeline;
-    MTLComputePipelineRef displacement_pipeline;
-    MTLComputePipelineRef normal_pipeline;
-    MTLComputePipelineRef foam_pipeline;
+    metal_compute_pipeline_t* spectrum_init_pipeline;
+    metal_compute_pipeline_t* spectrum_update_pipeline;
+    metal_compute_pipeline_t* fft_horizontal_pipeline;
+    metal_compute_pipeline_t* fft_vertical_pipeline;
+    metal_compute_pipeline_t* displacement_pipeline;
+    metal_compute_pipeline_t* normal_pipeline;
+    metal_compute_pipeline_t* foam_pipeline;
     
     // Uniform buffers
-    MTLBufferRef spectrum_params_buffer;
-    MTLBufferRef fft_params_buffer;
+    metal_buffer_t* spectrum_params_buffer;
+    metal_buffer_t* fft_params_buffer;
     
     // Cascades
     uint32_t cascade_count;
@@ -135,8 +135,8 @@ typedef struct OceanFFTSystem {
  * @return Initialized ocean system or NULL on failure
  */
 OceanFFTSystem* ocean_fft_create(
-    MTLDeviceRef device,
-    MTLCommandQueueRef queue,
+    metal_device_t* device,
+    mtl_command_queue_t queue,
     const OceanFFTConfig* config
 );
 
@@ -174,7 +174,7 @@ void ocean_fft_update(OceanFFTSystem* ocean, float delta_time);
  * @param cascade_index Cascade index (0 to cascade_count-1)
  * @return Displacement texture or NULL if invalid index
  */
-MTLTextureRef ocean_fft_get_displacement_texture(
+metal_texture_t* ocean_fft_get_displacement_texture(
     const OceanFFTSystem* ocean,
     uint32_t cascade_index
 );
@@ -187,7 +187,7 @@ MTLTextureRef ocean_fft_get_displacement_texture(
  * @param cascade_index Cascade index (0 to cascade_count-1)
  * @return Normal texture or NULL if invalid index
  */
-MTLTextureRef ocean_fft_get_normal_texture(
+metal_texture_t* ocean_fft_get_normal_texture(
     const OceanFFTSystem* ocean,
     uint32_t cascade_index
 );

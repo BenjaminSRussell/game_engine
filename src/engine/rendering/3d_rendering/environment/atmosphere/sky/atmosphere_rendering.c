@@ -210,6 +210,7 @@ void atmosphere_render_sky(atmosphere_system_t* atmo, id<MTLRenderCommandEncoder
     // Bind Textures
     [encoder setFragmentTexture:atmo->transmittance_lut atIndex:0];
     [encoder setFragmentTexture:atmo->scattering_lut atIndex:1];
+    [encoder setFragmentTexture:atmo->skyview_lut atIndex:2];
 
     // Prepare Uniforms
     SkyUniforms uniforms;
@@ -218,6 +219,8 @@ void atmosphere_render_sky(atmosphere_system_t* atmo, id<MTLRenderCommandEncoder
     uniforms.planet_radius = atmo->planet_radius;
     uniforms.sun_direction = atmo->sun_direction;
     uniforms.sun_intensity = atmo->sun_intensity;
+    uniforms.moon_direction = atmo->moon_direction;
+    uniforms.moon_phase = atmo->moon_phase;
     uniforms.screen_size = simd_make_float2((float)camera->viewport_width, (float)camera->viewport_height);
 
     [encoder setFragmentBytes:&uniforms length:sizeof(uniforms) atIndex:0];
@@ -235,9 +238,8 @@ void atmosphere_render_aerial_perspective(atmosphere_system_t* atmo, id<MTLRende
     [encoder setRenderPipelineState:atmo->aerial_perspective_pipeline];
     
     // Bind Textures
-    [encoder setFragmentTexture:atmo->transmittance_lut atIndex:0];
-    [encoder setFragmentTexture:atmo->scattering_lut atIndex:1];
-    [encoder setFragmentTexture:depth_tex atIndex:2];
+    [encoder setFragmentTexture:atmo->camera_volume_lut atIndex:0];
+    [encoder setFragmentTexture:depth_tex atIndex:1];
 
     // Prepare Uniforms
     SkyUniforms uniforms;
@@ -246,6 +248,8 @@ void atmosphere_render_aerial_perspective(atmosphere_system_t* atmo, id<MTLRende
     uniforms.planet_radius = atmo->planet_radius;
     uniforms.sun_direction = atmo->sun_direction;
     uniforms.sun_intensity = atmo->sun_intensity;
+    uniforms.moon_direction = atmo->moon_direction;
+    uniforms.moon_phase = atmo->moon_phase;
     uniforms.screen_size = simd_make_float2((float)camera->viewport_width, (float)camera->viewport_height);
 
     [encoder setFragmentBytes:&uniforms length:sizeof(uniforms) atIndex:0];

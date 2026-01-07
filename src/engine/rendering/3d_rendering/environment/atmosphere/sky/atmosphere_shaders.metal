@@ -550,6 +550,42 @@ vertex VertexOut sky_vertex(uint vid [[vertex_id]]) {
     return out;
 }
 
+// 3D Noise for stars
+float hash13(float3 p3) {
+    p3  = fract(p3 * .1031);
+    p3 += dot(p3, p3.yzx + 33.33);
+    return fract((p3.x + p3.y) * p3.z);
+}
+
+float3 get_star_field(float3 dir) {
+    float3 p = dir * 200.0; // Tiling density
+    float3 ip = floor(p);
+    float3 fp = fract(p);
+    
+    float3 star_color = float3(0);
+    
+    // 2-layer star field
+    for (int i = 0; i < 2; i++) {
+        float h = hash13(ip + float(i) * 123.45);
+        if (h > 0.98) { // Threshold for star existence
+            float size = 0.05 + 0.9 * (h - 0.98) / 0.02; // Random size
+            float2 center = float2(0.5) + 0.2 * float2(h - 0.5, fract(h * 13.0) - 0.5); // Jitter
+            float dist = length(fp.xy - center); // Simplified 2D distance projection approximation
+            
+            float glow = exp(-dist * 20.0 / size);
+            float core = smoothstep(0.05 * size, 0.0, dist);
+            
+            // Random color temp
+            float3 tint = mix(float3(0.5, 0.6, 1.0), float3(1.0, 0.8, 0.6), fract(h * 45.6));
+            
+            star_color += (glow * 0.5 + core * 5.0) * tint * 2.0;
+        }
+        ip = ip * 2.0 + 15.0; // Next layer transform
+        fp = fract(p * 2.0); // Assuming p scales
+    }
+    return star_color;
+}
+
 fragment float4 sky_fragment(
     VertexOut in [[stage_in]],
     constant SkyUniforms& uniforms [[buffer(0)]],
@@ -567,31 +603,22 @@ fragment float4 sky_fragment(
     
     // Camera altitude
     float camera_height = length(uniforms.camera_pos);
-    // float camera_altitude = camera_height - uniforms.planet_radius;
     
     // Calculate view zenith angle
     float3 up_dir = normalize(uniforms.camera_pos);
     float cos_view_zenith = dot(view_dir, up_dir);
     float horizon_cos = horizon_angle_cos(camera_height, uniforms.planet_radius);
     
-    // Sample Sky View LUT
+    // Sample Transmittance (needed for compositing Extraterrestrial objects)
     constexpr sampler samp(coord::normalized, address::clamp_to_edge, filter::linear);
+    float2 trans_uv = transmittance_lut_encode(camera_height, cos_view_zenith, *(constant AtmosphereParams*)&uniforms);
+    float3 transmittance = transmittance_lut.sample(samp, trans_uv).rgb;
     
-    // Compute UV based on view direction (same encoding as compute shader)
-    // Azimuth
-    float azimuth = atan2(view_dir.x, view_dir.z); // Need basis relative to camera?
-    // Simplified: Project view_dir onto tangent plane
-    // For now assuming Y is up, world space generic
-    // We used simple azimuth in compute shader: uv.x * 2PI
-    // We need consistent mapping.
-    // Let's assume standard mapping:
-    float3 right = cross(up_dir, normalize(float3(0,0,1))); // Placeholder north?
-    // Actually compute_skyview_lut iterated azimuth 0..2PI relative to some frame.
-    // Ideally we align this with sun direction or just world.
+    // Sample Sky View LUT (In-scattered light)
+    float azimuth = atan2(view_dir.x, view_dir.z); 
     if (azimuth < 0.0) azimuth += 2.0 * PI;
     float u_azimuth = azimuth / (2.0 * PI);
     
-    // Zenith
     float v_zenith;
     if (cos_view_zenith > horizon_cos) {
         float t = (cos_view_zenith - horizon_cos) / (1.0 - horizon_cos);
@@ -600,34 +627,97 @@ fragment float4 sky_fragment(
         float t = (horizon_cos - cos_view_zenith) / (horizon_cos + 1.0);
         v_zenith = 0.5 - 0.5 * sqrt(t);
     }
+    float3 inscatter = skyview_lut.sample(samp, float2(u_azimuth, v_zenith)).rgb;
     
-    float3 sky_color = skyview_lut.sample(samp, float2(u_azimuth, v_zenith)).rgb;
+    // Initialize final color
+    float3 final_color = inscatter;
+    
+    // Add Stars
+    // Only where transmittance is high (transparent atmosphere) and sky is dark
+    // For physically based: Stars * Transmittance
+    // Stars are weak, so they naturally disappear when sky is bright (inscatter dominates in HDR).
+    // But we might want to mask them by sun glare explicitly if needed.
+    float3 stars = get_star_field(view_dir);
+    
+    // Milky Way (Galaxy Band)
+    // Approximate galactic plane
+    float3 mw_pole = normalize(float3(0.4, 1.0, 0.2)); 
+    float mw_lat = asin(clamp(dot(view_dir, mw_pole), -1.0, 1.0));
+    float mw_band = exp(-mw_lat * mw_lat * 15.0); // Narrow band
+    float mw_noise = hash13(view_dir * 4.0);
+    float3 mw_color = float3(0.8, 0.7, 0.6) * mw_band * (0.5 + 0.5 * mw_noise) * 0.3;
+    
+    // Add MW to stars (before moon masking)
+    stars += mw_color;
+
+    // Mask stars by moon
+    // calculated later
+    
+    // Moon Rendering
+    float cos_moon_angle = dot(view_dir, uniforms.moon_direction);
+    float moon_angle = acos(clamp(cos_moon_angle, -1.0, 1.0));
+    float moon_angular_radius = 0.00465; // Same as sun approx
+    float moon_mask = smoothstep(moon_angular_radius, moon_angular_radius * 0.95, moon_angle);
+    
+    float3 moon_color = float3(0);
+    if (moon_mask > 0.0) {
+        // Simple phase calculation
+        // Moon normal (approximate on disk)
+        // Tangent space basis for moon
+        float3 moon_z = -uniforms.moon_direction; // View direction to moon center
+        float3 moon_x = normalize(cross(float3(0,1,0), moon_z));
+        float3 moon_y = cross(moon_z, moon_x);
+        
+        // Project view_dir onto disk plane to get UV
+        float3 dv = view_dir - uniforms.moon_direction; // relative vector (approx)
+        float u = dot(dv, moon_x) / moon_angular_radius;
+        float v = dot(dv, moon_y) / moon_angular_radius;
+        float z_sphere = sqrt(max(0.0, 1.0 - u*u - v*v));
+        float3 moon_normal = u * moon_x + v * moon_y + z_sphere * moon_z;
+        
+        // Lighting
+        float NdotL = dot(normalize(moon_normal), uniforms.sun_direction);
+        float moon_light = smoothstep(-0.1, 0.1, NdotL);
+        
+        // Craters (using star noise for now as base)
+        float noise = hash13(moon_normal * 10.0);
+        float craters = 0.8 + 0.2 * noise;
+        
+        float3 moon_albedo = float3(0.7) * craters;
+        moon_color = moon_albedo * moon_light * 2.0; // Lit side
+        moon_color += moon_albedo * 0.05; // Earthshine
+        
+        moon_color *= moon_mask;
+    }
+    
+    // Mask stars behind moon
+    stars *= (1.0 - moon_mask);
+    
+    final_color += stars * transmittance * 0.5; // Scale for brightness
+    final_color += moon_color * transmittance;
     
     // Add sun disk
     float cos_sun_angle = dot(view_dir, uniforms.sun_direction);
     float sun_angle = acos(clamp(cos_sun_angle, -1.0, 1.0));
-   
-    // Sun angular diameter: ~0.53 degrees = 0.0093 radians
     float sun_angular_radius = 0.00465;
     
-    // Limb darkening effect
     float sun_disk_mask = smoothstep(sun_angular_radius, sun_angular_radius * 0.95, sun_angle);
     float limb_darkening = 1.0 - 0.6 * (1.0 - sun_disk_mask);
-    
-    // Sun intensity with limb darkening
     float3 sun_color = uniforms.sun_intensity * sun_disk_mask * limb_darkening * 20.0;
     
-    // Sun corona (soft glow around sun)
+    // Corona
     float corona_size = sun_angular_radius * 3.0;
     float corona_contribution = exp(-sun_angle * sun_angle / (corona_size * corona_size));
     float3 corona_color = uniforms.sun_intensity * corona_contribution * 0.5;
     
-    sky_color += sun_color + corona_color;
+    // Composite Sun: Sun * Transmittance
+    // Note: The sun color here is L0 (radiance at top of atmosphere).
+    final_color += (sun_color + corona_color) * transmittance;
     
-    // Exposure adjustment for HDR
-    sky_color = sky_color * 0.01; // Scale down for HDR tone mapping
+    // Tone mapping scale
+    final_color = final_color * 0.01; 
     
-    return float4(sky_color, 1.0);
+    return float4(final_color, 1.0);
 }
 
 // Aerial Perspective
@@ -686,18 +776,4 @@ fragment float4 aerial_perspective_fragment(
     
     return fog_data;
 }
-    float view_dist = length(view_vec);
-    float3 view_dir = view_vec / view_dist;
 
-    // 2. Compute aerial perspective (simplified fog)
-    // In a real implementation: Raymarch or sample 3D LUT at (camera) and (target) to get inscatter/extinction
-    float altitude = length(uniforms.camera_pos) - uniforms.planet_radius;
-    float optical_depth = view_dist * 0.00001; // Extremely simplified constant density
-    float3 transmittance = exp(-optical_depth * float3(0.1, 0.2, 0.4)); // Blue tint
-
-    float3 inscatter = (1.0 - transmittance) * float3(0.5, 0.6, 0.8) * uniforms.sun_intensity.x * 0.01;
-
-    // This output creates a fog overlay. Usually blended with scene color.
-    // For this pass, we might output (Inscatter, Transmittance.r) to blend.
-    return float4(inscatter, transmittance.r);
-}

@@ -48,17 +48,6 @@ void debug_draw_grid(debug_renderer_t* dbg, simd_float3 center, float size, int 
 void debug_draw_text_3d(debug_renderer_t* dbg, simd_float3 position, const char* text, simd_float4 color);
 void debug_clear(debug_renderer_t* dbg);
 
-// Color Constants
-static const simd_float4 DEBUG_COLOR_RED = {1.0f, 0.0f, 0.0f, 1.0f};
-static const simd_float4 DEBUG_COLOR_GREEN = {0.0f, 1.0f, 0.0f, 1.0f};
-static const simd_float4 DEBUG_COLOR_BLUE = {0.0f, 0.0f, 1.0f, 1.0f};
-static const simd_float4 DEBUG_COLOR_YELLOW = {1.0f, 1.0f, 0.0f, 1.0f};
-static const simd_float4 DEBUG_COLOR_CYAN = {0.0f, 1.0f, 1.0f, 1.0f};
-static const simd_float4 DEBUG_COLOR_MAGENTA = {1.0f, 0.0f, 1.0f, 1.0f};
-static const simd_float4 DEBUG_COLOR_WHITE = {1.0f, 1.0f, 1.0f, 1.0f};
-static const simd_float4 DEBUG_COLOR_GRAY = {0.5f, 0.5f, 0.5f, 1.0f};
-static const simd_float4 DEBUG_COLOR_ORANGE = {1.0f, 0.5f, 0.0f, 1.0f};
-
 // Rendering to Encoder
 void debug_render(debug_renderer_t* dbg, id encoder, simd_float4x4 view_proj, bool depth_test);
 

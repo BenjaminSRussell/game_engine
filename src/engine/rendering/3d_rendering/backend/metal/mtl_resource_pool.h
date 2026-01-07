@@ -57,6 +57,12 @@ void metal_pool_return_texture(metal_resource_pool_t* pool, metal_texture_t* tex
 /* Cleanup unused resources that have been in the pool longer than max_age_frames */
 void metal_pool_cleanup(metal_resource_pool_t* pool, uint32_t max_age_frames);
 
+/* Handle memory pressure by evicting LRU resources */
+void metal_pool_handle_memory_pressure(metal_resource_pool_t* pool, size_t target_bytes_to_free);
+
+/* Defragment pool arrays (compact empty slots) */
+void metal_pool_defragment(metal_resource_pool_t* pool);
+
 /* Get pool statistics */
 metal_pool_stats_t metal_pool_get_stats(metal_resource_pool_t* pool);
 

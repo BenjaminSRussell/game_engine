@@ -240,6 +240,252 @@ void mesh_calculate_tangents(mesh_t* mesh) {
     // TODO: Implement MikkTSpace or simple tangent gen
 }
 
+// ----------------------------------------------------------------------------
+// Advanced Bounds Calculations
+// ----------------------------------------------------------------------------
+
+void mesh_calculate_obb(mesh_t* mesh) {
+    if (!mesh || mesh->vertex_count == 0) {
+        memset(&mesh->obb, 0, sizeof(mesh_obb_t));
+        return;
+    }
+
+    // Calculate centroid first
+    Vec3 centroid = mesh_calculate_centroid(mesh);
+    
+    // Build covariance matrix
+    f32 cov[3][3] = {{0}};
+    for (u32 i = 0; i < mesh->vertex_count; ++i) {
+        Vec3 p = vec3_sub(mesh->vertices[i].position, centroid);
+        cov[0][0] += p.x * p.x;
+        cov[0][1] += p.x * p.y;
+        cov[0][2] += p.x * p.z;
+        cov[1][1] += p.y * p.y;
+        cov[1][2] += p.y * p.z;
+        cov[2][2] += p.z * p.z;
+    }
+    cov[1][0] = cov[0][1];
+    cov[2][0] = cov[0][2];
+    cov[2][1] = cov[1][2];
+
+    // Simplified PCA: Use coordinate axes as approximation
+    // Full PCA requires eigenvalue decomposition which is complex
+    // For now, use world-aligned OBB (same as AABB but in OBB format)
+    mesh->obb.center = centroid;
+    mesh->obb.axes[0] = (Vec3){1, 0, 0};
+    mesh->obb.axes[1] = (Vec3){0, 1, 0};
+    mesh->obb.axes[2] = (Vec3){0, 0, 1};
+
+    // Calculate extents along each axis
+    Vec3 min_extents = {FLT_MAX, FLT_MAX, FLT_MAX};
+    Vec3 max_extents = {-FLT_MAX, -FLT_MAX, -FLT_MAX};
+    
+    for (u32 i = 0; i < mesh->vertex_count; ++i) {
+        Vec3 p = vec3_sub(mesh->vertices[i].position, centroid);
+        if (p.x < min_extents.x) min_extents.x = p.x;
+        if (p.y < min_extents.y) min_extents.y = p.y;
+        if (p.z < min_extents.z) min_extents.z = p.z;
+        if (p.x > max_extents.x) max_extents.x = p.x;
+        if (p.y > max_extents.y) max_extents.y = p.y;
+        if (p.z > max_extents.z) max_extents.z = p.z;
+    }
+    
+    mesh->obb.extents.x = (max_extents.x - min_extents.x) * 0.5f;
+    mesh->obb.extents.y = (max_extents.y - min_extents.y) * 0.5f;
+    mesh->obb.extents.z = (max_extents.z - min_extents.z) * 0.5f;
+}
+
+Vec3 mesh_calculate_centroid(const mesh_t* mesh) {
+    Vec3 centroid = {0, 0, 0};
+    if (!mesh || mesh->vertex_count == 0) {
+        return centroid;
+    }
+
+    for (u32 i = 0; i < mesh->vertex_count; ++i) {
+        centroid = vec3_add(centroid, mesh->vertices[i].position);
+    }
+    
+    return vec3_mul(centroid, 1.0f / (f32)mesh->vertex_count);
+}
+
+void mesh_update_bounds_transform(mesh_t* mesh, const float* transform_matrix) {
+    // NOTE: This is a simplified version - full implementation needs matrix math
+    // For now, just mark bounds as dirty
+    if (mesh) {
+        mesh->bounds_dirty = true;
+    }
+}
+
+// ----------------------------------------------------------------------------
+// Statistics
+// ----------------------------------------------------------------------------
+
+void mesh_calculate_stats(mesh_t* mesh) {
+    if (!mesh) return;
+    
+    mesh->stats.vertex_count = mesh->vertex_count;
+    mesh->stats.index_count = mesh->index_count;
+    mesh->stats.triangle_count = mesh->index_count / 3;
+    
+    // Calculate surface area (sum of triangle areas)
+    mesh->stats.surface_area = 0.0f;
+    for (u32 i = 0; i < mesh->index_count; i += 3) {
+        u32 i0 = mesh->indices[i];
+        u32 i1 = mesh->indices[i + 1];
+        u32 i2 = mesh->indices[i + 2];
+        
+        Vec3 v0 = mesh->vertices[i0].position;
+        Vec3 v1 = mesh->vertices[i1].position;
+        Vec3 v2 = mesh->vertices[i2].position;
+        
+        Vec3 edge1 = vec3_sub(v1, v0);
+        Vec3 edge2 = vec3_sub(v2, v0);
+        Vec3 cross = vec3_cross(edge1, edge2);
+        f32 area = vec3_length(cross) * 0.5f;
+        mesh->stats.surface_area += area;
+    }
+    
+    // Calculate memory usage
+    mesh->stats.cpu_memory_bytes = 
+        sizeof(mesh_t) +
+        mesh->vertex_capacity * sizeof(vertex_t) +
+        mesh->index_capacity * sizeof(u32) +
+        mesh->submesh_count * sizeof(submesh_t);
+    
+    // GPU memory (vertex + index buffers)
+    mesh->stats.gpu_memory_bytes = 
+        mesh->vertex_count * sizeof(vertex_t) +
+        mesh->index_count * sizeof(u32);
+    
+    mesh->stats_dirty = false;
+}
+
+u32 mesh_get_triangle_count(const mesh_t* mesh) {
+    return mesh ? mesh->index_count / 3 : 0;
+}
+
+u64 mesh_get_memory_usage(const mesh_t* mesh) {
+    if (!mesh) return 0;
+    return mesh->stats.cpu_memory_bytes + mesh->stats.gpu_memory_bytes;
+}
+
+// ----------------------------------------------------------------------------
+// Cloning
+// ----------------------------------------------------------------------------
+
+mesh_t* mesh_clone(const mesh_t* mesh) {
+    if (!mesh) return NULL;
+    
+    mesh_t* clone = mesh_create(mesh->name);
+    if (!clone) return NULL;
+    
+    // Copy flags and metadata
+    clone->flags = mesh->flags;
+    clone->lod_count = mesh->lod_count;
+    memcpy(clone->lods, mesh->lods, sizeof(mesh_lod_t) * MESH_MAX_LODS);
+    clone->material_count = mesh->material_count;
+    memcpy(clone->material_ids, mesh->material_ids, sizeof(u32) * MESH_MAX_MATERIALS);
+    
+    // Allocate and copy vertex/index data
+    if (mesh->vertex_count > 0) {
+        mesh_allocate_buffers(clone, mesh->vertex_count, mesh->index_count);
+        memcpy(clone->vertices, mesh->vertices, sizeof(vertex_t) * mesh->vertex_count);
+        memcpy(clone->indices, mesh->indices, sizeof(u32) * mesh->index_count);
+        clone->vertex_count = mesh->vertex_count;
+        clone->index_count = mesh->index_count;
+    }
+    
+    // Copy submeshes
+    for (u32 i = 0; i < mesh->submesh_count; ++i) {
+        mesh_add_submesh(clone, mesh->submeshes[i]);
+    }
+    
+    // Copy bounds and stats
+    clone->bounds = mesh->bounds;
+    clone->obb = mesh->obb;
+    clone->stats = mesh->stats;
+    
+    return clone;
+}
+
+// ----------------------------------------------------------------------------
+// Enhanced Validation
+// ----------------------------------------------------------------------------
+
+mesh_validation_error_e mesh_validate_detailed(const mesh_t* mesh, char* error_msg, u32 msg_size) {
+    if (!mesh) {
+        if (error_msg && msg_size > 0) {
+            strncpy(error_msg, "Mesh pointer is NULL", msg_size - 1);
+            error_msg[msg_size - 1] = '\0';
+        }
+        return MESH_VALIDATION_NULL_PTR;
+    }
+    
+    if (mesh->vertex_count == 0 || !mesh->vertices) {
+        if (error_msg && msg_size > 0) {
+            snprintf(error_msg, msg_size, "Mesh '%s' has no vertices", mesh->name);
+        }
+        return MESH_VALIDATION_NO_VERTICES;
+    }
+    
+    if (mesh->index_count == 0 || !mesh->indices) {
+        if (error_msg && msg_size > 0) {
+            snprintf(error_msg, msg_size, "Mesh '%s' has no indices", mesh->name);
+        }
+        return MESH_VALIDATION_NO_INDICES;
+    }
+    
+    // Validate indices are in range
+    for (u32 i = 0; i < mesh->index_count; ++i) {
+        if (mesh->indices[i] >= mesh->vertex_count) {
+            if (error_msg && msg_size > 0) {
+                snprintf(error_msg, msg_size, 
+                    "Mesh '%s' has invalid index %u at position %u (vertex count: %u)",
+                    mesh->name, mesh->indices[i], i, mesh->vertex_count);
+            }
+            return MESH_VALIDATION_INVALID_INDEX;
+        }
+    }
+    
+    // Check for degenerate triangles
+    for (u32 i = 0; i < mesh->index_count; i += 3) {
+        u32 i0 = mesh->indices[i];
+        u32 i1 = mesh->indices[i + 1];
+        u32 i2 = mesh->indices[i + 2];
+        
+        if (i0 == i1 || i1 == i2 || i0 == i2) {
+            if (error_msg && msg_size > 0) {
+                snprintf(error_msg, msg_size, 
+                    "Mesh '%s' has degenerate triangle at index %u", 
+                    mesh->name, i);
+            }
+            return MESH_VALIDATION_DEGENERATE_TRIANGLE;
+        }
+    }
+    
+    // Validate normals
+    for (u32 i = 0; i < mesh->vertex_count; ++i) {
+        f32 len_sq = vec3_dot(mesh->vertices[i].normal, mesh->vertices[i].normal);
+        if (len_sq < 0.9f || len_sq > 1.1f) { // Allow small tolerance
+            if (error_msg && msg_size > 0) {
+                snprintf(error_msg, msg_size, 
+                    "Mesh '%s' has invalid normal at vertex %u (length^2: %.3f)", 
+                    mesh->name, i, len_sq);
+            }
+            return MESH_VALIDATION_INVALID_NORMAL;
+        }
+    }
+    
+    if (error_msg && msg_size > 0) {
+        error_msg[0] = '\0';
+    }
+    return MESH_VALIDATION_OK;
+}
+
+bool mesh_validate(const mesh_t* mesh) {
+    return mesh_validate_detailed(mesh, NULL, 0) == MESH_VALIDATION_OK;
+}
+
 bool mesh_upload(mesh_t* mesh) {
     // TODO: Call into GPU backend
     // mesh->is_uploaded = true; 
@@ -251,19 +497,29 @@ void mesh_unload(mesh_t* mesh) {
     // mesh->is_uploaded = false;
 }
 
+bool mesh_update_gpu(mesh_t* mesh) {
+    // TODO: Update dynamic mesh data on GPU
+    return true;
+}
+
 void mesh_print_stats(const mesh_t* mesh) {
     if (!mesh) return;
+    
+    // Update stats if dirty
+    if (mesh->stats_dirty) {
+        mesh_calculate_stats((mesh_t*)mesh);
+    }
+    
     LOG_INFO("Mesh Stats - Name: %s, ID: %d", mesh->name, mesh->id);
-    LOG_INFO("  Vertices: %d, Indices: %d", mesh->vertex_count, mesh->index_count);
+    LOG_INFO("  Vertices: %d, Indices: %d, Triangles: %d", 
+        mesh->stats.vertex_count, mesh->stats.index_count, mesh->stats.triangle_count);
+    LOG_INFO("  Surface Area: %.2f, Volume: %.2f", 
+        mesh->stats.surface_area, mesh->stats.volume);
+    LOG_INFO("  CPU Memory: %llu bytes, GPU Memory: %llu bytes", 
+        mesh->stats.cpu_memory_bytes, mesh->stats.gpu_memory_bytes);
     LOG_INFO("  Submeshes: %d, Materials: %d", mesh->submesh_count, mesh->material_count);
     LOG_INFO("  Bounds Center: (%.2f, %.2f, %.2f) Radius: %.2f", 
         mesh->bounds.sphere_center.x, mesh->bounds.sphere_center.y, mesh->bounds.sphere_center.z, 
         mesh->bounds.sphere_radius);
 }
 
-bool mesh_validate(const mesh_t* mesh) {
-    if (!mesh) return false;
-    if (mesh->vertex_count > 0 && !mesh->vertices) return false;
-    if (mesh->index_count > 0 && !mesh->indices) return false;
-    return true;
-}

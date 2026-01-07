@@ -46,6 +46,22 @@ metal_device_t* metal_device_create_system_default(void);
 metal_device_t* metal_device_get_default(void);
 
 /**
+ * Retrieves the underlying MTLDevice (id<MTLDevice>) as a void*.
+ * Useful for APIs that require the raw Metal device object.
+ * @param dev Pointer to the device wrapper.
+ * @return The raw MTLDevice pointer (void*), or NULL.
+ */
+void* metal_device_get_mtl_device(metal_device_t* dev);
+
+/**
+ * Retrieves the underlying MTLDevice (id<MTLDevice>) as a void*.
+ * Useful for APIs that require the raw Metal device object.
+ * @param dev Pointer to the device wrapper.
+ * @return The raw MTLDevice pointer (void*), or NULL.
+ */
+void* metal_device_get_mtl_device(metal_device_t* dev);
+
+/**
  * Destroys the metal device and releases resources.
  * For the singleton, this should be called at application shutdown.
  * @param dev Pointer to the device to destroy.
@@ -77,6 +93,48 @@ void metal_device_get_memory_info(metal_device_t* dev, mtl_memory_info_t* out_in
  * Checks if the device supports ray tracing.
  */
 bool metal_device_supports_raytracing(metal_device_t* dev);
+
+/* ============================================================================
+ * MULTI-QUEUE SUPPORT
+ * ============================================================================ */
+
+typedef void* mtl_command_queue_t; /* Maps to id<MTLCommandQueue> */
+
+/**
+ * Creates a new command queue with optional priority.
+ * @param dev Pointer to the device.
+ * @param priority Queue priority (0 = normal, 1 = high). Not all devices support priority.
+ * @return The command queue.
+ */
+mtl_command_queue_t metal_device_create_command_queue(metal_device_t* dev, int priority);
+
+/**
+ * Destroys a command queue.
+ * @param queue The queue to destroy.
+ */
+void metal_command_queue_destroy(mtl_command_queue_t queue);
+
+/**
+ * Creates a command buffer from a specific queue.
+ * @param queue The command queue.
+ * @return A new command buffer.
+ */
+mtl_command_buffer_t metal_command_queue_create_command_buffer(mtl_command_queue_t queue);
+
+/**
+ * Sets a label on the command queue for debugging.
+ * @param queue The command queue.
+ * @param label The label string.
+ */
+void metal_command_queue_set_label(mtl_command_queue_t queue, const char* label);
+
+/**
+ * Gets the device's default command queue.
+ * @param dev Pointer to the device.
+ * @return The default command queue.
+ */
+mtl_command_queue_t metal_device_get_default_queue(metal_device_t* dev);
+
 
 #ifdef __cplusplus
 }

@@ -99,6 +99,21 @@ void metal_render_encoder_set_scissor_rect(mtl_render_command_encoder_t encoder,
 void metal_render_encoder_set_cull_mode(mtl_render_command_encoder_t encoder, int cull_mode);
 void metal_render_encoder_set_front_facing_winding(mtl_render_command_encoder_t encoder, int winding);
 
+/* Advanced State */
+void metal_render_encoder_set_depth_bias(mtl_render_command_encoder_t encoder, float depth_bias, float slope_scale, float clamp);
+void metal_render_encoder_set_blend_color(mtl_render_command_encoder_t encoder, float red, float green, float blue, float alpha);
+void metal_render_encoder_set_stencil_reference_value(mtl_render_command_encoder_t encoder, uint32_t reference_value);
+void metal_render_encoder_set_stencil_front_back_reference_value(mtl_render_command_encoder_t encoder, uint32_t front_reference, uint32_t back_reference);
+
+/* Debugging & Labels */
+void metal_render_encoder_push_debug_group(mtl_render_command_encoder_t encoder, const char* label);
+void metal_render_encoder_pop_debug_group(mtl_render_command_encoder_t encoder);
+void metal_render_encoder_insert_debug_signpost(mtl_render_command_encoder_t encoder, const char* label);
+
+/* Resource Usage (for Argument Buffers) */
+void metal_render_encoder_use_resource(mtl_render_command_encoder_t encoder, void* resource, int usage);
+void metal_render_encoder_use_heap(mtl_render_command_encoder_t encoder, void* heap);
+
 /* Drawing */
 void metal_render_encoder_draw_primitives(mtl_render_command_encoder_t encoder, mtl_draw_primitives_args_t args);
 void metal_render_encoder_draw_indexed_primitives(mtl_render_command_encoder_t encoder, mtl_draw_indexed_primitives_args_t args);
@@ -106,6 +121,55 @@ void metal_render_encoder_draw_primitives_indirect(mtl_render_command_encoder_t 
 void metal_render_encoder_draw_indexed_primitives_indirect(mtl_render_command_encoder_t encoder, mtl_primitive_type_t primitiveType, mtl_index_type_t indexType, void* indexBuffer, unsigned long indexBufferOffset, void* indirectBuffer, unsigned long indirectBufferOffset);
 void metal_render_encoder_set_visibility_result_mode(mtl_render_command_encoder_t encoder, mtl_visibility_result_mode_t mode, unsigned long offset);
 void metal_render_encoder_memory_barrier(mtl_render_command_encoder_t encoder, void* resources, unsigned long count);
+
+/* ============================================================================
+ * TILE SHADING (Apple Silicon)
+ * ============================================================================ */
+
+/**
+ * Sets a tile buffer (tile memory) for tile shaders (Apple Silicon).
+ * @param encoder The render encoder.
+ * @param buffer The buffer to bind to tile memory.
+ * @param offset The offset into the buffer.
+ * @param index The tile buffer index.
+ */
+void metal_render_encoder_set_tile_buffer(mtl_render_command_encoder_t encoder, void* buffer, unsigned long offset, unsigned long index);
+
+/**
+ * Sets a tile texture for tile shaders (Apple Silicon).
+ * @param encoder The render encoder.
+ * @param texture The texture to bind to tile memory.
+ * @param index The tile texture index.
+ */
+void metal_render_encoder_set_tile_texture(mtl_render_command_encoder_t encoder, void* texture, unsigned long index);
+
+/**
+ * Dispatches tile shader threadgroups (Apple Silicon).
+ * @param encoder The render encoder.
+ * @param threadsPerTile Number of threads per tile (x, y, z).
+ */
+void metal_render_encoder_dispatch_threads_per_tile(mtl_render_command_encoder_t encoder, unsigned long threadsPerTile[3]);
+
+/* ============================================================================
+ * CONDITIONAL RENDERING
+ * ============================================================================ */
+
+/**
+ * Begins conditional rendering based on a visibility buffer.
+ * Commands are only executed if the visibility test passes.
+ * @param encoder The render encoder.
+ * @param buffer The visibility result buffer.
+ * @param offset The offset in the buffer.
+ * @param comparison_value The value to compare against (for boolean mode).
+ */
+void metal_render_encoder_begin_conditional_rendering(mtl_render_command_encoder_t encoder, void* buffer, unsigned long offset, uint64_t comparison_value);
+
+/**
+ * Ends conditional rendering.
+ * @param encoder The render encoder.
+ */
+void metal_render_encoder_end_conditional_rendering(mtl_render_command_encoder_t encoder);
+
 
 /* ============================================================================
  * COMPUTE ENCODER API
@@ -120,6 +184,16 @@ void metal_compute_encoder_set_buffer(mtl_compute_command_encoder_t encoder, voi
 void metal_compute_encoder_set_texture(mtl_compute_command_encoder_t encoder, void* texture, unsigned long index);
 void metal_compute_encoder_set_sampler_state(mtl_compute_command_encoder_t encoder, void* sampler, unsigned long index);
 void metal_compute_encoder_set_threadgroup_memory_length(mtl_compute_command_encoder_t encoder, unsigned long length, unsigned long index);
+
+/* Debugging & Labels */
+void metal_compute_encoder_push_debug_group(mtl_compute_command_encoder_t encoder, const char* label);
+void metal_compute_encoder_pop_debug_group(mtl_compute_command_encoder_t encoder);
+void metal_compute_encoder_insert_debug_signpost(mtl_compute_command_encoder_t encoder, const char* label);
+
+/* Resource Usage (for Argument Buffers) */
+void metal_compute_encoder_use_resource(mtl_compute_command_encoder_t encoder, void* resource, int usage);
+void metal_compute_encoder_use_heap(mtl_compute_command_encoder_t encoder, void* heap);
+void metal_compute_encoder_set_buffer_offset(mtl_compute_command_encoder_t encoder, unsigned long offset, unsigned long index);
 
 /* Dispatch */
 void metal_compute_encoder_dispatch_threadgroups(mtl_compute_command_encoder_t encoder, mtl_dispatch_threadgroups_args_t args);

@@ -1,6 +1,6 @@
 /*
  * mtl_sampler.h
- * Metal samplers
+ * Metal sampler states
  *
  * Part of the Platform subsystem
  * Advanced 3D Rendering Engine
@@ -13,52 +13,138 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#ifdef __OBJC__
+#import <Metal/Metal.h>
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* ============================================================================
+ * FORWARD DECLARATIONS
+ * ============================================================================ */
+
+typedef struct metal_device metal_device_t;
+
+/* ============================================================================
+ * ENUMS
+ * ============================================================================ */
+
+typedef enum metal_filter_mode {
+    METAL_FILTER_NEAREST = 0,
+    METAL_FILTER_LINEAR = 1
+} metal_filter_mode_t;
+
+typedef enum metal_address_mode {
+    METAL_ADDRESS_CLAMP_TO_EDGE = 0,
+    METAL_ADDRESS_REPEAT = 1,
+    METAL_ADDRESS_MIRROR_REPEAT = 2,
+    METAL_ADDRESS_CLAMP_TO_ZERO = 3,
+    METAL_ADDRESS_CLAMP_TO_BORDER = 4
+} metal_address_mode_t;
+
+typedef enum metal_compare_function {
+    METAL_COMPARE_NEVER = 0,
+    METAL_COMPARE_LESS = 1,
+    METAL_COMPARE_EQUAL = 2,
+    METAL_COMPARE_LESS_EQUAL = 3,
+    METAL_COMPARE_GREATER = 4,
+    METAL_COMPARE_NOT_EQUAL = 5,
+    METAL_COMPARE_GREATER_EQUAL = 6,
+    METAL_COMPARE_ALWAYS = 7
+} metal_compare_function_t;
+
+typedef enum metal_border_color {
+    METAL_BORDER_COLOR_TRANSPARENT_BLACK = 0,
+    METAL_BORDER_COLOR_OPAQUE_BLACK = 1,
+    METAL_BORDER_COLOR_OPAQUE_WHITE = 2
+} metal_border_color_t;
+
+/* ============================================================================
  * TYPES
  * ============================================================================ */
 
-typedef struct platform_mtl_sampler_handle {
-    uint32_t id;
-} platform_mtl_sampler_handle_t;
+typedef struct metal_sampler {
+#ifdef __OBJC__
+    id<MTLSamplerState> sampler;
+#else
+    void* sampler;
+#endif
+    uint32_t hash;  // For deduplication
+    char label[64];
+} metal_sampler_t;
 
-typedef struct platform_mtl_sampler_desc {
-    uint32_t flags;
-    void* user_data;
-} platform_mtl_sampler_desc_t;
+typedef struct metal_sampler_desc {
+    metal_filter_mode_t min_filter;
+    metal_filter_mode_t mag_filter;
+    metal_filter_mode_t mip_filter;
+    
+    metal_address_mode_t address_mode_u;
+    metal_address_mode_t address_mode_v;
+    metal_address_mode_t address_mode_w;
+    
+    float min_lod;
+    float max_lod;
+    float lod_bias;
+    
+    uint32_t max_anisotropy;  // 1 = no aniso, max typically 16
+    
+    metal_compare_function_t compare_function;
+    bool compare_enabled;  // For shadow sampling
+    
+    metal_border_color_t border_color;
+    
+    bool normalized_coordinates;  // true = [0,1], false = [0, size]
+    
+    const char* label;
+} metal_sampler_desc_t;
 
-typedef struct platform_mtl_sampler_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} platform_mtl_sampler_info_t;
+typedef struct metal_sampler_cache_stats {
+    uint32_t total_samplers;
+    uint32_t cache_hits;
+    uint32_t cache_misses;
+    size_t memory_used;
+} metal_sampler_cache_stats_t;
 
 /* ============================================================================
- * API
+ * API - Sampler Lifecycle
  * ============================================================================ */
 
-/* Initialization */
-int platform_mtl_sampler_init(void);
-void platform_mtl_sampler_shutdown(void);
+/* Create sampler (with automatic caching/deduplication) */
+metal_sampler_t* metal_sampler_create(metal_device_t* device, const metal_sampler_desc_t* desc);
 
-/* Lifecycle */
-int platform_mtl_sampler_create(platform_mtl_sampler_handle_t* out_handle, const platform_mtl_sampler_desc_t* desc);
-void platform_mtl_sampler_destroy(platform_mtl_sampler_handle_t handle);
+/* Destroy sampler (decrements ref count, may not actually destroy if cached) */
+void metal_sampler_destroy(metal_sampler_t* sampler);
 
-/* Operations */
-int platform_mtl_sampler_update(platform_mtl_sampler_handle_t handle, const void* data, size_t size);
-bool platform_mtl_sampler_is_valid(platform_mtl_sampler_handle_t handle);
-int platform_mtl_sampler_get_info(platform_mtl_sampler_handle_t handle, platform_mtl_sampler_info_t* out_info);
-void platform_mtl_sampler_mark_dirty(platform_mtl_sampler_handle_t handle);
-int platform_mtl_sampler_process_pending(void);
+/* ============================================================================
+ * API - Predefined Samplers
+ * ============================================================================ */
 
-/* Statistics */
-uint32_t platform_mtl_sampler_get_count(void);
-size_t platform_mtl_sampler_get_memory_usage(void);
-void platform_mtl_sampler_debug_print(void);
+/* Point sampling, clamped */
+metal_sampler_t* metal_sampler_create_point_clamp(metal_device_t* device);
+
+/* Linear filtering, clamped */
+metal_sampler_t* metal_sampler_create_linear_clamp(metal_device_t* device);
+
+/* Linear filtering, repeating */
+metal_sampler_t* metal_sampler_create_linear_repeat(metal_device_t* device);
+
+/* Anisotropic filtering */
+metal_sampler_t* metal_sampler_create_anisotropic(metal_device_t* device, uint32_t max_aniso);
+
+/* Shadow sampler (comparison enabled) */
+metal_sampler_t* metal_sampler_create_shadow(metal_device_t* device);
+
+/* ============================================================================
+ * API - Sampler Cache
+ * ============================================================================ */
+
+/* Clear sampler cache (destroys all cached samplers) */
+void metal_sampler_cache_clear(void);
+
+/* Get cache statistics */
+metal_sampler_cache_stats_t metal_sampler_cache_get_stats(void);
 
 #ifdef __cplusplus
 }

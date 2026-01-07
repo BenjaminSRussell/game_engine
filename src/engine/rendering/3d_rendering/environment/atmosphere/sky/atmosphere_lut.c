@@ -238,6 +238,8 @@ void atmosphere_init(atmosphere_system_t* atmo, metal_device_t* dev_wrapper) {
     atmo->mie_g = 0.8f;
     atmo->sun_direction = simd_normalize(simd_make_float3(0.0f, 1.0f, 0.0f));
     atmo->sun_intensity = simd_make_float3(1.0f, 1.0f, 1.0f) * 10.0f;
+    atmo->moon_direction = simd_normalize(simd_make_float3(0.0f, -0.5f, 1.0f)); // Night position
+    atmo->moon_phase = 0.5f; // Full Moon
 }
 
 void atmosphere_shutdown(atmosphere_system_t* atmo) {
@@ -307,6 +309,45 @@ void atmosphere_precompute(atmosphere_system_t* atmo, id<MTLCommandBuffer> cmd) 
             (MULTISCATTER_WIDTH + threadGroupSize.width - 1) / threadGroupSize.width,
             (MULTISCATTER_HEIGHT + threadGroupSize.height - 1) / threadGroupSize.height,
             1
+        );
+        [encoder dispatchThreadgroups:threadGroups threadsPerThreadgroup:threadGroupSize];
+    }
+    
+    // 4. Sky View LUT
+    if (atmo->skyview_pipeline) {
+        [encoder setComputePipelineState:atmo->skyview_pipeline];
+        [encoder setTexture:atmo->skyview_lut atIndex:0];
+        [encoder setTexture:atmo->transmittance_lut atIndex:1];
+        [encoder setTexture:atmo->scattering_lut atIndex:2];
+        [encoder setTexture:atmo->multiscatter_lut atIndex:3];
+        [encoder setBytes:&params length:sizeof(params) atIndex:0];
+        // Note: SkyView usually needs camera pos, passed via buffer 1. 
+        // In precompute we might not have it, so this dispatch might produce invalid data until first frame update.
+        // We'll dispatch 1,1,1 just to clear it or similar, or full dispatch if we assume 0,0,0 camera.
+        
+        MTLSize threadGroupSize = MTLSizeMake(8, 8, 1);
+        MTLSize threadGroups = MTLSizeMake(
+            (SKYVIEW_WIDTH + threadGroupSize.width - 1) / threadGroupSize.width,
+            (SKYVIEW_HEIGHT + threadGroupSize.height - 1) / threadGroupSize.height,
+            1
+        );
+        [encoder dispatchThreadgroups:threadGroups threadsPerThreadgroup:threadGroupSize];
+    }
+    
+    // 5. Camera Volume LUT
+    if (atmo->camera_volume_pipeline) {
+        [encoder setComputePipelineState:atmo->camera_volume_pipeline];
+        [encoder setTexture:atmo->camera_volume_lut atIndex:0];
+        [encoder setTexture:atmo->transmittance_lut atIndex:1];
+        [encoder setTexture:atmo->scattering_lut atIndex:2];
+        [encoder setBytes:&params length:sizeof(params) atIndex:0];
+        // Buffer 1 (Uniforms) needed for camera pos. 
+        
+        MTLSize threadGroupSize = MTLSizeMake(8, 8, 4);
+        MTLSize threadGroups = MTLSizeMake(
+            (CAMERA_VOLUME_WIDTH + threadGroupSize.width - 1) / threadGroupSize.width,
+            (CAMERA_VOLUME_HEIGHT + threadGroupSize.height - 1) / threadGroupSize.height,
+            (CAMERA_VOLUME_DEPTH + threadGroupSize.depth - 1) / threadGroupSize.depth
         );
         [encoder dispatchThreadgroups:threadGroups threadsPerThreadgroup:threadGroupSize];
     }

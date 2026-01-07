@@ -212,6 +212,15 @@ typedef struct metal_render_pipeline {
     uint64_t hash;
 } metal_render_pipeline_t;
 
+typedef struct metal_render_pipeline_stats {
+    uint64_t creation_time_ns;  // Nanoseconds to compile
+    size_t estimated_memory_bytes;
+    bool has_vertex_shader;
+    bool has_fragment_shader;
+    bool uses_depth_testing;
+    bool uses_blending;
+} metal_render_pipeline_stats_t;
+
 /* ============================================================================
  * COMPUTE PIPELINE
  * ============================================================================ */
@@ -231,6 +240,12 @@ typedef struct metal_compute_pipeline {
     uint32_t threadgroup_size_z;
     uint64_t hash;
 } metal_compute_pipeline_t;
+
+typedef struct metal_compute_pipeline_stats {
+    uint64_t creation_time_ns;
+    size_t estimated_memory_bytes;
+    uint32_t max_total_threads_per_threadgroup;
+} metal_compute_pipeline_stats_t;
 
 /* ============================================================================
  * PIPELINE CACHE
@@ -335,6 +350,11 @@ metal_render_pipeline_t* metal_create_render_pipeline(
 
 void metal_destroy_render_pipeline(metal_render_pipeline_t* pipeline);
 
+/* Get statistics for a render pipeline */
+metal_render_pipeline_stats_t metal_render_pipeline_get_stats(
+    const metal_render_pipeline_t* pipeline
+);
+
 /* ============================================================================
  * API - COMPUTE PIPELINE
  * ============================================================================ */
@@ -345,6 +365,22 @@ metal_compute_pipeline_t* metal_create_compute_pipeline(
 );
 
 void metal_destroy_compute_pipeline(metal_compute_pipeline_t* pipeline);
+
+/* Validate compute pipeline descriptor against device capabilities */
+bool metal_compute_pipeline_validate(
+    MTLDeviceRef device,
+    const metal_compute_pipeline_desc_t* desc,
+    char* error_message,
+    size_t error_message_size
+);
+
+/* Get maximum threads per threadgroup for device */
+uint32_t metal_get_max_threads_per_threadgroup(MTLDeviceRef device);
+
+/* Get statistics for a compute pipeline */
+metal_compute_pipeline_stats_t metal_compute_pipeline_get_stats(
+    const metal_compute_pipeline_t* pipeline
+);
 
 /* ============================================================================
  * API - PIPELINE CACHE
@@ -371,6 +407,15 @@ metal_pipeline_cache_stats_t metal_pipeline_cache_get_stats(const metal_pipeline
 
 bool metal_pipeline_cache_save_to_disk(const metal_pipeline_cache_t* cache, const char* path);
 bool metal_pipeline_cache_load_from_disk(metal_pipeline_cache_t* cache, MTLDeviceRef device, const char* path);
+
+/* Invalidate (remove) a specific pipeline from cache by hash */
+bool metal_pipeline_cache_invalidate_by_hash(
+    metal_pipeline_cache_t* cache,
+    uint64_t hash
+);
+
+/* Invalidate all pipelines in cache */
+void metal_pipeline_cache_invalidate_all(metal_pipeline_cache_t* cache);
 
 /* ============================================================================
  * UTILITIES

@@ -220,9 +220,150 @@ void metal_pool_cleanup(metal_resource_pool_t* pool, uint32_t max_age_frames) {
     
     pool->current_frame++;
     
-    // Simple cleanup: if not used for N frames, destroy
-    // TODO: Implement actual cleanup logic here
-    // For now we just keep them until pool destroy
+    // Age-based cleanup for buffers
+    for (uint32_t i = 0; i < pool->buffer_count; ) {
+        cached_buffer_t* cached = &pool->buffers[i];
+        if (!cached->in_use) {
+            uint32_t age = pool->current_frame - cached->last_used_frame;
+            if (age > max_age_frames) {
+                // Evict old resource
+                metal_buffer_destroy(cached->buffer);
+                pool->stats.total_memory_managed -= cached->buffer->size;
+                pool->stats.pooled_buffers--;
+                
+                // Swap with last element and shrink
+                if (i < pool->buffer_count - 1) {
+                    pool->buffers[i] = pool->buffers[pool->buffer_count - 1];
+                }
+                pool->buffer_count--;
+                continue;  // Don't increment i, check swapped element
+            }
+        }
+        i++;
+    }
+    
+    // Age-based cleanup for textures
+    for (uint32_t i = 0; i < pool->texture_count; ) {
+        cached_texture_t* cached = &pool->textures[i];
+        if (!cached->in_use) {
+            uint32_t age = pool->current_frame - cached->last_used_frame;
+            if (age > max_age_frames) {
+                // Evict old resource
+                metal_texture_destroy(cached->texture);
+                pool->stats.pooled_textures--;
+                
+                // Swap with last element and shrink
+                if (i < pool->texture_count - 1) {
+                    pool->textures[i] = pool->textures[pool->texture_count - 1];
+                }
+                pool->texture_count--;
+                continue;
+            }
+        }
+        i++;
+    }
+}
+
+/* Advanced pool management */
+void metal_pool_handle_memory_pressure(metal_resource_pool_t* pool, size_t target_bytes_to_free) {
+    if (!pool || target_bytes_to_free == 0) return;
+    
+    size_t freed = 0;
+    
+    // Sort buffers by last used (LRU first)
+    // Simple bubble sort (good enough for pool sizes)
+    for (uint32_t i = 0; i < pool->buffer_count - 1; i++) {
+        for (uint32_t j = i + 1; j < pool->buffer_count; j++) {
+            if (!pool->buffers[i].in_use && !pool->buffers[j].in_use) {
+                if (pool->buffers[j].last_used_frame < pool->buffers[i].last_used_frame) {
+                    cached_buffer_t temp = pool->buffers[i];
+                    pool->buffers[i] = pool->buffers[j];
+                    pool->buffers[j] = temp;
+                }
+            }
+        }
+    }
+    
+    // Evict LRU buffers until target met
+    for (uint32_t i = 0; i < pool->buffer_count && freed < target_bytes_to_free; ) {
+        cached_buffer_t* cached = &pool->buffers[i];
+        if (!cached->in_use) {
+            freed += cached->buffer->size;
+            metal_buffer_destroy(cached->buffer);
+            pool->stats.total_memory_managed -= cached->buffer->size;
+            pool->stats.pooled_buffers--;
+            
+            // Swap and shrink
+            if (i < pool->buffer_count - 1) {
+                pool->buffers[i] = pool->buffers[pool->buffer_count - 1];
+            }
+            pool->buffer_count--;
+            continue;
+        }
+        i++;
+    }
+    
+    // If still need more, evict LRU textures
+    // Sort textures by last used
+    for (uint32_t i = 0; i < pool->texture_count - 1; i++) {
+        for (uint32_t j = i + 1; j < pool->texture_count; j++) {
+            if (!pool->textures[i].in_use && !pool->textures[j].in_use) {
+                if (pool->textures[j].last_used_frame < pool->textures[i].last_used_frame) {
+                    cached_texture_t temp = pool->textures[i];
+                    pool->textures[i] = pool->textures[j];
+                    pool->textures[j] = temp;
+                }
+            }
+        }
+    }
+    
+    // Evict LRU textures
+    for (uint32_t i = 0; i < pool->texture_count && freed < target_bytes_to_free; ) {
+        cached_texture_t* cached = &pool->textures[i];
+        if (!cached->in_use) {
+            // Estimate texture size (rough calculation)
+            size_t tex_size = cached->texture->width * cached->texture->height * 4;  // Assume RGBA8
+            freed += tex_size;
+            
+            metal_texture_destroy(cached->texture);
+            pool->stats.pooled_textures--;
+            
+            if (i < pool->texture_count - 1) {
+                pool->textures[i] = pool->textures[pool->texture_count - 1];
+            }
+            pool->texture_count--;
+            continue;
+        }
+        i++;
+    }
+}
+
+void metal_pool_defragment(metal_resource_pool_t* pool) {
+    if (!pool) return;
+    
+    // Compact buffer array - move all active buffers to front
+    uint32_t write_idx = 0;
+    for (uint32_t read_idx = 0; read_idx < pool->buffer_count; read_idx++) {
+        if (pool->buffers[read_idx].buffer) {
+            if (write_idx != read_idx) {
+                pool->buffers[write_idx] = pool->buffers[read_idx];
+            }
+            write_idx++;
+        }
+    }
+    pool->buffer_count = write_idx;
+    
+    // Compact texture array
+    write_idx = 0;
+    for (uint32_t read_idx = 0; read_idx < pool->texture_count; read_idx++) {
+        if (pool->textures[read_idx].texture) {
+            if (write_idx != read_idx) {
+                pool->textures[write_idx] = pool->textures[read_idx];
+            }
+            write_idx++;
+        }
+    }
+    pool->texture_count = write_idx;
 }
 
 metal_pool_stats_t metal_pool_get_stats(metal_resource_pool_t* pool) {
@@ -230,3 +371,4 @@ metal_pool_stats_t metal_pool_get_stats(metal_resource_pool_t* pool) {
     metal_pool_stats_t empty = {0};
     return empty;
 }
+

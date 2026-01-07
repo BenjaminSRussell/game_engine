@@ -78,7 +78,11 @@
       "Bash(test_collision )",
       "Bash(test_physics )",
       "Bash(test_vsm )",
-      "Bash(test_world)"
+      "Bash(test_world)",
+      "Bash(chmod:*)",
+      "Bash(cd /Users/benjaminrussell/Desktop/Minecraft\\\\ v2 && gcc:*)",
+      "Bash(file:*)",
+      "Bash(bash -c 'find \"\"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/3d_rendering/materials\"\" -name \"\"*.c\"\" 2>/dev/null | wc -l; find \"\"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/3d_rendering/lighting\"\" -name \"\"*.c\"\" 2>/dev/null | wc -l; find \"\"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/3d_rendering/postprocess\"\" -name \"\"*.c\"\" 2>/dev/null | wc -l')"
     ]
   }
 }

@@ -51,6 +51,16 @@ typedef struct mesh_bounds_t {
     f32    sphere_radius;
 } mesh_bounds_t;
 
+/**
+ * Oriented Bounding Box (OBB)
+ * More accurate than AABB for rotated objects
+ */
+typedef struct mesh_obb_t {
+    Vec3 center;
+    Vec3 extents;     // Half-sizes along each axis
+    Vec3 axes[3];     // Orientation axes (orthonormal basis)
+} mesh_obb_t;
+
 // ----------------------------------------------------------------------------
 // Submesh
 // ----------------------------------------------------------------------------
@@ -79,6 +89,42 @@ typedef struct mesh_lod_t {
 } mesh_lod_t;
 
 // ----------------------------------------------------------------------------
+// Mesh Statistics
+// ----------------------------------------------------------------------------
+
+typedef struct mesh_stats_t {
+    u32 triangle_count;
+    u32 vertex_count;
+    u32 index_count;
+    f32 surface_area;
+    f32 volume;
+    u64 cpu_memory_bytes;
+    u64 gpu_memory_bytes;
+} mesh_stats_t;
+
+// ----------------------------------------------------------------------------
+// Blend Shapes / Morph Targets
+// ----------------------------------------------------------------------------
+
+#define MESH_MAX_BLEND_SHAPES 32
+
+/**
+ * Blend shape stores per-vertex deltas for morphing
+ */
+typedef struct blend_shape_t {
+    char name[64];
+    Vec3* position_deltas;  // Per-vertex position offsets
+    Vec3* normal_deltas;    // Per-vertex normal offsets (optional)
+    u32 vertex_count;
+    f32 weight;             // Current blend weight [0, 1]
+} blend_shape_t;
+
+typedef struct morph_target_t {
+    blend_shape_t shapes[MESH_MAX_BLEND_SHAPES];
+    u32 shape_count;
+} morph_target_t;
+
+// ----------------------------------------------------------------------------
 // Mesh Flags
 // ----------------------------------------------------------------------------
 
@@ -90,7 +136,26 @@ typedef enum mesh_flags_e {
     MESH_FLAG_TRANSPARENT = 1 << 3, // Hint for sorting
     MESH_FLAG_SHADOW_CASTER = 1 << 4,
     MESH_FLAG_SHADOW_RECEIVER = 1 << 5,
+    MESH_FLAG_INSTANCED = 1 << 6,   // Supports GPU instancing
+    MESH_FLAG_HAS_BLEND_SHAPES = 1 << 7,
+    MESH_FLAG_GPU_UPLOADED = 1 << 8, // Currently on GPU
 } mesh_flags_e;
+
+// ----------------------------------------------------------------------------
+// Mesh Validation
+// ----------------------------------------------------------------------------
+
+typedef enum mesh_validation_error_e {
+    MESH_VALIDATION_OK = 0,
+    MESH_VALIDATION_NULL_PTR,
+    MESH_VALIDATION_NO_VERTICES,
+    MESH_VALIDATION_NO_INDICES,
+    MESH_VALIDATION_INVALID_INDEX,
+    MESH_VALIDATION_DEGENERATE_TRIANGLE,
+    MESH_VALIDATION_INVALID_NORMAL,
+    MESH_VALIDATION_INVALID_UV,
+    MESH_VALIDATION_BUFFER_OVERFLOW,
+} mesh_validation_error_e;
 
 // ----------------------------------------------------------------------------
 // Mesh
@@ -127,14 +192,21 @@ typedef struct mesh_t {
     u32 material_count;
 
     mesh_bounds_t bounds;
+    mesh_obb_t obb;
+    mesh_stats_t stats;
 
     // GPU Handles (Platform agnostic ID)
     u32 vertex_buffer_handle;
     u32 index_buffer_handle;
     
+    // Deformation
+    morph_target_t* morph_targets;
+    
     // Internal state
     u32 ref_count;
     u64 last_accessed_frame;
+    bool bounds_dirty;
+    bool stats_dirty;
 
 } mesh_t;
 
