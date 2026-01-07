@@ -6,13 +6,13 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "performance_profiling.h"
+#include "geometry/instancing/performance_profiling.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
 #include <sys/time.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * UTILITIES

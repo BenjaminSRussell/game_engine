@@ -1,4 +1,4 @@
-#include "render_tests.h"
+#include "testing/render_tests.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>

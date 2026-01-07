@@ -1,4 +1,4 @@
-#include "hair_common.h"
+#include "physics/character/hair/hair_common.h"
 
 void hair_simulate_step(id<MTLComputeCommandEncoder> encoder, HairSystem* system, float dt, simd_float3 gravity, simd_float3 wind) {
     if (!system || !system->simulation_pipeline) return;

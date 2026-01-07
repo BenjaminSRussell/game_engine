@@ -7,19 +7,19 @@
 #define lmathlib_c
 #define LUA_LIB
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
 #include <float.h>
 #include <limits.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include "lua.h"
+#include "vendor/lua/lua.h"
 
-#include "lauxlib.h"
-#include "lualib.h"
+#include "vendor/lua/lauxlib.h"
+#include "vendor/lua/lualib.h"
 
 
 #undef PI

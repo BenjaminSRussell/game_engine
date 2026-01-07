@@ -1,0 +1,86 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/perception/visual_cortex.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/planning/goap_planner.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/l_system.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_ai_impl.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/planning/htn_planner.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/speech/speech_synthesizer.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/dungeon_architect.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_scheduling.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/spatial/influence_maps.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/city_grid.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/lsystem_vegetation.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/wfc_3d.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/sense/sensory_memory.c.o
+[  3%] Built target Catch2
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/style_templates.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/sense/sensory_memory.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/speech/speech_synthesizer.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/perception/visual_cortex.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/procedural_advanced/l_system.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/procedural_advanced/wfc_3d.c::::11:11:10:::10:10: fatal error: 'ai/procedural_advanced/wfc_3d.h' file not found: 1:10 fatal error: :'ai/speech/speech_synthesizer.h' file not foundfatal error:  10
+fatal error: 'ai/procedural_advanced/l_system.h' file not found
+:'ai/perception/visual_cortex.h' file not found fatal error: 'ai/sense/sensory_memory.h' file not found
+
+
+    1 | #i    1 | #include     1        1 | 1ncl#inc |  | #"#aui/prlide oiudnclude "ai/procedural_advanced/wfc_3d.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ncl"aecedui /sense/se"ai/perception/visual_conudrarstl_aee dorxvan"caei/spye.h_d/l_seystem.hch"/smem"
+      | 
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ope         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ech_synthesizer.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ry.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+1111 error generated error generated.
+ error generated1 error generated.
+.
+ error generated.
+.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/sense/sensory_memory.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/wfc_3d.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/l_system.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/speech/speech_synthesizer.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/perception/visual_cortex.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:18:16: error: redefinition of enumerator 'BT_SEQUENCE'
+   18 | typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+      |                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:13:16: note: previous definition is here
+   13 | typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+      |                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:18:29: error: redefinition of enumerator 'BT_SELECTOR'
+   18 | typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+      |                             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:13:29: note: previous definition is here
+   13 | typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+      |                             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:18:42: error: redefinition of enumerator 'BT_ACTION'
+   18 | typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+      |                                          ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:13:42: note: previous definition is here
+   13 | typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+      |                                          ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:18:53: error: redefinition of enumerator 'BT_CONDITION'
+   18 | typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+      |                                                     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:13:53: note: previous definition is here
+   13 | typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+      |                                                     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:18:68: error: typedef redefinition with different types ('enum BTNodeType' vs 'enum BTNodeType')
+   18 | typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+      |                                                                    ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:13:68: note: previous definition is here
+   13 | typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+      |                                                                    ^
+5 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc_ai_impl.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/planning/htn_planner.c:409:5: error: expected identifier or '('
+  409 |     return false; // TODO: Pass domain to this function
+      |     ^
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/planning/htn_planner.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/spatial/influence_maps.c:29:32: error: use of undeclared identifier 'cont'
+   29 |             if (dist > radius) cont continue;
+      |                                ^
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/spatial/influence_maps.c.o] Error 1
+[  3%] Built target Catch2WithMain
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

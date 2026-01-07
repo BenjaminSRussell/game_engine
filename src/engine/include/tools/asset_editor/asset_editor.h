@@ -6,7 +6,7 @@
 #include "common.h"
 #include "math/vec3.h"
 #include "math/vec2.h"
-#include <renderer/camera.h>
+#include <include/rendering/camera.h>
 
 #ifdef __cplusplus
 extern "C" {

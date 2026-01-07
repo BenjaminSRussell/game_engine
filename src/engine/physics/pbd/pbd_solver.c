@@ -10,11 +10,11 @@
  * Different behaviors emerge from constraint types, not separate solvers.
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <renderer/vulkan.h> // Include Vulkan renderer definitions
+#include <rendering/vulkan.h> // Include Vulkan renderer definitions
 
 // Vulkan Global State for Physics (Should ideally be in a struct but sticking to pbd_solver scope)
 static VkPipeline g_compute_pipeline = VK_NULL_HANDLE;

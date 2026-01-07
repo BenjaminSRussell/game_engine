@@ -5,12 +5,12 @@
  * Compile with -mfpu=neon (ARMv7) or automatically enabled on AArch64.
  */
 
-#include "simd_math.h"
+#include "core/simd/simd_math.h"
 
 #ifdef SIMD_NEON
 
 #include <arm_neon.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ========================================
 // Single Vector Operations

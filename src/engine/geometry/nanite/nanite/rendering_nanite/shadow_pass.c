@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "shadow_pass.h"
+#include "geometry/nanite/nanite/rendering_nanite/shadow_pass.h"
 #include "../../3d_rendering.h"
 #include <stdint.h>
 #include <stdbool.h>

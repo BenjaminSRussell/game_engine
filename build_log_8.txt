@@ -1,0 +1,371 @@
+-- ========================================
+-- BUILD MODE: Editor (WITH_EDITOR=1)
+-- Building EditorApp with ImGui, tools, and full reflection
+-- ========================================
+-- GLFW3 found and will be linked
+--   glfw3_FOUND: 1
+--   GLFW3_FOUND: 
+--   glfw3_LIBRARIES: 
+--   GLFW3_LIBRARIES: 
+--   GLWF3_INCLUDE_DIRS: 
+--   glfw3_INCLUDE_DIRS: 
+-- Metal shader compilation target configured: compile_instancing_shaders
+-- Detected ARM platform - enabling NEON SIMD
+-- ARM64/Apple Silicon detected, NEON enabled by default
+-- Catch2 found, enabling modern unit tests
+-- G-Buffer tests configured: test_normal_encoding, test_framebuffer, test_gbuffer_resize
+-- Render Graph tests configured: test_frame_graph
+-- Configuring done (0.3s)
+-- Generating done (0.3s)
+-- Build files have been written to: /Users/benjaminrussell/Desktop/Minecraft v2/build
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/frame_interpolation.c.o
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/inverse_kinematics.c.o
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_core.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/gi_denoiser.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_complete.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/neural_animation.c.o
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_impl.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_inference.c:1:10: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/crowd_detour.c:1:10: fatal error: 'ai/navigation_advanced/crowd_detour.h' file not found
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/off_mesh_links.c:1:10: fatal error: 'ai/nav/off_mesh_links.h' file not found
+fatal error: 'ml_inference.h' file not found
+    1 | #include "ai/nav/off_mesh_links.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+    1 | #include "ml_inferenc    1 | e.h"
+      |          ^~~~~~~~~~~~~~~~
+#include "ai/navigation_advanced/crowd_detour.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o] Error 1
+1 error generated.
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o] Error 1
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:17:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:73:5: error: unknown type name 'vec3'
+   73 |     vec3 *waypoints;                 // Path waypoints
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:91:5: error: unknown type name 'vec3'
+   91 |     vec3 current_position;           // Current world position
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:92:5: error: unknown type name 'vec3'
+   92 |     vec3 target_position;           // Target destination
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:93:5: error: unknown type name 'vec3'
+   93 |     vec3 velocity;                  // Current /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.cmovement velocity
+      |     ^
+:14:14: error: static declaration of 'vec3_distance_sq' follows non-static declaration
+   14 | static float vec3_distanc/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:e_sq(const Vec3* a, const Vec3* b) {
+      |              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:126:12: note: previous definition is here
+111:5: error: unknown type name 'vec3'
+  126 | INLINE f32  111 |      vecvec3 predicted_positions[10];    // Predicted future positions
+      |     ^
+3_distance_sq(Vec3 a, Vec3 b) {
+      |            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:115:5: error: unknown type name 'vec3'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:21  115 |     vec3 prediction_:14: error: static declaration of 'vec3_distance' follows non-static declaration
+target;       21 | static floa     // Predt vec3_disticted target locatioance(const Vec3* a, const Vec3* bn
+      |     ^) {
+
+      |              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:124:12: note: previous definition is here
+  124 | INLINE f32 vec3_distance(Vec3 a, Vec3 b) { return vec3_length(vec3_sub(a, b)); }
+      |            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:136:5: error: unknown type name 'vec3'
+  136 |     vec3 group_target;              // Group destination
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:137:5: error: unknown type name 'vec3'
+  137 |     vec3 formation_center;          // Center of formation
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:219:68: error: unknown type name 'vec3'
+  219 | bool ml_navigation_add_static_obstacle(MLNavigationSystem *system, vec3 position, vec3 size);
+      |                                                                    ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:219:83: error: unknown type name 'vec3'
+  219 | bool ml_navigation_add_static_obstacle(MLNavigationSystem *system, vec3 position, vec3 size);
+      |                                                                                   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:220:79: error: unknown type name 'vec3'
+  220 | bool ml_navigation_update_dynamic_obstacles(MLNavigationSystem *system, const vec3 *obstacles, u32 count);
+      |                                                                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:224:70: error: unknown type name 'vec3'
+  224 | f32 ml_navigation_get_terrain_difficulty(MLNavigationSystem *system, vec3 position);
+      |                                                                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:225:69: error: unknown type name 'vec3'
+  225 | bool ml_navigation_is_position_walkable(MLNavigationSystem *system, vec3 position);
+      |                                                                     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:226:66: error: unknown type name 'vec3'
+  226 | bool ml_navigation_has_line_of_sight(MLNavigationSystem *system, vec3 start, vec3 end);
+      |                                                                  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:226:78: error: unknown type name 'vec3'
+  226 | bool ml_navigation_has_line_of_sight(MLNavigationSystem *system, vec3 start, vec3 end);
+      |                                                                              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:233:60: error: unknown type name 'vec3'
+  233 | u32 ml_navigation_create_agent(MLNavigationSystem *system, vec3 start_position, f32 max_speed);
+      |                                                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:235:79: error: unknown type name 'vec3'
+  235 | bool ml_navigation_set_agent_target(MLNavigationSystem *system, u32 agent_id, vec3 target);
+      |                                                                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:236:84: error: unknown type name 'vec3'
+  236 | bool ml_navigation_update_agent_position(MLNavigationSystem *system, u32 agent_id, vec3 position);
+      |                                                                                    ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:248:87: error: unknown type name 'vec3'
+  248 | NavigationPath *ml_navigation_generate_path(MLNavigationSystem *system, u32 agent_id, vec3 start, vec3 goal);
+      |                                                                                       ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:22:35: error: passing 'const Vec3 *' to parameter of incompatible type 'Vec3'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:35   22:33: |     return error: unknown type name 'CrowdAvoid'
+ sqrtf(vec3_d   35istance_s | vq(aoi, b))d ;
+crowd_se      |                                   ^
+t_desired_velocity(CrowdAvoid *crowd, int agent_idx, co/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:ns126t float *d:34: note: passing argument to parameter 'a' here
+esir  126 | INLINE f32 vec3_distance_sq(Vec3 a, Vec3 b) {
+      |                                  ^
+ed_vel) {
+      |                                 ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:25:14: error: static declaration of 'vec3_dot' follows non-static declaration
+   25 | static float vec3_dot(const Vec3* a, const /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:40:14:Vec3 error: static declaration of 'vec3_dot' follows non-static declaration
+* b)   40 | stat {
+      ic|              ^
+ f/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:111:loat 12: note: previous definition is herevec3_dot(const float *a
+, const f  111 | loat *b) {
+      |              ^
+INLINE f32/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:111 ve:12: note: previous definition is here
+  111 | INLINE f32 vec3_doc3_dot(Vec3 a, Vec3 b) {
+      |            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:29:13: error: static declaration of 'vec3_subtract' follows non-static declaration
+   29 | stt(Vec3 a, Vec3ati b) {
+      |            ^
+c Vec3 vec3_subtra/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:44ct(co:13: error: static declaration of 'vec3_sub' follows non-static declaration
+nst Vec3* a,   44 | st coatic nst Vec3* b) void vec3_sub(float *out, const float *a, const float *b) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:13: note: previous definition is here
+   96 | INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+      |             ^
+{
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:161:13: note: previous definition is here
+  161 | INLINE Vec3 vec3_subtract(Vec3 a, Vec3 b) { return vec3_sub(a, b); }
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:66:48: error: too many arguments to function call, expected 2, have 3
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:33:13: error: static declaration of 'vec3_add' follows non-static declaration
+   66 |          33 | s   tatic Vec3 vec3_add(const Vec3* a, const Vec   vec3_sub(rel_pos, oth3*er->posit b) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92:13: note: previous definition is here
+ion, agent-   92 | INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
+      |             ^
+>position);
+      | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:37:13: error: static declaration of 'vec3_scale' follows non-static declaration            ~~~~~~~~                           ^~~~~~~~~~~~~~~
+
+   37 | static Vec3 vec3_scale(const Vec3* v, floa/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:13t s) {: 
+      | note: 'vec3_sub' declared here
+            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:107:   96 | INLINE V13: ec3 note: veprevious definition is here
+  107c3_ | INLINEsub(Ve Vec3 vec3_scalc3 a, Vec3 b) {
+      |             ^        ~~~~~~~~~~~~~~
+e(Vec3 a, Vec3 b/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:67:41: ) {
+      error: passing 'float[3]' to parameter of incompatible type 'Vec3'
+|    67            ^
+ |             float dist = sqrtf(vec3_dot(rel_pos, rel_pos));
+      |                                         ^~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:111:26: note: passing argument to parameter 'a' here
+  111 | INLINE f32 vec3_dot(Vec3 a, Vec3 b) {
+      |                          ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:72:52: error: too many arguments to function call, expected 2, have 3
+   72 |                 vec3_sub(rel_vel, other->velocity, agent->velocity);
+      |                 ~~~~~~~~                           ^~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:13: note: 'vec3_sub' declared here
+   96 | INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+      |             ^        ~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:88:38: error: passing 'float[3]' to parameter of incompatible type 'Vec3'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:41:   88 |    55: error: unknown type name 'NavPolygon'; did you mean 'NavPoly'?
+    41 | static     fbool point_inloa_pt speeolygon(cond = st Vec3* point, const NavPolygon* poly) {
+      |                                                       ^~~~~~~~~~
+      |                                                       NavPoly
+sqrtf(v/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/navmesh.h:47:3: ec3_dot(note: 'NavPoly' declared here
+new_velocity, new_velocity   47));
+       | } NavPoly|                                      ^~~~~~~~~~~~;
+      |   ^
+
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:111:26: note: passing argument to parameter 'a' here
+  111 | INLINE f32 vec3_dot(Vec3 a, Vec3 b) {
+      |                          ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:46:21: warning: incompatible pointer types initializing 'const Vec3 *' with an expression of type 'const unsigned short *' [-Wincompatible-pointer-types]
+   46 |         const Vec3* vi = &poly->verts[i];
+      |                     ^    ~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:47:21: warning: incompatible pointer types initializing 'const Vec3 *' with an expression of type 'const unsigned short *' [-Wincompatible-pointer-types]
+   47 |         const Vec3* vj = &poly->verts[j];
+      |                     ^    ~~~~~~~~~~~~~~~
+7 errors generated.
+20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:105:14: error: no member named 'tile_size' in 'struct NavmeshBuilder'; did you mean 'cell_size'?
+  105 |     builder->tile_size = 32;
+      |              ^~~~~~~~~
+      |              cell_size
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/navmesh.h:107:11: note: 'cell_size' declared here
+  107 |     float cell_size;
+      |           ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:106:14: error: no member named 'border_size' in 'struct NavmeshBuilder'
+  106 |     builder->border_size = 1;
+      |     ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:107:14: error: no member named 'filter_low_hanging_obstacles' in 'struct NavmeshBuilder'
+  107 |     builder->filter_low_hanging_obstacles = true;
+      |     ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:108:14: error: no member named 'filter_ledge_spans' in 'struct NavmeshBuilder'
+  108 |     builder->filter_ledge_spans = true;
+      |     ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:109:14: error: no member named 'filter_walkable_low_height_spans' in 'struct NavmeshBuilder'
+  109 |     builder->filter_walkable_low_height_spans = true;
+      |     ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:134:31: error: passing 'const Vec3 *' to parameter of incompatible type 'Vec3'
+  134 |     Vec3 size = vec3_subtract(max_bounds, min_bounds);
+      |                               ^~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:161:32: note: passing argument to parameter 'a' here
+  161 | INLINE Vec3 vec3_subtract(Vec3 a, Vec3 b) { return vec3_sub(a, b); }
+      |                                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:142:18: warning: incompatible pointer types assigning to 'NavVoxel *' from 'uint8_t *' (aka 'unsigned char *') [-Wincompatible-pointer-types]
+  142 |     mesh->voxels = (uint8_t*)calloc(total_voxels, sizeof(uint8_t));
+      |                  ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:148:11: error: no member named 'voxel_min' in 'struct Navmesh'
+  148 |     mesh->voxel_min = *min_bounds;
+      |     ~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:157:27: error: no member named 'voxel_min' in 'struct Navmesh'
+  157 |                     mesh->voxel_min.x + x * mesh->voxel_size,
+      |                     ~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:158:27: error: no member named 'voxel_min' in 'struct Navmesh'
+  158 |                     mesh->voxel_min.y + y * mesh->voxel_size,
+      |                     ~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:159:27: error: no member named 'voxel_min' in 'struct Navmesh'
+  159 |                     mesh->voxel_min.z + z * mesh->voxel_size
+      |                     ~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:162:33: error: call to undeclared function 'navmesh_is_solid_at'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  162 |                 bool is_solid = navmesh_is_solid_at(world_pos);
+      |                                 ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+3 warnings and 20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o] Error 1
+[  3%] Built target Catch2
+[  3%] Built target Catch2WithMain
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:6:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/inverse_kinematics.h:23:5: error: unknown type name 'vec3'
+   23 |     vec3 joint_positions[16];
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/inverse_kinematics.h:24:5: error: unknown type name 'vec3'
+   24 |     vec3 joint_rotations[16];
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/inverse_kinematics.h:25:5: error: unknown type name 'vec3'
+   25 |     vec3 target_position;
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/inverse_kinematics.h:46:60: error: unknown type name 'vec3'
+   46 | bool ml_ik_solve_chain(MLIKSystem *system, IKChain *chain, vec3 target);
+      |                                                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:144:76: error: call to undeclared function 'stride'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  144 |             MLMultiArray *multiArray = [[MLMultiArray alloc] initWithShape:stride(shape)
+      |                                                                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:144:76: error: incompatible integer to pointer conversion sending 'int' to parameter of type 'NSArray<NSNumber *> * _Nonnull' [-Wint-conversion]
+  144 |             MLMultiArray *multiArray = [[MLMultiArray alloc] initWithShape:stride(shape)
+      |                                                                            ^~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLMultiArray.h:91:63: note: passing argument to parameter 'shape' here
+   91 | - (nullable instancetype)initWithShape:(NSArray<NSNumber *> *)shape
+      |                                                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:27:5: error: call to undeclared function 'ml_ik_shutdown'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   27 |     ml_ik_shutdown(system);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:51:9: error: call to undeclared function 'LOG_WARNING'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   51 |         LOG_WARNING("Failed to load IK model");
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:60:60: error: unknown type name 'vec3'
+   60 | bool ml_ik_solve_chain(MLIKSystem *system, IKChain *chain, vec3 target) {
+      |                                                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:109:6: error: conflicting types for 'ml_ik_shutdown'
+  109 | void ml_ik_shutdown(MLIKSystem *system) {
+      |      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:27:5: note: previous implicit declaration is here
+   27 |     ml_ik_shutdown(system);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:166:9: error: use of undeclared identifier 'MLFeatureProvider'
+  166 |         MLFeatureProvider *outputProvider = [ml_model predictionFromFeatures:inputProvider error:&error];
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:27:5: error: call to undeclared function 'gi_denoiser_shutdown'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   27 |     gi_denoiser_shutdown(denoiser);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:27:5: note: did you mean 'gi_denoiser_destroy'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:24:6: note: 'gi_denoiser_destroy' declared here
+   24 | void gi_denoiser_destroy(GIDenoiser *denoiser) {
+      |      ^
+   25 |     if (8!denoiser) errors generated.
+ return;
+   26 |     
+   27 |     gi_denoiser_shutdown(denoiser);
+      |     ~~~~~~~~~~~~~~~~~~~~
+      |     gi_denoiser_destroy
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:166:28: error: use of undeclared identifier 'outputProvider'; did you mean 'inputProvider'?
+  166 |         MLFeatureProvider *outputProvider = [ml_model predictionFromFeatures:inputProvider error:&error];
+      |                            ^~~~~~~~~~~~~~
+      |                            inputProvider
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:160:38: note: 'inputProvider' declared here
+  160 |         MLDictionaryFeatureProvider *inputProvider = [[MLDictionaryFeatureProvider alloc] 
+      |                                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:52:9: error: call to undeclared function 'LOG_WARNING'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   52 |         LOG_WARNING("Failed to load GI denoiser model");
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:97:6: error: conflicting types for 'gi_denoiser_shutdown'
+   97 | void gi_denoiser_shutdown(GIDenoiser *denoiser) {
+      |      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:27:5: note: previous implicit declaration is here
+   27 |     gi_denoiser_shutdown(denoiser);
+      |     ^
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/inverse_kinematics.c.o] Error 1
+3 errors generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:27:5: error: call to undeclared function 'neural_animation_shutdown'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   27 |     neural_animation_shutdown(system);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:27:5: note: did you mean 'neural_animation_destroy'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:24:6: note: 'neural_animation_destroy' declared here
+   24 | void neural_animation_destroy(NeuralAnimationSystem *system) {
+      |      ^
+   25 |     if (!system) return;
+   26 |     
+   27 |     neural_animation_shutdown(system);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     neural_animation_destroy
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:397:5: error: call to undeclared function 'time_get_high_res_time'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  397 |     INTERPOL_START_TIMER(interpolator);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/frame_interpolation.h:362:22: note: expanded from macro 'INTERPOL_START_TIMER'
+  362 |     f64 start_time = time_get_high_res_time()
+      |                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:51:9: error: call to undeclared function 'LOG_WARNING'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   51 |         LOG_WARNING("Failed to load animation model");
+      |         ^
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/gi_denoiser.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:113:6: error: conflicting types for 'neural_animation_shutdown'
+  113 | void neural_animation_shutdown(NeuralAnimationSystem *system) {
+      |      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:27:5: note: previous implicit declaration is here
+   27 |     neural_animation_shutdown(system);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:179:45: error: use of undeclared identifier 'outputProvider'; did you mean 'inputProvider'?
+  179 |             MLFeatureValue *featureValue = [outputProvider featureValueForName:tensorName];
+      |                                             ^~~~~~~~~~~~~~
+      |                                             inputProvider
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:160:38: note: 'inputProvider' declared here
+  160 |         MLDictionaryFeatureProvider *inputProvider = [[MLDictionaryFeatureProvider alloc] 
+      |                                      ^
+1 error generated.
+3 errors generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:584:23: warning: comparison of distinct pointer types ('void *' and 'u8 *' (aka 'unsigned char *')) [-Wcompare-distinct-pointer-types]
+  584 |          tensor->data >= (u8 *)system->tensor_pool + system->total_tensor_memory)) {
+      |          ~~~~~~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning and 5 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/frame_interpolation.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/neural_animation.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_core.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

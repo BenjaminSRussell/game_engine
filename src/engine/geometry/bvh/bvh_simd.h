@@ -11,9 +11,9 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "../../core/math/math/vec3.h"
-#include "../../core/math/math/vec4.h"
-#include "../../core/math/math/aabb.h"
+#include "include/math/vec3.h"
+#include "include/math/vec4.h"
+#include "include/math/aabb.h"
 
 #ifdef __cplusplus
 extern "C" {

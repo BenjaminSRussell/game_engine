@@ -2,7 +2,7 @@
 #include "core/memory.h"
 #include "core/logger.h"
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Placeholder for actual resource loading calls
 static void internal_load_level_resource(const char* path) {

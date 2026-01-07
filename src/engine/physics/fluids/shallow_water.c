@@ -2,7 +2,7 @@
 #include "physics/fluids/shallow_water.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 typedef struct {
     float *height;        // Water column height

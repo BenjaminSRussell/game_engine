@@ -1,13 +1,13 @@
-#include "asset_editor/editor_types.h"
-#include "asset_editor/asset_editor.h"
+#include "tools/asset_editor/editor_types.h"
+#include "tools/asset_editor/asset_editor.h"
 #include "core/memory.h"
 #include "core/file_system.h"
-#include <renderer/renderer.h>
+#include <rendering/renderer.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Import/Export System
 typedef struct {

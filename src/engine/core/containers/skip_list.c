@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdatomic.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ✅ COMPLETED: Skip List Implementation - AGENT_CORE_2
 // Probabilistic data structure providing O(log n) average case performance

@@ -1,0 +1,9 @@
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_complete.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_dsp.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_effects.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_effects_impl.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_engine.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/audio_engine.c:1:10: fatal error: 'audio/audio_engine.h' file not found
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/audio/audio_engine.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2

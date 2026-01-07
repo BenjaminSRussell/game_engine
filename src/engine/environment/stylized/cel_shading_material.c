@@ -1,5 +1,5 @@
 #include "environment/stylized/cel_shading_material.h"
-#include <math.h>
+#include <include/math/math.h>
 
 // Toon/Cel shader setup
 void cel_material_set_ramp_texture(void *material, void *texture, bool hard_bands) {

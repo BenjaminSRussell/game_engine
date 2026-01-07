@@ -4,10 +4,10 @@
  * =================================================================================================
  */
 
-#include "pitch_shifter.h"
+#include "audio/dsp/pitch_shifter.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 void pitch_shifter_init(PitchShifter *shifter, int sample_rate) {
     shifter->mode = PITCH_SHIFT_GRANULAR;

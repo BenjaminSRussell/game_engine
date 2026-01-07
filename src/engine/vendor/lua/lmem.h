@@ -10,8 +10,8 @@
 
 #include <stddef.h>
 
-#include "llimits.h"
-#include "lua.h"
+#include "vendor/lua/llimits.h"
+#include "vendor/lua/lua.h"
 
 
 #define luaM_error(L)	luaD_throw(L, LUA_ERRMEM)

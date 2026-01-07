@@ -4,8 +4,8 @@
  * Manages memory allocation for cache-aligned rigid body arrays.
  */
 
-#include "soa_rigidbody.h"
-#include "../simd/simd_math.h"
+#include "core/containers/soa_rigidbody.h"
+#include "core/simd/simd_math.h"
 #include <stdlib.h>
 #include <string.h>
 

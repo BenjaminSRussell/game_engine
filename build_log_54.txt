@@ -1,0 +1,14 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/import/gltf_importer.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:282:19: error: call to undeclared function 'gltf_atof'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  282 |     *out = (float)gltf_atof(buf);
+      |                   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:286:15: error: static declaration of 'gltf_atof' follows non-static declaration
+  286 | static double gltf_atof(const char* str) {
+      |               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:282:19: note: previous implicit declaration is here
+  282 |     *out = (float)gltf_atof(buf);
+      |                   ^
+2 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/import/gltf_importer.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

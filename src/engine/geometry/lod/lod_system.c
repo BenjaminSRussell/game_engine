@@ -13,12 +13,12 @@
 // ✅ COMPLETED: Add LOD optimization suggestions.
 // ✅ COMPLETED: Implement LOD hysteresis system for stability.
 // ✅ COMPLETED: Add LOD geometric error calculation.
-#include "../../include/render/lod_system.h"
-#include "../../include/core/logger.h"
-#include "../../include/core/memory.h"
+#include "include/rendering/lod_system.h"
+#include "include/core/logger.h"
+#include "include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Default LOD configuration
 static const LODConfig DEFAULT_LOD_CONFIG = {

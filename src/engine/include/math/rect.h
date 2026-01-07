@@ -2,7 +2,7 @@
 #define MATH_RECT_H
 
 #include <common.h>
-#include "vec2.h"
+#include "include/math/vec2.h"
 #include <stdbool.h>
 
 typedef struct Rect {

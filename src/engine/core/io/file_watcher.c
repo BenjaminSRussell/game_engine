@@ -1,4 +1,4 @@
-#include "core/io/file_watcher.h"
+#include "core/file_watcher.h"
 #include <stdlib.h>
 
 void file_watcher_init() {}

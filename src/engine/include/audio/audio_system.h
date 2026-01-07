@@ -45,7 +45,7 @@ struct PhysicsWorld;
 #endif
 
 // Audio reverb effect
-#include "audio_reverb.h"
+#include "include/audio/audio_reverb.h"
 
 typedef enum {
   SOUND_FOOTSTEP_GRASS,
@@ -223,9 +223,8 @@ void audio_set_sound_direction(AudioSystem *sys, u32 channel, Vec3 direction);
 u32 audio_add_reverb_zone(AudioSystem *sys, Vec3 min_bounds, Vec3 max_bounds,
                           f32 reverb_level, f32 decay_time);
 void audio_remove_reverb_zone(AudioSystem *sys, u32 zone_index);
-void audio_update_reverb_zones(
-    AudioSystem *sys,
-    PhysicsWorld
-        *physics); // Call each frame to update reverb for active sounds
+void audio_update_reverb_zones(AudioSystem *sys, PhysicsWorld *physics);
+
+void Audio_SendToOutput(const float* samples, size_t sample_count);
 
 #endif

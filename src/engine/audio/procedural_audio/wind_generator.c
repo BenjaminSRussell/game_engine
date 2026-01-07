@@ -1,5 +1,5 @@
 #include "audio/procedural_audio/wind_generator.h"
-#include <math.h>
+#include <include/math/math.h>
 
 void wind_generator_init() {}
 

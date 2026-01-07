@@ -6,9 +6,9 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "bvh_simd.h"
+#include "geometry/bvh/bvh_simd.h"
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * STATISTICS

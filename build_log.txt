@@ -1,0 +1,97 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/memory/episodic_memory.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:106:30: error: call to undeclared function 'memory_allocate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  106 |     EpisodicMemory* memory = memory_allocate(sizeof(EpisodicMemory), MEMORY_TAG_AI);
+      |                              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:106:30: note: did you mean 'memory_alloc'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:121:7: note: 'memory_alloc' declared here
+  121 | void *memory_alloc(u32 size, const char *file, u32 line);
+      |       ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:106:21: error: incompatible integer to pointer conversion initializing 'EpisodicMemory *' (aka 'struct EpisodicMemory *') with an expression of type 'int' [-Wint-conversion]
+  106 |     EpisodicMemory* memory = memory_allocate(sizeof(EpisodicMemory), MEMORY_TAG_AI);
+      |                     ^        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:127:24: error: incompatible integer to pointer conversion assigning to 'ShortTermMemory *' (aka 'struct ShortTermMemory *') from 'int' [-Wint-conversion]
+  127 |     memory->short_term = memory_allocate(sizeof(ShortTermMemory), MEMORY_TAG_AI);
+      |                        ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:129:29: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  129 |         memory_free(memory, MEMORY_TAG_AI);
+      |         ~~~~~~~~~~~         ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:134:34: error: incompatible integer to pointer conversion assigning to 'Episode *' (aka 'struct Episode *') from 'int' [-Wint-conversion]
+  134 |     memory->short_term->episodes = memory_allocate(sizeof(Episode) * memory->short_term->buffer_size, MEMORY_TAG_AI);
+      |                                  ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:135:51: error: incompatible integer to pointer conversion assigning to 'f32 *' (aka 'float *') from 'int' [-Wint-conversion]
+  135 |     memory->short_term->high_detail.visual_frames = memory_allocate(sizeof(f32) * 1024 * 30, MEMORY_TAG_AI);
+      |                                                   ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:136:51: error: incompatible integer to pointer conversion assigning to 'f32 *' (aka 'float *') from 'int' [-Wint-conversion]
+  136 |     memory->short_term->high_detail.audio_samples = memory_allocate(sizeof(f32) * 22050 * 30, MEMORY_TAG_AI);
+      |                                                   ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:144:23: error: incompatible integer to pointer conversion assigning to 'LongTermMemory *' (aka 'struct LongTermMemory *') from 'int' [-Wint-conversion]
+  144 |     memory->long_term = memory_allocate(sizeof(LongTermMemory), MEMORY_TAG_AI);
+      |                       ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:151:44: error: incompatible integer to pointer conversion assigning to 'Episode *' (aka 'struct Episode *') from 'int' [-Wint-conversion]
+  151 |     memory->long_term->compressed_episodes = memory_allocate(sizeof(Episode) * memory->long_term->capacity, MEMORY_TAG_AI);
+      |                                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:158:41: error: too few arguments to function call, expected 2, have 0
+  158 |     memory->memory_mutex = mutex_create();
+      |                            ~~~~~~~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/threading/mutex.h:10:8: note: 'mutex_create' declared here
+   10 | Mutex *mutex_create(bool recursive, const char *name);
+      |        ^            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:160:28: error: call to undeclared function 'time_get_current'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  160 |     memory->current_time = time_get_current();
+      |                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:177:55: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  177 |             memory_free(memory->short_term->episodes, MEMORY_TAG_AI);
+      |             ~~~~~~~~~~~                               ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:180:72: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  180 |             memory_free(memory->short_term->high_detail.visual_frames, MEMORY_TAG_AI);
+      |             ~~~~~~~~~~~                                                ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:183:72: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  183 |             memory_free(memory->short_term->high_detail.audio_samples, MEMORY_TAG_AI);
+      |             ~~~~~~~~~~~                                                ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:185:41: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  185 |         memory_free(memory->short_term, MEMORY_TAG_AI);
+      |         ~~~~~~~~~~~                     ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:191:65: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  191 |             memory_free(memory->long_term->compressed_episodes, MEMORY_TAG_AI);
+      |             ~~~~~~~~~~~                                         ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:193:40: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  193 |         memory_free(memory->long_term, MEMORY_TAG_AI);
+      |         ~~~~~~~~~~~                    ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:198:46: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  198 |         memory_free(memory->active_episodes, MEMORY_TAG_AI);
+      |         ~~~~~~~~~~~                          ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:205:25: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  205 |     memory_free(memory, MEMORY_TAG_AI);
+      |     ~~~~~~~~~~~         ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/memory/episodic_memory.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

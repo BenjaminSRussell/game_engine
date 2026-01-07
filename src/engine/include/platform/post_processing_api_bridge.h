@@ -4,7 +4,7 @@
 #ifndef POST_PROCESSING_API_BRIDGE_H
 #define POST_PROCESSING_API_BRIDGE_H
 
-#include "../common.h"
+#include "include/common.h"
 #include <stdbool.h>
 #include <stdint.h>
 

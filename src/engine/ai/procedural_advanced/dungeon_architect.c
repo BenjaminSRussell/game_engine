@@ -1,4 +1,4 @@
-#include "ai/procedural_advanced/dungeon_architect.h"
+#include <ai/procedural_advanced/dungeon_architect.h>
 
 void dungeon_architect_init() {}
 

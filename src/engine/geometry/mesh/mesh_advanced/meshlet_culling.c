@@ -1,4 +1,4 @@
-#include "renderer/mesh_advanced/meshlet_culling.h"
+#include "geometry/meshlets/meshlet_culling.h"
 
 void meshlet_init() {}
 

@@ -3,8 +3,8 @@
  * Implements narrowphase collision detection for supported shapes.
  */
 
-#include "../../physics/physics_engine_core.h"
-#include <math.h>
+#include "physics/physics_engine_core.h"
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

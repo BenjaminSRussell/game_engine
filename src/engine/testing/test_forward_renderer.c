@@ -3,7 +3,7 @@
  * Unit tests for the forward renderer.
  */
 
-#include "forward_renderer.h"
+#include "rendering/forward/forward_renderer.h"
 #include <core/logger.h>
 #include <unity.h> // Assuming Unity or similar test framework is used, or custom
 

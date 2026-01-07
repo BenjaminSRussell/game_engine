@@ -7,17 +7,17 @@
 #define ldump_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
 #include <limits.h>
 #include <stddef.h>
 
-#include "lua.h"
+#include "vendor/lua/lua.h"
 
-#include "lobject.h"
-#include "lstate.h"
-#include "lundump.h"
+#include "vendor/lua/lobject.h"
+#include "vendor/lua/lstate.h"
+#include "vendor/lua/lundump.h"
 
 
 typedef struct {

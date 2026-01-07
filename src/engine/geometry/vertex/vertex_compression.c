@@ -38,7 +38,7 @@
  * TODO: Add vertex compression render graph node
  */
 
-#include "vertex_compression.h"
+#include "geometry/vertex/vertex_compression.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -77,7 +77,7 @@ typedef struct geometry_vertex_compression_context {
 
 static geometry_vertex_compression_context_t g_vertex_compression_ctx = {0};
 
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * COMPRESSION IMPLEMENTATION

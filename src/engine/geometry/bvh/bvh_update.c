@@ -6,16 +6,16 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "bvh_update.h"
-#include "../../core/math/math/vec3.h"
-#include "../../core/math/math/aabb.h"
+#include "geometry/bvh/bvh_update.h"
+#include "include/math/vec3.h"
+#include "include/math/aabb.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
 #include <float.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * CONSTANTS

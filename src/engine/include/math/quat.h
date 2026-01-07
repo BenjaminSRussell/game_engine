@@ -39,8 +39,8 @@
 #define QUAT_H
 
 #include <common.h>
-#include "mat4.h"
-#include "vec3.h"
+#include "include/math/mat4.h"
+#include "include/math/vec3.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -70,7 +70,7 @@ typedef union {
     f32 w, x, y, z;
   };
   f32 data[4];
-} ALIGN(16) Quat;
+} K_ALIGN(16) Quat;
 
 INLINE Quat quat(f32 w, f32 x, f32 y, f32 z) {
   Quat q = {w, x, y, z};

@@ -1,4 +1,4 @@
-#include "hair_common.h"
+#include "physics/character/hair/hair_common.h"
 #include <stdlib.h>
 
 // Helper to generate a random float between 0 and 1

@@ -1,8 +1,8 @@
 // Example: Modern Renderer using Dynamic Rendering
 // Demonstrates migration from VkRenderPass to Dynamic Rendering API
 
-#include <renderer/dynamic_rendering.h>
-#include <renderer/vulkan_dispatch.h>
+#include <rendering/dynamic_rendering.h>
+#include <rendering/vulkan_dispatch.h>
 #include <core/logger.h>
 
 #ifdef VULKAN_BUILD

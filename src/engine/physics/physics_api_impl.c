@@ -1,5 +1,5 @@
-#include "engine/include/physics/physics.h"
-#include "physics_engine_core.h"
+#include "physics/physics.h"
+#include "physics/physics_engine_core.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>

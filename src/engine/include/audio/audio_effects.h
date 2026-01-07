@@ -25,7 +25,7 @@
 #define AUDIO_EFFECTS_H
 
 #include <common.h>
-#include "../vendor/miniaudio.h"
+#include "include/vendor/miniaudio.h"
 #include <math/vec3.h>
 
 #define MAX_EFFECT_BUSES 4

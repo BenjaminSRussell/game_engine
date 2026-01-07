@@ -1,7 +1,7 @@
 #include <simd/simd.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <math.h>
+#include <include/math/math.h>
 
 #ifdef __OBJC__
 #import <Metal/Metal.h>

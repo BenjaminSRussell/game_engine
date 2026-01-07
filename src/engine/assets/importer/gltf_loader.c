@@ -13,13 +13,13 @@
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
-#include <renderer/mesh.h>
-#include <renderer/vulkan.h>
+#include <rendering/mesh.h>
+#include <rendering/vulkan.h>
 #include <string.h>
 
 // Include cgltf implementation in exactly one source file
 #define CGLTF_IMPLEMENTATION
-#include "../../external/cgltf.h"
+#include "include/vendor/cgltf.h"
 
 // Forward declarations
 typedef struct GLTFLoadResult GLTFLoadResult;

@@ -38,7 +38,7 @@
  * TODO: Add meshlet renderer render graph node
  */
 
-#include "meshlet_renderer.h"
+#include "geometry/meshlets/meshlet_renderer.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

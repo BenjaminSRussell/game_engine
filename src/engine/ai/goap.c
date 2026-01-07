@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <include/math/math.h>
 #include <math.h>
+#include <time.h>
 
 /**
  * =================================================================================================
@@ -10,7 +12,14 @@
  * =================================================================================================
  */
 
-// Helper functions
+// Forward declarations
+// Forward declarations
+void goap_clear_search_data(GoapPlanner* planner);
+bool goap_astar_plan(GoapPlanner* planner, GoapAgent* agent, const GoapWorldState* start, const GoapGoal* goal, GoapAction** plan, int* plan_length);
+bool goap_world_states_equal(const GoapWorldState* state1, const GoapWorldState* state2);
+GoapPlanner* goap_create_planner(void);
+void goap_destroy_planner(GoapPlanner* planner);
+
 static float get_current_time(void) {
     return (float)clock() / CLOCKS_PER_SEC;
 }
@@ -20,25 +29,37 @@ static float heuristic_distance(const GoapWorldState* from, const GoapWorldState
     
     float distance = 0.0f;
     
-    // Calculate Manhattan distance between states
-    for (int i = 0; i < GOAP_MAX_STATE_VARS; i++) {
-        if (from->variables[i].type != GOAP_VAR_NONE && to->variables[i].type != GOAP_VAR_NONE) {
-            if (from->variables[i].type == to->variables[i].type) {
-                switch (from->variables[i].type) {
-                    case GOAP_VAR_BOOL:
-                        if (from->variables[i].bool_value != to->variables[i].bool_value) {
-                            distance += 1.0f;
-                        }
-                        break;
-                    case GOAP_VAR_INT:
-                        distance += abs(from->variables[i].int_value - to->variables[i].int_value);
-                        break;
-                    case GOAP_VAR_FLOAT:
-                        distance += fabsf(from->variables[i].float_value - to->variables[i].float_value);
-                        break;
-                    default:
-                        break;
-                }
+    // Calculate Manhattan distance between states matching keys
+    for (int i = 0; i < from->key_count; i++) {
+        const GoapStateKey* key_from = &from->keys[i];
+        GoapStateKey key_to;
+        
+        // Find corresponding key in 'to' state
+        bool found = false;
+        for (int j = 0; j < to->key_count; j++) {
+            if (strcmp(to->keys[j].name, key_from->name) == 0) {
+                key_to = to->keys[j];
+                found = true;
+                break;
+            }
+        }
+        
+        if (found && key_from->type == key_to.type) {
+             switch (key_from->type) {
+                case GOAP_STATE_BOOL:
+                    if (key_from->value.bool_val != key_to.value.bool_val) distance += 1.0f;
+                    break;
+                case GOAP_STATE_INT:
+                    distance += abs(key_from->value.int_val - key_to.value.int_val);
+                    break;
+                case GOAP_STATE_FLOAT:
+                    distance += fabsf(key_from->value.float_val - key_to.value.float_val);
+                    break;
+                case GOAP_STATE_VECTOR3:
+                    if (!vec3_is_equal(key_from->value.vector_val, key_to.value.vector_val, 0.001f)) distance += 1.0f;
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -91,867 +112,7 @@ void goap_shutdown(GoapPlanner* planner) {
     LOG_INFO("GOAP Planner shut down");
 }
 
-// =================================================================================================
-// WORLD STATE MANAGEMENT (TASK_1600)
-// =================================================================================================
 
-void goap_world_state_init(GoapWorldState* state) {
-    if (!state) return;
-    
-    memset(state, 0, sizeof(GoapWorldState));
-    
-    // Initialize all variables as undefined
-    for (int i = 0; i < GOAP_MAX_STATE_VARS; i++) {
-        state->variables[i].type = GOAP_VAR_NONE;
-    }
-}
-
-bool goap_set_state_bool(GoapWorldState* state, const char* key, bool value) {
-    if (!state || !key) return false;
-    
-    // Find existing key or empty slot
-    int index = -1;
-    for (int i = 0; i < GOAP_MAX_STATE_VARS; i++) {
-        if (state->variables[i].type == GOAP_VAR_NONE) {
-            if (index == -1) index = i;
-        } else if (strcmp(state->variables[i].key, key) == 0) {
-            index = i;
-            break;
-        }
-    }
-    
-    if (index == -1 || index >= GOAP_MAX_STATE_VARS) return false;
-    
-    strncpy(state->variables[index].key, key, sizeof(state->variables[index].key) - 1);
-    state->variables[index].type = GOAP_VAR_BOOL;
-    state->variables[index].bool_value = value;
-    
-    return true;
-}
-
-bool goap_set_state_int(GoapWorldState* state, const char* key, int value) {
-    if (!state || !key) return false;
-    
-    int index = -1;
-    for (int i = 0; i < GOAP_MAX_STATE_VARS; i++) {
-        if (state->variables[i].type == GOAP_VAR_NONE) {
-            if (index == -1) index = i;
-        } else if (strcmp(state->variables[i].key, key) == 0) {
-            index = i;
-            break;
-        }
-    }
-    
-    if (index == -1 || index >= GOAP_MAX_STATE_VARS) return false;
-    
-    strncpy(state->variables[index].key, key, sizeof(state->variables[index].key) - 1);
-    state->variables[index].type = GOAP_VAR_INT;
-    state->variables[index].int_value = value;
-    
-    return true;
-}
-
-bool goap_set_state_float(GoapWorldState* state, const char* key, float value) {
-    if (!state || !key) return false;
-    
-    int index = -1;
-    for (int i = 0; i < GOAP_MAX_STATE_VARS; i++) {
-        if (state->variables[i].type == GOAP_VAR_NONE) {
-            if (index == -1) index = i;
-        } else if (strcmp(state->variables[i].key, key) == 0) {
-            index = i;
-            break;
-        }
-    }
-    
-    if (index == -1 || index >= GOAP_MAX_STATE_VARS) return false;
-    
-    strncpy(state->variables[index].key, key, sizeof(state->variables[index].key) - 1);
-    state->variables[index].type = GOAP_VAR_FLOAT;
-    state->variables[index].float_value = value;
-    
-    return true;
-}
-
-bool goap_get_state_bool(const GoapWorldState* state, const char* key, bool* value) {
-    if (!state || !key || !value) return false;
-    
-    for (int i = 0; i < GOAP_MAX_STATE_VARS; i++) {
-        if (state->variables[i].type == GOAP_VAR_BOOL && strcmp(state->variables[i].key, key) == 0) {
-            *value = state->variables[i].bool_value;
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-bool goap_get_state_int(const GoapWorldState* state, const char* key, int* value) {
-    if (!state || !key || !value) return false;
-    
-    for (int i = 0; i < GOAP_MAX_STATE_VARS; i++) {
-        if (state->variables[i].type == GOAP_VAR_INT && strcmp(state->variables[i].key, key) == 0) {
-            *value = state->variables[i].int_value;
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-bool goap_get_state_float(const GoapWorldState* state, const char* key, float* value) {
-    if (!state || !key || !value) return false;
-    
-    for (int i = 0; i < GOAP_MAX_STATE_VARS; i++) {
-        if (state->variables[i].type == GOAP_VAR_FLOAT && strcmp(state->variables[i].key, key) == 0) {
-            *value = state->variables[i].float_value;
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-// =================================================================================================
-// ACTION SYSTEM (TASK_1601)
-// =================================================================================================
-
-GoapAction* goap_create_action(const char* name, float cost) {
-    if (!name) {
-        LOG_ERROR("Action name cannot be NULL");
-        return NULL;
-    }
-    
-    GoapAction* action = (GoapAction*)calloc(1, sizeof(GoapAction));
-    if (!action) {
-        LOG_ERROR("Failed to allocate GOAP action");
-        return NULL;
-    }
-    
-    strncpy(action->name, name, sizeof(action->name) - 1);
-    action->cost = cost;
-    action->duration = 1.0f;  // Default 1 second duration
-    
-    LOG_DEBUG("Created GOAP action: %s", name);
-    return action;
-}
-
-void goap_destroy_action(GoapAction* action) {
-    if (!action) return;
-    
-    free(action);
-    LOG_DEBUG("Destroyed GOAP action: %s", action->name);
-}
-
-bool goap_add_precondition(GoapAction* action, const char* key, GoapVarType type, void* value) {
-    if (!action || !key || !value) {
-        LOG_ERROR("Invalid parameters for precondition");
-        return false;
-    }
-    
-    if (action->precondition_count >= GOAP_MAX_PRECONDITIONS) {
-        LOG_ERROR("Maximum preconditions reached for action");
-        return false;
-    }
-    
-    GoapWorldStateVar* var = &action->preconditions[action->precondition_count++];
-    strncpy(var->key, key, sizeof(var->key) - 1);
-    var->type = type;
-    
-    switch (type) {
-        case GOAP_VAR_BOOL:
-            var->bool_value = *(bool*)value;
-            break;
-        case GOAP_VAR_INT:
-            var->int_value = *(int*)value;
-            break;
-        case GOAP_VAR_FLOAT:
-            var->float_value = *(float*)value;
-            break;
-        default:
-            LOG_ERROR("Invalid variable type for precondition");
-            return false;
-    }
-    
-    return true;
-}
-
-bool goap_add_effect(GoapAction* action, const char* key, GoapVarType type, void* value) {
-    if (!action || !key || !value) {
-        LOG_ERROR("Invalid parameters for effect");
-        return false;
-    }
-    
-    if (action->effect_count >= GOAP_MAX_EFFECTS) {
-        LOG_ERROR("Maximum effects reached for action");
-        return false;
-    }
-    
-    GoapWorldStateVar* var = &action->effects[action->effect_count++];
-    strncpy(var->key, key, sizeof(var->key) - 1);
-    var->type = type;
-    
-    switch (type) {
-        case GOAP_VAR_BOOL:
-            var->bool_value = *(bool*)value;
-            break;
-        case GOAP_VAR_INT:
-            var->int_value = *(int*)value;
-            break;
-        case GOAP_VAR_FLOAT:
-            var->float_value = *(float*)value;
-            break;
-        default:
-            LOG_ERROR("Invalid variable type for effect");
-            return false;
-    }
-    
-    return true;
-}
-
-bool goap_check_preconditions(const GoapAction* action, const GoapWorldState* state) {
-    if (!action || !state) return false;
-    
-    for (int i = 0; i < action->precondition_count; i++) {
-        const GoapWorldStateVar* precond = &action->preconditions[i];
-        
-        switch (precond->type) {
-            case GOAP_VAR_BOOL:
-                {
-                    bool value;
-                    if (!goap_get_state_bool(state, precond->key, &value) || value != precond->bool_value) {
-                        return false;
-                    }
-                }
-                break;
-                
-            case GOAP_VAR_INT:
-                {
-                    int value;
-                    if (!goap_get_state_int(state, precond->key, &value) || value != precond->int_value) {
-                        return false;
-                    }
-                }
-                break;
-                
-            case GOAP_VAR_FLOAT:
-                {
-                    float value;
-                    if (!goap_get_state_float(state, precond->key, &value) || value != precond->float_value) {
-                        return false;
-                    }
-                }
-                break;
-                
-            default:
-                break;
-        }
-    }
-    
-    return true;
-}
-
-void goap_apply_effects(GoapAction* action, GoapWorldState* state) {
-    if (!action || !state) return;
-    
-    for (int i = 0; i < action->effect_count; i++) {
-        const GoapWorldStateVar* effect = &action->effects[i];
-        
-        switch (effect->type) {
-            case GOAP_VAR_BOOL:
-                goap_set_state_bool(state, effect->key, effect->bool_value);
-                break;
-                
-            case GOAP_VAR_INT:
-                goap_set_state_int(state, effect->key, effect->int_value);
-                break;
-                
-            case GOAP_VAR_FLOAT:
-                goap_set_state_float(state, effect->key, effect->float_value);
-                break;
-                
-            default:
-                break;
-        }
-    }
-}
-
-// =================================================================================================
-// GOAL SYSTEM (TASK_1602)
-// =================================================================================================
-
-GoapGoal* goap_create_goal(const char* name, float priority) {
-    if (!name) {
-        LOG_ERROR("Goal name cannot be NULL");
-        return NULL;
-    }
-    
-    GoapGoal* goal = (GoapGoal*)calloc(1, sizeof(GoapGoal));
-    if (!goal) {
-        LOG_ERROR("Failed to allocate GOAP goal");
-        return NULL;
-    }
-    
-    strncpy(goal->name, name, sizeof(goal->name) - 1);
-    goal->priority = priority;
-    goal->is_active = true;
-    
-    LOG_DEBUG("Created GOAP goal: %s", name);
-    return goal;
-}
-
-void goap_destroy_goal(GoapGoal* goal) {
-    if (!goal) return;
-    
-    free(goal);
-    LOG_DEBUG("Destroyed GOAP goal: %s", goal->name);
-}
-
-bool goap_add_goal_condition(GoapGoal* goal, const char* key, GoapVarType type, void* value) {
-    if (!goal || !key || !value) {
-        LOG_ERROR("Invalid parameters for goal condition");
-        return false;
-    }
-    
-    if (goal->condition_count >= GOAP_MAX_GOAL_CONDITIONS) {
-        LOG_ERROR("Maximum goal conditions reached");
-        return false;
-    }
-    
-    GoapWorldStateVar* var = &goal->conditions[goal->condition_count++];
-    strncpy(var->key, key, sizeof(var->key) - 1);
-    var->type = type;
-    
-    switch (type) {
-        case GOAP_VAR_BOOL:
-            var->bool_value = *(bool*)value;
-            break;
-        case GOAP_VAR_INT:
-            var->int_value = *(int*)value;
-            break;
-        case GOAP_VAR_FLOAT:
-            var->float_value = *(float*)value;
-            break;
-        default:
-            LOG_ERROR("Invalid variable type for goal condition");
-            return false;
-    }
-    
-    return true;
-}
-
-bool goap_is_goal_satisfied(const GoapGoal* goal, const GoapWorldState* state) {
-    if (!goal || !state) return false;
-    
-    for (int i = 0; i < goal->condition_count; i++) {
-        const GoapWorldStateVar* condition = &goal->conditions[i];
-        
-        switch (condition->type) {
-            case GOAP_VAR_BOOL:
-                {
-                    bool value;
-                    if (!goap_get_state_bool(state, condition->key, &value) || value != condition->bool_value) {
-                        return false;
-                    }
-                }
-                break;
-                
-            case GOAP_VAR_INT:
-                {
-                    int value;
-                    if (!goap_get_state_int(state, condition->key, &value) || value != condition->int_value) {
-                        return false;
-                    }
-                }
-                break;
-                
-            case GOAP_VAR_FLOAT:
-                {
-                    float value;
-                    if (!goap_get_state_float(state, condition->key, &value) || value != condition->float_value) {
-                        return false;
-                    }
-                }
-                break;
-                
-            default:
-                break;
-        }
-    }
-    
-    return true;
-}
-
-// =================================================================================================
-// A* PLANNER (TASK_1603)
-// =================================================================================================
-
-GoapPlan* goap_create_plan(GoapPlanner* planner, const GoapWorldState* start, const GoapWorldState* goal, 
-                         const GoapAction* actions, int action_count) {
-    if (!planner || !start || !goal || !actions || action_count == 0) {
-        LOG_ERROR("Invalid parameters for plan creation");
-        return NULL;
-    }
-    
-    // Clear previous search data
-    goap_clear_search_data(planner);
-    
-    float start_time = get_current_time();
-    
-    // Create start node
-    struct PlanNode* start_node = (struct PlanNode*)calloc(1, sizeof(struct PlanNode));
-    if (!start_node) {
-        LOG_ERROR("Failed to allocate start node");
-        return NULL;
-    }
-    
-    start_node->state = *start;
-    start_node->g_cost = 0.0f;
-    start_node->h_cost = heuristic_distance(start, goal);
-    start_node->f_cost = start_node->g_cost + start_node->h_cost;
-    start_node->parent = NULL;
-    
-    // Add to open list
-    planner->open_list = start_node;
-    
-    // A* search loop
-    struct PlanNode* goal_node = NULL;
-    
-    while (planner->open_list && !goal_node) {
-        // Check time limit
-        if (get_current_time() - start_time > planner->max_search_time) {
-            LOG_WARNING("GOAP planning timeout");
-            break;
-        }
-        
-        // Find node with lowest f_cost
-        struct PlanNode* current = planner->open_list;
-        struct PlanNode* prev = NULL;
-        struct PlanNode* best = current;
-        struct PlanNode* best_prev = NULL;
-        
-        while (current) {
-            if (current->f_cost < best->f_cost) {
-                best = current;
-                best_prev = prev;
-            }
-            prev = current;
-            current = current->next;
-        }
-        
-        // Remove best from open list
-        if (best_prev) {
-            best_prev->next = best->next;
-        } else {
-            planner->open_list = best->next;
-        }
-        
-        // Add to closed list
-        best->next = planner->closed_list;
-        planner->closed_list = best;
-        
-        // Check if goal is reached
-        if (goap_is_goal_satisfied(NULL, &best->state)) {
-            goal_node = best;
-            break;
-        }
-        
-        // Expand node
-        for (int i = 0; i < action_count; i++) {
-            const GoapAction* action = &actions[i];
-            
-            // Check if action can be applied
-            if (!goap_check_preconditions(action, &best->state)) {
-                continue;
-            }
-            
-            // Create new state by applying action
-            GoapWorldState new_state = best->state;
-            goap_apply_effects((GoapAction*)action, &new_state);
-            
-            // Check if this state is already in closed list
-            bool in_closed = false;
-            struct PlanNode* closed_current = planner->closed_list;
-            while (closed_current) {
-                if (goap_states_equal(&closed_current->state, &new_state)) {
-                    in_closed = true;
-                    break;
-                }
-                closed_current = closed_current->next;
-            }
-            
-            if (in_closed) continue;
-            
-            // Calculate costs
-            float g_cost = best->g_cost + action->cost;
-            float h_cost = heuristic_distance(&new_state, goal);
-            float f_cost = g_cost + h_cost;
-            
-            // Check if this state is already in open list with better cost
-            bool in_open = false;
-            struct PlanNode* open_current = planner->open_list;
-            while (open_current) {
-                if (goap_states_equal(&open_current->state, &new_state)) {
-                    if (open_current->f_cost <= f_cost) {
-                        in_open = true;
-                    } else {
-                        // Update existing node
-                        open_current->g_cost = g_cost;
-                        open_current->h_cost = h_cost;
-                        open_current->f_cost = f_cost;
-                        open_current->parent = best;
-                        open_current->action = (GoapAction*)action;
-                    }
-                    break;
-                }
-                open_current = open_current->next;
-            }
-            
-            if (in_open) continue;
-            
-            // Create new node
-            struct PlanNode* new_node = (struct PlanNode*)calloc(1, sizeof(struct PlanNode));
-            if (!new_node) {
-                LOG_ERROR("Failed to allocate plan node");
-                continue;
-            }
-            
-            new_node->state = new_state;
-            new_node->g_cost = g_cost;
-            new_node->h_cost = h_cost;
-            new_node->f_cost = f_cost;
-            new_node->parent = best;
-            new_node->action = (GoapAction*)action;
-            
-            // Add to open list
-            new_node->next = planner->open_list;
-            planner->open_list = new_node;
-        }
-    }
-    
-    // Reconstruct plan if goal was found
-    GoapPlan* plan = NULL;
-    if (goal_node) {
-        plan = goap_reconstruct_plan(goal_node);
-    }
-    
-    // Clean up search data
-    goap_clear_search_data(planner);
-    
-    return plan;
-}
-
-GoapPlan* goap_reconstruct_plan(struct PlanNode* goal_node) {
-    if (!goal_node) return NULL;
-    
-    // Count plan length
-    int plan_length = 0;
-    struct PlanNode* current = goal_node;
-    while (current) {
-        plan_length++;
-        current = current->parent;
-    }
-    
-    if (plan_length == 0) return NULL;
-    
-    // Allocate plan
-    GoapPlan* plan = (GoapPlan*)calloc(1, sizeof(GoapPlan));
-    if (!plan) {
-        LOG_ERROR("Failed to allocate plan");
-        return NULL;
-    }
-    
-    plan->actions = (GoapAction**)calloc(plan_length, sizeof(GoapAction*));
-    plan->action_count = plan_length;
-    
-    if (!plan->actions) {
-        free(plan);
-        return NULL;
-    }
-    
-    // Fill plan (reverse order)
-    current = goal_node;
-    int index = plan_length - 1;
-    while (current && current->parent) {
-        plan->actions[index--] = current->action;
-        current = current->parent;
-    }
-    
-    plan->total_cost = goal_node->g_cost;
-    
-    LOG_INFO("Reconstructed GOAP plan with %d actions, cost: %.2f", plan_length, plan->total_cost);
-    return plan;
-}
-
-void goap_destroy_plan(GoapPlan* plan) {
-    if (!plan) return;
-    
-    if (plan->actions) {
-        free(plan->actions);
-    }
-    
-    free(plan);
-}
-
-bool goap_states_equal(const GoapWorldState* a, const GoapWorldState* b) {
-    if (!a || !b) return false;
-    
-    for (int i = 0; i < GOAP_MAX_STATE_VARS; i++) {
-        const GoapWorldStateVar* var_a = &a->variables[i];
-        const GoapWorldStateVar* var_b = &b->variables[i];
-        
-        if (var_a->type != var_b->type) return false;
-        
-        if (var_a->type == GOAP_VAR_NONE) continue;
-        
-        if (strcmp(var_a->key, var_b->key) != 0) return false;
-        
-        switch (var_a->type) {
-            case GOAP_VAR_BOOL:
-                if (var_a->bool_value != var_b->bool_value) return false;
-                break;
-            case GOAP_VAR_INT:
-                if (var_a->int_value != var_b->int_value) return false;
-                break;
-            case GOAP_VAR_FLOAT:
-                if (fabsf(var_a->float_value - var_b->float_value) > 0.001f) return false;
-                break;
-            default:
-                break;
-        }
-    }
-    
-    return true;
-}
-
-void goap_clear_search_data(GoapPlanner* planner) {
-    if (!planner) return;
-    
-    // Free open list
-    struct PlanNode* current = planner->open_list;
-    while (current) {
-        struct PlanNode* next = current->next;
-        free(current);
-        current = next;
-    }
-    planner->open_list = NULL;
-    
-    // Free closed list
-    current = planner->closed_list;
-    while (current) {
-        struct PlanNode* next = current->next;
-        free(current);
-        current = next;
-    }
-    planner->closed_list = NULL;
-}
-
-// =================================================================================================
-// AGENT MANAGEMENT (TASK_1610-1613)
-// =================================================================================================
-
-GoapAgent* goap_create_agent(uint32_t id, const char* name) {
-    GoapAgent* agent = (GoapAgent*)calloc(1, sizeof(GoapAgent));
-    if (!agent) {
-        LOG_ERROR("Failed to allocate agent");
-        return NULL;
-    }
-    
-    agent->id = id;
-    strncpy(agent->name, name, sizeof(agent->name) - 1);
-    
-    // Initialize world state
-    goap_world_state_init(&agent->current_state);
-    
-    // Set default replan interval
-    agent->replan_interval = 1.0f;  // Replan every second
-    agent->needs_replan = true;
-    
-    LOG_INFO("Created GOAP agent: %s (ID: %u)", name, id);
-    return agent;
-}
-
-void goap_destroy_agent(GoapAgent* agent) {
-    if (!agent) return;
-    
-    if (agent->current_plan) {
-        goap_destroy_plan(agent->current_plan);
-    }
-    
-    free(agent);
-    LOG_INFO("Destroyed GOAP agent: %s", agent->name);
-}
-
-bool goap_agent_update(GoapAgent* agent, GoapPlanner* planner, const GoapAction* actions, int action_count, 
-                      const GoapGoal* goals, int goal_count, float dt) {
-    if (!agent || !planner) return false;
-    
-    agent->update_timer += dt;
-    
-    // Check if we need to replan
-    if (agent->needs_replan || agent->update_timer >= agent->replan_interval) {
-        agent->needs_replan = false;
-        agent->update_timer = 0.0f;
-        
-        // Find best goal
-        const GoapGoal* best_goal = goap_find_best_goal(agent, goals, goal_count);
-        if (!best_goal) {
-            LOG_WARNING("No valid goal found for agent %s", agent->name);
-            return false;
-        }
-        
-        // Create goal state
-        GoapWorldState goal_state;
-        goap_world_state_init(&goal_state);
-        for (int i = 0; i < best_goal->condition_count; i++) {
-            const GoapWorldStateVar* condition = &best_goal->conditions[i];
-            
-            switch (condition->type) {
-                case GOAP_VAR_BOOL:
-                    goap_set_state_bool(&goal_state, condition->key, condition->bool_value);
-                    break;
-                case GOAP_VAR_INT:
-                    goap_set_state_int(&goal_state, condition->key, condition->int_value);
-                    break;
-                case GOAP_VAR_FLOAT:
-                    goap_set_state_float(&goal_state, condition->key, condition->float_value);
-                    break;
-                default:
-                    break;
-            }
-        }
-        
-        // Plan actions
-        if (agent->current_plan) {
-            goap_destroy_plan(agent->current_plan);
-            agent->current_plan = NULL;
-        }
-        
-        agent->current_plan = goap_create_plan(planner, &agent->current_state, &goal_state, actions, action_count);
-        
-        if (agent->current_plan) {
-            agent->current_action_index = 0;
-            LOG_INFO("Agent %s created new plan with %d actions", agent->name, agent->current_plan->action_count);
-        } else {
-            LOG_WARNING("Agent %s failed to create plan", agent->name);
-        }
-    }
-    
-    // Execute current action
-    if (agent->current_plan && agent->current_action_index < agent->current_plan->action_count) {
-        GoapAction* current_action = agent->current_plan->actions[agent->current_action_index];
-        
-        // Check if action can be executed
-        if (goap_check_preconditions(current_action, &agent->current_state)) {
-            // Apply action effects
-            goap_apply_effects(current_action, &agent->current_state);
-            
-            // Move to next action
-            agent->current_action_index++;
-            
-            LOG_DEBUG("Agent %s executed action: %s", agent->name, current_action->name);
-            
-            // Check if plan is complete
-            if (agent->current_action_index >= agent->current_plan->action_count) {
-                LOG_INFO("Agent %s completed plan", agent->name);
-                agent->needs_replan = true;
-            }
-            
-            return true;
-        } else {
-            LOG_WARNING("Agent %s cannot execute action: %s (preconditions not met)", 
-                       agent->name, current_action->name);
-            agent->needs_replan = true;
-        }
-    }
-    
-    return false;
-}
-
-const GoapGoal* goap_find_best_goal(GoapAgent* agent, const GoapGoal* goals, int goal_count) {
-    if (!agent || !goals || goal_count == 0) return NULL;
-    
-    const GoapGoal* best_goal = NULL;
-    float best_priority = -1.0f;
-    
-    for (int i = 0; i < goal_count; i++) {
-        const GoapGoal* goal = &goals[i];
-        
-        if (!goal->is_active) continue;
-        
-        // Calculate priority (could be based on distance to goal, urgency, etc.)
-        float priority = goal->priority;
-        
-        // Simple heuristic: goals that are closer have higher priority
-        float distance = heuristic_distance(&agent->current_state, NULL);
-        priority -= distance * 0.1f;
-        
-        if (priority > best_priority) {
-            best_priority = priority;
-            best_goal = goal;
-        }
-    }
-    
-    return best_goal;
-}
-
-// =================================================================================================
-// UTILITY FUNCTIONS
-// =================================================================================================
-
-void goap_debug_print_plan(const GoapPlan* plan) {
-    if (!plan) {
-        printf("Plan is NULL\n");
-        return;
-    }
-    
-    printf("=== GOAP Plan ===\n");
-    printf("Actions: %d\n", plan->action_count);
-    printf("Total Cost: %.2f\n", plan->total_cost);
-    printf("Actions:\n");
-    
-    for (int i = 0; i < plan->action_count; i++) {
-        printf("  %d. %s (Cost: %.2f)\n", i + 1, plan->actions[i]->name, plan->actions[i]->cost);
-    }
-    
-    printf("================\n");
-}
-
-void goap_debug_print_state(const GoapWorldState* state) {
-    if (!state) {
-        printf("State is NULL\n");
-        return;
-    }
-    
-    printf("=== World State ===\n");
-    
-    for (int i = 0; i < GOAP_MAX_STATE_VARS; i++) {
-        const GoapWorldStateVar* var = &state->variables[i];
-        
-        if (var->type == GOAP_VAR_NONE) continue;
-        
-        printf("  %s: ", var->key);
-        
-        switch (var->type) {
-            case GOAP_VAR_BOOL:
-                printf("%s", var->bool_value ? "true" : "false");
-                break;
-            case GOAP_VAR_INT:
-                printf("%d", var->int_value);
-                break;
-            case GOAP_VAR_FLOAT:
-                printf("%.2f", var->float_value);
-                break;
-            default:
-                printf("unknown");
-                break;
-        }
-        
-        printf("\n");
-    }
-    
-    printf("==================\n");
-}
 
 bool goap_validate_planner(const GoapPlanner* planner) {
     if (!planner) return false;
@@ -1107,7 +268,7 @@ bool goap_world_state_meets_conditions(const GoapWorldState* state,
                 }
                 break;
             case GOAP_STATE_VECTOR3:
-                if (!vec3_equals(&current_key.value.vector_val, &condition->value.vector_val)) {
+                if (!vec3_is_equal(current_key.value.vector_val, condition->value.vector_val, 0.001f)) {
                     return false;
                 }
                 break;
@@ -1350,7 +511,7 @@ float goap_calculate_heuristic(const GoapWorldState* current, const GoapGoal* go
                 }
                 break;
             case GOAP_STATE_VECTOR3:
-                if (!vec3_equals(&current_key.value.vector_val, &condition->value.vector_val)) {
+                if (!vec3_is_equal(current_key.value.vector_val, condition->value.vector_val, 0.001f)) {
                     unmet_conditions++;
                 }
                 break;
@@ -1430,17 +591,8 @@ bool goap_plan(GoapPlanner* planner, GoapAgent* agent, const GoapWorldState* sta
 bool goap_astar_plan(GoapPlanner* planner, GoapAgent* agent, const GoapWorldState* start, 
                      const GoapGoal* goal, GoapAction** plan, int* plan_length) {
     // Planning node structure
-    typedef struct PlanNode {
-        GoapWorldState state;
-        float g_cost;        // Cost from start
-        float h_cost;        // Heuristic cost to goal
-        float f_cost;        // Total cost
-        GoapAction* action;  // Action that led to this state
-        struct PlanNode* parent;
-        int depth;
-        bool in_open;
-        bool in_closed;
-    } PlanNode;
+    // Use struct PlanNode from goap.h, do not redefine
+    typedef struct PlanNode PlanNode;
     
     // Allocate node pool
     int max_nodes = 1000;  // Reasonable limit
@@ -1622,7 +774,7 @@ bool goap_world_states_equal(const GoapWorldState* state1, const GoapWorldState*
                 if (fabsf(key1->value.float_val - key2.value.float_val) > 0.001f) return false;
                 break;
             case GOAP_STATE_VECTOR3:
-                if (!vec3_equals(&key1->value.vector_val, &key2.value.vector_val)) return false;
+                if (!vec3_is_equal(key1->value.vector_val, key2.value.vector_val, 0.001f)) return false;
                 break;
         }
     }
@@ -1777,4 +929,58 @@ void goap_destroy_planner(GoapPlanner* planner) {
 // Function declarations for missing implementations
 bool goap_astar_plan(GoapPlanner* planner, GoapAgent* agent, const GoapWorldState* start, 
                      const GoapGoal* goal, GoapAction** plan, int* plan_length);
-bool goap_world_states_equal(const GoapWorldState* state1, const GoapWorldState* state2);
+
+// Implementations of removed legacy functions using new logic
+
+void goap_clear_search_data(GoapPlanner* planner) {
+    if (!planner) return;
+    
+    // Free open list
+    struct PlanNode* current = planner->open_list;
+    while (current) {
+        struct PlanNode* next = current->next;
+        free(current);
+        current = next;
+    }
+    planner->open_list = NULL;
+    
+    // Free closed list
+    current = planner->closed_list;
+    while (current) {
+        struct PlanNode* next = current->next;
+        free(current);
+        current = next;
+    }
+    planner->closed_list = NULL;
+}
+
+GoapAgent* goap_create_agent(uint32_t id, const char* name) {
+    GoapAgent* agent = (GoapAgent*)calloc(1, sizeof(GoapAgent));
+    if (!agent) {
+        LOG_ERROR("Failed to allocate agent");
+        return NULL;
+    }
+    
+    agent->id = id;
+    strncpy(agent->name, name, sizeof(agent->name) - 1);
+    
+    // Initialize world state
+    goap_world_state_init(&agent->current_state);
+    
+    // Set default replan interval
+    agent->replan_interval = 1.0f;  // Replan every second
+    agent->needs_replan = true;
+    
+    LOG_INFO("Created GOAP agent: %s (ID: %u)", name, id);
+    return agent;
+}
+
+void goap_destroy_agent(GoapAgent* agent) {
+    if (!agent) return;
+    
+    // Actions are pointers, owned by creator usually, but if we need to clear logic:
+    // Simple free agent
+    free(agent);
+    LOG_INFO("Destroyed GOAP agent: %s", agent->name);
+}
+

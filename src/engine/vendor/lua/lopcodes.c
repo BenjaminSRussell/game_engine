@@ -7,10 +7,10 @@
 #define lopcodes_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
-#include "lopcodes.h"
+#include "vendor/lua/lopcodes.h"
 
 
 /* ORDER OP */

@@ -1,7 +1,7 @@
 // physics/fluids/ocean_simulator.c - FFT-based ocean wave simulation
 #include <core/logger.h>
 #include <core/memory.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <physics/ocean_simulator.h>
 #include <stdlib.h>
 #include <string.h>

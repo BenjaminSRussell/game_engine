@@ -1,4 +1,4 @@
-#include "ai/npc_advanced/suppressive_fire.h"
+#include <ai/npc_advanced/suppressive_fire.h>
 
 void suppressive_fire_init() {}
 

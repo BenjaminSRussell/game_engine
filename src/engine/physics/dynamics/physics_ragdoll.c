@@ -1,7 +1,7 @@
-#include "../core/physics_types.h"
+#include "physics/core/physics_types.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Note: Using standard types where possible, but Ragdoll has specific structs
 // We define them here or move to types header if shared globally.

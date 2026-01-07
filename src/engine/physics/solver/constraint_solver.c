@@ -2,7 +2,7 @@
 #include <core/logger.h>
 #include <core/memory.h>
 #include <core/utils.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <math/quat.h>
 #include <physics/constraint_solver.h>
 #include <stdlib.h>

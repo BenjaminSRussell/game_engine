@@ -4,10 +4,10 @@
  * =================================================================================================
  */
 
-#include "crowd_avoidance.h"
+#include "ai/nav/crowd_avoidance.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 void crowd_avoidance_init(CrowdAvoidance *crowd) {
     crowd->agents = NULL;
@@ -32,16 +32,16 @@ void crowd_add_agent(CrowdAvoidance *crowd, const float *pos, float radius) {
     agent->max_speed = 3.0f;
 }
 
-void crowd_set_desired_velocity(CrowdAvoid *crowd, int agent_idx, const float *desired_vel) {
+void crowd_set_desired_velocity(CrowdAvoidance *crowd, int agent_idx, const float *desired_vel) {
     if (agent_idx < 0 || agent_idx >= crowd->agent_count) return;
     memcpy(crowd->agents[agent_idx].desired_velocity, desired_vel, sizeof(float) * 3);
 }
 
-static float vec3_dot(const float *a, const float *b) {
+static float crowd_vec3_dot(const float *a, const float *b) {
     return a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
 }
 
-static void vec3_sub(float *out, const float *a, const float *b) {
+static void crowd_vec3_sub(float *out, const float *a, const float *b) {
     out[0] = a[0] - b[0];
     out[1] = a[1] - b[1];
     out[2] = a[2] - b[2];
@@ -63,13 +63,13 @@ void crowd_compute_avoidance(CrowdAvoidance *crowd, float delta_time) {
             CrowdAgent *other = &crowd->agents[j];
             
             float rel_pos[3];
-            vec3_sub(rel_pos, other->position, agent->position);
-            float dist = sqrtf(vec3_dot(rel_pos, rel_pos));
+            crowd_vec3_sub(rel_pos, other->position, agent->position);
+            float dist = sqrtf(crowd_vec3_dot(rel_pos, rel_pos));
             
             if (dist < crowd->neighbor_distance) {
                 // Compute avoidance velocity
                 float rel_vel[3];
-                vec3_sub(rel_vel, other->velocity, agent->velocity);
+                crowd_vec3_sub(rel_vel, other->velocity, agent->velocity);
                 
                 // Project onto velocity obstacle cone
                 float combined_radius = agent->radius + other->radius;
@@ -85,7 +85,7 @@ void crowd_compute_avoidance(CrowdAvoidance *crowd, float delta_time) {
         }
         
         // Clamp to max speed
-        float speed = sqrtf(vec3_dot(new_velocity, new_velocity));
+        float speed = sqrtf(crowd_vec3_dot(new_velocity, new_velocity));
         if (speed > agent->max_speed) {
             float scale = agent->max_speed / speed;
             new_velocity[0] *= scale;

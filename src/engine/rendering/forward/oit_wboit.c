@@ -3,11 +3,11 @@
  * Weighted Blended OIT Implementation
  */
 
-#include "oit_wboit.h"
+#include "rendering/forward/oit_wboit.h"
 #include <core/logger.h>
 #include <core/memory.h>
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * INTERNAL STRUCTURES

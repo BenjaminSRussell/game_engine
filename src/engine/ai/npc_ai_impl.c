@@ -7,9 +7,15 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 typedef enum { BT_SUCCESS, BT_FAILURE, BT_RUNNING } BTStatus;
 typedef enum { BT_SEQUENCE, BT_SELECTOR, BT_ACTION, BT_CONDITION } BTNodeType;
+typedef struct BTNode BTNode;
+
+// Forward declaration
+BTStatus bt_evaluate(BTNode *node, void *context);
+
 
 typedef struct BTNode {
   BTNodeType type;

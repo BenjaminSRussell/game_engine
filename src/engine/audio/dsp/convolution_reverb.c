@@ -1,8 +1,8 @@
 #include "audio/dsp/convolution_reverb.h"
 #include "core/memory.h"
-#include "core/math.h"
+#include "include/math/math.h"
 #include <fftw3.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 
 /**

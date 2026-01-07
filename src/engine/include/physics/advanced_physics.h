@@ -34,9 +34,9 @@
 #ifndef ADVANCED_PHYSICS_H
 #define ADVANCED_PHYSICS_H
 
-#include "../../common.h"
-#include "../ecs/ecs.h"
-#include "../core/performance.h"
+#include "include/common.h"
+#include "include/ecs/ecs.h"
+#include "include/core/performance.h"
 #include <stdbool.h>
 
 // ============================================================================

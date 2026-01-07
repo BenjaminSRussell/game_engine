@@ -38,7 +38,7 @@
  * TODO: Add lod bias render graph node
  */
 
-#include "lod_bias.h"
+#include "geometry/lod/lod_bias.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

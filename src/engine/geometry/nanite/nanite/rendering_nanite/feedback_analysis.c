@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "feedback_analysis.h"
+#include "geometry/nanite/nanite/rendering_nanite/feedback_analysis.h"
 #include "../../3d_rendering.h"
 #include <stdint.h>
 #include <stdbool.h>

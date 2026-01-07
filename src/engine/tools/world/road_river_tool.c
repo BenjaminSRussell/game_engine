@@ -3,7 +3,7 @@
  * Spline-based Mesh Generation
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 
 typedef struct {

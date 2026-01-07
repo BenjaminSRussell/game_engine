@@ -7,8 +7,8 @@
 #ifndef MATERIAL_SYSTEM_H
 #define MATERIAL_SYSTEM_H
 
-#include "../common.h"
-#include "big_int.h"
+#include "include/common.h"
+#include "include/core/big_int.h"
 
 // Material ID - unique identifier for each material
 typedef u32 MaterialID;

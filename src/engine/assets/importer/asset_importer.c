@@ -78,7 +78,7 @@ static void *load_texture(const char *path, size_t *size) {
   return (void *)1; // Fake pointer
 }
 
-#include <renderer/mesh.h>
+#include <rendering/mesh.h>
 
 static void *load_mesh(const char *path, size_t *size) {
   // Simple heuristic for procedural loading or file loading

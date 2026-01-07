@@ -6,8 +6,8 @@
  * Optimized for real-time physics simulation with 1000+ dynamic objects.
  */
 
-#include "collision_detection.h"
-#include <math.h>
+#include "physics/collision_detection.h"
+#include <include/math/math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

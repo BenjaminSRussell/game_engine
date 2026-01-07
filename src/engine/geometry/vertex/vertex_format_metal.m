@@ -1,4 +1,4 @@
-#include "vertex_format.h"
+#include "geometry/vertex/vertex_format.h"
 
 #ifdef __OBJC__
 #import <Metal/Metal.h>

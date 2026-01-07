@@ -24,8 +24,8 @@
 #ifndef AI_BLACKBOARD_H
 #define AI_BLACKBOARD_H
 
-#include "../../common.h"
-#include "../core/logger.h"
+#include "include/common.h"
+#include "include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -57,19 +57,32 @@ typedef struct {
     BlackboardType type;             // Data type
     union {
         f32 float_value;
-        s32 int_value;
-        bool bool_value;
-        struct { f32 x, y, z; } vector3_value;
-        struct { f32 x, y, z, w; } vector4_value;
+        i32 int_value;
+        struct {
+            f32 x, y, z;
+        } vector3_value;
+        struct {
+            f32 x, y, z, w;
+        } vector4_value;
         u32 entity_value;
         char string_value[256];
-        struct { 
-            struct { f32 x, y, z; } position;
-            struct { f32 x, y, z, w; } rotation;
-            struct { f32 x, y, z; } scale;
+        struct {
+            struct {
+                f32 x, y, z;
+            } position;
+            struct {
+                f32 x, y, z, w;
+            } rotation;
+            struct {
+                f32 x, y, z;
+            } scale;
         } transform_value;
-        struct { f32 r, g, b, a; } color_value;
-        struct { f32 x, y, z, w; } quaternion_value;
+        struct {
+            f32 r, g, b, a;
+        } color_value;
+        struct {
+            f32 x, y, z, w;
+        } quaternion_value;
         void *custom_value;
     } data;
     
@@ -103,7 +116,7 @@ typedef struct {
     char key[64];
     union {
         f32 float_threshold;
-        s32 int_threshold;
+        i32 int_threshold;
         bool bool_threshold;
         f64 timeout_seconds;
     } threshold;
@@ -173,7 +186,7 @@ void blackboard_set_memory_pool_size(Blackboard *blackboard, size_t pool_size);
 
 // Basic type operations
 bool blackboard_set_float(Blackboard *blackboard, const char *key, f32 value, bool persistent);
-bool blackboard_set_int(Blackboard *blackboard, const char *key, s32 value, bool persistent);
+bool blackboard_set_int(Blackboard *blackboard, const char *key, i32 value, bool persistent);
 bool blackboard_set_bool(Blackboard *blackboard, const char *key, bool value, bool persistent);
 bool blackboard_set_vector3(Blackboard *blackboard, const char *key, f32 x, f32 y, f32 z, bool persistent);
 bool blackboard_set_vector4(Blackboard *blackboard, const char *key, f32 x, f32 y, f32 z, f32 w, bool persistent);
@@ -182,7 +195,7 @@ bool blackboard_set_string(Blackboard *blackboard, const char *key, const char *
 bool blackboard_set_custom(Blackboard *blackboard, const char *key, void *value, size_t size, bool persistent);
 
 bool blackboard_get_float(Blackboard *blackboard, const char *key, f32 *value);
-bool blackboard_get_int(Blackboard *blackboard, const char *key, s32 *value);
+bool blackboard_get_int(Blackboard *blackboard, const char *key, i32 *value);
 bool blackboard_get_bool(Blackboard *blackboard, const char *key, bool *value);
 bool blackboard_get_vector3(Blackboard *blackboard, const char *key, f32 *x, f32 *y, f32 *z);
 bool blackboard_get_vector4(Blackboard *blackboard, const char *key, f32 *x, f32 *y, f32 *z, f32 *w);
@@ -291,7 +304,7 @@ const char *blackboard_get_error_string(BlackboardError error);
     ({ f32 val; blackboard_get_float(bb, key, &val) ? val : (default_val); })
 
 #define BLACKBOARD_GET_INT(bb, key, default_val) \
-    ({ s32 val; blackboard_get_int(bb, key, &val) ? val : (default_val); })
+    ({ i32 val; blackboard_get_int(bb, key, &val) ? val : (default_val); })
 
 #define BLACKBOARD_GET_BOOL(bb, key, default_val) \
     ({ bool val; blackboard_get_bool(bb, key, &val) ? val : (default_val); })
@@ -316,13 +329,14 @@ const char *blackboard_get_error_string(BlackboardError error);
 
 // Performance macros
 #define BLACKBOARD_START_TIMER(bb) \
-    f64 start_time = performance_get_time()
+    f64 start_time = performance_get_time_ms()
 
 #define BLACKBOARD_END_TIMER(bb, lookup_time_ptr) \
     do { \
-        f64 end_time = performance_get_time(); \
+        f64 end_time = performance_get_time_ms(); \
         f64 duration = end_time - start_time; \
-        if (lookup_time_ptr) *lookup_time_ptr = duration; \
+        void* _ptr = (void*)(lookup_time_ptr); \
+        if (_ptr) *((f64*)_ptr) = duration; \
         bb->total_lookup_time += duration; \
         bb->total_lookups++; \
     } while(0)

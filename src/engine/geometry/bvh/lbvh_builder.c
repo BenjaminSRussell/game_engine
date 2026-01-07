@@ -38,7 +38,7 @@
  * TODO: Add lbvh builder render graph node
  */
 
-#include "lbvh_builder.h"
+#include "geometry/bvh/lbvh_builder.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

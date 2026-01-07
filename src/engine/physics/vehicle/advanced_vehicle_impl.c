@@ -3,7 +3,7 @@
  * Arcade & Simulation Modes
  */
 
-#include <math.h>
+#include <include/math/math.h>
 
 typedef enum { VEHICLE_ARCADE, VEHICLE_SIMULATION } VehicleMode;
 

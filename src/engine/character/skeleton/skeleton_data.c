@@ -1,4 +1,4 @@
-#include "skeleton_data.h"
+#include "character/skeleton/skeleton_data.h"
 #include <stdlib.h>
 #include <string.h>
 

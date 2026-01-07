@@ -7,19 +7,19 @@
 #define lmem_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
 #include <stddef.h>
 
-#include "lua.h"
+#include "vendor/lua/lua.h"
 
-#include "ldebug.h"
-#include "ldo.h"
-#include "lgc.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lstate.h"
+#include "vendor/lua/ldebug.h"
+#include "vendor/lua/ldo.h"
+#include "vendor/lua/lgc.h"
+#include "vendor/lua/lmem.h"
+#include "vendor/lua/lobject.h"
+#include "vendor/lua/lstate.h"
 
 
 

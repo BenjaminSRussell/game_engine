@@ -1,7 +1,7 @@
 // Queue Ownership Transfer Implementation
 // Proper cross-queue resource sharing with barriers
 
-#include <renderer/queue_ownership.h>
+#include <rendering/queue_ownership.h>
 #include <core/logger.h>
 
 #ifdef VULKAN_BUILD

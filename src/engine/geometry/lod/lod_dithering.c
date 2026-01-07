@@ -6,10 +6,10 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "lod_dithering.h"
+#include "geometry/lod/lod_dithering.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * CONSTANTS

@@ -1,4 +1,4 @@
-#include "../ui_types.h"
+#include "ui/ui_types.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

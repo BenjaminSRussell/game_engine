@@ -8,7 +8,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "../../geometry/meshlets/meshlet_builder.h"
+#include "geometry/meshlets/meshlet_builder.h"
 
 // Cluster structure as requested
 typedef struct cluster {

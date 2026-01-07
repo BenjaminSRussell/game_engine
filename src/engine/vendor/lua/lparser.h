@@ -7,9 +7,9 @@
 #ifndef lparser_h
 #define lparser_h
 
-#include "llimits.h"
-#include "lobject.h"
-#include "lzio.h"
+#include "vendor/lua/llimits.h"
+#include "vendor/lua/lobject.h"
+#include "vendor/lua/lzio.h"
 
 
 /*

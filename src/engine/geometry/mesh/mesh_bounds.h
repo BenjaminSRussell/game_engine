@@ -21,7 +21,7 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
-#include "mesh_data.h"
+#include "geometry/mesh/mesh_data.h"
 
 /* Bounding volume utilities for mesh optimization */
 

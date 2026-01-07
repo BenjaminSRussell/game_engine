@@ -38,7 +38,7 @@
  * TODO: Add vk swapchain render graph node
  */
 
-#include "vk_swapchain.h"
+#include "backend/vulkan/vk_swapchain.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

@@ -1,0 +1,122 @@
+[  3%] Built target Catch2
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o
+[  3%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o
+[  3%] Built target Catch2WithMain
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_inference.c:1:10:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/crowd_detour.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/obstacle_carving.c::1 fatal error: 'ml_inference.h' file not found
+1    :10: :1 | #i10ncl/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_boss.c:11:10udfatal error: 'ai/navigation_advanced/crowd_detour.h' file not found
+:e "ml_ fatal error: 'ai/navigation_advanced/obstacle_carving.h' file not found
+i:nfere fatal error: nce.'npc/prebuilt/npc_boss.h' file not found
+h"
+      |          ^~~~~~~~~~~~~~~~
+    1    1 | #include "ai/n   11 | #inaclude <npc/prebuviga[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_faction_system.c.o
+ | #intioni_1advancecd/olubsl error generated.
+detaclt/npc_b "oe_css.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+arving.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ai/navigation_advanced/crowd_detour.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_streaming.c:1:10: fatal error: 'ai/navigation_advanced/navmesh_streaming.h' file not found
+    1 | #include "ai/navigation_advanced/navmemake[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o] Error 1sh_stre
+aming.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated1.
+ error generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c:11:10: fatal error: 'npc/prebuilt/npc_companion.h' file not found
+   11 | #include <npc/prebuilt/npc_companion.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/off_mesh_links.c:1:10: fatal error: 'ai/nav/off_mesh_links.h' file not found
+    1 | #include "ai/nav/off_mesh_links.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o] Error 1
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_recast.c:1:10: fatal error: 'ai/navigation_advanced/navmesh_recast.h' file not found
+    1 | #include "ai/navigation_advanced/navmesh_recast.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c:1:10: fatal error: 'npc/prebuilt/npc_enemy_ranged.h' file not found
+    1 | #include "npc/prebuilt/npc_enemy_ranged.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_civilian.c:12:10: fatal error: 'npc/prebuilt/npc_civilian.h' file not found
+   12 | #include <npc/prebuilt/npc_civilian.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_faction_system.c:11:10: fatal error:  generated.
+'npc/prebuilt/npc_faction_system.h' file not found
+   11 | #include <npc/prebuilt/npc_faction_system.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:35:33: error: unknown type name 'CrowdAvoid'
+   35 | void crowd_set_desired_velocity(CrowdAvoid *crowd, int agent_idx, const float *desired_vel) {
+      |                                 ^
+1 error generated.
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:17:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:343:6: error: conflicting types for 'ml_navigation_validate_path'
+  343 | bool ml_navigation_validate_path(const NavigationPath *path);
+      |      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:254:6: note: previous declaration is here
+  254 | bool ml_navigation_validate_path(MLNavigationSystem *system, NavigationPath *path);
+      |      ^
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:68:14: error: no member named 'tile_size' in 'struct NavmeshBuilder'; did you mean 'cell_size'?
+   68 |     builder->tile_size = 32;
+      |              ^~~~~~~~~
+      |              cell_size
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/navmesh.h:108:11: note: 'cell_size' declared here
+  108 |     float cell_size;
+      |           ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:69:14: error: no member named 'border_size' in 'struct NavmeshBuilder'
+   69 |     builder->border_size = 1;
+      |     ~~~~~~~  ^
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:466:5: error: incompatible pointer to integer conversion returning 'void *' from a function with result type 'u32' (aka 'unsigned int') [-Wint-conversion]
+  466 |     NAV_CHECK_NULL_PARAM_PTR(system);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:412:20: note: expanded from macro 'NAV_CHECK_NULL_PARAM_PTR'
+  412 |             return NULL; \
+      |                    ^~~~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h:26:14: note: expanded from macro 'NULL'
+   26 | #define NULL ((void*)0)
+      |              ^~~~~~~~~~
+2 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o] Error 1
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_faction_system.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:489:5: error: call to undeclared function 'NAV_CHECK_NULL_PARAM_PTR_PTR'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  489 |     NAV_CHECK_NULL_PARAM_PTR_PTR(system);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:542:5: warning: indirection of non-volatile null pointer will be deleted, not trap [-Wnull-dereference]
+  542 |     NAV_END_TIMER(system, NULL);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:433:38: note: expanded from macro 'NAV_END_TIMER'
+  433 |         if ((path_time_ptr) != NULL) *((f64*)(path_time_ptr)) = duration; \
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:542:5: note: consider using __builtin_trap() or qualifying pointer with 'volatile'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:433:38: note: expanded from macro 'NAV_END_TIMER'
+  433 |         if ((path_time_ptr) != NULL) *((f64*)(path_time_ptr)) = duration; \
+      |                                      ^
+1 warning and 3 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

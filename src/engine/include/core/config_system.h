@@ -5,8 +5,8 @@
 #ifndef CONFIG_SYSTEM_H
 #define CONFIG_SYSTEM_H
 
-#include "../common.h"
-#include "config_loader.h"
+#include "include/common.h"
+#include "include/core/config_loader.h"
 
 // Configuration system
 typedef struct {

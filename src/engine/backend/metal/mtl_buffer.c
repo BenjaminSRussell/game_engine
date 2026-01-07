@@ -7,7 +7,7 @@
  */
 
 #import <Metal/Metal.h>
-#include "mtl_buffer.h"
+#include "backend/metal/mtl_buffer.h"
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>

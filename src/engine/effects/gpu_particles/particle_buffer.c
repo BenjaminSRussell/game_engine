@@ -1,0 +1,254 @@
+/*
+ * particle_buffer.c
+ * GPU particle buffer
+ *
+ * Part of the Effects subsystem
+ * Advanced 3D Rendering Engine
+ *
+ * Implementation TODOs:
+ * TODO: Implement GPU particle system
+ * TODO: Add particle collision
+ * TODO: Implement ribbon/trail rendering
+ * TODO: Add VFX graph system
+ * TODO: Implement decal rendering
+ * TODO: Add weather effects
+ * TODO: Implement particle sorting
+ * TODO: Add particle LOD
+ * TODO: Implement force fields
+ * TODO: Add particle events
+ * TODO: Implement particle buffer initialization
+ * TODO: Add particle buffer cleanup/shutdown
+ * TODO: Implement particle buffer validation
+ * TODO: Add particle buffer error handling
+ * TODO: Implement particle buffer serialization
+ * TODO: Add particle buffer debug output
+ * TODO: Implement particle buffer unit tests
+ * TODO: Add particle buffer performance counters
+ * TODO: Implement particle buffer hot-reload
+ * TODO: Add particle buffer thread safety
+ * TODO: Implement particle buffer memory pooling
+ * TODO: Add particle buffer caching layer
+ * TODO: Implement particle buffer async operations
+ * TODO: Add particle buffer GPU integration
+ * TODO: Implement particle buffer SIMD optimization
+ * TODO: Add particle buffer batch processing
+ * TODO: Implement particle buffer streaming support
+ * TODO: Add particle buffer LOD support
+ * TODO: Implement particle buffer culling integration
+ * TODO: Add particle buffer render graph node
+ */
+
+#include "effects/gpu_particles/particle_buffer.h"
+#include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <string.h>
+#include <stdlib.h>
+
+/* ============================================================================
+ * CONSTANTS
+ * ============================================================================ */
+
+#define EFFECTS_PARTICLE_BUFFER_MAX_COUNT 4096
+#define EFFECTS_PARTICLE_BUFFER_DEFAULT_CAPACITY 256
+#define EFFECTS_PARTICLE_BUFFER_ALIGNMENT 16
+
+/* ============================================================================
+ * TYPES
+ * ============================================================================ */
+
+typedef struct effects_particle_buffer_internal {
+    uint32_t id;
+    uint32_t flags;
+    gpu_particle_system_t gpu_system;
+    bool initialized;
+    bool dirty;
+    uint64_t frame_updated;
+} effects_particle_buffer_internal_t;
+
+typedef struct effects_particle_buffer_context {
+    effects_particle_buffer_internal_t* items;
+    uint32_t count;
+    uint32_t capacity;
+    void* allocator;
+    bool initialized;
+} effects_particle_buffer_context_t;
+
+static effects_particle_buffer_context_t g_particle_buffer_ctx = {0};
+
+/* ============================================================================
+ * PRIVATE FUNCTIONS
+ * ============================================================================ */
+
+static bool effects_particle_buffer_validate(const effects_particle_buffer_internal_t* item) {
+    if (!item) return false;
+    if (!item->initialized) return false;
+    return true;
+}
+
+static void effects_particle_buffer_cleanup_internal(effects_particle_buffer_internal_t* item) {
+    if (!item) return;
+    
+    // In a real implementation, we would destroy GPU buffers here
+    // render_buffer_destroy(context, item->gpu_system.particle_buffer);
+    // etc.
+    
+    item->initialized = false;
+}
+
+/* ============================================================================
+ * PUBLIC API
+ * ============================================================================ */
+
+int effects_particle_buffer_init(void) {
+    if (g_particle_buffer_ctx.initialized) {
+        return 0; // Already initialized
+    }
+
+    g_particle_buffer_ctx.capacity = EFFECTS_PARTICLE_BUFFER_DEFAULT_CAPACITY;
+    g_particle_buffer_ctx.items = calloc(g_particle_buffer_ctx.capacity, sizeof(effects_particle_buffer_internal_t));
+    if (!g_particle_buffer_ctx.items) {
+        return -1;
+    }
+
+    g_particle_buffer_ctx.count = 0;
+    g_particle_buffer_ctx.initialized = true;
+
+    return 0;
+}
+
+void effects_particle_buffer_shutdown(void) {
+    if (!g_particle_buffer_ctx.initialized) {
+        return;
+    }
+
+    for (uint32_t i = 0; i < g_particle_buffer_ctx.count; i++) {
+        effects_particle_buffer_cleanup_internal(&g_particle_buffer_ctx.items[i]);
+    }
+
+    free(g_particle_buffer_ctx.items);
+    g_particle_buffer_ctx.items = NULL;
+    g_particle_buffer_ctx.count = 0;
+    g_particle_buffer_ctx.capacity = 0;
+    g_particle_buffer_ctx.initialized = false;
+}
+
+int effects_particle_buffer_create(effects_particle_buffer_handle_t* out_handle, const effects_particle_buffer_desc_t* desc) {
+    if (!out_handle || !desc) {
+        return -1;
+    }
+
+    if (!g_particle_buffer_ctx.initialized) {
+        return -2;
+    }
+
+    if (g_particle_buffer_ctx.count >= g_particle_buffer_ctx.capacity) {
+        return -3;
+    }
+
+    uint32_t index = g_particle_buffer_ctx.count++;
+    effects_particle_buffer_internal_t* item = &g_particle_buffer_ctx.items[index];
+
+    item->id = index;
+    item->flags = desc->flags;
+    item->initialized = true;
+    item->dirty = true;
+    item->frame_updated = 0;
+    
+    // Initialize GPU system
+    item->gpu_system.max_particles = desc->max_particles > 0 ? desc->max_particles : 10000;
+    // item->gpu_system.particle_buffer = render_buffer_create(...); // Placeholder
+
+    out_handle->id = index;
+    return 0;
+}
+
+void effects_particle_buffer_destroy(effects_particle_buffer_handle_t handle) {
+    if (handle.id >= g_particle_buffer_ctx.count) {
+        return;
+    }
+
+    effects_particle_buffer_cleanup_internal(&g_particle_buffer_ctx.items[handle.id]);
+}
+
+int effects_particle_buffer_update(effects_particle_buffer_handle_t handle, const void* data, size_t size) {
+    if (handle.id >= g_particle_buffer_ctx.count) {
+        return -1;
+    }
+
+    effects_particle_buffer_internal_t* item = &g_particle_buffer_ctx.items[handle.id];
+    if (!item->initialized) {
+        return -2;
+    }
+    
+    // Update GPU buffers if needed
+    item->dirty = true;
+    return 0;
+}
+
+bool effects_particle_buffer_is_valid(effects_particle_buffer_handle_t handle) {
+    if (handle.id >= g_particle_buffer_ctx.count) {
+        return false;
+    }
+    return g_particle_buffer_ctx.items[handle.id].initialized;
+}
+
+int effects_particle_buffer_get_info(effects_particle_buffer_handle_t handle, effects_particle_buffer_info_t* out_info) {
+    if (!out_info) {
+        return -1;
+    }
+
+    if (handle.id >= g_particle_buffer_ctx.count) {
+        return -2;
+    }
+
+    const effects_particle_buffer_internal_t* item = &g_particle_buffer_ctx.items[handle.id];
+    out_info->id = item->id;
+    out_info->max_particles = item->gpu_system.max_particles;
+    out_info->allocated_size = item->gpu_system.max_particles * item->gpu_system.particle_stride;
+    out_info->initialized = item->initialized;
+
+    return 0;
+}
+
+void effects_particle_buffer_mark_dirty(effects_particle_buffer_handle_t handle) {
+    if (handle.id < g_particle_buffer_ctx.count) {
+        g_particle_buffer_ctx.items[handle.id].dirty = true;
+    }
+}
+
+int effects_particle_buffer_process_pending(void) {
+    int processed = 0;
+    for (uint32_t i = 0; i < g_particle_buffer_ctx.count; i++) {
+        effects_particle_buffer_internal_t* item = &g_particle_buffer_ctx.items[i];
+        if (item->initialized && item->dirty) {
+            // Process item
+            item->dirty = false;
+            processed++;
+        }
+    }
+
+    return processed;
+}
+
+uint32_t effects_particle_buffer_get_count(void) {
+    return g_particle_buffer_ctx.count;
+}
+
+size_t effects_particle_buffer_get_memory_usage(void) {
+    size_t total = sizeof(g_particle_buffer_ctx);
+    total += g_particle_buffer_ctx.capacity * sizeof(effects_particle_buffer_internal_t);
+
+    for (uint32_t i = 0; i < g_particle_buffer_ctx.count; i++) {
+        // total += g_particle_buffer_ctx.items[i].gpu_system.max_particles * sizeof(gpu_particle_t); // If we knew the size
+    }
+
+    return total;
+}
+
+void effects_particle_buffer_debug_print(void) {
+    // TODO: Implement debug output
+    // Debug printing implementation
+}
+
+/* End of particle_buffer.c */

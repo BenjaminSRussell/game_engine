@@ -1,6 +1,6 @@
 #pragma once
 
-#include "spatial_audio_config.h"
+#include "audio/spatial/spatial_audio_config.h"
 
 typedef struct {
     float position[3];   // x, y, z position

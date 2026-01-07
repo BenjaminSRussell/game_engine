@@ -6,7 +6,7 @@
 #ifndef MESHLET_CULLING_H
 #define MESHLET_CULLING_H
 
-#include "meshlet_builder.h"
+#include "geometry/meshlets/meshlet_builder.h"
 
 // Culling result
 typedef enum culling_result {

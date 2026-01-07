@@ -3,7 +3,7 @@
  * Shader Variant System Implementation
  */
 
-#include "shader_variants.h"
+#include "rendering/forward/shader_variants.h"
 #include <core/logger.h>
 #include <stdlib.h>
 // #include <containers/hash_map.h> // Assuming a hash map implementation exists

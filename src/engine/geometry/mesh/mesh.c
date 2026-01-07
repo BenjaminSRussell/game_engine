@@ -13,7 +13,7 @@
 #include <block/block.h>
 #include <chunk/chunk.h>
 #include <math/vec2.h>
-#include <renderer/mesh.h>
+#include <geometry/mesh.h>
 #include <stdlib.h>
 #include <string.h>
 

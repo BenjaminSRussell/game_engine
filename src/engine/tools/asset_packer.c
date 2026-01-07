@@ -1,5 +1,5 @@
-#include "../../include/common.h"
-#include "../../include/core/asset_compression.h"
+#include "include/common.h"
+#include "include/core/asset_compression.h"
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>

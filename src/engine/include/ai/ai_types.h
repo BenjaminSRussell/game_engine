@@ -4,28 +4,20 @@
 #ifndef AI_TYPES_H
 #define AI_TYPES_H
 
-#include "../../common.h"
-#include "../../math/vec3.h"
+#include "include/common.h"
+#include "include/math/vec3.h"
 
 // AI Entity ID
 typedef u32 AIEntityID;
 #define AI_NULL_ENTITY 0
 
 // World State for GOAP
-typedef struct {
-    u32 state_mask;     // Bitmask for atomic state
-    u32 hash_value;     // Quick comparison hash
-} WorldState;
+// GOAP State (Bitmask)
+typedef u64 GOAPState;
+// WorldState is deprecated/alias
+typedef GOAPState WorldState;
 
-// GOAP Action structure
-typedef struct {
-    const char* name;
-    WorldState preconditions;
-    WorldState effects;
-    f32 cost;
-    bool (*proc_check)(AIEntityID entity);
-    void (*execute)(AIEntityID entity);
-} GoapAction;
+// Note: GoapAction is defined in goap_planner.h
 
 // Cover Point structure
 typedef struct {

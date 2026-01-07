@@ -5,7 +5,7 @@
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
-#include <renderer/camera.h>
+#include <include/rendering/camera.h>
 #include <stdbool.h>
 
 // =================================================================================================

@@ -1,4 +1,4 @@
-#include "physics/ragdoll/pose_matching.h"
+#include "character/animation/blending/pose_matching.h"
 
 void pose_matching_init() {}
 

@@ -7,7 +7,7 @@
 #ifndef BIG_INT_H
 #define BIG_INT_H
 
-#include "../common.h"
+#include "include/common.h"
 
 // Big integer structure - using a 128-bit or arbitrary precision approach
 // For GregTech-style mods, we need to handle numbers like 2^64 and beyond

@@ -1,8 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "../common.h"
-#include "../ecs/ecs.h"
+#include "include/common.h"
+#include "include/ecs/ecs.h"
 #include <math/mat4.h>
 #include <math/vec3.h>
 

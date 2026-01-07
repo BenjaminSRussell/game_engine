@@ -1,0 +1,50 @@
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:819:28: error: use of undeclared identifier 'pos'
+  819 |             room_depth/2 - pos.z    // Back wall
+      |                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:812:9: warning: expression result unused [-Wunused-value]
+  812 |         vec3 pos = renderer->objects[i].position;
+      |         ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:853:13: error: expected ';' after expression
+  853 |         vec3 pos = object->position;
+      |             ^
+      |             ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:853:14: error: use of undeclared identifier 'pos'
+  853 |         vec3 pos = object->position;
+      |              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:854:32: error: use of undeclared identifier 'pos'
+  854 |         float distance = sqrtf(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+      |                                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:854:40: error: use of undeclared identifier 'pos'
+  854 |         float distance = sqrtf(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+      |                                        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:854:48: error: use of undeclared identifier 'pos'
+  854 |         float distance = sqrtf(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+      |                                                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:854:56: error: use of undeclared identifier 'pos'
+  854 |         float distance = sqrtf(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+      |                                                        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:854:64: error: use of undeclared identifier 'pos'
+  854 |         float distance = sqrtf(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+      |                                                                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:854:72: error: use of undeclared identifier 'pos'
+  854 |         float distance = sqrtf(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+      |                                                                        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:866:19: error: use of undeclared identifier 'pos'
+  866 |         if (fabsf(pos.x) < 0.1f) { // Object directly in front/behind
+      |                   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:853:9: warning: expression result unused [-Wunused-value]
+  853 |         vec3 pos = object->position;
+      |         ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:914:13: error: expected ';' after expression
+  914 |         vec3 relative_pos = object->position;
+      |             ^
+      |             ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:914:14: error: use of undeclared identifier 'relative_pos'
+  914 |         vec3 relative_pos = object->position;
+      |              ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+2 warnings and 20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/audio/advanced/dolby_atmos.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

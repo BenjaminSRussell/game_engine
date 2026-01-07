@@ -38,7 +38,7 @@
  * TODO: Add cluster split render graph node
  */
 
-#include "cluster_split.h"
+#include "geometry/nanite/nanite/cluster/cluster_split.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

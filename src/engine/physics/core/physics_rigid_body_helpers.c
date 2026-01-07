@@ -1,4 +1,4 @@
-#include "physics_types.h"
+#include "physics/core/physics_types.h"
 #include <stdlib.h>
 #include <string.h>
 

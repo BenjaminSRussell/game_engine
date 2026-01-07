@@ -1,9 +1,9 @@
-#include "mesh_deform.h"
-#include "mesh.h"
+#include "geometry/mesh_deform.h"
+#include "geometry/mesh.h"
 #include <core/memory.h>
 #include <core/logger.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ----------------------------------------------------------------------------
 // Blend Shape Management

@@ -2,7 +2,7 @@
 #include "core/memory.h"
 #include "core/logger.h"
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <time.h>
 

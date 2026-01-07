@@ -1,0 +1,26 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/voice/text_to_speech_neural.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/advanced/atmos_integration.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/advanced/audio_synthesis.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/audio_synthesis.c:122:21: error: no member named 'a0' in 'BiquadFilter'
+  122 |             filter->a0 = 1.0f + alpha;
+      |             ~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/audio_synthesis.c:131:21: error: no member named 'a0' in 'BiquadFilter'
+  131 |             filter->a0 = 1.0f + alpha;
+      |             ~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/audio_synthesis.c:140:21: error: no member named 'a0' in 'BiquadFilter'
+  140 |             filter->a0 = 1.0f + alpha;
+      |             ~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/audio_synthesis.c:149:21: error: no member named 'a0' in 'BiquadFilter'
+  149 |             filter->a0 = 1.0f + alpha;
+      |             ~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/audio_synthesis.c:158:21: error: no member named 'a0' in 'BiquadFilter'
+  158 |             filter->a0 = 1.0f + alpha;
+      |             ~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/audio_synthesis.c:165:33: error: no member named 'a0' in 'BiquadFilter'
+  165 |     f32 a0_inv = 1.0f / filter->a0;
+      |                         ~~~~~~  ^
+6 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/audio/advanced/audio_synthesis.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

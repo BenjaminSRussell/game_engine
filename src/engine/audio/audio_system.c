@@ -145,7 +145,7 @@
 #include <audio/audio_system.h>
 #include <audio/underwater_filter.h>
 #include <core/asset_importers.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <physics/physics.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -1127,4 +1127,11 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
                                0.0f);
     break;
   }
+}
+
+void Audio_SendToOutput(const float* samples, size_t sample_count) {
+    // TODO: Implement audio output routing for Dolby Atmos integration
+    // For now, this is a stub to allow compilation of atmos_integration.c
+    (void)samples;
+    (void)sample_count;
 }

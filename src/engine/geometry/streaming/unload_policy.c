@@ -38,7 +38,7 @@
  * TODO: Add unload policy render graph node
  */
 
-#include "unload_policy.h"
+#include "geometry/streaming/unload_policy.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

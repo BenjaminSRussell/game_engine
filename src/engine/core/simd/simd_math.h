@@ -10,8 +10,8 @@
 #ifndef SIMD_MATH_H
 #define SIMD_MATH_H
 
-#include "simd_types.h"
-#include <math.h>
+#include "core/simd/simd_types.h"
+#include <include/math/math.h>
 
 #ifdef __cplusplus
 extern "C" {

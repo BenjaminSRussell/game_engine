@@ -3,10 +3,10 @@
  * Indirect draw instancing implementation
  */
 
-#include "indirect_instancing.h"
+#include "geometry/instancing/indirect_instancing.h"
 #include <core/logger.h>
 #include <core/memory.h>
-#include <renderer/vulkan.h>
+#include <rendering/vulkan.h>
 #include <string.h>
 
 #define MAX_INDIRECT_BATCHES 64

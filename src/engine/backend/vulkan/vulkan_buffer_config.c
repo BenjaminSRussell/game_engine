@@ -1,13 +1,13 @@
 // Vulkan Buffer Configuration System
 // VULKAN-BF-006: Add buffer configuration system
 
-#include <renderer/vulkan.h>
+#include <rendering/vulkan.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
 #if defined(VULKAN_BUILD) && __has_include(<vulkan/vulkan.h>)
-#include <vulkan/vulkan.h>
+#include <include/rendering/vulkan.h>
 #else
 // Stub constants when Vulkan is not available
 typedef void* VkBuffer;

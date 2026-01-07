@@ -5,7 +5,7 @@
  * Compile with -msse2 or -mavx2 flags.
  */
 
-#include "simd_math.h"
+#include "core/simd/simd_math.h"
 
 #if defined(SIMD_SSE2) || defined(SIMD_AVX2)
 

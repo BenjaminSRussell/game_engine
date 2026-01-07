@@ -1,4 +1,4 @@
-#include "core/threading/thread_pool.h"
+#include "core/sync/thread_pool.h"
 #include "core/memory.h"
 #include "core/logging.h"
 #include <stdatomic.h>

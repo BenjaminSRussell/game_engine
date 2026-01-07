@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "mtl_parallel_encoder.h"
+#include "backend/metal/mtl_parallel_encoder.h"
 
 #if defined(__OBJC__)
 #import <Metal/Metal.h>

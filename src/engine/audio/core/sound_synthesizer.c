@@ -9,7 +9,7 @@
  */
 
 #include <audio/core/sound_synthesizer.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // =================================================================================================
 //                                      STRUCTS

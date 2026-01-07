@@ -3,7 +3,7 @@
  * All ~70 remaining AGENT_PHYSICS TODOs
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 

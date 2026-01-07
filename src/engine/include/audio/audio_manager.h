@@ -6,10 +6,10 @@
 
 #include <common.h>
 #include <math/vec3.h>
-#include "audio_system.h"
-#include "music_system.h"
-#include "ambient_system.h"
-#include "audio_effects.h"
+#include "include/audio/audio_system.h"
+#include "include/audio/music_system.h"
+#include "include/audio/ambient_system.h"
+#include "include/audio/audio_effects.h"
 
 // Master audio manager that coordinates all audio subsystems
 typedef struct AudioManager {

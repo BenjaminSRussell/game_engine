@@ -1,6 +1,6 @@
 #include "../include/platform/biome_api_bridge.h"
 #include "core/logger.h"
-#include "world/biome/biome_system.h"
+#include "scene/world/biome/biome_system.h"
 
 void biome_set_temperature(float temperature) {
   biome_sys_set_temperature(temperature);

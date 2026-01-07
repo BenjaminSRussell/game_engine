@@ -11,7 +11,7 @@
 // ✅ COMPLETED: Implement reverb validation system.
 // ✅ COMPLETED: Add reverb caching system.
 #include <audio/audio_reverb.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 

@@ -26,10 +26,10 @@
 #ifndef MESH_OPTIMIZER_ASSET_COMPILER_H
 #define MESH_OPTIMIZER_ASSET_COMPILER_H
 
-#include "../../common.h"
+#include "include/common.h"
 #include <math/vec3.h>
 #include <math/vec2.h>
-#include <renderer/mesh.h>
+#include <include/rendering/mesh.h>
 
 // ============================================================================
 // Optimization Configuration

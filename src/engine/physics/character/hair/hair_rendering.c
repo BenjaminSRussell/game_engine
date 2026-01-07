@@ -1,4 +1,4 @@
-#include "hair_common.h"
+#include "physics/character/hair/hair_common.h"
 
 void hair_render(id<MTLRenderCommandEncoder> encoder, HairSystem* system, const simd_float4x4* view_proj) {
     if (!system || !system->render_pipeline) return;

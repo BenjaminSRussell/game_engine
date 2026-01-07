@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "mtl_device_caps.h"
+#include "backend/metal/mtl_device_caps.h"
 #include <string.h>
 
 #ifdef __OBJC__

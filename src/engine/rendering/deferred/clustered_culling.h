@@ -9,7 +9,8 @@
 
 #pragma once
 
-#include <core/types.h>
+#include <stdbool.h>
+#include "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/types.h"
 #include <simd/simd.h>
 
 #ifdef __OBJC__

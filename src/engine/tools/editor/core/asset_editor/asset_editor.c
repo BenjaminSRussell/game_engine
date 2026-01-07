@@ -1,8 +1,8 @@
-#include "asset_editor/asset_editor.h"
-#include "asset_editor/editor_tools.h"
-#include "asset_editor/editor_ui.h"
-#include "core/input.h"
-#include <renderer/renderer.h>
+#include "tools/asset_editor/asset_editor.h"
+#include "tools/asset_editor/editor_tools.h"
+#include "tools/asset_editor/editor_ui.h"
+#include "include/platform/input/input.h"
+#include <rendering/renderer.h>
 #include "audio/audio.h"
 #include <stdio.h>
 #include <stdlib.h>

@@ -4,12 +4,12 @@
 #ifndef GOAP_PLANNER_H
 #define GOAP_PLANNER_H
 
-#include "../ai_types.h"
-#include "../../common.h"
+#include <ai/ai_types.h>
+#include <core/types.h>
 
 // GOAP state representation using bitmask
 #define GOAP_MAX_ATOMS 64
-typedef u64 GOAPState;
+// GOAPState defined in ai_types.h
 
 // GOAP atom identifiers
 typedef enum {

@@ -14,13 +14,13 @@
 // Dependencies: ml_core.h, blackboard.h, core/logger.h, core/memory.h
 //
 
-#include "../../../include/ai/nlp_behavior.h"
-#include "../../../include/core/logger.h"
-#include "../../../include/core/memory.h"
+#include "ai/nlp_behavior.h"
+#include "include/core/logger.h"
+#include "include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ============================================================================
 // INTERNAL CONSTANTS AND STRUCTURES
@@ -84,7 +84,7 @@ static EmotionalState transition_emotion(EmotionalState current, const DialogueC
                 return EMOTION_STATE_HAPPY;
             }
             if (strstr(context->player_input, "help") || strstr(context->player_input, "please")) {
-                return EMOTION_STATE_HELPFUL;
+                return EMOTION_STATE_HAPPY;
             }
             break;
             
@@ -148,7 +148,7 @@ static bool generate_response_template(NLPBehaviorSystem *system, u32 personalit
 }
 
 static bool apply_dialect_to_response(GeneratedResponse *response, const PersonalityProfile *personality) {
-    if (!personality->has_acent && !personality->uses_slang) {
+    if (!personality->has_accent && !personality->uses_slang) {
         return true; // No dialect modifications needed
     }
     
@@ -255,7 +255,7 @@ static bool should_adapt_behavior(NLPBehaviorSystem *system, u32 personality_id)
 // ============================================================================
 
 NLPBehaviorSystem *nlp_behavior_create(MLSystem *ml_system) {
-    NLP_CHECK_NULL_PARAM(ml_system);
+    NLP_CHECK_NULL_PARAM_PTR(ml_system);
     
     NLPBehaviorSystem *system = malloc(sizeof(NLPBehaviorSystem));
     if (!system) {
@@ -319,7 +319,7 @@ bool nlp_behavior_initialize(NLPBehaviorSystem *system) {
     
     system->nlp_model = ml_load_model(system->ml_system, model_path, &metadata);
     if (!system->nlp_model) {
-        LOG_WARNING("Failed to load NLP model, using template-based generation");
+        LOG_WARN("Failed to load NLP model, using template-based generation");
     }
     
     // Load understanding model
@@ -329,7 +329,7 @@ bool nlp_behavior_initialize(NLPBehaviorSystem *system) {
     
     system->understanding_model = ml_load_model(system->ml_system, model_path, &metadata);
     if (!system->understanding_model) {
-        LOG_WARNING("Failed to load understanding model");
+        LOG_WARN("Failed to load understanding model");
     }
     
     system->initialized = true;
@@ -383,9 +383,9 @@ u32 nlp_create_personality(NLPBehaviorSystem *system, const PersonalityProfile *
 
 GeneratedResponse *nlp_generate_response(NLPBehaviorSystem *system, u32 personality_id, 
                                          const DialogueContext *context) {
-    NLP_CHECK_NULL_PARAM(system);
-    NLP_CHECK_NULL_PARAM(context);
-    NLP_CHECK_ERROR(personality_id > 0 && personality_id <= system->personality_count, NLP_ERROR_PERSONALITY_NOT_FOUND);
+    NLP_CHECK_NULL_PARAM_PTR(system);
+    NLP_CHECK_NULL_PARAM_PTR(context);
+    NLP_CHECK_ERROR_PTR(personality_id > 0 && personality_id <= system->personality_count, NLP_ERROR_PERSONALITY_NOT_FOUND);
     
     NLP_START_TIMER(system);
     

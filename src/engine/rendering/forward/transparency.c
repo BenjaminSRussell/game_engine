@@ -3,7 +3,7 @@
  * Transparency System Implementation
  */
 
-#include "transparency.h"
+#include "rendering/forward/transparency.h"
 #include <core/logger.h>
 #include <stdbool.h>
 

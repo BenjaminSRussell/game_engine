@@ -14,13 +14,13 @@
 // Dependencies: ml_core.h, core/logger.h, core/memory.h
 //
 
-#include "../../../include/ai/ml_navigation.h"
-#include "../../../include/core/logger.h"
-#include "../../../include/core/memory.h"
+#include "ai/ml_navigation.h"
+#include "include/core/logger.h"
+#include "include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ============================================================================
 // INTERNAL CONSTANTS AND STRUCTURES
@@ -35,8 +35,8 @@
 #define ADAPTATION_THRESHOLD 50
 
 typedef struct {
-    vec3 position;
-    vec3 velocity;
+    Vec3 position;
+    Vec3 velocity;
     f64 timestamp;
     u32 agent_id;
 } NavigationSample;
@@ -52,7 +52,7 @@ typedef struct {
 // PATH GENERATION ALGORITHMS
 // ============================================================================
 
-static NavigationPath *generate_neural_path(MLNavigationSystem *system, u32 agent_id, vec3 start, vec3 goal) {
+static NavigationPath *generate_neural_path(MLNavigationSystem *system, u32 agent_id, Vec3 start, Vec3 goal) {
     if (!system->navigation_models[NAV_MODEL_PATH_PREDICTION]) {
         return NULL; // Model not loaded
     }
@@ -62,7 +62,7 @@ static NavigationPath *generate_neural_path(MLNavigationSystem *system, u32 agen
     if (!path) return NULL;
     
     memset(path, 0, sizeof(NavigationPath));
-    path->waypoints = malloc(sizeof(vec3) * MAX_WAYPOINTS);
+    path->waypoints = malloc(sizeof(Vec3) * MAX_WAYPOINTS);
     path->max_waypoints = MAX_WAYPOINTS;
     path->path_id = system->path_count + 1;
     path->creation_time = time(NULL);
@@ -107,13 +107,13 @@ static NavigationPath *generate_neural_path(MLNavigationSystem *system, u32 agen
     return path;
 }
 
-static NavigationPath *generate_traditional_path(MLNavigationSystem *system, vec3 start, vec3 goal) {
+static NavigationPath *generate_traditional_path(MLNavigationSystem *system, Vec3 start, Vec3 goal) {
     // Fallback traditional A* pathfinding
     NavigationPath *path = malloc(sizeof(NavigationPath));
     if (!path) return NULL;
     
     memset(path, 0, sizeof(NavigationPath));
-    path->waypoints = malloc(sizeof(vec3) * MAX_WAYPOINTS);
+    path->waypoints = malloc(sizeof(Vec3) * MAX_WAYPOINTS);
     path->max_waypoints = MAX_WAYPOINTS;
     path->path_id = system->path_count + 1;
     path->creation_time = time(NULL);
@@ -151,8 +151,8 @@ static bool check_path_collision(MLNavigationSystem *system, const NavigationPat
     
     // Check each path segment for collisions
     for (u32 i = 0; i < path->waypoint_count - 1; i++) {
-        vec3 start = path->waypoints[i];
-        vec3 end = path->waypoints[i + 1];
+        Vec3 start = path->waypoints[i];
+        Vec3 end = path->waypoints[i + 1];
         
         // Simple collision check with environment bounds
         if (start.x < 0 || start.x > system->environment.width ||
@@ -196,8 +196,8 @@ static bool avoid_obstacles_in_path(MLNavigationSystem *system, NavigationPath *
 // PREDICTIVE NAVIGATION
 // ============================================================================
 
-static PlayerPrediction *predict_player_movement_simple(MLNavigationSystem *system, vec3 current_pos, 
-                                                       vec3 current_vel, f32 horizon) {
+static PlayerPrediction *predict_player_movement_simple(MLNavigationSystem *system, Vec3 current_pos, 
+                                                       Vec3 current_vel, f32 horizon) {
     PlayerPrediction *prediction = malloc(sizeof(PlayerPrediction));
     if (!prediction) return NULL;
     
@@ -223,8 +223,8 @@ static PlayerPrediction *predict_player_movement_simple(MLNavigationSystem *syst
     return prediction;
 }
 
-static PlayerPrediction *predict_player_movement_neural(MLNavigationSystem *system, vec3 current_pos, 
-                                                         vec3 current_vel, f32 horizon) {
+static PlayerPrediction *predict_player_movement_neural(MLNavigationSystem *system, Vec3 current_pos, 
+                                                         Vec3 current_vel, f32 horizon) {
     if (!system->navigation_models[NAV_MODEL_PLAYER_BEHAVIOR]) {
         return predict_player_movement_simple(system, current_pos, current_vel, horizon);
     }
@@ -263,14 +263,14 @@ static bool calculate_formation_positions(MLNavigationSystem *system, Navigation
     if (!system || !group || group->agent_count == 0) return false;
     
     // Simple line formation as fallback
-    vec3 direction = vec3_normalize(vec3_sub(group->group_target, group->formation_center));
-    vec3 perpendicular = vec3_cross(direction, (vec3){0, 1, 0});
+    Vec3 direction = vec3_normalize(vec3_sub(group->group_target, group->formation_center));
+    Vec3 perpendicular = vec3_cross(direction, (Vec3){0, 1, 0});
     perpendicular = vec3_normalize(perpendicular);
     
     for (u32 i = 0; i < group->agent_count; i++) {
         f32 offset = (f32)i - (group->agent_count - 1) * 0.5f;
-        vec3 formation_pos = vec3_add(group->formation_center, 
-                                     vec3_scale(perpendicular, offset * group->formation_spacing));
+        Vec3 formation_pos = vec3_add(group->formation_center, 
+                                     vec3_mul(perpendicular, offset * group->formation_spacing));
         
         // Update agent target to formation position
         if (group->agents[i].agent_id > 0 && group->agents[i].agent_id <= system->max_agents) {
@@ -325,7 +325,7 @@ static bool should_retrain_models(MLNavigationSystem *system) {
 // ============================================================================
 
 MLNavigationSystem *ml_navigation_create(MLSystem *ml_system) {
-    NAV_CHECK_NULL_PARAM(ml_system);
+    NAV_CHECK_NULL_PARAM_PTR(ml_system);
     
     MLNavigationSystem *system = malloc(sizeof(MLNavigationSystem));
     if (!system) {
@@ -380,8 +380,8 @@ void ml_navigation_destroy(MLNavigationSystem *system) {
 }
 
 bool ml_navigation_initialize(MLNavigationSystem *system, const NavigationEnvironment *environment) {
-    NAV_CHECK_NULL_PARAM(system);
-    NAV_CHECK_NULL_PARAM(environment);
+    NAV_CHECK_NULL_PARAM_PTR(system);
+    NAV_CHECK_NULL_PARAM_PTR(environment);
     NAV_CHECK_ERROR(!system->initialized, NAV_ERROR_INVALID_PARAMETER);
     
     if (!ml_navigation_validate_environment(environment)) {
@@ -408,7 +408,7 @@ bool ml_navigation_initialize(MLNavigationSystem *system, const NavigationEnviro
     
     system->navigation_models[NAV_MODEL_PATH_PREDICTION] = ml_load_model(system->ml_system, model_path, &metadata);
     if (!system->navigation_models[NAV_MODEL_PATH_PREDICTION]) {
-        LOG_WARNING("Failed to load path prediction model");
+        LOG_WARN("Failed to load path prediction model");
     }
     
     // Obstacle avoidance model
@@ -416,7 +416,7 @@ bool ml_navigation_initialize(MLNavigationSystem *system, const NavigationEnviro
     metadata.name = "obstacle_avoidance_model";
     system->navigation_models[NAV_MODEL_OBSTACLE_AVOIDANCE] = ml_load_model(system->ml_system, model_path, &metadata);
     if (!system->navigation_models[NAV_MODEL_OBSTACLE_AVOIDANCE]) {
-        LOG_WARNING("Failed to load obstacle avoidance model");
+        LOG_WARN("Failed to load obstacle avoidance model");
     }
     
     // Player behavior model
@@ -424,7 +424,7 @@ bool ml_navigation_initialize(MLNavigationSystem *system, const NavigationEnviro
     metadata.name = "player_behavior_model";
     system->navigation_models[NAV_MODEL_PLAYER_BEHAVIOR] = ml_load_model(system->ml_system, model_path, &metadata);
     if (!system->navigation_models[NAV_MODEL_PLAYER_BEHAVIOR]) {
-        LOG_WARNING("Failed to load player behavior model");
+        LOG_WARN("Failed to load player behavior model");
     }
     
     system->initialized = true;
@@ -462,9 +462,9 @@ void ml_navigation_shutdown(MLNavigationSystem *system) {
     LOG_INFO("ML Navigation system shutdown complete");
 }
 
-u32 ml_navigation_create_agent(MLNavigationSystem *system, vec3 start_position, f32 max_speed) {
-    NAV_CHECK_NULL_PARAM(system);
-    NAV_CHECK_ERROR(system->agent_count < system->max_agents, NAV_ERROR_OUT_OF_MEMORY);
+u32 ml_navigation_create_agent(MLNavigationSystem *system, Vec3 start_position, f32 max_speed) {
+    NAV_CHECK_NULL_PARAM_RET(system, 0);
+    NAV_CHECK_RET(system->agent_count < system->max_agents, NAV_ERROR_OUT_OF_MEMORY, 0);
     
     u32 agent_id = system->agent_count + 1; // 1-based indexing
     NavigationAgent *agent = &system->agents[system->agent_count];
@@ -485,9 +485,9 @@ u32 ml_navigation_create_agent(MLNavigationSystem *system, vec3 start_position, 
     return agent_id;
 }
 
-NavigationPath *ml_navigation_generate_path(MLNavigationSystem *system, u32 agent_id, vec3 start, vec3 goal) {
-    NAV_CHECK_NULL_PARAM(system);
-    NAV_CHECK_ERROR(agent_id > 0 && agent_id <= system->agent_count, NAV_ERROR_AGENT_NOT_FOUND);
+NavigationPath *ml_navigation_generate_path(MLNavigationSystem *system, u32 agent_id, Vec3 start, Vec3 goal) {
+    NAV_CHECK_NULL_PARAM_PTR(system);
+    NAV_CHECK_ERROR_PTR(agent_id > 0 && agent_id <= system->agent_count, NAV_ERROR_AGENT_NOT_FOUND);
     
     NAV_START_TIMER(system);
     
@@ -544,8 +544,8 @@ NavigationPath *ml_navigation_generate_path(MLNavigationSystem *system, u32 agen
     return path;
 }
 
-bool ml_navigation_follow_path(MLNavigationSystem *system, u32 agent_id, f32 delta_time) {
-    NAV_CHECK_NULL_PARAM(system);
+bool ml_navigation_follow_path(MLNavigationSystem *system, u32 agent_id, NavigationPath *path, f32 delta_time) {
+    NAV_CHECK_NULL_PARAM_PTR(system);
     NAV_CHECK_ERROR(agent_id > 0 && agent_id <= system->agent_count, NAV_ERROR_AGENT_NOT_FOUND);
     
     NavigationAgent *agent = &system->agents[agent_id - 1];
@@ -553,7 +553,7 @@ bool ml_navigation_follow_path(MLNavigationSystem *system, u32 agent_id, f32 del
         return false;
     }
     
-    NavigationPath *path = agent->current_path;
+
     if (agent->current_waypoint >= path->waypoint_count) {
         // Reached destination
         agent->is_navigating = false;
@@ -561,8 +561,8 @@ bool ml_navigation_follow_path(MLNavigationSystem *system, u32 agent_id, f32 del
     }
     
     // Get current target waypoint
-    vec3 target = path->waypoints[agent->current_waypoint];
-    vec3 direction = vec3_sub(target, agent->current_position);
+    Vec3 target = path->waypoints[agent->current_waypoint];
+    Vec3 direction = vec3_sub(target, agent->current_position);
     f32 distance = vec3_length(direction);
     
     // Check if reached current waypoint
@@ -580,7 +580,7 @@ bool ml_navigation_follow_path(MLNavigationSystem *system, u32 agent_id, f32 del
     // Move towards target
     if (distance > 0.0f) {
         direction = vec3_normalize(direction);
-        vec3 movement = vec3_scale(direction, agent->max_speed * delta_time);
+        Vec3 movement = vec3_mul(direction, agent->max_speed * delta_time);
         agent->current_position = vec3_add(agent->current_position, movement);
         agent->velocity = movement;
     }
@@ -588,9 +588,9 @@ bool ml_navigation_follow_path(MLNavigationSystem *system, u32 agent_id, f32 del
     return true;
 }
 
-PlayerPrediction *ml_navigation_predict_player_movement(MLNavigationSystem *system, vec3 current_pos, 
-                                                      vec3 current_vel, f32 prediction_horizon) {
-    NAV_CHECK_NULL_PARAM(system);
+PlayerPrediction *ml_navigation_predict_player_movement(MLNavigationSystem *system, Vec3 current_pos, 
+                                                      Vec3 current_vel, f32 prediction_horizon) {
+    NAV_CHECK_NULL_PARAM_PTR(system);
     
     if (system->predictive.active_prediction_count >= system->predictive.max_predictions) {
         return NULL; // Prediction storage full
@@ -638,7 +638,7 @@ f32 ml_navigation_calculate_path_length(const NavigationPath *path) {
     
     f32 total_length = 0.0f;
     for (u32 i = 0; i < path->waypoint_count - 1; i++) {
-        vec3 segment = vec3_sub(path->waypoints[i + 1], path->waypoints[i]);
+        Vec3 segment = vec3_sub(path->waypoints[i + 1], path->waypoints[i]);
         total_length += vec3_length(segment);
     }
     

@@ -1,4 +1,4 @@
-#include "animation_blender.h"
+#include "character/animation/animation_blender.h"
 
 static void decompose_matrix(simd_float4x4 matrix, simd_float3* pos, simd_quatf* rot, simd_float3* scale) {
     // Extract translation

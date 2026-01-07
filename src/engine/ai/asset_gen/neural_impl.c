@@ -9,22 +9,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "ai/ai_models.h"
 
-typedef enum {
-  AI_MODEL_TEXT_TO_3D,
-  AI_MODEL_TEXTURE_SYNTHESIS,
-  AI_MODEL_STYLE_TRANSFER,
-  AI_MODEL_UPSCALING
-} AIModelType;
-
-typedef struct {
-  AIModelType type;
-  char model_path[512];
-  void *model_data;
-  bool use_gpu;
-  int input_size[4];
-  int output_size[4];
-} AIModel;
+// AI Model definitions moved to ai/ai_models.h
 
 typedef struct AIGeneratedMesh {
   uint32_t vertex_count;

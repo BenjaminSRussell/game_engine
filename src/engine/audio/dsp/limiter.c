@@ -4,10 +4,10 @@
  * =================================================================================================
  */
 
-#include "limiter.h"
+#include "audio/dsp/limiter.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 static float db_to_linear(float db) {
     return powf(10.0f, db / 20.0f);

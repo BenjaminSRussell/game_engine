@@ -1,18 +1,17 @@
 // Vulkan GPU capabilities and device feature detection
-// ✅ COMPLETED: Implement capability detection optimization.
-// ✅ COMPLETED: Add capability caching system.
-// ✅ COMPLETED: Implement capability validation system.
-// ✅ COMPLETED: Add capability statistics tracking.
-// ✅ COMPLETED: Implement capability debugging tools.
-// ✅ COMPLETED: Add capability performance profiling.
-// ✅ COMPLETED: Implement capability configuration system.
-// ✅ COMPLETED: Add capability unit testing framework.
-// ✅ COMPLETED: Implement capability documentation system.
-// ✅ COMPLETED: Add capability optimization suggestions.
-#include <common.h>
-#include <config/config.h>
-#include <core/logger.h>
-#include <renderer/vulkan.h>
+// VULKAN-CAPS-001: Implement capability detection optimization
+// VULKAN-CAPS-002: Add capability caching system
+// VULKAN-CAPS-003: Implement capability validation system
+// VULKAN-CAPS-004: Add capability statistics tracking
+// VULKAN-CAPS-005: Implement capability debugging tools
+// VULKAN-CAPS-006: Add capability performance profiling
+// VULKAN-CAPS-007: Implement capability configuration system
+// VULKAN-CAPS-008: Add capability unit testing framework
+// VULKAN-CAPS-009: Implement capability documentation system
+// VULKAN-CAPS-010: Add capability optimization suggestions
+#include "../../include/config/config.h"
+#include "include/core/logger.h"
+#include "include/rendering/vulkan.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,9 +51,27 @@ typedef struct {
   bool supports_variable_rate_shading;
   bool supports_mesh_shaders;
   bool supports_fragment_shader_interlock;
+  
+  // VULKAN-CAPS-004: Capability statistics tracking
+  u64 query_time_ms;
+  u32 extension_count;
+  u32 feature_check_count;
+  bool capabilities_cached;
 } GPUCapabilities;
 
 static GPUCapabilities g_gpu_caps = {0};
+
+// VULKAN-CAPS-002: Capability caching system
+static VkPhysicalDevice g_cached_device = VK_NULL_HANDLE;
+static bool g_cache_valid = false;
+
+// VULKAN-CAPS-006: Performance profiling
+static struct {
+  u64 total_query_time;
+  u32 query_count;
+  u64 cache_hits;
+  u64 cache_misses;
+} g_perf_stats = {0};
 
 // Convert vendor ID to readable name
 static const char *get_vendor_name(u32 vendor_id) {
@@ -113,10 +130,12 @@ static void query_ray_tracing_capabilities(VkPhysicalDevice device) {
   g_gpu_caps.supports_ray_tracing = false;
   g_gpu_caps.supports_ray_tracing_indirect = false;
   g_gpu_caps.supports_acceleration_structures = false;
+  g_gpu_caps.feature_check_count++;
 
   // Check for ray tracing extensions
   u32 extension_count = 0;
   vkEnumerateDeviceExtensionProperties(device, NULL, &extension_count, NULL);
+  g_gpu_caps.extension_count = extension_count;
 
   if (extension_count > 0) {
     VkExtensionProperties *extensions =
@@ -145,14 +164,22 @@ static void query_ray_tracing_capabilities(VkPhysicalDevice device) {
 
     free(extensions);
 
-    // Set ray tracing support based on extension availability
-    // Note: Full ray tracing feature queries require Vulkan 1.2+ extensions
-    // that may not be available on all platforms (especially MoltenVK)
+    // Query ray tracing features if extensions are available
     if (has_ray_tracing_pipeline && has_acceleration_structure) {
-      g_gpu_caps.supports_ray_tracing = true;
-      g_gpu_caps.supports_acceleration_structures = true;
+      VkPhysicalDeviceRayTracingFeaturesKHR rt_features = {0};
+      rt_features.sType =
+          VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RAY_TRACING_FEATURES_KHR;
+
+      VkPhysicalDeviceFeatures2 features2 = {0};
+      features2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+      features2.pNext = &rt_features;
+
+      vkGetPhysicalDeviceFeatures2(device, &features2);
+
+      g_gpu_caps.supports_ray_tracing = rt_features.rayTracing;
       g_gpu_caps.supports_ray_tracing_indirect =
-          false; // Requires deeper checks
+          rt_features.rayTracingIndirectRays;
+      g_gpu_caps.supports_acceleration_structures = has_acceleration_structure;
     }
   }
 }
@@ -176,13 +203,25 @@ static void query_memory_info(VkPhysicalDevice device) {
 
 #endif
 
-// Main capability query function
+// VULKAN-CAPS-001: Optimized capability query with timing
 bool vulkan_query_capabilities(VkPhysicalDevice device) {
 #if defined(VULKAN_BUILD) && __has_include(<vulkan/vulkan.h>)
   if (!device) {
     LOG_ERROR("Invalid physical device for capability query");
     return false;
   }
+
+  // VULKAN-CAPS-002: Check cache first
+  if (g_cache_valid && g_cached_device == device) {
+    g_perf_stats.cache_hits++;
+    LOG_INFO("Using cached GPU capabilities");
+    return true;
+  }
+  
+  g_perf_stats.cache_misses++;
+  
+  // VULKAN-CAPS-006: Start timing
+  u64 start_time = get_current_time_ms();
 
   // Reset capabilities
   memset(&g_gpu_caps, 0, sizeof(GPUCapabilities));
@@ -191,6 +230,17 @@ bool vulkan_query_capabilities(VkPhysicalDevice device) {
   query_device_properties(device);
   query_ray_tracing_capabilities(device);
   query_memory_info(device);
+  
+  // VULKAN-CAPS-006: End timing
+  u64 end_time = get_current_time_ms();
+  g_gpu_caps.query_time_ms = end_time - start_time;
+  g_perf_stats.total_query_time += g_gpu_caps.query_time_ms;
+  g_perf_stats.query_count++;
+  
+  // VULKAN-CAPS-002: Update cache
+  g_cached_device = device;
+  g_cache_valid = true;
+  g_gpu_caps.capabilities_cached = true;
 
   // Log capabilities
   LOG_INFO("=== GPU Capabilities ===");
@@ -236,6 +286,11 @@ bool vulkan_query_capabilities(VkPhysicalDevice device) {
            g_gpu_caps.max_uniform_buffer_size / (1024.0 * 1024.0));
   LOG_INFO("  Max Storage Buffer: %.1f MB",
            g_gpu_caps.max_storage_buffer_size / (1024.0 * 1024.0));
+           
+  LOG_INFO("Query Statistics:");
+  LOG_INFO("  Query Time: %llu ms", g_gpu_caps.query_time_ms);
+  LOG_INFO("  Extensions Found: %u", g_gpu_caps.extension_count);
+  LOG_INFO("  Feature Checks: %u", g_gpu_caps.feature_check_count);
 
   return true;
 #else
@@ -362,5 +417,121 @@ void vulkan_get_recommended_settings(VulkanRenderer *renderer,
     LOG_INFO("  Max Chunks Loaded: %u", config->max_chunks_loaded);
   } else {
     LOG_INFO("GPU capabilities detected - config unchanged");
+  }
+}
+
+// VULKAN-CAPS-003: Capability validation system
+bool vulkan_validate_capabilities(VkPhysicalDevice device) {
+#if defined(VULKAN_BUILD) && __has_include(<vulkan/vulkan.h>)
+  if (!device) {
+    LOG_ERROR("Invalid device for validation");
+    return false;
+  }
+  
+  // Validate minimum required capabilities
+  if (g_gpu_caps.max_texture_size < 512) {
+    LOG_ERROR("GPU texture size too small: %d (minimum: 512)", g_gpu_caps.max_texture_size);
+    return false;
+  }
+  
+  if (g_gpu_caps.max_render_targets < 4) {
+    LOG_ERROR("GPU render targets too few: %d (minimum: 4)", g_gpu_caps.max_render_targets);
+    return false;
+  }
+  
+  if (g_gpu_caps.total_memory < 256ULL * 1024 * 1024) {
+    LOG_ERROR("GPU memory too low: %.1f MB (minimum: 256 MB)", 
+             g_gpu_caps.total_memory / (1024.0 * 1024.0));
+    return false;
+  }
+  
+  LOG_INFO("GPU capabilities validation passed");
+  return true;
+#else
+  (void)device;
+  return false;
+#endif
+}
+
+// VULKAN-CAPS-005: Capability debugging tools
+void vulkan_debug_capabilities(void) {
+  LOG_INFO("=== GPU Capability Debug Info ===");
+  LOG_INFO("Cache Status: %s", g_cache_valid ? "Valid" : "Invalid");
+  LOG_INFO("Cached Device: %p", (void*)g_cached_device);
+  LOG_INFO("Performance Stats:");
+  LOG_INFO("  Total Queries: %u", g_perf_stats.query_count);
+  LOG_INFO("  Cache Hits: %llu", g_perf_stats.cache_hits);
+  LOG_INFO("  Cache Misses: %llu", g_perf_stats.cache_misses);
+  LOG_INFO("  Average Query Time: %.2f ms", 
+           g_perf_stats.query_count > 0 ? 
+           (double)g_perf_stats.total_query_time / g_perf_stats.query_count : 0.0);
+  LOG_INFO("  Cache Hit Rate: %.1f%%", 
+           (g_perf_stats.cache_hits + g_perf_stats.cache_misses) > 0 ?
+           (double)g_perf_stats.cache_hits / (g_perf_stats.cache_hits + g_perf_stats.cache_misses) * 100.0 : 0.0);
+}
+
+// VULKAN-CAPS-007: Capability configuration system
+void vulkan_configure_capabilities(const VulkanCapabilityConfig* config) {
+  if (!config) return;
+  
+  // Apply configuration settings
+  if (config->force_cache_invalidate) {
+    g_cache_valid = false;
+    g_cached_device = VK_NULL_HANDLE;
+    LOG_INFO("Capability cache invalidated by configuration");
+  }
+  
+  if (config->enable_detailed_logging) {
+    LOG_INFO("Detailed capability logging enabled");
+  }
+}
+
+// VULKAN-CAPS-006: Get performance statistics
+void vulkan_get_capability_stats(VulkanCapabilityStats* out_stats) {
+  if (!out_stats) return;
+  
+  out_stats->total_query_time = g_perf_stats.total_query_time;
+  out_stats->query_count = g_perf_stats.query_count;
+  out_stats->cache_hits = g_perf_stats.cache_hits;
+  out_stats->cache_misses = g_perf_stats.cache_misses;
+  out_stats->average_query_time = g_perf_stats.query_count > 0 ? 
+    (double)g_perf_stats.total_query_time / g_perf_stats.query_count : 0.0;
+  out_stats->cache_hit_rate = (g_perf_stats.cache_hits + g_perf_stats.cache_misses) > 0 ?
+    (double)g_perf_stats.cache_hits / (g_perf_stats.cache_hits + g_perf_stats.cache_misses) * 100.0 : 0.0;
+}
+
+// VULKAN-CAPS-002: Clear capability cache
+void vulkan_clear_capability_cache(void) {
+  g_cache_valid = false;
+  g_cached_device = VK_NULL_HANDLE;
+  memset(&g_gpu_caps, 0, sizeof(GPUCapabilities));
+  LOG_INFO("Capability cache cleared");
+}
+
+// VULKAN-CAPS-010: Get optimization suggestions
+void vulkan_get_optimization_suggestions(VulkanOptimizationSuggestions* suggestions) {
+  if (!suggestions) return;
+  
+  memset(suggestions, 0, sizeof(VulkanOptimizationSuggestions));
+  
+  // Memory-based suggestions
+  if (g_gpu_caps.total_memory < 512ULL * 1024 * 1024) {
+    suggestions->reduce_texture_quality = true;
+    suggestions->reduce_render_distance = true;
+    suggestions->disable_fancy_graphics = true;
+  }
+  
+  // Feature-based suggestions
+  if (!g_gpu_caps.supports_ray_tracing) {
+    suggestions->use_alternative_lighting = true;
+  }
+  
+  if (!g_gpu_caps.supports_variable_rate_shading) {
+    suggestions->disable_vrs = true;
+  }
+  
+  // Performance-based suggestions
+  if (g_gpu_caps.query_time_ms > 100) {
+    suggestions->enable_caching = true;
   }
 }

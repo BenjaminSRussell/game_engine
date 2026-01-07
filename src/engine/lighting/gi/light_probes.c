@@ -1,7 +1,7 @@
-#include "renderer/light_probes.h"
+#include "rendering/light_probes.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ============================================================================
 // Light Probes
@@ -54,7 +54,7 @@ void gi_light_probe_grid_shutdown(LightProbeGrid* grid) {
 }
 
 
-#include "renderer/global_illumination.h"
+#include "rendering/global_illumination.h"
 
 void gi_light_probes_bake(LightProbeGrid* grid, u32 samples_per_probe) {
     if (!grid || !grid->probes) return;

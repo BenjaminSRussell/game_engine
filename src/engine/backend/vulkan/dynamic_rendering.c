@@ -1,8 +1,8 @@
 // Dynamic Rendering Implementation
 // Modern rendering without VkRenderPass and VkFramebuffer
 
-#include <renderer/dynamic_rendering.h>
-#include <renderer/vulkan_dispatch.h>
+#include <rendering/dynamic_rendering.h>
+#include <rendering/vulkan_dispatch.h>
 #include <core/logger.h>
 #include <string.h>
 

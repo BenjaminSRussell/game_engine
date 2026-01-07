@@ -1,6 +1,6 @@
 #include "platform/occlusion_api_bridge.h"
 #include "core/logger.h"
-#include "renderer/optimization/occlusion_system.h"
+#include "rendering/optimization/occlusion_system.h"
 
 void occlusion_set_mode(PlatformOcclusionMode mode) { occlusion_sys_set_mode((OcclusionMode)mode); }
 

@@ -1,6 +1,6 @@
 #include "physics/fluids/fluid_system.h"
 #include "core/logger.h"
-#include "sph_solver.h"
+#include "physics/fluids/sph_solver.h"
 #include <stdlib.h>
 #include <string.h>
 

@@ -6,12 +6,12 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "bvh_builder.h"
-#include "bvh_node.h"
-#include "../../include/core/memory.h"
-#include "../../include/math/vec3.h"
-#include "../../include/math/aabb.h"
-#include "../../include/thread/job.h"
+#include "geometry/bvh/bvh_builder.h"
+#include "geometry/bvh/bvh_node.h"
+#include "include/core/memory.h"
+#include "include/math/vec3.h"
+#include "include/math/aabb.h"
+#include "include/core/threading/job.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

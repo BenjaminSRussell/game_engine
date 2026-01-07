@@ -5,7 +5,7 @@
  * =================================================================================================
  */
 
-#include "resource_manager.h"
+#include "core/resource/resource_manager.h"
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>

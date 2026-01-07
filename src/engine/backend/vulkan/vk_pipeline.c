@@ -38,7 +38,7 @@
  * TODO: Add vk pipeline render graph node
  */
 
-#include "vk_pipeline.h"
+#include "backend/vulkan/vk_pipeline.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

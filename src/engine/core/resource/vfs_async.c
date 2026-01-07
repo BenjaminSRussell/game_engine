@@ -1,7 +1,7 @@
 // VFS async operations implementation
 #include <core/logger.h>
-#include <thread/job.h>
-#include <vfs/vfs.h>
+#include <core/threading/job.h>
+#include <core/resource/vfs/vfs.h>
 #include <stdlib.h>
 #include <string.h>
 #ifndef PLATFORM_WEB

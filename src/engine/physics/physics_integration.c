@@ -12,7 +12,7 @@
 // ✅ COMPLETED: Physics integration thread-safety improvements added.
 #include <math/quat.h>
 #include <math/vec3.h>
-#include "physics_engine_core.h"
+#include "physics/physics_engine_core.h"
 #include <stdbool.h>
 #include <string.h>
 

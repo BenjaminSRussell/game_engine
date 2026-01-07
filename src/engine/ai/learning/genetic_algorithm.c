@@ -2,7 +2,7 @@
 #include "core/core.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 #define MAX_POPULATION 100
 #define GENE_COUNT 8

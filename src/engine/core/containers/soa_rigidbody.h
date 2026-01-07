@@ -16,8 +16,8 @@
 #ifndef SOA_RIGIDBODY_H
 #define SOA_RIGIDBODY_H
 
-#include "../simd/simd_types.h"
-#include "../simd/simd_math.h"
+#include "core/simd/simd_types.h"
+#include "core/simd/simd_math.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>

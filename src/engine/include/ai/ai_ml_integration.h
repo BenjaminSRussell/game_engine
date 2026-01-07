@@ -34,9 +34,9 @@
 #ifndef AI_ML_INTEGRATION_H
 #define AI_ML_INTEGRATION_H
 
-#include "../../common.h"
-#include "../ecs/ecs.h"
-#include "../core/performance.h"
+#include "include/common.h"
+#include "include/ecs/ecs.h"
+#include "include/core/performance.h"
 #include <stdbool.h>
 
 // ============================================================================

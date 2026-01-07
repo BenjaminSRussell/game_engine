@@ -1,0 +1,136 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_patrol.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_guard.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_shopkeeper.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_scheduling.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o
+[  4%] Built target Catch2
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_inference.c:1/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/crowd_detour.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_scheduling.c::/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_boss.c1:10/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/obstacle_carving.c10:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_streaming.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_recast.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/off_mesh_links.c: : fatal error: :1'ai/navigation_advanced/crowd_detour.h' file not found11fatal error: :::1
+'ml_inference.h' file not found::11:10:
+110    :: :     :110: 1fatal error:  | 1010'npc/prebuilt/npc_boss.h' file not found#:fatal error: :fatal error: :i'ai/navigation_advanced/obstacle_carving.h' file not found | 
+      fatal error: 'npc/prebuilt/npc_scheduling.h' file not found'ai/nav/off_mesh_links.h' file not found1fatal error: 10#
+
+
+       n'ai/navigation_advanced/navmesh_recast.h' file not found11    1
+i | # | c1: |  nl#ciifatal error: nlund    'ai/navigation_advanced/navmesh_streaming.h' file not foundcc#inuldelu
+1ec d | "leuu     | #de a1 i"i#< n/nn"i | p#dnemcilncnucll/ud pr"d_eaclvuiipaedeci /"p/ge  buirnaaen"iatife"ra/li/non_advaaivnaiagvv/b/ieonauncntciiteafgltvigaotafdneti/_.n/_apm/ccdieo_snbnh_o_vrpaassoo.nwn_cddh_vhdc_e">staoeurdvlc.inhd
+
+ahk/nsao"ebd
+c      snt      u      l|          ^~~~~~~~~~~~~~~~~~~~~~~~~
+ecd/| end         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.a
+| h/         ^~~~~~~~~~~~~~~~ncavmav
+mees"ihn_g.
+h"
+      | ls1               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+h| r_ee error         ^~~~~~~~~~~~~~~~~~~~~~~~~ generated1c
+.
+a error generated.
+st.s1h error_t generatedcrarving.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"
+      e|          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.
+aming.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+1 error generated.
+1 error generated.
+1 error generated.
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_scheduling.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c:1:10: fatal error: 'npc/prebuilt/npc_enemy_ranged.h' file not found
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_shopkeeper.c:1:10:    1 | #include "npc/prebu fatal error: 'npc/prebuilt/npc_shopkeeper.h' file not found
+ilt/npc_e    1 | #include "npc/prebneuilt/npc_shmy_ramake[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o] Error 1
+opkeepenged.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o] Error 1
+r.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o] Error 1
+1 error generated.
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_shopkeeper.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o] Error 1
+[  4%] Built target Catch2WithMain
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_patrol.c:11:26: error: unknown type name 'PatrolComponent'; did you mean 'PatrolWaypoint'?
+   11 | void patrol_update_debug(PatrolComponent *comp) {
+      |                          ^~~~~~~~~~~~~~~
+      |                          PatrolWaypoint
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/npc/prebuilt/npc_patrol.h:9:31: note: 'PatrolWaypoint' declared here
+    9 | typedef struct PatrolWaypoint PatrolWaypoint;
+      |                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_patrol.c:16:29: error: unknown type name 'PatrolComponent'; did you mean 'PatrolWaypoint'?
+   16 | void patrol_avoid_obstacles(PatrolComponent *comp, float *steering_force) {
+      |                             ^~~~~~~~~~~~~~~
+      |                             PatrolWaypoint
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/npc/prebuilt/npc_patrol.h:9:31: note: 'PatrolWaypoint' declared here
+    9 | typedef struct PatrolWaypoint PatrolWaypoint;
+      |                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c:16:14: error: redefinition of 'CompanionCommand'
+   16 | typedef enum CompanionCommand {
+      |              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/npc/prebuilt/npc_companion.h:8:14: note: previous definition is here
+    8 | typedef enum CompanionCommand {
+      |              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c:17:5: error: redefinition of enumerator 'CMD_FOLLOW'
+   17 |     CMD_FOLLOW = 0,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/npc/prebuilt/npc_companion.h:9:5: note: previous definition is here
+    9 |     CMD_FOLLOW = 0,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c:18:5: error: redefinition of enumerator 'CMD_WAIT'
+   18 |     CMD_WAIT = 1,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/npc/prebuilt/npc_companion.h:10:5: note: previous definition is here
+   10 |     CMD_WAIT = 1,
+      |     ^2
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c:19: errors generated.
+5: error: redefinition of enumerator 'CMD_ATTACK'
+   19 |     CMD_ATTACK = 2,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/npc/prebuilt/npc_companion.h:11:5: note: previous definition is here
+   11 |     CMD_ATTACK = 2,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c:20:5: error: redefinition of enumerator 'CMD_DEFEND'
+   20 |     CMD_DEFEND = 3,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/npc/prebuilt/npc_companion.h:12:5: note: previous definition is here
+   12 |     CMD_DEFEND = 3,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c:21:3: error: typedef redefinition with different types ('enum (unnamed enum at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c:16:14)' vs 'enum CompanionCommand')
+   21 | } CompanionCommand;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/npc/prebuilt/npc_companion.h:13:3: note: previous definition is here
+   13 | } CompanionCommand;
+      |   ^
+6 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_patrol.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_guard.c:74:9: error: use of undeclared identifier 'PhysicsRaycastResult'
+   74 |         PhysicsRaycastResult result;
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_guard.c:77:61: error: use of undeclared identifier 'PHYS_LAYER_WORLD'
+   77 |         if (physics_raycast(guard_pos, to_player, distance, PHYS_LAYER_WORLD, &result)) {
+      |                                                             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_guard.c:77:80: error: use of undeclared identifier 'result'
+   77 |         if (physics_raycast(guard_pos, to_player, distance, PHYS_LAYER_WORLD, &result)) {
+      |                                                                                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_guard.c:79:17: error: use of undeclared identifier 'result'
+   79 |             if (result.distance < distance - 0.5f) { // 0.5f buffer
+      |                 ^
+4 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_guard.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

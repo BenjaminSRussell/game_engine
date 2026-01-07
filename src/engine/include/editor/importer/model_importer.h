@@ -1,7 +1,7 @@
 #ifndef MODEL_IMPORTER_H
 #define MODEL_IMPORTER_H
 
-#include <animation/animation_system.h>
+#include <include/character/animation/animation_system.h>
 #include <core/types.h>
 
 /**

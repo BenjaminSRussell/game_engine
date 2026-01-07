@@ -1,7 +1,7 @@
 #ifndef GEOMETRY_MESH_H
 #define GEOMETRY_MESH_H
 
-#include "geometry_types.h"
+#include "geometry/geometry_types.h"
 
 // Lifecycle
 mesh_t* mesh_create(const char* name);

@@ -9,7 +9,7 @@
 #pragma once
 
 #include <core/types.h>
-#include "gbuffer.h"
+#include "rendering/gbuffer/gbuffer.h"
 
 /**
  * Descriptor for a G-Buffer render pass

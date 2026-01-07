@@ -1,8 +1,8 @@
 #ifndef LIGHT_CULLING_H
 #define LIGHT_CULLING_H
 
-#include "../../lighting/light_manager.h"
-#include "../../include/math/mat4.h"
+#include "lighting/light_manager.h"
+#include "include/math/mat4.h"
 
 /*
  * Clustered Light Culling System

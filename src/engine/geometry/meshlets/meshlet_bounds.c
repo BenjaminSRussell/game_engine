@@ -3,8 +3,8 @@
  * Implementation of bounding sphere and cone generation for meshlets
  */
 
-#include "meshlet_bounds.h"
-#include <math.h>
+#include "geometry/meshlets/meshlet_bounds.h"
+#include <include/math/math.h>
 #include <float.h>
 
 void compute_meshlet_bounds(meshlet_t* m, const float* vertices, uint32_t vertex_stride, const uint32_t* indices) {

@@ -1,4 +1,4 @@
-#include "inventory_system.h"
+#include "gameplay/inventory_system.h"
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>

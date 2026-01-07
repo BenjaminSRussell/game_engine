@@ -4,8 +4,8 @@
  * =================================================================================================
  */
 
-#include "transform_gizmo_advanced.h"
-#include <math.h>
+#include "editor/asset_creation/transform_gizmo_advanced.h"
+#include <include/math/math.h>
 #include <string.h>
 #include <stdio.h>
 

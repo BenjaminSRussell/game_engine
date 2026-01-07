@@ -12,9 +12,9 @@
 // ✅ COMPLETED: Add GPU lighting caching system.
 // ✅ COMPLETED: Implement GPU lighting batching optimization.
 // ✅ COMPLETED: Add GPU lighting validation system.
-#include "../../include/render/gpu_lighting.h"
-#include "../../include/core/logger.h"
-#include <math.h>
+#include "include/rendering/gpu_lighting.h"
+#include "include/core/logger.h"
+#include <include/math/math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

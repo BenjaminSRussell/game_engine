@@ -1,11 +1,11 @@
 #include "core/core.h"
 #include "editor/viewport/outline_rendering.h"
-#include "renderer/renderer.h"
+#include "rendering/renderer.h"
 #include "math/vec3.h"
 #include "math/mat4.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ✅ COMPLETED: Implement Selection Outline Rendering using Jump-Flood Algorithm
 // Implementation includes:

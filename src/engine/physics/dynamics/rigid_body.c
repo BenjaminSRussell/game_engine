@@ -3,7 +3,7 @@
  * Physics simulation for rigid bodies with simplified impulse-based resolution
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdbool.h>
 #include <stdlib.h>
 

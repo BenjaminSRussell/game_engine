@@ -10,9 +10,9 @@
  */
 
 /*
-#include "unreal_bridge.h"
-#include "../../asset_pipeline/unreal_asset_importer.h"
-#include "../../asset_pipeline/blueprint_transpiler.h"
+#include "editor/importer/unreal_bridge.h"
+#include "include/assets/import/unreal_asset_importer.h"
+#include "include/assets/import/blueprint_transpiler.h"
 #include "../../core/log.h"
 ... original content ...
 */

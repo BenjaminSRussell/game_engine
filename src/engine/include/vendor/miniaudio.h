@@ -11541,7 +11541,7 @@ IMPLEMENTATION
 
 #include <assert.h>
 #include <limits.h>         /* For INT_MAX */
-#include <math.h>           /* sin(), etc. */
+#include <include/math/math.h>           /* sin(), etc. */
 #include <stdlib.h>         /* For malloc(), free(), wcstombs(). */
 #include <string.h>         /* For memset() */
 
@@ -19484,7 +19484,7 @@ DEVICE I/O
 #endif
 
 #ifdef MA_POSIX
-    #include <sys/types.h>
+    #include <include/core/types.h>
 #endif
 
 /* This must be set to at least 26. */
@@ -37561,7 +37561,7 @@ audio(4) Backend
 #include <poll.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <sys/types.h>
+#include <include/core/types.h>
 #include <sys/ioctl.h>
 #include <sys/audioio.h>
 

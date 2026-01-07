@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "audio/audio_system.h"
-#include "spatial/spatial_audio_bridge.h"
+#include "audio/spatial/spatial_audio_bridge.h"
 
 // Add spatial audio context to AudioSystem
 typedef struct {

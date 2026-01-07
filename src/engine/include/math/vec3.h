@@ -40,13 +40,14 @@
 // - `EPSILON` (from `common.h`) is used to handle floating-point precision
 // issues,
 //   especially in normalization.
-// - The `ALIGN(16)` attribute suggests optimization for 16-byte boundaries.
+// - The `K_ALIGN(16)` attribute suggests optimization for 16-byte boundaries.
 //
 #ifndef VEC3_H
 #define VEC3_H
 
-#include "../common.h"
+#include "include/common.h"
 #include <math.h>
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -71,12 +72,12 @@ typedef struct {
 typedef enum { VEC3_PRECISION_SINGLE, VEC3_PRECISION_DOUBLE } Vec3Precision;
 
 // Optimized 3D vector with SIMD-friendly alignment
-typedef union {
+typedef union __attribute__((aligned(16))) {
   struct {
     f32 x, y, z;
   };
   f32 data[3];
-} ALIGN(16) Vec3;
+} Vec3;
 
 // Vector operations (all inline for performance)
 INLINE Vec3 vec3(f32 x, f32 y, f32 z) {

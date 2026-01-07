@@ -1,4 +1,4 @@
-#include "visibility_buffer.h"
+#include "geometry/cluster/visibility_buffer.h"
 #include <simd/simd.h>
 
 void visibility_buffer_init(visibility_buffer_t* buffer, id<MTLDevice> device, uint32_t width, uint32_t height) {

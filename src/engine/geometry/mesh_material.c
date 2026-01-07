@@ -1,5 +1,5 @@
-#include "mesh_material.h"
-#include "mesh.h"
+#include "geometry/mesh_material.h"
+#include "geometry/mesh.h"
 #include <core/logger.h>
 #include <string.h>
 

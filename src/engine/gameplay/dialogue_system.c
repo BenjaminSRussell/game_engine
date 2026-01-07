@@ -1,8 +1,8 @@
-#include "dialogue_system.h"
+#include "gameplay/dialogue_system.h"
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /**
  * =================================================================================================

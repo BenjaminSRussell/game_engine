@@ -38,7 +38,7 @@
  * TODO: Add screen size lod render graph node
  */
 
-#include "screen_size_lod.h"
+#include "geometry/lod/screen_size_lod.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

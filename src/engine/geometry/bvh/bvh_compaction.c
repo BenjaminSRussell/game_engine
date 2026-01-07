@@ -38,7 +38,7 @@
  * TODO: Add bvh compaction render graph node
  */
 
-#include "bvh_compaction.h"
+#include "geometry/bvh/bvh_compaction.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

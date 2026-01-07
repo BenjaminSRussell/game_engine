@@ -1,4 +1,4 @@
-#include "ai/procedural_advanced/city_grid.h"
+#include <ai/procedural_advanced/city_grid.h>
 
 void city_grid_init() {}
 

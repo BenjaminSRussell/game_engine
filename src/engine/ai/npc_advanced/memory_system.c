@@ -2,7 +2,7 @@
 #include <ai/npc/perception_system.h>
 #include <core/logger.h>
 #include <core/memory.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 

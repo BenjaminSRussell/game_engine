@@ -1,4 +1,4 @@
-#include "audio/procedural_audio/footstep_synthesis.h"
+#include "audio/procedural/footstep_synthesis.h"
 
 void footstep_synthesis_init() {}
 

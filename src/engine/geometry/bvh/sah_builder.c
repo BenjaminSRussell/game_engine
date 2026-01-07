@@ -38,7 +38,7 @@
  * TODO: Add sah builder render graph node
  */
 
-#include "sah_builder.h"
+#include "geometry/bvh/sah_builder.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

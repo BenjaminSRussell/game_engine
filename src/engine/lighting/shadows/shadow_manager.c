@@ -1,8 +1,8 @@
-#include "shadows/shadow_manager.h"
+#include "lighting/shadows/shadow_manager.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /**
  * Shadow Manager Implementation

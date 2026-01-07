@@ -5,7 +5,7 @@
 #ifndef ENGINE_GAME_LOOP_H
 #define ENGINE_GAME_LOOP_H
 
-#include "../../include/common.h"
+#include "include/common.h"
 
 typedef struct GameLoop GameLoop;
 

@@ -3,8 +3,8 @@
  * Implementation of cluster LOD selection
  */
 
-#include "cluster_lod.h"
-#include <math.h>
+#include "geometry/nanite/nanite/cluster/cluster_lod.h"
+#include <include/math/math.h>
 
 float compute_cluster_projected_error(const cluster_t* c, vec3_t view_pos, float view_fov, float screen_height) {
     if (!c) return 0.0f;

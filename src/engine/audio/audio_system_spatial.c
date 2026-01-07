@@ -4,7 +4,7 @@
  * =================================================================================================
  */
 
-#include "audio_system_spatial.h"
+#include "audio/audio_system_spatial.h"
 #include "audio/audio_system.h"
 #include <stdlib.h>
 #include <stdio.h>

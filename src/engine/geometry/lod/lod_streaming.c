@@ -6,11 +6,11 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "lod_streaming.h"
+#include "geometry/lod/lod_streaming.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * INTERNAL STATE

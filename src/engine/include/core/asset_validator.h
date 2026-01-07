@@ -1,9 +1,9 @@
 #ifndef ASSET_VALIDATOR_H
 #define ASSET_VALIDATOR_H
 
-#include "../common.h"
-#include "asset_manager.h"
-#include "json.h"
+#include "include/common.h"
+#include "include/core/asset_manager.h"
+#include "include/core/json.h"
 
 typedef struct {
   char asset_id[128];

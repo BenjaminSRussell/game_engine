@@ -3,7 +3,7 @@
  * Deep Implementation - Indirect Lighting
  */
 
-#include <math.h>
+#include <include/math/math.h>
 
 typedef struct {
   float center[3];

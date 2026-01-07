@@ -12,12 +12,12 @@
  * - Bounds merging for hierarchical structures
  */
 
-#include "mesh_bounds.h"
+#include "geometry/mesh/mesh_bounds.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <float.h>
 #include <stdio.h>
 

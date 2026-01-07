@@ -1,5 +1,5 @@
 #include "physics/ballistics/trajectory_sim.h"
-#include <math.h>
+#include <include/math/math.h>
 
 void trajectory_sim_init() {}
 

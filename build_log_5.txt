@@ -1,0 +1,844 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ai_pipeline.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/goap.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/asset_gen/neural_impl.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/advanced/extended_ai_complete.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/asset_generator.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/asset_gen/text_to_3d.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/behavior/utility_ai_advanced_impl.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/emotion/emotional_state.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/crowd/flow_field_impl.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/learning/genetic_algorithm.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/blackboard.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/logic/fuzzy_logic.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/memory/episodic_memory.c.o
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/asset_generator.c:6:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ai_asset_generator.h:18:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:9: error: expected parameter declarator
+   80 | } ALIGN(16) Vec3;
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:9: error: expected ')'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:8: note: to match this '('
+   80 | } ALIGN(16) Vec3;
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:13: error: expected function body after function declarator
+   80 | } ALIGN(16) Vec3;
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:83:8: error: unknown type name 'Vec3'
+   83 | INLINE Vec3 vec3(f32 x, f32 y, f32 z) {
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84:3: error: use of undeclared identifier 'Vec3'; did you mean 'vec3'?
+   84 |   Vec3 v = {x, y, z};
+      |   ^~~~
+      |   vec3
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:83:13: note: 'vec3' declared here
+   83 | INLINE Vec3 vec3(f32 x, f32 y, f32 z) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84:7: error: expected ';' after expression
+   84 |   Vec3 v = {x, y, z};
+      |       ^
+      |       ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84:8: error: use of undeclared identifier 'v'
+   84 |   VeIn file included from In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/advanced/extended_ai_complete.c:6:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/math.h:6In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/goap.c:1:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/goap.h:6:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:9: error: expected parameter declarator
+:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/mat4.hc/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ai_pipeline.c:6:
+:40:
+3 v = {x, y, z};
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84:12: error: expected expression
+   84 | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:9:    error: expected parameter declarator
+In file included from    80 | 80  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ai_pipeline.hV | } AL:10:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ai_asset_generator.h:}ec3 v = {x ALI, y, z};
+      G18:
+N/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80(| :           ^
+I9:16) error: expected parameter declarator
+GN(1   80 | }6 V) Vec3;
+      |  e        ^ALIGN
+(/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:85:10:16)9: : Vecerror:  error: use of undeclared identifier 'v'
+   85 |   returnc3;
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:9: error: expected ')'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:8: note: to match this '('
+   80 | } ALIGN(16) Vec3;
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:13: error: expected function body after function declarator
+   80 | } ALIGN(16) Vec3;
+      |             ^
+3;
+      |         ^
+ v;
+      |          ^expected ')'
+
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:8: note: to match this '('
+   80 | } ALIGN(16) Vec3;
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:13: error: expected function body after function declarator
+   80 | } ALIGN(16) Vec3;
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:88:8: error: unknown type name 'Vec3'
+   88 | INLINE Vec3 vec3_zero(void) { return vec3(0.0f, 0.0f, 0.0f); }
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:83:8: error: unknown type name 'Vec3'
+   83 | INLINE Vec3 vec3(f32 x, f32 y, f32 z) {
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:90:8: error: unknown type name 'Vec3'
+   90 | INLINE Vec3 vec3_one(void) { return vec3(1.0f, 1.0f, 1.0f); }
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92:8: error: unknown type name 'Vec3'
+   92 | INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92:22: error: unknown type name 'Vec3'
+   92 | INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
+      |                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92:30: error: unknown type name 'Vec3'
+   92 | INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
+      |                              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:8: error: unknown type name 'Vec3'
+   96 | INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:22: error: unknown type name 'Vec3'
+   96 | INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+      |                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:30: error: unknown type name 'Vec3'
+   96 | INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+      |                              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:100:8: error: unknown type name 'Vec3'
+  100 | INLINE Vec3 vec3_mul(Vec3 v, f32 s) { return vec3(v.x * s, v.y * s, v.z * s); }
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:100:22: error: unknown type name 'Vec3'
+  100 | INLINE Vec3 vec3_mul(Vec3 v, f32 s) { return vec3(In file included from :80:9: error: expected ')'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:8: note: to match this '('
+   80 | } ALIGN(16) Vec3;
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:13: error: expected function body after function declarator
+   80 | } ALIGN(16) Vec3;
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:83:8: error: unknown type name 'Vec3'
+   83 | INLINE Vec3 vec3(f32 x, f32 y, f32 z) {
+      |        ^
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/behavior/utility_ai_advanced_impl.c:6:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/math.h:6:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/mat4.h:40:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:9: error: expected parameter declarator
+   80 | } AL/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84:3: error: use of undeclared identifier 'Vec3'; did you mean 'vec3'?
+   84 |   Vec3 v =/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/emotion/emotional_state.c:9:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/math.h:6:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/mat4.h:40:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:9: error: expected parameter declarator
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h   :84:3:  error: use of undeclared identifier 'Vec3'; did you mean 'vec3'?80
+ | } AIv   84 |   Ve/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:83:8: error: unknown type name 'Vec3'
+LIGN(1{   83 | INL.INE 6) Vx, y, Vxec3ecG  c3;
+      |         ^
+zN(*}1 ;s
+v36/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h       ),   v| V  ^~~~.:=e
+c80y3      ; |   vec3
+ {/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:
+v      |         ^x
+,*:9 y/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h,: : s80 error: e83expected ')'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:,zc:};809::  8error: v:3In file included from In file included from  expected ')'note: (./Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/learning/genetic_algorithm.c
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/episodic_memory.c:f:to match this '('13:1
+:    note: 80'vec3' declared here
+:
+   In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h | :} z83 | A
+L      3801 :
+*I 2In file included from sI/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/memory/episodic_memory.h|  G:N/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ai_types.h  ^~~~NL:(
+8x6I:
+,1:)      /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h6: f)328 :
+y,/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:N 80:9: error: expected parameter declarator
+ | Ef  vec33 2   :80 
+:9/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hnote:  :z: ;V to match this '(') {
+80}e
+83
+c3 | error:  v   80       |       eexpected parameter declarator
+V:|                      ^c}13 ALe   3(f3}2I x,Gc80 f32 y, f3
+2 z)N: note: 'vec3' declared here
+   83 | INLINE Vec3 vec3(f32 x, f32 y, f32 |   ( |        ^{
+3};1ALI
+ z
+)fatal error:             GN A6(16) Vec3;
+) Ve      |        ^
+too many errors emitted, stopping now [-ferror-limit=]
+c3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hLI{| | :G
+            ^;      80
+:|        ^
+      13
+            ^/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:| 
+ error: N:        ^
+(16) Vec3;
+expected function body after function declarator
+80   80 | } AL      :13IGN(16) |         ^Vec
+: 3;
+      | error: expected function body after function declarator
+            ^
+   80 | } ALIGN(16) Vec3;
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84:7: error: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:8480::/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84:7: error: expected ';' after expression
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h   expected ';' after expression:9: 380error: ::9:
+expected ')'
+   84 |   error: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:use of undeclared identifier 'Vec3'; did you mean 'vec3'? V ec84:
+:3 | 83     :848V80 |  :8: 83e:cverror:  = expected ')'
+{3:  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.herror: 8x: 80:v ,:unknown type name 'Vec3' 
+V   83yerror: ,e8  :c3  znote: to match this '(' | note: unknown type name 'Vec3'}=;
+ INLIto match this '('v
+
+    {
+      |  N=      80      ^Ex
+80 |   }Ve83      {cx | I|  N | ,,A} yL      ; IAL
+,NELIGI  z}3 veNG(N;Vc1(e 63y/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+      |   ^~~~
+(f316) Vecc3 vec3(), z}      |   vec3
+2 x, f3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hf3;2 
+ Vecx:3:;,3; 84f      |        ^8332 
+y      ,:
+
+      |        ^
+8/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80:13: error: expected function body after function declarator
+:2  | error:    y80      ^/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h: 
+, | } f      :80:13: error: expected function body after function declarator
+|       ;
+use of undeclared identifier 'v'A
+32   84 |    Vf 3ez)213/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h {
+       zc)   :843 :8In file included from | ::        ^v
+L/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/blackboard.c note: 80 {:IGN(1='vec3' declared here23 
+6   ) :
+{x
+,In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h |       } 83y| error: :/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/math.h ,       ^use of undeclared identifier 'v'  | 84 z
+IN::Ve   }846c:
+;LI
+ALIGN3:
+ error:  | (163 In file included from use of undeclared identifier 'Vec3'; did you mean 'vec3'?);/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/mat4.hN 
+   EV Ve:40:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80 e84 |   Vc3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:
+V;      e:e| c
+      c| 3              ^            ^
+vec3(
+9/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h84| :f33 : 84:12::error: 3            ^ :2v =expected parameter declarator error: c
+error: 
+ x, f32 y   ,380 v /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h  use of undeclared identifier 'Vec3'; did you mean 'vec3'?:fexpected expression=3  | 
+{83{x:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h   ,884: |   :}283    84 error:  yA | ,zunknown type name 'Vec3' Lz:};
+8 IG)    N(
+{
+       |  : VVeerror:             ^
+      xecunknown type name 'Vec3'1c363 v|  ,83 In file included from 
+       ^)
+y/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/logic/fuzzy_logic.c :,: | VI1e:
+   v84In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/core.h :83c12= N 3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:;
+:5:=       z84}:L7|          ^{: ;:
+error: x
+expected expressionIn file included from 
+      | {  ^~~~I N/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/engine_core.h/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.herror: x,:expected ';' after expression | 
+, INyE,
+
+80:       |     84 |    :V  vec3y25  L84 |   ,:
+ z
+In file included from V/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/mat4.heI}:e;
+      |            ^Vc40N:
+
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.he /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h9::c8380:E3:9 :3:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hz:85 v:e c c310 :3error: expected ')'error: 13expected parameter declaratorVv  ( e};
+:   80c=f 
+3
+ | v/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h       |   ^~~~{
+:      3note: x2 |  'vec3' declared here=}  vec3
+x80error: :
+   83 8v ,In file included from use of undeclared identifier 'v' | :e f32
+A/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/crowd/flow_field_impl.c , y,     LfI32:{note:  zIc/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h 85Nto match this '('yxG)6: | :
+3In file included from 83/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/math.h, :NLz: }{((I1, ; f136): rV
+e   c 33 2ye,t 
+note: ur 6n;80x | z:
+       | 
+},
+In file included from 'vec3' declared hereNE 
+Ve        ^   v      83      /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/mat4.h | c| 
+3;f  |       ^}        ^
+
+:3240/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h      vA L;:
+
+| /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hI:
+      yI         ^/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h,:      
+:| 84N80| 80L ::eIG           ^N
+(3:1f639:)  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.herror: Vec3      ;:c;3
+
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h2: 88z9N:use of undeclared identifier 'Vec3'; did you mean 'vec3'?:8 (E:      f:  | ) {error: error: 
+        ^85unknown type name 'Vec3'
+error: V
+e/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hexpected ')'   :expected parameter declarator   
+380/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:13      :10|        ^:2 x84
+:84/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+88:8:,  : error: expected function body after function declarator
+error: fcuse of undeclared identifier 'v'   :80:8: note: to match this '('80 |  | 32
+ I   | }
+y   84N/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84:   ,error: LINE  803 | Vuse of undeclared identifier 'v'
+
+      80 | }V 853  | ALI : vG  eerror: }ecc | use of undeclared identifier 'Vec3'; did you mean 'vec3'?e NAV(16  cf3 3ev c332 LI(z)3rf32 et) {
+      | x, urn  v =f  Vec3
+             ^A
+;LI{x,     84vGe=y,v c{GN |   x z};/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84V(16,3_ze) 
+e 
+r;y,N
+oV(v       oc| i3(ec      3d2 yz3:,1      }         ^;
+
+|       ;7 f 3  ^~~~6| ) | : error: expected ';' after expression
+        ^v       ^
+)
+
+      |         ^{ rVe      
+2/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h tz| /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h)/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h: 84=   u: r::8488 en |   vec3:8012{::9 c8
+: :vx :80{:
+13error: 3expected expression:        /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h error: 
+ error: :;eerror: | expected ')'V83expected function body after function declarator:e
+            ^
+
+,13 /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:80/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:
+unknown type name 'Vec3'    
+c:80y:   84         c| 3note:  84,:3            ^7:  | ( | v 0 .}zerror: 'vec3' declared here}88 A0;
+8:  
+=L  
+   { | INnote: 83Iexpected ';' after expression      f, 
+G| NVe | c   L84to match this '('xI(30.IN,E   | 0 V/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hy 
+N,V1 z6})  Vv;e  ^~~~   ec
+e: c80f
+,       L33 v| IN  vec383c:8      :E  | 
+}=  ={x,  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h;3A|        ^:error: Lunknown type name 'Vec3'
+
+      I|             ^GNy(    83,v0
+83V 
+{x       | |  e1.0I:ef13,:  cy      ;note: z3c)6
+3 v'vec3' declared here}_e;) z/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hNce3, (z:83rf
+ VLI   :}}8/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.ho
+;833 | 2;IN
+E             | e      ^ 
+:V:      84| (           ^v
+o| ieN:
+c8cd3      L :       ^
+xerror: | unknown type name 'Vec3'
+I       ;;/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h)
+          3,
+| N       ^: {8583E | v:10 I/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+:f/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h :e c Nerror: :/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h3L3re2error: tuse of undeclared identifier 'v'use of undeclared identifier 'v':I8480
+
+uV(e:c13   r85 N | Ey3:   884: |   f 3 :rv  Vece3 n,error:  e2 expected function body after function declaratortu error: 90vuse of undeclared identifier 'v'r n:vce3 eVec3fc3(
+c23 v 3(    (;z
+v)f 
+f808x      3 |  {,   =0.
+32      84}:|  0| 2  error:  Af | 3              ^fx2unknown type name 'Vec3'{L,, fx
+ 3,     902 
+y         ^V I0
+G.,Nx y( | 0If,y/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:, ,84: , 1f632 7z:)N zeLIcf/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h3{3 0.  0f:32}N
+f       verror: ;2
+        E| |        ^) expected ';' after expression88 V; y
+,)z) ec3=  
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hvfe:       ^}3
+{{c
+x8:84      
+    V2e| :843:       | | ,c  _  3o12       ^ error: 
+Vz       ^)yn/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h::[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/memory/knowledge_graph.c.o
+ {
+e84e:; 3(error: expected expressionunknown type name 'Vec3',c: 
+v
+error: 3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:use of undeclared identifier 'Vec3'; did you mean 'vec3'?84:3
+                
+v88|             ^| o    :i /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hz            ^
+84 | d=
+ | }I:90:N)/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h;L
+ I      
+8::  84:error:  unknown type name 'Vec3'error:    N
+use of undeclared identifier 'Vec3'; did you mean 'vec3'?
+    {{    | rx90       ^84 V7e |  | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hI84cN | : 
+e,  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h3L:  :Eerror: Vexpected ';' after expression8384:VI ece 83:cNEy,  Ve cverror: 3:Vt3  
+12=:e     z}unknown type name 'Vec3'{  cx
+v   e83error: 84uexpected expression;
+, c | v3 v        3r   V_= { | y=IxneNz,,|       ^
+c z };   
+Lvec 843(3{ vI | y ,1       |   xzV}  ^~~~;
+      ee
+| c,      c|       ; y3.,e v v=
+r3   ^~~~ 
+
+_={NE V o       0|   vec3o
+ne(/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h{      :83(xxv:z| ,/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hoi:}, v13y  vec384d:ef
+ note: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.ho'vec3' declared here) :i{ r, z83:13} 
+;:8:ycd;3, :   
+ )note: 
+       error: ze v e{, cr};
+| 83      ^'vec3' declared here      3(fetuse of undeclared identifier 'v'
+|            ^
+      3| u 
+           ^ | 
+   
+2 x,    f3284 |  83      1I. y,0NL| I Nrnt f32/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h      ;
+ | INLI uEr f:85:vN ez) Vc10/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h3{VE V:e,c3
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h         (v:e |        ^1=85:10ce 0:error: {use of undeclared identifier 'v'
+n..
+ c3 v30f, 0.0f,e :c   85 |  0 f3 84 error: (ve0)use of undeclared identifier 'v've;c.c3r(
+ef0f:3x82t x,f   85 u/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h3 | :f, ):3 y2 3,; }2
+      r| n v;error: 84     r}xuse of undeclared identifier 'v'e       ^:z}(;1.t
+
+0urn 
+3:v;
+      ,f y,f      |          ^| 
+ 3             ^
+,2   84 |   Vec3   f
+|        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84:12: error: expected expression
+   84 |   Vec3 v = {x, y, z};
+      |            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92:8: error: unknown type name 'Vec3'
+   92 | INLINE Vec3 /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hvye1v
+      :/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hc32 z3 _/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.ha=,90 |          ^  )
+ {f:{error: use of undeclared identifier 'Vec3'; did you mean 'vec3'?85:
+      
+| :            ^
+:d88:832 .8x   zd(V,::84e )10:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h 0error: f:error:  , c3unknown type name 'Vec3'{/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h a
+use of undeclared identifier 'v':y 
+841 
+,   : |    88 .      85 |  :| 90 | 7,Veerror: 08unknown type name 'Vec3'            ^: I 
+c   error: Nre
+t3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:Ve:c expected ';' after expressionzL84}:If   
+    N)uv84 | 887error: ; = 3unknown type name 'Vec3' 
+{x; }   
+       
+V,88 | :I NLE| r      |        ^n  |  eV       ^error: yexpected ';' after expression, ce
+3v ;
+Ic
+v
+      N3    v84 L b | INE|          ^
+ V z} )ec3_ VIec;=
+      o  ec{
+3      | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h       ^
+nNe /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h| ({:x  ^~~~:88:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+928,E :84v :V3vec 3e/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h      :oc:9212error: i| d)  {3: :_z  vec3erov  8 error: unknown type name 'Vec3':
+=:22y: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h, (expected expression: rerror: 83{: z
+13error:    vee:};
+84x,unknown type name 'Vec3't | uc      vounknown type name 'Vec3'r3|        ^_ 
+
+V    
+note: 88'vec3' declared here          y,
+n   | 92zid) | 
+ e c83{ez | 3I | N}L;rIIN
+ NIL      v vNe| o    IELc3 rN      ^E      ;
+        =e
+( v(V92oI1NVee | id) | .{Ixc,3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h v:teEN{uc 84L      ;yI3 N,
+E rVc0 n3 _Vf:ere cz,vve  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.heteczuc8r3:1n3((f0.03.840ec:3:3 rv  2v8o:ff},(voied  0 .;x0)v ,cerror:  use of undeclared identifier 'v'e
+e
+,f   384_c 3       a, | {1f error:  _use of undeclared identifier 'v'a0dc 3
+(0.. 0f   .840 | 3|  02f            ^, dVd 0)yVde(.0ff,e, (c)0V3er.cV;30 fc;  } )3; 
+fvec3
+a, e       | }       ^
+
+ t  3=       2 z{| x       ^V
+)ve/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h :[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml/dlaa.c.o
+{}c
+85      u3a| , y r,,         ^nb
+z/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h) {::90 }V
+
+;:
+10e/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:90=:      :c8            | :3 8  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:: | berror:             ^
+92{                     ^| x,:  error: v
+unknown type name 'Vec3'error: unknown type name 'Vec3'8       ^
+
+e/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+)       {
+      :| 90:       ^ | I N90 y, z};84
+:c7L/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hIuse of undeclared identifier 'v'NE | 
+I/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+      ::84N   ::error: 3| (L0I unknown type name 'Vec3'
+85       ^VN12
+   /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h. /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h0e92c:f:error:  | expected ';' after expression,84:3092
+ : 3E0 ::   12 error:  | expected expressionerror: 
+   Ve84   Iv:N r84L | I | c. error: unknown type name 'Vec3'3expected expression  920vefe:,tNe   V0cV22
+E:
+   92 .e0 | uerror: unknown type name 'Vec3'ccf3    3 I
+N84Lvr_3_en Vc    | 92o | =e3cI);no3eI( vv  N Eovn;ei  (VeN }Vv
+e dL)ocI      Nv| ecE
+i3         ^ d3V      
+ c )=   {{{x,|  yx{,_3v/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:a        ^z}e,;c dv
+e 
+ y88,       z| :      ^r83c:d  = 3e({}_x  t;error: Vunknown type name 'Vec3'eav/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+e      
+r| 
+:c90d           ^3_aecd3      dtd(Vuurn ve|       ;
+er, :c
+n3    ay(V,  z};eac,88/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84: V8 | IN,
+L  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hc::IeN3 V85c3e(:E18.verror: cunknown type name 'Vec3' 3V e3c      b)
+ 10:| { 0 b)    : error: use of undeclared identifier 'v'
+390 | INa{f,
+L      |                              ^ error: I           ^use of undeclared identifier 'v' 1
+   ,eN84 | 
+  c
+      E3
+.Ve (| 0 v       ^V/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:85e:   ce
+853 1Vcc |  .10033_fv  : ,  e/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hf1r:etzu=,e .vr nerror: 96{/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h0 c1use of undeclared identifier 'v'ex:,3r 8f.c3
+:   85o | 92 _o:0 ) (: 22;:  re fvob,)  i}n
+dterror: {v
+)      y;unknown type name 'Vec3',error: 1unknown type name 'Vec3'u| 
+r       
+ .z         e}0;
+{                     ^
+       | f| )96;       ^ (|        ^ | }   
+von92 i | reI
+
+dI               ^
+vt)
+N/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hL I:;/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h84::N92| 
+u/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hr:{n vE9212: error: ::expected expression8      | e         ^N:       ^ cV/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h303: 
+(L
+Ierror: N   
+0 E84 .error: erce03:t | u V unknown type name 'Vec3'eunknown type name 'Vec3'/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+:   88r88n: fc3 :  v8/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hv92, | Vec3 
+(:0I8e:1    c..0efcerror: vN392unknown type name 'Vec3',
+: 3L | eI 0I    cf_error: aunknown type name 'Vec3'N92,3E:88
+v  NVd1    8L:d eerror: c.0=. 3 v | (e{cI3unknown type name 'Vec3'x0,f0
+I_   V88a,  N92y | I, | e_LNcE1Ns3f I I )dz.LNIN;a}u0Vf bN;)EL d}(;,eV
+EVcIN 3e 
+      ve       Vee| c 3(c       ^ }| E
+3           ^c
+3      c3
+v_ vece3 a|        ^
+Ve cV_dVedc3 3c3(Vaecb3 e)  _{aa,zd/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:85 c
+d/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.ha3 ,:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h      :(10VV90::eeccve 92Ve3c :e8: error: use of undeclared identifier 'v':c| 
+r333o8,_b (                     ^ 
+   v:o z) Viebdec) error: a) ,{ V85
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h{runknown type name 'Vec3'oeerror: 
+ | (   :      9092| 3  | vc unknown type name 'Vec3'{
+ 
+ :o30INLbrIe      i:dN   | )       ^92  {3
+ Eb |       |        ^) 
+                             ^
+ 
+ { error: r)V unknown type name 'Vec3'tIN
+L{reue/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h::t   92e
+I8rcu3r n vv | :INLINnN96:;t
+      EE22u: r e92n:       v | error: error: cunknown type name 'Vec3'
+   | V96 unknown type name 'Vec3'         ^e 3Vc
+       ^ve | _
+IN3   96
+(e0 | ecL22.oI3(I0:0f,N .error: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hc/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hN::EcL3392 n088e unknown type name 'Vec3':VvIf,(e:N 0e8cv22:. :20 c0E error  
+error: o3f unknown type name 'Vec3'V,v_id
+a      3 e0)c 0{de92 |  I sv generatedN92..
+d3.Lerror:  | _re0a0fe)I(IccVNLItfN33 e_vdd,(V s;unknown type name 'Vec3'ce0NEEueu  Ve
+rb3c.nc0  (   c88vfV3ea,c} 3 a)3
+eVe 3; _ s}      
+Vvec| ,ec3        a       ^, 
+ |  Vbc)c3eu3_IbN L({| (13
+       ^V      V
+ec| a/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hc3. 3                             ^IvN e 0
+eaEc: 3,b) dc90f:d{ 
+V      3_| ,a(/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hVVdd(e 1eVe:96       ^. c:903:c
+8e838: c vc :b:3)a  aerror: 0error:  unknown type name 'Vec3',/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.heunknown type name 'Vec3'
+
+cf:,3   {   92_
+:322       |                      ^  
+901. 0zfeV)rerror: 96e;bunknown type name 'Vec3' | )Ic { | NL/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h,I
+:3o:(    96error: 90unknown type name 'Vec3' | v: Io  
+N
+VeE}      b   | i)NI
+      | d30       ^NcL 
+)I92 | LIN:       ^VLeIN { cerror:  3I 
+Nr {E unknown type name 'Vec3'
+bENE  
+e3Ve      V| t                     ^/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h   e)u
+96 | cV {
+r:ne92 :c83: I       3 /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hverror: unknown type name 'Vec3'c:e| NL                     ^92c3
+:: v30396e: error: v
+_:e   make[2]: c2292 | o INunknown type name 'Vec3':Evn3e(
+*** [CMakeFiles/Engine.dir/src/engine/ai/asset_generator.c.o] Error 1ec 3IVev/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h(v_Nc   ec
+oLn033 e(cv92.oo3make[2]: _ i*** Waiting for unfinished jobs....I:92v
+ | d) { error: e_rsINcidN3Lunknown type name 'Vec3')aEud_  0s{f, 
+ubV0b(Vdec3.((0: f,e r   VVe0 e30tcv3. 96euet0afuec)r:3 cr3error:  | n, VnI N  vv;ecE ea 3eunknown type name 'Vec3'c 3}c
+3(c   V1ae
+c3.923 |       0(I fIN_| ,vN       ^a,e,cL1I
+NLE. bdI d03_  VV)V N(eec3VE1a Vef ,cd3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h e:c. 3 bc03)1fd(V.v {{
+
+90e,c 31 e.      e :|                               ^a,
+0vf8c      b)3;|  c}
+_e3:                     ^)
+ c       | Verror: 0       ^e 
+sunknown type name 'Vec3'fa3c ,{
+,
+      | 3    _/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.ha/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h :       ^ bV190)100ud
+d | e/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h(:I .92:{
+cb::N0f92)      L:30| 8                             ^(:I/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hN
+8 :::V3error: E  unknown type name 'Vec3' b)error: 96 eV Vec3
+;e:22: { unknown type name 'Vec3'}c  error: 
+cerror: 1003
+unknown type name 'Vec3'      3 /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+    v: | | aunknown type name 'Vec3'96: 92I      e |        ^N,ca3
+,I L_8I:N
+E
+V    V   e96e on92 |        ^
+ | ccNV3Ie | L3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hec(I IvNo3b NE:Ni/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92verror:  ):unknown type name 'Vec3'  ebVL
+L92c:3dI8N:22e{)_EmI  u   l(c:N96error:  | {E)IN3V VL  unknown type name 'Vec3'
+e      
+{c
+I V| e                             ^          3ec
+92 |  v|                      ^IN v
+error: eunknown type name 'Vec3'Lcc
+IN,r3EN3 E e   3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h92/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h vf |   :e:c963_IVNvtu:96V32: LraIned30s Nc:_ vadd)3 ve(ceE e{ r38 dVerror: :unknown type name 'Vec3'eceV
+c (error:    e96cunknown type name 'Vec3'e33t( | VuIr_n
+3_acNe3s c L1I   dNdu(cE96av .V | eeIbc0Nc,3(  fVv3V L3I3NVeE( v ce ecca3,3V_,e eaVcdedc3e c(va.3,3vc  33e _xV vc eb* a3c3 bb) ),e )1 V  ._escs u{sb0,c3{ { 
+u(
+
+3VV_f      bv      ,e| (e| csub(.       ^VV        ^yca
+3       13
+  | .                             ^0be)
+ec* c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h ,f);s:{923,  :/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.ha 3,a , :22a 92v
+::      ,} .|                       ^
+V
+zVV      e  *error: c3  ec3|         ^eb/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h)22:bc:unknown type name 'Vec3') 96V3e{
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hb:)
+c:   
+s896) :3{; 92 |  { 
+:error: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92 b      :30      }:| unknown type name 'Vec3'I|                       ^ 
+8
+error:       unknown type name 'Vec3'|                              ^
+N)
+       ^L error:    I
+unknown type name 'Vec3'{
+:      
+96    NE
+ V96      | 
+error: unknown type name 'Vec3'
+ |    I|    92       ^N | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h       ^e | IIL/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hN
+N:Ic92L:
+100 | :3 v/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h8INeN92E E: cI96V3ec:N:V/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h3: 30: 100L:eIN22:22c:  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.herror: EL_3unknown type name 'Vec3'v:
+error: I error: e  c100a dV e | 3unknown type name 'Vec3'_Nsdunknown type name 'Vec3'E
+
+uI(Nerror: LIc  VN v   92b3 |  EeI(V 100ceVevcV | unknown type name 'Vec3'I3N:L
+N   96IeL96c_3:IsNeENeE ca322u_ac:3    | Vca ,3  b(vecVVdVeee3,_cIedm(u3error: c3 c3N unknown type name 'Vec3'3 Vlva(,e V Vecc
+3 VL3eIcNe c3ecv  3cvbee3c3_aEd 3b) )bd (aV    ,{ 96 | V
+e)       v| c_a3dI{N c 
+{       ^3L
+_V
+      |                      ^
+vec3_sub(Vec3 a, Vec3 b) eecI/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:N/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hd      c(3V: e|                              ^{c3
+96:m,
+      | 92:30uE V3 b)22: f:3 2 e/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:l{                     ^
+error: aunknown type name 'Vec3'100
+:c    (,392  | ve  as
+      | ,8 /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h       ^)VIerror: ec3 :unknown type name 'Vec3':b
+
+96) :error:  30   c: 96V{unknown type name 'Vec3'
+{ reeNL
+I       c   | V NE Vee3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hI3cerror: 100: c | vIN| _92:3s22N                             ^
+L unknown type name 'Vec3'LI,I
+Nb   96E f3:N)E t error: unknown type name 'Vec3'u  |  b
+(   v92  | {I
+euV/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hVNecIeNcLcI:33N      32_ aL3IaN ,s r)96 nEd  V| {EV                     ^e :e8:  rcecV3e v
+tceub)cv ed 3error: 3runknown type name 'Vec3'V 3v
+c_   {(
+V/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h3e96ec  | vn v(ce3c_      se3:muI(NLuvcI3v.| Nb(                     ^Ve.x *3 cs92 _3a
+l (d:30aVdv(Eex,Ve : cc3*e 3ev _v.y c  error: unknown type name 'Vec3'sVueb
+3,   * c s,a /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h3: cV,s96,3 92 eaV,ec ( | cv.y3 3v V b eVc3 ,I e*evcbc:3303._ N) zsf, sL : error: 3u b*(bV2{unknown type name 'Vec3'e
+a    INE  v96s) ) |  ,
+ I{c.s) N
+LV)V;zeI{N E* c33       e c 3{      
+|  }       a , rbs) | e                             ^V                             ^
+
+veV       ece| 
+){| 
+                     ^3c ;      c }
+33|                      ^_ v/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.ht
+a                     ^b/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h):
+      ue
+ | 96d::rc8       ^3n
+d/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h: 92:30v:{100::e
+8 _fatal error: too many errors emitted, stopping now [-ferror-limit=]
+: cs3(error: vunknown type name 'Vec3'(      .|  Verror: unknown type name 'Vec3'exc error: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hunknown type name 'Vec3'/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hu3:
+b
+(:         ^*
+ 100    a
+   9692V,: | 22 | 100e:96 sc II3V/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h | NL error: aNunknown type name 'Vec3',,
+:  I100  | Ve:c3096Ne I:c:v 322LN.IL EIerror: N3L bIIn file included from  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/memory/knowledge_graph.c::N ENunknown type name 'Vec3'Iyb  1V:
+eIn file included from error: )unknown type name 'Vec3'/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/memory/knowledge_graph.h*
+V:NE)
+ s  eEV6 e   c{ :
+
+3      c| 3    {
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hcV:                             ^96
+v       96| e3 | ,I  |  vev                             ^Nc3LIN /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h.E
+80:c3_IevNcL100vee:3c3cm3:_z_u  9la8:*_/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hsVueI(m:d  bcu3 s(VV error: :error: de96cexpected parameter declaratorelv(:3)
+V   e cN(cv33,  ev;E unknown type name 'Vec3'} 8: error: funknown type name 'Vec3'c
+,a
+ 3f23V3  ,80 _         96VV2e | | ecs | }s) {       ^3I c rALeN
+LI3 u 
+Iebvt uesbcN(GrcVEenN3)_3  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hv )c(  s100a | u  {{
+1 ,e rI6e:      cVbN(| 1003:22:L )error:  unknown type name 'Vec3'a ,VI       ^ tVueV
+rVe
+Nece  Enc3c1003 ac  | ;3
+(, vVe vVIe      3N /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.heLe3| c: c        ^c
+33.IcN96 E/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h3v e cv:bx  80*b3b: e):9)22)s:3c   ,error: :( verror: { 3{_V_
+
+            munknown type name 'Vec3' es.uxuvl| {| (expected ')'                              ^
+
+   *b.cy/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h(                     ^V  
+
+      *9620 | :Is
+| e,cVN3 error80s generated:  8L.
+                             ^/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h 3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h Is
+a,,v : e note: cto match this '('3v:.:_Ny
+v96m:Ve100 E   c*80 :30e./Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hul8 : | :3s96}z: (*V ,  ALIv :cs)error: 8unknown type name 'Vec3': error: Ve 3;cG  ,v.  N}unknown type name 'Vec3'
+
+error:    3  unknown type name 'Vec3'(
+ fv,100b)3196
+ |    6  | fI3N)eIcNL2      L3z|   {       ^ I 
+96       *I 
+N2sV) sN | )sI) ;EE v{eec3Nc } | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hV3;
+      e:V cL100:22       ^I
+_:|         error: | {3        ^sr
+ue
+cNb                     ^(E3rV/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
+: unknown type name 'Vec3'
+  100 | e Ietue/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hrvtcecv:96Nn80 3u3ve c3Le I:c3_22Nar:_,mnul(sV fatal error: E :13V  eerror: Vctoo many errors emitted, stopping now [-ferror-limit=]:3ee
+vc3(ce v, f3 vunknown type name 'Vec3'Vec
+ev 2c c3 error: s)expected function body after function declarator.x3   3  {v
+96e3_subcu3    |  INL (r_bv(m*b u)Ie(80tuVrlNE  | e {n.Vs(
+e,VxVec v v      c3 ec3c.y 3* |  (s                     ^ec}
+* s,  v3, v.a ALIGN(1a, 6v. v) Vez.,, Vemake[2]: Vyec3 *** [CMakeFiles/Engine.dir/src/engine/ai/goap.c.o] Error 1
+b * s,3 /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hx) c  3*  s,:f963 v v*c2 s){3 ve.:z; }30 * 
+ss:.)c )error: y; 3;
+_{      unknown type name 'Vec3'
+ 
+*        s      | | bu            ^        ^} | 
+b   sr       ^
+
+e96()V {
+      |                              ^
+, 
+t | ve.u      crIz| 3                      ^n/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hN*:  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hv Leca100s3(
+:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:22vI:N:); :96E,  :error: 83unknown type name 'Vec3': .V10022Vxfatal error: too many errors emitted, stopping now [-ferror-limit=]e::}e ccerror: 
+unknown type name 'Vec3'
+3
+   8       8| *: :
+3        ^   error: vb  error: 
+)unknown type name 'Vec3'sunknown type name 'Vec3',
+ 10096
+e   83v  | cIN | .y | {
+       3LI/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h*_  IsN100INN Ls:E | u| 100I:,Ib N22                      ^LLvNIVIe
+cE. V(NVEec3:e3N c 3error: unknown type name 'Vec3'
+E   z  100  Vv*v | e aeVec,ec /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hs:c3V96):3c3;I30N vL:e ceI Nerror: cv e}c
+_      s3ub3unknown type name 'Vec3'3| _
+3    m(96V | u(ef_3                     ^mIE VNb2l( cx)ec L3
+{u3 I
+, NE       l( VvaV| ec3e v,, Ve cVe3f ef32c 3c                             ^3
+fatal error: vcy23 ,too many errors emitted, stopping now [-ferror-limit=] e_v m,s
+fu)l33  2c(b  f3Ve3c) z2)/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h{: 3 
+_20sv      su {{100 error)s|   , {20
+:b8 error                     ^      :s
+ generatedf  error: r.
+(runknown type name 'Vec3'| 
+eV3  2100 generated | .
+IN       ^t
+etL use/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hcr)n3 vec I{:N ur96 E:n 3va (30/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h: reV:error: vunknown type name 'Vec3'c.84ee
+t3u(vr.,n Vx *:c s3x ev,e: cvc3     3. error: 3* s,y(  use of undeclared identifier 'Vec3'; did you mean 'vec3'?vv96* e
+vs.c, 3b .x_)vmy |     *u I20s l,{(.
+z VN error84s        e** |  generatedv.
+                             ^s
+L) c;I | 3s. , v.Ny *  s zv, V * , v}f
+       .ezE3| /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h       ^ sc2Ve
+c33   ) svv; :* =100  e) s/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h}:c:){{;8 :3}
+100x        | r
+                     ^:_,22error: 
+:et serror:  unknown type name 'Vec3'y      unknown type name 'Vec3'| ,u                     ^
+ u
+r  n
+   100zfatal error:  | I100too many errors emitted, stopping now [-ferror-limit=]}v | NLIb
+;N
+(Vec3(E Vv      .fatal error: eIc|   ^~~~
+x *3 N       eaLIc,| Ns3  vec3
+E /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h ,Ve too many errors emitted, stopping now [-ferror-limit=]:83v ceVec3:3
+13: v bc3make[2]: )*** [CMakeFiles/Engine.dir/src/engine/ai/advanced/extended_ai_complete.c.o] Error 1_  
+note: mv'vec3' declared here
+u{
+.y   83       | I * s,ecl(N L| 3                             ^vI
+make[2]: N_m.uzl EV(Veec* cs3*** [CMakeFiles/Engine.dir/src/engine/ai/ai_pipeline.c.o] Error 1  ); 3 v,
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:100} v, f3
+      f:3|        ^
+8:2 2s)  s) { r{Vec et3 vec3(ferror: u32 x,  unknown type name 'Vec3'
+rf3r  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h2 y,:n ve100 e100cft3(:22: 3 | u2v z.error: unknown type name 'Vec3'
+x  100 | INLINE)r n make[2]: Vv*** [CMakeFiles/Engine.dir/src/engine/ai/behavior/utility_ai_advanced_impl.c.o] Error 1eIN 20LcI 3
+ ve{
+      ec error*N| s generated3c             ^E3_m.
+
+ (s, v.y * s, vVu/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:v84.l:e.xzc 7: 3(  vecerror: * s,3V * s)ve._mcexpected ';' after expression;y *3   v
+,s, fu   }
+       v84| .zl       ^
+(Vec3 v, f32  |   * s); }
+      |                      ^
+ Vec3 v = {x, y, z};
+      |       ^
+      3fatal error: too many errors emitted, stopping now [-ferror-limit=]
+| /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.hs      ;
+:2100:22: error: unknown type name 'Vec3'
+ s)  100 | INLINE Vec3 vec3_mul) (/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h V:84:8{e: error:  cuse of undeclared identifier 'v'{ 
+   return vec3r v3(v.x ,* s, f84 etu3v2 s)r | n ve.y *c 3  sV(v.ec3,  vx  v.z*  *s, =  { v.{y * s,  sre)xv, t;. zy}
+ur      |        ^
+n, z} * vec3(v. s);;
+      |        ^
+ }
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:84:      x12:  |                      ^* s, v.y *
+ s,error: expected expression
+ v   84.z * s); }/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:100 |  
+:22: error: unknown type name 'Vec3'       
+| fatal error:   Vtoo many errors emitted, stopping now [-ferror-limit=]
+e100c3                     ^
+ v = {x, | I y, z};
+      |            ^
+NLINE Vec3 vec3_fatal error: mul(Vtoo many errors emitted, stopping now [-ferror-limit=]
+ecmake[2]: 3 v, f32 s) { r/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h*** [CMakeFiles/Engine.dir/src/engine/ai/emotion/emotional_state.c.o] Error 1
+:85:10: error: use of undeclared identifier 'v'
+e   85 |   return v;
+      |          ^
+turn vec3(v.x * s, v.y * s, v.z * s); }
+      |                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:88:8: error: unknown type name 'Vec3'
+   88 | INLINE Vec3 vec3_zero(void) { return vec3(0.0f, 0.0fatal error: f20,  errors0too many errors emitted, stopping now [-ferror-limit=] generated.
+.0
+f); }
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:90:8: error: unknown type name 'Vec3'
+   90 | INLINE Vec3 vec3_one(void) { return vec3(1.0f, 1.0f, 1.0f); }
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92:8: error: unknown type name 'Vec3'
+   92 | INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92:22: error: unknown type name 'Vec3'
+   92 | INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
+      |                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92:30: error: unknown type name 'Vec3'
+   92 | INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
+      |                              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:8: error: unknown type name 'Vec3'
+   96 | INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:22: error: unknown type name 'Vec3'
+   96 | INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+      |                      ^
+20 errors generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:30: error: unknown type name 'Vec3'
+   96 | INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+      |                              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:100:8: error: unknown type name 'Vec3'
+  100 | INLINE Vec3 vec3_mul(Vec3 v, f32 s) { return vec3(v.x * s, v.y * s, v.z * s); }
+      |        ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:100:22: error: unknown type name 'Vec3'
+  100 | INLINE Vec3 vec3_mul(Vec3 v, f32 s) { return vec3(v.x * s, v.y * s, v.z * s); }
+      |                      ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/memory/episodic_memory.c.o] Error 1
+20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/crowd/flow_field_impl.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/blackboard.c.o] Error 1
+20 errors generated.
+20 errors generated.
+20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/memory/knowledge_graph.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/logic/fuzzy_logic.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/learning/genetic_algorithm.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+[  4%] Built target Catch2
+make: *** [all] Error 2

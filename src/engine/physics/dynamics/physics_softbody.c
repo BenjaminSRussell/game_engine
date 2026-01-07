@@ -1,7 +1,7 @@
-#include "../core/physics_types.h"
+#include "physics/core/physics_types.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdbool.h>
 
 // ROPE SIMULATION (Verlet integration)

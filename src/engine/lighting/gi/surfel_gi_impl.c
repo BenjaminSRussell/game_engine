@@ -3,7 +3,7 @@
  * Disk-based Indirect Lighting (Real-time)
  */
 
-#include <math.h>
+#include <include/math/math.h>
 
 typedef struct {
   float position[3];

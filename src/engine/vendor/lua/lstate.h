@@ -7,16 +7,16 @@
 #ifndef lstate_h
 #define lstate_h
 
-#include "lua.h"
+#include "vendor/lua/lua.h"
 
 
 /* Some header files included here need this definition */
 typedef struct CallInfo CallInfo;
 
 
-#include "lobject.h"
-#include "ltm.h"
-#include "lzio.h"
+#include "vendor/lua/lobject.h"
+#include "vendor/lua/ltm.h"
+#include "vendor/lua/lzio.h"
 
 
 /*

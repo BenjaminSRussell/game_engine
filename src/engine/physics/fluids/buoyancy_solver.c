@@ -6,7 +6,7 @@
 
 #include "physics/fluids/buoyancy_solver.h"
 #include <physics/physics.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 
 #define GRAVITY 9.81f

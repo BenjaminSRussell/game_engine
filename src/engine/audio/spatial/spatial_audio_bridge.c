@@ -4,12 +4,12 @@
  * =================================================================================================
  */
 
-#include "spatial_audio_bridge.h"
-#include "spatial_audio_config.h"
-#include "dolby_atmos_renderer.h"
+#include "audio/spatial/spatial_audio_bridge.h"
+#include "audio/spatial/spatial_audio_config.h"
+#include "audio/spatial/dolby_atmos_renderer.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 struct SpatialAudioContext {
     SpatialAudioConfig config;

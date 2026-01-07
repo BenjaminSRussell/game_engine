@@ -3,7 +3,7 @@
  * Deep Implementation - Sequential Impulse
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 
 typedef struct {

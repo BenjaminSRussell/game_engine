@@ -1,5 +1,5 @@
 #include "environment/builder/lighting_scenario.h"
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 
 typedef struct {

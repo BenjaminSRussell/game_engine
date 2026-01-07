@@ -1,5 +1,5 @@
 #include "core/core.h"
-#include <math.h>
+#include <include/math/math.h>
 
 #define MAX_SETS 8
 

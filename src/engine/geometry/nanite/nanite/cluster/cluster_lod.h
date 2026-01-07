@@ -6,7 +6,7 @@
 #ifndef CLUSTER_LOD_H
 #define CLUSTER_LOD_H
 
-#include "cluster_builder.h"
+#include "geometry/nanite/nanite/cluster/cluster_builder.h"
 
 // Computes the projected screen-space error for a cluster
 float compute_cluster_projected_error(const cluster_t* c, vec3_t view_pos, float view_fov, float screen_height);

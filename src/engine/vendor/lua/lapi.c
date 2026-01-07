@@ -7,28 +7,28 @@
 #define lapi_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
 #include <limits.h>
 #include <stdarg.h>
 #include <string.h>
 
-#include "lua.h"
+#include "vendor/lua/lua.h"
 
-#include "lapi.h"
-#include "ldebug.h"
-#include "ldo.h"
-#include "lfunc.h"
-#include "lgc.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lstate.h"
-#include "lstring.h"
-#include "ltable.h"
-#include "ltm.h"
-#include "lundump.h"
-#include "lvm.h"
+#include "vendor/lua/lapi.h"
+#include "vendor/lua/ldebug.h"
+#include "vendor/lua/ldo.h"
+#include "vendor/lua/lfunc.h"
+#include "vendor/lua/lgc.h"
+#include "vendor/lua/lmem.h"
+#include "vendor/lua/lobject.h"
+#include "vendor/lua/lstate.h"
+#include "vendor/lua/lstring.h"
+#include "vendor/lua/ltable.h"
+#include "vendor/lua/ltm.h"
+#include "vendor/lua/lundump.h"
+#include "vendor/lua/lvm.h"
 
 
 

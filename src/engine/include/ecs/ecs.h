@@ -34,7 +34,7 @@
 #ifndef ECS_H
 #define ECS_H
 
-#include "../core/performance.h"
+#include "include/core/performance.h"
 #include <common.h>
 #include <stdbool.h>
 

@@ -1,6 +1,7 @@
 #include "ai/memory/episodic_memory.h"
 #include <core/memory.h>
-#include <core/threading.h>
+#include <core/threading/mutex.h>
+#include <core/time_system.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -10,7 +11,11 @@
 // ✅ COMPLETED: Implement Long Term Memory with compression and serialization
 // ✅ COMPLETED: Implement Episode Retrieval with similarity search and context-based queries
 
-// Internal structures
+// Forward declarations
+static bool episodic_memory_episode_matches_query(const Episode* episode, const MemoryQuery* query);
+static f32 episodic_memory_calculate_relevance(const Episode* episode, const MemoryQuery* query);
+f32 episodic_memory_calculate_similarity(const Episode* episode1, const Episode* episode2);
+
 struct EpisodicMemory {
     EpisodicMemoryConfig config;
     
@@ -103,7 +108,7 @@ static f32 calculate_temporal_similarity(f64 time1, f64 time2, f64 time_window) 
 
 // Main Episodic Memory implementation
 EpisodicMemory* episodic_memory_create(const EpisodicMemoryConfig* config) {
-    EpisodicMemory* memory = memory_allocate(sizeof(EpisodicMemory), MEMORY_TAG_AI);
+    EpisodicMemory* memory = MALLOC_AI(sizeof(EpisodicMemory));
     if (!memory) return NULL;
     
     memset(memory, 0, sizeof(EpisodicMemory));
@@ -124,16 +129,16 @@ EpisodicMemory* episodic_memory_create(const EpisodicMemoryConfig* config) {
     }
     
     // Allocate short-term memory
-    memory->short_term = memory_allocate(sizeof(ShortTermMemory), MEMORY_TAG_AI);
+    memory->short_term = MALLOC_AI(sizeof(ShortTermMemory));
     if (!memory->short_term) {
-        memory_free(memory, MEMORY_TAG_AI);
+        memory_free(memory);
         return NULL;
     }
     
     memory->short_term->buffer_size = memory->config.short_term_capacity;
-    memory->short_term->episodes = memory_allocate(sizeof(Episode) * memory->short_term->buffer_size, MEMORY_TAG_AI);
-    memory->short_term->high_detail.visual_frames = memory_allocate(sizeof(f32) * 1024 * 30, MEMORY_TAG_AI);
-    memory->short_term->high_detail.audio_samples = memory_allocate(sizeof(f32) * 22050 * 30, MEMORY_TAG_AI);
+    memory->short_term->episodes = MALLOC_AI(sizeof(Episode) * memory->short_term->buffer_size);
+    memory->short_term->high_detail.visual_frames = MALLOC_AI(sizeof(f32) * 1024 * 30);
+    memory->short_term->high_detail.audio_samples = MALLOC_AI(sizeof(f32) * 22050 * 30);
     
     if (!memory->short_term->episodes || !memory->short_term->high_detail.visual_frames || !memory->short_term->high_detail.audio_samples) {
         episodic_memory_destroy(memory);
@@ -141,23 +146,23 @@ EpisodicMemory* episodic_memory_create(const EpisodicMemoryConfig* config) {
     }
     
     // Allocate long-term memory
-    memory->long_term = memory_allocate(sizeof(LongTermMemory), MEMORY_TAG_AI);
+    memory->long_term = MALLOC_AI(sizeof(LongTermMemory));
     if (!memory->long_term) {
         episodic_memory_destroy(memory);
         return NULL;
     }
     
     memory->long_term->capacity = memory->config.long_term_capacity;
-    memory->long_term->compressed_episodes = memory_allocate(sizeof(Episode) * memory->long_term->capacity, MEMORY_TAG_AI);
+    memory->long_term->compressed_episodes = MALLOC_AI(sizeof(Episode) * memory->long_term->capacity);
     
     if (!memory->long_term->compressed_episodes) {
         episodic_memory_destroy(memory);
         return NULL;
     }
     
-    memory->memory_mutex = mutex_create();
+    memory->memory_mutex = mutex_create(false, "EpisodicMemory");
     memory->next_episode_id = 1;
-    memory->current_time = time_get_current();
+    memory->current_time = time_get_high_res_time();
     
     // Initialize learning weights
     for (int i = 0; i < EPISODE_COUNT; i++) {
@@ -174,35 +179,35 @@ void episodic_memory_destroy(EpisodicMemory* memory) {
     // Cleanup short-term memory
     if (memory->short_term) {
         if (memory->short_term->episodes) {
-            memory_free(memory->short_term->episodes, MEMORY_TAG_AI);
+            memory_free(memory->short_term->episodes);
         }
         if (memory->short_term->high_detail.visual_frames) {
-            memory_free(memory->short_term->high_detail.visual_frames, MEMORY_TAG_AI);
+            memory_free(memory->short_term->high_detail.visual_frames);
         }
         if (memory->short_term->high_detail.audio_samples) {
-            memory_free(memory->short_term->high_detail.audio_samples, MEMORY_TAG_AI);
+            memory_free(memory->short_term->high_detail.audio_samples);
         }
-        memory_free(memory->short_term, MEMORY_TAG_AI);
+        memory_free(memory->short_term);
     }
     
     // Cleanup long-term memory
     if (memory->long_term) {
         if (memory->long_term->compressed_episodes) {
-            memory_free(memory->long_term->compressed_episodes, MEMORY_TAG_AI);
+            memory_free(memory->long_term->compressed_episodes);
         }
-        memory_free(memory->long_term, MEMORY_TAG_AI);
+        memory_free(memory->long_term);
     }
     
     // Cleanup active episodes
     if (memory->active_episodes) {
-        memory_free(memory->active_episodes, MEMORY_TAG_AI);
+        memory_free(memory->active_episodes);
     }
     
     if (memory->memory_mutex) {
         mutex_destroy(memory->memory_mutex);
     }
     
-    memory_free(memory, MEMORY_TAG_AI);
+    memory_free(memory);
 }
 
 bool episodic_memory_initialize(EpisodicMemory* memory) {
@@ -221,7 +226,7 @@ bool episodic_memory_initialize(EpisodicMemory* memory) {
     memset(memory->long_term->compressed_episodes, 0, sizeof(Episode) * memory->long_term->capacity);
     memory->long_term->episode_count = 0;
     
-    memory->current_time = time_get_current();
+    memory->current_time = time_get_high_res_time();
     memory->last_consolidation_time = memory->current_time;
     memory->last_decay_time = memory->current_time;
     
@@ -351,13 +356,13 @@ MemoryResult episodic_memory_query(EpisodicMemory* memory, const MemoryQuery* qu
     MemoryResult result = {0};
     if (!memory || !query) return result;
     
-    f64 start_time = time_get_current();
+    f64 start_time = time_get_high_res_time();
     
     mutex_lock(memory->memory_mutex);
     
     // Search short-term memory first if requested
     u32 total_results = 0;
-    Episode* temp_results[256]; // Temporary storage
+    Episode temp_results[256]; // Temporary storage
     
     if (query->include_short_term) {
         for (u32 i = 0; i < memory->short_term->episode_count && total_results < query->max_results; i++) {
@@ -388,7 +393,7 @@ MemoryResult episodic_memory_query(EpisodicMemory* memory, const MemoryQuery* qu
     
     // Prepare result
     if (total_results > 0) {
-        result.episodes = memory_allocate(sizeof(Episode) * total_results, MEMORY_TAG_AI);
+        result.episodes = MALLOC_AI(sizeof(Episode) * total_results);
         if (result.episodes) {
             memcpy(result.episodes, temp_results, sizeof(Episode) * total_results);
             result.episode_count = total_results;
@@ -404,7 +409,7 @@ MemoryResult episodic_memory_query(EpisodicMemory* memory, const MemoryQuery* qu
     
     mutex_unlock(memory->memory_mutex);
     
-    result.processing_time = time_get_current() - start_time;
+    result.processing_time = time_get_high_res_time() - start_time;
     memory->total_query_time += result.processing_time;
     
     return result;
@@ -414,11 +419,11 @@ MemoryResult episodic_memory_find_similar(EpisodicMemory* memory, const Episode*
     MemoryResult result = {0};
     if (!memory || !reference) return result;
     
-    f64 start_time = time_get_current();
+    f64 start_time = time_get_high_res_time();
     
     mutex_lock(memory->memory_mutex);
     
-    Episode* similar_episodes[256];
+    Episode similar_episodes[256];
     u32 similar_count = 0;
     
     // Search both short-term and long-term memory
@@ -456,7 +461,7 @@ MemoryResult episodic_memory_find_similar(EpisodicMemory* memory, const Episode*
     
     // Prepare result
     if (similar_count > 0) {
-        result.episodes = memory_allocate(sizeof(Episode) * similar_count, MEMORY_TAG_AI);
+        result.episodes = MALLOC_AI(sizeof(Episode) * similar_count);
         if (result.episodes) {
             memcpy(result.episodes, similar_episodes, sizeof(Episode) * similar_count);
             result.episode_count = similar_count;
@@ -470,7 +475,7 @@ MemoryResult episodic_memory_find_similar(EpisodicMemory* memory, const Episode*
     
     mutex_unlock(memory->memory_mutex);
     
-    result.processing_time = time_get_current() - start_time;
+    result.processing_time = time_get_high_res_time() - start_time;
     return result;
 }
 
@@ -548,7 +553,7 @@ static f32 episodic_memory_calculate_relevance(const Episode* episode, const Mem
     return fminf(1.0f, relevance);
 }
 
-static f32 episodic_memory_calculate_similarity(const Episode* episode1, const Episode* episode2) {
+f32 episodic_memory_calculate_similarity(const Episode* episode1, const Episode* episode2) {
     if (!episode1 || !episode2) return 0.0f;
     
     f32 total_similarity = 0.0f;

@@ -1,6 +1,7 @@
-#include "dolby_atmos.h"
-#include "../audio_system.h"
-#include "../../core/main.h"
+#include "audio/advanced/dolby_atmos.h"
+#include "audio/audio_system.h"
+#include "core/engine.h"
+#include <stdio.h>
 
 /**
  * =================================================================================================
@@ -76,8 +77,8 @@ void Audio_ProcessAtmosFrame() {
     
     // Update listener position from game state
     // This would typically get the player/camera position
-    vec3 listener_pos = {0.0f, 1.7f, 0.0f}; // Default ear height
-    quat listener_orient = {0.0f, 0.0f, 0.0f, 1.0f};
+    Vec3 listener_pos = {0.0f, 1.7f, 0.0f}; // Default ear height
+    Quat listener_orient = {0.0f, 0.0f, 0.0f, 1.0f};
     
     Atmos_UpdateListener(&g_atmos_renderer, listener_pos, listener_orient);
     
@@ -132,7 +133,7 @@ bool Audio_SetAtmosObjectPosition(uint32_t object_id, float x, float y, float z)
         return false;
     }
     
-    vec3 position = {x, y, z};
+    Vec3 position = {x, y, z};
     return Atmos_SetObjectPosition(&g_atmos_renderer, object_id, position);
 }
 
@@ -146,7 +147,7 @@ bool Audio_SetAtmosObjectVelocity(uint32_t object_id, float vx, float vy, float 
         return false;
     }
     
-    g_atmos_renderer.objects[index].velocity = (vec3){vx, vy, vz};
+    g_atmos_renderer.objects[index].velocity = (Vec3){vx, vy, vz};
     return true;
 }
 

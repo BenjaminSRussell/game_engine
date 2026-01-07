@@ -1,8 +1,8 @@
-#include "physics_types.h"
+#include "physics/core/physics_types.h"
 #include <stdlib.h>
 #include <string.h>
 #include <float.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* =================================================================================================
  *                                    COLLISION SHAPES

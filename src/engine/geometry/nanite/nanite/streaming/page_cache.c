@@ -3,7 +3,7 @@
  * Implementation of LRU cache for cluster data
  */
 
-#include "page_cache.h"
+#include "geometry/nanite/nanite/streaming/page_cache.h"
 #include <stdlib.h>
 #include <string.h>
 

@@ -38,7 +38,7 @@
  * TODO: Add prefetch system render graph node
  */
 
-#include "prefetch_system.h"
+#include "geometry/streaming/prefetch_system.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

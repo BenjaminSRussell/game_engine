@@ -3,8 +3,8 @@
  * All ~23 AGENT_PHYSICS_1 SPH fluid TODOs completed
  */
 
-#include "sph_solver.h"
-#include <math.h>
+#include "physics/fluids/sph_solver.h"
+#include <include/math/math.h>
 #include <stdlib.h>
 
 #define PI 3.14159265359f

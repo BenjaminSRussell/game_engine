@@ -1,7 +1,7 @@
-#include "render_tests.h"
+#include "testing/render_tests.h"
 #include <core/scene.h>
-#include <renderer/camera.h>
-#include <math.h>
+#include <rendering/camera.h>
+#include <include/math/math.h>
 #include <stdio.h>
 
 // Forward declaration

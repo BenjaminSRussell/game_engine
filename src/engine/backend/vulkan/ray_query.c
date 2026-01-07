@@ -1,7 +1,7 @@
 // Ray Query Implementation
 // Inline ray tracing using VK_KHR_ray_query in compute shaders
 
-#include <renderer/ray_query.h>
+#include <rendering/ray_query.h>
 #include <core/logger.h>
 #include <string.h>
 

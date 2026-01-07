@@ -37,13 +37,13 @@
  * TODO: Implement continuous LOD render graph node
  */
 
-#include "continuous_lod.h"
+#include "geometry/lod/continuous_lod.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * CONSTANTS

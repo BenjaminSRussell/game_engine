@@ -38,7 +38,7 @@
  * TODO: Add vk sync render graph node
  */
 
-#include "vk_sync.h"
+#include "backend/vulkan/vk_sync.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

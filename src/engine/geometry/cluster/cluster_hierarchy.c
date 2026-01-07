@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "../nanite/cluster_builder.h"
+#include "geometry/nanite/cluster_builder.h"
 
 // Placeholder for Hierarchy management (DAG traversal/updates)
 // In a full implementation, this would handle refining the cut of the DAG.

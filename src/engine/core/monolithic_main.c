@@ -15,7 +15,7 @@
 #include <block/block.h>
 #include <block/block_states.h>
 #include <block/interaction.h>
-#include <block/lighting.h>
+#include <include/rendering/lighting.h>
 #include <block/mining.h>
 #include <chunk/chunk.h>
 #include <chunk/chunk_buffers.h>
@@ -28,11 +28,11 @@
 #include <crafting/resource_processing.h>
 #include <ecs/ecs.h>
 #include <game/mode.h>
-#include <input/controls.h>
-#include <memory/pool.h>
-#include <mesh/mesh.h>
+#include <include/platform/input/controls.h>
+#include <core/memory/pool.h>
+#include <include/rendering/mesh.h>
 #include <npc/dialogue_manager.h>
-#include <npc/npc.h>
+#include <include/ecs/components/npc.h>
 #include <npc/npc_combat_behavior.h>
 #include <npc/npc_housing.h>
 #include <npc/npc_jobs.h>
@@ -41,18 +41,18 @@
 #include <npc/npc_visuals.h>
 #include <physics/physics.h>
 #include <player/player.h>
-#include <renderer/mesh_optimizer.h>
-#include <renderer/particle_renderer.h>
-#include <renderer/vulkan.h>
+#include <rendering/mesh_optimizer.h>
+#include <rendering/particle_renderer.h>
+#include <rendering/vulkan.h>
 #include <save/save.h>
 #include <stdlib.h>
 #include <string.h>
 #include <tech/solar_energy.h>
-#include <thread/job.h>
+#include <core/threading/job.h>
 #include <ui/hud.h>
 #include <ui/menu.h>
 #include <ui/menu_renderer.h>
-#include <vfs/vfs.h>
+#include <core/resource/vfs/vfs.h>
 #include <weather/weather.h>
 #include <world/dungeon_generation.h>
 #include <world/generator.h>
@@ -64,7 +64,7 @@
 #include <world/water_physics.h>
 #include <world/water_system.h>
 
-#include <math.h>
+#include <include/math/math.h>
 
 #include <ecs/components/transform.h>
 

@@ -2,7 +2,7 @@
 #define VEC4_H
 
 #include <common.h>
-#include <math.h>
+#include <include/math/math.h>
 
 typedef struct {
   f32 x, y, z, w;

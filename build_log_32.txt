@@ -1,0 +1,54 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_shopkeeper.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/goap_planner.c.o
+[  1%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/cover_system.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/goap_planner_enhanced.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/memory_system.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_scheduling.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/investigation.c.o
+[  4%] Built target Catch2
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_scheduling.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c:1:10: fatal error: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_shopkeeper.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_advanced/investigation.c::1/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_boss.c:111:::'npc/prebuilt/npc_enemy_ranged.h' file not found
+1    :10110: |  :#fatal error: 'ai/npc_advanced/investigation.h' file not found
+10: fatal error: 'npc/prebuilt/npc_scheduling.h' file not found:10: 
+i    1    1fatal error: n |   | #c'npc/prebuilt/npc_boss.h' file not found
+lifatal error: #   'npc/prebuilt/npc_shopkeeper.h' file not foundnc
+11 | l    ud1 | ude "npc/preb##uiniclude i<inclunpecdelt/npc_/n "e ncplude "npcre"mya/ieprbnpcu_i/n/ltepb/uiltp/cnr_apnrpc_c_sheaobbdossnvp.akuilt/ghne>encd.h"e
+dpc_s
+che      du| eper.h"/
+i      n         ^~~~~~~~~~~~~~~~~~~~~~~~~      
+| | li         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ng.h"vesti
+gatio
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~n.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1 error generated.
+1 error generated.
+1 error generated.
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/investigation.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_scheduling.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_shopkeeper.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o] Error 1
+[  4%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/suppression.c.o
+1 error generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_inference.c:1:10: fatal error: 'ml_inference.h' file not found
+    1 | #include "ml_inference.h"
+      |          ^~~~~~~~~~~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_advanced/suppression.c:1:10: fatal error: 'ai/npc_advanced/suppression.h' file not found
+    1 | #include "ai/npc_advanced/suppression.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/suppression.c.o] Error 1
+[  4%] Built target Catch2WithMain
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

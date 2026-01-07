@@ -2,7 +2,7 @@
 #include "core/memory.h"
 #include "core/logger.h"
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 
 void world_partition_init(WorldPartitionContext* ctx, int cell_size, int count_x, int count_y) {
     if (!ctx) return;

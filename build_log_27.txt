@@ -1,0 +1,126 @@
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_faction_system.c.o
+[  3%] Built target Catch2
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_guard.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c:1:10: fatal error: 'npc/prebuilt/npc_enemy_ranged.h' file not found
+    1 | #include "npc/prebuilt/npc_enemy_ranged.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/crowd_detour.c:1:10: fatal error: 'ai/navigation_advanced/crowd_detour.h' file not found
+    1 | #include "ai/na/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/off_mesh_links.c:1:10: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_boss.c:11:10:v/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_recast.c::111::1010:: fatal error: 'ai/npc/prebuilt/npc_companion.h' file not foundfatal error: 
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_inference.c: fatal error: 1'npc/prebuilt/npc_boss.h' file not found
+i/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/obstacle_carving.cgat:i o1:10fatal error: n_a:'ai/navigation_advanced/navmesh_recast.h' file not found'ai/nav/off_mesh_links.h' file not found
+dv
+a   11nced    1/crowd_detour.:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_faction_system.c:10 |  |  :/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_streaming.c   11#inc    111 | h# l#:"iui | :fatal error: fatal error: #1'ml_inference.h' file not found'ai/navigation_advanced/obstacle_carving.h' file not found
+
+in
+10: fatal error: 'ai/npc/prebuilt/npc_faction_system.h' file not found
+      | d         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~c
+    n   e:nl101cu:11d     c lu<1 | fatal error: e |  #'ai/navigation_advanced/navmesh_streaming.h' file not founddla | i##ei
+iinn "cnl/npc    <cca/u1lpl | dui#duuer/ niane" a"vn/eibmul/oiflpf_dci_nt/prm/ecshld_nebue eudf i"l<aaent/alnipvieprccn_ke _n"/sicinc.geabhaio/antv.ihg"assa"
+      /v.oiht
+igo| >
+i      a| o      tnp         ^~~~~~~~~~~~~~~~
+i         ^~~~~~~~~~~~~~~~~~~~~~~~~o| nm         ^~~~~~~~~~~~~~~~~~~~~~~~~
+c/pnrebu_na_panioadi
+nd_advv.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~anvancecaed/ncnavmesh_redca
+/letnavmesd//nph_sst.hobstactreaming.lc_fa"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ctihon_s"
+      
+ye_carving.h"|          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+stem.h>
+      | 
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+11 error generated.
+1 error generated.
+1 error generated.
+1 error generated.
+11 error generated.
+ error generated.
+ error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o] Error 1
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o] Error 1
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_faction_system.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_civilian.c:12:10: fatal error: 'ai/npc/prebuilt/npc_civilian.h' file not found
+   12 | #include <ai/npc/prebuilt/npc_civilian.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:12:27: error: unknown type name 'CrowdAvoidanceance'; did you mean 'CrowdAvoidance'?
+   12 | void crowd_avoidance_init(CrowdAvoidanceance *crowd) {
+      |                           ^~~~~~~~~~~~~~~~~~
+      |                           CrowdAvoidance
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.h:16:3: note: 'CrowdAvoidance' declared here
+   16 | } CrowdAvoidance;
+      |   ^
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:19:30: error: unknown type name 'CrowdAvoidanceance'; did you mean 'CrowdAvoidance'?
+   19 | void crowd_avoidance_destroy(CrowdAvoidanceance *crowd) {
+      |                              ^~~~~~~~~~~~~~~~~~
+      |                              CrowdAvoidance
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.h:16:3: note: 'CrowdAvoidance' declared here
+   16 | } CrowdAvoidance;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_guard.c:73:9: error: use of undeclared identifier 'PhysicsRaycastResult'
+   73 |         PhysicsRaycastResult result;
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:23:22: error: unknown type name 'CrowdAvoidanceance'; did you mean 'CrowdAvoidance'?
+   23 | void crowd_add_agent(CrowdAvoidanceance *crowd, const float *pos, float radius) {
+      |                      ^~~~~~~~~~~~~~~~~~
+      |                      CrowdAvoidance
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.h:16:3: note: 'CrowdAvoidance' declared here
+   16 | } CrowdAvoidance;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_guard.c:76:61: error: use of undeclared identifier 'PHYS_LAYER_WORLD'
+   76 |         if (physics_raycast(guard_pos, to_player, distance, PHYS_LAYER_WORLD, &result)) {
+      |                                                             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_guard.c:76:80: error: use of undeclared identifier 'result'
+   76 |         if (physics_raycast(guard_pos, to_player, distance, PHYS_LAYER_WORLD, &result)) {
+      |                                                                                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_guard.c:78:17: error: use of undeclared identifier 'result'
+   78 |             if (result.distance < distance - 0.5f) { // 0.5f buffer
+      |                 ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:50:30: error: unknown type name 'CrowdAvoidanceance'; did you mean 'CrowdAvoidance'?
+   50 | void crowd_compute_avoidance(CrowdAvoidanceance *crowd, float delta_time) {
+      |                              ^~~~~~~~~~~~~~~~~~
+      |                              CrowdAvoidance
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.h:16:3: note: 'CrowdAvoidance' declared here
+   16 | } CrowdAvoidance;
+      |   ^
+4 errors generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:100:29: error: unknown type name 'CrowdAvoidanceance'; did you mean 'CrowdAvoidance'?
+  100 | void crowd_update_positions(CrowdAvoidanceance *crowd, float delta_time) {
+      |                             ^~~~~~~~~~~~~~~~~~
+      |                             CrowdAvoidance
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.h:16:3: note: 'CrowdAvoidance' declared here
+   16 | } CrowdAvoidance;
+      |   ^
+5 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_guard.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+[  3%] Built target Catch2WithMain
+make: *** [all] Error 2

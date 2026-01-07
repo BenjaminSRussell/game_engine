@@ -1,4 +1,4 @@
-#include "type_registry.h"
+#include "core/introspection/type_registry.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

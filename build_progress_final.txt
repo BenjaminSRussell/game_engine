@@ -1,0 +1,10 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_engine.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_event_queue.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_impl.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_integration.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_loader.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_manager.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_occlusion.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_occlusion_raycast.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/audio_occlusion_raycast.c:1:10: fatal error: 'audio_occlusion_raycast.h' file not found
+1 error generated.

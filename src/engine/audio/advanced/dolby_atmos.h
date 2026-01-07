@@ -1,12 +1,12 @@
 #ifndef DOLBY_ATMOS_H
 #define DOLBY_ATMOS_H
 
-#include "../audio_system.h"
-#include "../../core/vec3.h"
-#include "../../core/quat.h"
+#include "audio/audio_system.h"
+#include "include/math/vec3.h"
+#include "include/math/quat.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // -------------------------------------------------------------------------------------------------
 // DOLBY ATMOS CONSTANTS AND CONFIGURATION
@@ -42,8 +42,8 @@ typedef enum {
 typedef struct {
     uint32_t id;
     AtmosObjectType type;
-    vec3 position;
-    vec3 velocity;
+    Vec3 position;
+    Vec3 velocity;
     float gain;
     float size;           // Object spread/size
     uint8_t priority;    // 0-255 priority
@@ -64,8 +64,8 @@ typedef struct {
 // -------------------------------------------------------------------------------------------------
 
 typedef struct {
-    vec3 position;
-    vec3 direction;
+    Vec3 position;
+    Vec3 direction;
     float distance;      // Distance from listening position
     float delay;         // Delay in samples
     float gain;          // Channel gain
@@ -90,8 +90,8 @@ typedef struct {
     AtmosSpeakerConfig speaker_config;
     AtmosAudioObject objects[ATMOS_MAX_OBJECTS];
     uint32_t active_object_count;
-    vec3 listener_position;
-    quat listener_orientation;
+    Vec3 listener_position;
+    Quat listener_orientation;
     float master_gain;
     bool dynamic_range_enabled;
 } AtmosRenderer;
@@ -144,7 +144,7 @@ bool Atmos_CalibrateRoom(AtmosSpeakerConfig* config);
 // Object-Based Audio (TASK_720-728)
 uint32_t Atmos_CreateAudioObject(AtmosRenderer* renderer, AtmosObjectType type);
 bool Atmos_AssignAudioToObject(AtmosRenderer* renderer, uint32_t object_id, void* audio_data, size_t size);
-bool Atmos_SetObjectPosition(AtmosRenderer* renderer, uint32_t object_id, vec3 position);
+bool Atmos_SetObjectPosition(AtmosRenderer* renderer, uint32_t object_id, Vec3 position);
 bool Atmos_SetObjectSize(AtmosRenderer* renderer, uint32_t object_id, float size);
 bool Atmos_SetObjectPriority(AtmosRenderer* renderer, uint32_t object_id, uint8_t priority);
 bool Atmos_SetObjectGain(AtmosRenderer* renderer, uint32_t object_id, float gain);
@@ -228,7 +228,7 @@ void Atmos_ProfilePerformance(AtmosRenderer* renderer);
 bool Atmos_EnableABComparison(AtmosRenderer* renderer, bool enable);
 
 // Utility Functions
-void Atmos_UpdateListener(AtmosRenderer* renderer, vec3 position, quat orientation);
+void Atmos_UpdateListener(AtmosRenderer* renderer, Vec3 position, Quat orientation);
 void Atmos_SetMasterGain(AtmosRenderer* renderer, float gain);
 void Atmos_Shutdown(AtmosRenderer* renderer);
 bool Atmos_IsInitialized(AtmosRenderer* renderer);

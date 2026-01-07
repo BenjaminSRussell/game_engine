@@ -6,14 +6,14 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "triangle_cull.h"
+#include "geometry/nanite/nanite/culling_nanite/triangle_cull.h"
 #include "../../3d_rendering.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdio.h>
 
 /* ============================================================================

@@ -8,7 +8,7 @@
 #include "math/quat.h"
 #include "physics/physics.h"
 #include <stdio.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <assert.h>
 
 /**

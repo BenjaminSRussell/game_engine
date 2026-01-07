@@ -1,0 +1,53 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/training/rl_gym_env.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:136:41: error: incompatible function pointer types passing 'void (void *)' to parameter of type 'ThreadFunction' (aka 'void *(*)(void *)') [-Wincompatible-function-pointer-types]
+  136 |     mic->capture_thread = thread_create(microphone_capture_thread, mic);
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/threading.h:16:51: note: passing argument to parameter 'func' here
+   16 | static inline Thread thread_create(ThreadFunction func, void* arg) {
+      |                                                   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:136:25: warning: incompatible pointer types assigning to 'Thread *' (aka 'struct _opaque_pthread_t **') from 'Thread' (aka 'struct _opaque_pthread_t *') [-Wincompatible-pointer-types]
+  136 |     mic->capture_thread = thread_create(microphone_capture_thread, mic);
+      |                         ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:146:21: warning: incompatible pointer types passing 'Thread *' (aka 'struct _opaque_pthread_t **') to parameter of type 'Thread' (aka 'struct _opaque_pthread_t *'); dereference with * [-Wincompatible-pointer-types]
+  146 |         thread_wait(mic->capture_thread);
+      |                     ^~~~~~~~~~~~~~~~~~~
+      |                     *
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/threading.h:24:39: note: passing argument to parameter 'thread' here
+   24 | static inline void thread_wait(Thread thread) {
+      |                                       ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:179:25: error: call to undeclared function 'time_get_current'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  179 |     buffer->timestamp = time_get_current();
+      |                         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:431:42: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  431 |             memory_free(buffer->samples, MEMORY_TAG_AUDIO);
+      |             ~~~~~~~~~~~                  ^~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:433:29: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  433 |         memory_free(buffer, MEMORY_TAG_AUDIO);
+      |         ~~~~~~~~~~~         ^~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:450:45: error: incompatible function pointer types passing 'void (void *)' to parameter of type 'ThreadFunction' (aka 'void *(*)(void *)') [-Wincompatible-function-pointer-types]
+  450 |     stt->recognition_thread = thread_create(stt_recognition_thread, stt);
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/threading.h:16:51: note: passing argument to parameter 'func' here
+   16 | static inline Thread thread_create(ThreadFunction func, void* arg) {
+      |                                                   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:450:29: warning: incompatible pointer types assigning to 'Thread *' (aka 'struct _opaque_pthread_t **') from 'Thread' (aka 'struct _opaque_pthread_t *') [-Wincompatible-pointer-types]
+  450 |     stt->recognition_thread = thread_create(stt_recognition_thread, stt);
+      |                             ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:466:21: warning: incompatible pointer types passing 'Thread *' (aka 'struct _opaque_pthread_t **') to parameter of type 'Thread' (aka 'struct _opaque_pthread_t *'); dereference with * [-Wincompatible-pointer-types]
+  466 |         thread_wait(stt->recognition_thread);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+      |                     *
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/threading.h:24:39: note: passing argument to parameter 'thread' here
+   24 | static inline void thread_wait(Thread thread) {
+      |                                       ^
+4 warnings and 5 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

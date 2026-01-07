@@ -1,5 +1,5 @@
-#include "physics_types.h"
-#include "../../include/physics/physics.h"
+#include "physics/core/physics_types.h"
+#include "physics/physics.h"
 
 // Implement rigid_body_get_velocity
 Vec3 rigid_body_get_velocity(const RigidBody *body) {

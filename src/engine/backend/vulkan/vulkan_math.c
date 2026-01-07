@@ -1,9 +1,9 @@
 #include <common.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <math/mat4.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
-#include <renderer/mesh_optimizer.h>
+#include <rendering/mesh_optimizer.h>
 
 /**
  * Normalizes a plane represented as a Vec4.

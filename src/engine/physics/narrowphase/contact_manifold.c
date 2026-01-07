@@ -2,8 +2,8 @@
  * Contact Manifold Generation Implementation
  */
 
-#include "contact_manifold.h"
-#include <math.h>
+#include "physics/narrowphase/contact_manifold.h"
+#include <include/math/math.h>
 #include <string.h>
 
 // Helper to get box face vertices

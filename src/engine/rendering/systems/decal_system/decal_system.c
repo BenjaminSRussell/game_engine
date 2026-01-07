@@ -1,9 +1,9 @@
-#include "decal_system.h"
+#include "rendering/systems/decal_system/decal_system.h"
 
 #include <core/logger.h>
-#include <renderer/render_backend.h>
-#include <renderer/camera.h>
-#include <renderer/culling.h> // For Frustum and AABB
+#include <rendering/render_backend.h>
+#include <rendering/camera.h>
+#include <rendering/culling.h> // For Frustum and AABB
 #include <math/aabb.h>
 #include <stdlib.h> 
 

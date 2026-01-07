@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "lod_generator.h"
+#include "geometry/lod/lod_generator.h"
 
 #ifdef __cplusplus
 extern "C" {

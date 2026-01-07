@@ -8,9 +8,9 @@
  */
 
 #include <scripting/lua/lua_script_system.h>
-#include <lauxlib.h>
-#include <lua.h>
-#include <lualib.h>
+#include <include/vendor/lua/lauxlib.h>
+#include <include/vendor/lua/lua.h>
+#include <include/vendor/lua/lualib.h>
 
 // =================================================================================================
 //                                      STRUCTS

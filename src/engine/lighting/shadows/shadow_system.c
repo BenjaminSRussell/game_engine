@@ -3,7 +3,7 @@
  * Cascaded Shadow Maps (CSM) logic and shadow volume calculations
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 

@@ -70,11 +70,11 @@
 #include "../../include/block/block.h"
 #include "../../include/block/water_physics.h"
 #include "../../include/chunk/chunk.h"
-#include "../../include/core/logger.h"
-#include "../../include/math/vec3.h"
-#include "../../include/mesh/mesh.h"
-#include "../../include/rendering/texture_atlas.h"
-#include <math.h>
+#include "include/core/logger.h"
+#include "include/math/vec3.h"
+#include "geometry/mesh.h"
+#include "include/rendering/texture_atlas.h"
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 

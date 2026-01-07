@@ -1,4 +1,4 @@
-#include "light_manager.h"
+#include "lighting/light_manager.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

@@ -2,17 +2,17 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-#include "renderer/render_types.h"
+#include <include/math/math.h>
+#include "rendering/render_types.h"
 #include "editor/viewport/gizmos.h"
 #include "editor/viewport/camera_controls.h"
 #include "math/vec3.h"
 #include "math/mat4.h"
 #include "math/quat.h"
-#include "renderer/renderer.h"
+#include "rendering/renderer.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ✅ COMPLETED: Implement Editor Gizmos - Full transform gizmo system
 // Implementation includes:

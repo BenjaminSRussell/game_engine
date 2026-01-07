@@ -1,7 +1,7 @@
 // Sky & Atmosphere API Bridge Implementation
 
 #include "../include/core/logger.h"
-#include <math.h>
+#include <include/math/math.h>
 #include "../include/platform/sky_api_bridge.h"
 #include <stdbool.h>
 #include <stdint.h>

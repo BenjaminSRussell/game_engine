@@ -2,9 +2,9 @@
 #define EDITOR_ASSET_BROWSER_THUMBNAIL_GENERATOR_H
 
 #include "core/core.h"
-#include "renderer/core/texture.h"
-#include "renderer/core/material.h"
-#include "core/threading/thread_pool.h"
+#include "rendering/core/texture.h"
+#include "include/rendering/material.h"
+#include "core/sync/thread_pool.h"
 
 #ifdef __cplusplus
 extern "C" {

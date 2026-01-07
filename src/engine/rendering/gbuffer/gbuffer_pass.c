@@ -4,11 +4,11 @@
  * =================================================================================================
  */
 
-#include "gbuffer_pass.h"
-#include <gpu_backend/render_pipeline.h>
-#include <gpu_backend/framebuffer.h>
-#include <core/memory/memory.h>
-#include <core/logger/logger.h>
+#include "rendering/gbuffer/gbuffer_pass.h"
+#include <rendering/render_pipeline.h>
+#include <rendering/framebuffer.h>
+#include <core/memory.h>
+#include <core/logger.h>
 #include <string.h>
 
 struct GBufferPass {

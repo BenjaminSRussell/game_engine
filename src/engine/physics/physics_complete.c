@@ -3,7 +3,7 @@
  * All physics functions for rigid body, collision, soft body, fluids, vehicles
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

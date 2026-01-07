@@ -1,5 +1,5 @@
 #include "environment/stylized/outline_renderer.h"
-#include <math.h>
+#include <include/math/math.h>
 
 void outline_renderer_apply(void *depth_buffer, void *normal_buffer, void *id_buffer, void *output) {
     // Post-processing outline shader logic would typically happen in a fragment shader

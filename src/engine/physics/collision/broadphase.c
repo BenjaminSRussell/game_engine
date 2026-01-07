@@ -1,4 +1,4 @@
-#include "../physics_engine_core.h"
+#include "physics/physics_engine_core.h"
 #include <stdlib.h>
 #include <string.h>
 

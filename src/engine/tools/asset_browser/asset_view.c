@@ -4,7 +4,7 @@
  * =================================================================================================
  */
 
-#include "asset_view.h"
+#include "tools/asset_browser/asset_view.h"
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>

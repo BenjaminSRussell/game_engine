@@ -1,5 +1,5 @@
 #include "physics/physics_system.h"
-#include "../core/physics_types.h"
+#include "physics/core/physics_types.h"
 #include <stdlib.h>
 
 // Forward declarations from core

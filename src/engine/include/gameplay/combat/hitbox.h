@@ -22,9 +22,9 @@
 #ifndef HITBOX_COMPONENT_H
 #define HITBOX_COMPONENT_H
 
-#include "../../common.h"
-#include "../../ecs/ecs.h"
-#include "../../math/vec3.h"
+#include "include/common.h"
+#include "include/ecs/ecs.h"
+#include "include/math/vec3.h"
 
 // Hitbox shape types
 typedef enum {

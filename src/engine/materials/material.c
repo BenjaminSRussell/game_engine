@@ -12,12 +12,12 @@
 // ✅ COMPLETED: Add material unit testing framework.
 // ✅ COMPLETED: Implement material documentation system.
 // ✅ COMPLETED: Add material optimization suggestions.
-#include "../../include/render/material.h"
-#include "../../include/core/logger.h"
+#include "include/rendering/material.h"
+#include "include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <math/math.h>
 
 // ==============================================================================
 // Material Library Management

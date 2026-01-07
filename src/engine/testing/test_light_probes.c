@@ -3,9 +3,9 @@
  * Unit tests for the light probe system.
  */
 
-#include "renderer/light_probes.h"
+#include "rendering/light_probes.h"
 #include <core/logger.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdio.h>
 
 // Simple assertion macro

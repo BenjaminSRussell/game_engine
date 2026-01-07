@@ -4,10 +4,10 @@
  * =================================================================================================
  */
 
-#include "utility_scorer.h"
+#include "ai/utility/utility_scorer.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 void utility_scorer_init(UtilityScorer *scorer) {
     scorer->actions = NULL;

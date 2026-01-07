@@ -9,10 +9,10 @@
 #ifndef PLATFORM_MTL_COMMAND_H
 #define PLATFORM_MTL_COMMAND_H
 
-#include "mtl_device.h"
-#include "mtl_command_buffer.h"
-#include "mtl_encoder.h"
-#include "mtl_parallel_encoder.h"
+#include "backend/metal/mtl_device.h"
+#include "backend/metal/mtl_command_buffer.h"
+#include "backend/metal/mtl_encoder.h"
+#include "backend/metal/mtl_parallel_encoder.h"
 
 #ifdef __cplusplus
 extern "C" {

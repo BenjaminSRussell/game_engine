@@ -1,5 +1,5 @@
-#include <renderer/renderer.h>
-#include <renderer/core/render_graph.h>
+#include <rendering/renderer.h>
+#include <rendering/core/render_graph.h>
 #include <stdlib.h>
 #include <stdio.h>
 

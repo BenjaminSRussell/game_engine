@@ -1,4 +1,4 @@
-#include "core/threading/lock_free_queue.h"
+#include "core/sync/lock_free_queue.h"
 #include "core/core.h"
 #include <stdlib.h>
 #include <string.h>

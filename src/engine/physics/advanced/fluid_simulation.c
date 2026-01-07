@@ -8,7 +8,7 @@
  * @copyright (c) 2024 Minecraft v2 Engine
  */
 
-#include <physics/advanced/fluid_simulation.h>
+#include <include/effects/vfx/fluid_simulation.h>
 #include <core/math/math_utils.h>
 
 // =================================================================================================

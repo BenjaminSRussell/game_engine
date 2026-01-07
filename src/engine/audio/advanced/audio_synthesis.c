@@ -1,5 +1,5 @@
 #include "audio/audio_synthesis.h"
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -114,12 +114,14 @@ void Filter_CalculateCoefficients(BiquadFilter* filter) {
     f32 cos_omega = cosf(omega);
     f32 alpha = sin_omega / (2.0f * q);
     
+    f32 a0;
+    
     switch (filter->type) {
         case FILTER_LOWPASS:
             filter->b0 = (1.0f - cos_omega) / 2.0f;
             filter->b1 = 1.0f - cos_omega;
             filter->b2 = (1.0f - cos_omega) / 2.0f;
-            filter->a0 = 1.0f + alpha;
+            a0 = 1.0f + alpha;
             filter->a1 = -2.0f * cos_omega;
             filter->a2 = 1.0f - alpha;
             break;
@@ -128,7 +130,7 @@ void Filter_CalculateCoefficients(BiquadFilter* filter) {
             filter->b0 = (1.0f + cos_omega) / 2.0f;
             filter->b1 = -(1.0f + cos_omega);
             filter->b2 = (1.0f + cos_omega) / 2.0f;
-            filter->a0 = 1.0f + alpha;
+            a0 = 1.0f + alpha;
             filter->a1 = -2.0f * cos_omega;
             filter->a2 = 1.0f - alpha;
             break;
@@ -137,7 +139,7 @@ void Filter_CalculateCoefficients(BiquadFilter* filter) {
             filter->b0 = alpha;
             filter->b1 = 0.0f;
             filter->b2 = -alpha;
-            filter->a0 = 1.0f + alpha;
+            a0 = 1.0f + alpha;
             filter->a1 = -2.0f * cos_omega;
             filter->a2 = 1.0f - alpha;
             break;
@@ -146,7 +148,7 @@ void Filter_CalculateCoefficients(BiquadFilter* filter) {
             filter->b0 = 1.0f;
             filter->b1 = -2.0f * cos_omega;
             filter->b2 = 1.0f;
-            filter->a0 = 1.0f + alpha;
+            a0 = 1.0f + alpha;
             filter->a1 = -2.0f * cos_omega;
             filter->a2 = 1.0f - alpha;
             break;
@@ -155,14 +157,14 @@ void Filter_CalculateCoefficients(BiquadFilter* filter) {
             filter->b0 = 1.0f - alpha;
             filter->b1 = -2.0f * cos_omega;
             filter->b2 = 1.0f + alpha;
-            filter->a0 = 1.0f + alpha;
+            a0 = 1.0f + alpha;
             filter->a1 = -2.0f * cos_omega;
             filter->a2 = 1.0f - alpha;
             break;
     }
     
     // Normalize coefficients
-    f32 a0_inv = 1.0f / filter->a0;
+    f32 a0_inv = 1.0f / a0;
     filter->b0 *= a0_inv;
     filter->b1 *= a0_inv;
     filter->b2 *= a0_inv;

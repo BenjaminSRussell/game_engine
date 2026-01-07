@@ -1,4 +1,4 @@
-#include "core/threading/fiber_system.h"
+#include "core/sync/fiber_system.h"
 #include "core/memory.h"
 #include "core/logging.h"
 #include <stdatomic.h>

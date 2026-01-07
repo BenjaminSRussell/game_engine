@@ -1,11 +1,11 @@
 // 3D vector math implementation with full SIMD optimization.
 // Features: AVX2/SSE2 support, validation system, caching, statistics, batch operations.
 // Includes comprehensive utility functions for angles, reflection, projection, and interpolation.
-#include "../../include/math/vec3.h"
+#include "math/vec3.h"
 #include <immintrin.h>  // AVX intrinsics
 #include <emmintrin.h>  // SSE intrinsics
 #include <string.h>
-#include <math.h>
+#include <math/math.h>
 
 // SIMD capability detection
 static bool g_has_avx2 = false;

@@ -6,10 +6,10 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "lod_gpu_selection.h"
+#include "geometry/lod/lod_gpu_selection.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * INTERNAL STATE

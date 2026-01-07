@@ -1,12 +1,12 @@
 #include "core/core.h"
 #include "editor/viewport/grid_rendering.h"
-#include "renderer/renderer.h"
-#include "renderer/camera.h"
+#include "rendering/renderer.h"
+#include "rendering/camera.h"
 #include "math/vec3.h"
 #include "math/mat4.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ✅ COMPLETED: Implement Infinite Grid Rendering with Distance-Based Fading
 // Implementation includes:

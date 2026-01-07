@@ -38,7 +38,7 @@
  * TODO: Add vk descriptor render graph node
  */
 
-#include "vk_descriptor.h"
+#include "backend/vulkan/vk_descriptor.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

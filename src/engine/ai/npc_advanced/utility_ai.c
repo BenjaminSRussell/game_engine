@@ -2,7 +2,7 @@
 #include <core/logger.h>
 #include <core/memory.h>
 #include <float.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 
 /**

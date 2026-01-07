@@ -1,5 +1,5 @@
-#include "ai_api.h"
-#include "../../core/introspection/type_registry.h"
+#include "ai/api/ai_api.h"
+#include "core/introspection/type_registry.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>

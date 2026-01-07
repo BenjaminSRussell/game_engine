@@ -5,8 +5,8 @@
  * =================================================================================================
  */
 
-#include "audio_system.h"
-#include <math.h>
+#include "cinematics/audio/audio_system.h"
+#include <include/math/math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

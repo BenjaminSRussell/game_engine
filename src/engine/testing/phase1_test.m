@@ -5,10 +5,10 @@
  * Tests basic Metal device initialization, buffers, textures, and capabilities
  */
 
-#include "../rendering/3d_rendering/backend/metal/metal/mtl_buffer.h"
-#include "../rendering/3d_rendering/backend/metal/metal/mtl_command_buffer.h"
-#include "../rendering/3d_rendering/backend/metal/metal/mtl_device.h"
-#include "../rendering/3d_rendering/backend/metal/metal/mtl_texture.h"
+#include "backend/metal/mtl_buffer.h"
+#include "backend/metal/mtl_command_buffer.h"
+#include "backend/metal/mtl_device.h"
+#include "backend/metal/mtl_texture.h"
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 #include <stdbool.h>

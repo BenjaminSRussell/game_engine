@@ -3,9 +3,9 @@
 // Implementation of mesh optimization systems including LOD generation,
 // compression, culling, and vertex cache optimization.
 
-#include <math.h>
-#include <renderer/camera.h>
-#include <renderer/mesh_optimizer.h>
+#include <include/math/math.h>
+#include <rendering/camera.h>
+#include <geometry/mesh/mesh_optimizer.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -9,8 +9,8 @@
 #ifndef GEOMETRY_BVH_NODE_H
 #define GEOMETRY_BVH_NODE_H
 
-#include "../../include/math/vec3.h"
-#include "../../include/math/aabb.h"
+#include "include/math/vec3.h"
+#include "include/math/aabb.h"
 #include <stdint.h>
 #include <stdbool.h>
 

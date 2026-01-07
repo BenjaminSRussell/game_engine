@@ -1,4 +1,4 @@
-#include "render_tests.h"
+#include "testing/render_tests.h"
 #include <stdio.h>
 
 void render_test_init(render_test_context_t* ctx, id<MTLDevice> device) {

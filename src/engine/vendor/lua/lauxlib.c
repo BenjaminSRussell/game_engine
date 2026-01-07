@@ -7,7 +7,7 @@
 #define lauxlib_c
 #define LUA_LIB
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
 #include <errno.h>
@@ -22,9 +22,9 @@
 ** Any function declared here could be written as an application function.
 */
 
-#include "lua.h"
+#include "vendor/lua/lua.h"
 
-#include "lauxlib.h"
+#include "vendor/lua/lauxlib.h"
 
 
 #if !defined(MAX_SIZET)

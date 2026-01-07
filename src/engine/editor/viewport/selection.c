@@ -2,16 +2,16 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-#include "renderer/camera.h"
+#include <include/math/math.h>
+#include "rendering/camera.h"
 #include "editor/viewport/selection.h"
-#include "renderer/renderer.h"
+#include "rendering/renderer.h"
 #include "math/vec3.h"
 #include "math/vec4.h"
 #include "math/mat4.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Helper for matrix-vector multiplication (as it's missing from mat4.h)
 static Vec4 mat4_mul_vec4(Mat4 m, Vec4 v) {

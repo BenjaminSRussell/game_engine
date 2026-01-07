@@ -1,0 +1,276 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml/inverse_kinematics.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/frame_interpolation.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml/npc_learning_impl.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml/gi_denoiser.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml/neural_network.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml/neural_animation.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml/neural_upscaling.c.o
+[  1%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_core.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml_training/data_pipeline.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/modular_assets.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml/procedural_ai_impl.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_inference.c:1:10: fatal error: 'ml_inference.h' file not found
+    1 | #include "ml_inference.h"
+      |          ^~~~~~~~~~~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+[  4%] Built target Catch2
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:6:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/inverse_kinematics.h:23:5: error: unknown type name 'vec3'
+   23 |     vec3 joint_positions[16];
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/inverse_kinematics.h:24:5: error: unknown type name 'vec3'
+   24 |     vec3 joint_rotations[16];
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/inverse_kinematics.h:25:5: error: unknown type name 'vec3'
+   25 |     vec3 target_position;
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/inverse_kinematics.h:46:60: error: unknown type name 'vec3'
+   46 | bool ml_ik_solve_chain(MLIKSystem *system, IKChain *chain, vec3 target);
+      |                                                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:27:5: error: call to undeclared function 'ml_ik_shutdown'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   27 |     ml_ik_shutdown(system);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:51:9: error: call to undeclared function 'LOG_WARNING'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   51 |         LOG_WARNING("Failed to load IK model");
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:60:60: error: unknown type name 'vec3'
+   60 | bool ml_ik_solve_chain(MLIKSystem *system, IKChain *chain, vec3 target) {
+      |                                                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:105:39: error: call to undeclared library function 'fmaxf' with type 'float (float, float)'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  105 |         system->chains[i].tolerance = fmaxf(0.001f, tolerance);
+      |                                       ^
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:17:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:73:5:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:105:39: note: include the header <math.h> or explicitly provide a declaration for 'fmaxf'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:109:6: error: conflicting types for 'ml_ik_shutdown'
+  109 | void ml_ik_shutdown(MLIKSystem *system) {
+      |      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/inverse_kinematics.c:27:5: note: previous implicit declaration is here
+   27 |     ml_ik_shutdown(system);
+      |     ^
+ error: unknown type name 'vec3'
+   73 |     vec3 *waypoints;                 // Path waypoints
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:91:5: error: unknown type name 'vec3'
+   91 |     vec3 current_position;           // Current world position
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:92:5: error: unknown type name 'vec3'
+   92 |     vec3 tar/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:27:get_position;           // Target destination
+      |     ^
+5:9 errors generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:93:5: error: unknown type name 'vec3'
+   93 |     vec3 velocity;                  // Current movement velocity
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:111:5: error: unknown type name 'vec3'
+  111 |     vec3 pred error: call to undeclared function 'gi_denoiser_shutdown'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   27 |     gi_denoiser_shutdown(denoiser);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:27:5: note: did you mean 'gi_denoiser_destroy'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:24:6: note: 'gi_denoiser_destroy' declared here
+   24 | void gi_denoiser_destroy(GIDenoiser *denoiser) {
+      |      ^
+   25 |     if (!denoiser) return;
+   26 |     
+   27 |     gi_denoiser_shutdown(denoiser);
+      |     ~~~~~~~~~~~~~~~~~~~~
+      |     gi_denoiser_destroy
+icted_positions[10];    // Predicted future positions
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:115:5: error: unknown type name 'vec3'
+  115 |     vec3 prediction_target;         // Predicted tar/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:52:9: error: call to undeclared function 'LOG_WARNING'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   52 |         LOG_WARNING("Failed to load GI denoiser model");
+      |         ^
+get location
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:136:5: error: unknown type name 'vec3'
+  136 |     vec3 group_target;              // Group destination
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:97:6: error: conflicting types for 'gi_denoiser_shutdown'
+   97 | void gi_denoiser_shutdown(GIDenoiser *denoiser) {
+      |      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/gi_denoiser.c:27:5: note: previous implicit declaration is here
+   27 |     gi_denoiser_shutdown(denoiser);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:137:5: error: unknown type name 'vec3'
+  137 |     vemake[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/inverse_kinematics.c.o] Error 1
+c3 formation_center;          // Center of formation
+      |     ^
+3 errors generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:219:68: error: unknown type name 'vec3'
+  219 | bool ml_navigation_add_static_obstacle(MLNavigationSystem *system, vec3 position, vec3 size);
+      |                                                                    ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:219:83: error: unknown type name 'vec3'
+  219 | bool ml_navigation_add_static_obstacle(MLNavigationSystem *system, vec3 position, vec3 size);
+      |                                                                                   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:220:79: error: unknown type name 'vec3'
+  220 | bool ml_navigation_update/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:27:5:_dynamic _oerror: call to undeclared function 'neural_animation_shutdown'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+bstacle   27 |   s(MLNavigat  neurionSal_ysanitem *sysmation_shutdownt(systemem);
+      , con|     ^
+s/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:27:5t vec3 : *obstacnote: did you mean 'neural_animation_destroy'?le
+s, u32 count);
+      |                                                                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:24:6: note: 'neural_animation_destroy' declared here
+   24 | void neural_animation_destroy(NeuralAnimat/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:io224:70:nS error: unknown type name 'vec3'
+ystem  224 |  *system) {
+      f32 ml|      ^
+_navigation_get_   25 |    terrain_dif ifif cult(!sy(MLNavigationSysteystem) return;m *system
+, vec3    26 |     
+positi   27 |     on);
+      |                                                                      ^
+neural_animation_shutdown(system);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     neural_animation_destroy
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:225:69: error: unknown type name 'vec3'
+  225 | bool ml_navigation_is_position_walkable(MLNavigationSystem *system, vec3 position);
+      |                                                                     ^
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/gi_denoiser.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:226:66: error: unknown type name 'vec3'
+  226 | bool ml_navigation_has_line_of_sight(MLNavigationSystem *system, vec3 start, vec3 end);
+      |                                                                  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:226:78: error: unknown type name 'vec3'
+  226 | bool ml_navigation_has_line_of_sight(MLNavigationSystem *system, vec3 start, vec3 end);
+      |                                                                              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:51:9: error: call to undeclared function 'LOG_WARNING'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   51 |         LOG_WAR/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:233:60: error: unknown type name 'vec3'
+N  233 | u3ING("Fa2 ml_navigation_create_agent(MLNavigationSysiled to load atenim *sysmatioten m, vec3 stmodelart_");
+      | position, f32 max_sp        ^
+eed);
+      |                                                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:235:79: error: unknown type name 'vec3'
+  235 | bool ml_navigation_set_agent_target(MLNavigationSystem *system, u32 agent_id, vec3 target);
+      |                                                                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:110:31: error: call to undeclared library function 'fmaxf' with type 'float (float, float)'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  110 |     system->animation_speed = f/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.hm:236:ax84:f(0.1 error: unknown type name 'vec3'f, f
+minf(5.0  236 | f, speed));
+      |                               ^
+bool ml_navigation_updat/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:e_agent_110:pos31: note: include the header <math.h> or explicitly provide a declaration for 'fmaxf'
+ition(MLNavigationSystem *system,/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:110: u343: error: call to undeclared library function 'fminf' with type 'float (float, float)'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+2  110 |  age    systntem_id,->anima vec3 position);
+      | tion_s                                                                                   ^
+peed = fmaxf(0.1f, fminf(5.0f, speed));
+      |                                           ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:110:43: note: include the header <math.h> or explicitly provide a declaration for 'fminf'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:248:87: error: unknown type name 'vec3'
+  248 | NavigationPath *ml_navigation_generate_path(MLNavi/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:113:6:gati error: conflicting types for 'neural_animation_shutdown'
+on  113 | void neuSyral_stem *system,animation_sh uutdown32 ag(NeuralAnimationenSyt_idst, emvec3 *s systatem) rt{
+,       |      ^vec
+3 go/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/neural_animation.c:27al);
+      |                                                                                       ^
+:5: note: previous implicit declaration is here
+   27 |     neural_animation_shutdown(system);
+      |     ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+5 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/neural_animation.c.o] Error 1
+20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o] Error 1
+[  4%] Built target Catch2WithMain
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:15:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/frame_interpolation.h:247:5: error: conflicting types for 'frame_interpolator_get_quality_factor'
+  247 | f32 frame_interpolator_get_quality_factor(InterpolationQuality quality);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/frame_interpolation.h:203:5: note: previous declaration is here
+  203 | f32 frame_interpolator_get_quality_factor(FrameInterpolator *interpolator);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:144:76: error: call to undeclared function 'stride'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  144 |             MLMultiArray *multiArray = [[MLMultiArray alloc] initWithShape:stride(shape)
+      |                                                                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:144:76: error: incompatible integer to pointer conversion sending 'int' to parameter of type 'NSArray<NSNumber *> * _Nonnull' [-Wint-conversion]
+  144 |             MLMultiArray *multiArray = [[MLMultiArray alloc] initWithShape:stride(shape)
+      |                                                                            ^~~~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLMultiArray.h:91:63: note: passing argument to parameter 'shape' here
+   91 | - (nullable instancetype)initWithShape:(NSArray<NSNumber *> *)shape
+      |                                                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:166:9: error: use of undeclared identifier 'MLFeatureProvider'
+  166 |         MLFeatureProvider *outputProvider = [ml_model predictionFromFeatures:inputProvider error:&error];
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:62:5: error: unknown type name 'MPSImageOpticalFlow'
+   62 |     MPSImageOpticalFlow *optical_flow;
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:72:14: error: no member named 'mps_device' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+   72 |     context->mps_device = MTLCreateSystemDefaultDevice();
+      |     ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:73:19: error: no member named 'mps_device' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+   73 |     if (!context->mps_device) {
+      |          ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:80:14: error: no member named 'command_queue' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+   80 |     context->command_queue = [context->mps_device newCommandQueue];
+      |     ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:80:40: error: no member named 'mps_device' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+   80 |     context->command_queue = [context->mps_device newCommandQueue];
+      |                               ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:81:19: error: no member named 'command_queue' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+   81 |     if (!context->command_queue) {
+      |          ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:83:19: error: no member named 'mps_device' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+   83 |         [context->mps_device release];
+      |          ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:166:28: error: use of undeclared identifier 'outputProvider'; did you mean 'inputProvider'?
+  166 |         MLFeatureProvider *outputProvider = [ml_model predictionFromFeatures:inputProvider error:&error];
+      |                            ^~~~~~~~~~~~~~
+      |                            inputProvider
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:160:38: note: 'inputProvider' declared here
+  160 |         MLDictionaryFeatureProvider *inputProvider = [[MLDictionaryFeatureProvider alloc] 
+      |                                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:179:45: error: use of undeclared identifier 'outputProvider'; did you mean 'inputProvider'?
+  179 |             MLFeatureValue *featureValue = [outputProvider featureValueForName:tensorName];
+      |                                             ^~~~~~~~~~~~~~
+      |                                             inputProvider
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:160:38: note: 'inputProvider' declared here
+  160 |         MLDictionaryFeatureProvider *inputProvider = [[MLDictionaryFeatureProvider alloc] 
+      |                                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_core.c:584:23: warning: comparison of distinct pointer types ('void *' and 'u8 *' (aka 'unsigned char *')) [-Wcompare-distinct-pointer-types]
+  584 |          tensor->data >= (u8 *)system->tensor_pool + system->total_tensor_memory)) {
+      |          ~~~~~~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning and 5 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_core.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:89:31: error: use of undeclared identifier 'MPSImageOpticalFlow'
+   89 |     context->optical_flow = [[MPSImageOpticalFlow alloc] initWithDevice:context->mps_device];
+      |                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:92:19: error: no member named 'command_queue' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+   92 |         [context->command_queue release];
+      |          ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:93:19: error: no member named 'mps_device' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+   93 |         [context->mps_device release];
+      |          ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:110:22: error: no member named 'command_queue' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+  110 |         if (context->command_queue) [context->command_queue release];
+      |             ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:110:47: error: no member named 'command_queue' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+  110 |         if (context->command_queue) [context->command_queue release];
+      |                                      ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:111:22: error: no member named 'mps_device' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+  111 |         if (context->mps_device) [context->mps_device release];
+      |             ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:111:44: error: no member named 'mps_device' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+  111 |         if (context->mps_device) [context->mps_device release];
+      |                                   ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:126:57: error: no member named 'command_queue' in 'struct (unnamed at /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:58:9)'
+  126 |         id<MTLCommandBuffer> command_buffer = [context->command_queue commandBuffer];
+      |                                                ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:261:5: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'FrameInterpolator *' [-Wint-conversion]
+  261 |     INTERPOL_CHECK_NULL_PARAM(ml_system);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/frame_interpolation.h:337:43: note: expanded from macro 'INTERPOL_CHECK_NULL_PARAM'
+  337 |     INTERPOL_CHECK_ERROR((param) != NULL, INTERPOL_ERROR_INVALID_PARAMETER)
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/frame_interpolation.h:332:20: note: expanded from macro 'INTERPOL_CHECK_ERROR'
+  332 |             return error; \
+      |                    ^~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:337:9: error: call to undeclared function 'LOG_WARNING'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  337 |         LOG_WARNING("Failed to load interpolation model, will use fallback");
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/frame_interpolation.c:392:5: error: call to undeclared function 'performance_get_time'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  392 |     INTERPOL_START_TIMER(interpolator);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml/frame_interpolation.h:341:22: note: expanded from macro 'INTERPOL_START_TIMER'
+  341 |     f64 start_time = performance_get_time()
+      |                      ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/frame_interpolation.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

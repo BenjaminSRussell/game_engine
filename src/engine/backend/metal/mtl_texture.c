@@ -7,10 +7,10 @@
  */
 
 #import <Metal/Metal.h>
-#include "mtl_texture.h"
+#include "backend/metal/mtl_texture.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * INTERNAL HELPERS
@@ -26,19 +26,19 @@ typedef struct metal_device {
  * HELPERS
  * ============================================================================ */
 
-static inline void convert_format(metal_pixel_format_t fmt, MTLPixelFormat* mtl_fmt) {
+static inline MTLPixelFormat convert_format(metal_pixel_format_t fmt) {
     switch (fmt) {
-        case METAL_PIXEL_FORMAT_RGBA8_UNORM: *mtl_fmt = MTLPixelFormatRGBA8Unorm; break;
-        case METAL_PIXEL_FORMAT_RGBA8_SRGB: *mtl_fmt = MTLPixelFormatRGBA8Unorm_sRGB; break;
-        case METAL_PIXEL_FORMAT_BGRA8_UNORM: *mtl_fmt = MTLPixelFormatBGRA8Unorm; break;
-        case METAL_PIXEL_FORMAT_BGRA8_SRGB: *mtl_fmt = MTLPixelFormatBGRA8Unorm_sRGB; break;
-        case METAL_PIXEL_FORMAT_RGBA16_FLOAT: *mtl_fmt = MTLPixelFormatRGBA16Float; break;
-        case METAL_PIXEL_FORMAT_RGBA32_FLOAT: *mtl_fmt = MTLPixelFormatRGBA32Float; break;
-        case METAL_PIXEL_FORMAT_R8_UNORM: *mtl_fmt = MTLPixelFormatR8Unorm; break;
-        case METAL_PIXEL_FORMAT_R16_FLOAT: *mtl_fmt = MTLPixelFormatR16Float; break;
-        case METAL_PIXEL_FORMAT_R32_FLOAT: *mtl_fmt = MTLPixelFormatR32Float; break;
-        case METAL_PIXEL_FORMAT_RG16_FLOAT: *mtl_fmt = MTLPixelFormatRG16Float; break;
-        case METAL_PIXEL_FORMAT_DEPTH32_FLOAT: *mtl_fmt = MTLPixelFormatDepth32Float; break;
+        case METAL_PIXEL_FORMAT_RGBA8_UNORM: return MTLPixelFormatRGBA8Unorm;
+        case METAL_PIXEL_FORMAT_RGBA8_SRGB: return MTLPixelFormatRGBA8Unorm_sRGB;
+        case METAL_PIXEL_FORMAT_BGRA8_UNORM: return MTLPixelFormatBGRA8Unorm;
+        case METAL_PIXEL_FORMAT_BGRA8_SRGB: return MTLPixelFormatBGRA8Unorm_sRGB;
+        case METAL_PIXEL_FORMAT_RGBA16_FLOAT: return MTLPixelFormatRGBA16Float;
+        case METAL_PIXEL_FORMAT_RGBA32_FLOAT: return MTLPixelFormatRGBA32Float;
+        case METAL_PIXEL_FORMAT_R8_UNORM: return MTLPixelFormatR8Unorm;
+        case METAL_PIXEL_FORMAT_R16_FLOAT: return MTLPixelFormatR16Float;
+        case METAL_PIXEL_FORMAT_R32_FLOAT: return MTLPixelFormatR32Float;
+        case METAL_PIXEL_FORMAT_RG16_FLOAT: return MTLPixelFormatRG16Float;
+        case METAL_PIXEL_FORMAT_DEPTH32_FLOAT: return MTLPixelFormatDepth32Float;
         case METAL_PIXEL_FORMAT_DEPTH24_STENCIL8:
 #if TARGET_OS_OSX
             return MTLPixelFormatDepth24Unorm_Stencil8;
@@ -59,6 +59,7 @@ static inline void convert_format(metal_pixel_format_t fmt, MTLPixelFormat* mtl_
         case METAL_PIXEL_FORMAT_ASTC_8x8_SRGB:
             return MTLPixelFormatASTC_8x8_sRGB;
         default:
+            NSLog(@"Unsupported pixel format: %d, using RGBA8Unorm as fallback", fmt);
             return MTLPixelFormatRGBA8Unorm;
     }
 }
@@ -140,6 +141,12 @@ metal_texture_t* metal_texture_create(metal_device_t* device, const metal_textur
 
     // Create descriptor
     MTLTextureDescriptor* mtl_desc = [[MTLTextureDescriptor alloc] init];
+    if (!mtl_desc) {
+        NSLog(@"Failed to allocate MTLTextureDescriptor");
+        free(texture);
+        return NULL;
+    }
+
     mtl_desc.textureType = mtl_type;
     mtl_desc.pixelFormat = mtl_format;
     mtl_desc.width = desc->width;
@@ -343,6 +350,14 @@ bool metal_pixel_format_is_compressed(metal_pixel_format_t format) {
         default:
             return false;
     }
+}
+
+/* ============================================================================
+ * PUBLIC API IMPLEMENTATIONS
+ * ============================================================================ */
+
+MTLPixelFormat metal_pixel_format_to_mtl(metal_pixel_format_t format) {
+    return convert_format(format);
 }
 
 /* End of mtl_texture.c */

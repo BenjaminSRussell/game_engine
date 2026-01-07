@@ -2,8 +2,8 @@
 #define EDITOR_UI_H
 
 #include <stdbool.h>
-#include "asset_editor.h"
-#include "editor_types.h"
+#include "include/tools/asset_editor/asset_editor.h"
+#include "include/tools/asset_editor/editor_types.h"
 
 #ifdef __cplusplus
 extern "C" {

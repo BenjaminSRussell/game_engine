@@ -7,10 +7,10 @@
 #define lctype_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
-#include "lctype.h"
+#include "vendor/lua/lctype.h"
 
 #if !LUA_USE_CTYPE	/* { */
 

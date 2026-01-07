@@ -4,7 +4,7 @@
  * ambient
  */
 
-#include <math.h>
+#include <include/math/vec3.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -14,9 +14,6 @@
 // Type definitions
 typedef uint32_t u32;
 typedef float f32;
-typedef struct {
-  f32 x, y, z;
-} Vec3;
 
 // Audio system handle
 typedef struct AudioSystem AudioSystem;

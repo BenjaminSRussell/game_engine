@@ -5,9 +5,9 @@
  * Tests mesh sorting, culling, and BVH systems
  */
 
-#include "../rendering/3d_rendering/geometry/mesh/mesh_sorting.h"
-#include "../rendering/3d_rendering/geometry/mesh/static_mesh_draw.h"
-#include "../rendering/3d_rendering/geometry/bvh/bvh_scene_cull.h"
+#include "geometry/mesh/mesh_sorting.h"
+#include "geometry/mesh/static_mesh_draw.h"
+#include "geometry/bvh/bvh_scene_cull.h"
 #include <stdio.h>
 #include <stdbool.h>
 

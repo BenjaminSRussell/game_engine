@@ -7,9 +7,9 @@
 #ifndef lstring_h
 #define lstring_h
 
-#include "lgc.h"
-#include "lobject.h"
-#include "lstate.h"
+#include "include/vendor/lua/lgc.h"
+#include "include/vendor/lua/lobject.h"
+#include "include/vendor/lua/lstate.h"
 
 
 /*

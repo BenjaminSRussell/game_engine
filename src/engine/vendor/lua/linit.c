@@ -24,15 +24,15 @@
 **  lua_pop(L, 1);  // remove PRELOAD table
 */
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
 #include <stddef.h>
 
-#include "lua.h"
+#include "vendor/lua/lua.h"
 
-#include "lualib.h"
-#include "lauxlib.h"
+#include "vendor/lua/lualib.h"
+#include "vendor/lua/lauxlib.h"
 
 
 /*

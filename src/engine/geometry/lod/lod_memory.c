@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "lod_memory.h"
+#include "geometry/lod/lod_memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

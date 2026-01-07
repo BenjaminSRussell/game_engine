@@ -18,8 +18,8 @@
 #ifndef GAME_API_H
 #define GAME_API_H
 
-#include "../common.h"
-#include "scene.h"
+#include "include/common.h"
+#include "include/core/scene.h"
 #include <core/engine_core.h>
 #include <math/vec2.h>
 #include <math/vec3.h>

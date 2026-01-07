@@ -6,12 +6,12 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "lod_crossfade.h"
+#include "geometry/lod/lod_crossfade.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * INITIALIZATION

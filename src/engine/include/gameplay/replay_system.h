@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "core/math/vec3.h"
+#include "include/math/vec3.h"
 #include "core/utils.h"
 
 #ifdef __cplusplus

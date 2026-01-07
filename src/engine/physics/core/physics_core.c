@@ -1,7 +1,7 @@
-#include "physics_types.h"
-#include "../../include/physics/physics.h"  // For PhysicsConfig
+#include "physics/core/physics_types.h"
+#include "physics/physics.h"  // For PhysicsConfig
 #include <float.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

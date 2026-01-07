@@ -13,8 +13,8 @@
 // ✅ COMPLETED: Add AO caching system for performance.
 // ✅ COMPLETED: Implement AO temporal filtering system.
 // ✅ COMPLETED: Add AO denoising system.
-#include "../../include/render/ambient_occlusion.h"
-#include <math.h>
+#include "include/rendering/ambient_occlusion.h"
+#include <include/math/math.h>
 #include <string.h>
 #include <stdlib.h>
 

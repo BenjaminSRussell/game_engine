@@ -1,0 +1,7 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/ambience/procedural_ambience.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/ambient_system.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/audio/audio_complete.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/audio_complete.c:19:3: error: typedef redefinition with different types ('struct Vec3' vs 'union Vec3')
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/audio/audio_complete.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2

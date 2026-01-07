@@ -13,7 +13,7 @@
 // Note: Core block physics functionality integrated with spatial optimization
 #include <block/block.h>
 #include <chunk/chunk.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <physics/block_physics.h>
 #include <string.h>
 

@@ -1,7 +1,7 @@
 // MoltenVK Configuration Implementation
 // Detects and configures MoltenVK-specific features and workarounds
 
-#include <renderer/moltenvk_config.h>
+#include <rendering/moltenvk_config.h>
 #include <core/logger.h>
 #include <string.h>
 

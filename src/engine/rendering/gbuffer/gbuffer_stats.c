@@ -4,8 +4,8 @@
  * =================================================================================================
  */
 
-#include "gbuffer_stats.h"
-#include <core/logger/logger.h>
+#include "rendering/gbuffer/gbuffer_stats.h"
+#include <core/logger.h>
 
 GBufferStats gbuffer_calculate_stats(u32 width, u32 height) {
     GBufferStats stats = {0};

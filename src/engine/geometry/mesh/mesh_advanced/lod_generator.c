@@ -1,4 +1,4 @@
-#include "renderer/mesh_advanced/lod_generator.h"
+#include "geometry/lod/lod_generator.h"
 
 void lod_generator_init() {}
 

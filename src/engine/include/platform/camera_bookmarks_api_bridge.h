@@ -4,7 +4,7 @@
 #ifndef CAMERA_BOOKMARKS_API_BRIDGE_H
 #define CAMERA_BOOKMARKS_API_BRIDGE_H
 
-#include "../common.h"
+#include "include/common.h"
 #include <stdbool.h>
 #include <stdint.h>
 

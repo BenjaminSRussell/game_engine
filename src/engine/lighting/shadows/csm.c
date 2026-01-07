@@ -9,7 +9,7 @@
  * =================================================================================================
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdbool.h>
 
 #define MAX_CASCADES 4

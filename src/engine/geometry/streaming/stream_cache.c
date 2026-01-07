@@ -38,7 +38,7 @@
  * TODO: Add stream cache render graph node
  */
 
-#include "stream_cache.h"
+#include "geometry/streaming/stream_cache.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

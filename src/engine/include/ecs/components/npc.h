@@ -40,9 +40,9 @@
 #ifndef NPC_COMPONENT_H
 #define NPC_COMPONENT_H
 
-#include "../../common.h"
-#include "../../math/vec3.h"
-#include "../ecs.h"
+#include "include/common.h"
+#include "include/math/vec3.h"
+#include "include/ecs/ecs.h"
 #include <npc/npc_types.h>
 
 // Behavior flags for NPCs

@@ -1,4 +1,4 @@
-#include "cloth_common.h"
+#include "physics/character/cloth/cloth_common.h"
 #include <stdlib.h>
 
 void cloth_setup_collision(ClothMesh* cloth, uint32_t max_colliders) {

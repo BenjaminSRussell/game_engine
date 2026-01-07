@@ -38,7 +38,7 @@
  * TODO: Add stream priority render graph node
  */
 
-#include "stream_priority.h"
+#include "geometry/nanite/nanite/streaming/stream_priority.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

@@ -60,12 +60,13 @@ struct NavPath {
     float total_length;
     unsigned short poly_refs[NAVMESH_MAX_PATH_LENGTH];
     int poly_count;
+    int current_waypoint;
 };
 
 // Navigation mesh
 struct Navmesh {
     // Voxel data
-    NavVoxel* voxels;
+    unsigned char* voxels;
     int voxel_count;
     int voxel_width, voxel_height, voxel_depth;
     Vec3 voxel_origin;
@@ -116,6 +117,11 @@ struct NavmeshBuilder {
     // Region settings
     int min_region_size;
     int merge_region_size;
+    
+    // Filtering
+    bool filter_low_hanging_obstacles;
+    bool filter_ledge_spans;
+    bool filter_walkable_low_height_spans;
     
     bool initialized;
 };

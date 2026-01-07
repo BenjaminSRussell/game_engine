@@ -1,6 +1,6 @@
 #include "../include/platform/post_processing_api_bridge.h"
 #include "core/logger.h"
-#include "renderer/post_processing.h"
+#include "rendering/post_processing.h"
 #include <string.h>
 
 // Global configuration instance that the renderer can query

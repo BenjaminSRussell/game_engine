@@ -13,8 +13,8 @@
 // ✅ COMPLETED: Add reflection caching system.
 // ✅ COMPLETED: Implement reflection denoising system.
 // ✅ COMPLETED: Add reflection validation system.
-#include "../../include/render/material_reflection.h"
-#include <math.h>
+#include "include/rendering/material_reflection.h"
+#include <math/math.h>
 #include <string.h>
 
 // ============================================================================

@@ -9,7 +9,7 @@
 #ifndef PLATFORM_MTL_COMMAND_BUFFER_H
 #define PLATFORM_MTL_COMMAND_BUFFER_H
 
-#include "mtl_device.h"
+#include "backend/metal/mtl_device.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus

@@ -8,7 +8,7 @@
 #ifndef COLLISION_GJK_EPA_H
 #define COLLISION_GJK_EPA_H
 
-#include "../../core/simd/simd_math.h"
+#include "core/simd/simd_math.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus

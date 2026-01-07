@@ -1,5 +1,5 @@
 #include "audio/spatial_audio_hrtf.h"
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

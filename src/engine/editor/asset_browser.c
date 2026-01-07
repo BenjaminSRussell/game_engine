@@ -3,7 +3,7 @@
 #include <core/memory.h>
 #include <core/time_system.h>
 #include <editor/editor_main.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

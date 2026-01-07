@@ -1,6 +1,6 @@
 #include "environment/stylized/low_poly_generator.h"
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 
 typedef struct {
     float x, y, z;

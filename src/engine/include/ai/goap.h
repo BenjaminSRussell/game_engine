@@ -138,6 +138,10 @@ struct GoapPlanner {
     struct PlanNode* open_list;
     struct PlanNode* closed_list;
     
+    // Configuration
+    int max_plan_length;
+    float max_search_time;
+
     // Statistics
     int nodes_expanded;
     float planning_time_ms;
@@ -152,6 +156,9 @@ struct PlanNode {
     float f_cost;  // Total cost
     GoapAction* action;  // Action that led to this state
     struct PlanNode* parent;
+    struct PlanNode* next;  // For open/closed list linked lists
+    bool in_open;
+    bool in_closed;
     int depth;
 };
 

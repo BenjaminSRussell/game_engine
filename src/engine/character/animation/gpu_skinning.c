@@ -1,4 +1,4 @@
-#include "gpu_skinning.h"
+#include "character/animation/gpu_skinning.h"
 
 #ifdef __OBJC__
 #import <Metal/Metal.h>

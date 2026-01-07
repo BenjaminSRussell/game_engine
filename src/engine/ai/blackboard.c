@@ -14,13 +14,16 @@
 // Dependencies: core/logger.h, core/memory.h, common.h
 //
 
-#include "../../../include/ai/blackboard.h"
-#include "../../../include/core/logger.h"
-#include "../../../include/core/memory.h"
+#include "ai/blackboard.h"
+#include "include/core/logger.h"
+#include "include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <math.h>
+#include <include/math/math.h>
+#include <time.h>
+
+#include "performance_profiling.h"
 
 // ============================================================================
 // INTERNAL CONSTANTS AND STRUCTURES
@@ -71,7 +74,7 @@ static bool initialize_memory_pool(Blackboard *blackboard, size_t pool_size) {
     // Align pool size to memory boundary
     pool_size = (pool_size + MEMORY_POOL_ALIGNMENT - 1) & ~(MEMORY_POOL_ALIGNMENT - 1);
     
-    blackboard->memory_pool = memory_allocate(pool_size);
+    blackboard->memory_pool = MALLOC(pool_size);
     if (!blackboard->memory_pool) {
         LOG_ERROR("Failed to allocate blackboard memory pool: %zu bytes", pool_size);
         return false;
@@ -93,7 +96,7 @@ static void *allocate_from_pool(Blackboard *blackboard, size_t size) {
     size = (size + MEMORY_POOL_ALIGNMENT - 1) & ~(MEMORY_POOL_ALIGNMENT - 1);
     
     if (blackboard->pool_used + size > blackboard->pool_size) {
-        LOG_WARNING("Blackboard memory pool exhausted, falling back to malloc");
+        LOG_WARN("Blackboard memory pool exhausted, falling back to malloc");
         return malloc(size);
     }
     
@@ -153,7 +156,7 @@ static bool add_entry_to_hash_table(Blackboard *blackboard, BlackboardEntry *ent
     // Check if entry already exists
     BlackboardEntry *existing = find_entry_in_bucket(blackboard->hash_table[hash], entry->key);
     if (existing) {
-        LOG_WARNING("Blackboard key already exists: %s", entry->key);
+        LOG_WARN("Blackboard key already exists: %s", entry->key);
         return false;
     }
     
@@ -243,8 +246,14 @@ static bool evaluate_decorator(Blackboard *blackboard, BlackboardDecorator *deco
 // ============================================================================
 
 Blackboard *blackboard_create(u32 max_entries, const char *owner_name) {
-    BLACKBOARD_CHECK_NULL_PARAM(owner_name);
-    BLACKBOARD_CHECK_ERROR(max_entries > 0, BLACKBOARD_ERROR_INVALID_PARAMETER);
+    if (!owner_name) {
+        LOG_ERROR("Blackboard create failed: owner_name is NULL");
+        return NULL;
+    }
+    if (max_entries == 0) {
+        LOG_ERROR("Blackboard create failed: max_entries is 0");
+        return NULL;
+    }
     
     Blackboard *blackboard = malloc(sizeof(Blackboard));
     if (!blackboard) {
@@ -314,7 +323,7 @@ bool blackboard_set_float(Blackboard *blackboard, const char *key, f32 value, bo
     BlackboardEntry *entry = find_entry(blackboard, key);
     if (entry) {
         if (entry->is_read_only) {
-            LOG_WARNING("Attempted to modify read-only key: %s", key);
+            LOG_WARN("Attempted to modify read-only key: %s", key);
             return false;
         }
         
@@ -386,7 +395,7 @@ bool blackboard_get_float(Blackboard *blackboard, const char *key, f32 *value) {
     return true;
 }
 
-bool blackboard_set_int(Blackboard *blackboard, const char *key, s32 value, bool persistent) {
+bool blackboard_set_int(Blackboard *blackboard, const char *key, i32 value, bool persistent) {
     BLACKBOARD_CHECK_NULL_PARAM(blackboard);
     BLACKBOARD_CHECK_NULL_PARAM(key);
     BLACKBOARD_CHECK_ERROR(blackboard->entry_count < blackboard->max_entries, BLACKBOARD_ERROR_OUT_OF_MEMORY);
@@ -395,7 +404,7 @@ bool blackboard_set_int(Blackboard *blackboard, const char *key, s32 value, bool
     BlackboardEntry *entry = find_entry(blackboard, key);
     if (entry) {
         if (entry->is_read_only) {
-            LOG_WARNING("Attempted to modify read-only key: %s", key);
+            LOG_WARN("Attempted to modify read-only key: %s", key);
             return false;
         }
         
@@ -431,7 +440,7 @@ bool blackboard_set_int(Blackboard *blackboard, const char *key, s32 value, bool
     return true;
 }
 
-bool blackboard_get_int(Blackboard *blackboard, const char *key, s32 *value) {
+bool blackboard_get_int(Blackboard *blackboard, const char *key, i32 *value) {
     BLACKBOARD_CHECK_NULL_PARAM(blackboard);
     BLACKBOARD_CHECK_NULL_PARAM(key);
     BLACKBOARD_CHECK_NULL_PARAM(value);
@@ -475,8 +484,7 @@ bool blackboard_has_key(Blackboard *blackboard, const char *key) {
 }
 
 BlackboardType blackboard_get_type(Blackboard *blackboard, const char *key) {
-    BLACKBOARD_CHECK_NULL_PARAM(blackboard);
-    BLACKBOARD_CHECK_NULL_PARAM(key);
+    if (!blackboard || !key) return BLACKBOARD_TYPE_CUSTOM;
     
     BlackboardEntry *entry = find_entry(blackboard, key);
     return entry ? entry->type : BLACKBOARD_TYPE_CUSTOM;
@@ -518,7 +526,7 @@ bool blackboard_evaluate_decorators(Blackboard *blackboard) {
 }
 
 BlackboardStats *blackboard_get_statistics(Blackboard *blackboard) {
-    BLACKBOARD_CHECK_NULL_PARAM(blackboard);
+    if (!blackboard) return NULL;
     
     static BlackboardStats stats;
     memset(&stats, 0, sizeof(BlackboardStats));

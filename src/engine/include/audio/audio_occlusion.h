@@ -25,7 +25,7 @@
 #define AUDIO_OCCLUSION_H
 
 #include <common.h>
-#include "audio_system.h"
+#include "include/audio/audio_system.h"
 #include <chunk/chunk.h>
 #include <math/vec3.h>
 

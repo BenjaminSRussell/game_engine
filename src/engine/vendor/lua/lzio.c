@@ -7,17 +7,17 @@
 #define lzio_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
 #include <string.h>
 
-#include "lua.h"
+#include "vendor/lua/lua.h"
 
-#include "llimits.h"
-#include "lmem.h"
-#include "lstate.h"
-#include "lzio.h"
+#include "vendor/lua/llimits.h"
+#include "vendor/lua/lmem.h"
+#include "vendor/lua/lstate.h"
+#include "vendor/lua/lzio.h"
 
 
 int luaZ_fill (ZIO *z) {

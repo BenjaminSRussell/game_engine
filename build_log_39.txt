@@ -1,0 +1,700 @@
+[  3%] Built target Catch2
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/perception/visual_cortex.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_ai_impl.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/l_system.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/speech/speech_synthesizer.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/sense/sensory_memory.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/training/rl_gym_env.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/assets/import/blueprint_transpiler.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/voice/text_to_speech_neural.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/wfc_3d.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/assets/import/material_transpiler.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/assets/import/skeleton_extractor.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/assets/import/unreal_asset_importer.c.o
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/assets/importer/asset_importer.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/perception/visual_cortex.c:1/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/procedural_advanced/wfc_3d.c:1:10: :10: fatal error: 'ai/perception/visual_cortex.h' file not found
+    1/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/sense/sensory_memory.c:1:10: fatal error:  | #include "'ai/sense/sensory_memory.h' file not found
+ai/fatal error: 'ai/procedural_advanced/wfc_3d.h' file not found    1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/procedural_advanced/l_system.c | #in    cpelude1 | :1:10#inclrce: fatal error: 'ai/procedural_advanced/l_system.h' file not found
+ "aption/iuvisua    d/l_e1 | #in c"ocsertanse/seneslxor.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+y_memory.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+ude i"a/pr/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/speech/speech_synthesizer.c:1:10: fatal error: 'ai/speech/speech_synthesizer.h' file not found
+ocedural    1 | #inci/prolu_advanced/wfc_3d.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dcedural_adev "ai/speech/speech_synthesizer.h"
+      | 1         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~a
+nced/l_system.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ error generated.
+1 error generated.
+1 error generated.
+1 error generated.
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/perception/visual_cortex.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/sense/sensory_memory.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/l_system.c.o] Error 1
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/blueprint_transpiler.c:1:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/blueprint_transpiler.h:4:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:154:3:make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/speech/speech_synthesizer.c.o] Error 1
+ error: make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/wfc_3d.c.o] Error 1
+typedef redefinition with different types ('struct UnrealProperty' (aka 'UnrealProperty') vs 'struct UnrealProperty')
+  In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c:154 | } Unre1:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:154:3alPr: error: otypedef redefinition with different types ('struct UnrealProperty' (aka 'UnrealProperty') vs 'struct UnrealProperty')
+perty;
+      |   ^
+  154 | } UnrealProperty;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:28:31: note: previous definition is here
+   28 | typedef st/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:28ruc:31: note: previous definition is here
+   28 | tyt UnrealProperty UnrealProperty;
+      |                               ^
+pedef struct UnrealProperty UnrealProperty;
+      |                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:200:3: error: typedef redefinition with different types ('struct UnrealMeshData' (aka 'UnrealMeshData') vs 'struct UnrealMeshData')
+  200 | } U/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.hnrealMeshDat:200:3: a;
+      |   ^
+error: typedef redefinition with different types ('struct UnrealMeshData' (aka 'UnrealMeshData') vs 'struct UnrealMeshData')
+  200 | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:29:31:} note: previous definition is here
+ UnrealMeshD   29 | typedef strata;
+      |   ^
+uct UnrealMeshData UnrealM/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.heshData;
+      |                               ^:29:31: note: previous definition is here
+   29 | typedef struct UnrealMes
+hData UnrealMeshData;
+      |                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:253:3: error: typedef redefinition with different types ('struct UnrealMaterialData' (aka 'UnrealMaterialData') vs 'struct UnrealMaterialData')
+  253 | } Unreal/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:253:3: error: typedef redefinition with different types ('struct UnrealMaterialData' (aka 'UnrealMaterialData') vs 'struct UnrealMaterialData')Ma
+  253 | } UnrterialData;
+      |   ^
+ealMaterialData;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:30:35: note: previous definition is here
+   30 | typedef struct Unreal:30:35: note: previous definition is here
+   30 | MatterialData UnrealMaterialData;
+      |                                   ^
+ypedef struct UnrealMaterialDa/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:ta286: UnrealMaterialData;
+      |                                   ^
+3: error: typedef redefinition with different types ('struct UnrealAnimationData' (aka 'UnrealAnimationData') vs 'struct UnrealAnimationData')
+  286 | } Un/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:286:3: error: typedef redefinition with different types ('struct UnrealAnimationData' (aka 'UnrealAnimationData') vs 'struct UnrealAnimationData')realA
+ni  286 | } UnrealAnimationDatmatioa;nD
+      at|   ^a;
+      |   ^
+
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:31:36: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:31:note: previous definition is here
+36: note: previous definition is here
+   31 | type   31 | tydef structpedef struct UnrealAnimationData UnrealAnimationData;
+      |                                    ^
+ U/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:329:3: error: nrealAtypedef redefinition with different types ('struct UnrealBlueprintData' (aka 'UnrealBlueprintData') vs 'struct UnrealBlueprintData')
+nimationData UnrealAnimationData;
+      |                                    ^
+  329 | } Unrea/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:lBlueprin329:3:tData error: ;
+typedef redefinition with different types ('struct UnrealBlueprintData' (aka 'UnrealBlueprintData') vs 'struct UnrealBlueprintData')
+      |   ^  329 | } Un
+r/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:32:36ealBlueprintData;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:32:36: note: previous definition is here
+   32 | typedef struc: t Unrenote: previous definition is here
+   32 | typedealBflueprintData UnrealBluepr intData;
+      struct |                                    ^
+UnrealBlueprintData /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:353:3: error: typedef redefinition with different types ('struct UnrealTextureData' (aka 'UnrealTextureData') vs 'struct UnrealTextureData')
+  353 | } UnrealTextuUnrealBlreData;ue
+      |   ^
+pr/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:33:34intData;
+      : note: previous definition is here
+   33 | typedef struct |                                    ^
+UnrealTextureData UnrealTextureData;
+      |                                  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:368:3: error: typedef redefinition with different types ('struct UnrealPackage' (aka 'UnrealPackage') vs 'struct UnrealPackage')
+  368/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:353:3 | } Un: error: typedef redefinition with different types ('struct UnrealTextureData' (aka 'UnrealTextureData') vs 'struct UnrealTextureData')
+realPac  353 | }kage;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25:30: note: previous definition is here
+   25 | t Uypnrealedef structTe UnrealxtuPackareDage Uta;
+      | nrealPa  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/training/rl_gym_env.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:33:34:11c: note: :3: kprevious definition is here
+   33 | typedef struct Uerror: unknown type name 'bool'
+nreaalTge;
+      extureDa| ta                             ^    U11nrealT
+extu |   bool done;
+      |   ^
+reData;
+      |                                  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:368:3: error: typedef redefinition with different types ('struct UnrealPackage' (aka 'UnrealPackage') vs 'struct UnrealPackage')
+  368 | } UnrealPackage;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25:30: note: previous definition is here
+   25 | typedef struct UnrealPackage UnrealPackage;
+      |                              ^
+1 error generated.
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.c:1:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/skeleton_extractor.h:4:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:154:3: error: typedef redefinition with different types ('struct UnrealProperty' (aka 'UnrealProperty') vs 'struct UnrealProperty')
+  154 | } UnrealProperty;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:28:31: note: previous definition is here
+   28 | typedef struct UnrealPropertyIn file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.c Unreal:1:
+In file included from P/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/material_transpiler.h:4:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:154:3: error: typedef redefinition with different types ('struct UnrealProperty' (aka 'UnrealProperty') vs 'struct UnrealProperty')
+  154 | } UnrealProperty;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:28:31: note: previous definition is here
+   28 | typedef strucroperty;
+      |                               ^
+t UnrealProperty UnrealProperty;
+      |                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:200:3: error: typedef redefinition with different types ('struct UnrealMeshData' (aka 'UnrealMeshData') vs 'struct UnrealMeshData')
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:200:3  200 | } : error: Unrealtypedef redefinition with different types ('struct UnrealMeshData' (aka 'UnrealMeshData') vs 'struct UnrealMeshData')
+MeshData;
+  200 | }       |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:29:31: note: previous definition is here
+Un   29 | typedrealMeef structsh UData;
+      |   ^
+nr/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:ealMeshDat29:31: anote:  UnrealMeshData;
+      previous definition is here
+   29 | typedef struct UnrealMeshData UnrealMeshData;
+      |                               ^
+|                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:253:3: error: typedef redefinition with different types ('struct UnrealMaterialData' (aka 'UnrealMaterialData') vs 'struct UnrealMaterialData')
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:253:3: error: typedef redefinition with different types ('struct UnrealMaterialData' (aka 'UnrealMaterialData') vs 'struct UnrealMaterialData')
+    253253 | } Unre | alM} aterialUnDatrealMataeria;
+      |   ^
+lData;
+      | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:30:35: note: previous definition is here
+  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:30:35: note: previous definition is here
+   30 | t   30 | typedef ypedestruct UnrealMaterialData UnrealMaterialData;
+      |                                   ^
+f struct UnrealMaterialData UnrealMateria/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:286:3: error: typedef redefinition with different types ('struct UnrealAnimationData' (aka 'UnrealAnimationData') vs 'struct UnrealAnimationData')
+  286 | } UnrelalAnimationData;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:Data;
+      |                                   ^
+31:36: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:286:3: error: make[2]: typedef redefinition with different types ('struct UnrealAnimationData' (aka 'UnrealAnimationData') vs 'struct UnrealAnimationData')
+  286 | } *** [CMakeFiles/Engine.dir/src/engine/ai/training/rl_gym_env.c.o] Error 1
+note: previous definition is here
+   31 | typedeUnrf sealAnimatruct UnrtionDateala;
+      | An  ^
+ima/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:tionD31:ata Unre36: note: alAprevious definition is here
+n   31ima | ttiyponedDaefta struct UnrealAn;
+      |                                    ^
+imationData UnrealAnimatio/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:329:3: error: typedef redefinition with different types ('struct UnrealBlueprintData' (aka 'UnrealBlueprintData') vs 'struct UnrealBlueprintData')
+nData;
+      |                                    ^
+  329 | } UnrealBlueprintData;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:32:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h36::329:3:  note: previous definition is here
+   32 | typedef error: typedef redefinition with different types ('struct UnrealBlueprintData' (aka 'UnrealBlueprintData') vs 'struct UnrealBlueprintData')
+str  329 | }uct Unreal UnrealBluepriBlueprintDantDta UnrealBlatauepri;
+      |   ^
+ntData;
+      |                                    ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:32:36: note: previous definition is here
+   32 | ty/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:353:3: error: typedef redefinition with different types ('struct UnrealTextureData' (aka 'UnrealTextureData') vs 'struct UnrealTextureData')
+  353 | } UnrealTextureData;
+      |   ^
+pe/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:def struct33:34: Unreal note: previous definition is here
+   33 | Bltypedef struepuct UrintnrealTextureData UnrealDataT UnrealBlueprintData;
+      |                                    ^
+extureData/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:353:3: error: typedef redefinition with different types ('struct UnrealTextureData' (aka 'UnrealTextureData') vs 'struct UnrealTextureData')
+  353 | } UnrealTextureData;
+;      
+      |                                  ^
+|   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:33:34: note: previous definition is here
+   33 | typ/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:368:3: error: typedef redefinition with different types ('struct UnrealPackage' (aka 'UnrealPackage') vs 'struct UnrealPackage')
+ede  368 | } UnrealPackage;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25f struct UnrealTextureData UnrealTextureData;
+      |                                  ^
+:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:368:3: error: typedef redefinition with different types ('struct UnrealPackage' (aka 'UnrealPackage') vs 'struct UnrealPackage')
+  368 | } Unreal30: Package;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25:30: note: previous definition is here
+note:    previous definition is here
+   25 | typedef str25 | typedef strucuct UnrealPackage Unt UnrealPrackage UnrealPackage;
+      |                              ^
+ealPackage;
+      |                              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c:41:40: error: invalid application of 'sizeof' to an incomplete type 'UnrealPackage' (aka 'struct UnrealPackage')
+   41 |  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/blueprint_transpiler.c:142:68: error: incomplete definition of type 'UnrealBlueprintData' (aka 'struct UnrealBlueprintData')
+  142 |     context->   Unvisual_graph->variable_count = contexrealPackagte* package = c->blueprinalloct_data->variab(1, sizeleof(_cUnount;
+      realPack|                                             ~~~~~~~~~~~~~~~~~~~~~~~^
+a/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:ge))32:16: note: forward declaration of 'struct UnrealBlueprintData'
+;
+   32      |                                        ^     ~~~~~~~~~~~~~~~
+ | typede/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25f s:16: note: trucforward declaration of 'struct UnrealPackage'
+t    25 | tyUnrepedef struct UnrealalBlueprintPackage UnrealPackDatage;
+      a U|                ^
+nrealBlueprintData;
+      |                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/blueprint_transpiler.c:174:68: error: incomplete definition of type 'UnrealBlueprintData' (aka 'struct UnrealBlueprintData')
+  174 |     context->visual_graph->function_count = context->blueprint_data->function_count;
+      |                                             ~~~~~~~~~~~~~~~~~~~~~~~^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c:49:20/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:: error: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+32:16: note: forward declaration of 'struct UnrealBlueprintData'
+   32 | t   49 |     strncpy(packypage->fiedef struct Unrle_path, file_patealBh,lu sieprintData Unrezeof(paalBckaglueprintData;
+      |                ^
+e->file_path) - 1);
+      |             ~~~~~~~^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h:259:42: note: expanded from macro 'strncpy'
+  259 | #define strncpy(...) __strncpy_chk_func (__VA_ARGS__)
+      |                                          ^~~~~~~~~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h:147:28: note: expanded from macro '__strncpy_chk_func'
+  147 |                 __builtin___strncpy_chk (dest, __VA_ARGS__, __darwin_obsz (dest))
+      |                                          ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25:16: note: forward declaration of 'struct UnrealPackage'
+   25 | typedef struct Unre/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/blueprint_transpiler.c:al336P:64: error: incomplete definition of type 'UnrealBlueprintData' (aka 'struct UnrealBlueprintData')
+ackage Un  336 |     strcpyrea(clPacontext-ka>vgeisua;
+      |                ^
+l_graph->name, co/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c:49:58ntex:t->blueprint_data->name error: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+);
+      |    49 |                                          ~~~~~~~~~~~~~~~~~~~~~~~^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h:249:40: note: expanded from macro 'strcpy'
+    249 | #d stefirncne strcpypy(...) __strcpy_ch(package->fk_func ile_path, file_pa(_th, s_VA_ARGSizeof(package->file_path) -__)
+      |                                        ^~~~~~~~~~~
+ 1);
+      |                                                   ~~~~~~~^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h:172:33: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h:259note: expanded from macro '__strcpy_chk_func'
+:42: note:   172 | expanded from macro 'strncpy'
+          259        __ | #budeilfitinen___st strncpy(.rc..) __strncpy_chk_fpy_unc (__VA_ARGS__)
+      |                                          ^~~~~~~~~~~
+chk (dest, __VA_ARGS__/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h:147:34: , __danote: expanded from macro '__strncpy_chk_func'
+rwin_obsz   (dest)147 | )
+                __      |                                               ^~~~~~~~~~~built
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:32in_:16__: stnote: forward declaration of 'struct UnrealBlueprintData'rn
+cpy   32_c | thk (dest, __ypVAedef s_ARGtrS__, __darwiuct UnrealBn_ob/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.clu:71:29: error: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')sep
+zri (   nt71 |   deData  if (!packa Unge || !srealBlueprintData;
+      |                ^
+pact))kage->is_val
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/blueprint_transpiler.c:      | id ||                                                ^~~~~~~~~~~
+!s/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25:16:ke337 note: forward declaration of 'struct UnrealPackage'
+l:72:   et25 |  error: incomplete definition of type 'UnrealBlueprintData' (aka 'struct UnrealBlueprintData')
+typedeo  f s337n_name) {
+      |                      ~~~~~~~^
+ | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.ht   :25:16: ruct strc UnrealPapy(note: forward declaration of 'struct UnrealPackage'
+   25 | tycontextpedef str->visucual_grapht Unrealckage Unrea-lPa>/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.cckparenat_c:gelaPac;skags
+,      |                ^
+156:24/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c:: e49 error: co U:20:nrea nlPackagincomplete definition of type 'UnrealMaterialData' (aka 'struct UnrealMaterialData')teerror: eincomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage');
+      |                ^
+xt->
+
+  156 | bluep /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.c:    49 | r78 :37:    if  error: (stincomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+    78 | risl  ntte_n(mr ncated rafptaor (-iuiya>pnt3la2-(_tpa ir>c nkageame) =-e == >nt_clasfi0; ils < 0e_p) {
+      | pa)               ~~~~~~~~^
+cat;
+      | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:30h                                                ~~~~~~~~~~~~~~~~~~~~~~~^, file_:k
+16path:a ge->heanote: der.,forward declaration of 'struct UnrealMaterialData'e/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h
+:249:40:   30 | typedef x sporttruct UnrealMs note: expanded from macro 'strcpy'
+iz_coe  ouatef(p249rinackt; a | lData Unagr#define se->fileetria_pc+atlh) +p- 1)yMa(...) __ter);strcpiy_chk
+      a {
+_      |                              ~~~~~~~^| l
+            ~~~~~~~^/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h
+fuD:25n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.ha:16: note: :259tforward declaration of 'struct UnrealPackage'c (
+a;
+         :42:_| _VA25               ^_
+ note:  | tyexpanded from macro 'strncpy'
+ApedefRG s  259 | #defintruct Une/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.c:S 201:17strnr_cpy(ealP: ac_.k).a
+.      error: incomplete definition of type 'UnrealMaterialData' (aka 'struct UnrealMaterialData')
+ge) _|                                        ^~~~~~~~~~~
+   U/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h:172:_n201 |     strrief (material33:nc->a lPackagpnote: expanded from macro '__strcpy_chk_func'nod
+y_e;
+      |                ^
+  172 |                 __chbes) k_/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.c{:79:
+      |         ~~~~~~~~^uiltin__f28: error: _stincomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+rcun/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.hpc: y_30:chk
+(_16:    79_Vnote:  |     A  _(deAforward declaration of 'struct UnrealMaterialData'st
+   30 RG,   | ty if ped((_es_VtArf scmp(S___)
+      | ptAructa Uc                                         ^~~~~~~~~~~kaR
+n/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.hG:S_147:rge->ee62xpor: alMaterianote: _, _t_lDaexpanded from macro '__strncpy_chk_func'tta
+a_ U  147 |                 _bdnrle[eai_lM]b.acarulwteiain_obszsr (sial_nalDamtin_taed;_es_st
+t),       )
+"Ske      rn|                                               ^~~~~~~~~~~c
+|                ^py_cleto/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.hn")
+:h/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.c:202: k==  (dest, __0 |V22|
+:       |                     ~~~~~~~^
+error: incomplete definition of type 'UnrealMaterialData' (aka 'struct UnrealMaterialData')A_AR
+  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:32202GS25:16::16: note: forward declaration of 'struct UnrealBlueprintData' _ |   note: forward declaration of 'struct UnrealPackage'
+   25_, __d
+    |   atypedr    frew32ef stein | t_obsz rype(ded(st))ue
+fc       t msUattner| rial->rnod                                                                           ^~~~
+e/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_common.husealPctack Unraea)lBg;
+:41:      lu54epr:|              ~~~~~~~~^ note: e expanded from macro '__darwin_obsz'iU
+ntDa
+nre/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:al   30P:ta16: note: forward declaration of 'struct UnrealMaterialData'41 
+aUnrcealBk | #ag   le;
+      du|                ^
+eepr30 | tyifntDapedefit n/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.ce as:tru__80;
+      |                ^darwic
+n:28: error: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+_   80 |    obs       t Unrz e(o  strcmpbject)alMaterialData (paUnrealMa cte/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/blueprint_transpiler.ck_a:r_g409ialDbata;
+      | u:25:                ^
+error: e->exporit_tincomplete definition of type 'UnrealBlueprintData' (aka 'struct UnrealBlueprintData')able[i].c
+lt  409 |   il  inass__objectnaf me,(_size (stobjerlenct,  "_(blUSkeleton") == 0Uu)/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.cSe:Ep 277:38: rin_FOt->RTerror: incomplete definition of type 'UnrealMaterialData' (aka 'struct UnrealMaterialData')
+n  aIF&mY_L&277 |   EV e) == 0  
+EL|      f| |                     ~~~~~~~^
+s/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25:16 > : 1 ? note: or (uintrlen1 :tforward declaration of 'struct UnrealPackage' 0)3(
+2b
+         25_l | | utypedef s                                                     ^~~~~~
+t i truct/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h :25epr:16:U =note: forward declaration of 'struct UnrealPackage'
+nrealPaci   25 | t 0; kage ni < material-tU>-ny>node_rpcounarenpt;tede_c if strucl++a) {
+      |                              ~~~~~~~~^
+t/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:30:16ealss) UnrePa c: k== 0) anote: lPackageforward declaration of 'struct UnrealMaterialData'
+age;{   
+ U30 | t
+nry      eapedef| lP       |                ~~~~~~~~~^struct Un
+a/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:32:16real: note: Materi               ^
+forward declaration of 'struct UnrealBlueprintData'
+   32 | typ/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.caec:lD81def strata Ukanrge;e:27:uca
+ lMateria      lDt | Unrerror: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+aealta;   81 |    
+   Bl      |                ^                  ^
+ueprin
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.c:278:45:t error: incomplete definition of type 'UnrealMaterialData' (aka 'struct UnrealMaterialData')
+  278 |   /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c D:53:12: error:  a      ts trcmpa UUnrnrealBluep(peincomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')aacka
+l   53 |  Mat   perialNode* node = &material->nodrges[intData;
+ea      -| i]c>k               ^;
+      | expo                                    ~~~~~~~~^
+rt_tabla
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.hgee[i/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/blueprint_transpiler.c:->].ob409pje::30:16: note: forward declaration of 'struct UnrealMaterialData'
+57ac:    ck30aerror: incomplete definition of type 'UnrealBlueprintData' (aka 'struct UnrealBlueprintData')
+ | typge_  t_name, ed409 | ef  si  ze ske=str i letftefol (n_strlnalumect (fUeni) n(== leblueprint->nrealMa)0) {
+      | ;                   ~~~~~~~^
+
+      |     ~~~~~~~^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25:16/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h::teria menote: 25forward declaration of 'struct UnrealPackage':16: note: forward declaration of 'struct UnrealPackage'al
+) == 0
+    ||    Datst2525ar | t | lenty Uny(brealMlpateueprdef strupeeidcrefnialD st Utt->parareuta;c
+nt_t Ucl      |                ^nreasnasl)
+ ==realPacPakage 0) c {
+      Ukage|                                                ~~~~~~~~~^
+ UnrealPacknagerealPackage;/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:32:16:
+;
+      | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.c      |                ^               ^
+
+:336:38: error: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c:56/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.c ::82:incomplete definition of type 'UnrealMaterialData' (aka 'struct UnrealMaterialData')1239note: :
+forward declaration of 'struct UnrealBlueprintData':   
+error:    32 incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')336
+error:    56 |     |  p    aincomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')f | 
+or (uint32_t icktyage   ped 82-ef st=>pack | r     0;    auct UnrealBg lei <_ue maprinteritData  dUatn aa rl- = maeal>n lloc(skBopeletode_n_ecount; ackage->pluepxriporntData;
+      |                ^
+taicka++) = &pa {
+      ck| age->exp                             ~~~~~~~~^
+o/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:30:16: note: forward declaration of 'struct UnrealMaterialData'
+   rt_tage_sizb30e); | ty
+le[i]pe;
+      |                                ~~~~~~~^
+de/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:f       |     ~~~~~~~^
+struct /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:Unr25:eal16: Matnote: forward declaration of 'struct UnrealPackage'25:16: note: forward declaration of 'struct UnrealPackage'
+   25 | erialDa
+typ   25 | typedef etstruct Unreadef st UnrealMateriruct alPacUnralData;
+ealPkage UnrealPa      | acka               ^
+ge UnrealPac/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.c:337:kage;
+      ckag45: error: incomplete definition of type 'UnrealMaterialData' (aka 'struct UnrealMaterialData')
+|                ^
+e;
+      |                ^
+  337 |    /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c:56     Unr:43ealMater: error: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+ia   56 |     lNode*p13ack/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.c:102:80: age->p na errorode =cerror: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+k  102s generated  |   ag  i.
+ef&_dat maa(skelett =oern_e ixpoamalloc(packarl->nodest-ge-[i];
+      | >s                                    ~~~~~~~~^
+e/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h>pa:30:16: note: forward declaration of 'struct UnrealMaterialData'
+   ckage_size)30 | tyrial_ped;of
+      | fset + skeleton_export->seriale                                   ~~~~~~~^f_size stru
+ct UnrealM > package/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.hate->packagerialData Unrea:25:16lMateri_si: note: forward declaration of 'struct UnrealPackage'
+alData;
+      |                ^
+ze) {
+      |                                                                         ~~~~~~~^   25 | typedef stru
+ct Unr/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:ealPackage25:16:  Unreanote: forward declaration of 'struct UnrealPackage'
+lPackage;
+      |                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c:57:17: error:    25 | incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+typedef struct UnrealPackage UnrealPack   57 |     if (!package->package_da/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.c:435:40: error: incomplete definition of type 'UnrealMaterialData' (aka 'struct UnrealMaterialData')
+age;  t
+      a)| 435                ^
+ |     strc{
+      |          ~~~~~~~^
+py(pbr_mat/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25eri:16/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.c:108:35:al->n: error: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+ ame, ma  108 | note: tforward declaration of 'struct UnrealPackage'
+erial->name);
+      |                                ~~~~~~~~^
+       /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h:249:u25 | t40: note: expanded from macro 'strcpy'
+  249 | #defineypint8 strc_tpy(.* serial_dat..) __sa = pacedef stkage-trcpy_c>rucpackahk_func (_g_VAte__ARGS__ data + skeleton_export->seUnr)
+      eriala|                                        ^~~~~~~~~~~lPacka
+g/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h:172:_offse Unr33: ealPackage;
+      | note: expanded from macro '__strcpy_chk_func'
+e  172 |                 __               ^
+but;
+      |                            ~~~~~~~^il
+tin__/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25_st:64rcpy_chk (d:22est, __VA_ARG:16: error: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')S_
+: note: forward declaration of 'struct UnrealPackage'
+_,   64 |     if (f    __darwinrea_obsz (dest))
+      |                                               ^~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:30:16d(pa: note: forward declaration of 'struct UnrealMaterialData'
+   c2530 | kage | typedef->pt struypect Unrdef streuct alPackackagUnrealMaterialData UnreaalMatge Une_dartaeeari,la 1, package->lDapPta;ackage;
+ackage_siz      
+      | |                ^
+               ^
+e, file) != package->package_size) {
+      /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.c:450:|               ~~~~~~~^
+38/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25:16::  note: forward declaration of 'struct UnrealPackage'
+   error: incomplete definition of type 'UnrealMaterialData' (aka 'struct UnrealMaterialData')
+  450 |     for (uint32_t i25 | typed/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.cef str:125:u = 0; i < mactte30 rial->node_count; i++) {
+UnrealPackage U:      nreal|                              ~~~~~~~~^Pack
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:30error: a:ge16: subscript of pointer to incomplete type 'UnrealProperty' (aka 'struct UnrealProperty')
+note: forward declaration of 'struct UnrealMaterialData'
+   ;make[2]:   125 | *** [CMakeFiles/Engine.dir/src/engine/assets/import/blueprint_transpiler.c.o] Error 1
+30        if ( | tystr
+      pe[  3%] Built target Catch2WithMain
+cmp(pdef rop|                ^
+erti/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.cests[i:64:ruct Unr48: error: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+ealMat   ].name, 64erialData Unr | "Bo  nea  if (feNalMames"read(pteriackage->) == 0) {
+      |                    ~~~~~~~~~~^
+alData;pack/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:28:
+      |                ^
+16: note: forward declaration of 'struct UnrealProperty'
+ag   28e/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/material_transpiler.c:451:45: error: incomplete definition of type 'UnrealMaterialData' (aka 'struct UnrealMaterialData')
+_data, | ty  451 |    p 1ede  f s, pac   Unrtekaruct UgenreaalMa->packterialNodalegP* noroe_perty deUnrealProp s= &material->erty;
+      |                ^
+iznoe/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.c:, file128:) des[i];
+      72: error: subscript of pointer to incomplete type 'UnrealProperty' (aka 'struct UnrealProperty')
+|                                     ~~~~~~~~^
+!=/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:30 pac:16: knote: forward declaration of 'struct UnrealMaterialData'  128 |       
+a   30ge | t  yp->package_size  ) {edef struct U  if (!parse_skn
+      | rea                                        ~~~~~~~^
+leleton_Mabteonriales(/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25:16: note: forward declaration of 'struct UnrealPackage'
+   25Data  | pUackanrtypedef sgtee, sealMaterrruct UnreialDaial_dtalPaca;
+ata      |                ^kage U
+ + propertnies[irealPackage;
+      |                ^
+].data_off/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c:64se:80: error: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+t   64 | , 
+      |                                                              ~~~~~~~~~~^
+    if (/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:28:16:fread(package note: ->package_forward declaration of 'struct UnrealProperty'
+data, 1,    28 | typackage->packagpedef struct UnrealProperty Unre_size, file) != package->package_sizealProperte) {
+y;
+      |                                                                         ~~~~~~~^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25      |                ^
+:16: note: forward declaration of 'struct UnrealPackage'
+   25 | typed/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.c:129:47: error: subscript of pointer to incomplete type 'UnrealProperty' (aka 'struct UnrealProperty')
+  129 |  ef str                    uct UnrealP               propackage UnrealPackerties[i].data_s17a errorsige;
+      | ze, sk               ^
+eleto generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/unreal_asset_importer.c:66n_data)) {
+      |                                     ~~~~~~~~~~^
+:21: error: incomplete definition of type 'UnrealPackage' (aka 'struct UnrealPackage')
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:28:16: note: forward declaration of 'struct UnrealProperty'
+   66 |       28 | t     free(pacypekadef structge->pa UnrealProperty Unrckage_data);
+      |              ~~~~~~~^
+ealProperty;
+      |                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:25:16: note: forward declaration of 'struct UnrealPackage'
+   25 | typedef struct Unre/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/import/skeleton_extractor.c:alPacka134:35: error: subscript of pointer to incomplete type 'UnrealProperty' (aka 'struct UnrealProperty')
+g  134 |    e   UnrealPack   else if age;(strcmp
+      |                ^(pro
+perties[i].name, "ReferenceSkeleton") == fatal error: too many errors emitted, stopping now [-ferror-limit=]0)
+ {
+      |                         ~~~~~~~~~~^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/assets/import/unreal_asset_importer.h:28:16: note: forward declaration of 'struct UnrealProperty'
+   28 | typedef struct UnrealProperty UnrealProperty;
+      |                ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/assets/import/material_transpiler.c.o] Error 1
+20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/assets/import/skeleton_extractor.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/assets/import/unreal_asset_importer.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:20:5: error: unknown type name 'Thread'
+   20 |     Thread* capture_thread;
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:21:5: error: unknown type name 'Mutex'
+   21 |     Mutex* buffer_mutex;
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:23:5: error: unknown type name 'Thread'
+   23 |     Thread* /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:54:5:worker_thread;
+      |     ^
+ error: unknown type name 'Thread'
+   54 |     Thread* recognition_thread;
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:25:5: error: unknown type name 'Mutex'
+   25 |     Mutex* request_mutex;
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:76:29: error: call to undeclared function 'memory_allocate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   76 |     MicrophoneBuffer* mic = memory_allocate(sizeof(MicrophoneBuffer), M/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:EMORY_TAG_AUDIO);
+      |                             ^
+121:28: error: call to undeclared function 'memory_allocate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:76:29: note: did you mean 'memory_alloc'?
+  121 |     TTSNeuralSystem* tts = memory_allocate(sizeof(TTSNeuralSystem), MEMORY_TAG_AI);
+      |                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:121:28: note: did you mean 'memory_alloc'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:121:7/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:121:7: : note: 'memory_alloc' declared here
+  121 | void *mnote: 'memory_alloc' declared here
+  121 | vemooid *memory_alloc(ry_alu32 sloize, coc(u32nst ch sizear *f, const ile,ch u32ar *f line);
+      il|       ^
+e, u32 line);
+      |       ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:76:23: error: incompatible integer to pointer conversion initializing 'MicrophoneBuffer *' (aka 'struct MicrophoneBuffer *') with an expression of type 'int' [-Wint-conversion]/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:121:22: error: incompatible integer to pointer conversion initializing 'TTSNeuralSystem *' (aka 'struct TTSNeuralSystem *') with an expression of type 'int' [-Wint-conversion]
+
+  121 |     TTS   76 |     MicrophoneBNeuralSystem*uffer* mic = m tts = mememory_allocate(orsizy_eof(TTSNeuralSysteallocate(sizeof(Mm)ic, MEroMORY_TAGph_AI);
+      | oneBuff                     ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+er), MEMORY_TAG_AUDIO);
+      |                       ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:79:18: error: incompatible integer to pointer conversion assigning to 'f32 *' (aka 'float *') from 'int' [-Wint-conversion]
+   79 |     mic->samples = memory_allocate(sizeof(f32) * buffer_size, MEMORY_TAG_AUDIO);
+      |                  ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:145:26: error: call to undeclared function 'mutex_create'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  145 |     tts->request_mutex =/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:81:26 mut: error: ex_crtoo many arguments to function call, expected single argument 'ptr', have 2 arguments
+eate(   81 |         m);emory_free(
+      |                          ^
+mic, MEMORY_TAG_AUDIO);
+      |         ~~~~~~~~~~~      ^~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:147:26: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  147 |         memory_free(tts, MEMORY_TAG_AI);
+      |         ~~~~~~~~~~~      ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:91:25: error: call to undeclared function 'mutex_create'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   91 |     mic->buffer_mutex = mutex_create();
+      |                         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:103:35: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  103 |         memory_free(mic->s/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:160:9: amples,error: call to undeclared function 'mutex_destroy'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration] M
+  160 |    EM    OR mutex_destroyY_(tts->request_muTAteG_AUx)DI;
+O);
+      |         ^
+      |         ~~~~~~~~~~~               ^~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:167:67: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  167 |                 memory_free(tts->cache.audio_buffers[i]->samples, MEMORY_TAG_AUDIO);
+      |                 ~~~~~~~~~~~                                       ^~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:106:9: error: call to undeclared function 'mutex_destroy'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  106 |         mutex_destroy(mic->buffer_mutex);
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:169:54: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  169 |             memory_free(tts->cache.audio_buffers[i], MEMORY_TAG_AUDIO);
+      |             ~~~~~~~~~~~                              ^~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:108:22: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  108 |     memory_free(mic, MEMORY_TAG_AUDIO);
+      |     ~~~~~~~~~~~      ^~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:173:68: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  173 |                 memory_free(tts->cache.lip_sync_data[i]->phonemes, MEMORY_TAG_AI);
+      |                 ~~~~~~~~~~~                                        ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:117:9: error: call to undeclared function 'mutex_lock'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  117 |         mutex_lock(mic->buffer_mutex);
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:117:9: note: did you mean 'ma_mutex_lock'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/vendor/miniaudio.h:6215:13: note: 'ma_mutex_lock' declared here
+ 6215 | MA_API void ma_mutex_lock(ma_mutex* pMutex);
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:175:54: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  175 |             memory_free(tts->cache.lip_sync_data[i], MEMORY_TAG_AI);
+      |             ~~~~~~~~~~~                              ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:126:9: error: call to undeclared function 'mutex_unlock'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  126 |         mutex_unlock(mic->buffer_mutex);
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:179:22: error: too many arguments to function call, expected single argument 'ptr', have 2 arguments
+  179 |     memory_free(tts, MEMORY_TAG_AI);
+      |     ~~~~~~~~~~~      ^~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/memory.h:124:6: note: 'memory_free' declared here
+  124 | void memory_free(void *ptr);
+      |      ^           ~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:128:9: error: call to undeclared function 'thread_sleep'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  128 |         thread_sleep(10); // 10ms chunks
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:128:9/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:186: note: did you mean 'pthread_self'?
+:9: error: call to undeclared function 'mutex_lock'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h:494:  186 |  11: note: 'pthread_self' declared here
+       mutex  494 | pthread_t p_lthread_selock(tts->reqf(vouest_mutid);
+      |           ^ex
+);
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:186:9: note: did you mean 'ma_mutex_lock'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/vendor/miniaudio.h:6215:13: note: 'ma_mutex_lock' declared here
+ 6215 | MA_API void ma_mutex_lock(ma_mutex* pMutex);
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:136:27: error: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:call to undeclared function 'thread_create'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+197:13  136:  |    error: call to undeclared function 'mutex_unlock'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  197 |            m  mutex_unlocic->cak(tts->request_mutex);
+      |             ^
+pture_thread = thread_create(microphone_capture_thread, mic);
+      |                           ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:136:27: note: did you mean 'pthread_create'?
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h:338:5: note: 'pthread_create' declared here
+  338 | int pthread_create(pthread_t _Nullable * _Nonnull __restrict,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:145:9: error: call to undeclared function 'thread_wait'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  145 |         thread_wait(mic->capture_thread);
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:145:9: note: did you mean 'pthread_exit'?
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h:356:6: note: 'pthread_exit' declared here
+  356 | void pthread_exit(void * _Nullable) __dead2;
+      |      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:146:9: error: call to undeclared function 'thread_destroy'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  146 |         thread_destroy(mic->capture_thread);
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:155:27: error: call to undeclared function 'memory_allocate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  155 |     AudioBuffer* buffer = memory_allocate(sizeof(AudioBuffer), MEMORY_TAG_AUDIO);
+      |                           ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:155:18: error: incompatible integer to pointer conversion initializing 'AudioBuffer *' with an expression of type 'int' [-Wint-conversion]
+  155 |     AudioBuffer* buffer = memory_allocate(sizeof(AudioBuffer), MEMORY_TAG_AUDIO);
+      |                  ^        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:200:13: error: call to undeclared function 'tts_process_request'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  200 |             tts_process_request(tts, &request);
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:202:13: error: call to undeclared function 'mutex_unlock'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  202 |             mutex_unlock(tts->request_mutex);
+      |             ^
+20 errors generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:203:13: error: call to undeclared function 'thread_sleep'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  203 |             thread_sleep(10);
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:203:13: note: did you mean 'pthread_self'?
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h:494:11: note: 'pthread_self' declared here
+  494 | pthread_t pthread_self(void);
+      |           ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:241:26: error: call to undeclared function 'thread_create'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  241 |     tts->worker_thread = thread_create(tts_worker_thread, tts);
+      |                          ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:241:26: note: did you mean 'pthread_create'?
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h:338:5: note: 'pthread_create' declared here
+  338 | int pthread_create(pthread_t _Nullable * _Nonnull __restrict,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:256:9: error: call to undeclared function 'thread_wait'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  256 |         thread_wait(tts->worker_thread);
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/text_to_speech_neural.c:256:9: note: did you mean 'pthread_exit'?
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h:356:6: note: 'pthread_exit' declared here
+  356 | void pthread_exit(void * _Nullable) __dead2;
+      |      ^
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o] Error 1
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/voice/text_to_speech_neural.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

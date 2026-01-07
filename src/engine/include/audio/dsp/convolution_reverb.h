@@ -1,7 +1,7 @@
 #ifndef AUDIO_DSP_CONVOLUTION_REVERB_H
 #define AUDIO_DSP_CONVOLUTION_REVERB_H
 
-#include "../../common.h"
+#include "include/common.h"
 #include <fftw3.h>
 
 #define MAX_IR_LENGTH 1048576  // 1M samples (~21 seconds at 48kHz)

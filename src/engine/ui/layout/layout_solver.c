@@ -1,9 +1,9 @@
-#include "../ui_types.h"
+#include "ui/ui_types.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdio.h>
 
 /* =================================================================================================

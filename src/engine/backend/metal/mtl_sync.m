@@ -459,15 +459,18 @@ bool metal_event_add_listener(metal_event_t *event, uint64_t value,
     return false;
   }
 
+  // Capture event and callback in the block - Metal retains the listener during callback
   [event->event notifyListener:listener
                        atValue:value
                          block:^(id<MTLSharedEvent> sharedEvent, uint64_t val) {
-                           callback(event, val, user_data);
+                           if (event && callback) {
+                             callback(event, val, user_data);
+                           }
                          }];
 
-  // Note: Listener lifetime management would need to be tracked by the caller
-  // For now, we release immediately as the block retains what it needs
-  [listener release];
+  // IMPORTANT: Keep listener alive - MTLSharedEvent retains it during the callback
+  // The listener will be released by MTLSharedEvent automatically after the callback
+  // DO NOT release it here as it causes EXC_BAD_ACCESS when the callback fires
 
   return true;
 }
@@ -551,29 +554,9 @@ bool metal_check_resource_hazard(metal_resource_tracker_t *tracker,
                             METAL_STAGE_VERTEX | METAL_STAGE_FRAGMENT |
                                 METAL_STAGE_COMPUTE);
 
-    // Create and signal a new fence for this access
-    // Note: We can't create a new fence here without a device reference
-    // This would need to be refactored to pass device explicitly
-    metal_fence_t *new_fence = NULL;
-    if (new_fence) {
-      metal_fence_encode_signal(new_fence, cmd_buffer,
-                                METAL_STAGE_VERTEX | METAL_STAGE_FRAGMENT |
-                                    METAL_STAGE_COMPUTE);
-
-      // Clean up old fence
-      metal_fence_destroy(tracker->last_fence);
-      tracker->last_fence = new_fence;
-    }
-  } else if (needs_fence && !tracker->last_fence) {
-    // Create initial fence
-    // Note: We can't create a fence here without a device reference
-    // This would need to be refactored to pass device explicitly
-    tracker->last_fence = NULL;
-    if (tracker->last_fence) {
-      metal_fence_encode_signal(tracker->last_fence, cmd_buffer,
-                                METAL_STAGE_VERTEX | METAL_STAGE_FRAGMENT |
-                                    METAL_STAGE_COMPUTE);
-    }
+    // FIXME: Create and signal a new fence for this access
+    // TODO: Refactor to pass device explicitly for fence creation
+    // For now, just keep using the existing fence with addCompletedHandler
   }
 
   // Update tracker

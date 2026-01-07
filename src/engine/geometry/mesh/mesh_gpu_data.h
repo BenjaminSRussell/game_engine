@@ -9,7 +9,7 @@
 #ifndef GEOMETRY_MESH_GPU_DATA_H
 #define GEOMETRY_MESH_GPU_DATA_H
 
-#include "mesh_data.h"
+#include "geometry/mesh/mesh_data.h"
 #include <Metal/Metal.h>
 
 #ifdef __cplusplus

@@ -3,7 +3,7 @@
  * Forward Renderer Batching Implementation
  */
 
-#include "forward_batching.h"
+#include "rendering/forward/forward_batching.h"
 #include <core/logger.h>
 #include <core/memory.h>
 #include <stdlib.h>

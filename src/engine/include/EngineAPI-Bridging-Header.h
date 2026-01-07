@@ -9,22 +9,22 @@
 #include "core/logger.h"
 
 // Render Graph System
-#include "renderer/frame_graph/frame_graph.h"
+#include "include/rendering/frame_graph/frame_graph.h"
 
 // Material System V2
-#include "renderer/materials/material_instance.h"
-#include "renderer/materials/material_templates.h"
-#include "renderer/materials/material_serialization.h"
-#include "renderer/materials/material_hot_reload.h"
+#include "rendering/materials/material_instance.h"
+#include "rendering/materials/material_templates.h"
+#include "rendering/materials/material_serialization.h"
+#include "rendering/materials/material_hot_reload.h"
 
 // Post-Processing
-#include "renderer/post_processing/post_processing_pipeline.h"
+#include "rendering/post_processing/post_processing_pipeline.h"
 
 // Existing renderer
-#include "renderer/core/renderer.h"
-#include "renderer/core/texture.h"
-#include "renderer/core/buffer.h"
-#include "renderer/core/shader.h"
+#include "include/rendering/renderer.h"
+#include "rendering/core/texture.h"
+#include "rendering/core/buffer.h"
+#include "include/rendering/shader.h"
 
 // Engine core
 #include "core/engine.h"

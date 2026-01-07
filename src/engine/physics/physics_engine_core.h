@@ -1,7 +1,7 @@
 #ifndef PHYSICS_ENGINE_CORE_H
 #define PHYSICS_ENGINE_CORE_H
 
-#include "core/physics_types.h"
+#include "physics/core/physics_types.h"
 #include "physics/physics.h"
 
 // Re-export core creation functions from physics_rigid_body_helpers.c

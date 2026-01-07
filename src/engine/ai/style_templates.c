@@ -5,7 +5,7 @@
 //
 #include <ai/ai_asset_generator.h>
 #include <core/logger.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 

@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "visibility_buffer_nanite.h"
+#include "geometry/nanite/nanite/culling_nanite/visibility_buffer_nanite.h"
 #include "../../3d_rendering.h"
 #include <stdint.h>
 #include <stdbool.h>

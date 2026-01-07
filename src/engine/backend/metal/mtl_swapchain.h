@@ -9,7 +9,7 @@
 #ifndef PLATFORM_MTL_SWAPCHAIN_H
 #define PLATFORM_MTL_SWAPCHAIN_H
 
-#include "mtl_device.h"
+#include "backend/metal/mtl_device.h"
 #include <stdint.h>
 #include <stdbool.h>
 

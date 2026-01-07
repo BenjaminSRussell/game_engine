@@ -1,4 +1,4 @@
-#include "core/threading/atomic_ops.h"
+#include "core/sync/atomic_ops.h"
 #include <stdatomic.h>
 #include <stdint.h>
 #include <stdbool.h>

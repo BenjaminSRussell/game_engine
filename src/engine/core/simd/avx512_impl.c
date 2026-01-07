@@ -4,7 +4,7 @@
  */
 
 #include <immintrin.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdio.h>
 
 // Vector add (16 floats)

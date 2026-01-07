@@ -1,8 +1,8 @@
-#include "../core/physics_types.h"
+#include "physics/core/physics_types.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // DESTRUCTION SYSTEM (Voronoi fracture simulation)
 typedef struct {

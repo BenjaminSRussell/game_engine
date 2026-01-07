@@ -36,6 +36,8 @@
 #include <onnxruntime_c_api.h>
 #endif
 
+#include "ai/ai_models.h"
+
 
 typedef struct AIGeneratedMesh {
   uint32_t vertex_count;
@@ -139,25 +141,7 @@ static void ai_generated_mesh_destroy(AIGeneratedMesh *mesh) {
 //                                    AI MODEL MANAGEMENT
 // =================================================================================================
 
-typedef enum {
-  AI_MODEL_TEXT_TO_3D,
-  AI_MODEL_TEXTURE_SYNTHESIS,
-  AI_MODEL_STYLE_TRANSFER,
-  AI_MODEL_UPSCALING,
-  AI_MODEL_NORMAL_GENERATION,
-  AI_MODEL_COUNT
-} AIModelType;
-
-typedef struct AIModel {
-  AIModelType type;
-  char name[128];
-  char model_path[512];
-  void *model_data; // TFLite or ONNX model
-  void *interpreter;
-  bool use_gpu;
-  int input_size[4]; // [batch, height, width, channels]
-  int output_size[4];
-} AIModel;
+// AI Model Management definitions moved to ai/ai_models.h
 
 AIModel *ai_model_load(const char *model_path, bool use_gpu) {
   AIModel *model = (AIModel *)calloc(1, sizeof(AIModel));

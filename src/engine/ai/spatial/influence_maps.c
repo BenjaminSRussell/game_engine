@@ -1,7 +1,7 @@
 #include "ai/ai_types.h"
 #include "core/core.h"
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 #define GRID_SIZE 64
 
@@ -26,7 +26,7 @@ void influence_add(InfluenceMap *map, int x, int y, float radius, float value) {
             if (nx < 0 || nx >= map->width || ny < 0 || ny >= map->height) continue;
             
             float dist = sqrtf(dx*dx + dy*dy);
-            if (dist > radius) cont continue;
+            if (dist > radius) continue;
             
             // Gaussian falloff
             float falloff = expf(-(dist*dist) / (2.0f * radius*radius));

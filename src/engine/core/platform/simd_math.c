@@ -1,5 +1,5 @@
-#include "core/platform/simd_math.h"
-#include <math.h>
+#include "core/simd/simd_math.h"
+#include <include/math/math.h>
 
 void simd_vec4_add(const float a[4], const float b[4], float result[4]) {
     result[0] = a[0] + b[0];

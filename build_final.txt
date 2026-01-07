@@ -1,0 +1,19 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/advanced/dtx_surround.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dtx_surround.c:247:45: error: no member named 'lfe_boost' in 'BassManagementConfig'; did you mean 'lfe_boost_db'?
+  247 |     f32 boost = powf(10.0f, manager->config.lfe_boost / 20.0f);
+      |                                             ^~~~~~~~~
+      |                                             lfe_boost_db
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/audio/dtx_surround.h:72:9: note: 'lfe_boost_db' declared here
+   72 |     f32 lfe_boost_db;
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dtx_surround.c:509:14: error: field designator 'lfe_boost' does not refer to any field in type 'BassManagementConfig'; did you mean 'lfe_boost_db'?
+  509 |             .lfe_boost = 10.0f,
+      |              ^~~~~~~~~
+      |              lfe_boost_db
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/audio/dtx_surround.h:72:9: note: 'lfe_boost_db' declared here
+   72 |     f32 lfe_boost_db;
+      |         ^
+2 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/audio/advanced/dtx_surround.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

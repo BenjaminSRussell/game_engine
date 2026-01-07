@@ -4,7 +4,7 @@
  * PBD cloth and SPH fluid simulation
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>

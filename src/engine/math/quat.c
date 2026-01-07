@@ -1,9 +1,9 @@
 // Quaternion math implementation with full SIMD optimization.
 // Features: AVX2/SSE2 support, SLERP/NLERP interpolation, validation, caching.
 // Includes comprehensive quaternion operations, statistics tracking, and batch processing.
-#include "../../include/math/quat.h"
-#include "../../include/math/mat4.h"
-#include <math.h>
+#include "math/quat.h"
+#include "math/mat4.h"
+#include <math/math.h>
 #include <immintrin.h>  // AVX intrinsics
 #include <emmintrin.h>  // SSE intrinsics
 #include <string.h>

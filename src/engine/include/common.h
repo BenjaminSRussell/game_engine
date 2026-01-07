@@ -11,9 +11,9 @@
 #endif
 
 #if defined(_MSC_VER)
-#define ALIGN(x) __declspec(align(x))
+#define K_ALIGN(x) __declspec(align(x))
 #else
-#define ALIGN(x) __attribute__((aligned(x)))
+#define K_ALIGN(x) __attribute__((aligned(x)))
 #endif
 
 #ifndef EPSILON

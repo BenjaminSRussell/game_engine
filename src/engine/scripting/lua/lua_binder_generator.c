@@ -4,7 +4,7 @@
  * =================================================================================================
  */
 
-#include "lua_binder_generator.h"
+#include "scripting/lua/lua_binder_generator.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

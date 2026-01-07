@@ -9,7 +9,7 @@
  */
 
 #include <audio/core/dsp_processor.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 
 // =================================================================================================

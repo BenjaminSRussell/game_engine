@@ -3,8 +3,8 @@
  * Implementation of meshlet visibility testing
  */
 
-#include "meshlet_culling.h"
-#include <math.h>
+#include "geometry/meshlets/meshlet_culling.h"
+#include <include/math/math.h>
 
 // Helper: vec3 normalize
 static vec3_t normalize_vec3(vec3_t v) {

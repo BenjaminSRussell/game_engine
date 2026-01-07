@@ -12,7 +12,7 @@
 #ifndef ITEM_DATABASE_H
 #define ITEM_DATABASE_H
 
-#include "item.h"
+#include "include/gameplay/inventory/item.h"
 #include <common.h>
 
 // ============================================================================

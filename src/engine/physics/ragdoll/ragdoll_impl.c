@@ -3,7 +3,7 @@
  * Powered Ragdoll & Blend to Animation
  */
 
-#include <math.h>
+#include <include/math/math.h>
 
 #define MAX_BONES 64
 

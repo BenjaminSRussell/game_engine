@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "mtl_resource_pool.h"
+#include "backend/metal/mtl_resource_pool.h"
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>

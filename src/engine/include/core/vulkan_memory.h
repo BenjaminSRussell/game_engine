@@ -4,7 +4,7 @@
 #include <core/memory.h>
 
 #ifdef VULKAN_BUILD
-#include <vulkan/vulkan.h>
+#include <include/rendering/vulkan.h>
 #else
 // Forward declarations/dummies if Vulkan not enabled
 // But this header implies Vulkan usage.

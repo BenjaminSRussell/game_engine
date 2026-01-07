@@ -38,7 +38,7 @@
  * TODO: Add cluster dag render graph node
  */
 
-#include "cluster_dag.h"
+#include "geometry/meshlets/cluster_dag.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

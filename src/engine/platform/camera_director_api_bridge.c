@@ -1,6 +1,6 @@
 #include "platform/camera_director_api_bridge.h"
 #include "core/logger.h"
-#include "renderer/cinematic/camera_director.h"
+#include "rendering/cinematic/camera_director.h"
 
 uint64_t camera_director_create_path_api(const char *path_name) {
   return camera_director_create_path(path_name);

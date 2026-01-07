@@ -1,0 +1,208 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o
+[  3%] Built target Catch2
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_faction_system.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_recast.c:1:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/crowd_detour.c10: fatal error: 'ai/navigation_advanced/navmesh_recast.h' file not found
+:    1:110: fatal error: 'ai/navigation_advanced/crowd_detour.h' file not found
+ | #inclu    1 | de "#aincli/navigat/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/obstacle_carving.c:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/off_mesh_links.c:1:1:1010: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_streaming.cu/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_inference.c: fatal error: 'ai/navigation_advanced/obstacle_carving.h' file not found:
+fatal error: i:1'ai/nav/off_mesh_links.h' file not foundd:    1oe:n_10
+: 110 | #i    1fatal error: : 'ai/navigation_advanced/navmesh_streaming.h' file not foundn
+a | # clfatal error:     d"v'ml_inference.h' file not foundud
+iance    1a1i | #in | e/ c"#inda/navni/naviganclude "ml_talmesh/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c:u_rev11cini:d10oligaunft:ecre iede "_fatal error: aoa'npc/prebuilt/npc_companion.h' file not found a"dst.i
+h"
+      | a         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~nn   11_ic
+ve/anna/vigcatied/.ahd"vn | 
+oa#iav/off_m      nob| sec         ^~~~~~~~~~~~~~~~etdann_
+1cacslhlued error generatede/_d_calvincance.
+rdoksr v<.hn"pin
+w1 error/ generated.
+g.navmhc/prebui      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+lt/npc_companion.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~esd
+"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+h__detour.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+streaming.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+1 error generated.
+1 error generated.
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_boss.c:11:10: fatal error: 'npc/prebuilt/npc_boss.h' file not found
+   11 | #include <npc/prebuilt/npc_boss.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c:1:10: fatal error: 'npc/prebuilt/npc_enemy_ranged.h' file not found
+    1 | #include "npc/prebuilt/npc_enemy_ranged.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o] Error 1
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_civilian.c:12:10: fatal error: 'npc/prebuilt/npc_civilian.h' file not found
+   12 | #include <npc/prebuilt/npc_civilian.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+1 error generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:35:33: error: unknown type name 'CrowdAvoid'
+   35 | void crowd_set_desired_velocity(CrowdAvoid *crowd, int agent_idx, const float *desired_vel) {
+      |                                 ^
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o] Error 1
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:17:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:343:6: error: conflicting types for 'ml_navigation_validate_path'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_faction_system.c:11:10: fatal error: 'npc/prebuilt/npc_faction_system.h' file not found
+     11 | #include <npc/p343 | boorel ml_bunailvigat/tinpc_on_validate_pafactionth(co_snst NavigaystionPath *path);
+      | tem     ^
+.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:254:6
+: note: previous declaration is here
+  254 | bool ml_navigation_validate_path(MLNavigationSystem *system, NavigationPath *path);
+      |      ^
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:68:14: error: no member named 'tile_size' in 'struct NavmeshBuilder'; did you mean 'cell_size'?
+   68 |     builder->tile_size = 32;
+      |              ^~~~~~~~~
+      |              cell_size
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/navmesh.h:108:11: note: 'cell_size' declared here
+  108 |     float cell_size;
+      |           ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:69:14: error: no member named 'border_size' in 'struct NavmeshBuilder'
+   69 |     builder->border_size = 1;
+      |     ~~~~~~~  ^
+2 errors generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:266:22: error: call to undeclared function 'Vec3_normalize'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  266 |     Vec3 direction = Vec3_normalize(Vec3_sub(group->group_target, group->formation_center));
+      |                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:266:22: note: did you mean 'vec3_normalize'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:130:13: note: 'vec3_normalize' declared here
+  130 | INLINE Vec3 vec3_normalize(Vec3 v) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:266:37: error: call to undeclared function 'Vec3_sub'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  266 |     Vec3 direction = Vec3_normalize(Vec3_sub(group->group_target, group->formation_center));
+      |                                     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:266:37: note: did you mean 'vec3_sub'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:13: note: 'vec3_sub' declared here
+   96 | INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+      |             ^
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:266:10: error: initializing 'Vec3' with an expression of incompatible type 'int'
+  266 |     Vec3 direction = Vec3_normalize(Vec3_sub(group->group_target, group->formation_center));
+      |          ^           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:267:26: error: call to undeclared function 'Vec3_cross'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  267 |     Vec3 perpendicular = Vec3_cross(direction, (Vec3){0, 1, 0});
+      |                          ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:267:26: note: did you mean 'vec3_cross'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:115:13: note: 'vec3_cross' declared here
+  115 | INLINE Vec3 vec3_cross(Vec3 a, Vec3 b) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:267:10: error: initializing 'Vec3' with an expression of incompatible type 'int'
+  267 |     Vec3 perpendicular = Vec3_cross(direction, (Vec3){0, 1, 0});
+      |          ^               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:268:19: error: assigning to 'Vec3' from incompatible type 'int'
+  268 |     perpendicular = Vec3_normalize(perpendicular);
+      |                   ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:272:30: error: call to undeclared function 'Vec3_add'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  272 |         Vec3 formation_pos = Vec3_add(group->formation_center, 
+      |                              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:272:30: note: did you mean 'vec3_add'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92:13: note: 'vec3_add' declared here
+   92 | INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:273:38: error: call to undeclared function 'Vec3_scale'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  273 |                                      Vec3_scale(perpendicular, offset * group->formation_spacing));
+      |                                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:273:38: note: did you mean 'vec3_scale'?
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:107:13: note: 'vec3_scale' declared here
+  107 | INLINE Vec3 vec3_scale(Vec3 a, Vec3 b) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:272:14: error: initializing 'Vec3' with an expression of incompatible type 'int'
+  272 |         Vec3 formation_pos = Vec3_add(group->formation_center, 
+      |              ^               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  273 |                                      Vec3_scale(perpendicular, offset * group->formation_spacing));
+      |                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:328:5: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'MLNavigationSystem *' [-Wint-conversion]
+  328 |     NAV_CHECK_NULL_PARAM(ml_system);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:398:38: note: expanded from macro 'NAV_CHECK_NULL_PARAM'
+  398 |     NAV_CHECK_ERROR((param) != NULL, NAV_ERROR_INVALID_PARAMETER)
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:393:20: note: expanded from macro 'NAV_CHECK_ERROR'
+  393 |             return error; \
+      |                    ^~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:411:9: error: call to undeclared function 'LOG_WARNING'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  411 |         LOG_WARNING("Failed to load path prediction model");
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:419:9: error: call to undeclared function 'LOG_WARNING'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  419 |         LOG_WARNING("Failed to load obstacle avoidance model");
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:427:9: error: call to undeclared function 'LOG_WARNING'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  427 |         LOG_WARNING("Failed to load player behavior model");
+      |         ^
+1 error generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:489:5: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'NavigationPath *' [-Wint-conversion]
+  489 |     NAV_CHECK_NULL_PARAM(system);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:398:38: note: expanded from macro 'NAV_CHECK_NULL_PARAM'
+  398 |     NAV_CHECK_ERROR((param) != NULL, NAV_ERROR_INVALID_PARAMETER)
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:393:20: note: expanded from macro 'NAV_CHECK_ERROR'
+  393 |             return error; \
+      |                    ^~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:490:70: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'NavigationPath *' [-Wint-conversion]
+  490 |     NAV_CHECK_ERROR(agent_id > 0 && agent_id <= system->agent_count, NAV_ERROR_AGENT_NOT_FOUND);
+      |                                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:393:20: note: expanded from macro 'NAV_CHECK_ERROR'
+  393 |             return error; \
+      |                    ^~~~~
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_faction_system.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:492:5: error: call to undeclared function 'performance_get_time'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  492 |     NAV_START_TIMER(system);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:402:22: note: expanded from macro 'NAV_START_TIMER'
+  402 |     f64 start_time = performance_get_time()
+      |                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:542:5: warning: ISO C does not allow indirection on operand of type 'void *' [-Wvoid-ptr-dereference]
+  542 |     NAV_END_TIMER(system, NULL);
+      |     ^                     ~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:408:28: note: expanded from macro 'NAV_END_TIMER'
+  408 |         if (path_time_ptr) *path_time_ptr = duration; \
+      |                            ^~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:542:5: error: incomplete type 'void' is not assignable
+  542 |     NAV_END_TIMER(system, NULL);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:408:43: note: expanded from macro 'NAV_END_TIMER'
+  408 |         if (path_time_ptr) *path_time_ptr = duration; \
+      |                            ~~~~~~~~~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:547:6: error: conflicting types for 'ml_navigation_follow_path'
+  547 | bool ml_navigation_follow_path(MLNavigationSystem *system, u32 agent_id, f32 delta_time) {
+      |      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:259:6: note: previous declaration is here
+  259 | bool ml_navigation_follow_path(MLNavigationSystem *system, u32 agent_id, NavigationPath *path, f32 delta_time);
+      |      ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+1 warning and 20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+[  3%] Built target Catch2WithMain
+make: *** [all] Error 2

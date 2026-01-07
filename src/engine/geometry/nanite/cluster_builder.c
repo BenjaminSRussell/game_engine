@@ -1,7 +1,7 @@
-#include "cluster_builder.h"
+#include "geometry/nanite/cluster_builder.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Morton code (z-order curve) utilities for 3D coordinates
 // Expands a 10-bit integer into 30 bits by inserting 2 zeros after each bit.

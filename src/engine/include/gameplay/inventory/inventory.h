@@ -11,7 +11,7 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#include "item.h"
+#include "include/gameplay/inventory/item.h"
 #include <common.h>
 #include <ecs/ecs.h>
 

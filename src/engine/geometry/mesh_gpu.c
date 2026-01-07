@@ -1,5 +1,5 @@
-#include "mesh_gpu.h"
-#include "mesh.h"
+#include "geometry/mesh_gpu.h"
+#include "geometry/mesh.h"
 #include <core/memory.h>
 #include <core/logger.h>
 #include <backend/metal/mtl_buffer.h>

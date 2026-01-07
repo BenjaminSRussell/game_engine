@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "material_eval.h"
+#include "geometry/nanite/nanite/rendering_nanite/material_eval.h"
 #include "../../3d_rendering.h"
 #include <stdint.h>
 #include <stdbool.h>

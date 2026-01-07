@@ -1,7 +1,7 @@
 #include <core/time_system.h>
 #include <core/types.h>
 #include <editor/editor_main.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <math/mat4.h>
 #include <math/vec2.h>
 #include <math/vec3.h>

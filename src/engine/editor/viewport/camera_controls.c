@@ -2,16 +2,16 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-#include "renderer/camera.h"
+#include <include/math/math.h>
+#include "rendering/camera.h"
 #include "editor/viewport/camera_controls.h"
 #include "math/vec3.h"
 #include "math/mat4.h"
 #include "math/quat.h"
-#include "input/input.h"
+#include "include/platform/input/input.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ✅ COMPLETED: Implement Camera Controls - Full Maya-style camera system
 // Implementation includes:

@@ -8,7 +8,7 @@
  * =================================================================================================
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdint.h>
 #include <stdlib.h> // NULL
 

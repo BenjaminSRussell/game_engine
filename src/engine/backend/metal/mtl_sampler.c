@@ -38,7 +38,7 @@
  * TODO: Add mtl sampler render graph node
  */
 
-#include "mtl_sampler.h"
+#include "backend/metal/mtl_sampler.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

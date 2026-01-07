@@ -38,7 +38,7 @@
  * TODO: Add mesh loader render graph node
  */
 
-#include "mesh_loader.h"
+#include "geometry/mesh/mesh_loader.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

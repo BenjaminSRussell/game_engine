@@ -1,7 +1,7 @@
 #ifndef GEOMETRY_MESH_UTILS_H
 #define GEOMETRY_MESH_UTILS_H
 
-#include "geometry_types.h"
+#include "geometry/geometry_types.h"
 
 // Convex Hull Approximation
 // Returns array of extreme hull vertices (caller must free)

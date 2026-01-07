@@ -1,7 +1,7 @@
 #pragma once
 
-#include "vertex_format.h"
-#include "vertex_compression.h"
+#include "backend/vertex_format.h"
+#include "backend/vertex_compression.h"
 
 /**
  * =================================================================================================

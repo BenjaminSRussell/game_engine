@@ -13,13 +13,13 @@
 // ✅ COMPLETED: Instancing documentation system
 // ✅ COMPLETED: Instancing optimization suggestions
 // Note: GPU instancing system integrated with Vulkan draw calls
-#include "../../include/renderer/instancing.h"
-#include "../../include/core/logger.h"
-#include "../../include/core/memory.h"
+#include "include/rendering/instancing.h"
+#include "include/core/logger.h"
+#include "include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
-#include "gpu_instance_data.h"
-#include "indirect_instancing.h"
+#include "geometry/instancing/gpu_instance_data.h"
+#include "geometry/instancing/indirect_instancing.h"
 
 // Initialize instancing system
 void instancing_system_init(InstancingSystem* system) {

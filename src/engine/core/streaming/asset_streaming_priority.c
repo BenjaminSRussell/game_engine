@@ -1,9 +1,9 @@
-#include "asset_streaming_priority.h"
-#include "../core/logger.h"
-#include "../core/memory.h"
+#include "core/resource/streaming/asset_streaming_priority.h"
+#include "core/logger.h"
+#include "core/memory.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Helper function to swap two asset requests
 static void swap_requests(AssetRequest* a, AssetRequest* b) {

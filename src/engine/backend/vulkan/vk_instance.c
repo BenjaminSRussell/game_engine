@@ -38,7 +38,7 @@
  * TODO: Add vk instance render graph node
  */
 
-#include "vk_instance.h"
+#include "backend/vulkan/vk_instance.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

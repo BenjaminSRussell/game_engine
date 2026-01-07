@@ -3,7 +3,7 @@
 #define GLTF_MATERIAL_BRIDGE_H
 
 #include <assets/gltf_loader.h>
-#include <renderer/gpu_material.h>
+#include <include/rendering/gpu_material.h>
 
 // Map GLTF material to GPUMaterial push constants
 void gltf_material_to_gpu(const GLTFMaterial *gltf_mat,

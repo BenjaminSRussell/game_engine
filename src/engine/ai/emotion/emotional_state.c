@@ -4,9 +4,9 @@
  * =================================================================================================
  */
 
-#include "emotional_state.h"
+#include "ai/emotion/emotional_state.h"
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 void emotion_init(EmotionalState *state) {
     memset(state->values, 0, sizeof(state->values));

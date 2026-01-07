@@ -8,8 +8,8 @@
 #ifndef CONTACT_MANIFOLD_H
 #define CONTACT_MANIFOLD_H
 
-#include "collision_gjk_epa.h"
-#include "../../core/simd/simd_math.h"
+#include "physics/narrowphase/collision_gjk_epa.h"
+#include "core/simd/simd_math.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus

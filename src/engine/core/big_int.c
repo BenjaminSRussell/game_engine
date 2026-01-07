@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Constants
 const BigInt BIG_INT_MAX_U64 = {.high = 0, .low = UINT64_MAX, .sign = false};

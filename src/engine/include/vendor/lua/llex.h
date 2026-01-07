@@ -9,8 +9,8 @@
 
 #include <limits.h>
 
-#include "lobject.h"
-#include "lzio.h"
+#include "include/vendor/lua/lobject.h"
+#include "include/vendor/lua/lzio.h"
 
 
 /*

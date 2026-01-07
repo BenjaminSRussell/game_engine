@@ -2,7 +2,7 @@
 #define TEXTURE_COMPRESSOR_H
 
 #include "core/core.h"
-#include "renderer/core/texture.h"
+#include "rendering/core/texture.h"
 
 #ifdef __cplusplus
 extern "C" {

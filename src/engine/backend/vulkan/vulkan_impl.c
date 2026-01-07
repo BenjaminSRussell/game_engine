@@ -12,7 +12,7 @@
 #define VK_USE_PLATFORM_METAL_EXT
 #endif
 
-#include <vulkan/vulkan.h>
+#include <include/rendering/vulkan.h>
 
 // ============================================================================
 // VULKAN CONTEXT

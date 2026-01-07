@@ -7,7 +7,7 @@
 
 #include <common.h>
 #include <math/vec3.h>
-#include "audio_system.h"
+#include "include/audio/audio_system.h"
 
 #define MAX_AUDIO_EVENTS 256
 #define AUDIO_EVENT_QUEUE_SIZE 256

@@ -4,10 +4,10 @@
  * =================================================================================================
  */
 
-#include "delay_line.h"
+#include "audio/dsp/delay_line.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 void delay_line_create(DelayLine *delay, float max_delay_ms, int sample_rate) {
     delay->buffer_size = (int)((max_delay_ms / 1000.0f) * sample_rate) + 1;

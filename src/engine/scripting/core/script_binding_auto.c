@@ -8,7 +8,7 @@
  */
 
 #include <scripting/core/script_binding_auto.h>
-#include <scene/transform.h>
+#include <include/ecs/components/transform.h>
 
 // =================================================================================================
 //                                      BINDINGS

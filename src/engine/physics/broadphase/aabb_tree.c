@@ -7,8 +7,8 @@
  * - Fat AABBs with velocity prediction
  */
 
-#include "aabb_tree.h"
-#include "../../core/simd/simd_math.h"
+#include "physics/broadphase/aabb_tree.h"
+#include "core/simd/simd_math.h"
 #include <stdlib.h>
 #include <string.h>
 #include <float.h>

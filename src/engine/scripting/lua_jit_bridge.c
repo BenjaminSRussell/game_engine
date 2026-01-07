@@ -4,7 +4,7 @@
  * =================================================================================================
  */
 
-#include "lua_jit_bridge.h"
+#include "scripting/lua_jit_bridge.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

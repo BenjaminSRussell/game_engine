@@ -7,7 +7,7 @@
 #define AI_PIPELINE_H
 
 #include <common.h>
-#include "ai_asset_generator.h"
+#include "include/ai/ai_asset_generator.h"
 
 // Pipeline stage
 typedef enum {

@@ -26,8 +26,8 @@
 #define AUDIO_STREAMING_H
 
 #include <common.h>
-#include "../vendor/miniaudio.h"
-#include "audio_system.h"
+#include "include/vendor/miniaudio.h"
+#include "include/audio/audio_system.h"
 
 #define MAX_AUDIO_STREAMS 8
 #define STREAM_BUFFER_SIZE 8192

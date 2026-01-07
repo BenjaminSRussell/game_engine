@@ -4,9 +4,9 @@
  * Support functions, GJK algorithm, and EPA algorithm.
  */
 
-#include "collision_gjk_epa.h"
+#include "physics/narrowphase/collision_gjk_epa.h"
 #include <float.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdio.h>
 
 #define GJK_MAX_ITERATIONS 64

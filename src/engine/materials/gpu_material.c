@@ -12,8 +12,8 @@
 // ✅ COMPLETED: Add GPU material caching system.
 // ✅ COMPLETED: Implement GPU material batching optimization.
 // ✅ COMPLETED: Add GPU material validation system.
-#include "../../include/render/gpu_material.h"
-#include "../../include/core/logger.h"
+#include "include/rendering/gpu_material.h"
+#include "include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

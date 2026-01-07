@@ -1,5 +1,5 @@
 #include "environment/builder/road_spline_tool.h"
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 
 typedef struct {

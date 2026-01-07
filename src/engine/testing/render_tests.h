@@ -1,7 +1,7 @@
 #ifndef RENDER_TESTS_H
 #define RENDER_TESTS_H
 
-#include "../integration/render_world.h"
+#include "core/integration/render_world.h"
 #include <Metal/Metal.h>
 #include <stdbool.h>
 

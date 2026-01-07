@@ -1,4 +1,4 @@
-#include "core/threading/sync_primitives.h"
+#include "core/sync/sync_primitives.h"
 #include "core/memory.h"
 #include "core/logging.h"
 #include <stdatomic.h>

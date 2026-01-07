@@ -1,6 +1,6 @@
 #include "physics/fracture/voronoi_shatter.h"
 #include "core/logger.h"
-#include "renderer/mesh.h"
+#include "rendering/mesh.h"
 
 uint64_t voronoi_shatter_mesh(uint64_t source_mesh_id,
                               uint32_t fragment_count) {

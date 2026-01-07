@@ -1,7 +1,7 @@
 #ifndef PHYSICS_CORE_TYPES_H
 #define PHYSICS_CORE_TYPES_H
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdbool.h>
 #include <stdint.h>
 // Note: Do NOT include physics/physics.h here to avoid circular dependency

@@ -1,4 +1,4 @@
-#include <math.h>
+#include <include/math/math.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>

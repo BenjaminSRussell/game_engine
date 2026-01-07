@@ -38,7 +38,7 @@
  * TODO: Add eviction render graph node
  */
 
-#include "eviction.h"
+#include "geometry/nanite/nanite/streaming/eviction.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

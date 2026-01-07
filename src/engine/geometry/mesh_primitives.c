@@ -1,7 +1,7 @@
-#include "mesh_primitives.h"
-#include "mesh.h"
+#include "geometry/mesh_primitives.h"
+#include "geometry/mesh.h"
 #include <core/memory.h>
-#include <math.h>
+#include <include/math/math.h>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846

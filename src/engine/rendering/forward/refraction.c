@@ -3,11 +3,11 @@
  * Refraction System Implementation
  */
 
-#include "refraction.h"
+#include "rendering/forward/refraction.h"
 #include <core/logger.h>
 #include <core/memory.h>
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * INTERNAL STATE

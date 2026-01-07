@@ -4,7 +4,7 @@
  * =================================================================================================
  */
 
-#include "comb_filter.h"
+#include "audio/dsp/comb_filter.h"
 #include <stdlib.h>
 #include <string.h>
 

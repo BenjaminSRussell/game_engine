@@ -1,9 +1,9 @@
-#include "mesh_optimize.h"
-#include "mesh.h"
+#include "geometry/mesh_optimize.h"
+#include "geometry/mesh.h"
 #include <core/memory.h>
 #include <core/logger.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ----------------------------------------------------------------------------
 // Vertex Deduplication

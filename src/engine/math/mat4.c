@@ -1,10 +1,10 @@
 // 4x4 matrix math implementation with full SIMD optimization.
 // Features: AVX2/SSE2 support, decomposition, interpolation, validation, caching.
 // Includes comprehensive matrix operations, statistics tracking, and batch processing.
-#include "../../include/math/mat4.h"
-#include "../../include/math/vec3.h"
+#include "math/mat4.h"
+#include "math/vec3.h"
 #include <string.h>
-#include <math.h>
+#include <math/math.h>
 #include <immintrin.h>  // AVX intrinsics
 #include <emmintrin.h>  // SSE intrinsics
 

@@ -3,7 +3,7 @@
  * All ~75 remaining AGENT_AI advanced TODOs
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>

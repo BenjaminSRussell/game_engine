@@ -1,7 +1,7 @@
 // Vulkan Dispatch Table Implementation
 // Dynamic loading of Vulkan functions for cross-version compatibility
 
-#include <renderer/vulkan_dispatch.h>
+#include <rendering/vulkan_dispatch.h>
 
 #ifdef VULKAN_BUILD
 

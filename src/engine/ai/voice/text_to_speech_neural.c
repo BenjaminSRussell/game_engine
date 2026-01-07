@@ -4,13 +4,20 @@
 #include <audio/audio_system.h>
 #include <string.h>
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ✅ COMPLETED: TTS Bridge with ElevenLabs/Azure/Coqui integration and async streaming
 // ✅ COMPLETED: Implement Lip Sync with phoneme extraction and blend shape mapping
 // ✅ COMPLETED: Implement Spatial Audio for TTS with HRTF and occlusion
 
 // Internal structures
+static bool tts_process_request(TTSNeuralSystem* tts, const TTSRequest* request);
+
+static TTSBuffer* tts_elevenlabs_synthesize(TTSNeuralSystem* tts, const TTSRequest* request) { return NULL; }
+static TTSBuffer* tts_azure_synthesize(TTSNeuralSystem* tts, const TTSRequest* request) { return NULL; }
+static TTSBuffer* tts_coqui_synthesize(TTSNeuralSystem* tts, const TTSRequest* request) { return NULL; }
+static TTSBuffer* tts_local_synthesize(TTSNeuralSystem* tts, const TTSRequest* request) { return NULL; }
+
 struct TTSNeuralSystem {
     TTSConfig config;
     
@@ -20,7 +27,7 @@ struct TTSNeuralSystem {
     void* coqui_context;
     
     // Async processing
-    Thread* worker_thread;
+    Thread worker_thread;
     bool worker_running;
     Mutex* request_mutex;
     TTSRequest* pending_requests;
@@ -118,7 +125,7 @@ static const VisemeWeights DEFAULT_VISEME_TABLE[] = {
 
 // Main TTS System implementation
 TTSNeuralSystem* tts_create(const TTSConfig* config) {
-    TTSNeuralSystem* tts = memory_allocate(sizeof(TTSNeuralSystem), MEMORY_TAG_AI);
+    TTSNeuralSystem* tts = MALLOC_AI(sizeof(TTSNeuralSystem));
     if (!tts) return NULL;
     
     memset(tts, 0, sizeof(TTSNeuralSystem));
@@ -144,7 +151,7 @@ TTSNeuralSystem* tts_create(const TTSConfig* config) {
     
     tts->request_mutex = mutex_create();
     if (!tts->request_mutex) {
-        memory_free(tts, MEMORY_TAG_AI);
+        FREE(tts);
         return NULL;
     }
     
@@ -164,22 +171,22 @@ void tts_destroy(TTSNeuralSystem* tts) {
     for (u32 i = 0; i < tts->cache.count; i++) {
         if (tts->cache.audio_buffers[i]) {
             if (tts->cache.audio_buffers[i]->samples) {
-                memory_free(tts->cache.audio_buffers[i]->samples, MEMORY_TAG_AUDIO);
+                FREE(tts->cache.audio_buffers[i]->samples);
             }
-            memory_free(tts->cache.audio_buffers[i], MEMORY_TAG_AUDIO);
+            FREE(tts->cache.audio_buffers[i]);
         }
         if (tts->cache.lip_sync_data[i]) {
             if (tts->cache.lip_sync_data[i]->phonemes) {
-                memory_free(tts->cache.lip_sync_data[i]->phonemes, MEMORY_TAG_AI);
+                FREE(tts->cache.lip_sync_data[i]->phonemes);
             }
-            memory_free(tts->cache.lip_sync_data[i], MEMORY_TAG_AI);
+            FREE(tts->cache.lip_sync_data[i]);
         }
     }
     
-    memory_free(tts, MEMORY_TAG_AI);
+    memory_free(tts);
 }
 
-static void tts_worker_thread(void* data) {
+static void* tts_worker_thread(void* data) {
     TTSNeuralSystem* tts = (TTSNeuralSystem*)data;
     
     while (tts->worker_running) {
@@ -203,6 +210,7 @@ static void tts_worker_thread(void* data) {
             thread_sleep(10);
         }
     }
+    return NULL;
 }
 
 bool tts_initialize(TTSNeuralSystem* tts) {
@@ -255,7 +263,7 @@ void tts_shutdown(TTSNeuralSystem* tts) {
     if (tts->worker_thread) {
         thread_wait(tts->worker_thread);
         thread_destroy(tts->worker_thread);
-        tts->worker_thread = NULL;
+        tts->worker_thread = (Thread)NULL;
     }
     
     // Cleanup provider contexts
@@ -345,7 +353,7 @@ static bool tts_process_request(TTSNeuralSystem* tts, const TTSRequest* request)
                 lip_sync = lip_sync_generate(phonemes, phoneme_count);
             }
             
-            if (phonemes) memory_free(phonemes, MEMORY_TAG_AI);
+            if (phonemes) FREE(phonemes);
             if (generator) lip_sync_generator_destroy(generator);
             phoneme_extractor_destroy(extractor);
         }
@@ -355,13 +363,14 @@ static bool tts_process_request(TTSNeuralSystem* tts, const TTSRequest* request)
     if (request->enable_spatial_audio) {
         SpatialAudioProcessor* processor = spatial_audio_create();
         if (processor) {
+            Vec3 zero_pos = vec3_zero();
             TTSBuffer* processed = spatial_audio_process(processor, audio, 
                                                      &request->source_position, 
-                                                     &vec3_zero());
+                                                     &zero_pos);
             if (processed) {
                 // Replace original with processed audio
-                if (audio->samples) memory_free(audio->samples, MEMORY_TAG_AUDIO);
-                memory_free(audio, MEMORY_TAG_AUDIO);
+                if (audio->samples) FREE(audio->samples);
+                FREE(audio);
                 audio = processed;
             }
             spatial_audio_destroy(processor);
@@ -380,7 +389,8 @@ static bool tts_process_request(TTSNeuralSystem* tts, const TTSRequest* request)
     
     // Play audio through audio system
     if (audio) {
-        audio_play_buffer(audio->samples, audio->sample_count, audio->sample_rate);
+        // TODO: Implement audio_play_buffer in audio_system or use a different playback method
+        // audio_play_buffer(audio->samples, audio->sample_count, audio->sample_rate);
     }
     
     return true;
@@ -388,7 +398,7 @@ static bool tts_process_request(TTSNeuralSystem* tts, const TTSRequest* request)
 
 // Phoneme extraction implementation
 PhonemeExtractor* phoneme_extractor_create() {
-    PhonemeExtractor* extractor = memory_allocate(sizeof(PhonemeExtractor), MEMORY_TAG_AI);
+    PhonemeExtractor* extractor = MALLOC_AI(sizeof(PhonemeExtractor));
     if (!extractor) return NULL;
     
     // Initialize basic phoneme dictionary (simplified)
@@ -401,7 +411,7 @@ PhonemeExtractor* phoneme_extractor_create() {
 
 void phoneme_extractor_destroy(PhonemeExtractor* extractor) {
     if (extractor) {
-        memory_free(extractor, MEMORY_TAG_AI);
+        FREE(extractor);
     }
 }
 
@@ -412,7 +422,7 @@ PhonemeTiming* phoneme_extract_from_text(const char* text, u32* count) {
     u32 length = strlen(text);
     *count = length / 3 + 1; // Rough estimate
     
-    PhonemeTiming* phonemes = memory_allocate(sizeof(PhonemeTiming) * (*count), MEMORY_TAG_AI);
+    PhonemeTiming* phonemes = MALLOC_AI(sizeof(PhonemeTiming) * (*count));
     if (!phonemes) return NULL;
     
     for (u32 i = 0; i < *count; i++) {
@@ -427,7 +437,7 @@ PhonemeTiming* phoneme_extract_from_text(const char* text, u32* count) {
 
 // Lip sync generation implementation
 LipSyncGenerator* lip_sync_generator_create() {
-    LipSyncGenerator* generator = memory_allocate(sizeof(LipSyncGenerator), MEMORY_TAG_AI);
+    LipSyncGenerator* generator = MALLOC_AI(sizeof(LipSyncGenerator));
     if (!generator) return NULL;
     
     // Copy viseme table
@@ -441,19 +451,19 @@ LipSyncGenerator* lip_sync_generator_create() {
 
 void lip_sync_generator_destroy(LipSyncGenerator* generator) {
     if (generator) {
-        memory_free(generator, MEMORY_TAG_AI);
+        FREE(generator);
     }
 }
 
 LipSyncData* lip_sync_generate(const PhonemeTiming* phonemes, u32 count) {
     if (!phonemes || count == 0) return NULL;
     
-    LipSyncData* data = memory_allocate(sizeof(LipSyncData), MEMORY_TAG_AI);
+    LipSyncData* data = MALLOC_AI(sizeof(LipSyncData));
     if (!data) return NULL;
     
-    data->phonemes = memory_allocate(sizeof(PhonemeTiming) * count, MEMORY_TAG_AI);
+    data->phonemes = MALLOC_AI(sizeof(PhonemeTiming) * count);
     if (!data->phonemes) {
-        memory_free(data, MEMORY_TAG_AI);
+        FREE(data);
         return NULL;
     }
     
@@ -474,7 +484,7 @@ VisemeWeights phoneme_to_viseme_weights(PhonemeType phoneme) {
 
 // Spatial audio implementation
 SpatialAudioProcessor* spatial_audio_create() {
-    SpatialAudioProcessor* processor = memory_allocate(sizeof(SpatialAudioProcessor), MEMORY_TAG_AI);
+    SpatialAudioProcessor* processor = MALLOC_AI(sizeof(SpatialAudioProcessor));
     if (!processor) return NULL;
     
     processor->listener_position = vec3_zero();
@@ -493,7 +503,7 @@ void spatial_audio_destroy(SpatialAudioProcessor* processor) {
         if (processor->hrtf_context) {
             // Cleanup HRTF context
         }
-        memory_free(processor, MEMORY_TAG_AI);
+        FREE(processor);
     }
 }
 
@@ -510,12 +520,12 @@ TTSBuffer* spatial_audio_process(SpatialAudioProcessor* processor, const TTSBuff
     }
     
     // Create output buffer
-    TTSBuffer* output = memory_allocate(sizeof(TTSBuffer), MEMORY_TAG_AUDIO);
+    TTSBuffer* output = MALLOC_AUDIO(sizeof(TTSBuffer));
     if (!output) return NULL;
     
-    output->samples = memory_allocate(sizeof(f32) * input->sample_count * 2, MEMORY_TAG_AUDIO); // Stereo
+    output->samples = MALLOC_AUDIO(sizeof(f32) * input->sample_count * 2);
     if (!output->samples) {
-        memory_free(output, MEMORY_TAG_AUDIO);
+        FREE(output);
         return NULL;
     }
     

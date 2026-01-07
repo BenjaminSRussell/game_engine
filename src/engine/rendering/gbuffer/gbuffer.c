@@ -4,12 +4,12 @@
  * =================================================================================================
  */
 
-#include "gbuffer.h"
-#include <core/memory/memory.h>
-#include <core/logger/logger.h>
-#include <gpu_backend/render_pipeline.h>
-#include <gpu_backend/framebuffer.h>
-#include <gpu_backend/render_types.h>
+#include "rendering/gbuffer/gbuffer.h"
+#include <core/memory.h>
+#include <core/logger.h>
+#include <rendering/render_pipeline.h>
+#include <rendering/framebuffer.h>
+#include <rendering/render_types.h>
 
 GBuffer* gbuffer_create(u32 width, u32 height) {
     GBuffer *gbuffer = (GBuffer*)memory_allocate(sizeof(GBuffer), MEMORY_TAG_RENDERER);

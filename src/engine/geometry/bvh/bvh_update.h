@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "../../core/math/math/aabb.h"
+#include "include/math/aabb.h"
 
 #ifdef __cplusplus
 extern "C" {

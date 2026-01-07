@@ -7,7 +7,7 @@
 #define liolib_c
 #define LUA_LIB
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
 #include <ctype.h>
@@ -17,10 +17,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lua.h"
+#include "vendor/lua/lua.h"
 
-#include "lauxlib.h"
-#include "lualib.h"
+#include "vendor/lua/lauxlib.h"
+#include "vendor/lua/lualib.h"
 
 
 
@@ -117,7 +117,7 @@ static int l_checkmode (const char *mode) {
 
 #if defined(LUA_USE_POSIX)	/* { */
 
-#include <sys/types.h>
+#include <include/core/types.h>
 
 #define l_fseek(f,o,w)		fseeko(f,o,w)
 #define l_ftell(f)		ftello(f)

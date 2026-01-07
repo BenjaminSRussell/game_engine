@@ -4,10 +4,10 @@
  * =================================================================================================
  */
 
-#include "duplication_randomization.h"
+#include "editor/asset_creation/duplication_randomization.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 static float randf(float min, float max) {
     return min + (max - min) * ((float)rand() / (float)RAND_MAX);

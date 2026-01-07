@@ -38,7 +38,7 @@
  * TODO: Add cluster merge render graph node
  */
 
-#include "cluster_merge.h"
+#include "geometry/nanite/nanite/cluster/cluster_merge.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

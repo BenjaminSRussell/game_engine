@@ -38,7 +38,7 @@
  * TODO: Add submesh manager render graph node
  */
 
-#include "submesh_manager.h"
+#include "geometry/mesh/submesh_manager.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

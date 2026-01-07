@@ -12,11 +12,11 @@
 // Device lost handling: IMPLEMENTED (recovery system).
 #include <common.h>
 #include <core/logger.h>
-#include <renderer/ray_tracing.h>
-#include <renderer/texture_loader.h>
-#include <renderer/vulkan.h>
-#include <renderer/vulkan_capabilities.h>
-#include <renderer/vulkan_streaming.h>
+#include <rendering/ray_tracing.h>
+#include <rendering/texture_loader.h>
+#include <rendering/vulkan.h>
+#include <rendering/vulkan_capabilities.h>
+#include <rendering/vulkan_streaming.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,7 +26,7 @@
 #endif
 
 #if defined(VULKAN_BUILD) && __has_include(<vulkan/vulkan.h>)
-#include <vulkan/vulkan.h>
+#include <include/rendering/vulkan.h>
 #ifdef _WIN32
 #include <vulkan/vk_platform.h>
 #endif

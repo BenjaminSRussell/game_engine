@@ -4,11 +4,11 @@
  * =================================================================================================
  */
 
-#include "clustered_culling.h"
-#include <core/logger/logger.h>
+#include "rendering/deferred/clustered_culling.h"
+#include <core/logger.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 #ifdef __OBJC__
 #import <Metal/Metal.h>

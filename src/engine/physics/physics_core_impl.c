@@ -5,9 +5,9 @@
  * =================================================================================================
  */
 
-#include "physics_engine_core.h"
+#include "physics/physics_engine_core.h"
 #include <float.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

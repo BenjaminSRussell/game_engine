@@ -3,7 +3,7 @@
  * Raycast Suspension & Powertrain
  */
 
-#include <math.h>
+#include <include/math/math.h>
 
 typedef struct {
   // Configuration

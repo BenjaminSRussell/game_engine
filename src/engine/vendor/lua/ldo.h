@@ -8,10 +8,10 @@
 #define ldo_h
 
 
-#include "llimits.h"
-#include "lobject.h"
-#include "lstate.h"
-#include "lzio.h"
+#include "vendor/lua/llimits.h"
+#include "vendor/lua/lobject.h"
+#include "vendor/lua/lstate.h"
+#include "vendor/lua/lzio.h"
 
 
 /*

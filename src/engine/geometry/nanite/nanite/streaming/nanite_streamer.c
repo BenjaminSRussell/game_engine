@@ -3,7 +3,7 @@
  * Implementation of Nanite cluster page streaming logic
  */
 
-#include "nanite_streamer.h"
+#include "geometry/nanite/nanite/streaming/nanite_streamer.h"
 #include <stdlib.h>
 #include <string.h>
 

@@ -1,4 +1,4 @@
-#include "asset_streaming.h"
+#include "assets/system/asset_system/compression_assets/asset_streaming.h"
 
 /**
  * =================================================================================================

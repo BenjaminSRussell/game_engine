@@ -4,7 +4,7 @@
  * =================================================================================================
  */
 
-#include "property_inspector.h"
+#include "editor/asset_creation/property_inspector.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

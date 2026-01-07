@@ -1,7 +1,7 @@
-#include "mesh.h"
+#include "geometry/mesh.h"
 #include <core/memory.h>
 #include <core/logger.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 #include <float.h>
 

@@ -1,6 +1,6 @@
 #include <core/logger.h>
-#include <renderer/vulkan.h>
-#include <renderer/vulkan_streaming.h>
+#include <rendering/vulkan.h>
+#include <rendering/vulkan_streaming.h>
 #include <stdlib.h>
 #include <string.h>
 

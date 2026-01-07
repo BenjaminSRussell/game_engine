@@ -1,4 +1,4 @@
-#include "dolby_atmos.h"
+#include "audio/advanced/dolby_atmos.h"
 #include <dlfcn.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -58,8 +58,8 @@ bool Atmos_InitializeSDK(AtmosRenderer* renderer) {
     
     // Initialize renderer state
     memset(renderer, 0, sizeof(AtmosRenderer));
-    renderer->listener_position = (vec3){0.0f, 0.0f, 0.0f};
-    renderer->listener_orientation = (quat){0.0f, 0.0f, 0.0f, 1.0f};
+    renderer->listener_position = (Vec3){0.0f, 0.0f, 0.0f};
+    renderer->listener_orientation = (Quat){0.0f, 0.0f, 0.0f, 1.0f};
     renderer->master_gain = 1.0f;
     renderer->dynamic_range_enabled = true;
     
@@ -140,48 +140,48 @@ bool Atmos_ConfigureBedChannels(AtmosSpeakerConfig* config) {
     float speaker_distance = 2.0f; // 2 meters from listening position
     
     // Front Left
-    config->speakers[0].position = (vec3){-speaker_distance, 0.0f, speaker_distance};
-    config->speakers[0].direction = (vec3){1.0f, 0.0f, -1.0f};
+    config->speakers[0].position = vec3(-speaker_distance, 0.0f, speaker_distance);
+    config->speakers[0].direction = vec3(1.0f, 0.0f, -1.0f);
     config->speakers[0].distance = speaker_distance;
     config->speakers[0].delay = 0.0f;
     config->speakers[0].gain = 1.0f;
     config->speakers[0].active = true;
     
     // Front Right
-    config->speakers[1].position = (vec3){speaker_distance, 0.0f, speaker_distance};
-    config->speakers[1].direction = (vec3){-1.0f, 0.0f, -1.0f};
+    config->speakers[1].position = vec3(speaker_distance, 0.0f, speaker_distance);
+    config->speakers[1].direction = vec3(-1.0f, 0.0f, -1.0f);
     config->speakers[1].distance = speaker_distance;
     config->speakers[1].delay = 0.0f;
     config->speakers[1].gain = 1.0f;
     config->speakers[1].active = true;
     
     // Center
-    config->speakers[2].position = (vec3){0.0f, 0.0f, speaker_distance};
-    config->speakers[2].direction = (vec3){0.0f, 0.0f, -1.0f};
+    config->speakers[2].position = vec3(0.0f, 0.0f, speaker_distance);
+    config->speakers[2].direction = vec3(0.0f, 0.0f, -1.0f);
     config->speakers[2].distance = speaker_distance;
     config->speakers[2].delay = 0.0f;
     config->speakers[2].gain = 1.0f;
     config->speakers[2].active = true;
     
     // LFE (subwoofer)
-    config->speakers[3].position = (vec3){0.0f, -0.5f, 0.0f}; // Floor level
-    config->speakers[3].direction = (vec3){0.0f, 1.0f, 0.0f};
+    config->speakers[3].position = vec3(0.0f, -0.5f, 0.0f); // Floor level
+    config->speakers[3].direction = vec3(0.0f, 1.0f, 0.0f);
     config->speakers[3].distance = 1.0f;
     config->speakers[3].delay = 0.0f;
     config->speakers[3].gain = 1.0f;
     config->speakers[3].active = true;
     
     // Side Left
-    config->speakers[4].position = (vec3){-speaker_distance, 0.0f, 0.0f};
-    config->speakers[4].direction = (vec3){1.0f, 0.0f, 0.0f};
+    config->speakers[4].position = vec3(-speaker_distance, 0.0f, 0.0f);
+    config->speakers[4].direction = vec3(1.0f, 0.0f, 0.0f);
     config->speakers[4].distance = speaker_distance;
     config->speakers[4].delay = 0.002f; // 2ms delay for side speakers
     config->speakers[4].gain = 1.0f;
     config->speakers[4].active = true;
     
     // Side Right
-    config->speakers[5].position = (vec3){speaker_distance, 0.0f, 0.0f};
-    config->speakers[5].direction = (vec3){-1.0f, 0.0f, 0.0f};
+    config->speakers[5].position = vec3(speaker_distance, 0.0f, 0.0f);
+    config->speakers[5].direction = vec3(-1.0f, 0.0f, 0.0f);
     config->speakers[5].distance = speaker_distance;
     config->speakers[5].delay = 0.002f;
     config->speakers[5].gain = 1.0f;
@@ -198,16 +198,16 @@ bool Atmos_ConfigureHeightChannels(AtmosSpeakerConfig* config) {
     float speaker_distance = 2.0f;
     
     // Top Left
-    config->speakers[6].position = (vec3){-speaker_distance * 0.7f, height, speaker_distance * 0.7f};
-    config->speakers[6].direction = (vec3){0.7f, -1.0f, -0.7f};
+    config->speakers[6].position = vec3(-speaker_distance * 0.7f, height, speaker_distance * 0.7f);
+    config->speakers[6].direction = vec3(0.7f, -1.0f, -0.7f);
     config->speakers[6].distance = sqrtf(speaker_distance * speaker_distance + height * height);
     config->speakers[6].delay = 0.004f; // 4ms delay for height speakers
     config->speakers[6].gain = 0.8f; // Slightly reduced gain for height channels
     config->speakers[6].active = true;
     
     // Top Right
-    config->speakers[7].position = (vec3){speaker_distance * 0.7f, height, speaker_distance * 0.7f};
-    config->speakers[7].direction = (vec3){-0.7f, -1.0f, -0.7f};
+    config->speakers[7].position = vec3(speaker_distance * 0.7f, height, speaker_distance * 0.7f);
+    config->speakers[7].direction = vec3(-0.7f, -1.0f, -0.7f);
     config->speakers[7].distance = sqrtf(speaker_distance * speaker_distance + height * height);
     config->speakers[7].delay = 0.004f;
     config->speakers[7].gain = 0.8f;
@@ -262,8 +262,8 @@ uint32_t Atmos_CreateAudioObject(AtmosRenderer* renderer, AtmosObjectType type) 
         if (!renderer->objects[i].active) {
             renderer->objects[i].id = i + 1;
             renderer->objects[i].type = type;
-            renderer->objects[i].position = (vec3){0.0f, 0.0f, 0.0f};
-            renderer->objects[i].velocity = (vec3){0.0f, 0.0f, 0.0f};
+            renderer->objects[i].position = vec3(0.0f, 0.0f, 0.0f);
+            renderer->objects[i].velocity = vec3(0.0f, 0.0f, 0.0f);
             renderer->objects[i].gain = 1.0f;
             renderer->objects[i].size = 1.0f;
             renderer->objects[i].priority = 128; // Medium priority
@@ -297,7 +297,7 @@ bool Atmos_AssignAudioToObject(AtmosRenderer* renderer, uint32_t object_id, void
     return true;
 }
 
-bool Atmos_SetObjectPosition(AtmosRenderer* renderer, uint32_t object_id, vec3 position) {
+bool Atmos_SetObjectPosition(AtmosRenderer* renderer, uint32_t object_id, Vec3 position) {
     if (object_id == 0 || object_id > ATMOS_MAX_OBJECTS) {
         return false;
     }
@@ -381,7 +381,7 @@ bool Atmos_GroupObjects(AtmosRenderer* renderer, uint32_t* object_ids, uint32_t 
 // UTILITY FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 
-void Atmos_UpdateListener(AtmosRenderer* renderer, vec3 position, quat orientation) {
+void Atmos_UpdateListener(AtmosRenderer* renderer, Vec3 position, Quat orientation) {
     renderer->listener_position = position;
     renderer->listener_orientation = orientation;
 }
@@ -432,7 +432,7 @@ bool Atmos_EncodeObjectPositions(AtmosMetadata* metadata, AtmosAudioObject* obje
         if (!objects[i].active) continue;
         
         // Calculate spherical coordinates from Cartesian position
-        vec3 pos = objects[i].position;
+        Vec3 pos = objects[i].position;
         float distance = sqrtf(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
         
         if (distance > 0.001f) {
@@ -555,7 +555,7 @@ bool Atmos_ApplyPanningLaws(AtmosRenderer* renderer, uint32_t object_index) {
     }
     
     AtmosAudioObject* object = &renderer->objects[object_index];
-    vec3 relative_pos = object->position;
+    Vec3 relative_pos = object->position;
     
     // Calculate panning gains based on speaker layout
     // This is a simplified implementation - real VBAP is much more complex
@@ -645,7 +645,7 @@ bool Atmos_ApplyDiffraction(AtmosRenderer* renderer, uint32_t object_index) {
 static float g_hrtf_data[360][90][2] = {0}; // Azimuth, Elevation, Left/Right
 static bool g_hrtf_loaded = false;
 static bool g_head_tracking_enabled = false;
-static quat g_head_orientation = {0.0f, 0.0f, 0.0f, 1.0f};
+static Quat g_head_orientation = {0.0f, 0.0f, 0.0f, 1.0f};
 
 bool Atmos_LoadHRTFDatabase(const char* hrtf_path) {
     printf("Loading HRTF database from: %s\n", hrtf_path ? hrtf_path : "default");
@@ -737,7 +737,7 @@ bool Atmos_EnableHeadTracking(AtmosRenderer* renderer, bool enable) {
     if (enable) {
         // Initialize head tracking system
         // In a real implementation, this would interface with VR/AR headsets or gyroscopes
-        g_head_orientation = (quat){0.0f, 0.0f, 0.0f, 1.0f};
+        g_head_orientation = quat(0.0f, 0.0f, 0.0f, 1.0f);
     }
     
     return true;
@@ -809,7 +809,7 @@ bool Atmos_SimulateRoomForHeadphones(AtmosRenderer* renderer) {
         }
         
         // Calculate distance-based early reflections
-        vec3 pos = renderer->objects[i].position;
+        Vec3 pos = renderer->objects[i].position;
         float distance_to_walls[6] = {
             pos.x + room_width/2,   // Left wall
             room_width/2 - pos.x,   // Right wall
@@ -850,7 +850,7 @@ bool Atmos_EnhanceExternalization(AtmosRenderer* renderer) {
         }
         
         AtmosAudioObject* object = &renderer->objects[i];
-        vec3 pos = object->position;
+        Vec3 pos = object->position;
         float distance = sqrtf(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
         
         // Apply externalization techniques:
@@ -911,7 +911,7 @@ bool Atmos_RenderBinauralFrame(AtmosRenderer* renderer, float* left_buffer, floa
         AtmosAudioObject* object = &renderer->objects[i];
         
         // Calculate object position relative to listener
-        vec3 relative_pos = object->position;
+        Vec3 relative_pos = object->position;
         
         // Apply head orientation if tracking is enabled
         if (g_head_tracking_enabled) {
@@ -1303,7 +1303,7 @@ typedef struct {
     float depth;      // Room depth in meters
     float rt60;       // Reverberation time in seconds
     float absorption[6]; // Wall absorption coefficients (0-1)
-    vec3 listener_pos; // Listener position in room
+    Vec3 listener_pos; // Listener position in room
 } AtmosRoom;
 
 static AtmosRoom g_current_room = {0};
@@ -1318,7 +1318,7 @@ bool Atmos_GenerateRoomImpulseResponse(AtmosRenderer* renderer, float room_size,
     g_current_room.height = room_size * 0.6f; // Typical room ratio
     g_current_room.depth = room_size * 0.8f;
     g_current_room.rt60 = reverb_time;
-    g_current_room.listener_pos = (vec3){room_size/2, 1.7f, room_size/2}; // Center of room, ear height
+    g_current_room.listener_pos = vec3(room_size/2, 1.7f, room_size/2); // Center of room, ear height
     
     // Calculate room volume and surface area
     float room_volume = g_current_room.width * g_current_room.height * g_current_room.depth;
@@ -1420,8 +1420,8 @@ bool Atmos_RayTraceAcoustics(AtmosRenderer* renderer) {
         }
         
         AtmosAudioObject* object = &renderer->objects[obj_idx];
-        vec3 source_pos = object->position;
-        vec3 listener_pos = g_current_room.listener_pos;
+        Vec3 source_pos = object->position;
+        Vec3 listener_pos = g_current_room.listener_pos;
         
         printf("Tracing rays for object %u at (%.2f, %.2f, %.2f)\n", 
                obj_idx + 1, source_pos.x, source_pos.y, source_pos.z);
@@ -1440,7 +1440,7 @@ bool Atmos_RayTraceAcoustics(AtmosRenderer* renderer) {
                direct_delay * 1000, direct_gain);
         
         // Calculate first-order reflections
-        vec3 walls[6] = {
+        Vec3 walls[6] = {
             {0, 0, 1},   // Front wall (Z+)
             {0, 0, -1},  // Back wall (Z-)
             {1, 0, 0},   // Right wall (X+)
@@ -1460,7 +1460,7 @@ bool Atmos_RayTraceAcoustics(AtmosRenderer* renderer) {
         
         for (int wall = 0; wall < 6; wall++) {
             // Calculate image source position
-            vec3 image_source = source_pos;
+            Vec3 image_source = source_pos;
             
             if (wall == 0) image_source.z = 2 * wall_positions[wall] - source_pos.z;      // Front
             else if (wall == 1) image_source.z = 2 * wall_positions[wall] - source_pos.z; // Back

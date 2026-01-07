@@ -1,6 +1,6 @@
 #include "platform/vfx_optimization_api_bridge.h"
 #include "core/logger.h"
-#include "renderer/systems/vfx_optimizer.h"
+#include "rendering/systems/vfx_optimizer.h"
 
 void vfx_opt_set_culling_enabled(bool enabled) {
   vfx_sys_set_culling_enabled(enabled);

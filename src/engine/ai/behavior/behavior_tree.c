@@ -23,6 +23,8 @@ typedef struct BTNode {
   void *user_data;
 } BTNode;
 
+BTStatus bt_tick(BTNode *node, void *context);
+
 BTNode *bt_create_action(BTStatus (*action)(BTNode *, void *)) {
   BTNode *node = calloc(1, sizeof(BTNode));
   node->type = BT_ACTION;

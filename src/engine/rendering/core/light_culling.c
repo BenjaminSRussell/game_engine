@@ -1,9 +1,9 @@
-#include "light_culling.h"
-#include "../../include/math/aabb.h"
+#include "rendering/core/light_culling.h"
+#include "include/math/aabb.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <math.h>
+#include <include/math/math.h>
 
 #define MAX_LIGHTS_PER_TILE 256
 

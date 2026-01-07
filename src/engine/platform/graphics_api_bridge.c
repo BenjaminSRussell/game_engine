@@ -4,9 +4,9 @@
 #include "../include/assets/gltf_loader.h"
 #include "../include/core/logger.h"
 #include "../include/platform/graphics_api_bridge.h"
-#include "../include/renderer/gpu_material.h"
-#include "../include/renderer/gpu_particles.h"
-#include "../include/renderer/vulkan.h"
+#include "include/rendering/gpu_material.h"
+#include "include/rendering/gpu_particles.h"
+#include "include/rendering/vulkan.h"
 #include <string.h>
 
 // Global renderer (would be properly managed in production)

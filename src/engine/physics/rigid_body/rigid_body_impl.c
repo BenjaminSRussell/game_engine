@@ -3,10 +3,10 @@
  * Implements core rigid body dynamics using physics_engine_core.h
  */
 
-#include "../../physics/physics_engine_core.h"
+#include "physics/physics_engine_core.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Helper for quaternion multiplication
 static void q_mul(float *out, const float *q1, const float *q2) {

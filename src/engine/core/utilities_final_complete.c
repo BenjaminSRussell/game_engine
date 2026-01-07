@@ -3,7 +3,7 @@
  * ~150+ remaining TODOs across various categories
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

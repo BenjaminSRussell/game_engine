@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "mtl_shader_compiler.h"
+#include "backend/metal/mtl_shader_compiler.h"
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 #include <stdio.h>
@@ -199,11 +199,18 @@ compile_internal(metal_shader_compiler_t *compiler, const char *source,
   for (uint32_t i = 0; i < compiler->cache_count; i++) {
     metal_shader_cache_entry_t *entry = &compiler->cache[i];
     if (entry->in_use && entry->source_hash == source_hash) {
-      NSLog(@\"Shader cache hit: %s\", debug_name ? debug_name : \"<unknown>\");
-      compiler->cache_hits++;
-      result.library = entry->library;
-      result.succeeded = true;
-      return result;
+      // Verify with actual source comparison to avoid hash collision issues
+      if (strcmp(entry->source, source) == 0) {
+        NSLog(@\"Shader cache hit: %s\", debug_name ? debug_name : \"<unknown>\");
+        compiler->cache_hits++;
+        result.library = entry->library;
+        result.succeeded = true;
+        return result;
+      } else {
+        // Hash collision - different source with same hash
+        NSLog(@\"Warning: Shader cache hash collision detected for %s\",
+              debug_name ? debug_name : \"<unknown>\");
+      }
     }
   }
 

@@ -28,20 +28,20 @@
 // Invariants:
 // - Vectors are assumed to be 2-component floating-point vectors.
 // - Operations like `vec2_length` rely on standard `sqrtf` from `math.h`.
-// - The `ALIGN(8)` attribute suggests optimization for 8-byte boundaries.
+// - The `K_ALIGN(8)` attribute suggests optimization for 8-byte boundaries.
 //
 #ifndef VEC2_H
 #define VEC2_H
 
 #include <common.h>
-#include <math.h>
+#include <include/math/math.h>
 
 typedef union {
   struct {
     f32 x, y;
   };
   f32 data[2];
-} ALIGN(8) Vec2;
+} K_ALIGN(8) Vec2;
 
 INLINE Vec2 vec2(f32 x, f32 y) {
   Vec2 v = {x, y};

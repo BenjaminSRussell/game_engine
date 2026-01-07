@@ -22,7 +22,7 @@ static WFC3D g_wfc = {0};
 
 void wfc_init(int size) {
     g_wfc.size = size;
-    uint32_t all = (1 << MAX_MODULES) - 1;
+    uint32_t all = (uint32_t)((1ULL << MAX_MODULES) - 1);
     for (int z = 0; z < size; z++) {
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {

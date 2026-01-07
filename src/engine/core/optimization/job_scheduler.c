@@ -8,7 +8,7 @@
  * @copyright (c) 2024 Minecraft v2 Engine
  */
 
-#include <core/optimization/job_scheduler.h>
+#include <core/sync/job_scheduler.h>
 #include <pthread.h>
 #include <stdatomic.h>
 

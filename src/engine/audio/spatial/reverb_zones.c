@@ -1,6 +1,6 @@
 #include "audio/spatial/reverb_zones.h"
 #include "core/core.h"
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 #include <stdlib.h>
 

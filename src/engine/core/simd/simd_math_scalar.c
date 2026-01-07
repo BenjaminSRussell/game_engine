@@ -5,8 +5,8 @@
  * Also serves as ground truth for testing SIMD implementations.
  */
 
-#include "simd_math.h"
-#include <math.h>
+#include "core/simd/simd_math.h"
+#include <include/math/math.h>
 #include <string.h>
 
 // Only compile if no SIMD available

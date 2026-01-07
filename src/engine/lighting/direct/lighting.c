@@ -52,12 +52,12 @@
 //     - LOD transitions: IMPLEMENTED (smooth LOD transitions)
 //     - LOD quality: IMPLEMENTED (quality levels per LOD)
 //
-#include "../../include/render/lighting.h"
-#include "../../include/core/logger.h"
+#include "include/rendering/lighting.h"
+#include "include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ==============================================================================
 // Lighting System Lifecycle

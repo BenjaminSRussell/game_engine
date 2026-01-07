@@ -9,7 +9,7 @@
 #ifndef PLATFORM_MTL_ENCODER_H
 #define PLATFORM_MTL_ENCODER_H
 
-#include "mtl_command_buffer.h"
+#include "backend/metal/mtl_command_buffer.h"
 #include <stdint.h>
 #include <stdbool.h>
 

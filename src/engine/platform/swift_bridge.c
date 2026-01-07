@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "core/engine.h"
-#include "input/input.h"
+#include "platform/input/input.h"
 #include "core/logger.h"
-#include "renderer/renderer.h"
+#include "rendering/renderer.h"
 #include "core/gpu_acceleration.h"
 
 // Globals for simple bridge management

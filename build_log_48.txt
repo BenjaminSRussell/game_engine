@@ -1,0 +1,18 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/io/async/system_02.c.o
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/async/system_02.c:32:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/async/system_02.h:44:5: error: conflicting types for 'io_async_system_02_optimize'
+   44 | int io_async_system_02_optimize(io_async_system_02_t* ctx);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/async/system_02.h:38:5: note: previous declaration is here
+   38 | int io_async_system_02_optimize(io_async_system_02_t* ctx, void* params);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/async/system_02.c:410:5: error: conflicting types for 'io_async_system_02_optimize'
+  410 | int io_async_system_02_optimize(io_async_system_02_t* ctx) {
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/async/system_02.c:356:5: note: previous definition is here
+  356 | int io_async_system_02_optimize(io_async_system_02_t* ctx, void* params) {
+      |     ^
+2 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/assets/io/async/system_02.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

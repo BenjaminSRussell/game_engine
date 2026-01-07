@@ -13,8 +13,8 @@
 // ✅ COMPLETED: Add GI caching system for performance.
 // ✅ COMPLETED: Implement GI temporal filtering system.
 // ✅ COMPLETED: Add GI denoising system.
-#include "../../include/renderer/global_illumination.h"
-#include <math.h>
+#include "include/rendering/global_illumination.h"
+#include <include/math/math.h>
 #include <string.h>
 #include <stdlib.h>
 

@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "../vertex/vertex_format.h"
+#include "geometry/vertex/vertex_format.h"
 
 #ifdef __cplusplus
 extern "C" {

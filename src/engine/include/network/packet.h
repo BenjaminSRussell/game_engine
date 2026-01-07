@@ -1,7 +1,7 @@
 #ifndef PACKET_H
 #define PACKET_H
 
-#include "network_types.h"
+#include "include/network/network_types.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

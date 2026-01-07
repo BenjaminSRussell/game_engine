@@ -9,7 +9,12 @@
 
 #pragma once
 
-#include <core/types.h>
+#ifndef PI
+#define PI 3.14159265359f
+#endif
+
+#include <stdbool.h>
+#include "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/types.h"
 #include <simd/simd.h>
 
 /* =================================================================================================

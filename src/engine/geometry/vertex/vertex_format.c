@@ -13,7 +13,7 @@
  * - Query interfaces for attribute discovery
  */
 
-#include "vertex_format.h"
+#include "geometry/vertex/vertex_format.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

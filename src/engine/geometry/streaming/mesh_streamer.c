@@ -38,7 +38,7 @@
  * TODO: Add mesh streamer render graph node
  */
 
-#include "mesh_streamer.h"
+#include "geometry/streaming/mesh_streamer.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

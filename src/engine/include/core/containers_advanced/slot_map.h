@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../types.h"
+#include "include/core/types.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus

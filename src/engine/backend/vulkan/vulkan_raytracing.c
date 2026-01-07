@@ -4,12 +4,12 @@
 // VULKAN-RT-622: Bind Descriptor Sets for raytracing
 // VULKAN-RT-623: Implement vkCmdTraceRaysKHR
 
-#include <renderer/vulkan.h>
+#include <rendering/vulkan.h>
 #include <stdlib.h>
 #include <string.h>
 
 #if defined(VULKAN_BUILD) && __has_include(<vulkan/vulkan.h>)
-#include <vulkan/vulkan.h>
+#include <include/rendering/vulkan.h>
 #else
 // Stub constants when Vulkan raytracing is not available
 #define VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_GEOMETRY_INFO_KHR 1000150000

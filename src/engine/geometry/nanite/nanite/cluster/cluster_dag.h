@@ -6,7 +6,7 @@
 #ifndef CLUSTER_DAG_H
 #define CLUSTER_DAG_H
 
-#include "cluster_builder.h"
+#include "geometry/nanite/nanite/cluster/cluster_builder.h"
 
 // Traversal callback
 typedef void (*cluster_visitor_t)(const cluster_t* cluster, void* user_data);

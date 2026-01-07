@@ -6,9 +6,9 @@
 #ifndef EDITOR_VIEWPORT_CAMERA_CONTROLS_H
 #define EDITOR_VIEWPORT_CAMERA_CONTROLS_H
 
-#include "../../common.h"
-#include "../../math/math.h"
-#include "../../input/input.h"
+#include "include/common.h"
+#include "include/math/math.h"
+#include "include/platform/input/input.h"
 
 // Forward declarations
 typedef struct Camera Camera;

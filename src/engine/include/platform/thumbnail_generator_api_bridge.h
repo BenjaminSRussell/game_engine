@@ -4,7 +4,7 @@
 #ifndef THUMBNAIL_GENERATOR_API_BRIDGE_H
 #define THUMBNAIL_GENERATOR_API_BRIDGE_H
 
-#include "../common.h"
+#include "include/common.h"
 #include <stdbool.h>
 #include <stdint.h>
 

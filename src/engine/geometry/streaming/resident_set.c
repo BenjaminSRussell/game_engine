@@ -38,7 +38,7 @@
  * TODO: Add resident set render graph node
  */
 
-#include "resident_set.h"
+#include "geometry/streaming/resident_set.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

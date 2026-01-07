@@ -1,4 +1,4 @@
-#include "debug_renderer.h"
+#include "editor/debug/debug_renderer.h"
 
 typedef struct {
     simd_float3 min;

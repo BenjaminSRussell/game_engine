@@ -24,8 +24,9 @@
 #ifndef ML_NAVIGATION_H
 #define ML_NAVIGATION_H
 
-#include "../../common.h"
-#include "ml_core.h"
+#include "include/common.h"
+#include "include/ai/ml/ml_core.h"
+#include "include/math/vec3.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -70,7 +71,7 @@ typedef struct {
 // ============================================================================
 
 typedef struct {
-    vec3 *waypoints;                 // Path waypoints
+    Vec3 *waypoints;                 // Path waypoints
     u32 waypoint_count;             // Number of waypoints
     u32 max_waypoints;              // Maximum waypoints allocated
     f32 total_length;               // Total path length
@@ -88,9 +89,9 @@ typedef struct {
 
 typedef struct {
     u32 agent_id;                    // Unique agent identifier
-    vec3 current_position;           // Current world position
-    vec3 target_position;           // Target destination
-    vec3 velocity;                  // Current movement velocity
+    Vec3 current_position;           // Current world position
+    Vec3 target_position;           // Target destination
+    Vec3 velocity;                  // Current movement velocity
     f32 max_speed;                  // Maximum movement speed
     f32 acceleration;               // Acceleration rate
     f32 turning_radius;             // Minimum turning radius
@@ -108,11 +109,11 @@ typedef struct {
 // ============================================================================
 
 typedef struct {
-    vec3 predicted_positions[10];    // Predicted future positions
+    Vec3 predicted_positions[10];    // Predicted future positions
     f32 prediction_confidence[10];   // Confidence for each prediction
     u32 prediction_count;           // Number of predictions
     f64 prediction_time;            // When predictions were made
-    vec3 prediction_target;         // Predicted target location
+    Vec3 prediction_target;         // Predicted target location
     f32 target_confidence;          // Confidence in target prediction
 } PlayerPrediction;
 
@@ -133,8 +134,8 @@ typedef struct {
     u32 group_id;                   // Group identifier
     NavigationAgent *agents;         // Agents in the group
     u32 agent_count;                // Number of agents in group
-    vec3 group_target;              // Group destination
-    vec3 formation_center;          // Center of formation
+    Vec3 group_target;              // Group destination
+    Vec3 formation_center;          // Center of formation
     f32 formation_spacing;          // Spacing between agents
     bool is_formation_maintained;   // Whether formation is maintained
     u32 coordination_strategy;       // Coordination strategy type
@@ -216,24 +217,24 @@ void ml_navigation_set_replanning_threshold(MLNavigationSystem *system, f32 thre
 
 // Environment setup
 bool ml_navigation_load_terrain(MLNavigationSystem *system, const char *terrain_file);
-bool ml_navigation_add_static_obstacle(MLNavigationSystem *system, vec3 position, vec3 size);
-bool ml_navigation_update_dynamic_obstacles(MLNavigationSystem *system, const vec3 *obstacles, u32 count);
+bool ml_navigation_add_static_obstacle(MLNavigationSystem *system, Vec3 position, Vec3 size);
+bool ml_navigation_update_dynamic_obstacles(MLNavigationSystem *system, const Vec3 *obstacles, u32 count);
 bool ml_navigation_update_environment(MLNavigationSystem *system);
 
 // Environment analysis
-f32 ml_navigation_get_terrain_difficulty(MLNavigationSystem *system, vec3 position);
-bool ml_navigation_is_position_walkable(MLNavigationSystem *system, vec3 position);
-bool ml_navigation_has_line_of_sight(MLNavigationSystem *system, vec3 start, vec3 end);
+f32 ml_navigation_get_terrain_difficulty(MLNavigationSystem *system, Vec3 position);
+bool ml_navigation_is_position_walkable(MLNavigationSystem *system, Vec3 position);
+bool ml_navigation_has_line_of_sight(MLNavigationSystem *system, Vec3 start, Vec3 end);
 
 // ============================================================================
 // PUBLIC API - AGENT MANAGEMENT
 // ============================================================================
 
 // Agent creation and management
-u32 ml_navigation_create_agent(MLNavigationSystem *system, vec3 start_position, f32 max_speed);
+u32 ml_navigation_create_agent(MLNavigationSystem *system, Vec3 start_position, f32 max_speed);
 bool ml_navigation_destroy_agent(MLNavigationSystem *system, u32 agent_id);
-bool ml_navigation_set_agent_target(MLNavigationSystem *system, u32 agent_id, vec3 target);
-bool ml_navigation_update_agent_position(MLNavigationSystem *system, u32 agent_id, vec3 position);
+bool ml_navigation_set_agent_target(MLNavigationSystem *system, u32 agent_id, Vec3 target);
+bool ml_navigation_update_agent_position(MLNavigationSystem *system, u32 agent_id, Vec3 position);
 
 // Agent state
 NavigationAgent *ml_navigation_get_agent(MLNavigationSystem *system, u32 agent_id);
@@ -245,8 +246,8 @@ f32 ml_navigation_get_agent_progress(MLNavigationSystem *system, u32 agent_id);
 // ============================================================================
 
 // Main path generation
-NavigationPath *ml_navigation_generate_path(MLNavigationSystem *system, u32 agent_id, vec3 start, vec3 goal);
-bool ml_navigation_generate_path_async(MLNavigationSystem *system, u32 agent_id, vec3 start, vec3 goal,
+NavigationPath *ml_navigation_generate_path(MLNavigationSystem *system, u32 agent_id, Vec3 start, Vec3 goal);
+bool ml_navigation_generate_path_async(MLNavigationSystem *system, u32 agent_id, Vec3 start, Vec3 goal,
                                       void (*callback)(NavigationPath *path, void *user_data), void *user_data);
 
 // Path validation and optimization
@@ -256,7 +257,7 @@ bool ml_navigation_smooth_path(MLNavigationSystem *system, NavigationPath *path)
 
 // Path following
 bool ml_navigation_follow_path(MLNavigationSystem *system, u32 agent_id, NavigationPath *path, f32 delta_time);
-vec3 ml_navigation_get_next_waypoint(MLNavigationSystem *system, u32 agent_id);
+Vec3 ml_navigation_get_next_waypoint(MLNavigationSystem *system, u32 agent_id);
 bool ml_navigation_reached_destination(MLNavigationSystem *system, u32 agent_id);
 
 // ============================================================================
@@ -264,14 +265,14 @@ bool ml_navigation_reached_destination(MLNavigationSystem *system, u32 agent_id)
 // ============================================================================
 
 // Player prediction
-PlayerPrediction *ml_navigation_predict_player_movement(MLNavigationSystem *system, vec3 current_pos, 
-                                                      vec3 current_vel, f32 prediction_horizon);
-bool ml_navigation_update_prediction(MLNavigationSystem *system, u32 prediction_id, vec3 actual_position);
+PlayerPrediction *ml_navigation_predict_player_movement(MLNavigationSystem *system, Vec3 current_pos, 
+                                                      Vec3 current_vel, f32 prediction_horizon);
+bool ml_navigation_update_prediction(MLNavigationSystem *system, u32 prediction_id, Vec3 actual_position);
 f32 ml_navigation_get_prediction_accuracy(MLNavigationSystem *system);
 
 // Predictive pathfinding
 NavigationPath *ml_navigation_generate_predictive_path(MLNavigationSystem *system, u32 agent_id, 
-                                                      vec3 start, PlayerPrediction *target_prediction);
+                                                      Vec3 start, PlayerPrediction *target_prediction);
 
 // ============================================================================
 // PUBLIC API - GROUP COORDINATION
@@ -281,12 +282,12 @@ NavigationPath *ml_navigation_generate_predictive_path(MLNavigationSystem *syste
 u32 ml_navigation_create_group(MLNavigationSystem *system);
 bool ml_navigation_add_agent_to_group(MLNavigationSystem *system, u32 group_id, u32 agent_id);
 bool ml_navigation_remove_agent_from_group(MLNavigationSystem *system, u32 group_id, u32 agent_id);
-bool ml_navigation_set_group_target(MLNavigationSystem *system, u32 group_id, vec3 target);
+bool ml_navigation_set_group_target(MLNavigationSystem *system, u32 group_id, Vec3 target);
 
 // Formation control
 bool ml_navigation_set_formation(MLNavigationSystem *system, u32 group_id, u32 formation_type, f32 spacing);
 bool ml_navigation_maintain_formation(MLNavigationSystem *system, u32 group_id, f32 delta_time);
-vec3 ml_navigation_get_formation_position(MLNavigationSystem *system, u32 group_id, u32 agent_id);
+Vec3 ml_navigation_get_formation_position(MLNavigationSystem *system, u32 group_id, u32 agent_id);
 
 // ============================================================================
 // PUBLIC API - LEARNING AND ADAPTATION
@@ -339,9 +340,9 @@ const char *ml_navigation_get_algorithm_name(NavigationAlgorithm algorithm);
 
 // Utility functions
 bool ml_navigation_validate_environment(const NavigationEnvironment *environment);
-bool ml_navigation_validate_path(const NavigationPath *path);
+// bool ml_navigation_validate_path(const NavigationPath *path); // Duplicate removed
 f32 ml_navigation_calculate_path_length(const NavigationPath *path);
-vec3 ml_navigation_get_path_direction(const NavigationPath *path, u32 waypoint_index);
+Vec3 ml_navigation_get_path_direction(const NavigationPath *path, u32 waypoint_index);
 
 // ============================================================================
 // ERROR HANDLING
@@ -393,18 +394,36 @@ const char *ml_navigation_get_error_string(NavigationError error);
         } \
     } while(0)
 
+#define NAV_CHECK_RET(condition, error, retval) \
+    do { \
+        if (!(condition)) { \
+            LOG_ERROR("ML Navigation Error: %s", ml_navigation_get_error_string(error)); \
+            return retval; \
+        } \
+    } while(0)
+
 #define NAV_CHECK_NULL_PARAM(param) \
     NAV_CHECK_ERROR((param) != NULL, NAV_ERROR_INVALID_PARAMETER)
 
+#define NAV_CHECK_NULL_PARAM_RET(param, retval) \
+    NAV_CHECK_RET((param) != NULL, NAV_ERROR_INVALID_PARAMETER, retval)
+
+#define NAV_CHECK_NULL_PARAM_PTR(param) \
+    NAV_CHECK_NULL_PARAM_RET(param, NULL)
+
+#define NAV_CHECK_ERROR_PTR(condition, error) \
+    NAV_CHECK_RET(condition, error, NULL)
+
 // Performance macros
+#include <time.h>
 #define NAV_START_TIMER(system) \
-    f64 start_time = performance_get_time()
+    clock_t start_time = clock()
 
 #define NAV_END_TIMER(system, path_time_ptr) \
     do { \
-        f64 end_time = performance_get_time(); \
-        f64 duration = end_time - start_time; \
-        if (path_time_ptr) *path_time_ptr = duration; \
+        clock_t end_time = clock(); \
+        f64 duration = ((f64)(end_time - start_time)) / CLOCKS_PER_SEC; \
+        if ((path_time_ptr) != NULL) *((f64*)(path_time_ptr)) = duration; \
         system->total_navigation_time += duration; \
         system->total_paths_generated++; \
         system->average_navigation_time = system->total_navigation_time / system->total_paths_generated; \

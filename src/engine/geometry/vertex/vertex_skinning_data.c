@@ -38,7 +38,7 @@
  * TODO: Add vertex skinning data render graph node
  */
 
-#include "vertex_skinning_data.h"
+#include "geometry/vertex/vertex_skinning_data.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

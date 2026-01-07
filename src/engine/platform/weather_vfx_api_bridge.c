@@ -1,6 +1,6 @@
 #include "platform/weather_vfx_api_bridge.h"
 #include "core/logger.h"
-#include "renderer/systems/weather_system.h"
+#include "rendering/systems/weather_system.h"
 
 // Delegates to the actual Weather System
 

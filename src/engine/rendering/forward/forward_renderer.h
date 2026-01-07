@@ -10,8 +10,8 @@
 #define RENDERING_FORWARD_RENDERER_H
 
 #include <core/types.h>
-#include <renderer/renderer.h>
-#include <renderer/camera.h>
+#include <rendering/renderer.h>
+#include <rendering/camera.h>
 #include <core/scene.h>
 
 /* ============================================================================

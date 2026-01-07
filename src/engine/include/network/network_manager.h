@@ -1,9 +1,9 @@
 #ifndef NETWORK_MANAGER_H
 #define NETWORK_MANAGER_H
 
-#include "network_types.h"
-#include "packet.h"
-#include "socket.h"
+#include "include/network/network_types.h"
+#include "include/network/packet.h"
+#include "include/network/socket.h"
 #include <stdbool.h>
 
 typedef struct {

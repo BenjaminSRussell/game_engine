@@ -38,7 +38,7 @@
  * TODO: Add vertex stream render graph node
  */
 
-#include "vertex_stream.h"
+#include "geometry/vertex/vertex_stream.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

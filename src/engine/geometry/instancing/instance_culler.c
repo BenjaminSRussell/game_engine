@@ -6,8 +6,8 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "instance_culler.h"
-#include "../../core/math/math/frustum.h"
+#include "geometry/instancing/instance_culler.h"
+#include "math/frustum.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

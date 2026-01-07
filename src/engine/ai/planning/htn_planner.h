@@ -4,8 +4,8 @@
 #ifndef HTN_PLANNER_H
 #define HTN_PLANNER_H
 
-#include "../ai_types.h"
-#include "../../common.h"
+#include "ai/ai_types.h"
+#include "include/common.h"
 
 // HTN Task types
 typedef enum {

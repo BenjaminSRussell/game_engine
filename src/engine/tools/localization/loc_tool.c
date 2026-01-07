@@ -4,7 +4,7 @@
  * =================================================================================================
  */
 
-#include "loc_tool.h"
+#include "tools/localization/loc_tool.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

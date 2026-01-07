@@ -5,7 +5,7 @@
  * Processing 4-8 bodies per iteration via NEON/SSE2/AVX2.
  */
 
-#include "physics_integration.h"
+#include "physics/integration/physics_integration.h"
 #include <string.h>
 
 void physics_integrate_velocities(RigidBodySoA *soa, float dt) {

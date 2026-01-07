@@ -2,7 +2,7 @@
 // Environmental ambient sound system with dynamic zones and layers
 
 #include <audio/ambient_system.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

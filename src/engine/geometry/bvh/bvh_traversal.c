@@ -6,9 +6,9 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "bvh_traversal.h"
-#include "../../core/math/math/vec3.h"
-#include "../../core/math/math/aabb.h"
+#include "geometry/bvh/bvh_traversal.h"
+#include "include/math/vec3.h"
+#include "include/math/aabb.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -226,7 +226,7 @@ static uint32_t traverse_bvh_frustum(
 }
 
 /* SIMD-optimized frustum culling (4 AABBs at once) */
-#include "bvh_simd.h"
+#include "geometry/bvh/bvh_simd.h"
 
 static uint32_t traverse_bvh_frustum_simd(
     const geometry_bvh_traversal_internal_t* traversal,

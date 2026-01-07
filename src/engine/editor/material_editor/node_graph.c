@@ -1,5 +1,5 @@
 #include "editor/material_editor/node_graph.h"
-#include "renderer/core/material.h"
+#include "rendering/material.h"
 #include "core/memory.h"
 #include "core/logger.h"
 #include "core/string_utils.h"

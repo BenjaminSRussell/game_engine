@@ -4,7 +4,7 @@
  * =================================================================================================
  */
 
-#include "selection_marquee.h"
+#include "editor/asset_creation/selection_marquee.h"
 #include <string.h>
 
 void marquee_init(MarqueeSelection *marquee) {

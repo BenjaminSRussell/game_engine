@@ -7,7 +7,7 @@
 #ifndef ltable_h
 #define ltable_h
 
-#include "lobject.h"
+#include "include/vendor/lua/lobject.h"
 
 
 #define gnode(t,i)	(&(t)->node[i])

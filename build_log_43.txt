@@ -1,0 +1,11 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:451:45: error: incompatible function pointer types passing 'void (void *)' to parameter of type 'ThreadFunction' (aka 'void *(*)(void *)') [-Wincompatible-function-pointer-types]
+  451 |     stt->recognition_thread = thread_create(stt_recognition_thread, stt);
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/threading.h:16:51: note: passing argument to parameter 'func' here
+   16 | static inline Thread thread_create(ThreadFunction func, void* arg) {
+      |                                                   ^
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

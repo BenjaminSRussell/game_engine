@@ -10,8 +10,8 @@
 
 #include <core/types.h>
 #include <core/scene.h>
-#include "shader_variants.h"
-#include "transparency.h"
+#include "rendering/forward/shader_variants.h"
+#include "rendering/forward/transparency.h"
 
 /* ============================================================================
  * TYPES

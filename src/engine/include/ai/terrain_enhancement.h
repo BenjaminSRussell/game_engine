@@ -7,8 +7,8 @@
 #ifndef TERRAIN_ENHANCEMENT_H
 #define TERRAIN_ENHANCEMENT_H
 
-#include "../../common.h"
-#include "../ml/ml_core.h"
+#include "include/common.h"
+#include "include/ai/ml/ml_core.h"
 #include <stdbool.h>
 
 typedef enum {

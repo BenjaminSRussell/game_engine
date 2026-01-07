@@ -38,7 +38,7 @@
  * TODO: Add vertex buffer pool render graph node
  */
 
-#include "vertex_buffer_pool.h"
+#include "geometry/vertex/vertex_buffer_pool.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

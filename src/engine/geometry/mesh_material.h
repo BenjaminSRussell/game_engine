@@ -1,7 +1,7 @@
 #ifndef GEOMETRY_MESH_MATERIAL_H
 #define GEOMETRY_MESH_MATERIAL_H
 
-#include "geometry_types.h"
+#include "geometry/geometry_types.h"
 #include <stdbool.h>
 
 /**

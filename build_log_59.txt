@@ -1,0 +1,97 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/advanced/audio_synthesis.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/audio/advanced/dolby_atmos.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:61:33: error: assigning to 'Vec3' from incompatible type 'Vec3 (f32, f32, f32)' (aka 'Vec3 (float, float, float)')
+   61 |     renderer->listener_position = (vec3){0.0f, 0.0f, 0.0f};
+      |                                 ^ ~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:61:41: error: expected ';' after expression
+   61 |     renderer->listener_position = (vec3){0.0f, 0.0f, 0.0f};
+      |                                         ^
+      |                                         ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:61:58: error: expected ';' after expression
+   61 |     renderer->listener_position = (vec3){0.0f, 0.0f, 0.0f};
+      |                                                          ^
+      |                                                          ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:62:36: error: assigning to 'Quat' from incompatible type 'Quat (f32, f32, f32, f32)' (aka 'Quat (float, float, float, float)')
+   62 |     renderer->listener_orientation = (quat){0.0f, 0.0f, 0.0f, 1.0f};
+      |                                    ^ ~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:62:44: error: expected ';' after expression
+   62 |     renderer->listener_orientation = (quat){0.0f, 0.0f, 0.0f, 1.0f};
+      |                                            ^
+      |                                            ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:62:67: error: expected ';' after expression
+   62 |     renderer->listener_orientation = (quat){0.0f, 0.0f, 0.0f, 1.0f};
+      |                                                                   ^
+      |                                                                   ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:61:42: warning: left operand of comma operator has no effect [-Wunused-value]
+   61 |     renderer->listener_position = (vec3){0.0f, 0.0f, 0.0f};
+      |                                          ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:61:48: warning: left operand of comma operator has no effect [-Wunused-value]
+   61 |     renderer->listener_position = (vec3){0.0f, 0.0f, 0.0f};
+      |                                                ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:61:54: warning: expression result unused [-Wunused-value]
+   61 |     renderer->listener_position = (vec3){0.0f, 0.0f, 0.0f};
+      |                                                      ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:62:45: warning: left operand of comma operator has no effect [-Wunused-value]
+   62 |     renderer->listener_orientation = (quat){0.0f, 0.0f, 0.0f, 1.0f};
+      |                                             ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:62:51: warning: left operand of comma operator has no effect [-Wunused-value]
+   62 |     renderer->listener_orientation = (quat){0.0f, 0.0f, 0.0f, 1.0f};
+      |                                                   ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:62:57: warning: left operand of comma operator has no effect [-Wunused-value]
+   62 |     renderer->listener_orientation = (quat){0.0f, 0.0f, 0.0f, 1.0f};
+      |                                                         ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:62:63: warning: expression result unused [-Wunused-value]
+   62 |     renderer->listener_orientation = (quat){0.0f, 0.0f, 0.0f, 1.0f};
+      |                                                               ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:143:34: error: assigning to 'Vec3' from incompatible type 'Vec3 (f32, f32, f32)' (aka 'Vec3 (float, float, float)')
+  143 |     config->speakers[0].position = (vec3){-speaker_distance, 0.0f, speaker_distance};
+      |                                  ^ ~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:143:42: error: expected ';' after expression
+  143 |     config->speakers[0].position = (vec3){-speaker_distance, 0.0f, speaker_distance};
+      |                                          ^
+      |                                          ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:143:84: error: expected ';' after expression
+  143 |     config->speakers[0].position = (vec3){-speaker_distance, 0.0f, speaker_distance};
+      |                                                                                    ^
+      |                                                                                    ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:144:35: error: assigning to 'Vec3' from incompatible type 'Vec3 (f32, f32, f32)' (aka 'Vec3 (float, float, float)')
+  144 |     config->speakers[0].direction = (vec3){1.0f, 0.0f, -1.0f};
+      |                                   ^ ~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:144:43: error: expected ';' after expression
+  144 |     config->speakers[0].direction = (vec3){1.0f, 0.0f, -1.0f};
+      |                                           ^
+      |                                           ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:144:61: error: expected ';' after expression
+  144 |     config->speakers[0].direction = (vec3){1.0f, 0.0f, -1.0f};
+      |                                                             ^
+      |                                                             ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:151:34: error: assigning to 'Vec3' from incompatible type 'Vec3 (f32, f32, f32)' (aka 'Vec3 (float, float, float)')
+  151 |     config->speakers[1].position = (vec3){speaker_distance, 0.0f, speaker_distance};
+      |                                  ^ ~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:151:42: error: expected ';' after expression
+  151 |     config->speakers[1].position = (vec3){speaker_distance, 0.0f, speaker_distance};
+      |                                          ^
+      |                                          ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:151:83: error: expected ';' after expression
+  151 |     config->speakers[1].position = (vec3){speaker_distance, 0.0f, speaker_distance};
+      |                                                                                   ^
+      |                                                                                   ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:152:35: error: assigning to 'Vec3' from incompatible type 'Vec3 (f32, f32, f32)' (aka 'Vec3 (float, float, float)')
+  152 |     config->speakers[1].direction = (vec3){-1.0f, 0.0f, -1.0f};
+      |                                   ^ ~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:152:43: error: expected ';' after expression
+  152 |     config->speakers[1].direction = (vec3){-1.0f, 0.0f, -1.0f};
+      |                                           ^
+      |                                           ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:152:62: error: expected ';' after expression
+  152 |     config->speakers[1].direction = (vec3){-1.0f, 0.0f, -1.0f};
+      |                                                              ^
+      |                                                              ;
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/audio/advanced/dolby_atmos.c:159:34: error: assigning to 'Vec3' from incompatible type 'Vec3 (f32, f32, f32)' (aka 'Vec3 (float, float, float)')
+  159 |     config->speakers[2].position = (vec3){0.0f, 0.0f, speaker_distance};
+      |                                  ^ ~~~~~~
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+7 warnings and 20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/audio/advanced/dolby_atmos.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

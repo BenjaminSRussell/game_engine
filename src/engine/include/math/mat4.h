@@ -37,7 +37,7 @@
 
 
 #include <common.h>
-#include "vec3.h"
+#include "include/math/vec3.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -77,7 +77,7 @@ typedef union {
         f32 m02, m12, m22, m32;
         f32 m03, m13, m23, m33;
     };
-} ALIGN(16) Mat4;
+} K_ALIGN(16) Mat4;
 
 INLINE Mat4 mat4_identity(void) {
     Mat4 m = {0};

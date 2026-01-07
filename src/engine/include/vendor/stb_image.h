@@ -10,7 +10,7 @@
    #include ...
    #include ...
    #define STB_IMAGE_IMPLEMENTATION
-   #include "stb_image.h"
+   #include "include/vendor/stb_image.h"
 
    You can #define STBI_ASSERT(x) before the #include to avoid using assert.h.
    And #define STBI_MALLOC, STBI_REALLOC, and STBI_FREE to avoid using malloc,realloc,free
@@ -591,7 +591,7 @@ STBIDEF int   stbi_zlib_decode_noheader_buffer(char *obuffer, int olen, const ch
 #include <limits.h>
 
 #if !defined(STBI_NO_LINEAR) || !defined(STBI_NO_HDR)
-#include <math.h>  // ldexp, pow
+#include <include/math/math.h>  // ldexp, pow
 #endif
 
 #ifndef STBI_NO_STDIO

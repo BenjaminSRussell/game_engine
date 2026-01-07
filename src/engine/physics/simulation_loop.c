@@ -1,4 +1,4 @@
-#include "physics_engine_core.h"
+#include "physics/physics_engine_core.h"
 
 #include <time.h>
 #include <unistd.h>
@@ -6,10 +6,10 @@
 #include <stdatomic.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-#include "../include/threading/job_scheduler_fiber.h"
+#include <include/math/math.h>
+#include "include/core/threading/job_scheduler_fiber.h"
 #include "../include/tools/profiler.h"
-#include "../include/memory/allocator_aligned.h"
+#include "include/core/memory/allocator_aligned.h"
 
 // Define max/min Macros if not present
 #ifndef fmaxf

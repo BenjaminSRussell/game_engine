@@ -1,8 +1,8 @@
 #ifndef AUDIO_PROCEDURAL_ADAPTIVE_MUSIC_H
 #define AUDIO_PROCEDURAL_ADAPTIVE_MUSIC_H
 
-#include "../../common.h"
-#include <math.h>
+#include "include/common.h"
+#include <include/math/math.h>
 
 #define MAX_MUSIC_LAYERS 8
 #define MAX_MUSIC_SEGMENTS 16

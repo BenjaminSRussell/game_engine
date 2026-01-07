@@ -5,7 +5,7 @@
  * =================================================================================================
  */
 
-#include "script_interface.h"
+#include "scripting/script_interface.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

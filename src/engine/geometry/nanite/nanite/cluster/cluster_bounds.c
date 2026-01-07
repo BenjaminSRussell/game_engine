@@ -3,8 +3,8 @@
  * Implementation of cluster bounding volume generation
  */
 
-#include "cluster_bounds.h"
-#include <math.h>
+#include "geometry/nanite/nanite/cluster/cluster_bounds.h"
+#include <include/math/math.h>
 
 static float dist_sq(vec3_t a, vec3_t b) {
     float dx = a.x - b.x;

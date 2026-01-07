@@ -1,0 +1,95 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/import/fbx_importer.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/import/gltf_importer.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:286:15: error: static declaration of 'atof' follows non-static declaration
+  286 | static double atof(const char* str) {
+      |               ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h:154:9: note: previous declaration is here
+  154 | double   atof(const char *);
+      |          ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:467:32: error: unknown type name 'asset_gltf_importer_handle_t'; did you mean 'asset_gltf_importer_context_t'?
+  467 | int asset_gltf_importer_create(asset_gltf_importer_handle_t* out_handle, 
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                asset_gltf_importer_context_t
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:232:3: note: 'asset_gltf_importer_context_t' declared here
+  232 | } asset_gltf_importer_context_t;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:468:40: error: unknown type name 'asset_gltf_importer_desc_t'; did you mean 'asset_gltf_importer_context_t'?
+  468 |                                  const asset_gltf_importer_desc_t* desc) {
+      |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                        asset_gltf_importer_context_t
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:232:3: note: 'asset_gltf_importer_context_t' declared here
+  232 | } asset_gltf_importer_context_t;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:485:25: error: no member named 'flags' in 'struct asset_gltf_importer_context'
+  485 |     item->flags = desc->flags;
+      |                   ~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:492:17: error: no member named 'id' in 'struct asset_gltf_importer_context'
+  492 |     out_handle->id = index;
+      |     ~~~~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:496:34: error: unknown type name 'asset_gltf_importer_handle_t'; did you mean 'asset_gltf_importer_context_t'?
+  496 | void asset_gltf_importer_destroy(asset_gltf_importer_handle_t handle) {
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                  asset_gltf_importer_context_t
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:232:3: note: 'asset_gltf_importer_context_t' declared here
+  232 | } asset_gltf_importer_context_t;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:497:16: error: no member named 'id' in 'struct asset_gltf_importer_context'
+  497 |     if (handle.id >= g_gltf_ctx.count) {
+      |         ~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:501:48: error: no member named 'id' in 'struct asset_gltf_importer_context'
+  501 |     gltf_data_cleanup(&g_gltf_ctx.items[handle.id].data);
+      |                                         ~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:502:29: error: no member named 'id' in 'struct asset_gltf_importer_context'
+  502 |     g_gltf_ctx.items[handle.id].initialized = false;
+      |                      ~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:505:30: error: unknown type name 'asset_gltf_importer_handle_t'; did you mean 'asset_gltf_importer_context_t'?
+  505 | int asset_gltf_importer_load(asset_gltf_importer_handle_t handle, const char* path) {
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                              asset_gltf_importer_context_t
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:232:3: note: 'asset_gltf_importer_context_t' declared here
+  232 | } asset_gltf_importer_context_t;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:506:16: error: no member named 'id' in 'struct asset_gltf_importer_context'
+  506 |     if (handle.id >= g_gltf_ctx.count || !path) {
+      |         ~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:510:69: error: no member named 'id' in 'struct asset_gltf_importer_context'
+  510 |     asset_gltf_importer_internal_t* item = &g_gltf_ctx.items[handle.id];
+      |                                                              ~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:531:45: error: unknown type name 'asset_gltf_importer_handle_t'; did you mean 'asset_gltf_importer_context_t'?
+  531 | uint32_t asset_gltf_importer_get_mesh_count(asset_gltf_importer_handle_t handle) {
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                             asset_gltf_importer_context_t
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:232:3: note: 'asset_gltf_importer_context_t' declared here
+  232 | } asset_gltf_importer_context_t;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:532:16: error: no member named 'id' in 'struct asset_gltf_importer_context'
+  532 |     if (handle.id >= g_gltf_ctx.count) {
+      |         ~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:535:36: error: no member named 'id' in 'struct asset_gltf_importer_context'
+  535 |     return g_gltf_ctx.items[handle.id].data.mesh_count;
+      |                             ~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:538:49: error: unknown type name 'asset_gltf_importer_handle_t'; did you mean 'asset_gltf_importer_context_t'?
+  538 | uint32_t asset_gltf_importer_get_material_count(asset_gltf_importer_handle_t handle) {
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                 asset_gltf_importer_context_t
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:232:3: note: 'asset_gltf_importer_context_t' declared here
+  232 | } asset_gltf_importer_context_t;
+      |   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:539:16: error: no member named 'id' in 'struct asset_gltf_importer_context'
+  539 |     if (handle.id >= g_gltf_ctx.count) {
+      |         ~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:542:36: error: no member named 'id' in 'struct asset_gltf_importer_context'
+  542 |     return g_gltf_ctx.items[handle.id].data.material_count;
+      |                             ~~~~~~ ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:545:50: error: unknown type name 'asset_gltf_importer_handle_t'; did you mean 'asset_gltf_importer_context_t'?
+  545 | uint32_t asset_gltf_importer_get_animation_count(asset_gltf_importer_handle_t handle) {
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                  asset_gltf_importer_context_t
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:232:3: note: 'asset_gltf_importer_context_t' declared here
+  232 | } asset_gltf_importer_context_t;
+      |   ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/import/gltf_importer.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

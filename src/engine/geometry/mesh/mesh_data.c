@@ -13,15 +13,15 @@
  * - Memory pooling and statistics
  */
 
-#include "mesh_data.h"
-#include "mesh_bounds.h"
+#include "geometry/mesh/mesh_data.h"
+#include "geometry/mesh/mesh_bounds.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * CONSTANTS

@@ -1,7 +1,7 @@
 #ifndef LIGHT_MANAGER_H
 #define LIGHT_MANAGER_H
 
-#include "light_types.h"
+#include "lighting/light_types.h"
 #include <stdint.h>
 #include <stdbool.h>
 

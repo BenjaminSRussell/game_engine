@@ -1,0 +1,167 @@
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nlp_behavior.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o
+[  3%] Built target Catch2
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/obstacle_carving.c:1:10: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_inference.c:1/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_recast.c::1[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_melee.c.o
+10:10: fatal error: : fatal error: 'ml_inference.h' file not found
+fatal error: 'ai/navigation_advanced/obstacle_carving.h' file not found
+    1 | #i    nclude "ai/navigation_advan'ai/navigation_advanced/navmesh_recast.h' file not found1 | #include 
+"cmed/obstacle_carl_infve/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_streaming.c    1/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_boss.c:r11 | ::/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/crowd_detour.c1:1:#ie1010in:: gn:10:fatal error: c .fatal error: h 'npc/prebuilt/npc_boss.h' file not found'ai/navigation_advanced/crowd_detour.h' file not found
+n    fatal error: 'ai/navigation_advanced/navmesh_streaming.h' file not found
+1 | "#ecl.
+incl         
+uh"
+      d11| e         ^~~~~~~~~~~~~~~~|  |     ude          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+"a 
+includ"aei/navigation_adva 1<npc/prebu1ilni1c/nead errortvi/gation_ error generated.
+/npc generated_advance | #include "aicr/navigd/navmesh_recoast.h"wd_boss.h
+      .
+ation_detour.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~a>|          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+dvanc
+ed/navmesh_streaming.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+1 error generated.
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o] Error 1
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c:11:10: fatal error: 'npc/prebuilt/npc_companion.h' file not found
+   11 | #make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/off_mesh_links.cinclu:1:10: fatal error: 'ai/nav/off_mesh_links.h' file not foundde <n
+pc    1 | #inclu/prde "ai/ebuilt/npnav/off_mesh_linksc_compani.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+on.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:35:33: error: unknown type name 'CrowdAvoid'
+   35 | void crowd_set_desired_velocity(CrowdAvoid *crowd, int agent_idx, const float *desired_vel) {
+      |                                 ^
+1 error generated.
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:17:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:73:5: error: unknown type name 'vec3'
+   73 |     vec3 *waypoints;                 // Path waypoints
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:91:5: error: unknown type name 'vec3'
+   91 |     vec3 current_position;           // Current world position
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:92:5: error: unknown type name 'vec3'
+   92 |     vec3 target_position;           // Target destination
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:93:5: error: unknown type name 'vec3'
+   93 |     vec3 velocity;                  // Current movement velocity
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:111:5: error: unknown type name 'vec3'
+  111 |     vec3 predicted_positions[10];    // Predicted future positions
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:115:5: error: unknown type name 'vec3'
+  115 |     vec3 prediction_target;         // Predicted target location
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:136:5: error: unknown type name 'vec3'
+  136 |     vec3 group_target;              // Group destination
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:137:5: error: unknown type name 'vec3'
+  137 |     vec3 formation_center;          // Center of formation
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:219:68: error: unknown type name 'vec3'
+  219 | bool ml_navigation_add_static_obstacle(MLNavigationSystem *system, vec3 position, vec3 size)make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o] Error 1;
+      |                                                                    ^
+
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:219:83: error: unknown type name 'vec3'
+  219 | bool ml_navigation_add_static_obstacle(MLNavigationSystem *system, vec3 position, vec3 size);
+      |                                                                                   ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:220:79: error: unknown type name 'vec3'
+  220 | bool ml_navigation_update_dynamic_obstacles(MLNavigationSystem *system, const vec3 *obstacles, u32 count);
+      |                                                                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:224:70: error: unknown type name 'vec3'
+  224 | f32 ml_navigation_get_terrain_difficulty(MLNavigationSystem *system, vec3 position);
+      |                                                                      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_civilian.c:12:10: fatal error: 'npc/prebuilt/npc_civilian.h' file not found
+   12 | #include <npc/prebuilt/npc_civilian.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:225:69: error: unknown type name 'vec3'
+  225 | bool ml_navigation_is_position_walkable(MLNavigationSystem *system, vec3 position);
+      |                                                                     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:68:14: error: no member named 'tile_size' in 'struct NavmeshBuilder'; did you mean 'cell_size'?
+   68 |     builder->tile_size = 32;
+      |              ^~~~~~~~~
+      |              cell_size
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/navmesh.h:108:11: note: 'cell_size' declared here
+  108 | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:    f226:66: error: unknown type name 'vec3'loat 
+cel  226 | bool1 ml_navigation_ error generatedl_size;
+      |           ^
+h.
+as_line_of_sight(MLNav/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:69:14: error: no member named 'border_size' in 'struct NavmeshBuilder'
+ig1a    error generated69.
+tionS |    ystem *sys builder->tem, vec3 staborder_srt, vec3ize = 1;
+      |  end);
+      |                                                                  ^
+    ~~~~~~~  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:226:78: error: unknown type name 'vec3'
+  226 | bool ml_navigation_has_line_of_sight(MLNavigationSystem *system, vec3 start, vec3 end);
+      |                                                                              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:233:60: error: unknown type name 'vec3'
+  233 | u32 ml_navigation_create_agent(MLNavigationSystem *system, vec3 start_position, f32 max_speed);
+      |                                                            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:235:79: error: unknown type name 'vec3'
+  235 | bool ml_navigation_set_agent_target(MLNavigationSystem *system, u32 agent_id, vec3 target);
+      |                                                                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:236:84: error: unknown type name 'vec3'
+  236 | bool ml_navigation_update_agent_position(MLNavigationSystem *system, u32 agent_id, vec3 position);
+      |                                                                                    ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:248:87: error: unknown type name 'vec3'
+  248 | NavigationPath *ml_navigation_generate_path(MLNavigationSystem *system, u32 agent_id, vec3 start, vec3 goal);
+      |                                                                                       ^
+2 errors generated.
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nlp_behavior.c:87:24: error: use of undeclared identifier 'EMOTION_STATE_HELPFUL'; did you mean 'EMOTION_STATE_FEARFUL'?
+   87 |                 return EMOTION_STATE_HELPFUL;
+      |                        ^~~~~~~~~~~~~~~~~~~~~
+      |                        EMOTION_STATE_FEARFUL
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/nlp_behavior.h:63:5: note: 'EMOTION_STATE_FEARFUL' declared here
+   63 |     EMOTION_STATE_FEARFUL,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nlp_behavior.c:447:5: warning: indirection of non-volatile null pointer will be deleted, not trap [-Wnull-dereference]
+  447 |     NLP_END_TIMER(system, NULL);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/nlp_behavior.h:409:42: note: expanded from macro 'NLP_END_TIMER'
+  409 |         if ((response_time_ptr) != NULL) *((f64*)(response_time_ptr)) = duration; \
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nlp_behavior.c:447:5: note: consider using __builtin_trap() or qualifying pointer with 'volatile'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/nlp_behavior.h:409:42: note: expanded from macro 'NLP_END_TIMER'
+  409 |         if ((response_time_ptr) != NULL) *((f64*)(response_time_ptr)) = duration; \
+      |                                          ^
+20 errors generated.
+1 warning and 1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nlp_behavior.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_enemy_melee.c:12:10: fatal error: 'npc/prebuilt/npc_enemy_melee.h' file not found
+   12 | #include <npc/prebuilt/npc_enemy_melee.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_melee.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+[  3%] Built target Catch2WithMain
+make: *** [all] Error 2

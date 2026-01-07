@@ -38,7 +38,7 @@
  * TODO: Add instance lod render graph node
  */
 
-#include "instance_lod.h"
+#include "geometry/instancing/instance_lod.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

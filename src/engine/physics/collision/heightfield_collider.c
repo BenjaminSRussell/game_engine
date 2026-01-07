@@ -4,9 +4,9 @@
  * =================================================================================================
  */
 
-#include "heightfield_collider.h"
+#include "physics/collision/heightfield_collider.h"
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 
 void heightfield_create(HeightfieldCollider *hf, int width, int height, float cell_size) {
     hf->width = width;

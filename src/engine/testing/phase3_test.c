@@ -5,11 +5,11 @@
  * Tests render graph, G-buffer, deferred rendering, and shadow systems
  */
 
-#include "../rendering/3d_rendering/rendering/render_graph/graph_compiler.h"
-#include "../rendering/3d_rendering/rendering/render_graph/render_pass_node.h"
-#include "../rendering/3d_rendering/rendering/render_graph/resource_node.h"
-#include "../rendering/3d_rendering/lighting/shadows/csm_manager.h"
-#include "../rendering/3d_rendering/lighting/shadows/shadow_atlas.h"
+#include "rendering/render_graph/graph_compiler.h"
+#include "rendering/render_graph/render_pass_node.h"
+#include "rendering/render_graph/resource_node.h"
+#include "lighting/shadows/csm_manager.h"
+#include "lighting/shadows/shadow_atlas.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>

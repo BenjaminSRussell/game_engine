@@ -7,26 +7,26 @@
 #define lobject_c
 #define LUA_CORE
 
-#include "lprefix.h"
+#include "vendor/lua/lprefix.h"
 
 
 #include <locale.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "lua.h"
+#include "vendor/lua/lua.h"
 
-#include "lctype.h"
-#include "ldebug.h"
-#include "ldo.h"
-#include "lmem.h"
-#include "lobject.h"
-#include "lstate.h"
-#include "lstring.h"
-#include "lvm.h"
+#include "vendor/lua/lctype.h"
+#include "vendor/lua/ldebug.h"
+#include "vendor/lua/ldo.h"
+#include "vendor/lua/lmem.h"
+#include "vendor/lua/lobject.h"
+#include "vendor/lua/lstate.h"
+#include "vendor/lua/lstring.h"
+#include "vendor/lua/lvm.h"
 
 
 /*

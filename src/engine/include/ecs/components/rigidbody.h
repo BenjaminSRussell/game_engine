@@ -1,7 +1,7 @@
 #ifndef RIGIDBODY_COMPONENT_H
 #define RIGIDBODY_COMPONENT_H
 
-#include "../../physics/physics.h"
+#include "include/physics/physics.h"
 
 typedef struct {
   RigidBody *body;

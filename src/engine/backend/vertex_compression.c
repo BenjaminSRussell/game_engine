@@ -1,5 +1,5 @@
-#include "vertex_compression.h"
-#include <math.h>
+#include "backend/vertex_compression.h"
+#include <include/math/math.h>
 #include <core/logger.h>
 
 /* ===== OCTAHEDRAL NORMAL ENCODING ===== */

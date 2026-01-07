@@ -1,0 +1,319 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/nlp_behavior.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o
+[  3%] Built target Catch2
+[  3%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_melee.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/obstacle_carving.c:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_streaming.c1::/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/crowd_detour.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/off_mesh_links.c10:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_companion.c1: /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation_advanced/navmesh_recast.c::/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_inference.c::/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_boss.c10fatal error: 11:'ai/navigation_advanced/obstacle_carving.h' file not found::11:
+1010:11 ::10 fatal error:     'ai/nav/off_mesh_links.h' file not found:::10 fatal error: :10'ai/navigation_advanced/navmesh_recast.h' file not foundfatal error:  fatal error: 'npc/prebuilt/npc_companion.h' file not found'ai/navigation_advanced/crowd_detour.h' file not found
+
+11:10:    11fatal error: 
+1    : | 'ai/navigation_advanced/navmesh_streaming.h' file not found
+ 1    fatal error:     1'ml_inference.h' file not found | :
+ fatal error:  | #i
+'npc/prebuilt/npc_boss.h' file not found
+n | c##1 | ini#   ludenclclud#    1 | i     #niiuc1nnc<11clednpuldee |  c  "u""la#ui/aiaiinddpcr/e | /eeb nln#aauvv/iun"iigl amdateli_gaotin _/it"nvn<ai/pniinagovap/an_actdicvoaclnocuefnf/_d/cdpmd_nr_ecabereo dowdfmps_ea"hva_uavdrenienalc/iinetnnkd/obsoilncatvtcaeoeiucgdrasl..h//ne.n.ah_""
+      h| "         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+h>tc
+n
+par
+      vv      |          ^~~~~~~~~~~~~~~~~~~~~~~~~mi| e
+i      n|          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+shco_bon_ad_gv         ^~~~~~~~~~~~~~~~
+anced/.nrecast.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+avmesh_streaming.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ss.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+1 error generated1.
+ error generated.
+1 error generated.
+1 error generated.
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/crowd_detour.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_recast.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/navmesh_streaming.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation_advanced/obstacle_carving.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/off_mesh_links.c.o] Error 1
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o] Error 1
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml_navigation.c:17:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:73:5: error: unknown type name 'vec3'
+   73 |     vec3 *waypoints;                 // Path waypoints
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:91:5: error: unknown type name 'vec3'
+   91 |     vec3 current_position;           // Current world position
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_civilian.c/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:92:5: error: unknown type name 'vec3':12:10: fatal error: 'npc/prebuilt/npc_civilian.h' file not found
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_enemy_melee.c
+:   92 |     vec3 ta   12 | #rget_pinclude <npc/pre12:10: fatal error: osbuilt/npcition;       'npc/prebuilt/npc_enemy_melee.h' file not found
+_c    // Tair   12get destin | #vilianati.h>
+      | on         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+      | include    ^
+ <npc/prebuilt/npc_enemy_melee.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:93:5: error: unknown type name 'vec3'
+   93 |     vec3 velocity;                  // Current movement velocity
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:111:5: error: unknown type name 'vec3'1
+1  111 |     error generated.
+ error generated.
+ vec3 predicted_positions[10];    // Predicted future positions
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:115:5: error: unknown type name 'vec3'
+  115 |     vec3 prediction_target;         // Predicted target location
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:136:5: error: unknown type name 'vec3'
+  136 |     vec3 group_target;              // Group destination
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:137:5: error: unknown type name 'vec3'
+  137 |     1 error generatedve.
+c3 formation_center;          // Center of formation
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:16:14: error: static declaration of 'vec3_distance_sq' follows non-static declaration
+   16 | static float vec3_distance_sq(const Vec3* a, const Ve/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:219:68c3: error: unknown type name 'vec3'
+*   219 | bb)oo {l ml
+      |              ^
+_navigation_add_stat/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:126:12ic_: note: previous definition is hereob
+st  126 | aclINLe(MLINE f32 vec3Na_divigatistanconSystem *systee_sq(Vec3 a,m, v Vec3 b) {
+ec3 p      |            ^
+osition, vec3 size/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:23:);14:
+       error: static declaration of 'vec3_distance' follows non-static declaration
+|                                                                    ^
+   23 | static float vec3_distance(const Vec3* a, const Vec3* b) {
+      |              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:124:12: note: previous definition is here
+  124 | I/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:219NLINE f3:832 vec3_di: error: unknown type name 'vec3'
+  219 | bstaoonce(Vl ec3 a, Veml_navigation_addc3 b_static_obstacle(MLN) { return vecavig3_length(vec3_ationSsuystb(a, b));em  }*system, vec3 position, vec3 size);
+      |                                                                                   ^
+
+      |            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:220:79: error: unknown type name 'vec3'
+  220 | bool ml_navigation_update_dynamic_obstacles(MLNavigationSystem *system, const vec3 *obstacles, u32 count);
+      |                                                                               ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:224:70: error: unknown type name 'vec3'
+  224 | f32 ml_navigation_get_terrain_difficulty(MLNavigationSystem *system, make[2]: v*** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_melee.c.o] Error 1
+ec3 position)make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o] Error 1
+;
+      |                                                                      ^
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o] Error 1/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:225:69: error: unknown type name 'vec3'
+
+  225 | bool ml_navigation_is_position_walkable(MLNavigationSystem *system, vec3 position);
+      |                                                                     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:226:66: error: unknown type name 'vec3'
+  226 | bool ml_navigation_has_line_of_sight(MLNavigationSystem *system, vec3 start, vec3 end);
+      |                                                                  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:226:78: error: unknown type name 'vec3'
+  226 | bool/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:35:33: error: unknown type name 'CrowdAvoid'
+ ml_navigation_   35 | vohas_lineid c_of_sight(MLNavigationSystem *systroem, vec3 start, vecwd3 _set_desireend_veld);
+      |                                                                              ^
+ocity(CrowdAvoid *crowd, int agent_idx, const float *desired_vel) /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:233:60{
+:       |                                 ^
+error: unknown type name 'vec3'
+  233 | u32 ml_navigation_create_agent(MLNavigationSystem *system, vec3 st/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:40/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.ca:14rt_position, f32 max_speed):24:35: error: passing 'const Vec3 *' to parameter of incompatible type 'Vec3'
+:   24 |     error: ;
+ r      static declaration of 'vec3_dot' follows non-static declarationeturn sqrtf(vec| 
+3_                                                           ^
+dist   40an | sceta_sqti(a,c fl b));
+oa      |                                   ^
+t vec3_dot(const float *a, const float *b) {
+      |              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:111:12: note: previous definition is here
+  111 | INLINE f32 vec3_dot(Vec3 a/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:235:79:, V error: unknown type name 'vec3'ec
+3 b) {
+      |            ^
+  235 | bool ml_navigation_set_/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:agent44:_t13:arget( error: static declaration of 'vec3_sub' follows non-static declaration
+   44 | stMLatNaicvi vgationSystem *syste/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:oim126:, u34:d vec3_sub(float note: passing argument to parameter 'a' here
+  126 3 | INLINE f32*out, c2  onst floatav *ec3a,gent_id, vec3 target);
+      |                                                                               ^
+_di cstonance_stsq(Vec3  fla,oat *b)  Vec3 b) {
+      |                                  ^{
+      |             ^
+
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:13: note: previous definition is here
+   96 | IN/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:27LIN:14:E Vec3 ve error: static declaration of 'vec3_dot' follows non-static declaration/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:
+c   236:27 | 84: error: unknown type name 'vec3'
+s  3_236 | subool ml_nbtavigatatic floaion_updat(te_agenVet_posic vt3ec3_dotio( nco(MLNavigaantionSyste,st Vec3 b) {
+      |             ^
+ Vecm 3**s ayste, m,co uns32 t agVeent_id,c3* b) {
+      |              ^
+ vec3/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:111:12: note: previous definition is here
+  111 position);
+      |                                                                                    ^
+ | INLINE f32 vec3_dot(Vec3 a, Vec3 b) {
+      |            ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:31:13: error: static declaration of 'vec3_subtract' follows non-static declaration
+   31 | static Vec3 vec3_subtract(const V/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/ml_navigation.h:ec248:87: 3*error: unknown type name 'vec3' a
+, co  248ns | Nt avVei/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:gac3ti* b) {
+      |             ^
+onPath66/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h::48161:13: note: previous definition is here
+:  *m  error: too many arguments to function call, expected 2, have 3161 | I
+l_NLnavigation_generate_   INE 66 |      path(MLNavigationSystem       *Vec3 vesy vecst3_em, u32 agenc3ts_subtracu_id, vec3 stat(Vecrt, b(rvec3 el3 a, Vec_gopoal);
+      |                                                                                       ^
+s,3  ob) { return thvec3_sub(a, b); }
+      |             ^
+er->position, agent->positfatal error: too many errors emitted, stopping now [-ferror-limit=]
+ion/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:);
+      35:13: |             ~~~~~~~~                           ^~~~~~~~~~~~~~~
+error: static declaration of 'vec3_add' follows non-static declaration
+   35 | static Vec/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:3 13: note: 'vec3_sub' declared here
+v   96ec3_add( | IcoNLnsINt E VeVec3c3 vec3_su* b(a,Ve cc3on ast, Vec3 b) {
+ V      | ec            ^        ~~~~~~~~~~~~~~
+3* b) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:92:13: note: previous definition is here
+   92 | INLINE Vec3 vec3_add(/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:67:Ve41:c3 error:  apassing 'float[3]' to parameter of incompatible type 'Vec3'
+,   67 |          V    float distec = s3 b) {
+      |             ^
+qrtf(vec3_dot(rel_pos, rel_po/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:s));
+      |                                         ^~~~~~~
+39:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:111:26: note: 13:passing argument to parameter 'a' here
+ error:   111 | static declaration of 'vec3_scale' follows non-static declaration
+INLI   39NE f3 | s2 tatveic Vec3_dot(Vec3c3 a, V vecec3_scal3 b) {e(con
+      st|                          ^ Vec
+3* v, float s) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:107:13: note: previous definition is here
+  107 | INLINE Vec3 vec3_scale(Vec3 a, Vec3 b) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:72:52: error: too many arguments to function call, expected 2, have 3
+   72 |                 vec3_sub(rel_vel, other->velocity, agent->velocity);
+      |                 ~~~~~~~~                           ^~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:96:13: note: 'vec3_sub' declared here
+   96 | INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+      |             ^        ~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nav/crowd_avoidance.c:88:38: error: passing 'float[3]' to parameter of incompatible type 'Vec3'
+   88 |         float speed = sqrtf(vec3_dot(new_velocity, new_velocity));
+      |                                      ^~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:111:26: note: passing argument to parameter 'a' here
+  111 | INLINE f32 vec3_dot(Vec3 a, Vec3 b) {
+      |                          ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nlp_behavior.c:8743:55::24 error: : unknown type name 'NavPolygon'; did you mean 'NavPoly'?
+error: use of undeclared identifier 'EMOTION_STATE_HELPFUL'; did you mean 'EMOTION_STATE_FEARFUL'?
+   43 | static bool point_in_polygo   87n(c |   on    st    Vec  3*   p  oi rnteturn,  EMOTION_STATE_HELPFUL;
+const      |                        ^~~~~~~~~~~~~~~~~~~~~
+      |                        EMOTION_STATE_FEARFUL
+ NavPolygon* po/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/nlp_behavior.h:63:ly5: ) {
+      |                                                       ^~~~~~~~~~
+note: 'EMOTION_STATE_FEARFUL' declared here      | 
+   63 |                                                       NavPoly
+    EM/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/navmesh.h:47:3: note: 'NavPoly' declared hereOTION_
+   47 | } NavPoly;
+      |   ^STATE_
+FEARFUL,
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:48:21: warning: incompatible pointer types initializing 'const Vec3 *' with an expression of type 'const unsigned short *' [-Wincompatible-pointer-types]
+   48 |         const Vec3* vi = &poly->verts[i];
+      |                     ^    ~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:49:21: warning: incompatible pointer types initializing 'const Vec3 *' with an expression of type 'const unsigned short *' [-Wincompatible-pointer-types]
+   49 |         const Vec3* vj = &poly->verts[j];
+      |                     ^    ~~~~~~~~~~~~~~~
+7 errors generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nlp_behavior.c:151:23107:: error: 14:no member named 'has_acent' in 'PersonalityProfile'; did you mean 'has_accent'?
+ error: no member named 'tile_size' in 'struct NavmeshBuilder'; did you mean 'cell_size'?
+  151 |   107 |         builder-if>ti (!le_size = 32;
+      |              ^~~~~~~~~
+pe      |              cell_size
+rs/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/navmesh.h:on108:11: note: 'cell_size' declared hereal
+  108 |    it fy->lohas_acentat &&  c!pell_size;ers
+      |           ^onali
+ty->uses_slang) {
+      |                       ^~~~~~~~~
+      |                       has_accent
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:108:14: error: no member named 'border_size' in 'struct NavmeshBuilder'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/nlp_behavior.h:88:  108 |  10:   note:  b'has_accent' declared here
+u   88il |  de  r- b>booorderl _shasize _a= cc1;en
+      t;|     ~~~~~~~  ^           make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o] Error 1
+
+      // Has regional accent in speech
+      |          ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:323:13: error: conflicting types for 'point_in_polygon'
+  323 | static bool point_in_polygon(const Vec3* p, const NavPoly* poly, const Navmesh* mesh);
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:43:13: note: previous definition is here
+   43 | static bool point_in_polygon(const Vec3* point, const NavPolygon* poly) {
+      |             ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:364:13: error: conflicting types for 'point_in_polygon'
+  364 | /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nlp_behavior.c:447:stat5:ic bool point_in_polygon(const Vec3* p, const N warning: avindirection of non-volatile null pointer will be deleted, not trap [-Wnull-dereference]
+Po  447ly |  *   po NlyLP, const N_EavNDmesh*_TIME mesR(h) {
+sy      |             ^
+st/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:em43:, 13:NU note: LLprevious definition is here
+);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   43 | s/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/nlp_behavior.h:tatic b409:ool poi42:nt note: _iexpanded from macro 'NLP_END_TIMER'
+n_p  409ol |  ygon   (const V  ec3*   if poin((t, recospnsonse_timt Nae_pvPolygon*tr)  po!=ly N) {
+      UL|             ^L)
+ *((f64*)(response_time_ptr)) = duration; \
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/nlp_behavior.c:447:5: note: consider using __builtin_trap() or qualifying pointer with 'volatile'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/nlp_behavior.h:409:42: note: expanded from macro 'NLP_END_TIMER'
+  409 |         if ((res20ponse errors generated_t.
+ime_ptr) != NULL) *((f64*)(response_time_ptr)) = duration; \
+      |                                          ^
+[  3%] Built target Catch2WithMain
+1 warning and 2 errors generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:407:46: error: too many arguments to function call, expected 2, have 3
+  407 |         if (point_in_polygon(position, poly, mesh)) {
+      |             ~~~~~~~~~~~~~~~~                 ^~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:43:13: note: 'point_in_polygon' declared here
+   43 | static bool point_in_polygon(const Vec3* point, const NavPolygon* poly) {
+      |             ^                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:423:6: error: conflicting types for 'navmesh_smooth_path'
+  423 | void navmesh_smooth_path(NavmeshQuery* query, NavPath* path) {
+      |      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/ai/navmesh.h:197:6: note: previous declaration is here
+  197 | bool navmesh_smooth_path(NavmeshQuery* query, NavPath* path);
+      |      ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:494:7: error: redefinition of 'navmesh_distance_to_line_segment'
+  494 | float navmesh_distance_to_line_segment(const Vec3* point, const Vec3* start, conmake[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o] Error 1
+st Vec3* end) {
+      |       ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:378:14: note: previous definition is here
+  378 | static float navmesh_distance_to_line_segment(const Vec3* p, const Vec3* a, const Vec3* b) {
+      |              ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:495:35: error: passing 'const Vec3 *' to parameter of incompatible type 'Vec3'
+  495 |     Vec3 line_vec = vec3_subtract(end, start);
+      |                                   ^~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:161:32: note: passing argument to parameter 'a' here
+  161 | INLINE Vec3 vec3_subtract(Vec3 a, Vec3 b) { return vec3_sub(a, b); }
+      |                                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:496:36: error: passing 'const Vec3 *' to parameter of incompatible type 'Vec3'
+  496 |     Vec3 point_vec = vec3_subtract(point, start);
+      |                                    ^~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:161:32: note: passing argument to parameter 'a' here
+  161 | INLINE Vec3 vec3_subtmake[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/nlp_behavior.c.o] Error 1
+ract(Vec3 a, Vec3 b) { return vec3_sub(a, b); }
+      |                                ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:498:42: error: passing 'const Vec3 *' to parameter of incompatible type 'Vec3'
+  498 |     float line_len_sq = vec3_distance_sq(start, end);
+      |                                          ^~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:126:34: note: passing argument to parameter 'a' here
+  126 | INLINE f32 vec3_distance_sq(Vec3 a, Vec3 b) {
+      |                                  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/navigation/navmesh_generation.c:500:30: error: passing 'const Vec3 *' to parameter of incompatible type 'Vec3'
+  500 |         return vec3_distance(point, start);
+      |                              ^~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h:124:31: note: passing argument to parameter 'a' here
+  124 | INLINE f32 vec3_distance(Vec3 a, Vec3 b) { return vec3_length(vec3_sub(a, b)); }
+      |                               ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+2 warnings and 20 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

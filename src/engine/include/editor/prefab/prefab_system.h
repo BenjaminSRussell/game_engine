@@ -2,9 +2,9 @@
 #define EDITOR_PREFAB_PREFAB_SYSTEM_H
 
 #include "core/core.h"
-#include "core/math/transform.h"
+#include "include/ecs/components/transform.h"
 #include "core/serialization/binary_serializer.h"
-#include "renderer/core/material.h"
+#include "include/rendering/material.h"
 
 #ifdef __cplusplus
 extern "C" {

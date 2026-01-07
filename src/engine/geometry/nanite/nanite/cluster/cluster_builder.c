@@ -3,7 +3,7 @@
  * Implementation of cluster hierarchy (DAG) building
  */
 
-#include "cluster_builder.h"
+#include "geometry/nanite/nanite/cluster/cluster_builder.h"
 #include <stdlib.h>
 #include <string.h>
 

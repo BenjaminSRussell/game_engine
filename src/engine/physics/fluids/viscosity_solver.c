@@ -1,6 +1,6 @@
 // Viscosity Solver - Complete (7 TODOs)
 #include "physics/fluids/viscosity_solver.h"
-#include <math.h>
+#include <include/math/math.h>
 
 #define SPH_KERNEL_RADIUS 1.0f
 

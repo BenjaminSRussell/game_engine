@@ -1,6 +1,7 @@
 #include "ai/memory/knowledge_graph.h"
 #include <core/memory.h>
-#include <core/threading.h>
+#include <core/threading/mutex.h>
+#include <core/time_system.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -67,7 +68,7 @@ static u32 hash_relation(EntityID subject, RelationType relation, EntityID objec
 
 // Main Knowledge Graph implementation
 KnowledgeGraph* knowledge_graph_create(const KnowledgeGraphConfig* config) {
-    KnowledgeGraph* graph = memory_allocate(sizeof(KnowledgeGraph), MEMORY_TAG_AI);
+    KnowledgeGraph* graph = MALLOC_AI(sizeof(KnowledgeGraph));
     if (!graph) return NULL;
     
     memset(graph, 0, sizeof(KnowledgeGraph));
@@ -88,34 +89,34 @@ KnowledgeGraph* knowledge_graph_create(const KnowledgeGraphConfig* config) {
     
     // Allocate node storage
     graph->node_capacity = graph->config.max_nodes;
-    graph->nodes = memory_allocate(sizeof(KnowledgeNode) * graph->node_capacity, MEMORY_TAG_AI);
+    graph->nodes = MALLOC_AI(sizeof(KnowledgeNode) * graph->node_capacity);
     if (!graph->nodes) {
-        memory_free(graph, MEMORY_TAG_AI);
+        memory_free(graph);
         return NULL;
     }
     
     // Allocate relation storage
     graph->relation_capacity = graph->config.max_nodes * graph->config.max_relations_per_node;
-    graph->relations = memory_allocate(sizeof(KnowledgeRelation) * graph->relation_capacity, MEMORY_TAG_AI);
+    graph->relations = MALLOC_AI(sizeof(KnowledgeRelation) * graph->relation_capacity);
     if (!graph->relations) {
-        memory_free(graph->nodes, MEMORY_TAG_AI);
-        memory_free(graph, MEMORY_TAG_AI);
+        memory_free(graph->nodes);
+        memory_free(graph);
         return NULL;
     }
     
     // Allocate indexing structures
     graph->node_index.capacity = graph->node_capacity * 2;
-    graph->node_index.entity_to_node_index = memory_allocate(sizeof(EntityID) * graph->node_index.capacity, MEMORY_TAG_AI);
+    graph->node_index.entity_to_node_index = MALLOC_AI(sizeof(EntityID) * graph->node_index.capacity);
     
     graph->relation_index.hash_capacity = graph->relation_capacity * 2;
-    graph->relation_index.relation_hash_table = memory_allocate(sizeof(u32) * graph->relation_index.hash_capacity, MEMORY_TAG_AI);
+    graph->relation_index.relation_hash_table = MALLOC_AI(sizeof(u32) * graph->relation_index.hash_capacity);
     
     if (!graph->node_index.entity_to_node_index || !graph->relation_index.relation_hash_table) {
-        if (graph->nodes) memory_free(graph->nodes, MEMORY_TAG_AI);
-        if (graph->relations) memory_free(graph->relations, MEMORY_TAG_AI);
-        if (graph->node_index.entity_to_node_index) memory_free(graph->node_index.entity_to_node_index, MEMORY_TAG_AI);
-        if (graph->relation_index.relation_hash_table) memory_free(graph->relation_index.relation_hash_table, MEMORY_TAG_AI);
-        memory_free(graph, MEMORY_TAG_AI);
+        if (graph->nodes) memory_free(graph->nodes);
+        if (graph->relations) memory_free(graph->relations);
+        if (graph->node_index.entity_to_node_index) memory_free(graph->node_index.entity_to_node_index);
+        if (graph->relation_index.relation_hash_table) memory_free(graph->relation_index.relation_hash_table);
+        memory_free(graph);
         return NULL;
     }
     
@@ -124,13 +125,13 @@ KnowledgeGraph* knowledge_graph_create(const KnowledgeGraphConfig* config) {
     
     // Allocate inference cache
     graph->inference_cache.capacity = 100;
-    graph->inference_cache.queries = memory_allocate(sizeof(KnowledgeQuery) * graph->inference_cache.capacity, MEMORY_TAG_AI);
-    graph->inference_cache.results = memory_allocate(sizeof(KnowledgeResult) * graph->inference_cache.capacity, MEMORY_TAG_AI);
+    graph->inference_cache.queries = MALLOC_AI(sizeof(KnowledgeQuery) * graph->inference_cache.capacity);
+    graph->inference_cache.results = MALLOC_AI(sizeof(KnowledgeResult) * graph->inference_cache.capacity);
     graph->inference_cache.cache_duration = 30.0; // 30 seconds
     
-    graph->graph_mutex = mutex_create();
+    graph->graph_mutex = mutex_create(false, "KnowledgeGraph");
     graph->next_entity_id = 1;
-    graph->current_time = time_get_current();
+    graph->current_time = time_get_high_res_time();
     
     return graph;
 }
@@ -141,30 +142,30 @@ void knowledge_graph_destroy(KnowledgeGraph* graph) {
     // Cleanup nodes
     for (u32 i = 0; i < graph->node_count; i++) {
         if (graph->nodes[i].relations) {
-            memory_free(graph->nodes[i].relations, MEMORY_TAG_AI);
+            memory_free(graph->nodes[i].relations);
         }
     }
     
     // Cleanup inference cache
     for (u32 i = 0; i < graph->inference_cache.count; i++) {
         if (graph->inference_cache.results[i].nodes) {
-            memory_free(graph->inference_cache.results[i].nodes, MEMORY_TAG_AI);
+            memory_free(graph->inference_cache.results[i].nodes);
         }
         if (graph->inference_cache.results[i].relations) {
-            memory_free(graph->inference_cache.results[i].relations, MEMORY_TAG_AI);
+            memory_free(graph->inference_cache.results[i].relations);
         }
     }
     
     // Free allocated memory
-    if (graph->nodes) memory_free(graph->nodes, MEMORY_TAG_AI);
-    if (graph->relations) memory_free(graph->relations, MEMORY_TAG_AI);
-    if (graph->node_index.entity_to_node_index) memory_free(graph->node_index.entity_to_node_index, MEMORY_TAG_AI);
-    if (graph->relation_index.relation_hash_table) memory_free(graph->relation_index.relation_hash_table, MEMORY_TAG_AI);
-    if (graph->inference_cache.queries) memory_free(graph->inference_cache.queries, MEMORY_TAG_AI);
-    if (graph->inference_cache.results) memory_free(graph->inference_cache.results, MEMORY_TAG_AI);
+    if (graph->nodes) memory_free(graph->nodes);
+    if (graph->relations) memory_free(graph->relations);
+    if (graph->node_index.entity_to_node_index) memory_free(graph->node_index.entity_to_node_index);
+    if (graph->relation_index.relation_hash_table) memory_free(graph->relation_index.relation_hash_table);
+    if (graph->inference_cache.queries) memory_free(graph->inference_cache.queries);
+    if (graph->inference_cache.results) memory_free(graph->inference_cache.results);
     if (graph->graph_mutex) mutex_destroy(graph->graph_mutex);
     
-    memory_free(graph, MEMORY_TAG_AI);
+    memory_free(graph);
 }
 
 bool knowledge_graph_initialize(KnowledgeGraph* graph) {
@@ -176,7 +177,7 @@ bool knowledge_graph_initialize(KnowledgeGraph* graph) {
     memset(graph->node_index.entity_to_node_index, 0xFF, sizeof(EntityID) * graph->node_index.capacity);
     memset(graph->relation_index.relation_hash_table, 0xFF, sizeof(u32) * graph->relation_index.hash_capacity);
     
-    graph->current_time = time_get_current();
+    graph->current_time = time_get_high_res_time();
     graph->last_decay_time = graph->current_time;
     
     mutex_unlock(graph->graph_mutex);
@@ -225,7 +226,7 @@ KnowledgeNode* knowledge_graph_add_node(KnowledgeGraph* graph, EntityID entity_i
     node->is_active = true;
     
     // Allocate relations array
-    node->relations = memory_allocate(sizeof(KnowledgeRelation) * graph->config.max_relations_per_node, MEMORY_TAG_AI);
+    node->relations = MALLOC_AI(sizeof(KnowledgeRelation) * graph->config.max_relations_per_node);
     if (!node->relations) {
         mutex_unlock(graph->graph_mutex);
         return NULL;
@@ -371,7 +372,7 @@ KnowledgeResult knowledge_graph_query(KnowledgeGraph* graph, const KnowledgeQuer
     KnowledgeResult result = {0};
     if (!graph || !query) return result;
     
-    f64 start_time = time_get_current();
+    f64 start_time = time_get_high_res_time();
     
     mutex_lock(graph->graph_mutex);
     
@@ -392,7 +393,7 @@ KnowledgeResult knowledge_graph_query(KnowledgeGraph* graph, const KnowledgeQuer
         KnowledgeRelation* relation = knowledge_graph_get_relation(graph, query->subject_entity, 
                                                               query->object_entity, query->relation_type);
         if (relation && relation->certainty >= query->min_certainty) {
-            result.relations = memory_allocate(sizeof(KnowledgeRelation), MEMORY_TAG_AI);
+            result.relations = MALLOC_AI(sizeof(KnowledgeRelation));
             if (result.relations) {
                 result.relations[0] = *relation;
                 result.relation_count = 1;
@@ -413,7 +414,7 @@ KnowledgeResult knowledge_graph_query(KnowledgeGraph* graph, const KnowledgeQuer
             }
             
             if (result.relation_count > 0) {
-                result.relations = memory_allocate(sizeof(KnowledgeRelation) * result.relation_count, MEMORY_TAG_AI);
+                result.relations = MALLOC_AI(sizeof(KnowledgeRelation) * result.relation_count);
                 if (result.relations) {
                     u32 index = 0;
                     for (u32 i = 0; i < node->relation_count; i++) {
@@ -447,7 +448,7 @@ KnowledgeResult knowledge_graph_query(KnowledgeGraph* graph, const KnowledgeQuer
     
     mutex_unlock(graph->graph_mutex);
     
-    result.processing_time = time_get_current() - start_time;
+    result.processing_time = time_get_high_res_time() - start_time;
     graph->total_query_time += result.processing_time;
     
     return result;
@@ -462,7 +463,7 @@ KnowledgeResult knowledge_graph_infer_facts(KnowledgeGraph* graph, EntityID enti
     
     // Collect all possible inferences
     u32 max_inferences = 100;
-    KnowledgeRelation* inferred_relations = memory_allocate(sizeof(KnowledgeRelation) * max_inferences, MEMORY_TAG_AI);
+    KnowledgeRelation* inferred_relations = MALLOC_AI(sizeof(KnowledgeRelation) * max_inferences);
     if (!inferred_relations) return result;
     
     u32 inference_count = 0;
@@ -512,7 +513,7 @@ KnowledgeResult knowledge_graph_infer_facts(KnowledgeGraph* graph, EntityID enti
     
     // Prepare result
     if (inference_count > 0) {
-        result.relations = memory_allocate(sizeof(KnowledgeRelation) * inference_count, MEMORY_TAG_AI);
+        result.relations = MALLOC_AI(sizeof(KnowledgeRelation) * inference_count);
         if (result.relations) {
             memcpy(result.relations, inferred_relations, sizeof(KnowledgeRelation) * inference_count);
             result.relation_count = inference_count;
@@ -522,7 +523,7 @@ KnowledgeResult knowledge_graph_infer_facts(KnowledgeGraph* graph, EntityID enti
         graph->inferences_made += inference_count;
     }
     
-    memory_free(inferred_relations, MEMORY_TAG_AI);
+    memory_free(inferred_relations);
     return result;
 }
 

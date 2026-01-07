@@ -6,8 +6,8 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "instance_batching.h"
-#include "../../math/vec3.h"
+#include "geometry/instancing/instance_batching.h"
+#include "include/math/vec3.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -405,7 +405,7 @@ size_t geometry_instance_batching_get_memory_usage(void) {
 
 void geometry_instance_batching_debug_print(void) {
     printf("[Instance Batching] Total batchers: %u\n", g_instance_batching_ctx.count);
-    
+
     for (uint32_t i = 0; i < g_instance_batching_ctx.count; i++) {
         const geometry_instance_batching_internal_t* item = &g_instance_batching_ctx.items[i];
         if (item->initialized) {
@@ -417,6 +417,66 @@ void geometry_instance_batching_debug_print(void) {
                    i, item->batch_count, total_instances);
         }
     }
+}
+
+/* ============================================================================
+ * GPU INTEGRATION FUNCTIONS
+ * ============================================================================ */
+
+int geometry_instance_batching_get_batch_data(geometry_instance_batching_handle_t handle,
+                                               uint32_t batch_index,
+                                               geometry_instance_batch_data_t* out_data) {
+    if (!out_data) {
+        return -1;
+    }
+
+    if (handle.id >= g_instance_batching_ctx.count) {
+        return -2;
+    }
+
+    const geometry_instance_batching_internal_t* item = &g_instance_batching_ctx.items[handle.id];
+    if (!item->initialized || batch_index >= item->batch_count) {
+        return -3;
+    }
+
+    const instance_batch_t* batch = &item->batches[batch_index];
+    out_data->batch_indices = batch->instance_ids;
+    out_data->batch_count = batch->count;
+    out_data->mesh_id = batch->key.mesh_id;
+    out_data->material_id = batch->key.material_id;
+    out_data->lod_level = (uint8_t)batch->key.lod_level;
+
+    return 0;
+}
+
+uint32_t geometry_instance_batching_get_instance_count(geometry_instance_batching_handle_t handle) {
+    if (handle.id >= g_instance_batching_ctx.count) {
+        return 0;
+    }
+
+    const geometry_instance_batching_internal_t* item = &g_instance_batching_ctx.items[handle.id];
+    if (!item->initialized) {
+        return 0;
+    }
+
+    uint32_t total = 0;
+    for (uint32_t i = 0; i < item->batch_count; i++) {
+        total += item->batches[i].count;
+    }
+    return total;
+}
+
+uint32_t geometry_instance_batching_get_batch_count(geometry_instance_batching_handle_t handle) {
+    if (handle.id >= g_instance_batching_ctx.count) {
+        return 0;
+    }
+
+    const geometry_instance_batching_internal_t* item = &g_instance_batching_ctx.items[handle.id];
+    if (!item->initialized) {
+        return 0;
+    }
+
+    return item->batch_count;
 }
 
 /* End of instance_batching.c */

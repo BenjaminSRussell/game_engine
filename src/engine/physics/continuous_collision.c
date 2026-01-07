@@ -4,8 +4,8 @@
 #include "math/math.h"
 #include <string.h>
 #include <stdlib.h>
-#include <math.h>
-#include <math.h>
+#include <include/math/math.h>
+#include <include/math/math.h>
 
 // Forward declarations of utility functions
 uint32_t spatial_hash_coordinate(int x, int y, int z);

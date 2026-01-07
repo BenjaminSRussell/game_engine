@@ -38,7 +38,7 @@
  * TODO: Add mesh builder render graph node
  */
 
-#include "mesh_builder.h"
+#include "geometry/mesh/mesh_builder.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

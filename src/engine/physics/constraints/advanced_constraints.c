@@ -11,7 +11,7 @@
 #include "include/math/quat.h"
 #include "include/math/vec3.h"
 #include "physics/physics_engine_core.h"
-#include <math.h>
+#include <include/math/math.h>
 #include <stdbool.h>
 
 // Helper to access RigidBody float arrays using Vec3

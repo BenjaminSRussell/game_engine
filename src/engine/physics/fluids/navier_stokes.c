@@ -2,7 +2,7 @@
 #include "physics/fluids/navier_stokes.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 typedef struct {
     float *velocity_x, *velocity_y, *velocity_z;

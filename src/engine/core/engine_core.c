@@ -2,14 +2,14 @@
 //
 // Implementation of the engine core abstraction layer
 //
-#include "../../include/engine/engine_core.h"
-#include "../../include/core/logger.h"
-#include "../../include/render/camera.h"
-#include "../../include/render/vulkan.h"
-#include "../../include/physics/physics.h"
-#include "../../include/thread/job.h"
-#include "../../include/vfs/vfs.h"
-#include "../../include/audio/audio_system.h"
+#include "core/engine_core.h"
+#include "core/logger.h"
+#include "include/rendering/camera.h"
+#include "include/rendering/vulkan.h"
+#include "include/physics/physics.h"
+#include "core/threading/job.h"
+#include "core/resource/vfs/vfs.h"
+#include "cinematics/audio/audio_system.h"
 #include "../../include/config/config.h"
 #include <stdlib.h>
 #include <string.h>

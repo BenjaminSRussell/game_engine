@@ -6,11 +6,11 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "mtl_frame_sync.h"
+#include "backend/metal/mtl_frame_sync.h"
 #include <stdlib.h>
 #include <string.h>
 #include <mach/mach_time.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ============================================================================
 // Internal Structures
@@ -387,22 +387,37 @@ void metal_frame_resource_manager_advance(metal_frame_resource_manager_t* manage
 
 void metal_frame_resource_manager_add_resource(metal_frame_resource_manager_t* manager, void* resource) {
     if (!manager || !resource) return;
-    
+
     metal_frame_resources_t* frame = metal_frame_resource_manager_get_current(manager);
     if (!frame) return;
-    
+
     // Resize if needed
     if (frame->resource_count >= frame->resource_capacity) {
         uint32_t new_capacity = frame->resource_capacity * 2;
+        if (new_capacity == 0) {
+            // Prevent integer overflow
+            new_capacity = 16;
+        }
+
         void** new_resources = (void**)realloc(frame->resources, new_capacity * sizeof(void*));
-        
-        if (!new_resources) return; // Allocation failed
-        
+
+        if (!new_resources) {
+            // Allocation failed - keep old pointer and return
+            NSLog(@"Warning: Failed to resize frame resource array from %u to %u",
+                  frame->resource_capacity, new_capacity);
+            return;
+        }
+
         frame->resources = new_resources;
         frame->resource_capacity = new_capacity;
     }
-    
-    frame->resources[frame->resource_count++] = resource;
+
+    // Add the resource if we have space
+    if (frame->resource_count < frame->resource_capacity) {
+        frame->resources[frame->resource_count++] = resource;
+    } else {
+        NSLog(@"Error: Frame resource array is full, cannot add resource");
+    }
 }
 
 void metal_frame_resource_manager_clear_frame(metal_frame_resource_manager_t* manager, uint32_t frame_index) {

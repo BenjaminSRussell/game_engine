@@ -8,8 +8,8 @@
 #ifndef PHYSICS_INTEGRATION_H
 #define PHYSICS_INTEGRATION_H
 
-#include "../../core/containers/soa_rigidbody.h"
-#include "../../core/simd/simd_math.h"
+#include "core/containers/soa_rigidbody.h"
+#include "core/simd/simd_math.h"
 
 #ifdef __cplusplus
 extern "C" {

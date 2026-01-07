@@ -8,10 +8,10 @@
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
-#include <renderer/mesh.h>
+#include <include/rendering/mesh.h>
 
 #ifdef VULKAN_BUILD
-#include <renderer/vulkan.h>
+#include <include/rendering/vulkan.h>
 #endif
 
 // Forward declarations

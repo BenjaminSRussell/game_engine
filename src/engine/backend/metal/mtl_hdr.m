@@ -6,10 +6,10 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "mtl_hdr.h"
+#include "backend/metal/mtl_hdr.h"
 #import <CoreGraphics/CoreGraphics.h>
 #import <Metal/Metal.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <stdio.h>
 
 /* ============================================================================

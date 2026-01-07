@@ -3,7 +3,7 @@
  * Implementation of cluster residency tracking
  */
 
-#include "residency_manager.h"
+#include "geometry/nanite/nanite/streaming/residency_manager.h"
 #include <stdlib.h>
 #include <string.h>
 

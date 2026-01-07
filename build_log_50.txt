@@ -1,0 +1,38 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/io/async/system_02.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/io/bundling/system_02.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/io/caching/system_02.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/io/compression/system_02.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/io/export/manager_01.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/io/export/processor_04.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/io/export/renderer_03.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/io/export/system_02.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/io/formats/manager_01.c.o
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/formats/manager_01.c:32:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/formats/manager_01.h:32:5: error: conflicting types for 'io_formats_manager_01_create'
+   32 | int io_formats_manager_01_create(io_formats_manager_01_t* ctx, void* params);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/formats/manager_01.h:25:5: note: previous declaration is here
+   25 | int io_formats_manager_01_create(io_formats_manager_01_t** out_ctx, const io_formats_manager_01_desc_t* desc);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/formats/manager_01.h:33:5: error: conflicting types for 'io_formats_manager_01_destroy'
+   33 | int io_formats_manager_01_destroy(io_formats_manager_01_t* ctx, void* params);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/formats/manager_01.h:26:5: note: previous declaration is here
+   26 | int io_formats_manager_01_destroy(io_formats_manager_01_t* ctx);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/formats/manager_01.c:212:5: error: conflicting types for 'io_formats_manager_01_create'
+  212 | int io_formats_manager_01_create(io_formats_manager_01_t* ctx, void* params) {
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/formats/manager_01.h:25:5: note: previous declaration is here
+   25 | int io_formats_manager_01_create(io_formats_manager_01_t** out_ctx, const io_formats_manager_01_desc_t* desc);
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/formats/manager_01.c:236:5: error: conflicting types for 'io_formats_manager_01_destroy'
+  236 | int io_formats_manager_01_destroy(io_formats_manager_01_t* ctx, void* params) {
+      |     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/formats/manager_01.h:26:5: note: previous declaration is here
+   26 | int io_formats_manager_01_destroy(io_formats_manager_01_t* ctx);
+      |     ^
+4 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/assets/io/formats/manager_01.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

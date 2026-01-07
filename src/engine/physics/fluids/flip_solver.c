@@ -2,7 +2,7 @@
 #include "physics/fluids/flip_solver.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 #define MAX_PARTICLES 100000
 

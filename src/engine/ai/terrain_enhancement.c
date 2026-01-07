@@ -3,10 +3,14 @@
 // Purpose: Implementation of ML-based terrain enhancement system
 //
 
-#include "../../../include/ai/terrain_enhancement.h"
-#include "../../../include/core/logger.h"
+#include <ai/terrain_enhancement.h>
+#include <core/logger.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+
+// Forward declaration
+void terrain_enhancement_shutdown(TerrainEnhancementSystem *system);
 
 TerrainEnhancementSystem *terrain_enhancement_create(MLSystem *ml_system) {
     if (!ml_system) return NULL;
@@ -48,7 +52,7 @@ bool terrain_enhancement_initialize(TerrainEnhancementSystem *system, TerrainMod
     
     system->terrain_models[model] = ml_load_model(system->ml_system, model_path, &metadata);
     if (!system->terrain_models[model]) {
-        LOG_WARNING("Failed to load terrain enhancement model");
+        LOG_WARN("Failed to load terrain enhancement model");
         return false;
     }
     

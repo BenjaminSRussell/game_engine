@@ -6,9 +6,9 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "mtl_device.h"
-#include "mtl_device_caps.h"
-#include "mtl_memory_heap.h"
+#include "backend/metal/mtl_device.h"
+#include "backend/metal/mtl_device_caps.h"
+#include "backend/metal/mtl_memory_heap.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>

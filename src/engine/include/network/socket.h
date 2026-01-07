@@ -1,7 +1,7 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
-#include "network_types.h"
+#include "include/network/network_types.h"
 #include <stdbool.h>
 #include <stdint.h>
 

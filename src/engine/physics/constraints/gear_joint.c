@@ -3,7 +3,7 @@
 #include "math/quat.h"
 #include "math/vec3.h"
 #include "physics/physics.h"
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 
 /**

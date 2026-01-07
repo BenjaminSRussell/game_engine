@@ -5,9 +5,9 @@
 //
 #include <ai/ai_asset_generator.h>
 #include <core/logger.h>
-#include <math.h>
-#include <mesh/mesh.h>
-#include <renderer/texture_system.h>
+#include <include/math/math.h>
+#include <include/rendering/mesh.h>
+#include <rendering/texture_system.h>
 #include <stdlib.h>
 #include <string.h>
 

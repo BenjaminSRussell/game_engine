@@ -1,13 +1,13 @@
 // Vulkan Pipeline Caching Implementation
 // VULKAN-PL-001: Implement pipeline caching system for performance
 
-#include <renderer/vulkan.h>
+#include <rendering/vulkan.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
 #if defined(VULKAN_BUILD) && __has_include(<vulkan/vulkan.h>)
-#include <vulkan/vulkan.h>
+#include <include/rendering/vulkan.h>
 #else
 // Stub constants when Vulkan is not available
 #define VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO 3

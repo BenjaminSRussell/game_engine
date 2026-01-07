@@ -1,6 +1,6 @@
-#include "animation_state_machine.h"
-#include "animation_sampler.h"
-#include "animation_blender.h"
+#include "character/animation/animation_state_machine.h"
+#include "character/animation/animation_sampler.h"
+#include "character/animation/animation_blender.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

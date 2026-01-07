@@ -3,7 +3,7 @@
  * Compute Shader Implementation
  */
 
-#include <math.h>
+#include <include/math/math.h>
 
 typedef struct {
   float pos[3];

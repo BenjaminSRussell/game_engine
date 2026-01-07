@@ -6,11 +6,11 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "lod_selector.h"
+#include "geometry/lod/lod_selector.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 
 /* ============================================================================

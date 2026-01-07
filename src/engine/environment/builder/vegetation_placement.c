@@ -1,4 +1,4 @@
-#include "environment/builder/vegetation_placement.h"
+#include "environment/landscape/terrain/landscape/procedural/vegetation_placement.h"
 
 void vegetation_placement_init() {}
 

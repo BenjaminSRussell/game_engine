@@ -1,5 +1,5 @@
 #include "audio/audio_surround.h"
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 #include <stdio.h>
 
@@ -20,7 +20,7 @@ static VBAPSetup g_vbap_setup = {0};
 static ObjectAudioRenderer g_object_renderer = {0};
 static bool g_surround_initialized = false;
 
-void Audio_MixSurround() {
+void Audio_InitSurround() {
     // TASK_800: Configure Output Channels (7.1.2 setup).
     //       Left, Right, Center, LFE, SL, SR, RL, RR, TopL, TopR.
     if (!g_surround_initialized) {
@@ -397,7 +397,7 @@ void Audio_UpdateListener(ObjectAudioRenderer* renderer, const Vec3 position, co
 void Audio_MixSurround(f32* output_buffer, const f32* input_buffer, u32 frames, const SurroundConfig* config) {
     // Main surround mixing function
     if (!g_surround_initialized) {
-        Audio_MixSurround();  // Initialize if not already done
+        Audio_InitSurround();  // Initialize if not already done
     }
     
     // For now, just copy input to all channels (panning would be applied here)

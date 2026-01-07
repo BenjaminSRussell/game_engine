@@ -130,7 +130,7 @@ extern "C" {
 #endif
 
 #if !defined(VULKAN_H_)
-#include <vulkan/vulkan.h>
+#include <include/rendering/vulkan.h>
 #endif
 
 #define VMA_VERSION (VK_MAKE_VERSION(3, 4, 0))

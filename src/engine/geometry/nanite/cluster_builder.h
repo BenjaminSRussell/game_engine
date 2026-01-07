@@ -3,7 +3,7 @@
 
 #include <Metal/Metal.h>
 #include <simd/simd.h>
-#include "../vertex/vertex_format.h" // Assuming this path
+#include "geometry/vertex/vertex_format.h" // Assuming this path
 
 #define CLUSTER_TRIANGLE_COUNT 128
 #define CLUSTER_VERTEX_COUNT 256

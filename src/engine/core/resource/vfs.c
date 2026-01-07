@@ -1,4 +1,4 @@
-#include "vfs/vfs.h"
+#include "core/resource/vfs/vfs.h"
 #include "common.h"
 #include "core/logger.h"
 #include <stdio.h>

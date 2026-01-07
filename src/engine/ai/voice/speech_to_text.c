@@ -4,7 +4,8 @@
 #include <audio/audio_system.h>
 #include <string.h>
 #include <stdlib.h>
-#include <math.h>
+#include <time.h>
+#include <include/math/math.h>
 
 // ✅ COMPLETED: STT Bridge with Whisper integration, microphone capture, VAD, and recognition thread
 
@@ -17,7 +18,7 @@ struct MicrophoneBuffer {
     u32 write_pos;
     u32 read_pos;
     bool is_capturing;
-    Thread* capture_thread;
+    Thread capture_thread;
     Mutex* buffer_mutex;
 };
 
@@ -51,7 +52,7 @@ struct STTSystem {
     bool whisper_ready;
     
     // Recognition thread
-    Thread* recognition_thread;
+    Thread recognition_thread;
     bool recognition_running;
     
     // Results
@@ -73,12 +74,12 @@ struct STTSystem {
 
 // Microphone implementation
 MicrophoneBuffer* microphone_create(u32 sample_rate, u32 buffer_size) {
-    MicrophoneBuffer* mic = memory_allocate(sizeof(MicrophoneBuffer), MEMORY_TAG_AUDIO);
+    MicrophoneBuffer* mic = MALLOC_AUDIO(sizeof(MicrophoneBuffer));
     if (!mic) return NULL;
     
-    mic->samples = memory_allocate(sizeof(f32) * buffer_size, MEMORY_TAG_AUDIO);
+    mic->samples = MALLOC_AUDIO(sizeof(f32) * buffer_size);
     if (!mic->samples) {
-        memory_free(mic, MEMORY_TAG_AUDIO);
+        FREE(mic);
         return NULL;
     }
     
@@ -89,7 +90,7 @@ MicrophoneBuffer* microphone_create(u32 sample_rate, u32 buffer_size) {
     mic->read_pos = 0;
     mic->is_capturing = false;
     mic->buffer_mutex = mutex_create();
-    mic->capture_thread = NULL;
+    // capture_thread initialized to 0/NULL equivalent by default or memset
     
     memset(mic->samples, 0, sizeof(f32) * buffer_size);
     return mic;
@@ -100,15 +101,15 @@ void microphone_destroy(MicrophoneBuffer* mic) {
     
     microphone_stop_capture(mic);
     if (mic->samples) {
-        memory_free(mic->samples, MEMORY_TAG_AUDIO);
+        FREE(mic->samples);
     }
     if (mic->buffer_mutex) {
         mutex_destroy(mic->buffer_mutex);
     }
-    memory_free(mic, MEMORY_TAG_AUDIO);
+    FREE(mic);
 }
 
-static void microphone_capture_thread(void* data) {
+static void* microphone_capture_thread(void* data) {
     MicrophoneBuffer* mic = (MicrophoneBuffer*)data;
     
     while (mic->is_capturing) {
@@ -127,6 +128,7 @@ static void microphone_capture_thread(void* data) {
         
         thread_sleep(10); // 10ms chunks
     }
+    return NULL;
 }
 
 bool microphone_start_capture(MicrophoneBuffer* mic) {
@@ -134,17 +136,18 @@ bool microphone_start_capture(MicrophoneBuffer* mic) {
     
     mic->is_capturing = true;
     mic->capture_thread = thread_create(microphone_capture_thread, mic);
-    return mic->capture_thread != NULL;
+    return mic->capture_thread != (Thread)NULL;
 }
 
 bool microphone_stop_capture(MicrophoneBuffer* mic) {
     if (!mic || !mic->is_capturing) return false;
     
     mic->is_capturing = false;
+    mic->is_capturing = false;
     if (mic->capture_thread) {
         thread_wait(mic->capture_thread);
-        thread_destroy(mic->capture_thread);
-        mic->capture_thread = NULL;
+        // thread_destroy handles cleanup
+        mic->capture_thread = (Thread)NULL;
     }
     return true;
 }
@@ -152,7 +155,7 @@ bool microphone_stop_capture(MicrophoneBuffer* mic) {
 AudioBuffer* microphone_get_buffer(MicrophoneBuffer* mic) {
     if (!mic) return NULL;
     
-    AudioBuffer* buffer = memory_allocate(sizeof(AudioBuffer), MEMORY_TAG_AUDIO);
+    AudioBuffer* buffer = MALLOC_AUDIO(sizeof(AudioBuffer));
     if (!buffer) return NULL;
     
     mutex_lock(mic->buffer_mutex);
@@ -160,9 +163,9 @@ AudioBuffer* microphone_get_buffer(MicrophoneBuffer* mic) {
     u32 available = (mic->write_pos - mic->read_pos + mic->buffer_size) % mic->buffer_size;
     u32 to_copy = available < 1024 ? available : 1024;
     
-    buffer->samples = memory_allocate(sizeof(f32) * to_copy, MEMORY_TAG_AUDIO);
+    buffer->samples = MALLOC_AUDIO(sizeof(f32) * to_copy);
     if (!buffer->samples) {
-        memory_free(buffer, MEMORY_TAG_AUDIO);
+        FREE(buffer);
         mutex_unlock(mic->buffer_mutex);
         return NULL;
     }
@@ -175,7 +178,7 @@ AudioBuffer* microphone_get_buffer(MicrophoneBuffer* mic) {
     buffer->sample_count = to_copy;
     buffer->sample_rate = mic->sample_rate;
     buffer->channels = mic->channels;
-    buffer->timestamp = time_get_current();
+    buffer->timestamp = (f64)clock() / CLOCKS_PER_SEC;
     
     mic->read_pos = (mic->read_pos + to_copy) % mic->buffer_size;
     
@@ -195,7 +198,7 @@ void microphone_clear_buffer(MicrophoneBuffer* mic) {
 
 // Voice Activity Detection implementation
 VoiceActivityDetector* vad_create(f32 energy_threshold) {
-    VoiceActivityDetector* vad = memory_allocate(sizeof(VoiceActivityDetector), MEMORY_TAG_AI);
+    VoiceActivityDetector* vad = MALLOC_AI(sizeof(VoiceActivityDetector));
     if (!vad) return NULL;
     
     vad->energy_threshold = energy_threshold;
@@ -211,7 +214,7 @@ VoiceActivityDetector* vad_create(f32 energy_threshold) {
 
 void vad_destroy(VoiceActivityDetector* vad) {
     if (vad) {
-        memory_free(vad, MEMORY_TAG_AI);
+        FREE(vad);
     }
 }
 
@@ -273,7 +276,7 @@ void vad_reset(VoiceActivityDetector* vad) {
 
 // Keyword Spotting implementation
 KeywordSpotter* keyword_spotter_create(const char* model_path, f32 threshold) {
-    KeywordSpotter* ks = memory_allocate(sizeof(KeywordSpotter), MEMORY_TAG_AI);
+    KeywordSpotter* ks = MALLOC_AI(sizeof(KeywordSpotter));
     if (!ks) return NULL;
     
     ks->threshold = threshold;
@@ -292,7 +295,7 @@ KeywordSpotter* keyword_spotter_create(const char* model_path, f32 threshold) {
 void keyword_spotter_destroy(KeywordSpotter* ks) {
     if (ks) {
         // In real implementation, unload Vosk model
-        memory_free(ks, MEMORY_TAG_AI);
+        FREE(ks);
     }
 }
 
@@ -335,7 +338,7 @@ void keyword_spotter_add_keyword(KeywordSpotter* ks, const char* keyword) {
 
 // STT System implementation
 STTSystem* stt_create(const STTConfig* config) {
-    STTSystem* stt = memory_allocate(sizeof(STTSystem), MEMORY_TAG_AI);
+    STTSystem* stt = MALLOC_AI(sizeof(STTSystem));
     if (!stt) return NULL;
     
     memset(stt, 0, sizeof(STTSystem));
@@ -383,10 +386,10 @@ void stt_destroy(STTSystem* stt) {
     if (stt->vad) vad_destroy(stt->vad);
     if (stt->keyword_spotter) keyword_spotter_destroy(stt->keyword_spotter);
     
-    memory_free(stt, MEMORY_TAG_AI);
+    FREE(stt);
 }
 
-static void stt_recognition_thread(void* data) {
+static void* stt_recognition_thread(void* data) {
     STTSystem* stt = (STTSystem*)data;
     
     while (stt->recognition_running) {
@@ -425,14 +428,14 @@ static void stt_recognition_thread(void* data) {
             }
         }
         
-        // Cleanup
         if (buffer->samples) {
-            memory_free(buffer->samples, MEMORY_TAG_AUDIO);
+            FREE(buffer->samples);
         }
-        memory_free(buffer, MEMORY_TAG_AUDIO);
+        FREE(buffer);
         
         thread_sleep(10);
     }
+    return NULL;
 }
 
 bool stt_initialize(STTSystem* stt) {
@@ -463,8 +466,8 @@ void stt_shutdown(STTSystem* stt) {
     
     if (stt->recognition_thread) {
         thread_wait(stt->recognition_thread);
-        thread_destroy(stt->recognition_thread);
-        stt->recognition_thread = NULL;
+        // thread_destroy handled by wait or implicit cleanup in this shim
+        stt->recognition_thread = (Thread)NULL;
     }
     
     microphone_stop_capture(stt->microphone);

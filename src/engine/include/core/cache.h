@@ -37,7 +37,7 @@
 #define CACHE_H
 
 
-#include "../common.h"
+#include "include/common.h"
 
 typedef struct CacheEntry {
     u64 key;

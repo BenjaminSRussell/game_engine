@@ -1,9 +1,9 @@
 #ifndef ASSET_IMPORTERS_H
 #define ASSET_IMPORTERS_H
 
-#include "../common.h"
-#include <renderer/renderer.h>
-#include <renderer/renderer_api.h>
+#include "include/common.h"
+#include <include/rendering/renderer.h>
+#include <include/rendering/renderer_api.h>
 
 // Forward declarations
 typedef struct AssetManager AssetManager;

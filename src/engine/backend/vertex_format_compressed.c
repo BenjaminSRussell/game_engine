@@ -1,4 +1,4 @@
-#include "vertex_format_compressed.h"
+#include "backend/vertex_format_compressed.h"
 
 void vertex_format_make_p3n3t3u2_compressed(VertexFormat* fmt) {
     vertex_format_init(fmt);

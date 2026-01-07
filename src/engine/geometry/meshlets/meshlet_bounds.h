@@ -6,7 +6,7 @@
 #ifndef MESHLET_BOUNDS_H
 #define MESHLET_BOUNDS_H
 
-#include "meshlet_builder.h"
+#include "geometry/meshlets/meshlet_builder.h"
 
 // Computes the bounding sphere and normal cone for a single meshlet
 void compute_meshlet_bounds(meshlet_t* meshlet, const float* vertices, uint32_t vertex_stride, const uint32_t* indices);

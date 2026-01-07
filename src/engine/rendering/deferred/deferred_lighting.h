@@ -1,41 +1,70 @@
-/**
- * =================================================================================================
- *                              DEFERRED LIGHTING SYSTEM
- * =================================================================================================
+/*
+ * deferred_lighting.h
+ * Deferred lighting pass API
  *
- * Purpose: Manages the lighting pass of the deferred rendering pipeline.
- * Computes lighting for every pixel using G-Buffer data.
+ * Part of the Rendering subsystem
+ * Advanced 3D Rendering Engine
  */
 
-#pragma once
+#ifndef DEFERRED_LIGHTING_H
+#define DEFERRED_LIGHTING_H
 
-#include <core/types.h>
-#include "../gbuffer/gbuffer.h"
+#include <stdint.h>
+#include <stdbool.h>
+#include <simd/simd.h>
+#include <Metal/Metal.h>
 
-/* =================================================================================================
- *                                    PUBLIC API
- * =================================================================================================
- */
+// Forward declarations
+struct Camera;
+struct gbuffer; // Assuming gbuffer_t is struct gbuffer based on context, or use void* if unknown
+typedef struct gbuffer gbuffer_t; // We might need to include gbuffer_layout.h or forward declare
 
 /**
- * Initializes the deferred lighting system resources (shaders, pipelines, etc.).
+ * Light data structure matching the Metal shader
  */
-void deferred_lighting_init(void);
+typedef struct light {
+    vector_float3 position;
+    float radius;
+    vector_float3 color;
+    float intensity;
+} light_t;
 
 /**
- * Shuts down the deferred lighting system.
+ * Deferred lighting pass context
  */
-void deferred_lighting_shutdown(void);
+typedef struct deferred_lighting deferred_lighting_t;
 
 /**
- * Executes the deferred lighting pass.
- * 
- * @param gbuffer The G-Buffer containing the scene geometry data.
- * @param output_target The render target to write final lit color to.
+ * @brief Create a new deferred lighting pass instance
+ * @param device Metal device
+ * @param color_format Pixel format of the lighting accumulation buffer
+ * @param depth_format Pixel format of the depth buffer (can be MTLPixelFormatInvalid if not used)
+ * @return Pointer to new instance or NULL on failure
  */
-void deferred_lighting_execute(GBuffer *gbuffer, void *output_target);
+deferred_lighting_t* rendering_deferred_lighting_create(id<MTLDevice> device,
+                                                      MTLPixelFormat color_format,
+                                                      MTLPixelFormat depth_format);
 
 /**
- * Updates lighting configuration (e.g. environment maps, global settings).
+ * @brief Destroy a deferred lighting pass instance
+ * @param dl Instance to destroy
  */
-void deferred_lighting_update_settings(void *settings);
+void rendering_deferred_lighting_destroy(deferred_lighting_t* dl);
+
+/**
+ * @brief Execute the deferred lighting pass
+ * @param dl Deferred lighting instance
+ * @param gb G-buffer containing textures
+ * @param encoder Render command encoder
+ * @param lights Array of lights
+ * @param light_count Number of lights
+ * @param camera Camera for view/proj matrices
+ */
+void rendering_deferred_lighting_execute(deferred_lighting_t* dl, 
+                                       gbuffer_t* gb,
+                                       id<MTLRenderCommandEncoder> encoder,
+                                       light_t* lights, 
+                                       uint32_t light_count,
+                                       struct Camera* camera);
+
+#endif /* DEFERRED_LIGHTING_H */

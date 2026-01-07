@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "depth_only.h"
+#include "geometry/nanite/nanite/rendering_nanite/depth_only.h"
 #include "../../3d_rendering.h"
 #include <stdint.h>
 #include <stdbool.h>

@@ -14,7 +14,7 @@
 #ifndef AABB_TREE_H
 #define AABB_TREE_H
 
-#include "../../core/simd/simd_types.h"
+#include "core/simd/simd_types.h"
 #include <stdint.h>
 #include <stdbool.h>
 

@@ -3,10 +3,10 @@
  * Implementation of meshlet generation from mesh index buffers
  */
 
-#include "meshlet_builder.h"
+#include "geometry/meshlets/meshlet_builder.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Simple greedy meshlet builder
 // In a production engine, this would use METIS or a more advanced clusterer

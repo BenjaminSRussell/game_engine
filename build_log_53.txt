@@ -1,0 +1,11 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/import/gltf_importer.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/system/asset_system/import/gltf_importer.c:286:15: error: static declaration of 'atof' follows non-static declaration
+  286 | static double atof(const char* str) {
+      |               ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h:154:9: note: previous declaration is here
+  154 | double   atof(const char *);
+      |          ^
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/import/gltf_importer.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

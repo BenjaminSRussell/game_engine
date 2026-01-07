@@ -9,9 +9,9 @@
 #ifndef PLATFORM_MTL_RESOURCE_POOL_H
 #define PLATFORM_MTL_RESOURCE_POOL_H
 
-#include "mtl_device.h"
-#include "mtl_buffer.h"
-#include "mtl_texture.h"
+#include "backend/metal/mtl_device.h"
+#include "backend/metal/mtl_buffer.h"
+#include "backend/metal/mtl_texture.h"
 
 #ifdef __cplusplus
 extern "C" {

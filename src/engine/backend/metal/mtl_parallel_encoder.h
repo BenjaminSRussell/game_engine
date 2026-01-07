@@ -9,8 +9,8 @@
 #ifndef PLATFORM_MTL_PARALLEL_ENCODER_H
 #define PLATFORM_MTL_PARALLEL_ENCODER_H
 
-#include "mtl_command_buffer.h"
-#include "mtl_encoder.h"
+#include "backend/metal/mtl_command_buffer.h"
+#include "backend/metal/mtl_encoder.h"
 
 #ifdef __cplusplus
 extern "C" {

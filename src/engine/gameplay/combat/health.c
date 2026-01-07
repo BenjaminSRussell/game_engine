@@ -1,7 +1,7 @@
 #include "ecs/components/health.h"
 #include "gameplay/combat/damage.h"
 #include <core/memory.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Enhanced health system extending the base HealthComponent
 

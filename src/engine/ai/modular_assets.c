@@ -8,7 +8,7 @@
 #include <core/modular_assets.h>
 #include <float.h>
 #include <math/mat4.h>
-#include <mesh/mesh.h>
+#include <include/rendering/mesh.h>
 #include <stdlib.h>
 #include <string.h>
 

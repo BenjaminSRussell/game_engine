@@ -1,5 +1,5 @@
 #include <core/logger.h>
-#include <renderer/renderer.h>
+#include <rendering/renderer.h>
 #include <stdlib.h>
 
 // TODO: Add renderer factory unit tests for all renderer types
@@ -10,7 +10,7 @@
 IRenderer *voxel_renderer_create(void);
 IRenderer *voxel_renderer_create(void);
 IRenderer *sprite_3d_renderer_create(void);
-#include "../metal/metal_backend.h"
+#include "rendering/metal_backend.h"
 
 IRenderer *voxel_renderer_create(void);
 IRenderer *sprite_3d_renderer_create(void);

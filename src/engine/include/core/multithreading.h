@@ -35,8 +35,8 @@
 #ifndef MULTITHREADING_H
 #define MULTITHREADING_H
 
-#include "../common.h"
-#include "performance.h"
+#include "include/common.h"
+#include "include/core/performance.h"
 
 // ============================================================================
 // THREAD MANAGEMENT

@@ -1,5 +1,5 @@
 // Spatial octree implementation for queries.
-#include <spatial/octree.h>
+#include <include/core/containers_advanced/octree.h>
 #include <stdlib.h>
 #include <string.h>
 

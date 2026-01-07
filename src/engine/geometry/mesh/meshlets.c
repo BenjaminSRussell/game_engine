@@ -10,14 +10,14 @@
 // MESHLETS-009: Cross-platform support
 // MESHLETS-010: Integration with existing systems
 
-#include "../../include/renderer/meshlets.h"
-#include "../../include/core/logger.h"
+#include "include/rendering/meshlets.h"
+#include "include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 #ifdef VULKAN_BUILD
-#include <vulkan/vulkan.h>
+#include <include/rendering/vulkan.h>
 #endif
 
 // MESHLETS-001: Initialize meshlet system

@@ -1,7 +1,7 @@
 #include "audio/procedural/adaptive_music.h"
 #include "core/memory.h"
-#include "core/math.h"
-#include <math.h>
+#include "include/math/math.h"
+#include <include/math/math.h>
 #include <string.h>
 
 /**

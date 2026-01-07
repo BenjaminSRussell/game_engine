@@ -1,5 +1,5 @@
 #include <simd/simd.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Compute screen space error for a cluster
 // projected_error = (lod_error * sphere_radius) / distance_to_camera * screen_height / fov_factor

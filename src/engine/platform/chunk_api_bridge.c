@@ -1,7 +1,7 @@
 #include "platform/chunk_api_bridge.h"
 #include "core/logger.h"
-#include "world/chunk/chunk_system.h"
-#include "../../../editor/Core/Bridges/include/engine_bridge.h"
+#include "scene/world/chunk/chunk_system.h"
+#include "platform/engine_bridge.h"
 
 void chunk_set_load_distance(float distance) {
   chunk_sys_set_load_distance(distance);

@@ -4,7 +4,7 @@
  * ML-driven level design and quest generation
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 

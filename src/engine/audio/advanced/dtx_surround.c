@@ -1,5 +1,5 @@
 #include "audio/dtx_surround.h"
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@ bool DTX_InitSystem(DTXConfig* config) {
     config->height_channels_enabled = true;
     config->dtx_enabled = true;
     config->crossover_frequency = 80.0f;  // Standard THX crossover
-    config->lfe_boost_db = 10.0f;  // +10dB for cinematic impact
+    config->lfe_boost = 10.0f;  // +10dB for cinematic impact
     
     // Initialize speaker positions for 5.1.2 setup
     DTX_Setup51Layout(config);
@@ -61,7 +61,7 @@ void DTX_Setup51Layout(DTXConfig* config) {
     
     // LFE (subwoofer)
     config->speakers[DTX_CHANNEL_LFE].position = (Vec3){0.0f, -0.5f, 1.5f};
-    config->speakers[DTX_CHANNEL_LFE].gain = powf(10.0f, config->lfe_boost_db / 20.0f);  // Convert dB to linear
+    config->speakers[DTX_CHANNEL_LFE].gain = powf(10.0f, config->lfe_boost / 20.0f);  // Convert dB to linear
     config->speakers[DTX_CHANNEL_LFE].distance = 2.0f;
     config->speakers[DTX_CHANNEL_LFE].active = true;
     

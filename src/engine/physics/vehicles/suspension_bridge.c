@@ -2,7 +2,7 @@
 #include "physics/vehicles/suspension_bridge.h"
 #include <physics/physics.h>
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 
 typedef struct {
     Vec3 position;

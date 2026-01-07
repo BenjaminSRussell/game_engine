@@ -3,10 +3,10 @@
  * GPU-side instance storage implementation
  */
 
-#include "gpu_instance_data.h"
+#include "geometry/instancing/gpu_instance_data.h"
 #include <core/logger.h>
 #include <core/memory.h>
-#include <renderer/vulkan.h> // Assuming Vulkan backend usage for SSBOs
+#include <rendering/vulkan.h> // Assuming Vulkan backend usage for SSBOs
 #include <string.h>
 
 #define MAX_GPU_INSTANCE_BUFFERS 256

@@ -38,7 +38,7 @@
  * TODO: Add distance lod render graph node
  */
 
-#include "distance_lod.h"
+#include "geometry/lod/distance_lod.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

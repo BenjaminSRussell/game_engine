@@ -4,7 +4,7 @@
  * Real-time synthesis of sound effects and ambient noise
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 
 #define SAMPLE_RATE 44100

@@ -3,7 +3,7 @@
  * All ~18 AGENT_AUDIO_1 spatial audio TODOs completed
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 
 typedef struct {

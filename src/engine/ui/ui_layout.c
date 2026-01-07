@@ -2,7 +2,7 @@
 #include <core/logger.h>
 #include <core/memory.h>
 #include <ui/ui_system.h>
-#include <math.h>
+#include <include/math/math.h>
 
 void ui_system_init(void) { LOG_INFO("UI System Initialized"); }
 

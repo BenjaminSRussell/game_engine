@@ -1,8 +1,8 @@
-#include "goap_planner.h"
-#include "../../../common.h"
+#include "ai/planning/goap_planner.h"
+#include "include/common.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // ✅ COMPLETED: GOAP (Goal Oriented Action Planning) solver [Difficulty: 9]
 // 1. Define 'WorldState' struct using a bitmask or hash map for symbolic state

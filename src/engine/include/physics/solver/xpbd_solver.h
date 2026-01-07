@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../core/types.h"
-#include "../../math/vec3.h"
-#include "../../math/quat.h"
+#include "include/core/types.h"
+#include "include/math/vec3.h"
+#include "include/math/quat.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus

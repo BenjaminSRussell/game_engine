@@ -55,11 +55,11 @@
 // Forward declaration for ECS integration (Phase 3)
 typedef struct World World;
 
-#include "../common.h"
-#include "../vfs/vfs.h"
-#include "file_watcher.h"
-#include <renderer/lod_system.h>
-#include "../resource/asset_instance.h"
+#include "include/common.h"
+#include "include/core/resource/vfs/vfs.h"
+#include "include/core/file_watcher.h"
+#include <include/rendering/lod_system.h>
+#include "include/core/resource/asset_instance.h"
 
 // Forward declarations
 typedef struct AssetManager AssetManager;

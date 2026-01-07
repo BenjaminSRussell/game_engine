@@ -2,7 +2,7 @@
 #define VISIBILITY_BUFFER_H
 
 #include <Metal/Metal.h>
-#include "../nanite/cluster_builder.h"
+#include "geometry/nanite/cluster_builder.h"
 
 // Forward declaration
 typedef struct gbuffer gbuffer_t;

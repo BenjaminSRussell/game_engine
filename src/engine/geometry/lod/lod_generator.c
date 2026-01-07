@@ -6,13 +6,13 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "lod_generator.h"
+#include "geometry/lod/lod_generator.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <float.h>
 // #include <core/memory.h> // Removing non-standard headers for stability
 // #include <core/logger.h> 

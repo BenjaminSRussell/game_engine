@@ -2,7 +2,7 @@
 
 #include "core/json.h"
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

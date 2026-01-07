@@ -1,6 +1,6 @@
 #include "gameplay/combat/hitbox.h"
 #include <core/memory.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <string.h>
 
 // ============================================================================

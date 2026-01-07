@@ -1,5 +1,5 @@
 #include "physics/aerodynamics/lift_drag.h"
-#include <math.h>
+#include <include/math/math.h>
 
 void aerodynamics_init() {}
 

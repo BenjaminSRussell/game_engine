@@ -1,6 +1,6 @@
 #include "environment/builder/rock_scatter.h"
 #include <stdlib.h>
-#include <math.h>
+#include <include/math/math.h>
 
 typedef struct {
     float x, y, z;

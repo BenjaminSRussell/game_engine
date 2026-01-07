@@ -3,7 +3,7 @@
  * Metal buffer integration implementation
  */
 
-#include "mesh_gpu_data.h"
+#include "geometry/mesh/mesh_gpu_data.h"
 #include <stdlib.h>
 
 mesh_gpu_data_t *mesh_upload_to_gpu(id<MTLDevice> device,

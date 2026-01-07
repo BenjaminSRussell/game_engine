@@ -1,5 +1,5 @@
 // engine_bridge.c - C implementation of Swift-C bridge
-#include "engine_bridge.h"
+#include "platform/engine_bridge.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

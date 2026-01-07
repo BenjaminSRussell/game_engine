@@ -3,10 +3,10 @@
  * Forward Rendering System Core Implementation
  */
 
-#include "forward_renderer.h"
-#include "shader_variants.h"
-#include "transparency.h"
-#include "forward_batching.h"
+#include "rendering/forward/forward_renderer.h"
+#include "rendering/forward/shader_variants.h"
+#include "rendering/forward/transparency.h"
+#include "rendering/forward/forward_batching.h"
 #include <core/logger.h>
 #include <core/memory.h>
 #include <stdlib.h>

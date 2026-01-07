@@ -10,7 +10,7 @@
  */
 
 #include <float.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <physics/physics_engine_core.h>
 #include <stdbool.h>
 #include <string.h>

@@ -6,9 +6,9 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "instance_buffer.h"
-#include "../../backend/metal/metal/mtl_buffer.h"
-#include "../../backend/metal/metal/mtl_device.h"
+#include "geometry/instancing/instance_buffer.h"
+#include "backend/metal/mtl_buffer.h"
+#include "backend/metal/mtl_device.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

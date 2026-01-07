@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "hardware_raster.h"
+#include "geometry/nanite/nanite/rendering_nanite/hardware_raster.h"
 #include "../../3d_rendering.h"
 #include <stdint.h>
 #include <stdbool.h>

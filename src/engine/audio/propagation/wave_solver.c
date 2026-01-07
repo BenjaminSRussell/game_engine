@@ -7,7 +7,7 @@
  * APPROACH: Solve wave equation on voxelized level geometry using compute shaders
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdlib.h>
 #include <string.h>
 

@@ -4,7 +4,7 @@
  * Transform gizmos and camera controls
  */
 
-#include <math.h>
+#include <include/math/math.h>
 #include <stdbool.h>
 #include <stdlib.h>
 

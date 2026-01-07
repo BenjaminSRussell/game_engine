@@ -7,10 +7,10 @@
 #include "../include/core/time_system.h"
 #include "../include/core/unified_engine.h"
 #include <audio/audio.h>
-#include <input/input.h>
+#include <include/platform/input/input.h>
 #include <network/network_system.h>
-#include <renderer/renderer.h>
-#include <renderer/renderer_api.h>
+#include <rendering/renderer.h>
+#include <rendering/renderer_api.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ui/ui_manager.h>

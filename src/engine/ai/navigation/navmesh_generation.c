@@ -1,7 +1,7 @@
-#include "ai/navmesh.h"
+#include "include/ai/navmesh.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 #include <float.h>
 
 /**
@@ -11,49 +11,12 @@
  */
 
 // Helper functions
-static float vec3_distance_sq(const Vec3* a, const Vec3* b) {
-    float dx = a->x - b->x;
-    float dy = a->y - b->y;
-    float dz = a->z - b->z;
-    return dx * dx + dy * dy + dz * dz;
-}
+static bool navmesh_is_solid_at(Vec3 position);
 
-static float vec3_distance(const Vec3* a, const Vec3* b) {
-    return sqrtf(vec3_distance_sq(a, b));
-}
+// =================================================================================================
+// CORE NAVMESH FUNCTIONS
+// =================================================================================================
 
-static float vec3_dot(const Vec3* a, const Vec3* b) {
-    return a->x * b->x + a->y * b->y + a->z * b->z;
-}
-
-static Vec3 vec3_subtract(const Vec3* a, const Vec3* b) {
-    return (Vec3){a->x - b->x, a->y - b->y, a->z - b->z};
-}
-
-static Vec3 vec3_add(const Vec3* a, const Vec3* b) {
-    return (Vec3){a->x + b->x, a->y + b->y, a->z + b->z};
-}
-
-static Vec3 vec3_scale(const Vec3* v, float s) {
-    return (Vec3){v->x * s, v->y * s, v->z * s};
-}
-
-static bool point_in_polygon(const Vec3* point, const NavPolygon* poly) {
-    if (poly->vert_count < 3) return false;
-    
-    bool inside = false;
-    for (uint32_t i = 0, j = poly->vert_count - 1; i < poly->vert_count; j = i++) {
-        const Vec3* vi = &poly->verts[i];
-        const Vec3* vj = &poly->verts[j];
-        
-        if (((vi->z > point->z) != (vj->z > point->z)) &&
-            (point->x < (vj->x - vi->x) * (point->z - vi->z) / (vj->z - vi->z) + vi->x)) {
-            inside = !inside;
-        }
-    }
-    
-    return inside;
-}
 
 // =================================================================================================
 // CORE NAVMESH FUNCTIONS
@@ -102,8 +65,8 @@ NavmeshBuilder* navmesh_builder_create(Navmesh* mesh) {
     builder->navmesh = mesh;
     
     // Set default builder settings
-    builder->tile_size = 32;
-    builder->border_size = 1;
+    builder->cell_size = 32;
+    // builder->border_size = 1; // Removed as it doesn't exist
     builder->filter_low_hanging_obstacles = true;
     builder->filter_ledge_spans = true;
     builder->filter_walkable_low_height_spans = true;
@@ -131,7 +94,7 @@ bool navmesh_voxelize_world(NavmeshBuilder* builder, const Vec3* min_bounds, con
     Navmesh* mesh = builder->navmesh;
     
     // Calculate voxel grid dimensions
-    Vec3 size = vec3_subtract(max_bounds, min_bounds);
+    Vec3 size = vec3_subtract(*max_bounds, *min_bounds);
     mesh->voxel_width = (uint32_t)ceilf(size.x / mesh->voxel_size);
     mesh->voxel_height = (uint32_t)ceilf(size.y / mesh->voxel_size);
     mesh->voxel_depth = (uint32_t)ceilf(size.z / mesh->voxel_size);
@@ -145,7 +108,7 @@ bool navmesh_voxelize_world(NavmeshBuilder* builder, const Vec3* min_bounds, con
         return false;
     }
     
-    mesh->voxel_min = *min_bounds;
+    mesh->voxel_origin = *min_bounds;
     
     // Voxelize world collision
     for (uint32_t z = 0; z < mesh->voxel_depth; z++) {
@@ -154,9 +117,9 @@ bool navmesh_voxelize_world(NavmeshBuilder* builder, const Vec3* min_bounds, con
                 uint32_t voxel_index = x + y * mesh->voxel_width + z * mesh->voxel_width * mesh->voxel_height;
                 
                 Vec3 world_pos = {
-                    mesh->voxel_min.x + x * mesh->voxel_size,
-                    mesh->voxel_min.y + y * mesh->voxel_size,
-                    mesh->voxel_min.z + z * mesh->voxel_size
+                    mesh->voxel_origin.x + x * mesh->voxel_size,
+                    mesh->voxel_origin.y + y * mesh->voxel_size,
+                    mesh->voxel_origin.z + z * mesh->voxel_size
                 };
                 
                 bool is_solid = navmesh_is_solid_at(world_pos);
@@ -257,8 +220,8 @@ bool navmesh_build_polygon_mesh(NavmeshBuilder* builder) {
     uint32_t max_polys = mesh->voxel_width * mesh->voxel_depth / 4;  // Estimate
     uint32_t max_verts = max_polys * 4;  // 4 verts per poly
     
-    mesh->polys = (NavPolygon*)malloc(max_polys * sizeof(NavPolygon));
-    mesh->verts = (Vec3*)malloc(max_verts * sizeof(Vec3));
+    mesh->polys = (NavPoly*)malloc(max_polys * sizeof(NavPoly));
+    mesh->verts = (NavVert*)malloc(max_verts * sizeof(NavVert));
     
     if (!mesh->polys || !mesh->verts) {
         LOG_ERROR("Failed to allocate polygon mesh arrays");
@@ -281,20 +244,23 @@ bool navmesh_build_polygon_mesh(NavmeshBuilder* builder) {
             }
             
             if (walkable && poly_count < max_polys && vert_count + 4 <= max_verts) {
-                NavPolygon* poly = &mesh->polys[poly_count];
+                NavPoly* poly = &mesh->polys[poly_count];
                 poly->vert_count = 4;
-                poly->verts = &mesh->verts[vert_count];
-                poly->normal = (Vec3){0, 1, 0};  // Y-up normal
                 
                 // Create quad vertices
-                float vx = mesh->voxel_min.x + x * mesh->voxel_size;
-                float vz = mesh->voxel_min.z + z * mesh->voxel_size;
-                float vy = mesh->voxel_min.y + mesh->voxel_size;  // Ground level
+                float vx = mesh->voxel_origin.x + x * mesh->voxel_size;
+                float vz = mesh->voxel_origin.z + z * mesh->voxel_size;
+                float vy = mesh->voxel_origin.y + mesh->voxel_size;  // Ground level
                 
-                poly->verts[0] = (Vec3){vx, vy, vz};
-                poly->verts[1] = (Vec3){vx + mesh->voxel_size, vy, vz};
-                poly->verts[2] = (Vec3){vx + mesh->voxel_size, vy, vz + mesh->voxel_size};
-                poly->verts[3] = (Vec3){vx, vy, vz + mesh->voxel_size};
+                mesh->verts[vert_count + 0].pos = (Vec3){vx, vy, vz};
+                mesh->verts[vert_count + 1].pos = (Vec3){vx + mesh->voxel_size, vy, vz};
+                mesh->verts[vert_count + 2].pos = (Vec3){vx + mesh->voxel_size, vy, vz + mesh->voxel_size};
+                mesh->verts[vert_count + 3].pos = (Vec3){vx, vy, vz + mesh->voxel_size};
+                
+                poly->verts[0] = vert_count + 0;
+                poly->verts[1] = vert_count + 1;
+                poly->verts[2] = vert_count + 2;
+                poly->verts[3] = vert_count + 3;
                 
                 poly_count++;
                 vert_count += 4;
@@ -313,11 +279,18 @@ bool navmesh_build_polygon_mesh(NavmeshBuilder* builder) {
 // A* PATHFINDING (TASK_1410)
 // =================================================================================================
 
-NavPath* navmesh_find_path(Navmesh* mesh, const Vec3* start, const Vec3* end, uint32_t agent_id) {
-    if (!mesh || !start || !end) {
+// Helper forward declarations
+static uint32_t navmesh_find_polygon_at(Navmesh* mesh, const Vec3* position);
+static bool point_in_polygon(const Vec3* p, const NavPoly* poly, const Navmesh* mesh);
+static float navmesh_distance_to_line_segment(const Vec3* p, const Vec3* a, const Vec3* b);
+static float navmesh_distance_to_polygon(const Vec3* point, const NavPoly* poly, const Navmesh* mesh);
+
+bool navmesh_find_path(NavmeshQuery* query, const Vec3* start, const Vec3* end, NavPath* path) {
+    if (!query || !query->navmesh || !start || !end || !path) {
         LOG_ERROR("Invalid parameters for pathfinding");
-        return NULL;
+        return false;
     }
+    Navmesh* mesh = query->navmesh;
     
     // Find start and end polygons
     uint32_t start_poly = navmesh_find_polygon_at(mesh, start);
@@ -325,116 +298,99 @@ NavPath* navmesh_find_path(Navmesh* mesh, const Vec3* start, const Vec3* end, ui
     
     if (start_poly == UINT32_MAX || end_poly == UINT32_MAX) {
         LOG_ERROR("Start or end position not on navmesh");
-        return NULL;
+        return false;
     }
     
-    // Simple path - straight line through polygon centers
-    NavPath* path = (NavPath*)malloc(sizeof(NavPath));
-    if (!path) {
-        LOG_ERROR("Failed to allocate path");
-        return NULL;
-    }
+    // Initialize path
+    path->point_count = 0;
+    path->poly_count = 0;
+    path->total_length = 0.0f;
+    path->current_waypoint = 0;
     
-    memset(path, 0, sizeof(NavPath));
-    path->start_pos = *start;
-    path->end_pos = *end;
-    path->poly_count = 2;
-    path->polys = (uint32_t*)malloc(2 * sizeof(uint32_t));
-    path->points = (Vec3*)malloc(2 * sizeof(Vec3));
-    
-    if (path->polys && path->points) {
-        path->polys[0] = start_poly;
-        path->polys[1] = end_poly;
+    // Simple path - straight line (Task 1410 placeholder)
+    if (path->point_count + 2 <= NAVMESH_MAX_PATH_LENGTH) {
         path->points[0] = *start;
         path->points[1] = *end;
         path->point_count = 2;
-    } else {
-        free(path);
-        path = NULL;
+        path->poly_refs[0] = (unsigned short)start_poly;
+        path->poly_refs[1] = (unsigned short)end_poly;
+        path->poly_count = 2;
+        path->total_length = vec3_distance(*start, *end);
+        return true;
     }
-    
-    return path;
+    return false;
 }
 
-uint32_t navmesh_find_polygon_at(Navmesh* mesh, const Vec3* position) {
+// Helper: Point in polygon test
+static bool point_in_polygon(const Vec3* p, const NavPoly* poly, const Navmesh* mesh) {
+    bool inside = false;
+    for (int i = 0, j = poly->vert_count - 1; i < poly->vert_count; j = i++) {
+        Vec3 vi = mesh->verts[poly->verts[i]].pos;
+        Vec3 vj = mesh->verts[poly->verts[j]].pos;
+        if (((vi.z > p->z) != (vj.z > p->z)) &&
+            (p->x < (vj.x - vi.x) * (p->z - vi.z) / (vj.z - vi.z) + vi.x)) {
+            inside = !inside;
+        }
+    }
+    return inside;
+}
+
+// Helper: Distance from point to line segment
+static float navmesh_distance_to_line_segment(const Vec3* p, const Vec3* a, const Vec3* b) {
+    Vec3 ab = vec3_sub(*b, *a);
+    float dot = vec3_dot(vec3_sub(*p, *a), ab);
+    float len_sq = vec3_dot(ab, ab);
+    float t = (len_sq > 0) ? dot / len_sq : 0.0f;
+    t = fmaxf(0.0f, fminf(1.0f, t));
+    Vec3 closest = vec3_add(*a, vec3_mul(ab, t));
+    return vec3_distance(*p, closest);
+}
+
+// Helper: Distance to polygon
+static float navmesh_distance_to_polygon(const Vec3* point, const NavPoly* poly, const Navmesh* mesh) {
+    float min_dist = FLT_MAX;
+    for (uint32_t i = 0; i < poly->vert_count; i++) {
+        uint32_t next_i = (i + 1) % poly->vert_count;
+        Vec3 v1 = mesh->verts[poly->verts[i]].pos;
+        Vec3 v2 = mesh->verts[poly->verts[next_i]].pos;
+        float dist = navmesh_distance_to_line_segment(point, &v1, &v2);
+        if (dist < min_dist) min_dist = dist;
+    }
+    return min_dist;
+}
+
+static uint32_t navmesh_find_polygon_at(Navmesh* mesh, const Vec3* position) {
     float closest_dist = FLT_MAX;
     uint32_t closest_poly = UINT32_MAX;
     
     for (uint32_t i = 0; i < mesh->poly_count; i++) {
-        NavPolygon* poly = &mesh->polys[i];
-        
-        // Simple point-in-polygon test
-        if (point_in_polygon(position, poly)) {
+        NavPoly* poly = &mesh->polys[i];
+        if (point_in_polygon(position, poly, mesh)) {
             return i;
         }
-        
-        // Check distance to polygon
-        float dist = navmesh_distance_to_polygon(position, poly);
+        float dist = navmesh_distance_to_polygon(position, poly, mesh);
         if (dist < closest_dist) {
             closest_dist = dist;
             closest_poly = i;
         }
     }
-    
     return closest_dist < mesh->agent_radius ? closest_poly : UINT32_MAX;
-}
-
-float navmesh_distance_to_polygon(const Vec3* point, const NavPolygon* poly) {
-    float min_dist = FLT_MAX;
-    
-    for (uint32_t i = 0; i < poly->vert_count; i++) {
-        uint32_t next_i = (i + 1) % poly->vert_count;
-        
-        Vec3 edge_start = poly->verts[i];
-        Vec3 edge_end = poly->verts[next_i];
-        
-        float dist = navmesh_distance_to_line_segment(point, &edge_start, &edge_end);
-        min_dist = fminf(min_dist, dist);
-    }
-    
-    return min_dist;
-}
-
-float navmesh_distance_to_line_segment(const Vec3* point, const Vec3* start, const Vec3* end) {
-    Vec3 line_vec = vec3_subtract(end, start);
-    Vec3 point_vec = vec3_subtract(point, start);
-    
-    float line_len_sq = vec3_distance_sq(start, end);
-    if (line_len_sq == 0.0f) {
-        return vec3_distance(point, start);
-    }
-    
-    float t = fmaxf(0.0f, fminf(1.0f, vec3_dot(&point_vec, &line_vec) / line_len_sq));
-    Vec3 projection = vec3_add(start, vec3_scale(&line_vec, t));
-    
-    return vec3_distance(point, &projection);
 }
 
 // =================================================================================================
 // FUNNEL ALGORITHM (TASK_1411)
 // =================================================================================================
 
-void navmesh_smooth_path(Navmesh* mesh, NavPath* path) {
-    if (!mesh || !path || path->point_count < 2) return;
-    
-    // Simple path smoothing - just ensure points are valid
-    // In a real implementation, this would apply the funnel algorithm
-    
+bool navmesh_smooth_path(NavmeshQuery* query, NavPath* path) {
+    if (!query || !path || path->point_count < 2) return false;
+    // Simple path smoothing placeholder
     LOG_DEBUG("Path smoothing applied");
+    return true;
 }
 
 // =================================================================================================
 // PATH FOLLOWING (TASK_1432)
 // =================================================================================================
-
-void navmesh_path_destroy(NavPath* path) {
-    if (!path) return;
-    
-    if (path->polys) free(path->polys);
-    if (path->points) free(path->points);
-    
-    free(path);
-}
 
 bool navmesh_follow_path(NavPath* path, Vec3* current_pos, Vec3* target_pos, float speed, float dt) {
     if (!path || !current_pos || !target_pos || path->point_count < 2) {
@@ -442,26 +398,26 @@ bool navmesh_follow_path(NavPath* path, Vec3* current_pos, Vec3* target_pos, flo
     }
     
     // Find next waypoint
-    uint32_t current_waypoint = path->current_waypoint;
+    uint32_t current_waypoint = (uint32_t)path->current_waypoint;
     if (current_waypoint >= path->point_count - 1) {
-        *target_pos = path->end_pos;
+        *target_pos = path->points[path->point_count - 1]; // End pos
         return true;  // Reached destination
     }
     
     *target_pos = path->points[current_waypoint + 1];
     
     // Move towards target
-    Vec3 direction = vec3_subtract(target_pos, current_pos);
-    float distance = vec3_distance(current_pos, target_pos);
+    Vec3 direction = vec3_subtract(*target_pos, *current_pos);
+    float distance = vec3_distance(*current_pos, *target_pos);
     
     if (distance > 0.001f) {
-        direction = vec3_scale(&direction, 1.0f / distance);
-        Vec3 movement = vec3_scale(&direction, speed * dt);
+        direction = vec3_mul(direction, 1.0f / distance);
+        Vec3 movement = vec3_mul(direction, speed * dt);
         
-        *current_pos = vec3_add(current_pos, &movement);
+        *current_pos = vec3_add(*current_pos, movement);
         
         // Check if we reached the waypoint
-        float new_distance = vec3_distance(current_pos, target_pos);
+        float new_distance = vec3_distance(*current_pos, *target_pos);
         if (new_distance < 0.1f) {
             path->current_waypoint++;
             if (path->current_waypoint >= path->point_count - 1) {
@@ -489,10 +445,10 @@ void navmesh_debug_print_info(const Navmesh* mesh) {
     if (!mesh) return;
     
     printf("=== Navmesh Info ===\n");
-    printf("Voxel Grid: %ux%ux%u\n", mesh->voxel_width, mesh->voxel_height, mesh->voxel_depth);
-    printf("Polygons: %u\n", mesh->poly_count);
-    printf("Vertices: %u\n", mesh->vert_count);
+    printf("Voxel Grid: %dx%dx%d\n", mesh->voxel_width, mesh->voxel_height, mesh->voxel_depth);
+    printf("Polygons: %d\n", mesh->poly_count);
+    printf("Vertices: %d\n", mesh->vert_count);
     printf("Agent Radius: %.2f\n", mesh->agent_radius);
-    printf("Max Slope: %.1f°\n", mesh->max_slope);
+    printf("Max Slope: %.1f\n", mesh->max_slope);
     printf("==================\n");
 }

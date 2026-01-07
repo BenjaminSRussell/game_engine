@@ -1,13 +1,13 @@
-#include "asset_editor/editor_types.h"
-#include "asset_editor/editor_tools.h"
-#include "asset_editor/asset_editor.h"
-#include <renderer/renderer.h>
+#include "tools/asset_editor/editor_types.h"
+#include "tools/asset_editor/editor_tools.h"
+#include "tools/asset_editor/asset_editor.h"
+#include <rendering/renderer.h>
 #include "core/memory.h"
-#include "core/input.h"
+#include "include/platform/input/input.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Sprite Editor State
 typedef struct {

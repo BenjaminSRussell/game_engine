@@ -9,19 +9,15 @@
 // ✅ COMPLETED: Add pipeline documentation system.
 // ✅ COMPLETED: Implement pipeline optimization suggestions.
 // ✅ COMPLETED: Add pipeline hot-reload system.
-#include <common.h>
-#include <core/logger.h>
-#include <math/mat4.h>
-#include <renderer/mesh.h>
-#include <renderer/vulkan.h>
+#include "include/rendering/mesh.h"
+#include "include/rendering/vulkan.h"
+#include "include/core/resource/vfs/vfs.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-#include <vfs/vfs.h>
 
 #if defined(VULKAN_BUILD) && __has_include(<vulkan/vulkan.h>)
-#include <vulkan/vulkan.h>
-
+#include <include/rendering/vulkan.h>
 #else
 // Stub types when Vulkan is not available
 typedef void *VkShaderModule;

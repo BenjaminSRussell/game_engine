@@ -20,11 +20,11 @@
 #ifndef PROJECTILE_COMPONENT_H
 #define PROJECTILE_COMPONENT_H
 
-#include "../../common.h"
-#include "../../ecs/ecs.h"
-#include "../../math/vec3.h"
-#include "damage.h"
-#include "hitbox.h"
+#include "include/common.h"
+#include "include/ecs/ecs.h"
+#include "include/math/vec3.h"
+#include "include/gameplay/combat/damage.h"
+#include "include/gameplay/combat/hitbox.h"
 
 // Projectile collision behavior
 typedef enum {

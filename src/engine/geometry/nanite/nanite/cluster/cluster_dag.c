@@ -3,7 +3,7 @@
  * Implementation of cluster DAG management
  */
 
-#include "cluster_dag.h"
+#include "geometry/nanite/nanite/cluster/cluster_dag.h"
 #include <stdio.h>
 #include <stdlib.h>
 

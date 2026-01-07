@@ -24,9 +24,9 @@
 #ifndef NLP_BEHAVIOR_H
 #define NLP_BEHAVIOR_H
 
-#include "../../common.h"
-#include "ml_core.h"
-#include "blackboard.h"
+#include "include/common.h"
+#include "include/ai/ml/ml_core.h"
+#include "include/ai/blackboard.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -381,18 +381,36 @@ const char *nlp_get_error_string(NLPError error);
 #define NLP_CHECK_NULL_PARAM(param) \
     NLP_CHECK_ERROR((param) != NULL, NLP_ERROR_INVALID_PARAMETER)
 
+#define NLP_CHECK_NULL_PARAM_PTR(param) \
+    do { \
+        if ((param) == NULL) { \
+            LOG_ERROR("NLP Behavior Error: %s", nlp_get_error_string(NLP_ERROR_INVALID_PARAMETER)); \
+            return NULL; \
+        } \
+    } while(0)
+
+#define NLP_CHECK_ERROR_PTR(condition, error) \
+    do { \
+        if (!(condition)) { \
+            LOG_ERROR("NLP Behavior Error: %s", nlp_get_error_string(error)); \
+            return NULL; \
+        } \
+    } while(0)
+
 // Performance macros
+#include <time.h>
 #define NLP_START_TIMER(system) \
-    f64 start_time = performance_get_time()
+    clock_t start_time = clock()
 
 #define NLP_END_TIMER(system, response_time_ptr) \
     do { \
-        f64 end_time = performance_get_time(); \
-        f64 duration = end_time - start_time; \
-        if (response_time_ptr) *response_time_ptr = duration; \
+        clock_t end_time = clock(); \
+        f64 duration = ((f64)(end_time - start_time)) / CLOCKS_PER_SEC; \
+        if ((response_time_ptr) != NULL) *((f64*)(response_time_ptr)) = duration; \
         system->total_response_time += duration; \
         system->total_responses_generated++; \
-        system->average_response_time = system->total_response_time / system->total_responses_generated; \
+        if (system->total_responses_generated > 0) \
+            system->average_response_time = system->total_response_time / system->total_responses_generated; \
     } while(0)
 
 #endif // NLP_BEHAVIOR_H

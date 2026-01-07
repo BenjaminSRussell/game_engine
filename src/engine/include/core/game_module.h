@@ -16,7 +16,7 @@
 #ifndef ENGINE_GAME_MODULE_H
 #define ENGINE_GAME_MODULE_H
 
-#include "../common.h"
+#include "include/common.h"
 #include <math/math.h>
 
 // Forward declarations

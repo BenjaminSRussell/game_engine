@@ -1,7 +1,7 @@
 #include <editor/importer/model_importer.h>
 #include <core/logger.h>
 #include <core/memory.h>
-#include "../../external/cgltf.h"
+#include "include/vendor/cgltf.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

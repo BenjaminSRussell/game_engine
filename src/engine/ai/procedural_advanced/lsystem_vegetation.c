@@ -1,4 +1,4 @@
-#include "ai/procedural_advanced/lsystem_vegetation.h"
+#include <ai/procedural_advanced/lsystem_vegetation.h>
 
 void lsystem_vegetation_init() {}
 

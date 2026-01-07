@@ -38,7 +38,7 @@
  * TODO: Add vk device render graph node
  */
 
-#include "vk_device.h"
+#include "backend/vulkan/vk_device.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

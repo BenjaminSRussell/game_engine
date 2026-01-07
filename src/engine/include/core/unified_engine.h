@@ -7,10 +7,10 @@
 #ifndef UNIFIED_ENGINE_H
 #define UNIFIED_ENGINE_H
 
-#include "../common.h"
+#include "include/common.h"
 #include <math/mat4.h>
 #include <math/vec3.h>
-#include "gpu_acceleration.h"
+#include "include/core/gpu_acceleration.h"
 
 // Forward declarations
 typedef struct Engine Engine;

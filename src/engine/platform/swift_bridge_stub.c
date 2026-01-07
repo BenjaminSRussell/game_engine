@@ -1,4 +1,4 @@
-#include "swift_bridge.h"
+#include "platform/swift_bridge.h"
 #include <core/logger.h>
 
 void engine_swift_init(void) {

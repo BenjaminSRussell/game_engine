@@ -17,11 +17,11 @@
 // Subsystem headers
 #include <core/asset_manager.h>
 #include <ecs/ecs.h>
-#include <input/input.h>
+#include <include/platform/input/input.h>
 #include <physics/physics.h>
-#include <renderer/renderer.h>
+#include <rendering/renderer.h>
 #include <scripting/script_system.h>
-#include <vfs/vfs.h>
+#include <core/resource/vfs/vfs.h>
 
 // New Subsystems
 #include <audio/audio_system.h>
@@ -29,7 +29,7 @@
 #include <network/rpc_system.h>
 
 #include <core/hot_reload.h>
-#include <renderer/post_processing.h>
+#include <rendering/post_processing.h>
 #include <scene/scene_system.h>
 #include <tools/profiler.h>
 
@@ -48,7 +48,7 @@
 #include <ai/npc_advanced/utility_ai.h>
 
 // Animation System
-#include <animation/animation_system.h>
+#include <character/animation/animation_system.h>
 
 // Internal state wrapper if needed
 typedef struct {

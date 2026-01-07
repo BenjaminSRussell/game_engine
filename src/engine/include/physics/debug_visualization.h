@@ -4,7 +4,7 @@
 #include "math/quat.h"
 #include "math/vec3.h"
 #include "physics/physics.h"
-#include <renderer/renderer.h>
+#include <include/rendering/renderer.h>
 // Forward declarations for types used in pointers
 struct PhysicsBody;
 struct TriangleMeshShape;

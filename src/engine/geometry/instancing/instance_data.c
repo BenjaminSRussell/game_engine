@@ -6,8 +6,8 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "instance_data.h"
-#include "../../rendering/3d_rendering/backend/metal/mtl_buffer.h"
+#include "geometry/instancing/instance_data.h"
+#include "backend/metal/mtl_buffer.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

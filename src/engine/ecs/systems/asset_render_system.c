@@ -3,7 +3,7 @@
 #include "ecs/component_ids.h"
 #include "ecs/components/transform.h"
 #include "ecs/components/asset_instance_component.h"
-#include "resource/asset_instance.h"
+#include "include/core/resource/asset_instance.h"
 #include "core/asset_manager.h"
 #include "core/logger.h"
 #include <stddef.h>

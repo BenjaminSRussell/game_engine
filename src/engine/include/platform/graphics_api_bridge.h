@@ -7,7 +7,7 @@
 #include <common.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "../assets/gltf_loader.h"
+#include "include/assets/gltf_loader.h"
 
 #ifdef __cplusplus
 extern "C" {

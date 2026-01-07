@@ -38,7 +38,7 @@
  * TODO: Add prefetch render graph node
  */
 
-#include "prefetch.h"
+#include "geometry/nanite/nanite/streaming/prefetch.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

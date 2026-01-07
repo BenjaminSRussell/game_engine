@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../types.h"
-#include "json_parser.h"
+#include "include/core/types.h"
+#include "include/core/serialization/json_parser.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus

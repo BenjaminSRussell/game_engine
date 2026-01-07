@@ -1,4 +1,4 @@
-#include "renderer/lighting/volumetric_fog.h"
+#include "lighting/volumetric/volumetric_fog.h"
 
 void volumetric_fog_init() {}
 

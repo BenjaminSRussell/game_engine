@@ -38,7 +38,7 @@
  * TODO: Add vk command render graph node
  */
 
-#include "vk_command.h"
+#include "backend/vulkan/vk_command.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

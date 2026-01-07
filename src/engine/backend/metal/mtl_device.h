@@ -9,8 +9,8 @@
 #ifndef PLATFORM_MTL_DEVICE_H
 #define PLATFORM_MTL_DEVICE_H
 
-#include "mtl_device_caps.h"
-#include "mtl_memory_heap.h"
+#include "backend/metal/mtl_device_caps.h"
+#include "backend/metal/mtl_memory_heap.h"
 
 #include <stdint.h>
 #include <stdbool.h>

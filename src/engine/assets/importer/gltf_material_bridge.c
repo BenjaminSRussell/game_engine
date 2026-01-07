@@ -3,7 +3,7 @@
 
 #include <assets/gltf_loader.h>
 #include <core/logger.h>
-#include <renderer/gpu_material.h>
+#include <rendering/gpu_material.h>
 #include <string.h>
 
 // Map GLTF material to GPUMaterial push constants

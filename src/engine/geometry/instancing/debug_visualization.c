@@ -6,13 +6,13 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "debug_visualization.h"
-#include "instance_data.h"
-#include "gpu_culling.h"
+#include "geometry/instancing/debug_visualization.h"
+#include "geometry/instancing/instance_data.h"
+#include "geometry/instancing/gpu_culling.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <math.h>
+#include <include/math/math.h>
 
 /* ============================================================================
  * DEBUG LINE STRUCTURE

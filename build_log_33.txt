@@ -1,0 +1,65 @@
+[  0%] Building OBJC object CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_scheduling.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/suppression.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/utility_ai.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_shopkeeper.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/investigation.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_ai_impl.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/suppressive_fire.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/pathfinding/astar_pathfinder.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/pathfinding/path_smoothing.c.o
+[  1%] Building C object CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_complete.c.o
+[  4%] Built target Catch2
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_scheduling.c:1/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_boss.c:10:11:10: fatal error: : fatal error: 'npc/prebuilt/npc_scheduling.h' file not found
+'npc/prebuilt/npc_boss.h' file not found
+    1 | #include "npc   11 | /pr#incluebuildet/npc_scheduling.h"
+      |  <n         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pc/prebuilt/npc_boss.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c:.
+1:10: fatal error: 'npc/prebuilt/npc_enemy_ranged.h' file not found
+    1 | #include "npc/prebuilt/npc_enemy_ranged.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ml/ml_inference.c:1:10: fatal error: 'ml_inference.h' file not found
+    1 | #include "ml_inference.h"
+      |          ^~~~~~~~~~~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_scheduling.c.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_ranged.c.o] Error 1
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/ml/ml_inference.c.o] Error 1
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_boss.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_advanced/suppressive_fire.c:1:10: fatal error: 'ai/npc_advanced/suppressive_fire.h' file not found
+    1 | #include "ai/npc_advanced/suppressive_fire.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/suppressive_fire.c.o] Error 1
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:57:23: error: call to undeclared function 'bt_evaluate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   57 |     BTStatus status = bt_evaluate(node->children[i], context);
+      |                       ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:67:23: error: call to undeclared function 'bt_evaluate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   67 |     BTStatus status = bt_evaluate(node->children[i], context);
+      |                       ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:75:10: error: conflicting types for 'bt_evaluate'
+   75 | BTStatus bt_evaluate(BTNode *node, void *context) {
+      |          ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:57:23: note: previous implicit declaration is here
+   57 |     BTStatus status = bt_evaluate(node->children[i], context);
+      |                       ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:181:18: error: call to undeclared library function 'sqrtf' with type 'float (float)'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  181 |     float dist = sqrtf(dx * dx + dy * dy + dz * dz);
+      |                  ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:181:18: note: include the header <math.h> or explicitly provide a declaration for 'sqrtf'
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:187:21: error: call to undeclared library function 'acosf' with type 'float (float)'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  187 |       float angle = acosf(dot);
+      |                     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/npc_ai_impl.c:187:21: note: include the header <math.h> or explicitly provide a declaration for 'acosf'
+5 errors generated.
+[  4%] Built target Catch2WithMain
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/npc_ai_impl.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

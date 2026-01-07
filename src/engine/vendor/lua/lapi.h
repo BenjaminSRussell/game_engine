@@ -8,8 +8,8 @@
 #define lapi_h
 
 
-#include "llimits.h"
-#include "lstate.h"
+#include "vendor/lua/llimits.h"
+#include "vendor/lua/lstate.h"
 
 
 /* Increments 'L->top.p', checking for stack overflows */

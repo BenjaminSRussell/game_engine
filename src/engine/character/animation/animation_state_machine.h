@@ -1,7 +1,7 @@
 #ifndef ANIMATION_STATE_MACHINE_H
 #define ANIMATION_STATE_MACHINE_H
 
-#include "animation_clip.h"
+#include "character/animation/animation_clip.h"
 #include <simd/simd.h>
 
 #define MAX_STATES 32

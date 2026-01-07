@@ -1,9 +1,9 @@
-#include "streaming_memory_pool.h"
-#include "../core/logger.h"
-#include "../core/memory.h"
+#include "core/resource/streaming/streaming_memory_pool.h"
+#include "core/logger.h"
+#include "core/memory.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <include/math/math.h>
 
 // Helper function to align size to alignment boundary
 static u32 align_size(u32 size, u32 alignment) {

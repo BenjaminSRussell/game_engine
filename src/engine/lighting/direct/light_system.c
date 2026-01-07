@@ -1,5 +1,5 @@
-#include "lighting/light_system.h"
-#include <math.h>
+#include "lighting/direct/light_system.h"
+#include <include/math/math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

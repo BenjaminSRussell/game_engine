@@ -8,8 +8,8 @@
 #define lgc_h
 
 
-#include "lobject.h"
-#include "lstate.h"
+#include "include/vendor/lua/lobject.h"
+#include "include/vendor/lua/lstate.h"
 
 /*
 ** Collectable objects may have one of three colors: white, which means
