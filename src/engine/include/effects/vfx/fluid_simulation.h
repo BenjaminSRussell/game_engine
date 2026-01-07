@@ -2,7 +2,7 @@
 #define FLUID_SIMULATION_H
 
 #include "include/core/types.h"
-#include "../math/vec3.h"
+#include "math/vec3.h"
 #include "include/core/memory.h"
 
 // Fluid simulation configuration

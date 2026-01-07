@@ -1,7 +1,7 @@
 #ifndef SIMD_VEC3_H
 #define SIMD_VEC3_H
 
-#include "../math/vec3.h"
+#include "math/vec3.h"
 
 #ifdef __cplusplus
 extern "C" {

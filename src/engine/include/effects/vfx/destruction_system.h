@@ -2,7 +2,7 @@
 #define DESTRUCTION_SYSTEM_H
 
 #include "include/core/types.h"
-#include "../math/vec3.h"
+#include "math/vec3.h"
 #include "../math/mat4.h"
 #include "include/core/memory.h"
 

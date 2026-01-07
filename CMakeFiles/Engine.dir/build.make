@@ -28758,10 +28758,24 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/buffer_pool.c.s: cmake_for
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/buffer_pool.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/buffer_pool.c" -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/buffer_pool.c.s
 
+CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o: src/engine/rendering/gpu_driven/compute_dispatch.c
+CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2050) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/compute_dispatch.c"
+
+CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/compute_dispatch.c" > CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.i
+
+CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/compute_dispatch.c" -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.s
+
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o: src/engine/rendering/gpu_driven/draw_command_gen.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2050) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2051) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/draw_command_gen.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.i: cmake_force
@@ -28775,7 +28789,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o: src/engine/rendering/gpu_driven/gpu_scene.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2051) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2052) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/gpu_scene.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.i: cmake_force
@@ -28789,7 +28803,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.o: src/engine/rendering/gpu_driven/instance_data_gpu.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2052) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2053) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/instance_data_gpu.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.i: cmake_force
@@ -28803,7 +28817,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/material_data_gpu.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/material_data_gpu.c.o: src/engine/rendering/gpu_driven/material_data_gpu.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/material_data_gpu.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2053) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/material_data_gpu.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2054) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/material_data_gpu.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/material_data_gpu.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/material_data_gpu.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/material_data_gpu.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/material_data_gpu.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/material_data_gpu.c.i: cmake_force
@@ -28817,7 +28831,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/material_data_gpu.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/multi_draw_indirect.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/multi_draw_indirect.c.o: src/engine/rendering/gpu_driven/multi_draw_indirect.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/multi_draw_indirect.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2054) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/multi_draw_indirect.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2055) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/multi_draw_indirect.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/multi_draw_indirect.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/multi_draw_indirect.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/multi_draw_indirect.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/multi_draw_indirect.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/multi_draw_indirect.c.i: cmake_force
@@ -28831,7 +28845,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/multi_draw_indirect.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/persistent_mapping.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/persistent_mapping.c.o: src/engine/rendering/gpu_driven/persistent_mapping.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/persistent_mapping.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2055) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/persistent_mapping.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2056) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/persistent_mapping.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/persistent_mapping.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/persistent_mapping.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/persistent_mapping.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/persistent_mapping.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/persistent_mapping.c.i: cmake_force
@@ -28845,7 +28859,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/persistent_mapping.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/render_graph_integration.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/render_graph_integration.c.o: src/engine/rendering/gpu_driven/render_graph_integration.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/render_graph_integration.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2056) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/render_graph_integration.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2057) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/render_graph_integration.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/render_graph_integration.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/render_graph_integration.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/render_graph_integration.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_driven/render_graph_integration.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/render_graph_integration.c.i: cmake_force
@@ -28859,7 +28873,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/render_graph_integration.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_memory.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_memory.c.o: src/engine/rendering/gpu_memory.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_memory.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2057) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_memory.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2058) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_memory.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_memory.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_memory.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_memory.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_memory.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_memory.c.i: cmake_force
@@ -28873,7 +28887,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_memory.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_particles.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_particles.c.o: src/engine/rendering/gpu_particles.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_particles.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2058) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_particles.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2059) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_particles.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_particles.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_particles.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_particles.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_particles.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_particles.c.i: cmake_force
@@ -28887,7 +28901,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_particles.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_postprocess.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_postprocess.c.o: src/engine/rendering/gpu_postprocess.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_postprocess.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2059) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_postprocess.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2060) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_postprocess.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_postprocess.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_postprocess.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_postprocess.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_postprocess.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_postprocess.c.i: cmake_force
@@ -28901,7 +28915,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_postprocess.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_renderpass.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_renderpass.c.o: src/engine/rendering/gpu_renderpass.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_renderpass.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2060) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_renderpass.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2061) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_renderpass.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_renderpass.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_renderpass.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_renderpass.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_renderpass.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_renderpass.c.i: cmake_force
@@ -28915,7 +28929,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_renderpass.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_culling.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_culling.c.o: src/engine/rendering/gpu_scene/gpu_scene_culling.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_culling.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2061) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_culling.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2062) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_culling.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_culling.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_culling.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_culling.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_scene/gpu_scene_culling.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_culling.c.i: cmake_force
@@ -28929,7 +28943,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_culling.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_rendering.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_rendering.c.o: src/engine/rendering/gpu_scene/gpu_scene_rendering.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_rendering.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2062) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_rendering.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2063) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_rendering.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_rendering.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_rendering.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_rendering.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_scene/gpu_scene_rendering.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_rendering.c.i: cmake_force
@@ -28943,7 +28957,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_rendering.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_update.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_update.c.o: src/engine/rendering/gpu_scene/gpu_scene_update.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_update.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2063) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_update.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2064) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_update.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_update.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_update.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_update.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_scene/gpu_scene_update.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_update.c.i: cmake_force
@@ -28957,7 +28971,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_scene/gpu_scene_update.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_shader_reload.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_shader_reload.c.o: src/engine/rendering/gpu_shader_reload.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_shader_reload.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2064) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_shader_reload.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2065) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_shader_reload.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_shader_reload.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_shader_reload.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_shader_reload.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_shader_reload.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_shader_reload.c.i: cmake_force
@@ -28971,7 +28985,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_shader_reload.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_text.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_text.c.o: src/engine/rendering/gpu_text.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_text.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2065) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_text.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2066) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_text.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_text.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_text.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_text.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_text.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_text.c.i: cmake_force
@@ -28985,7 +28999,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_text.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_texture.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_texture.c.o: src/engine/rendering/gpu_texture.c
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_texture.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2066) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_texture.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2067) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/gpu_texture.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/gpu_texture.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/gpu_texture.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/gpu_texture.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/gpu_texture.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/gpu_texture.c.i: cmake_force
@@ -28999,7 +29013,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/gpu_texture.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/graph/render_graph_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/graph/render_graph_impl.c.o: src/engine/rendering/graph/render_graph_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/graph/render_graph_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2067) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/graph/render_graph_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2068) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/graph/render_graph_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/graph/render_graph_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/graph/render_graph_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/graph/render_graph_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/graph/render_graph_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/graph/render_graph_impl.c.i: cmake_force
@@ -29013,7 +29027,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/graph/render_graph_impl.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/rendering/grid_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/grid_renderer.c.o: src/engine/rendering/grid_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/grid_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2068) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/grid_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2069) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/grid_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/grid_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/grid_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/grid_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/grid_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/grid_renderer.c.i: cmake_force
@@ -29027,7 +29041,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/grid_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/hdr_tonemap.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/hdr_tonemap.c.o: src/engine/rendering/hdr_tonemap.c
 CMakeFiles/Engine.dir/src/engine/rendering/hdr_tonemap.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2069) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/hdr_tonemap.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2070) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/hdr_tonemap.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/hdr_tonemap.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/hdr_tonemap.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/hdr_tonemap.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/hdr_tonemap.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/hdr_tonemap.c.i: cmake_force
@@ -29041,7 +29055,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/hdr_tonemap.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/hybrid_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/hybrid_renderer.c.o: src/engine/rendering/hybrid_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/hybrid_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2070) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/hybrid_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2071) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/hybrid_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/hybrid_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/hybrid_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/hybrid_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/hybrid_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/hybrid_renderer.c.i: cmake_force
@@ -29055,7 +29069,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/hybrid_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/material_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/material_system.c.o: src/engine/rendering/material_system.c
 CMakeFiles/Engine.dir/src/engine/rendering/material_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2071) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/material_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2072) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/material_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/material_system.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/material_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/material_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/material_system.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/material_system.c.i: cmake_force
@@ -29069,7 +29083,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/material_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_complete_example.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_complete_example.c.o: src/engine/rendering/materials/material_complete_example.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_complete_example.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2072) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_complete_example.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2073) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_complete_example.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials/material_complete_example.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials/material_complete_example.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials/material_complete_example.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials/material_complete_example.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_complete_example.c.i: cmake_force
@@ -29083,7 +29097,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials/material_complete_example.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_defaults.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_defaults.c.o: src/engine/rendering/materials/material_defaults.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_defaults.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2073) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_defaults.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2074) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_defaults.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials/material_defaults.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials/material_defaults.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials/material_defaults.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials/material_defaults.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_defaults.c.i: cmake_force
@@ -29097,7 +29111,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials/material_defaults.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_examples.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_examples.c.o: src/engine/rendering/materials/material_examples.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_examples.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2074) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_examples.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2075) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_examples.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials/material_examples.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials/material_examples.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials/material_examples.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials/material_examples.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_examples.c.i: cmake_force
@@ -29111,7 +29125,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials/material_examples.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_hot_reload.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_hot_reload.c.o: src/engine/rendering/materials/material_hot_reload.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_hot_reload.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2075) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_hot_reload.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2076) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_hot_reload.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials/material_hot_reload.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials/material_hot_reload.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials/material_hot_reload.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials/material_hot_reload.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_hot_reload.c.i: cmake_force
@@ -29125,7 +29139,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials/material_hot_reload.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_instance.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_instance.c.o: src/engine/rendering/materials/material_instance.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_instance.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2076) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_instance.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2077) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_instance.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials/material_instance.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials/material_instance.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials/material_instance.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials/material_instance.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_instance.c.i: cmake_force
@@ -29139,7 +29153,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials/material_instance.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization.c.o: src/engine/rendering/materials/material_serialization.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2077) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2078) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials/material_serialization.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization.c.i: cmake_force
@@ -29153,7 +29167,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization.c.s:
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization_examples.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization_examples.c.o: src/engine/rendering/materials/material_serialization_examples.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization_examples.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2078) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization_examples.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2079) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization_examples.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization_examples.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization_examples.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization_examples.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials/material_serialization_examples.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization_examples.c.i: cmake_force
@@ -29167,7 +29181,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials/material_serialization_exam
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_system.c.o: src/engine/rendering/materials/material_system.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2079) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2080) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials/material_system.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials/material_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials/material_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials/material_system.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_system.c.i: cmake_force
@@ -29181,7 +29195,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials/material_system.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_templates.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_templates.c.o: src/engine/rendering/materials/material_templates.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_templates.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2080) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_templates.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2081) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/material_templates.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials/material_templates.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials/material_templates.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials/material_templates.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials/material_templates.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials/material_templates.c.i: cmake_force
@@ -29195,7 +29209,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials/material_templates.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/materials/shader_permutations.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials/shader_permutations.c.o: src/engine/rendering/materials/shader_permutations.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials/shader_permutations.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2081) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/shader_permutations.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2082) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials/shader_permutations.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials/shader_permutations.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials/shader_permutations.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials/shader_permutations.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials/shader_permutations.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials/shader_permutations.c.i: cmake_force
@@ -29209,7 +29223,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials/shader_permutations.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/anisotropy.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/anisotropy.c.o: src/engine/rendering/materials_advanced/anisotropy.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/anisotropy.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2082) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/anisotropy.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2083) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/anisotropy.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/anisotropy.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/anisotropy.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/anisotropy.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_advanced/anisotropy.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/anisotropy.c.i: cmake_force
@@ -29223,7 +29237,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/anisotropy.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/clear_coat.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/clear_coat.c.o: src/engine/rendering/materials_advanced/clear_coat.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/clear_coat.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2083) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/clear_coat.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2084) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/clear_coat.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/clear_coat.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/clear_coat.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/clear_coat.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_advanced/clear_coat.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/clear_coat.c.i: cmake_force
@@ -29237,7 +29251,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/clear_coat.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/cloth_shader.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/cloth_shader.c.o: src/engine/rendering/materials_advanced/cloth_shader.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/cloth_shader.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2084) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/cloth_shader.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2085) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/cloth_shader.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/cloth_shader.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/cloth_shader.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/cloth_shader.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_advanced/cloth_shader.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/cloth_shader.c.i: cmake_force
@@ -29251,7 +29265,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/cloth_shader.c.s: 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/glitter_shader.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/glitter_shader.c.o: src/engine/rendering/materials_advanced/glitter_shader.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/glitter_shader.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2085) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/glitter_shader.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2086) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/glitter_shader.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/glitter_shader.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/glitter_shader.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/glitter_shader.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_advanced/glitter_shader.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/glitter_shader.c.i: cmake_force
@@ -29265,7 +29279,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/glitter_shader.c.s
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/hair_shader.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/hair_shader.c.o: src/engine/rendering/materials_advanced/hair_shader.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/hair_shader.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2086) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/hair_shader.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2087) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/hair_shader.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/hair_shader.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/hair_shader.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/hair_shader.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_advanced/hair_shader.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/hair_shader.c.i: cmake_force
@@ -29279,7 +29293,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/hair_shader.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/layered_materials.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/layered_materials.c.o: src/engine/rendering/materials_advanced/layered_materials.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/layered_materials.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2087) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/layered_materials.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2088) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/layered_materials.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/layered_materials.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/layered_materials.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/layered_materials.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_advanced/layered_materials.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/layered_materials.c.i: cmake_force
@@ -29293,7 +29307,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/layered_materials.
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/microfacet_distribution.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/microfacet_distribution.c.o: src/engine/rendering/materials_advanced/microfacet_distribution.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/microfacet_distribution.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2088) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/microfacet_distribution.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2089) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/microfacet_distribution.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/microfacet_distribution.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/microfacet_distribution.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/microfacet_distribution.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_advanced/microfacet_distribution.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/microfacet_distribution.c.i: cmake_force
@@ -29307,7 +29321,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/microfacet_distrib
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/sheen_shader.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/sheen_shader.c.o: src/engine/rendering/materials_advanced/sheen_shader.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/sheen_shader.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2089) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/sheen_shader.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2090) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/sheen_shader.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/sheen_shader.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/sheen_shader.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/sheen_shader.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_advanced/sheen_shader.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/sheen_shader.c.i: cmake_force
@@ -29321,7 +29335,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/sheen_shader.c.s: 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/subsurface_scattering.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/subsurface_scattering.c.o: src/engine/rendering/materials_advanced/subsurface_scattering.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/subsurface_scattering.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2090) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/subsurface_scattering.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2091) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/subsurface_scattering.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/subsurface_scattering.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/subsurface_scattering.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/subsurface_scattering.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_advanced/subsurface_scattering.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/subsurface_scattering.c.i: cmake_force
@@ -29335,7 +29349,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/subsurface_scatter
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/water_shader.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/water_shader.c.o: src/engine/rendering/materials_advanced/water_shader.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/water_shader.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2091) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/water_shader.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2092) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/water_shader.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/water_shader.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/water_shader.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/water_shader.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_advanced/water_shader.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/water_shader.c.i: cmake_force
@@ -29349,7 +29363,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_advanced/water_shader.c.s: 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.o: src/engine/rendering/materials_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2092) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2093) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/materials_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.i: cmake_force
@@ -29363,7 +29377,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/mesh/mesh_processing_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/mesh/mesh_processing_impl.c.o: src/engine/rendering/mesh/mesh_processing_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/mesh/mesh_processing_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2093) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/mesh/mesh_processing_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2094) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/mesh/mesh_processing_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/mesh/mesh_processing_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/mesh/mesh_processing_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/mesh/mesh_processing_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/mesh/mesh_processing_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/mesh/mesh_processing_impl.c.i: cmake_force
@@ -29377,7 +29391,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/mesh/mesh_processing_impl.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/model_loader.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/model_loader.c.o: src/engine/rendering/model_loader.c
 CMakeFiles/Engine.dir/src/engine/rendering/model_loader.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2094) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/model_loader.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2095) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/model_loader.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/model_loader.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/model_loader.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/model_loader.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/model_loader.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/model_loader.c.i: cmake_force
@@ -29391,7 +29405,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/model_loader.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/normal_mapping.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/normal_mapping.c.o: src/engine/rendering/normal_mapping.c
 CMakeFiles/Engine.dir/src/engine/rendering/normal_mapping.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2095) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/normal_mapping.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2096) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/normal_mapping.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/normal_mapping.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/normal_mapping.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/normal_mapping.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/normal_mapping.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/normal_mapping.c.i: cmake_force
@@ -29405,7 +29419,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/normal_mapping.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_build.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_build.c.o: src/engine/rendering/occlusion/hzb/hzb_build.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_build.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2096) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_build.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2097) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_build.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_build.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_build.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_build.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/hzb/hzb_build.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_build.c.i: cmake_force
@@ -29419,7 +29433,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_build.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_debug.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_debug.c.o: src/engine/rendering/occlusion/hzb/hzb_debug.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_debug.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2097) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_debug.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2098) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_debug.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_debug.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_debug.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_debug.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/hzb/hzb_debug.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_debug.c.i: cmake_force
@@ -29433,7 +29447,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_debug.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_downsample.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_downsample.c.o: src/engine/rendering/occlusion/hzb/hzb_downsample.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_downsample.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2098) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_downsample.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2099) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_downsample.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_downsample.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_downsample.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_downsample.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/hzb/hzb_downsample.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_downsample.c.i: cmake_force
@@ -29447,7 +29461,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_downsample.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_first_person.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_first_person.c.o: src/engine/rendering/occlusion/hzb/hzb_first_person.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_first_person.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2099) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_first_person.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2100) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_first_person.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_first_person.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_first_person.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_first_person.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/hzb/hzb_first_person.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_first_person.c.i: cmake_force
@@ -29461,7 +29475,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_first_person.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_temporal.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_temporal.c.o: src/engine/rendering/occlusion/hzb/hzb_temporal.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_temporal.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2100) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_temporal.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2101) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_temporal.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_temporal.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_temporal.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_temporal.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/hzb/hzb_temporal.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_temporal.c.i: cmake_force
@@ -29475,7 +29489,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/hzb/hzb_temporal.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c.o: src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2101) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2102) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c.i: cmake_force
@@ -29489,7 +29503,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/masked_o
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/occlusion_query.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/occlusion_query.c.o: src/engine/rendering/occlusion/software_occlusion/occlusion_query.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/occlusion_query.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2102) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/occlusion_query.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2103) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/occlusion_query.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/occlusion_query.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/occlusion_query.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/occlusion_query.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/software_occlusion/occlusion_query.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/occlusion_query.c.i: cmake_force
@@ -29503,7 +29517,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/occlusio
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_binning.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_binning.c.o: src/engine/rendering/occlusion/software_occlusion/sw_binning.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_binning.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2103) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_binning.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2104) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_binning.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_binning.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_binning.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_binning.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/software_occlusion/sw_binning.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_binning.c.i: cmake_force
@@ -29517,7 +29531,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_binni
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c.o: src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2104) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2105) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c.i: cmake_force
@@ -29531,7 +29545,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_depth
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c.o: src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2105) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2106) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c.i: cmake_force
@@ -29545,7 +29559,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_raste
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_triangle.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_triangle.c.o: src/engine/rendering/occlusion/software_occlusion/sw_triangle.c
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_triangle.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2106) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_triangle.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2107) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_triangle.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_triangle.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_triangle.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_triangle.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/occlusion/software_occlusion/sw_triangle.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_triangle.c.i: cmake_force
@@ -29559,7 +29573,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/occlusion/software_occlusion/sw_trian
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/dynamic_resolution.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/dynamic_resolution.c.o: src/engine/rendering/optimization/dynamic_resolution.c
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/dynamic_resolution.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2107) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/optimization/dynamic_resolution.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2108) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/optimization/dynamic_resolution.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/optimization/dynamic_resolution.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/optimization/dynamic_resolution.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/optimization/dynamic_resolution.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/optimization/dynamic_resolution.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/dynamic_resolution.c.i: cmake_force
@@ -29573,7 +29587,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/optimization/dynamic_resolution.c.s: 
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/mesh_optimizer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/mesh_optimizer.c.o: src/engine/rendering/optimization/mesh_optimizer.c
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/mesh_optimizer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2108) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/optimization/mesh_optimizer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2109) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/optimization/mesh_optimizer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/optimization/mesh_optimizer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/optimization/mesh_optimizer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/optimization/mesh_optimizer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/optimization/mesh_optimizer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/mesh_optimizer.c.i: cmake_force
@@ -29587,7 +29601,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/optimization/mesh_optimizer.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/occlusion_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/occlusion_system.c.o: src/engine/rendering/optimization/occlusion_system.c
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/occlusion_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2109) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/optimization/occlusion_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2110) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/optimization/occlusion_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/optimization/occlusion_system.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/optimization/occlusion_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/optimization/occlusion_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/optimization/occlusion_system.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/optimization/occlusion_system.c.i: cmake_force
@@ -29601,7 +29615,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/optimization/occlusion_system.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/output/frame_pacing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/output/frame_pacing.c.o: src/engine/rendering/output/frame_pacing.c
 CMakeFiles/Engine.dir/src/engine/rendering/output/frame_pacing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2110) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/frame_pacing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2111) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/frame_pacing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/output/frame_pacing.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/output/frame_pacing.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/output/frame_pacing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/output/frame_pacing.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/output/frame_pacing.c.i: cmake_force
@@ -29615,7 +29629,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/output/frame_pacing.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/output/hdr_output.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/output/hdr_output.c.o: src/engine/rendering/output/hdr_output.c
 CMakeFiles/Engine.dir/src/engine/rendering/output/hdr_output.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2111) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/hdr_output.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2112) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/hdr_output.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/output/hdr_output.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/output/hdr_output.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/output/hdr_output.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/output/hdr_output.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/output/hdr_output.c.i: cmake_force
@@ -29629,7 +29643,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/output/hdr_output.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/output/present.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/output/present.c.o: src/engine/rendering/output/present.c
 CMakeFiles/Engine.dir/src/engine/rendering/output/present.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2112) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/present.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2113) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/present.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/output/present.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/output/present.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/output/present.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/output/present.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/output/present.c.i: cmake_force
@@ -29643,7 +29657,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/output/present.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/output/resolution_scaling.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/output/resolution_scaling.c.o: src/engine/rendering/output/resolution_scaling.c
 CMakeFiles/Engine.dir/src/engine/rendering/output/resolution_scaling.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2113) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/resolution_scaling.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2114) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/resolution_scaling.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/output/resolution_scaling.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/output/resolution_scaling.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/output/resolution_scaling.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/output/resolution_scaling.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/output/resolution_scaling.c.i: cmake_force
@@ -29657,7 +29671,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/output/resolution_scaling.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/output/swapchain.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/output/swapchain.c.o: src/engine/rendering/output/swapchain.c
 CMakeFiles/Engine.dir/src/engine/rendering/output/swapchain.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2114) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/swapchain.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2115) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/swapchain.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/output/swapchain.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/output/swapchain.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/output/swapchain.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/output/swapchain.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/output/swapchain.c.i: cmake_force
@@ -29671,7 +29685,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/output/swapchain.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/output/vsync_modes.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/output/vsync_modes.c.o: src/engine/rendering/output/vsync_modes.c
 CMakeFiles/Engine.dir/src/engine/rendering/output/vsync_modes.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2115) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/vsync_modes.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2116) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/output/vsync_modes.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/output/vsync_modes.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/output/vsync_modes.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/output/vsync_modes.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/output/vsync_modes.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/output/vsync_modes.c.i: cmake_force
@@ -29685,7 +29699,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/output/vsync_modes.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/particle_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/particle_renderer.c.o: src/engine/rendering/particle_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/particle_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2116) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/particle_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2117) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/particle_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/particle_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/particle_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/particle_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/particle_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/particle_renderer.c.i: cmake_force
@@ -29699,7 +29713,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/particle_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.o: src/engine/rendering/particles/gpu_particles.c
 CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2117) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2118) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/particles/gpu_particles.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.i: cmake_force
@@ -29713,7 +29727,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/rendering/particles/ribbon_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/particles/ribbon_renderer.c.o: src/engine/rendering/particles/ribbon_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/particles/ribbon_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2118) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/particles/ribbon_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2119) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/particles/ribbon_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/particles/ribbon_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/particles/ribbon_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/particles/ribbon_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/particles/ribbon_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/particles/ribbon_renderer.c.i: cmake_force
@@ -29727,7 +29741,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/particles/ribbon_renderer.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/passes/shadow_pass_example.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/passes/shadow_pass_example.c.o: src/engine/rendering/passes/shadow_pass_example.c
 CMakeFiles/Engine.dir/src/engine/rendering/passes/shadow_pass_example.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2119) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/passes/shadow_pass_example.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2120) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/passes/shadow_pass_example.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/passes/shadow_pass_example.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/passes/shadow_pass_example.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/passes/shadow_pass_example.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/passes/shadow_pass_example.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/passes/shadow_pass_example.c.i: cmake_force
@@ -29741,7 +29755,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/passes/shadow_pass_example.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.o: src/engine/rendering/pbr/pbr_brdf.c
 CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2120) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2121) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/pbr/pbr_brdf.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.i: cmake_force
@@ -29755,7 +29769,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing.c.o: src/engine/rendering/post_processing.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2121) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2122) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing.c.i: cmake_force
@@ -29769,7 +29783,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/auto_exposure.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/auto_exposure.c.o: src/engine/rendering/post_processing/auto_exposure.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/auto_exposure.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2122) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/auto_exposure.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2123) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/auto_exposure.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/auto_exposure.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/auto_exposure.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/auto_exposure.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/auto_exposure.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/auto_exposure.c.i: cmake_force
@@ -29783,7 +29797,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/auto_exposure.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom.c.o: src/engine/rendering/post_processing/bloom.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2123) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2124) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/bloom.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom.c.i: cmake_force
@@ -29797,7 +29811,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom_convolution.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom_convolution.c.o: src/engine/rendering/post_processing/bloom_convolution.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom_convolution.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2124) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom_convolution.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2125) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom_convolution.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom_convolution.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom_convolution.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom_convolution.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/bloom_convolution.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom_convolution.c.i: cmake_force
@@ -29811,7 +29825,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/bloom_convolution.c.s
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/chromatic_aberration.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/chromatic_aberration.c.o: src/engine/rendering/post_processing/chromatic_aberration.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/chromatic_aberration.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2125) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/chromatic_aberration.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2126) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/chromatic_aberration.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/chromatic_aberration.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/chromatic_aberration.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/chromatic_aberration.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/chromatic_aberration.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/chromatic_aberration.c.i: cmake_force
@@ -29825,7 +29839,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/chromatic_aberration.
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/color_grading.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/color_grading.c.o: src/engine/rendering/post_processing/color_grading.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/color_grading.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2126) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/color_grading.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2127) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/color_grading.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/color_grading.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/color_grading.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/color_grading.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/color_grading.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/color_grading.c.i: cmake_force
@@ -29839,7 +29853,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/color_grading.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/dof_bokeh.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/dof_bokeh.c.o: src/engine/rendering/post_processing/dof_bokeh.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/dof_bokeh.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2127) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/dof_bokeh.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2128) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/dof_bokeh.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/dof_bokeh.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/dof_bokeh.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/dof_bokeh.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/dof_bokeh.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/dof_bokeh.c.i: cmake_force
@@ -29853,7 +29867,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/dof_bokeh.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/fxaa.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/fxaa.c.o: src/engine/rendering/post_processing/fxaa.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/fxaa.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2128) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/fxaa.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2129) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/fxaa.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/fxaa.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/fxaa.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/fxaa.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/fxaa.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/fxaa.c.i: cmake_force
@@ -29867,7 +29881,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/fxaa.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/lens_flares.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/lens_flares.c.o: src/engine/rendering/post_processing/lens_flares.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/lens_flares.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2129) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/lens_flares.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2130) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/lens_flares.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/lens_flares.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/lens_flares.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/lens_flares.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/lens_flares.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/lens_flares.c.i: cmake_force
@@ -29881,7 +29895,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/lens_flares.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/motion_blur.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/motion_blur.c.o: src/engine/rendering/post_processing/motion_blur.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/motion_blur.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2130) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/motion_blur.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2131) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/motion_blur.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/motion_blur.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/motion_blur.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/motion_blur.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/motion_blur.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/motion_blur.c.i: cmake_force
@@ -29895,7 +29909,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/motion_blur.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_examples.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_examples.c.o: src/engine/rendering/post_processing/post_processing_examples.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_examples.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2131) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_examples.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2132) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_examples.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_examples.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_examples.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_examples.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/post_processing_examples.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_examples.c.i: cmake_force
@@ -29909,7 +29923,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_examp
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_pipeline.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_pipeline.c.o: src/engine/rendering/post_processing/post_processing_pipeline.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_pipeline.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2132) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_pipeline.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2133) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_pipeline.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_pipeline.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_pipeline.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_pipeline.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/post_processing_pipeline.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_pipeline.c.i: cmake_force
@@ -29923,7 +29937,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/post_processing_pipel
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/procedural_lens_flare.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/procedural_lens_flare.c.o: src/engine/rendering/post_processing/procedural_lens_flare.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/procedural_lens_flare.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2133) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/procedural_lens_flare.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2134) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/procedural_lens_flare.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/procedural_lens_flare.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/procedural_lens_flare.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/procedural_lens_flare.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/procedural_lens_flare.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/procedural_lens_flare.c.i: cmake_force
@@ -29937,7 +29951,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/procedural_lens_flare
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/screen_space_reflections.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/screen_space_reflections.c.o: src/engine/rendering/post_processing/screen_space_reflections.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/screen_space_reflections.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2134) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/screen_space_reflections.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2135) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/screen_space_reflections.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/screen_space_reflections.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/screen_space_reflections.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/screen_space_reflections.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/screen_space_reflections.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/screen_space_reflections.c.i: cmake_force
@@ -29951,7 +29965,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/screen_space_reflecti
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/ssao_horizon.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/ssao_horizon.c.o: src/engine/rendering/post_processing/ssao_horizon.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/ssao_horizon.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2135) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/ssao_horizon.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2136) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/ssao_horizon.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/ssao_horizon.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/ssao_horizon.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/ssao_horizon.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/ssao_horizon.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/ssao_horizon.c.i: cmake_force
@@ -29965,7 +29979,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/ssao_horizon.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/taa.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/taa.c.o: src/engine/rendering/post_processing/taa.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/taa.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2136) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/taa.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2137) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/taa.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/taa.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/taa.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/taa.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/taa.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/taa.c.i: cmake_force
@@ -29979,7 +29993,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/taa.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/tonemapping.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/tonemapping.c.o: src/engine/rendering/post_processing/tonemapping.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/tonemapping.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2137) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/tonemapping.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2138) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/tonemapping.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/tonemapping.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/tonemapping.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/tonemapping.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/tonemapping.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/tonemapping.c.i: cmake_force
@@ -29993,7 +30007,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/tonemapping.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/vignette.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/vignette.c.o: src/engine/rendering/post_processing/vignette.c
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/vignette.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2138) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/vignette.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2139) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/post_processing/vignette.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/post_processing/vignette.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/post_processing/vignette.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/post_processing/vignette.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/post_processing/vignette.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/post_processing/vignette.c.i: cmake_force
@@ -30007,7 +30021,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/post_processing/vignette.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/rendering/postprocess/taa_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/postprocess/taa_impl.c.o: src/engine/rendering/postprocess/taa_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/postprocess/taa_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2139) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/postprocess/taa_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2140) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/postprocess/taa_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/postprocess/taa_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/postprocess/taa_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/postprocess/taa_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/postprocess/taa_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/postprocess/taa_impl.c.i: cmake_force
@@ -30021,7 +30035,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/postprocess/taa_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/postprocess/uber_posttrace_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/postprocess/uber_posttrace_impl.c.o: src/engine/rendering/postprocess/uber_posttrace_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/postprocess/uber_posttrace_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2140) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/postprocess/uber_posttrace_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2141) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/postprocess/uber_posttrace_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/postprocess/uber_posttrace_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/postprocess/uber_posttrace_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/postprocess/uber_posttrace_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/postprocess/uber_posttrace_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/postprocess/uber_posttrace_impl.c.i: cmake_force
@@ -30035,7 +30049,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/postprocess/uber_posttrace_impl.c.s: 
 CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.o: src/engine/rendering/ray_tracing.c
 CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2141) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2142) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/ray_tracing.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.i: cmake_force
@@ -30049,7 +30063,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_compaction.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_compaction.c.o: src/engine/rendering/raytracing/acceleration/as_compaction.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_compaction.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2142) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_compaction.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2143) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_compaction.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_compaction.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_compaction.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_compaction.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/acceleration/as_compaction.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_compaction.c.i: cmake_force
@@ -30063,7 +30077,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_compaction
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_manager.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_manager.c.o: src/engine/rendering/raytracing/acceleration/as_manager.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_manager.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2143) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_manager.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2144) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_manager.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_manager.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_manager.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_manager.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/acceleration/as_manager.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_manager.c.i: cmake_force
@@ -30077,7 +30091,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_manager.c.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_update.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_update.c.o: src/engine/rendering/raytracing/acceleration/as_update.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_update.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2144) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_update.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2145) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_update.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_update.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_update.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_update.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/acceleration/as_update.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_update.c.i: cmake_force
@@ -30091,7 +30105,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/as_update.c.s
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/blas_builder.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/blas_builder.c.o: src/engine/rendering/raytracing/acceleration/blas_builder.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/blas_builder.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2145) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/blas_builder.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2146) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/blas_builder.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/blas_builder.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/blas_builder.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/blas_builder.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/acceleration/blas_builder.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/blas_builder.c.i: cmake_force
@@ -30105,7 +30119,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/blas_builder.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c.o: src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2146) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2147) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c.i: cmake_force
@@ -30119,7 +30133,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/instance_buff
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/tlas_builder.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/tlas_builder.c.o: src/engine/rendering/raytracing/acceleration/tlas_builder.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/tlas_builder.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2147) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/tlas_builder.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2148) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/tlas_builder.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/tlas_builder.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/tlas_builder.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/tlas_builder.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/acceleration/tlas_builder.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/tlas_builder.c.i: cmake_force
@@ -30133,7 +30147,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/acceleration/tlas_builder.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/bvh_builder.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/bvh_builder.c.o: src/engine/rendering/raytracing/bvh_builder.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/bvh_builder.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2148) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/bvh_builder.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2149) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/bvh_builder.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/bvh_builder.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/bvh_builder.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/bvh_builder.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/bvh_builder.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/bvh_builder.c.i: cmake_force
@@ -30147,7 +30161,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/bvh_builder.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/edge_stopping.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/edge_stopping.c.o: src/engine/rendering/raytracing/denoising/edge_stopping.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/edge_stopping.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2149) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/edge_stopping.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2150) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/edge_stopping.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/edge_stopping.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/edge_stopping.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/edge_stopping.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/denoising/edge_stopping.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/edge_stopping.c.i: cmake_force
@@ -30161,7 +30175,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/edge_stopping.c.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/nrd_integration.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/nrd_integration.c.o: src/engine/rendering/raytracing/denoising/nrd_integration.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/nrd_integration.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2150) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/nrd_integration.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2151) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/nrd_integration.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/nrd_integration.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/nrd_integration.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/nrd_integration.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/denoising/nrd_integration.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/nrd_integration.c.i: cmake_force
@@ -30175,7 +30189,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/nrd_integration.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/relax_denoiser.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/relax_denoiser.c.o: src/engine/rendering/raytracing/denoising/relax_denoiser.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/relax_denoiser.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2151) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/relax_denoiser.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2152) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/relax_denoiser.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/relax_denoiser.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/relax_denoiser.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/relax_denoiser.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/denoising/relax_denoiser.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/relax_denoiser.c.i: cmake_force
@@ -30189,7 +30203,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/relax_denoiser.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/svgf_denoiser.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/svgf_denoiser.c.o: src/engine/rendering/raytracing/denoising/svgf_denoiser.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/svgf_denoiser.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2152) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/svgf_denoiser.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2153) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/svgf_denoiser.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/svgf_denoiser.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/svgf_denoiser.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/svgf_denoiser.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/denoising/svgf_denoiser.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/svgf_denoiser.c.i: cmake_force
@@ -30203,7 +30217,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/svgf_denoiser.c.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/temporal_accumulation.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/temporal_accumulation.c.o: src/engine/rendering/raytracing/denoising/temporal_accumulation.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/temporal_accumulation.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2153) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/temporal_accumulation.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2154) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/temporal_accumulation.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/temporal_accumulation.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/temporal_accumulation.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/temporal_accumulation.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/denoising/temporal_accumulation.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/temporal_accumulation.c.i: cmake_force
@@ -30217,7 +30231,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/temporal_accumul
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/variance_estimation.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/variance_estimation.c.o: src/engine/rendering/raytracing/denoising/variance_estimation.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/variance_estimation.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2154) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/variance_estimation.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2155) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/variance_estimation.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/variance_estimation.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/variance_estimation.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/variance_estimation.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/denoising/variance_estimation.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/variance_estimation.c.i: cmake_force
@@ -30231,7 +30245,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/denoising/variance_estimat
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c.o: src/engine/rendering/raytracing/gi_rt/ddgi_probes.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2155) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2156) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c.i: cmake_force
@@ -30245,7 +30259,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_probes.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c.o: src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2156) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2157) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c.i: cmake_force
@@ -30259,7 +30273,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_update.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_update.c.o: src/engine/rendering/raytracing/gi_rt/ddgi_update.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_update.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2157) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_update.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2158) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_update.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_update.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_update.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_update.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/gi_rt/ddgi_update.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_update.c.i: cmake_force
@@ -30273,7 +30287,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/ddgi_update.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c.o: src/engine/rendering/raytracing/gi_rt/gi_denoiser.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2158) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2159) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c.i: cmake_force
@@ -30287,7 +30301,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/restir_gi.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/restir_gi.c.o: src/engine/rendering/raytracing/gi_rt/restir_gi.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/restir_gi.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2159) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/restir_gi.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2160) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/restir_gi.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/restir_gi.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/restir_gi.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/restir_gi.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/gi_rt/restir_gi.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/restir_gi.c.i: cmake_force
@@ -30301,7 +30315,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/restir_gi.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_ao.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_ao.c.o: src/engine/rendering/raytracing/gi_rt/rt_ao.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_ao.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2160) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_ao.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2161) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_ao.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_ao.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_ao.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_ao.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/gi_rt/rt_ao.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_ao.c.i: cmake_force
@@ -30315,7 +30329,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_ao.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c.o: src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2161) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2162) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c.i: cmake_force
@@ -30329,7 +30343,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/hybrid_rt_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/hybrid_rt_impl.c.o: src/engine/rendering/raytracing/hybrid_rt_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/hybrid_rt_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2162) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/hybrid_rt_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2163) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/hybrid_rt_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/hybrid_rt_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/hybrid_rt_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/hybrid_rt_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/hybrid_rt_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/hybrid_rt_impl.c.i: cmake_force
@@ -30343,7 +30357,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/hybrid_rt_impl.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/mis_weights.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/mis_weights.c.o: src/engine/rendering/raytracing/path_tracing/mis_weights.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/mis_weights.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2163) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/mis_weights.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2164) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/mis_weights.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/mis_weights.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/mis_weights.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/mis_weights.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/path_tracing/mis_weights.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/mis_weights.c.i: cmake_force
@@ -30357,7 +30371,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/mis_weights.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_integrator.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_integrator.c.o: src/engine/rendering/raytracing/path_tracing/path_integrator.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_integrator.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2164) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_integrator.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2165) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_integrator.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_integrator.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_integrator.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_integrator.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/path_tracing/path_integrator.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_integrator.c.i: cmake_force
@@ -30371,7 +30385,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_integrat
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_sampler.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_sampler.c.o: src/engine/rendering/raytracing/path_tracing/path_sampler.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_sampler.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2165) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_sampler.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2166) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_sampler.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_sampler.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_sampler.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_sampler.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/path_tracing/path_sampler.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_sampler.c.i: cmake_force
@@ -30385,7 +30399,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/path_sampler.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/progressive_render.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/progressive_render.c.o: src/engine/rendering/raytracing/path_tracing/progressive_render.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/progressive_render.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2166) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/progressive_render.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2167) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/progressive_render.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/progressive_render.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/progressive_render.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/progressive_render.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/path_tracing/progressive_render.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/progressive_render.c.i: cmake_force
@@ -30399,7 +30413,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/progressive_r
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/reference_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/reference_renderer.c.o: src/engine/rendering/raytracing/path_tracing/reference_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/reference_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2167) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/reference_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2168) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/reference_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/reference_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/reference_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/reference_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/path_tracing/reference_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/reference_renderer.c.i: cmake_force
@@ -30413,7 +30427,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/reference_ren
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/russian_roulette.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/russian_roulette.c.o: src/engine/rendering/raytracing/path_tracing/russian_roulette.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/russian_roulette.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2168) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/russian_roulette.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2169) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/russian_roulette.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/russian_roulette.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/russian_roulette.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/russian_roulette.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/path_tracing/russian_roulette.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/russian_roulette.c.i: cmake_force
@@ -30427,7 +30441,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/path_tracing/russian_roule
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/bvh_builder.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/bvh_builder.c.o: src/engine/rendering/raytracing/raytracing/bvh_builder.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/bvh_builder.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2169) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/bvh_builder.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2170) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/bvh_builder.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/bvh_builder.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/bvh_builder.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/bvh_builder.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing/bvh_builder.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/bvh_builder.c.i: cmake_force
@@ -30441,7 +30455,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/bvh_builder.c.s
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c.o: src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2170) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2171) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c.i: cmake_force
@@ -30455,7 +30469,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/rt_pipeline.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/rt_pipeline.c.o: src/engine/rendering/raytracing/raytracing/rt_pipeline.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/rt_pipeline.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2171) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/rt_pipeline.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2172) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/rt_pipeline.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/rt_pipeline.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/rt_pipeline.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/rt_pipeline.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing/rt_pipeline.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/rt_pipeline.c.i: cmake_force
@@ -30469,7 +30483,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing/rt_pipeline.c.s
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_acceleration_structures.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_acceleration_structures.c.o: src/engine/rendering/raytracing/raytracing_acceleration_structures.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_acceleration_structures.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2172) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_acceleration_structures.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2173) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_acceleration_structures.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_acceleration_structures.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_acceleration_structures.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_acceleration_structures.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_acceleration_structures.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_acceleration_structures.c.i: cmake_force
@@ -30483,7 +30497,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_acceleration_st
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c.o: src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2173) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2174) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c.i: cmake_force
@@ -30497,7 +30511,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/accele
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising.c.o: src/engine/rendering/raytracing/raytracing_advanced/denoising.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2174) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2175) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_advanced/denoising.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising.c.i: cmake_force
@@ -30511,7 +30525,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denois
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c.o: src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2175) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2176) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c.i: cmake_force
@@ -30525,7 +30539,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/denois
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c.o: src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2176) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2177) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c.i: cmake_force
@@ -30539,7 +30553,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_in
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c.o: src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2177) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2178) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c.i: cmake_force
@@ -30553,7 +30567,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/dxr_in
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c.o: src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2178) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2179) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c.i: cmake_force
@@ -30567,7 +30581,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/path_t
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c.o: src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2179) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2180) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c.i: cmake_force
@@ -30581,7 +30595,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/rt_ref
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c.o: src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2180) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2181) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c.i: cmake_force
@@ -30595,7 +30609,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_advanced/shader
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_denoiser.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_denoiser.c.o: src/engine/rendering/raytracing/raytracing_denoiser.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_denoiser.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2181) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_denoiser.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2182) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_denoiser.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_denoiser.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_denoiser.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_denoiser.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_denoiser.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_denoiser.c.i: cmake_force
@@ -30609,7 +30623,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_denoiser.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_global_illumination.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_global_illumination.c.o: src/engine/rendering/raytracing/raytracing_global_illumination.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_global_illumination.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2182) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_global_illumination.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2183) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_global_illumination.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_global_illumination.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_global_illumination.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_global_illumination.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_global_illumination.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_global_illumination.c.i: cmake_force
@@ -30623,7 +30637,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_global_illumina
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_impl.c.o: src/engine/rendering/raytracing/raytracing_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2183) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2184) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_impl.c.i: cmake_force
@@ -30637,7 +30651,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_impl.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_pipeline.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_pipeline.c.o: src/engine/rendering/raytracing/raytracing_pipeline.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_pipeline.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2184) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_pipeline.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2185) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_pipeline.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_pipeline.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_pipeline.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_pipeline.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_pipeline.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_pipeline.c.i: cmake_force
@@ -30651,7 +30665,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_pipeline.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_reflections.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_reflections.c.o: src/engine/rendering/raytracing/raytracing_reflections.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_reflections.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2185) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_reflections.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2186) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_reflections.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_reflections.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_reflections.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_reflections.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/raytracing_reflections.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_reflections.c.i: cmake_force
@@ -30665,7 +30679,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/raytracing_reflections.c.s
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c.o: src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2186) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2187) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c.i: cmake_force
@@ -30679,7 +30693,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_glossy_r
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c.o: src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2187) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2188) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c.i: cmake_force
@@ -30693,7 +30707,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_multi_bo
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c.o: src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2188) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2189) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c.i: cmake_force
@@ -30707,7 +30721,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflecti
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c.o: src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2189) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2190) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c.i: cmake_force
@@ -30721,7 +30735,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflecti
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c.o: src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2190) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2191) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c.i: cmake_force
@@ -30735,7 +30749,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflecti
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c.o: src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2191) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2192) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c.i: cmake_force
@@ -30749,7 +30763,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/reflections_rt/rt_reflecti
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/rt_pipeline.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/rt_pipeline.c.o: src/engine/rendering/raytracing/rt_pipeline.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/rt_pipeline.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2192) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/rt_pipeline.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2193) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/rt_pipeline.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/rt_pipeline.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/rt_pipeline.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/rt_pipeline.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/rt_pipeline.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/rt_pipeline.c.i: cmake_force
@@ -30763,7 +30777,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/rt_pipeline.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c.o: src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2193) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2194) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c.i: cmake_force
@@ -30777,7 +30791,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_contact_shad
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c.o: src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2194) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2195) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c.i: cmake_force
@@ -30791,7 +30805,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c.o: src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2195) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2196) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c.i: cmake_force
@@ -30805,7 +30819,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoi
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c.o: src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2196) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2197) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c.i: cmake_force
@@ -30819,7 +30833,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c.o: src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2197) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2198) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c.i: cmake_force
@@ -30833,7 +30847,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c.o: src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2198) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2199) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c.i: cmake_force
@@ -30847,7 +30861,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_acceleration_structures.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_acceleration_structures.c.o: src/engine/rendering/raytracing_acceleration_structures.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_acceleration_structures.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2199) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_acceleration_structures.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2200) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_acceleration_structures.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_acceleration_structures.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_acceleration_structures.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_acceleration_structures.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_acceleration_structures.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_acceleration_structures.c.i: cmake_force
@@ -30861,7 +30875,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_acceleration_structures.c.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/acceleration_structure.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/acceleration_structure.c.o: src/engine/rendering/raytracing_advanced/acceleration_structure.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/acceleration_structure.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2200) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/acceleration_structure.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2201) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/acceleration_structure.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/acceleration_structure.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/acceleration_structure.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/acceleration_structure.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_advanced/acceleration_structure.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/acceleration_structure.c.i: cmake_force
@@ -30875,7 +30889,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/acceleration_stru
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising.c.o: src/engine/rendering/raytracing_advanced/denoising.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2201) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2202) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_advanced/denoising.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising.c.i: cmake_force
@@ -30889,7 +30903,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising_svgf.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising_svgf.c.o: src/engine/rendering/raytracing_advanced/denoising_svgf.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising_svgf.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2202) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising_svgf.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2203) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising_svgf.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising_svgf.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising_svgf.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising_svgf.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_advanced/denoising_svgf.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising_svgf.c.i: cmake_force
@@ -30903,7 +30917,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/denoising_svgf.c.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration.c.o: src/engine/rendering/raytracing_advanced/dxr_integration.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2203) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2204) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_advanced/dxr_integration.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration.c.i: cmake_force
@@ -30917,7 +30931,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration_v2.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration_v2.c.o: src/engine/rendering/raytracing_advanced/dxr_integration_v2.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration_v2.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2204) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration_v2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2205) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration_v2.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration_v2.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration_v2.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration_v2.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_advanced/dxr_integration_v2.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration_v2.c.i: cmake_force
@@ -30931,7 +30945,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/dxr_integration_v
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/path_tracer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/path_tracer.c.o: src/engine/rendering/raytracing_advanced/path_tracer.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/path_tracer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2205) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/path_tracer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2206) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/path_tracer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/path_tracer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/path_tracer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/path_tracer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_advanced/path_tracer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/path_tracer.c.i: cmake_force
@@ -30945,7 +30959,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/path_tracer.c.s: 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/rt_reflections.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/rt_reflections.c.o: src/engine/rendering/raytracing_advanced/rt_reflections.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/rt_reflections.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2206) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/rt_reflections.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2207) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/rt_reflections.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/rt_reflections.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/rt_reflections.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/rt_reflections.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_advanced/rt_reflections.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/rt_reflections.c.i: cmake_force
@@ -30959,7 +30973,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/rt_reflections.c.
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/shader_binding_table.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/shader_binding_table.c.o: src/engine/rendering/raytracing_advanced/shader_binding_table.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/shader_binding_table.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2207) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/shader_binding_table.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2208) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/shader_binding_table.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/shader_binding_table.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/shader_binding_table.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/shader_binding_table.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_advanced/shader_binding_table.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/shader_binding_table.c.i: cmake_force
@@ -30973,7 +30987,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_advanced/shader_binding_ta
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_denoiser.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_denoiser.c.o: src/engine/rendering/raytracing_denoiser.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_denoiser.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2208) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_denoiser.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2209) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_denoiser.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_denoiser.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_denoiser.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_denoiser.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_denoiser.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_denoiser.c.i: cmake_force
@@ -30987,7 +31001,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_denoiser.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_global_illumination.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_global_illumination.c.o: src/engine/rendering/raytracing_global_illumination.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_global_illumination.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2209) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_global_illumination.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2210) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_global_illumination.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_global_illumination.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_global_illumination.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_global_illumination.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_global_illumination.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_global_illumination.c.i: cmake_force
@@ -31001,7 +31015,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_global_illumination.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_impl.c.o: src/engine/rendering/raytracing_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2210) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2211) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_impl.c.i: cmake_force
@@ -31015,7 +31029,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_pipeline.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_pipeline.c.o: src/engine/rendering/raytracing_pipeline.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_pipeline.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2211) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_pipeline.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2212) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_pipeline.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_pipeline.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_pipeline.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_pipeline.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_pipeline.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_pipeline.c.i: cmake_force
@@ -31029,7 +31043,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_pipeline.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_reflections.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_reflections.c.o: src/engine/rendering/raytracing_reflections.c
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_reflections.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2212) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_reflections.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2213) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/raytracing_reflections.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/raytracing_reflections.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/raytracing_reflections.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/raytracing_reflections.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/raytracing_reflections.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/raytracing_reflections.c.i: cmake_force
@@ -31043,7 +31057,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/raytracing_reflections.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/barrier_insertion.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/barrier_insertion.c.o: src/engine/rendering/render_graph/barrier_insertion.c
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/barrier_insertion.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2213) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/barrier_insertion.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2214) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/barrier_insertion.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/render_graph/barrier_insertion.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/render_graph/barrier_insertion.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/render_graph/barrier_insertion.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/render_graph/barrier_insertion.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/barrier_insertion.c.i: cmake_force
@@ -31057,7 +31071,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/render_graph/barrier_insertion.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_compiler.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_compiler.c.o: src/engine/rendering/render_graph/graph_compiler.c
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_compiler.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2214) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_compiler.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2215) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_compiler.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_compiler.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_compiler.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_compiler.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/render_graph/graph_compiler.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_compiler.c.i: cmake_force
@@ -31071,7 +31085,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_compiler.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_executor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_executor.c.o: src/engine/rendering/render_graph/graph_executor.c
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_executor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2215) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_executor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2216) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_executor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_executor.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_executor.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_executor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/render_graph/graph_executor.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_executor.c.i: cmake_force
@@ -31085,7 +31099,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/render_graph/graph_executor.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_graph_example.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_graph_example.c.o: src/engine/rendering/render_graph/render_graph_example.c
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_graph_example.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2216) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_graph_example.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2217) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_graph_example.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_graph_example.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_graph_example.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_graph_example.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/render_graph/render_graph_example.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_graph_example.c.i: cmake_force
@@ -31099,7 +31113,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_graph_example.c.s
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_pass_node.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_pass_node.c.o: src/engine/rendering/render_graph/render_pass_node.c
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_pass_node.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2217) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_pass_node.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2218) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_pass_node.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_pass_node.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_pass_node.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_pass_node.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/render_graph/render_pass_node.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_pass_node.c.i: cmake_force
@@ -31113,7 +31127,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/render_graph/render_pass_node.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_aliasing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_aliasing.c.o: src/engine/rendering/render_graph/resource_aliasing.c
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_aliasing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2218) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_aliasing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2219) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_aliasing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_aliasing.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_aliasing.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_aliasing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/render_graph/resource_aliasing.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_aliasing.c.i: cmake_force
@@ -31127,7 +31141,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_aliasing.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_node.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_node.c.o: src/engine/rendering/render_graph/resource_node.c
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_node.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2219) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_node.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2220) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_node.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_node.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_node.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_node.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/render_graph/resource_node.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_node.c.i: cmake_force
@@ -31141,7 +31155,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/render_graph/resource_node.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph_impl.c.o: src/engine/rendering/render_graph_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2220) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2221) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_graph_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/render_graph_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/render_graph_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/render_graph_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/render_graph_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/render_graph_impl.c.i: cmake_force
@@ -31155,7 +31169,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/render_graph_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/render_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/render_impl.c.o: src/engine/rendering/render_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/render_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2221) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2222) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/render_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/render_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/render_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/render_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/render_impl.c.i: cmake_force
@@ -31169,7 +31183,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/render_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.o: src/engine/rendering/render_pipeline_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2222) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2223) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/render_pipeline_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.i: cmake_force
@@ -31183,7 +31197,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/renderer_complete.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/renderer_complete.c.o: src/engine/rendering/renderer_complete.c
 CMakeFiles/Engine.dir/src/engine/rendering/renderer_complete.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2223) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/renderer_complete.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2224) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/renderer_complete.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/renderer_complete.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/renderer_complete.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/renderer_complete.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/renderer_complete.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/renderer_complete.c.i: cmake_force
@@ -31197,7 +31211,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/renderer_complete.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/scene.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/scene.c.o: src/engine/rendering/scene.c
 CMakeFiles/Engine.dir/src/engine/rendering/scene.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2224) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/scene.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2225) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/scene.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/scene.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/scene.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/scene.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/scene.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/scene.c.i: cmake_force
@@ -31211,7 +31225,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/scene.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/shader/compiler_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/shader/compiler_impl.c.o: src/engine/rendering/shader/compiler_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/shader/compiler_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2225) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader/compiler_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2226) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader/compiler_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/shader/compiler_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/shader/compiler_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/shader/compiler_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/shader/compiler_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/shader/compiler_impl.c.i: cmake_force
@@ -31225,7 +31239,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/shader/compiler_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/shader/graph_backend_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/shader/graph_backend_impl.c.o: src/engine/rendering/shader/graph_backend_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/shader/graph_backend_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2226) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader/graph_backend_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2227) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader/graph_backend_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/shader/graph_backend_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/shader/graph_backend_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/shader/graph_backend_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/shader/graph_backend_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/shader/graph_backend_impl.c.i: cmake_force
@@ -31239,7 +31253,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/shader/graph_backend_impl.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.o: src/engine/rendering/shader/pbr_stylized_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2227) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2228) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/shader/pbr_stylized_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.i: cmake_force
@@ -31253,7 +31267,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/rendering/shader/sss_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/shader/sss_impl.c.o: src/engine/rendering/shader/sss_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/shader/sss_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2228) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader/sss_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2229) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader/sss_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/shader/sss_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/shader/sss_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/shader/sss_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/shader/sss_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/shader/sss_impl.c.i: cmake_force
@@ -31267,7 +31281,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/shader/sss_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/shader_compiler.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/shader_compiler.c.o: src/engine/rendering/shader_compiler.c
 CMakeFiles/Engine.dir/src/engine/rendering/shader_compiler.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2229) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader_compiler.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2230) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader_compiler.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/shader_compiler.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/shader_compiler.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/shader_compiler.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/shader_compiler.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/shader_compiler.c.i: cmake_force
@@ -31281,7 +31295,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/shader_compiler.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/shader_graph.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/shader_graph.c.o: src/engine/rendering/shader_graph.c
 CMakeFiles/Engine.dir/src/engine/rendering/shader_graph.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2230) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader_graph.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2231) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader_graph.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/shader_graph.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/shader_graph.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/shader_graph.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/shader_graph.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/shader_graph.c.i: cmake_force
@@ -31295,7 +31309,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/shader_graph.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/shader_nodes.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/shader_nodes.c.o: src/engine/rendering/shader_nodes.c
 CMakeFiles/Engine.dir/src/engine/rendering/shader_nodes.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2231) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader_nodes.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2232) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shader_nodes.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/shader_nodes.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/shader_nodes.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/shader_nodes.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/shader_nodes.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/shader_nodes.c.i: cmake_force
@@ -31309,7 +31323,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/shader_nodes.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/shaders/foliage_wind_shader.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/shaders/foliage_wind_shader.c.o: src/engine/rendering/shaders/foliage_wind_shader.c
 CMakeFiles/Engine.dir/src/engine/rendering/shaders/foliage_wind_shader.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2232) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shaders/foliage_wind_shader.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2233) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shaders/foliage_wind_shader.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/shaders/foliage_wind_shader.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/shaders/foliage_wind_shader.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/shaders/foliage_wind_shader.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/shaders/foliage_wind_shader.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/shaders/foliage_wind_shader.c.i: cmake_force
@@ -31323,7 +31337,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/shaders/foliage_wind_shader.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.o: src/engine/rendering/shaders/ocean_water.c
 CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2233) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2234) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/shaders/ocean_water.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.i: cmake_force
@@ -31337,7 +31351,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering.c.o: src/engine/rendering/sky/atmosphere_scattering.c
 CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2234) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2235) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/sky/atmosphere_scattering.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering.c.i: cmake_force
@@ -31351,7 +31365,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.o: src/engine/rendering/sky/atmosphere_scattering_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2235) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2236) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/sky/atmosphere_scattering_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.i: cmake_force
@@ -31365,7 +31379,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/sky/volumetric_clouds.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/sky/volumetric_clouds.c.o: src/engine/rendering/sky/volumetric_clouds.c
 CMakeFiles/Engine.dir/src/engine/rendering/sky/volumetric_clouds.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2236) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/sky/volumetric_clouds.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2237) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/sky/volumetric_clouds.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/sky/volumetric_clouds.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/sky/volumetric_clouds.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/sky/volumetric_clouds.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/sky/volumetric_clouds.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/sky/volumetric_clouds.c.i: cmake_force
@@ -31379,7 +31393,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/sky/volumetric_clouds.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/rendering/sprite_3d_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/sprite_3d_renderer.c.o: src/engine/rendering/sprite_3d_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/sprite_3d_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2237) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/sprite_3d_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2238) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/sprite_3d_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/sprite_3d_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/sprite_3d_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/sprite_3d_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/sprite_3d_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/sprite_3d_renderer.c.i: cmake_force
@@ -31393,7 +31407,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/sprite_3d_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/sprite_renderer_2_5d.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/sprite_renderer_2_5d.c.o: src/engine/rendering/sprite_renderer_2_5d.c
 CMakeFiles/Engine.dir/src/engine/rendering/sprite_renderer_2_5d.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2238) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/sprite_renderer_2_5d.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2239) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/sprite_renderer_2_5d.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/sprite_renderer_2_5d.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/sprite_renderer_2_5d.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/sprite_renderer_2_5d.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/sprite_renderer_2_5d.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/sprite_renderer_2_5d.c.i: cmake_force
@@ -31407,7 +31421,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/sprite_renderer_2_5d.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/streaming/asset_streamer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/streaming/asset_streamer.c.o: src/engine/rendering/streaming/asset_streamer.c
 CMakeFiles/Engine.dir/src/engine/rendering/streaming/asset_streamer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2239) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/streaming/asset_streamer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2240) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/streaming/asset_streamer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/streaming/asset_streamer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/streaming/asset_streamer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/streaming/asset_streamer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/streaming/asset_streamer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/streaming/asset_streamer.c.i: cmake_force
@@ -31421,7 +31435,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/streaming/asset_streamer.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/rendering/streaming/lod_selector.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/streaming/lod_selector.c.o: src/engine/rendering/streaming/lod_selector.c
 CMakeFiles/Engine.dir/src/engine/rendering/streaming/lod_selector.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2240) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/streaming/lod_selector.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2241) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/streaming/lod_selector.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/streaming/lod_selector.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/streaming/lod_selector.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/streaming/lod_selector.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/streaming/lod_selector.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/streaming/lod_selector.c.i: cmake_force
@@ -31435,7 +31449,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/streaming/lod_selector.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/rendering/systems/animation_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/animation_system.c.o: src/engine/rendering/systems/animation_system.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/animation_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2241) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/animation_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2242) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/animation_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/animation_system.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/animation_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/animation_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/animation_system.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/animation_system.c.i: cmake_force
@@ -31449,7 +31463,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/animation_system.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/rendering/systems/camera.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/camera.c.o: src/engine/rendering/systems/camera.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/camera.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2242) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/camera.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2243) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/camera.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/camera.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/camera.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/camera.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/camera.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/camera.c.i: cmake_force
@@ -31463,7 +31477,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/camera.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/systems/camera_controls.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/camera_controls.c.o: src/engine/rendering/systems/camera_controls.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/camera_controls.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2243) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/camera_controls.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2244) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/camera_controls.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/camera_controls.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/camera_controls.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/camera_controls.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/camera_controls.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/camera_controls.c.i: cmake_force
@@ -31477,7 +31491,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/camera_controls.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/rendering/systems/decal_system/decal_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/decal_system/decal_system.c.o: src/engine/rendering/systems/decal_system/decal_system.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/decal_system/decal_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2244) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/decal_system/decal_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2245) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/decal_system/decal_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/decal_system/decal_system.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/decal_system/decal_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/decal_system/decal_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/decal_system/decal_system.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/decal_system/decal_system.c.i: cmake_force
@@ -31491,7 +31505,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/decal_system/decal_system.c.s
 CMakeFiles/Engine.dir/src/engine/rendering/systems/gpu_particle_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/gpu_particle_system.c.o: src/engine/rendering/systems/gpu_particle_system.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/gpu_particle_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2245) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/gpu_particle_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2246) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/gpu_particle_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/gpu_particle_system.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/gpu_particle_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/gpu_particle_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/gpu_particle_system.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/gpu_particle_system.c.i: cmake_force
@@ -31505,7 +31519,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/gpu_particle_system.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh.c.o: src/engine/rendering/systems/mesh.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2246) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2247) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/mesh.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh.c.i: cmake_force
@@ -31519,7 +31533,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh_optimizer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh_optimizer.c.o: src/engine/rendering/systems/mesh_optimizer.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh_optimizer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2247) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh_optimizer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2248) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh_optimizer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh_optimizer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh_optimizer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh_optimizer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/mesh_optimizer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh_optimizer.c.i: cmake_force
@@ -31533,7 +31547,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/mesh_optimizer.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_renderer.c.o: src/engine/rendering/systems/particle_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2248) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2249) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/particle_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_renderer.c.i: cmake_force
@@ -31547,7 +31561,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_renderer.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_system_gpu.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_system_gpu.c.o: src/engine/rendering/systems/particle_system_gpu.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_system_gpu.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2249) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_system_gpu.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2250) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_system_gpu.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_system_gpu.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_system_gpu.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_system_gpu.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/particle_system_gpu.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_system_gpu.c.i: cmake_force
@@ -31561,7 +31575,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/particle_system_gpu.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/systems/post_processing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/post_processing.c.o: src/engine/rendering/systems/post_processing.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/post_processing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2250) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/post_processing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2251) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/post_processing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/post_processing.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/post_processing.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/post_processing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/post_processing.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/post_processing.c.i: cmake_force
@@ -31575,7 +31589,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/post_processing.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_3d_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_3d_renderer.c.o: src/engine/rendering/systems/sprite_3d_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_3d_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2251) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_3d_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2252) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_3d_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_3d_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_3d_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_3d_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/sprite_3d_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_3d_renderer.c.i: cmake_force
@@ -31589,7 +31603,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_3d_renderer.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_renderer_2_5d.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_renderer_2_5d.c.o: src/engine/rendering/systems/sprite_renderer_2_5d.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_renderer_2_5d.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2252) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_renderer_2_5d.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2253) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_renderer_2_5d.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_renderer_2_5d.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_renderer_2_5d.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_renderer_2_5d.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/sprite_renderer_2_5d.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_renderer_2_5d.c.i: cmake_force
@@ -31603,7 +31617,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/sprite_renderer_2_5d.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/systems/text_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/text_renderer.c.o: src/engine/rendering/systems/text_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/text_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2253) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/text_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2254) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/text_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/text_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/text_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/text_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/text_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/text_renderer.c.i: cmake_force
@@ -31617,7 +31631,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/text_renderer.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/rendering/systems/ui_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/ui_renderer.c.o: src/engine/rendering/systems/ui_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/ui_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2254) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/ui_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2255) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/ui_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/ui_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/ui_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/ui_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/ui_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/ui_renderer.c.i: cmake_force
@@ -31631,7 +31645,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/ui_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/systems/vfx_optimizer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/vfx_optimizer.c.o: src/engine/rendering/systems/vfx_optimizer.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/vfx_optimizer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2255) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/vfx_optimizer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2256) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/vfx_optimizer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/vfx_optimizer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/vfx_optimizer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/vfx_optimizer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/vfx_optimizer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/vfx_optimizer.c.i: cmake_force
@@ -31645,7 +31659,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/vfx_optimizer.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/rendering/systems/voxel_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/voxel_renderer.c.o: src/engine/rendering/systems/voxel_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/voxel_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2256) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/voxel_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2257) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/voxel_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/voxel_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/voxel_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/voxel_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/voxel_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/voxel_renderer.c.i: cmake_force
@@ -31659,7 +31673,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/voxel_renderer.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/rendering/systems/weather_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/systems/weather_system.c.o: src/engine/rendering/systems/weather_system.c
 CMakeFiles/Engine.dir/src/engine/rendering/systems/weather_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2257) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/weather_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2258) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/systems/weather_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/systems/weather_system.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/systems/weather_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/systems/weather_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/systems/weather_system.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/systems/weather_system.c.i: cmake_force
@@ -31673,7 +31687,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/systems/weather_system.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/proc_planet.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/proc_planet.c.o: src/engine/rendering/terrain/proc_planet.c
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/proc_planet.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2258) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/terrain/proc_planet.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2259) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/terrain/proc_planet.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/terrain/proc_planet.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/terrain/proc_planet.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/terrain/proc_planet.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/terrain/proc_planet.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/proc_planet.c.i: cmake_force
@@ -31687,7 +31701,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/terrain/proc_planet.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_lod.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_lod.c.o: src/engine/rendering/terrain/terrain_lod.c
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_lod.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2259) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_lod.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2260) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_lod.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_lod.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_lod.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_lod.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/terrain/terrain_lod.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_lod.c.i: cmake_force
@@ -31701,7 +31715,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_lod.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_quadtree.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_quadtree.c.o: src/engine/rendering/terrain/terrain_quadtree.c
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_quadtree.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2260) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_quadtree.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2261) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_quadtree.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_quadtree.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_quadtree.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_quadtree.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/terrain/terrain_quadtree.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_quadtree.c.i: cmake_force
@@ -31715,7 +31729,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/terrain/terrain_quadtree.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/rendering/text_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/text_renderer.c.o: src/engine/rendering/text_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/text_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2261) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/text_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2262) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/text_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/text_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/text_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/text_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/text_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/text_renderer.c.i: cmake_force
@@ -31729,7 +31743,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/text_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture/virtual_streaming_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture/virtual_streaming_impl.c.o: src/engine/rendering/texture/texture/virtual_streaming_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture/virtual_streaming_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2262) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture/texture/virtual_streaming_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2263) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture/texture/virtual_streaming_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/texture/texture/virtual_streaming_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/texture/texture/virtual_streaming_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/texture/texture/virtual_streaming_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/texture/texture/virtual_streaming_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture/virtual_streaming_impl.c.i: cmake_force
@@ -31743,7 +31757,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/texture/texture/virtual_streaming_imp
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.o: src/engine/rendering/texture/texture_atlas.c
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2263) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2264) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/texture/texture_atlas.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.i: cmake_force
@@ -31757,7 +31771,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_system.c.o: src/engine/rendering/texture/texture_system.c
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2264) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2265) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_system.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/texture/texture_system.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_system.c.i: cmake_force
@@ -31771,7 +31785,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_system.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/rendering/texture/virtual_streaming_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/texture/virtual_streaming_impl.c.o: src/engine/rendering/texture/virtual_streaming_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/texture/virtual_streaming_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2265) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture/virtual_streaming_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2266) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture/virtual_streaming_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/texture/virtual_streaming_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/texture/virtual_streaming_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/texture/virtual_streaming_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/texture/virtual_streaming_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/texture/virtual_streaming_impl.c.i: cmake_force
@@ -31785,7 +31799,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/texture/virtual_streaming_impl.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/texture_atlas.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/texture_atlas.c.o: src/engine/rendering/texture_atlas.c
 CMakeFiles/Engine.dir/src/engine/rendering/texture_atlas.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2266) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture_atlas.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2267) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture_atlas.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/texture_atlas.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/texture_atlas.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/texture_atlas.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/texture_atlas.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/texture_atlas.c.i: cmake_force
@@ -31799,7 +31813,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/texture_atlas.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/texture_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/texture_system.c.o: src/engine/rendering/texture_system.c
 CMakeFiles/Engine.dir/src/engine/rendering/texture_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2267) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2268) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texture_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/texture_system.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/texture_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/texture_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/texture_system.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/texture_system.c.i: cmake_force
@@ -31813,7 +31827,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/texture_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/bindless_resources.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/bindless_resources.c.o: src/engine/rendering/texturing/bindless_resources.c
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/bindless_resources.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2268) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texturing/bindless_resources.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2269) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texturing/bindless_resources.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/texturing/bindless_resources.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/texturing/bindless_resources.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/texturing/bindless_resources.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/texturing/bindless_resources.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/bindless_resources.c.i: cmake_force
@@ -31827,7 +31841,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/texturing/bindless_resources.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/texture_compression.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/texture_compression.c.o: src/engine/rendering/texturing/texture_compression.c
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/texture_compression.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2269) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texturing/texture_compression.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2270) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texturing/texture_compression.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/texturing/texture_compression.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/texturing/texture_compression.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/texturing/texture_compression.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/texturing/texture_compression.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/texture_compression.c.i: cmake_force
@@ -31841,7 +31855,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/texturing/texture_compression.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/virtual_texture.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/virtual_texture.c.o: src/engine/rendering/texturing/virtual_texture.c
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/virtual_texture.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2270) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texturing/virtual_texture.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2271) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/texturing/virtual_texture.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/texturing/virtual_texture.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/texturing/virtual_texture.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/texturing/virtual_texture.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/texturing/virtual_texture.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/texturing/virtual_texture.c.i: cmake_force
@@ -31855,7 +31869,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/texturing/virtual_texture.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/ui_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/ui_renderer.c.o: src/engine/rendering/ui_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/ui_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2271) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/ui_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2272) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/ui_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/ui_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/ui_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/ui_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/ui_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/ui_renderer.c.i: cmake_force
@@ -31869,7 +31883,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/ui_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/environment_vfx_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/environment_vfx_impl.c.o: src/engine/rendering/vfx/environment_vfx_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/environment_vfx_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2272) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vfx/environment_vfx_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2273) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vfx/environment_vfx_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vfx/environment_vfx_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vfx/environment_vfx_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vfx/environment_vfx_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vfx/environment_vfx_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/environment_vfx_impl.c.i: cmake_force
@@ -31883,7 +31897,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vfx/environment_vfx_impl.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/hair_rendering_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/hair_rendering_impl.c.o: src/engine/rendering/vfx/hair_rendering_impl.c
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/hair_rendering_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2273) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vfx/hair_rendering_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2274) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vfx/hair_rendering_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vfx/hair_rendering_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vfx/hair_rendering_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vfx/hair_rendering_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vfx/hair_rendering_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/hair_rendering_impl.c.i: cmake_force
@@ -31897,7 +31911,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vfx/hair_rendering_impl.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/particle_system_complete.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/particle_system_complete.c.o: src/engine/rendering/vfx/particle_system_complete.c
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/particle_system_complete.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2274) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vfx/particle_system_complete.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2275) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vfx/particle_system_complete.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vfx/particle_system_complete.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vfx/particle_system_complete.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vfx/particle_system_complete.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vfx/particle_system_complete.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vfx/particle_system_complete.c.i: cmake_force
@@ -31911,7 +31925,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vfx/particle_system_complete.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/deferred_texturing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/deferred_texturing.c.o: src/engine/rendering/visibility/deferred_texturing.c
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/deferred_texturing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2275) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/deferred_texturing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2276) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/deferred_texturing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/visibility/deferred_texturing.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/visibility/deferred_texturing.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/visibility/deferred_texturing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/visibility/deferred_texturing.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/deferred_texturing.c.i: cmake_force
@@ -31925,7 +31939,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/visibility/deferred_texturing.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/material_classify.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/material_classify.c.o: src/engine/rendering/visibility/material_classify.c
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/material_classify.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2276) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/material_classify.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2277) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/material_classify.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/visibility/material_classify.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/visibility/material_classify.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/visibility/material_classify.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/visibility/material_classify.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/material_classify.c.i: cmake_force
@@ -31939,7 +31953,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/visibility/material_classify.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/primitive_id_buffer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/primitive_id_buffer.c.o: src/engine/rendering/visibility/primitive_id_buffer.c
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/primitive_id_buffer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2277) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/primitive_id_buffer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2278) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/primitive_id_buffer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/visibility/primitive_id_buffer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/visibility/primitive_id_buffer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/visibility/primitive_id_buffer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/visibility/primitive_id_buffer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/primitive_id_buffer.c.i: cmake_force
@@ -31953,7 +31967,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/visibility/primitive_id_buffer.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_buffer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_buffer.c.o: src/engine/rendering/visibility/visibility_buffer.c
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_buffer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2278) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_buffer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2279) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_buffer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_buffer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_buffer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_buffer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/visibility/visibility_buffer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_buffer.c.i: cmake_force
@@ -31967,7 +31981,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_buffer.c.s: cma
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_debug.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_debug.c.o: src/engine/rendering/visibility/visibility_debug.c
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_debug.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2279) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_debug.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2280) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_debug.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_debug.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_debug.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_debug.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/visibility/visibility_debug.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_debug.c.i: cmake_force
@@ -31981,7 +31995,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_debug.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_resolve.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_resolve.c.o: src/engine/rendering/visibility/visibility_resolve.c
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_resolve.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2280) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_resolve.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2281) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_resolve.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_resolve.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_resolve.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_resolve.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/visibility/visibility_resolve.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_resolve.c.i: cmake_force
@@ -31995,7 +32009,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/visibility/visibility_resolve.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/voxel_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/voxel_renderer.c.o: src/engine/rendering/voxel_renderer.c
 CMakeFiles/Engine.dir/src/engine/rendering/voxel_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2281) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/voxel_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2282) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/voxel_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/voxel_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/voxel_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/voxel_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/voxel_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/voxel_renderer.c.i: cmake_force
@@ -32009,7 +32023,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/voxel_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c.o: src/engine/rendering/vrs/vrs_analysis/content_adaptive.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2282) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2283) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c.i: cmake_force
@@ -32023,7 +32037,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/content_adaptive.c.s
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c.o: src/engine/rendering/vrs/vrs_analysis/depth_vrs.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2283) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2284) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c.i: cmake_force
@@ -32037,7 +32051,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/depth_vrs.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c.o: src/engine/rendering/vrs/vrs_analysis/edge_vrs.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2284) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2285) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c.i: cmake_force
@@ -32051,7 +32065,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/edge_vrs.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c.o: src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2285) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2286) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c.i: cmake_force
@@ -32065,7 +32079,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c.o: src/engine/rendering/vrs/vrs_analysis/motion_vrs.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2286) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2287) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c.i: cmake_force
@@ -32079,7 +32093,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/motion_vrs.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c.o: src/engine/rendering/vrs/vrs_analysis/vrs_debug.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2287) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2288) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c.i: cmake_force
@@ -32093,7 +32107,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_analysis/vrs_debug.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c.o: src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2288) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2289) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c.i: cmake_force
@@ -32107,7 +32121,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c.o: src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2289) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2290) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c.i: cmake_force
@@ -32121,7 +32135,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c.o: src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2290) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2291) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c.i: cmake_force
@@ -32135,7 +32149,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c.s: c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_image.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_image.c.o: src/engine/rendering/vrs/vrs_rendering/vrs_image.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_image.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2291) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_image.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2292) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_image.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_image.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_image.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_image.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_rendering/vrs_image.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_image.c.i: cmake_force
@@ -32149,7 +32163,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_image.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c.o: src/engine/rendering/vrs/vrs_rendering/vrs_integration.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2292) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2293) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c.i: cmake_force
@@ -32163,7 +32177,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_integration.c.s
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c.o: src/engine/rendering/vrs/vrs_rendering/vrs_quality.c
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2293) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2294) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c.i: cmake_force
@@ -32177,7 +32191,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/vrs/vrs_rendering/vrs_quality.c.s: cm
 CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.o: src/engine/rendering/water/fft_ocean.c
 CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2294) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2295) "Building C object CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.o -MF CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/water/fft_ocean.c"
 
 CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.i: cmake_force
@@ -32191,7 +32205,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scene/scene_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/scene_impl.c.o: src/engine/scene/scene_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/scene_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2295) "Building C object CMakeFiles/Engine.dir/src/engine/scene/scene_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2296) "Building C object CMakeFiles/Engine.dir/src/engine/scene/scene_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/scene_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/scene_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/scene_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/scene_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/scene_impl.c.i: cmake_force
@@ -32205,7 +32219,7 @@ CMakeFiles/Engine.dir/src/engine/scene/scene_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scene/scene_system_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/scene_system_impl.c.o: src/engine/scene/scene_system_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/scene_system_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2296) "Building C object CMakeFiles/Engine.dir/src/engine/scene/scene_system_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2297) "Building C object CMakeFiles/Engine.dir/src/engine/scene/scene_system_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/scene_system_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/scene_system_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/scene_system_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/scene_system_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/scene_system_impl.c.i: cmake_force
@@ -32219,7 +32233,7 @@ CMakeFiles/Engine.dir/src/engine/scene/scene_system_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_blending_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_blending_impl.c.o: src/engine/scene/world/biome/biome_blending_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_blending_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2297) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_blending_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2298) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_blending_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_blending_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_blending_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_blending_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/biome/biome_blending_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_blending_impl.c.i: cmake_force
@@ -32233,7 +32247,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_blending_impl.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_system.c.o: src/engine/scene/world/biome/biome_system.c
 CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2298) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2299) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_system.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/biome/biome_system.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_system.c.i: cmake_force
@@ -32247,7 +32261,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/biome/biome_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scene/world/chunk/chunk_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/chunk/chunk_system.c.o: src/engine/scene/world/chunk/chunk_system.c
 CMakeFiles/Engine.dir/src/engine/scene/world/chunk/chunk_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2299) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/chunk/chunk_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2300) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/chunk/chunk_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/chunk/chunk_system.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/chunk/chunk_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/chunk/chunk_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/chunk/chunk_system.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/chunk/chunk_system.c.i: cmake_force
@@ -32261,7 +32275,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/chunk/chunk_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scene/world/city/fractal_city_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/city/fractal_city_impl.c.o: src/engine/scene/world/city/fractal_city_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/city/fractal_city_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2300) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/city/fractal_city_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2301) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/city/fractal_city_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/city/fractal_city_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/city/fractal_city_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/city/fractal_city_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/city/fractal_city_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/city/fractal_city_impl.c.i: cmake_force
@@ -32275,7 +32289,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/city/fractal_city_impl.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/scene/world/ecosystem/ecosystem_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/ecosystem/ecosystem_impl.c.o: src/engine/scene/world/ecosystem/ecosystem_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/ecosystem/ecosystem_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2301) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/ecosystem/ecosystem_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2302) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/ecosystem/ecosystem_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/ecosystem/ecosystem_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/ecosystem/ecosystem_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/ecosystem/ecosystem_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/ecosystem/ecosystem_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/ecosystem/ecosystem_impl.c.i: cmake_force
@@ -32289,7 +32303,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/ecosystem/ecosystem_impl.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/scene/world/environment/environment_systems_complete.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/environment/environment_systems_complete.c.o: src/engine/scene/world/environment/environment_systems_complete.c
 CMakeFiles/Engine.dir/src/engine/scene/world/environment/environment_systems_complete.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2302) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/environment/environment_systems_complete.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2303) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/environment/environment_systems_complete.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/environment/environment_systems_complete.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/environment/environment_systems_complete.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/environment/environment_systems_complete.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/environment/environment_systems_complete.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/environment/environment_systems_complete.c.i: cmake_force
@@ -32303,7 +32317,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/environment/environment_systems_com
 CMakeFiles/Engine.dir/src/engine/scene/world/generation/universe_gen_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/generation/universe_gen_impl.c.o: src/engine/scene/world/generation/universe_gen_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/generation/universe_gen_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2303) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/generation/universe_gen_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2304) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/generation/universe_gen_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/generation/universe_gen_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/generation/universe_gen_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/generation/universe_gen_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/generation/universe_gen_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/generation/universe_gen_impl.c.i: cmake_force
@@ -32317,7 +32331,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/generation/universe_gen_impl.c.s: c
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural/procedural_generation_complete.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural/procedural_generation_complete.c.o: src/engine/scene/world/procedural/procedural_generation_complete.c
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural/procedural_generation_complete.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2304) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/procedural/procedural_generation_complete.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2305) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/procedural/procedural_generation_complete.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/procedural/procedural_generation_complete.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/procedural/procedural_generation_complete.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/procedural/procedural_generation_complete.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/procedural/procedural_generation_complete.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural/procedural_generation_complete.c.i: cmake_force
@@ -32331,7 +32345,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/procedural/procedural_generation_co
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural_city/city_generator.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural_city/city_generator.c.o: src/engine/scene/world/procedural_city/city_generator.c
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural_city/city_generator.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2305) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/procedural_city/city_generator.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2306) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/procedural_city/city_generator.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/procedural_city/city_generator.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/procedural_city/city_generator.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/procedural_city/city_generator.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/procedural_city/city_generator.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural_city/city_generator.c.i: cmake_force
@@ -32345,7 +32359,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/procedural_city/city_generator.c.s:
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural_impl.c.o: src/engine/scene/world/procedural_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2306) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/procedural_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2307) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/procedural_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/procedural_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/procedural_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/procedural_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/procedural_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/procedural_impl.c.i: cmake_force
@@ -32359,7 +32373,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/procedural_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scene/world/streaming/world_streaming_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/streaming/world_streaming_impl.c.o: src/engine/scene/world/streaming/world_streaming_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/streaming/world_streaming_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2307) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/streaming/world_streaming_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2308) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/streaming/world_streaming_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/streaming/world_streaming_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/streaming/world_streaming_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/streaming/world_streaming_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/streaming/world_streaming_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/streaming/world_streaming_impl.c.i: cmake_force
@@ -32373,7 +32387,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/streaming/world_streaming_impl.c.s:
 CMakeFiles/Engine.dir/src/engine/scene/world/terrain/mega_terrain_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/terrain/mega_terrain_impl.c.o: src/engine/scene/world/terrain/mega_terrain_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/terrain/mega_terrain_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2308) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/terrain/mega_terrain_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2309) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/terrain/mega_terrain_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/terrain/mega_terrain_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/terrain/mega_terrain_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/terrain/mega_terrain_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/terrain/mega_terrain_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/terrain/mega_terrain_impl.c.i: cmake_force
@@ -32387,7 +32401,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/terrain/mega_terrain_impl.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/scene/world/terrain_tools/terrain_tools_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/terrain_tools/terrain_tools_impl.c.o: src/engine/scene/world/terrain_tools/terrain_tools_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/terrain_tools/terrain_tools_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2309) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/terrain_tools/terrain_tools_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2310) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/terrain_tools/terrain_tools_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/terrain_tools/terrain_tools_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/terrain_tools/terrain_tools_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/terrain_tools/terrain_tools_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/terrain_tools/terrain_tools_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/terrain_tools/terrain_tools_impl.c.i: cmake_force
@@ -32401,7 +32415,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/terrain_tools/terrain_tools_impl.c.
 CMakeFiles/Engine.dir/src/engine/scene/world/tools_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/tools_impl.c.o: src/engine/scene/world/tools_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/tools_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2310) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/tools_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2311) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/tools_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/tools_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/tools_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/tools_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/tools_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/tools_impl.c.i: cmake_force
@@ -32415,7 +32429,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/tools_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scene/world/vegetation/l_system_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/vegetation/l_system_impl.c.o: src/engine/scene/world/vegetation/l_system_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/vegetation/l_system_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2311) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/vegetation/l_system_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2312) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/vegetation/l_system_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/vegetation/l_system_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/vegetation/l_system_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/vegetation/l_system_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/vegetation/l_system_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/vegetation/l_system_impl.c.i: cmake_force
@@ -32429,7 +32443,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/vegetation/l_system_impl.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/scene/world/voxel/marching_cubes_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/voxel/marching_cubes_impl.c.o: src/engine/scene/world/voxel/marching_cubes_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/voxel/marching_cubes_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2312) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/voxel/marching_cubes_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2313) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/voxel/marching_cubes_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/voxel/marching_cubes_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/voxel/marching_cubes_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/voxel/marching_cubes_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/voxel/marching_cubes_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/voxel/marching_cubes_impl.c.i: cmake_force
@@ -32443,7 +32457,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/voxel/marching_cubes_impl.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/scene/world/weather/dynamic_weather_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/weather/dynamic_weather_impl.c.o: src/engine/scene/world/weather/dynamic_weather_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/weather/dynamic_weather_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2313) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/weather/dynamic_weather_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2314) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/weather/dynamic_weather_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/weather/dynamic_weather_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/weather/dynamic_weather_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/weather/dynamic_weather_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/weather/dynamic_weather_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/weather/dynamic_weather_impl.c.i: cmake_force
@@ -32457,7 +32471,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/weather/dynamic_weather_impl.c.s: c
 CMakeFiles/Engine.dir/src/engine/scene/world/world_batch_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world/world_batch_impl.c.o: src/engine/scene/world/world_batch_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world/world_batch_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2314) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/world_batch_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2315) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world/world_batch_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world/world_batch_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world/world_batch_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world/world_batch_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world/world_batch_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world/world_batch_impl.c.i: cmake_force
@@ -32471,7 +32485,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world/world_batch_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scene/world_building/ecosystem/ecosystem.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world_building/ecosystem/ecosystem.c.o: src/engine/scene/world_building/ecosystem/ecosystem.c
 CMakeFiles/Engine.dir/src/engine/scene/world_building/ecosystem/ecosystem.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2315) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world_building/ecosystem/ecosystem.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2316) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world_building/ecosystem/ecosystem.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world_building/ecosystem/ecosystem.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world_building/ecosystem/ecosystem.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world_building/ecosystem/ecosystem.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world_building/ecosystem/ecosystem.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world_building/ecosystem/ecosystem.c.i: cmake_force
@@ -32485,7 +32499,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world_building/ecosystem/ecosystem.c.s: c
 CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_impl.c.o: src/engine/scene/world_building/weather/weather_impl.c
 CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2316) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2317) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world_building/weather/weather_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_impl.c.i: cmake_force
@@ -32499,7 +32513,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_impl.c.s: 
 CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_system.c.o: src/engine/scene/world_building/weather/weather_system.c
 CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2317) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2318) "Building C object CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_system.c.o -MF CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/world_building/weather/weather_system.c"
 
 CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_system.c.i: cmake_force
@@ -32513,7 +32527,7 @@ CMakeFiles/Engine.dir/src/engine/scene/world_building/weather/weather_system.c.s
 CMakeFiles/Engine.dir/src/engine/scripting/c_bindings.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/c_bindings.c.o: src/engine/scripting/c_bindings.c
 CMakeFiles/Engine.dir/src/engine/scripting/c_bindings.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2318) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/c_bindings.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2319) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/c_bindings.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/c_bindings.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/c_bindings.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/c_bindings.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/c_bindings.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/c_bindings.c.i: cmake_force
@@ -32527,7 +32541,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/c_bindings.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scripting/core/script_binding_auto.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/core/script_binding_auto.c.o: src/engine/scripting/core/script_binding_auto.c
 CMakeFiles/Engine.dir/src/engine/scripting/core/script_binding_auto.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2319) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/core/script_binding_auto.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2320) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/core/script_binding_auto.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/core/script_binding_auto.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/core/script_binding_auto.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/core/script_binding_auto.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/core/script_binding_auto.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/core/script_binding_auto.c.i: cmake_force
@@ -32541,7 +32555,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/core/script_binding_auto.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/scripting/core/visual_script_graph.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/core/visual_script_graph.c.o: src/engine/scripting/core/visual_script_graph.c
 CMakeFiles/Engine.dir/src/engine/scripting/core/visual_script_graph.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2320) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/core/visual_script_graph.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2321) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/core/visual_script_graph.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/core/visual_script_graph.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/core/visual_script_graph.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/core/visual_script_graph.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/core/visual_script_graph.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/core/visual_script_graph.c.i: cmake_force
@@ -32555,7 +32569,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/core/visual_script_graph.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_binder_generator.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_binder_generator.c.o: src/engine/scripting/lua/lua_binder_generator.c
 CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_binder_generator.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2321) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_binder_generator.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2322) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_binder_generator.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_binder_generator.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_binder_generator.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_binder_generator.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/lua/lua_binder_generator.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_binder_generator.c.i: cmake_force
@@ -32569,7 +32583,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_binder_generator.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_script_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_script_system.c.o: src/engine/scripting/lua/lua_script_system.c
 CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_script_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2322) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_script_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2323) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_script_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_script_system.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_script_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_script_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/lua/lua_script_system.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_script_system.c.i: cmake_force
@@ -32583,7 +32597,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/lua/lua_script_system.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/scripting/lua_bindings.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/lua_bindings.c.o: src/engine/scripting/lua_bindings.c
 CMakeFiles/Engine.dir/src/engine/scripting/lua_bindings.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2323) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/lua_bindings.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2324) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/lua_bindings.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/lua_bindings.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/lua_bindings.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/lua_bindings.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/lua_bindings.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/lua_bindings.c.i: cmake_force
@@ -32597,7 +32611,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/lua_bindings.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scripting/lua_jit_bridge.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/lua_jit_bridge.c.o: src/engine/scripting/lua_jit_bridge.c
 CMakeFiles/Engine.dir/src/engine/scripting/lua_jit_bridge.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2324) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/lua_jit_bridge.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2325) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/lua_jit_bridge.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/lua_jit_bridge.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/lua_jit_bridge.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/lua_jit_bridge.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/lua_jit_bridge.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/lua_jit_bridge.c.i: cmake_force
@@ -32611,7 +32625,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/lua_jit_bridge.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scripting/script_bridge_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/script_bridge_impl.c.o: src/engine/scripting/script_bridge_impl.c
 CMakeFiles/Engine.dir/src/engine/scripting/script_bridge_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2325) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/script_bridge_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2326) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/script_bridge_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/script_bridge_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/script_bridge_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/script_bridge_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/script_bridge_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/script_bridge_impl.c.i: cmake_force
@@ -32625,7 +32639,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/script_bridge_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scripting/script_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/script_impl.c.o: src/engine/scripting/script_impl.c
 CMakeFiles/Engine.dir/src/engine/scripting/script_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2326) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/script_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2327) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/script_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/script_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/script_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/script_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/script_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/script_impl.c.i: cmake_force
@@ -32639,7 +32653,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/script_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scripting/script_interface_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/script_interface_impl.c.o: src/engine/scripting/script_interface_impl.c
 CMakeFiles/Engine.dir/src/engine/scripting/script_interface_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2327) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/script_interface_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2328) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/script_interface_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/script_interface_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/script_interface_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/script_interface_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/script_interface_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/script_interface_impl.c.i: cmake_force
@@ -32653,7 +32667,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/script_interface_impl.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/scripting/script_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/script_system.c.o: src/engine/scripting/script_system.c
 CMakeFiles/Engine.dir/src/engine/scripting/script_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2328) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/script_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2329) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/script_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/script_system.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/script_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/script_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/script_system.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/script_system.c.i: cmake_force
@@ -32667,7 +32681,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/script_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scripting/scripting_lua.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/scripting_lua.c.o: src/engine/scripting/scripting_lua.c
 CMakeFiles/Engine.dir/src/engine/scripting/scripting_lua.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2329) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/scripting_lua.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2330) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/scripting_lua.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/scripting_lua.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/scripting_lua.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/scripting_lua.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/scripting_lua.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/scripting_lua.c.i: cmake_force
@@ -32681,7 +32695,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/scripting_lua.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/debugger.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/debugger.c.o: src/engine/scripting/visual_scripting/debugger.c
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/debugger.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2330) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/debugger.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2331) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/debugger.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/debugger.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/debugger.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/debugger.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/visual_scripting/debugger.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/debugger.c.i: cmake_force
@@ -32695,7 +32709,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/debugger.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/node_compiler.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/node_compiler.c.o: src/engine/scripting/visual_scripting/node_compiler.c
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/node_compiler.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2331) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/node_compiler.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2332) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/node_compiler.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/node_compiler.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/node_compiler.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/node_compiler.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/visual_scripting/node_compiler.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/node_compiler.c.i: cmake_force
@@ -32709,7 +32723,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/node_compiler.c.s: c
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/nodes.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/nodes.c.o: src/engine/scripting/visual_scripting/nodes.c
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/nodes.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2332) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/nodes.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2333) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/nodes.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/nodes.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/nodes.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/nodes.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/visual_scripting/nodes.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/nodes.c.i: cmake_force
@@ -32723,7 +32737,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/nodes.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/visual_scripting_core.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/visual_scripting_core.c.o: src/engine/scripting/visual_scripting/visual_scripting_core.c
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/visual_scripting_core.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2333) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/visual_scripting_core.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2334) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/visual_scripting_core.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/visual_scripting_core.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/visual_scripting_core.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/visual_scripting_core.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/visual_scripting/visual_scripting_core.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/visual_scripting_core.c.i: cmake_force
@@ -32737,7 +32751,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting/visual_scripting_cor
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting_impl.c.o: src/engine/scripting/visual_scripting_impl.c
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2334) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2335) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/visual_scripting_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting_impl.c.i: cmake_force
@@ -32751,7 +32765,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/visual_scripting_impl.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/scripting/vm.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/scripting/vm.c.o: src/engine/scripting/vm.c
 CMakeFiles/Engine.dir/src/engine/scripting/vm.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2335) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/vm.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2336) "Building C object CMakeFiles/Engine.dir/src/engine/scripting/vm.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/scripting/vm.c.o -MF CMakeFiles/Engine.dir/src/engine/scripting/vm.c.o.d -o CMakeFiles/Engine.dir/src/engine/scripting/vm.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scripting/vm.c"
 
 CMakeFiles/Engine.dir/src/engine/scripting/vm.c.i: cmake_force
@@ -32765,7 +32779,7 @@ CMakeFiles/Engine.dir/src/engine/scripting/vm.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/brdf/diffuse_brdf.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/brdf/diffuse_brdf.c.o: src/engine/shading/brdf/diffuse_brdf.c
 CMakeFiles/Engine.dir/src/engine/shading/brdf/diffuse_brdf.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2336) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/diffuse_brdf.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2337) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/diffuse_brdf.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/brdf/diffuse_brdf.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/brdf/diffuse_brdf.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/brdf/diffuse_brdf.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/brdf/diffuse_brdf.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/brdf/diffuse_brdf.c.i: cmake_force
@@ -32779,7 +32793,7 @@ CMakeFiles/Engine.dir/src/engine/shading/brdf/diffuse_brdf.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/brdf/energy_conservation.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/brdf/energy_conservation.c.o: src/engine/shading/brdf/energy_conservation.c
 CMakeFiles/Engine.dir/src/engine/shading/brdf/energy_conservation.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2337) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/energy_conservation.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2338) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/energy_conservation.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/brdf/energy_conservation.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/brdf/energy_conservation.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/brdf/energy_conservation.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/brdf/energy_conservation.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/brdf/energy_conservation.c.i: cmake_force
@@ -32793,7 +32807,7 @@ CMakeFiles/Engine.dir/src/engine/shading/brdf/energy_conservation.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/shading/brdf/fresnel.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/brdf/fresnel.c.o: src/engine/shading/brdf/fresnel.c
 CMakeFiles/Engine.dir/src/engine/shading/brdf/fresnel.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2338) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/fresnel.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2339) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/fresnel.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/brdf/fresnel.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/brdf/fresnel.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/brdf/fresnel.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/brdf/fresnel.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/brdf/fresnel.c.i: cmake_force
@@ -32807,7 +32821,7 @@ CMakeFiles/Engine.dir/src/engine/shading/brdf/fresnel.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/brdf/ggx_brdf.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/brdf/ggx_brdf.c.o: src/engine/shading/brdf/ggx_brdf.c
 CMakeFiles/Engine.dir/src/engine/shading/brdf/ggx_brdf.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2339) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/ggx_brdf.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2340) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/ggx_brdf.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/brdf/ggx_brdf.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/brdf/ggx_brdf.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/brdf/ggx_brdf.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/brdf/ggx_brdf.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/brdf/ggx_brdf.c.i: cmake_force
@@ -32821,7 +32835,7 @@ CMakeFiles/Engine.dir/src/engine/shading/brdf/ggx_brdf.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/brdf/multiscatter_ggx.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/brdf/multiscatter_ggx.c.o: src/engine/shading/brdf/multiscatter_ggx.c
 CMakeFiles/Engine.dir/src/engine/shading/brdf/multiscatter_ggx.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2340) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/multiscatter_ggx.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2341) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/multiscatter_ggx.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/brdf/multiscatter_ggx.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/brdf/multiscatter_ggx.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/brdf/multiscatter_ggx.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/brdf/multiscatter_ggx.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/brdf/multiscatter_ggx.c.i: cmake_force
@@ -32835,7 +32849,7 @@ CMakeFiles/Engine.dir/src/engine/shading/brdf/multiscatter_ggx.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/brdf/visibility_term.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/brdf/visibility_term.c.o: src/engine/shading/brdf/visibility_term.c
 CMakeFiles/Engine.dir/src/engine/shading/brdf/visibility_term.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2341) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/visibility_term.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2342) "Building C object CMakeFiles/Engine.dir/src/engine/shading/brdf/visibility_term.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/brdf/visibility_term.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/brdf/visibility_term.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/brdf/visibility_term.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/brdf/visibility_term.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/brdf/visibility_term.c.i: cmake_force
@@ -32849,7 +32863,7 @@ CMakeFiles/Engine.dir/src/engine/shading/brdf/visibility_term.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/car_paint.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/car_paint.c.o: src/engine/shading/clearcoat/car_paint.c
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/car_paint.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2342) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/car_paint.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2343) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/car_paint.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/clearcoat/car_paint.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/clearcoat/car_paint.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/clearcoat/car_paint.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/clearcoat/car_paint.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/car_paint.c.i: cmake_force
@@ -32863,7 +32877,7 @@ CMakeFiles/Engine.dir/src/engine/shading/clearcoat/car_paint.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_layer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_layer.c.o: src/engine/shading/clearcoat/clearcoat_layer.c
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_layer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2343) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_layer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2344) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_layer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_layer.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_layer.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_layer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/clearcoat/clearcoat_layer.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_layer.c.i: cmake_force
@@ -32877,7 +32891,7 @@ CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_layer.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_normal.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_normal.c.o: src/engine/shading/clearcoat/clearcoat_normal.c
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_normal.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2344) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_normal.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2345) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_normal.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_normal.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_normal.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_normal.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/clearcoat/clearcoat_normal.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_normal.c.i: cmake_force
@@ -32891,7 +32905,7 @@ CMakeFiles/Engine.dir/src/engine/shading/clearcoat/clearcoat_normal.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_fresnel.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_fresnel.c.o: src/engine/shading/clearcoat/coat_fresnel.c
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_fresnel.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2345) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_fresnel.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2346) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_fresnel.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_fresnel.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_fresnel.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_fresnel.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/clearcoat/coat_fresnel.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_fresnel.c.i: cmake_force
@@ -32905,7 +32919,7 @@ CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_fresnel.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_thickness.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_thickness.c.o: src/engine/shading/clearcoat/coat_thickness.c
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_thickness.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2346) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_thickness.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2347) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_thickness.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_thickness.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_thickness.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_thickness.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/clearcoat/coat_thickness.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_thickness.c.i: cmake_force
@@ -32919,7 +32933,7 @@ CMakeFiles/Engine.dir/src/engine/shading/clearcoat/coat_thickness.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/multi_layer_material.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/multi_layer_material.c.o: src/engine/shading/clearcoat/multi_layer_material.c
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/multi_layer_material.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2347) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/multi_layer_material.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2348) "Building C object CMakeFiles/Engine.dir/src/engine/shading/clearcoat/multi_layer_material.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/clearcoat/multi_layer_material.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/clearcoat/multi_layer_material.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/clearcoat/multi_layer_material.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/clearcoat/multi_layer_material.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/clearcoat/multi_layer_material.c.i: cmake_force
@@ -32933,7 +32947,7 @@ CMakeFiles/Engine.dir/src/engine/shading/clearcoat/multi_layer_material.c.s: cma
 CMakeFiles/Engine.dir/src/engine/shading/cloth/anisotropic_cloth.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/cloth/anisotropic_cloth.c.o: src/engine/shading/cloth/anisotropic_cloth.c
 CMakeFiles/Engine.dir/src/engine/shading/cloth/anisotropic_cloth.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2348) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/anisotropic_cloth.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2349) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/anisotropic_cloth.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/cloth/anisotropic_cloth.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/cloth/anisotropic_cloth.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/cloth/anisotropic_cloth.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/cloth/anisotropic_cloth.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/cloth/anisotropic_cloth.c.i: cmake_force
@@ -32947,7 +32961,7 @@ CMakeFiles/Engine.dir/src/engine/shading/cloth/anisotropic_cloth.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_ao.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_ao.c.o: src/engine/shading/cloth/cloth_ao.c
 CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_ao.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2349) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_ao.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2350) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_ao.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_ao.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_ao.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_ao.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/cloth/cloth_ao.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_ao.c.i: cmake_force
@@ -32961,7 +32975,7 @@ CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_ao.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_brdf.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_brdf.c.o: src/engine/shading/cloth/cloth_brdf.c
 CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_brdf.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2350) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_brdf.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2351) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_brdf.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_brdf.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_brdf.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_brdf.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/cloth/cloth_brdf.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_brdf.c.i: cmake_force
@@ -32975,7 +32989,7 @@ CMakeFiles/Engine.dir/src/engine/shading/cloth/cloth_brdf.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/cloth/fabric_patterns.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/cloth/fabric_patterns.c.o: src/engine/shading/cloth/fabric_patterns.c
 CMakeFiles/Engine.dir/src/engine/shading/cloth/fabric_patterns.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2351) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/fabric_patterns.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2352) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/fabric_patterns.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/cloth/fabric_patterns.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/cloth/fabric_patterns.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/cloth/fabric_patterns.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/cloth/fabric_patterns.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/cloth/fabric_patterns.c.i: cmake_force
@@ -32989,7 +33003,7 @@ CMakeFiles/Engine.dir/src/engine/shading/cloth/fabric_patterns.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/cloth/fuzz_lighting.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/cloth/fuzz_lighting.c.o: src/engine/shading/cloth/fuzz_lighting.c
 CMakeFiles/Engine.dir/src/engine/shading/cloth/fuzz_lighting.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2352) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/fuzz_lighting.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2353) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/fuzz_lighting.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/cloth/fuzz_lighting.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/cloth/fuzz_lighting.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/cloth/fuzz_lighting.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/cloth/fuzz_lighting.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/cloth/fuzz_lighting.c.i: cmake_force
@@ -33003,7 +33017,7 @@ CMakeFiles/Engine.dir/src/engine/shading/cloth/fuzz_lighting.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/cloth/sheen_layer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/cloth/sheen_layer.c.o: src/engine/shading/cloth/sheen_layer.c
 CMakeFiles/Engine.dir/src/engine/shading/cloth/sheen_layer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2353) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/sheen_layer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2354) "Building C object CMakeFiles/Engine.dir/src/engine/shading/cloth/sheen_layer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/cloth/sheen_layer.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/cloth/sheen_layer.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/cloth/sheen_layer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/cloth/sheen_layer.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/cloth/sheen_layer.c.i: cmake_force
@@ -33017,7 +33031,7 @@ CMakeFiles/Engine.dir/src/engine/shading/cloth/sheen_layer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_antialiasing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_antialiasing.c.o: src/engine/shading/hair/hair_antialiasing.c
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_antialiasing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2354) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/hair_antialiasing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2355) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/hair_antialiasing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/hair/hair_antialiasing.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/hair/hair_antialiasing.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/hair/hair_antialiasing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/hair/hair_antialiasing.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_antialiasing.c.i: cmake_force
@@ -33031,7 +33045,7 @@ CMakeFiles/Engine.dir/src/engine/shading/hair/hair_antialiasing.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_ao.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_ao.c.o: src/engine/shading/hair/hair_ao.c
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_ao.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2355) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/hair_ao.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2356) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/hair_ao.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/hair/hair_ao.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/hair/hair_ao.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/hair/hair_ao.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/hair/hair_ao.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_ao.c.i: cmake_force
@@ -33045,7 +33059,7 @@ CMakeFiles/Engine.dir/src/engine/shading/hair/hair_ao.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_scattering.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_scattering.c.o: src/engine/shading/hair/hair_scattering.c
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_scattering.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2356) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/hair_scattering.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2357) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/hair_scattering.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/hair/hair_scattering.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/hair/hair_scattering.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/hair/hair_scattering.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/hair/hair_scattering.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_scattering.c.i: cmake_force
@@ -33059,7 +33073,7 @@ CMakeFiles/Engine.dir/src/engine/shading/hair/hair_scattering.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_shadows.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_shadows.c.o: src/engine/shading/hair/hair_shadows.c
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_shadows.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2357) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/hair_shadows.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2358) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/hair_shadows.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/hair/hair_shadows.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/hair/hair_shadows.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/hair/hair_shadows.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/hair/hair_shadows.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_shadows.c.i: cmake_force
@@ -33073,7 +33087,7 @@ CMakeFiles/Engine.dir/src/engine/shading/hair/hair_shadows.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_strand_shading.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_strand_shading.c.o: src/engine/shading/hair/hair_strand_shading.c
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_strand_shading.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2358) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/hair_strand_shading.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2359) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/hair_strand_shading.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/hair/hair_strand_shading.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/hair/hair_strand_shading.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/hair/hair_strand_shading.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/hair/hair_strand_shading.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/hair/hair_strand_shading.c.i: cmake_force
@@ -33087,7 +33101,7 @@ CMakeFiles/Engine.dir/src/engine/shading/hair/hair_strand_shading.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/shading/hair/marschner_model.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/hair/marschner_model.c.o: src/engine/shading/hair/marschner_model.c
 CMakeFiles/Engine.dir/src/engine/shading/hair/marschner_model.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2359) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/marschner_model.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2360) "Building C object CMakeFiles/Engine.dir/src/engine/shading/hair/marschner_model.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/hair/marschner_model.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/hair/marschner_model.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/hair/marschner_model.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/hair/marschner_model.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/hair/marschner_model.c.i: cmake_force
@@ -33101,7 +33115,7 @@ CMakeFiles/Engine.dir/src/engine/shading/hair/marschner_model.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/library/environment/foliage_wind.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/library/environment/foliage_wind.c.o: src/engine/shading/library/environment/foliage_wind.c
 CMakeFiles/Engine.dir/src/engine/shading/library/environment/foliage_wind.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2360) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/environment/foliage_wind.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2361) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/environment/foliage_wind.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/library/environment/foliage_wind.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/library/environment/foliage_wind.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/library/environment/foliage_wind.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/library/environment/foliage_wind.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/library/environment/foliage_wind.c.i: cmake_force
@@ -33115,7 +33129,7 @@ CMakeFiles/Engine.dir/src/engine/shading/library/environment/foliage_wind.c.s: c
 CMakeFiles/Engine.dir/src/engine/shading/library/environment/water_ocean.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/library/environment/water_ocean.c.o: src/engine/shading/library/environment/water_ocean.c
 CMakeFiles/Engine.dir/src/engine/shading/library/environment/water_ocean.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2361) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/environment/water_ocean.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2362) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/environment/water_ocean.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/library/environment/water_ocean.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/library/environment/water_ocean.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/library/environment/water_ocean.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/library/environment/water_ocean.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/library/environment/water_ocean.c.i: cmake_force
@@ -33129,7 +33143,7 @@ CMakeFiles/Engine.dir/src/engine/shading/library/environment/water_ocean.c.s: cm
 CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/pbr_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/pbr_impl.c.o: src/engine/shading/library/pbr_variants/pbr_impl.c
 CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/pbr_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2362) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/pbr_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2363) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/pbr_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/pbr_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/pbr_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/pbr_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/library/pbr_variants/pbr_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/pbr_impl.c.i: cmake_force
@@ -33143,7 +33157,7 @@ CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/pbr_impl.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/standard_pbr.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/standard_pbr.c.o: src/engine/shading/library/pbr_variants/standard_pbr.c
 CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/standard_pbr.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2363) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/standard_pbr.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2364) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/standard_pbr.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/standard_pbr.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/standard_pbr.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/standard_pbr.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/library/pbr_variants/standard_pbr.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/standard_pbr.c.i: cmake_force
@@ -33157,7 +33171,7 @@ CMakeFiles/Engine.dir/src/engine/shading/library/pbr_variants/standard_pbr.c.s: 
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_advanced_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_advanced_impl.c.o: src/engine/shading/library/shader_advanced_impl.c
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_advanced_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2364) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/shader_advanced_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2365) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/shader_advanced_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/library/shader_advanced_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/library/shader_advanced_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/library/shader_advanced_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/library/shader_advanced_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_advanced_impl.c.i: cmake_force
@@ -33171,7 +33185,7 @@ CMakeFiles/Engine.dir/src/engine/shading/library/shader_advanced_impl.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_library_core_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_library_core_impl.c.o: src/engine/shading/library/shader_library_core_impl.c
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_library_core_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2365) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/shader_library_core_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2366) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/shader_library_core_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/library/shader_library_core_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/library/shader_library_core_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/library/shader_library_core_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/library/shader_library_core_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_library_core_impl.c.i: cmake_force
@@ -33185,7 +33199,7 @@ CMakeFiles/Engine.dir/src/engine/shading/library/shader_library_core_impl.c.s: c
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_utils_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_utils_impl.c.o: src/engine/shading/library/shader_utils_impl.c
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_utils_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2366) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/shader_utils_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2367) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/shader_utils_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/library/shader_utils_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/library/shader_utils_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/library/shader_utils_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/library/shader_utils_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/library/shader_utils_impl.c.i: cmake_force
@@ -33199,7 +33213,7 @@ CMakeFiles/Engine.dir/src/engine/shading/library/shader_utils_impl.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.o: src/engine/shading/library/stylized/cel_shading.c
 CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2367) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2368) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/library/stylized/cel_shading.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.i: cmake_force
@@ -33213,7 +33227,7 @@ CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o: src/engine/shading/library/vfx/particle_shaders.c
 CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2368) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2369) "Building C object CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/library/vfx/particle_shaders.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.i: cmake_force
@@ -33227,7 +33241,7 @@ CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/shading/special/absorption.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/special/absorption.c.o: src/engine/shading/special/absorption.c
 CMakeFiles/Engine.dir/src/engine/shading/special/absorption.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2369) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/absorption.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2370) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/absorption.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/special/absorption.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/special/absorption.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/special/absorption.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/special/absorption.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/special/absorption.c.i: cmake_force
@@ -33241,7 +33255,7 @@ CMakeFiles/Engine.dir/src/engine/shading/special/absorption.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/special/anisotropy.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/special/anisotropy.c.o: src/engine/shading/special/anisotropy.c
 CMakeFiles/Engine.dir/src/engine/shading/special/anisotropy.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2370) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/anisotropy.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2371) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/anisotropy.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/special/anisotropy.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/special/anisotropy.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/special/anisotropy.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/special/anisotropy.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/special/anisotropy.c.i: cmake_force
@@ -33255,7 +33269,7 @@ CMakeFiles/Engine.dir/src/engine/shading/special/anisotropy.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/special/eye_shading.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/special/eye_shading.c.o: src/engine/shading/special/eye_shading.c
 CMakeFiles/Engine.dir/src/engine/shading/special/eye_shading.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2371) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/eye_shading.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2372) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/eye_shading.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/special/eye_shading.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/special/eye_shading.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/special/eye_shading.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/special/eye_shading.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/special/eye_shading.c.i: cmake_force
@@ -33269,7 +33283,7 @@ CMakeFiles/Engine.dir/src/engine/shading/special/eye_shading.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/special/gemstone.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/special/gemstone.c.o: src/engine/shading/special/gemstone.c
 CMakeFiles/Engine.dir/src/engine/shading/special/gemstone.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2372) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/gemstone.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2373) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/gemstone.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/special/gemstone.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/special/gemstone.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/special/gemstone.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/special/gemstone.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/special/gemstone.c.i: cmake_force
@@ -33283,7 +33297,7 @@ CMakeFiles/Engine.dir/src/engine/shading/special/gemstone.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/special/iridescence.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/special/iridescence.c.o: src/engine/shading/special/iridescence.c
 CMakeFiles/Engine.dir/src/engine/shading/special/iridescence.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2373) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/iridescence.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2374) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/iridescence.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/special/iridescence.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/special/iridescence.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/special/iridescence.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/special/iridescence.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/special/iridescence.c.i: cmake_force
@@ -33297,7 +33311,7 @@ CMakeFiles/Engine.dir/src/engine/shading/special/iridescence.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/special/transmission.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/special/transmission.c.o: src/engine/shading/special/transmission.c
 CMakeFiles/Engine.dir/src/engine/shading/special/transmission.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2374) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/transmission.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2375) "Building C object CMakeFiles/Engine.dir/src/engine/shading/special/transmission.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/special/transmission.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/special/transmission.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/special/transmission.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/special/transmission.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/special/transmission.c.i: cmake_force
@@ -33311,7 +33325,7 @@ CMakeFiles/Engine.dir/src/engine/shading/special/transmission.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/pre_integrated_sss.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/pre_integrated_sss.c.o: src/engine/shading/subsurface/pre_integrated_sss.c
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/pre_integrated_sss.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2375) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/pre_integrated_sss.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2376) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/pre_integrated_sss.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/subsurface/pre_integrated_sss.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/subsurface/pre_integrated_sss.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/subsurface/pre_integrated_sss.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/subsurface/pre_integrated_sss.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/pre_integrated_sss.c.i: cmake_force
@@ -33325,7 +33339,7 @@ CMakeFiles/Engine.dir/src/engine/shading/subsurface/pre_integrated_sss.c.s: cmak
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/skin_shading.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/skin_shading.c.o: src/engine/shading/subsurface/skin_shading.c
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/skin_shading.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2376) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/skin_shading.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2377) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/skin_shading.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/subsurface/skin_shading.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/subsurface/skin_shading.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/subsurface/skin_shading.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/subsurface/skin_shading.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/skin_shading.c.i: cmake_force
@@ -33339,7 +33353,7 @@ CMakeFiles/Engine.dir/src/engine/shading/subsurface/skin_shading.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_blur.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_blur.c.o: src/engine/shading/subsurface/sss_blur.c
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_blur.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2377) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_blur.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2378) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_blur.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_blur.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_blur.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_blur.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/subsurface/sss_blur.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_blur.c.i: cmake_force
@@ -33353,7 +33367,7 @@ CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_blur.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_profile.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_profile.c.o: src/engine/shading/subsurface/sss_profile.c
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_profile.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2378) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_profile.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2379) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_profile.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_profile.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_profile.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_profile.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/subsurface/sss_profile.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_profile.c.i: cmake_force
@@ -33367,7 +33381,7 @@ CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_profile.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_shadow_maps.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_shadow_maps.c.o: src/engine/shading/subsurface/sss_shadow_maps.c
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_shadow_maps.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2379) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_shadow_maps.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2380) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_shadow_maps.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_shadow_maps.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_shadow_maps.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_shadow_maps.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/subsurface/sss_shadow_maps.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_shadow_maps.c.i: cmake_force
@@ -33381,7 +33395,7 @@ CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_shadow_maps.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_transmission.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_transmission.c.o: src/engine/shading/subsurface/sss_transmission.c
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_transmission.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2380) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_transmission.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2381) "Building C object CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_transmission.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_transmission.c.o -MF CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_transmission.c.o.d -o CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_transmission.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/shading/subsurface/sss_transmission.c"
 
 CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_transmission.c.i: cmake_force
@@ -33395,7 +33409,7 @@ CMakeFiles/Engine.dir/src/engine/shading/subsurface/sss_transmission.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/testing/benchmark_suite.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/benchmark_suite.c.o: src/engine/testing/benchmark_suite.c
 CMakeFiles/Engine.dir/src/engine/testing/benchmark_suite.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2381) "Building C object CMakeFiles/Engine.dir/src/engine/testing/benchmark_suite.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2382) "Building C object CMakeFiles/Engine.dir/src/engine/testing/benchmark_suite.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/benchmark_suite.c.o -MF CMakeFiles/Engine.dir/src/engine/testing/benchmark_suite.c.o.d -o CMakeFiles/Engine.dir/src/engine/testing/benchmark_suite.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/benchmark_suite.c"
 
 CMakeFiles/Engine.dir/src/engine/testing/benchmark_suite.c.i: cmake_force
@@ -33409,7 +33423,7 @@ CMakeFiles/Engine.dir/src/engine/testing/benchmark_suite.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/testing/phase1_test.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/phase1_test.m.o: src/engine/testing/phase1_test.m
 CMakeFiles/Engine.dir/src/engine/testing/phase1_test.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2382) "Building OBJC object CMakeFiles/Engine.dir/src/engine/testing/phase1_test.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2383) "Building OBJC object CMakeFiles/Engine.dir/src/engine/testing/phase1_test.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/phase1_test.m.o -MF CMakeFiles/Engine.dir/src/engine/testing/phase1_test.m.o.d -o CMakeFiles/Engine.dir/src/engine/testing/phase1_test.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/phase1_test.m"
 
 CMakeFiles/Engine.dir/src/engine/testing/phase1_test.m.i: cmake_force
@@ -33423,7 +33437,7 @@ CMakeFiles/Engine.dir/src/engine/testing/phase1_test.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/testing/phase2_test.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/phase2_test.c.o: src/engine/testing/phase2_test.c
 CMakeFiles/Engine.dir/src/engine/testing/phase2_test.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2383) "Building C object CMakeFiles/Engine.dir/src/engine/testing/phase2_test.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2384) "Building C object CMakeFiles/Engine.dir/src/engine/testing/phase2_test.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/phase2_test.c.o -MF CMakeFiles/Engine.dir/src/engine/testing/phase2_test.c.o.d -o CMakeFiles/Engine.dir/src/engine/testing/phase2_test.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/phase2_test.c"
 
 CMakeFiles/Engine.dir/src/engine/testing/phase2_test.c.i: cmake_force
@@ -33437,7 +33451,7 @@ CMakeFiles/Engine.dir/src/engine/testing/phase2_test.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/testing/phase3_test.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/phase3_test.c.o: src/engine/testing/phase3_test.c
 CMakeFiles/Engine.dir/src/engine/testing/phase3_test.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2384) "Building C object CMakeFiles/Engine.dir/src/engine/testing/phase3_test.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2385) "Building C object CMakeFiles/Engine.dir/src/engine/testing/phase3_test.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/phase3_test.c.o -MF CMakeFiles/Engine.dir/src/engine/testing/phase3_test.c.o.d -o CMakeFiles/Engine.dir/src/engine/testing/phase3_test.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/phase3_test.c"
 
 CMakeFiles/Engine.dir/src/engine/testing/phase3_test.c.i: cmake_force
@@ -33451,7 +33465,7 @@ CMakeFiles/Engine.dir/src/engine/testing/phase3_test.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/testing/phase5_integration_test.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/phase5_integration_test.c.o: src/engine/testing/phase5_integration_test.c
 CMakeFiles/Engine.dir/src/engine/testing/phase5_integration_test.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2385) "Building C object CMakeFiles/Engine.dir/src/engine/testing/phase5_integration_test.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2386) "Building C object CMakeFiles/Engine.dir/src/engine/testing/phase5_integration_test.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/phase5_integration_test.c.o -MF CMakeFiles/Engine.dir/src/engine/testing/phase5_integration_test.c.o.d -o CMakeFiles/Engine.dir/src/engine/testing/phase5_integration_test.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/phase5_integration_test.c"
 
 CMakeFiles/Engine.dir/src/engine/testing/phase5_integration_test.c.i: cmake_force
@@ -33465,7 +33479,7 @@ CMakeFiles/Engine.dir/src/engine/testing/phase5_integration_test.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/testing/render_tests.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/render_tests.c.o: src/engine/testing/render_tests.c
 CMakeFiles/Engine.dir/src/engine/testing/render_tests.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2386) "Building C object CMakeFiles/Engine.dir/src/engine/testing/render_tests.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2387) "Building C object CMakeFiles/Engine.dir/src/engine/testing/render_tests.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/render_tests.c.o -MF CMakeFiles/Engine.dir/src/engine/testing/render_tests.c.o.d -o CMakeFiles/Engine.dir/src/engine/testing/render_tests.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/render_tests.c"
 
 CMakeFiles/Engine.dir/src/engine/testing/render_tests.c.i: cmake_force
@@ -33479,7 +33493,7 @@ CMakeFiles/Engine.dir/src/engine/testing/render_tests.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/testing/test_forward_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/test_forward_renderer.c.o: src/engine/testing/test_forward_renderer.c
 CMakeFiles/Engine.dir/src/engine/testing/test_forward_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2387) "Building C object CMakeFiles/Engine.dir/src/engine/testing/test_forward_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2388) "Building C object CMakeFiles/Engine.dir/src/engine/testing/test_forward_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/test_forward_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/testing/test_forward_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/testing/test_forward_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/test_forward_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/testing/test_forward_renderer.c.i: cmake_force
@@ -33493,7 +33507,7 @@ CMakeFiles/Engine.dir/src/engine/testing/test_forward_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/testing/test_light_probes.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/test_light_probes.c.o: src/engine/testing/test_light_probes.c
 CMakeFiles/Engine.dir/src/engine/testing/test_light_probes.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2388) "Building C object CMakeFiles/Engine.dir/src/engine/testing/test_light_probes.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2389) "Building C object CMakeFiles/Engine.dir/src/engine/testing/test_light_probes.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/test_light_probes.c.o -MF CMakeFiles/Engine.dir/src/engine/testing/test_light_probes.c.o.d -o CMakeFiles/Engine.dir/src/engine/testing/test_light_probes.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/test_light_probes.c"
 
 CMakeFiles/Engine.dir/src/engine/testing/test_light_probes.c.i: cmake_force
@@ -33507,7 +33521,7 @@ CMakeFiles/Engine.dir/src/engine/testing/test_light_probes.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/testing/test_shader_variants.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/test_shader_variants.c.o: src/engine/testing/test_shader_variants.c
 CMakeFiles/Engine.dir/src/engine/testing/test_shader_variants.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2389) "Building C object CMakeFiles/Engine.dir/src/engine/testing/test_shader_variants.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2390) "Building C object CMakeFiles/Engine.dir/src/engine/testing/test_shader_variants.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/test_shader_variants.c.o -MF CMakeFiles/Engine.dir/src/engine/testing/test_shader_variants.c.o.d -o CMakeFiles/Engine.dir/src/engine/testing/test_shader_variants.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/test_shader_variants.c"
 
 CMakeFiles/Engine.dir/src/engine/testing/test_shader_variants.c.i: cmake_force
@@ -33521,7 +33535,7 @@ CMakeFiles/Engine.dir/src/engine/testing/test_shader_variants.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/testing/test_transparency.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/test_transparency.c.o: src/engine/testing/test_transparency.c
 CMakeFiles/Engine.dir/src/engine/testing/test_transparency.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2390) "Building C object CMakeFiles/Engine.dir/src/engine/testing/test_transparency.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2391) "Building C object CMakeFiles/Engine.dir/src/engine/testing/test_transparency.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/test_transparency.c.o -MF CMakeFiles/Engine.dir/src/engine/testing/test_transparency.c.o.d -o CMakeFiles/Engine.dir/src/engine/testing/test_transparency.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/test_transparency.c"
 
 CMakeFiles/Engine.dir/src/engine/testing/test_transparency.c.i: cmake_force
@@ -33535,7 +33549,7 @@ CMakeFiles/Engine.dir/src/engine/testing/test_transparency.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/testing/visual_tests.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/testing/visual_tests.c.o: src/engine/testing/visual_tests.c
 CMakeFiles/Engine.dir/src/engine/testing/visual_tests.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2391) "Building C object CMakeFiles/Engine.dir/src/engine/testing/visual_tests.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2392) "Building C object CMakeFiles/Engine.dir/src/engine/testing/visual_tests.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/testing/visual_tests.c.o -MF CMakeFiles/Engine.dir/src/engine/testing/visual_tests.c.o.d -o CMakeFiles/Engine.dir/src/engine/testing/visual_tests.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/testing/visual_tests.c"
 
 CMakeFiles/Engine.dir/src/engine/testing/visual_tests.c.i: cmake_force
@@ -33549,7 +33563,7 @@ CMakeFiles/Engine.dir/src/engine/testing/visual_tests.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/analytics.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/analytics.c.o: src/engine/tools/analytics.c
 CMakeFiles/Engine.dir/src/engine/tools/analytics.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2392) "Building C object CMakeFiles/Engine.dir/src/engine/tools/analytics.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2393) "Building C object CMakeFiles/Engine.dir/src/engine/tools/analytics.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/analytics.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/analytics.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/analytics.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/analytics.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/analytics.c.i: cmake_force
@@ -33563,7 +33577,7 @@ CMakeFiles/Engine.dir/src/engine/tools/analytics.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.o: src/engine/tools/analytics/telemetry.c
 CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2393) "Building C object CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2394) "Building C object CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/analytics/telemetry.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.i: cmake_force
@@ -33577,7 +33591,7 @@ CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/asset_browser/asset_view.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/asset_browser/asset_view.c.o: src/engine/tools/asset_browser/asset_view.c
 CMakeFiles/Engine.dir/src/engine/tools/asset_browser/asset_view.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2394) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_browser/asset_view.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2395) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_browser/asset_view.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/asset_browser/asset_view.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/asset_browser/asset_view.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/asset_browser/asset_view.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/asset_browser/asset_view.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/asset_browser/asset_view.c.i: cmake_force
@@ -33591,7 +33605,7 @@ CMakeFiles/Engine.dir/src/engine/tools/asset_browser/asset_view.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/mesh_optimizer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/mesh_optimizer.c.o: src/engine/tools/asset_compiler/mesh_optimizer.c
 CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/mesh_optimizer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2395) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/mesh_optimizer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2396) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/mesh_optimizer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/mesh_optimizer.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/mesh_optimizer.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/mesh_optimizer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/asset_compiler/mesh_optimizer.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/mesh_optimizer.c.i: cmake_force
@@ -33605,7 +33619,7 @@ CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/mesh_optimizer.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/texture_compressor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/texture_compressor.c.o: src/engine/tools/asset_compiler/texture_compressor.c
 CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/texture_compressor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2396) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/texture_compressor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2397) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/texture_compressor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/texture_compressor.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/texture_compressor.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/texture_compressor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/asset_compiler/texture_compressor.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/texture_compressor.c.i: cmake_force
@@ -33619,7 +33633,7 @@ CMakeFiles/Engine.dir/src/engine/tools/asset_compiler/texture_compressor.c.s: cm
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/2d/sprite_editor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/2d/sprite_editor.c.o: src/engine/tools/asset_editor/2d/sprite_editor.c
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/2d/sprite_editor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2397) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_editor/2d/sprite_editor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2398) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_editor/2d/sprite_editor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/asset_editor/2d/sprite_editor.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/asset_editor/2d/sprite_editor.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/asset_editor/2d/sprite_editor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/asset_editor/2d/sprite_editor.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/2d/sprite_editor.c.i: cmake_force
@@ -33633,7 +33647,7 @@ CMakeFiles/Engine.dir/src/engine/tools/asset_editor/2d/sprite_editor.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.o: src/engine/tools/asset_editor/3d/model_editor.c
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2398) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2399) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/asset_editor/3d/model_editor.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.i: cmake_force
@@ -33647,7 +33661,7 @@ CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.o: src/engine/tools/asset_editor/asset_editor.c
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2399) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2400) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/asset_editor/asset_editor.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.i: cmake_force
@@ -33661,7 +33675,7 @@ CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/management/import_export.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/management/import_export.c.o: src/engine/tools/asset_editor/management/import_export.c
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/management/import_export.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2400) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_editor/management/import_export.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2401) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_editor/management/import_export.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/asset_editor/management/import_export.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/asset_editor/management/import_export.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/asset_editor/management/import_export.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/asset_editor/management/import_export.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/asset_editor/management/import_export.c.i: cmake_force
@@ -33675,7 +33689,7 @@ CMakeFiles/Engine.dir/src/engine/tools/asset_editor/management/import_export.c.s
 CMakeFiles/Engine.dir/src/engine/tools/asset_hotreload.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/asset_hotreload.c.o: src/engine/tools/asset_hotreload.c
 CMakeFiles/Engine.dir/src/engine/tools/asset_hotreload.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2401) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_hotreload.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2402) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_hotreload.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/asset_hotreload.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/asset_hotreload.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/asset_hotreload.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/asset_hotreload.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/asset_hotreload.c.i: cmake_force
@@ -33689,7 +33703,7 @@ CMakeFiles/Engine.dir/src/engine/tools/asset_hotreload.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/asset_packer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/asset_packer.c.o: src/engine/tools/asset_packer.c
 CMakeFiles/Engine.dir/src/engine/tools/asset_packer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2402) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_packer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2403) "Building C object CMakeFiles/Engine.dir/src/engine/tools/asset_packer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/asset_packer.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/asset_packer.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/asset_packer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/asset_packer.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/asset_packer.c.i: cmake_force
@@ -33703,7 +33717,7 @@ CMakeFiles/Engine.dir/src/engine/tools/asset_packer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/build_pipeline.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/build_pipeline.c.o: src/engine/tools/build_pipeline.c
 CMakeFiles/Engine.dir/src/engine/tools/build_pipeline.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2403) "Building C object CMakeFiles/Engine.dir/src/engine/tools/build_pipeline.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2404) "Building C object CMakeFiles/Engine.dir/src/engine/tools/build_pipeline.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/build_pipeline.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/build_pipeline.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/build_pipeline.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/build_pipeline.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/build_pipeline.c.i: cmake_force
@@ -33717,7 +33731,7 @@ CMakeFiles/Engine.dir/src/engine/tools/build_pipeline.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/console.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/console.c.o: src/engine/tools/console.c
 CMakeFiles/Engine.dir/src/engine/tools/console.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2404) "Building C object CMakeFiles/Engine.dir/src/engine/tools/console.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2405) "Building C object CMakeFiles/Engine.dir/src/engine/tools/console.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/console.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/console.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/console.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/console.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/console.c.i: cmake_force
@@ -33731,7 +33745,7 @@ CMakeFiles/Engine.dir/src/engine/tools/console.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.o: src/engine/tools/console/command_processor.c
 CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2405) "Building C object CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2406) "Building C object CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/console/command_processor.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.i: cmake_force
@@ -33745,7 +33759,7 @@ CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/tools/debug/bug_reporter.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/debug/bug_reporter.c.o: src/engine/tools/debug/bug_reporter.c
 CMakeFiles/Engine.dir/src/engine/tools/debug/bug_reporter.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2406) "Building C object CMakeFiles/Engine.dir/src/engine/tools/debug/bug_reporter.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2407) "Building C object CMakeFiles/Engine.dir/src/engine/tools/debug/bug_reporter.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/debug/bug_reporter.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/debug/bug_reporter.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/debug/bug_reporter.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/debug/bug_reporter.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/debug/bug_reporter.c.i: cmake_force
@@ -33759,7 +33773,7 @@ CMakeFiles/Engine.dir/src/engine/tools/debug/bug_reporter.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/debug/crash_reporter.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/debug/crash_reporter.c.o: src/engine/tools/debug/crash_reporter.c
 CMakeFiles/Engine.dir/src/engine/tools/debug/crash_reporter.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2407) "Building C object CMakeFiles/Engine.dir/src/engine/tools/debug/crash_reporter.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2408) "Building C object CMakeFiles/Engine.dir/src/engine/tools/debug/crash_reporter.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/debug/crash_reporter.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/debug/crash_reporter.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/debug/crash_reporter.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/debug/crash_reporter.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/debug/crash_reporter.c.i: cmake_force
@@ -33773,7 +33787,7 @@ CMakeFiles/Engine.dir/src/engine/tools/debug/crash_reporter.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c.o: src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2408) "Building C object CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2409) "Building C object CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c.i: cmake_force
@@ -33787,7 +33801,7 @@ CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/2d/sprite_editor
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/3d/model_editor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/3d/model_editor.c.o: src/engine/tools/editor/core/asset_editor/3d/model_editor.c
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/3d/model_editor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2409) "Building C object CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/3d/model_editor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2410) "Building C object CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/3d/model_editor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/3d/model_editor.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/3d/model_editor.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/3d/model_editor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/editor/core/asset_editor/3d/model_editor.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/3d/model_editor.c.i: cmake_force
@@ -33801,7 +33815,7 @@ CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/3d/model_editor.
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/asset_editor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/asset_editor.c.o: src/engine/tools/editor/core/asset_editor/asset_editor.c
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/asset_editor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2410) "Building C object CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/asset_editor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2411) "Building C object CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/asset_editor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/asset_editor.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/asset_editor.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/asset_editor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/editor/core/asset_editor/asset_editor.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/asset_editor.c.i: cmake_force
@@ -33815,7 +33829,7 @@ CMakeFiles/Engine.dir/src/engine/tools/editor/core/asset_editor/asset_editor.c.s
 CMakeFiles/Engine.dir/src/engine/tools/editor_tools_complete.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/editor_tools_complete.c.o: src/engine/tools/editor_tools_complete.c
 CMakeFiles/Engine.dir/src/engine/tools/editor_tools_complete.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2411) "Building C object CMakeFiles/Engine.dir/src/engine/tools/editor_tools_complete.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2412) "Building C object CMakeFiles/Engine.dir/src/engine/tools/editor_tools_complete.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/editor_tools_complete.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/editor_tools_complete.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/editor_tools_complete.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/editor_tools_complete.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/editor_tools_complete.c.i: cmake_force
@@ -33829,7 +33843,7 @@ CMakeFiles/Engine.dir/src/engine/tools/editor_tools_complete.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/external_tools_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/external_tools_impl.c.o: src/engine/tools/external_tools_impl.c
 CMakeFiles/Engine.dir/src/engine/tools/external_tools_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2412) "Building C object CMakeFiles/Engine.dir/src/engine/tools/external_tools_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2413) "Building C object CMakeFiles/Engine.dir/src/engine/tools/external_tools_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/external_tools_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/external_tools_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/external_tools_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/external_tools_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/external_tools_impl.c.i: cmake_force
@@ -33843,7 +33857,7 @@ CMakeFiles/Engine.dir/src/engine/tools/external_tools_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.o: src/engine/tools/hot_reload.c
 CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2413) "Building C object CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2414) "Building C object CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/hot_reload.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.i: cmake_force
@@ -33857,7 +33871,7 @@ CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.o: src/engine/tools/hot_reload/hot_reload_impl.c
 CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2414) "Building C object CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2415) "Building C object CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/hot_reload/hot_reload_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.i: cmake_force
@@ -33871,7 +33885,7 @@ CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/tools/localization/loc_tool.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/localization/loc_tool.c.o: src/engine/tools/localization/loc_tool.c
 CMakeFiles/Engine.dir/src/engine/tools/localization/loc_tool.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2415) "Building C object CMakeFiles/Engine.dir/src/engine/tools/localization/loc_tool.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2416) "Building C object CMakeFiles/Engine.dir/src/engine/tools/localization/loc_tool.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/localization/loc_tool.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/localization/loc_tool.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/localization/loc_tool.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/localization/loc_tool.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/localization/loc_tool.c.i: cmake_force
@@ -33885,7 +33899,7 @@ CMakeFiles/Engine.dir/src/engine/tools/localization/loc_tool.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/localization/translation_tool.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/localization/translation_tool.c.o: src/engine/tools/localization/translation_tool.c
 CMakeFiles/Engine.dir/src/engine/tools/localization/translation_tool.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2416) "Building C object CMakeFiles/Engine.dir/src/engine/tools/localization/translation_tool.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2417) "Building C object CMakeFiles/Engine.dir/src/engine/tools/localization/translation_tool.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/localization/translation_tool.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/localization/translation_tool.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/localization/translation_tool.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/localization/translation_tool.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/localization/translation_tool.c.i: cmake_force
@@ -33899,7 +33913,7 @@ CMakeFiles/Engine.dir/src/engine/tools/localization/translation_tool.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor.c.o: src/engine/tools/modeling/mesh_editor.c
 CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2417) "Building C object CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2418) "Building C object CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/modeling/mesh_editor.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor.c.i: cmake_force
@@ -33913,7 +33927,7 @@ CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor_impl.c.o: src/engine/tools/modeling/mesh_editor_impl.c
 CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2418) "Building C object CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2419) "Building C object CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/modeling/mesh_editor_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor_impl.c.i: cmake_force
@@ -33927,7 +33941,7 @@ CMakeFiles/Engine.dir/src/engine/tools/modeling/mesh_editor_impl.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter.c.o: src/engine/tools/painting/texture_painter.c
 CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2419) "Building C object CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2420) "Building C object CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/painting/texture_painter.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter.c.i: cmake_force
@@ -33941,7 +33955,7 @@ CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter_impl.c.o: src/engine/tools/painting/texture_painter_impl.c
 CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2420) "Building C object CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2421) "Building C object CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/painting/texture_painter_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter_impl.c.i: cmake_force
@@ -33955,7 +33969,7 @@ CMakeFiles/Engine.dir/src/engine/tools/painting/texture_painter_impl.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/asset_pipeline_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/asset_pipeline_impl.c.o: src/engine/tools/pipeline/asset_pipeline_impl.c
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/asset_pipeline_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2421) "Building C object CMakeFiles/Engine.dir/src/engine/tools/pipeline/asset_pipeline_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2422) "Building C object CMakeFiles/Engine.dir/src/engine/tools/pipeline/asset_pipeline_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/pipeline/asset_pipeline_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/pipeline/asset_pipeline_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/pipeline/asset_pipeline_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/pipeline/asset_pipeline_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/asset_pipeline_impl.c.i: cmake_force
@@ -33969,7 +33983,7 @@ CMakeFiles/Engine.dir/src/engine/tools/pipeline/asset_pipeline_impl.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/build_system_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/build_system_impl.c.o: src/engine/tools/pipeline/build_system_impl.c
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/build_system_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2422) "Building C object CMakeFiles/Engine.dir/src/engine/tools/pipeline/build_system_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2423) "Building C object CMakeFiles/Engine.dir/src/engine/tools/pipeline/build_system_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/pipeline/build_system_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/pipeline/build_system_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/pipeline/build_system_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/pipeline/build_system_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/build_system_impl.c.i: cmake_force
@@ -33983,7 +33997,7 @@ CMakeFiles/Engine.dir/src/engine/tools/pipeline/build_system_impl.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/converters/asset_converters.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/converters/asset_converters.c.o: src/engine/tools/pipeline/converters/asset_converters.c
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/converters/asset_converters.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2423) "Building C object CMakeFiles/Engine.dir/src/engine/tools/pipeline/converters/asset_converters.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2424) "Building C object CMakeFiles/Engine.dir/src/engine/tools/pipeline/converters/asset_converters.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/pipeline/converters/asset_converters.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/pipeline/converters/asset_converters.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/pipeline/converters/asset_converters.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/pipeline/converters/asset_converters.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/converters/asset_converters.c.i: cmake_force
@@ -33997,7 +34011,7 @@ CMakeFiles/Engine.dir/src/engine/tools/pipeline/converters/asset_converters.c.s:
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/distributed_build.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/distributed_build.c.o: src/engine/tools/pipeline/distributed_build.c
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/distributed_build.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2424) "Building C object CMakeFiles/Engine.dir/src/engine/tools/pipeline/distributed_build.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2425) "Building C object CMakeFiles/Engine.dir/src/engine/tools/pipeline/distributed_build.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/pipeline/distributed_build.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/pipeline/distributed_build.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/pipeline/distributed_build.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/pipeline/distributed_build.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/distributed_build.c.i: cmake_force
@@ -34011,7 +34025,7 @@ CMakeFiles/Engine.dir/src/engine/tools/pipeline/distributed_build.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/pipeline_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/pipeline_impl.c.o: src/engine/tools/pipeline/pipeline_impl.c
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/pipeline_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2425) "Building C object CMakeFiles/Engine.dir/src/engine/tools/pipeline/pipeline_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2426) "Building C object CMakeFiles/Engine.dir/src/engine/tools/pipeline/pipeline_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/pipeline/pipeline_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/pipeline/pipeline_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/pipeline/pipeline_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/pipeline/pipeline_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/pipeline/pipeline_impl.c.i: cmake_force
@@ -34025,7 +34039,7 @@ CMakeFiles/Engine.dir/src/engine/tools/pipeline/pipeline_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/profiler.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/profiler.c.o: src/engine/tools/profiler.c
 CMakeFiles/Engine.dir/src/engine/tools/profiler.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2426) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2427) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/profiler.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/profiler.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/profiler.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/profiler.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/profiler.c.i: cmake_force
@@ -34039,7 +34053,7 @@ CMakeFiles/Engine.dir/src/engine/tools/profiler.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/profiler/comprehensive_profiler_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/profiler/comprehensive_profiler_impl.c.o: src/engine/tools/profiler/comprehensive_profiler_impl.c
 CMakeFiles/Engine.dir/src/engine/tools/profiler/comprehensive_profiler_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2427) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler/comprehensive_profiler_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2428) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler/comprehensive_profiler_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/profiler/comprehensive_profiler_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/profiler/comprehensive_profiler_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/profiler/comprehensive_profiler_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/profiler/comprehensive_profiler_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/profiler/comprehensive_profiler_impl.c.i: cmake_force
@@ -34053,7 +34067,7 @@ CMakeFiles/Engine.dir/src/engine/tools/profiler/comprehensive_profiler_impl.c.s:
 CMakeFiles/Engine.dir/src/engine/tools/profiler/gpu_profiler_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/profiler/gpu_profiler_impl.c.o: src/engine/tools/profiler/gpu_profiler_impl.c
 CMakeFiles/Engine.dir/src/engine/tools/profiler/gpu_profiler_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2428) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler/gpu_profiler_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2429) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler/gpu_profiler_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/profiler/gpu_profiler_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/profiler/gpu_profiler_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/profiler/gpu_profiler_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/profiler/gpu_profiler_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/profiler/gpu_profiler_impl.c.i: cmake_force
@@ -34067,7 +34081,7 @@ CMakeFiles/Engine.dir/src/engine/tools/profiler/gpu_profiler_impl.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/flame_graph.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/flame_graph.c.o: src/engine/tools/profiler_advanced/flame_graph.c
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/flame_graph.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2429) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/flame_graph.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2430) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/flame_graph.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/flame_graph.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/flame_graph.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/flame_graph.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/profiler_advanced/flame_graph.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/flame_graph.c.i: cmake_force
@@ -34081,7 +34095,7 @@ CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/flame_graph.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/memory_visualizer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/memory_visualizer.c.o: src/engine/tools/profiler_advanced/memory_visualizer.c
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/memory_visualizer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2430) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/memory_visualizer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2431) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/memory_visualizer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/memory_visualizer.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/memory_visualizer.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/memory_visualizer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/profiler_advanced/memory_visualizer.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/memory_visualizer.c.i: cmake_force
@@ -34095,7 +34109,7 @@ CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/memory_visualizer.c.s: 
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/overlay_ui.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/overlay_ui.c.o: src/engine/tools/profiler_advanced/overlay_ui.c
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/overlay_ui.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2431) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/overlay_ui.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2432) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/overlay_ui.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/overlay_ui.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/overlay_ui.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/overlay_ui.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/profiler_advanced/overlay_ui.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/overlay_ui.c.i: cmake_force
@@ -34109,7 +34123,7 @@ CMakeFiles/Engine.dir/src/engine/tools/profiler_advanced/overlay_ui.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/tools/profiler_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/profiler_impl.c.o: src/engine/tools/profiler_impl.c
 CMakeFiles/Engine.dir/src/engine/tools/profiler_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2432) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2433) "Building C object CMakeFiles/Engine.dir/src/engine/tools/profiler_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/profiler_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/profiler_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/profiler_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/profiler_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/profiler_impl.c.i: cmake_force
@@ -34123,7 +34137,7 @@ CMakeFiles/Engine.dir/src/engine/tools/profiler_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/utilities_complete.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/utilities_complete.c.o: src/engine/tools/utilities_complete.c
 CMakeFiles/Engine.dir/src/engine/tools/utilities_complete.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2433) "Building C object CMakeFiles/Engine.dir/src/engine/tools/utilities_complete.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2434) "Building C object CMakeFiles/Engine.dir/src/engine/tools/utilities_complete.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/utilities_complete.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/utilities_complete.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/utilities_complete.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/utilities_complete.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/utilities_complete.c.i: cmake_force
@@ -34137,7 +34151,7 @@ CMakeFiles/Engine.dir/src/engine/tools/utilities_complete.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/world/biome_designer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/world/biome_designer.c.o: src/engine/tools/world/biome_designer.c
 CMakeFiles/Engine.dir/src/engine/tools/world/biome_designer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2434) "Building C object CMakeFiles/Engine.dir/src/engine/tools/world/biome_designer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2435) "Building C object CMakeFiles/Engine.dir/src/engine/tools/world/biome_designer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/world/biome_designer.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/world/biome_designer.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/world/biome_designer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/world/biome_designer.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/world/biome_designer.c.i: cmake_force
@@ -34151,7 +34165,7 @@ CMakeFiles/Engine.dir/src/engine/tools/world/biome_designer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/world/road_river_tool.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/world/road_river_tool.c.o: src/engine/tools/world/road_river_tool.c
 CMakeFiles/Engine.dir/src/engine/tools/world/road_river_tool.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2435) "Building C object CMakeFiles/Engine.dir/src/engine/tools/world/road_river_tool.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2436) "Building C object CMakeFiles/Engine.dir/src/engine/tools/world/road_river_tool.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/world/road_river_tool.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/world/road_river_tool.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/world/road_river_tool.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/world/road_river_tool.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/world/road_river_tool.c.i: cmake_force
@@ -34165,7 +34179,7 @@ CMakeFiles/Engine.dir/src/engine/tools/world/road_river_tool.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/tools/world/vegetation_painter.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/tools/world/vegetation_painter.c.o: src/engine/tools/world/vegetation_painter.c
 CMakeFiles/Engine.dir/src/engine/tools/world/vegetation_painter.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2436) "Building C object CMakeFiles/Engine.dir/src/engine/tools/world/vegetation_painter.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2437) "Building C object CMakeFiles/Engine.dir/src/engine/tools/world/vegetation_painter.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/tools/world/vegetation_painter.c.o -MF CMakeFiles/Engine.dir/src/engine/tools/world/vegetation_painter.c.o.d -o CMakeFiles/Engine.dir/src/engine/tools/world/vegetation_painter.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/tools/world/vegetation_painter.c"
 
 CMakeFiles/Engine.dir/src/engine/tools/world/vegetation_painter.c.i: cmake_force
@@ -34179,7 +34193,7 @@ CMakeFiles/Engine.dir/src/engine/tools/world/vegetation_painter.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/accessibility/accessibility.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/accessibility/accessibility.c.o: src/engine/ui/accessibility/accessibility.c
 CMakeFiles/Engine.dir/src/engine/ui/accessibility/accessibility.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2437) "Building C object CMakeFiles/Engine.dir/src/engine/ui/accessibility/accessibility.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2438) "Building C object CMakeFiles/Engine.dir/src/engine/ui/accessibility/accessibility.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/accessibility/accessibility.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/accessibility/accessibility.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/accessibility/accessibility.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/accessibility/accessibility.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/accessibility/accessibility.c.i: cmake_force
@@ -34193,7 +34207,7 @@ CMakeFiles/Engine.dir/src/engine/ui/accessibility/accessibility.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/core/ui_event_dispatcher.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/core/ui_event_dispatcher.c.o: src/engine/ui/core/ui_event_dispatcher.c
 CMakeFiles/Engine.dir/src/engine/ui/core/ui_event_dispatcher.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2438) "Building C object CMakeFiles/Engine.dir/src/engine/ui/core/ui_event_dispatcher.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2439) "Building C object CMakeFiles/Engine.dir/src/engine/ui/core/ui_event_dispatcher.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/core/ui_event_dispatcher.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/core/ui_event_dispatcher.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/core/ui_event_dispatcher.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/core/ui_event_dispatcher.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/core/ui_event_dispatcher.c.i: cmake_force
@@ -34207,7 +34221,7 @@ CMakeFiles/Engine.dir/src/engine/ui/core/ui_event_dispatcher.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.o: src/engine/ui/core/ui_layout_engine.c
 CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2439) "Building C object CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2440) "Building C object CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/core/ui_layout_engine.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.i: cmake_force
@@ -34221,7 +34235,7 @@ CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/layout/layout_solver.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/layout/layout_solver.c.o: src/engine/ui/layout/layout_solver.c
 CMakeFiles/Engine.dir/src/engine/ui/layout/layout_solver.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2440) "Building C object CMakeFiles/Engine.dir/src/engine/ui/layout/layout_solver.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2441) "Building C object CMakeFiles/Engine.dir/src/engine/ui/layout/layout_solver.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/layout/layout_solver.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/layout/layout_solver.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/layout/layout_solver.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/layout/layout_solver.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/layout/layout_solver.c.i: cmake_force
@@ -34235,7 +34249,7 @@ CMakeFiles/Engine.dir/src/engine/ui/layout/layout_solver.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/text/font_atlas_gen.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/text/font_atlas_gen.c.o: src/engine/ui/text/font_atlas_gen.c
 CMakeFiles/Engine.dir/src/engine/ui/text/font_atlas_gen.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2441) "Building C object CMakeFiles/Engine.dir/src/engine/ui/text/font_atlas_gen.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2442) "Building C object CMakeFiles/Engine.dir/src/engine/ui/text/font_atlas_gen.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/text/font_atlas_gen.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/text/font_atlas_gen.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/text/font_atlas_gen.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/text/font_atlas_gen.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/text/font_atlas_gen.c.i: cmake_force
@@ -34249,7 +34263,7 @@ CMakeFiles/Engine.dir/src/engine/ui/text/font_atlas_gen.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/text/rich_text_parser.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/text/rich_text_parser.c.o: src/engine/ui/text/rich_text_parser.c
 CMakeFiles/Engine.dir/src/engine/ui/text/rich_text_parser.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2442) "Building C object CMakeFiles/Engine.dir/src/engine/ui/text/rich_text_parser.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2443) "Building C object CMakeFiles/Engine.dir/src/engine/ui/text/rich_text_parser.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/text/rich_text_parser.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/text/rich_text_parser.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/text/rich_text_parser.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/text/rich_text_parser.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/text/rich_text_parser.c.i: cmake_force
@@ -34263,7 +34277,7 @@ CMakeFiles/Engine.dir/src/engine/ui/text/rich_text_parser.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/ui_accessibility.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/ui_accessibility.c.o: src/engine/ui/ui_accessibility.c
 CMakeFiles/Engine.dir/src/engine/ui/ui_accessibility.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2443) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_accessibility.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2444) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_accessibility.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/ui_accessibility.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/ui_accessibility.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/ui_accessibility.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/ui_accessibility.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/ui_accessibility.c.i: cmake_force
@@ -34277,7 +34291,7 @@ CMakeFiles/Engine.dir/src/engine/ui/ui_accessibility.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/ui_animation.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/ui_animation.c.o: src/engine/ui/ui_animation.c
 CMakeFiles/Engine.dir/src/engine/ui/ui_animation.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2444) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_animation.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2445) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_animation.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/ui_animation.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/ui_animation.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/ui_animation.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/ui_animation.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/ui_animation.c.i: cmake_force
@@ -34291,7 +34305,7 @@ CMakeFiles/Engine.dir/src/engine/ui/ui_animation.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/ui_layout.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/ui_layout.c.o: src/engine/ui/ui_layout.c
 CMakeFiles/Engine.dir/src/engine/ui/ui_layout.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2445) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_layout.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2446) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_layout.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/ui_layout.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/ui_layout.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/ui_layout.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/ui_layout.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/ui_layout.c.i: cmake_force
@@ -34305,7 +34319,7 @@ CMakeFiles/Engine.dir/src/engine/ui/ui_layout.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/ui_layout_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/ui_layout_system.c.o: src/engine/ui/ui_layout_system.c
 CMakeFiles/Engine.dir/src/engine/ui/ui_layout_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2446) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_layout_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2447) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_layout_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/ui_layout_system.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/ui_layout_system.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/ui_layout_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/ui_layout_system.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/ui_layout_system.c.i: cmake_force
@@ -34319,7 +34333,7 @@ CMakeFiles/Engine.dir/src/engine/ui/ui_layout_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/ui_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/ui_renderer.c.o: src/engine/ui/ui_renderer.c
 CMakeFiles/Engine.dir/src/engine/ui/ui_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2447) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2448) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/ui_renderer.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/ui_renderer.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/ui_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/ui_renderer.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/ui_renderer.c.i: cmake_force
@@ -34333,7 +34347,7 @@ CMakeFiles/Engine.dir/src/engine/ui/ui_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.o: src/engine/ui/ui_widgets.c
 CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2448) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2449) "Building C object CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.o -MF CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.o.d -o CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ui/ui_widgets.c"
 
 CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.i: cmake_force
@@ -34347,7 +34361,7 @@ CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lapi.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lapi.c.o: src/engine/vendor/lua/lapi.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lapi.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2449) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lapi.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2450) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lapi.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lapi.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lapi.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lapi.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lapi.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lapi.c.i: cmake_force
@@ -34361,7 +34375,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lapi.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lauxlib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lauxlib.c.o: src/engine/vendor/lua/lauxlib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lauxlib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2450) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lauxlib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2451) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lauxlib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lauxlib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lauxlib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lauxlib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lauxlib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lauxlib.c.i: cmake_force
@@ -34375,7 +34389,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lauxlib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lbaselib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lbaselib.c.o: src/engine/vendor/lua/lbaselib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lbaselib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2451) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lbaselib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2452) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lbaselib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lbaselib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lbaselib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lbaselib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lbaselib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lbaselib.c.i: cmake_force
@@ -34389,7 +34403,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lbaselib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lcode.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lcode.c.o: src/engine/vendor/lua/lcode.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lcode.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2452) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lcode.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2453) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lcode.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lcode.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lcode.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lcode.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lcode.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lcode.c.i: cmake_force
@@ -34403,7 +34417,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lcode.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lcorolib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lcorolib.c.o: src/engine/vendor/lua/lcorolib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lcorolib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2453) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lcorolib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2454) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lcorolib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lcorolib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lcorolib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lcorolib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lcorolib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lcorolib.c.i: cmake_force
@@ -34417,7 +34431,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lcorolib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lctype.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lctype.c.o: src/engine/vendor/lua/lctype.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lctype.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2454) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lctype.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2455) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lctype.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lctype.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lctype.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lctype.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lctype.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lctype.c.i: cmake_force
@@ -34431,7 +34445,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lctype.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldblib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldblib.c.o: src/engine/vendor/lua/ldblib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldblib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2455) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ldblib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2456) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ldblib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/ldblib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/ldblib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/ldblib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/ldblib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldblib.c.i: cmake_force
@@ -34445,7 +34459,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/ldblib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldebug.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldebug.c.o: src/engine/vendor/lua/ldebug.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldebug.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2456) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ldebug.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2457) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ldebug.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/ldebug.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/ldebug.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/ldebug.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/ldebug.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldebug.c.i: cmake_force
@@ -34459,7 +34473,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/ldebug.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldo.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldo.c.o: src/engine/vendor/lua/ldo.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldo.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2457) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ldo.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2458) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ldo.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/ldo.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/ldo.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/ldo.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/ldo.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldo.c.i: cmake_force
@@ -34473,7 +34487,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/ldo.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldump.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldump.c.o: src/engine/vendor/lua/ldump.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldump.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2458) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ldump.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2459) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ldump.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/ldump.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/ldump.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/ldump.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/ldump.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ldump.c.i: cmake_force
@@ -34487,7 +34501,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/ldump.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lfunc.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lfunc.c.o: src/engine/vendor/lua/lfunc.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lfunc.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2459) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lfunc.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2460) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lfunc.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lfunc.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lfunc.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lfunc.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lfunc.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lfunc.c.i: cmake_force
@@ -34501,7 +34515,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lfunc.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lgc.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lgc.c.o: src/engine/vendor/lua/lgc.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lgc.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2460) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lgc.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2461) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lgc.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lgc.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lgc.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lgc.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lgc.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lgc.c.i: cmake_force
@@ -34515,7 +34529,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lgc.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/linit.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/linit.c.o: src/engine/vendor/lua/linit.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/linit.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2461) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/linit.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2462) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/linit.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/linit.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/linit.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/linit.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/linit.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/linit.c.i: cmake_force
@@ -34529,7 +34543,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/linit.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/liolib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/liolib.c.o: src/engine/vendor/lua/liolib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/liolib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2462) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/liolib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2463) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/liolib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/liolib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/liolib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/liolib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/liolib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/liolib.c.i: cmake_force
@@ -34543,7 +34557,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/liolib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/llex.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/llex.c.o: src/engine/vendor/lua/llex.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/llex.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2463) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/llex.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2464) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/llex.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/llex.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/llex.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/llex.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/llex.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/llex.c.i: cmake_force
@@ -34557,7 +34571,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/llex.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lmathlib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lmathlib.c.o: src/engine/vendor/lua/lmathlib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lmathlib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2464) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lmathlib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2465) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lmathlib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lmathlib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lmathlib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lmathlib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lmathlib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lmathlib.c.i: cmake_force
@@ -34571,7 +34585,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lmathlib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lmem.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lmem.c.o: src/engine/vendor/lua/lmem.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lmem.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2465) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lmem.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2466) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lmem.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lmem.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lmem.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lmem.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lmem.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lmem.c.i: cmake_force
@@ -34585,7 +34599,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lmem.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/loadlib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/loadlib.c.o: src/engine/vendor/lua/loadlib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/loadlib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2466) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/loadlib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2467) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/loadlib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/loadlib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/loadlib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/loadlib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/loadlib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/loadlib.c.i: cmake_force
@@ -34599,7 +34613,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/loadlib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lobject.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lobject.c.o: src/engine/vendor/lua/lobject.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lobject.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2467) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lobject.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2468) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lobject.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lobject.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lobject.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lobject.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lobject.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lobject.c.i: cmake_force
@@ -34613,7 +34627,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lobject.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lopcodes.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lopcodes.c.o: src/engine/vendor/lua/lopcodes.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lopcodes.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2468) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lopcodes.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2469) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lopcodes.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lopcodes.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lopcodes.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lopcodes.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lopcodes.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lopcodes.c.i: cmake_force
@@ -34627,7 +34641,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lopcodes.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/loslib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/loslib.c.o: src/engine/vendor/lua/loslib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/loslib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2469) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/loslib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2470) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/loslib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/loslib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/loslib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/loslib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/loslib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/loslib.c.i: cmake_force
@@ -34641,7 +34655,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/loslib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lparser.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lparser.c.o: src/engine/vendor/lua/lparser.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lparser.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2470) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lparser.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2471) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lparser.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lparser.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lparser.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lparser.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lparser.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lparser.c.i: cmake_force
@@ -34655,7 +34669,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lparser.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstate.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstate.c.o: src/engine/vendor/lua/lstate.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstate.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2471) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lstate.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2472) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lstate.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lstate.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lstate.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lstate.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lstate.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstate.c.i: cmake_force
@@ -34669,7 +34683,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lstate.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstring.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstring.c.o: src/engine/vendor/lua/lstring.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstring.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2472) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lstring.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2473) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lstring.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lstring.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lstring.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lstring.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lstring.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstring.c.i: cmake_force
@@ -34683,7 +34697,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lstring.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstrlib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstrlib.c.o: src/engine/vendor/lua/lstrlib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstrlib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2473) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lstrlib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2474) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lstrlib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lstrlib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lstrlib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lstrlib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lstrlib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lstrlib.c.i: cmake_force
@@ -34697,7 +34711,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lstrlib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltable.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltable.c.o: src/engine/vendor/lua/ltable.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltable.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2474) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ltable.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2475) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ltable.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/ltable.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/ltable.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/ltable.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/ltable.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltable.c.i: cmake_force
@@ -34711,7 +34725,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/ltable.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltablib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltablib.c.o: src/engine/vendor/lua/ltablib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltablib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2475) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ltablib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2476) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ltablib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/ltablib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/ltablib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/ltablib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/ltablib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltablib.c.i: cmake_force
@@ -34725,7 +34739,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/ltablib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltm.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltm.c.o: src/engine/vendor/lua/ltm.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltm.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2476) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ltm.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2477) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/ltm.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/ltm.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/ltm.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/ltm.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/ltm.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/ltm.c.i: cmake_force
@@ -34739,7 +34753,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/ltm.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lundump.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lundump.c.o: src/engine/vendor/lua/lundump.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lundump.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2477) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lundump.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2478) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lundump.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lundump.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lundump.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lundump.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lundump.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lundump.c.i: cmake_force
@@ -34753,7 +34767,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lundump.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lutf8lib.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lutf8lib.c.o: src/engine/vendor/lua/lutf8lib.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lutf8lib.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2478) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lutf8lib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2479) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lutf8lib.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lutf8lib.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lutf8lib.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lutf8lib.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lutf8lib.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lutf8lib.c.i: cmake_force
@@ -34767,7 +34781,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lutf8lib.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lvm.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lvm.c.o: src/engine/vendor/lua/lvm.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lvm.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2479) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lvm.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2480) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lvm.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lvm.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lvm.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lvm.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lvm.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lvm.c.i: cmake_force
@@ -34781,7 +34795,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lvm.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: src/engine/vendor/lua/lzio.c
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2480) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2481) "Building C object CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o -MF CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o.d -o CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/vendor/lua/lzio.c"
 
 CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.i: cmake_force
@@ -34795,7 +34809,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ai/enemy_ai.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ai/enemy_ai.c.o: src/game/minecraftv2/ai/enemy_ai.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ai/enemy_ai.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2481) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ai/enemy_ai.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2482) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ai/enemy_ai.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ai/enemy_ai.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ai/enemy_ai.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ai/enemy_ai.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ai/enemy_ai.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ai/enemy_ai.c.i: cmake_force
@@ -34809,7 +34823,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ai/enemy_ai.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/api.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/api.c.o: src/game/minecraftv2/api.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/api.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2482) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/api.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2483) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/api.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/api.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/api.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/api.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/api.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/api.c.i: cmake_force
@@ -34823,7 +34837,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/api.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/block.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/block.c.o: src/game/minecraftv2/block/block.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/block.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2483) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/block.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2484) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/block.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/block/block.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/block/block.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/block/block.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/block/block.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/block.c.i: cmake_force
@@ -34837,7 +34851,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/block/block.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/block_states.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/block_states.c.o: src/game/minecraftv2/block/block_states.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/block_states.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2484) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/block_states.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2485) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/block_states.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/block/block_states.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/block/block_states.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/block/block_states.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/block/block_states.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/block_states.c.i: cmake_force
@@ -34851,7 +34865,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/block/block_states.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/falling_blocks.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/falling_blocks.c.o: src/game/minecraftv2/block/falling_blocks.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/falling_blocks.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2485) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/falling_blocks.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2486) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/falling_blocks.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/block/falling_blocks.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/block/falling_blocks.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/block/falling_blocks.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/block/falling_blocks.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/falling_blocks.c.i: cmake_force
@@ -34865,7 +34879,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/block/falling_blocks.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/interaction.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/interaction.c.o: src/game/minecraftv2/block/interaction.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/interaction.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2486) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/interaction.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2487) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/interaction.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/block/interaction.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/block/interaction.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/block/interaction.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/block/interaction.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/interaction.c.i: cmake_force
@@ -34879,7 +34893,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/block/interaction.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/lighting.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/lighting.c.o: src/game/minecraftv2/block/lighting.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/lighting.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2487) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/lighting.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2488) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/lighting.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/block/lighting.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/block/lighting.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/block/lighting.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/block/lighting.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/lighting.c.i: cmake_force
@@ -34893,7 +34907,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/block/lighting.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/liquid_blocks.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/liquid_blocks.c.o: src/game/minecraftv2/block/liquid_blocks.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/liquid_blocks.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2488) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/liquid_blocks.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2489) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/liquid_blocks.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/block/liquid_blocks.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/block/liquid_blocks.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/block/liquid_blocks.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/block/liquid_blocks.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/liquid_blocks.c.i: cmake_force
@@ -34907,7 +34921,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/block/liquid_blocks.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/mining.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/mining.c.o: src/game/minecraftv2/block/mining.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/mining.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2489) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/mining.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2490) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/mining.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/block/mining.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/block/mining.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/block/mining.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/block/mining.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/mining.c.i: cmake_force
@@ -34921,7 +34935,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/block/mining.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_bucket.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_bucket.c.o: src/game/minecraftv2/block/water_bucket.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_bucket.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2490) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_bucket.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2491) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_bucket.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_bucket.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_bucket.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_bucket.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/block/water_bucket.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_bucket.c.i: cmake_force
@@ -34935,7 +34949,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_bucket.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_physics.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_physics.c.o: src/game/minecraftv2/block/water_physics.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_physics.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2491) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_physics.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2492) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_physics.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_physics.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_physics.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_physics.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/block/water_physics.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_physics.c.i: cmake_force
@@ -34949,7 +34963,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/block/water_physics.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/block_registry_global.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/block_registry_global.c.o: src/game/minecraftv2/block_registry_global.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/block_registry_global.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2492) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block_registry_global.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2493) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/block_registry_global.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/block_registry_global.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/block_registry_global.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/block_registry_global.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/block_registry_global.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/block_registry_global.c.i: cmake_force
@@ -34963,7 +34977,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/block_registry_global.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk.c.o: src/game/minecraftv2/chunk/chunk.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2493) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2494) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/chunk/chunk.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk.c.i: cmake_force
@@ -34977,7 +34991,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_buffers.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_buffers.c.o: src/game/minecraftv2/chunk/chunk_buffers.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_buffers.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2494) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_buffers.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2495) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_buffers.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_buffers.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_buffers.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_buffers.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/chunk/chunk_buffers.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_buffers.c.i: cmake_force
@@ -34991,7 +35005,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_buffers.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_manager_optimized.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_manager_optimized.c.o: src/game/minecraftv2/chunk/chunk_manager_optimized.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_manager_optimized.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2495) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_manager_optimized.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2496) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_manager_optimized.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_manager_optimized.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_manager_optimized.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_manager_optimized.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/chunk/chunk_manager_optimized.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_manager_optimized.c.i: cmake_force
@@ -35005,7 +35019,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/chunk/chunk_manager_optimized.c.s: cm
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_animations.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_animations.c.o: src/game/minecraftv2/combat/combat_animations.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_animations.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2496) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_animations.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2497) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_animations.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_animations.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_animations.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_animations.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/combat/combat_animations.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_animations.c.i: cmake_force
@@ -35019,7 +35033,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_animations.c.s: cmake_f
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_system.c.o: src/game/minecraftv2/combat/combat_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2497) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2498) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/combat/combat_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_system.c.i: cmake_force
@@ -35033,7 +35047,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/combat/combat_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_calc.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_calc.c.o: src/game/minecraftv2/combat/damage_calc.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_calc.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2498) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_calc.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2499) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_calc.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_calc.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_calc.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_calc.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/combat/damage_calc.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_calc.c.i: cmake_force
@@ -35047,7 +35061,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_calc.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_system.c.o: src/game/minecraftv2/combat/damage_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2499) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2500) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/combat/damage_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_system.c.i: cmake_force
@@ -35061,7 +35075,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/combat/damage_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/equipment.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/equipment.c.o: src/game/minecraftv2/combat/equipment.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/equipment.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2500) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/equipment.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2501) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/equipment.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/combat/equipment.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/combat/equipment.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/combat/equipment.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/combat/equipment.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/equipment.c.i: cmake_force
@@ -35075,7 +35089,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/combat/equipment.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/projectile.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/projectile.c.o: src/game/minecraftv2/combat/projectile.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/projectile.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2501) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/projectile.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2502) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/projectile.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/combat/projectile.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/combat/projectile.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/combat/projectile.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/combat/projectile.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/projectile.c.i: cmake_force
@@ -35089,7 +35103,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/combat/projectile.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/shield.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/shield.c.o: src/game/minecraftv2/combat/shield.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/shield.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2502) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/shield.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2503) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/combat/shield.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/combat/shield.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/combat/shield.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/combat/shield.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/combat/shield.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/combat/shield.c.i: cmake_force
@@ -35103,7 +35117,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/combat/shield.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/advanced_crafting.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/advanced_crafting.c.o: src/game/minecraftv2/crafting/advanced_crafting.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/advanced_crafting.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2503) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/advanced_crafting.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2504) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/advanced_crafting.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/advanced_crafting.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/advanced_crafting.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/advanced_crafting.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/advanced_crafting.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/advanced_crafting.c.i: cmake_force
@@ -35117,7 +35131,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/advanced_crafting.c.s: cmake
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/brewing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/brewing.c.o: src/game/minecraftv2/crafting/brewing.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/brewing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2504) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/brewing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2505) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/brewing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/brewing.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/brewing.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/brewing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/brewing.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/brewing.c.i: cmake_force
@@ -35131,7 +35145,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/brewing.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/crafting_table.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/crafting_table.c.o: src/game/minecraftv2/crafting/crafting_table.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/crafting_table.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2505) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/crafting_table.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2506) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/crafting_table.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/crafting_table.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/crafting_table.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/crafting_table.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/crafting_table.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/crafting_table.c.i: cmake_force
@@ -35145,7 +35159,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/crafting_table.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/enchanting.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/enchanting.c.o: src/game/minecraftv2/crafting/enchanting.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/enchanting.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2506) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/enchanting.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2507) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/enchanting.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/enchanting.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/enchanting.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/enchanting.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/enchanting.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/enchanting.c.i: cmake_force
@@ -35159,7 +35173,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/enchanting.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/furnace.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/furnace.c.o: src/game/minecraftv2/crafting/furnace.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/furnace.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2507) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/furnace.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2508) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/furnace.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/furnace.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/furnace.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/furnace.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/furnace.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/furnace.c.i: cmake_force
@@ -35173,7 +35187,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/furnace.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe.c.o: src/game/minecraftv2/crafting/recipe.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2508) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2509) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/recipe.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe.c.i: cmake_force
@@ -35187,7 +35201,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_expansion.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_expansion.c.o: src/game/minecraftv2/crafting/recipe_expansion.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_expansion.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2509) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_expansion.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2510) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_expansion.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_expansion.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_expansion.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_expansion.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/recipe_expansion.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_expansion.c.i: cmake_force
@@ -35201,7 +35215,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_expansion.c.s: cmake_
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_manager.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_manager.c.o: src/game/minecraftv2/crafting/recipe_manager.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_manager.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2510) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_manager.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2511) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_manager.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_manager.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_manager.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_manager.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/recipe_manager.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_manager.c.i: cmake_force
@@ -35215,7 +35229,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_manager.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_registry.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_registry.c.o: src/game/minecraftv2/crafting/recipe_registry.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_registry.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2511) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_registry.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2512) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_registry.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_registry.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_registry.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_registry.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/recipe_registry.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_registry.c.i: cmake_force
@@ -35229,7 +35243,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_registry.c.s: cmake_f
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_system.c.o: src/game/minecraftv2/crafting/recipe_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2512) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2513) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/recipe_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_system.c.i: cmake_force
@@ -35243,7 +35257,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/recipe_system.c.s: cmake_for
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/resource_processing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/resource_processing.c.o: src/game/minecraftv2/crafting/resource_processing.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/resource_processing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2513) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/resource_processing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2514) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/resource_processing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/resource_processing.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/resource_processing.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/resource_processing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/crafting/resource_processing.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/resource_processing.c.i: cmake_force
@@ -35257,7 +35271,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/crafting/resource_processing.c.s: cma
 CMakeFiles/Engine.dir/src/game/minecraftv2/ecs/ecs.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ecs/ecs.c.o: src/game/minecraftv2/ecs/ecs.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ecs/ecs.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2514) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ecs/ecs.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2515) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ecs/ecs.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ecs/ecs.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ecs/ecs.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ecs/ecs.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ecs/ecs.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ecs/ecs.c.i: cmake_force
@@ -35271,7 +35285,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ecs/ecs.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/game.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/game.c.o: src/game/minecraftv2/game.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/game.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2515) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/game.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2516) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/game.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/game.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/game.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/game.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/game.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/game.c.i: cmake_force
@@ -35285,7 +35299,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/game.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/game_hooks.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/game_hooks.c.o: src/game/minecraftv2/game_hooks.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/game_hooks.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2516) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/game_hooks.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2517) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/game_hooks.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/game_hooks.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/game_hooks.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/game_hooks.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/game_hooks.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/game_hooks.c.i: cmake_force
@@ -35299,7 +35313,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/game_hooks.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/inventory.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/inventory.c.o: src/game/minecraftv2/inventory/inventory.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/inventory.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2517) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/inventory.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2518) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/inventory.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/inventory.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/inventory.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/inventory.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/inventory/inventory.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/inventory.c.i: cmake_force
@@ -35313,7 +35327,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/inventory.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/item_registry.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/item_registry.c.o: src/game/minecraftv2/inventory/item_registry.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/item_registry.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2518) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/item_registry.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2519) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/item_registry.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/item_registry.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/item_registry.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/item_registry.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/inventory/item_registry.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/item_registry.c.i: cmake_force
@@ -35327,7 +35341,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/inventory/item_registry.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/game/minecraftv2/minecraft_v2_module.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/minecraft_v2_module.c.o: src/game/minecraftv2/minecraft_v2_module.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/minecraft_v2_module.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2519) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/minecraft_v2_module.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2520) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/minecraft_v2_module.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/minecraft_v2_module.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/minecraft_v2_module.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/minecraft_v2_module.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/minecraft_v2_module.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/minecraft_v2_module.c.i: cmake_force
@@ -35341,7 +35355,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/minecraft_v2_module.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_spawning.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_spawning.c.o: src/game/minecraftv2/mobs/mob_spawning.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_spawning.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2520) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_spawning.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2521) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_spawning.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_spawning.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_spawning.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_spawning.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/mobs/mob_spawning.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_spawning.c.i: cmake_force
@@ -35355,7 +35369,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_spawning.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_system.c.o: src/game/minecraftv2/mobs/mob_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2521) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2522) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/mobs/mob_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_system.c.i: cmake_force
@@ -35369,7 +35383,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/mobs/mob_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_api.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_api.c.o: src/game/minecraftv2/modding/mod_api.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_api.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2522) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_api.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2523) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_api.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_api.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_api.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_api.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/modding/mod_api.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_api.c.i: cmake_force
@@ -35383,7 +35397,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_api.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_loader.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_loader.c.o: src/game/minecraftv2/modding/mod_loader.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_loader.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2523) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_loader.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2524) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_loader.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_loader.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_loader.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_loader.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/modding/mod_loader.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_loader.c.i: cmake_force
@@ -35397,7 +35411,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/modding/mod_loader.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/mode.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/mode.c.o: src/game/minecraftv2/mode.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/mode.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2524) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mode.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2525) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mode.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/mode.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/mode.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/mode.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/mode.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/mode.c.i: cmake_force
@@ -35411,7 +35425,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/mode.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/camera_dev_mod.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/camera_dev_mod.c.o: src/game/minecraftv2/mods/camera_dev_mod.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/camera_dev_mod.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2525) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mods/camera_dev_mod.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2526) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mods/camera_dev_mod.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/mods/camera_dev_mod.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/mods/camera_dev_mod.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/mods/camera_dev_mod.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/mods/camera_dev_mod.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/camera_dev_mod.c.i: cmake_force
@@ -35425,7 +35439,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/mods/camera_dev_mod.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/example_mod.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/example_mod.c.o: src/game/minecraftv2/mods/example_mod.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/example_mod.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2526) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mods/example_mod.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2527) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mods/example_mod.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/mods/example_mod.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/mods/example_mod.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/mods/example_mod.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/mods/example_mod.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/example_mod.c.i: cmake_force
@@ -35439,7 +35453,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/mods/example_mod.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/flight_dev_mod.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/flight_dev_mod.c.o: src/game/minecraftv2/mods/flight_dev_mod.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/flight_dev_mod.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2527) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mods/flight_dev_mod.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2528) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/mods/flight_dev_mod.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/mods/flight_dev_mod.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/mods/flight_dev_mod.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/mods/flight_dev_mod.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/mods/flight_dev_mod.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/mods/flight_dev_mod.c.i: cmake_force
@@ -35453,7 +35467,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/mods/flight_dev_mod.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue.c.o: src/game/minecraftv2/npc/dialogue.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2528) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2529) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/dialogue.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue.c.i: cmake_force
@@ -35467,7 +35481,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_builder.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_builder.c.o: src/game/minecraftv2/npc/dialogue_builder.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_builder.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2529) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_builder.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2530) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_builder.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_builder.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_builder.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_builder.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/dialogue_builder.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_builder.c.i: cmake_force
@@ -35481,7 +35495,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_builder.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_manager.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_manager.c.o: src/game/minecraftv2/npc/dialogue_manager.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_manager.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2530) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_manager.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2531) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_manager.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_manager.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_manager.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_manager.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/dialogue_manager.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_manager.c.i: cmake_force
@@ -35495,7 +35509,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_manager.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_tree.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_tree.c.o: src/game/minecraftv2/npc/dialogue_tree.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_tree.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2531) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_tree.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2532) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_tree.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_tree.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_tree.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_tree.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/dialogue_tree.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_tree.c.i: cmake_force
@@ -35509,7 +35523,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/dialogue_tree.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_abilities.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_abilities.c.o: src/game/minecraftv2/npc/npc_abilities.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_abilities.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2532) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_abilities.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2533) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_abilities.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_abilities.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_abilities.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_abilities.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_abilities.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_abilities.c.i: cmake_force
@@ -35523,7 +35537,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_abilities.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_ai.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_ai.c.o: src/game/minecraftv2/npc/npc_ai.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_ai.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2533) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_ai.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2534) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_ai.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_ai.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_ai.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_ai.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_ai.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_ai.c.i: cmake_force
@@ -35537,7 +35551,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_ai.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat.c.o: src/game/minecraftv2/npc/npc_combat.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2534) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2535) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_combat.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat.c.i: cmake_force
@@ -35551,7 +35565,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.o: src/game/minecraftv2/npc/npc_combat_behavior.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2535) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2536) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_combat_behavior.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.i: cmake_force
@@ -35565,7 +35579,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_housing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_housing.c.o: src/game/minecraftv2/npc/npc_housing.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_housing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2536) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_housing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2537) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_housing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_housing.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_housing.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_housing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_housing.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_housing.c.i: cmake_force
@@ -35579,7 +35593,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_housing.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_jobs.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_jobs.c.o: src/game/minecraftv2/npc/npc_jobs.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_jobs.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2537) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_jobs.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2538) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_jobs.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_jobs.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_jobs.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_jobs.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_jobs.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_jobs.c.i: cmake_force
@@ -35593,7 +35607,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_jobs.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_lod.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_lod.c.o: src/game/minecraftv2/npc/npc_lod.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_lod.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2538) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_lod.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2539) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_lod.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_lod.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_lod.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_lod.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_lod.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_lod.c.i: cmake_force
@@ -35607,7 +35621,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_lod.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_profiler.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_profiler.c.o: src/game/minecraftv2/npc/npc_profiler.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_profiler.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2539) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_profiler.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2540) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_profiler.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_profiler.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_profiler.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_profiler.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_profiler.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_profiler.c.i: cmake_force
@@ -35621,7 +35635,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_profiler.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_schedule.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_schedule.c.o: src/game/minecraftv2/npc/npc_schedule.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_schedule.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2540) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_schedule.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2541) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_schedule.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_schedule.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_schedule.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_schedule.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_schedule.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_schedule.c.i: cmake_force
@@ -35635,7 +35649,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_schedule.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_scheduler.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_scheduler.c.o: src/game/minecraftv2/npc/npc_scheduler.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_scheduler.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2541) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_scheduler.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2542) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_scheduler.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_scheduler.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_scheduler.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_scheduler.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_scheduler.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_scheduler.c.i: cmake_force
@@ -35649,7 +35663,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_scheduler.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_serialization.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_serialization.c.o: src/game/minecraftv2/npc/npc_serialization.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_serialization.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2542) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_serialization.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2543) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_serialization.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_serialization.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_serialization.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_serialization.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_serialization.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_serialization.c.i: cmake_force
@@ -35663,7 +35677,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_serialization.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_social.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_social.c.o: src/game/minecraftv2/npc/npc_social.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_social.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2543) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_social.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2544) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_social.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_social.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_social.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_social.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_social.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_social.c.i: cmake_force
@@ -35677,7 +35691,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_social.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_spawning.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_spawning.c.o: src/game/minecraftv2/npc/npc_spawning.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_spawning.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2544) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_spawning.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2545) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_spawning.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_spawning.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_spawning.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_spawning.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_spawning.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_spawning.c.i: cmake_force
@@ -35691,7 +35705,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_spawning.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_system.c.o: src/game/minecraftv2/npc/npc_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2545) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2546) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_system.c.i: cmake_force
@@ -35705,7 +35719,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_visuals.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_visuals.c.o: src/game/minecraftv2/npc/npc_visuals.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_visuals.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2546) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_visuals.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2547) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_visuals.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_visuals.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_visuals.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_visuals.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_visuals.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_visuals.c.i: cmake_force
@@ -35719,7 +35733,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_visuals.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_work.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_work.c.o: src/game/minecraftv2/npc/npc_work.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_work.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2547) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_work.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2548) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_work.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_work.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_work.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_work.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/npc_work.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_work.c.i: cmake_force
@@ -35733,7 +35747,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/npc_work.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/pathfinding.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/pathfinding.c.o: src/game/minecraftv2/npc/pathfinding.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/pathfinding.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2548) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/pathfinding.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2549) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/pathfinding.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/pathfinding.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/pathfinding.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/pathfinding.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/pathfinding.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/pathfinding.c.i: cmake_force
@@ -35747,7 +35761,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/pathfinding.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/villager_trading.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/villager_trading.c.o: src/game/minecraftv2/npc/villager_trading.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/villager_trading.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2549) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/villager_trading.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2550) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/npc/villager_trading.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/npc/villager_trading.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/npc/villager_trading.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/npc/villager_trading.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/npc/villager_trading.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/npc/villager_trading.c.i: cmake_force
@@ -35761,7 +35775,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/npc/villager_trading.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ore/ore_generation.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ore/ore_generation.c.o: src/game/minecraftv2/ore/ore_generation.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ore/ore_generation.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2550) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ore/ore_generation.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2551) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ore/ore_generation.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ore/ore_generation.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ore/ore_generation.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ore/ore_generation.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ore/ore_generation.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ore/ore_generation.c.i: cmake_force
@@ -35775,7 +35789,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ore/ore_generation.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_system.c.o: src/game/minecraftv2/player/experience_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2551) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2552) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/experience_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_system.c.i: cmake_force
@@ -35789,7 +35803,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_system.c.s: cmake_f
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_test.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_test.c.o: src/game/minecraftv2/player/experience_test.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_test.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2552) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_test.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2553) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_test.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_test.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_test.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_test.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/experience_test.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_test.c.i: cmake_force
@@ -35803,7 +35817,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/experience_test.c.s: cmake_for
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player.c.o: src/game/minecraftv2/player/player.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2553) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2554) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/player.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/player.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/player.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/player.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player.c.i: cmake_force
@@ -35817,7 +35831,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/player.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_combat.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_combat.c.o: src/game/minecraftv2/player/player_combat.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_combat.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2554) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_combat.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2555) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_combat.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_combat.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_combat.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_combat.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/player_combat.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_combat.c.i: cmake_force
@@ -35831,7 +35845,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_combat.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_damage.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_damage.c.o: src/game/minecraftv2/player/player_damage.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_damage.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2555) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_damage.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2556) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_damage.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_damage.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_damage.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_damage.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/player_damage.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_damage.c.i: cmake_force
@@ -35845,7 +35859,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_damage.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_food.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_food.c.o: src/game/minecraftv2/player/player_food.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_food.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2556) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_food.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2557) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_food.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_food.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_food.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_food.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/player_food.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_food.c.i: cmake_force
@@ -35859,7 +35873,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_food.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_magic.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_magic.c.o: src/game/minecraftv2/player/player_magic.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_magic.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2557) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_magic.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2558) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_magic.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_magic.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_magic.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_magic.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/player_magic.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_magic.c.i: cmake_force
@@ -35873,7 +35887,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_magic.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_movement_physics.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_movement_physics.c.o: src/game/minecraftv2/player/player_movement_physics.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_movement_physics.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2558) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_movement_physics.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2559) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_movement_physics.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_movement_physics.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_movement_physics.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_movement_physics.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/player_movement_physics.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_movement_physics.c.i: cmake_force
@@ -35887,7 +35901,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_movement_physics.c.s: c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_system_update.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_system_update.c.o: src/game/minecraftv2/player/player_system_update.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_system_update.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2559) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_system_update.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2560) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_system_update.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_system_update.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_system_update.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_system_update.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/player_system_update.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_system_update.c.i: cmake_force
@@ -35901,7 +35915,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_system_update.c.s: cmak
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_vehicle.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_vehicle.c.o: src/game/minecraftv2/player/player_vehicle.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_vehicle.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2560) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_vehicle.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2561) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_vehicle.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_vehicle.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_vehicle.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_vehicle.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/player_vehicle.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_vehicle.c.i: cmake_force
@@ -35915,7 +35929,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/player_vehicle.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/spirit_model.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/spirit_model.c.o: src/game/minecraftv2/player/spirit_model.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/spirit_model.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2561) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/spirit_model.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2562) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/spirit_model.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/spirit_model.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/spirit_model.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/spirit_model.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/spirit_model.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/spirit_model.c.i: cmake_force
@@ -35929,7 +35943,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/spirit_model.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/status_effects.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/status_effects.c.o: src/game/minecraftv2/player/status_effects.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/status_effects.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2562) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/status_effects.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2563) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/player/status_effects.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/player/status_effects.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/player/status_effects.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/player/status_effects.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/player/status_effects.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/player/status_effects.c.i: cmake_force
@@ -35943,7 +35957,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/player/status_effects.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/game/minecraftv2/queue.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/queue.c.o: src/game/minecraftv2/queue.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/queue.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2563) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/queue.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2564) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/queue.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/queue.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/queue.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/queue.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/queue.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/queue.c.i: cmake_force
@@ -35957,7 +35971,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/queue.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/save/save.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/save/save.c.o: src/game/minecraftv2/save/save.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/save/save.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2564) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/save/save.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2565) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/save/save.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/save/save.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/save/save.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/save/save.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/save/save.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/save/save.c.i: cmake_force
@@ -35971,7 +35985,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/save/save.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/survival/hunger.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/survival/hunger.c.o: src/game/minecraftv2/survival/hunger.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/survival/hunger.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2565) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/survival/hunger.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2566) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/survival/hunger.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/survival/hunger.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/survival/hunger.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/survival/hunger.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/survival/hunger.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/survival/hunger.c.i: cmake_force
@@ -35985,7 +35999,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/survival/hunger.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/survival_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/survival_system.c.o: src/game/minecraftv2/survival_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/survival_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2566) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/survival_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2567) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/survival_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/survival_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/survival_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/survival_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/survival_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/survival_system.c.i: cmake_force
@@ -35999,7 +36013,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/survival_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/systems/progression.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/systems/progression.c.o: src/game/minecraftv2/systems/progression.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/systems/progression.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2567) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/systems/progression.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2568) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/systems/progression.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/systems/progression.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/systems/progression.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/systems/progression.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/systems/progression.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/systems/progression.c.i: cmake_force
@@ -36013,7 +36027,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/systems/progression.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/energy_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/energy_system.c.o: src/game/minecraftv2/tech/energy_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/energy_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2568) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/tech/energy_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2569) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/tech/energy_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/tech/energy_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/tech/energy_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/tech/energy_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/tech/energy_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/energy_system.c.i: cmake_force
@@ -36027,7 +36041,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/tech/energy_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/solar_energy.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/solar_energy.c.o: src/game/minecraftv2/tech/solar_energy.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/solar_energy.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2569) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/tech/solar_energy.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2570) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/tech/solar_energy.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/tech/solar_energy.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/tech/solar_energy.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/tech/solar_energy.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/tech/solar_energy.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/solar_energy.c.i: cmake_force
@@ -36041,7 +36055,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/tech/solar_energy.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/tech_machines.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/tech_machines.c.o: src/game/minecraftv2/tech/tech_machines.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/tech_machines.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2570) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/tech/tech_machines.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2571) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/tech/tech_machines.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/tech/tech_machines.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/tech/tech_machines.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/tech/tech_machines.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/tech/tech_machines.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech/tech_machines.c.i: cmake_force
@@ -36055,7 +36069,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/tech/tech_machines.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech_crafting_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech_crafting_impl.c.o: src/game/minecraftv2/tech_crafting_impl.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech_crafting_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2571) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/tech_crafting_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2572) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/tech_crafting_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/tech_crafting_impl.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/tech_crafting_impl.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/tech_crafting_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/tech_crafting_impl.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/tech_crafting_impl.c.i: cmake_force
@@ -36069,7 +36083,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/tech_crafting_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/crafting_ui.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/crafting_ui.c.o: src/game/minecraftv2/ui/crafting_ui.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/crafting_ui.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2572) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/crafting_ui.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2573) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/crafting_ui.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/crafting_ui.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/crafting_ui.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/crafting_ui.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/crafting_ui.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/crafting_ui.c.i: cmake_force
@@ -36083,7 +36097,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/crafting_ui.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/floating_text.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/floating_text.c.o: src/game/minecraftv2/ui/floating_text.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/floating_text.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2573) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/floating_text.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2574) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/floating_text.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/floating_text.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/floating_text.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/floating_text.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/floating_text.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/floating_text.c.i: cmake_force
@@ -36097,7 +36111,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/floating_text.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hotbar.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hotbar.c.o: src/game/minecraftv2/ui/hotbar.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hotbar.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2574) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hotbar.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2575) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hotbar.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hotbar.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hotbar.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hotbar.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/hotbar.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hotbar.c.i: cmake_force
@@ -36111,7 +36125,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hotbar.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_bars.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_bars.c.o: src/game/minecraftv2/ui/hud_bars.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_bars.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2575) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_bars.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2576) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_bars.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_bars.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_bars.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_bars.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/hud_bars.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_bars.c.i: cmake_force
@@ -36125,7 +36139,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_bars.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_debug.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_debug.c.o: src/game/minecraftv2/ui/hud_debug.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_debug.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2576) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_debug.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2577) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_debug.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_debug.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_debug.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_debug.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/hud_debug.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_debug.c.i: cmake_force
@@ -36139,7 +36153,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_debug.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_impl.c.o: src/game/minecraftv2/ui/hud_impl.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2577) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2578) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_impl.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_impl.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/hud_impl.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_impl.c.i: cmake_force
@@ -36153,7 +36167,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_logging.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_logging.c.o: src/game/minecraftv2/ui/hud_logging.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_logging.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2578) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_logging.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2579) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_logging.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_logging.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_logging.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_logging.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/hud_logging.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_logging.c.i: cmake_force
@@ -36167,7 +36181,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_logging.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_main.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_main.c.o: src/game/minecraftv2/ui/hud_main.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_main.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2579) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_main.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2580) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_main.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_main.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_main.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_main.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/hud_main.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_main.c.i: cmake_force
@@ -36181,7 +36195,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_main.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_overlay.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_overlay.c.o: src/game/minecraftv2/ui/hud_overlay.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_overlay.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2580) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_overlay.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2581) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_overlay.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_overlay.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_overlay.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_overlay.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/hud_overlay.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_overlay.c.i: cmake_force
@@ -36195,7 +36209,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_overlay.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_renderer.c.o: src/game/minecraftv2/ui/hud_renderer.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2581) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2582) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_renderer.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_renderer.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/hud_renderer.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_renderer.c.i: cmake_force
@@ -36209,7 +36223,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/hud_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/inventory_ui.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/inventory_ui.c.o: src/game/minecraftv2/ui/inventory_ui.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/inventory_ui.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2582) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/inventory_ui.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2583) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/inventory_ui.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/inventory_ui.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/inventory_ui.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/inventory_ui.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/inventory_ui.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/inventory_ui.c.i: cmake_force
@@ -36223,7 +36237,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/inventory_ui.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/main_menu.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/main_menu.c.o: src/game/minecraftv2/ui/main_menu.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/main_menu.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2583) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/main_menu.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2584) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/main_menu.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/main_menu.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/main_menu.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/main_menu.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/main_menu.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/main_menu.c.i: cmake_force
@@ -36237,7 +36251,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/main_menu.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu.c.o: src/game/minecraftv2/ui/menu.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2584) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2585) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/menu.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu.c.i: cmake_force
@@ -36251,7 +36265,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_renderer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_renderer.c.o: src/game/minecraftv2/ui/menu_renderer.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_renderer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2585) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_renderer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2586) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_renderer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_renderer.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_renderer.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_renderer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/menu_renderer.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_renderer.c.i: cmake_force
@@ -36265,7 +36279,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_renderer.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_systems_complete.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_systems_complete.c.o: src/game/minecraftv2/ui/menu_systems_complete.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_systems_complete.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2586) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_systems_complete.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2587) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_systems_complete.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_systems_complete.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_systems_complete.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_systems_complete.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/menu_systems_complete.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_systems_complete.c.i: cmake_force
@@ -36279,7 +36293,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/menu_systems_complete.c.s: cmake_f
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/pause_menu.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/pause_menu.c.o: src/game/minecraftv2/ui/pause_menu.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/pause_menu.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2587) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/pause_menu.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2588) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/ui/pause_menu.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/ui/pause_menu.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/ui/pause_menu.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/ui/pause_menu.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/ui/pause_menu.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/ui/pause_menu.c.i: cmake_force
@@ -36293,7 +36307,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/ui/pause_menu.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/utils.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/utils.c.o: src/game/minecraftv2/utils.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/utils.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2588) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/utils.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2589) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/utils.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/utils.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/utils.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/utils.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/utils.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/utils.c.i: cmake_force
@@ -36307,7 +36321,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/utils.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/vehicle/vehicle_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/vehicle/vehicle_system.c.o: src/game/minecraftv2/vehicle/vehicle_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/vehicle/vehicle_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2589) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vehicle/vehicle_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2590) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vehicle/vehicle_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/vehicle/vehicle_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/vehicle/vehicle_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/vehicle/vehicle_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/vehicle/vehicle_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/vehicle/vehicle_system.c.i: cmake_force
@@ -36321,7 +36335,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/vehicle/vehicle_system.c.s: cmake_for
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/gpu_pipeline_setup.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/gpu_pipeline_setup.c.o: src/game/minecraftv2/vfx/gpu_pipeline_setup.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/gpu_pipeline_setup.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2590) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/gpu_pipeline_setup.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2591) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/gpu_pipeline_setup.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/gpu_pipeline_setup.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/gpu_pipeline_setup.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/gpu_pipeline_setup.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/vfx/gpu_pipeline_setup.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/gpu_pipeline_setup.c.i: cmake_force
@@ -36335,7 +36349,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/gpu_pipeline_setup.c.s: cmake_for
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/particle_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/particle_system.c.o: src/game/minecraftv2/vfx/particle_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/particle_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2591) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/particle_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2592) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/particle_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/particle_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/particle_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/particle_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/vfx/particle_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/particle_system.c.i: cmake_force
@@ -36349,7 +36363,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/particle_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/post_processing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/post_processing.c.o: src/game/minecraftv2/vfx/post_processing.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/post_processing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2592) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/post_processing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2593) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/post_processing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/post_processing.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/post_processing.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/post_processing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/vfx/post_processing.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/post_processing.c.i: cmake_force
@@ -36363,7 +36377,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/post_processing.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/status_effect_visuals.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/status_effect_visuals.c.o: src/game/minecraftv2/vfx/status_effect_visuals.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/status_effect_visuals.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2593) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/status_effect_visuals.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2594) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/status_effect_visuals.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/status_effect_visuals.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/status_effect_visuals.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/status_effect_visuals.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/vfx/status_effect_visuals.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/status_effect_visuals.c.i: cmake_force
@@ -36377,7 +36391,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/status_effect_visuals.c.s: cmake_
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/vfx_optimization.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/vfx_optimization.c.o: src/game/minecraftv2/vfx/vfx_optimization.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/vfx_optimization.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2594) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/vfx_optimization.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2595) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/vfx_optimization.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/vfx_optimization.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/vfx_optimization.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/vfx_optimization.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/vfx/vfx_optimization.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/vfx_optimization.c.i: cmake_force
@@ -36391,7 +36405,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/vfx_optimization.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/visual_effects.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/visual_effects.c.o: src/game/minecraftv2/vfx/visual_effects.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/visual_effects.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2595) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/visual_effects.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2596) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/visual_effects.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/visual_effects.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/visual_effects.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/visual_effects.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/vfx/visual_effects.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/visual_effects.c.i: cmake_force
@@ -36405,7 +36419,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/vfx/visual_effects.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/environmental_effects.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/environmental_effects.c.o: src/game/minecraftv2/weather/environmental_effects.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/environmental_effects.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2596) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/weather/environmental_effects.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2597) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/weather/environmental_effects.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/weather/environmental_effects.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/weather/environmental_effects.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/weather/environmental_effects.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/weather/environmental_effects.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/environmental_effects.c.i: cmake_force
@@ -36419,7 +36433,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/weather/environmental_effects.c.s: cm
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/seasonal_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/seasonal_system.c.o: src/game/minecraftv2/weather/seasonal_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/seasonal_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2597) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/weather/seasonal_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2598) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/weather/seasonal_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/weather/seasonal_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/weather/seasonal_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/weather/seasonal_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/weather/seasonal_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/seasonal_system.c.i: cmake_force
@@ -36433,7 +36447,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/weather/seasonal_system.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather.c.o: src/game/minecraftv2/weather/weather.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2598) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2599) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/weather/weather.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather.c.i: cmake_force
@@ -36447,7 +36461,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_audio.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_audio.c.o: src/game/minecraftv2/weather/weather_audio.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_audio.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2599) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_audio.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2600) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_audio.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_audio.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_audio.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_audio.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/weather/weather_audio.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_audio.c.i: cmake_force
@@ -36461,7 +36475,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_audio.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_particles.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_particles.c.o: src/game/minecraftv2/weather/weather_particles.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_particles.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2600) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_particles.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2601) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_particles.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_particles.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_particles.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_particles.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/weather/weather_particles.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_particles.c.i: cmake_force
@@ -36475,7 +36489,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/weather/weather_particles.c.s: cmake_
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_features.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_features.c.o: src/game/minecraftv2/world/biome_features.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_features.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2601) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_features.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2602) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_features.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_features.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_features.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_features.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/biome_features.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_features.c.i: cmake_force
@@ -36489,7 +36503,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_features.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_generator.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_generator.c.o: src/game/minecraftv2/world/biome_generator.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_generator.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2602) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_generator.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2603) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_generator.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_generator.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_generator.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_generator.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/biome_generator.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_generator.c.i: cmake_force
@@ -36503,7 +36517,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_generator.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_system.c.o: src/game/minecraftv2/world/biome_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2603) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2604) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/biome_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_system.c.i: cmake_force
@@ -36517,7 +36531,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_transitions.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_transitions.c.o: src/game/minecraftv2/world/biome_transitions.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_transitions.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2604) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_transitions.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2605) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_transitions.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_transitions.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_transitions.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_transitions.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/biome_transitions.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_transitions.c.i: cmake_force
@@ -36531,7 +36545,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/biome_transitions.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/cave_generation.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/cave_generation.c.o: src/game/minecraftv2/world/cave_generation.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/cave_generation.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2605) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/cave_generation.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2606) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/cave_generation.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/cave_generation.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/cave_generation.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/cave_generation.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/cave_generation.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/cave_generation.c.i: cmake_force
@@ -36545,7 +36559,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/cave_generation.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/dungeon_generation.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/dungeon_generation.c.o: src/game/minecraftv2/world/dungeon_generation.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/dungeon_generation.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2606) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/dungeon_generation.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2607) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/dungeon_generation.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/dungeon_generation.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/dungeon_generation.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/dungeon_generation.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/dungeon_generation.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/dungeon_generation.c.i: cmake_force
@@ -36559,7 +36573,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/dungeon_generation.c.s: cmake_f
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator.c.o: src/game/minecraftv2/world/generator.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2607) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2608) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/generator.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator.c.i: cmake_force
@@ -36573,7 +36587,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator_basic.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator_basic.c.o: src/game/minecraftv2/world/generator_basic.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator_basic.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2608) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator_basic.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2609) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator_basic.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator_basic.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator_basic.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator_basic.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/generator_basic.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator_basic.c.i: cmake_force
@@ -36587,7 +36601,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/generator_basic.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/loot_tables.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/loot_tables.c.o: src/game/minecraftv2/world/loot_tables.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/loot_tables.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2609) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/loot_tables.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2610) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/loot_tables.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/loot_tables.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/loot_tables.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/loot_tables.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/loot_tables.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/loot_tables.c.i: cmake_force
@@ -36601,7 +36615,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/loot_tables.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/noise.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/noise.c.o: src/game/minecraftv2/world/noise.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/noise.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2610) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/noise.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2611) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/noise.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/noise.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/noise.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/noise.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/noise.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/noise.c.i: cmake_force
@@ -36615,7 +36629,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/noise.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_generation.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_generation.c.o: src/game/minecraftv2/world/plant_generation.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_generation.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2611) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_generation.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2612) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_generation.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_generation.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_generation.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_generation.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/plant_generation.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_generation.c.i: cmake_force
@@ -36629,7 +36643,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_generation.c.s: cmake_for
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_varieties.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_varieties.c.o: src/game/minecraftv2/world/plant_varieties.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_varieties.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2612) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_varieties.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2613) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_varieties.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_varieties.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_varieties.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_varieties.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/plant_varieties.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_varieties.c.i: cmake_force
@@ -36643,7 +36657,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_varieties.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_vfx.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_vfx.c.o: src/game/minecraftv2/world/plant_vfx.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_vfx.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2613) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_vfx.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2614) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_vfx.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_vfx.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_vfx.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_vfx.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/plant_vfx.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_vfx.c.i: cmake_force
@@ -36657,7 +36671,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/plant_vfx.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/rail_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/rail_system.c.o: src/game/minecraftv2/world/rail_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/rail_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2614) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/rail_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2615) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/rail_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/rail_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/rail_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/rail_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/rail_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/rail_system.c.i: cmake_force
@@ -36671,7 +36685,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/rail_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/settlement_generation.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/settlement_generation.c.o: src/game/minecraftv2/world/settlement_generation.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/settlement_generation.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2615) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/settlement_generation.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2616) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/settlement_generation.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/settlement_generation.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/settlement_generation.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/settlement_generation.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/settlement_generation.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/settlement_generation.c.i: cmake_force
@@ -36685,7 +36699,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/settlement_generation.c.s: cmak
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/structures.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/structures.c.o: src/game/minecraftv2/world/structures.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/structures.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2616) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/structures.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2617) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/structures.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/structures.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/structures.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/structures.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/structures.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/structures.c.i: cmake_force
@@ -36699,7 +36713,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/structures.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_generation.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_generation.c.o: src/game/minecraftv2/world/tree_generation.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_generation.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2617) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_generation.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2618) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_generation.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_generation.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_generation.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_generation.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/tree_generation.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_generation.c.i: cmake_force
@@ -36713,7 +36727,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_generation.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_varieties.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_varieties.c.o: src/game/minecraftv2/world/tree_varieties.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_varieties.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2618) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_varieties.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2619) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_varieties.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_varieties.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_varieties.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_varieties.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/tree_varieties.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_varieties.c.i: cmake_force
@@ -36727,7 +36741,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/tree_varieties.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/voxel_world_data.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/voxel_world_data.c.o: src/game/minecraftv2/world/voxel_world_data.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/voxel_world_data.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2619) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/voxel_world_data.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2620) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/voxel_world_data.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/voxel_world_data.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/voxel_world_data.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/voxel_world_data.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/voxel_world_data.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/voxel_world_data.c.i: cmake_force
@@ -36741,7 +36755,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/voxel_world_data.c.s: cmake_for
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_integration.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_integration.c.o: src/game/minecraftv2/world/water_integration.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_integration.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2620) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_integration.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2621) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_integration.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_integration.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_integration.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_integration.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/water_integration.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_integration.c.i: cmake_force
@@ -36755,7 +36769,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_integration.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_physics.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_physics.c.o: src/game/minecraftv2/world/water_physics.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_physics.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2621) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_physics.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2622) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_physics.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_physics.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_physics.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_physics.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/water_physics.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_physics.c.i: cmake_force
@@ -36769,7 +36783,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_physics.c.s: cmake_force
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_system.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_system.c.o: src/game/minecraftv2/world/water_system.c
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_system.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2622) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_system.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2623) "Building C object CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_system.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_system.c.o -MF CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_system.c.o.d -o CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_system.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/world/water_system.c"
 
 CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_system.c.i: cmake_force
@@ -36783,7 +36797,7 @@ CMakeFiles/Engine.dir/src/game/minecraftv2/world/water_system.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.o: src/engine/backend/vulkan/dynamic_rendering.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2623) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2624) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/dynamic_rendering.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.i: cmake_force
@@ -36797,7 +36811,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/dynamic_rendering.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.o: src/engine/backend/vulkan/modern_renderer_example.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2624) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2625) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/modern_renderer_example.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.i: cmake_force
@@ -36811,7 +36825,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/modern_renderer_example.c.s: cma
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.o: src/engine/backend/vulkan/moltenvk_config.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2625) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2626) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/moltenvk_config.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.i: cmake_force
@@ -36825,7 +36839,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/moltenvk_config.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.o: src/engine/backend/vulkan/queue_ownership.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2626) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2627) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/queue_ownership.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.i: cmake_force
@@ -36839,7 +36853,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/queue_ownership.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.o: src/engine/backend/vulkan/ray_query.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2627) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2628) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/ray_query.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.i: cmake_force
@@ -36853,7 +36867,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/ray_query.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.o: src/engine/backend/vulkan/vk_command.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2628) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2629) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vk_command.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.i: cmake_force
@@ -36867,7 +36881,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_command.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.o: src/engine/backend/vulkan/vk_descriptor.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2629) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2630) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vk_descriptor.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.i: cmake_force
@@ -36881,7 +36895,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_descriptor.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.o: src/engine/backend/vulkan/vk_device.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2630) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2631) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vk_device.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.i: cmake_force
@@ -36895,7 +36909,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_device.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.o: src/engine/backend/vulkan/vk_instance.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2631) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2632) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vk_instance.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.i: cmake_force
@@ -36909,7 +36923,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_instance.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.o: src/engine/backend/vulkan/vk_memory.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2632) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2633) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vk_memory.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.i: cmake_force
@@ -36923,7 +36937,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_memory.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.o: src/engine/backend/vulkan/vk_pipeline.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2633) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2634) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vk_pipeline.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.i: cmake_force
@@ -36937,7 +36951,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.o: src/engine/backend/vulkan/vk_swapchain.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2634) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2635) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vk_swapchain.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.i: cmake_force
@@ -36951,7 +36965,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_swapchain.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.o: src/engine/backend/vulkan/vk_sync.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2635) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2636) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vk_sync.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.i: cmake_force
@@ -36965,7 +36979,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_sync.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.o: src/engine/backend/vulkan/vulkan.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2636) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2637) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.i: cmake_force
@@ -36979,7 +36993,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.o: src/engine/backend/vulkan/vulkan_buffer_config.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2637) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2638) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_buffer_config.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.i: cmake_force
@@ -36993,7 +37007,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffer_config.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_2.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_2.c.o: src/engine/backend/vulkan/vulkan_buffers\ 2.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_2.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2638) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2639) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_2.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_2.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_2.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_2.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_buffers 2.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_2.c.i: cmake_force
@@ -37007,7 +37021,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_2.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.o: src/engine/backend/vulkan/vulkan_buffers.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2639) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2640) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_buffers.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.i: cmake_force
@@ -37021,7 +37035,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_2.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_2.c.o: src/engine/backend/vulkan/vulkan_capabilities\ 2.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_2.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2640) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2641) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_2.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_2.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_2.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_2.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_capabilities 2.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_2.c.i: cmake_force
@@ -37035,7 +37049,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_2.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.o: src/engine/backend/vulkan/vulkan_capabilities.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2641) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2642) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_capabilities.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.i: cmake_force
@@ -37049,7 +37063,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.o: src/engine/backend/vulkan/vulkan_dispatch.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2642) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2643) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_dispatch.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.i: cmake_force
@@ -37063,7 +37077,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_dispatch.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_2.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_2.c.o: src/engine/backend/vulkan/vulkan_framebuffer\ 2.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_2.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2643) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2644) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_2.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_2.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_2.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_2.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_framebuffer 2.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_2.c.i: cmake_force
@@ -37077,7 +37091,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_2.c.s: cmake_
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.o: src/engine/backend/vulkan/vulkan_framebuffer.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2644) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2645) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_framebuffer.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.i: cmake_force
@@ -37091,7 +37105,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_2.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_2.c.o: src/engine/backend/vulkan/vulkan_image\ 2.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_2.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2645) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2646) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_2.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_2.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_2.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_2.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_image 2.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_2.c.i: cmake_force
@@ -37105,7 +37119,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_2.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.o: src/engine/backend/vulkan/vulkan_image.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2646) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2647) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_image.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.i: cmake_force
@@ -37119,7 +37133,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.o: src/engine/backend/vulkan/vulkan_impl.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2647) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2648) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.i: cmake_force
@@ -37133,7 +37147,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_impl.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.o: src/engine/backend/vulkan/vulkan_math.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2648) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2649) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_math.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.i: cmake_force
@@ -37147,7 +37161,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_math.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_2.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_2.c.o: src/engine/backend/vulkan/vulkan_pipeline\ 2.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_2.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2649) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2650) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_2.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_2.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_2.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_2.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_pipeline 2.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_2.c.i: cmake_force
@@ -37161,7 +37175,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_2.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.o: src/engine/backend/vulkan/vulkan_pipeline.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2650) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2651) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_pipeline.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.i: cmake_force
@@ -37175,7 +37189,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.o: src/engine/backend/vulkan/vulkan_pipeline_cache.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2651) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2652) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_pipeline_cache.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.i: cmake_force
@@ -37189,7 +37203,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_cache.c.s: cmake
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.o: src/engine/backend/vulkan/vulkan_raytracing.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2652) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2653) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_raytracing.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.i: cmake_force
@@ -37203,7 +37217,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_raytracing.c.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_2.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_2.c.o: src/engine/backend/vulkan/vulkan_render\ 2.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_2.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2653) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2654) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_2.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_2.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_2.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_2.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_render 2.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_2.c.i: cmake_force
@@ -37217,7 +37231,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_2.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.o: src/engine/backend/vulkan/vulkan_render.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2654) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2655) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_render.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.i: cmake_force
@@ -37231,7 +37245,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.o: src/engine/backend/vulkan/vulkan_streaming.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2655) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2656) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_streaming.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.i: cmake_force
@@ -37245,7 +37259,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_streaming.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.o: src/engine/backend/vulkan/vulkan_surface\ 2.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2656) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2657) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_surface 2.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.i: cmake_force
@@ -37259,7 +37273,7 @@ CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.o: src/engine/backend/vulkan/vulkan_surface.c
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2657) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2658) "Building C object CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.o -MF CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.o.d -o CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vulkan/vulkan_surface.c"
 
 CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.i: cmake_force
@@ -39321,6 +39335,7 @@ Engine_OBJECTS = \
 "CMakeFiles/Engine.dir/src/engine/rendering/gpu/gpu_text.c.o" \
 "CMakeFiles/Engine.dir/src/engine/rendering/gpu/gpu_texture.c.o" \
 "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/buffer_pool.c.o" \
+"CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o" \
 "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o" \
 "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o" \
 "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.o" \
@@ -41982,6 +41997,7 @@ libEngine.a: CMakeFiles/Engine.dir/src/engine/rendering/gpu/gpu_shader_reload.c.
 libEngine.a: CMakeFiles/Engine.dir/src/engine/rendering/gpu/gpu_text.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/rendering/gpu/gpu_texture.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/buffer_pool.c.o
+libEngine.a: CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/instance_data_gpu.c.o
@@ -42592,7 +42608,7 @@ libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_2.c.
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.o
 libEngine.a: CMakeFiles/Engine.dir/build.make
 libEngine.a: CMakeFiles/Engine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2658) "Linking C static library libEngine.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2659) "Linking C static library libEngine.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/Engine.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Engine.dir/link.txt --verbose=$(VERBOSE)
 

@@ -49491,6 +49491,30 @@ src/engine/rendering/gpu_driven/buffer_pool.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/buffer_pool.c.s
 .PHONY : src/engine/rendering/gpu_driven/buffer_pool.c.s
 
+src/engine/rendering/gpu_driven/compute_dispatch.o: src/engine/rendering/gpu_driven/compute_dispatch.c.o
+.PHONY : src/engine/rendering/gpu_driven/compute_dispatch.o
+
+# target to build an object file
+src/engine/rendering/gpu_driven/compute_dispatch.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o
+.PHONY : src/engine/rendering/gpu_driven/compute_dispatch.c.o
+
+src/engine/rendering/gpu_driven/compute_dispatch.i: src/engine/rendering/gpu_driven/compute_dispatch.c.i
+.PHONY : src/engine/rendering/gpu_driven/compute_dispatch.i
+
+# target to preprocess a source file
+src/engine/rendering/gpu_driven/compute_dispatch.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.i
+.PHONY : src/engine/rendering/gpu_driven/compute_dispatch.c.i
+
+src/engine/rendering/gpu_driven/compute_dispatch.s: src/engine/rendering/gpu_driven/compute_dispatch.c.s
+.PHONY : src/engine/rendering/gpu_driven/compute_dispatch.s
+
+# target to generate assembly for a file
+src/engine/rendering/gpu_driven/compute_dispatch.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.s
+.PHONY : src/engine/rendering/gpu_driven/compute_dispatch.c.s
+
 src/engine/rendering/gpu_driven/draw_command_gen.o: src/engine/rendering/gpu_driven/draw_command_gen.c.o
 .PHONY : src/engine/rendering/gpu_driven/draw_command_gen.o
 
@@ -69921,6 +69945,9 @@ help:
 	@echo "... src/engine/rendering/gpu_driven/buffer_pool.o"
 	@echo "... src/engine/rendering/gpu_driven/buffer_pool.i"
 	@echo "... src/engine/rendering/gpu_driven/buffer_pool.s"
+	@echo "... src/engine/rendering/gpu_driven/compute_dispatch.o"
+	@echo "... src/engine/rendering/gpu_driven/compute_dispatch.i"
+	@echo "... src/engine/rendering/gpu_driven/compute_dispatch.s"
 	@echo "... src/engine/rendering/gpu_driven/draw_command_gen.o"
 	@echo "... src/engine/rendering/gpu_driven/draw_command_gen.i"
 	@echo "... src/engine/rendering/gpu_driven/draw_command_gen.s"

@@ -1,7 +1,7 @@
 #ifndef SKIN_RENDERING_H
 #define SKIN_RENDERING_H
 
-#include "../math/vec3.h"
+#include "math/vec3.h"
 #include "assets/resources/resource_management/resource_handle.h"
 
 /**

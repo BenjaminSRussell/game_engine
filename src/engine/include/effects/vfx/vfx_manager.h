@@ -2,7 +2,7 @@
 #define VFX_MANAGER_H
 
 #include "include/core/types.h"
-#include "../math/vec3.h"
+#include "math/vec3.h"
 #include "include/core/memory.h"
 #include "include/effects/vfx/fluid_simulation.h"
 #include "include/effects/vfx/destruction_system.h"

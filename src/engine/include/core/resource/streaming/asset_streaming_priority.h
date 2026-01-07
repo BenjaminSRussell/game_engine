@@ -2,7 +2,7 @@
 #define ASSET_STREAMING_PRIORITY_H
 
 #include "include/core/types.h"
-#include "../math/vec3.h"
+#include "math/vec3.h"
 
 #define MAX_PRIORITY_QUEUE_SIZE 512
 #define PRIORITY_UPDATE_INTERVAL_MS 100  // Update priorities every 100ms

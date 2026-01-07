@@ -2,7 +2,7 @@
 #define ANIMATION_SYNTHESIS_H
 
 #include "../core/types.h"
-#include "../math/vec3.h"
+#include "math/vec3.h"
 #include "../math/quat.h"
 #include "../math/mat4.h"
 #include "animation_system.h"

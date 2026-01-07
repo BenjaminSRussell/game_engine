@@ -4167,6 +4167,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Engine.dir/src/engine/rendering/gpu/gpu_texture.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/buffer_pool.c.o"
   "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/buffer_pool.c.o.d"
+  "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o"
+  "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/compute_dispatch.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o"
   "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/draw_command_gen.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/rendering/gpu_driven/gpu_scene.c.o"

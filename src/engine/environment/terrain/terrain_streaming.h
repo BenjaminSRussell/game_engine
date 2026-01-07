@@ -2,7 +2,7 @@
 #define TERRAIN_STREAMING_H
 
 #include "include/core/types.h"
-#include "../math/vec3.h"
+#include "math/vec3.h"
 #include "include/core/memory.h"
 
 // Terrain tile configuration
