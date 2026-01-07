@@ -46,6 +46,20 @@ metal_device_t* metal_device_create_system_default(void);
 metal_device_t* metal_device_get_default(void);
 
 /**
+ * Retrieves the underlying MTLDevice (id<MTLDevice> cast to void*).
+ * @param dev Pointer to the device wrapper.
+ * @return Raw MTLDevice pointer or NULL.
+ */
+void* metal_get_device(metal_device_t* dev);
+    
+/**
+ * Retrieves the underlying MTLDevice object.
+ * @param dev Pointer to the device wrapper.
+ * @return The id<MTLDevice> object.
+ */
+void* metal_get_device(metal_device_t* dev);
+
+/**
  * Destroys the metal device and releases resources.
  * For the singleton, this should be called at application shutdown.
  * @param dev Pointer to the device to destroy.
@@ -77,6 +91,11 @@ void metal_device_get_memory_info(metal_device_t* dev, mtl_memory_info_t* out_in
  * Checks if the device supports ray tracing.
  */
 bool metal_device_supports_raytracing(metal_device_t* dev);
+
+/**
+ * Retrieves the raw id<MTLDevice> (as void*).
+ */
+void* metal_get_device(metal_device_t* dev);
 
 #ifdef __cplusplus
 }

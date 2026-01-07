@@ -1,4 +1,4 @@
-#include <animation/animation_system.h>
+#include <character/animation/animation_system.h>
 #include <core/logger.h>
 #include <core/memory.h>
 #include <stdlib.h>

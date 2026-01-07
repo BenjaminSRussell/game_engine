@@ -580,8 +580,8 @@ void ml_destroy_tensor(MLSystem *system, MLTensor *tensor) {
     
     // Only free data if it wasn't allocated from tensor pool
     if (tensor->data && 
-        (tensor->data < system->tensor_pool || 
-         tensor->data >= (u8 *)system->tensor_pool + system->total_tensor_memory)) {
+        ((u8*)tensor->data < (u8*)system->tensor_pool || 
+         (u8*)tensor->data >= (u8 *)system->tensor_pool + system->total_tensor_memory)) {
         free(tensor->data);
     }
     

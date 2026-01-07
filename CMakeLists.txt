@@ -125,6 +125,9 @@ set_target_properties(Engine PROPERTIES C_STANDARD 11 C_STANDARD_REQUIRED ON)
 if(APPLE)
     file(GLOB ML_OBJC_SOURCES src/engine/ai/ml/*.c)
     set_source_files_properties(${ML_OBJC_SOURCES} PROPERTIES LANGUAGE OBJC)
+
+    file(GLOB METAL_OBJC_SOURCES src/engine/backend/metal/*.m)
+    set_source_files_properties(${METAL_OBJC_SOURCES} PROPERTIES LANGUAGE OBJC COMPILE_FLAGS "-fobjc-arc")
 endif()
 
 # SIMD Math Library Platform-Specific Sources
@@ -240,7 +243,9 @@ endif()
 endif()
 
 # Placeholder for other platforms (e.g. macOS Desktop)
+message(STATUS "Checking MinecraftApp target conditions: IOS=${IOS}, APPLE=${APPLE}")
 if(NOT IOS)
+    message(STATUS "Adding MinecraftApp executable target")
     add_executable(MinecraftApp src/engine/core/main.c)
     target_link_libraries(MinecraftApp PRIVATE Game Engine ZLIB::ZLIB Threads::Threads "-framework Metal" "-framework MetalKit" "-framework Cocoa" "-framework IOKit" "-framework QuartzCore")
 endif()

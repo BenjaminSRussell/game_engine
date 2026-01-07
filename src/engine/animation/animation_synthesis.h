@@ -5,8 +5,8 @@
 #include "math/vec3.h"
 #include "math/quat.h"
 #include "math/mat4.h"
-#include <animation/animation_system.h>
-#include "../core/memory.h"
+#include <character/animation/animation_system.h>
+#include <core/memory.h>
 
 // Animation synthesis configuration
 #define ANIM_SYNTH_MAX_PROCEDURAL_JOINTS 64

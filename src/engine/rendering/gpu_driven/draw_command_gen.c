@@ -7,6 +7,8 @@
  */
 
 #include "rendering/gpu_driven/draw_command_gen.h"
+#include "backend/metal/mtl_buffer.h"
+#include "backend/metal/mtl_device.h"
 #include "../core/gpu_types.h"
 #include "../../3d_rendering.h"
 #include <stdint.h>
@@ -17,19 +19,40 @@
 #include <stdio.h>
 
 /* ============================================================================
+ * CONSTANTS
+ * ============================================================================ */
+
+#define MAX_DRAW_COMMANDS 8192
+#define MAX_BATCHES 4096
+#define INITIAL_BATCH_CAPACITY 256
+
+/* ============================================================================
  * TYPES
  * ============================================================================ */
 
 typedef struct rendering_draw_command_gen_internal {
     uint32_t id;
     uint32_t flags;
-    ResourceHandle indirect_buffer;
-    ResourceHandle count_buffer;
+    metal_device_t* device;
 
-    // GPU-driven rendering support
-    IndirectDrawArgs* indirect_args;
-    uint32_t indirect_arg_capacity;
-    uint32_t indirect_arg_count;
+    // Batch management
+    draw_batch_t* batches;
+    uint32_t batch_capacity;
+    uint32_t batch_count;
+
+    // GPU buffers
+    metal_buffer_t* command_buffer;      // Indirect draw commands
+    metal_buffer_t* visible_buffer;      // Visible instance IDs
+    metal_buffer_t* counter_buffer;      // Atomic counters
+
+    // CPU-side data
+    void* command_data;                  // Mapped command buffer
+    void* visible_data;                  // Mapped visible buffer
+    void* counter_data;                  // Mapped counter buffer
+
+    // Statistics
+    uint32_t total_commands_generated;
+    uint32_t peak_batch_count;
 
     bool initialized;
     bool dirty;
@@ -51,15 +74,33 @@ static rendering_draw_command_gen_context_t g_draw_command_gen_ctx = {0};
 static void rendering_draw_command_gen_cleanup_internal(rendering_draw_command_gen_internal_t* item) {
     if (!item) return;
 
-    if (item->indirect_args) {
-        free(item->indirect_args);
-        item->indirect_args = NULL;
+    // Destroy GPU buffers
+    if (item->command_buffer) {
+        metal_buffer_destroy(item->command_buffer);
+        item->command_buffer = NULL;
+        item->command_data = NULL;
     }
 
-    item->indirect_buffer = INVALID_HANDLE;
-    item->count_buffer = INVALID_HANDLE;
-    item->indirect_arg_capacity = 0;
-    item->indirect_arg_count = 0;
+    if (item->visible_buffer) {
+        metal_buffer_destroy(item->visible_buffer);
+        item->visible_buffer = NULL;
+        item->visible_data = NULL;
+    }
+
+    if (item->counter_buffer) {
+        metal_buffer_destroy(item->counter_buffer);
+        item->counter_buffer = NULL;
+        item->counter_data = NULL;
+    }
+
+    // Free batch array
+    if (item->batches) {
+        free(item->batches);
+        item->batches = NULL;
+    }
+
+    item->batch_capacity = 0;
+    item->batch_count = 0;
     item->initialized = false;
 }
 
@@ -120,20 +161,81 @@ int rendering_draw_command_gen_create(rendering_draw_command_gen_handle_t* out_h
     uint32_t index = g_draw_command_gen_ctx.count++;
     rendering_draw_command_gen_internal_t* item = &g_draw_command_gen_ctx.items[index];
 
-    // Allocate indirect args buffer
-    item->indirect_arg_capacity = 1024;  // Default capacity for 1024 draw calls
-    item->indirect_args = malloc(item->indirect_arg_capacity * sizeof(IndirectDrawArgs));
-    if (!item->indirect_args) {
-        return -4;
-    }
-
     item->id = index;
     item->flags = desc->flags;
+    item->device = desc->device;
+
+    // Allocate batch management array
+    item->batch_capacity = INITIAL_BATCH_CAPACITY;
+    item->batches = malloc(item->batch_capacity * sizeof(draw_batch_t));
+    if (!item->batches) {
+        return -4;
+    }
+    item->batch_count = 0;
+
+    // Allocate GPU buffers for indirect rendering
+    // Command buffer: stores indirect draw commands
+    uint32_t max_commands = desc->max_draw_commands > 0 ? desc->max_draw_commands : MAX_DRAW_COMMANDS;
+    size_t command_buffer_size = max_commands * sizeof(IndirectDrawArgs);
+
+    metal_buffer_desc_t cmd_desc = {
+        .size = command_buffer_size,
+        .storage_mode = METAL_STORAGE_SHARED,  // CPU-writable for batch generation
+        .usage = METAL_BUFFER_USAGE_STORAGE,
+        .label = "Draw Command Buffer"
+    };
+    item->command_buffer = metal_buffer_create(desc->device, &cmd_desc);
+    if (!item->command_buffer) {
+        free(item->batches);
+        return -5;
+    }
+    item->command_data = metal_buffer_get_cpu_ptr(item->command_buffer);
+
+    // Visible IDs buffer: stores visible instance IDs from culling
+    size_t visible_buffer_size = max_commands * MAX_BATCHES * sizeof(uint32_t);  // Conservative estimate
+    metal_buffer_desc_t vis_desc = {
+        .size = visible_buffer_size,
+        .storage_mode = METAL_STORAGE_SHARED,
+        .usage = METAL_BUFFER_USAGE_STORAGE,
+        .label = "Visible Instance IDs Buffer"
+    };
+    item->visible_buffer = metal_buffer_create(desc->device, &vis_desc);
+    if (!item->visible_buffer) {
+        metal_buffer_destroy(item->command_buffer);
+        item->command_buffer = NULL;
+        free(item->batches);
+        return -6;
+    }
+    item->visible_data = metal_buffer_get_cpu_ptr(item->visible_buffer);
+
+    // Counter buffer: atomic counters for GPU-side counting
+    size_t counter_buffer_size = 4 * sizeof(uint32_t);  // 4 counters (visible count, batch count, etc)
+    metal_buffer_desc_t ctr_desc = {
+        .size = counter_buffer_size,
+        .storage_mode = METAL_STORAGE_SHARED,
+        .usage = METAL_BUFFER_USAGE_STORAGE,
+        .label = "Draw Command Counter Buffer"
+    };
+    item->counter_buffer = metal_buffer_create(desc->device, &ctr_desc);
+    if (!item->counter_buffer) {
+        metal_buffer_destroy(item->visible_buffer);
+        item->visible_buffer = NULL;
+        metal_buffer_destroy(item->command_buffer);
+        item->command_buffer = NULL;
+        free(item->batches);
+        return -7;
+    }
+    item->counter_data = metal_buffer_get_cpu_ptr(item->counter_buffer);
+
+    // Initialize counters to zero
+    if (item->counter_data) {
+        memset(item->counter_data, 0, counter_buffer_size);
+    }
+
+    item->total_commands_generated = 0;
+    item->peak_batch_count = 0;
     item->initialized = true;
     item->dirty = true;
-    item->indirect_buffer = INVALID_HANDLE;
-    item->count_buffer = INVALID_HANDLE;
-    item->indirect_arg_count = 0;
 
     out_handle->id = index;
     return 0;
@@ -181,6 +283,12 @@ int rendering_draw_command_gen_get_info(rendering_draw_command_gen_handle_t hand
     out_info->id = item->id;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
+    out_info->pending_commands = item->batch_count;
+    out_info->max_capacity = MAX_DRAW_COMMANDS;
+    out_info->memory_used = (item->command_buffer ? metal_buffer_get_size(item->command_buffer) : 0) +
+                            (item->visible_buffer ? metal_buffer_get_size(item->visible_buffer) : 0) +
+                            (item->counter_buffer ? metal_buffer_get_size(item->counter_buffer) : 0) +
+                            (item->batch_capacity * sizeof(draw_batch_t));
 
     return 0;
 }
@@ -223,6 +331,111 @@ void rendering_draw_command_gen_debug_print(void) {
 
     printf("Draw Command Generation Status:\n");
     printf("  Count: %u / %u\n", g_draw_command_gen_ctx.count, g_draw_command_gen_ctx.capacity);
+
+    for (uint32_t i = 0; i < g_draw_command_gen_ctx.count; i++) {
+        const rendering_draw_command_gen_internal_t* item = &g_draw_command_gen_ctx.items[i];
+        if (item->initialized) {
+            printf("  [%u] Batches: %u / %u, Commands Generated: %u, Peak: %u\n",
+                   item->id, item->batch_count, item->batch_capacity,
+                   item->total_commands_generated, item->peak_batch_count);
+        }
+    }
+}
+
+int rendering_draw_command_gen_add_batch(rendering_draw_command_gen_handle_t handle,
+                                        const draw_batch_t* batch) {
+    if (!batch || handle.id >= g_draw_command_gen_ctx.count) {
+        return -1;
+    }
+
+    rendering_draw_command_gen_internal_t* item = &g_draw_command_gen_ctx.items[handle.id];
+    if (!item->initialized) {
+        return -2;
+    }
+
+    // Grow batch array if needed
+    if (item->batch_count >= item->batch_capacity) {
+        uint32_t new_capacity = item->batch_capacity * 2;
+        if (new_capacity > MAX_BATCHES) new_capacity = MAX_BATCHES;
+        if (new_capacity == item->batch_capacity) {
+            return -3;  // At capacity limit
+        }
+
+        draw_batch_t* new_batches = realloc(item->batches, new_capacity * sizeof(draw_batch_t));
+        if (!new_batches) {
+            return -4;
+        }
+        item->batches = new_batches;
+        item->batch_capacity = new_capacity;
+    }
+
+    // Add batch
+    item->batches[item->batch_count] = *batch;
+    item->dirty = true;
+
+    if (item->batch_count >= item->peak_batch_count) {
+        item->peak_batch_count = item->batch_count + 1;
+    }
+
+    return item->batch_count++;
+}
+
+void rendering_draw_command_gen_clear_batches(rendering_draw_command_gen_handle_t handle) {
+    if (handle.id >= g_draw_command_gen_ctx.count) {
+        return;
+    }
+
+    rendering_draw_command_gen_internal_t* item = &g_draw_command_gen_ctx.items[handle.id];
+    if (item->initialized) {
+        item->batch_count = 0;
+        item->dirty = true;
+    }
+}
+
+uint32_t rendering_draw_command_gen_get_batch_count(rendering_draw_command_gen_handle_t handle) {
+    if (handle.id >= g_draw_command_gen_ctx.count) {
+        return 0;
+    }
+
+    const rendering_draw_command_gen_internal_t* item = &g_draw_command_gen_ctx.items[handle.id];
+    return item->initialized ? item->batch_count : 0;
+}
+
+metal_buffer_t* rendering_draw_command_gen_get_command_buffer(rendering_draw_command_gen_handle_t handle) {
+    if (handle.id >= g_draw_command_gen_ctx.count) {
+        return NULL;
+    }
+
+    const rendering_draw_command_gen_internal_t* item = &g_draw_command_gen_ctx.items[handle.id];
+    return item->initialized ? item->command_buffer : NULL;
+}
+
+metal_buffer_t* rendering_draw_command_gen_get_visible_buffer(rendering_draw_command_gen_handle_t handle) {
+    if (handle.id >= g_draw_command_gen_ctx.count) {
+        return NULL;
+    }
+
+    const rendering_draw_command_gen_internal_t* item = &g_draw_command_gen_ctx.items[handle.id];
+    return item->initialized ? item->visible_buffer : NULL;
+}
+
+metal_buffer_t* rendering_draw_command_gen_get_counter_buffer(rendering_draw_command_gen_handle_t handle) {
+    if (handle.id >= g_draw_command_gen_ctx.count) {
+        return NULL;
+    }
+
+    const rendering_draw_command_gen_internal_t* item = &g_draw_command_gen_ctx.items[handle.id];
+    return item->initialized ? item->counter_buffer : NULL;
+}
+
+uint32_t rendering_draw_command_gen_get_total_draw_commands(void) {
+    uint32_t total = 0;
+    if (g_draw_command_gen_ctx.initialized) {
+        for (uint32_t i = 0; i < g_draw_command_gen_ctx.count; i++) {
+            total += g_draw_command_gen_ctx.items[i].total_commands_generated;
+        }
+    }
+    return total;
 }
 
 /* ============================================================================

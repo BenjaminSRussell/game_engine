@@ -18,15 +18,15 @@
 #include <core/asset_manager.h>
 #include <ecs/ecs.h>
 #include <include/platform/input/input.h>
-#include <physics/physics.h>
+// #include <physics/physics.h>
 #include <rendering/renderer.h>
-#include <scripting/script_system.h>
+// #include <scripting/script_system.h>
 #include <core/resource/vfs/vfs.h>
 
 // New Subsystems
-#include <audio/audio_system.h>
-#include <network/reliable_udp.h>
-#include <network/rpc_system.h>
+// #include <audio/audio_system.h>
+// #include <network/reliable_udp.h>
+// #include <network/rpc_system.h>
 
 #include <core/hot_reload.h>
 #include <rendering/post_processing.h>
@@ -34,21 +34,21 @@
 #include <tools/profiler.h>
 
 // Gameplay system headers
-#include <gameplay/combat/combat_system.h>
-#include <gameplay/crafting/crafting.h>
-#include <gameplay/inventory/inventory.h>
-#include <gameplay/inventory/item_database.h>
+// #include <gameplay/combat/combat_system.h>
+// #include <gameplay/crafting/crafting.h>
+// #include <gameplay/inventory/inventory.h>
+// #include <gameplay/inventory/item_database.h>
 
 // AI advanced subsystems
-#include <ai/npc/perception_system.h>
-#include <ai/npc_advanced/goap_enhanced.h>
-#include <ai/npc_advanced/memory_system.h>
-#include <ai/npc_advanced/utility_ai.h>
+// #include <ai/npc/perception_system.h>
+// #include <ai/npc_advanced/goap_enhanced.h>
+// #include <ai/npc_advanced/memory_system.h>
+// #include <ai/npc_advanced/utility_ai.h>
 
-#include <ai/npc_advanced/utility_ai.h>
+// #include <ai/npc_advanced/utility_ai.h>
 
 // Animation System
-#include <character/animation/animation_system.h>
+// #include <character/animation/animation_system.h>
 
 // Internal state wrapper if needed
 typedef struct {
@@ -236,10 +236,11 @@ static void engine_update_callback(void *user_data, f32 delta_time) {
     ecs_world_update(world, delta_time);
 
     // Update combat system
-    combat_system_update(world, delta_time);
+    // combat_system_update(world, delta_time);
   }
 
   // Update AI Subsystems
+  /*
   if (engine->subsystems.perception) {
     perception_system_process_frame(engine->subsystems.perception, delta_time);
   }
@@ -247,9 +248,10 @@ static void engine_update_callback(void *user_data, f32 delta_time) {
   if (engine->subsystems.memory) {
     memory_system_update(engine->subsystems.memory, delta_time);
   }
+  */
 
   // Update Animation System
-  animation_system_update(delta_time);
+  // animation_system_update(delta_time);
 
   // Game Module Input & Update
   if (engine->game_module) {
@@ -369,6 +371,7 @@ static bool engine_init_subsystems(Engine *engine) {
   }
 
   // 5. Physics
+  /*
   PhysicsConfig phys_config = {.gravity = {0.0f, -9.81f, 0.0f},
                                .fixed_timestep = 1.0f / 60.0f,
                                .velocity_iterations = 8,
@@ -380,6 +383,7 @@ static bool engine_init_subsystems(Engine *engine) {
   } else {
     LOG_INFO("Physics System initialized");
   }
+  */
 
   // 6. Scene Manager
   engine->subsystems.scene_manager =
@@ -391,13 +395,16 @@ static bool engine_init_subsystems(Engine *engine) {
   }
 
   // 10. Audio System
+  /*
   engine->subsystems.audio = (AudioSystem *)calloc(1, sizeof(AudioSystem));
   if (engine->subsystems.audio) {
     audio_system_init(engine->subsystems.audio, 32); // 32 channels
     LOG_INFO("Audio System initialized");
   }
+  */
 
   // 11. Scripting System
+  /*
   engine->subsystems.scripting =
       (ScriptSystem *)calloc(1, sizeof(ScriptSystem));
   if (engine->subsystems.scripting) {
@@ -407,6 +414,7 @@ static bool engine_init_subsystems(Engine *engine) {
       LOG_ERROR("Scripting System initialization failed");
     }
   }
+  */
 
   // 12. Network System (Stub for now, but structures exist)
   // engine->subsystems.network = ...
@@ -429,6 +437,7 @@ static bool engine_init_subsystems(Engine *engine) {
   }
 
   // 8. Gameplay Systems Integration
+  /*
   World *world = (World *)engine->subsystems.entities;
   if (world) {
     // Combat System
@@ -448,6 +457,7 @@ static bool engine_init_subsystems(Engine *engine) {
 
     // Crafting System
     if (crafting_system_init(1000)) {
+  */
       crafting_register_default_recipes();
       LOG_INFO("Crafting System initialized");
     } else {

@@ -4,6 +4,8 @@
  */
 
 #include <math.h>
+#include <stdbool.h>
+#include "blend_tree_impl.h"
 #include <stdlib.h>
 
 typedef struct AnimState AnimState;

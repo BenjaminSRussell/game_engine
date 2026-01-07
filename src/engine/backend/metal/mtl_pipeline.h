@@ -379,6 +379,38 @@ bool metal_pipeline_cache_load_from_disk(metal_pipeline_cache_t* cache, MTLDevic
 uint64_t metal_hash_render_pipeline_desc(const metal_render_pipeline_desc_t* desc);
 uint64_t metal_hash_compute_pipeline_desc(const metal_compute_pipeline_desc_t* desc);
 
+/* ============================================================================
+ * EXTENSIONS (Statistics & Validation)
+ * ============================================================================ */
+
+typedef struct metal_render_pipeline_stats {
+    bool has_vertex_shader;
+    bool has_fragment_shader;
+    bool uses_depth_testing;
+    bool uses_blending;
+    size_t estimated_memory_bytes;
+    uint64_t creation_time_ns;
+} metal_render_pipeline_stats_t;
+
+typedef struct metal_compute_pipeline_stats {
+    uint32_t max_total_threads_per_threadgroup;
+    size_t estimated_memory_bytes;
+    uint64_t creation_time_ns;
+} metal_compute_pipeline_stats_t;
+
+metal_render_pipeline_stats_t metal_render_pipeline_get_stats(const metal_render_pipeline_t *pipeline);
+metal_compute_pipeline_stats_t metal_compute_pipeline_get_stats(const metal_compute_pipeline_t *pipeline);
+
+bool metal_compute_pipeline_validate(MTLDeviceRef device_ref,
+                                     const metal_compute_pipeline_desc_t *desc,
+                                     char *error_message,
+                                     size_t error_message_size);
+
+uint32_t metal_get_max_threads_per_threadgroup(MTLDeviceRef device_ref);
+
+bool metal_pipeline_cache_invalidate_by_hash(metal_pipeline_cache_t *cache, uint64_t hash);
+void metal_pipeline_cache_invalidate_all(metal_pipeline_cache_t *cache);
+
 #ifdef __cplusplus
 }
 #endif

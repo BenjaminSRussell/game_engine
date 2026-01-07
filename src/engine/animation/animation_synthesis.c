@@ -1,6 +1,6 @@
 #include "animation_synthesis.h"
-#include "../core/logger.h"
-#include "../core/time.h"
+#include <core/logger.h>
+#include <core/time_system.h>
 #include "math/math.h"
 #include <string.h>
 #include <math.h>
@@ -248,7 +248,7 @@ AnimationClip* animation_synthesis_generate(AnimationSynthesisSystem* system,
         }
     }
     
-    u64 start_time = time_get_current_ms();
+    u64 start_time = (u64)(time_get_high_res_time() * 1000.0);
     
     AnimationSynthesisContext* context = &system->contexts[type];
     

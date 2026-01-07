@@ -7,10 +7,10 @@
  */
 
 #include "backend/metal/mtl_pipeline.h"
-#import \u003cFoundation / Foundation.h\u003e
-#import \u003cMetal / Metal.h\u003e
-#include \u003cstdio.h\u003e
-#include \u003cstring.h\u003e
+#import <Foundation/Foundation.h>
+#import <Metal/Metal.h>
+#include <stdio.h>
+#include <string.h>
 
 /* ============================================================================
  * RENDER PIPELINE STATISTICS
