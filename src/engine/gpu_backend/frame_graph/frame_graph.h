@@ -35,6 +35,14 @@ extern "C" {
 // Opaque type for the render graph
 typedef struct RenderGraph RenderGraph;
 
+// Queue type for multi-queue execution
+typedef enum RGQueueType {
+    RG_QUEUE_GRAPHICS = 0,
+    RG_QUEUE_COMPUTE_ASYNC,
+    RG_QUEUE_TRANSFER,
+    RG_QUEUE_COUNT
+} RGQueueType;
+
 // Resource and pass handles (opaque IDs)
 typedef struct RGResourceHandle {
     u32 id;
@@ -43,6 +51,12 @@ typedef struct RGResourceHandle {
 typedef struct RGPassHandle {
     u32 id;
 } RGPassHandle;
+
+// Resource versioning (for read-modify-write patterns)
+typedef struct RGResourceVersion {
+    RGResourceHandle base;
+    u32 version;
+} RGResourceVersion;
 
 // Invalid handle constants
 #define RG_INVALID_RESOURCE ((RGResourceHandle){0xFFFFFFFF})
@@ -86,6 +100,8 @@ typedef struct RGPassDesc {
     const char *name;
     RGPassExecuteFunc execute;
     void *user_data;
+    RGQueueType queue_type;  // Which queue to execute on
+    u32 priority;            // 0-255, higher = more important (for scheduling)
 } RGPassDesc;
 
 // === Graph Lifecycle ===
@@ -175,6 +191,14 @@ typedef struct RGStats {
 
 // Get graph statistics (call after compile)
 void rg_get_stats(RenderGraph *rg, RGStats *out);
+
+// === Validation ===
+
+// Comprehensive graph validation with detailed error reporting
+// Returns true if valid, false if errors found
+// error_buffer: buffer to write error message (can be NULL)
+// buffer_size: size of error buffer in bytes
+bool rg_validate_graph(RenderGraph *rg, char *error_buffer, u32 buffer_size);
 
 #ifdef __cplusplus
 }

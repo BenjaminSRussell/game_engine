@@ -31,6 +31,13 @@ RenderGraph *rg_create(void) {
     
     memset(&rg->stats, 0, sizeof(RGStats));
     
+    // Phase 1: Initialize profiling and barrier stats
+    memset(&rg->profiling, 0, sizeof(RGProfilingState));
+    memset(&rg->barrier_stats, 0, sizeof(RGBarrierStats));
+    for (u32 i = 0; i < RG_MAX_PASSES; i++) {
+        rg->pass_queues[i] = RG_QUEUE_GRAPHICS;  // Default to graphics queue
+    }
+    
     LOG_INFO("Render graph created");
     return rg;
 }
@@ -69,6 +76,10 @@ void rg_reset(RenderGraph *rg) {
     }
     
     memset(&rg->stats, 0, sizeof(RGStats));
+    
+    // Phase 1: Reset profiling and barrier stats
+    memset(&rg->profiling, 0, sizeof(RGProfilingState));
+    memset(&rg->barrier_stats, 0, sizeof(RGBarrierStats));
 }
 
 // === Resource Declaration ===

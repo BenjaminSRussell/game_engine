@@ -45,6 +45,12 @@ void oit_wboit_resize(OITContext* ctx, u32 width, u32 height);
 void oit_wboit_begin_pass(OITContext* ctx);
 
 /**
+ * Renders transparent geometry into WBOIT buffers.
+ * Geometry outputs weighted color and revealage.
+ */
+void oit_wboit_render_transparent(OITContext* ctx, void* draw_commands);
+
+/**
  * Composites the transparent result onto the backbuffer (or current render target).
  * Should be called after all transparent geometry is drawn.
  * Fullscreen pass that reads Accum and Reveal textures.
@@ -60,5 +66,11 @@ void* oit_wboit_get_accum_texture(OITContext* ctx);
  * Gets the Reveal Texture (R8 or R16F).
  */
 void* oit_wboit_get_reveal_texture(OITContext* ctx);
+
+/**
+ * Sets the WBOIT weight calculation parameters.
+ * bias: typically ~10.0, scale: typically ~3000.0, power: typically ~2.0
+ */
+void oit_wboit_set_weight_params(OITContext* ctx, float bias, float scale, float power);
 
 #endif /* RENDERING_FORWARD_OIT_WBOIT_H */

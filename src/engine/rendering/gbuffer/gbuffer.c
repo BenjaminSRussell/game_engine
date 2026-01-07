@@ -8,9 +8,8 @@
 #include <core/memory/memory.h>
 #include <core/logger/logger.h>
 #include <gpu_backend/render_pipeline.h>
-// Assuming texture creation functions are available in render_pipeline.h or similar
-// We will look at render_types.h and render_pipeline.h again to double check the texture creation API, 
-// using the `texture_create_2d` and `texture_destroy` functions seen earlier.
+#include <gpu_backend/framebuffer.h>
+#include <gpu_backend/render_types.h>
 
 GBuffer* gbuffer_create(u32 width, u32 height) {
     GBuffer *gbuffer = (GBuffer*)memory_allocate(sizeof(GBuffer), MEMORY_TAG_RENDERER);
@@ -19,47 +18,45 @@ GBuffer* gbuffer_create(u32 width, u32 height) {
 
     LOG_INFO("Creating G-Buffer: %dx%d", width, height);
 
-    // 1. Create Textures
+    // 1. Create Textures with proper formats
     
-    // Albedo: RGBA8
+    // Albedo: RGBA8 (8-bit per channel, standard color)
     gbuffer->texture_albedo = texture_create_2d(width, height, TEX_FORMAT_RGBA8);
-    // TODO: Set texture names for debugging if API allows
 
-    // Normal: RG16F (Float for precision with encoding)
-    gbuffer->texture_normal = texture_create_2d(width, height, TEX_FORMAT_RGBA16F); // Using RGBA16F for now as RG16F generic mapping might differ, can optimize later
+    // Normal: RG16F (2-channel 16-bit float for octahedral encoding)
+    gbuffer->texture_normal = texture_create_2d(width, height, TEX_FORMAT_RG16F);
 
     // Material: RGBA8 (Metallic, Roughness, AO, Flags)
     gbuffer->texture_material = texture_create_2d(width, height, TEX_FORMAT_RGBA8);
 
-    // Emissive: RGBA16F (HDR)
-    gbuffer->texture_emissive = texture_create_2d(width, height, TEX_FORMAT_RGBA16F);
+    // Emissive: R11G11B10F (Packed HDR format, more efficient than RGBA16F)
+    gbuffer->texture_emissive = texture_create_2d(width, height, TEX_FORMAT_R11G11B10F);
     
-    // Velocity: RG16F
-    gbuffer->texture_velocity = texture_create_2d(width, height, TEX_FORMAT_RGBA16F); // Using RGBA16F, likely only using RG channels
+    // Velocity: RG16F (2-channel for screen space motion vectors)
+    gbuffer->texture_velocity = texture_create_2d(width, height, TEX_FORMAT_RG16F);
 
-    // Depth: Depth32 (Using generic create, need to ensure format handles transform to depth attachment)
-    // Note: texture_create_2d might default to color, need to check if there is a specific depth creation or if format handles it.
-    // Assuming TEX_FORMAT_D32F exists or similar. Checking render_types.h earlier, I saw TEX_FORMAT_RGBA8 etc. 
-    // I did NOT see a Depth format in the small enum in render_types.h.
-    // I will assume for now I need to add it or it's handled via a specific flag, but for now I'll use a placeholder or assume the create_render_target API handles depth.
-    
-    // WAIT: render_pipeline.h has `render_target_create`. Let's re-examine if that creates a full framebuffer or just a texture.
-    // "void *render_target_create(uint32_t width, uint32_t height);"
-    
-    // Actually, usually G-Buffers are constructed from multiple textures attached to a Framebuffer.
-    // If the engine has a `framebuffer_create` (not seen in the short file view), or if we manually attach.
-    // I'll stick to creating textures.
-    // Use RGBA32F as placeholder for depth if specific depth format isn't exposed in the enum I saw, 
-    // but typically it should be.
-    // Let's rely on `texture_create_2d` returning a handle.
+    // Depth: D32F (32-bit float depth buffer)
+    gbuffer->texture_depth = texture_create_2d(width, height, TEX_FORMAT_D32F);
 
-    // Correcting assumption: In many simple engines, render_target_create makes a default color+depth.
-    // But for MRT (Multiple Render Targets), we likely need a specific Framebuffer builder.
-    // Since I don't see that in the headers I read, I will assume we create textures and then maybe there is an API to attach them or I just hold them here.
-    // I see `vulkan_framebuffer.c` in the file list.
+    // 2. Create and configure framebuffer
+    gbuffer->framebuffer = framebuffer_create(width, height);
     
-    // I will initialize depth as a texture for now.
-    gbuffer->texture_depth = texture_create_2d(width, height, TEX_FORMAT_RGBA32F); // Placeholder for Depth if specific enum missing
+    // Attach all textures to framebuffer
+    framebuffer_attach_color(gbuffer->framebuffer, 0, gbuffer->texture_albedo);
+    framebuffer_attach_color(gbuffer->framebuffer, 1, gbuffer->texture_normal);
+    framebuffer_attach_color(gbuffer->framebuffer, 2, gbuffer->texture_material);
+    framebuffer_attach_color(gbuffer->framebuffer, 3, gbuffer->texture_emissive);
+    framebuffer_attach_color(gbuffer->framebuffer, 4, gbuffer->texture_velocity);
+    framebuffer_attach_depth(gbuffer->framebuffer, gbuffer->texture_depth);
+    
+    // Validate framebuffer
+    if (!framebuffer_validate(gbuffer->framebuffer)) {
+        LOG_ERROR("G-Buffer framebuffer validation failed!");
+        gbuffer_destroy(gbuffer);
+        return NULL;
+    }
+    
+    LOG_INFO("G-Buffer created successfully with 5 color attachments + depth");
 
     return gbuffer;
 }
@@ -75,7 +72,7 @@ void gbuffer_destroy(GBuffer *gbuffer) {
     texture_destroy(gbuffer->texture_depth);
 
     if (gbuffer->framebuffer) {
-        // framebuffer_destroy(gbuffer->framebuffer);
+        framebuffer_destroy(gbuffer->framebuffer);
     }
 
     memory_free(gbuffer, sizeof(GBuffer), MEMORY_TAG_RENDERER);
@@ -99,27 +96,54 @@ void gbuffer_resize(GBuffer *gbuffer, u32 width, u32 height) {
     texture_destroy(gbuffer->texture_depth);
 
     gbuffer->texture_albedo = texture_create_2d(width, height, TEX_FORMAT_RGBA8);
-    gbuffer->texture_normal = texture_create_2d(width, height, TEX_FORMAT_RGBA16F);
+    gbuffer->texture_normal = texture_create_2d(width, height, TEX_FORMAT_RG16F);
     gbuffer->texture_material = texture_create_2d(width, height, TEX_FORMAT_RGBA8);
-    gbuffer->texture_emissive = texture_create_2d(width, height, TEX_FORMAT_RGBA16F);
-    gbuffer->texture_velocity = texture_create_2d(width, height, TEX_FORMAT_RGBA16F);
-    gbuffer->texture_depth = texture_create_2d(width, height, TEX_FORMAT_RGBA32F);
+    gbuffer->texture_emissive = texture_create_2d(width, height, TEX_FORMAT_R11G11B10F);
+    gbuffer->texture_velocity = texture_create_2d(width, height, TEX_FORMAT_RG16F);
+    gbuffer->texture_depth = texture_create_2d(width, height, TEX_FORMAT_D32F);
+    
+    // Recreate framebuffer
+    if (gbuffer->framebuffer) {
+        framebuffer_destroy(gbuffer->framebuffer);
+    }
+    
+    gbuffer->framebuffer = framebuffer_create(width, height);
+    framebuffer_attach_color(gbuffer->framebuffer, 0, gbuffer->texture_albedo);
+    framebuffer_attach_color(gbuffer->framebuffer, 1, gbuffer->texture_normal);
+    framebuffer_attach_color(gbuffer->framebuffer, 2, gbuffer->texture_material);
+    framebuffer_attach_color(gbuffer->framebuffer, 3, gbuffer->texture_emissive);
+    framebuffer_attach_color(gbuffer->framebuffer, 4, gbuffer->texture_velocity);
+    framebuffer_attach_depth(gbuffer->framebuffer, gbuffer->texture_depth);
+    framebuffer_validate(gbuffer->framebuffer);
 
-    // Rebuild framebuffer if necessary
 }
 
 void gbuffer_bind(GBuffer *gbuffer) {
-    // This requires a "bind framebuffer" or "set render targets" API.
-    // Since I haven't implemented the lower level MRT binding yet, I will leave this as a TODO or pseudocode stub.
-    // It will likely involve calling something like `render_pass_begin(gbuffer->pass)`
+    if (!gbuffer || !gbuffer->framebuffer) {
+        LOG_ERROR("gbuffer_bind: Invalid G-Buffer");
+        return;
+    }
+    
+    framebuffer_bind(gbuffer->framebuffer);
+    
+    // Clear all attachments
+    framebuffer_clear_color(gbuffer->framebuffer, 0.0f, 0.0f, 0.0f, 0.0f);
+    framebuffer_clear_depth(gbuffer->framebuffer, 1.0f);
 }
 
 void gbuffer_unbind(GBuffer *gbuffer) {
-    // render_pass_end();
+    framebuffer_unbind();
 }
 
 void gbuffer_bind_textures(GBuffer *gbuffer, u32 start_slot) {
-    // Bind all textures to slots for reading in the lighting pass
-    // shader_set_texture_by_slot(..., start_slot + 0, gbuffer->texture_albedo);
-    // ...
+    if (!gbuffer) return;
+    
+    // Bind all G-buffer textures for reading in the lighting pass
+    shader_set_texture(0, "texAlbedo", gbuffer->texture_albedo);
+    shader_set_texture(0, "texNormal", gbuffer->texture_normal);
+    shader_set_texture(0, "texMaterial", gbuffer->texture_material);
+    shader_set_texture(0, "texDepth", gbuffer->texture_depth);
+    shader_set_texture(0, "texEmissive", gbuffer->texture_emissive);
+    
+    // Note: Using placeholder shader ID of 0, actual implementation should use active shader
 }

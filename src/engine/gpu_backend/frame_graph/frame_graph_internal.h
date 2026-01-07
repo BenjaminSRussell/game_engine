@@ -95,6 +95,22 @@ typedef struct RGBarrier {
     PipelineStage dst_stage;
 } RGBarrier;
 
+// GPU profiling state (for timestamp queries)
+typedef struct RGProfilingState {
+    void *query_pool;                    // VkQueryPool or Metal buffer
+    u64 timestamps[RG_MAX_PASSES * 2];   // Start/end for each pass
+    u32 query_count;
+    f32 timestamp_period;                // nanoseconds per tick
+    bool queries_resolved;               // Have results been read back?
+} RGProfilingState;
+
+// Barrier optimization statistics
+typedef struct RGBarrierStats {
+    u32 barriers_generated;              // Total barriers created
+    u32 barriers_merged;                 // How many were merged
+    u32 layout_transitions;              // Image layout changes
+} RGBarrierStats;
+
 // Main render graph structure
 struct RenderGraph {
     // Resources
@@ -122,6 +138,11 @@ struct RenderGraph {
     
     // Statistics
     RGStats stats;
+    
+    // Phase 1 additions
+    RGProfilingState profiling;          // GPU profiling data
+    RGBarrierStats barrier_stats;        // Barrier optimization stats
+    RGQueueType pass_queues[RG_MAX_PASSES];  // Queue assignment per pass
 };
 
 // === Internal Functions ===

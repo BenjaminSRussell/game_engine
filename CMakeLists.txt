@@ -78,6 +78,18 @@ add_custom_target(compile_shaders
     COMMENT "Compiling Vulkan shaders to SPIR-V"
 )
 
+# Metal shader compilation for instancing system
+if(APPLE)
+    add_custom_target(compile_instancing_shaders
+        COMMAND xcrun -sdk macosx metal -c ${CMAKE_SOURCE_DIR}/assets/shaders/compute/instance_culling.metal -o ${CMAKE_BINARY_DIR}/instance_culling.air
+        COMMAND xcrun -sdk macosx metal -c ${CMAKE_SOURCE_DIR}/assets/shaders/compute/batch_generation.metal -o ${CMAKE_BINARY_DIR}/batch_generation.air
+        COMMAND xcrun -sdk macosx metallib ${CMAKE_BINARY_DIR}/instance_culling.air ${CMAKE_BINARY_DIR}/batch_generation.air -o ${CMAKE_BINARY_DIR}/instancing_shaders.metallib
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Compiling Metal compute shaders for instancing system"
+    )
+    message(STATUS "Metal shader compilation target configured: compile_instancing_shaders")
+endif()
+
 # --- Source File Lists ---
 
 # Engine Sources
@@ -264,9 +276,15 @@ set(ENGINE_SOURCES
     src/engine/rendering/3d_rendering/geometry/bvh/bvh_simd.c
 
     # Instancing & GPU-Driven Rendering System
-    src/engine/geometry/instancing/instancing.c
-    src/engine/geometry/instancing/gpu_instance_data.c
-    src/engine/geometry/instancing/indirect_instancing.c
+    src/engine/geometry/instancing/instance_data.c
+    src/engine/geometry/instancing/gpu_culling.c
+    src/engine/geometry/instancing/performance_profiling.c
+    src/engine/geometry/instancing/debug_visualization.c
+    
+    # GPU-Driven Rendering
+    src/engine/rendering/3d_rendering/rendering/gpu_driven/multi_draw_indirect.c
+    src/engine/rendering/3d_rendering/rendering/gpu_driven/buffer_pool.c
+    src/engine/rendering/3d_rendering/rendering/gpu_driven/render_graph_integration.c
 
     # Input
     src/engine/input/input.c
@@ -817,3 +835,30 @@ endmacro()
 
 
 
+
+# ===========================================
+# G-Buffer & Deferred Rendering Tests
+# ===========================================
+add_executable(test_normal_encoding tests/test_normal_encoding.c)
+target_link_libraries(test_normal_encoding PRIVATE Engine)
+target_include_directories(test_normal_encoding PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+)
+
+add_executable(test_framebuffer tests/test_framebuffer.c)
+target_link_libraries(test_framebuffer PRIVATE Engine)
+target_include_directories(test_framebuffer PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+)
+
+add_executable(test_gbuffer_resize tests/test_gbuffer_resize.c)
+target_link_libraries(test_gbuffer_resize PRIVATE Engine)
+target_include_directories(test_gbuffer_resize PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src/engine/rendering/gbuffer
+)
+
+message(STATUS "G-Buffer tests configured: test_normal_encoding, test_framebuffer, test_gbuffer_resize")

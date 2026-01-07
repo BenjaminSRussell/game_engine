@@ -237,8 +237,87 @@ void mesh_calculate_normals(mesh_t* mesh) {
 }
 
 void mesh_calculate_tangents(mesh_t* mesh) {
-    // TODO: Implement MikkTSpace or simple tangent gen
+    if (!mesh || !mesh->vertices || !mesh->indices) return;
+    if (mesh->index_count < 3) return;
+
+    // Initialize tangents to zero
+    Vec3* tan1 = (Vec3*)MALLOC_GEOMETRY(sizeof(Vec3) * mesh->vertex_count * 2);
+    Vec3* tan2 = tan1 + mesh->vertex_count;
+    memset(tan1, 0, sizeof(Vec3) * mesh->vertex_count * 2);
+
+    // Accumulate tangents per triangle
+    for (u32 i = 0; i < mesh->index_count; i += 3) {
+        u32 i0 = mesh->indices[i];
+        u32 i1 = mesh->indices[i + 1];
+        u32 i2 = mesh->indices[i + 2];
+
+        Vec3 v0 = mesh->vertices[i0].position;
+        Vec3 v1 = mesh->vertices[i1].position;
+        Vec3 v2 = mesh->vertices[i2].position;
+
+        Vec2 w0 = mesh->vertices[i0].uv;
+        Vec2 w1 = mesh->vertices[i1].uv;
+        Vec2 w2 = mesh->vertices[i2].uv;
+
+        f32 x1 = v1.x - v0.x;
+        f32 x2 = v2.x - v0.x;
+        f32 y1 = v1.y - v0.y;
+        f32 y2 = v2.y - v0.y;
+        f32 z1 = v1.z - v0.z;
+        f32 z2 = v2.z - v0.z;
+
+        f32 s1 = w1.x - w0.x;
+        f32 s2 = w2.x - w0.x;
+        f32 t1 = w1.y - w0.y;
+        f32 t2 = w2.y - w0.y;
+
+        f32 r = s1 * t2 - s2 * t1;
+        f32 inv_r = (fabsf(r) < 0.0001f) ? 0.0f : (1.0f / r);
+
+        Vec3 sdir = {
+            (t2 * x1 - t1 * x2) * inv_r,
+            (t2 * y1 - t1 * y2) * inv_r,
+            (t2 * z1 - t1 * z2) * inv_r
+        };
+        Vec3 tdir = {
+            (s1 * x2 - s2 * x1) * inv_r,
+            (s1 * y2 - s2 * y1) * inv_r,
+            (s1 * z2 - s2 * z1) * inv_r
+        };
+
+        tan1[i0] = vec3_add(tan1[i0], sdir);
+        tan1[i1] = vec3_add(tan1[i1], sdir);
+        tan1[i2] = vec3_add(tan1[i2], sdir);
+
+        tan2[i0] = vec3_add(tan2[i0], tdir);
+        tan2[i1] = vec3_add(tan2[i1], tdir);
+        tan2[i2] = vec3_add(tan2[i2], tdir);
+    }
+
+    // Orthogonalize and store
+    for (u32 i = 0; i < mesh->vertex_count; ++i) {
+        Vec3 n = mesh->vertices[i].normal;
+        Vec3 t = tan1[i];
+
+        // Gram-Schmidt orthogonalize
+        Vec3 proj = vec3_mul(n, vec3_dot(n, t));
+        Vec3 tangent = vec3_normalize(vec3_sub(t, proj));
+
+        // Calculate handedness
+        Vec3 cross = vec3_cross(n, t);
+        f32 handedness = (vec3_dot(cross, tan2[i]) < 0.0f) ? -1.0f : 1.0f;
+
+        // Store in tangent.w component
+        mesh->vertices[i].tangent.x = tangent.x;
+        mesh->vertices[i].tangent.y = tangent.y;
+        mesh->vertices[i].tangent.z = tangent.z;
+        mesh->vertices[i].tangent.w = handedness;
+    }
+
+    FREE(tan1);
+    LOG_INFO("Calculated tangents for mesh '%s'", mesh->name);
 }
+
 
 // ----------------------------------------------------------------------------
 // Advanced Bounds Calculations

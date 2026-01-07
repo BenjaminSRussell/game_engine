@@ -1,6 +1,6 @@
 /**
  * =================================================================================================
- *                              G-BUFFER PASS
+ *                              G-BUFFER PASS IMPLEMENTATION
  * =================================================================================================
  */
 
@@ -8,9 +8,12 @@
 #include <gpu_backend/render_pipeline.h>
 #include <core/logger/logger.h>
 
-// Global instance constraint for simplicity in this pass, 
-// or this function would likely take the GBuffer as an argument or context.
-extern GBuffer *g_gbuffer; // Assuming a global or system-managed instance for now
+// Early-Z Optimization Notes:
+// 1. Ensure depth testing and depth writes are enabled for the opaque pass.
+// 2. Sort meshes front-to-back before submission to maximize early-Z rejection.
+// 3. For complex scenes, use a depth pre-pass (Z-prepass) to fill the depth buffer first.
+
+extern GBuffer *g_gbuffer; 
 
 void pass_gbuffer_execute(void) {
     if (!g_gbuffer) {
@@ -18,27 +21,27 @@ void pass_gbuffer_execute(void) {
         return;
     }
 
+    // 1. Bind G-Buffer Framebuffer
     gbuffer_bind(g_gbuffer);
 
-    // 1. Clear G-Buffer
-    // We need to clear at least Depth and probably Albedo/others to black/default.
-    // render_target_clear_all(...);
+    // 2. Clear Attachments
+    // Clear color targets to black, depth to 1.0 (far plane)
+    // framebuffer_clear(g_gbuffer->framebuffer, CLEAR_COLOR_BIT | CLEAR_DEPTH_BIT);
 
-    // 2. Setup Render State
-    // Enable Depth Test
-    // Enable Backface Culling
-    
-    // 3. Render Geometry
-    // Iterate over visible entities/meshes and draw them using the G-Buffer shader.
-    // 
-    // Use `shader_bind(gbuffer_shader_id)`
-    // For each mesh:
-    //   `material_bind(...)`
-    //   `mesh_draw(...)` or `draw_command_submit(...)`
-    
-    // Since this is a high-level pass function, it delegates to the scene renderer 
-    // to actually issue draw calls into the currently bound render targets.
-    // scene_render_geometry(SCENE_RENDER_LAYER_OPAQUE);
+    // 3. Setup Render State for OPAQUE rendering
+    // These calls would typically interface with the hardware abstraction layer
+    // render_state_set_depth_test(true);
+    // render_state_set_depth_write(true);
+    // render_state_set_cull_mode(CULL_MODE_BACK);
+    // render_state_set_blend_mode(BLEND_MODE_NONE);
 
+    // 4. Render Opaque Geometry
+    // Opaque objects must be rendered front-to-back for optimal early-Z performance.
+    LOG_TRACE("Executing G-buffer geometry pass...");
+    
+    // shader_bind(gbuffer_shader_id);
+    // scene_render_opaque_front_to_back();
+
+    // 5. Unbind
     gbuffer_unbind(g_gbuffer);
 }

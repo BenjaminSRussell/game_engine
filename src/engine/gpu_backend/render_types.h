@@ -52,10 +52,21 @@ typedef struct {
 /* ===== TEXTURE TYPES ===== */
 
 typedef enum {
+    // Standard Color Formats
     TEX_FORMAT_RGBA8,
     TEX_FORMAT_RGBA16F,
     TEX_FORMAT_RGBA32F,
     TEX_FORMAT_RGB10A2,
+    
+    // G-Buffer Optimized Formats
+    TEX_FORMAT_RG16F,        // 2-channel 16-bit float (normals, velocity)
+    TEX_FORMAT_R11G11B10F,   // Packed 32-bit HDR (emissive)
+    
+    // Depth/Stencil Formats
+    TEX_FORMAT_D32F,         // 32-bit float depth
+    TEX_FORMAT_D24S8,        // 24-bit depth + 8-bit stencil
+    
+    // Compressed Formats
     TEX_FORMAT_BC1,
     TEX_FORMAT_BC3,
     TEX_FORMAT_BC5,

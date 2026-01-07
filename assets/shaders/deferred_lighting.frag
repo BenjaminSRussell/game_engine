@@ -4,11 +4,13 @@
  * Performs PBR lighting using G-Buffer inputs.
  */
 
+#include "normal_encoding.glsl"
+
 layout(location = 0) in vec2 inUV;
 
 // G-Buffer Inputs
 layout(set = 0, binding = 0) uniform sampler2D texAlbedo;
-layout(set = 0, binding = 1) uniform sampler2D texNormal;
+layout(set = 0, binding = 1) uniform sampler2D texNormal;   // RG16F octahedral encoded
 layout(set = 0, binding = 2) uniform sampler2D texMaterial; // Met, Rough, AO
 layout(set = 0, binding = 3) uniform sampler2D texDepth;
 layout(set = 0, binding = 4) uniform sampler2D texEmissive;
@@ -28,7 +30,7 @@ layout(location = 0) out vec4 outColor;
 
 const float PI = 3.14159265359;
 
-// Trowbridge-Reitz GGX
+// Trowbridge-Reitz GGX Normal Distribution Function
 float DistributionGGX(vec3 N, vec3 H, float roughness) {
     float a = roughness * roughness;
     float a2 = a * a;
@@ -69,9 +71,10 @@ vec3 FresnelSchlick(float cosTheta, vec3 F0) {
 
 // Reconstruct World Position from Depth
 vec3 WorldPosFromDepth(float depth, vec2 uv) {
-    vec4 clipSpace = vec4(uv * 2.0 - 1.0, depth, 1.0); // Assuming 0..1 depth? Or Gl clip space. Vulkan is 0..1
-    vec4 worldPos = global.invViewProj * clipSpace;
-    return worldPos.xyz / worldPos.w;
+    // Vulkan NDC: x [-1,1], y [-1,1], z [0,1]
+    vec4 clipSpace = vec4(uv * 2.0 - 1.0, depth, 1.0);
+    vec4 viewPos = global.invViewProj * clipSpace;
+    return viewPos.xyz / viewPos.w;
 }
 
 void main() {
@@ -79,8 +82,9 @@ void main() {
     vec4 albedoSample = texture(texAlbedo, inUV);
     vec3 albedo = albedoSample.rgb;
     
-    // Normal (Decoding simple RGB storage for now)
-    vec3 N = normalize(texture(texNormal, inUV).rgb * 2.0 - 1.0);
+    // Decode octahedral normal from RG16F
+    vec2 encodedNormal = texture(texNormal, inUV).rg;
+    vec3 N = octDecode(encodedNormal);
     
     vec4 matSample = texture(texMaterial, inUV);
     float metallic = matSample.r;
@@ -90,21 +94,22 @@ void main() {
     float depth = texture(texDepth, inUV).r;
     vec3 emissive = texture(texEmissive, inUV).rgb;
 
-    if (depth == 1.0) { // Background / Sky
-        // Ideally we would sample environment map or separate skypass
-        outColor = vec4(emissive, 1.0); // Assuming sky writes to emissive or is cleared
+    // Early out for background/sky
+    if (depth >= 1.0) {
+        outColor = vec4(emissive, 1.0);
         return; 
     }
 
     vec3 WorldPos = WorldPosFromDepth(depth, inUV);
     vec3 V = normalize(global.cameraPos - WorldPos); // View Vector
+    
+    // Fresnel reflectance at normal incidence
     vec3 F0 = vec3(0.04); 
     F0 = mix(F0, albedo, metallic);
 
-    // 2. Lighting Calculation (Single Directional Light for now)
+    // 2. Lighting Calculation (Directional Light)
     vec3 Lo = vec3(0.0);
     
-    // Light Params
     vec3 L = normalize(-global.sunDirection); // Direction TO light
     vec3 H = normalize(V + L);
     vec3 radiance = global.sunColor * global.sunIntensity;
@@ -125,12 +130,11 @@ void main() {
     float NdotL = max(dot(N, L), 0.0);
     Lo += (kD * albedo / PI + specular) * radiance * NdotL;
 
-    // 3. Ambient
-    vec3 ambient = vec3(0.03) * albedo * ao; // Simple ambient
+    // 3. Ambient Lighting
+    vec3 ambient = vec3(0.03) * albedo * ao;
     
     vec3 color = ambient + Lo + emissive;
     
-    // Tone mapping and gamma correction usually in PostProcess pass, 
-    // so here we output linear HDR color.
+    // Output linear HDR color (tone mapping done in post-process)
     outColor = vec4(color, 1.0);
 }

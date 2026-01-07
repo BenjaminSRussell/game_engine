@@ -50,4 +50,10 @@ void* refraction_get_scene_color_texture(void);
  */
 f32 refraction_calculate_f0(f32 ior);
 
+/**
+ * Helper: Calculates base offsets for chromatic aberration.
+ * Returns vec3 where x=Red offset, y=Green offset, z=Blue offset.
+ */
+vec3 refraction_calculate_chromatic_aberration_offsets(f32 strength);
+
 #endif /* RENDERING_FORWARD_REFRACTION_H */

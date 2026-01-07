@@ -55,4 +55,21 @@ bool transparency_requires_sorting(BlendMode mode);
  */
 bool transparency_is_order_independent(BlendMode mode);
 
+/**
+ * Enables or disables Alpha to Coverage (A2C) for MSAA.
+ * This converts alpha values to coverage (subpixel masks) for smoother edges on foliage/hair.
+ */
+void transparency_set_alpha_to_coverage(bool enabled);
+
+/**
+ * Sets the alpha test cutoff threshold for alpha masking.
+ * Pixels with alpha below this value are discarded (in shader).
+ */
+void transparency_set_alpha_test_cutoff(float cutoff);
+
+/**
+ * Gets the currently active blend mode.
+ */
+BlendMode transparency_get_current_mode(void);
+
 #endif /* RENDERING_FORWARD_TRANSPARENCY_H */
