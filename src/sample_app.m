@@ -183,11 +183,15 @@ typedef struct {
         float cosY = cosf(self.rotationY);
         float sinY = sinf(self.rotationY);
 
-        matrix_float4x4 model = {0};
-        model.columns[0] = {cosY, 0, sinY, 0};
-        model.columns[1] = {sinX * sinY, cosX, -sinX * cosY, 0};
-        model.columns[2] = {-sinY * cosX, sinX, cosX * cosY, 0};
-        model.columns[3] = {0, 0, 0, 1};
+        matrix_float4x4 model = matrix_identity_float4x4;
+        model.columns[0][0] = cosY;
+        model.columns[0][2] = sinY;
+        model.columns[1][0] = sinX * sinY;
+        model.columns[1][1] = cosX;
+        model.columns[1][2] = -sinX * cosY;
+        model.columns[2][0] = -sinY * cosX;
+        model.columns[2][1] = sinX;
+        model.columns[2][2] = cosX * cosY;
         self.modelMatrix = model;
 
         struct {
@@ -195,25 +199,29 @@ typedef struct {
             matrix_float4x4 view;
             matrix_float4x4 model;
             vector_float3 lightDir;
-        } uniforms = {
-            self.projectionMatrix,
-            self.viewMatrix,
-            self.modelMatrix,
-            {1.0f, 1.0f, 1.0f}
-        };
+            float _pad;
+        } uniforms;
+        uniforms.projection = self.projectionMatrix;
+        uniforms.view = self.viewMatrix;
+        uniforms.model = self.modelMatrix;
+        uniforms.lightDir = (vector_float3){1.0f, 1.0f, 1.0f};
+        uniforms._pad = 0.0f;
 
         self.uniformBuffer = [self.device newBufferWithBytes:&uniforms
                                                       length:sizeof(uniforms)
                                                      options:MTLResourceStorageModeShared];
 
         id<CAMetalDrawable> drawable = [self currentDrawable];
+        if (!drawable) return;
+
         MTLRenderPassDescriptor *renderPass = [MTLRenderPassDescriptor renderPassDescriptor];
         renderPass.colorAttachments[0].texture = drawable.texture;
         renderPass.colorAttachments[0].clearColor = MTLClearColorMake(0.2, 0.3, 0.5, 1.0);
         renderPass.colorAttachments[0].loadAction = MTLLoadActionClear;
         renderPass.colorAttachments[0].storeAction = MTLStoreActionStore;
 
-        id<MTLCommandBuffer> commandBuffer = [self.commandQueue commandBuffer];
+        id<MTLCommandQueue> commandQueue = [self.device newCommandQueue];
+        id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
         id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPass];
 
         [renderEncoder setRenderPipelineState:self.pipelineState];
