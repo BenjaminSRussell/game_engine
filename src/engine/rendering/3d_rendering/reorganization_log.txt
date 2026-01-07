@@ -1,0 +1,6 @@
+[INFO] ============================================================
+[INFO] Starting 3D Rendering Directory Reorganization
+[INFO] Mode: EXECUTE
+[INFO] ============================================================
+[ERROR] Working directory is not clean. Commit or stash changes first.
+[ERROR] Aborting due to git status check failure

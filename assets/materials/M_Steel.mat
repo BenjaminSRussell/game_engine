@@ -1,0 +1,21 @@
+{
+  "material": {
+    "name": "M_Steel",
+    "parent": "M_PBR_Standard",
+    "parameters": {
+      "BaseColor": [0.7, 0.7, 0.7],
+      "Roughness": 0.2,
+      "Metallic": 1.0,
+      "AO": 1.0
+    },
+    "textures": {
+      "NormalMap": "textures/steel_normal.png",
+      "RoughnessMap": "textures/steel_roughness.png",
+      "MetallicMap": null,
+      "AOMap": null,
+      "EmissiveMap": null
+    },
+    "features": ["NORMAL_MAP", "ROUGHNESS_MAP"],
+    "quality": "HIGH"
+  }
+}

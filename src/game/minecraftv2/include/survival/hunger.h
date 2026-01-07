@@ -1,0 +1,144 @@
+// include/survival/hunger.h
+//
+// Purpose: Defines the public API and data structures for the hunger and food
+// mechanics system. This header provides structures for managing player hunger,
+// food items with nutritional values, and the effects of hunger on gameplay
+// including health regeneration, stamina, and starvation mechanics.
+//
+// Public APIs:
+// - `FoodType`: Enumeration for different types of food with varying properties.
+// - `Food`: Structure defining food properties including nutrition, saturation, and effects.
+// - `HungerComponent`: ECS component for tracking entity hunger and saturation levels.
+// - `hunger_component_init`: Initializes a hunger component with default values.
+// - `hunger_component_free`: Frees hunger component resources.
+// - `hunger_update`: Updates hunger levels over time and applies effects.
+// - `hunger_consume_food`: Consumes food item and applies its effects.
+// - `hunger_can_eat`: Checks if entity can eat (not full, not recently eaten).
+// - `hunger_get_hunger_level`: Gets current hunger level as percentage.
+// - `hunger_get_saturation_level`: Gets current saturation level as percentage.
+// - `hunger_is_starving`: Checks if entity is taking starvation damage.
+// - `hunger_should_regenerate`: Checks if entity should regenerate health.
+// - `hunger_apply_exertion`: Applies hunger drain from physical activities.
+// - `hunger_get_status_effects`: Gets status effects based on hunger level.
+//
+// Ownership: `HungerComponent` is owned by entities as an ECS component.
+// `Food` instances are typically owned by inventory systems or item definitions.
+//
+// Invariants:
+// - Hunger values range from 0.0 (starving) to max_hunger (full).
+// - Saturation values range from 0.0 to max_saturation.
+// - Saturation cannot exceed hunger level.
+// - Food nutrition values must be positive.
+// - Hunger drain rates should be balanced for gameplay.
+
+#ifndef HUNGER_H
+#define HUNGER_H
+
+#include "../game_common.h"
+#include <ecs/ecs.h>
+#include <math/vec3.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// Forward declarations
+struct ECSWorld;
+
+// Food types with different properties
+typedef enum {
+  FOOD_TYPE_APPLE,           // Basic fruit, low nutrition
+  FOOD_TYPE_BREAD,            // Grain-based, moderate nutrition
+  FOOD_TYPE_MEAT_COOKED,      // Cooked meat, high nutrition
+  FOOD_TYPE_MEAT_RAW,         // Raw meat, moderate nutrition with risk
+  FOOD_TYPE_FISH,             // Fish, moderate nutrition
+  FOOD_TYPE_CARROT,           // Vegetable, low nutrition
+  FOOD_TYPE_POTATO,           // Starchy vegetable, moderate nutrition
+  FOOD_TYPE_STEW,             // Complex meal, very high nutrition
+  FOOD_TYPE_CAKE,             // Dessert, high saturation but low nutrition
+  FOOD_TYPE_COOKIE,           // Small snack, minimal nutrition
+  FOOD_TYPE_PUMPKIN_PIE,      // Special food, good nutrition
+  FOOD_TYPE_GOLDEN_APPLE,     // Rare food, special effects
+  FOOD_TYPE_ENCHANTED_GOLDEN_APPLE, // Ultra rare, powerful effects
+  FOOD_TYPE_ROTTEN_FLESH,     // Bad food, negative effects
+  FOOD_TYPE_SPIDER_EYE,        // Dangerous food, poison risk
+  FOOD_TYPE_POISONOUS_POTATO,  // Poisonous food
+  FOOD_TYPE_COUNT
+} FoodType;
+
+// Food structure with nutritional properties
+typedef struct {
+  FoodType type;
+  f32 nutrition;        // Hunger points restored (0-20)
+  f32 saturation;       // Saturation points restored (0-20)
+  f32 eat_time;        // Time to consume in seconds
+  bool can_be_eaten_raw; // Can be eaten without cooking
+  u32 hunger_effect;    // Special effect ID (0 = none)
+  f32 effect_duration;  // Duration of special effect in seconds
+  f32 chance_poison;    // Chance of food poisoning (0.0-1.0)
+} Food;
+
+// Hunger component for entities
+typedef struct {
+  f32 hunger;            // Current hunger level (0-20)
+  f32 max_hunger;        // Maximum hunger level
+  f32 saturation;        // Current saturation level (0-20)
+  f32 max_saturation;    // Maximum saturation level
+  f32 exhaustion;        // Exhaustion level that affects hunger drain
+  f32 food_timer;        // Time since last ate (for eating cooldown)
+  f32 starvation_timer;  // Time since last took starvation damage
+  f32 regeneration_timer; // Timer for health regeneration
+  f32 hunger_drain_rate; // Base hunger drain per second
+  bool is_starving;      // Currently taking starvation damage
+  bool can_regen_health; // Can regenerate health from saturation
+  u32 last_food_type;    // Type of last food eaten
+} HungerComponent;
+
+// Hunger system functions
+void hunger_component_init(HungerComponent* hunger);
+void hunger_component_free(HungerComponent* hunger);
+
+// Hunger update and mechanics
+void hunger_update(HungerComponent* hunger, f32 delta_time);
+bool hunger_consume_food(HungerComponent* hunger, const Food* food);
+bool hunger_can_eat(const HungerComponent* hunger);
+
+// Hunger state queries
+f32 hunger_get_hunger_level(const HungerComponent* hunger);    // 0.0-1.0
+f32 hunger_get_saturation_level(const HungerComponent* hunger); // 0.0-1.0
+bool hunger_is_starving(const HungerComponent* hunger);
+bool hunger_should_regenerate_health(const HungerComponent* hunger);
+bool hunger_is_very_hungry(const HungerComponent* hunger);   // < 3 hunger points
+bool hunger_is_peckish(const HungerComponent* hunger);        // < 6 hunger points
+
+// Hunger effects and modifiers
+void hunger_apply_exertion(HungerComponent* hunger, f32 exertion_amount);
+void hunger_set_hunger_drain_rate(HungerComponent* hunger, f32 rate);
+u32 hunger_get_status_effects(const HungerComponent* hunger);
+
+// Food creation and management
+Food food_create(FoodType type);
+const char* food_get_name(FoodType type);
+const char* food_get_description(FoodType type);
+bool food_is_safe_to_eat(const Food* food);
+
+// Utility functions
+f32 hunger_calculate_exhaustion_from_movement(f32 movement_speed, bool is_sprinting, bool is_swimming);
+f32 hunger_calculate_health_regen_rate(const HungerComponent* hunger);
+void hunger_debug_print_status(const HungerComponent* hunger);
+
+// Constants
+#define HUNGER_MAX_LEVEL 20.0f
+#define SATURATION_MAX_LEVEL 20.0f
+#define HUNGER_STARVATION_THRESHOLD 0.0f
+#define HUNGER_REGENERATION_THRESHOLD 18.0f
+#define HUNGER_EXERTION_THRESHOLD 4.0f
+#define FOOD_EAT_COOLDOWN 1.5f
+#define STARVATION_DAMAGE_RATE 1.0f  // Damage per second
+#define HEALTH_REGENERATION_RATE 0.5f  // Health per second
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // HUNGER_H

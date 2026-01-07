@@ -1,0 +1,129 @@
+#version 460 core
+
+/**
+ * =================================================================================================
+ *                              OCEAN WATER COMPUTE SHADER - DISPLACEMENT MAPS
+ *                              Agent: AGENT_SHADER_2
+ * =================================================================================================
+ *
+ * Compute shader for generating displacement, normal, and folding maps from
+ * FFT displacement data.
+ *
+ * =================================================================================================
+ */
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(set = 0, binding = 0) uniform DisplacementUBO {
+    int resolution;
+    float patch_size;
+    float height_scale;
+    float normal_scale;
+    float jacobian_threshold;
+} ubo;
+
+layout(rgba32f, binding = 0) uniform readonly image2D displacement_texture;
+layout(rgba32f, binding = 1) uniform writeonly image2D normal_texture;
+layout(rgba32f, binding = 2) uniform writeonly image2D folding_texture;
+layout(rgba32f, binding = 3) uniform writeonly image2D foam_texture;
+
+/* =================================================================================================
+ *                                    GRADIENT CALCULATION
+ * =================================================================================================
+ */
+vec3 calculateGradient(ivec2 coord) {
+    // Sample neighboring pixels for gradient calculation
+    vec3 center = imageLoad(displacement_texture, coord).xyz;
+    
+    vec3 right = imageLoad(displacement_texture, ivec2(coord.x + 1, coord.y)).xyz;
+    vec3 left = imageLoad(displacement_texture, ivec2(coord.x - 1, coord.y)).xyz;
+    vec3 up = imageLoad(displacement_texture, ivec2(coord.x, coord.y + 1)).xyz;
+    vec3 down = imageLoad(displacement_texture, ivec2(coord.x, coord.y - 1)).xyz;
+    
+    // Calculate gradients using central differences
+    float dx = (right.x - left.x) * 0.5;
+    float dz = (up.z - down.z) * 0.5;
+    float dy = (right.y - left.y) * 0.5;
+    
+    return vec3(dx, dy, dz);
+}
+
+/* =================================================================================================
+ *                                    NORMAL CALCULATION
+ * =================================================================================================
+ */
+vec3 calculateNormal(vec3 gradient) {
+    // Normal is perpendicular to the surface
+    // For a height field: normal = normalize((-dz, 1, -dx))
+    vec3 normal = normalize(vec3(-gradient.x, 1.0, -gradient.z));
+    return normal;
+}
+
+/* =================================================================================================
+ *                                    JACOBIAN CALCULATION
+ * =================================================================================================
+ */
+float calculateJacobian(vec3 gradient) {
+    // Jacobian = (1 - dx) * (1 - dz) - dx * dz
+    // where dx and dz are the x and z gradients of displacement
+    float dx = gradient.x;
+    float dz = gradient.z;
+    
+    float jacobian = (1.0 - dx) * (1.0 - dz) - dx * dz;
+    return jacobian;
+}
+
+/* =================================================================================================
+ *                                    FOAM GENERATION
+ * =================================================================================================
+ */
+float generateFoam(float jacobian, vec3 displacement) {
+    float foam = 0.0;
+    
+    // Wave breaking foam (from Jacobian)
+    if (jacobian < ubo.jacobian_threshold) {
+        foam += 1.0 - (jacobian / ubo.jacobian_threshold);
+    }
+    
+    // Height-based foam (for very high waves)
+    float height_factor = saturate(displacement.y / 2.0); // Assuming max wave height of 2m
+    foam += height_factor * 0.3;
+    
+    return saturate(foam);
+}
+
+/* =================================================================================================
+ *                                    MAIN COMPUTE SHADER
+ * =================================================================================================
+ */
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    
+    if (coord.x >= ubo.resolution || coord.y >= ubo.resolution) {
+        return;
+    }
+    
+    // Load displacement data
+    vec3 displacement = imageLoad(displacement_texture, coord).xyz;
+    
+    // Scale displacement
+    displacement *= ubo.height_scale;
+    
+    // Calculate gradient
+    vec3 gradient = calculateGradient(coord);
+    gradient *= ubo.normal_scale;
+    
+    // Calculate normal
+    vec3 normal = calculateNormal(gradient);
+    
+    // Calculate Jacobian for foam detection
+    float jacobian = calculateJacobian(gradient);
+    
+    // Generate foam
+    float foam = generateFoam(jacobian, displacement);
+    
+    // Store results
+    imageStore(normal_texture, coord, vec4(normal, 1.0));
+    imageStore(folding_texture, coord, vec4(jacobian, 0.0, 0.0, 1.0));
+    imageStore(foam_texture, coord, vec4(foam, 0.0, 0.0, 1.0));
+}

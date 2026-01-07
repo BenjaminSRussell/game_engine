@@ -1,0 +1,46 @@
+# Minecraft v2 Pickaxe Item Model
+# Simple 3D pickaxe for inventory display
+
+# Head vertices
+v 0.0 0.5 0.2
+v 0.3 0.5 0.2
+v 0.3 0.8 0.2
+v 0.0 0.8 0.2
+v 0.0 0.5 -0.2
+v 0.3 0.5 -0.2
+v 0.3 0.8 -0.2
+v 0.0 0.8 -0.2
+
+# Handle vertices
+v 0.1 0.5 0.05
+v 0.2 0.5 0.05
+v 0.2 -0.3 0.05
+v 0.1 -0.3 0.05
+v 0.1 0.5 -0.05
+v 0.2 0.5 -0.05
+v 0.2 -0.3 -0.05
+v 0.1 -0.3 -0.05
+
+# Texture coordinates
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+vt 0.0 1.0
+
+# Head faces
+usemtl pickaxe_head
+f 1/1 2/2 3/3 4/4
+f 5/1 6/2 7/3 8/4
+f 1/1 5/2 6/3 2/4
+f 2/1 6/2 7/3 3/4
+f 3/1 7/2 8/3 4/4
+f 4/1 8/2 5/3 1/4
+
+# Handle faces
+usemtl pickaxe_handle
+f 9/1 10/2 11/3 12/4
+f 13/1 14/2 15/3 16/4
+f 9/1 13/2 14/3 10/4
+f 10/1 14/2 15/3 11/4
+f 11/1 15/2 16/3 12/4
+f 12/1 16/2 13/3 9/4

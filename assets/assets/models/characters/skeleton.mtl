@@ -1,0 +1,32 @@
+# Minecraft v2 Skeleton Model Materials
+newmtl skeleton_body
+Ka 0.0 0.0 0.0
+Kd 0.9 0.9 0.9
+Ks 0.3 0.3 0.3
+Ns 20
+illum 2
+map_Kd ../textures/entities/skeleton.png
+
+newmtl skeleton_head
+Ka 0.0 0.0 0.0
+Kd 0.95 0.95 0.95
+Ks 0.3 0.3 0.3
+Ns 20
+illum 2
+map_Kd ../textures/entities/skeleton.png
+
+newmtl skeleton_arms
+Ka 0.0 0.0 0.0
+Kd 0.9 0.9 0.9
+Ks 0.3 0.3 0.3
+Ns 20
+illum 2
+map_Kd ../textures/entities/skeleton.png
+
+newmtl skeleton_legs
+Ka 0.0 0.0 0.0
+Kd 0.85 0.85 0.85
+Ks 0.3 0.3 0.3
+Ns 20
+illum 2
+map_Kd ../textures/entities/skeleton.png

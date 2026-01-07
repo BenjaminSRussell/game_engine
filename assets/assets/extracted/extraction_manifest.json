@@ -1,0 +1,11 @@
+{
+  "extractions": [],
+  "statistics": {
+    "total_jars": 0,
+    "successful_extractions": 0,
+    "failed_extractions": 0,
+    "total_assets_found": 0,
+    "asset_types": {}
+  },
+  "mod_asset_counts": {}
+}

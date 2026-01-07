@@ -1,0 +1,32 @@
+# Minecraft v2 Player Model Materials
+newmtl player_body
+Ka 0.0 0.0 0.0
+Kd 0.6 0.3 0.1
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/entities/player.png
+
+newmtl player_head
+Ka 0.0 0.0 0.0
+Kd 0.8 0.6 0.4
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/entities/player.png
+
+newmtl player_arms
+Ka 0.0 0.0 0.0
+Kd 0.8 0.6 0.4
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/entities/player.png
+
+newmtl player_legs
+Ka 0.0 0.0 0.0
+Kd 0.2 0.2 0.8
+Ks 0.1 0.1 0.1
+Ns 10
+illum 2
+map_Kd ../textures/entities/player.png

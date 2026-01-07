@@ -1,0 +1,41 @@
+# Audio Asset Credits
+
+## Weather Sounds (CC0 - Public Domain)
+All weather sounds sourced from Freesound.org under CC0 license.
+- Rain sounds: Various contributors
+- Thunder sounds: Various contributors  
+- Wind sounds: Various contributors
+- Cave ambience: Various contributors
+
+## Mob Sounds (CC0 - Public Domain)
+All mob sounds sourced from Freesound.org under CC0 license.
+- Zombie, Skeleton, Creeper, Spider sounds: Various contributors
+- Animal sounds (Cow, Pig, Sheep): Various contributors
+
+## Music Tracks (CC-BY 3.0)
+Music by Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 3.0
+http://creativecommons.org/licenses/by/3.0/
+
+Tracks included:
+- Wallpaper
+- Carefree
+- Floating Cities
+- Cipher
+- Ascending the Vale
+- Enchanted Journey
+- Volatile Reaction
+- Darkest Child
+- Teller of the Tales
+- Meditation Impromptu 02
+
+## Kenney Sound Packs (CC0)
+- Kenney Digital Audio Pack
+- Kenney RPG Audio Pack
+- Kenney UI Audio Pack
+All available at: https://kenney.nl/
+
+## Attribution Requirements
+When distributing this game, please include:
+"Music by Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 3.0"

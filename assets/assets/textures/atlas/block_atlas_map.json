@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "tile_size": 32,
+  "tiles_per_row": 16,
+  "tiles": {
+    "stone": 0,
+    "dirt": 1,
+    "grass_top": 2,
+    "grass_side": 3,
+    "wood": 4,
+    "planks": 5,
+    "sand": 6,
+    "water": 7,
+    "lava": 8,
+    "glass": 9,
+    "leaves": 10,
+    "wool": 11
+  }
+}

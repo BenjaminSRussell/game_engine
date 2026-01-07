@@ -1,0 +1,194 @@
+#version 460 core
+
+/**
+ * =================================================================================================
+ *                              OCEAN WATER COMPUTE SHADER - FFT SPECTRUM
+ *                              Agent: AGENT_SHADER_2
+ * =================================================================================================
+ *
+ * Compute shader for generating ocean wave spectrum using Phillips and JONSWAP models.
+ * This generates the frequency domain representation of ocean waves.
+ *
+ * =================================================================================================
+ */
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(set = 0, binding = 0) uniform OceanSpectrumUBO {
+    float time;
+    float wind_speed;
+    vec2 wind_direction;
+    float fetch;
+    float spread_blend;
+    int resolution;
+    float patch_size;
+    float phillips_constant;
+    float jonswap_alpha;
+    float jonswap_gamma;
+} ubo;
+
+layout(rgba32f, binding = 0) uniform image2D spectrum_texture_real;
+layout(rgba32f, binding = 1) uniform image2D spectrum_texture_imag;
+layout(rgba32f, binding = 2) uniform image2D spectrum_texture_prev_real;
+layout(rgba32f, binding = 3) uniform image2D spectrum_texture_prev_imag;
+
+/* =================================================================================================
+ *                                    RANDOM NUMBER GENERATION
+ * =================================================================================================
+ */
+uint wang_hash(uint seed) {
+    seed = (seed ^ 61) ^ (seed >> 16);
+    seed *= 9;
+    seed = seed ^ (seed >> 4);
+    seed *= 0x27d4eb2d;
+    seed = seed ^ (seed >> 15);
+    return seed;
+}
+
+float random(uint seed) {
+    return float(wang_hash(seed)) / 4294967296.0;
+}
+
+/* =================================================================================================
+ *                                    PHILLIPS SPECTRUM
+ * =================================================================================================
+ */
+float phillipsSpectrum(vec2 k, float wind_speed, float fetch) {
+    float k_length = length(k);
+    if (k_length < 0.0001) return 0.0;
+    
+    float L = wind_speed * wind_speed / 9.81; // Largest wave length
+    float k_sq = k_length * k_length;
+    float k4 = k_sq * k_sq;
+    
+    // Wind direction
+    vec2 wind_dir = normalize(ubo.wind_direction);
+    float k_dot_wind = dot(normalize(k), wind_dir);
+    
+    float spectrum = expf(-1.0 / (k_sq * L * L)) / k4;
+    spectrum *= k_dot_wind * k_dot_wind; // Directional factor
+    spectrum *= expf(-k_sq * fetch * fetch / 10000.0); // Fetch limitation
+    
+    return spectrum * ubo.phillips_constant;
+}
+
+/* =================================================================================================
+ *                                    JONSWAP SPECTRUM
+ * =================================================================================================
+ */
+float jonswapSpectrum(float k_length, float wind_speed, float fetch) {
+    if (k_length < 0.0001) return 0.0;
+    
+    float omega_p = 0.877 * 9.81 / wind_speed; // Peak frequency
+    float omega = sqrt(9.81 * k_length);
+    
+    float sigma = (omega <= omega_p) ? 0.07 : 0.09;
+    float r = expf(-(omega - omega_p) * (omega - omega_p) / (2.0 * sigma * sigma * omega_p * omega_p));
+    
+    float S_PM = ubo.jonswap_alpha * 9.81 * 9.81 / pow(omega, 5) * expf(-1.25 * pow(omega_p / omega, 4));
+    
+    return S_PM * pow(ubo.jonswap_gamma, r);
+}
+
+/* =================================================================================================
+ *                                    DIRECTIONAL SPREADING
+ * =================================================================================================
+ */
+float directionalSpreading(vec2 k, vec2 wind_dir, float s) {
+    if (length(k) < 0.0001) return 1.0;
+    
+    float theta = atan(k.y, k.x);
+    float theta_mean = atan(wind_dir.y, wind_dir.x);
+    float dtheta = theta - theta_mean;
+    
+    // Normalize angle difference to [-pi, pi]
+    while (dtheta > PI) dtheta -= 2.0 * PI;
+    while (dtheta < -PI) dtheta += 2.0 * PI;
+    
+    return pow(cos(dtheta * 0.5), 2.0 * s);
+}
+
+/* =================================================================================================
+ *                                    COMPLEX RANDOM NUMBER
+ * =================================================================================================
+ */
+vec2 complexRandom(uint seed) {
+    // Box-Muller transform for Gaussian random numbers
+    float u1 = random(seed);
+    float u2 = random(seed + 1);
+    
+    float radius = sqrt(-2.0 * log(u1));
+    float angle = 2.0 * PI * u2;
+    
+    return vec2(radius * cos(angle), radius * sin(angle));
+}
+
+/* =================================================================================================
+ *                                    MAIN COMPUTE SHADER
+ * =================================================================================================
+ */
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    
+    if (coord.x >= ubo.resolution || coord.y >= ubo.resolution) {
+        return;
+    }
+    
+    // Convert pixel coordinates to wave vector
+    vec2 k;
+    k.x = 2.0 * PI * (coord.x - ubo.resolution / 2) / ubo.patch_size;
+    k.y = 2.0 * PI * (coord.y - ubo.resolution / 2) / ubo.patch_size;
+    
+    float k_length = length(k);
+    
+    // Generate spectrum
+    float spectrum = 0.0;
+    
+    // Blend between Phillips and JONSWAP spectra
+    float phillips = phillipsSpectrum(k, ubo.wind_speed, ubo.fetch);
+    float jonswap = jonswapSpectrum(k_length, ubo.wind_speed, ubo.fetch);
+    spectrum = mix(phillips, jonswap, ubo.spread_blend);
+    
+    // Apply directional spreading
+    vec2 wind_dir = normalize(ubo.wind_direction);
+    float spreading = directionalSpreading(k, wind_dir, 2.0);
+    spectrum *= spreading;
+    
+    // Generate complex random numbers
+    uint seed = uint(coord.x) * 1000 + uint(coord.y) + uint(ubo.time * 1000);
+    vec2 random_complex = complexRandom(seed);
+    
+    // Calculate dispersion relation
+    float omega = sqrt(9.81 * k_length);
+    
+    // Time-dependent phase
+    float phase = omega * ubo.time;
+    vec2 phase_complex = vec2(cos(phase), sin(phase));
+    
+    // Complex spectrum with time evolution
+    vec2 h0_k = sqrt(spectrum * 0.5) * random_complex;
+    vec2 h0_minus_k = sqrt(spectrum * 0.5) * vec2(random_complex.x, -random_complex.y);
+    
+    // Apply time evolution
+    vec2 h_t = h0_k * phase_complex + h0_minus_k * vec2(phase_complex.x, -phase_complex.y);
+    
+    // Store spectrum components
+    vec4 spectrum_real = vec4(h_t.x, 0.0, 0.0, 1.0);
+    vec4 spectrum_imag = vec4(h_t.y, 0.0, 0.0, 1.0);
+    
+    // Store current spectrum
+    imageStore(spectrum_texture_real, coord, spectrum_real);
+    imageStore(spectrum_texture_imag, coord, spectrum_imag);
+    
+    // Store previous spectrum for temporal coherence
+    vec4 prev_real = imageLoad(spectrum_texture_prev_real, coord);
+    vec4 prev_imag = imageLoad(spectrum_texture_prev_imag, coord);
+    
+    // Blend with previous spectrum for temporal stability
+    float blend_factor = 0.1;
+    spectrum_real = mix(prev_real, spectrum_real, blend_factor);
+    spectrum_imag = mix(prev_imag, spectrum_imag, blend_factor);
+    
+    imageStore(spectrum_texture_prev_real, coord, spectrum_real);
+    imageStore(spectrum_texture_prev_imag, coord, spectrum_imag);
+}

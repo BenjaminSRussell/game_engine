@@ -1,0 +1,21 @@
+{
+  "material": {
+    "name": "M_Grass",
+    "parent": "M_PBR_Standard",
+    "parameters": {
+      "BaseColor": [0.2, 0.8, 0.3],
+      "Roughness": 0.9,
+      "Metallic": 0.0,
+      "AO": 1.0
+    },
+    "textures": {
+      "NormalMap": "textures/grass_normal.png",
+      "RoughnessMap": null,
+      "MetallicMap": null,
+      "AOMap": null,
+      "EmissiveMap": null
+    },
+    "features": ["NORMAL_MAP"],
+    "quality": "HIGH"
+  }
+}

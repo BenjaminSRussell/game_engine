@@ -1,0 +1,289 @@
+// Shield blocking and parry mechanics implementation.
+// TODO: Implement shield bash attack system for offensive shield use.
+// TODO: Add shield durability system with visual wear indicators.
+// TODO: Implement shield enchantment system (unbreaking, thorns, etc.).
+// TODO: Add shield blocking angle optimization for better protection.
+// TODO: Implement shield stamina drain system for balance.
+// TODO: Add shield visual effects for blocking impacts.
+// TODO: Implement shield sound effects for blocks and parries.
+// TODO: Add shield animation system for raise/lower states.
+// TODO: Implement shield upgrade system with material tiers.
+// TODO: Add shield customization system (colors, patterns).
+#include "../../include/combat/shield.h"
+#include "../../include/core/logger.h"
+#include <string.h>
+#include <math.h>
+
+// Shield type definitions with balanced stats
+static const Shield SHIELD_STATS[SHIELD_TYPE_COUNT] = {
+  // Wooden Shield: Basic protection, fast raise time, low durability
+  {SHIELD_TYPE_WOODEN, 60.0f, 60.0f, 0.4f, 0.15f, 0.3f, 1.0f, 0},
+  // Stone Shield: Better protection, slower raise time, moderate durability
+  {SHIELD_TYPE_STONE, 90.0f, 90.0f, 0.5f, 0.12f, 0.4f, 1.5f, 0},
+  // Iron Shield: Good protection, balanced stats, high durability
+  {SHIELD_TYPE_IRON, 120.0f, 120.0f, 0.6f, 0.1f, 0.35f, 2.0f, 0},
+  // Diamond Shield: Excellent protection, fast raise time, very high durability
+  {SHIELD_TYPE_DIAMOND, 180.0f, 180.0f, 0.7f, 0.2f, 0.25f, 1.8f, 0},
+  // Netherite Shield: Best protection, moderate raise time, highest durability
+  {SHIELD_TYPE_NETHERITE, 250.0f, 250.0f, 0.8f, 0.18f, 0.3f, 2.5f, 0}
+};
+
+void shield_component_init(ShieldComponent* component, ShieldType type) {
+    if (!component) return;
+    
+    memset(component, 0, sizeof(ShieldComponent));
+    component->shield = shield_create(type);
+    component->state = BLOCKING_STATE_IDLE;
+    component->state_timer = 0.0f;
+    component->block_angle = 0.0f;
+    component->block_direction = (Vec3){0.0f, 0.0f, 1.0f};
+    component->stamina_cost = 2.0f + (type * 0.5f); // Higher tier shields cost more stamina
+    component->parry_stamina_cost = 5.0f + (type * 1.0f);
+    component->is_blocking = false;
+    component->can_parry = false;
+    component->last_parry_time = 0.0f;
+    component->parry_cooldown = 0.5f; // Base cooldown between parries
+    
+    LOG_DEBUG("Shield component initialized with %s shield", shield_get_type_name(type));
+}
+
+void shield_component_free(ShieldComponent* component) {
+    if (!component) return;
+    
+    memset(component, 0, sizeof(ShieldComponent));
+    LOG_DEBUG("Shield component freed");
+}
+
+void shield_start_block(ShieldComponent* component, Vec3 direction) {
+    if (!component || shield_is_broken(component)) return;
+    
+    // Normalize direction
+    f32 length = sqrtf(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
+    if (length > 0.001f) {
+        component->block_direction.x = direction.x / length;
+        component->block_direction.y = direction.y / length;
+        component->block_direction.z = direction.z / length;
+    }
+    
+    component->state = BLOCKING_STATE_RAISING;
+    component->state_timer = component->shield.raise_time;
+    component->is_blocking = true;
+    
+    LOG_DEBUG("Shield block started");
+}
+
+void shield_stop_block(ShieldComponent* component) {
+    if (!component) return;
+    
+    component->state = BLOCKING_STATE_IDLE;
+    component->state_timer = 0.0f;
+    component->is_blocking = false;
+    component->can_parry = false;
+    
+    LOG_DEBUG("Shield block stopped");
+}
+
+void shield_update(ShieldComponent* component, f32 delta_time) {
+    if (!component || shield_is_broken(component)) return;
+    
+    component->state_timer -= delta_time;
+    
+    switch (component->state) {
+        case BLOCKING_STATE_RAISING:
+            if (component->state_timer <= 0.0f) {
+                component->state = BLOCKING_STATE_BLOCKING;
+                component->state_timer = 0.0f;
+                component->can_parry = true; // Can parry while blocking
+                LOG_DEBUG("Shield fully raised");
+            }
+            break;
+            
+        case BLOCKING_STATE_BLOCKING:
+            // Shield is actively blocking
+            break;
+            
+        case BLOCKING_STATE_PARRYING:
+            if (component->state_timer <= 0.0f) {
+                component->state = BLOCKING_STATE_BLOCKING;
+                component->can_parry = false;
+                LOG_DEBUG("Parry window closed");
+            }
+            break;
+            
+        case BLOCKING_STATE_STUNNED:
+            if (component->state_timer <= 0.0f) {
+                component->state = BLOCKING_STATE_IDLE;
+                component->is_blocking = false;
+                LOG_DEBUG("Recovered from parry stun");
+            }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+bool shield_attempt_parry(ShieldComponent* component, Vec3 attack_direction) {
+    if (!component || !component->can_parry || shield_is_broken(component)) {
+        return false;
+    }
+    
+    // Check if attack is coming from the front (within 90 degrees)
+    f32 dot_product = component->block_direction.x * attack_direction.x +
+                     component->block_direction.y * attack_direction.y +
+                     component->block_direction.z * attack_direction.z;
+    
+    if (dot_product < 0.0f) { // Attack is from behind
+        return false;
+    }
+    
+    // Check angle between shield direction and attack direction
+    f32 angle = acosf(fminf(1.0f, fabsf(dot_product)));
+    if (angle > M_PI / 2) { // More than 90 degrees
+        return false;
+    }
+    
+    // Successful parry
+    component->state = BLOCKING_STATE_PARRYING;
+    component->state_timer = component->shield.parry_window;
+    component->can_parry = false;
+    
+    LOG_DEBUG("Successful parry attempt");
+    return true;
+}
+
+bool shield_can_parry(ShieldComponent* component, f32 current_time) {
+    if (!component || shield_is_broken(component)) {
+        return false;
+    }
+    
+    return component->can_parry && 
+           (current_time - component->last_parry_time) >= component->parry_cooldown;
+}
+
+f32 shield_get_parry_bonus(ShieldComponent* component) {
+    if (!component) return 1.0f;
+    
+    // Parry bonus damage multiplier based on shield type
+    switch (component->shield.type) {
+        case SHIELD_TYPE_WOODEN: return 1.5f;
+        case SHIELD_TYPE_STONE: return 1.6f;
+        case SHIELD_TYPE_IRON: return 1.7f;
+        case SHIELD_TYPE_DIAMOND: return 1.8f;
+        case SHIELD_TYPE_NETHERITE: return 2.0f;
+        default: return 1.5f;
+    }
+}
+
+f32 shield_calculate_block_reduction(ShieldComponent* component, Vec3 attack_direction) {
+    if (!component || !component->is_blocking || shield_is_broken(component)) {
+        return 0.0f;
+    }
+    
+    // Check if attack is coming from the front
+    f32 dot_product = component->block_direction.x * attack_direction.x +
+                     component->block_direction.y * attack_direction.y +
+                     component->block_direction.z * attack_direction.z;
+    
+    if (dot_product < 0.0f) { // Attack is from behind - no blocking
+        return 0.0f;
+    }
+    
+    // Calculate angle-based effectiveness
+    f32 angle = acosf(fminf(1.0f, fabsf(dot_product)));
+    f32 angle_factor = 1.0f - (angle / (M_PI / 2)); // 0.0 to 1.0 based on angle
+    
+    // Combine shield block strength with angle factor
+    f32 reduction = component->shield.block_strength * angle_factor;
+    
+    // State-based modifiers
+    if (component->state == BLOCKING_STATE_RAISING) {
+        reduction *= 0.5f; // Half effectiveness while raising
+    } else if (component->state == BLOCKING_STATE_PARRYING) {
+        reduction = 1.0f; // Perfect block during parry window
+    }
+    
+    return fminf(1.0f, reduction);
+}
+
+bool shield_apply_damage(ShieldComponent* component, f32 damage) {
+    if (!component || shield_is_broken(component)) {
+        return false;
+    }
+    
+    // Apply damage to shield durability
+    component->shield.durability -= damage;
+    
+    if (component->shield.durability <= 0.0f) {
+        component->shield.durability = 0.0f;
+        component->state = BLOCKING_STATE_IDLE;
+        component->is_blocking = false;
+        LOG_INFO("Shield broken!");
+        return true; // Shield broke
+    }
+    
+    return false; // Shield still functional
+}
+
+bool shield_is_broken(ShieldComponent* component) {
+    if (!component) return true;
+    return component->shield.durability <= 0.0f;
+}
+
+const char* shield_get_type_name(ShieldType type) {
+    switch (type) {
+        case SHIELD_TYPE_WOODEN: return "Wooden";
+        case SHIELD_TYPE_STONE: return "Stone";
+        case SHIELD_TYPE_IRON: return "Iron";
+        case SHIELD_TYPE_DIAMOND: return "Diamond";
+        case SHIELD_TYPE_NETHERITE: return "Netherite";
+        default: return "Unknown";
+    }
+}
+
+f32 shield_get_movement_penalty(ShieldComponent* component) {
+    if (!component || !component->is_blocking || shield_is_broken(component)) {
+        return 0.0f;
+    }
+    
+    // Movement speed reduction based on shield weight and state
+    f32 penalty = component->shield.weight * 0.1f; // Base penalty from weight
+    
+    if (component->state == BLOCKING_STATE_RAISING) {
+        penalty *= 0.5f; // Less penalty while raising
+    }
+    
+    return fminf(0.5f, penalty); // Cap at 50% speed reduction
+}
+
+f32 shield_get_stamina_drain(ShieldComponent* component, f32 delta_time) {
+    if (!component || !component->is_blocking || shield_is_broken(component)) {
+        return 0.0f;
+    }
+    
+    f32 drain = component->stamina_cost * delta_time;
+    
+    // Higher drain while raising shield
+    if (component->state == BLOCKING_STATE_RAISING) {
+        drain *= 2.0f;
+    }
+    
+    return drain;
+}
+
+Shield shield_create(ShieldType type) {
+    if (type >= SHIELD_TYPE_COUNT) {
+        type = SHIELD_TYPE_WOODEN; // Default to wooden
+    }
+    
+    Shield shield = SHIELD_STATS[type];
+    shield.type = type;
+    
+    return shield;
+}
+
+ShieldComponent shield_component_create(ShieldType type) {
+    ShieldComponent component;
+    shield_component_init(&component, type);
+    return component;
+}

@@ -1,0 +1,8 @@
+module CVoxelForge {
+    header "voxelforge_bridge.h"
+    header "swift_bridge_wrapper.h"
+    export *
+    
+    link "Engine"
+    link "Game"
+}

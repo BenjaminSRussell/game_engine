@@ -1,0 +1,4 @@
+module CVoxelForge {
+    header "voxelforge_bridge.h"
+    export *
+}

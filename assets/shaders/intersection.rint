@@ -1,0 +1,321 @@
+#version 460
+#extension GL_EXT_ray_tracing : require
+
+// Intersection shader - handles custom primitive intersection tests
+layout(location = 0) rayPayloadInEXT RayPayload payload;
+layout(location = 1) rayPayloadInEXT ShadowPayload shadow_payload;
+
+hitAttributeEXT vec3 hit_attribs; // Custom hit attributes
+
+// Custom primitive types
+#define PRIMITIVE_TYPE_SPHERE 1
+#define PRIMITIVE_TYPE_BOX 2
+#define PRIMITIVE_TYPE_CYLINDER 3
+#define PRIMITIVE_TYPE_CONE 4
+
+// Custom primitive data
+struct CustomPrimitive {
+    vec3 center;
+    vec3 extents;  // For box: half-extents, for sphere: radius, for cylinder: height/radius
+    uint primitive_type;
+    uint material_id;
+    uint padding0;
+    uint padding1;
+};
+
+// Custom primitive data buffer
+layout(binding = 8, set = 0, std430) readonly buffer CustomPrimitiveBuffer {
+    CustomPrimitive primitives[];
+};
+
+// Ray structure
+struct Ray {
+    vec3 origin;
+    vec3 direction;
+    float t_min;
+    float t_max;
+};
+
+// Hit result
+struct HitResult {
+    bool hit;
+    float t;
+    vec3 normal;
+    vec3 position;
+    vec2 uv;
+};
+
+// Sphere intersection
+HitResult intersect_sphere(Ray ray, CustomPrimitive primitive) {
+    HitResult result;
+    result.hit = false;
+    
+    vec3 oc = ray.origin - primitive.center;
+    float a = dot(ray.direction, ray.direction);
+    float b = 2.0 * dot(oc, ray.direction);
+    float c = dot(oc, oc) - primitive.extents.x * primitive.extents.x; // radius stored in x
+    
+    float discriminant = b * b - 4.0 * a * c;
+    if (discriminant < 0.0) {
+        return result;
+    }
+    
+    float sqrt_disc = sqrt(discriminant);
+    float t1 = (-b - sqrt_disc) / (2.0 * a);
+    float t2 = (-b + sqrt_disc) / (2.0 * a);
+    
+    float t = (t1 > ray.t_min) ? t1 : t2;
+    if (t < ray.t_min || t > ray.t_max) {
+        return result;
+    }
+    
+    result.hit = true;
+    result.t = t;
+    result.position = ray.origin + t * ray.direction;
+    result.normal = normalize(result.position - primitive.center);
+    
+    // Calculate UV coordinates for texturing
+    vec3 local_pos = result.position - primitive.center;
+    result.uv = vec2(atan(local_pos.z, local_pos.x) / (2.0 * PI) + 0.5, 
+                     acos(local_pos.y / primitive.extents.x) / PI);
+    
+    return result;
+}
+
+// Box intersection
+HitResult intersect_box(Ray ray, CustomPrimitive primitive) {
+    HitResult result;
+    result.hit = false;
+    
+    vec3 min_bound = primitive.center - primitive.extents;
+    vec3 max_bound = primitive.center + primitive.extents;
+    
+    vec3 inv_dir = 1.0 / ray.direction;
+    vec3 t0 = (min_bound - ray.origin) * inv_dir;
+    vec3 t1 = (max_bound - ray.origin) * inv_dir;
+    
+    vec3 t_min = min(t0, t1);
+    vec3 t_max = max(t0, t1);
+    
+    float t_near = max(max(t_min.x, t_min.y), t_min.z);
+    float t_far = min(min(t_max.x, t_max.y), t_max.z);
+    
+    if (t_near > t_far || t_far < ray.t_min || t_near > ray.t_max) {
+        return result;
+    }
+    
+    float t = (t_near > ray.t_min) ? t_near : t_far;
+    if (t > ray.t_max) {
+        return result;
+    }
+    
+    result.hit = true;
+    result.t = t;
+    result.position = ray.origin + t * ray.direction;
+    
+    // Calculate normal based on which face was hit
+    vec3 local_pos = result.position - primitive.center;
+    vec3 abs_local = abs(local_pos);
+    vec3 normal = vec3(0.0);
+    
+    float max_comp = max(max(abs_local.x, abs_local.y), abs_local.z);
+    if (abs_local.x == max_comp) {
+        normal.x = sign(local_pos.x);
+    } else if (abs_local.y == max_comp) {
+        normal.y = sign(local_pos.y);
+    } else {
+        normal.z = sign(local_pos.z);
+    }
+    
+    result.normal = normalize(normal);
+    
+    // Calculate UV coordinates
+    vec3 uvw = (result.position - primitive.center) / primitive.extents * 0.5 + 0.5;
+    if (abs(normal.x) > 0.5) {
+        result.uv = uvw.yz;
+    } else if (abs(normal.y) > 0.5) {
+        result.uv = uvw.xz;
+    } else {
+        result.uv = uvw.xy;
+    }
+    
+    return result;
+}
+
+// Cylinder intersection
+HitResult intersect_cylinder(Ray ray, CustomPrimitive primitive) {
+    HitResult result;
+    result.hit = false;
+    
+    float radius = primitive.extents.x;
+    float height = primitive.extents.y;
+    
+    // Transform to cylinder local space
+    vec3 oc = ray.origin - primitive.center;
+    
+    // Quadratic formula for cylinder sides
+    float a = ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z;
+    float b = 2.0 * (oc.x * ray.direction.x + oc.z * ray.direction.z);
+    float c = oc.x * oc.x + oc.z * oc.z - radius * radius;
+    
+    float discriminant = b * b - 4.0 * a * c;
+    if (discriminant < 0.0) {
+        return result;
+    }
+    
+    float sqrt_disc = sqrt(discriminant);
+    float t1 = (-b - sqrt_disc) / (2.0 * a);
+    float t2 = (-b + sqrt_disc) / (2.0 * a);
+    
+    // Check cylinder side hits
+    for (int i = 0; i < 2; ++i) {
+        float t = (i == 0) ? t1 : t2;
+        if (t < ray.t_min || t > ray.t_max) continue;
+        
+        vec3 hit_pos = ray.origin + t * ray.direction;
+        float y = hit_pos.y - primitive.center.y;
+        
+        if (abs(y) <= height * 0.5) {
+            result.hit = true;
+            result.t = t;
+            result.position = hit_pos;
+            result.normal = normalize(vec3(hit_pos.x - primitive.center.x, 0.0, hit_pos.z - primitive.center.z));
+            
+            // Calculate UV coordinates
+            float angle = atan(hit_pos.z - primitive.center.z, hit_pos.x - primitive.center.x);
+            result.uv = vec2(angle / (2.0 * PI) + 0.5, (y + height * 0.5) / height);
+            
+            return result;
+        }
+    }
+    
+    // Check top and bottom caps
+    for (int i = 0; i < 2; ++i) {
+        float cap_y = (i == 0) ? primitive.center.y + height * 0.5 : primitive.center.y - height * 0.5;
+        float t = (cap_y - ray.origin.y) / ray.direction.y;
+        
+        if (t < ray.t_min || t > ray.t_max) continue;
+        
+        vec3 hit_pos = ray.origin + t * ray.direction;
+        float dist_xz = sqrt((hit_pos.x - primitive.center.x) * (hit_pos.x - primitive.center.x) + 
+                             (hit_pos.z - primitive.center.z) * (hit_pos.z - primitive.center.z));
+        
+        if (dist_xz <= radius) {
+            result.hit = true;
+            result.t = t;
+            result.position = hit_pos;
+            result.normal = vec3(0.0, (i == 0) ? 1.0 : -1.0, 0.0);
+            
+            // Calculate UV coordinates for caps
+            result.uv = vec2((hit_pos.x - primitive.center.x) / radius + 0.5,
+                           (hit_pos.z - primitive.center.z) / radius + 0.5);
+            
+            return result;
+        }
+    }
+    
+    return result;
+}
+
+// Cone intersection
+HitResult intersect_cone(Ray ray, CustomPrimitive primitive) {
+    HitResult result;
+    result.hit = false;
+    
+    float radius = primitive.extents.x;
+    float height = primitive.extents.y;
+    
+    // Transform to cone local space
+    vec3 oc = ray.origin - primitive.center;
+    
+    // Simplified cone intersection (cone pointing up, apex at center)
+    float cone_angle = atan(radius / height);
+    
+    // This is a simplified implementation - a full cone intersection would be more complex
+    // For now, we'll use an approximation
+    
+    // Check if ray intersects cone volume (simplified)
+    float t = -oc.y / ray.direction.y; // Intersection with cone base plane
+    if (t < ray.t_min || t > ray.t_max) {
+        return result;
+    }
+    
+    vec3 hit_pos = ray.origin + t * ray.direction;
+    float dist_from_center = sqrt((hit_pos.x - primitive.center.x) * (hit_pos.x - primitive.center.x) + 
+                                 (hit_pos.z - primitive.center.z) * (hit_pos.z - primitive.center.z));
+    
+    // Check if hit is within cone at this height
+    float y_at_hit = hit_pos.y - primitive.center.y;
+    float max_radius_at_y = (y_at_hit + height * 0.5) * radius / height;
+    
+    if (dist_from_center <= max_radius_at_y && y_at_hit >= -height * 0.5 && y_at_hit <= height * 0.5) {
+        result.hit = true;
+        result.t = t;
+        result.position = hit_pos;
+        
+        // Calculate normal (simplified)
+        vec3 side_normal = normalize(vec3(hit_pos.x - primitive.center.x, 
+                                         radius / height, 
+                                         hit_pos.z - primitive.center.z));
+        result.normal = side_normal;
+        
+        // Calculate UV coordinates
+        float angle = atan(hit_pos.z - primitive.center.z, hit_pos.x - primitive.center.x);
+        result.uv = vec2(angle / (2.0 * PI) + 0.5, (y_at_hit + height * 0.5) / height);
+    }
+    
+    return result;
+}
+
+// Main intersection shader
+void main() {
+    // Get primitive ID from gl_PrimitiveID
+    uint primitive_id = gl_PrimitiveID;
+    
+    // Get ray parameters
+    Ray ray;
+    ray.origin = gl_WorldRayOriginEXT;
+    ray.direction = gl_WorldRayDirectionEXT;
+    ray.t_min = gl_RayTminEXT;
+    ray.t_max = gl_RayTmaxEXT;
+    
+    // Get custom primitive data
+    if (primitive_id >= primitives.length()) {
+        ignoreIntersectionEXT;
+        return;
+    }
+    
+    CustomPrimitive primitive = primitives[primitive_id];
+    
+    // Test intersection based on primitive type
+    HitResult hit_result;
+    
+    switch (primitive.primitive_type) {
+        case PRIMITIVE_TYPE_SPHERE:
+            hit_result = intersect_sphere(ray, primitive);
+            break;
+        case PRIMITIVE_TYPE_BOX:
+            hit_result = intersect_box(ray, primitive);
+            break;
+        case PRIMITIVE_TYPE_CYLINDER:
+            hit_result = intersect_cylinder(ray, primitive);
+            break;
+        case PRIMITIVE_TYPE_CONE:
+            hit_result = intersect_cone(ray, primitive);
+            break;
+        default:
+            ignoreIntersectionEXT;
+            return;
+    }
+    
+    if (!hit_result.hit) {
+        ignoreIntersectionEXT;
+        return;
+    }
+    
+    // Set hit attributes
+    hit_attribs = vec3(hit_result.uv, primitive.material_id);
+    
+    // Report the hit
+    reportIntersectionEXT(hit_result.t, 0);
+}

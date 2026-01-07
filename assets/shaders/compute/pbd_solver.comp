@@ -1,0 +1,83 @@
+#version 450
+layout(local_size_x = 256) in;
+
+struct PBDParticle {
+    float pos_x, pos_y, pos_z;
+    float prev_pos_x, prev_pos_y, prev_pos_z;
+    float vel_x, vel_y, vel_z;
+    float inv_mass;
+    float friction;
+    float restitution;
+    float density;
+    uint color;
+    float radius;
+    uint active; // Using uint for bool (0/1) padding might vary
+};
+
+layout(std430, binding = 0) buffer ParticleBuffer {
+    PBDParticle particles[];
+};
+
+layout(push_constant) uniform Constants {
+    float dt;
+    uint particle_count;
+};
+
+void main() {
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= particle_count) return;
+
+    // Load particle data
+    // We access floats directly to avoid alignment issues with vec3 in std430 vs C struct
+    vec3 pos = vec3(particles[idx].pos_x, particles[idx].pos_y, particles[idx].pos_z);
+    vec3 prev_pos = vec3(particles[idx].prev_pos_x, particles[idx].prev_pos_y, particles[idx].prev_pos_z);
+    vec3 vel = vec3(particles[idx].vel_x, particles[idx].vel_y, particles[idx].vel_z);
+    float inv_mass = particles[idx].inv_mass;
+    
+    // Check if active and dynamic
+    if (particles[idx].active == 0 || inv_mass == 0.0) {
+        return;
+    }
+
+    // Explicit Verlet Integration
+    // v = (p - prev_p) / dt
+    vel = (pos - prev_pos) / dt;
+
+    // Gravity
+    vel.y += -9.81 * dt;
+
+    // Save previous position
+    prev_pos = pos;
+
+    // Update position
+    pos += vel * dt;
+
+    // Ground collision (y < 0)
+    if (pos.y < 0.0) {
+        pos.y = 0.0;
+        // Simple friction/restitution approximation
+        vel.y *= -particles[idx].restitution;
+        vel.x *= 0.9; // Friction
+        vel.z *= 0.9;
+        
+        // Correct position based on new velocity? 
+        // In PBD/Verlet, we just clamp position. Velocity is derived next frame.
+        // But for damping we might modify prev_pos to fake a velocity change.
+        // pos - prev_pos = vel * dt
+        // prev_pos = pos - vel * dt
+        prev_pos = pos - vel * dt; 
+    }
+
+    // Write back
+    particles[idx].pos_x = pos.x;
+    particles[idx].pos_y = pos.y;
+    particles[idx].pos_z = pos.z;
+    
+    particles[idx].prev_pos_x = prev_pos.x;
+    particles[idx].prev_pos_y = prev_pos.y;
+    particles[idx].prev_pos_z = prev_pos.z;
+
+    particles[idx].vel_x = vel.x;
+    particles[idx].vel_y = vel.y;
+    particles[idx].vel_z = vel.z;
+}

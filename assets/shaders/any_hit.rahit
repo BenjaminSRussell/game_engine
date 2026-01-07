@@ -1,0 +1,131 @@
+#version 460
+#extension GL_EXT_ray_tracing : require
+#extension GL_EXT_nonuniform_qualifier : require
+
+// Any-hit shader - handles alpha testing and transparency
+layout(location = 0) rayPayloadInEXT RayPayload payload;
+layout(location = 1) rayPayloadInEXT ShadowPayload shadow_payload;
+
+hitAttributeEXT vec2 attribs; // Barycentric coordinates
+
+// Descriptor bindings
+layout(set = 0, binding = 3) uniform sampler2D textures[256];
+
+// Data structures
+struct RayPayload {
+    vec3 radiance;
+    vec3 throughput;
+    vec3 origin;
+    vec3 direction;
+    uint depth;
+    uint seed;
+    float t;
+    uint hit_id;
+    uint material_id;
+};
+
+struct ShadowPayload {
+    float visibility;
+};
+
+struct Vertex {
+    vec3 position;
+    vec3 normal;
+    vec2 uv;
+    uint ao;
+    uint light;
+    uint textureId;
+};
+
+// Vertex and index data buffers
+layout(binding = 6, set = 0, std430) readonly buffer VertexBuffer {
+    Vertex vertices[];
+};
+
+layout(binding = 7, set = 0, std430) readonly buffer IndexBuffer {
+    uint indices[];
+};
+
+// Random number generator
+uint wang_hash(uint seed) {
+    seed = (seed ^ 61) ^ (seed >> 16);
+    seed *= 9;
+    seed = seed ^ (seed >> 4);
+    seed *= 0x27d4eb2d;
+    seed = seed ^ (seed >> 15);
+    return seed;
+}
+
+float rand_float(inout uint seed) {
+    seed = wang_hash(seed);
+    return float(seed) / 4294967296.0;
+}
+
+// Main any-hit shader
+void main() {
+    // Get primitive index from gl_PrimitiveID
+    uint primitiveIndex = gl_PrimitiveID;
+    
+    // Get vertex indices for this triangle
+    uint i0 = indices[primitiveIndex * 3];
+    uint i1 = indices[primitiveIndex * 3 + 1];
+    uint i2 = indices[primitiveIndex * 3 + 2];
+    
+    // Get vertices
+    Vertex v0 = vertices[i0];
+    Vertex v1 = vertices[i1];
+    Vertex v2 = vertices[i2];
+    
+    // Calculate barycentric coordinates
+    vec3 barycentrics = vec3(1.0 - attribs.x - attribs.y, attribs.x, attribs.y);
+    
+    // Interpolate UV coordinates
+    vec2 uv = 
+        barycentrics.x * v0.uv +
+        barycentrics.y * v1.uv +
+        barycentrics.z * v2.uv;
+    
+    // Get texture ID
+    uint textureId = v0.textureId;
+    
+    // Sample texture for alpha
+    float alpha = 1.0;
+    if (textureId < 256) {
+        vec4 texColor = texture(textures[textureId], uv);
+        alpha = texColor.a;
+    }
+    
+    // Alpha test with stochastic transparency
+    float alpha_threshold = 0.5;
+    
+    if (alpha < alpha_threshold) {
+        // For partially transparent materials, use stochastic sampling
+        if (gl_RayFlagsEXT & gl_RayFlagsOpaqueEXT) {
+            // For shadow rays, use simple alpha test
+            ignoreIntersectionEXT;
+        } else {
+            // For primary rays, use stochastic transparency
+            uint rng_state = payload.seed + primitiveIndex;
+            float random_value = rand_float(rng_state);
+            
+            if (random_value > alpha) {
+                // Ray passes through transparent material
+                ignoreIntersectionEXT;
+            } else {
+                // Ray interacts with material, continue to closest hit
+                return;
+            }
+        }
+    }
+    
+    // Handle shadow rays for transparent materials
+    if (gl_RayFlagsEXT & gl_RayFlagsOpaqueEXT) {
+        // For shadow rays, reduce visibility based on alpha
+        shadow_payload.visibility *= alpha;
+        
+        // For very transparent materials, continue tracing
+        if (alpha < 0.1) {
+            ignoreIntersectionEXT;
+        }
+    }
+}

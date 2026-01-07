@@ -1,0 +1,34 @@
+VoxelForge Engine - Asset Verification Report
+Generated: Wed Dec 31 22:07:27 EST 2025
+================================================
+
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/water_diffuse_4k.jpg (size: 4KB, expected: >1000KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/water_normal_4k.jpg (size: 4KB, expected: >1000KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/water_roughness_4k.jpg (size: 4KB, expected: >500KB)
+PASS: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/sand_diffuse_4k.jpg (7220KB)
+PASS: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/sand_normal_4k.jpg (7228KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/wet_rocks_diffuse_4k.jpg (size: 4KB, expected: >1000KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/wet_rocks_normal_4k.jpg (size: 4KB, expected: >1000KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/grass_diffuse_4k.jpg (size: 4KB, expected: >1000KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/grass_normal_4k.jpg (size: 4KB, expected: >1000KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/rock_cliff_diffuse_4k.jpg (size: 4KB, expected: >1000KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/rock_cliff_normal_4k.jpg (size: 4KB, expected: >1000KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/forest_ground_diffuse_4k.jpg (size: 4KB, expected: >1000KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/textures/forest_ground_normal_4k.jpg (size: 4KB, expected: >1000KB)
+PASS: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/environment/sky_clear_2k.hdr (6776KB)
+PASS: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/environment/sky_overcast_2k.hdr (6352KB)
+PASS: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/environment/sky_sunset_2k.hdr (5792KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/models/rock_01.glb (size: 4KB, expected: >500KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/models/rock_02.glb (size: 4KB, expected: >500KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/models/rock_03.glb (size: 4KB, expected: >500KB)
+WARN: /Users/benjaminrussell/Desktop/Minecraft v2/assets/downloaded/models/tree_stump.glb (size: 4KB, expected: >500KB)
+
+================================================
+SUMMARY
+================================================
+Total Assets: 20
+Passed: 5
+Failed: 16
+Success Rate: 25%
+
+Status: SOME TESTS FAILED ❌

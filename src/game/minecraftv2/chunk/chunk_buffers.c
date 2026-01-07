@@ -1,0 +1,67 @@
+// src/chunk/chunk_buffers.c
+#include <chunk/chunk_buffers.h>
+#include <renderer/vulkan.h>
+#include <stdlib.h>
+#include <string.h>
+
+bool chunk_create_vulkan_buffers(Chunk *chunk, VulkanRenderer *renderer) {
+  if (!chunk || !renderer) {
+    return false;
+  }
+
+#ifdef VULKAN_BUILD
+  if (chunk->mesh.vertex_count == 0 || chunk->mesh.index_count == 0) {
+    return false;
+  }
+
+  // Use the helper functions from vulkan.h
+  return vulkan_create_chunk_vertex_buffer(renderer, (Mesh *)&chunk->mesh,
+                                           (VkBuffer *)&chunk->mesh.vertex_buffer,
+                                           (VkDeviceMemory *)&chunk->mesh.vertex_buffer_memory) &&
+         vulkan_create_chunk_index_buffer(renderer, (Mesh *)&chunk->mesh,
+                                          (VkBuffer *)&chunk->mesh.index_buffer,
+                                          (VkDeviceMemory *)&chunk->mesh.index_buffer_memory);
+#else
+  (void)chunk;
+  (void)renderer;
+  return false;
+#endif
+}
+
+bool chunk_update_vulkan_buffers(Chunk *chunk, VulkanRenderer *renderer) {
+  if (!chunk || !renderer) {
+    return false;
+  }
+
+#ifdef VULKAN_BUILD
+  if (chunk->mesh.vertex_buffer == VK_NULL_HANDLE) {
+    return chunk_create_vulkan_buffers(chunk, renderer);
+  }
+
+  // Update buffers using the helper function from vulkan.h
+  return vulkan_update_chunk_buffers(renderer, (Mesh *)&chunk->mesh,
+                                     chunk->mesh.vertex_buffer,
+                                     chunk->mesh.index_buffer);
+#else
+  return false;
+#endif
+}
+
+void chunk_destroy_vulkan_buffers(Chunk *chunk, VulkanRenderer *renderer) {
+  if (!chunk || !renderer) {
+    return;
+  }
+
+#ifdef VULKAN_BUILD
+  if (chunk->mesh.vertex_buffer != VK_NULL_HANDLE) {
+    vkDestroyBuffer(renderer->device, chunk->mesh.vertex_buffer, NULL);
+    vkFreeMemory(renderer->device, chunk->mesh.vertex_buffer_memory, NULL);
+    chunk->mesh.vertex_buffer = VK_NULL_HANDLE;
+  }
+  if (chunk->mesh.index_buffer != VK_NULL_HANDLE) {
+    vkDestroyBuffer(renderer->device, chunk->mesh.index_buffer, NULL);
+    vkFreeMemory(renderer->device, chunk->mesh.index_buffer_memory, NULL);
+    chunk->mesh.index_buffer = VK_NULL_HANDLE;
+  }
+#endif
+}

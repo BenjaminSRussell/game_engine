@@ -1,0 +1,204 @@
+#version 460
+#extension GL_EXT_ray_tracing : require
+
+// Ray-traced water caustics shader
+// Generates realistic light patterns underwater from water surface refraction
+
+layout(local_size_x = 8, local_size_y = 8) in;
+
+// Input/output images
+layout(binding = 0, rgba16f) uniform image2D caustics_output;     // Final caustics pattern
+layout(binding = 1, rgba16f) uniform image2D water_surface;      // Water surface normals/height
+layout(binding = 2, rgba16f) uniform image2D depth_buffer;        // Scene depth
+layout(binding = 3, rgba16f) uniform image2D light_direction;    // Light direction buffer
+
+// Water caustics parameters
+layout(binding = 4) uniform CausticsParams {
+    vec2 resolution;
+    float water_level;           // Water surface height
+    float caustics_intensity;   // Overall brightness multiplier
+    float caustics_scale;        // Scale of caustics patterns
+    float wave_amplitude;        // Wave height amplitude
+    float wave_frequency;        // Wave frequency
+    float caustics_distance;     // Maximum distance for caustics
+    uint time;                   // Current time for animation
+    uint caustics_samples;       // Samples per pixel for caustics
+    bool enable_animated_waves;  // Animate water surface
+    bool enable_color_caustics;  // Colorful caustics from light spectrum
+    bool enable_depth_attenuation; // Fade caustics with depth
+    float refractive_index;       // Water refractive index
+} caustics_params;
+
+// Random number generator
+uint wang_hash(uint seed) {
+    seed = (seed ^ 61) ^ (seed >> 16);
+    seed *= 9;
+    seed = seed ^ (seed >> 4);
+    seed *= 0x27d4eb2d;
+    seed = seed ^ (seed >> 15);
+    return seed;
+}
+
+float rand_float(inout uint seed) {
+    seed = wang_hash(seed);
+    return float(seed) / 4294967296.0;
+}
+
+// Generate water surface normal and height
+vec3 get_water_surface(vec2 world_pos, float time) {
+    vec2 wave_pos = world_pos * caustics_params.wave_frequency;
+    
+    // Multiple wave layers for realistic water
+    float wave1 = sin(wave_pos.x + time * 1.0) * cos(wave_pos.y + time * 0.7);
+    float wave2 = sin(wave_pos.x * 2.3 + time * 1.5) * cos(wave_pos.y * 1.7 + time * 1.1);
+    float wave3 = sin(wave_pos.x * 3.7 + time * 2.1) * cos(wave_pos.y * 2.9 + time * 1.9);
+    
+    float height = (wave1 * 0.5 + wave2 * 0.3 + wave3 * 0.2) * caustics_params.wave_amplitude;
+    
+    // Calculate normal using gradient
+    float epsilon = 0.01;
+    float dx = (sin((world_pos.x + epsilon) * caustics_params.wave_frequency + time * 1.0) * 
+               cos((world_pos.y) * caustics_params.wave_frequency + time * 0.7) -
+               sin((world_pos.x - epsilon) * caustics_params.wave_frequency + time * 1.0) * 
+               cos((world_pos.y) * caustics_params.wave_frequency + time * 0.7)) / (2.0 * epsilon);
+    
+    float dy = (sin((world_pos.x) * caustics_params.wave_frequency + time * 1.0) * 
+               cos((world_pos.y + epsilon) * caustics_params.wave_frequency + time * 0.7) -
+               sin((world_pos.x) * caustics_params.wave_frequency + time * 1.0) * 
+               cos((world_pos.y - epsilon) * caustics_params.wave_frequency + time * 0.7)) / (2.0 * epsilon);
+    
+    vec3 normal = normalize(vec3(-dx, 1.0, -dy));
+    
+    return vec3(normal, height);
+}
+
+// Calculate refraction through water surface
+vec3 refract_ray(vec3 incident, vec3 normal, float n1, float n2) {
+    float eta = n1 / n2;
+    float cos_i = -dot(incident, normal);
+    float k = 1.0 - eta * eta * (1.0 - cos_i * cos_i);
+    
+    if (k < 0.0) {
+        // Total internal reflection
+        return reflect(incident, normal);
+    }
+    
+    return eta * incident + (eta * cos_i - sqrt(k)) * normal;
+}
+
+// Calculate caustics contribution at a point
+vec3 calculate_caustics_contribution(vec2 world_pos, vec3 light_dir, float depth, float time) {
+    // Get water surface at this position
+    vec3 water_data = get_water_surface(world_pos, time);
+    vec3 water_normal = water_data.xyz;
+    float water_height = water_data.w;
+    
+    // Check if we're underwater
+    if (depth < caustics_params.water_level + water_height) {
+        return vec3(0.0);
+    }
+    
+    // Calculate distance from water surface
+    float water_distance = depth - (caustics_params.water_level + water_height);
+    
+    // Attenuate with distance
+    if (water_distance > caustics_params.caustics_distance) {
+        return vec3(0.0);
+    }
+    
+    float distance_attenuation = 1.0 - (water_distance / caustics_params.caustics_distance);
+    if (caustics_params.enable_depth_attenuation) {
+        distance_attenuation *= exp(-water_distance * 0.1);
+    }
+    
+    // Calculate refracted ray direction
+    vec3 incident = normalize(-light_dir);
+    vec3 refracted = refract_ray(incident, water_normal, 1.0, caustics_params.refractive_index);
+    
+    // Calculate caustics intensity based on refraction angle
+    float refraction_angle = acos(clamp(dot(refracted, vec3(0, -1, 0)), -1.0, 1.0));
+    float caustics_strength = pow(sin(refraction_angle), 2.0);
+    
+    // Scale caustics
+    caustics_strength *= caustics_params.caustics_intensity * distance_attenuation;
+    
+    // Add wave-based modulation
+    float wave_modulation = sin(world_pos.x * caustics_params.caustics_scale + time * 2.0) * 
+                           cos(world_pos.y * caustics_params.caustics_scale + time * 1.5);
+    caustics_strength *= (1.0 + wave_modulation * 0.3);
+    
+    // Generate color caustics if enabled
+    vec3 caustics_color = vec3(1.0);
+    if (caustics_params.enable_color_caustics) {
+        // Simulate light spectrum dispersion
+        float dispersion = sin(time * 0.5 + world_pos.x * 0.1) * 0.1;
+        caustics_color = vec3(
+            1.0 + dispersion,
+            1.0 - dispersion * 0.5,
+            1.0 - dispersion
+        );
+    }
+    
+    return caustics_color * caustics_strength;
+}
+
+// Sample caustics with multiple samples for better quality
+vec3 sample_caustics(vec2 world_pos, vec3 light_dir, float depth, float time, uint rng_state) {
+    vec3 total_caustics = vec3(0.0);
+    
+    for (uint i = 0; i < caustics_params.caustics_samples; ++i) {
+        // Random offset for sampling
+        vec2 offset = vec2(rand_float(rng_state), rand_float(rng_state)) * 0.5;
+        vec2 sample_pos = world_pos + offset;
+        
+        total_caustics += calculate_caustics_contribution(sample_pos, light_dir, depth, time);
+    }
+    
+    return total_caustics / float(caustics_params.caustics_samples);
+}
+
+void main() {
+    ivec2 pixel_coord = ivec2(gl_GlobalInvocationID.xy);
+    vec2 uv = (vec2(pixel_coord) + 0.5) / caustics_params.resolution;
+    
+    // Check if we're within bounds
+    if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
+        return;
+    }
+    
+    // Get depth at this pixel
+    float depth = texelFetch(depth_buffer, pixel_coord, 0).r;
+    
+    // Skip if no valid depth (background)
+    if (depth >= 1.0) {
+        imageStore(caustics_output, pixel_coord, vec4(0.0, 0.0, 0.0, 1.0));
+        return;
+    }
+    
+    // Get light direction
+    vec3 light_dir = texelFetch(light_direction, pixel_coord, 0).rgb;
+    light_dir = normalize(light_dir);
+    
+    // Convert UV to world position (simplified)
+    vec2 world_pos = (uv - 0.5) * 100.0; // Assume 100m world size
+    
+    // Get time for animation
+    float time = float(caustics_params.time) * 0.001; // Convert milliseconds to seconds
+    
+    // Initialize random number generator
+    uint rng_state = uint(gl_GlobalInvocationID.x + gl_GlobalInvocationID.y * caustics_params.resolution.x) + 
+                     uint(time * 1000.0);
+    
+    // Calculate caustics
+    vec3 caustics = sample_caustics(world_pos, light_dir, depth, time, rng_state);
+    
+    // Apply additional effects
+    if (caustics_params.enable_animated_waves) {
+        // Add time-based animation to caustics
+        float animation_factor = sin(time * 0.5) * 0.5 + 0.5;
+        caustics *= animation_factor;
+    }
+    
+    // Store caustics result
+    imageStore(caustics_output, pixel_coord, vec4(caustics, 1.0));
+}

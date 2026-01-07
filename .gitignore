@@ -1,0 +1,55 @@
+# Build
+build/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.wasm
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xccheckout
+xcuserdata/
+DerivedData/
+
+# Swift
+.build/
+*.swiftpm/
+*.xcframework/
+
+# Generated
+*.html
+*.js
+*.data
+project.yml
+
+# OS
+.DS_Store
+*.swp
+*.swo
+*~
+
+# IDEs
+.vscode/
+.idea/
+.vim/
+
+# Logs
+*.log
+*.trace
+
+# Local Binaries and Folders
+*.dSYM/
+example_physics
+city_generator.o
+ecosystem.o
+weather_system.o
+build_output.log
+

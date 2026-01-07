@@ -1,0 +1,8 @@
+# Python dependencies for modpack asset acquisition scripts
+
+# Image processing for texture optimization
+Pillow>=10.0.0
+
+# HTTP requests for downloading modpacks
+requests>=2.31.0
+
