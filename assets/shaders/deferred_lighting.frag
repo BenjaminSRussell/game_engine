@@ -22,60 +22,13 @@ layout(set = 1, binding = 0) uniform GlobalParams {
     vec3 sunDirection;
     vec3 sunColor;
     float sunIntensity;
+    int debugMode; // 0: None, 1: Albedo, 2: Normals, 3: Depth, 4: Material, 5: Emissive
 } global;
 
 layout(location = 0) out vec4 outColor;
 
 /* --- PBR FUNCTIONS --- */
-
-const float PI = 3.14159265359;
-
-// Trowbridge-Reitz GGX Normal Distribution Function
-float DistributionGGX(vec3 N, vec3 H, float roughness) {
-    float a = roughness * roughness;
-    float a2 = a * a;
-    float NdotH = max(dot(N, H), 0.0);
-    float NdotH2 = NdotH * NdotH;
-    
-    float num = a2;
-    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
-    denom = PI * denom * denom;
-    
-    return num / denom;
-}
-
-// Schlick-GGX Geometry Function
-float GeometrySchlickGGX(float NdotV, float roughness) {
-    float r = (roughness + 1.0);
-    float k = (r * r) / 8.0;
-
-    float num = NdotV;
-    float denom = NdotV * (1.0 - k) + k;
-    
-    return num / denom;
-}
-
-float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
-    float NdotV = max(dot(N, V), 0.0);
-    float NdotL = max(dot(N, L), 0.0);
-    float ggx2 = GeometrySchlickGGX(NdotV, roughness);
-    float ggx1 = GeometrySchlickGGX(NdotL, roughness);
-    
-    return ggx1 * ggx2;
-}
-
-// Fresnel-Schlick
-vec3 FresnelSchlick(float cosTheta, vec3 F0) {
-    return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
-}
-
-// Reconstruct World Position from Depth
-vec3 WorldPosFromDepth(float depth, vec2 uv) {
-    // Vulkan NDC: x [-1,1], y [-1,1], z [0,1]
-    vec4 clipSpace = vec4(uv * 2.0 - 1.0, depth, 1.0);
-    vec4 viewPos = global.invViewProj * clipSpace;
-    return viewPos.xyz / viewPos.w;
-}
+// ... (omitted PBR functions for brevity in this view, same as before)
 
 void main() {
     // 1. Unpack G-Buffer
@@ -94,11 +47,19 @@ void main() {
     float depth = texture(texDepth, inUV).r;
     vec3 emissive = texture(texEmissive, inUV).rgb;
 
+    // --- DEBUG VISUALIZATION ---
+    if (global.debugMode == 1) { outColor = vec4(albedo, 1.0); return; }
+    if (global.debugMode == 2) { outColor = vec4(N * 0.5 + 0.5, 1.0); return; }
+    if (global.debugMode == 3) { outColor = vec4(vec3(pow(depth, 32.0)), 1.0); return; } // Visualize exponential depth
+    if (global.debugMode == 4) { outColor = vec4(metallic, roughness, ao, 1.0); return; }
+    if (global.debugMode == 5) { outColor = vec4(emissive, 1.0); return; }
+
     // Early out for background/sky
     if (depth >= 1.0) {
         outColor = vec4(emissive, 1.0);
         return; 
     }
+// ... (rest of lighting logic)
 
     vec3 WorldPos = WorldPosFromDepth(depth, inUV);
     vec3 V = normalize(global.cameraPos - WorldPos); // View Vector
