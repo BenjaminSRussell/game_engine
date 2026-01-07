@@ -54,7 +54,7 @@ mtl_indirect_command_buffer_t metal_indirect_command_buffer_create(
                              maxCommandCount:max_command_count
                                      options:MTLResourceStorageModePrivate];
 
-  return (void *)icb;
+  return (__bridge void *)icb;
 #else
   return NULL;
 #endif
