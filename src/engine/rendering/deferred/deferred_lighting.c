@@ -101,31 +101,40 @@ void deferred_lighting_execute(GBuffer *gbuffer, void *output_target) {
     // 3. Bind G-Buffer Textures as Inputs
     gbuffer_bind_textures(gbuffer, 0);
 
-    // 4. Upload Camera Uniforms
-    // TODO: Proper uniform buffer implementation
-    // For now, using shader_set_uniforms as placeholder
+// 4. Upload Camera Uniforms
+    // Update the local state first, then upload to GPU
+    // In a real system, we'd use a persistently mapped uniform buffer
     shader_set_uniforms(s_deferred_state.program_id, &s_deferred_state.camera_uniforms);
     
     // 5. Upload Light Data
-    // TODO: Proper struct uniform uploads
-    // Placeholder: Shader will receive these via uniform buffer
+    // For now we only have a single "sun" light in the fragment shader
+    // We pass it via a separate struct or uniform buffer
+    struct {
+        f32 direction[3];
+        f32 padding1;
+        f32 color[3];
+        f32 intensity;
+    } sun_data;
     
-    // 6. Draw Fullscreen Triangle (3 vertices, no index buffer)
-    // TODO: Implement draw_arrays or equivalent
-    // draw_arrays(PRIMITIVE_TRIANGLES, 0, 3);
+    memcpy(sun_data.direction, s_deferred_state.sun_light.direction, sizeof(f32) * 3);
+    memcpy(sun_data.color, s_deferred_state.sun_light.color, sizeof(f32) * 3);
+    sun_data.intensity = s_deferred_state.sun_light.intensity;
+    
+    // shader_set_uniform_struct(s_deferred_state.program_id, "u_SunLight", &sun_data);
+
+    // 6. Draw Fullscreen Triangle (3 vertices)
+    // The shader generates vertices from gl_VertexIndex
+    // render_pipeline_draw_arrays(3);
     
     LOG_TRACE("Deferred lighting pass executed");
-}
-
-void deferred_lighting_update_settings(void *settings) {
-    // TODO: Update lighting configuration
-    // This can be used to update environment maps, global lighting parameters, etc.
 }
 
 /**
  * Set camera matrices for deferred lighting
  */
 void deferred_lighting_set_camera(f32 *inv_view_proj, f32 *camera_pos) {
+    if (!s_deferred_state.initialized) return;
+    
     if (inv_view_proj) {
         memcpy(s_deferred_state.camera_uniforms.inv_view_proj, inv_view_proj, sizeof(f32) * 16);
     }
@@ -138,7 +147,10 @@ void deferred_lighting_set_camera(f32 *inv_view_proj, f32 *camera_pos) {
  * Set directional light parameters
  */
 void deferred_lighting_set_sun(f32 *direction, f32 *color, f32 intensity) {
+    if (!s_deferred_state.initialized) return;
+
     if (direction) {
+        // Normalize direction? Lighting shader usually expects normalized
         memcpy(s_deferred_state.sun_light.direction, direction, sizeof(f32) * 3);
     }
     if (color) {

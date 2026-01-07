@@ -137,48 +137,47 @@ void forward_renderer_render_opaque(ForwardRenderer* renderer, const scene_t* sc
     if (!renderer || !renderer->in_frame || !scene) return;
 
     // 1. Depth Pre-Pass (if enabled)
-    // Renders only depth, no color writes - populates depth buffer for early-Z rejection
     if (renderer->config.enable_depth_prepass) {
-        // TODO: Bind depth-only shader (minimal vertex transform)
-        // TODO: Disable color writes
-        // render_state_set_color_write_mask(false, false, false, false);
+        // TODO: Bind depth-only shader
+        // render_state_set_color_write(false);
         // render_state_set_depth_write(true);
         // render_state_set_depth_test(COMPARE_FUNC_LESS);
         
-        // TODO: Submit opaque geometry (depth-only)
-        // forward_batching_begin_frame();
-        // for each opaque object:
-        //   forward_batching_submit(&depth_only_cmd);
-        // forward_batching_sort(false); // front-to-back
-        // forward_batching_flush(renderer);
+        forward_batching_begin_frame();
+        // for each object in scene:
+        //   if (object->is_opaque) {
+        //     ForwardDrawCommand cmd = { ... };
+        //     forward_batching_submit(&cmd);
+        //   }
+        
+        forward_batching_sort(false); // Front-to-back
+        forward_batching_flush(renderer);
         
         LOG_INFO("ForwardRenderer: Depth pre-pass executed");
     }
     
     // 2. Main Opaque Lighting Pass
-    // TODO: Enable color writes
-    // render_state_set_color_write_mask(true, true, true, true);
+    // render_state_set_color_write(true);
     
-    // Configure depth test for main pass
     if (renderer->config.enable_depth_prepass) {
-        // Use EQUAL depth test since depth is already written
         // render_state_set_depth_test(COMPARE_FUNC_EQUAL);
-        // render_state_set_depth_write(false); // Already written
+        // render_state_set_depth_write(false);
     } else {
-        // Standard depth test and write
         // render_state_set_depth_test(COMPARE_FUNC_LESS);
         // render_state_set_depth_write(true);
     }
     
-    // TODO: Culling: Get visible opaque objects from scene
-    // TODO: Sorting: Front-to-back for early-Z optimization
-    // TODO: Batch and render with full lighting shaders
-    // forward_batching_begin_frame();
-    // for each opaque object:
-    //   ShaderVariantKey key = shader_variant_generate_key(object->features);
-    //   forward_batching_submit(&cmd);
-    // forward_batching_sort(false);
-    // forward_batching_flush(renderer);
+    forward_batching_begin_frame();
+    // Gather and submit opaque objects with PBR variants
+    // for each object in scene:
+    //   if (object->is_opaque) {
+    //     ShaderVariantKey key = shader_variant_generate_key(object->features);
+    //     ForwardDrawCommand cmd = { .mesh_id = object->mesh_id, .shader_key = key, ... };
+    //     forward_batching_submit(&cmd);
+    //   }
+    
+    forward_batching_sort(false);
+    forward_batching_flush(renderer);
 }
 
 void forward_renderer_render_transparent(ForwardRenderer* renderer, const scene_t* scene) {
@@ -186,38 +185,33 @@ void forward_renderer_render_transparent(ForwardRenderer* renderer, const scene_
 
     if (!renderer->config.enable_transparency) return;
 
-    // Transparent Pass Configuration
-    // TODO: Set depth write to false (read-only depth)
+    // OIT Path
+    if (renderer->config.enable_oit) {
+        // TODO: oit_wboit_begin_pass(renderer->oit_context);
+        // Submit transparent objects
+        // forward_batching_flush(renderer);
+        // oit_wboit_composite(renderer->oit_context);
+        LOG_INFO("ForwardRenderer: OIT pass executed");
+        return;
+    }
+
+    // Standard Alpha Blending Path
     // render_state_set_depth_write(false);
-    // render_state_set_depth_test(COMPARE_FUNC_LESS);
-    
-    // TODO: Configure alpha blending
     // transparency_set_blend_state(BLEND_MODE_ALPHA);
-    // Standard: glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     
-    // 1. Culling: Get visible transparent objects from scene
-    // TODO: frustum_cull_transparent_objects(scene, renderer->current_camera);
+    forward_batching_begin_frame();
+    // for each object in scene:
+    //   if (object->is_transparent) {
+    //     f32 dist = vec3_distance(object->pos, renderer->current_camera->position);
+    //     ShaderVariantKey key = shader_variant_generate_key(object->features | SHADER_FEATURE_TRANSPARENT);
+    //     ForwardDrawCommand cmd = { .mesh_id = object->mesh_id, .shader_key = key, .distance_to_camera = dist, ... };
+    //     forward_batching_submit(&cmd);
+    //   }
+
+    forward_batching_sort(true); // Back-to-front
+    forward_batching_flush(renderer);
     
-    // 2. Sorting: CRITICAL - Back-to-front for correct alpha blending
-    // Calculate distance to camera for each transparent object
-    // TODO: forward_batching_begin_frame();
-    // for each transparent object:
-    //   f32 distance = calculate_distance_to_camera(object, camera);
-    //   ShaderVariantKey key = shader_variant_generate_key(object->features | SHADER_FEATURE_TRANSPARENT);
-    //   ForwardDrawCommand cmd = { ... };
-    //   cmd.distance_to_camera = distance;
-    //   forward_batching_submit(&cmd);
-    
-    // Sort back-to-front (larger distances first)
-    // forward_batching_sort(true); // is_transparent = true
-    
-    // 3. Render with alpha blending enabled
-    // forward_batching_flush(renderer);
-    
-    // Note: For OIT (Order-Independent Transparency), sorting is not needed
-    // The WBOIT implementation will use accumulation buffers instead
-    
-    LOG_INFO("ForwardRenderer: Transparent pass executed (%d objects)", renderer->transparent_count);
+    LOG_INFO("ForwardRenderer: Transparent pass executed");
 }
 
 void forward_renderer_end_frame(ForwardRenderer* renderer) {

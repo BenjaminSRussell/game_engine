@@ -157,6 +157,7 @@ bool rg_topological_sort(RenderGraph *rg);
 void rg_cull_unused_passes(RenderGraph *rg);
 void rg_calculate_resource_lifetimes(RenderGraph *rg);
 void rg_generate_barriers(RenderGraph *rg);
+void merge_adjacent_barriers(RenderGraph *rg);
 
 // Resource pool (for transient allocation)
 typedef struct RGResourcePool RGResourcePool;

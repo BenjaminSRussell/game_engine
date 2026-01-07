@@ -227,9 +227,11 @@ set(ENGINE_SOURCES
     src/engine/renderer/core/render_graph.c        # New Glass-Box Render Graph
     src/engine/renderer/core/graph_renderer.c      # New Glass-Box Renderer Implementation
     # Frame Graph System (Weeks 1-4)
-    src/engine/renderer/frame_graph/frame_graph.c
-    src/engine/renderer/frame_graph/compile_execute.c
-    src/engine/renderer/frame_graph/resource_pool.c
+    src/engine/gpu_backend/frame_graph/frame_graph.c
+    src/engine/gpu_backend/frame_graph/compile_execute.c
+    src/engine/gpu_backend/frame_graph/resource_pool.c
+    src/engine/gpu_backend/frame_graph/validation.c
+    src/engine/gpu_backend/frame_graph/barrier_merge.c
     # Material System V2 (Weeks 5-12)
     src/engine/renderer/materials/shader_permutations.c
     src/engine/renderer/materials/material_instance.c

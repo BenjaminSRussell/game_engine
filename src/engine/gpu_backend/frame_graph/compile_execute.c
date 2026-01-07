@@ -1,4 +1,4 @@
-// Frame Graph - Compilation & Execution
+#include "frame_graph.h"
 #include "frame_graph_internal.h"
 #include "core/logger.h"
 #include <string.h>
@@ -8,6 +8,15 @@
 
 bool rg_compile(RenderGraph *rg) {
     if (!rg) return false;
+
+    // Phase 1: Validate graph before compilation
+    char error_buffer[512] = {0};
+    if (!rg_validate_graph(rg, error_buffer, sizeof(error_buffer))) {
+        LOG_ERROR("Render graph validation failed: %s", error_buffer);
+        // We'll continue for now but mark it as invalid if critical, 
+        // or just return false if it's strictly enforced.
+        // return false; 
+    }
     
     LOG_INFO("Compiling render graph: %u passes, %u resources", 
              rg->pass_count, rg->resource_count);
@@ -37,6 +46,17 @@ bool rg_compile(RenderGraph *rg) {
     
     // Step 6: Generate barriers
     rg_generate_barriers(rg);
+    
+    // Phase 1: Optimize barriers
+    u32 before = rg->barrier_count;
+    merge_adjacent_barriers(rg);
+    rg->barrier_stats.barriers_merged = before - rg->barrier_count;
+    rg->barrier_stats.barriers_generated = before;
+    
+    if (rg->barrier_stats.barriers_merged > 0) {
+        LOG_DEBUG("Barrier merging optimized %u barriers down to %u", 
+                 before, rg->barrier_count);
+    }
     
     // Update stats
     rg->stats.total_passes = rg->pass_count;

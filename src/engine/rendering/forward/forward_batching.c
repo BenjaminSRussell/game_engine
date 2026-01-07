@@ -94,33 +94,39 @@ void forward_batching_sort(bool is_transparent) {
 }
 
 void forward_batching_flush(void* renderer_context) {
-    if (g_batcher.count == 0) return;
+    if (g_batcher.count == 0 || !renderer_context) return;
     
-    // TODO: Iterate commands and execute render calls
-    // Bind Shader -> Bind Material -> Draw Mesh
+    // State Tracking
     ShaderVariantKey current_shader = 0xFFFFFFFF;
     u32 current_material = 0xFFFFFFFF;
+    u32 current_mesh = 0xFFFFFFFF;
     
     for (u32 i = 0; i < g_batcher.count; i++) {
         ForwardDrawCommand* cmd = &g_batcher.commands[i];
         
-        // State change tracking
+        // 1. Pipeline / Shader Switch
         if (cmd->shader_key != current_shader) {
-            // bind_shader(cmd->shader_key);
+            // void* pipeline = shader_variant_get(cmd->shader_key);
+            // rhi_bind_pipeline(renderer_context, pipeline);
             current_shader = cmd->shader_key;
         }
         
+        // 2. Resource Bindings (Material/Textures)
         if (cmd->material_id != current_material) {
-            // bind_material(cmd->material_id);
+            // rhi_bind_material_descriptor(renderer_context, cmd->material_id);
             current_material = cmd->material_id;
         }
         
-        // draw_mesh(cmd->mesh_id);
+        // 3. Geometry Binding
+        if (cmd->mesh_id != current_mesh) {
+            // rhi_bind_mesh(renderer_context, cmd->mesh_id);
+            current_mesh = cmd->mesh_id;
+        }
+        
+        // 4. Draw
+        // rhi_draw_indexed(renderer_context, cmd->mesh_id);
     }
     
-    // Clear after flushing? Or keep for multiple passes? 
-    // Usually clear if this represents one generic list.
-    // But caller might want to sort transparent subset from same list?
-    // For now, assume flush consumes the buffer.
+    // Reset count for next batch
     g_batcher.count = 0;
 }

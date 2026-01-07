@@ -1,8 +1,11 @@
-// Barrier merging - append to end of compile_execute.c
+// Frame Graph - Barrier Merging Optimization
+#include "frame_graph_internal.h"
+#include "core/logger.h"
+#include <stdbool.h>
 
 // Phase 1: Barrier merging optimization  
 // Merges adjacent barriers to the same resource to reduce overhead
-static void merge_adjacent_barriers(RenderGraph *rg) {
+void merge_adjacent_barriers(RenderGraph *rg) {
     if (!rg || rg->barrier_count <= 1) return;
     
     // Greedy merging: scan array, merge consecutive barriers to same resource
