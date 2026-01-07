@@ -13,6 +13,28 @@
 #include <string.h>
 
 /* =================================================================================================
+ *                                    FORWARD DECLARATIONS
+ * =================================================================================================
+ */
+
+// Internal helpers
+void physics_world_integrate_velocities(PhysicsWorld *world, float dt);
+void physics_world_find_contacts(PhysicsWorld *world);
+void physics_world_solve_constraints(PhysicsWorld *world, float dt);
+void physics_world_integrate_positions(PhysicsWorld *world, float dt);
+void physics_world_solve_positions(PhysicsWorld *world);
+void broadphase_insert(BroadPhase *bp, uint32_t body_id, const float *min, const float *max);
+void broadphase_remove(BroadPhase *bp, uint32_t body_id);
+bool broadphase_query(BroadPhase *bp, uint32_t id1, uint32_t id2);
+// Narrowphase
+bool collision_detect_pair(RigidBody *a, RigidBody *b, ContactManifold *m);
+// Internal rigid body helpers
+void core_rigid_body_check_sleeping(RigidBody *body, float dt);
+// Step phases
+void physics_world_step_fixed(PhysicsWorld *world, float dt);
+
+
+/* =================================================================================================
  *                                    INTERNAL HELPERS
  * =================================================================================================
  */
@@ -59,7 +81,7 @@ static RigidBody *physics_world_get_body(PhysicsWorld *world, uint32_t id) {
 }
 
 // Get AABB from rigid body
-static void core_rigid_body_get_aabb(RigidBody *body, float *min_out,
+void core_rigid_body_get_aabb(RigidBody *body, float *min_out,
                                 float *max_out) {
   if (!body || !body->shape) {
     pvec3_zero(min_out);
