@@ -13,7 +13,7 @@ typedef struct {
     vector_float3 normal;
 } Vertex;
 
-@interface MetalView : MTKView
+@interface MetalView : MTKView <MTKViewDelegate>
 @property (nonatomic, strong) id<MTLRenderPipelineState> pipelineState;
 @property (nonatomic, strong) id<MTLBuffer> vertexBuffer;
 @property (nonatomic, strong) id<MTLBuffer> uniformBuffer;
@@ -30,7 +30,7 @@ typedef struct {
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame device:MTLCreateSystemDefaultDevice()];
     if (self) {
-        self.delegate = self;
+        self.delegate = (id<MTKViewDelegate>)self;
         [self setupMetal];
     }
     return self;

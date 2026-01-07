@@ -3,7 +3,7 @@
 
 #include <common.h>
 #include "math/vec3.h"
-#include "../math/quat.h"
+#include <math/quat.h>
 
 #ifdef __cplusplus
 extern "C" {

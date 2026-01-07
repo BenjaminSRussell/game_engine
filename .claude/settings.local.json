@@ -83,7 +83,8 @@
       "Bash(\"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_texture.c\" )",
       "Bash(\"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_sync.m\" )",
       "Bash(\"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_frame_sync.c\" )",
-      "Bash(\"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_shader_compiler.m\" )"
+      "Bash(\"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_shader_compiler.m\" )",
+      "Bash(src/sample_app.m )"
     ]
   }
 }

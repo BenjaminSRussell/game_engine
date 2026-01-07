@@ -3,8 +3,8 @@
 
 #include "core/types.h"
 #include "math/vec3.h"
-#include "../math/quat.h"
-#include "../math/mat4.h"
+#include "math/quat.h"
+#include "math/mat4.h"
 #include "character/animation/animation_system.h"
 #include "core/memory.h"
 

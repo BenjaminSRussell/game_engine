@@ -2,7 +2,7 @@
 #define EYE_RENDERING_H
 
 #include "math/vec3.h"
-#include "../math/vec2.h"
+#include <math/vec2.h>
 #include "assets/resources/resource_management/resource_handle.h"
 
 /**
