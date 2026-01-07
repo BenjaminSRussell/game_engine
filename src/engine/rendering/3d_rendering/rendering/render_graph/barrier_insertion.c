@@ -131,33 +131,19 @@ void rg_insert_barriers(render_graph_t* graph) {
     // 2. Track resource access per pass
     // 3. Insert VkImageMemoryBarrier/VkBufferMemoryBarrier between passes
     
-    // For now, we mark all resources as needing transitions and
-    // leave actual barrier commands to the executor
+    // For Metal, we rely on implicit tracking or explicit fences for async compute.
+    // For standard render passes, Metal tracks hazards within a command buffer for attached resources.
+    // Explicit barriers are needed for untracked resources (heaps) or across command buffers.
     
-    // Track that barrier analysis has been performed
-    // The executor will use this to know barriers are ready
-    
-    // Per-resource last-write tracking
-    if (graph->resource_count > 0) {
-        // Mark resources that need barriers based on sequential pass processing
-        for (uint32_t p = 0; p < graph->pass_count; p++) {
-            uint32_t pass_index = graph->execution_order[p];
-            rendering_render_pass_node_handle_t pass_handle = graph->passes[pass_index];
-            
-            // Get basic pass info
-            rendering_render_pass_node_info_t info;
-            if (rendering_render_pass_node_get_info(pass_handle, &info) != 0) continue;
-            
-            // In the full implementation with extended info:
-            // - Check color_outputs -> insert barriers to COLOR_ATTACHMENT
-            // - Check depth_output -> insert barrier to DEPTH_ATTACHMENT
-            // - Check texture_inputs -> insert barriers to SHADER_READ
-            // - Check storage_outputs -> insert barriers to SHADER_WRITE
-            
-            // For now, the pass execution handles barriers internally
-            // This marks that barrier analysis was attempted
-            (void)info;
-        }
+    // Iterate over execution order
+    for (uint32_t i = 0; i < graph->pass_count; i++) {
+        uint32_t pass_idx = graph->execution_order[i];
+        rendering_render_pass_node_handle_t pass_handle = graph->passes[pass_idx];
+        
+        // We could insert "barrier passes" or "fences" here if we detects cross-queue dependencies.
+        // For now, this is a placeholder for logic that ensures safety.
+        // Metal handles most intra-queue barriers automatically if API is used correctly.
+        (void)pass_handle;
     }
 }
 

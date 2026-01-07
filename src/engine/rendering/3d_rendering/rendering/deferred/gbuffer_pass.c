@@ -8,8 +8,10 @@
 
 #include "gbuffer_pass.h"
 #include "gbuffer_layout.h"
-#include "../../static_mesh_rendering/static_mesh_draw.h"
-#include "../../static_mesh_rendering/mesh_sorting.h"
+#include "gbuffer_layout.h"
+#include "../../geometry/mesh/static_mesh_draw.h"
+#include "../../geometry/mesh/mesh_sorting.h"
+#include "../../core/command/command_encoder.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -79,8 +81,10 @@ void rendering_gbuffer_pass_submit(const static_mesh_draw_info_t* info) {
 }
 
 void rendering_gbuffer_pass_execute(void* cmd_buffer, const float camera_pos[3]) {
-    if (!g_gbuffer_pass.initialized) return;
+    if (!g_gbuffer_pass.initialized || !cmd_buffer) return;
     
+    command_buffer_t* cmd = (command_buffer_t*)cmd_buffer;
+
     /* 1. Sort opaque items Front-to-Back for early-Z / G-buffer write optimization */
     mesh_sort_items(
         g_gbuffer_pass.data.draw_items, 
@@ -90,22 +94,26 @@ void rendering_gbuffer_pass_execute(void* cmd_buffer, const float camera_pos[3])
     );
     
     /* 2. Begin G-buffer rendering pass */
-     void* framebuffer = rendering_gbuffer_get_framebuffer();
-     // command_buffer_begin_render_pass(cmd_buffer, framebuffer, ...);
-    
-    /* 3. Draw sorted items */
-    static_mesh_draw_begin((command_buffer_t*)cmd_buffer);
-    
-    for (uint32_t i = 0; i < g_gbuffer_pass.data.draw_item_count; i++) {
-        static_mesh_draw_submit(&g_gbuffer_pass.data.draw_items[i]);
+    void* framebuffer = rendering_gbuffer_get_framebuffer();
+    if (framebuffer) {
+        render_pass_info_t pass_info = {0};
+        pass_info.backend_handle = framebuffer;
+        
+        cmd_begin_render_pass(cmd, &pass_info);
+        
+        /* 3. Draw sorted items */
+        static_mesh_draw_begin(cmd);
+        
+        for (uint32_t i = 0; i < g_gbuffer_pass.data.draw_item_count; i++) {
+            static_mesh_draw_submit(&g_gbuffer_pass.data.draw_items[i]);
+        }
+        
+        static_mesh_draw_end();
+        
+        /* 4. End pass */
+        cmd_end_render_pass(cmd);
     }
-    
-    static_mesh_draw_end();
-    
-    /* 4. End pass */
-    // command_buffer_end_render_pass(cmd_buffer);
     
     /* Clear for next frame */
     g_gbuffer_pass.data.draw_item_count = 0;
 }
-

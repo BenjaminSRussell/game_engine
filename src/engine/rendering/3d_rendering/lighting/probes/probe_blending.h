@@ -1,6 +1,6 @@
 /*
  * probe_blending.h
- * Multi-probe blending
+ * Probe blending logic
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
@@ -9,56 +9,31 @@
 #ifndef LIGHTING_PROBE_BLENDING_H
 #define LIGHTING_PROBE_BLENDING_H
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
+#include <simd/simd.h>
+#include "irradiance_probe.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+/**
+ * Calculates the blend weight for a probe at the given world position.
+ * @param world_pos The point being shaded.
+ * @param probe The probe being sampled.
+ * @return A weight between 0.0 and 1.0.
+ */
+float probe_calculate_weight(simd_float3 world_pos, const irradiance_probe_t* probe);
 
-typedef struct lighting_probe_blending_handle {
-    uint32_t id;
-} lighting_probe_blending_handle_t;
-
-typedef struct lighting_probe_blending_desc {
-    uint32_t flags;
-    void* user_data;
-} lighting_probe_blending_desc_t;
-
-typedef struct lighting_probe_blending_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} lighting_probe_blending_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
-
-/* Initialization */
-int lighting_probe_blending_init(void);
-void lighting_probe_blending_shutdown(void);
-
-/* Lifecycle */
-int lighting_probe_blending_create(lighting_probe_blending_handle_t* out_handle, const lighting_probe_blending_desc_t* desc);
-void lighting_probe_blending_destroy(lighting_probe_blending_handle_t handle);
-
-/* Operations */
-int lighting_probe_blending_update(lighting_probe_blending_handle_t handle, const void* data, size_t size);
-bool lighting_probe_blending_is_valid(lighting_probe_blending_handle_t handle);
-int lighting_probe_blending_get_info(lighting_probe_blending_handle_t handle, lighting_probe_blending_info_t* out_info);
-void lighting_probe_blending_mark_dirty(lighting_probe_blending_handle_t handle);
-int lighting_probe_blending_process_pending(void);
-
-/* Statistics */
-uint32_t lighting_probe_blending_get_count(void);
-size_t lighting_probe_blending_get_memory_usage(void);
-void lighting_probe_blending_debug_print(void);
+/**
+ * Blends irradiance from multiple probes based on their weights.
+ * @param probe_indices Array of probe indices to blend.
+ * @param weights Array of weights for each probe.
+ * @param count Number of probes.
+ * @param grid The probe grid.
+ * @param normal The surface normal (for SH evaluation).
+ * @return The blended irradiance color.
+ */
+simd_float3 probe_blend_irradiance(const uint32_t* probe_indices, const float* weights, uint32_t count, const probe_grid_t* grid, simd_float3 normal);
 
 #ifdef __cplusplus
 }

@@ -5,8 +5,12 @@
 #define MATERIAL_INSTANCE_H
 
 #include "shader_permutations.h"
-#include "core/types.h"
-#include "renderer/core/texture.h"
+#include "../../include/core/types.h"
+
+// Forward declaration or definition if missing
+typedef struct {
+    u32 id;
+} TextureID;
 
 #ifdef __cplusplus
 extern "C" {

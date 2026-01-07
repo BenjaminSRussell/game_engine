@@ -108,8 +108,17 @@ void rg_execute(render_graph_t* graph, void* cmd) {
     if (!graph || !graph->compiled) return;
     
     for (uint32_t i = 0; i < graph->pass_count; i++) {
+        // Use topological sort order
         uint32_t pass_index = graph->execution_order[i];
         rendering_render_pass_node_handle_t pass_handle = graph->passes[pass_index];
+        
+        // Get pass info to check if we need to do anything special (like async compute sync)
+        
+        // Execute the pass
+        // In a real Metal implementation, we would:
+        // 1. Create MTLRenderCommandEncoder or MTLComputeCommandEncoder
+        // 2. Bind resources (aliased heaps might need 'makeAliasable' calls or fences)
+        // 3. Call the user callback
         
         rendering_render_pass_node_execute(pass_handle, cmd);
     }

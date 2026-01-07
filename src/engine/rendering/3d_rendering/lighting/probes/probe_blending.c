@@ -1,290 +1,110 @@
 /*
  * probe_blending.c
- * Multi-probe blending
+ * Probe blending logic implementation
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement clustered light culling
- * TODO: Add ray-traced shadows
- * TODO: Implement cascaded shadow maps
- * TODO: Add area light support
- * TODO: Implement global illumination
- * TODO: Add volumetric lighting
- * TODO: Implement light probes
- * TODO: Add IES profile support
- * TODO: Implement lightmap baking
- * TODO: Add real-time GI
- * TODO: Implement probe blending initialization
- * TODO: Add probe blending cleanup/shutdown
- * TODO: Implement probe blending validation
- * TODO: Add probe blending error handling
- * TODO: Implement probe blending serialization
- * TODO: Add probe blending debug output
- * TODO: Implement probe blending unit tests
- * TODO: Add probe blending performance counters
- * TODO: Implement probe blending hot-reload
- * TODO: Add probe blending thread safety
- * TODO: Implement probe blending memory pooling
- * TODO: Add probe blending caching layer
- * TODO: Implement probe blending async operations
- * TODO: Add probe blending GPU integration
- * TODO: Implement probe blending SIMD optimization
- * TODO: Add probe blending batch processing
- * TODO: Implement probe blending streaming support
- * TODO: Add probe blending LOD support
- * TODO: Implement probe blending culling integration
- * TODO: Add probe blending render graph node
  */
 
-#include "probe_blending.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
-#include <stdlib.h>
+#include "probe_parallax.h"
 
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
+// SH Basis Constants
+static const float SH_C0 = 0.28209479177387814347f; // 1 / (2 * sqrt(pi))
+static const float SH_C1 = 0.48860251190291992159f; // sqrt(3) / (2 * sqrt(pi))
+static const float SH_C2_1 = 1.09254843059207907054f; // sqrt(15) / (2 * sqrt(pi))
+static const float SH_C2_2 = 0.31539156525252000603f; // sqrt(5) / (4 * sqrt(pi))
+static const float SH_C2_3 = 0.54627421529603953527f; // sqrt(15) / (4 * sqrt(pi))
 
-#define LIGHTING_PROBE_BLENDING_MAX_COUNT 4096
-#define LIGHTING_PROBE_BLENDING_DEFAULT_CAPACITY 256
-#define LIGHTING_PROBE_BLENDING_ALIGNMENT 16
+static simd_float3 evaluate_sh(const simd_float4* sh, simd_float3 n) {
+    simd_float3 result = simd_make_float3(0.0f, 0.0f, 0.0f);
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+    // L0
+    // Y0,0 = 0.282095
+    float y00 = SH_C0;
+    
+    // L1
+    // Y1,-1 = 0.488603 * y
+    // Y1,0  = 0.488603 * z
+    // Y1,1  = 0.488603 * x
+    float y1m1 = SH_C1 * n.y;
+    float y10  = SH_C1 * n.z;
+    float y11  = SH_C1 * n.x;
 
-typedef struct lighting_probe_blending_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} lighting_probe_blending_internal_t;
+    // L2
+    // Y2,-2 = 1.092548 * x * y
+    // Y2,-1 = 1.092548 * y * z
+    // Y2,0  = 0.315392 * (3 * z * z - 1)
+    // Y2,1  = 1.092548 * x * z
+    // Y2,2  = 0.546274 * (x * x - y * y)
+    float y2m2 = SH_C2_1 * n.x * n.y;
+    float y2m1 = SH_C2_1 * n.y * n.z;
+    float y20  = SH_C2_2 * (3.0f * n.z * n.z - 1.0f);
+    float y21  = SH_C2_1 * n.x * n.z;
+    float y22  = SH_C2_3 * (n.x * n.x - n.y * n.y);
 
-typedef struct lighting_probe_blending_context {
-    lighting_probe_blending_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} lighting_probe_blending_context_t;
+    // Accumulate
+    // Coeffs are stored as 9 float4s. Each float4 is (R, G, B, X).
+    
+    // L0
+    result += sh[0].xyz * y00;
 
-static lighting_probe_blending_context_t g_probe_blending_ctx = {0};
+    // L1
+    result += sh[1].xyz * y1m1;
+    result += sh[2].xyz * y10;
+    result += sh[3].xyz * y11;
 
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
+    // L2
+    result += sh[4].xyz * y2m2;
+    result += sh[5].xyz * y2m1;
+    result += sh[6].xyz * y20;
+    result += sh[7].xyz * y21;
+    result += sh[8].xyz * y22;
 
-static bool lighting_probe_blending_validate(const lighting_probe_blending_internal_t* item) {
-    // TODO: Implement clustered light culling
-    // TODO: Add ray-traced shadows
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
+    return result;
 }
 
-static void lighting_probe_blending_cleanup_internal(lighting_probe_blending_internal_t* item) {
-    // TODO: Implement cascaded shadow maps
-    // TODO: Add area light support
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
+float probe_calculate_weight(simd_float3 world_pos, const irradiance_probe_t* probe) {
+    if (!probe) return 0.0f;
+    
+    float dist = simd_distance(world_pos, probe->position);
+    float r = probe->influence_radius;
+    
+    if (dist >= r) return 0.0f;
+    
+    // Smooth falloff
+    // x = dist / radius
+    // weight = 1 - x (linear) or smoothstep
+    float x = dist / r;
+    // Quadratic falloff is better: 1 - x^2? 
+    // Or just linear for trilinear interpolation conceptualization.
+    // However, for blending arbitrary probes, smoothstep is good.
+    // smoothstep(1, 0, x)
+    
+    float t = simd_clamp(1.0f - x, 0.0f, 1.0f);
+    return t * t * (3.0f - 2.0f * t);
 }
 
-/* ============================================================================
- * PUBLIC API
- * ============================================================================ */
-
-int lighting_probe_blending_init(void) {
-    // TODO: Implement global illumination
-    // TODO: Add volumetric lighting
-    // TODO: Implement light probes
-    // TODO: Add IES profile support
-
-    if (g_probe_blending_ctx.initialized) {
-        return 0; // Already initialized
+simd_float3 probe_blend_irradiance(const uint32_t* probe_indices, const float* weights, uint32_t count, const probe_grid_t* grid, simd_float3 normal) {
+    if (!grid || !probe_indices || !weights || count == 0) return simd_make_float3(0.0f, 0.0f, 0.0f);
+    
+    simd_float3 accumulated_irradiance = 0;
+    float total_weight = 0.0f;
+    
+    for (uint32_t i = 0; i < count; i++) {
+        uint32_t idx = probe_indices[i];
+        if (idx >= grid->probe_count) continue;
+        
+        float w = weights[i];
+        if (w <= 0.0f) continue;
+        
+        simd_float3 irradiance = evaluate_sh(grid->probes[idx].sh_coefficients, normal);
+        accumulated_irradiance += irradiance * w;
+        total_weight += w;
     }
-
-    g_probe_blending_ctx.capacity = LIGHTING_PROBE_BLENDING_DEFAULT_CAPACITY;
-    g_probe_blending_ctx.items = calloc(g_probe_blending_ctx.capacity, sizeof(lighting_probe_blending_internal_t));
-    if (!g_probe_blending_ctx.items) {
-        return -1;
+    
+    if (total_weight > 0.0f) {
+        return accumulated_irradiance / total_weight;
     }
-
-    g_probe_blending_ctx.count = 0;
-    g_probe_blending_ctx.initialized = true;
-
-    return 0;
+    
+    return accumulated_irradiance;
 }
-
-void lighting_probe_blending_shutdown(void) {
-    // TODO: Implement lightmap baking
-    // TODO: Add real-time GI
-    // TODO: Implement probe blending initialization
-    // TODO: Add probe blending cleanup/shutdown
-
-    if (!g_probe_blending_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_probe_blending_ctx.count; i++) {
-        lighting_probe_blending_cleanup_internal(&g_probe_blending_ctx.items[i]);
-    }
-
-    free(g_probe_blending_ctx.items);
-    g_probe_blending_ctx.items = NULL;
-    g_probe_blending_ctx.count = 0;
-    g_probe_blending_ctx.capacity = 0;
-    g_probe_blending_ctx.initialized = false;
-}
-
-int lighting_probe_blending_create(lighting_probe_blending_handle_t* out_handle, const lighting_probe_blending_desc_t* desc) {
-    // TODO: Implement probe blending validation
-    // TODO: Add probe blending error handling
-    // TODO: Implement probe blending serialization
-    // TODO: Add probe blending debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_probe_blending_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_probe_blending_ctx.count >= g_probe_blending_ctx.capacity) {
-        // TODO: Implement probe blending unit tests
-        return -3;
-    }
-
-    uint32_t index = g_probe_blending_ctx.count++;
-    lighting_probe_blending_internal_t* item = &g_probe_blending_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
-}
-
-void lighting_probe_blending_destroy(lighting_probe_blending_handle_t handle) {
-    // TODO: Add probe blending performance counters
-    // TODO: Implement probe blending hot-reload
-
-    if (handle.id >= g_probe_blending_ctx.count) {
-        return;
-    }
-
-    lighting_probe_blending_cleanup_internal(&g_probe_blending_ctx.items[handle.id]);
-}
-
-int lighting_probe_blending_update(lighting_probe_blending_handle_t handle, const void* data, size_t size) {
-    // TODO: Add probe blending thread safety
-    // TODO: Implement probe blending memory pooling
-    // TODO: Add probe blending caching layer
-    // TODO: Implement probe blending async operations
-
-    if (handle.id >= g_probe_blending_ctx.count) {
-        return -1;
-    }
-
-    lighting_probe_blending_internal_t* item = &g_probe_blending_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add probe blending GPU integration
-    // TODO: Implement probe blending SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool lighting_probe_blending_is_valid(lighting_probe_blending_handle_t handle) {
-    // TODO: Add probe blending batch processing
-    if (handle.id >= g_probe_blending_ctx.count) {
-        return false;
-    }
-    return g_probe_blending_ctx.items[handle.id].initialized;
-}
-
-int lighting_probe_blending_get_info(lighting_probe_blending_handle_t handle, lighting_probe_blending_info_t* out_info) {
-    // TODO: Implement probe blending streaming support
-    // TODO: Add probe blending LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_probe_blending_ctx.count) {
-        return -2;
-    }
-
-    const lighting_probe_blending_internal_t* item = &g_probe_blending_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void lighting_probe_blending_mark_dirty(lighting_probe_blending_handle_t handle) {
-    // TODO: Implement probe blending culling integration
-    if (handle.id < g_probe_blending_ctx.count) {
-        g_probe_blending_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int lighting_probe_blending_process_pending(void) {
-    // TODO: Add probe blending render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_probe_blending_ctx.count; i++) {
-        lighting_probe_blending_internal_t* item = &g_probe_blending_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
-}
-
-uint32_t lighting_probe_blending_get_count(void) {
-    return g_probe_blending_ctx.count;
-}
-
-size_t lighting_probe_blending_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_probe_blending_ctx);
-    total += g_probe_blending_ctx.capacity * sizeof(lighting_probe_blending_internal_t);
-
-    for (uint32_t i = 0; i < g_probe_blending_ctx.count; i++) {
-        total += g_probe_blending_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void lighting_probe_blending_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of probe_blending.c */

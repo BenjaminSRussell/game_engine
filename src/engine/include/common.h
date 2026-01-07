@@ -6,12 +6,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef ALIGN
+#ifdef ALIGN
+#undef ALIGN
+#endif
+
 #if defined(_MSC_VER)
 #define ALIGN(x) __declspec(align(x))
 #else
 #define ALIGN(x) __attribute__((aligned(x)))
-#endif
 #endif
 
 #ifndef EPSILON

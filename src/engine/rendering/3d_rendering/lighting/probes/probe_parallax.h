@@ -1,6 +1,6 @@
 /*
  * probe_parallax.h
- * Parallax-corrected probes
+ * Probe parallax correction
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
@@ -9,56 +9,39 @@
 #ifndef LIGHTING_PROBE_PARALLAX_H
 #define LIGHTING_PROBE_PARALLAX_H
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
+#include <simd/simd.h>
+#include "irradiance_probe.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+/**
+ * Applies parallax correction to a reflection vector or lookup position based on the probe's bounding box.
+ * This is primarily for reflection probes but can be used for localizing irradiance lookups.
+ * 
+ * @param world_pos The surface position being shaded.
+ * @param view_dir The view direction (unused for simple position correction, but used for reflection vector correction).
+ * @param reflection_vector The original reflection vector (normalized).
+ * @param probe_pos The center of the probe.
+ * @param box_min The min bounds of the probe's influence volume.
+ * @param box_max The max bounds of the probe's influence volume.
+ * @return The corrected vector/position.
+ */
 
-typedef struct lighting_probe_parallax_handle {
-    uint32_t id;
-} lighting_probe_parallax_handle_t;
+// Calculates the intersection of a ray with an AABB
+simd_float3 probe_parallax_intersect_aabb(simd_float3 ray_origin, simd_float3 ray_dir, simd_float3 box_min, simd_float3 box_max);
 
-typedef struct lighting_probe_parallax_desc {
-    uint32_t flags;
-    void* user_data;
-} lighting_probe_parallax_desc_t;
-
-typedef struct lighting_probe_parallax_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} lighting_probe_parallax_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
-
-/* Initialization */
-int lighting_probe_parallax_init(void);
-void lighting_probe_parallax_shutdown(void);
-
-/* Lifecycle */
-int lighting_probe_parallax_create(lighting_probe_parallax_handle_t* out_handle, const lighting_probe_parallax_desc_t* desc);
-void lighting_probe_parallax_destroy(lighting_probe_parallax_handle_t handle);
-
-/* Operations */
-int lighting_probe_parallax_update(lighting_probe_parallax_handle_t handle, const void* data, size_t size);
-bool lighting_probe_parallax_is_valid(lighting_probe_parallax_handle_t handle);
-int lighting_probe_parallax_get_info(lighting_probe_parallax_handle_t handle, lighting_probe_parallax_info_t* out_info);
-void lighting_probe_parallax_mark_dirty(lighting_probe_parallax_handle_t handle);
-int lighting_probe_parallax_process_pending(void);
-
-/* Statistics */
-uint32_t lighting_probe_parallax_get_count(void);
-size_t lighting_probe_parallax_get_memory_usage(void);
-void lighting_probe_parallax_debug_print(void);
+/**
+ * Corrects the reflection vector for box projection.
+ * @param world_pos Surface position.
+ * @param reflection_dir Normalized reflection direction.
+ * @param probe_pos Center of the probe.
+ * @param box_min AABB min.
+ * @param box_max AABB max.
+ * @return Corrected sampling position in AABB space (for cubemap lookup).
+ */
+simd_float3 probe_parallax_box_projection(simd_float3 world_pos, simd_float3 reflection_dir, simd_float3 probe_pos, simd_float3 box_min, simd_float3 box_max);
 
 #ifdef __cplusplus
 }

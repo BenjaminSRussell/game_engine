@@ -73,6 +73,12 @@ typedef struct rendering_render_pass_node_internal {
     rg_resource_handle_t storage_outputs[8];
     uint32_t storage_output_count;
     
+    // Dependencies
+    uint32_t input_passes[32];
+    uint32_t input_pass_count;
+    uint32_t output_passes[32];
+    uint32_t output_pass_count;
+    
     rendering_render_pass_execute_fn execute;
     void* user_data;
     uint32_t flags;
@@ -193,6 +199,17 @@ int rendering_render_pass_node_create(rendering_render_pass_node_handle_t* out_h
     memcpy(item->storage_outputs, desc->storage_outputs, sizeof(item->storage_outputs));
     item->storage_output_count = desc->storage_output_count;
     
+    // Copy explicit input dependencies
+    if (desc->input_pass_count > 0) {
+        // Limit to max explicit inputs, though internal capacity is larger for inputs+inferred
+        uint32_t count = desc->input_pass_count > 16 ? 16 : desc->input_pass_count;
+        memcpy(item->input_passes, desc->input_passes, count * sizeof(uint32_t));
+        item->input_pass_count = count;
+    } else {
+        item->input_pass_count = 0;
+    }
+    item->output_pass_count = 0;
+    
     item->execute = desc->execute;
     item->user_data = desc->user_data;
     item->flags = desc->flags;
@@ -264,7 +281,61 @@ int rendering_render_pass_node_get_info(rendering_render_pass_node_handle_t hand
     out_info->type = item->type;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
+    
+    memcpy(out_info->input_passes, item->input_passes, sizeof(item->input_passes));
+    out_info->input_pass_count = item->input_pass_count;
+    memcpy(out_info->output_passes, item->output_passes, sizeof(item->output_passes));
+    out_info->output_pass_count = item->output_pass_count;
 
+    return 0;
+}
+
+void rendering_render_pass_node_add_dependency(rendering_render_pass_node_handle_t handle, uint32_t dependency_pass_id) {
+    if (handle.id >= g_render_pass_node_ctx.count) return;
+    
+    rendering_render_pass_node_internal_t* item = &g_render_pass_node_ctx.items[handle.id];
+    if (item->input_pass_count < 32) {
+        // Check for duplicate
+        for (uint32_t i = 0; i < item->input_pass_count; i++) {
+            if (item->input_passes[i] == dependency_pass_id) return;
+        }
+        item->input_passes[item->input_pass_count++] = dependency_pass_id;
+    }
+}
+
+void rendering_render_pass_node_add_output_dependency(rendering_render_pass_node_handle_t handle, uint32_t dependent_pass_id) {
+    if (handle.id >= g_render_pass_node_ctx.count) return;
+    
+    rendering_render_pass_node_internal_t* item = &g_render_pass_node_ctx.items[handle.id];
+    if (item->output_pass_count < 32) {
+        // Check for duplicate
+        for (uint32_t i = 0; i < item->output_pass_count; i++) {
+            if (item->output_passes[i] == dependent_pass_id) return;
+        }
+        item->output_passes[item->output_pass_count++] = dependent_pass_id;
+    }
+}
+
+int rendering_render_pass_node_get_inputs(rendering_render_pass_node_handle_t handle, rg_resource_handle_t* out_textures, uint32_t* out_texture_count) {
+    if (handle.id >= g_render_pass_node_ctx.count) return -1;
+    const rendering_render_pass_node_internal_t* item = &g_render_pass_node_ctx.items[handle.id];
+    
+    if (out_texture_count) *out_texture_count = item->texture_input_count;
+    if (out_textures && item->texture_input_count > 0) {
+        memcpy(out_textures, item->texture_inputs, item->texture_input_count * sizeof(rg_resource_handle_t));
+    }
+    return 0;
+}
+
+int rendering_render_pass_node_get_outputs(rendering_render_pass_node_handle_t handle, rg_resource_handle_t* out_colors, uint32_t* out_color_count, rg_resource_handle_t* out_depth) {
+    if (handle.id >= g_render_pass_node_ctx.count) return -1;
+    const rendering_render_pass_node_internal_t* item = &g_render_pass_node_ctx.items[handle.id];
+    
+    if (out_color_count) *out_color_count = item->color_output_count;
+    if (out_colors && item->color_output_count > 0) {
+        memcpy(out_colors, item->color_outputs, item->color_output_count * sizeof(rg_resource_handle_t));
+    }
+    if (out_depth) *out_depth = item->depth_output;
     return 0;
 }
 

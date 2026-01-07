@@ -3,6 +3,7 @@
 #include "core/logger.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 // === Graph Lifecycle ===
 
@@ -20,6 +21,14 @@ RenderGraph *rg_create(void) {
     rg->is_compiled = false;
     rg->profiling_enabled = false;
     
+    // Create resource pool
+    rg->resource_pool = rg_pool_create();
+    if (!rg->resource_pool) {
+        LOG_ERROR("Failed to create resource pool for render graph");
+        free(rg);
+        return NULL;
+    }
+    
     memset(&rg->stats, 0, sizeof(RGStats));
     
     LOG_INFO("Render graph created");
@@ -35,6 +44,12 @@ void rg_destroy(RenderGraph *rg) {
         rg->passes[i].user_data = NULL;
     }
     
+    // Destroy resource pool
+    if (rg->resource_pool) {
+        rg_pool_destroy(rg->resource_pool);
+        rg->resource_pool = NULL;
+    }
+    
     free(rg);
     LOG_INFO("Render graph destroyed");
 }
@@ -47,6 +62,11 @@ void rg_reset(RenderGraph *rg) {
     rg->execution_count = 0;
     rg->barrier_count = 0;
     rg->is_compiled = false;
+    
+    // Reset resource pool for reuse
+    if (rg->resource_pool) {
+        rg_pool_reset(rg->resource_pool);
+    }
     
     memset(&rg->stats, 0, sizeof(RGStats));
 }

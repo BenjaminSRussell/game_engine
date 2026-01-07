@@ -25,7 +25,7 @@
 #include <common.h>
 #include <math/mat4.h>
 #include <math/vec3.h>
-#include "../mesh/mesh.h"
+#include "mesh.h"
 #include <renderer/vulkan.h>
 
 #ifdef __cplusplus
@@ -52,11 +52,17 @@ typedef struct {
     u32 instance_count;              // Number of active instances
     u32 instance_capacity;           // Allocated capacity
 
-#ifdef VULKAN_BUILD
+    // GPU resources
+    // Note: Always define these structure members to avoid ABI issues if usage flags differ
     VkBuffer instance_buffer;        // GPU buffer for instance data
     VkDeviceMemory instance_memory;  // GPU memory
     bool buffer_needs_update;        // Flag for buffer updates
-#endif
+
+    // GPU-Driven specific resources
+    u32 gpu_data_id;                 // ID/Handle for geometry_gpu_instance_data
+    u32 indirect_batch_id;           // ID/Handle for geometry_indirect_instancing
+    VkBuffer visible_indices_buffer; // SSBO for culled indices
+    VkDeviceMemory visible_indices_memory;
 
     bool active;                     // Is this group active?
 } InstancedMeshGroup;
@@ -67,13 +73,16 @@ typedef struct {
     u32 group_count;
     u32 group_capacity;
 
-#ifdef VULKAN_BUILD
     VulkanRenderer* renderer;
     VkDescriptorSetLayout instance_descriptor_layout;
     VkDescriptorPool instance_descriptor_pool;
-#endif
+
+    // GPU-Driven Culling
+    VkPipeline cull_pipeline;
+    VkPipelineLayout cull_pipeline_layout;
 
     bool enabled;
+    bool gpu_driven; // Use GPU-driven culling and indirect draw
 } InstancingSystem;
 
 // Initialize instancing system
@@ -96,6 +105,9 @@ void instancing_update_instance(InstancingSystem* system, u64 group_id, u32 inst
 
 // Update instance buffer on GPU
 void instancing_update_buffers(InstancingSystem* system);
+
+// Dispatch compute culling (GPU-driven mode only)
+void instancing_dispatch_culling(InstancingSystem* system, VkCommandBuffer cmd_buffer);
 
 // Render all instances (called per frame)
 void instancing_render_all(InstancingSystem* system, VkCommandBuffer cmd_buffer);

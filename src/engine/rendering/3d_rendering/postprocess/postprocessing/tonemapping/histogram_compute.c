@@ -248,23 +248,52 @@ void postprocessing_histogram_compute_cpu(const histogram_params_t* params, cons
 
     float min_log = params->min_log_lum;
     float range_inv = 1.0f / (params->log_lum_range > 0.0001f ? params->log_lum_range : 1.0f);
+    
+    // Simplified: assume input is square or we know dimensions for metering
+    // For CPU sim, we just iterate pixels. For metering, we'd need width/height.
+    // Let's assume input_rgb is for a target of width x height.
+    // If not provided, we fallback to average.
+    
+    uint32_t width = (uint32_t)sqrt((double)pixel_count);
+    uint32_t height = pixel_count / width;
 
-    for (size_t i = 0; i < pixel_count; ++i) {
-        float r = input_rgb[i * 3];
-        float g = input_rgb[i * 3 + 1];
-        float b = input_rgb[i * 3 + 2];
-        float lum = get_luminance(r, g, b);
+    for (uint32_t y = 0; y < height; y++) {
+        for (uint32_t x = 0; x < width; x++) {
+            size_t i = y * width + x;
+            float r = input_rgb[i * 3];
+            float g = input_rgb[i * 3 + 1];
+            float b = input_rgb[i * 3 + 2];
+            float lum = get_luminance(r, g, b);
 
-        if (lum < HISTOGRAM_EPSILON) lum = HISTOGRAM_EPSILON;
+            float weight = 1.0f;
+            if (params->metering_mode == METERING_MODE_CENTER_WEIGHTED) {
+                float dx = (float)x / width - 0.5f;
+                float dy = (float)y / height - 0.5f;
+                float dist = sqrtf(dx*dx + dy*dy) * 2.0f; // 0 at center, 1 at edges
+                weight = 1.0f + (1.0f - dist) * params->center_weight;
+            } else if (params->metering_mode == METERING_MODE_SPOT) {
+                float dx = (float)x / width - 0.5f;
+                float dy = (float)y / height - 0.5f;
+                float dist = sqrtf(dx*dx + dy*dy);
+                if (dist > params->spot_range) weight = 0.01f; // Outliers contribute very little
+            }
 
-        float log_lum = log2f(lum);
-        float normalized = (log_lum - min_log) * range_inv;
-        
-        int bin = (int)(normalized * HISTOGRAM_BIN_COUNT);
-        if (bin < 0) bin = 0;
-        if (bin >= HISTOGRAM_BIN_COUNT) bin = HISTOGRAM_BIN_COUNT - 1;
+            if (lum < HISTOGRAM_EPSILON) lum = HISTOGRAM_EPSILON;
 
-        out_histogram[bin]++;
+            float log_lum = log2f(lum);
+            float normalized = (log_lum - min_log) * range_inv;
+            
+            int bin = (int)(normalized * HISTOGRAM_BIN_COUNT);
+            if (bin < 0) bin = 0;
+            if (bin >= HISTOGRAM_BIN_COUNT) bin = HISTOGRAM_BIN_COUNT - 1;
+
+            // Apply weight to count (simulated on CPU with floats for now, 
+            // but normally histogram is integer counts. For sim, we can just use float counts if needed, 
+            // but out_histogram is uint32_t. Let's just use probabilistic weighting or floor/ceil)
+            if (weight >= 1.0f || ((float)rand() / RAND_MAX) < weight) {
+                out_histogram[bin]++;
+            }
+        }
     }
 }
 

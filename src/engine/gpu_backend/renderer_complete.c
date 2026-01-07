@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "materials/material_system.h"
 
 // Type definitions
 typedef uint32_t u32;
@@ -94,10 +95,18 @@ void renderer_destroy(Renderer *renderer) {
 
 bool renderer_init(void) {
   g_renderer = renderer_create();
+  if (g_renderer) {
+      if (!material_system_init()) {
+          printf("[Renderer] Error: Failed to initialize material system\n");
+      }
+  }
   return g_renderer != NULL;
 }
 
-void renderer_shutdown(void) { renderer_destroy(g_renderer); }
+void renderer_shutdown(void) { 
+    material_system_shutdown();
+    renderer_destroy(g_renderer); 
+}
 
 void renderer_begin_frame(Renderer *renderer) {
   if (!renderer)
@@ -125,12 +134,17 @@ void renderer_set_viewport(Renderer *renderer, u32 x, u32 y, u32 width,
 // ============================================================================
 
 Material *material_create(const char *name) {
+  // Legacy stub adaptor for new system
   Material *mat = calloc(1, sizeof(Material));
   if (name)
     strncpy(mat->name, name, sizeof(mat->name) - 1);
   mat->albedo = (Color){1, 1, 1, 1};
   mat->metallic = 0.0f;
   mat->roughness = 0.5f;
+  
+  // In a real migration, we would create a MaterialInstance here
+  // material_system_create_instance("M_PBR_Standard", name);
+  
   return mat;
 }
 

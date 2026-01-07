@@ -617,6 +617,10 @@ typedef struct VulkanRenderer {
   VkImageView offscreen_depth_view;
   VkRenderPass offscreen_render_pass; // Render pass for offscreen target
   VkFramebuffer offscreen_framebuffer;
+
+  // TAA State
+  u32 jitter_index;
+  Vec2 jitter_offset;
 } VulkanRenderer;
 
 // Camera (defined in camera.h)

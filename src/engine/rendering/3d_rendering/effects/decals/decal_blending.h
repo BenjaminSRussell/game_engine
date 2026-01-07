@@ -40,6 +40,21 @@ typedef struct effects_decal_blending_info {
  * API
  * ============================================================================ */
 
+typedef enum decal_blend_mode {
+    DECAL_BLEND_MODE_NORMAL = 0,
+    DECAL_BLEND_MODE_ADDITIVE = 1,
+    DECAL_BLEND_MODE_MULTIPLY = 2,
+    DECAL_BLEND_MODE_COUNT
+} decal_blend_mode_t;
+
+// Forward declaration for Metal objects if not including Metal.h
+#ifdef __OBJC__
+@class MTLRenderPipelineColorAttachmentDescriptor;
+void effects_decal_blending_setup_attachment(MTLRenderPipelineColorAttachmentDescriptor* desc, decal_blend_mode_t mode);
+#else
+void effects_decal_blending_setup_attachment(void* desc_ptr, decal_blend_mode_t mode);
+#endif
+
 /* Initialization */
 int effects_decal_blending_init(void);
 void effects_decal_blending_shutdown(void);

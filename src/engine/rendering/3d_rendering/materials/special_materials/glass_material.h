@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "../../../forward/refraction.h"
+#include "../../../forward/transparency.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,6 +28,22 @@ typedef struct materials_glass_material_handle {
 } materials_glass_material_handle_t;
 
 typedef struct materials_glass_material_desc {
+    // Visual Properties
+    float base_color[4];    // r, g, b, a (alpha = opacity)
+    float emissive_factor[3];
+    
+    // PBR Properties
+    float roughness;
+    float metallic;
+    
+    // Glass Specifics
+    RefractionParams refraction;
+    float fresnel_scale;    // Adjusts the Fresnel intensity
+    float tint_absorption;  // How much the glass color absorbs light passing through (Beer's Law)
+    
+    // Transparency Settings
+    BlendMode blend_mode;
+    
     uint32_t flags;
     void* user_data;
 } materials_glass_material_desc_t;
@@ -49,16 +67,9 @@ int materials_glass_material_create(materials_glass_material_handle_t* out_handl
 void materials_glass_material_destroy(materials_glass_material_handle_t handle);
 
 /* Operations */
-int materials_glass_material_update(materials_glass_material_handle_t handle, const void* data, size_t size);
+int materials_glass_material_update(materials_glass_material_handle_t handle, const materials_glass_material_desc_t* desc);
 bool materials_glass_material_is_valid(materials_glass_material_handle_t handle);
 int materials_glass_material_get_info(materials_glass_material_handle_t handle, materials_glass_material_info_t* out_info);
-void materials_glass_material_mark_dirty(materials_glass_material_handle_t handle);
-int materials_glass_material_process_pending(void);
-
-/* Statistics */
-uint32_t materials_glass_material_get_count(void);
-size_t materials_glass_material_get_memory_usage(void);
-void materials_glass_material_debug_print(void);
 
 #ifdef __cplusplus
 }

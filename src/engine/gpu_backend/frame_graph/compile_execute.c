@@ -2,6 +2,7 @@
 #include "frame_graph_internal.h"
 #include "core/logger.h"
 #include <string.h>
+#include <stdio.h>
 
 // === Compilation ===
 
@@ -29,7 +30,12 @@ bool rg_compile(RenderGraph *rg) {
     // Step 4: Calculate resource lifetimes
     rg_calculate_resource_lifetimes(rg);
     
-    // Step 5: Generate barriers
+    // Step 5: Perform resource aliasing
+    if (rg->resource_pool) {
+        rg_pool_alias_resources(rg->resource_pool, rg);
+    }
+    
+    // Step 6: Generate barriers
     rg_generate_barriers(rg);
     
     // Update stats
@@ -49,6 +55,13 @@ bool rg_compile(RenderGraph *rg) {
     }
     rg->stats.transient_resources = transient_count;
     rg->stats.imported_resources = imported_count;
+    
+    // Get aliasing stats
+    if (rg->resource_pool) {
+        rg_pool_get_stats(rg->resource_pool, 
+                         &rg->stats.transient_memory_allocated,
+                         &rg->stats.transient_memory_aliased);
+    }
     
     rg->is_compiled = true;
     LOG_INFO("Render graph compiled: %u/%u passes will execute", 
@@ -120,10 +133,18 @@ TextureID rg_ctx_get_texture(RGPassContext *ctx, RGResourceHandle handle) {
         return res->physical.texture_id;
     }
     
-    // For transient resources, allocate from pool
-    // TODO: Implement resource pool
-    LOG_ERROR("Transient resource allocation not yet implemented");
-    return (TextureID){0};
+    // For transient resources, allocate from pool if not already allocated
+    if (res->physical.texture_id.id == 0) {
+        if (ctx->graph->resource_pool) {
+            res->physical.texture_id = rg_pool_allocate_texture(
+                ctx->graph->resource_pool, &res->desc.texture);
+        } else {
+            LOG_ERROR("No resource pool available for transient allocation");
+            return (TextureID){0};
+        }
+    }
+    
+    return res->physical.texture_id;
 }
 
 BufferID rg_ctx_get_buffer(RGPassContext *ctx, RGResourceHandle handle) {
@@ -142,10 +163,18 @@ BufferID rg_ctx_get_buffer(RGPassContext *ctx, RGResourceHandle handle) {
         return res->physical.buffer_id;
     }
     
-    // For transient resources, allocate from pool
-    // TODO: Implement resource pool
-    LOG_ERROR("Transient resource allocation not yet implemented");
-    return (BufferID){0};
+    // For transient resources, allocate from pool if not already allocated
+    if (res->physical.buffer_id.id == 0) {
+        if (ctx->graph->resource_pool) {
+            res->physical.buffer_id = rg_pool_allocate_buffer(
+                ctx->graph->resource_pool, &res->desc.buffer);
+        } else {
+            LOG_ERROR("No resource pool available for transient allocation");
+            return (BufferID){0};
+        }
+    }
+    
+    return res->physical.buffer_id;
 }
 
 // === Debugging ===

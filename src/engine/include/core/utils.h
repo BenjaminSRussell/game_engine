@@ -68,6 +68,17 @@ static inline f32 distance(f32 x1, f32 y1, f32 x2, f32 y2) {
   return sqrtf(distance_squared(x1, y1, x2, y2));
 }
 
+static inline f32 halton_sequence(u32 index, u32 base) {
+  f32 f = 1.0f;
+  f32 r = 0.0f;
+  while (index > 0) {
+    f = f / (f32)base;
+    r = r + f * (f32)(index % base);
+    index = index / base;
+  }
+  return r;
+}
+
 static inline u32 next_power_of_two(u32 v) {
   v--;
   v |= v >> 1;

@@ -1,270 +1,200 @@
 /*
  * froxel_grid.c
- * Froxel volume allocation and management
- *
- * Part of the Lighting subsystem
- * Advanced 3D Rendering Engine
+ * Froxel volume math and management
  */
 
 #include "froxel_grid.h"
-#include "../../math/vec3.h"
-#include "../../math/vec4.h"
-#include "../../math/mat4.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
-#include <stdlib.h>
+#include "../../core/math/math/vec3.h"
+#include "../../core/math/math/mat4.h"
 #include <math.h>
+#include <string.h>
 
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
-
-#define LIGHTING_FROXEL_GRID_MAX_COUNT 16
-#define LIGHTING_FROXEL_GRID_DEFAULT_RES_X 160
-#define LIGHTING_FROXEL_GRID_DEFAULT_RES_Y 90
-#define LIGHTING_FROXEL_GRID_DEFAULT_RES_Z 64
-
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct lighting_froxel_grid_data {
-    uint32_t resolution_x;
-    uint32_t resolution_y;
-    uint32_t resolution_z;
+void froxel_grid_init_with_config(froxel_grid_t* grid, const froxel_config_t* config) {
+    memset(grid, 0, sizeof(froxel_grid_t));
     
-    float near_plane;
-    float far_plane;
-    float fov;
-    float aspect_ratio;
+    grid->width = config->width;
+    grid->height = config->height;
+    grid->depth = config->depth;
+    grid->near_plane = config->near_plane;
+    grid->far_plane = config->far_plane;
+    grid->slice_distribution = config->slice_distribution;
     
-    // Derived values for fast slicing
-    float slice_depth_distribution_scale;
-    float slice_depth_distribution_bias;
+    grid->resolution_scale = 1.0f;
+    grid->effective_width = config->width;
+    grid->effective_height = config->height;
     
-    // Simulated Texture IDs (GL/Vulkan handles would be here)
-    uint32_t density_texture_id;
-    uint32_t scattering_texture_id; // RGB = scattering, A = transmittance
-    uint32_t noise_texture_id;
+    // Z slice mapping (exponential/logarithmic distribution)
+    // Blend between linear (0.0) and logarithmic (1.0) based on slice_distribution
+    grid->z_log_scale = (float)config->depth / logf(config->far_plane / config->near_plane);
+    grid->z_log_bias = logf(config->near_plane);
     
-    mat4_t view_proj;
-    mat4_t inv_view_proj;
-    vec3_t cam_pos;
-} lighting_froxel_grid_data_t;
+    // Initialize bounds
+    grid->bounds_min = vec3_zero();
+    grid->bounds_max = vec3_zero();
+}
 
-typedef struct lighting_froxel_grid_internal {
-    uint32_t id;
-    uint32_t flags;
-    lighting_froxel_grid_data_t* data;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} lighting_froxel_grid_internal_t;
+void froxel_grid_init(froxel_grid_t* grid, uint32_t w, uint32_t h, uint32_t d, float near_p, float far_p) {
+    froxel_config_t config = {
+        .width = w,
+        .height = h,
+        .depth = d,
+        .near_plane = near_p,
+        .far_plane = far_p,
+        .adaptive_slicing = false,
+        .slice_distribution = 1.0f  // Full logarithmic by default
+    };
+    froxel_grid_init_with_config(grid, &config);
+}
 
-typedef struct lighting_froxel_grid_context {
-    lighting_froxel_grid_internal_t items[LIGHTING_FROXEL_GRID_MAX_COUNT];
-    uint32_t count;
-    bool initialized;
-} lighting_froxel_grid_context_t;
-
-static lighting_froxel_grid_context_t g_froxel_grid_ctx = {0};
-
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-// Calculate Z-slice parameters for exponential distribution
-// slice = log2(z / near) * scale + bias
-static void calculate_slice_distribution(lighting_froxel_grid_data_t* data) {
-    if (!data) return;
+void froxel_grid_set_resolution_scale(froxel_grid_t* grid, float scale) {
+    grid->resolution_scale = scale;
+    grid->effective_width = (uint32_t)(grid->width * scale);
+    grid->effective_height = (uint32_t)(grid->height * scale);
     
-    // We want slice = 0 at z = near
-    // We want slice = resolution_z at z = far
-    // Linear depth z distribution is bad for fog; use exponential.
-    // k = far / near
-    // z = near * pow(k, slice / max_slices)
-    // slice = max_slices * log(z/near) / log(k)
+    // Ensure at least 1x1
+    if (grid->effective_width < 1) grid->effective_width = 1;
+    if (grid->effective_height < 1) grid->effective_height = 1;
+}
+
+void froxel_grid_update_planes(froxel_grid_t* grid, float near_p, float far_p) {
+    grid->near_plane = near_p;
+    grid->far_plane = far_p;
     
-    float k = data->far_plane / data->near_plane;
-    float log_k = log2f(k);
+    // Recalculate Z mapping
+    grid->z_log_scale = (float)grid->depth / logf(far_p / near_p);
+    grid->z_log_bias = logf(near_p);
+}
+
+float froxel_grid_z_to_slice(const froxel_grid_t* grid, float z) {
+    if (z <= grid->near_plane) return 0.0f;
+    if (z >= grid->far_plane) return 1.0f;
     
-    if (log_k > 0.0001f) {
-        data->slice_depth_distribution_scale = (float)data->resolution_z / log_k;
-        data->slice_depth_distribution_bias = -(float)data->resolution_z * log2f(data->near_plane) / log_k;
-    } else {
-        data->slice_depth_distribution_scale = 1.0f;
-        data->slice_depth_distribution_bias = 0.0f;
+    // Logarithmic distribution
+    float slice = logf(z / grid->near_plane) * grid->z_log_scale;
+    return slice / (float)grid->depth;
+}
+
+float froxel_grid_slice_to_z(const froxel_grid_t* grid, float slice) {
+    // slice is [0, 1]
+    if (slice <= 0.0f) return grid->near_plane;
+    if (slice >= 1.0f) return grid->far_plane;
+    return grid->near_plane * powf(grid->far_plane / grid->near_plane, slice);
+}
+
+bool froxel_grid_screen_to_froxel(const froxel_grid_t* grid, float screen_x, float screen_y, 
+                                   float view_z, uint32_t* out_x, uint32_t* out_y, uint32_t* out_z) {
+    // Screen coordinates are [0,1]
+    if (screen_x < 0.0f || screen_x > 1.0f || screen_y < 0.0f || screen_y > 1.0f)
+        return false;
+    
+    if (view_z < grid->near_plane || view_z > grid->far_plane)
+        return false;
+    
+    *out_x = (uint32_t)(screen_x * grid->effective_width);
+    *out_y = (uint32_t)(screen_y * grid->effective_height);
+    
+    float slice = froxel_grid_z_to_slice(grid, view_z);
+    *out_z = (uint32_t)(slice * grid->depth);
+    
+    // Clamp to bounds
+    if (*out_x >= grid->effective_width) *out_x = grid->effective_width - 1;
+    if (*out_y >= grid->effective_height) *out_y = grid->effective_height - 1;
+    if (*out_z >= grid->depth) *out_z = grid->depth - 1;
+    
+    return true;
+}
+
+void froxel_grid_froxel_to_screen(const froxel_grid_t* grid, uint32_t x, uint32_t y, uint32_t z,
+                                   float* out_screen_x, float* out_screen_y, float* out_view_z) {
+    // Get center of froxel
+    *out_screen_x = ((float)x + 0.5f) / (float)grid->effective_width;
+    *out_screen_y = ((float)y + 0.5f) / (float)grid->effective_height;
+    
+    float slice = ((float)z + 0.5f) / (float)grid->depth;
+    *out_view_z = froxel_grid_slice_to_z(grid, slice);
+}
+
+vec3_t froxel_grid_get_world_pos(const froxel_grid_t* grid, uint32_t x, uint32_t y, uint32_t z, 
+                                  mat4_t inv_view_proj) {
+    float screen_x, screen_y, view_z;
+    froxel_grid_froxel_to_screen(grid, x, y, z, &screen_x, &screen_y, &view_z);
+    
+    // Convert to NDC [-1, 1]
+    float ndc_x = screen_x * 2.0f - 1.0f;
+    float ndc_y = screen_y * 2.0f - 1.0f;
+    
+    // Convert view Z to NDC Z (assuming standard perspective projection [0,1] depth range)
+    float n = grid->near_plane;
+    float f = grid->far_plane;
+    float ndc_z = f / (f - n) - (f * n) / (view_z * (f - n));
+    
+    // Transform to world space
+    vec4_t ndc = {ndc_x, ndc_y, ndc_z, 1.0f};
+    vec4_t world = mat4_mul_vec4(inv_view_proj, ndc);
+    
+    // Perspective divide
+    if (fabsf(world.w) > 0.0001f) {
+        return vec3_set(world.x / world.w, world.y / world.w, world.z / world.w);
     }
-}
-
-static float get_z_from_slice(const lighting_froxel_grid_data_t* data, float slice) {
-    if (data->slice_depth_distribution_scale < 0.0001f) return data->near_plane;
     
-    // Inverse of slice logic
-    // slice = log2(z) * scale + bias
-    // log2(z) = (slice - bias) / scale
-    // z = exp2((slice - bias) / scale)
-    return exp2f((slice - data->slice_depth_distribution_bias) / data->slice_depth_distribution_scale);
+    return vec3_zero();
 }
 
-/* ============================================================================
- * PUBLIC API
- * ============================================================================ */
-
-int lighting_froxel_grid_init(void) {
-    if (g_froxel_grid_ctx.initialized) {
-        return 0;
-    }
-
-    memset(&g_froxel_grid_ctx, 0, sizeof(g_froxel_grid_ctx));
-    g_froxel_grid_ctx.initialized = true;
-
-    return 0;
-}
-
-void lighting_froxel_grid_shutdown(void) {
-    if (!g_froxel_grid_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < LIGHTING_FROXEL_GRID_MAX_COUNT; i++) {
-        if (g_froxel_grid_ctx.items[i].initialized) {
-            lighting_froxel_grid_handle_t h = {i};
-            lighting_froxel_grid_destroy(h);
-        }
-    }
-
-    g_froxel_grid_ctx.initialized = false;
-    g_froxel_grid_ctx.count = 0; // Reset count
-}
-
-int lighting_froxel_grid_create(lighting_froxel_grid_handle_t* out_handle, const lighting_froxel_grid_desc_t* desc) {
-    if (!out_handle || !desc) return -1;
-    if (!g_froxel_grid_ctx.initialized) return -2;
-
-    // Find free slot
-    int free_index = -1;
-    for (int i = 0; i < LIGHTING_FROXEL_GRID_MAX_COUNT; i++) {
-        if (!g_froxel_grid_ctx.items[i].initialized) {
-            free_index = i;
-            break;
-        }
-    }
-
-    if (free_index == -1) return -3; // No free slots
-
-    lighting_froxel_grid_internal_t* item = &g_froxel_grid_ctx.items[free_index];
-    item->id = free_index;
-    item->flags = desc->flags;
-    item->data = calloc(1, sizeof(lighting_froxel_grid_data_t));
-    if (!item->data) return -4;
-
-    // Set defaults
-    item->data->resolution_x = LIGHTING_FROXEL_GRID_DEFAULT_RES_X;
-    item->data->resolution_y = LIGHTING_FROXEL_GRID_DEFAULT_RES_Y;
-    item->data->resolution_z = LIGHTING_FROXEL_GRID_DEFAULT_RES_Z;
-    item->data->near_plane = 0.1f;
-    item->data->far_plane = 100.0f;
+void froxel_grid_get_froxel_bounds(const froxel_grid_t* grid, uint32_t x, uint32_t y, uint32_t z,
+                                    vec3_t* out_min, vec3_t* out_max) {
+    // Get min corner (in screen space and view Z)
+    float min_screen_x = (float)x / (float)grid->effective_width;
+    float min_screen_y = (float)y / (float)grid->effective_height;
+    float min_slice = (float)z / (float)grid->depth;
+    float min_z = froxel_grid_slice_to_z(grid, min_slice);
     
-    calculate_slice_distribution(item->data);
-
-    item->initialized = true;
-    item->dirty = true;
-    g_froxel_grid_ctx.count++;
-
-    out_handle->id = free_index;
-    return 0;
-}
-
-void lighting_froxel_grid_destroy(lighting_froxel_grid_handle_t handle) {
-    if (handle.id >= LIGHTING_FROXEL_GRID_MAX_COUNT) return;
-    lighting_froxel_grid_internal_t* item = &g_froxel_grid_ctx.items[handle.id];
-
-    if (item->initialized) {
-        if (item->data) {
-            free(item->data);
-            item->data = NULL;
-        }
-        item->initialized = false;
-        if (g_froxel_grid_ctx.count > 0) g_froxel_grid_ctx.count--;
-    }
-}
-
-int lighting_froxel_grid_update(lighting_froxel_grid_handle_t handle, const void* data, size_t size) {
-    if (handle.id >= LIGHTING_FROXEL_GRID_MAX_COUNT) return -1;
-    lighting_froxel_grid_internal_t* item = &g_froxel_grid_ctx.items[handle.id];
-    if (!item->initialized) return -2;
-
-    // For now, assume data is a struct with camera info passed from renderer
-    // In a real engine, we'd have a specific update struct
-    // For this implementation, we just mark dirty
-    item->dirty = true;
+    // Get max corner
+    float max_screen_x = (float)(x + 1) / (float)grid->effective_width;
+    float max_screen_y = (float)(y + 1) / (float)grid->effective_height;
+    float max_slice = (float)(z + 1) / (float)grid->depth;
+    float max_z = froxel_grid_slice_to_z(grid, max_slice);
     
-    // Recalculate distribution if planes changed (mockup logic)
-    calculate_slice_distribution(item->data);
+    // In view space, the froxel is a frustum slice
+    // For simplicity, we'll use screen-space bounds and Z range
+    *out_min = vec3_set(min_screen_x, min_screen_y, min_z);
+    *out_max = vec3_set(max_screen_x, max_screen_y, max_z);
+}
+
+bool froxel_grid_point_in_froxel(const froxel_grid_t* grid, uint32_t x, uint32_t y, uint32_t z,
+                                  vec3_t view_pos) {
+    vec3_t min, max;
+    froxel_grid_get_froxel_bounds(grid, x, y, z, &min, &max);
     
-    return 0;
+    // Simple AABB test (simplified, actual test would need screen-space projection)
+    return (view_pos.z >= min.z && view_pos.z <= max.z);
 }
 
-bool lighting_froxel_grid_is_valid(lighting_froxel_grid_handle_t handle) {
-    if (handle.id >= LIGHTING_FROXEL_GRID_MAX_COUNT) return false;
-    return g_froxel_grid_ctx.items[handle.id].initialized;
+bool froxel_grid_sphere_intersects_froxel(const froxel_grid_t* grid, uint32_t x, uint32_t y, uint32_t z,
+                                           vec3_t sphere_center, float sphere_radius) {
+    vec3_t min, max;
+    froxel_grid_get_froxel_bounds(grid, x, y, z, &min, &max);
+    
+    // Find closest point on AABB to sphere center
+    float closest_z = fmaxf(min.z, fminf(sphere_center.z, max.z));
+    
+    // Simple Z-only test for now (proper test would be more complex)
+    float dist_z = closest_z - sphere_center.z;
+    return (dist_z * dist_z <= sphere_radius * sphere_radius);
 }
 
-int lighting_froxel_grid_get_info(lighting_froxel_grid_handle_t handle, lighting_froxel_grid_info_t* out_info) {
-    if (!out_info) return -1;
-    if (handle.id >= LIGHTING_FROXEL_GRID_MAX_COUNT) return -2;
-
-    lighting_froxel_grid_internal_t* item = &g_froxel_grid_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
+uint32_t froxel_grid_count(const froxel_grid_t* grid) {
+    return grid->effective_width * grid->effective_height * grid->depth;
 }
 
-void lighting_froxel_grid_mark_dirty(lighting_froxel_grid_handle_t handle) {
-    if (handle.id < LIGHTING_FROXEL_GRID_MAX_COUNT) {
-        g_froxel_grid_ctx.items[handle.id].dirty = true;
-    }
+uint32_t froxel_grid_index(const froxel_grid_t* grid, uint32_t x, uint32_t y, uint32_t z) {
+    return z * (grid->effective_width * grid->effective_height) + y * grid->effective_width + x;
 }
 
-int lighting_froxel_grid_process_pending(void) {
-    int processed = 0;
-    for (uint32_t i = 0; i < LIGHTING_FROXEL_GRID_MAX_COUNT; i++) {
-        lighting_froxel_grid_internal_t* item = &g_froxel_grid_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Re-upload GPU buffers if needed
-            item->dirty = false;
-            processed++;
-        }
-    }
-    return processed;
-}
-
-uint32_t lighting_froxel_grid_get_count(void) {
-    return g_froxel_grid_ctx.count;
-}
-
-size_t lighting_froxel_grid_get_memory_usage(void) {
-    size_t total = sizeof(lighting_froxel_grid_context_t);
-    for (uint32_t i = 0; i < LIGHTING_FROXEL_GRID_MAX_COUNT; i++) {
-        if (g_froxel_grid_ctx.items[i].initialized && g_froxel_grid_ctx.items[i].data) {
-            total += sizeof(lighting_froxel_grid_data_t);
-            // Add texture memory approximations here
-            // W*H*D * 16 bytes (float4) for scattering
-            uint32_t w = g_froxel_grid_ctx.items[i].data->resolution_x;
-            uint32_t h = g_froxel_grid_ctx.items[i].data->resolution_y;
-            uint32_t d = g_froxel_grid_ctx.items[i].data->resolution_z;
-            total += w * h * d * 16; // Scattering
-            total += w * h * d * 4;  // Density (float)
-        }
-    }
-    return total;
-}
-
-void lighting_froxel_grid_debug_print(void) {
-    // Debug print
+void froxel_grid_coords_from_index(const froxel_grid_t* grid, uint32_t index,
+                                    uint32_t* out_x, uint32_t* out_y, uint32_t* out_z) {
+    uint32_t slice_size = grid->effective_width * grid->effective_height;
+    *out_z = index / slice_size;
+    uint32_t remainder = index % slice_size;
+    *out_y = remainder / grid->effective_width;
+    *out_x = remainder % grid->effective_width;
 }

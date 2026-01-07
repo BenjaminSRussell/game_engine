@@ -213,6 +213,17 @@ int effects_decal_sorting_update(effects_decal_sorting_handle_t handle, const vo
         return -2;
     }
 
+    // data could be raw list of decals to sort
+    // For now we assume the data is already in 'entries' or passed here
+    // If passed here:
+    if (data && size > 0 && size % sizeof(decal_sort_entry_t) == 0) {
+        uint32_t count = size / sizeof(decal_sort_entry_t);
+        if (count > EFFECTS_DECAL_SORTING_MAX_COUNT) count = EFFECTS_DECAL_SORTING_MAX_COUNT;
+        
+        memcpy(item->entries, data, count * sizeof(decal_sort_entry_t));
+        item->entry_count = count;
+    }
+
     if (item->entry_count > 1) {
         qsort(item->entries, item->entry_count, sizeof(decal_sort_entry_t), decal_compare);
     }

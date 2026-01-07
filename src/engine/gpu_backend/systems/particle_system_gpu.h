@@ -39,7 +39,15 @@ typedef struct {
     f32 rotation;
     u32 texture_id;
     u32 padding;                // 16-byte alignment
-} GPUParticle;
+} GPUParticle; // Used for API interaction; GPU uses SoA layout
+
+// Curve for animating values over time (max 8 keyframes)
+typedef struct {
+    f32 times[8];      // Normalized time 0-1
+    f32 values[8];     // Value at each time
+    u32 count;         // Number of keyframes
+    u32 padding;
+} ParticleCurve;
 
 // Emitter data for GPU
 typedef struct {
@@ -47,6 +55,7 @@ typedef struct {
     f32 emission_rate;          // Particles per second
     Vec3 direction;             // Emission direction
     f32 particle_lifetime;
+    f32 duration;               // Emitter duration (-1 = infinite)
     Vec3 velocity_min;
     f32 time_alive;             // Emitter age
     Vec3 velocity_max;
@@ -55,11 +64,31 @@ typedef struct {
     Vec4 color_end;
     f32 size_start;
     f32 size_end;
+    
+    // Enhanced emission control (Phase 2)
+    f32 lifetime_min;           // Min lifetime (particle_lifetime is max)
+    f32 lifetime_randomness;    // 0-1 randomization factor
+    bool use_burst_mode;
+    u32 burst_count;            // Particles per burst
+    f32 burst_interval;         // Time between bursts
+    f32 burst_timer;            // Internal burst timing
+    
+    // Velocity control
+    f32 velocity_randomness;    // 0-1 cone spread
+    f32 velocity_inheritance;   // Inherit from emitter movement
+    
+    // Rotation control
+    f32 rotation_initial_min;
+    f32 rotation_initial_max;
+    f32 rotation_speed;
+    f32 padding_rotation;
+    
     u32 emitter_type;           // Point, sphere, box, etc.
     u32 shape_params[2];        // Radius, height, etc.
     f32 spawn_timer;
     s32 active;                  // -1 = inactive, >=0 = active
-    u32 padding_[2];
+    u32 curve_set_id;           // Index to curve set (separate buffer)
+    u32 padding_[1];
 } GPUEmitter;
 
 // Atomic counter buffer
@@ -68,6 +97,8 @@ typedef struct {
     u32 dead_count;             // Number of dead particles (free slots)
     u32 emit_count;             // Particles to emit this frame
     u32 dispatch_count;         // Compute shader dispatch count
+    u32 max_particles;          // Capacity (for validation)
+    u32 padding[3];
 } GPUAtomicCounters;
 
 // Indirect dispatch arguments
@@ -87,9 +118,15 @@ typedef struct {
 } GPUDrawIndirect;
 
 typedef struct {
-    // GPU Buffers
-    VkBuffer particle_buffer;           // Main particle data SSBO
-    VkDeviceMemory particle_memory;
+    // GPU Buffers - Double Buffered for SoA
+    // Layout: [Position(Vec4)*N][Velocity(Vec4)*N][Color(Vec4)*N][Attributes(Vec4)*N]
+    VkBuffer particle_buffer[2];           // Main particle data SSBOs (Read/Write)
+    VkDeviceMemory particle_memory[2];
+    u32 current_buffer_index;              // Index of the buffer currently simulating FROM
+    
+    // Metadata Buffer (Flags, Type, Collision Info)
+    VkBuffer particle_metadata_buffer;
+    VkDeviceMemory particle_metadata_memory;
     
     VkBuffer emitter_buffer;            // Emitter data SSBO
     VkDeviceMemory emitter_memory;
@@ -112,25 +149,43 @@ typedef struct {
     VkBuffer draw_buffer;               // Indirect draw args
     VkDeviceMemory draw_memory;
     
-    // Compute shader resources
+    // Compute shader resources - Simulation
     VkPipeline simulation_pipeline;
     VkPipelineLayout simulation_layout;
     VkDescriptorSetLayout simulation_descriptor_layout;
-    VkDescriptorSet simulation_descriptor_set;
+    VkDescriptorSet simulation_descriptor_set[2]; // One per buffer set
+    
+    // Compute shader resources - Emission (Phase 3)
+    VkPipeline emission_pipeline;
+    VkPipelineLayout emission_layout; // Likely same as simulation, but separate for safety
+    VkDescriptorSetLayout emission_descriptor_layout;
+    VkDescriptorSet emission_descriptor_set; // Shared or one per buffer? Emission writes to "current" buffer. 
+                                            // We can just bind the active buffer. 
+                                            // Since we have ping-pong, we might need 2 sets if we toggle destination.
+                                            // Actually, emission happens before simulation, so it writes to Input (buffer[current]).
+                                            // Simulation reads Input -> Output.
+                                            // So emission target swaps.
+    VkDescriptorSet emission_descriptor_set_array[2];
     
     // Rendering resources
     VkPipeline render_pipeline;
     VkPipelineLayout render_layout;
     VkDescriptorSetLayout render_descriptor_layout;
-    VkDescriptorSet render_descriptor_set;
+    VkDescriptorSet render_descriptor_set[2]; // One per buffer set
     
     // Buffer sizes
     u32 max_particles;
     u32 max_emitters;
-    size_t particle_buffer_size;
+    size_t particle_buffer_size;     // Size of ONE double buffer
     size_t emitter_buffer_size;
     size_t atomic_buffer_size;
     size_t list_buffer_size;
+    
+    // SoA Offsets (bytes)
+    size_t offset_position;
+    size_t offset_velocity;
+    size_t offset_color;
+    size_t offset_attributes;   // x=age, y=size, z=rotation, w=padding
     
     // Mapping for CPU access
     GPUEmitter* mapped_emitters;
@@ -171,6 +226,7 @@ bool gpu_particle_create_buffers(GPUParticleSystem* system);
 void gpu_particle_destroy_buffers(GPUParticleSystem* system);
 bool gpu_particle_map_buffers(GPUParticleSystem* system);
 void gpu_particle_unmap_buffers(GPUParticleSystem* system);
+bool gpu_particle_resize_buffers(GPUParticleSystem* system, u32 new_max_particles);
 
 // Atomic counter management (TASK_631)
 bool gpu_particle_init_atomic_counters(GPUParticleSystem* system);
@@ -199,6 +255,21 @@ u32 gpu_particle_create_emitter(GPUParticleSystem* system, const GPUEmitter* emi
 void gpu_particle_update_emitter(GPUParticleSystem* system, u32 emitter_id, const GPUEmitter* emitter);
 void gpu_particle_destroy_emitter(GPUParticleSystem* system, u32 emitter_id);
 void gpu_particle_update_emitters_cpu(GPUParticleSystem* system, f32 delta_time);
+
+// Pipeline and Descriptor management (Phase 3)
+bool gpu_particle_create_pipelines(GPUParticleSystem* system);
+void gpu_particle_destroy_pipelines(GPUParticleSystem* system);
+bool gpu_particle_create_descriptor_sets(GPUParticleSystem* system);
+void gpu_particle_update_descriptor_sets(GPUParticleSystem* system);
+
+// Curve evaluation and emission control (Phase 2)
+f32 gpu_particle_evaluate_curve(const ParticleCurve* curve, f32 t);
+void gpu_particle_enable_burst_mode(GPUParticleSystem* system, u32 emitter_id, bool enabled, u32 count, f32 interval);
+void gpu_particle_trigger_burst(GPUParticleSystem* system, u32 emitter_id);
+void gpu_particle_set_lifetime_range(GPUParticleSystem* system, u32 emitter_id, f32 min, f32 max);
+void gpu_particle_set_rotation_range(GPUParticleSystem* system, u32 emitter_id, f32 initial_min, f32 initial_max, f32 speed);
+void gpu_particle_set_velocity_randomness(GPUParticleSystem* system, u32 emitter_id, f32 randomness);
+void gpu_particle_set_velocity_inheritance(GPUParticleSystem* system, u32 emitter_id, f32 factor);
 
 // Point emitter system (TASK_640)
 typedef struct {

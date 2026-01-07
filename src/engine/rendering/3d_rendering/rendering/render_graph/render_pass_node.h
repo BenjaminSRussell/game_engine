@@ -52,6 +52,10 @@ typedef struct rendering_render_pass_node_desc {
     rg_resource_handle_t storage_outputs[8];
     uint32_t storage_output_count;
     
+    // Explicit dependencies (optional, usually inferred)
+    uint32_t input_passes[16];
+    uint32_t input_pass_count;
+    
     rendering_render_pass_execute_fn execute;
     void* user_data;
     uint32_t flags;
@@ -63,6 +67,12 @@ typedef struct rendering_render_pass_node_info {
     rendering_render_pass_type_t type;
     uint32_t flags;
     bool initialized;
+    
+    // Computed dependencies
+    uint32_t input_passes[32];
+    uint32_t input_pass_count;
+    uint32_t output_passes[32];
+    uint32_t output_pass_count;
 } rendering_render_pass_node_info_t;
 
 /* ============================================================================
@@ -84,6 +94,14 @@ int rendering_render_pass_node_get_info(rendering_render_pass_node_handle_t hand
 void rendering_render_pass_node_mark_dirty(rendering_render_pass_node_handle_t handle);
 int rendering_render_pass_node_process_pending(void);
 void rendering_render_pass_node_execute(rendering_render_pass_node_handle_t handle, void* cmd);
+
+/* Dependency Management */
+void rendering_render_pass_node_add_dependency(rendering_render_pass_node_handle_t handle, uint32_t dependency_pass_id);
+void rendering_render_pass_node_add_output_dependency(rendering_render_pass_node_handle_t handle, uint32_t dependent_pass_id);
+
+/* Resource Access Helpers */
+int rendering_render_pass_node_get_inputs(rendering_render_pass_node_handle_t handle, rg_resource_handle_t* out_textures, uint32_t* out_texture_count);
+int rendering_render_pass_node_get_outputs(rendering_render_pass_node_handle_t handle, rg_resource_handle_t* out_colors, uint32_t* out_color_count, rg_resource_handle_t* out_depth);
 
 /* Statistics */
 uint32_t rendering_render_pass_node_get_count(void);

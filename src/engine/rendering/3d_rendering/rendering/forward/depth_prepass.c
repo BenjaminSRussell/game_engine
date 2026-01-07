@@ -7,8 +7,8 @@
  */
 
 #include "depth_prepass.h"
-#include "../../static_mesh_rendering/static_mesh_draw.h" // Reuse draw infrastructure
-#include "../../static_mesh_rendering/mesh_sorting.h"
+#include "../../geometry/mesh/static_mesh_draw.h" // Reuse draw infrastructure
+#include "../../geometry/mesh/mesh_sorting.h"
 #include <stdlib.h>
 #include <string.h>
 

@@ -44,6 +44,50 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <Metal/Metal.h>
+
+void effects_decal_blending_setup_attachment(void* desc_ptr, decal_blend_mode_t mode) {
+    if (!desc_ptr) return;
+    MTLRenderPipelineColorAttachmentDescriptor* desc = (__bridge MTLRenderPipelineColorAttachmentDescriptor*)desc_ptr;
+
+    desc.blendingEnabled = YES;
+    
+    switch (mode) {
+        case DECAL_BLEND_MODE_NORMAL:
+            // Source Over
+            desc.rgbBlendOperation = MTLBlendOperationAdd;
+            desc.sourceRGBBlendFactor = MTLBlendFactorSourceAlpha;
+            desc.destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+            desc.alphaBlendOperation = MTLBlendOperationAdd;
+            desc.sourceAlphaBlendFactor = MTLBlendFactorOne;
+            desc.destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+            break;
+            
+        case DECAL_BLEND_MODE_ADDITIVE:
+            // Additive
+            desc.rgbBlendOperation = MTLBlendOperationAdd;
+            desc.sourceRGBBlendFactor = MTLBlendFactorSourceAlpha;
+            desc.destinationRGBBlendFactor = MTLBlendFactorOne;
+            desc.alphaBlendOperation = MTLBlendOperationAdd;
+            desc.sourceAlphaBlendFactor = MTLBlendFactorSourceAlpha;
+            desc.destinationAlphaBlendFactor = MTLBlendFactorOne;
+            break;
+            
+        case DECAL_BLEND_MODE_MULTIPLY:
+            // Multiply
+            desc.rgbBlendOperation = MTLBlendOperationAdd; // Standard multiply relies on dst * src
+            desc.sourceRGBBlendFactor = MTLBlendFactorDestinationColor;
+            desc.destinationRGBBlendFactor = MTLBlendFactorZero;
+            desc.alphaBlendOperation = MTLBlendOperationAdd;
+            desc.sourceAlphaBlendFactor = MTLBlendFactorDestinationAlpha;
+            desc.destinationAlphaBlendFactor = MTLBlendFactorZero;
+            break;
+            
+        default:
+            desc.blendingEnabled = NO;
+            break;
+    }
+}
 
 /* ============================================================================
  * CONSTANTS

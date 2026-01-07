@@ -1,6 +1,6 @@
 /*
  * cascade_culling.h
- * Per-cascade object culling
+ * Per-cascade frustum culling
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
@@ -11,54 +11,41 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+/**
+ * @brief Cull shadow casters against a single cascade frustum
+ * 
+ * @param cascade_view_proj Cascade View-Projection matrix (16 floats)
+ * @param render_proxies Array of render proxies (implementation dependent opaque pointer)
+ * @param proxy_count Number of proxies
+ * @param out_visible_indices Output array for visible indices
+ * @param out_visible_count Output count of visible proxies
+ */
+void cascade_cull_casters(const float* cascade_view_proj, 
+                          const void* render_proxies, 
+                          uint32_t proxy_count,
+                          uint32_t* out_visible_indices,
+                          uint32_t* out_visible_count);
 
-typedef struct lighting_cascade_culling_handle {
-    uint32_t id;
-} lighting_cascade_culling_handle_t;
-
-typedef struct lighting_cascade_culling_desc {
-    uint32_t flags;
-    void* user_data;
-} lighting_cascade_culling_desc_t;
-
-typedef struct lighting_cascade_culling_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} lighting_cascade_culling_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
-
-/* Initialization */
-int lighting_cascade_culling_init(void);
-void lighting_cascade_culling_shutdown(void);
-
-/* Lifecycle */
-int lighting_cascade_culling_create(lighting_cascade_culling_handle_t* out_handle, const lighting_cascade_culling_desc_t* desc);
-void lighting_cascade_culling_destroy(lighting_cascade_culling_handle_t handle);
-
-/* Operations */
-int lighting_cascade_culling_update(lighting_cascade_culling_handle_t handle, const void* data, size_t size);
-bool lighting_cascade_culling_is_valid(lighting_cascade_culling_handle_t handle);
-int lighting_cascade_culling_get_info(lighting_cascade_culling_handle_t handle, lighting_cascade_culling_info_t* out_info);
-void lighting_cascade_culling_mark_dirty(lighting_cascade_culling_handle_t handle);
-int lighting_cascade_culling_process_pending(void);
-
-/* Statistics */
-uint32_t lighting_cascade_culling_get_count(void);
-size_t lighting_cascade_culling_get_memory_usage(void);
-void lighting_cascade_culling_debug_print(void);
+/**
+ * @brief Compute bounds of the receiver volume (view frustum slice)
+ * Used to optimize shadow map projection (fit to receivers)
+ * 
+ * @param camera_view_proj Main camera VP
+ * @param cascade_near Near distance of cascade
+ * @param cascade_far Far distance of cascade
+ * @param out_min Output AABB min (3 floats)
+ * @param out_max Output AABB max (3 floats)
+ */
+void cascade_compute_receiver_bounds(const float* camera_view_proj,
+                                    float cascade_near,
+                                    float cascade_far,
+                                    float* out_min,
+                                    float* out_max);
 
 #ifdef __cplusplus
 }

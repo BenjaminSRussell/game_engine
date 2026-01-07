@@ -1,9 +1,6 @@
 /*
  * volumetric_fog.h
  * Volumetric fog rendering
- *
- * Part of the Lighting subsystem
- * Advanced 3D Rendering Engine
  */
 
 #ifndef LIGHTING_VOLUMETRIC_FOG_H
@@ -11,54 +8,75 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
+#include <simd/simd.h>
+
+#ifdef __OBJC__
+#import <Metal/Metal.h>
+#else
+typedef void* id;
+#endif
+
+#include "../../backend/metal/metal/mtl_device.h"
+#include "../../rendering/deferred/gbuffer_layout.h"
+#include "froxel_grid.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+typedef struct volumetric_fog {
+#ifdef __OBJC__
+    id<MTLTexture> froxel_scattering;     // RGBA16F: inscatter.rgb, transmittance.a
+    id<MTLTexture> froxel_density;        // R16F: density
+    id<MTLTexture> integrated_scattering; // Result of integration
 
-typedef struct lighting_volumetric_fog_handle {
-    uint32_t id;
-} lighting_volumetric_fog_handle_t;
+    id<MTLComputePipelineState> inject_pipeline;
+    id<MTLComputePipelineState> raymarch_pipeline;
+    id<MTLComputePipelineState> integrate_pipeline;
+#else
+    void* froxel_scattering;
+    void* froxel_density;
+    void* integrated_scattering;
 
-typedef struct lighting_volumetric_fog_desc {
-    uint32_t flags;
-    void* user_data;
-} lighting_volumetric_fog_desc_t;
+    void* inject_pipeline;
+    void* raymarch_pipeline;
+    void* integrate_pipeline;
+#endif
 
-typedef struct lighting_volumetric_fog_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} lighting_volumetric_fog_info_t;
+    simd_uint3 resolution;  // e.g., 160x90x128
+    float near_plane;
+    float far_plane;
+    float density_scale;
+    simd_float3 fog_color;
+} volumetric_fog_t;
 
-/* ============================================================================
- * API
- * ============================================================================ */
+// Opaque light system and camera handles for C interop
+typedef struct light_system light_system_t;
+typedef struct Camera camera_t;
+typedef struct shadow_map_system shadow_map_system_t;
 
-/* Initialization */
-int lighting_volumetric_fog_init(void);
-void lighting_volumetric_fog_shutdown(void);
+/**
+ * Creates the volumetric fog system.
+ */
+volumetric_fog_t* volumetric_fog_create(metal_device_t* dev, uint32_t w, uint32_t h, uint32_t d);
 
-/* Lifecycle */
-int lighting_volumetric_fog_create(lighting_volumetric_fog_handle_t* out_handle, const lighting_volumetric_fog_desc_t* desc);
-void lighting_volumetric_fog_destroy(lighting_volumetric_fog_handle_t handle);
+/**
+ * Destroys the volumetric fog system.
+ */
+void volumetric_fog_destroy(volumetric_fog_t* fog);
 
-/* Operations */
-int lighting_volumetric_fog_update(lighting_volumetric_fog_handle_t handle, const void* data, size_t size);
-bool lighting_volumetric_fog_is_valid(lighting_volumetric_fog_handle_t handle);
-int lighting_volumetric_fog_get_info(lighting_volumetric_fog_handle_t handle, lighting_volumetric_fog_info_t* out_info);
-void lighting_volumetric_fog_mark_dirty(lighting_volumetric_fog_handle_t handle);
-int lighting_volumetric_fog_process_pending(void);
-
-/* Statistics */
-uint32_t lighting_volumetric_fog_get_count(void);
-size_t lighting_volumetric_fog_get_memory_usage(void);
-void lighting_volumetric_fog_debug_print(void);
+/**
+ * Renders the volumetric fog.
+ */
+#ifdef __OBJC__
+void volumetric_fog_render(volumetric_fog_t* fog, id<MTLCommandBuffer> cmd,
+                           light_system_t* lights, camera_t* camera,
+                           shadow_map_system_t* shadows);
+#else
+void volumetric_fog_render(volumetric_fog_t* fog, void* cmd,
+                           light_system_t* lights, camera_t* camera,
+                           shadow_map_system_t* shadows);
+#endif
 
 #ifdef __cplusplus
 }

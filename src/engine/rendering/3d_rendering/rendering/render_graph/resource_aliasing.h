@@ -12,6 +12,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "graph_compiler.h" // For render_graph_t definition (simplest way, though circular dep risk)
+// Actually resource_aliasing.h only uses render_graph_t* in declaration.
+// Forward declarations are better.
+struct rendering_render_graph;
+typedef struct rendering_render_graph render_graph_t;
 
 #ifdef __cplusplus
 extern "C" {

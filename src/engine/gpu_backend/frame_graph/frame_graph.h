@@ -21,7 +21,7 @@
 #ifndef FRAME_GRAPH_H
 #define FRAME_GRAPH_H
 
-#include "common.h"
+#include "core/types.h"
 #include "core/types.h"
 #include "renderer/core/texture.h"
 #include "renderer/core/buffer.h"

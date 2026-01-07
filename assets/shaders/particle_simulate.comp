@@ -1,107 +1,200 @@
 #version 450
 layout(local_size_x = 256) in;
 
-struct Particle {
-    vec3 position;
-    float life;
-    vec3 velocity;
-    float size;
-    vec3 acceleration;
-    float rotation;
-    vec4 color;
-    float age;
-    uint flags;
-    uint emitterId;
-    float mass;
-    float padding; // Alignment
+// Curve structure
+struct ParticleCurve {
+    float times[8];
+    float values[8];
+    uint count;
+    uint padding;
 };
 
 struct Emitter {
     vec3 position;
-    vec3 direction;     // 12 bytes + 4 pad = 16
-    vec3 spread;
-    float rate;
-    float lifetime;
-    float initialSpeed;
-    float initialSize;
-    float padding;
-    vec4 initialColor;
-    vec4 finalColor;
-    uint type;
-    uint blendMode;
-    uint space;
-    uint enabled;
-    uint maxParticles;
-    uint particlesPerEmission;
-    float emissionRadius;
-    float rotationSpeed;
+    float emission_rate;
+    vec3 direction;
+    float particle_lifetime;
+    float duration;
+    vec3 velocity_min;
+    float time_alive;
+    vec3 velocity_max;
+    uint particles_to_emit;
+    vec4 color_start;
+    vec4 color_end;
+    float size_start;
+    float size_end;
+    
+    // Phase 2: Enhanced fields
+    float lifetime_min;
+    float lifetime_randomness;
+    uint use_burst_mode;       // bool as uint
+    uint burst_count;
+    float burst_interval;
+    float burst_timer;
+    
+    float velocity_randomness;
+    float velocity_inheritance;
+    
+    float rotation_initial_min;
+    float rotation_initial_max;
+    float rotation_speed;
+    float padding_rotation;
+
+    uint emitter_type;
+    uint shape_params0; // float as uint
+    uint shape_params1; // float as uint
+    float spawn_timer;
+    int active;
+    uint curve_set_id;
+    uint padding_end;
 };
 
-layout(std140, binding = 0) buffer ParticleBuffer {
-    Particle particles[];
+// SoA Layout:
+// Base 0: Positions + Age (vec4)
+// Base 1: Velocities + EmitterID (vec4)
+// Base 2: Colors (vec4)
+// Base 3: Attributes (Size, Rot, TexID, Flags) (vec4)
+
+layout(std430, binding = 0) readonly buffer InputParticles {
+    vec4 in_data[];
 };
 
-layout(std140, binding = 1) buffer EmitterBuffer {
-    Emitter emitters[256];
+layout(std430, binding = 1) buffer OutputParticles {
+    vec4 out_data[];
+};
+
+layout(std140, binding = 2) buffer EmitterBuffer {
+    Emitter emitters[];
+};
+
+layout(std430, binding = 3) buffer AtomicCounters {
+    uint alive_count;
+    uint dead_count;
+    uint emit_count;
+    uint dispatch_count;
+};
+
+layout(std430, binding = 4) buffer DeadList {
+    uint dead_indices[];
 };
 
 layout(push_constant) uniform PushConstants {
-    float deltaTime;
-    uint particleCount;
-} u_PushConstants;
+    float delta_time;
+    uint max_particles;
+    uint random_seed;
+} u_Push;
 
-float rand(vec2 co){
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+// Random functions
+uint hash(uint x) {
+    x += (x << 10u);
+    x ^= (x >> 6u);
+    x += (x << 3u);
+    x ^= (x >> 11u);
+    x += (x << 15u);
+    return x;
+}
+
+float random(uint seed) {
+    return float(hash(seed)) / 4294967295.0;
 }
 
 void main() {
     uint idx = gl_GlobalInvocationID.x;
-    if (idx >= u_PushConstants.particleCount) return;
+    if (idx >= u_Push.max_particles) return;
 
-    // Load particle
-    Particle p = particles[idx];
-    
-    if (p.life > 0.0) {
-        // Update physics
-        p.velocity += p.acceleration * u_PushConstants.deltaTime;
-        p.velocity += vec3(0, -9.8, 0) * u_PushConstants.deltaTime * p.mass; // Gravity
-        p.position += p.velocity * u_PushConstants.deltaTime;
-        p.rotation += 1.0 * u_PushConstants.deltaTime; // Simple rotation
-        p.life -= u_PushConstants.deltaTime;
-        p.age += u_PushConstants.deltaTime;
+    // Read particle age from Input
+    vec4 pos_age = in_data[idx];
+    float age = pos_age.w;
+
+    // Dead particle?
+    if (age <= 0.0) {
+        // Just copy dead state or do nothing (slot remains 'dead' if life <= 0)
+        // But we must write to Output to ensure consistency?
+        // Actually, if it's dead, we don't care about values, but we should write age=0 to Output.
+        out_data[idx] = vec4(0.0);
         
-        // Color fade
-        // (Simplified for now)
-        p.color.a = clamp(p.life, 0.0, 1.0);
-    } else {
-        // Respawn logic (Simple Loop for demo)
-        // In a real system, we'd use a spawn queue or atomic counter
-        uint emitterId = p.emitterId;
-        if (emitterId < 256 && emitters[emitterId].enabled != 0) {
-            // Respawn
-            Emitter e = emitters[emitterId];
-            p.life = e.lifetime;
-            p.age = 0.0;
-            p.position = e.position + vec3(
-                (rand(vec2(idx, u_PushConstants.deltaTime)) - 0.5) * e.emissionRadius,
-                0,
-                (rand(vec2(idx + 1, u_PushConstants.deltaTime)) - 0.5) * e.emissionRadius
-            );
-            
-            vec3 dir = normalize(e.direction + vec3(
-                (rand(vec2(idx + 2, u_PushConstants.deltaTime)) - 0.5) * e.spread.x,
-                (rand(vec2(idx + 3, u_PushConstants.deltaTime)) - 0.5) * e.spread.y,
-                (rand(vec2(idx + 4, u_PushConstants.deltaTime)) - 0.5) * e.spread.z
-            ));
-            
-            p.velocity = dir * e.initialSpeed;
-            p.acceleration = vec3(0); // Reset accel
-            p.color = e.initialColor;
-            p.size = e.initialSize;
-            p.mass = 1.0;
-        }
+        // Also: Emission logic injects NEW particles.
+        // If we want to handle emission here, we need to consume from Dead List.
+        // But current plan is: CPU allocates slots, or separate Emission shader.
+        // If CPU allocates, it writes Initial State to CURRENT buffer (Output).
+        // If we overwrite here, we better check if it's a NEW particle?
+        // A "New" particle has age > 0 but was just written by CPU/Emitter.
+        // If we read 'Previous' (Input) and it's dead, but 'Current' (Output) has new data?
+        // Wait. Double Buffering Logic:
+        // Frame N: CPU writes new particles to 'Input' (Source) or 'Output' (Dest)?
+        // If CPU writes to Input, then Compute reads Input (valid) -> writes Output (stepped).
+        // Correct.
+        // So if Input has age > 0, we simulate.
+        
+        return; 
     }
+
+    // Read remaining components
+    uint vel_offset = u_Push.max_particles;
+    uint col_offset = u_Push.max_particles * 2;
+    uint attr_offset = u_Push.max_particles * 3;
+
+    vec4 vel_emit = in_data[vel_offset + idx];
+    vec4 color = in_data[col_offset + idx];
+    vec4 attr = in_data[attr_offset + idx];
+
+    vec3 pos = pos_age.xyz;
+    vec3 vel = vel_emit.xyz;
+    float life_max = 5.0; // Retrieve from emitter or stored?
+    // We don't store max_life in SoA. We store Normalized Age (0..1) usually?
+    // C code `GPUParticle` struct has `age` (normalized 0-1).
+    // But we need deltaTime step. If age is 0..1, we need to know MaxLife to step 1/MaxLife.
+    // We don't have MaxLife in particle data!
+    // We have EmitterID. We can look up Emitter.
     
-    // Store back
-    particles[idx] = p;
+    uint emitter_id = uint(vel_emit.w);
+    // Safety check
+    if (emitter_id < 1024) { // GPU_MAX_EMITTERS
+       // lifetime from emitter
+       life_max = emitters[emitter_id].particle_lifetime;
+       // Note: if lifetime is randomized, this is wrong.
+       // We should store either `max_life` or `inverse_life` in particle data.
+       // We have padding in `attributes`?
+       // attributes: x=size, y=rot, z=tex, w=flags.
+       // We can use w (flags) for packed data or add another component?
+       // Or `color` uses 4 floats.
+       // We assume C code initializes Age=MaxLife and we decrement?
+       // Comment in .h: "f32 age; // Normalized 0-1 lifetime"
+       // If it is normalized, we need 1/MaxLife.
+       // If we change Age to "Time Remaining", it solves it.
+       // Let's assume Age is "Time Remaining" (Seconds).
+       // Decrement by deltaTime. If < 0, die.
+    }
+
+    // Update Physics
+    float dt = u_Push.delta_time;
+    
+    // Gravity
+    vel += vec3(0, -9.8, 0) * dt;
+    
+    // Integration
+    pos += vel * dt;
+    
+    // Update Age
+    age -= dt;
+    
+    // Rotation
+    float rot_speed = emitters[emitter_id].rotation_speed;
+    attr.y += rot_speed * dt;
+
+    // Write Output
+    if (age <= 0.0) {
+        // Died this frame
+        out_data[idx] = vec4(0.0); // Write dead
+        // Add to Dead List
+        uint dead_idx = atomicAdd(dead_count, 1);
+        dead_indices[dead_idx] = idx;
+        atomicAdd(alive_count, -1);
+    } else {
+        // Write alive
+        out_data[idx] = vec4(pos, age);
+        out_data[vel_offset + idx] = vec4(vel, float(emitter_id));
+        out_data[col_offset + idx] = color; // Can animate color here
+        out_data[attr_offset + idx] = attr;
+    }
 }

@@ -54,6 +54,7 @@ bool effects_decal_rendering_is_valid(effects_decal_rendering_handle_t handle);
 int effects_decal_rendering_get_info(effects_decal_rendering_handle_t handle, effects_decal_rendering_info_t* out_info);
 void effects_decal_rendering_mark_dirty(effects_decal_rendering_handle_t handle);
 int effects_decal_rendering_process_pending(void);
+void effects_decal_rendering_render(effects_decal_rendering_handle_t handle, void* encoder, void* uniforms);
 
 /* Statistics */
 uint32_t effects_decal_rendering_get_count(void);

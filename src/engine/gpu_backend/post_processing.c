@@ -242,6 +242,45 @@ bool post_process_init(PostProcessingPipeline *pipeline,
     }
   }
 
+  // Create TAA history images
+  imageInfo.extent.width = 1920;
+  imageInfo.extent.height = 1080;
+  imageInfo.format = VK_FORMAT_R16G16B16A16_SFLOAT;
+  for (u32 i = 0; i < 2; i++) {
+    if (vkCreateImage(renderer->device, &imageInfo, NULL,
+                      &pipeline->historyImages[i]) != VK_SUCCESS) {
+      LOG_ERROR("Failed to create TAA history image %u", i);
+      post_process_shutdown(pipeline, renderer);
+      return false;
+    }
+
+    vkGetImageMemoryRequirements(renderer->device, pipeline->historyImages[i],
+                                 &memRequirements);
+    allocInfo.allocationSize = memRequirements.size;
+    allocInfo.memoryTypeIndex = vulkan_find_memory_type(
+       renderer->physical_device, memRequirements.memoryTypeBits,
+       VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+
+    if (vkAllocateMemory(renderer->device, &allocInfo, NULL,
+                         &pipeline->historyMemories[i]) != VK_SUCCESS) {
+      LOG_ERROR("Failed to allocate TAA history memory %u", i);
+      post_process_shutdown(pipeline, renderer);
+      return false;
+    }
+
+    vkBindImageMemory(renderer->device, pipeline->historyImages[i],
+                      pipeline->historyMemories[i], 0);
+
+    viewInfo.image = pipeline->historyImages[i];
+    viewInfo.format = VK_FORMAT_R16G16B16A16_SFLOAT;
+    if (vkCreateImageView(renderer->device, &viewInfo, NULL,
+                          &pipeline->historyImageViews[i]) != VK_SUCCESS) {
+      LOG_ERROR("Failed to create TAA history image view %u", i);
+      post_process_shutdown(pipeline, renderer);
+      return false;
+    }
+  }
+
   // Create samplers
   VkSamplerCreateInfo samplerInfo = {0};
   samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -724,6 +763,16 @@ void post_process_shutdown(PostProcessingPipeline *pipeline,
       vkDestroySampler(renderer->device, pipeline->samplers[i], NULL);
   }
 
+  // Cleanup TAA history
+  for (u32 i = 0; i < 2; i++) {
+    if (pipeline->historyImageViews[i])
+      vkDestroyImageView(renderer->device, pipeline->historyImageViews[i], NULL);
+    if (pipeline->historyImages[i])
+      vkDestroyImage(renderer->device, pipeline->historyImages[i], NULL);
+    if (pipeline->historyMemories[i])
+      vkFreeMemory(renderer->device, pipeline->historyMemories[i], NULL);
+  }
+
   // Cleanup pipelines and layouts
   for (u32 i = 0; i < 8; i++) {
     if (pipeline->pipelineLayouts[i])
@@ -855,21 +904,91 @@ bool post_process_anti_aliasing(PostProcessingPipeline *pipeline,
   if (!pipeline || !renderer || !commandBuffer ||
       pipeline->config.aaMethod == AA_NONE)
     return false;
+
 #ifdef VULKAN_BUILD
-  vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE,
-                    pipeline->aaPipeline);
-  struct {
-    float edgeThreshold;
-    float edgeThresholdMin;
-    u32 method;
-  } params = {pipeline->config.fxaaEdgeThreshold,
-              pipeline->config.fxaaEdgeThresholdMin, pipeline->config.aaMethod};
-  vkCmdPushConstants(commandBuffer, pipeline->pipelineLayouts[6],
-                     VK_SHADER_STAGE_COMPUTE_BIT, 0, sizeof(params), &params);
-  u32 groupX = (1920 + 15) / 16;
-  u32 groupY = (1080 + 15) / 16;
-  vkCmdDispatch(commandBuffer, groupX, groupY, 1);
-  return true;
+  // For FXAA, use the standard pipeline
+  if (pipeline->config.aaMethod == AA_FXAA) {
+    vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE,
+                      pipeline->aaPipeline);
+    struct {
+      float edgeThreshold;
+      float edgeThresholdMin;
+      u32 method;
+    } params = {pipeline->config.fxaaEdgeThreshold,
+                pipeline->config.fxaaEdgeThresholdMin, pipeline->config.aaMethod};
+    vkCmdPushConstants(commandBuffer, pipeline->pipelineLayouts[6],
+                       VK_SHADER_STAGE_COMPUTE_BIT, 0, sizeof(params), &params);
+    u32 groupX = (1920 + 15) / 16;
+    u32 groupY = (1080 + 15) / 16;
+    vkCmdDispatch(commandBuffer, groupX, groupY, 1);
+    return true;
+  }
+  
+  // For TAA
+  if (pipeline->config.aaMethod == AA_TAA) {
+    // Ping-pong history indices
+    u32 historyReadIndex = (pipeline->currentFrame % 2);
+    u32 historyWriteIndex = (pipeline->currentFrame + 1) % 2;
+    
+    // We need a specific TAA pipeline layout compatible with:
+    // Set 0: Input Color
+    // Set 1: Output Color
+    // Set 2: History Color (Read)
+    // Set 3: Velocity Buffer (Sampled from GBuffer - assuming available in renderer key slots)
+    // Set 4: Depth Buffer
+    
+    // For now, re-using existing generic layout structure but this likely needs 
+    // updates to pipeline creation to support specific TAA descriptor sets.
+    // Assuming aaPipeline handles TAA shader if method is AA_TAA.
+    
+    vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE,
+                      pipeline->aaPipeline);
+
+    // Push constants for TAA
+    struct {
+      float jitterX;
+      float jitterY;
+      float feedback;
+      u32 method;
+    } params;
+    
+    params.jitterX = renderer->jitter_offset.x;
+    params.jitterY = renderer->jitter_offset.y;
+    params.feedback = 0.95f; // TODO: Make configurable
+    params.method = AA_TAA;
+    
+    vkCmdPushConstants(commandBuffer, pipeline->pipelineLayouts[6],
+                       VK_SHADER_STAGE_COMPUTE_BIT, 0, sizeof(params), &params);
+
+    // Dispatch
+    u32 groupX = (1920 + 15) / 16;
+    u32 groupY = (1080 + 15) / 16;
+    vkCmdDispatch(commandBuffer, groupX, groupY, 1);
+    
+    // Copy output to history (Write) for next frame
+    // Ideally this is done via descriptor write, but for explicit history management:
+    // Copy Current Output -> History[WriteIndex]
+    
+    VkImageCopy copyRegion = {0};
+    copyRegion.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    copyRegion.srcSubresource.layerCount = 1;
+    copyRegion.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    copyRegion.dstSubresource.layerCount = 1;
+    copyRegion.extent.width = 1920;
+    copyRegion.extent.height = 1080;
+    copyRegion.extent.depth = 1;
+    
+    // Transition history image to transfer dst if needed
+    // Assuming pipeline output is TRANSFER_SRC optimized or similar.
+    
+    vkCmdCopyImage(commandBuffer, pipeline->intermediateImages[6], VK_IMAGE_LAYOUT_GENERAL,
+                   pipeline->historyImages[historyWriteIndex], VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                   1, &copyRegion);
+                   
+    return true;
+  }
+
+  return false;
 #else
   return false;
 #endif

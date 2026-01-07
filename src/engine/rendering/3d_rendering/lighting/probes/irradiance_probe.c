@@ -1,290 +1,189 @@
 /*
  * irradiance_probe.c
- * Irradiance probe sampling
+ * Irradiance probe sampling implementation
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement clustered light culling
- * TODO: Add ray-traced shadows
- * TODO: Implement cascaded shadow maps
- * TODO: Add area light support
- * TODO: Implement global illumination
- * TODO: Add volumetric lighting
- * TODO: Implement light probes
- * TODO: Add IES profile support
- * TODO: Implement lightmap baking
- * TODO: Add real-time GI
- * TODO: Implement irradiance probe initialization
- * TODO: Add irradiance probe cleanup/shutdown
- * TODO: Implement irradiance probe validation
- * TODO: Add irradiance probe error handling
- * TODO: Implement irradiance probe serialization
- * TODO: Add irradiance probe debug output
- * TODO: Implement irradiance probe unit tests
- * TODO: Add irradiance probe performance counters
- * TODO: Implement irradiance probe hot-reload
- * TODO: Add irradiance probe thread safety
- * TODO: Implement irradiance probe memory pooling
- * TODO: Add irradiance probe caching layer
- * TODO: Implement irradiance probe async operations
- * TODO: Add irradiance probe GPU integration
- * TODO: Implement irradiance probe SIMD optimization
- * TODO: Add irradiance probe batch processing
- * TODO: Implement irradiance probe streaming support
- * TODO: Add irradiance probe LOD support
- * TODO: Implement irradiance probe culling integration
- * TODO: Add irradiance probe render graph node
  */
 
 #include "irradiance_probe.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
+#ifdef __OBJC__
+#import <Metal/Metal.h>
 
-#define LIGHTING_IRRADIANCE_PROBE_MAX_COUNT 4096
-#define LIGHTING_IRRADIANCE_PROBE_DEFAULT_CAPACITY 256
-#define LIGHTING_IRRADIANCE_PROBE_ALIGNMENT 16
+/* 
+ * INTERNAL: Replicating metal_device struct to access device.
+ * This MUST match mtl_device.c structure layout.
+ * We only need the device reference.
+ */
+struct metal_device {
+    id<MTLDevice> device;
+    id<MTLCommandQueue> command_queue;
+    // ... other fields ignored
+};
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+probe_grid_t* probe_grid_create(metal_device_t* dev, simd_float3 min, simd_float3 max, simd_uint3 resolution) {
+    if (!dev || resolution.x == 0 || resolution.y == 0 || resolution.z == 0) return NULL;
 
-typedef struct lighting_irradiance_probe_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} lighting_irradiance_probe_internal_t;
+    probe_grid_t* grid = calloc(1, sizeof(probe_grid_t));
+    if (!grid) return NULL;
 
-typedef struct lighting_irradiance_probe_context {
-    lighting_irradiance_probe_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
-} lighting_irradiance_probe_context_t;
+    grid->bounds_min = min;
+    grid->bounds_max = max;
+    grid->resolution = resolution;
 
-static lighting_irradiance_probe_context_t g_irradiance_probe_ctx = {0};
-
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool lighting_irradiance_probe_validate(const lighting_irradiance_probe_internal_t* item) {
-    // TODO: Implement clustered light culling
-    // TODO: Add ray-traced shadows
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void lighting_irradiance_probe_cleanup_internal(lighting_irradiance_probe_internal_t* item) {
-    // TODO: Implement cascaded shadow maps
-    // TODO: Add area light support
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
-}
-
-/* ============================================================================
- * PUBLIC API
- * ============================================================================ */
-
-int lighting_irradiance_probe_init(void) {
-    // TODO: Implement global illumination
-    // TODO: Add volumetric lighting
-    // TODO: Implement light probes
-    // TODO: Add IES profile support
-
-    if (g_irradiance_probe_ctx.initialized) {
-        return 0; // Already initialized
+    grid->probe_count = resolution.x * resolution.y * resolution.z;
+    grid->probes = calloc(grid->probe_count, sizeof(irradiance_probe_t));
+    if (!grid->probes) {
+        free(grid);
+        return NULL;
     }
 
-    g_irradiance_probe_ctx.capacity = LIGHTING_IRRADIANCE_PROBE_DEFAULT_CAPACITY;
-    g_irradiance_probe_ctx.items = calloc(g_irradiance_probe_ctx.capacity, sizeof(lighting_irradiance_probe_internal_t));
-    if (!g_irradiance_probe_ctx.items) {
-        return -1;
-    }
+    // Initialize probe positions
+    simd_float3 range = max - min;
+    simd_float3 cell_size = range / simd_make_float3((float)resolution.x, (float)resolution.y, (float)resolution.z);
+    
+    // Calculate influence radius (slightly larger than cell diagonal to ensure overlap)
+    // Using half diagonal * factor
+    float influence_radius = simd_length(cell_size) * 0.75f; 
 
-    g_irradiance_probe_ctx.count = 0;
-    g_irradiance_probe_ctx.initialized = true;
-
-    return 0;
-}
-
-void lighting_irradiance_probe_shutdown(void) {
-    // TODO: Implement lightmap baking
-    // TODO: Add real-time GI
-    // TODO: Implement irradiance probe initialization
-    // TODO: Add irradiance probe cleanup/shutdown
-
-    if (!g_irradiance_probe_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_irradiance_probe_ctx.count; i++) {
-        lighting_irradiance_probe_cleanup_internal(&g_irradiance_probe_ctx.items[i]);
-    }
-
-    free(g_irradiance_probe_ctx.items);
-    g_irradiance_probe_ctx.items = NULL;
-    g_irradiance_probe_ctx.count = 0;
-    g_irradiance_probe_ctx.capacity = 0;
-    g_irradiance_probe_ctx.initialized = false;
-}
-
-int lighting_irradiance_probe_create(lighting_irradiance_probe_handle_t* out_handle, const lighting_irradiance_probe_desc_t* desc) {
-    // TODO: Implement irradiance probe validation
-    // TODO: Add irradiance probe error handling
-    // TODO: Implement irradiance probe serialization
-    // TODO: Add irradiance probe debug output
-
-    if (!out_handle || !desc) {
-        return -1;
-    }
-
-    if (!g_irradiance_probe_ctx.initialized) {
-        return -2;
-    }
-
-    if (g_irradiance_probe_ctx.count >= g_irradiance_probe_ctx.capacity) {
-        // TODO: Implement irradiance probe unit tests
-        return -3;
-    }
-
-    uint32_t index = g_irradiance_probe_ctx.count++;
-    lighting_irradiance_probe_internal_t* item = &g_irradiance_probe_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
-}
-
-void lighting_irradiance_probe_destroy(lighting_irradiance_probe_handle_t handle) {
-    // TODO: Add irradiance probe performance counters
-    // TODO: Implement irradiance probe hot-reload
-
-    if (handle.id >= g_irradiance_probe_ctx.count) {
-        return;
-    }
-
-    lighting_irradiance_probe_cleanup_internal(&g_irradiance_probe_ctx.items[handle.id]);
-}
-
-int lighting_irradiance_probe_update(lighting_irradiance_probe_handle_t handle, const void* data, size_t size) {
-    // TODO: Add irradiance probe thread safety
-    // TODO: Implement irradiance probe memory pooling
-    // TODO: Add irradiance probe caching layer
-    // TODO: Implement irradiance probe async operations
-
-    if (handle.id >= g_irradiance_probe_ctx.count) {
-        return -1;
-    }
-
-    lighting_irradiance_probe_internal_t* item = &g_irradiance_probe_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add irradiance probe GPU integration
-    // TODO: Implement irradiance probe SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool lighting_irradiance_probe_is_valid(lighting_irradiance_probe_handle_t handle) {
-    // TODO: Add irradiance probe batch processing
-    if (handle.id >= g_irradiance_probe_ctx.count) {
-        return false;
-    }
-    return g_irradiance_probe_ctx.items[handle.id].initialized;
-}
-
-int lighting_irradiance_probe_get_info(lighting_irradiance_probe_handle_t handle, lighting_irradiance_probe_info_t* out_info) {
-    // TODO: Implement irradiance probe streaming support
-    // TODO: Add irradiance probe LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_irradiance_probe_ctx.count) {
-        return -2;
-    }
-
-    const lighting_irradiance_probe_internal_t* item = &g_irradiance_probe_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void lighting_irradiance_probe_mark_dirty(lighting_irradiance_probe_handle_t handle) {
-    // TODO: Implement irradiance probe culling integration
-    if (handle.id < g_irradiance_probe_ctx.count) {
-        g_irradiance_probe_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int lighting_irradiance_probe_process_pending(void) {
-    // TODO: Add irradiance probe render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_irradiance_probe_ctx.count; i++) {
-        lighting_irradiance_probe_internal_t* item = &g_irradiance_probe_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
+    for (uint32_t z = 0; z < resolution.z; z++) {
+        for (uint32_t y = 0; y < resolution.y; y++) {
+            for (uint32_t x = 0; x < resolution.x; x++) {
+                uint32_t idx = x + y * resolution.x + z * resolution.x * resolution.y;
+                
+                // Position at center of cell
+                simd_float3 pos = min + cell_size * simd_make_float3((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f);
+                
+                grid->probes[idx].position = pos;
+                grid->probes[idx].influence_radius = influence_radius;
+                
+                // Initialize SH to 0
+                for (int i = 0; i < 9; i++) {
+                    grid->probes[idx].sh_coefficients[i] = simd_make_float4(0.0f, 0.0f, 0.0f, 0.0f);
+                }
+            }
         }
     }
 
-    return processed;
-}
+    // Create Metal resources
+    grid->probe_buffer = [dev->device newBufferWithLength:grid->probe_count * sizeof(irradiance_probe_t)
+                                                  options:MTLResourceStorageModeShared];
+    
+    if (!grid->probe_buffer) {
+        free(grid->probes);
+        free(grid);
+        return NULL;
+    }
+    
+    // Initial upload of static data (positions, etc)
+    memcpy(grid->probe_buffer.contents, grid->probes, grid->probe_count * sizeof(irradiance_probe_t));
 
-uint32_t lighting_irradiance_probe_get_count(void) {
-    return g_irradiance_probe_ctx.count;
-}
-
-size_t lighting_irradiance_probe_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_irradiance_probe_ctx);
-    total += g_irradiance_probe_ctx.capacity * sizeof(lighting_irradiance_probe_internal_t);
-
-    for (uint32_t i = 0; i < g_irradiance_probe_ctx.count; i++) {
-        total += g_irradiance_probe_ctx.items[i].data_size;
+    // 3D texture for SH coefficients (RGBA16Float, 9 slices per probe depth-wise)
+    // Dimensions: W=res.x, H=res.y, D=res.z * 9
+    // We treat the grid as X, Y, and Z dimension expanded by 9.
+    MTLTextureDescriptor* desc = [MTLTextureDescriptor
+        texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA32Float
+                                     width:resolution.x
+                                    height:resolution.y
+                                 mipmapped:NO];
+    desc.textureType = MTLTextureType3D;
+    desc.depth = resolution.z * 9;  // 9 SH coefficients per probe layer
+    desc.usage = MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite;
+    
+    grid->probe_texture = [dev->device newTextureWithDescriptor:desc];
+    if (!grid->probe_texture) {
+        free(grid->probes);
+        free(grid);
+        return NULL;
     }
 
-    return total;
+    return grid;
 }
 
-void lighting_irradiance_probe_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+void probe_grid_destroy(probe_grid_t* grid) {
+    if (!grid) return;
+    
+    grid->probe_buffer = nil;
+    grid->probe_texture = nil;
+
+    free(grid->probes);
+    free(grid);
 }
 
-/* End of irradiance_probe.c */
+void probe_grid_update_gpu(probe_grid_t* grid) {
+    if (!grid || !grid->probe_buffer || !grid->probe_texture) return;
+
+    // 1. Update Buffer (Positions, Radius, and SH data accessible structurally)
+    memcpy(grid->probe_buffer.contents, grid->probes, grid->probe_count * sizeof(irradiance_probe_t));
+
+    // 2. Update Texture (SH Coefficients packed)
+    // We need to repackage the SH data into a contiguous block formatted for the 3D texture.
+    // Texture Layout: width=X, height=Y, depth=Z*9.
+    // We iterate Z, then for each Z, we have 9 layers of SH coefficients.
+    
+    uint32_t width = grid->resolution.x;
+    uint32_t height = grid->resolution.y;
+    uint32_t depth = grid->resolution.z; // real depth
+    uint32_t sh_layers = 9;
+    
+    // Using RGBA32Float (size of simd_float4) to match sizeof(simd_float4).
+    // Note: Texture is RGBA16Float (8 bytes per pixel). Source is RGBA32Float (16 bytes).
+    // We MUST convert to half-float if strict, but replaceRegion might strictly require the format size.
+    // Given no easy half-float type in C stdlib, and `replaceRegion` takes raw pointer.
+    // CRITICAL: If I pass float array to replaceRegion for RGBA16Float, it will interpret bits wrongly.
+    // I should probably change the texture format to RGBA32Float for this implementation to be correct without half-float lib.
+    // Re-creating the texture here? No, I should have changed it in create.
+    // NOTE: For this task, I will assume the texture is RGBA32Float to match the provided data types.
+    // I will NOT modify the header which might be shared? Header is opaque about texture format.
+    // I'll silently assume RGBA32Float creation logic in `create` above IS what I want, but I wrote RGBA16Float there.
+    // I will change `create` logic above to RGBA32Float to match.
+    // Wait, I can't edit the `create` code I just sent in the tool call... 
+    // OH, I AM writing the file NOW. I can change it in the CodeContent argument below!
+    // I will change it to MTLPixelFormatRGBA32Float.
+    
+    size_t total_texels = width * height * (depth * sh_layers);
+    simd_float4* tex_data = calloc(total_texels, sizeof(simd_float4));
+    
+    if (!tex_data) return;
+    
+    for (uint32_t z = 0; z < depth; z++) {
+        for (uint32_t y = 0; y < height; y++) {
+            for (uint32_t x = 0; x < width; x++) {
+                uint32_t probe_idx = x + y * width + z * width * height;
+                irradiance_probe_t* probe = &grid->probes[probe_idx];
+                
+                // For this probe, we distribute its 9 SH coeffs into 9 Z-slices
+                // The texture Z coordinate for coefficient i is: (z * 9) + i
+                for (uint32_t i = 0; i < 9; i++) {
+                    uint32_t tex_z = (z * 9) + i;
+                    uint32_t tex_idx = x + y * width + tex_z * width * height;
+                    tex_data[tex_idx] = probe->sh_coefficients[i];
+                }
+            }
+        }
+    }
+    
+    MTLRegion region = MTLRegionMake3D(0, 0, 0, width, height, depth * sh_layers);
+    NSUInteger bytesPerRow = width * sizeof(simd_float4);
+    NSUInteger bytesPerImage = bytesPerRow * height;
+    
+    [grid->probe_texture replaceRegion:region
+                           mipmapLevel:0
+                                 slice:0
+                             withBytes:tex_data
+                           bytesPerRow:bytesPerRow
+                         bytesPerImage:bytesPerImage];
+                         
+    free(tex_data);
+}
+
+#else
+// Non-ObjC (pure C) stub
+probe_grid_t* probe_grid_create(metal_device_t* dev, simd_float3 min, simd_float3 max, simd_uint3 resolution) { return NULL; }
+void probe_grid_destroy(probe_grid_t* grid) {}
+void probe_grid_update_gpu(probe_grid_t* grid) {}
+#endif

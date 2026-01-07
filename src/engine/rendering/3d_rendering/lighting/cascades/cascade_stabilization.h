@@ -11,54 +11,28 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+/**
+ * @brief Stabilize view-projection matrix by snapping to shadow map texels
+ * Prevents shimmering when camera moves.
+ * 
+ * @param view_proj_matrix INPUT/OUTPUT: 4x4 matrix to modify (column-major)
+ * @param shadow_map_size Resolution of the shadow map side (e.g. 1024)
+ */
+void cascade_stabilize_matrix(float* view_proj_matrix, uint32_t shadow_map_size);
 
-typedef struct lighting_cascade_stabilization_handle {
-    uint32_t id;
-} lighting_cascade_stabilization_handle_t;
-
-typedef struct lighting_cascade_stabilization_desc {
-    uint32_t flags;
-    void* user_data;
-} lighting_cascade_stabilization_desc_t;
-
-typedef struct lighting_cascade_stabilization_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} lighting_cascade_stabilization_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
-
-/* Initialization */
-int lighting_cascade_stabilization_init(void);
-void lighting_cascade_stabilization_shutdown(void);
-
-/* Lifecycle */
-int lighting_cascade_stabilization_create(lighting_cascade_stabilization_handle_t* out_handle, const lighting_cascade_stabilization_desc_t* desc);
-void lighting_cascade_stabilization_destroy(lighting_cascade_stabilization_handle_t handle);
-
-/* Operations */
-int lighting_cascade_stabilization_update(lighting_cascade_stabilization_handle_t handle, const void* data, size_t size);
-bool lighting_cascade_stabilization_is_valid(lighting_cascade_stabilization_handle_t handle);
-int lighting_cascade_stabilization_get_info(lighting_cascade_stabilization_handle_t handle, lighting_cascade_stabilization_info_t* out_info);
-void lighting_cascade_stabilization_mark_dirty(lighting_cascade_stabilization_handle_t handle);
-int lighting_cascade_stabilization_process_pending(void);
-
-/* Statistics */
-uint32_t lighting_cascade_stabilization_get_count(void);
-size_t lighting_cascade_stabilization_get_memory_usage(void);
-void lighting_cascade_stabilization_debug_print(void);
+/**
+ * @brief Round camera position to nearest stable grid point
+ * Alternative to matrix snapping
+ * 
+ * @param camera_pos INPUT/OUTPUT: 3 float position array
+ * @param shadow_unit_per_texel World units covered by one shadow texel
+ */
+void cascade_apply_camera_rounding(float* camera_pos, float shadow_unit_per_texel);
 
 #ifdef __cplusplus
 }

@@ -10,55 +10,32 @@
 #define LIGHTING_CASCADE_SELECTION_H
 
 #include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
+#include <math.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+/**
+ * @brief Calculate split depths using Practical Split Scheme
+ * 
+ * @param near_plane Camera near plane
+ * @param far_plane Shadow max distance
+ * @param lambda Split distribution factor (0.0=Uniform, 1.0=Logarithmic, 0.5=Hybrid)
+ * @param count Number of cascades
+ * @param out_splits Output array of float depths (size = count)
+ */
+void cascade_calculate_split_depths(float near_plane, float far_plane, float lambda, uint32_t count, float* out_splits);
 
-typedef struct lighting_cascade_selection_handle {
-    uint32_t id;
-} lighting_cascade_selection_handle_t;
-
-typedef struct lighting_cascade_selection_desc {
-    uint32_t flags;
-    void* user_data;
-} lighting_cascade_selection_desc_t;
-
-typedef struct lighting_cascade_selection_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} lighting_cascade_selection_info_t;
-
-/* ============================================================================
- * API
- * ============================================================================ */
-
-/* Initialization */
-int lighting_cascade_selection_init(void);
-void lighting_cascade_selection_shutdown(void);
-
-/* Lifecycle */
-int lighting_cascade_selection_create(lighting_cascade_selection_handle_t* out_handle, const lighting_cascade_selection_desc_t* desc);
-void lighting_cascade_selection_destroy(lighting_cascade_selection_handle_t handle);
-
-/* Operations */
-int lighting_cascade_selection_update(lighting_cascade_selection_handle_t handle, const void* data, size_t size);
-bool lighting_cascade_selection_is_valid(lighting_cascade_selection_handle_t handle);
-int lighting_cascade_selection_get_info(lighting_cascade_selection_handle_t handle, lighting_cascade_selection_info_t* out_info);
-void lighting_cascade_selection_mark_dirty(lighting_cascade_selection_handle_t handle);
-int lighting_cascade_selection_process_pending(void);
-
-/* Statistics */
-uint32_t lighting_cascade_selection_get_count(void);
-size_t lighting_cascade_selection_get_memory_usage(void);
-void lighting_cascade_selection_debug_print(void);
+/**
+ * @brief Calculate transition regions for smooth blending
+ * 
+ * @param splits Array of split depths
+ * @param count Number of cascades
+ * @param transition_fraction Fraction of cascade depth to use as transition (e.g. 0.1)
+ * @param out_regions Output buffer for transition parameters
+ */
+void cascade_calculate_transition_regions(const float* splits, uint32_t count, float transition_fraction, float* out_regions);
 
 #ifdef __cplusplus
 }

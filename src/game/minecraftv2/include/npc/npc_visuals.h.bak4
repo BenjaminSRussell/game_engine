@@ -1,0 +1,20 @@
+#ifndef NPC_VISUALS_H
+#define NPC_VISUALS_H
+
+#include "../game_common.h"
+#include "../ecs/components/npc.h"
+#include "../ecs/components/transform.h"
+#include "../mesh/mesh.h"
+
+// Initialize any static resources for NPC visuals
+void npc_visuals_init(void);
+
+// Clean up resources
+void npc_visuals_free(void);
+
+// Append an NPC's geometry to a dynamic mesh batch
+// This calculates animations and transforms on the CPU
+void npc_visuals_append_mesh(Mesh *batch, NPCComponent *npc,
+                             TransformComponent *transform, f32 delta_time);
+
+#endif // NPC_VISUALS_H

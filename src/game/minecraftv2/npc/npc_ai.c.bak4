@@ -1,0 +1,252 @@
+// src/npc/npc_ai.c
+// NPC AI and behavior implementation
+
+#include <core/logger.h>
+#include <ecs/component_ids.h>
+#include <ecs/components/health.h>
+#include <ecs/components/transform.h>
+#include <math.h>
+#include <npc/npc.h>
+#include <stdlib.h>
+
+// Helper function to get random wander position
+static Vec3 get_random_wander_position(Vec3 current_pos, f32 wander_radius) {
+  f32 angle = ((f32)rand() / RAND_MAX) * 2.0f * 3.14159f;
+  f32 distance = ((f32)rand() / RAND_MAX) * wander_radius;
+
+  return vec3(current_pos.x + cosf(angle) * distance, current_pos.y,
+              current_pos.z + sinf(angle) * distance);
+}
+
+// Helper function to move towards a target position
+static void move_towards(TransformComponent *transform, Vec3 target, f32 speed,
+                         f32 delta_time) {
+  Vec3 direction =
+      vec3(target.x - transform->position.x, target.y - transform->position.y,
+           target.z - transform->position.z);
+
+  f32 distance = sqrtf(direction.x * direction.x + direction.y * direction.y +
+                       direction.z * direction.z);
+
+  if (distance > 0.1f) {
+    // Normalize direction
+    direction.x /= distance;
+    direction.y /= distance;
+    direction.z /= distance;
+
+    // Move towards target
+    f32 move_distance = speed * delta_time;
+    if (move_distance > distance) {
+      move_distance = distance;
+    }
+
+    transform->position.x += direction.x * move_distance;
+    transform->position.y += direction.y * move_distance;
+    transform->position.z += direction.z * move_distance;
+  }
+}
+
+void npc_ai_update(NPCSystem *system, EntityID entity, NPCComponent *npc,
+                   f32 delta_time) {
+  if (!system || !npc) {
+    return;
+  }
+
+  // Get transform component
+  TransformComponent *transform = (TransformComponent *)ecs_get_component(
+      (World *)system->ecs, (Entity){entity, 0}, TRANSFORM_COMPONENT_ID);
+  if (!transform) {
+    return;
+  }
+
+  // Get NPC stats
+  NPCStats stats = npc_get_stats(npc->type);
+
+  // Basic state machine
+  switch (npc->state) {
+  case NPC_STATE_IDLE: {
+    // Decrement behavior timer
+    if (npc->behavior_timer <= 0.0f) {
+      // Transition to wandering after idle period
+      npc->state = NPC_STATE_WANDERING;
+      npc->behavior_timer =
+          5.0f + ((f32)rand() / RAND_MAX) * 5.0f; // 5-10 seconds
+
+      // Set random wander target
+      Vec3 wander_target =
+          get_random_wander_position(transform->position, 10.0f);
+      npc->path[0] = wander_target;
+      npc->path_length = 1;
+      npc->current_path_index = 0;
+
+      LOG_DEBUG("NPC %u transitioning to WANDERING state", entity);
+    }
+    break;
+  }
+
+  case NPC_STATE_WANDERING: {
+    if (npc->path_length > 0 && npc->current_path_index < npc->path_length) {
+      Vec3 target = npc->path[npc->current_path_index];
+      f32 distance = vec3_distance(transform->position, target);
+
+      if (distance < 0.5f) {
+        // Reached waypoint
+        npc->current_path_index++;
+
+        if (npc->current_path_index >= npc->path_length) {
+          // Reached end of path, go back to idle
+          npc->state = NPC_STATE_IDLE;
+          npc->behavior_timer =
+              2.0f + ((f32)rand() / RAND_MAX) * 3.0f; // 2-5 seconds
+          npc->path_length = 0;
+          LOG_DEBUG("NPC %u transitioning to IDLE state", entity);
+        }
+      } else {
+        // Move towards current waypoint
+        move_towards(transform, target, stats.move_speed, delta_time);
+      }
+    } else {
+      // No path, go back to idle
+      npc->state = NPC_STATE_IDLE;
+      npc->behavior_timer = 2.0f;
+    }
+    break;
+  }
+
+  case NPC_STATE_FLEEING: {
+    // Flee from flee_target
+    if (npc->flee_target != NULL_ENTITY) {
+      TransformComponent *threat_transform =
+          (TransformComponent *)ecs_get_component(system->ecs, npc->flee_target,
+                                                  TRANSFORM_COMPONENT_ID);
+
+      if (threat_transform) {
+        f32 distance =
+            vec3_distance(transform->position, threat_transform->position);
+
+        if (distance > stats.flee_range * 2.0f) {
+          // Far enough away, stop fleeing
+          npc->state = NPC_STATE_IDLE;
+          npc->flee_target = NULL_ENTITY;
+          npc->panic_timer = 0.0f;
+          LOG_DEBUG("NPC %u stopped fleeing", entity);
+        } else {
+          // Calculate flee direction (away from threat)
+          Vec3 flee_direction =
+              vec3(transform->position.x - threat_transform->position.x, 0.0f,
+                   transform->position.z - threat_transform->position.z);
+
+          f32 dir_length = sqrtf(flee_direction.x * flee_direction.x +
+                                 flee_direction.z * flee_direction.z);
+          if (dir_length > 0.1f) {
+            flee_direction.x /= dir_length;
+            flee_direction.z /= dir_length;
+
+            // Move away at increased speed
+            f32 flee_speed = stats.move_speed * 1.5f;
+            transform->position.x += flee_direction.x * flee_speed * delta_time;
+            transform->position.z += flee_direction.z * flee_speed * delta_time;
+          }
+        }
+      }
+    } else {
+      // No flee target, return to idle
+      npc->state = NPC_STATE_IDLE;
+      npc->panic_timer = 0.0f;
+    }
+    break;
+  }
+
+  case NPC_STATE_CHASING: {
+    // Chase target entity
+    if (npc->target != NULL_ENTITY) {
+      TransformComponent *target_transform =
+          (TransformComponent *)ecs_get_component(system->ecs, npc->target,
+                                                  TRANSFORM_COMPONENT_ID);
+
+      if (target_transform) {
+        f32 distance =
+            vec3_distance(transform->position, target_transform->position);
+
+        if (distance > stats.detection_range * 1.5f) {
+          // Target too far, give up chase
+          npc->state = NPC_STATE_IDLE;
+          npc->target = NULL_ENTITY;
+          LOG_DEBUG("NPC %u lost target", entity);
+        } else if (distance <= stats.attack_range) {
+          // In attack range, transition to attacking
+          npc->state = NPC_STATE_ATTACKING;
+          npc->behavior_timer = 1.0f; // Attack cooldown
+          LOG_DEBUG("NPC %u transitioning to ATTACKING state", entity);
+        } else {
+          // Move towards target
+          move_towards(transform, target_transform->position,
+                       stats.move_speed * 1.2f, delta_time);
+        }
+      }
+    } else {
+      // No target, return to idle
+      npc->state = NPC_STATE_IDLE;
+    }
+    break;
+  }
+
+  case NPC_STATE_ATTACKING: {
+    // Attack target entity
+    if (npc->target != NULL_ENTITY && npc->behavior_timer <= 0.0f) {
+      TransformComponent *target_transform =
+          (TransformComponent *)ecs_get_component(system->ecs, npc->target,
+                                                  TRANSFORM_COMPONENT_ID);
+
+      if (target_transform) {
+        f32 distance =
+            vec3_distance(transform->position, target_transform->position);
+
+        if (distance > stats.attack_range * 1.2f) {
+          // Target moved out of range, chase again
+          npc->state = NPC_STATE_CHASING;
+          LOG_DEBUG("NPC %u transitioning back to CHASING state", entity);
+        } else {
+          // Perform attack
+          HealthComponent *target_health = (HealthComponent *)ecs_get_component(
+              system->ecs, npc->target, HEALTH_COMPONENT_ID);
+
+          if (target_health) {
+            target_health->health -= stats.damage;
+            LOG_DEBUG("NPC %u attacked entity %u for %.1f damage", entity,
+                      npc->target, stats.damage);
+
+            if (target_health->health <= 0.0f) {
+              // Target died, return to idle
+              npc->state = NPC_STATE_IDLE;
+              npc->target = NULL_ENTITY;
+              LOG_INFO("NPC %u killed target %u", entity, npc->target);
+            }
+          }
+
+          // Reset attack cooldown
+          npc->behavior_timer = 1.0f;
+        }
+      }
+    } else if (npc->target == NULL_ENTITY) {
+      // No target, return to idle
+      npc->state = NPC_STATE_IDLE;
+    }
+    break;
+  }
+
+  case NPC_STATE_BREEDING: {
+    // TODO: Implement breeding behavior
+    // For now, just return to idle after timer expires
+    if (npc->behavior_timer <= 0.0f) {
+      npc->state = NPC_STATE_IDLE;
+      npc->behavior_flags &= ~NPC_FLAG_IN_LOVE;
+    }
+    break;
+  }
+
+  default:
+    npc->state = NPC_STATE_IDLE;
+    break;
+  }
+}

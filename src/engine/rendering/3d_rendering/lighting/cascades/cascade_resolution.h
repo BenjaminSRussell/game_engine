@@ -1,6 +1,6 @@
 /*
  * cascade_resolution.h
- * Adaptive cascade resolution
+ * Cascade resolution management
  *
  * Part of the Lighting subsystem
  * Advanced 3D Rendering Engine
@@ -11,54 +11,48 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct lighting_cascade_resolution_handle {
-    uint32_t id;
-} lighting_cascade_resolution_handle_t;
-
-typedef struct lighting_cascade_resolution_desc {
-    uint32_t flags;
-    void* user_data;
-} lighting_cascade_resolution_desc_t;
-
-typedef struct lighting_cascade_resolution_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} lighting_cascade_resolution_info_t;
+typedef enum cascade_quality_preset {
+    CASCADE_QUALITY_LOW,
+    CASCADE_QUALITY_MEDIUM,
+    CASCADE_QUALITY_HIGH,
+    CASCADE_QUALITY_ULTRA
+} cascade_quality_preset_t;
 
 /* ============================================================================
  * API
  * ============================================================================ */
 
-/* Initialization */
-int lighting_cascade_resolution_init(void);
-void lighting_cascade_resolution_shutdown(void);
+/**
+ * @brief Calculate optimal resolution for a cascade layer
+ * 
+ * @param frustum_diagonal_size Size of the cascade frustum diagonal in world units
+ * @param texel_density_target Desired pixels per world unit
+ * @return Power-of-two resolution
+ */
+uint32_t cascade_calculate_resolution(float frustum_diagonal_size, float texel_density_target);
 
-/* Lifecycle */
-int lighting_cascade_resolution_create(lighting_cascade_resolution_handle_t* out_handle, const lighting_cascade_resolution_desc_t* desc);
-void lighting_cascade_resolution_destroy(lighting_cascade_resolution_handle_t handle);
+/**
+ * @brief Calculate current texel density
+ * 
+ * @param resolution Map resolution
+ * @param world_diagonal_size World space diagonal size covered
+ * @return Pixels per world unit
+ */
+float cascade_calculate_texel_density(uint32_t resolution, float world_diagonal_size);
 
-/* Operations */
-int lighting_cascade_resolution_update(lighting_cascade_resolution_handle_t handle, const void* data, size_t size);
-bool lighting_cascade_resolution_is_valid(lighting_cascade_resolution_handle_t handle);
-int lighting_cascade_resolution_get_info(lighting_cascade_resolution_handle_t handle, lighting_cascade_resolution_info_t* out_info);
-void lighting_cascade_resolution_mark_dirty(lighting_cascade_resolution_handle_t handle);
-int lighting_cascade_resolution_process_pending(void);
-
-/* Statistics */
-uint32_t lighting_cascade_resolution_get_count(void);
-size_t lighting_cascade_resolution_get_memory_usage(void);
-void lighting_cascade_resolution_debug_print(void);
+/**
+ * @brief Apply quality preset to generate resolutions for cascades
+ * 
+ * @param preset Quality level
+ * @param out_resolutions Array to fill with resolutions
+ * @param count Number of cascades
+ */
+void cascade_apply_quality_preset(cascade_quality_preset_t preset, uint32_t* out_resolutions, uint32_t count);
 
 #ifdef __cplusplus
 }

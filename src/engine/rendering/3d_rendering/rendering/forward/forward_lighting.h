@@ -1,17 +1,13 @@
-/*
- * forward_lighting.h
- * Forward lighting loop
- *
- * Part of the Rendering subsystem
- * Advanced 3D Rendering Engine
- */
-
 #ifndef RENDERING_FORWARD_LIGHTING_H
 #define RENDERING_FORWARD_LIGHTING_H
 
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+
+#ifdef __OBJC__
+#import <Metal/Metal.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,6 +16,20 @@ extern "C" {
 /* ============================================================================
  * TYPES
  * ============================================================================ */
+
+/* Metal Forward Renderer State */
+#ifdef __OBJC__
+typedef struct forward_renderer {
+    id<MTLRenderPipelineState> opaque_pipeline;
+    id<MTLRenderPipelineState> transparent_pipeline;
+    id<MTLDepthStencilState> depth_state_opaque;
+    id<MTLDepthStencilState> depth_state_transparent;
+    id<MTLBuffer> light_grid_buffer;  // Clustered light indices
+    id<MTLBuffer> light_data_buffer;
+} forward_renderer_t;
+#else
+typedef struct forward_renderer forward_renderer_t;
+#endif
 
 typedef struct rendering_forward_lighting_handle {
     uint32_t id;
@@ -43,6 +53,9 @@ typedef struct rendering_forward_lighting_info {
 /* Initialization */
 int rendering_forward_lighting_init(void);
 void rendering_forward_lighting_shutdown(void);
+
+/* Get the global forward renderer instance */
+forward_renderer_t* rendering_forward_lighting_get_renderer(void);
 
 /* Lifecycle */
 int rendering_forward_lighting_create(rendering_forward_lighting_handle_t* out_handle, const rendering_forward_lighting_desc_t* desc);

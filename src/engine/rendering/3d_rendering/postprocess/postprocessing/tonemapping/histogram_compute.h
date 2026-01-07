@@ -31,11 +31,23 @@ typedef struct postprocessing_histogram_compute_handle {
 
 #define HISTOGRAM_BIN_COUNT 64
 
+typedef enum metering_mode {
+    METERING_MODE_AVERAGE = 0,
+    METERING_MODE_CENTER_WEIGHTED = 1,
+    METERING_MODE_SPOT = 2,
+    METERING_MODE_CUSTOM = 3
+} metering_mode_t;
+
 typedef struct histogram_params {
     float min_log_lum;   // Minimum log luminance (e.g., -10.0)
     float log_lum_range; // Range of log luminance (e.g., 20.0)
     float low_percentile; // For filtering outliers (e.g., 0.1)
     float high_percentile; // For filtering outliers (e.g., 0.9)
+    
+    // Metering
+    metering_mode_t metering_mode;
+    float center_weight; // Used for center-weighted metering (e.g., 0.5)
+    float spot_range;    // Used for spot metering (e.g., 0.1)
 } histogram_params_t;
 
 typedef struct postprocessing_histogram_compute_desc {

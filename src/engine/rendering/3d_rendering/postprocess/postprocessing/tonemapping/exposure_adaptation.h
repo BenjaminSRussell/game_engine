@@ -35,6 +35,14 @@ typedef struct exposure_params {
     float target_luminance; // Key value (usually 0.18 for middle gray)
     float adaptation_speed; // Speed of adaptation (tau)
     bool use_ev;            // If true, min/max are in EV units
+    
+    // Manual override
+    bool manual_override;
+    float manual_exposure;
+    
+    // History
+    bool use_history;
+    uint32_t history_size;  // Max 64
 } exposure_params_t;
 
 typedef struct postprocessing_exposure_adaptation_desc {
@@ -75,6 +83,14 @@ int postprocessing_exposure_adaptation_process_pending(void);
 // Computes new exposure based on average luminance and time delta
 float postprocessing_exposure_compute_target(const exposure_params_t* params, float avg_luminance);
 float postprocessing_exposure_adapt(const exposure_params_t* params, float current_exposure, float target_exposure, float dt);
+
+/* Manual Control */
+void postprocessing_exposure_set_manual(postprocessing_exposure_adaptation_handle_t handle, bool enabled, float exposure);
+
+/* History Management */
+void postprocessing_exposure_push_history(postprocessing_exposure_adaptation_handle_t handle, float exposure);
+float postprocessing_exposure_get_average_history(postprocessing_exposure_adaptation_handle_t handle);
+void postprocessing_exposure_clear_history(postprocessing_exposure_adaptation_handle_t handle);
 
 /* Statistics */
 uint32_t postprocessing_exposure_adaptation_get_count(void);

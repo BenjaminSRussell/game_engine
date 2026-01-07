@@ -72,6 +72,7 @@ typedef enum {
   MEMORY_TAG_NETWORK,
   MEMORY_TAG_UI,
   MEMORY_TAG_GAMEPLAY,
+  MEMORY_TAG_GEOMETRY,
   MEMORY_TAG_COUNT
 } MemoryTag;
 
@@ -341,6 +342,8 @@ void memory_free_resolved_stack_trace(char **symbols);
 #define MALLOC_AI(size) MALLOC_TAGGED(size, MEMORY_TAG_AI)
 #define MALLOC_NETWORK(size) MALLOC_TAGGED(size, MEMORY_TAG_NETWORK)
 #define MALLOC_UI(size) MALLOC_TAGGED(size, MEMORY_TAG_UI)
+#define MALLOC_GAMEPLAY(size) MALLOC_TAGGED(size, MEMORY_TAG_GAMEPLAY)
+#define MALLOC_GEOMETRY(size) MALLOC_TAGGED(size, MEMORY_TAG_GEOMETRY)
 
 // ============================================================================
 // Vulkan Memory Integration

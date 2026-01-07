@@ -70,6 +70,11 @@ typedef struct postprocessing_exposure_adaptation_internal {
     uint64_t frame_updated;
     exposure_params_t params;
     float current_exposure;
+    
+    // History buffer
+    float history[64];
+    uint32_t history_head;
+    uint32_t history_count;
 } postprocessing_exposure_adaptation_internal_t;
 
 typedef struct postprocessing_exposure_adaptation_context {
@@ -167,6 +172,10 @@ int postprocessing_exposure_adaptation_create(postprocessing_exposure_adaptation
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
+    
+    item->history_head = 0;
+    item->history_count = 0;
+    memset(item->history, 0, sizeof(item->history));
 
     out_handle->id = index;
     return 0;
@@ -270,6 +279,10 @@ float postprocessing_exposure_compute_target(const exposure_params_t* params, fl
 float postprocessing_exposure_adapt(const exposure_params_t* params, float current_exposure, float target_exposure, float dt) {
     if (!params) return target_exposure;
     
+    if (params->manual_override) {
+        return params->manual_exposure;
+    }
+    
     // Smooth adaptation
     // exposure = lerp(current, target, 1 - exp(-speed * dt))
     
@@ -277,6 +290,47 @@ float postprocessing_exposure_adapt(const exposure_params_t* params, float curre
     float alpha = 1.0f - expf(-speed * dt);
     
     return lerp(current_exposure, target_exposure, alpha);
+}
+
+void postprocessing_exposure_set_manual(postprocessing_exposure_adaptation_handle_t handle, bool enabled, float exposure) {
+    if (handle.id >= g_exposure_adaptation_ctx.count) return;
+    postprocessing_exposure_adaptation_internal_t* item = &g_exposure_adaptation_ctx.items[handle.id];
+    item->params.manual_override = enabled;
+    item->params.manual_exposure = exposure;
+    item->dirty = true;
+}
+
+void postprocessing_exposure_push_history(postprocessing_exposure_adaptation_handle_t handle, float exposure) {
+    if (handle.id >= g_exposure_adaptation_ctx.count) return;
+    postprocessing_exposure_adaptation_internal_t* item = &g_exposure_adaptation_ctx.items[handle.id];
+    
+    uint32_t size = item->params.history_size;
+    if (size == 0) size = 1;
+    if (size > 64) size = 64;
+    
+    item->history[item->history_head] = exposure;
+    item->history_head = (item->history_head + 1) % size;
+    if (item->history_count < size) item->history_count++;
+}
+
+float postprocessing_exposure_get_average_history(postprocessing_exposure_adaptation_handle_t handle) {
+    if (handle.id >= g_exposure_adaptation_ctx.count) return 1.0f;
+    postprocessing_exposure_adaptation_internal_t* item = &g_exposure_adaptation_ctx.items[handle.id];
+    
+    if (item->history_count == 0) return item->current_exposure;
+    
+    float sum = 0.0f;
+    for (uint32_t i = 0; i < item->history_count; i++) {
+        sum += item->history[i];
+    }
+    return sum / (float)item->history_count;
+}
+
+void postprocessing_exposure_clear_history(postprocessing_exposure_adaptation_handle_t handle) {
+    if (handle.id >= g_exposure_adaptation_ctx.count) return;
+    postprocessing_exposure_adaptation_internal_t* item = &g_exposure_adaptation_ctx.items[handle.id];
+    item->history_count = 0;
+    item->history_head = 0;
 }
 
 uint32_t postprocessing_exposure_adaptation_get_count(void) {

@@ -1,0 +1,173 @@
+#version 450
+layout(local_size_x = 64) in;
+
+// Same structs as simulate
+struct ParticleCurve {
+    float times[8];
+    float values[8];
+    uint count;
+    uint padding;
+};
+
+struct Emitter {
+    vec3 position;
+    float emission_rate;
+    vec3 direction;
+    float particle_lifetime;
+    float duration;
+    vec3 velocity_min;
+    float time_alive;
+    vec3 velocity_max;
+    uint particles_to_emit;
+    vec4 color_start;
+    vec4 color_end;
+    float size_start;
+    float size_end;
+    
+    // Phase 2
+    float lifetime_min;
+    float lifetime_randomness;
+    uint use_burst_mode;
+    uint burst_count;
+    float burst_interval;
+    float burst_timer;
+    
+    float velocity_randomness;
+    float velocity_inheritance;
+    
+    float rotation_initial_min;
+    float rotation_initial_max;
+    float rotation_speed;
+    float padding_rotation;
+
+    uint emitter_type;
+    uint shape_params0;
+    uint shape_params1;
+    float spawn_timer;
+    int active;
+    uint curve_set_id;
+    uint padding_end;
+};
+
+// Bindings (Same layout indices)
+// Writing to Binding 0 (Input of Sim) because we run Emission BEFORE Sim
+layout(std430, binding = 0) buffer ParticleDataWrite {
+    vec4 p_data[]; // Write access
+};
+
+// Binding 1: unused or safe
+layout(std430, binding = 1) buffer ParticleDataOut {
+    vec4 p_out_unused[]; 
+};
+
+layout(std140, binding = 2) buffer EmitterBuffer {
+    Emitter emitters[];
+};
+
+layout(std430, binding = 3) buffer AtomicCounters {
+    uint alive_count;
+    uint dead_count;
+    uint emit_count;
+    uint dispatch_count;
+};
+
+layout(std430, binding = 4) buffer DeadList {
+    uint dead_indices[];
+};
+
+layout(push_constant) uniform PushConstants {
+    float delta_time;
+    uint max_particles;
+    uint random_seed;
+    uint emitter_count;
+} u_Push;
+
+// Hash/Random
+uint hash(uint x) {
+    x += (x << 10u);
+    x ^= (x >> 6u);
+    x += (x << 3u);
+    x ^= (x >> 11u);
+    x += (x << 15u);
+    return x;
+}
+float random(uint seed) {
+    return float(hash(seed)) / 4294967295.0;
+}
+vec3 randomVec3(uint seed) {
+    return vec3(random(seed), random(seed + 1), random(seed + 2));
+}
+
+void main() {
+    uint emitter_idx = gl_GlobalInvocationID.x;
+    if (emitter_idx >= u_Push.emitter_count) return;
+
+    Emitter e = emitters[emitter_idx];
+    if (e.active < 0 || e.particles_to_emit == 0) return;
+
+    // Emit particles loop
+    // Note: If particles_to_emit is large, this thread loops a lot?
+    // Better: Dispatch N threads where N = TotalEmitCount?
+    // But we need to know WHICH emitter.
+    // Approach: Each thread = 1 emitter. Loop for spawn count.
+    // If burst is 1000, this thread hangs?
+    // For 1000 particles, loop is okay on GPU (1000 iter is fast enough if logic simple).
+    // Or we use indirect dispatch for emission (complex).
+    
+    uint count = e.particles_to_emit;
+    
+    for (uint i = 0; i < count; i++) {
+        // Alloc slot
+        // atomicAdd returns OLD value.
+        // If dead_count was 10, returns 10. we want index 9.
+        // Wait, stack pointer. If count=10, valid indices are 0..9.
+        // We decrement first? Or separate counter?
+        // Usually: index = atomicAdd(dead_count, -1) - 1;
+        // If dead_count=0, returns 0. 0-1 = MAX_UINT. Check overflow.
+        
+        uint old_dead = atomicAdd(dead_count, 0xFFFFFFFF); // -1
+        if (old_dead == 0) {
+            // Restore? Or accept empty.
+            atomicAdd(dead_count, 1);
+            break; // Pool empty
+        }
+        uint list_idx = old_dead - 1;
+        uint particle_idx = dead_indices[list_idx];
+        
+        // Safety check
+        if (particle_idx >= u_Push.max_particles) continue;
+
+        // Initialize Particle
+        uint seed = u_Push.random_seed + emitter_idx * 1337 + i;
+        
+        // Position
+        vec3 pos = e.position;
+        if (e.emitter_type == 1) { // Box
+             vec3 size = vec3(uintBitsToFloat(e.shape_params0), uintBitsToFloat(e.shape_params1), e.velocity_min.z); // hacky mapping from C
+             // Actually we should fix mapping.
+             // But for now, just point emission default.
+        }
+        
+        // Velocity (Cone/Random)
+        vec3 base_dir = normalize(e.direction);
+        float speed_rnd = random(seed + 1);
+        // speed lerp logic
+        
+        // Init attributes
+        float life = e.particle_lifetime; // Apply randomization range
+        
+        // Write to SoA (offsets)
+        uint p_offset = 0;
+        uint v_offset = u_Push.max_particles;
+        uint c_offset = u_Push.max_particles * 2;
+        uint a_offset = u_Push.max_particles * 3;
+        
+        p_data[particle_idx] = vec4(pos, life); // w = age/life
+        p_data[v_offset + particle_idx] = vec4(e.direction, float(emitter_idx)); // temp vel
+        p_data[c_offset + particle_idx] = e.color_start;
+        p_data[a_offset + particle_idx] = vec4(e.size_start, 0.0, 0.0, 0.0);
+        
+        // Update alive count
+        atomicAdd(alive_count, 1);
+    }
+}

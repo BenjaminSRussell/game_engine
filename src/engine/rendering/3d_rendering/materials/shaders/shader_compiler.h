@@ -1,67 +1,47 @@
-/*
- * shader_compiler.h
- * HLSL/GLSL compilation
- *
- * Part of the Materials subsystem
- * Advanced 3D Rendering Engine
- */
+#ifndef SHADER_COMPILER_H
+#define SHADER_COMPILER_H
 
-#ifndef MATERIALS_SHADER_COMPILER_H
-#define MATERIALS_SHADER_COMPILER_H
+#import <Metal/Metal.h>
+#include <sys/stat.h>
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
+// Forward declaration of metal_device_t (assuming it exists in your engine's Metal backend)
+typedef struct metal_device {
+    id<MTLDevice> device;
+} metal_device_t;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+typedef struct metal_shader_library {
+    id<MTLLibrary> library;
+    char path[256];
+    time_t last_modified;
+} metal_shader_library_t;
 
-/* ============================================================================
- * TYPES
- * ============================================================================ */
+typedef struct metal_shader {
+    id<MTLFunction> function;
+    char name[64];
+    MTLFunctionType type;  // Vertex, Fragment, Kernel
+} metal_shader_t;
 
-typedef struct materials_shader_compiler_handle {
-    uint32_t id;
-} materials_shader_compiler_handle_t;
+typedef struct shader_system {
+    metal_shader_library_t* libraries;
+    uint32_t library_count;
+    uint32_t library_capacity;
+    metal_device_t* device;
+} shader_system_t;
 
-typedef struct materials_shader_compiler_desc {
-    uint32_t flags;
-    void* user_data;
-} materials_shader_compiler_desc_t;
+// Initialize the shader system
+shader_system_t* shader_system_create(metal_device_t* device);
+void shader_system_destroy(shader_system_t* sys);
 
-typedef struct materials_shader_compiler_info {
-    uint32_t id;
-    uint32_t flags;
-    bool initialized;
-} materials_shader_compiler_info_t;
+// Load shader library
+metal_shader_library_t* shader_load_library(shader_system_t* sys, const char* path);
 
-/* ============================================================================
- * API
- * ============================================================================ */
+// Get shader function (no constants)
+metal_shader_t* shader_get_function(metal_shader_library_t* lib, const char* name);
 
-/* Initialization */
-int materials_shader_compiler_init(void);
-void materials_shader_compiler_shutdown(void);
+// Get shader function with constants (permutations)
+metal_shader_t* shader_get_function_with_constants(metal_shader_library_t* lib, const char* name, MTLFunctionConstantValues* constants);
 
-/* Lifecycle */
-int materials_shader_compiler_create(materials_shader_compiler_handle_t* out_handle, const materials_shader_compiler_desc_t* desc);
-void materials_shader_compiler_destroy(materials_shader_compiler_handle_t handle);
+// Hot reload (development only)
+void shader_system_check_reload(shader_system_t* sys);
 
-/* Operations */
-int materials_shader_compiler_update(materials_shader_compiler_handle_t handle, const void* data, size_t size);
-bool materials_shader_compiler_is_valid(materials_shader_compiler_handle_t handle);
-int materials_shader_compiler_get_info(materials_shader_compiler_handle_t handle, materials_shader_compiler_info_t* out_info);
-void materials_shader_compiler_mark_dirty(materials_shader_compiler_handle_t handle);
-int materials_shader_compiler_process_pending(void);
-
-/* Statistics */
-uint32_t materials_shader_compiler_get_count(void);
-size_t materials_shader_compiler_get_memory_usage(void);
-void materials_shader_compiler_debug_print(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* MATERIALS_SHADER_COMPILER_H */
+#endif // SHADER_COMPILER_H

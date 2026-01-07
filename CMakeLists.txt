@@ -161,9 +161,36 @@ set(ENGINE_SOURCES
     src/engine/physics/narrowphase/collision_gjk_epa.c
     src/engine/physics/narrowphase/contact_manifold.c
     # Input
-    src/engine/input/input_factory.c
-    src/engine/renderer/metal/metal_backend.c
-    src/engine/renderer/metal/metal_device.m
+    src/engine/backend/vertex_format.c
+    src/engine/backend/vertex_format_compressed.c
+    src/engine/backend/vertex_format_cache.c
+    src/engine/backend/vertex_format_reflect.c
+    src/engine/backend/vertex_compression.c
+    # src/engine/backend/metal/metal_backend.c
+    # src/engine/backend/metal/metal_device.m
+    # src/engine/backend/metal/metal_vertex.m
+
+    # New Metal Backend (Modular)
+    src/engine/backend/metal/mtl_buffer.c
+    src/engine/backend/metal/mtl_command.c
+    src/engine/backend/metal/mtl_command_buffer.c
+    src/engine/backend/metal/mtl_device.c
+    src/engine/backend/metal/mtl_device_caps.c
+    src/engine/backend/metal/mtl_display.m
+    src/engine/backend/metal/mtl_encoder.c
+    src/engine/backend/metal/mtl_frame_sync.c
+    src/engine/backend/metal/mtl_hazard_tracking.c
+    src/engine/backend/metal/mtl_hdr.m
+    src/engine/backend/metal/mtl_memory_heap.c
+    src/engine/backend/metal/mtl_parallel_encoder.c
+    src/engine/backend/metal/mtl_pipeline.m
+    src/engine/backend/metal/mtl_resource_pool.c
+    src/engine/backend/metal/mtl_sampler.c
+    src/engine/backend/metal/mtl_shader_compiler.m
+    src/engine/backend/metal/mtl_shader_library.m
+    src/engine/backend/metal/mtl_swapchain.c
+    src/engine/backend/metal/mtl_sync.m
+    src/engine/backend/metal/mtl_texture.c
 
     # ... (rest of sources)
 
@@ -177,6 +204,7 @@ set(ENGINE_SOURCES
     # Renderer
     src/engine/renderer/core/renderer.c
     src/engine/renderer/core/lighting.c
+    src/engine/lighting/gi/light_probes.c
     src/engine/renderer/core/mesh.c
     src/engine/renderer/core/scene.c
     src/engine/scene/scene_system_impl.c
@@ -228,6 +256,18 @@ set(ENGINE_SOURCES
     src/engine/renderer/renderer_complete.c
     src/engine/renderer/mesh.c
     # src/engine/renderer/culling.c
+    
+    # BVH Culling System
+    src/engine/rendering/3d_rendering/geometry/bvh/bvh_builder.c
+    src/engine/rendering/3d_rendering/geometry/bvh/bvh_traversal.c
+    src/engine/rendering/3d_rendering/geometry/bvh/bvh_update.c
+    src/engine/rendering/3d_rendering/geometry/bvh/bvh_simd.c
+
+    # Instancing & GPU-Driven Rendering System
+    src/engine/geometry/instancing/instancing.c
+    src/engine/geometry/instancing/gpu_instance_data.c
+    src/engine/geometry/instancing/indirect_instancing.c
+
     # Input
     src/engine/input/input.c
     # UI System (layout and text - enabled)
@@ -558,6 +598,9 @@ endif()
 
 # Link OpenGL framework on macOS
 if(APPLE)
+    list(APPEND ENGINE_SOURCES
+        src/engine/rendering/3d_rendering/geometry/bvh/bvh_metal_culling.m
+    )
     target_link_libraries(Engine PUBLIC "-framework OpenGL" "-framework CoreFoundation" "-framework CoreServices")
 endif()
 

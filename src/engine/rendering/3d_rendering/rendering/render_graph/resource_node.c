@@ -69,6 +69,19 @@ typedef struct rendering_resource_node_internal {
     uint32_t flags;
     void* user_data;
     bool is_transient;
+    size_t buffer_size;
+    
+    // Lifetime tracking for aliasing
+    uint32_t first_use_pass;
+    uint32_t last_use_pass;
+    
+    // Memory management
+    size_t memory_size;
+    size_t memory_offset;
+    
+    // Metal resource handle (void* for C compatibility)
+    void* metal_resource;
+    
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -181,6 +194,25 @@ int rendering_resource_node_create(rendering_resource_node_handle_t* out_handle,
     item->flags = desc->flags;
     item->user_data = desc->user_data;
     item->is_transient = desc->is_transient;
+    item->buffer_size = desc->buffer_size;
+    
+    // Initialize lifetime tracking
+    item->first_use_pass = UINT32_MAX;
+    item->last_use_pass = 0;
+    
+    // Calculate memory size
+    if (desc->type == RENDERING_RESOURCE_TYPE_TEXTURE) {
+        // Estimate texture memory size based on format
+        // This is a simplified calculation - real implementation would use MTLTexture.allocatedSize
+        uint32_t bytes_per_pixel = 4; // Assume RGBA8 as default
+        if (desc->format == 115) bytes_per_pixel = 8; // RGBA16Float
+        if (desc->format == 125) bytes_per_pixel = 16; // RGBA32Float
+        item->memory_size = desc->width * desc->height * bytes_per_pixel;
+    } else {
+        item->memory_size = desc->buffer_size;
+    }
+    item->memory_offset = 0;
+    item->metal_resource = NULL;
     
     item->initialized = true;
     item->dirty = true;
@@ -250,6 +282,11 @@ int rendering_resource_node_get_info(rendering_resource_node_handle_t handle, re
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
     out_info->is_transient = item->is_transient;
+    out_info->first_use_pass = item->first_use_pass;
+    out_info->last_use_pass = item->last_use_pass;
+    out_info->memory_size = item->memory_size;
+    out_info->memory_offset = item->memory_offset;
+    out_info->metal_resource = item->metal_resource;
 
     return 0;
 }
@@ -291,6 +328,29 @@ size_t rendering_resource_node_get_memory_usage(void) {
 void rendering_resource_node_debug_print(void) {
     // TODO: Implement debug output
     // Debug printing implementation
+}
+
+void rendering_resource_node_set_lifetime(rendering_resource_node_handle_t handle, uint32_t first_pass, uint32_t last_pass) {
+    if (handle.id >= g_resource_node_ctx.count) return;
+    
+    rendering_resource_node_internal_t* item = &g_resource_node_ctx.items[handle.id];
+    item->first_use_pass = first_pass;
+    item->last_use_pass = last_pass;
+}
+
+void* rendering_resource_node_get_metal_resource(rendering_resource_node_handle_t handle) {
+    if (handle.id >= g_resource_node_ctx.count) return NULL;
+    return g_resource_node_ctx.items[handle.id].metal_resource;
+}
+
+void rendering_resource_node_set_metal_resource(rendering_resource_node_handle_t handle, void* metal_resource) {
+    if (handle.id >= g_resource_node_ctx.count) return;
+    g_resource_node_ctx.items[handle.id].metal_resource = metal_resource;
+}
+
+void rendering_resource_node_set_memory_offset(rendering_resource_node_handle_t handle, size_t offset) {
+    if (handle.id >= g_resource_node_ctx.count) return;
+    g_resource_node_ctx.items[handle.id].memory_offset = offset;
 }
 
 /* End of resource_node.c */

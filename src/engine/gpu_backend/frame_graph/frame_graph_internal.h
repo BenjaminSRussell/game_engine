@@ -1,10 +1,10 @@
-// Frame Graph - Internal Data Structures
-// Private header for render graph implementation
-
 #ifndef FRAME_GRAPH_INTERNAL_H
 #define FRAME_GRAPH_INTERNAL_H
 
 #include "frame_graph.h"
+#include "core/types.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "core/memory.h"
 
 #ifdef __cplusplus
@@ -50,7 +50,10 @@ typedef struct RGResource {
     } physical;
     
     // Aliasing (for transients)
-    u32 alias_pool_index;
+    u32 alias_group_id;      // Which alias group this belongs to
+    u32 alias_pool_index;    // Index in the pool (deprecated, kept for compatibility)
+    u64 memory_offset;       // Offset within the aliased memory block
+    u64 memory_size;         // Size in bytes of this resource
     
     // Current state (for barrier generation)
     RGResourceState current_state;
@@ -110,6 +113,9 @@ struct RenderGraph {
     RGBarrier barriers[RG_MAX_DEPENDENCIES];
     u32 barrier_count;
     
+    // Resource pool for transient allocation
+    RGResourcePool *resource_pool;
+    
     // State
     bool is_compiled;
     bool profiling_enabled;
@@ -138,6 +144,11 @@ void rg_pool_destroy(RGResourcePool *pool);
 TextureID rg_pool_allocate_texture(RGResourcePool *pool, const RGTextureDesc *desc);
 BufferID rg_pool_allocate_buffer(RGResourcePool *pool, const RGBufferDesc *desc);
 void rg_pool_reset(RGResourcePool *pool);
+
+// Resource aliasing
+void rg_pool_alias_resources(RGResourcePool *pool, RenderGraph *rg);
+void rg_pool_get_stats(RGResourcePool *pool, u64 *allocated, u64 *aliased);
+u64 rg_calculate_resource_size(RGResource *res);
 
 #ifdef __cplusplus
 }

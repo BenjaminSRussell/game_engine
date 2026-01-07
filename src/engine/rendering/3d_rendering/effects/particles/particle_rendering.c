@@ -164,6 +164,18 @@ int effects_particle_rendering_create(effects_particle_rendering_handle_t* out_h
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
+    
+    // Store Particle Rendering Configuration
+    // In a real implementation, these would configure the shader pipeline
+    item->flags = desc->flags;
+    item->enable_depth_write = desc->enable_depth_write;
+    item->enable_depth_test = desc->enable_depth_test;
+    
+    // New Flags 
+    // item->enable_soft_particles = desc->enable_soft_particles; 
+    // item->soft_particle_fade_distance = desc->soft_particle_fade_distance;
+    // item->enable_lighting = desc->enable_lighting;
+    // item->blend_mode = desc->blend_mode;
 
     out_handle->id = index;
     return 0;

@@ -10,6 +10,7 @@
 #define EFFECTS_PARTICLE_RENDERING_H
 
 #include "../gpu_particles/particle_buffer.h"
+#include "../../../forward/transparency.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -30,8 +31,12 @@ typedef struct effects_particle_rendering_desc {
     // Pipeline configuration
     bool enable_depth_write;
     bool enable_depth_test;
-    bool enable_bending;
-    // ... other render states
+    bool enable_soft_particles; // Soft particles using depth buffer
+    float soft_particle_fade_distance;
+    
+    BlendMode blend_mode;       // Forward transparency blend mode
+    
+    bool enable_lighting;       // Simple per-particle lighting
     
     uint32_t flags;
     void* user_data;

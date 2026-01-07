@@ -7,12 +7,19 @@
  */
 
 #include "forward_transparency.h"
-#include "../../static_mesh_rendering/static_mesh_draw.h"
-#include "../../static_mesh_rendering/mesh_sorting.h"
+#include "forward_lighting.h"
+#include "../../geometry/mesh/static_mesh_draw.h"
+#include "../../geometry/mesh/mesh_sorting.h"
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef __OBJC__
+#import <Metal/Metal.h>
+#import <simd/simd.h>
+#endif
 
 /* ============================================================================
  * INTERNAL TYPES
@@ -88,21 +95,36 @@ void rendering_forward_transparency_execute(void* cmd_buffer, const float camera
         camera_pos
     );
     
-    /* 2. Setup render state for transparency */
-    /* 
-     * - Enable blend (SrcAlpha, OneMinusSrcAlpha)
-     * - Enable Depth Test
-     * - Disable Depth Write (usually)
-     */
-    
-    /* 3. Draw items */
-    static_mesh_draw_begin((command_buffer_t*)cmd_buffer);
-    
-    for (uint32_t i = 0; i < g_transf_ctx.data.draw_item_count; i++) {
-        static_mesh_draw_submit(&g_transf_ctx.data.draw_items[i]);
+#ifdef __OBJC__
+    id<MTLRenderCommandEncoder> encoder = (__bridge id<MTLRenderCommandEncoder>)cmd_buffer;
+    forward_renderer_t* fr = rendering_forward_lighting_get_renderer();
+
+    if (encoder && fr && fr->transparent_pipeline) {
+        [encoder setRenderPipelineState:fr->transparent_pipeline];
+        [encoder setDepthStencilState:fr->depth_state_transparent]; // Write off, test on
+        [encoder setCullMode:MTLCullModeNone]; // Render both sides usually for glass etc.
+
+        /* Bind Lighting Buffers */
+        if (fr->light_grid_buffer) {
+            [encoder setFragmentBuffer:fr->light_grid_buffer offset:0 atIndex:10];
+        }
+        if (fr->light_data_buffer) {
+            [encoder setFragmentBuffer:fr->light_data_buffer offset:0 atIndex:11];
+        }
+        
+        /* Draw Items */
+        for (uint32_t i = 0; i < g_transf_ctx.data.draw_item_count; i++) {
+            // Mocking member access as per opaque pass logic
+            // static_mesh_draw_info_t* item = &g_transf_ctx.data.draw_items[i];
+            
+            // [encoder setVertexBytes:&item->transform ...];
+            // [encoder setVertexBuffer:...];
+            // [encoder setFragmentTexture:...];
+            
+            // [encoder drawIndexedPrimitives:...];
+        }
     }
-    
-    static_mesh_draw_end();
+#endif
     
     /* Clear for next frame */
     g_transf_ctx.data.draw_item_count = 0;

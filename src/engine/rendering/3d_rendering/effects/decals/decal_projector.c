@@ -39,7 +39,7 @@
  */
 
 #include "decal_projector.h"
-#include "../../math/mat4.h"
+#include "../../core/math/math/mat4.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -207,9 +207,30 @@ int effects_decal_projector_update(effects_decal_projector_handle_t handle, cons
         return -2;
     }
 
-    // Update projection matrices here
-    for (uint32_t i = 0; i < item->decal_count; i++) {
-        // item->decals[i].projection = ...
+    // data is expected to be an array of mat4_t transforms for the decals
+    // For this simple implementation, we assume data contains world transforms
+    // We compute the inverse of the world transform to get world-to-decal space
+    
+    if (data && size > 0 && size % sizeof(mat4_t) == 0) {
+        uint32_t count = size / sizeof(mat4_t);
+        if (count > EFFECTS_DECAL_PROJECTOR_MAX_COUNT) {
+            count = EFFECTS_DECAL_PROJECTOR_MAX_COUNT;
+        }
+        item->decal_count = count;
+        
+        const mat4_t* transforms = (const mat4_t*)data;
+        for (uint32_t i = 0; i < count; i++) {
+            // Decal projection is World -> Local (Unit Cube)
+            // So we just need the inverse of the placement matrix
+            // This assumes the sticker is placed as a unit cube in the world
+            
+            // TODO: Optimize matrix inversion
+            item->decals[i].projection = mat4_inverse(transforms[i]);
+            
+            // Default properties for now
+            item->decals[i].opacity = 1.0f;
+            item->decals[i].sort_order = i;
+        }
     }
 
     item->dirty = true;

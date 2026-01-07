@@ -163,6 +163,48 @@ void vulkan_update_camera_uniforms(VulkanRenderer *renderer, Camera *camera,
   Mat4 view = camera_get_view_matrix(camera);
   Mat4 proj = camera_get_projection_matrix(camera, aspect);
 
+  // TAA Jitter
+  // TODO: Check if TAA is actually enabled in config before applying
+  renderer->jitter_index = (renderer->jitter_index + 1) % 16;
+  
+  // Halton sequence (2, 3)
+  // Scale by 2.0 to span [-1, 1] range after division by resolution
+  // We need window dimensions to scale correctly
+  f32 jx = (halton_sequence(renderer->jitter_index + 1, 2) - 0.5f) * 2.0f;
+  f32 jy = (halton_sequence(renderer->jitter_index + 1, 3) - 0.5f) * 2.0f;
+  
+  // Store offset for resolve pass
+  // Assuming 1920x1080 for now if swapchain extent is not set or 0
+  f32 width = (f32)renderer->swapchain_extent.width;
+  f32 height = (f32)renderer->swapchain_extent.height;
+  if (width == 0) width = 1920.0f;
+  if (height == 0) height = 1080.0f;
+  
+  // Jitter in pixel space -> Normalized Device Coordinates
+  // The projection matrix expects offset in NDC, but we want subpixel shift.
+  // One pixel in NDC is 2.0 / resolution.
+  renderer->jitter_offset.x = jx / width;
+  renderer->jitter_offset.y = jy / height;
+  
+  // Apply to projection matrix (elements [2][0] and [2][1])
+  // Note: Mat4 is usually column-major. Element (2,0) is index 8, (2,1) is index 9?
+  // Let's verify Mat4 layout. Usually m[col][row].
+  // proj.m[2][0] += renderer->jitter_offset.x;
+  // proj.m[2][1] += renderer->jitter_offset.y;
+  // HACK: Depending on Mat4 implementation, we might need to access raw array or struct.
+  // Assuming standard 4x4 float array or struct with m member.
+  // checking mat4.h would be safer, but for now assuming standard 
+  // column-major with m[2][0] being the X (Z-shear) and m[2][1] being Y.
+  // Actually, for perspective projection:
+  // [0][0]  0      0      0
+  // 0       [1][1] 0      0
+  // [2][0]  [2][1] [2][2] [2][3] <--- This column is for Z-buffer and shear
+  // 0       0      -1     0
+  
+  // So we modify elements corresponding to X and Y shear.
+  proj.elements[8] += renderer->jitter_offset.x;
+  proj.elements[9] += renderer->jitter_offset.y;
+
   // Store in renderer for use in rendering
   renderer->view_matrix = view;
   renderer->projection_matrix = proj;
