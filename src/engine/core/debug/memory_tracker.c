@@ -1,4 +1,4 @@
-#include "core/debug/memory_tracker.h"
+#include <core/debug/memory_tracker.h>
 #include "core/core.h"
 #include <stdlib.h>
 #include <string.h>
@@ -37,9 +37,9 @@ typedef struct {
     bool tracking_enabled;
     bool canary_enabled;
     bool stack_capture_enabled;
-} MemoryTracker;
+} InternalMemoryTracker;
 
-static MemoryTracker g_tracker = {0};
+static InternalMemoryTracker g_tracker = {0};
 static const u64 CANARY_VALUE = 0xDEADBEEFCAFEBABE;
 
 // ✅ COMPLETED: Thread-safe hash map (simplified)

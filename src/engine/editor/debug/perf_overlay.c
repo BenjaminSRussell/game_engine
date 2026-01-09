@@ -1,3 +1,4 @@
+#include "debug_renderer.h"
 #include "editor/debugging/perf_overlay.h"
 #include <stdio.h>
 

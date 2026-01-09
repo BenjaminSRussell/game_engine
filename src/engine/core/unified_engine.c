@@ -15,9 +15,11 @@
 #include "include/rendering/renderer.h"
 #include "include/ecs/components/npc.h"
 #include "../include/physics/physics.h"
+#include "../include/physics/physics_internal.h"  // For PhysicsWorld struct definition
 #include "core/threading/job.h"
 #include "core/resource/vfs/vfs.h"
 #include "../include/world/generator.h"
+#include "../../game/minecraftv2/include/npc/npc.h"  // For NPCSystem definition
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -163,12 +165,12 @@ bool engine_unified_init(Engine *engine, const EngineConfig *config) {
   }
 
   // Initialize ECS first (Asset Manager may need it)
-  engine->ecs = (ECSWorld *)calloc(1, sizeof(ECSWorld));
+  engine->ecs = (ECSWorld *)calloc(1, sizeof(World));  // sizeof(World), not ECSWorld
   if (!engine->ecs) {
     LOG_ERROR("Failed to allocate ECS world");
     return false;
   }
-  ecs_world_init(engine->ecs, 65536, 256, 64);
+  ecs_world_init((World*)engine->ecs, 65536, 256, 64);  // Cast to World*
 
   // Initialize asset manager
   engine->assets = asset_manager_create(256, (World *)engine->ecs);
@@ -216,7 +218,7 @@ bool engine_unified_init(Engine *engine, const EngineConfig *config) {
     LOG_ERROR("Failed to allocate NPC system");
     return false;
   }
-  npc_system_init(engine->npc_system, engine->ecs, engine->physics);
+  npc_system_init(engine->npc_system, (World*)engine->ecs, engine->physics);  // Cast ECSWorld* to World*
 
   // Initialize world generator
   engine->world_generator = (WorldGenerator *)calloc(1, sizeof(WorldGenerator));
@@ -292,7 +294,7 @@ void engine_unified_shutdown(Engine *engine) {
   }
 
   if (engine->ecs) {
-    ecs_world_free(engine->ecs);
+    ecs_world_free((World*)engine->ecs);  // Cast to World*
     free(engine->ecs);
   }
 
@@ -362,7 +364,7 @@ void engine_unified_update(Engine *engine) {
 
   // Update ECS systems
   if (engine->ecs) {
-    ecs_update_systems(engine->ecs, engine->delta_time);
+    ecs_update_systems((World*)engine->ecs, engine->delta_time);  // Cast to World*
   }
 
   // Update game module

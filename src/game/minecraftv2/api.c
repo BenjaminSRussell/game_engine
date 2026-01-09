@@ -7,7 +7,7 @@
 #include <core/logger.h>
 #include <core/scene.h>
 #include <math/mat4.h>
-#include <renderer/camera.h>
+#include <rendering/camera.h>
 #include <stdlib.h>
 #include <string.h>
 

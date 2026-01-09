@@ -23,10 +23,10 @@
 #include <math/mat4.h>
 #include <math/math.h>
 #include <math/vec3.h>
-#include <renderer/renderer.h>
+#include <rendering/renderer.h>
 #include <stdlib.h>
 #include <string.h>
-#include <vfx/particle_system.h>
+// #include <vfx/particle_system.h>
 
 // Minecraft v2 specific includes (these will be gradually migrated)
 #include <audio/audio_system.h>
@@ -40,7 +40,7 @@
 #include <player/player.h>
 #include <tech/crafting.h>
 #include <ui/hud.h>
-#include <vfx/particle_system.h>
+// #include <vfx/particle_system.h>
 #include <weather/weather.h>
 #include <world/generator.h>
 

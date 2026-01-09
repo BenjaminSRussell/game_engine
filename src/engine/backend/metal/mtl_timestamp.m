@@ -112,7 +112,7 @@ metal_timestamp_pool_create(id<MTLDevice> device,
   if (!pool)
     return NULL;
 
-  pool->device = [device retain];
+  pool->device = device;
   pool->config = *config;
   pool->max_queries = config->max_queries > 0 ? config->max_queries : 64;
 
@@ -120,7 +120,7 @@ metal_timestamp_pool_create(id<MTLDevice> device,
   NSArray<id<MTLCounterSet>> *counterSets = device.counterSets;
   for (id<MTLCounterSet> counterSet in counterSets) {
     if ([counterSet.name containsString:@"timestamp"]) {
-      pool->timestamp_counter_set = [counterSet retain];
+      pool->timestamp_counter_set = counterSet;
       break;
     }
   }
@@ -128,10 +128,10 @@ metal_timestamp_pool_create(id<MTLDevice> device,
   if (!pool->timestamp_counter_set) {
     // Fallback: use first available counter set
     if (counterSets.count > 0) {
-      pool->timestamp_counter_set = [counterSets[0] retain];
+      pool->timestamp_counter_set = counterSets[0];
     } else {
       // No counters available on this device
-      [pool->device release];
+      /* [pool->device release]; */
       free(pool);
       return NULL;
     }
@@ -148,12 +148,12 @@ metal_timestamp_pool_create(id<MTLDevice> device,
   NSError *error = nil;
   pool->sample_buffer = [device newCounterSampleBufferWithDescriptor:desc
                                                                error:&error];
-  [desc release];
+  /* [desc release]; */
 
   if (!pool->sample_buffer) {
     NSLog(@"Failed to create counter sample buffer: %@", error);
-    [pool->timestamp_counter_set release];
-    [pool->device release];
+    /* [pool->timestamp_counter_set release]; */
+    /* [pool->device release]; */
     free(pool);
     return NULL;
   }
@@ -162,9 +162,9 @@ metal_timestamp_pool_create(id<MTLDevice> device,
   pool->queries = (metal_timestamp_query_t *)calloc(
       pool->max_queries, sizeof(metal_timestamp_query_t));
   if (!pool->queries) {
-    [pool->sample_buffer release];
-    [pool->timestamp_counter_set release];
-    [pool->device release];
+    /* [pool->sample_buffer release]; */
+    /* [pool->timestamp_counter_set release]; */
+    /* [pool->device release]; */
     free(pool);
     return NULL;
   }
@@ -176,9 +176,9 @@ metal_timestamp_pool_create(id<MTLDevice> device,
 }
 
 uint32_t metal_timestamp_begin(metal_timestamp_pool_t *pool,
-                               metal_command_buffer_t *cmd_buffer,
+                               mtl_command_buffer_t *cmd_buffer,
                                const char *label) {
-  if (!pool || !cmd_buffer || !cmd_buffer->buffer)
+  if (!pool || !cmd_buffer || !(*cmd_buffer))
     return UINT32_MAX;
 
   if (pool->active_query_count >= pool->max_queries) {
@@ -204,20 +204,21 @@ uint32_t metal_timestamp_begin(metal_timestamp_pool_t *pool,
   }
 
   // Encode timestamp sample
+  id<MTLCommandBuffer> mtl_cmd = (__bridge id<MTLCommandBuffer>)(*cmd_buffer);
+  id<MTLBlitCommandEncoder> blit = [mtl_cmd blitCommandEncoder];
   NSUInteger sample_index = query_id * 2; // Begin sample
-  [cmd_buffer->buffer sampleCountersInBuffer:pool->sample_buffer
-                               atSampleIndex:sample_index
-                                 withBarrier:YES];
+  [blit sampleCountersInBuffer:pool->sample_buffer
+                 atSampleIndex:sample_index
+                   withBarrier:YES];
+  [blit endEncoding];
 
   pool->active_query_count++;
   return query_id;
 }
 
 void metal_timestamp_end(metal_timestamp_pool_t *pool,
-                         metal_command_buffer_t *cmd_buffer,
-                         uint32_t query_id) {
-  if (!pool || !cmd_buffer || !cmd_buffer->buffer ||
-      query_id >= pool->max_queries)
+                         mtl_command_buffer_t *cmd_buffer, uint32_t query_id) {
+  if (!pool || !cmd_buffer || !(*cmd_buffer) || query_id >= pool->max_queries)
     return;
 
   metal_timestamp_query_t *query = &pool->queries[query_id];
@@ -225,16 +226,19 @@ void metal_timestamp_end(metal_timestamp_pool_t *pool,
     return;
 
   // Encode end timestamp sample
+  id<MTLCommandBuffer> mtl_cmd = (__bridge id<MTLCommandBuffer>)(*cmd_buffer);
+  id<MTLBlitCommandEncoder> blit = [mtl_cmd blitCommandEncoder];
   NSUInteger sample_index = query_id * 2 + 1; // End sample
-  [cmd_buffer->buffer sampleCountersInBuffer:pool->sample_buffer
-                               atSampleIndex:sample_index
-                                 withBarrier:YES];
+  [blit sampleCountersInBuffer:pool->sample_buffer
+                 atSampleIndex:sample_index
+                   withBarrier:YES];
+  [blit endEncoding];
 
   // Mark as completed when command buffer finishes
   __block metal_timestamp_pool_t *pool_ref = pool;
   __block uint32_t qid = query_id;
 
-  [cmd_buffer->buffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
+  [mtl_cmd addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
     if (qid < pool_ref->max_queries) {
       pool_ref->queries[qid].completed = true;
       pool_ref->active_query_count--;
@@ -346,15 +350,18 @@ void metal_timestamp_pool_destroy(metal_timestamp_pool_t *pool) {
   }
 
   if (pool->sample_buffer) {
-    [pool->sample_buffer release];
+    /* [pool->sample_buffer release]; */
+    pool->sample_buffer = nil;
   }
 
   if (pool->timestamp_counter_set) {
-    [pool->timestamp_counter_set release];
+    /* [pool->timestamp_counter_set release]; */
+    pool->timestamp_counter_set = nil;
   }
 
   if (pool->device) {
-    [pool->device release];
+    /* [pool->device release]; */
+    pool->device = nil;
   }
 
   free(pool);
@@ -366,7 +373,7 @@ void metal_timestamp_pool_destroy(metal_timestamp_pool_t *pool) {
 
 metal_scoped_timestamp_t
 metal_timestamp_scope_begin(metal_timestamp_pool_t *pool,
-                            metal_command_buffer_t *cmd_buffer,
+                            mtl_command_buffer_t *cmd_buffer,
                             const char *label) {
   metal_scoped_timestamp_t scope = {0};
   scope.pool = pool;
@@ -376,7 +383,7 @@ metal_timestamp_scope_begin(metal_timestamp_pool_t *pool,
 }
 
 void metal_timestamp_scope_end(metal_scoped_timestamp_t *scope,
-                               metal_command_buffer_t *cmd_buffer,
+                               mtl_command_buffer_t *cmd_buffer,
                                metal_timestamp_result_t *result) {
   if (!scope || !scope->pool)
     return;

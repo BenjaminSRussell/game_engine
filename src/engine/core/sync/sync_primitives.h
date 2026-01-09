@@ -65,7 +65,7 @@ void barrier_destroy(Barrier *barrier);
 /**
  * Wait at the barrier (blocks until all threads arrive)
  */
-void barrier_wait(Barrier *barrier);
+bool barrier_wait(Barrier *barrier, uint32_t timeout_ms);
 
 /* ===== EVENT (CONDITION VARIABLE) ===== */
 
@@ -104,4 +104,3 @@ void event_reset(Event *event);
  */
 bool event_is_signaled(Event *event);
 
-#endif /* SYNC_PRIMITIVES_H */

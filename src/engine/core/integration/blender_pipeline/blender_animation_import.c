@@ -1,4 +1,4 @@
-#include "integration/blender_pipeline/blender_animation_import.h"
+#include "core/integration/blender_pipeline/blender_animation_import.h"
 
 void blender_animation_import_init() {}
 

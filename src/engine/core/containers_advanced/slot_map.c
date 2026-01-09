@@ -1,7 +1,9 @@
-#include "core/containers_advanced/slot_map.h"
+#include <core/containers_advanced/slot_map.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <stdio.h>
+#include <stdint.h>
 
 /**
  * =================================================================================================

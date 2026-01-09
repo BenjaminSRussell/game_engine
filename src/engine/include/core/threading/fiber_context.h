@@ -592,4 +592,3 @@ bool fiber_context_stress_test(u32 num_fibers, u32 duration_ms);
 }
 #endif
 
-#endif // FIBER_CONTEXT_H

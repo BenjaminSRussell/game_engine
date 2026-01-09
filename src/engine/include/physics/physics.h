@@ -60,6 +60,10 @@ typedef struct {
 PhysicsWorld *physics_world_create(PhysicsConfig config);
 void physics_world_destroy(PhysicsWorld *world);
 
+// Additional initialization/cleanup functions
+void physics_world_init(PhysicsWorld *world, const Vec3 *gravity);
+void physics_world_free(PhysicsWorld *world);
+
 // Simulation step
 void physics_world_step(PhysicsWorld *world, f32 delta_time);
 

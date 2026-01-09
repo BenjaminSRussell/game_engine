@@ -1,4 +1,4 @@
-#include "integration/blender_pipeline/blender_mesh_import.h"
+#include "core/integration/blender_pipeline/blender_mesh_import.h"
 
 void blender_mesh_import_init() {}
 

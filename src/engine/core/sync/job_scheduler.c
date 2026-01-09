@@ -34,6 +34,8 @@ typedef struct JobScheduler {
 
 static JobScheduler g_scheduler = {0};
 
+void *job_worker_thread(void *arg);
+
 // COMPLETED: All job scheduler functions
 void job_scheduler_init(int worker_count) {
   g_scheduler.worker_count = worker_count;

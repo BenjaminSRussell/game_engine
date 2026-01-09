@@ -1,3 +1,5 @@
+#include <core/containers/skip_list.h>
+#include <core/containers/skip_list.h>
 #include "core/core.h"
 #include <stdlib.h>
 #include <string.h>
@@ -18,13 +20,13 @@ typedef struct SkipListNode {
     i32 level;                      // Current level of this node
 } SkipListNode;
 
-typedef struct {
+struct SkipList {
     SkipListNode* header;            // Header node with maximum level
     i32 max_level;                  // Maximum allowed level
     i32 current_level;              // Current highest level in use
     f32 probability;                // Probability factor for level generation
     size_t size;                    // Number of elements in skip list
-} SkipList;
+};
 
 // Internal helper functions
 static i32 skip_list_random_level(SkipList* list) {

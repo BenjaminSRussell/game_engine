@@ -59,7 +59,7 @@
 Profiler g_profiler = {0};
 FrameStats g_frame_stats = {0};
 
-static f64 get_time(void) {
+static f64 internal_get_time(void) {
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
     return ts.tv_sec + ts.tv_nsec / 1e9;
@@ -86,13 +86,13 @@ void timer_destroy(Timer *timer) {
 
 void timer_start(Timer *timer) {
     if (timer) {
-        timer->start_time = get_time();
+        timer->start_time = internal_get_time();
     }
 }
 
 void timer_stop(Timer *timer) {
     if (timer) {
-        timer->elapsed_time = get_time() - timer->start_time;
+        timer->elapsed_time = internal_get_time() - timer->start_time;
         timer->total_time += timer->elapsed_time;
         timer->frame_count++;
     }
@@ -148,14 +148,14 @@ void profiler_start(const char *name) {
     
     ProfilerEntry *entry = profiler_get_entry(name);
     if (entry) {
-        entry->start_time = get_time();
+        entry->start_time = internal_get_time();
     }
 }
 
 void profiler_stop(const char *name) {
     if (!g_profiler.enabled) return;
     
-    f64 current_time = get_time();
+    f64 current_time = internal_get_time();
     
     for (u32 i = 0; i < g_profiler.entry_count; i++) {
         ProfilerEntry *entry = &g_profiler.entries[i];
@@ -293,12 +293,34 @@ u32 profiler_get_call_count(const char *function) {
     return 0;
 }
 
+static struct {
+    const char *scope_names[64];
+    u32 scope_depth;
+} g_scope_tracking = {0};
+
+int profiler_scope_enter(const char *name) {
+    if (g_scope_tracking.scope_depth < 64) {
+        g_scope_tracking.scope_names[g_scope_tracking.scope_depth] = name;
+        g_scope_tracking.scope_depth++;
+        profiler_call_count_increment(name);
+    }
+    return 0; // Return explicit handled scope ID (0 for stack-based default)
+}
+
+void profiler_scope_exit(int scope_id) {
+    (void)scope_id; // Unused for stack-based tracking
+    if (g_scope_tracking.scope_depth > 0) {
+        g_scope_tracking.scope_depth--;
+    }
+}
+
+
 void physics_profile_start(void) {
     profiler_scope_enter("physics_update");
 }
 
 void physics_profile_end(void) {
-    profiler_scope_exit();
+    profiler_scope_exit(0);
 }
 
 void entity_lifecycle_log(const char *event, const char *entity_type) {
@@ -310,7 +332,7 @@ void world_gen_profile_start(void) {
 }
 
 void world_gen_profile_end(void) {
-    profiler_scope_exit();
+    profiler_scope_exit(0);
 }
 
 void chunk_lifecycle_log(int chunk_x, int chunk_z, const char *event) {
@@ -332,23 +354,4 @@ void crafting_event_log(const char *recipe_name, bool success) {
 
 void save_load_log(const char *operation, const char *target) {
     LOG_CAT_INFO(LOG_CAT_IO, "Save/Load operation: %s on %s", operation, target);
-}
-
-static struct {
-    const char *scope_names[64];
-    u32 scope_depth;
-} g_scope_tracking = {0};
-
-void profiler_scope_enter(const char *name) {
-    if (g_scope_tracking.scope_depth < 64) {
-        g_scope_tracking.scope_names[g_scope_tracking.scope_depth] = name;
-        g_scope_tracking.scope_depth++;
-        profiler_call_count_increment(name);
-    }
-}
-
-void profiler_scope_exit(void) {
-    if (g_scope_tracking.scope_depth > 0) {
-        g_scope_tracking.scope_depth--;
-    }
 }

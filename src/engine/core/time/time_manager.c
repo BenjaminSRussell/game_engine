@@ -1,4 +1,4 @@
-#include "core/time/time_manager.h"
+// #include "core/time/time_manager.h"  // Header not found - stubbed for compilation
 #include <time.h>
 
 static double g_time_start = 0.0;

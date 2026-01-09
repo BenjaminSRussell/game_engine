@@ -23,9 +23,12 @@ extern "C" {
 #endif
 
 // Forward declarations
-typedef struct metal_device metal_device_t;
-typedef struct metal_command_buffer metal_command_buffer_t;
+// Forward declarations
+// typedef struct metal_device metal_device_t;
+// typedef struct metal_command_buffer metal_command_buffer_t;
 typedef struct metal_fence metal_fence_t;
+
+#include "mtl_device.h"
 
 // ============================================================================
 // Resource Dependency Graph
@@ -168,7 +171,7 @@ metal_barrier_manager_t* metal_barrier_manager_create(id device, metal_barrier_p
  */
 uint32_t metal_barrier_manager_access_resource(metal_barrier_manager_t* manager,
                                                const metal_resource_access_desc_t* access,
-                                               metal_command_buffer_t* cmd_buffer);
+                                               mtl_command_buffer_t* cmd_buffer);
 
 /**
  * Insert explicit barrier for a resource.
@@ -180,7 +183,7 @@ uint32_t metal_barrier_manager_access_resource(metal_barrier_manager_t* manager,
  */
 void metal_barrier_manager_insert_barrier(metal_barrier_manager_t* manager,
                                           void* resource,
-                                          metal_command_buffer_t* cmd_buffer,
+                                          mtl_command_buffer_t* cmd_buffer,
                                           uint32_t stages);
 
 /**

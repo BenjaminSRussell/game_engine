@@ -32,7 +32,7 @@
 
 #include "../game_common.h"
 #include "chunk.h"
-#include <renderer/vulkan.h>
+#include <rendering/vulkan.h>
 
 // Forward declarations
 // VulkanRenderer is defined in render/vulkan.h

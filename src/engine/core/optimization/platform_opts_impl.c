@@ -57,7 +57,18 @@ SystemInfo platform_detect_cpu() {
 // Prefetch
 void platform_prefetch(const void *addr, int rw, int locality) {
 #if defined(__GNUC__) || defined(__clang__)
-  __builtin_prefetch(addr, rw, locality);
+  // __builtin_prefetch requires constant arguments
+  if (rw == 0) { // Read
+      if (locality == 0) __builtin_prefetch(addr, 0, 0);
+      else if (locality == 1) __builtin_prefetch(addr, 0, 1);
+      else if (locality == 2) __builtin_prefetch(addr, 0, 2);
+      else __builtin_prefetch(addr, 0, 3);
+  } else { // Write
+      if (locality == 0) __builtin_prefetch(addr, 1, 0);
+      else if (locality == 1) __builtin_prefetch(addr, 1, 1);
+      else if (locality == 2) __builtin_prefetch(addr, 1, 2);
+      else __builtin_prefetch(addr, 1, 3);
+  }
 #elif defined(_MSC_VER)
   _mm_prefetch((char *)addr, _MM_HINT_T0);
 #endif

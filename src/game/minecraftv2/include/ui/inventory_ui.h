@@ -61,7 +61,7 @@
 #include <math/vec4.h>
 // #include "../inventory/hotbar.h"
 #include "../block/block.h"
-#include <input/controls.h>
+#include <platform/input/controls.h>
 
 // Forward declarations
 struct VulkanRenderer;

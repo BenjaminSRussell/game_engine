@@ -19,10 +19,10 @@
 #ifndef PARTICLE_SYSTEM_GPU_H
 #define PARTICLE_SYSTEM_GPU_H
 
-#include "include/common.h"
-#include "include/math/vec3.h"
-#include "include/math/vec4.h"
-#include "include/rendering/vulkan.h"
+#include "common.h"
+#include "math/vec3.h"
+#include "math/vec4.h"
+#include "rendering/vulkan.h"
 
 #define GPU_MAX_PARTICLES 1048576  // 1M particles
 #define GPU_MAX_EMITTERS 1024
@@ -48,6 +48,15 @@ typedef struct {
     u32 count;         // Number of keyframes
     u32 padding;
 } ParticleCurve;
+
+// Color/alpha over life curves (TASK_665)
+typedef struct {
+    Vec4 color_keys[8];      // Color keys for interpolation
+    f32 alpha_keys[8];        // Alpha keys for interpolation
+    f32 key_times[8];         // Normalized time for each key (0.0-1.0)
+    u32 color_key_count;
+    u32 alpha_key_count;
+} ParticleLifeCurves;
 
 // Emitter data for GPU
 typedef struct {
@@ -86,7 +95,7 @@ typedef struct {
     u32 emitter_type;           // Point, sphere, box, etc.
     u32 shape_params[2];        // Radius, height, etc.
     f32 spawn_timer;
-    s32 active;                  // -1 = inactive, >=0 = active
+    i32 active;                  // -1 = inactive, >=0 = active
     u32 curve_set_id;           // Index to curve set (separate buffer)
     u32 padding_[1];
 } GPUEmitter;
@@ -116,6 +125,40 @@ typedef struct {
     u32 first_vertex;
     u32 first_instance;
 } GPUDrawIndirect;
+
+// Particle simulation system (TASK_650)
+typedef struct {
+    Vec3 gravity;             // Global gravity vector
+    f32 air_resistance;       // Air drag coefficient (0.0-1.0)
+    f32 time_scale;           // Time scale for simulation
+    bool enable_collision;     // Enable particle collision
+    bool enable_wind;          // Enable wind effects
+    Vec3 wind_velocity;        // Global wind velocity
+} ParticleSimulationConfig;
+
+// Particle physics forces (TASK_653, TASK_654)
+typedef struct {
+    Vec3 position;
+    f32 strength;
+    f32 radius;
+    bool is_attractor;        // true=attractor, false=repeller
+    bool active;
+} ParticleForceField;
+
+// Particle rendering system (TASK_660)
+typedef struct {
+    VkPipeline billboard_pipeline;
+    VkPipelineLayout billboard_layout;
+    VkDescriptorSetLayout billboard_descriptor_layout;
+    VkSampler particle_sampler;
+    
+    // Rendering settings
+    bool enable_depth_write;
+    bool enable_depth_test;
+    VkBlendFactor src_blend;
+    VkBlendFactor dst_blend;
+    VkCullModeFlags cull_mode;
+} ParticleRenderingConfig;
 
 typedef struct {
     // GPU Buffers - Double Buffered for SoA
@@ -198,6 +241,7 @@ typedef struct {
     VkDevice device;
     VkPhysicalDevice physical_device;
     VkCommandPool command_pool;
+    VkDescriptorPool descriptor_pool;
     VkQueue compute_queue;
     VkQueue graphics_queue;
     
@@ -372,15 +416,9 @@ void gpu_particle_enable_vertex_color_sampling(GPUParticleSystem* system, u32 em
                                              bool enabled, f32 variation);
 
 // Particle simulation system (TASK_650)
-typedef struct {
-    Vec3 gravity;             // Global gravity vector
-    f32 air_resistance;       // Air drag coefficient (0.0-1.0)
-    f32 time_scale;           // Time scale for simulation
-    bool enable_collision;     // Enable particle collision
-    bool enable_wind;          // Enable wind effects
-    Vec3 wind_velocity;        // Global wind velocity
-} ParticleSimulationConfig;
 
+
+// Config Setters
 void gpu_particle_set_simulation_config(GPUParticleSystem* system, const ParticleSimulationConfig* config);
 void gpu_particle_set_gravity(GPUParticleSystem* system, Vec3 gravity);
 void gpu_particle_set_air_resistance(GPUParticleSystem* system, f32 resistance);
@@ -388,47 +426,15 @@ void gpu_particle_set_wind(GPUParticleSystem* system, Vec3 wind_velocity);
 void gpu_particle_enable_collision(GPUParticleSystem* system, bool enabled);
 void gpu_particle_enable_wind(GPUParticleSystem* system, bool enabled);
 
-// Particle physics forces (TASK_653, TASK_654)
-typedef struct {
-    Vec3 position;
-    f32 strength;
-    f32 radius;
-    bool is_attractor;        // true=attractor, false=repeller
-    bool active;
-} ParticleForceField;
-
 u32 gpu_particle_add_force_field(GPUParticleSystem* system, const ParticleForceField* field);
 void gpu_particle_remove_force_field(GPUParticleSystem* system, u32 field_id);
 void gpu_particle_update_force_field(GPUParticleSystem* system, u32 field_id, const ParticleForceField* field);
 
-// Particle rendering system (TASK_660)
-typedef struct {
-    VkPipeline billboard_pipeline;
-    VkPipelineLayout billboard_layout;
-    VkDescriptorSetLayout billboard_descriptor_layout;
-    VkSampler particle_sampler;
-    
-    // Rendering settings
-    bool enable_depth_write;
-    bool enable_depth_test;
-    VkBlendFactor src_blend;
-    VkBlendFactor dst_blend;
-    VkCullModeFlags cull_mode;
-} ParticleRenderingConfig;
-
 void gpu_particle_set_rendering_config(GPUParticleSystem* system, const ParticleRenderingConfig* config);
-void gpu_particle_set_blend_mode(GPUParticleSystem* system, VkBlendFactor src, VkBlendFactor dst);
-void gpu_particle_set_depth_mode(GPUParticleSystem* system, bool depth_test, bool depth_write);
 void gpu_particle_set_cull_mode(GPUParticleSystem* system, VkCullModeFlags cull_mode);
 
 // Color/alpha over life curves (TASK_665)
-typedef struct {
-    Vec4 color_keys[8];      // Color keys for interpolation
-    f32 alpha_keys[8];        // Alpha keys for interpolation
-    f32 key_times[8];         // Normalized time for each key (0.0-1.0)
-    u32 color_key_count;
-    u32 alpha_key_count;
-} ParticleLifeCurves;
+
 
 void gpu_particle_set_life_curves(GPUParticleSystem* system, const ParticleLifeCurves* curves);
 void gpu_particle_set_color_curve(GPUParticleSystem* system, const Vec4* colors, const f32* times, u32 count);

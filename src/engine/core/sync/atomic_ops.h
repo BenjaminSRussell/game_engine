@@ -89,4 +89,3 @@ void atomic_fence_release(void);
  */
 void atomic_fence_acquire(void);
 
-#endif /* ATOMIC_OPS_H */

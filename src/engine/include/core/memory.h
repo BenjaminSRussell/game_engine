@@ -238,11 +238,7 @@ typedef struct {
   bool recording;
 } MemoryProfiler;
 
-StackAllocator *stack_allocator_create(u32 size);
-void stack_allocator_destroy(StackAllocator *alloc);
-void *stack_allocator_alloc(StackAllocator *alloc, u32 size);
-void stack_allocator_reset(StackAllocator *alloc);
-void stack_allocator_end_frame(StackAllocator *alloc);
+// StackAllocator API provided by allocator_stack.h
 
 // Memory statistics and pool management
 typedef struct {

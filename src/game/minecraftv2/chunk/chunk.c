@@ -76,21 +76,21 @@
 // (Additional comments from the file indicating external dependencies and
 // roadmaps are preserved.) Chunk storage, neighbors, and mesh dirty tracking.
 // Roadmap: docs/CHUNK_SYSTEM_ROADMAP.md.
-#include <audio/audio_system.h>
+// #include <audio/audio_system.h>
 #include <block/lighting.h>
 #include <chunk/chunk.h>
 #include <chunk/chunk_format.h>
 #include <core/logger.h>
-#include <crafting/brewing.h>
+// #include <crafting/brewing.h>
 #include <math/vec3.h>
 #include <pthread.h>
-#include <renderer/renderer.h>
+#include <rendering/renderer.h>
 #include <stdatomic.h>
 #include <stdlib.h>
 #include <string.h>
-#include <thread/job.h>
+#include <core/threading/job.h>
 #include <time.h>
-#include <vfx/particle_system.h>
+// #include <vfx/particle_system.h>
 #include <world/generator.h>
 #include <zlib.h>
 
@@ -1474,50 +1474,54 @@ void chunk_manager_preload_chunks(ChunkManager *manager, Vec3 player_pos,
   }
 }
 
-void chunk_manager_register_brewing_stand(ChunkManager *manager,
-                                          BrewingStand *stand) {
-  if (!manager || !stand)
-    return;
+// Disabled: requires crafting/brewing.h
+// void chunk_manager_register_brewing_stand(ChunkManager *manager,
+//                                           BrewingStand *stand) {
+//   if (!manager || !stand)
+//     return;
+//
+//   if (!manager->brewing_stands) {
+//     manager->brewing_stand_capacity = 4;
+//     manager->brewing_stands = (BrewingStand **)calloc(
+//         manager->brewing_stand_capacity, sizeof(BrewingStand *));
+//     manager->brewing_stand_count = 0;
+//   }
+//
+//   if (manager->brewing_stand_count >= manager->brewing_stand_capacity) {
+//     manager->brewing_stand_capacity *= 2;
+//     manager->brewing_stands = (BrewingStand **)realloc(
+//         manager->brewing_stands,
+//         manager->brewing_stand_capacity * sizeof(BrewingStand *));
+//   }
+//
+//   manager->brewing_stands[manager->brewing_stand_count++] = stand;
+// }
 
-  if (!manager->brewing_stands) {
-    manager->brewing_stand_capacity = 4;
-    manager->brewing_stands = (BrewingStand **)calloc(
-        manager->brewing_stand_capacity, sizeof(BrewingStand *));
-    manager->brewing_stand_count = 0;
-  }
-
-  if (manager->brewing_stand_count >= manager->brewing_stand_capacity) {
-    manager->brewing_stand_capacity *= 2;
-    manager->brewing_stands = (BrewingStand **)realloc(
-        manager->brewing_stands,
-        manager->brewing_stand_capacity * sizeof(BrewingStand *));
-  }
-
-  manager->brewing_stands[manager->brewing_stand_count++] = stand;
-}
-
-void chunk_manager_unregister_brewing_stand(ChunkManager *manager,
-                                            BrewingStand *stand) {
-  if (!manager || !stand || !manager->brewing_stands)
-    return;
-
-  u32 write = 0;
-  for (u32 i = 0; i < manager->brewing_stand_count; i++) {
-    if (manager->brewing_stands[i] == stand)
-      continue; // drop
-    manager->brewing_stands[write++] = manager->brewing_stands[i];
-  }
-  manager->brewing_stand_count = write;
-}
+// Disabled: requires crafting/brewing.h
+// void chunk_manager_unregister_brewing_stand(ChunkManager *manager,
+//                                             BrewingStand *stand) {
+//   if (!manager || !stand || !manager->brewing_stands)
+//     return;
+//
+//   u32 write = 0;
+//   for (u32 i = 0; i < manager->brewing_stand_count; i++) {
+//     if (manager->brewing_stands[i] == stand)
+//       continue; // drop
+//     manager->brewing_stands[write++] = manager->brewing_stands[i];
+//   }
+//   manager->brewing_stand_count = write;
+// }
 
 void chunk_manager_update(ChunkManager *manager, f32 delta_time) {
-  // Update brewing stands
-  if (manager->brewing_stands) {
-    for (u32 i = 0; i < manager->brewing_stand_count; i++) {
-      BrewingStand *stand = manager->brewing_stands[i];
-      brewing_stand_update(stand, delta_time, NULL, NULL);
-    }
-  }
+  // Disabled: brewing stands require crafting/brewing.h
+  // if (manager->brewing_stands) {
+  //   for (u32 i = 0; i < manager->brewing_stand_count; i++) {
+  //     BrewingStand *stand = manager->brewing_stands[i];
+  //     brewing_stand_update(stand, delta_time, NULL, NULL);
+  //   }
+  // }
+  (void)manager;
+  (void)delta_time;
 }
 
 void chunk_manager_render(ChunkManager *manager, void *renderer, Mat4 view,

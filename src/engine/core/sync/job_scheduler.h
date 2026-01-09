@@ -95,4 +95,3 @@ u32 job_get_worker_count(void);
  */
 void job_process_pending(void);
 
-#endif /* JOB_SCHEDULER_H */

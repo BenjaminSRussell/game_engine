@@ -1,4 +1,4 @@
-#include "integration/ai_tools/debug_adapter.h"
+#include "core/integration/ai_tools/debug_adapter.h"
 
 void debug_adapter_init() {}
 

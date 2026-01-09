@@ -1,6 +1,6 @@
 #pragma once
 
-#include "include/core/types.h"
+#include <core/types.h>
 #include <stdbool.h>
 
 #ifdef __cplusplus
@@ -555,4 +555,4 @@ INLINE u32 slot_map_handle_generation(SlotHandle handle) {
 }
 #endif
 
-#endif // SLOT_MAP_H
+

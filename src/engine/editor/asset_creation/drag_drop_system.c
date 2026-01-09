@@ -1,4 +1,5 @@
 #include "editor/asset_creation/drag_drop_system.h"
+#include <stdlib.h>
 
 void drag_drop_init() {}
 

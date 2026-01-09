@@ -69,7 +69,7 @@
 // - The hash map uses open addressing with linear probing.
 //
 // Hash map container implementation.
-#include <core/hashmap.h>
+#include <core/containers/hashmap.h>
 #include <core/logger.h>
 #include <stdlib.h>
 #include <string.h>

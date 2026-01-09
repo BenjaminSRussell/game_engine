@@ -493,4 +493,3 @@ bool asset_manifest_self_test(void);
 }
 #endif
 
-#endif // ASSET_MANIFEST_H

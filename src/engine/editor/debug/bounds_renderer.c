@@ -1,4 +1,4 @@
-#include "editor/debug/debug_renderer.h"
+#include "debug_renderer.h"
 
 typedef struct {
     simd_float3 min;
@@ -6,7 +6,7 @@ typedef struct {
 } aabb_t;
 
 void bounds_render_aabb(debug_renderer_t* dbg, aabb_t bounds, simd_float4 color) {
-    debug_draw_box(dbg, bounds.min, bounds.max, color);
+    debug_draw_aabb(dbg, bounds.min, bounds.max, color);
 }
 
 void bounds_render_obb(debug_renderer_t* dbg, simd_float4x4 transform, aabb_t bounds, simd_float4 color) {

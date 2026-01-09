@@ -10,8 +10,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
+#include <unistd.h>
 
-typedef enum { LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL } LogLevel;
+// Forward declarations
+void *logger_async_worker(void *arg);
+const char *log_level_string(LogLevel level);
+void logger_compress_log(const char *log_path);
+
+
 
 typedef struct LogEntry {
   LogLevel level;

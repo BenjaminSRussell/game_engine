@@ -1,4 +1,4 @@
-#include "integration/blender_pipeline/blender_live_link.h"
+#include "core/integration/blender_pipeline/blender_live_link.h"
 
 void blender_live_link_init() {}
 

@@ -19,6 +19,8 @@
 #include <block/mining.h>
 #include <chunk/chunk.h>
 #include <chunk/chunk_buffers.h>
+#include "../../game/minecraftv2/include/block/lighting.h"
+#include "../../game/minecraftv2/include/mesh/mesh.h"
 #include <combat/combat.h>
 #include <combat/combat_animations.h>
 #include <common.h>

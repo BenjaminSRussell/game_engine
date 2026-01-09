@@ -2,6 +2,16 @@
 #include <stdatomic.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdlib.h>
+
+#if defined( __SSE2__ ) || defined( _M_X64 )
+    #include <emmintrin.h>
+    #define CPU_RELAX() _mm_pause()
+#elif defined( __aarch64__ ) || defined( _M_ARM64 )
+    #define CPU_RELAX() __asm__ __volatile__("yield")
+#else
+    #define CPU_RELAX() ((void)0)
+#endif
 
 /**
  * =================================================================================================
@@ -413,7 +423,7 @@ void rcu_synchronize() {
         if (atomic_load(&g_rcu_readers) > 0) {
             // Simple backoff for demonstration
             for (int i = 0; i < 100; i++) {
-                _mm_pause();
+                CPU_RELAX();
             }
             continue;
         }
@@ -421,20 +431,3 @@ void rcu_synchronize() {
         break;
     }
 }
-
-/**
- * ✅ COMPLETED: All atomic operations implemented with performance targets met:
- * - Basic atomic operations (CAS, fetch_add, exchange) with proper memory ordering
- * - Tagged pointers for ABA problem prevention
- * - Lock-free stack (Michael-Scott algorithm)
- * - Lock-free queue (Michael-Scott algorithm)
- * - Hazard pointer system for safe memory reclamation
- * - RCU primitives for read-mostly scenarios
- *
- * Performance characteristics:
- * - Basic atomic ops: <5ns (uncontended)
- * - Compare-exchange: <10ns (uncontended)
- * - Stack push/pop: <15ns (uncontended)
- * - Queue enqueue/dequeue: <20ns (uncontended)
- * - Hazard pointer check: <50ns
- */

@@ -1,5 +1,5 @@
 #include "core/memory/gpu_allocator.h"
-#include "../device/device_memory.h"
+#include "core/device/device_memory.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

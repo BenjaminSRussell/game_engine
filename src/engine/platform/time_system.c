@@ -42,6 +42,10 @@ f64 time_get_elapsed_seconds(f64 start_time) {
     return time_get_high_res_time() - start_time;
 }
 
+u64 time_get_current_ms(void) {
+    return (u64)(time_get_high_res_time() * 1000.0);
+}
+
 void time_system_init(TimeSystem* time, f32 fixed_timestep) {
     if (!time) return;
     

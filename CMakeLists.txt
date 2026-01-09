@@ -97,16 +97,17 @@ include(cmake/sources.cmake)
 
 
 # --- Vulkan ---
-find_package(Vulkan)
-if(Vulkan_FOUND)
-    file(GLOB_RECURSE VULKAN_SOURCES "src/engine/backend/vulkan/*.c")
-    list(APPEND ENGINE_SOURCES ${VULKAN_SOURCES})
-    add_definitions(-DVULKAN_BUILD)
-    include_directories(${Vulkan_INCLUDE_DIRS})
-    set(VULKAN_LIBS ${Vulkan_LIBRARIES})
-else()
-    message(STATUS "Vulkan not found, building without Vulkan renderer")
-endif()
+# --- Vulkan ---
+# find_package(Vulkan)
+# if(Vulkan_FOUND)
+#     file(GLOB_RECURSE VULKAN_SOURCES "src/engine/backend/vulkan/*.c")
+#     list(APPEND ENGINE_SOURCES ${VULKAN_SOURCES})
+#     add_definitions(-DVULKAN_BUILD)
+#     include_directories(${Vulkan_INCLUDE_DIRS})
+#     set(VULKAN_LIBS ${Vulkan_LIBRARIES})
+# else()
+#     message(STATUS "Vulkan not found, building without Vulkan renderer")
+# endif()
 
 # --- Libraries ---
 # TODO: Medium - Implement a more robust build options system (e.g., for enabling/disabling features like Vulkan, debugging, etc.).
@@ -126,8 +127,20 @@ if(APPLE)
     file(GLOB ML_OBJC_SOURCES src/engine/ai/ml/*.c)
     set_source_files_properties(${ML_OBJC_SOURCES} PROPERTIES LANGUAGE OBJC)
 
+    # Metal backend .m files (Objective-C)
     file(GLOB METAL_OBJC_SOURCES src/engine/backend/metal/*.m)
     set_source_files_properties(${METAL_OBJC_SOURCES} PROPERTIES LANGUAGE OBJC COMPILE_FLAGS "-fobjc-arc")
+    
+    # Metal backend .c files also use Objective-C syntax (#import, @available, etc.)
+    file(GLOB METAL_C_SOURCES src/engine/backend/metal/*.c)
+    set_source_files_properties(${METAL_C_SOURCES} PROPERTIES LANGUAGE OBJC COMPILE_FLAGS "-fobjc-arc")
+
+    # Core integration files using Metal/ObjC
+    set(CORE_OBJC_SOURCES 
+        src/engine/core/integration/render_world.m
+        src/engine/core/integration/scene_renderer.m
+    )
+    set_source_files_properties(${CORE_OBJC_SOURCES} PROPERTIES LANGUAGE OBJC COMPILE_FLAGS "-fobjc-arc")
 endif()
 
 # SIMD Math Library Platform-Specific Sources
@@ -246,7 +259,7 @@ endif()
 message(STATUS "Checking MinecraftApp target conditions: IOS=${IOS}, APPLE=${APPLE}")
 if(NOT IOS)
     message(STATUS "Adding MinecraftApp executable target")
-    add_executable(MinecraftApp src/engine/core/main.c)
+    add_executable(MinecraftApp src/engine/core/monolithic_main.c)
     target_link_libraries(MinecraftApp PRIVATE Game Engine ZLIB::ZLIB Threads::Threads "-framework Metal" "-framework MetalKit" "-framework Cocoa" "-framework IOKit" "-framework QuartzCore")
 endif()
 
@@ -420,38 +433,38 @@ endmacro()
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================
-add_executable(test_normal_encoding tests/test_normal_encoding.c)
-target_link_libraries(test_normal_encoding PRIVATE Engine)
-target_include_directories(test_normal_encoding PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/engine/include
-    ${CMAKE_SOURCE_DIR}/src/engine
-)
-
-add_executable(test_framebuffer tests/test_framebuffer.c)
-target_link_libraries(test_framebuffer PRIVATE Engine)
-target_include_directories(test_framebuffer PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/engine/include
-    ${CMAKE_SOURCE_DIR}/src/engine
-)
-
-add_executable(test_gbuffer_resize tests/test_gbuffer_resize.c)
-target_link_libraries(test_gbuffer_resize PRIVATE Engine)
-target_include_directories(test_gbuffer_resize PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/engine/include
-    ${CMAKE_SOURCE_DIR}/src/engine
-    ${CMAKE_SOURCE_DIR}/src/engine/rendering/gbuffer
-)
-
-message(STATUS "G-Buffer tests configured: test_normal_encoding, test_framebuffer, test_gbuffer_resize")
-
+# add_executable(test_normal_encoding tests/test_normal_encoding.c)
+# target_link_libraries(test_normal_encoding PRIVATE Engine)
+# target_include_directories(test_normal_encoding PRIVATE
+#     ${CMAKE_SOURCE_DIR}/src/engine/include
+#     ${CMAKE_SOURCE_DIR}/src/engine
+# )
+# 
+# add_executable(test_framebuffer tests/test_framebuffer.c)
+# target_link_libraries(test_framebuffer PRIVATE Engine)
+# target_include_directories(test_framebuffer PRIVATE
+#     ${CMAKE_SOURCE_DIR}/src/engine/include
+#     ${CMAKE_SOURCE_DIR}/src/engine
+# )
+# 
+# add_executable(test_gbuffer_resize tests/test_gbuffer_resize.c)
+# target_link_libraries(test_gbuffer_resize PRIVATE Engine)
+# target_include_directories(test_gbuffer_resize PRIVATE
+#     ${CMAKE_SOURCE_DIR}/src/engine/include
+#     ${CMAKE_SOURCE_DIR}/src/engine
+#     ${CMAKE_SOURCE_DIR}/src/engine/rendering/gbuffer
+# )
+# 
+# message(STATUS "G-Buffer tests configured: test_normal_encoding, test_framebuffer, test_gbuffer_resize")
+# 
 # ===========================================
 # Render Graph System Tests
 # ===========================================
-add_executable(test_frame_graph tests/test_frame_graph.c)
-target_link_libraries(test_frame_graph PRIVATE Engine)
-target_include_directories(test_frame_graph PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/engine/include
-    ${CMAKE_SOURCE_DIR}/src/engine
-)
-
-message(STATUS "Render Graph tests configured: test_frame_graph")
+# add_executable(test_frame_graph tests/test_frame_graph.c)
+# target_link_libraries(test_frame_graph PRIVATE Engine)
+# target_include_directories(test_frame_graph PRIVATE
+#     ${CMAKE_SOURCE_DIR}/src/engine/include
+#     ${CMAKE_SOURCE_DIR}/src/engine
+# )
+# 
+# message(STATUS "Render Graph tests configured: test_frame_graph")

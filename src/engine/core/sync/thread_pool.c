@@ -1,6 +1,8 @@
 #include "core/sync/thread_pool.h"
 #include "core/memory.h"
 #include "core/logging.h"
+#include <stdbool.h>
+#include <stdlib.h>
 #include <stdatomic.h>
 #include <pthread.h>
 #include <unistd.h>
@@ -54,8 +56,8 @@ typedef struct Worker {
   uint32_t cpu_affinity;          // CPU affinity
   ThreadPool *pool;                // Parent pool
   _Atomic(bool) running;          // Running flag
-  _Atomic(uint64_t) tasks_executed); // Statistics
-  _Atomic(uint64_t) busy_time_ns);   // Busy time statistics
+  _Atomic(uint64_t) tasks_executed; // Statistics
+  _Atomic(uint64_t) busy_time_ns;   // Busy time statistics
 } Worker;
 
 // ✅ COMPLETED: Thread pool
@@ -64,22 +66,22 @@ typedef struct ThreadPool {
   uint32_t worker_count;          // Number of workers
   uint32_t min_workers;           // Minimum workers
   uint32_t max_workers;           // Maximum workers
-  _Atomic(uint32_t) active_workers); // Currently active workers
+  _Atomic(uint32_t) active_workers; // Currently active workers
   
   // Task queues (one per priority level)
   Task *priority_queues[4];       // Priority queues
   pthread_mutex_t queue_mutex;    // Queue protection
   pthread_cond_t work_available;  // Work notification
-  _Atomic(uint32_t) pending_tasks); // Pending task count
+  _Atomic(uint32_t) pending_tasks; // Pending task count
   
   // Pool management
   _Atomic(bool) shutdown;         // Shutdown flag
   pthread_mutex_t resize_mutex;   // Resize protection
   
   // Statistics
-  _Atomic(uint64_t) total_tasks);  // Total tasks submitted
-  _Atomic(uint64_t) completed_tasks); // Total tasks completed
-  _Atomic(uint64_t) queue_time_ns); // Total time in queue
+  _Atomic(uint64_t) total_tasks;  // Total tasks submitted
+  _Atomic(uint64_t) completed_tasks; // Total tasks completed
+  _Atomic(uint64_t) queue_time_ns; // Total time in queue
 } ThreadPool;
 
 // ✅ COMPLETED: Forward declarations
@@ -150,34 +152,36 @@ ThreadPool* thread_pool_init(uint32_t min_workers, uint32_t max_workers) {
     }
     
     // Set thread affinity
+#ifdef __linux__
+    // CPU affinity is Linux-specific
     cpu_set_t cpuset;
     CPU_ZERO(&cpuset);
     CPU_SET(pool->workers[i].cpu_affinity, &cpuset);
     pthread_setaffinity_np(pool->workers[i].thread, sizeof(cpu_set_t), &cpuset);
+#endif
   }
   
   return pool;
 }
 
 // ✅ COMPLETED: Task submission
-TaskHandle thread_pool_submit(ThreadPool *pool, void (*function)(void*), 
-                             void *data, uint32_t priority) {
-  if (!pool || !function) return NULL;
+typedef void* TaskHandle;
+
+void thread_pool_submit(ThreadPool *pool, ThreadWork work, void *arg) {
+  if (!pool || !work) return;
   
   Task *task = malloc(sizeof(Task));
-  if (!task) return NULL;
+  if (!task) return;
   
-  task->function = function;
-  task->data = data;
+  task->function = work;
+  task->data = arg;
   task->callback = NULL;
   task->callback_data = NULL;
-  task->priority = priority;
+  task->priority = 0;  // Default priority
   task->submit_time = get_timestamp_ns();
   task->next = NULL;
   
   enqueue_task(pool, task);
-  
-  return (TaskHandle)task;
 }
 
 // ✅ COMPLETED: Task submission with callback
@@ -415,10 +419,13 @@ void thread_pool_resize(ThreadPool *pool, uint32_t new_size) {
       atomic_init(&worker->busy_time_ns, 0);
       
       if (pthread_create(&worker->thread, NULL, worker_thread_main, worker) == 0) {
+#ifdef __linux__
+        // CPU affinity is Linux-specific
         cpu_set_t cpuset;
         CPU_ZERO(&cpuset);
         CPU_SET(worker->cpu_affinity, &cpuset);
         pthread_setaffinity_np(worker->thread, sizeof(cpu_set_t), &cpuset);
+#endif
       }
     }
     atomic_store(&pool->active_workers, new_size);

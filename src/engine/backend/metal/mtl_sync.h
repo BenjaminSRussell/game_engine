@@ -16,9 +16,16 @@ typedef void* dispatch_semaphore_t;
 extern "C" {
 #endif
 
+#include "mtl_device.h"
+#include "mtl_resources.h"
+
 // Forward declarations
-typedef struct metal_device metal_device_t;
-typedef struct metal_command_buffer metal_command_buffer_t;
+// typedef struct metal_device metal_device_t;
+// typedef mtl_command_buffer_t metal_command_buffer_t; // Alias for backward compatibility if needed, or just replace
+// Actually, let's just delete the typedef if we replace usages, OR alias it to match mtl_device.h
+// mtl_device.h defines mtl_command_buffer_t.
+// So let's alias metal_command_buffer_t to mtl_command_buffer_t
+typedef mtl_command_buffer_t metal_command_buffer_t;
 
 // ============================================================================
 // Frame Synchronization (Triple Buffering)
@@ -27,14 +34,8 @@ typedef struct metal_command_buffer metal_command_buffer_t;
 /**
  * Frame timing statistics for performance monitoring.
  */
-typedef struct metal_frame_stats {
-    double min_frame_time_ms;              // Minimum frame time recorded
-    double max_frame_time_ms;              // Maximum frame time recorded
-    double avg_frame_time_ms;              // Rolling average frame time
-    double target_frame_time_ms;           // Target frame time (e.g., 16.67ms for 60 FPS)
-    uint64_t total_frames;                 // Total number of frames rendered
-    uint64_t dropped_frames;               // Number of frames that exceeded budget
-} metal_frame_stats_t;
+#include "mtl_frame_sync.h"
+#include "mtl_hazard_tracking.h"
 
 /**
  * Frame pacing mode.
@@ -63,7 +64,7 @@ typedef struct metal_frame_sync {
     // Enhanced timing and statistics
     uint64_t frame_start_time;             // Start time of current frame (mach_absolute_time)
     uint64_t timeout_ns;                   // Timeout for frame wait in nanoseconds (0 = infinite)
-    metal_frame_stats_t stats;             // Frame statistics
+    metal_frame_timing_stats_t stats;             // Frame statistics
     metal_frame_pacing_mode_t pacing_mode; // Frame pacing mode
     
     // Deadlock detection
@@ -99,7 +100,7 @@ void metal_frame_begin(metal_frame_sync_t* sync);
  * @param sync Frame synchronization object
  * @param cmd_buffer Command buffer to track for completion
  */
-void metal_frame_end(metal_frame_sync_t* sync, metal_command_buffer_t* cmd_buffer);
+void metal_frame_end(metal_frame_sync_t* sync, mtl_command_buffer_t* cmd_buffer);
 
 /**
  * Begin a new frame with timeout. Blocks if max frames are already in flight.
@@ -135,7 +136,8 @@ uint64_t metal_frame_get_current_index(metal_frame_sync_t* sync);
  * @param sync Frame synchronization object
  * @param stats Output statistics structure
  */
-void metal_frame_get_stats(metal_frame_sync_t* sync, metal_frame_stats_t* stats);
+void metal_frame_sync_get_stats(metal_frame_sync_t* sync,
+                                metal_frame_timing_stats_t* stats);
 
 /**
  * Reset frame statistics.
@@ -211,7 +213,7 @@ metal_fence_t* metal_fence_create(id device);
  * @param cmd_buffer Command buffer to encode wait into
  * @param stage Pipeline stage to wait at (before vertex, fragment, etc.)
  */
-void metal_fence_encode_wait(metal_fence_t* fence, metal_command_buffer_t* cmd_buffer, uint32_t stage);
+void metal_fence_encode_wait(metal_fence_t* fence, mtl_command_buffer_t* cmd_buffer, uint32_t stage);
 
 /**
  * Encode a signal operation on a fence in a command buffer.
@@ -221,7 +223,7 @@ void metal_fence_encode_wait(metal_fence_t* fence, metal_command_buffer_t* cmd_b
  * @param cmd_buffer Command buffer to encode signal into
  * @param stage Pipeline stage to signal at (after vertex, fragment, etc.)
  */
-void metal_fence_encode_signal(metal_fence_t* fence, metal_command_buffer_t* cmd_buffer, uint32_t stage);
+void metal_fence_encode_signal(metal_fence_t* fence, mtl_command_buffer_t* cmd_buffer, uint32_t stage);
 
 /**
  * Destroy a Metal fence.
@@ -268,7 +270,7 @@ metal_event_t* metal_event_create(id device, uint64_t initial_value);
  * @param cmd_buffer Command buffer to encode signal into
  * @param value Value to signal
  */
-void metal_event_encode_signal(metal_event_t* event, metal_command_buffer_t* cmd_buffer, uint64_t value);
+void metal_event_encode_signal(metal_event_t* event, mtl_command_buffer_t* cmd_buffer, uint64_t value);
 
 /**
  * Encode a GPU wait operation on an event.
@@ -278,7 +280,7 @@ void metal_event_encode_signal(metal_event_t* event, metal_command_buffer_t* cmd
  * @param cmd_buffer Command buffer to encode wait into
  * @param value Value to wait for
  */
-void metal_event_encode_wait(metal_event_t* event, metal_command_buffer_t* cmd_buffer, uint64_t value);
+void metal_event_encode_wait(metal_event_t* event, mtl_command_buffer_t* cmd_buffer, uint64_t value);
 
 /**
  * CPU wait for an event to reach a specific value.
@@ -355,7 +357,7 @@ bool metal_event_wait_multiple(metal_event_t** events, uint64_t* values, uint32_
  * @param count Number of events in the arrays
  * @param cmd_buffer Command buffer to encode waits into
  */
-void metal_event_encode_wait_multiple(metal_event_t** events, uint64_t* values, uint32_t count, metal_command_buffer_t* cmd_buffer);
+void metal_event_encode_wait_multiple(metal_event_t** events, uint64_t* values, uint32_t count, mtl_command_buffer_t* cmd_buffer);
 
 /**
  * Create a synchronization point for CPU-GPU coordination.
@@ -406,6 +408,7 @@ typedef struct metal_resource_tracker {
 /**
  * Hazard analysis result.
  */
+#include "mtl_frame_sync.h"
 typedef struct metal_hazard_info {
     bool has_hazard;                    // True if hazard detected
     bool is_raw;                        // Read-after-write hazard
@@ -415,21 +418,19 @@ typedef struct metal_hazard_info {
     uint32_t recommended_stages;        // Recommended pipeline stages for barrier
 } metal_hazard_info_t;
 
+
 /**
  * Check if a resource access creates a hazard and insert fence if needed.
  * 
- * @param tracker Resource tracker
- * @param resource Resource being accessed
- * @param access Access type
- * @param cmd_buffer Command buffer for fence insertion
- * @param frame_index Current frame index
- * @return true if fence was inserted, false otherwise
+ * Detailed hazard info for analysis.
  */
+
+
 bool metal_check_resource_hazard(
     metal_resource_tracker_t* tracker,
     void* resource,
     metal_resource_access_t access,
-    metal_command_buffer_t* cmd_buffer,
+    mtl_command_buffer_t* cmd_buffer,
     uint64_t frame_index
 );
 
@@ -457,7 +458,7 @@ bool metal_analyze_resource_hazard(
  * @param stages Pipeline stages to apply barrier
  */
 void metal_insert_texture_barrier(
-    metal_command_buffer_t* cmd_buffer,
+    mtl_command_buffer_t* cmd_buffer,
     void* texture,
     uint32_t stages
 );
@@ -470,7 +471,7 @@ void metal_insert_texture_barrier(
  * @param stages Pipeline stages to apply barrier
  */
 void metal_insert_buffer_barrier(
-    metal_command_buffer_t* cmd_buffer,
+    mtl_command_buffer_t* cmd_buffer,
     void* buffer,
     uint32_t stages
 );

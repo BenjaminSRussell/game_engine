@@ -4,19 +4,19 @@ import SwiftUI
 /// Mirrors asset_browser.c functionality with macOS integration
 @available(macOS 14.0, *)
 public struct AssetBrowserView: View {
-    @State private var selectedAsset: AssetItem?
+    @State private var selectedAsset: BrowserAssetItem?
     @State private var searchText = ""
     @State private var selectedCategory: AssetCategory = .all
     
-    let assets: [AssetItem]
-    let onAssetSelected: (AssetItem) -> Void
+    let assets: [BrowserAssetItem]
+    let onAssetSelected: (BrowserAssetItem) -> Void
     
-    public init(assets: [AssetItem] = [], onAssetSelected: @escaping (AssetItem) -> Void = { _ in }) {
+    public init(assets: [BrowserAssetItem] = [], onAssetSelected: @escaping (BrowserAssetItem) -> Void = { _ in }) {
         self.assets = assets
         self.onAssetSelected = onAssetSelected
     }
     
-    var filteredAssets: [AssetItem] {
+    var filteredAssets: [BrowserAssetItem] {
         assets.filter { asset in
             let matchesSearch = searchText.isEmpty || asset.name.localizedCaseInsensitiveContains(searchText)
             let matchesCategory = selectedCategory == .all || asset.category == selectedCategory
@@ -91,7 +91,7 @@ public struct AssetBrowserView: View {
 // MARK: - Asset Card
 
 struct AssetCard: View {
-    let asset: AssetItem
+    let asset: BrowserAssetItem
     let isSelected: Bool
     
     var body: some View {
@@ -117,7 +117,7 @@ struct AssetCard: View {
 
 // MARK: - Data Models
 
-public struct AssetItem: Identifiable {
+public struct BrowserAssetItem: Identifiable {
     public let id: UUID
     public let name: String
     public let category: AssetCategory
@@ -132,15 +132,15 @@ public struct AssetItem: Identifiable {
         self.path = path
     }
     
-    @MainActor static let mockAssets: [AssetItem] = [
-        AssetItem(name: "Stone", category: .voxels, icon: "cube.fill", path: "/assets/voxels/stone.vox"),
-        AssetItem(name: "Grass", category: .voxels, icon: "cube.fill", path: "/assets/voxels/grass.vox"),
-        AssetItem(name: "Wood", category: .voxels, icon: "cube.fill", path: "/assets/voxels/wood.vox"),
-        AssetItem(name: "Water", category: .voxels, icon: "drop.fill", path: "/assets/voxels/water.vox"),
-        AssetItem(name: "Metal", category: .materials, icon: "circle.hexagongrid.fill", path: "/assets/materials/metal.mat"),
-        AssetItem(name: "Glass", category: .materials, icon: "circle.hexagongrid", path: "/assets/materials/glass.mat"),
-        AssetItem(name: "Footstep", category: .audio, icon: "waveform", path: "/assets/audio/footstep.wav"),
-        AssetItem(name: "Ambient", category: .audio, icon: "waveform.circle", path: "/assets/audio/ambient.wav"),
+    @MainActor static let mockAssets: [BrowserAssetItem] = [
+        BrowserAssetItem(name: "Stone", category: .voxels, icon: "cube.fill", path: "/assets/voxels/stone.vox"),
+        BrowserAssetItem(name: "Grass", category: .voxels, icon: "cube.fill", path: "/assets/voxels/grass.vox"),
+        BrowserAssetItem(name: "Wood", category: .voxels, icon: "cube.fill", path: "/assets/voxels/wood.vox"),
+        BrowserAssetItem(name: "Water", category: .voxels, icon: "drop.fill", path: "/assets/voxels/water.vox"),
+        BrowserAssetItem(name: "Metal", category: .materials, icon: "circle.hexagongrid.fill", path: "/assets/materials/metal.mat"),
+        BrowserAssetItem(name: "Glass", category: .materials, icon: "circle.hexagongrid", path: "/assets/materials/glass.mat"),
+        BrowserAssetItem(name: "Footstep", category: .audio, icon: "waveform", path: "/assets/audio/footstep.wav"),
+        BrowserAssetItem(name: "Ambient", category: .audio, icon: "waveform.circle", path: "/assets/audio/ambient.wav"),
     ]
 }
 

@@ -6,12 +6,18 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#include <stdatomic.h>
 
 // SparseSet - O(1) insert/remove/contains
 typedef struct {
   uint32_t *sparse, *dense;
   uint32_t capacity, count;
 } SparseSet;
+
+bool sparse_set_contains(SparseSet *set, uint32_t value);
+
+bool sparse_set_contains(SparseSet *set, uint32_t value);
 
 SparseSet *sparse_set_create(uint32_t capacity) {
   SparseSet *set = malloc(sizeof(SparseSet));

@@ -60,7 +60,9 @@ bool time_system_is_paused(const TimeSystem* time);
 
 // High-resolution timer
 f64 time_get_high_res_time(void);
+f64 time_get_high_res_time(void);
 f64 time_get_elapsed_seconds(f64 start_time);
+u64 time_get_current_ms(void);
 
 // Timestamp utilities
 typedef struct {

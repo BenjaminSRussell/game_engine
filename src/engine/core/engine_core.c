@@ -10,12 +10,18 @@
 #include "core/threading/job.h"
 #include "core/resource/vfs/vfs.h"
 #include "cinematics/audio/audio_system.h"
-#include "../../include/config/config.h"
+// #include <config/config.h>
+#ifndef MAX_ENTITIES
+#define MAX_ENTITIES 10000
+#endif
+#ifndef MAX_COMPONENTS
+#define MAX_COMPONENTS 64
+#endif
 #include <stdlib.h>
 #include <string.h>
 
 // Default configuration
-void engine_config_set_defaults(EngineConfig *config) {
+void engine_config_set_defaults(EngineCoreConfig *config) {
     if (!config) return;
     
     config->window_width = 1280;
@@ -31,8 +37,8 @@ void engine_config_set_defaults(EngineConfig *config) {
     config->physics_max_frame_time = 0.25f;
 }
 
-EngineConfig engine_config_create_2_5d(u32 width, u32 height) {
-    EngineConfig config;
+EngineCoreConfig engine_config_create_2_5d(u32 width, u32 height) {
+    EngineCoreConfig config;
     engine_config_set_defaults(&config);
     config.window_width = width;
     config.window_height = height;
@@ -40,8 +46,8 @@ EngineConfig engine_config_create_2_5d(u32 width, u32 height) {
     return config;
 }
 
-EngineConfig engine_config_create_3d(u32 width, u32 height) {
-    EngineConfig config;
+EngineCoreConfig engine_config_create_3d(u32 width, u32 height) {
+    EngineCoreConfig config;
     engine_config_set_defaults(&config);
     config.window_width = width;
     config.window_height = height;
@@ -49,8 +55,8 @@ EngineConfig engine_config_create_3d(u32 width, u32 height) {
     return config;
 }
 
-EngineConfig engine_config_create_2d(u32 width, u32 height) {
-    EngineConfig config;
+EngineCoreConfig engine_config_create_2d(u32 width, u32 height) {
+    EngineCoreConfig config;
     engine_config_set_defaults(&config);
     config.window_width = width;
     config.window_height = height;
@@ -59,7 +65,7 @@ EngineConfig engine_config_create_2d(u32 width, u32 height) {
 }
 
 // Engine initialization
-bool engine_core_init(EngineCore *engine, const EngineConfig *config) {
+bool engine_core_init(EngineCore *engine, const EngineCoreConfig *config) {
     if (!engine || !config) {
         LOG_ERROR("Invalid parameters for engine_core_init");
         return false;
@@ -77,37 +83,42 @@ bool engine_core_init(EngineCore *engine, const EngineConfig *config) {
     
     // Initialize physics if enabled
     if (config->enable_physics) {
-        engine->physics_world = (struct PhysicsWorld *)malloc(sizeof(struct PhysicsWorld));
-        if (engine->physics_world) {
-            physics_world_init(engine->physics_world, vec3(0.0f, -9.81f, 0.0f));
+        PhysicsConfig phys_config = {
+            .gravity = {0.0f, -9.81f, 0.0f},
+            .fixed_timestep = config->physics_fixed_dt > 0 ? config->physics_fixed_dt : 1.0f/60.0f,
+            .velocity_iterations = 8,
+            .position_iterations = 3
+        };
+        engine->physics_world = physics_world_create(phys_config);
+        if (!engine->physics_world) {
+            LOG_ERROR("Failed to create physics world");
         }
     }
     
     // Initialize thread pool
     engine->thread_pool = (struct ThreadPool *)malloc(sizeof(struct ThreadPool));
     if (engine->thread_pool) {
-        thread_pool_init(engine->thread_pool, 4);
+        thread_pool_init((ThreadPool*)engine->thread_pool, 4);
     }
     
     // Initialize VFS
     engine->vfs = (struct VFS *)malloc(sizeof(struct VFS));
     if (engine->vfs) {
-        vfs_init(engine->vfs);
+        vfs_init((VFS*)engine->vfs);
     }
     
     // Initialize audio if enabled
     if (config->enable_audio) {
-        engine->audio_system = (struct AudioSystem *)malloc(sizeof(struct AudioSystem));
-        // TODO: Add proper audio system initialization with device enumeration
-        // TODO: Add audio format configuration (sample rate, bit depth, channels)
-        // TODO: Add audio system unit tests for device management and playback
-        // Audio initialization would go here
+        engine->audio_system = (struct AudioSystem *)malloc(sizeof(AudioManager));
+        if (engine->audio_system) {
+            audio_manager_init((AudioManager*)engine->audio_system);
+        }
     }
     
     // Initialize camera
     engine->camera = (struct Camera *)malloc(sizeof(struct Camera));
     if (engine->camera) {
-        camera_init(engine->camera, vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
+        camera_init((Camera*)engine->camera, vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
     }
     
     // Initialize renderer based on mode
@@ -177,28 +188,28 @@ void engine_core_shutdown(EngineCore *engine) {
     
     // Cleanup audio
     if (engine->audio_system) {
+        audio_manager_shutdown((AudioManager*)engine->audio_system);
         free(engine->audio_system);
         engine->audio_system = NULL;
     }
     
     // Cleanup VFS
     if (engine->vfs) {
-        vfs_shutdown(engine->vfs);
+        vfs_free((VFS*)engine->vfs);
         free(engine->vfs);
         engine->vfs = NULL;
     }
     
     // Cleanup thread pool
     if (engine->thread_pool) {
-        thread_pool_shutdown(engine->thread_pool);
+        thread_pool_free((ThreadPool*)engine->thread_pool);
         free(engine->thread_pool);
         engine->thread_pool = NULL;
     }
     
     // Cleanup physics
     if (engine->physics_world) {
-        physics_world_free(engine->physics_world);
-        free(engine->physics_world);
+        physics_world_destroy((PhysicsWorld*)engine->physics_world);
         engine->physics_world = NULL;
     }
     
@@ -244,7 +255,7 @@ void engine_core_update(EngineCore *engine) {
     
     // Update physics if enabled
     if (engine->physics_world && engine->config.enable_physics) {
-        physics_system_update(engine->physics_world, &engine->ecs_world, 
+        physics_world_step((PhysicsWorld*)engine->physics_world, 
                              engine->config.physics_fixed_dt);
     }
     
@@ -388,4 +399,3 @@ bool engine_run_game(const GameDefinition *game) {
     
     return true;
 }
-

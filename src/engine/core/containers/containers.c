@@ -9,7 +9,7 @@
 // ✅ COMPLETED: Add container bounds checking in debug builds.
 // ✅ COMPLETED: Implement container element move semantics.
 // ✅ COMPLETED: Add container benchmarking tools for performance analysis.
-#include <core/containers.h>
+#include <core/containers/containers.h>
 #include <stdlib.h>
 #include <string.h>
 

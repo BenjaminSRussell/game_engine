@@ -146,7 +146,7 @@ create_mtl_compile_options(const metal_compile_options_t *options) {
         strncpy(value, equals + 1, 255);
       } else {
         strncpy(key, define, 255);
-        strcpy(value, \"1\");
+        strcpy(value, "1");
       }
 
       NSString *nsKey = [NSString stringWithUTF8String:key];
@@ -161,17 +161,17 @@ create_mtl_compile_options(const metal_compile_options_t *options) {
     NSString *version =
         [NSString stringWithUTF8String:options->language_version];
 
-    if ([version isEqualToString:@\"2.4\"]) {
+    if ([version isEqualToString:@"2.4"]) {
       mtlOptions.languageVersion = MTLLanguageVersion2_4;
-    } else if ([version isEqualToString:@\"3.0\"]) {
+    } else if ([version isEqualToString:@"3.0"]) {
       if (@available(macOS 12.0, *)) {
-    mtlOptions.languageVersion = MTLLanguageVersion3_0;
+        mtlOptions.languageVersion = MTLLanguageVersion3_0;
       }
-}
-// Add more version mappings as needed
-}
+    }
+    // Add more version mappings as needed
+  }
 
-return mtlOptions;
+  return mtlOptions;
 }
 
 /* ============================================================================
@@ -190,7 +190,8 @@ compile_internal(metal_shader_compiler_t *compiler, const char *source,
   result.error_count = 0;
 
   if (!compiler || !source) {
-    snprintf(result.errors[result.error_count++].message, 512, \"Invalid arguments\");
+    snprintf(result.errors[result.error_count++].message, 512,
+             "Invalid arguments");
     return result;
   }
 
@@ -201,15 +202,15 @@ compile_internal(metal_shader_compiler_t *compiler, const char *source,
     if (entry->in_use && entry->source_hash == source_hash) {
       // Verify with actual source comparison to avoid hash collision issues
       if (strcmp(entry->source, source) == 0) {
-        NSLog(@\"Shader cache hit: %s\", debug_name ? debug_name : \"<unknown>\");
+        NSLog(@"Shader cache hit: %s", debug_name ? debug_name : "<unknown>");
         compiler->cache_hits++;
         result.library = entry->library;
         result.succeeded = true;
         return result;
       } else {
         // Hash collision - different source with same hash
-        NSLog(@\"Warning: Shader cache hash collision detected for %s\",
-              debug_name ? debug_name : \"<unknown>\");
+        NSLog(@"Warning: Shader cache hash collision detected for %s",
+              debug_name ? debug_name : "<unknown>");
       }
     }
   }
@@ -244,9 +245,9 @@ compile_internal(metal_shader_compiler_t *compiler, const char *source,
       compile_error->column = 0;
     }
 
-    NSLog(@\"Shader compilation failed for %s: %@\", 
-          debug_name ? debug_name : \"<unknown>\", error);
-    
+    NSLog(@"Shader compilation failed for %s: %@",
+          debug_name ? debug_name : "<unknown>", error);
+
     result.succeeded = false;
     return result;
   }
@@ -261,16 +262,15 @@ compile_internal(metal_shader_compiler_t *compiler, const char *source,
         &compiler->cache[compiler->cache_count++];
     entry->source_hash = source_hash;
     entry->library = library_ref;
-    strncpy(entry->debug_name,
-            debug_name ? debug_name : \"<compiled>\", 
-                                          sizeof(entry->debug_name) -
-                                          1);
+    strncpy(entry->debug_name, debug_name ? debug_name : "<compiled>",
+            sizeof(entry->debug_name) - 1);
     entry->in_use = true;
   } else {
-    NSLog(@\"Shader cache full, not caching compiled shader\");
+    NSLog(@"Shader cache full, not caching compiled shader");
   }
 
-  NSLog(@\"Shader compiled successfully: %s\", debug_name ? debug_name : \"<unknown>\");
+  NSLog(@"Shader compiled successfully: %s",
+        debug_name ? debug_name : "<unknown>");
 
   return result;
 }
@@ -283,15 +283,16 @@ metal_shader_compile_file(metal_shader_compiler_t *compiler, const char *path,
   result.succeeded = false;
 
   if (!compiler || !path) {
-    snprintf(result.errors[result.error_count++].message, 512, \"Invalid arguments\");
+    snprintf(result.errors[result.error_count++].message, 512,
+             "Invalid arguments");
     return result;
   }
 
   // Read file
-  FILE* file = fopen(path, \"r\");
+  FILE *file = fopen(path, "r");
   if (!file) {
-    snprintf(result.errors[result.error_count++].message, 512, 
-             \"Failed to open file: %s\", path);
+    snprintf(result.errors[result.error_count++].message, 512,
+             "Failed to open file: %s", path);
     return result;
   }
 
@@ -299,15 +300,15 @@ metal_shader_compile_file(metal_shader_compiler_t *compiler, const char *path,
   long size = ftell(file);
   fseek(file, 0, SEEK_SET);
 
-  char* source = (char*)malloc(size + 1);
+  char *source = (char *)malloc(size + 1);
   if (!source) {
     fclose(file);
-    snprintf(result.errors[result.error_count++].message, 512, \"Out of memory\");
+    snprintf(result.errors[result.error_count++].message, 512, "Out of memory");
     return result;
   }
 
   size_t read_size = fread(source, 1, size, file);
-  source[read_size] = '\\0';
+  source[read_size] = '\0';
   fclose(file);
 
   // Compile
@@ -369,7 +370,7 @@ void metal_shader_cache_add(metal_shader_compiler_t *compiler,
   }
 
   if (compiler->cache_count >= METAL_MAX_CACHED_SHADERS) {
-    NSLog(@\"Shader cache full, cannot add more entries\");
+    NSLog(@"Shader cache full, cannot add more entries");
     return;
   }
 
@@ -378,10 +379,8 @@ void metal_shader_cache_add(metal_shader_compiler_t *compiler,
   metal_shader_cache_entry_t *entry = &compiler->cache[compiler->cache_count++];
   entry->source_hash = source_hash;
   entry->library = library;
-  strncpy(entry->debug_name,
-          debug_name ? debug_name : \"<manual>\", 
-                                        sizeof(entry->debug_name) -
-                                        1);
+  strncpy(entry->debug_name, debug_name ? debug_name : "<manual>",
+          sizeof(entry->debug_name) - 1);
   entry->in_use = true;
 }
 
@@ -400,7 +399,7 @@ void metal_shader_cache_clear(metal_shader_compiler_t *compiler) {
   }
 
   compiler->cache_count = 0;
-  NSLog(@\"Shader cache cleared\");
+  NSLog(@"Shader cache cleared");
 }
 
 /* ============================================================================
@@ -437,23 +436,24 @@ void metal_shader_compiler_print_stats(
     return;
   }
 
-  NSLog(@\"=== Shader Compiler Statistics ===\");
-  NSLog(@\"Total Compilations: %u\", compiler->compile_count);
-  NSLog(@\"Cache Hits: %u\", compiler->cache_hits);
-  NSLog(@\"Cached Shaders: %u\", compiler->cache_count);
-  
+  NSLog(@"=== Shader Compiler Statistics ===");
+  NSLog(@"Total Compilations: %u", compiler->compile_count);
+  NSLog(@"Cache Hits: %u", compiler->cache_hits);
+  NSLog(@"Cached Shaders: %u", compiler->cache_count);
+
   float hit_rate = 0.0f;
   if (compiler->compile_count + compiler->cache_hits > 0) {
     hit_rate = (float)compiler->cache_hits /
                (float)(compiler->compile_count + compiler->cache_hits) * 100.0f;
   }
-  NSLog(@\"Cache Hit Rate: %.1f%%\", hit_rate);
+  NSLog(@"Cache Hit Rate: %.1f%%", hit_rate);
 
-  NSLog(@\"\\nCached Shaders:\");
+  NSLog(@"\nCached Shaders:");
   for (uint32_t i = 0; i < compiler->cache_count; i++) {
     const metal_shader_cache_entry_t *entry = &compiler->cache[i];
     if (entry->in_use) {
-      NSLog(@\"  [%u] %s (hash: 0x%llx)\", i, entry->debug_name, entry->source_hash);
+      NSLog(@"  [%u] %s (hash: 0x%llx)", i, entry->debug_name,
+            entry->source_hash);
     }
   }
 }

@@ -15,26 +15,7 @@
 //                                      STRUCTS
 // =================================================================================================
 
-typedef enum FieldType {
-  TYPE_INT32,
-  TYPE_FLOAT,
-  TYPE_STRING,
-  TYPE_STRUCT,
-  TYPE_ARRAY
-} FieldType;
-
-typedef struct FieldSchema {
-  const char *name;
-  FieldType type;
-  size_t offset;
-  // ... metadata ...
-} FieldSchema;
-
-typedef struct TypeSchema {
-  const char *name;
-  FieldSchema fields[32];
-  int field_count;
-} TypeSchema;
+// Structs and Enums defined in binary_serializer.h
 
 // =================================================================================================
 //                                      IMPLEMENTATION

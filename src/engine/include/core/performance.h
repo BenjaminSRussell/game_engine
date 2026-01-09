@@ -34,7 +34,7 @@
 #define PERFORMANCE_H
 
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct {
     const char *name;
@@ -118,7 +118,7 @@ typedef struct {
     f64 elapsed_time;
 } ScopeEntry;
 
-void profiler_scope_enter(const char *name);
-void profiler_scope_exit(void);
+int profiler_scope_enter(const char *name);
+void profiler_scope_exit(int scope_id);
 
 #endif

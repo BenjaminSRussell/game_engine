@@ -1,4 +1,4 @@
-#include "integration/blender_pipeline/blender_material_convert.h"
+#include "core/integration/blender_pipeline/blender_material_convert.h"
 
 void blender_material_convert_init() {}
 

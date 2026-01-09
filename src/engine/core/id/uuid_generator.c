@@ -10,9 +10,7 @@
  * =================================================================================================
  */
 
-typedef struct {
-    uint8_t bytes[16];
-} UUID;
+
 
 void uuid_generate_v4(UUID* out_uuid) {
     if (!out_uuid) return;

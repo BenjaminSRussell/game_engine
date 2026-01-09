@@ -33,15 +33,17 @@
 #ifndef VEC2_H
 #define VEC2_H
 
-#include <common.h>
-#include <include/math/math.h>
+#include "common.h"
+#include "math.h"
 
 typedef union {
   struct {
     f32 x, y;
   };
-  f32 data[2];
+
 } K_ALIGN(8) Vec2;
+
+typedef Vec2 vec2_t;
 
 INLINE Vec2 vec2(f32 x, f32 y) {
   Vec2 v = {x, y};

@@ -1,4 +1,4 @@
-#include "integration/blender_pipeline/blender_batch_export.h"
+#include "core/integration/blender_pipeline/blender_batch_export.h"
 
 void blender_batch_export_init() {}
 

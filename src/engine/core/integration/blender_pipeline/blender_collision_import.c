@@ -1,4 +1,4 @@
-#include "integration/blender_pipeline/blender_collision_import.h"
+#include "core/integration/blender_pipeline/blender_collision_import.h"
 
 void blender_collision_import_init() {}
 

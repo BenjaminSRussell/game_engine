@@ -9,7 +9,7 @@
 #include <core/logger.h>
 #include <core/memory.h>
 #include <math/math.h>
-#include <renderer/renderer.h>
+#include <rendering/renderer.h>
 #else
 #include <stdio.h>
 #include <stdlib.h>

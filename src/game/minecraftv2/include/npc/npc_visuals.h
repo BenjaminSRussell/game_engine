@@ -4,7 +4,7 @@
 #include "../game_common.h"
 #include <ecs/components/npc.h>
 #include <ecs/components/transform.h>
-#include <renderer/mesh.h>
+#include <rendering/mesh.h>
 
 // Initialize any static resources for NPC visuals
 void npc_visuals_init(void);

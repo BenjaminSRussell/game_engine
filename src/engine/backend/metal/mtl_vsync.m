@@ -174,7 +174,7 @@ metal_vsync_manager_create(const metal_vsync_config_t *config) {
   CVReturn status =
       CVDisplayLinkCreateWithCGDisplay(display_id, &manager->display_link);
   if (status != kCVReturnSuccess || !manager->display_link) {
-    dispatch_release(manager->vblank_semaphore);
+    // dispatch_release(manager->vblank_semaphore);
     free(manager->frame_times);
     free(manager);
     return NULL;
@@ -286,7 +286,7 @@ void metal_vsync_manager_destroy(metal_vsync_manager_t *manager) {
   }
 
   if (manager->vblank_semaphore) {
-    dispatch_release(manager->vblank_semaphore);
+    // dispatch_release(manager->vblank_semaphore);
   }
 
   if (manager->frame_times) {

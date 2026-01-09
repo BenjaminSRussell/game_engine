@@ -40,10 +40,10 @@
 // #include <gameplay/inventory/item_database.h>
 
 // AI advanced subsystems
-// #include <ai/npc/perception_system.h>
-// #include <ai/npc_advanced/goap_enhanced.h>
-// #include <ai/npc_advanced/memory_system.h>
-// #include <ai/npc_advanced/utility_ai.h>
+#include <ai/npc/perception_system.h>
+#include <ai/npc_advanced/goap_enhanced.h>
+#include <ai/npc_advanced/memory_system.h>
+#include <ai/npc_advanced/utility_ai.h>
 
 // #include <ai/npc_advanced/utility_ai.h>
 
@@ -457,14 +457,16 @@ static bool engine_init_subsystems(Engine *engine) {
 
     // Crafting System
     if (crafting_system_init(1000)) {
-  */
+
       crafting_register_default_recipes();
       LOG_INFO("Crafting System initialized");
     } else {
       LOG_ERROR("Crafting System initialization failed");
     }
   }
+  */
 
+  /*
   // 9. AI Systems
   // Perception System
   PerceptionSystemConfig perception_config = {.max_agents = 100,
@@ -498,6 +500,7 @@ static bool engine_init_subsystems(Engine *engine) {
   } else {
     LOG_ERROR("GOAP Planner initialization failed");
   }
+  */
 
   return true;
 }
@@ -530,17 +533,21 @@ static void engine_shutdown_subsystems(Engine *engine) {
     // If implemented, uncomment.
   }
 
+  /*
   if (engine->subsystems.audio) {
     audio_system_free(engine->subsystems.audio);
     free(engine->subsystems.audio);
     engine->subsystems.audio = NULL;
   }
+  */
 
+  /*
   if (engine->subsystems.scripting) {
     ScriptSystem_Shutdown(engine->subsystems.scripting);
     free(engine->subsystems.scripting);
     engine->subsystems.scripting = NULL;
   }
+  */
 
   if (engine->subsystems.post_processing) {
     post_process_shutdown(engine->subsystems.post_processing,
@@ -553,27 +560,35 @@ static void engine_shutdown_subsystems(Engine *engine) {
     free(engine->subsystems.scene_manager);
   }
 
+  /*
   // AI Systems Shutdown
   if (engine->subsystems.perception) {
     perception_system_shutdown(engine->subsystems.perception);
     perception_system_destroy(engine->subsystems.perception);
     engine->subsystems.perception = NULL;
   }
+  */
 
+  /*
   if (engine->subsystems.memory) {
     memory_system_destroy(engine->subsystems.memory);
     engine->subsystems.memory = NULL;
   }
+  */
 
+  /*
   if (engine->subsystems.planner) {
     goap_planner_destroy_state(engine->subsystems.planner);
     engine->subsystems.planner = NULL;
   }
+  */
 
+  /*
   // Gameplay Systems Shutdown
   item_database_shutdown();
   crafting_system_shutdown();
   combat_system_shutdown();
+  */
 
   vfs_free(&g_vfs);
 }

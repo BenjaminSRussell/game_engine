@@ -60,9 +60,10 @@ metal_shader_library_t *metal_load_shader_library(MTLDeviceRef device_ref,
   id<MTLDevice> device = (__bridge id<MTLDevice>)device_ref;
 
   NSString *nsPath = [NSString stringWithUTF8String:path];
+  NSURL *url = [NSURL fileURLWithPath:nsPath];
   NSError *error = nil;
 
-  id<MTLLibrary> library = [device newLibraryWithFile:nsPath error:&error];
+  id<MTLLibrary> library = [device newLibraryWithURL:url error:&error];
 
   if (error || !library) {
     NSLog(@"Failed to load shader library from %@: %@", nsPath, error);

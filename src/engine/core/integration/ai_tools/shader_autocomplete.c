@@ -1,4 +1,4 @@
-#include "integration/ai_tools/shader_autocomplete.h"
+#include "core/integration/ai_tools/shader_autocomplete.h"
 
 void shader_autocomplete_init() {}
 

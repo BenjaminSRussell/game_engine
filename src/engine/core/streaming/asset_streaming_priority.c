@@ -3,7 +3,9 @@
 #include "core/memory.h"
 #include <stdlib.h>
 #include <string.h>
-#include <include/math/math.h>
+#include <string.h>
+#include "core/time_system.h"
+//#include <include/math/math.h>
 
 // Helper function to swap two asset requests
 static void swap_requests(AssetRequest* a, AssetRequest* b) {
@@ -63,7 +65,7 @@ bool asset_priority_init(AssetStreamingPriority* system) {
     memset(system, 0, sizeof(AssetStreamingPriority));
     
     // Allocate priority queue
-    system->queue = (AssetPriorityQueue*)memory_alloc(sizeof(AssetPriorityQueue));
+    system->queue = (AssetPriorityQueue*)memory_alloc(sizeof(AssetPriorityQueue), __FILE__, __LINE__);
     if (!system->queue) {
         LOG_ERROR("Failed to allocate asset priority queue");
         return false;

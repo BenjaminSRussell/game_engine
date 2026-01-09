@@ -1,11 +1,11 @@
-/**
- * AVX-512 SIMD Vector Operations - COMPLETE IMPLEMENTATION
- * AGENT_PERF_2 - Stream 1
- */
+#if defined(__AVX512F__)
+// AVX-512 SIMD Vector Operations - COMPLETE IMPLEMENTATION
+// AGENT_PERF_2 - Stream 1
 
 #include <immintrin.h>
 #include <include/math/math.h>
 #include <stdio.h>
+#include "avx512_kernels.h"
 
 // Vector add (16 floats)
 static inline __m512 vec16_add(__m512 a, __m512 b) {
@@ -149,8 +149,4 @@ unsigned short frustum_cull_aabb_avx512(const float *aabb_mins,
   return visible_mask;
 }
 
-/*
- * IMPLEMENTATION COMPLETE: 20/200 SIMD TODOs
- * LOC: ~150
- * Performance: 4-16x speedup achieved ✅
- */
+#endif // defined(__AVX512F__)

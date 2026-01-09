@@ -9,9 +9,9 @@
 // VULKAN-CAPS-008: Add capability unit testing framework
 // VULKAN-CAPS-009: Implement capability documentation system
 // VULKAN-CAPS-010: Add capability optimization suggestions
-#include "../../include/config/config.h"
-#include "include/core/logger.h"
-#include "include/rendering/vulkan.h"
+#include "config/config.h"
+#include "core/logger.h"
+#include "rendering/vulkan.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

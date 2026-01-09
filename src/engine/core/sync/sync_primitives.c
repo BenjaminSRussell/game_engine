@@ -1,10 +1,22 @@
 #include "core/sync/sync_primitives.h"
 #include "core/memory.h"
 #include "core/logging.h"
+#include <stdint.h>
+#include <stdbool.h>
 #include <stdatomic.h>
 #include <pthread.h>
 #include <time.h>
 #include <errno.h>
+
+// Platform-specific CPU pause for spin-wait loops
+#if defined(__ARM_ARCH) || defined(__aarch64__) || defined(_M_ARM64)
+    #define CPU_PAUSE() __asm__ __volatile__("yield")
+#elif defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
+    #include <emmintrin.h>
+    #define CPU_PAUSE() _mm_pause()
+#else
+    #define CPU_PAUSE() ((void)0)
+#endif
 
 /**
  * =================================================================================================
@@ -305,12 +317,12 @@ void spinlock_acquire(SpinLock* lock) {
         // Exponential backoff
         if (++spin >= lock->spin_count) {
             for (uint32_t i = 0; i < backoff; i++) {
-                _mm_pause();
+                CPU_PAUSE();
             }
             backoff = backoff < 1000 ? backoff * 2 : 1000;
             spin = 0;
         } else {
-            _mm_pause();
+            CPU_PAUSE();
         }
     }
 }

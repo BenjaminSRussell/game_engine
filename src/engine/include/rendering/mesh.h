@@ -58,6 +58,8 @@ typedef struct Mesh {
 #endif
 } Mesh;
 
+
+
 // Mesh lifecycle
 bool mesh_create(Mesh *mesh, Vertex *vertices, u32 vertex_count, u32 *indices,
                  u32 index_count);

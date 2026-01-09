@@ -301,3 +301,46 @@ bool json_bool_value(JsonValue *value) {
     return value->boolean;
   return false;
 }
+
+// Builder Implementation
+
+JsonValue *json_create_object(void) {
+  return json_create_value(JSON_OBJECT);
+}
+
+JsonValue *json_create_array(void) {
+  return json_create_value(JSON_ARRAY);
+}
+
+void json_object_set_string(JsonValue *object, const char *key, const char *value) {
+  if (!object || object->type != JSON_OBJECT || !key || !value) return;
+  JsonValue *val = json_create_value(JSON_STRING);
+  val->string = strdup(value);
+  json_object_set_value(object, key, val);
+}
+
+void json_object_set_number(JsonValue *object, const char *key, double value) {
+  if (!object || object->type != JSON_OBJECT || !key) return;
+  JsonValue *val = json_create_value(JSON_NUMBER);
+  val->number = value;
+  json_object_set_value(object, key, val);
+}
+
+void json_object_set_value(JsonValue *object, const char *key, JsonValue *value) {
+  if (!object || object->type != JSON_OBJECT || !key || !value) return;
+
+  object->object.count++;
+  object->object.keys = (char **)realloc(object->object.keys, sizeof(char *) * object->object.count);
+  object->object.values = (JsonValue **)realloc(object->object.values, sizeof(JsonValue *) * object->object.count);
+  
+  object->object.keys[object->object.count - 1] = strdup(key);
+  object->object.values[object->object.count - 1] = value;
+}
+
+void json_array_push(JsonValue *array, JsonValue *value) {
+  if (!array || array->type != JSON_ARRAY || !value) return;
+
+  array->array.count++;
+  array->array.values = (JsonValue **)realloc(array->array.values, sizeof(JsonValue *) * array->array.count);
+  array->array.values[array->array.count - 1] = value;
+}

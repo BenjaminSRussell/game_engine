@@ -52,7 +52,7 @@
 // - It relies on `malloc`, `realloc`, `free`, and `memcpy` for memory management and data movement.
 //
 // Dynamic array container implementation.
-#include <containers/dynamic_array.h>
+#include <core/containers/dynamic_array.h>
 #include <core/logger.h>
 #include <core/memory.h>
 #include <string.h>

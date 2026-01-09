@@ -1,4 +1,4 @@
-#include "integration/ai_tools/project_context_exporter.h"
+#include "core/integration/ai_tools/project_context_exporter.h"
 
 void project_context_init() {}
 

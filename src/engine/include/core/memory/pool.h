@@ -74,18 +74,8 @@ void arena_init(Arena *arena, void *memory, u32 size, u32 alignment);
 void *arena_alloc(Arena *arena, u32 size);
 void arena_reset(Arena *arena); // Reset to beginning (doesn't free memory)
 
-// Stack allocator - for frame-based allocations
-typedef struct {
-    void *memory;
-    u32 size;
-    u32 offset;
-    u32 alignment;
-} StackAllocator;
-
-void stack_allocator_init(StackAllocator *alloc, void *memory, u32 size, u32 alignment);
-void *stack_alloc(StackAllocator *alloc, u32 size);
-void stack_free(StackAllocator *alloc, void *ptr);
-void stack_reset(StackAllocator *alloc); // Reset to beginning
+// Note: StackAllocator forward declared in memory.h - see allocator_stack.h for full definition
+// Removed duplicate typedef to avoid conflicts
 
 #endif // MEMORY_POOL_H
 

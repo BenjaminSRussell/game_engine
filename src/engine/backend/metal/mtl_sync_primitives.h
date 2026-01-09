@@ -9,7 +9,7 @@
 #ifndef PLATFORM_MTL_SYNC_PRIMITIVES_H
 #define PLATFORM_MTL_SYNC_PRIMITIVES_H
 
-#include "backend/metal/mtl_device.h"
+#include "mtl_device.h"
 #include "backend/metal/mtl_encoder.h"
 #include <stdint.h>
 

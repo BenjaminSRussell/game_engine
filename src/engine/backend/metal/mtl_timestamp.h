@@ -23,7 +23,7 @@ extern "C" {
 #endif
 
 // Forward declarations
-typedef struct metal_command_buffer metal_command_buffer_t;
+typedef void* mtl_command_buffer_t;
 
 // ============================================================================
 // GPU Timestamp Query System
@@ -76,7 +76,7 @@ metal_timestamp_pool_t* metal_timestamp_pool_create(id device, const metal_times
  * @return Query ID, or UINT32_MAX on failure
  */
 uint32_t metal_timestamp_begin(metal_timestamp_pool_t* pool, 
-                                metal_command_buffer_t* cmd_buffer,
+                                mtl_command_buffer_t* cmd_buffer,
                                 const char* label);
 
 /**
@@ -88,7 +88,7 @@ uint32_t metal_timestamp_begin(metal_timestamp_pool_t* pool,
  * @param query_id Query ID from metal_timestamp_begin
  */
 void metal_timestamp_end(metal_timestamp_pool_t* pool,
-                        metal_command_buffer_t* cmd_buffer,
+                               mtl_command_buffer_t* cmd_buffer,
                         uint32_t query_id);
 
 /**
@@ -161,7 +161,7 @@ typedef struct metal_scoped_timestamp {
  * @return Scoped timestamp object
  */
 metal_scoped_timestamp_t metal_timestamp_scope_begin(metal_timestamp_pool_t* pool,
-                                                     metal_command_buffer_t* cmd_buffer,
+                                                     mtl_command_buffer_t* cmd_buffer,
                                                      const char* label);
 
 /**
@@ -172,7 +172,7 @@ metal_scoped_timestamp_t metal_timestamp_scope_begin(metal_timestamp_pool_t* poo
  * @param result Output result
  */
 void metal_timestamp_scope_end(metal_scoped_timestamp_t* scope,
-                               metal_command_buffer_t* cmd_buffer,
+                                      mtl_command_buffer_t* cmd_buffer,
                                metal_timestamp_result_t* result);
 
 // ============================================================================

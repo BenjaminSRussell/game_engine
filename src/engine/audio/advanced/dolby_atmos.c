@@ -804,12 +804,13 @@ bool Atmos_SimulateRoomForHeadphones(AtmosRenderer* renderer) {
     
     // Apply room simulation to all active objects
     for (uint32_t i = 0; i < ATMOS_MAX_OBJECTS; i++) {
+        Vec3 pos;
         if (!renderer->objects[i].active) {
             continue;
         }
         
         // Calculate distance-based early reflections
-        Vec3 pos = renderer->objects[i].position;
+        pos = renderer->objects[i].position;
         float distance_to_walls[6] = {
             pos.x + room_width/2,   // Left wall
             room_width/2 - pos.x,   // Right wall
@@ -845,24 +846,31 @@ bool Atmos_EnhanceExternalization(AtmosRenderer* renderer) {
     // This addresses the "in-head localization" problem with headphones
     
     for (uint32_t i = 0; i < ATMOS_MAX_OBJECTS; i++) {
+        AtmosAudioObject* object;
+        Vec3 pos;
+        float distance;
+        float pinna_gain;
+        float shoulder_reflection;
+        float head_shadow;
+        
         if (!renderer->objects[i].active) {
             continue;
         }
         
-        AtmosAudioObject* object = &renderer->objects[i];
-        Vec3 pos = object->position;
-        float distance = sqrtf(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+        object = &renderer->objects[i];
+        pos = object->position;
+        distance = sqrtf(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
         
         // Apply externalization techniques:
         
         // 1. Pinna cues (outer ear effects)
-        float pinna_gain = 1.0f + 0.2f * sinf(distance * 0.5f);
+        pinna_gain = 1.0f + 0.2f * sinf(distance * 0.5f);
         
         // 2. Shoulder reflection cues
-        float shoulder_reflection = 0.1f * expf(-distance / 2.0f);
+        shoulder_reflection = 0.1f * expf(-distance / 2.0f);
         
         // 3. Head shadowing
-        float head_shadow = 1.0f;
+        head_shadow = 1.0f;
         if (fabsf(pos.x) < 0.1f) { // Object directly in front/behind
             head_shadow = 0.9f;
         }
@@ -904,14 +912,26 @@ bool Atmos_RenderBinauralFrame(AtmosRenderer* renderer, float* left_buffer, floa
     
     // Render each audio object with binaural processing
     for (uint32_t i = 0; i < ATMOS_MAX_OBJECTS; i++) {
+        AtmosAudioObject* object;
+        Vec3 relative_pos;
+        float distance;
+        float azimuth;
+        float elevation;
+        float hrtf_coeffs[2];
+        float gain;
+        float* audio_data;
+        size_t samples_to_process;
+        size_t j;
+        float sample;
+        
         if (!renderer->objects[i].active || !renderer->objects[i].audio_data) {
             continue;
         }
         
-        AtmosAudioObject* object = &renderer->objects[i];
+        object = &renderer->objects[i];
         
         // Calculate object position relative to listener
-        Vec3 relative_pos = object->position;
+        relative_pos = object->position;
         
         // Apply head orientation if tracking is enabled
         if (g_head_tracking_enabled) {
@@ -925,34 +945,33 @@ bool Atmos_RenderBinauralFrame(AtmosRenderer* renderer, float* left_buffer, floa
         }
         
         // Calculate azimuth and elevation
-        float distance = sqrtf(relative_pos.x * relative_pos.x + 
+        distance = sqrtf(relative_pos.x * relative_pos.x + 
                               relative_pos.y * relative_pos.y + 
                               relative_pos.z * relative_pos.z);
         
         if (distance < 0.001f) continue;
         
-        float azimuth = atan2f(relative_pos.x, relative_pos.z) * 180.0f / M_PI;
-        float elevation = asinf(relative_pos.y / distance) * 180.0f / M_PI;
+        azimuth = atan2f(relative_pos.x, relative_pos.z) * 180.0f / M_PI;
+        elevation = asinf(relative_pos.y / distance) * 180.0f / M_PI;
         
         // Get HRTF coefficients for this position
-        float hrtf_coeffs[2];
         if (!Atmos_InterpolateHRTF(azimuth, elevation, hrtf_coeffs)) {
             continue;
         }
         
         // Apply distance attenuation
-        float gain = object->gain * renderer->master_gain;
+        gain = object->gain * renderer->master_gain;
         if (distance > 1.0f) {
             gain *= 1.0f / distance;
         }
         
         // Mix audio with binaural processing
-        float* audio_data = (float*)object->audio_data;
-        size_t samples_to_process = buffer_size < object->data_size / sizeof(float) ? 
+        audio_data = (float*)object->audio_data;
+        samples_to_process = buffer_size < object->data_size / sizeof(float) ? 
                                    buffer_size : object->data_size / sizeof(float);
         
-        for (size_t j = 0; j < samples_to_process; j++) {
-            float sample = audio_data[j] * gain;
+        for (j = 0; j < samples_to_process; j++) {
+            sample = audio_data[j] * gain;
             left_buffer[j] += sample * hrtf_coeffs[0];
             right_buffer[j] += sample * hrtf_coeffs[1];
         }

@@ -13,16 +13,7 @@
 #define MIN_CASCADE_RESOLUTION 256
 #define MAX_CASCADE_RESOLUTION 8192
 
-static uint32_t next_power_of_two(uint32_t v) {
-    v--;
-    v |= v >> 1;
-    v |= v >> 2;
-    v |= v >> 4;
-    v |= v >> 8;
-    v |= v >> 16;
-    v++;
-    return v;
-}
+
 
 uint32_t cascade_calculate_resolution(float frustum_diagonal_size, float texel_density_target) {
     if (texel_density_target <= 0.0f) return 1024; // Default fallback

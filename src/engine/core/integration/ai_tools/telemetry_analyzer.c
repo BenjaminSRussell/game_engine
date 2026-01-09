@@ -1,4 +1,4 @@
-#include "integration/ai_tools/telemetry_analyzer.h"
+#include "core/integration/ai_tools/telemetry_analyzer.h"
 
 void telemetry_analyzer_init() {}
 

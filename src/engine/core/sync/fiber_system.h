@@ -14,6 +14,7 @@
  */
 
 typedef struct FiberScheduler FiberScheduler;
+typedef FiberFn FiberFunction;
 
 /* ===== FIBER SCHEDULER API ===== */
 
@@ -57,4 +58,3 @@ bool fiber_system_is_idle(void);
  */
 u32 fiber_system_get_active_count(void);
 
-#endif /* FIBER_SYSTEM_H */

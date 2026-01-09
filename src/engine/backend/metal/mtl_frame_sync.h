@@ -26,7 +26,7 @@ extern "C" {
 
 // Forward declarations
 typedef struct metal_device metal_device_t;
-typedef struct metal_command_buffer metal_command_buffer_t;
+typedef void* metal_command_buffer_t;
 
 // ============================================================================
 // Advanced Frame Pacing Manager
@@ -57,6 +57,7 @@ typedef struct metal_frame_timing_stats {
     uint64_t total_frames;                 // Total frames rendered
     uint64_t dropped_frames;               // Frames exceeding budget
     uint32_t current_fps;                  // Current FPS estimate
+    double target_frame_time_ms;           // Target frame time
 } metal_frame_timing_stats_t;
 
 /**
@@ -250,7 +251,7 @@ double metal_frame_pacer_get_drop_rate(metal_frame_pacer_t* pacer);
  * @param timestamp Display timestamp
  * @param user_data User-provided data
  */
-typedef void (*metal_vsync_callback_t)(double timestamp, void* user_data);
+typedef void (*metal_vsync_callback_t)(double timestamp, double frame_duration, void* user_data);
 
 /**
  * Enable VSync integration.

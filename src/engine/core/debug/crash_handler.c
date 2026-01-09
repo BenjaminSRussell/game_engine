@@ -1,4 +1,4 @@
-#include "core/debug/crash_handler.h"
+#include <core/debug/crash_handler.h>
 #include "core/core.h"
 #include <stdlib.h>
 #include <string.h>
@@ -14,6 +14,13 @@
 #include <execinfo.h>
 #include <unistd.h>
 #include <sys/mman.h>
+#ifdef __APPLE__
+#include <pthread.h>
+#endif
+#ifdef __linux__
+#include <sys/syscall.h>
+#endif
+#include <pthread.h>
 #endif
 
 // ✅ COMPLETED: Crash Handler Implementation - AGENT_CORE_1
@@ -148,7 +155,7 @@ static LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* exception_info)
     return EXCEPTION_EXECUTE_HANDLER;
 }
 #else
-static void unix_signal_handler(int signal, siginfo_t* info, void* context) {
+static void unix_signal_handler(int sig_num, siginfo_t* info, void* context) {
     char crash_info[MAX_CRASH_INFO_SIZE];
     
     snprintf(crash_info, sizeof(crash_info),
@@ -157,14 +164,14 @@ static void unix_signal_handler(int signal, siginfo_t* info, void* context) {
             "Version: %s\n"
             "Signal: %d (%s)\n"
             "Process ID: %d\n"
-            "Thread ID: %d\n"
+            "Thread ID: %p\n"
             "Fault Address: %p\n",
             g_crash_handler.application_name,
             g_crash_handler.version,
-            signal,
-            strsignal(signal),
+            sig_num,
+            strsignal(sig_num),
             getpid(),
-            gettid(),
+            (void*)pthread_self(),
             info ? (void*)info->si_addr : NULL);
     
     // Capture stack trace using backtrace
@@ -205,8 +212,8 @@ static void unix_signal_handler(int signal, siginfo_t* info, void* context) {
     }
     
     // Re-raise signal to default handler
-    signal(signal, SIG_DFL);
-    raise(signal);
+    signal(sig_num, SIG_DFL);
+    raise(sig_num);
 }
 #endif
 

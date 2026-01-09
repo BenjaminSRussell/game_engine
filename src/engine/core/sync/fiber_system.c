@@ -1,3 +1,6 @@
+#define _XOPEN_SOURCE 600
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 #include "core/sync/fiber_system.h"
 #include "core/memory.h"
 #include "core/logging.h"
@@ -6,6 +9,18 @@
 #include <ucontext.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdbool.h>
+
+// Forward declarations
+typedef struct Fiber Fiber; 
+typedef struct FiberScheduler FiberScheduler;
+
+void fiber_yield(void);
+void fiber_scheduler_init(void);
+void fiber_scheduler_ready(Fiber *fiber);
+Fiber* fiber_scheduler_next_ready(void);
+static void fiber_entry_point(void);
+void fiber_switch(Fiber *from, Fiber *to);
 
 /**
  * =================================================================================================
@@ -46,12 +61,12 @@ typedef struct FiberScheduler {
   Fiber *current_fiber;           // Currently executing fiber
   Fiber *main_fiber;              // Main thread fiber
   pthread_mutex_t queue_mutex;     // Queue protection
-  _Atomic(uint32_t) next_fiber_id); // Next fiber ID
-  _Atomic(uint32_t) fiber_count);   // Active fiber count
+  _Atomic(uint32_t) next_fiber_id; // Next fiber ID
+  _Atomic(uint32_t) fiber_count;   // Active fiber count
   // Statistics
   _Atomic(uint64_t) context_switches; // Total context switches
-  _Atomic(uint64_t) yield_count);     // Total yields
-  _Atomic(uint64_t) total_stack_size); // Total stack memory used
+  _Atomic(uint64_t) yield_count;     // Total yields
+  _Atomic(uint64_t) total_stack_size; // Total stack memory used
 } FiberScheduler;
 
 // ✅ COMPLETED: Waiting primitives

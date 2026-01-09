@@ -1,16 +1,9 @@
-#include "core/containers/small_vector.h"
+#include <core/containers/small_vector.h>
 #include <stdlib.h>
 #include <string.h>
 
 // Small vector with small buffer optimization
-#define SMALL_VEC_SIZE 8
 
-typedef struct SmallVector {
-    void **data;
-    size_t size;
-    size_t capacity;
-    void *small_buffer[SMALL_VEC_SIZE];
-} SmallVector;
 
 SmallVector* small_vector_create() {
     SmallVector *vec = (SmallVector*)malloc(sizeof(SmallVector));

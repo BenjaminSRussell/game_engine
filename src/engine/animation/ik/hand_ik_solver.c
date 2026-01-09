@@ -3,7 +3,37 @@
 #include "math/vec3.h"
 #include "math/quat.h"
 #include "math/mat4.h"
+#include "core/utils.h"
 #include <math.h>
+#include <stdlib.h>
+
+// Helper: create quaternion that rotates 'from' vector to 'to' vector
+static Quat quat_from_to_vectors(Vec3 from, Vec3 to) {
+    Vec3 cross = vec3_cross(from, to);
+    f32 dot = vec3_dot(from, to);
+    
+    if (dot < -0.999999f) {
+        // Vectors are opposite, find orthogonal vector
+        Vec3 ortho = vec3_cross((Vec3){1, 0, 0}, from);
+        if (vec3_length_sq(ortho) < 0.01f) {
+            ortho = vec3_cross((Vec3){0, 1, 0}, from);
+        }
+        ortho = vec3_normalize(ortho);
+        return quat_from_axis_angle(ortho, PI);
+    }
+    
+    Quat q;
+    q.x = cross.x;
+    q.y = cross.y;
+    q.z = cross.z;
+    q.w = 1.0f + dot;
+    return quat_normalize(q);
+}
+
+// Helper: get position from Mat4 (translation component)
+static Vec3 mat4_get_translation(Mat4 m) {
+    return vec3(m.data[12], m.data[13], m.data[14]);
+}
 
 // ✅ COMPLETED: Define Hand IK Struct [Difficulty: 1] [Atomic Steps: 4]
 // 1. 'int shoulder', 'int elbow', 'int wrist'.
@@ -45,17 +75,8 @@ static void hand_ik_solve_two_bone(HandIK* ik, Skeleton* skeleton, Vec3 target_p
     }
     
     // Get bone positions
-    Vec3 shoulder_pos = vec3(
-        skeleton->global_transforms[ik->shoulder_bone_index].m[3][0],
-        skeleton->global_transforms[ik->shoulder_bone_index].m[3][1],
-        skeleton->global_transforms[ik->shoulder_bone_index].m[3][2]
-    );
-    
-    Vec3 elbow_pos = vec3(
-        skeleton->global_transforms[ik->elbow_bone_index].m[3][0],
-        skeleton->global_transforms[ik->elbow_bone_index].m[3][1],
-        skeleton->global_transforms[ik->elbow_bone_index].m[3][2]
-    );
+    Vec3 shoulder_pos = mat4_get_translation(skeleton->global_transforms[ik->shoulder_bone_index]);
+    Vec3 elbow_pos = mat4_get_translation(skeleton->global_transforms[ik->elbow_bone_index]);
     
     // Calculate bone lengths
     f32 upper_arm_length = vec3_length(vec3_sub(elbow_pos, shoulder_pos));
@@ -67,9 +88,9 @@ static void hand_ik_solve_two_bone(HandIK* ik, Skeleton* skeleton, Vec3 target_p
     
     // Apply spherical constraints
     if (ik->enable_spherical_constraints) {
-        target_distance = clampf(target_distance, ik->min_reach_distance, ik->max_reach_distance);
+        target_distance = clamp(target_distance, ik->min_reach_distance, ik->max_reach_distance);
         Vec3 direction = vec3_normalize(shoulder_to_target);
-        target_pos = vec3_add(shoulder_pos, vec3_scale(direction, target_distance));
+        target_pos = vec3_add(shoulder_pos, vec3_mul(direction, target_distance));
     }
     
     // Check if target is reachable
@@ -77,14 +98,14 @@ static void hand_ik_solve_two_bone(HandIK* ik, Skeleton* skeleton, Vec3 target_p
     if (target_distance > max_reach) {
         // Target too far, stretch towards it
         Vec3 direction = vec3_normalize(shoulder_to_target);
-        target_pos = vec3_add(shoulder_pos, vec3_scale(direction, max_reach * 0.99f));
+        target_pos = vec3_add(shoulder_pos, vec3_mul(direction, max_reach * 0.99f));
         target_distance = max_reach * 0.99f;
     }
     
     // Calculate elbow angle using law of cosines
     f32 cos_elbow_angle = (upper_arm_length * upper_arm_length + forearm_length * forearm_length - target_distance * target_distance) / 
                          (2.0f * upper_arm_length * forearm_length);
-    cos_elbow_angle = clampf(cos_elbow_angle, -1.0f, 1.0f);
+    cos_elbow_angle = clamp(cos_elbow_angle, -1.0f, 1.0f);
     f32 elbow_angle = acosf(cos_elbow_angle);
     
     // Calculate elbow position using pole vector for natural bend
@@ -95,19 +116,19 @@ static void hand_ik_solve_two_bone(HandIK* ik, Skeleton* skeleton, Vec3 target_p
     
     // Minimize energy - keep elbow as low as possible
     if (bend_direction.y < 0) {
-        bend_direction = vec3_scale(bend_direction, -1.0f);
+        bend_direction = vec3_mul(bend_direction, -1.0f);
     }
     
     // Calculate elbow position
     f32 elbow_distance_from_shoulder = upper_arm_length;
-    Vec3 elbow_offset = vec3_scale(bend_direction, sinf(elbow_angle) * elbow_distance_from_shoulder);
-    Vec3 forward_offset = vec3_scale(shoulder_to_target_norm, cosf(elbow_angle) * elbow_distance_from_shoulder);
+    Vec3 elbow_offset = vec3_mul(bend_direction, sinf(elbow_angle) * elbow_distance_from_shoulder);
+    Vec3 forward_offset = vec3_mul(shoulder_to_target_norm, cosf(elbow_angle) * elbow_distance_from_shoulder);
     Vec3 new_elbow_pos = vec3_add(shoulder_pos, vec3_add(forward_offset, elbow_offset));
     
     // Apply rotations to bones
     // Shoulder rotation
     Vec3 shoulder_to_elbow = vec3_normalize(vec3_sub(new_elbow_pos, shoulder_pos));
-    Quat shoulder_rotation = quat_from_vectors(vec3_down(), shoulder_to_elbow);
+    Quat shoulder_rotation = quat_from_to_vectors(vec3_down(), shoulder_to_elbow);
     Mat4 shoulder_matrix = quat_to_mat4(shoulder_rotation);
     skeleton->global_transforms[ik->shoulder_bone_index] = 
         mat4_mul(skeleton->global_transforms[ik->shoulder_bone_index], shoulder_matrix);
@@ -115,7 +136,7 @@ static void hand_ik_solve_two_bone(HandIK* ik, Skeleton* skeleton, Vec3 target_p
     // Elbow rotation
     Vec3 elbow_to_wrist = vec3_normalize(vec3_sub(target_pos, new_elbow_pos));
     Vec3 elbow_to_shoulder = vec3_normalize(vec3_sub(shoulder_pos, new_elbow_pos));
-    Quat elbow_rotation = quat_from_vectors(elbow_to_shoulder, elbow_to_wrist);
+    Quat elbow_rotation = quat_from_to_vectors(elbow_to_shoulder, elbow_to_wrist);
     Mat4 elbow_matrix = quat_to_mat4(elbow_rotation);
     skeleton->global_transforms[ik->elbow_bone_index] = 
         mat4_mul(skeleton->global_transforms[ik->elbow_bone_index], elbow_matrix);
@@ -176,7 +197,7 @@ static void hand_ik_update_finger_posing(HandIK* ik, Skeleton* skeleton) {
     } else {
         // Procedural curl based on object size (simplified)
         f32 object_size = vec3_length(ik->target_position); // Simplified object size estimation
-        f32 curl_factor = clampf(object_size * 0.5f, 0.0f, 1.0f);
+        f32 curl_factor = clamp(object_size * 0.5f, 0.0f, 1.0f);
         finger_rotation = quat_from_axis_angle(vec3_right(), curl_factor * ik->finger_curl_amount);
     }
     
@@ -212,7 +233,7 @@ static void hand_ik_update_two_handed_grip(HandIK* ik, Skeleton* skeleton, HandI
         
         // Update slave hand target to foregrip position
         if (other_hand && other_hand->wrist_bone_index >= 0) {
-            Vec3 foregrip_pos = vec3_sub(weapon_pos, vec3_scale(weapon_forward, ik->grip_distance));
+            Vec3 foregrip_pos = vec3_sub(weapon_pos, vec3_mul(weapon_forward, ik->grip_distance));
             other_hand->target_position = foregrip_pos;
             other_hand->target_rotation = ik->target_rotation; // Align with weapon
         }
@@ -270,7 +291,7 @@ void hand_ik_set_target(HandIK* ik, Vec3 position, Quat rotation) {
 
 void hand_ik_set_blend_weight(HandIK* ik, f32 weight) {
     if (ik) {
-        ik->blend_weight = clampf(weight, 0.0f, 1.0f);
+        ik->blend_weight = clamp(weight, 0.0f, 1.0f);
     }
 }
 

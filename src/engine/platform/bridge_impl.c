@@ -16,10 +16,20 @@
     #include <mach-o/dyld.h>
     #include <unistd.h>
     #include <sys/stat.h>
+    #include <sys/types.h>
+    #include <sys/sysctl.h>
+    #include <pthread.h>
+    #include <dlfcn.h>
+    #include <errno.h>
 #elif defined(__linux__)
     #define PLATFORM_LINUX
     #include <unistd.h>
     #include <linux/limits.h>
+    #include <pthread.h>
+    #include <dlfcn.h>
+    #include <errno.h>
+    #include <sys/stat.h>
+    #include <time.h>
 #endif
 
 // ============================================================================

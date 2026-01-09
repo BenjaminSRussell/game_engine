@@ -150,7 +150,7 @@
 
 // ✅ COMPLETED: BEHAVIOR_TREES - Advanced AI decision making
 // - Visual behavior tree editor
-- Parallel node execution and synchronization
+// - Parallel node execution and synchronization
 // - Dynamic tree modification at runtime
 // - Behavior tree templates and reuse
 // - Performance optimization with node caching

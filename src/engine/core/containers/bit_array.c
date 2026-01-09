@@ -1,11 +1,11 @@
-#include "core/containers/bit_array.h"
+#include <core/containers/bit_array.h>
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct BitArray {
+struct BitArray {
     unsigned char *bits;
     size_t bit_count;
-} BitArray;
+};
 
 BitArray* bit_array_create(size_t bit_count) {
     BitArray *arr = (BitArray*)malloc(sizeof(BitArray));

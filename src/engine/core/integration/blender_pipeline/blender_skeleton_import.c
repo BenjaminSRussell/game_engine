@@ -1,4 +1,4 @@
-#include "integration/blender_pipeline/blender_skeleton_import.h"
+#include "core/integration/blender_pipeline/blender_skeleton_import.h"
 
 void blender_skeleton_import_init() {}
 

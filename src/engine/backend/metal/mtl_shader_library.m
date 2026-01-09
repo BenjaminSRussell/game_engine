@@ -86,25 +86,26 @@ metal_library_manager_load_file(metal_shader_library_manager_t *manager,
   for (uint32_t i = 0; i < manager->library_count; i++) {
     metal_library_entry_t *entry = &manager->libraries[i];
     if (entry->in_use && strcmp(entry->path, path) == 0) {
-      NSLog(@\"Library already loaded: %s\", path);
+      NSLog(@"Library already loaded: %s", path);
       return entry->library;
     }
   }
 
   // Load from file
   NSString *nsPath = [NSString stringWithUTF8String:path];
+  NSURL *url = [NSURL fileURLWithPath:nsPath];
   NSError *error = nil;
-  id<MTLLibrary> library = [device newLibraryWithFile:nsPath error:&error];
+  id<MTLLibrary> library = [device newLibraryWithURL:url error:&error];
 
   if (error || !library) {
-    NSLog(@\"Failed to load shader library from %@: %@\", nsPath, error);
+    NSLog(@"Failed to load shader library from %@: %@", nsPath, error);
     return NULL;
   }
 
   // Add to cache
   if (manager->library_count >= METAL_MAX_CACHED_LIBRARIES) {
-    NSLog(@\"Library cache full, cannot load more libraries\");
-    return (__bridge_retained MTLLibraryRef)library;  // Return but don't cache
+    NSLog(@"Library cache full, cannot load more libraries");
+    return (__bridge_retained MTLLibraryRef)library; // Return but don't cache
   }
 
   metal_library_entry_t *entry = &manager->libraries[manager->library_count++];
@@ -118,7 +119,8 @@ metal_library_manager_load_file(metal_shader_library_manager_t *manager,
   manager->total_memory_bytes +=
       100 * 1024 + (entry->function_count * 10 * 1024);
 
-  NSLog(@\"Loaded shader library: %s (%u functions)\", path, entry->function_count);
+  NSLog(@"Loaded shader library: %s (%u functions)", path,
+        entry->function_count);
 
   return entry->library;
 }
@@ -142,26 +144,28 @@ metal_library_manager_load_data(metal_shader_library_manager_t *manager,
                                                 error:&error];
 
   if (error || !library) {
-    NSLog(@\"Failed to load shader library from data: %@\", error);
+    NSLog(@"Failed to load shader library from data: %@", error);
     return NULL;
   }
 
   // Add to cache if space available
   if (manager->library_count >= METAL_MAX_CACHED_LIBRARIES) {
-    NSLog(@\"Library cache full, returning uncached library\");
+    NSLog(@"Library cache full, returning uncached library");
     return (__bridge_retained MTLLibraryRef)library;
   }
 
   metal_library_entry_t *entry = &manager->libraries[manager->library_count++];
   entry->library = (__bridge_retained MTLLibraryRef)library;
-  strncpy(entry->path, debug_name ? debug_name : \"<embedded>\", sizeof(entry->path) - 1);
-  entry->file_mod_time = 0;  // No file backing
+  strncpy(entry->path, debug_name ? debug_name : "<embedded>",
+          sizeof(entry->path) - 1);
+  entry->file_mod_time = 0; // No file backing
   entry->function_count = (uint32_t)[[library functionNames] count];
   entry->in_use = true;
 
   manager->total_memory_bytes += size;
 
-  NSLog(@\"Loaded shader library from data: %s (%u functions)\", entry->path, entry->function_count);
+  NSLog(@"Loaded shader library from data: %s (%u functions)", entry->path,
+        entry->function_count);
 
   return entry->library;
 }
@@ -187,7 +191,7 @@ metal_library_manager_get_function(metal_shader_library_manager_t *manager,
     }
   }
 
-  NSLog(@\"Function '%s' not found in any loaded library\", name);
+  NSLog(@"Function '%s' not found in any loaded library", name);
   return NULL;
 }
 
@@ -351,7 +355,7 @@ MTLFunctionRef metal_function_create_specialized(MTLLibraryRef library_ref,
   // In a real implementation, you would need to know the constant indices and
   // types For now, we just log that specialization was requested
   if (constant_values && constant_values_size > 0) {
-    NSLog(@\"Specialization constants requested but not fully implemented\");
+    NSLog(@"Specialization constants requested but not fully implemented");
   }
 
   NSError *error = nil;
@@ -360,7 +364,7 @@ MTLFunctionRef metal_function_create_specialized(MTLLibraryRef library_ref,
                                                     error:&error];
 
   if (error || !function) {
-    NSLog(@\"Failed to create specialized function '%s': %@\", name, error);
+    NSLog(@"Failed to create specialized function '%s': %@", name, error);
     return NULL;
   }
 
@@ -389,7 +393,7 @@ bool metal_library_manager_check_for_changes(
     uint64_t current_mod_time = get_file_mod_time(entry->path);
     if (current_mod_time > entry->file_mod_time) {
       has_changes = true;
-      NSLog(@\"Library file modified: %s\", entry->path);
+      NSLog(@"Library file modified: %s", entry->path);
     }
   }
 
@@ -415,12 +419,12 @@ metal_library_manager_reload_changed(metal_shader_library_manager_t *manager) {
     if (current_mod_time > entry->file_mod_time) {
       // Reload library
       NSString *nsPath = [NSString stringWithUTF8String:entry->path];
+      NSURL *url = [NSURL fileURLWithPath:nsPath];
       NSError *error = nil;
-      id<MTLLibrary> new_library = [device newLibraryWithFile:nsPath
-                                                        error:&error];
+      id<MTLLibrary> new_library = [device newLibraryWithURL:url error:&error];
 
       if (error || !new_library) {
-        NSLog(@\"Failed to reload library %s: %@\", entry->path, error);
+        NSLog(@"Failed to reload library %s: %@", entry->path, error);
         continue;
       }
 
@@ -434,7 +438,8 @@ metal_library_manager_reload_changed(metal_shader_library_manager_t *manager) {
       entry->file_mod_time = current_mod_time;
       entry->function_count = (uint32_t)[[new_library functionNames] count];
 
-      NSLog(@\"Reloaded library: %s (%u functions)\", entry->path, entry->function_count);
+      NSLog(@"Reloaded library: %s (%u functions)", entry->path,
+            entry->function_count);
       reloaded_count++;
     }
   }
@@ -478,18 +483,18 @@ void metal_library_manager_print_stats(
 
   metal_library_stats_t stats = metal_library_manager_get_stats(manager);
 
-  NSLog(@\"=== Shader Library Manager Statistics ===\");
-  NSLog(@\"Total Libraries: %u\", stats.total_libraries);
-  NSLog(@\"Total Functions: %u\", stats.total_functions);
-  NSLog(@\"Total Memory: %.2f MB\", stats.total_memory_bytes / (1024.0 * 1024.0));
-  NSLog(@\"Hot Reloads: %u\", stats.hot_reloads);
+  NSLog(@"=== Shader Library Manager Statistics ===");
+  NSLog(@"Total Libraries: %u", stats.total_libraries);
+  NSLog(@"Total Functions: %u", stats.total_functions);
+  NSLog(@"Total Memory: %.2f MB", stats.total_memory_bytes / (1024.0 * 1024.0));
+  NSLog(@"Hot Reloads: %u", stats.hot_reloads);
 
   // List all loaded libraries
-  NSLog(@\"\\nLoaded Libraries:\");
+  NSLog(@"\nLoaded Libraries:");
   for (uint32_t i = 0; i < manager->library_count; i++) {
     const metal_library_entry_t *entry = &manager->libraries[i];
     if (entry->in_use) {
-      NSLog(@\"  [%u] %s (%u functions)\", i, entry->path, entry->function_count);
+      NSLog(@"  [%u] %s (%u functions)", i, entry->path, entry->function_count);
     }
   }
 }

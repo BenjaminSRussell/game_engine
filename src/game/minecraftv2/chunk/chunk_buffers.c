@@ -1,6 +1,6 @@
 // src/chunk/chunk_buffers.c
 #include <chunk/chunk_buffers.h>
-#include <renderer/vulkan.h>
+#include <rendering/vulkan.h>
 #include <stdlib.h>
 #include <string.h>
 

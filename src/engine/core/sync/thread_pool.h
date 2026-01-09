@@ -62,4 +62,3 @@ u32 thread_pool_get_pending_count(ThreadPool *pool);
  */
 bool thread_pool_is_idle(ThreadPool *pool);
 
-#endif /* THREAD_POOL_H */

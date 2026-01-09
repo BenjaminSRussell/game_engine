@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <float.h>
 
 // ✅ COMPLETED: Profiler Hooks Implementation - AGENT_CORE_1
 // Macro hooks for measuring scope duration
@@ -19,18 +20,7 @@ __declspec(thread) static int g_thread_id = -1;
 __thread static int g_thread_id = -1;
 #endif
 
-typedef struct {
-    char name[SCOPE_NAME_LENGTH];
-    f64 start_time;
-    f64 end_time;
-    f64 duration;
-    u32 color;
-    bool active;
-    u64 call_count;
-    f64 total_time;
-    f64 min_time;
-    f64 max_time;
-} ProfileScope;
+// ProfileScope is defined in profiler_hooks.h
 
 typedef struct {
     ProfileScope scopes[MAX_SCOPES_PER_THREAD];
@@ -49,7 +39,7 @@ static f64 g_overhead_calibration = 0.0;
 static u64 g_global_frame_counter = 0;
 
 // ✅ COMPLETED: High-resolution time
-static f64 get_time(void) {
+static f64 internal_get_time(void) {
 #ifdef _WIN32
     LARGE_INTEGER freq, count;
     QueryPerformanceFrequency(&freq);
@@ -111,7 +101,7 @@ int profiler_register_thread(const char* thread_name) {
     memset(data, 0, sizeof(ThreadProfileData));
     strncpy(data->thread_name, thread_name, sizeof(data->thread_name) - 1);
     data->thread_color = hash_color(thread_name);
-    data->frame_start_time = get_time();
+    data->frame_start_time = internal_get_time();
     
     g_thread_id = (int)index;
     return g_thread_id;
@@ -123,14 +113,14 @@ static void calibrate_overhead(void) {
     
     // Measure overhead of scope operations
     for (int i = 0; i < CALIBRATION_SAMPLES; i++) {
-        f64 start = get_time();
+        f64 start = internal_get_time();
         
         // Simulate scope operations
         volatile f64 dummy = 0.0;
-        dummy += get_time();
-        dummy += get_time();
+        dummy += internal_get_time();
+        dummy += internal_get_time();
         
-        f64 end = get_time();
+        f64 end = internal_get_time();
         total_overhead += (end - start);
     }
     
@@ -164,7 +154,7 @@ int profiler_scope_enter(const char* name) {
     }
     
     ProfileScope* scope = &data->scopes[scope_index];
-    scope->start_time = get_time();
+    scope->start_time = internal_get_time();
     scope->active = true;
     scope->call_count++;
     
@@ -183,7 +173,7 @@ void profiler_scope_exit(int scope_id) {
     ProfileScope* scope = &data->scopes[scope_id];
     if (!scope->active) return;
     
-    scope->end_time = get_time();
+    scope->end_time = internal_get_time();
     scope->duration = scope->end_time - scope->start_time - g_overhead_calibration;
     
     // Update statistics
@@ -205,7 +195,7 @@ void profiler_frame_marker(void) {
     if (g_thread_id >= 0) {
         ThreadProfileData* data = &g_thread_data[g_thread_id];
         
-        f64 now = get_time();
+        f64 now = internal_get_time();
         f64 frame_duration = now - data->frame_start_time;
         data->frame_start_time = now;
         data->frame_number = g_global_frame_counter;
@@ -303,14 +293,14 @@ size_t profiler_get_thread_count(void) {
 f64 profiler_measure_overhead(int iterations) {
     if (iterations <= 0) iterations = 10000;
     
-    f64 start = get_time();
+    f64 start = internal_get_time();
     
     for (int i = 0; i < iterations; i++) {
         int scope_id = profiler_scope_enter("TestScope");
         profiler_scope_exit(scope_id);
     }
     
-    f64 end = get_time();
+    f64 end = internal_get_time();
     f64 total_time = end - start;
     
     return total_time / (f64)iterations;
@@ -331,7 +321,7 @@ void profiler_reset_stats(void) {
         }
         
         data->frame_number = 0;
-        data->frame_start_time = get_time();
+        data->frame_start_time = internal_get_time();
     }
     
     g_global_frame_counter = 0;

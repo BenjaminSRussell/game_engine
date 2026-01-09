@@ -16,19 +16,19 @@
 //                                      STRUCTS
 // =================================================================================================
 
-typedef struct LinearAllocator {
+struct LinearAllocator {
   void *start_ptr;
   size_t size;
   size_t offset;
-} LinearAllocator;
+};
 
-typedef struct PoolAllocator {
+struct PoolAllocator {
   void *start_ptr;
   size_t block_size;
   size_t total_blocks;
   void **free_list; // Stack of free pointers
   size_t free_idx;
-} PoolAllocator;
+};
 
 // =================================================================================================
 //                                      LINEAR ALLOCATOR

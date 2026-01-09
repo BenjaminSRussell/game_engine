@@ -1,4 +1,4 @@
-#include "integration/ai_tools/lsp_server.h"
+#include "core/integration/ai_tools/lsp_server.h"
 
 void lsp_server_init() {}
 

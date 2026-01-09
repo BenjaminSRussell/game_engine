@@ -16,6 +16,14 @@
 #define K_ALIGN(x) __attribute__((aligned(x)))
 #endif
 
+#ifndef INLINE
+#if defined(_MSC_VER)
+#define INLINE __forceinline
+#else
+#define INLINE inline __attribute__((always_inline))
+#endif
+#endif
+
 #ifndef EPSILON
 #define EPSILON 0.000001f
 #endif

@@ -24,7 +24,7 @@ typedef struct PoolBlock {
     uint32_t used_count;
 } PoolBlock;
 
-typedef struct {
+struct PoolAllocator {
     PoolBlock *blocks;
     void *free_list;
     size_t element_size;
@@ -36,7 +36,7 @@ typedef struct {
     uint32_t allocation_count;
     bool expandable;
     bool zero_on_alloc;
-} PoolAllocator;
+};
 
 // Helper function for aligned memory allocation
 static void* allocate_aligned_memory(size_t size, size_t alignment) {

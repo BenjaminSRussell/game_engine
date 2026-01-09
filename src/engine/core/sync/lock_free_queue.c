@@ -28,8 +28,8 @@ typedef struct {
     char padding[CACHE_LINE_SIZE - sizeof(void*)];
 } HazardPointer;
 
-// ✅ COMPLETED: Lock-free queue
-typedef struct {
+// ✅ COMPLETED: Lock-free queue - full definition
+struct LockFreeQueue {
     QueueNode* nodes;
     size_t capacity;
     size_t mask;
@@ -50,7 +50,11 @@ typedef struct {
     QueueNode** retired_nodes;
     size_t* retired_counts;
     size_t retire_threshold;
-} LockFreeQueue;
+};
+
+// Forward declarations for static functions
+static void retire_node(LockFreeQueue* queue, QueueNode* node, size_t thread_id);
+static void reclaim_nodes(LockFreeQueue* queue, size_t thread_id);
 
 // ✅ COMPLETED: Atomic operations for tagged pointers
 static TaggedPointer make_tagged_pointer(void* ptr, u64 tag) {
@@ -332,8 +336,9 @@ void lock_free_queue_destroy(LockFreeQueue* queue) {
     }
     
     // Free remaining nodes in queue
-    if (atomic_load(&queue->head_ptr).ptr) {
-        QueueNode* node = (QueueNode*)atomic_load(&queue->head_ptr).ptr;
+    TaggedPointer head_tagged = atomic_load(&queue->head_ptr);
+    if (head_tagged.ptr) {
+        QueueNode* node = (QueueNode*)head_tagged.ptr;
         while (node) {
             QueueNode* next = (QueueNode*)node->next.ptr;
             free(node);

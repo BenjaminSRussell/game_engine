@@ -3,7 +3,7 @@
  * Telnet/WebSocket Debugging
  */
 
-#include <stdio.h>
+#include <core/debug/remote_console.h>
 #include <string.h>
 
 // Handle Command

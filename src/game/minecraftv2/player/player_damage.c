@@ -11,7 +11,7 @@
 #include <math/vec3.h>
 #include <player/player.h>
 #include <player/status_effects.h>
-#include <renderer/camera.h>
+#include <rendering/camera.h>
 #include <stdlib.h>
 #include <time.h>
 #include <vfx/visual_effects.h>

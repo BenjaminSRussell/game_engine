@@ -1,5 +1,5 @@
 #include <core/logger.h>
-#include <renderer/ui_renderer.h>
+#include <rendering/ui_renderer.h>
 #include <ui/hud_renderer.h>
 
 static UIRenderer *g_ui_renderer = NULL;

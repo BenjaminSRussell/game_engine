@@ -1,4 +1,4 @@
-#include "integration/blender_pipeline/blender_lod_import.h"
+#include "core/integration/blender_pipeline/blender_lod_import.h"
 
 void blender_lod_import_init() {}
 

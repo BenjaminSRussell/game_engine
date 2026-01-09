@@ -1,4 +1,4 @@
-#include "integration/blender/live_sync_server.h"
+#include "core/integration/blender/live_sync_server.h"
 
 void live_sync_init() {}
 

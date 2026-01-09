@@ -10,6 +10,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stddef.h>
 
 typedef enum AssetType {
   ASSET_TYPE_UNKNOWN,
@@ -33,35 +34,35 @@ typedef enum AssetType {
  * =================================================================================================
  */
 
-void *asset_texture_load(const char *path);
-void asset_texture_load_async(const char *path, void (*callback)(void *));
-void *asset_mesh_load(const char *path);
-void asset_mesh_load_async(const char *path, void (*callback)(void *));
-void *asset_material_load(const char *path);
-void *asset_shader_load(const char *path);
-void *asset_audio_load(const char *path);
-void asset_audio_load_async(const char *path, void (*callback)(void *));
-void *asset_animation_load(const char *path);
-void *asset_font_load(const char *path);
-void *asset_prefab_load(const char *path);
-void *asset_scene_load(const char *path);
-void *asset_script_load(const char *path);
-void *asset_data_load(const char *path);
-void *asset_localization_load(const char *path);
+uint32_t asset_texture_load(const char *path);
+void asset_texture_load_async(const char *path, void (*callback)(uint32_t));
+uint32_t asset_mesh_load(const char *path);
+void asset_mesh_load_async(const char *path, void (*callback)(uint32_t));
+uint32_t asset_material_load(const char *path);
+uint32_t asset_shader_load(const char *path);
+uint32_t asset_audio_load(const char *path);
+void asset_audio_load_async(const char *path, void (*callback)(uint32_t));
+uint32_t asset_animation_load(const char *path);
+uint32_t asset_font_load(const char *path);
+uint32_t asset_prefab_load(const char *path);
+uint32_t asset_scene_load(const char *path);
+uint32_t asset_script_load(const char *path);
+uint32_t asset_data_load(const char *path);
+uint32_t asset_localization_load(const char *path);
 
 /* =================================================================================================
  *                                    ASSET UNLOADING
  * =================================================================================================
  */
 
-void asset_texture_unload(void *asset);
-void asset_mesh_unload(void *asset);
-void asset_material_unload(void *asset);
-void asset_audio_unload(void *asset);
-void asset_animation_unload(void *asset);
-void asset_font_unload(void *asset);
-void asset_prefab_unload(void *asset);
-void asset_scene_unload(void *asset);
+void asset_texture_unload(uint32_t asset_id);
+void asset_mesh_unload(uint32_t asset_id);
+void asset_material_unload(uint32_t asset_id);
+void asset_audio_unload(uint32_t asset_id);
+void asset_animation_unload(uint32_t asset_id);
+void asset_font_unload(uint32_t asset_id);
+void asset_prefab_unload(uint32_t asset_id);
+void asset_scene_unload(uint32_t asset_id);
 void asset_unload_unused(void);
 void asset_force_unload(uint32_t asset_id);
 
@@ -152,7 +153,7 @@ void database_search(const char *query, uint32_t *out_ids,
                      uint32_t max_results);
 void database_filter_by_type(AssetType type, uint32_t *out_ids,
                              uint32_t max_results);
-const char *database_get_metadata(uint32_t id, const char *key);
+void *database_get_metadata(uint32_t id, size_t *size);
 void database_set_metadata(uint32_t id, const char *key, const char *value);
 void database_import(const char *src_path);
 void database_export(uint32_t id, const char *dst_path);
@@ -164,16 +165,18 @@ void database_deserialize(const char *path);
  * =================================================================================================
  */
 
-void resource_manager_init(uint32_t initial_capacity);
+#include <stddef.h>
+
+bool resource_manager_init(void);
 void resource_manager_shutdown(void);
-void resource_manager_update(float dt);
-void *resource_manager_load(const char *path);
-void resource_manager_load_async(const char *path, void (*callback)(void *));
-void *resource_manager_get(const char *path);
-void resource_manager_release(const char *path);
+void resource_manager_update(void);
+uint32_t resource_manager_load(const char *path);
+void resource_manager_load_async(const char *path, void (*callback)(uint32_t));
+void *resource_manager_get(uint32_t id);
+void resource_manager_release(uint32_t id);
 void resource_manager_preload(const char *path);
 void resource_manager_gc(void);
-void resource_manager_stats(void);
-void resource_manager_memory_budget(uint64_t bytes);
+void resource_manager_stats(uint32_t *count, size_t *memory_used, size_t *memory_budget);
+void resource_manager_memory_budget(size_t budget);
 
 #endif // RESOURCE_MANAGER_H

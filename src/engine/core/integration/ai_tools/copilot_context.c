@@ -1,4 +1,4 @@
-#include "integration/ai_tools/copilot_context.h"
+#include "core/integration/ai_tools/copilot_context.h"
 #include <stdio.h>
 #include <string.h>
 

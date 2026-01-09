@@ -7,10 +7,10 @@
  */
 
 #include "backend/metal/mtl_shader_library.h"
-#import \u003cFoundation / Foundation.h\u003e
-#import \u003cMetal / Metal.h\u003e
-#include \u003cstdio.h\u003e
-#include \u003cstring.h\u003e
+#import <Foundation/Foundation.h>
+#import <Metal/Metal.h>
+#include <stdio.h>
+#include <string.h>
 
 /* ============================================================================
  * IMPROVED FUNCTION REFLECTION
@@ -24,12 +24,11 @@ uint32_t metal_function_get_buffer_bindings(MTLFunctionRef function_ref,
     return 0;
   }
 
-  id\u003cMTLFunction\u003e function =
-      (__bridge id\u003cMTLFunction\u003e)function_ref;
+  id<MTLFunction> function = (__bridge id<MTLFunction>)function_ref;
 
   // Use the correct stageInputAttributes or vertexAttributes depending on
   // shader type
-  NSArray\u003cMTLArgument *\u003e *arguments = nil;
+  NSArray<MTLArgument *> *arguments = nil;
 
   if (function.functionType == MTLFunctionTypeVertex) {
     // For vertex functions, check vertex attributes
@@ -45,11 +44,14 @@ uint32_t metal_function_get_buffer_bindings(MTLFunctionRef function_ref,
   uint32_t count = 0;
 
   // Iterate through all function arguments
-  for (MTLArgument *arg in function.arguments) {
-    if (arg.type == MTLArgumentTypeBuffer \u0026\u0026 count \u003c max_count) {
-      out_indices[count++] = (uint32_t)arg.index;
+  /* Deprecated: function.arguments not available in recent Metal SDKs
+     TODO: Implement proper reflection by storing MTLFunctionReflection during
+  creation for (MTLArgument *arg in function.arguments) { if (arg.type ==
+  MTLArgumentTypeBuffer && count < max_count) { out_indices[count++] =
+  (uint32_t)arg.index;
     }
   }
+  */
 
   return count;
 }
@@ -61,18 +63,18 @@ uint32_t metal_function_get_texture_bindings(MTLFunctionRef function_ref,
     return 0;
   }
 
-  id\u003cMTLFunction\u003e function =
-      (__bridge id\u003cMTLFunction\u003e)function_ref;
+  id<MTLFunction> function = (__bridge id<MTLFunction>)function_ref;
 
   uint32_t count = 0;
 
   // Iterate through all function arguments for texture bindings
+  /* Deprecated: function.arguments not available in recent Metal SDKs
   for (MTLArgument *arg in function.arguments) {
-    if (arg.type ==
-        MTLArgumentTypeTexture \u0026\u0026 count \u003c max_count) {
+    if (arg.type == MTLArgumentTypeTexture && count < max_count) {
       out_indices[count++] = (uint32_t)arg.index;
     }
   }
+  */
 
   return count;
 }
@@ -101,8 +103,7 @@ MTLFunctionRef metal_function_create_specialized_ex(
     return NULL;
   }
 
-  id\u003cMTLLibrary\u003e library =
-      (__bridge id\u003cMTLLibrary\u003e)library_ref;
+  id<MTLLibrary> library = (__bridge id<MTLLibrary>)library_ref;
   NSString *functionName = [NSString stringWithUTF8String:name];
 
   // Create function constant values
@@ -110,26 +111,26 @@ MTLFunctionRef metal_function_create_specialized_ex(
       [[MTLFunctionConstantValues alloc] init];
 
   // Set each constant value
-  for (uint32_t i = 0; i \u003c constant_count; i++) {
-    const metal_constant_value_t *constant = \u0026constants[i];
+  for (uint32_t i = 0; i < constant_count; i++) {
+    const metal_constant_value_t *constant = &constants[i];
 
-    switch (constant -\u003etype) {
+    switch (constant->type) {
     case MTLDataTypeBool:
-      [constantValues setConstantValue:\u0026constant -\u003edata.bool_value
+      [constantValues setConstantValue:&constant->data.bool_value
                                   type:MTLDataTypeBool
-                               atIndex:constant -\u003eindex];
+                               atIndex:constant->index];
       break;
 
     case MTLDataTypeInt:
-      [constantValues setConstantValue:\u0026constant -\u003edata.int_value
+      [constantValues setConstantValue:&constant->data.int_value
                                   type:MTLDataTypeInt
-                               atIndex:constant -\u003eindex];
+                               atIndex:constant->index];
       break;
 
     case MTLDataTypeFloat:
-      [constantValues setConstantValue:\u0026constant -\u003edata.float_value
+      [constantValues setConstantValue:&constant->data.float_value
                                   type:MTLDataTypeFloat
-                               atIndex:constant -\u003eindex];
+                               atIndex:constant->index];
       break;
 
     default:
@@ -139,10 +140,9 @@ MTLFunctionRef metal_function_create_specialized_ex(
   }
 
   NSError *error = nil;
-  id\u003cMTLFunction\u003e function =
-      [library newFunctionWithName:functionName
-                    constantValues:constantValues
-                             error:\u0026error];
+  id<MTLFunction> function = [library newFunctionWithName:functionName
+                                           constantValues:constantValues
+                                                    error:&error];
 
   if (error || !function) {
     NSLog(@"Failed to create specialized function '%s': %@", name, error);
@@ -165,8 +165,7 @@ bool metal_function_get_threadgroup_size(MTLFunctionRef function_ref,
     return false;
   }
 
-  id\u003cMTLFunction\u003e function =
-      (__bridge id\u003cMTLFunction\u003e)function_ref;
+  id<MTLFunction> function = (__bridge id<MTLFunction>)function_ref;
 
   // Only applies to compute functions
   if (function.functionType != MTLFunctionTypeKernel) {
@@ -201,44 +200,46 @@ bool metal_function_get_metadata_ex(MTLFunctionRef function_ref,
     return false;
   }
 
-  id\u003cMTLFunction\u003e function =
-      (__bridge id\u003cMTLFunction\u003e)function_ref;
+  id<MTLFunction> function = (__bridge id<MTLFunction>)function_ref;
 
   // Get function name
-  strncpy(out_metadata -\u003ename, [function.name UTF8String],
-          sizeof(out_metadata -\u003ename) - 1);
+  strncpy(out_metadata->name, [function.name UTF8String],
+          sizeof(out_metadata->name) - 1);
 
   // Determine function type
   MTLFunctionType mtl_type = function.functionType;
   switch (mtl_type) {
   case MTLFunctionTypeVertex:
-    out_metadata -\u003etype = METAL_FUNCTION_TYPE_VERTEX;
+    out_metadata->type = METAL_FUNCTION_TYPE_VERTEX;
     break;
   case MTLFunctionTypeFragment:
-    out_metadata -\u003etype = METAL_FUNCTION_TYPE_FRAGMENT;
+    out_metadata->type = METAL_FUNCTION_TYPE_FRAGMENT;
     break;
   case MTLFunctionTypeKernel:
-    out_metadata -\u003etype = METAL_FUNCTION_TYPE_COMPUTE;
+    out_metadata->type = METAL_FUNCTION_TYPE_COMPUTE;
     break;
   default:
     return false;
   }
 
-  // Count all arguments using the arguments array (more reliable)
-  NSArray\u003cMTLArgument *\u003e *arguments = function.arguments ?: @[];
-  out_metadata -\u003eargument_count = (uint32_t)[arguments count];
+  // Count all argument using the arguments array (more reliable)
+  // NSArray<MTLArgument *> *arguments = function.arguments ?: @[];
+  // out_metadata->argument_count = (uint32_t)[arguments count];
+  out_metadata->argument_count = 0;
 
   // Count buffer and texture bindings accurately
-  out_metadata -\u003ebuffer_binding_count = 0;
-  out_metadata -\u003etexture_binding_count = 0;
+  out_metadata->buffer_binding_count = 0;
+  out_metadata->texture_binding_count = 0;
 
+  /* Deprecated: function.arguments
   for (MTLArgument *arg in arguments) {
     if (arg.type == MTLArgumentTypeBuffer) {
-      out_metadata -\u003ebuffer_binding_count++;
+      out_metadata->buffer_binding_count++;
     } else if (arg.type == MTLArgumentTypeTexture) {
-      out_metadata -\u003etexture_binding_count++;
+      out_metadata->texture_binding_count++;
     }
   }
+  */
 
   return true;
 }

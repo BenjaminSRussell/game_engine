@@ -1,5 +1,5 @@
-#include "editor/debugging/visualization/debug_shapes.h"
-#include <include/math/math.h>
+#include "debug_renderer.h"
+#include <math.h>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846

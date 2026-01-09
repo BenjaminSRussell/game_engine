@@ -79,7 +79,7 @@
 #include <ecs/ecs.h>
 #include <game/mode.h>
 #include <game_common.h>
-#include <input/controls.h>
+#include <platform/input/controls.h>
 #include <inventory/inventory.h>
 #include <math/vec3.h>
 #include <physics/physics.h>
@@ -88,7 +88,7 @@
 #include <player/player_vehicle.h>
 #include <player/spirit_model.h>
 #include <player/status_effects.h>
-#include <renderer/camera.h>
+#include <rendering/camera.h>
 #include <ui/hotbar.h>
 
 // Spirit model and player magic components are defined in their

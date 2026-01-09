@@ -17,7 +17,7 @@
 #include <ecs/ecs.h>
 #include <game/mode.h>
 #include <game_common.h>
-#include <input/controls.h>
+#include <platform/input/controls.h>
 #include <inventory/inventory.h>
 #include <math.h>
 #include <math/math.h>
@@ -31,9 +31,9 @@
 #include <player/player_vehicle.h>
 #include <player/spirit_model.h>
 #include <player/status_effects.h>
-#include <renderer/camera.h>
-#include <renderer/mesh.h>
-#include <renderer/renderer.h>
+#include <rendering/camera.h>
+#include <rendering/mesh.h>
+#include <rendering/renderer.h>
 #include <stdlib.h>
 #include <string.h>
 #include <weather/weather.h>

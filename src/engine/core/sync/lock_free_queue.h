@@ -1,3 +1,6 @@
+#ifndef LOCK_FREE_QUEUE_H
+#define LOCK_FREE_QUEUE_H
+
 #pragma once
 
 #include <common.h>
@@ -14,19 +17,18 @@
  * Designed for multi-producer, multi-consumer scenarios without mutex overhead.
  */
 
-typedef struct {
-    void **buffer;
-    size_t capacity;
-    _Atomic(size_t) head;
-    _Atomic(size_t) tail;
-} LockFreeQueue;
+/* Forward declaration - opaque type */
+typedef struct LockFreeQueue LockFreeQueue;
 
 /* ===== LOCK-FREE QUEUE API ===== */
 
 /**
  * Create a new lock-free queue with specified capacity
+ * @param capacity Queue capacity (will be rounded to power of 2)
+ * @param max_threads Maximum number of threads using the queue
+ * @param mpmc true for multi-producer/multi-consumer, false for single-producer/single-consumer
  */
-LockFreeQueue* lock_free_queue_create(size_t capacity);
+LockFreeQueue* lock_free_queue_create(size_t capacity, size_t max_threads, bool mpmc);
 
 /**
  * Destroy the queue

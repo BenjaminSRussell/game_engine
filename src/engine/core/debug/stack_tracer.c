@@ -1,4 +1,4 @@
-#include "core/debug/stack_tracer.h"
+#include <core/debug/stack_tracer.h>
 #include "core/core.h"
 #include <stdlib.h>
 #include <string.h>
@@ -12,38 +12,16 @@
 #else
 #include <execinfo.h>
 #include <dlfcn.h>
+#ifndef __APPLE__
 #include <link.h>
-#include <cxxabi.h>
+#endif
 #endif
 
 // ✅ COMPLETED: Stack Tracer Implementation - AGENT_CORE_1
 // Capture and resolve call stacks for crash reporting and profiling
 
-#define MAX_STACK_FRAMES 64
-#define MAX_SYMBOL_LENGTH 512
-#define MAX_MODULE_PATH 260
 #define STACK_HASH_SEED 0x9E3779B9
-
-typedef struct {
-    void* address;
-    char symbol[MAX_SYMBOL_LENGTH];
-    char module[MAX_MODULE_PATH];
-    size_t offset;
-    bool resolved;
-} StackFrame;
-
-typedef struct {
-    StackFrame frames[MAX_STACK_FRAMES];
-    size_t frame_count;
-    u64 hash;
-    f64 timestamp;
-} StackTrace;
-
-typedef struct {
-    char name[MAX_MODULE_PATH];
-    void* base_address;
-    size_t size;
-} ModuleInfo;
+#define MAX_MODULE_PATH 256
 
 static ModuleInfo g_modules[64];
 static size_t g_module_count = 0;
@@ -84,6 +62,7 @@ static void enumerate_modules(void) {
     }
 }
 #else
+#ifndef __APPLE__
 static int module_callback(struct dl_phdr_info* info, size_t size, void* data) {
     if (g_module_count >= 64) return 1;
     
@@ -103,6 +82,13 @@ static void enumerate_modules(void) {
     g_module_count = 0;
     dl_iterate_phdr(module_callback, NULL);
 }
+#else
+static void enumerate_modules(void) {
+    // macOS module enumeration stub
+    // backtrace_symbols usually provides sufficient info on macOS
+    g_module_count = 0;
+}
+#endif
 #endif
 
 // ✅ COMPLETED: Symbol resolution
@@ -161,16 +147,7 @@ static void resolve_symbol(void* address, StackFrame* frame) {
     
     if (dladdr(address, &info)) {
         if (info.dli_sname) {
-            // Demangle C++ names
-            int status = 0;
-            char* demangled = abi::__cxa_demangle(info.dli_sname, NULL, NULL, &status);
-            
-            if (status == 0 && demangled) {
-                strncpy(frame->symbol, demangled, MAX_SYMBOL_LENGTH - 1);
-                free(demangled);
-            } else {
-                strncpy(frame->symbol, info.dli_sname, MAX_SYMBOL_LENGTH - 1);
-            }
+            strncpy(frame->symbol, info.dli_sname, MAX_SYMBOL_LENGTH - 1);
             
             frame->offset = (char*)address - (char*)info.dli_saddr;
             frame->resolved = true;

@@ -1,3 +1,4 @@
+#include <core/containers/ring_queue_lockfree.h>
 #include "core/core.h"
 #include <stdlib.h>
 #include <stdatomic.h>
@@ -7,17 +8,26 @@
 // Single Producer Single Consumer (SPSC) lock-free ring buffer
 // Uses atomic operations for thread-safe communication
 
-typedef struct {
+struct LockFreeRingQueue {
     void** buffer;           // Ring buffer for data pointers
     size_t capacity;          // Buffer capacity (must be power of 2)
     size_t mask;             // Capacity-1 for fast modulo
     atomic_size_t head;       // Producer index (write position)
     atomic_size_t tail;       // Consumer index (read position)
     bool allow_overwrite;     // Allow overwriting when full
-} LockFreeRingQueue;
+};
+
+struct MPSCRingQueue {
+    void** buffer;
+    size_t capacity;
+    size_t mask;
+    atomic_size_t head;
+    atomic_size_t tail;
+    atomic_size_t sequence[0];  // Flexible array for sequence numbers
+};
 
 // ✅ COMPLETED: Helper function to check if value is power of 2
-static bool is_power_of_two(size_t x) {
+static bool is_power_of_two_size(size_t x) {
     return x != 0 && (x & (x - 1)) == 0;
 }
 
@@ -26,7 +36,7 @@ LockFreeRingQueue* ring_queue_create(size_t capacity, bool allow_overwrite) {
     if (capacity == 0) return NULL;
     
     // Ensure capacity is power of 2 for fast modulo
-    if (!is_power_of_two(capacity)) {
+    if (!is_power_of_two_size(capacity)) {
         // Round up to next power of 2
         size_t power = 1;
         while (power < capacity) power <<= 1;
@@ -177,19 +187,10 @@ void ring_queue_clear(LockFreeRingQueue* queue) {
     atomic_store_explicit(&queue->tail, current_head, memory_order_release);
 }
 
-// ✅ COMPLETED: Multi-Producer Support (Advanced)
-// Uses Compare-And-Swap (CAS) for multiple producers
-typedef struct {
-    void** buffer;
-    size_t capacity;
-    size_t mask;
-    atomic_size_t head;
-    atomic_size_t tail;
-    atomic_size_t sequence[0];  // Flexible array for sequence numbers
-} MPSCRingQueue;
+
 
 MPSCRingQueue* mpsc_ring_queue_create(size_t capacity) {
-    if (capacity == 0 || !is_power_of_two(capacity)) return NULL;
+    if (capacity == 0 || !is_power_of_two_size(capacity)) return NULL;
     
     MPSCRingQueue* queue = malloc(sizeof(MPSCRingQueue) + capacity * sizeof(atomic_size_t));
     if (!queue) return NULL;
@@ -280,13 +281,7 @@ void ring_queue_destroy(LockFreeRingQueue* queue) {
     free(queue);
 }
 
-// ✅ COMPLETED: Performance Statistics
-typedef struct {
-    size_t enqueue_count;
-    size_t dequeue_count;
-    size_t overflow_count;     // Only for overwrite queues
-    size_t underflow_count;     // Dequeue attempts on empty queue
-} RingQueueStats;
+
 
 void ring_queue_get_stats(const LockFreeRingQueue* queue, RingQueueStats* stats) {
     if (!queue || !stats) return;

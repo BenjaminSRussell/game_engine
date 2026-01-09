@@ -1,4 +1,4 @@
-#include "core/algorithms/random.h"
+#include <core/algorithms/random.h>
 #include <stdlib.h>
 
 static unsigned long long g_seed = 12345;

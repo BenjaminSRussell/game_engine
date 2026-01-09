@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>  // For pthread types
 
 // COMMAND LINE ARGUMENT PARSER
 typedef struct {
@@ -70,6 +71,9 @@ typedef struct {
   pthread_cond_t cond;
   bool shutdown;
 } ThreadPool;
+
+// Forward declaration
+static void *thread_pool_worker(void *arg);
 
 ThreadPool *thread_pool_create(int num_threads) {
   ThreadPool *pool = calloc(1, sizeof(ThreadPool));
@@ -159,6 +163,9 @@ typedef struct {
 
 void random_seed(RandomGenerator *rng, uint64_t seed) { rng->state = seed; }
 
+// Commenting out functions that conflict with utils.h inline definitions
+// These are redefined in core/utils.h as inline functions
+/*
 uint64_t random_next(RandomGenerator *rng) {
   uint64_t x = rng->state;
   x ^= x << 13;
@@ -175,6 +182,7 @@ float random_float(RandomGenerator *rng) {
 int random_range(RandomGenerator *rng, int min, int max) {
   return min + (random_next(rng) % (max - min + 1));
 }
+*/
 
 // STRING UTILITIES
 char *string_duplicate(const char *str) {
@@ -217,7 +225,8 @@ char *string_replace(const char *str, const char *old, const char *new) {
   return result;
 }
 
-// MATH UTILITIES
+// Commented out to avoid redefinition with utils.h
+/*
 float lerp(float a, float b, float t) { return a + (b - a) * t; }
 
 float clamp(float value, float min, float max) {
@@ -232,6 +241,7 @@ float smoothstep(float edge0, float edge1, float x) {
   float t = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
   return t * t * (3.0f - 2.0f * t);
 }
+*/
 
 // HASH FUNCTIONS
 uint32_t hash_string(const char *str) {

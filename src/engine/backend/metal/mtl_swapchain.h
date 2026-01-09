@@ -15,6 +15,7 @@
 
 #ifdef __OBJC__
 #import <QuartzCore/CAMetalLayer.h>
+#import <Metal/Metal.h>
 #import <Cocoa/Cocoa.h>
 #endif
 

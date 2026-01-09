@@ -1,4 +1,4 @@
-#include "integration/vscode/language_server.h"
+#include "core/integration/vscode/language_server.h"
 
 void language_server_init() {}
 

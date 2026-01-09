@@ -1,1 +1,350 @@
-#include "core/memory/allocator_aligned.h"\n#include <stdlib.h>\n#include <string.h>\n#include <stdint.h>\n#include <assert.h>\n\n#ifdef _WIN32\n#include <windows.h>\n#else\n#include <sys/mman.h>\n#include <unistd.h>\n#endif\n\n/**\n * =================================================================================================\n *                                 ALIGNED MEMORY ALLOCATOR - COMPLETE\n * =================================================================================================\n */\n\ntypedef struct AllocationHeader {\n    struct AllocationHeader *prev;\n    struct AllocationHeader *next;\n    void *actual_ptr;  // Pointer to actual allocated memory\n    size_t requested_size;\n    size_t alignment;\n    size_t actual_size;\n} AllocationHeader;\n\ntypedef struct {\n    AllocationHeader *free_list;\n    AllocationHeader *allocated_list;\n    void *backing_allocator;\n    size_t default_alignment;\n    size_t total_allocated;\n    uint32_t allocation_count;\n    bool owns_backing_allocator;\n} AlignedAllocator;\n\n// Helper function for aligned memory allocation\nstatic void* allocate_aligned_memory(size_t size, size_t alignment) {\n#ifdef _WIN32\n    return _aligned_malloc(size, alignment);\n#else\n    void *ptr = NULL;\n    if (posix_memalign(&ptr, alignment, size) != 0) {\n        return NULL;\n    }\n    return ptr;\n#endif\n}\n\n// Helper function for aligned memory deallocation\nstatic void free_aligned_memory(void *ptr) {\n#ifdef _WIN32\n    _aligned_free(ptr);\n#else\n    free(ptr);\n#endif\n}\n\n// Helper function to check if alignment is power of 2\nstatic bool is_power_of_2(size_t value) {\n    return value != 0 && (value & (value - 1)) == 0;\n}\n\n// Helper function to get next power of 2\nstatic size_t next_power_of_2(size_t value) {\n    if (value == 0) {\n        return 1;\n    }\n    value--;\n    value |= value >> 1;\n    value |= value >> 2;\n    value |= value >> 4;\n    value |= value >> 8;\n    value |= value >> 16;\n    value |= value >> 32;  // For 64-bit values\n    value++;\n    return value;\n}\n\n// Calculate padding needed for alignment\nstatic size_t calculate_padding(void *ptr, size_t alignment) {\n    uintptr_t addr = (uintptr_t)ptr;\n    size_t mask = alignment - 1;\n    size_t padding = (alignment - (addr & mask)) & mask;\n    return padding;\n}\n\n// Find header from user pointer\nstatic AllocationHeader* get_header_from_pointer(void *user_ptr) {\n    if (!user_ptr) {\n        return NULL;\n    }\n    \n    // Header is stored just before the user pointer\n    uintptr_t header_addr = (uintptr_t)user_ptr - sizeof(AllocationHeader);\n    return (AllocationHeader*)header_addr;\n}\n\n// Find user pointer from header\nstatic void* get_user_pointer_from_header(AllocationHeader *header) {\n    if (!header) {\n        return NULL;\n    }\n    \n    uintptr_t header_addr = (uintptr_t)header;\n    uintptr_t user_ptr = header_addr + sizeof(AllocationHeader);\n    \n    // Add padding to achieve alignment\n    size_t padding = calculate_padding((void*)user_ptr, header->alignment);\n    user_ptr += padding;\n    \n    return (void*)user_ptr;\n}\n\nAlignedAllocator* aligned_allocator_create(void *backing_allocator, size_t default_alignment) {\n    // Validate default alignment\n    if (default_alignment == 0) {\n        default_alignment = 16; // Default to 16-byte for SIMD\n    }\n    \n    if (!is_power_of_2(default_alignment)) {\n        default_alignment = next_power_of_2(default_alignment);\n    }\n    \n    AlignedAllocator *allocator = (AlignedAllocator*)malloc(sizeof(AlignedAllocator));\n    if (!allocator) {\n        return NULL;\n    }\n    \n    allocator->free_list = NULL;\n    allocator->allocated_list = NULL;\n    allocator->backing_allocator = backing_allocator;\n    allocator->default_alignment = default_alignment;\n    allocator->total_allocated = 0;\n    allocator->allocation_count = 0;\n    allocator->owns_backing_allocator = false;\n    \n    return allocator;\n}\n\nvoid aligned_allocator_destroy(AlignedAllocator *allocator) {\n    if (!allocator) {\n        return;\n    }\n    \n    // Free all allocated memory\n    AllocationHeader *current = allocator->allocated_list;\n    while (current) {\n        AllocationHeader *next = current->next;\n        if (current->actual_ptr) {\n            free_aligned_memory(current->actual_ptr);\n        }\n        current = next;\n    }\n    \n    // Free free list\n    current = allocator->free_list;\n    while (current) {\n        AllocationHeader *next = current->next;\n        if (current->actual_ptr) {\n            free_aligned_memory(current->actual_ptr);\n        }\n        current = next;\n    }\n    \n    free(allocator);\n}\n\nvoid* aligned_allocator_allocate(AlignedAllocator *allocator, size_t size, size_t alignment) {\n    if (!allocator || size == 0) {\n        return NULL;\n    }\n    \n    // Use default alignment if not specified\n    if (alignment == 0) {\n        alignment = allocator->default_alignment;\n    }\n    \n    // Validate alignment\n    if (!is_power_of_2(alignment)) {\n        alignment = next_power_of_2(alignment);\n    }\n    \n    // Calculate total size needed\n    size_t header_size = sizeof(AllocationHeader);\n    size_t total_size = header_size + size + alignment;\n    \n    // Try to find suitable block in free list\n    AllocationHeader *block = allocator->free_list;\n    AllocationHeader *prev_block = NULL;\n    \n    while (block) {\n        if (block->alignment >= alignment && block->actual_size >= total_size) {\n            // Found suitable block\n            if (prev_block) {\n                prev_block->next = block->next;\n            } else {\n                allocator->free_list = block->next;\n            }\n            \n            // Update block info\n            block->requested_size = size;\n            block->alignment = alignment;\n            \n            // Add to allocated list\n            block->prev = NULL;\n            block->next = allocator->allocated_list;\n            if (allocator->allocated_list) {\n                allocator->allocated_list->prev = block;\n            }\n            allocator->allocated_list = block;\n            \n            allocator->allocation_count++;\n            return get_user_pointer_from_header(block);\n        }\n        \n        prev_block = block;\n        block = block->next;\n    }\n    \n    // No suitable block found, allocate new memory\n    void *actual_ptr = allocate_aligned_memory(total_size, 16); // Header doesn't need special alignment\n    if (!actual_ptr) {\n        return NULL;\n    }\n    \n    // Create header\n    AllocationHeader *header = (AllocationHeader*)actual_ptr;\n    header->actual_ptr = actual_ptr;\n    header->requested_size = size;\n    header->alignment = alignment;\n    header->actual_size = total_size;\n    \n    // Add to allocated list\n    header->prev = NULL;\n    header->next = allocator->allocated_list;\n    if (allocator->allocated_list) {\n        allocator->allocated_list->prev = header;\n    }\n    allocator->allocated_list = header;\n    \n    allocator->total_allocated += total_size;\n    allocator->allocation_count++;\n    \n    return get_user_pointer_from_header(header);\n}\n\nvoid aligned_allocator_deallocate(AlignedAllocator *allocator, void *ptr) {\n    if (!allocator || !ptr) {\n        return;\n    }\n    \n    AllocationHeader *header = get_header_from_pointer(ptr);\n    if (!header) {\n        return; // Invalid pointer\n    }\n    \n    // Remove from allocated list\n    if (header->prev) {\n        header->prev->next = header->next;\n    } else {\n        allocator->allocated_list = header->next;\n    }\n    \n    if (header->next) {\n        header->next->prev = header->prev;\n    }\n    \n    // Add to free list\n    header->prev = NULL;\n    header->next = allocator->free_list;\n    allocator->free_list = header;\n    \n    allocator->allocation_count--;\n}\n\nvoid* aligned_allocator_reallocate(AlignedAllocator *allocator, void *ptr, size_t size, size_t alignment) {\n    if (!allocator) {\n        return NULL;\n    }\n    \n    if (!ptr) {\n        return aligned_allocator_allocate(allocator, size, alignment);\n    }\n    \n    if (size == 0) {\n        aligned_allocator_deallocate(allocator, ptr);\n        return NULL;\n    }\n    \n    AllocationHeader *header = get_header_from_pointer(ptr);\n    if (!header) {\n        return NULL; // Invalid pointer\n    }\n    \n    // If new size fits in current block, just update size\n    size_t total_needed = sizeof(AllocationHeader) + size + (alignment ? alignment : allocator->default_alignment);\n    if (total_needed <= header->actual_size) {\n        header->requested_size = size;\n        return ptr;\n    }\n    \n    // Need to allocate new block and copy data\n    void *new_ptr = aligned_allocator_allocate(allocator, size, alignment);\n    if (!new_ptr) {\n        return NULL;\n    }\n    \n    // Copy old data\n    size_t copy_size = header->requested_size < size ? header->requested_size : size;\n    memcpy(new_ptr, ptr, copy_size);\n    \n    // Free old block\n    aligned_allocator_deallocate(allocator, ptr);\n    \n    return new_ptr;\n}\n\nvoid aligned_allocator_get_stats(AlignedAllocator *allocator, size_t *total_allocated, \n                                uint32_t *allocation_count, size_t *default_alignment) {\n    if (!allocator) {\n        return;\n    }\n    \n    if (total_allocated) *total_allocated = allocator->total_allocated;\n    if (allocation_count) *allocation_count = allocator->allocation_count;\n    if (default_alignment) *default_alignment = allocator->default_alignment;\n}\n\nbool aligned_allocator_is_valid_alignment(size_t alignment) {\n    return is_power_of_2(alignment) && alignment > 0;\n}\n\nsize_t aligned_allocator_get_next_power_of_2(size_t size) {\n    return next_power_of_2(size);\n}\n\nsize_t aligned_allocator_round_up(size_t size, size_t alignment) {\n    if (alignment == 0) {\n        return size;\n    }\n    \n    if (!is_power_of_2(alignment)) {\n        alignment = next_power_of_2(alignment);\n    }\n    \n    return (size + alignment - 1) & ~(alignment - 1);\n}
+#include "core/memory/allocator_aligned.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <assert.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <sys/mman.h>
+#include <unistd.h>
+#endif
+
+/**
+ * =================================================================================================
+ *                                 ALIGNED MEMORY ALLOCATOR - COMPLETE
+ * =================================================================================================
+ */
+
+typedef struct AllocationHeader {
+    struct AllocationHeader *prev;
+    struct AllocationHeader *next;
+    void *actual_ptr;  // Pointer to actual allocated memory
+    size_t requested_size;
+    size_t alignment;
+    size_t actual_size;
+} AllocationHeader;
+
+struct AlignedAllocator {
+    AllocationHeader *free_list;
+    AllocationHeader *allocated_list;
+    void *backing_allocator;
+    size_t default_alignment;
+    size_t total_allocated;
+    uint32_t allocation_count;
+    bool owns_backing_allocator;
+};
+
+// Helper function for aligned memory allocation
+static void* allocate_aligned_memory(size_t size, size_t alignment) {
+#ifdef _WIN32
+    return _aligned_malloc(size, alignment);
+#else
+    void *ptr = NULL;
+    if (posix_memalign(&ptr, alignment, size) != 0) {
+        return NULL;
+    }
+    return ptr;
+#endif
+}
+
+// Helper function for aligned memory deallocation
+static void free_aligned_memory(void *ptr) {
+#ifdef _WIN32
+    _aligned_free(ptr);
+#else
+    free(ptr);
+#endif
+}
+
+// Helper function to check if alignment is power of 2
+static bool is_power_of_2(size_t value) {
+    return value != 0 && (value & (value - 1)) == 0;
+}
+
+// Helper function to get next power of 2
+static size_t next_power_of_2(size_t value) {
+    if (value == 0) {
+        return 1;
+    }
+    value--;
+    value |= value >> 1;
+    value |= value >> 2;
+    value |= value >> 4;
+    value |= value >> 8;
+    value |= value >> 16;
+    value |= value >> 32;  // For 64-bit values
+    value++;
+    return value;
+}
+
+// Calculate padding needed for alignment
+static size_t calculate_padding(void *ptr, size_t alignment) {
+    uintptr_t addr = (uintptr_t)ptr;
+    size_t mask = alignment - 1;
+    size_t padding = (alignment - (addr & mask)) & mask;
+    return padding;
+}
+
+// Find header from user pointer
+static AllocationHeader* get_header_from_pointer(void *user_ptr) {
+    if (!user_ptr) {
+        return NULL;
+    }
+    
+    // Header is stored just before the user pointer
+    uintptr_t header_addr = (uintptr_t)user_ptr - sizeof(AllocationHeader);
+    return (AllocationHeader*)header_addr;
+}
+
+// Find user pointer from header
+static void* get_user_pointer_from_header(AllocationHeader *header) {
+    if (!header) {
+        return NULL;
+    }
+    
+    uintptr_t header_addr = (uintptr_t)header;
+    uintptr_t user_ptr = header_addr + sizeof(AllocationHeader);
+    
+    // Add padding to achieve alignment
+    size_t padding = calculate_padding((void*)user_ptr, header->alignment);
+    user_ptr += padding;
+    
+    return (void*)user_ptr;
+}
+
+AlignedAllocator* aligned_allocator_create(void *backing_allocator, size_t default_alignment) {
+    // Validate default alignment
+    if (default_alignment == 0) {
+        default_alignment = 16; // Default to 16-byte for SIMD
+    }
+    
+    if (!is_power_of_2(default_alignment)) {
+        default_alignment = next_power_of_2(default_alignment);
+    }
+    
+    AlignedAllocator *allocator = (AlignedAllocator*)malloc(sizeof(AlignedAllocator));
+    if (!allocator) {
+        return NULL;
+    }
+    
+    allocator->free_list = NULL;
+    allocator->allocated_list = NULL;
+    allocator->backing_allocator = backing_allocator;
+    allocator->default_alignment = default_alignment;
+    allocator->total_allocated = 0;
+    allocator->allocation_count = 0;
+    allocator->owns_backing_allocator = false;
+    
+    return allocator;
+}
+
+void aligned_allocator_destroy(AlignedAllocator *allocator) {
+    if (!allocator) {
+        return;
+    }
+    
+    // Free all allocated memory
+    AllocationHeader *current = allocator->allocated_list;
+    while (current) {
+        AllocationHeader *next = current->next;
+        if (current->actual_ptr) {
+            free_aligned_memory(current->actual_ptr);
+        }
+        current = next;
+    }
+    
+    // Free free list
+    current = allocator->free_list;
+    while (current) {
+        AllocationHeader *next = current->next;
+        if (current->actual_ptr) {
+            free_aligned_memory(current->actual_ptr);
+        }
+        current = next;
+    }
+    
+    free(allocator);
+}
+
+void* aligned_allocator_allocate(AlignedAllocator *allocator, size_t size, size_t alignment) {
+    if (!allocator || size == 0) {
+        return NULL;
+    }
+    
+    // Use default alignment if not specified
+    if (alignment == 0) {
+        alignment = allocator->default_alignment;
+    }
+    
+    // Validate alignment
+    if (!is_power_of_2(alignment)) {
+        alignment = next_power_of_2(alignment);
+    }
+    
+    // Calculate total size needed
+    size_t header_size = sizeof(AllocationHeader);
+    size_t total_size = header_size + size + alignment;
+    
+    // Try to find suitable block in free list
+    AllocationHeader *block = allocator->free_list;
+    AllocationHeader *prev_block = NULL;
+    
+    while (block) {
+        if (block->alignment >= alignment && block->actual_size >= total_size) {
+            // Found suitable block
+            if (prev_block) {
+                prev_block->next = block->next;
+            } else {
+                allocator->free_list = block->next;
+            }
+            
+            // Update block info
+            block->requested_size = size;
+            block->alignment = alignment;
+            
+            // Add to allocated list
+            block->prev = NULL;
+            block->next = allocator->allocated_list;
+            if (allocator->allocated_list) {
+                allocator->allocated_list->prev = block;
+            }
+            allocator->allocated_list = block;
+            
+            allocator->allocation_count++;
+            return get_user_pointer_from_header(block);
+        }
+        
+        prev_block = block;
+        block = block->next;
+    }
+    
+    // No suitable block found, allocate new memory
+    void *actual_ptr = allocate_aligned_memory(total_size, 16); // Header doesn't need special alignment
+    if (!actual_ptr) {
+        return NULL;
+    }
+    
+    // Create header
+    AllocationHeader *header = (AllocationHeader*)actual_ptr;
+    header->actual_ptr = actual_ptr;
+    header->requested_size = size;
+    header->alignment = alignment;
+    header->actual_size = total_size;
+    
+    // Add to allocated list
+    header->prev = NULL;
+    header->next = allocator->allocated_list;
+    if (allocator->allocated_list) {
+        allocator->allocated_list->prev = header;
+    }
+    allocator->allocated_list = header;
+    
+    allocator->total_allocated += total_size;
+    allocator->allocation_count++;
+    
+    return get_user_pointer_from_header(header);
+}
+
+void aligned_allocator_deallocate(AlignedAllocator *allocator, void *ptr) {
+    if (!allocator || !ptr) {
+        return;
+    }
+    
+    AllocationHeader *header = get_header_from_pointer(ptr);
+    if (!header) {
+        return; // Invalid pointer
+    }
+    
+    // Remove from allocated list
+    if (header->prev) {
+        header->prev->next = header->next;
+    } else {
+        allocator->allocated_list = header->next;
+    }
+    
+    if (header->next) {
+        header->next->prev = header->prev;
+    }
+    
+    // Add to free list
+    header->prev = NULL;
+    header->next = allocator->free_list;
+    allocator->free_list = header;
+    
+    allocator->allocation_count--;
+}
+
+void* aligned_allocator_reallocate(AlignedAllocator *allocator, void *ptr, size_t size, size_t alignment) {
+    if (!allocator) {
+        return NULL;
+    }
+    
+    if (!ptr) {
+        return aligned_allocator_allocate(allocator, size, alignment);
+    }
+    
+    if (size == 0) {
+        aligned_allocator_deallocate(allocator, ptr);
+        return NULL;
+    }
+    
+    AllocationHeader *header = get_header_from_pointer(ptr);
+    if (!header) {
+        return NULL; // Invalid pointer
+    }
+    
+    // If new size fits in current block, just update size
+    size_t total_needed = sizeof(AllocationHeader) + size + (alignment ? alignment : allocator->default_alignment);
+    if (total_needed <= header->actual_size) {
+        header->requested_size = size;
+        return ptr;
+    }
+    
+    // Need to allocate new block and copy data
+    void *new_ptr = aligned_allocator_allocate(allocator, size, alignment);
+    if (!new_ptr) {
+        return NULL;
+    }
+    
+    // Copy old data
+    size_t copy_size = header->requested_size < size ? header->requested_size : size;
+    memcpy(new_ptr, ptr, copy_size);
+    
+    // Free old block
+    aligned_allocator_deallocate(allocator, ptr);
+    
+    return new_ptr;
+}
+
+void aligned_allocator_get_stats(AlignedAllocator *allocator, size_t *total_allocated, 
+                                uint32_t *allocation_count, size_t *default_alignment) {
+    if (!allocator) {
+        return;
+    }
+    
+    if (total_allocated) *total_allocated = allocator->total_allocated;
+    if (allocation_count) *allocation_count = allocator->allocation_count;
+    if (default_alignment) *default_alignment = allocator->default_alignment;
+}
+
+bool aligned_allocator_is_valid_alignment(size_t alignment) {
+    return is_power_of_2(alignment) && alignment > 0;
+}
+
+size_t aligned_allocator_get_next_power_of_2(size_t size) {
+    return next_power_of_2(size);
+}
+
+size_t aligned_allocator_round_up(size_t size, size_t alignment) {
+    if (alignment == 0) {
+        return size;
+    }
+    
+    if (!is_power_of_2(alignment)) {
+        alignment = next_power_of_2(alignment);
+    }
+    
+    return (size + alignment - 1) & ~(alignment - 1);
+}

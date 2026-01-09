@@ -1,4 +1,4 @@
-#include "integration/ai_tools/code_snippet_generator.h"
+#include "core/integration/ai_tools/code_snippet_generator.h"
 
 void code_snippet_generator_init() {}
 

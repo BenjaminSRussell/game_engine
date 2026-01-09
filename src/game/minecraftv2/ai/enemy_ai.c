@@ -13,7 +13,10 @@
 // AI day/night cycle behavior variations
 #include <ai/enemy_ai.h>
 #include <core/logger.h>
+#include <ecs/ecs.h>
 #include <ecs/component_ids.h>
+#include <ecs/components/transform.h>
+#include <ecs/components/health.h>
 #include <math.h>
 #include <math/math.h>
 #include <string.h>
@@ -159,9 +162,9 @@ void enemy_ai_perceive(EnemyAI *ai, struct ECSWorld *ecs, EntityID entity_id) {
 
   // Get AI entity's transform
   TransformComponent *ai_transform =
-      ecs_get_component(ecs, entity_id, TRANSFORM_COMPONENT_ID);
+      ecs_get_component(ecs, ecs_get_entity_by_id(ecs, entity_id), TRANSFORM_COMPONENT_ID);
   HealthComponent *ai_health =
-      ecs_get_component(ecs, entity_id, HEALTH_COMPONENT_ID);
+      ecs_get_component(ecs, ecs_get_entity_by_id(ecs, entity_id), HEALTH_COMPONENT_ID);
 
   if (!ai_transform || !ai_health)
     return;

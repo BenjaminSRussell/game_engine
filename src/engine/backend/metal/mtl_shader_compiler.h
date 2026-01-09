@@ -66,6 +66,7 @@ typedef struct metal_compile_result {
 
 typedef struct metal_shader_cache_entry {
     uint64_t source_hash;
+    char* source;  // Owned copy of source for collision check
     MTLLibraryRef library;
     char debug_name[256];
     bool in_use;

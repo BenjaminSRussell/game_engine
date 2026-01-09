@@ -46,6 +46,7 @@ void debug_draw_sphere(debug_renderer_t* dbg, simd_float3 center, float radius, 
 void debug_draw_frustum(debug_renderer_t* dbg, simd_float4x4 inv_view_proj, simd_float4 color);
 void debug_draw_grid(debug_renderer_t* dbg, simd_float3 center, float size, int divisions, simd_float4 color);
 void debug_draw_text_3d(debug_renderer_t* dbg, simd_float3 position, const char* text, simd_float4 color);
+void debug_draw_text(debug_renderer_t* dbg, float x, float y, const char* text, simd_float4 color);
 void debug_clear(debug_renderer_t* dbg);
 
 // Color Constants

@@ -28,9 +28,7 @@
  * MATH TYPES
  * ============================================================================ */
 
-typedef struct vec3 {
-    float x, y, z;
-} vec3_t;
+#include "math/vec3.h"
 
 typedef struct vec4 {
     float x, y, z, w;

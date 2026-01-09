@@ -1,4 +1,4 @@
-#include "integration/blender/addon_bridge.h"
+#include "core/integration/blender/addon_bridge.h"
 
 void blender_bridge_init() {}
 

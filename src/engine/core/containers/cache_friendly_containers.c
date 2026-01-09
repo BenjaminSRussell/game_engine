@@ -1,8 +1,8 @@
-#include "core/containers/cache_friendly_containers.h"
+#include <core/containers/cache_friendly_containers.h>
 #include <stdlib.h>
 
 // Structure of Arrays (SoA) pattern for cache-friendly access
-typedef struct EntitySoA {
+struct EntitySoA {
     float *positions_x;
     float *positions_y;
     float *positions_z;
@@ -11,7 +11,7 @@ typedef struct EntitySoA {
     float *velocities_z;
     size_t count;
     size_t capacity;
-} EntitySoA;
+};
 
 EntitySoA* entity_soa_create(size_t capacity) {
     EntitySoA *soa = (EntitySoA*)malloc(sizeof(EntitySoA));

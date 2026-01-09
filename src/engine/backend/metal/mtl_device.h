@@ -9,8 +9,8 @@
 #ifndef PLATFORM_MTL_DEVICE_H
 #define PLATFORM_MTL_DEVICE_H
 
-#include "backend/metal/mtl_device_caps.h"
-#include "backend/metal/mtl_memory_heap.h"
+#include "mtl_device_caps.h"
+#include "mtl_memory_heap.h"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -51,13 +51,7 @@ metal_device_t* metal_device_get_default(void);
  * @return Raw MTLDevice pointer or NULL.
  */
 void* metal_get_device(metal_device_t* dev);
-    
-/**
- * Retrieves the underlying MTLDevice object.
- * @param dev Pointer to the device wrapper.
- * @return The id<MTLDevice> object.
- */
-void* metal_get_device(metal_device_t* dev);
+
 
 /**
  * Destroys the metal device and releases resources.
@@ -92,10 +86,7 @@ void metal_device_get_memory_info(metal_device_t* dev, mtl_memory_info_t* out_in
  */
 bool metal_device_supports_raytracing(metal_device_t* dev);
 
-/**
- * Retrieves the raw id<MTLDevice> (as void*).
- */
-void* metal_get_device(metal_device_t* dev);
+
 
 #ifdef __cplusplus
 }

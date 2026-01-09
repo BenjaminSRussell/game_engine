@@ -1,7 +1,7 @@
 #ifndef JSON_PARSER_H
 #define JSON_PARSER_H
 
-#include "include/common.h"
+#include "common.h"
 
 typedef enum {
   JSON_NULL,
@@ -43,5 +43,13 @@ JsonValue *json_object_get(JsonValue *object, const char *key);
 const char *json_string_value(JsonValue *value);
 double json_number_value(JsonValue *value);
 bool json_bool_value(JsonValue *value);
+
+// Builder functions
+JsonValue *json_create_object(void);
+JsonValue *json_create_array(void);
+void json_object_set_string(JsonValue *object, const char *key, const char *value);
+void json_object_set_number(JsonValue *object, const char *key, double value);
+void json_object_set_value(JsonValue *object, const char *key, JsonValue *value);
+void json_array_push(JsonValue *array, JsonValue *value);
 
 #endif // JSON_PARSER_H

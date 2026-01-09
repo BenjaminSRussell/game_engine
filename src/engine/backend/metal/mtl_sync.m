@@ -34,7 +34,7 @@ metal_frame_sync_t *metal_frame_sync_create(id<MTLDevice> device,
   // Create shared event for GPU completion tracking
   sync->shared_event = [device newSharedEvent];
   if (!sync->shared_event) {
-    dispatch_release(sync->frame_semaphore);
+    // dispatch_release(sync->frame_semaphore); // ARC handles this
     free(sync);
     return NULL;
   }
@@ -71,19 +71,21 @@ void metal_frame_begin(metal_frame_sync_t *sync) {
 }
 
 void metal_frame_end(metal_frame_sync_t *sync,
-                     metal_command_buffer_t *cmd_buffer) {
-  if (!sync || !cmd_buffer || !cmd_buffer->buffer) {
+                     mtl_command_buffer_t *cmd_buffer) {
+  if (!sync || !cmd_buffer || !(*cmd_buffer)) {
     return;
   }
 
+  id<MTLCommandBuffer> buffer = (__bridge id<MTLCommandBuffer>)(*cmd_buffer);
+
   // Increment frame counter and signal this value when GPU completes
   uint64_t signal_value = ++sync->frame_index;
-  [cmd_buffer->buffer encodeSignalEvent:sync->shared_event value:signal_value];
+  [buffer encodeSignalEvent:sync->shared_event value:signal_value];
 
   // Add completion handler to release the frame slot when GPU is done
   // We need to capture the semaphore in the block
   __block dispatch_semaphore_t sem = sync->frame_semaphore;
-  [cmd_buffer->buffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
+  [buffer addCompletedHandler:^(id<MTLCommandBuffer> _Nonnull buf) {
     // Signal the semaphore to release the frame slot
     dispatch_semaphore_signal(sem);
   }];
@@ -95,12 +97,12 @@ void metal_frame_sync_destroy(metal_frame_sync_t *sync) {
   }
 
   if (sync->shared_event) {
-    [sync->shared_event release];
+    // ARC handles release
     sync->shared_event = nil;
   }
 
   if (sync->frame_semaphore) {
-    dispatch_release(sync->frame_semaphore);
+    // dispatch_release(sync->frame_semaphore);
     sync->frame_semaphore = NULL;
   }
 
@@ -181,8 +183,8 @@ bool metal_frame_wait_for_completion(metal_frame_sync_t *sync,
 
   long result = dispatch_semaphore_wait(wait_sem, timeout);
 
-  dispatch_release(wait_sem);
-  [listener release];
+  // dispatch_release(wait_sem);
+  /* [listener release]; ARC handles this */
 
   return (result == 0) && completed;
 }
@@ -192,7 +194,7 @@ uint64_t metal_frame_get_current_index(metal_frame_sync_t *sync) {
 }
 
 void metal_frame_get_stats(metal_frame_sync_t *sync,
-                           metal_frame_stats_t *stats) {
+                           metal_frame_timing_stats_t *stats) {
   if (!sync || !stats) {
     return;
   }
@@ -264,11 +266,12 @@ metal_fence_t *metal_fence_create(id<MTLDevice> device) {
 }
 
 void metal_fence_encode_wait(metal_fence_t *fence,
-                             metal_command_buffer_t *cmd_buffer,
-                             uint32_t stage) {
-  if (!fence || !fence->fence || !cmd_buffer || !cmd_buffer->buffer) {
+                             mtl_command_buffer_t *cmd_buffer, uint32_t stage) {
+  if (!fence || !fence->fence || !cmd_buffer || !(*cmd_buffer)) {
     return;
   }
+
+  id<MTLCommandBuffer> buffer = (__bridge id<MTLCommandBuffer>)(*cmd_buffer);
 
   // Convert stage flags to MTLRenderStages
   MTLRenderStages mtl_stages = 0;
@@ -282,13 +285,13 @@ void metal_fence_encode_wait(metal_fence_t *fence,
   // For render encoders, we need to wait before the specified stages
   // Note: This is typically called within a render pass encoder context
   // For now, we'll encode a wait at the command buffer level
-  [cmd_buffer->buffer encodeWaitForEvent:(id<MTLEvent>)fence->fence value:1];
+  [buffer encodeWaitForEvent:(id<MTLEvent>)fence->fence value:1];
 }
 
 void metal_fence_encode_signal(metal_fence_t *fence,
-                               metal_command_buffer_t *cmd_buffer,
+                               mtl_command_buffer_t *cmd_buffer,
                                uint32_t stage) {
-  if (!fence || !fence->fence || !cmd_buffer || !cmd_buffer->buffer) {
+  if (!fence || !fence->fence || !cmd_buffer || !(*cmd_buffer)) {
     return;
   }
 
@@ -303,7 +306,8 @@ void metal_fence_encode_signal(metal_fence_t *fence,
 
   // Signal the fence after the specified stages
   // Note: This is typically called within a render pass encoder context
-  [cmd_buffer->buffer encodeSignalEvent:(id<MTLEvent>)fence->fence value:1];
+  id<MTLCommandBuffer> buffer = (__bridge id<MTLCommandBuffer>)(*cmd_buffer);
+  [buffer encodeSignalEvent:(id<MTLEvent>)fence->fence value:1];
 }
 
 void metal_fence_destroy(metal_fence_t *fence) {
@@ -312,7 +316,7 @@ void metal_fence_destroy(metal_fence_t *fence) {
   }
 
   if (fence->fence) {
-    [fence->fence release];
+    // ARC handles release
     fence->fence = nil;
   }
 
@@ -347,14 +351,16 @@ metal_event_t *metal_event_create(id<MTLDevice> device,
 }
 
 void metal_event_encode_signal(metal_event_t *event,
-                               metal_command_buffer_t *cmd_buffer,
+                               mtl_command_buffer_t *cmd_buffer,
                                uint64_t value) {
-  if (!event || !event->event || !cmd_buffer || !cmd_buffer->buffer) {
+  if (!event || !event->event || !cmd_buffer || !(*cmd_buffer)) {
     return;
   }
 
+  id<MTLCommandBuffer> buffer = (__bridge id<MTLCommandBuffer>)(*cmd_buffer);
+
   // Encode GPU signal operation
-  [cmd_buffer->buffer encodeSignalEvent:event->event value:value];
+  [buffer encodeSignalEvent:event->event value:value];
 
   // Update tracked value
   if (value > event->current_value) {
@@ -363,14 +369,15 @@ void metal_event_encode_signal(metal_event_t *event,
 }
 
 void metal_event_encode_wait(metal_event_t *event,
-                             metal_command_buffer_t *cmd_buffer,
-                             uint64_t value) {
-  if (!event || !event->event || !cmd_buffer || !cmd_buffer->buffer) {
+                             mtl_command_buffer_t *cmd_buffer, uint64_t value) {
+  if (!event || !event->event || !cmd_buffer || !(*cmd_buffer)) {
     return;
   }
 
+  id<MTLCommandBuffer> buffer = (__bridge id<MTLCommandBuffer>)(*cmd_buffer);
+
   // Encode GPU wait operation
-  [cmd_buffer->buffer encodeWaitForEvent:event->event value:value];
+  [buffer encodeWaitForEvent:event->event value:value];
 }
 
 bool metal_event_wait(metal_event_t *event, uint64_t value,
@@ -406,8 +413,8 @@ bool metal_event_wait(metal_event_t *event, uint64_t value,
 
   long result = dispatch_semaphore_wait(wait_semaphore, timeout);
 
-  dispatch_release(wait_semaphore);
-  [listener release];
+  // dispatch_release(wait_semaphore);
+  // [listener release];
 
   return (result == 0) && signaled;
 }
@@ -436,7 +443,7 @@ void metal_event_destroy(metal_event_t *event) {
   }
 
   if (event->event) {
-    [event->event release];
+    // ARC handles release
     event->event = nil;
   }
 
@@ -459,7 +466,8 @@ bool metal_event_add_listener(metal_event_t *event, uint64_t value,
     return false;
   }
 
-  // Capture event and callback in the block - Metal retains the listener during callback
+  // Capture event and callback in the block - Metal retains the listener during
+  // callback
   [event->event notifyListener:listener
                        atValue:value
                          block:^(id<MTLSharedEvent> sharedEvent, uint64_t val) {
@@ -468,9 +476,10 @@ bool metal_event_add_listener(metal_event_t *event, uint64_t value,
                            }
                          }];
 
-  // IMPORTANT: Keep listener alive - MTLSharedEvent retains it during the callback
-  // The listener will be released by MTLSharedEvent automatically after the callback
-  // DO NOT release it here as it causes EXC_BAD_ACCESS when the callback fires
+  // IMPORTANT: Keep listener alive - MTLSharedEvent retains it during the
+  // callback The listener will be released by MTLSharedEvent automatically
+  // after the callback DO NOT release it here as it causes EXC_BAD_ACCESS when
+  // the callback fires
 
   return true;
 }
@@ -493,7 +502,7 @@ bool metal_event_wait_multiple(metal_event_t **events, uint64_t *values,
 
 void metal_event_encode_wait_multiple(metal_event_t **events, uint64_t *values,
                                       uint32_t count,
-                                      metal_command_buffer_t *cmd_buffer) {
+                                      mtl_command_buffer_t *cmd_buffer) {
   if (!events || !values || count == 0 || !cmd_buffer) {
     return;
   }
@@ -518,7 +527,7 @@ metal_event_t *metal_create_sync_point(id<MTLDevice> device) {
 
 bool metal_check_resource_hazard(metal_resource_tracker_t *tracker,
                                  void *resource, metal_resource_access_t access,
-                                 metal_command_buffer_t *cmd_buffer,
+                                 mtl_command_buffer_t *cmd_buffer,
                                  uint64_t frame_index) {
   if (!tracker || !resource || !cmd_buffer) {
     return false;
@@ -568,7 +577,7 @@ bool metal_check_resource_hazard(metal_resource_tracker_t *tracker,
 }
 
 // ============================================================================
-// Enhanced Resource Hazard Tracking Implementation  
+// Enhanced Resource Hazard Tracking Implementation
 // ============================================================================
 
 bool metal_analyze_resource_hazard(metal_resource_tracker_t *tracker,
@@ -578,19 +587,20 @@ bool metal_analyze_resource_hazard(metal_resource_tracker_t *tracker,
   if (!tracker || !resource || !info) {
     return false;
   }
-  
+
   // Initialize hazard info
   memset(info, 0, sizeof(metal_hazard_info_t));
-  
+
   // Check if this is a new resource
   if (tracker->resource != resource) {
     info->has_hazard = false;
     return false;
   }
-  
+
   // Analyze hazard type
   if (tracker->last_access == METAL_RESOURCE_ACCESS_WRITE) {
-    if (access == METAL_RESOURCE_ACCESS_READ || access == METAL_RESOURCE_ACCESS_READ_WRITE) {
+    if (access == METAL_RESOURCE_ACCESS_READ ||
+        access == METAL_RESOURCE_ACCESS_READ_WRITE) {
       info->is_raw = true;
       info->has_hazard = true;
     } else if (access == METAL_RESOURCE_ACCESS_WRITE) {
@@ -598,7 +608,8 @@ bool metal_analyze_resource_hazard(metal_resource_tracker_t *tracker,
       info->has_hazard = true;
     }
   } else if (tracker->last_access == METAL_RESOURCE_ACCESS_READ) {
-    if (access == METAL_RESOURCE_ACCESS_WRITE || access == METAL_RESOURCE_ACCESS_READ_WRITE) {
+    if (access == METAL_RESOURCE_ACCESS_WRITE ||
+        access == METAL_RESOURCE_ACCESS_READ_WRITE) {
       info->is_war = true;
       info->has_hazard = true;
     }
@@ -608,42 +619,41 @@ bool metal_analyze_resource_hazard(metal_resource_tracker_t *tracker,
     info->is_war = (access == METAL_RESOURCE_ACCESS_WRITE);
     info->is_waw = (access == METAL_RESOURCE_ACCESS_WRITE);
   }
-  
+
   if (info->has_hazard) {
     info->needs_barrier = true;
-    info->recommended_stages = METAL_STAGE_VERTEX | METAL_STAGE_FRAGMENT | METAL_STAGE_COMPUTE;
+    info->recommended_stages =
+        METAL_STAGE_VERTEX | METAL_STAGE_FRAGMENT | METAL_STAGE_COMPUTE;
   }
-  
+
   return info->has_hazard;
 }
 
 void metal_insert_texture_barrier(metal_command_buffer_t *cmd_buffer,
-                                  void *texture,
-                                  uint32_t stages) {
+                                  void *texture, uint32_t stages) {
   if (!cmd_buffer || !texture) {
     return;
   }
-  
+
   // Note: Metal doesn't have explicit texture barriers like Vulkan
   // Instead, we use fences at the command encoder level
 }
 
 void metal_insert_buffer_barrier(metal_command_buffer_t *cmd_buffer,
-                                 void *buffer,
-                                 uint32_t stages) {
+                                 void *buffer, uint32_t stages) {
   if (!cmd_buffer || !buffer) {
     return;
   }
-  
+
   // Note: Similar to texture barriers, Metal uses fences
 }
 
 void metal_resource_tracker_init(metal_resource_tracker_t *tracker,
-                                metal_resource_type_t type) {
+                                 metal_resource_type_t type) {
   if (!tracker) {
     return;
   }
-  
+
   memset(tracker, 0, sizeof(metal_resource_tracker_t));
   tracker->type = type;
 }
@@ -652,10 +662,10 @@ void metal_resource_tracker_reset(metal_resource_tracker_t *tracker) {
   if (!tracker) {
     return;
   }
-  
+
   if (tracker->last_fence) {
     metal_fence_destroy(tracker->last_fence);
   }
-  
+
   memset(tracker, 0, sizeof(metal_resource_tracker_t));
 }
