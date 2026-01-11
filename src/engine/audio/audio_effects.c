@@ -189,3 +189,106 @@ u32 audio_effect_create_reverb(AudioEffectsSystem *system,
   system->active_effect_count++;
   return (u32)slot;
 }
+
+u32 audio_effect_create_echo(AudioEffectsSystem *system, f32 delay,
+                             f32 feedback) {
+  if (!system)
+    return 0xFFFFFFFF;
+
+  i32 slot = find_free_effect_slot(system);
+  if (slot < 0)
+    return 0xFFFFFFFF;
+
+  AudioEffect *effect = &system->effects[slot];
+  effect->type = EFFECT_TYPE_ECHO;
+  effect->active = true;
+  effect->params.echo = (EchoParams){.delay_time = delay,
+                                     .feedback = feedback,
+                                     .wet_level = 0.5f,
+                                     .dry_level = 0.5f};
+
+  // Allocate buffer for 2 seconds max delay
+  u32 sample_rate = 44100;
+  u32 buffer_samples = sample_rate * 2;
+  effect->buffer = (f32 *)calloc(buffer_samples, sizeof(f32));
+  effect->buffer_size = buffer_samples;
+  effect->buffer_position = 0;
+
+  system->active_effect_count++;
+  return (u32)slot;
+}
+
+u32 audio_effect_create_lowpass(AudioEffectsSystem *system, f32 cutoff_freq) {
+  if (!system)
+    return 0xFFFFFFFF;
+
+  i32 slot = find_free_effect_slot(system);
+  if (slot < 0)
+    return 0xFFFFFFFF;
+
+  AudioEffect *effect = &system->effects[slot];
+  effect->type = EFFECT_TYPE_LOWPASS;
+  effect->active = true;
+  effect->params.filter = (FilterParams){
+      .cutoff_freq = cutoff_freq, .resonance = 0.1f, .wet_level = 1.0f};
+
+  // Filters need history for IIR (input/output history)
+  // [x1, x2, y1, y2] per channel. Mono for simplicity or stereo?
+  // Let's allocate small buffer for history states.
+  effect->buffer = (f32 *)calloc(16, sizeof(f32));
+  effect->buffer_size = 16;
+  effect->buffer_position = 0;
+
+  system->active_effect_count++;
+  return (u32)slot;
+}
+
+u32 audio_effect_create_highpass(AudioEffectsSystem *system, f32 cutoff_freq) {
+  if (!system)
+    return 0xFFFFFFFF;
+
+  i32 slot = find_free_effect_slot(system);
+  if (slot < 0)
+    return 0xFFFFFFFF;
+
+  AudioEffect *effect = &system->effects[slot];
+  effect->type = EFFECT_TYPE_HIGHPASS;
+  effect->active = true;
+  effect->params.filter = (FilterParams){
+      .cutoff_freq = cutoff_freq, .resonance = 0.1f, .wet_level = 1.0f};
+
+  effect->buffer = (f32 *)calloc(16, sizeof(f32));
+  effect->buffer_size = 16;
+  effect->buffer_position = 0;
+
+  system->active_effect_count++;
+  return (u32)slot;
+}
+
+void audio_effect_set_reverb_params(AudioEffectsSystem *system, u32 effect_id,
+                                    ReverbParams params) {
+  if (!system || effect_id >= MAX_EFFECT_BUSES)
+    return;
+  if (system->effects[effect_id].type == EFFECT_TYPE_REVERB) {
+    system->effects[effect_id].params.reverb = params;
+  }
+}
+
+void audio_effect_set_echo_params(AudioEffectsSystem *system, u32 effect_id,
+                                  EchoParams params) {
+  if (!system || effect_id >= MAX_EFFECT_BUSES)
+    return;
+  if (system->effects[effect_id].type == EFFECT_TYPE_ECHO) {
+    system->effects[effect_id].params.echo = params;
+  }
+}
+
+void audio_effect_set_filter_params(AudioEffectsSystem *system, u32 effect_id,
+                                    FilterParams params) {
+  if (!system || effect_id >= MAX_EFFECT_BUSES)
+    return;
+  if (system->effects[effect_id].type == EFFECT_TYPE_LOWPASS ||
+      system->effects[effect_id].type == EFFECT_TYPE_HIGHPASS) {
+    system->effects[effect_id].params.filter = params;
+  }
+}
