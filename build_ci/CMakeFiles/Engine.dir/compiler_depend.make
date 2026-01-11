@@ -109738,7 +109738,8 @@ CMakeFiles/Engine.dir/src/engine/effects/decals/decal_streaming.c.o: /Users/benj
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/materials/decal_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/mat4.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h
 
 CMakeFiles/Engine.dir/src/engine/effects/decals/decals/decal_projection.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/decals/decals/decal_projection.c
 
@@ -109756,7 +109757,140 @@ CMakeFiles/Engine.dir/src/engine/effects/destruction/fracture/runtime_fracture.c
 
 CMakeFiles/Engine.dir/src/engine/effects/destruction/fracture/voronoi_fracture.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/destruction/fracture/voronoi_fracture.c
 
-CMakeFiles/Engine.dir/src/engine/effects/destruction/fracture_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/destruction/fracture_system.c
+CMakeFiles/Engine.dir/src/engine/effects/destruction/fracture_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/destruction/fracture_system.c \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_abort.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_bounds.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_printf.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_time.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint16_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint32_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/alloca.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/machine/_structs.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_mcontext.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/signal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_ptrcheck.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/pthread_impl.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/qos.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/sched.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_common.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_strings.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stddef.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdlib.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/string.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/__endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_posix_availability.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_cond_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_condattr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_key_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_once_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlock_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlockattr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_clock_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ct_rune_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_id_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int32_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mach_port_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_pid_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rune_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_seek_set.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigaltstack.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigset_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_time_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timespec.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int64_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int8_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ucontext.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uid_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/appleapiopts.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/qos.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/time.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_max_align_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_ptrdiff_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/memory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/effects/vfx/destruction_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/mat4.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h
 
 CMakeFiles/Engine.dir/src/engine/effects/destruction/rendering_destruction/crack_rendering.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/destruction/rendering_destruction/crack_rendering.c
 
@@ -117357,644 +117491,19 @@ CMakeFiles/Engine.dir/src/engine/math/vec3.c.o: /Users/benjaminrussell/Desktop/M
 
 CMakeFiles/Engine.dir/src/engine/math/vec4.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/math/vec4.c
 
-CMakeFiles/Engine.dir/src/engine/physics/advanced/advanced_physics_complete.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/advanced_physics_complete.c
-
-CMakeFiles/Engine.dir/src/engine/physics/advanced/cloth_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/cloth_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/advanced/complete_physics_batch.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/complete_physics_batch.c
-
-CMakeFiles/Engine.dir/src/engine/physics/advanced/final_systems_batch.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/final_systems_batch.c
-
-CMakeFiles/Engine.dir/src/engine/physics/advanced/fluid_simulation.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/fluid_simulation.c
-
-CMakeFiles/Engine.dir/src/engine/physics/advanced/physics_final_batch.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/physics_final_batch.c
-
-CMakeFiles/Engine.dir/src/engine/physics/advanced/soft_body_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/soft_body_solver.c
-
-CMakeFiles/Engine.dir/src/engine/physics/advanced/vehicle_controller.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/vehicle_controller.c
-
-CMakeFiles/Engine.dir/src/engine/physics/aerodynamics/lift_drag.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/aerodynamics/lift_drag.c
-
-CMakeFiles/Engine.dir/src/engine/physics/aerodynamics/wind_field.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/aerodynamics/wind_field.c
-
-CMakeFiles/Engine.dir/src/engine/physics/ballistics/trajectory_sim.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/ballistics/trajectory_sim.c
-
 CMakeFiles/Engine.dir/src/engine/physics/block_physics.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/block_physics.c
 
 CMakeFiles/Engine.dir/src/engine/physics/broadphase/aabb_tree.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/aabb_tree.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/broadphase_manager.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/broadphase_manager.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/broadphase_processor.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/broadphase_processor.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/broadphase_renderer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/broadphase_renderer.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/broadphase_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/broadphase_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/builder_05.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/builder_05.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/gpu_broadphase.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/gpu_broadphase.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/manager_01.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/manager_01.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/processor_04.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/processor_04.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/renderer_03.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/renderer_03.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/sap_algorithm.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/sap_algorithm.c
-
-CMakeFiles/Engine.dir/src/engine/physics/broadphase/system_02.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/system_02.c
-
-CMakeFiles/Engine.dir/src/engine/physics/character/climbing_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/climbing_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/character/cloth/cloth_collision.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/cloth/cloth_collision.c
-
-CMakeFiles/Engine.dir/src/engine/physics/character/cloth/cloth_constraints.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/cloth/cloth_constraints.c
-
-CMakeFiles/Engine.dir/src/engine/physics/character/cloth/cloth_simulation.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/cloth/cloth_simulation.c
-
-CMakeFiles/Engine.dir/src/engine/physics/character/hair/hair_rendering.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/hair/hair_rendering.c
-
-CMakeFiles/Engine.dir/src/engine/physics/character/hair/hair_simulation.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/hair/hair_simulation.c
-
-CMakeFiles/Engine.dir/src/engine/physics/character/hair/hair_strand.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/hair/hair_strand.c
-
-CMakeFiles/Engine.dir/src/engine/physics/cloth/builder_05.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/builder_05.c
-
-CMakeFiles/Engine.dir/src/engine/physics/cloth/cloth_physics_manager.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/cloth_physics_manager.c
-
-CMakeFiles/Engine.dir/src/engine/physics/cloth/cloth_physics_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/cloth_physics_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/cloth/cloth_processor.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/cloth_processor.c
-
-CMakeFiles/Engine.dir/src/engine/physics/cloth/cloth_renderer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/cloth_renderer.c
-
-CMakeFiles/Engine.dir/src/engine/physics/cloth/manager_01.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/manager_01.c
-
-CMakeFiles/Engine.dir/src/engine/physics/cloth/processor_04.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/processor_04.c
-
-CMakeFiles/Engine.dir/src/engine/physics/cloth/renderer_03.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/renderer_03.c
-
-CMakeFiles/Engine.dir/src/engine/physics/cloth/system_02.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/system_02.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/broadphase.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/broadphase.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/builder_05.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/builder_05.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/collision_manager.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_manager.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/collision_primitive.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_primitive.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/collision_processor.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_processor.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/collision_renderer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_renderer.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/collision_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/continuous_collision.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/continuous_collision.c
 
 CMakeFiles/Engine.dir/src/engine/physics/collision/epa_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/epa_solver.c
 
 CMakeFiles/Engine.dir/src/engine/physics/collision/gjk_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/gjk_solver.c
 
-CMakeFiles/Engine.dir/src/engine/physics/collision/heightfield_collider.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/heightfield_collider.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/manager_01.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/manager_01.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/narrowphase.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/narrowphase.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/processor_04.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/processor_04.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/renderer_03.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/renderer_03.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision/system_02.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/system_02.c
-
-CMakeFiles/Engine.dir/src/engine/physics/collision_detection.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision_detection.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/advanced_constraints.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/advanced_constraints.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/ball_socket.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/ball_socket.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/builder_05.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/builder_05.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/constraint_manager.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/constraint_manager.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/constraint_processor.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/constraint_processor.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/constraint_renderer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/constraint_renderer.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/gear_joint.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/gear_joint.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/hinge_joint.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/hinge_joint.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/manager_01.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/manager_01.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/physics_constraint_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/physics_constraint_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/processor_04.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/processor_04.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/renderer_03.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/renderer_03.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/slider_joint.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/slider_joint.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/spring_joint.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/spring_joint.c
-
-CMakeFiles/Engine.dir/src/engine/physics/constraints/system_02.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/system_02.c
-
-CMakeFiles/Engine.dir/src/engine/physics/continuous_collision.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/continuous_collision.c
-
-CMakeFiles/Engine.dir/src/engine/physics/core/physics_broadphase.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_broadphase.c
-
-CMakeFiles/Engine.dir/src/engine/physics/core/physics_core.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_core.c
-
-CMakeFiles/Engine.dir/src/engine/physics/core/physics_rigid_body_api.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_rigid_body_api.c
-
-CMakeFiles/Engine.dir/src/engine/physics/core/physics_rigid_body_helpers.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_rigid_body_helpers.c
-
-CMakeFiles/Engine.dir/src/engine/physics/core/physics_shapes.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_shapes.c
-
-CMakeFiles/Engine.dir/src/engine/physics/core_rigid_body.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core_rigid_body.c
-
-CMakeFiles/Engine.dir/src/engine/physics/destruction/destruction_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/destruction/destruction_impl.c \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_bounds.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_printf.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint16_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint32_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_common.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_posix_availability.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int32_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_seek_set.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int64_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int8_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/destruction/destruction_impl.h
-
-CMakeFiles/Engine.dir/src/engine/physics/destruction/explosion_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/destruction/explosion_system.c \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_bounds.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_printf.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint16_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint32_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_common.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_posix_availability.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int32_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_seek_set.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int64_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int8_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/destruction/destruction_impl.h
-
-CMakeFiles/Engine.dir/src/engine/physics/dynamics/character_controller_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/character_controller_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/dynamics/physics_destruction.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/physics_destruction.c
-
-CMakeFiles/Engine.dir/src/engine/physics/dynamics/physics_ragdoll.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/physics_ragdoll.c
-
-CMakeFiles/Engine.dir/src/engine/physics/dynamics/physics_softbody.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/physics_softbody.c
-
-CMakeFiles/Engine.dir/src/engine/physics/dynamics/physics_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/physics_solver.c
-
-CMakeFiles/Engine.dir/src/engine/physics/dynamics/rigid_body.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/rigid_body.c
-
-CMakeFiles/Engine.dir/src/engine/physics/dynamics/softbody_simulation.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/softbody_simulation.c
-
-CMakeFiles/Engine.dir/src/engine/physics/dynamics/vehicle_physics.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/vehicle_physics.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluid/builder_05.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/builder_05.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluid/fluid_physics_manager.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/fluid_physics_manager.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluid/fluid_physics_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/fluid_physics_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluid/fluid_processor.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/fluid_processor.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluid/fluid_renderer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/fluid_renderer.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluid/manager_01.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/manager_01.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluid/processor_04.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/processor_04.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluid/renderer_03.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/renderer_03.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluid/system_02.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/system_02.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluids/buoyancy_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/buoyancy_solver.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluids/flip_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/flip_solver.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluids/fluid_baker.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/fluid_baker.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluids/fluid_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/fluid_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluids/navier_stokes.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/navier_stokes.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluids/ocean_simulator.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/ocean_simulator.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluids/shallow_water.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/shallow_water.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluids/sph_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/sph_solver.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluids/sph_solver_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/sph_solver_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fluids/viscosity_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/viscosity_solver.c
-
-CMakeFiles/Engine.dir/src/engine/physics/fracture/voronoi_shatter.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fracture/voronoi_shatter.c
-
 CMakeFiles/Engine.dir/src/engine/physics/integration/physics_integration.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/integration/physics_integration.c
-
-CMakeFiles/Engine.dir/src/engine/physics/narrowphase/builder_05.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/builder_05.c
-
-CMakeFiles/Engine.dir/src/engine/physics/narrowphase/collision_gjk_epa.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/collision_gjk_epa.c
 
 CMakeFiles/Engine.dir/src/engine/physics/narrowphase/contact_manifold.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/contact_manifold.c
 
-CMakeFiles/Engine.dir/src/engine/physics/narrowphase/manager_01.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/manager_01.c
-
-CMakeFiles/Engine.dir/src/engine/physics/narrowphase/narrowphase_manager.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/narrowphase_manager.c
-
-CMakeFiles/Engine.dir/src/engine/physics/narrowphase/narrowphase_processor.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/narrowphase_processor.c
-
-CMakeFiles/Engine.dir/src/engine/physics/narrowphase/narrowphase_renderer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/narrowphase_renderer.c
-
-CMakeFiles/Engine.dir/src/engine/physics/narrowphase/narrowphase_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/narrowphase_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/narrowphase/processor_04.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/processor_04.c
-
-CMakeFiles/Engine.dir/src/engine/physics/narrowphase/renderer_03.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/renderer_03.c
-
-CMakeFiles/Engine.dir/src/engine/physics/narrowphase/system_02.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/system_02.c
-
-CMakeFiles/Engine.dir/src/engine/physics/particles/builder_05.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/builder_05.c
-
-CMakeFiles/Engine.dir/src/engine/physics/particles/manager_01.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/manager_01.c
-
-CMakeFiles/Engine.dir/src/engine/physics/particles/particle_physics_manager.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/particle_physics_manager.c
-
-CMakeFiles/Engine.dir/src/engine/physics/particles/particle_physics_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/particle_physics_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/particles/particle_processor.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/particle_processor.c
-
-CMakeFiles/Engine.dir/src/engine/physics/particles/particle_renderer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/particle_renderer.c
-
-CMakeFiles/Engine.dir/src/engine/physics/particles/processor_04.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/processor_04.c
-
-CMakeFiles/Engine.dir/src/engine/physics/particles/renderer_03.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/renderer_03.c
-
-CMakeFiles/Engine.dir/src/engine/physics/particles/system_02.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/system_02.c
-
-CMakeFiles/Engine.dir/src/engine/physics/pbd/pbd_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/pbd/pbd_solver.c
-
-CMakeFiles/Engine.dir/src/engine/physics/physics_advanced_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_advanced_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_api_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_api_impl_alt.c
-
-CMakeFiles/Engine.dir/src/engine/physics/physics_complete.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_complete.c
-
-CMakeFiles/Engine.dir/src/engine/physics/physics_core_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_core_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/physics_integration.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_integration.c
-
-CMakeFiles/Engine.dir/src/engine/physics/physics_world_stubs.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_world_stubs.c \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_abort.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_bounds.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_printf.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint16_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint32_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/alloca.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_endian.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/machine/_structs.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_endian.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_mcontext.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/endian.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/signal.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_ptrcheck.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_common.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_strings.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stddef.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdlib.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/string.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/__endian.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_posix_availability.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ct_rune_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_id_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int32_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_pid_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rune_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_seek_set.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigaltstack.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigset_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int64_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int8_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ucontext.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uid_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_wchar_t.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/appleapiopts.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_max_align_t.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_ptrdiff_t.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdatomic.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/utils.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/aabb.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/frustum.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/mat4.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/math.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/plane.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/ray.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/physics/physics.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_types.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_engine_core.h
-
 CMakeFiles/Engine.dir/src/engine/physics/queries/physics_queries.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/queries/physics_queries.c
-
-CMakeFiles/Engine.dir/src/engine/physics/ragdoll/pose_matching.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/ragdoll/pose_matching.c
-
-CMakeFiles/Engine.dir/src/engine/physics/ragdoll/ragdoll_controller.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/ragdoll/ragdoll_controller.c
-
-CMakeFiles/Engine.dir/src/engine/physics/ragdoll/ragdoll_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/ragdoll/ragdoll_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/ragdoll/skeleton_matching.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/ragdoll/skeleton_matching.c
-
-CMakeFiles/Engine.dir/src/engine/physics/rigid/builder_05.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/builder_05.c
-
-CMakeFiles/Engine.dir/src/engine/physics/rigid/manager_01.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/manager_01.c
-
-CMakeFiles/Engine.dir/src/engine/physics/rigid/processor_04.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/processor_04.c
-
-CMakeFiles/Engine.dir/src/engine/physics/rigid/renderer_03.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/renderer_03.c
-
-CMakeFiles/Engine.dir/src/engine/physics/rigid/rigidbody_manager.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/rigidbody_manager.c
-
-CMakeFiles/Engine.dir/src/engine/physics/rigid/rigidbody_processor.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/rigidbody_processor.c
-
-CMakeFiles/Engine.dir/src/engine/physics/rigid/rigidbody_renderer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/rigidbody_renderer.c
-
-CMakeFiles/Engine.dir/src/engine/physics/rigid/rigidbody_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/rigidbody_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/rigid/system_02.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/system_02.c
-
-CMakeFiles/Engine.dir/src/engine/physics/rigid_body/rigid_body_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid_body/rigid_body_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/simulation_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/simulation_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/simulation_loop.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/simulation_loop.c
-
-CMakeFiles/Engine.dir/src/engine/physics/soft/builder_05.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/builder_05.c
-
-CMakeFiles/Engine.dir/src/engine/physics/soft/manager_01.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/manager_01.c
-
-CMakeFiles/Engine.dir/src/engine/physics/soft/processor_04.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/processor_04.c
-
-CMakeFiles/Engine.dir/src/engine/physics/soft/renderer_03.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/renderer_03.c
-
-CMakeFiles/Engine.dir/src/engine/physics/soft/softbody_manager.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/softbody_manager.c
-
-CMakeFiles/Engine.dir/src/engine/physics/soft/softbody_processor.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/softbody_processor.c
-
-CMakeFiles/Engine.dir/src/engine/physics/soft/softbody_renderer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/softbody_renderer.c
-
-CMakeFiles/Engine.dir/src/engine/physics/soft/softbody_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/softbody_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/soft/system_02.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/system_02.c
-
-CMakeFiles/Engine.dir/src/engine/physics/softbody/cloth_self_collision.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/cloth_self_collision.c
-
-CMakeFiles/Engine.dir/src/engine/physics/softbody/cloth_simulation.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/cloth_simulation.c
-
-CMakeFiles/Engine.dir/src/engine/physics/softbody/cloth_simulation_advanced.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/cloth_simulation_advanced.c
-
-CMakeFiles/Engine.dir/src/engine/physics/softbody/fem_deformable.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/fem_deformable.c
-
-CMakeFiles/Engine.dir/src/engine/physics/softbody/rope_simulation.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/rope_simulation.c
-
-CMakeFiles/Engine.dir/src/engine/physics/softbody/skinning_constraints.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/skinning_constraints.c
-
-CMakeFiles/Engine.dir/src/engine/physics/softbody/softbody_constraints.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/softbody_constraints.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/builder_05.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/builder_05.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/constraint_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/constraint_solver.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/constraint_solver_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/constraint_solver_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/contact_cache.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/contact_cache.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/contact_manifold.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/contact_manifold.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/debug_visualization.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/debug_visualization.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/island_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/island_solver.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/joint_motors.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/joint_motors.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/manager_01.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/manager_01.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/performance_profiler.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/performance_profiler.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/physics_solver_manager.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/physics_solver_manager.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/physics_solver_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/physics_solver_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/processor_04.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/processor_04.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/renderer_03.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/renderer_03.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/sequential_impulse.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/sequential_impulse.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/sleep_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/sleep_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/soft_body.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/soft_body.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/solver_constraints_simd.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/solver_constraints_simd.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/solver_island.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/solver_island.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/solver_processor.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/solver_processor.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/solver_renderer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/solver_renderer.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/spatial_hash.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/spatial_hash.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/system_02.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/system_02.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/time_step.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/time_step.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/warm_starting.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/warm_starting.c
-
-CMakeFiles/Engine.dir/src/engine/physics/solver/xpbd_solver.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/xpbd_solver.c
-
-CMakeFiles/Engine.dir/src/engine/physics/spatial/octree.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/spatial/octree.c
-
-CMakeFiles/Engine.dir/src/engine/physics/system/physics_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/system/physics_system.c
-
-CMakeFiles/Engine.dir/src/engine/physics/vehicle/advanced_vehicle_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicle/advanced_vehicle_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/vehicle/tire_model.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicle/tire_model.c
-
-CMakeFiles/Engine.dir/src/engine/physics/vehicle/vehicle_physics_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicle/vehicle_physics_impl.c
-
-CMakeFiles/Engine.dir/src/engine/physics/vehicles/engine_model.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicles/engine_model.c
-
-CMakeFiles/Engine.dir/src/engine/physics/vehicles/suspension.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicles/suspension.c
-
-CMakeFiles/Engine.dir/src/engine/physics/vehicles/suspension_bridge.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicles/suspension_bridge.c
-
-CMakeFiles/Engine.dir/src/engine/physics/vehicles/tire_model.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicles/tire_model.c
-
-CMakeFiles/Engine.dir/src/engine/physics/vehicles/vehicle_dynamics.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicles/vehicle_dynamics.c
 
 CMakeFiles/Engine.dir/src/engine/platform/biome_api_bridge.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/biome_api_bridge.c
 
@@ -124931,6 +124440,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/tools/analytics.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/subsurface/skin_shading.c:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/special/transmission.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/special/gemstone.c:
@@ -124965,6 +124476,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/clearcoat/car_paint.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/brdf/visibility_term.c:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/brdf/multiscatter_ggx.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/brdf/energy_conservation.c:
@@ -124988,6 +124501,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/scripting/script_bridge_impl.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/scripting/lua_bindings.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/scripting/core/visual_script_graph.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/scripting/c_bindings.c:
 
@@ -125114,6 +124629,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/render_graph/resource_aliasing.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/render_graph/render_graph_example.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/raytracing_reflections.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/raytracing_impl.c:
 
@@ -125269,6 +124786,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/hybrid_renderer.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/hdr_tonemap.c:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/grid_renderer.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/graph/render_graph_impl.c:
@@ -125288,6 +124807,10 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/gpu_driven/draw_command_gen.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/gpu_driven/compute_dispatch.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/scripting/lua/lua_binder_generator.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/gpu_driven/buffer_pool.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/gpu/gpu_shader_reload.c:
 
@@ -125330,6 +124853,10 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/environment/ibl.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/environment/environment_manager.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/light_culling.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/gbuffer_resolve.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/gbuffer_pass.c:
 
@@ -125421,6 +124948,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/screen_space_reflections.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/screen_space/ssr_resolve.c:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/screen_space/ssr_fallback.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/screen_space/ss_shadows.c:
@@ -125438,6 +124967,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/motion_blur/motion_blur_gather.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/motion_blur/camera_motion_blur.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/depth_of_field/dof_parameters.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/depth_of_field/dof_combine.c:
 
@@ -125529,6 +125060,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/post_processing_api_bridge.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/physics_debug_api_bridge.c:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/outline_rendering_api_bridge.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/occlusion_api_bridge.c:
@@ -125542,6 +125075,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/mesh_optimizer_api_bridge.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/material_override_api_bridge.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/lod_api_bridge.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/input/input_system.h:
 
@@ -125591,269 +125126,15 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/bounds_visualization_api_bridge.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicles/engine_model.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/scripting/lua/lua_binder_generator.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/gpu_driven/buffer_pool.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicle/tire_model.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicle/advanced_vehicle_impl.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/system/physics_system.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/time_step.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/spatial_hash.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/solver_renderer.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/solver_island.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/brdf/visibility_term.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/solver_constraints_simd.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/soft_body.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/sleep_system.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/sequential_impulse.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/gbuffer_resolve.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/processor_04.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/physics_solver_system.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/physics_solver_manager.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/manager_01.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/joint_motors.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/debug_visualization.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/contact_cache.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/constraint_solver.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/builder_05.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/softbody_constraints.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/skinning_constraints.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/cloth_simulation.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/cloth_self_collision.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/softbody_system.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/softbody_processor.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/softbody_manager.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/renderer_03.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/builder_05.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/light_culling.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/system_02.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/rigidbody_processor.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/rigidbody_manager.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/manager_01.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/ragdoll/skeleton_matching.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/lod_api_bridge.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/ragdoll/ragdoll_impl.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/ragdoll/ragdoll_controller.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_engine_core.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_world_stubs.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_integration.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_complete.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_api_impl_alt.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/pbd/pbd_solver.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/system_02.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/processor_04.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/particle_processor.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/particle_physics_system.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/subsurface/skin_shading.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/manager_01.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/system_02.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/renderer_03.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/processor_04.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/physics_debug_api_bridge.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/narrowphase_system.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/depth_of_field/dof_parameters.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/narrowphase_renderer.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/simulation_loop.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/narrowphase_processor.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/narrowphase_manager.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/manager_01.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/contact_manifold.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/collision_gjk_epa.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/narrowphase/builder_05.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/integration/physics_integration.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/sph_solver.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/shallow_water.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/ocean_simulator.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/fluid_system.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/fluid_baker.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/flip_solver.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/processor_04.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/manager_01.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/hdr_tonemap.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/fluid_processor.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/fluid_physics_system.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/fluid_physics_manager.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/builder_05.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/vehicle_physics.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/scripting/core/visual_script_graph.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/destruction/explosion_system.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/destruction/destruction_impl.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core_rigid_body.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/slider_joint.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/processor_04.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/physics_constraint_system.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/manager_01.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/hinge_joint.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/gear_joint.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/constraint_renderer.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/constraint_processor.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/advanced_constraints.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision_detection.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/system_02.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/renderer_03.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/narrowphase.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/manager_01.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/epa_solver.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/continuous_collision.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_renderer.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/screen_space/ssr_resolve.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_primitive.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_manager.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/builder_05.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/raytracing_reflections.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/system_02.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/renderer_03.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/manager_01.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/cloth_physics_manager.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/hair/hair_strand.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/contact_manifold.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/hair/hair_rendering.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/cloth/cloth_collision.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/sap_algorithm.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/renderer_03.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/manager_01.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/navier_stokes.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/builder_05.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/broadphase_manager.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/aabb_tree.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/block_physics.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/ballistics/trajectory_sim.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/aerodynamics/lift_drag.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/vehicle_controller.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/physics_final_batch.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/final_systems_batch.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/cloth_system.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/math/vec2.c:
 
@@ -125884,8 +125165,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/types/fabric/fabric_detail.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/types/concrete/concrete_staining.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicles/tire_model.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/textures/texture_transform.c:
 
@@ -126373,11 +125652,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/combat/hitbox.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/physics_ragdoll.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/combat/health.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/physics_softbody.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/combat/damage_system.c:
 
@@ -126434,8 +125709,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/procedural/procedural_city.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/procedural/dungeon/room_generator.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/constraint_solver_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_zero.h:
 
@@ -126621,6 +125894,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/destruction/rendering_destruction/crack_rendering.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/effects/vfx/destruction_system.h:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/destruction/fracture_system.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/material_system/material_lod.c:
@@ -126678,8 +125953,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/sync/semaphore_manager.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/sync/mutex.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/climbing_system.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/sync/lock_free_queue.h:
 
@@ -126740,8 +126013,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/framebuffer.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/camera/camera_controls.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/cloth_processor.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSImageView.h:
 
@@ -126875,8 +126146,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/memory/gpu_allocator.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/rigid_body.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/device/device_memory.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/defragmenter.c:
@@ -126944,8 +126213,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/gpu_particles.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/scene.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/island_solver.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Files.h:
 
@@ -127027,8 +126294,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/water_physics.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_rigid_body_helpers.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/structures.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/settlement_generation.h:
@@ -127057,15 +126322,11 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/hotbar.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_core_impl.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/tree_varieties.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/tech/solar_energy.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/status_effects.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/system_02.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/spirit_model.h:
 
@@ -127144,8 +126405,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/materials_advanced/clear_coat.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/platform/input/controls.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/continuous_collision.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/components/npc.h:
 
@@ -127297,8 +126556,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/jobs/fiber_jobs_impl.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/performance_profiler.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/algorithms/random.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/algorithms/random.c:
@@ -127339,8 +126596,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/memory/aligned_allocator.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/particle_renderer.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/hair/system/hair_system/rendering_hair/hair_shading_render.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/clearcoat/coat_fresnel.c:
@@ -127364,8 +126619,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/hair/rendering/hair_rendering/hair_grooming.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/eyes/eye_rendering/eye_refraction.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/renderer_03.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/eyes/eye_rendering/eye_rendering.h:
 
@@ -127505,8 +126758,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game/mode.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/fem_deformable.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSAttributedString.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/motion_matching_impl.c:
@@ -127593,8 +126844,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/engine_core.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/physics_solver.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/blending/pose_matching.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecSignVerifyTransform.h:
@@ -127610,8 +126859,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/containers/bloom_filter.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/blending/additive_blending.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/ragdoll/pose_matching.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/lod_generator.h:
 
@@ -127660,8 +126907,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/caching/cache_processor.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_sync_manager.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/soft_body_solver.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_sync_manager.m:
 
@@ -127795,8 +127040,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CATextLayer.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/buoyancy_solver.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CAScrollLayer.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CAReplicatorLayer.h:
@@ -127806,8 +127049,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CARemoteLayerClient.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CAOpenGLLayer.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/broadphase_processor.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/types/liquid/liquid_surface.c:
 
@@ -127917,8 +127158,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIImageProcessor.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/broadphase.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/lighting/sources/point_light.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIImage.h:
@@ -127948,8 +127187,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/core/inverse_kinematics_solver.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreData.framework/Headers/NSPropertyMapping.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/renderer_03.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreData.framework/Headers/NSPersistentStoreRequest.h:
 
@@ -128121,8 +127358,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTintProminence.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/particle_physics_manager.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/animation/core/skeleton_manager.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTintConfiguration.h:
@@ -128189,8 +127424,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTextAlternatives.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_processor.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecPolicy.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTableRowView.h:
@@ -128214,8 +127447,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSStringDrawing.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSStoryboardSegue.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/viscosity_solver.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSStepperTouchBarItem.h:
 
@@ -128255,8 +127486,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/system_02.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSURLRequest.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSSegmentedCell.h:
@@ -128266,8 +127495,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ecs/entity_hierarchy.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSScrubberLayout.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicles/suspension.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSScrubberItemView.h:
 
@@ -128322,8 +127549,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSPressGestureRecognizer.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSPredicateEditor.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/simulation_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSPopoverTouchBarItem.h:
 
@@ -128383,8 +127608,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/integration/render_config.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/heightfield_collider.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSObjectController.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSFontDescriptor.h:
@@ -128440,8 +127663,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/mesh/mesh_advanced/nanite_geometry.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSEvent.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/cloth/cloth_simulation.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/cloth/simulation_cloth/cloth_tearing.c:
 
@@ -128813,15 +128034,11 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioUnitParameters.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/cloth_physics_system.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/npc/prebuilt/npc_enemy_ranged.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/sprite_3d_renderer.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/system_02.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioSession.h:
 
@@ -128842,8 +128059,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioComponent.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioCodec.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/sph_solver_impl.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/lighting/cascades/cascade_splits.c:
 
@@ -128925,8 +128140,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/textures/streaming/prefetch_hints.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid_body/rigid_body_impl.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSParagraphStyle.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/integration/render_world.h:
@@ -128936,8 +128149,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/CGLIOSurface.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/textures/sampling/texture_lod.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/cloth/cloth_constraints.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/hair/system/hair_system/rendering_hair/hair_shading_render.h:
 
@@ -128966,8 +128177,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/textures/sampling/cubemap_filtering.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/_LocationEssentials.framework/Headers/CLEssentialsAvailability.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_advanced_impl.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/textures/sampling/anisotropic_filter.c:
 
@@ -129133,8 +128342,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_shader_library_extensions.m:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_rigid_body_api.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGWindow.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/streaming/stream_renderer.c:
@@ -129211,8 +128418,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/scene/scene_renderer.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/physics_destruction.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/scene/scene_renderer.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/vendor/lua/linit.c:
@@ -129229,8 +128434,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/state_machines/state_editor.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/broadphase_system.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/texture_system.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/scene/scene_io_system.c:
@@ -129244,8 +128447,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/scene/scene_io_manager.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/scene/renderer_03.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/ball_socket.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/containers_advanced/sparse_set.c:
 
@@ -129337,8 +128538,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/formats/processor_04.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/manager_01.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/formats/manager_01.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/formats/manager_01.c:
@@ -129352,8 +128551,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/formats/format_processor.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/anti_aliasing/smaa_pass.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/softbody_simulation.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/export/system_02.h:
 
@@ -129398,8 +128595,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/OSUtils.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/compression/asset_compression_system.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/aerodynamics/wind_field.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/compression/asset_compression_system.c:
 
@@ -129466,8 +128661,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalFX.framework/Headers/MTLFXTemporalDenoisedScaler.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/temporal_upscaling/tsr_core.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/renderer_03.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/animation/motion_matching.c:
 
@@ -129637,15 +128830,11 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/texture/texture_atlas.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/warm_starting.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSDateIntervalFormatter.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/hair/system/hair_system/rendering_hair/hair_antialiasing_render.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/animation/blending/inertialization.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/softbody_renderer.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSMorphology.h:
 
@@ -129714,8 +128903,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/importer/gltf_loader.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/threading.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/processor_04.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_system.h:
 
@@ -129806,8 +128993,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/post_processing/chromatic_aberration.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/model_loader.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/solver_processor.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/npc_advanced/goap_planner.c:
 
@@ -130117,8 +129302,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIFilterGenerator.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/fluid_renderer.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/logic.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h:
@@ -130315,8 +129498,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/mman.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/cloth_simulation_advanced.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/processor_info.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSMatrixFullyConnected.h:
@@ -130330,8 +129511,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSImage.framework/Headers/MPSImage.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/big_int.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/system_02.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/water/rivers/river_rendering.c:
 
@@ -130509,8 +129688,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/integration/ai_tools/copilot_context.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/processor_04.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/inttypes.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/controllers/fixed_angle_camera_controller.c:
@@ -130639,8 +129816,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSVisualEffectView.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/broadphase_renderer.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/math/mat3.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/OSTypes.h:
@@ -130704,8 +129879,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/memory/knowledge_graph.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctype.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/character_controller_impl.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/threading/job.h:
 
@@ -130953,8 +130126,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSTemporalAA.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_broadphase.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/textures/virtual_texturing/page_cache.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSXPCConnection.h:
@@ -131023,8 +130194,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/limits.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_shapes.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/system/asset_system/loading/asset_dependencies.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/post_processing/bloom_convolution.c:
@@ -131084,8 +130253,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/landscape/terrain/landscape/procedural/vegetation_placement.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNDArray.framework/Headers/MPSNDArrayTypes.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_system.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTextListElement.h:
 
@@ -131223,8 +130390,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSItemBadge.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/renderer_03.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_posix_vdisable.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_param.h:
@@ -131245,8 +130410,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/IOSurface.framework/Headers/IOSurfaceRef.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/builder_05.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/ml/ml_core.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/atmosphere/core/atmosphere/clouds/volumetric_clouds.c:
@@ -131258,8 +130421,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/emotion/emotional_state.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_o_sync.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/character/hair/hair_simulation.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_device.m:
 
@@ -131288,8 +130449,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFNotificationCenter.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSGridView.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/builder_05.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Finder.h:
 
@@ -131465,8 +130624,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLComputePass.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/builder_05.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLComputeCommandEncoder.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLCommandQueue.h:
@@ -131527,8 +130684,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/ToolUtils.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/processor_04.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/animation/ik_solver.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/decals/decal_projector.c:
@@ -131583,8 +130738,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelStructure.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/fluid_simulation.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGEXRToneMappingGamma.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGPDFDictionary.h:
@@ -131611,8 +130764,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/vendor/lua/lapi.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_api_impl.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4CommandBuffer.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/formats/processor_04.h:
@@ -131628,8 +130779,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach_debug/hash_info.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4AccelerationStructure.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/rigidbody_system.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/emmspi.h:
 
@@ -131793,8 +130942,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/formats/asset_format_manager.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/spatial/octree.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/logic/fuzzy_logic.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSSpellServer.h:
@@ -131806,8 +130953,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLCPUComputeDevice.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/destruction/fracture/voronoi_fracture.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/builder_05.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/param.h:
 
@@ -131844,8 +130989,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/environment/ocean_rendering.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/debug/stack_tracer.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/processor_04.c:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h:
 
@@ -131989,8 +131132,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/ai_pipeline.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/rope_simulation.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSExtensionItem.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h:
@@ -132052,8 +131193,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLParameterKey.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/vfx_optimization_api_bridge.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/processor_04.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/config_system.h:
 
@@ -132142,8 +131281,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/system/asset_system/compression_assets/mesh_compression.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/broadphase/gpu_broadphase.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSDecimalNumber.h:
 
@@ -132333,8 +131470,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/resources/resource_management/resource_pool.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicle/vehicle_physics_impl.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/import/system_02.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGDirectDisplayMetal.h:
@@ -132342,8 +131477,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/uuid/uuid.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/MultiprocessingInfo.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/complete_physics_batch.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFFileDescriptor.h:
 
@@ -132435,8 +131568,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/os/workgroup_object.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/renderer_03.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/cssmcspi.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/LowMem.h:
@@ -132505,8 +131636,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/hair/system/hair_system/simulation/hair_collision.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/constraint_manager.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecRequirement.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/integration/ai_tools/shader_autocomplete.h:
@@ -132557,13 +131686,9 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLUpdateProgressEvent.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/advanced/advanced_physics_complete.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_blksize_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGColorConversionInfo.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/spring_joint.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/group/squad_tactics.h:
 
@@ -132781,8 +131906,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/ml/dlaa.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_core.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/special_materials/emissive_material.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/memory/heap_manager.h:
@@ -132844,8 +131967,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSText.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFSocket.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicles/suspension_bridge.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/lighting/shadows/raytraced/rt_shadow_ray.c:
 
@@ -132926,8 +132047,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/skin/skin_detail.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_hazard_tracking.m:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/xpbd_solver.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSAccelerationStructureGroup.h:
 
@@ -133139,8 +132258,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/vendor/lua/lobject.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/system_02.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFTimeZone.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSWindow.h:
@@ -133150,8 +132267,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/IOTypes.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/ai_types.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/rigid/rigidbody_renderer.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSMethodSignature.h:
 
@@ -133178,8 +132293,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecKeychainItem.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/AXWebConstants.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/vehicles/vehicle_dynamics.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/alloca.h:
 
@@ -133427,8 +132540,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLImageSizeConstraint.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fracture/voronoi_shatter.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/integration/ai_tools/copilot_context.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/cups/raster.h:
@@ -133561,8 +132672,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/vfx_optimizer.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/cloth/cloth_renderer.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTFrame.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_swapchain.m:
@@ -133626,8 +132735,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arpa/inet.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/async/async_io_renderer.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/destruction/destruction_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecCode.h:
 
@@ -133698,8 +132805,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/output/present.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_types.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/textures/compression/format_conversion.h:
 
