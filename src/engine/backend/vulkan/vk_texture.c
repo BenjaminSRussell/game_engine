@@ -20,6 +20,7 @@ typedef enum {
     VK_TEXTURE_TYPE_COUNT
 } vk_texture_type_t;
 
+<<<<<<< HEAD
 typedef enum {
     VK_TEXTURE_FORMAT_UNDEFINED = 0,
     VK_TEXTURE_FORMAT_R8_UNORM,
@@ -73,6 +74,8 @@ typedef enum {
     VK_TEXTURE_FORMAT_COUNT
 } vk_texture_format_t;
 
+=======
+>>>>>>> feature/geometry-system-implementation
 typedef struct vk_texture {
     VkImage image;
     VkImageView image_view;
@@ -112,6 +115,7 @@ typedef struct vk_texture_manager {
 
 static vk_texture_manager_t g_texture_manager = {0};
 
+<<<<<<< HEAD
 // Convert our texture format to Vulkan format
 static VkFormat convert_texture_format(vk_texture_format_t format) {
     switch (format) {
@@ -303,6 +307,8 @@ static u32 find_memory_type_for_image(VkPhysicalDevice physical_device, u32 type
     return UINT32_MAX;
 }
 
+=======
+>>>>>>> feature/geometry-system-implementation
 // Initialize texture manager
 bool vk_texture_manager_init(VkDevice device, VkPhysicalDevice physical_device, VkCommandPool command_pool, VkQueue graphics_queue) {
     if (!device || !physical_device || !command_pool || !graphics_queue) {
@@ -351,8 +357,13 @@ void vk_texture_manager_cleanup(void) {
     printf("Vulkan texture manager cleaned up\n");
 }
 
+<<<<<<< HEAD
 // Create texture
 u32 vk_texture_create_2d(const char* name, u32 width, u32 height, vk_texture_format_t format, bool is_mipmapped, bool is_sampled) {
+=======
+// Create 2D texture
+u32 vk_texture_create_2d(const char* name, u32 width, u32 height, VkFormat format, bool is_mipmapped, bool is_sampled) {
+>>>>>>> feature/geometry-system-implementation
     if (!name || !g_texture_manager.device || width == 0 || height == 0) {
         return 0;
     }
@@ -362,12 +373,15 @@ u32 vk_texture_create_2d(const char* name, u32 width, u32 height, vk_texture_for
         return 0;
     }
     
+<<<<<<< HEAD
     VkFormat vk_format = convert_texture_format(format);
     if (vk_format == VK_FORMAT_UNDEFINED) {
         printf("Error: Unsupported texture format\n");
         return 0;
     }
     
+=======
+>>>>>>> feature/geometry-system-implementation
     // Calculate mip levels
     u32 mip_levels = 1;
     if (is_mipmapped) {
@@ -384,10 +398,17 @@ u32 vk_texture_create_2d(const char* name, u32 width, u32 height, vk_texture_for
     image_info.extent.depth = 1;
     image_info.mipLevels = mip_levels;
     image_info.arrayLayers = 1;
+<<<<<<< HEAD
     image_info.format = vk_format;
     image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
     image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     image_info.usage = get_image_usage_flags(VK_TEXTURE_TYPE_2D, is_sampled, is_mipmapped);
+=======
+    image_info.format = format;
+    image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
+    image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    image_info.usage = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
+>>>>>>> feature/geometry-system-implementation
     image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
     
     VkImage image;
@@ -401,6 +422,7 @@ u32 vk_texture_create_2d(const char* name, u32 width, u32 height, vk_texture_for
     VkMemoryRequirements mem_requirements;
     vkGetImageMemoryRequirements(g_texture_manager.device, image, &mem_requirements);
     
+<<<<<<< HEAD
     u32 memory_type = find_memory_type_for_image(g_texture_manager.physical_device, 
                                                  mem_requirements.memoryTypeBits, 
                                                  VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
@@ -415,6 +437,12 @@ u32 vk_texture_create_2d(const char* name, u32 width, u32 height, vk_texture_for
     alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     alloc_info.allocationSize = mem_requirements.size;
     alloc_info.memoryTypeIndex = memory_type;
+=======
+    VkMemoryAllocateInfo alloc_info = {0};
+    alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    alloc_info.allocationSize = mem_requirements.size;
+    alloc_info.memoryTypeIndex = 0; // Simplified - should find proper memory type
+>>>>>>> feature/geometry-system-implementation
     
     VkDeviceMemory memory;
     result = vkAllocateMemory(g_texture_manager.device, &alloc_info, NULL, &memory);
@@ -434,8 +462,25 @@ u32 vk_texture_create_2d(const char* name, u32 width, u32 height, vk_texture_for
     }
     
     // Create image view
+<<<<<<< HEAD
     VkImageView image_view = create_image_view(g_texture_manager.device, image, vk_format, VK_TEXTURE_TYPE_2D, mip_levels, 1);
     if (image_view == VK_NULL_HANDLE) {
+=======
+    VkImageViewCreateInfo view_info = {0};
+    view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    view_info.image = image;
+    view_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
+    view_info.format = format;
+    view_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    view_info.subresourceRange.baseMipLevel = 0;
+    view_info.subresourceRange.levelCount = mip_levels;
+    view_info.subresourceRange.baseArrayLayer = 0;
+    view_info.subresourceRange.layerCount = 1;
+    
+    VkImageView image_view;
+    result = vkCreateImageView(g_texture_manager.device, &view_info, NULL, &image_view);
+    if (result != VK_SUCCESS) {
+>>>>>>> feature/geometry-system-implementation
         printf("Error: Failed to create image view\n");
         vkDestroyImage(g_texture_manager.device, image, NULL);
         vkFreeMemory(g_texture_manager.device, memory, NULL);
@@ -443,8 +488,36 @@ u32 vk_texture_create_2d(const char* name, u32 width, u32 height, vk_texture_for
     }
     
     // Create sampler
+<<<<<<< HEAD
     VkSampler sampler = create_sampler(g_texture_manager.device, is_mipmapped);
     if (sampler == VK_NULL_HANDLE) {
+=======
+    VkSamplerCreateInfo sampler_info = {0};
+    sampler_info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+    sampler_info.minFilter = VK_FILTER_LINEAR;
+    sampler_info.magFilter = VK_FILTER_LINEAR;
+    sampler_info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    sampler_info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    sampler_info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    sampler_info.anisotropyEnable = VK_FALSE;
+    sampler_info.maxAnisotropy = 1.0f;
+    sampler_info.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
+    sampler_info.unnormalizedCoordinates = VK_FALSE;
+    
+    if (is_mipmapped) {
+        sampler_info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+        sampler_info.minLod = VK_LOD_CLAMP_NONE;
+        sampler_info.maxLod = VK_LOD_CLAMP_NONE;
+    } else {
+        sampler_info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST;
+        sampler_info.minLod = 0.0f;
+        sampler_info.maxLod = 0.0f;
+    }
+    
+    VkSampler sampler;
+    result = vkCreateSampler(g_texture_manager.device, &sampler_info, NULL, &sampler);
+    if (result != VK_SUCCESS) {
+>>>>>>> feature/geometry-system-implementation
         printf("Error: Failed to create sampler\n");
         vkDestroyImageView(g_texture_manager.device, image_view, NULL);
         vkDestroyImage(g_texture_manager.device, image, NULL);
@@ -461,7 +534,11 @@ u32 vk_texture_create_2d(const char* name, u32 width, u32 height, vk_texture_for
     texture->sampler = sampler;
     texture->memory = memory;
     texture->type = VK_TEXTURE_TYPE_2D;
+<<<<<<< HEAD
     texture->format = vk_format;
+=======
+    texture->format = format;
+>>>>>>> feature/geometry-system-implementation
     texture->width = width;
     texture->height = height;
     texture->depth = 1;
@@ -478,12 +555,17 @@ u32 vk_texture_create_2d(const char* name, u32 width, u32 height, vk_texture_for
     g_texture_manager.total_textures_created++;
     g_texture_manager.total_memory_used += mem_requirements.size;
     
+<<<<<<< HEAD
     printf("Created 2D texture '%s' (%ux%u, format: %d, mips: %u)\n", 
            name, width, height, format, mip_levels);
+=======
+    printf("Created 2D texture '%s' (%ux%u, mips: %u)\n", name, width, height, mip_levels);
+>>>>>>> feature/geometry-system-implementation
     
     return texture_id;
 }
 
+<<<<<<< HEAD
 // Create cube texture
 u32 vk_texture_create_cube(const char* name, u32 size, vk_texture_format_t format, bool is_mipmapped, bool is_sampled) {
     if (!name || !g_texture_manager.device || size == 0) {
@@ -616,6 +698,45 @@ u32 vk_texture_create_cube(const char* name, u32 size, vk_texture_format_t forma
            name, size, size, format, mip_levels);
     
     return texture_id;
+=======
+// Get texture image
+VkImage vk_texture_get_image(u32 texture_id) {
+    if (!g_texture_manager.device || texture_id == 0) {
+        return VK_NULL_HANDLE;
+    }
+    
+    if (texture_id > g_texture_manager.next_texture_id) {
+        return VK_NULL_HANDLE;
+    }
+    
+    return g_texture_manager.textures[texture_id - 1].image;
+}
+
+// Get texture image view
+VkImageView vk_texture_get_image_view(u32 texture_id) {
+    if (!g_texture_manager.device || texture_id == 0) {
+        return VK_NULL_HANDLE;
+    }
+    
+    if (texture_id > g_texture_manager.next_texture_id) {
+        return VK_NULL_HANDLE;
+    }
+    
+    return g_texture_manager.textures[texture_id - 1].image_view;
+}
+
+// Get texture sampler
+VkSampler vk_texture_get_sampler(u32 texture_id) {
+    if (!g_texture_manager.device || texture_id == 0) {
+        return VK_NULL_HANDLE;
+    }
+    
+    if (texture_id > g_texture_manager.next_texture_id) {
+        return VK_NULL_HANDLE;
+    }
+    
+    return g_texture_manager.textures[texture_id - 1].sampler;
+>>>>>>> feature/geometry-system-implementation
 }
 
 // Destroy texture
@@ -660,6 +781,7 @@ bool vk_texture_destroy(u32 texture_id) {
     return true;
 }
 
+<<<<<<< HEAD
 // Get texture image
 VkImage vk_texture_get_image(u32 texture_id) {
     if (!g_texture_manager.device || texture_id == 0) {
@@ -727,9 +849,15 @@ bool vk_texture_get_info(u32 texture_id, char* name, size_t name_size, u32* widt
     return true;
 }
 
+=======
+>>>>>>> feature/geometry-system-implementation
 // Get statistics
 void vk_texture_get_stats(u64* total_memory_used, u32* total_textures_created, u32* total_textures_destroyed) {
     if (total_memory_used) *total_memory_used = g_texture_manager.total_memory_used;
     if (total_textures_created) *total_textures_created = g_texture_manager.total_textures_created;
     if (total_textures_destroyed) *total_textures_destroyed = g_texture_manager.total_textures_destroyed;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feature/geometry-system-implementation

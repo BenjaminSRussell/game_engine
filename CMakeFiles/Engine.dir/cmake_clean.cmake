@@ -2793,6 +2793,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Engine.dir/src/engine/physics/rigid/system_02.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/physics/rigid_body/rigid_body_impl.c.o"
   "CMakeFiles/Engine.dir/src/engine/physics/rigid_body/rigid_body_impl.c.o.d"
+  "CMakeFiles/Engine.dir/src/engine/physics/serialization/physics_serialization.c.o"
+  "CMakeFiles/Engine.dir/src/engine/physics/serialization/physics_serialization.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/physics/simulation_impl.c.o"
   "CMakeFiles/Engine.dir/src/engine/physics/simulation_impl.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/physics/simulation_loop.c.o"
