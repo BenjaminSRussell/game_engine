@@ -5,8 +5,8 @@
 extern "C" {
 #endif
 
-#include <audio/audio_engine_types.h>
-#include <physics/block_physics.h>
+#include "include/audio/audio_engine_types.h"
+#include "include/physics/block_physics.h"
 
 void Audio_UpdateOcclusion(AudioSystem *sys, BlockPhysicsSystem *bp);
 void audio_occlusion_raycast_init(void);
