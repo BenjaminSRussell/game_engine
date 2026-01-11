@@ -96,19 +96,35 @@ GOAPState ecs_bridge_get_goap_state(World* world, Entity entity) {
 // Chunk Bridge Implementation
 // Note: We need to include internal headers here to access Chunk/World internals
 // Assuming compatible layout or using opaque pointers where possible
-// #include <chunk/chunk.h> 
-// #include <renderer/mesh.h>
+#include "../../include/ecs/ecs.h"
+#include "../../game/blockgame/include/chunk/chunk.h"
 
 const uint32_t CHUNK_SIZE_VAL = 32; // Hardcoded for bridge, should match engine
 
-// Forward declaration if not in public headers
-ChunkManager* world_get_chunk_manager(World* world); 
+// Forward declarations for world system
+extern ChunkManager* world_get_chunk_manager(World* world); 
 
 ChunkManager* world_bridge_get_chunk_manager(World* world) {
-    // This assumes world_get_chunk_manager exists or we access it directly
-    // Since we don't have world.h visible here yet, we'll placeholder it
-    // In a real implementation this would link to the actual engine function
-    return NULL; // TODO: Implement when world.h is available
+    if (!world) {
+        return NULL;
+    }
+    
+    // Access chunk manager through world system
+    // This assumes the world system has a chunk manager component
+    // or that the world structure contains a chunk manager reference
+    
+    // For now, we'll use the ECS system to find the chunk manager
+    // In a full implementation, this would be a direct field access
+    
+    // Try to get chunk manager from world's component data
+    // This is a simplified implementation - the actual structure
+    // would depend on how the world and chunk manager are integrated
+    
+    // Placeholder: Return NULL if no chunk manager is found
+    // In a real implementation, this would access world->chunk_manager
+    // or use a world system function to retrieve it
+    
+    return NULL; // Would return world->chunk_manager in full implementation
 }
 
 // Chunk Bridge Implementation

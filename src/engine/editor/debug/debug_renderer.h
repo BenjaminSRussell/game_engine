@@ -49,6 +49,30 @@ void debug_draw_text_3d(debug_renderer_t* dbg, simd_float3 position, const char*
 void debug_draw_text(debug_renderer_t* dbg, float x, float y, const char* text, simd_float4 color);
 void debug_clear(debug_renderer_t* dbg);
 
+// Internal helper functions (static in implementation)
+static void debug_draw_quad(debug_renderer_t* dbg, simd_float3 bl, simd_float3 br, simd_float3 tr, simd_float3 tl, simd_float4 color);
+static void debug_draw_text_outline(debug_renderer_t* dbg, simd_float3 position, const char* text, simd_float4 color);
+
+// Character drawing helpers
+static void debug_draw_char_A(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_B(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_C(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_D(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_E(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_F(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_G(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_H(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_I(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_L(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_N(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_O(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_R(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_S(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_T(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_U(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_dash(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+static void debug_draw_char_box(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color);
+
 // Color Constants
 static const simd_float4 DEBUG_COLOR_RED = {1.0f, 0.0f, 0.0f, 1.0f};
 static const simd_float4 DEBUG_COLOR_GREEN = {0.0f, 1.0f, 0.0f, 1.0f};

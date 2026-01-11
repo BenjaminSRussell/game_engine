@@ -8,7 +8,9 @@
       "Bash(for dir in src/game/blockgame/*)",
       "Bash(do if [ -d \"$dir\" ])",
       "Bash(for dir in src/frontend/Sources/*)",
-      "Bash(xargs -I {} sh -c 'echo \"\"===== {} =====\"\"; head -1 \"\"{}\"\"')"
+      "Bash(xargs -I {} sh -c 'echo \"\"===== {} =====\"\"; head -1 \"\"{}\"\"')",
+      "Bash(xargs -I {} sh -c 'head -1 \"\"{}\"\"')",
+      "Bash(xargs -I {} sh -c 'lines=$\\(wc -l < \"\"{}\"\"\\); echo \"\"$lines lines: {}\"\"')"
     ]
   }
 }

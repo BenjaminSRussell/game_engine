@@ -26,6 +26,8 @@ typedef struct gpu_profiler_pass {
     uint32_t memory_used;
     uint32_t bandwidth_estimate;
     bool active;
+    uint32_t start_sample_index;
+    uint32_t end_sample_index;
 } gpu_profiler_pass_t;
 
 // GPU profiler state
@@ -47,6 +49,10 @@ typedef struct gpu_profiler {
     
     uint64_t total_memory_used;
     uint64_t total_bandwidth;
+    
+    // Timestamp sampling
+    uint32_t current_sample_index;
+    uint32_t max_samples;
     
     bool enabled;
     bool overlay_visible;
@@ -70,6 +76,9 @@ float gpu_profiler_get_frame_time(gpu_profiler_t* profiler);
 float gpu_profiler_get_average_frame_time(gpu_profiler_t* profiler);
 void gpu_profiler_get_memory_stats(gpu_profiler_t* profiler, uint64_t* out_used, uint64_t* out_peak);
 void gpu_profiler_get_bandwidth_stats(gpu_profiler_t* profiler, uint64_t* out_bandwidth);
+
+// Helper functions
+float gpu_profiler_estimate_pass_time(gpu_profiler_t* profiler, const char* pass_name);
 
 // Display control
 void gpu_profiler_set_overlay_visible(gpu_profiler_t* profiler, bool visible);

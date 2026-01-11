@@ -67,7 +67,8 @@ void material_editor_ui_init(void) {
 
 void material_editor_ui_update_interaction(EditorContext* ctx, MaterialGraph* graph, 
                                          i32 mouse_x, i32 mouse_y, 
-                                         bool mouse_down, bool mouse_right_down) {
+                                         bool mouse_down, bool mouse_right_down,
+                                         f32 mouse_wheel_delta) {
     // Convert mouse to graph space
     Vec2 mouse_world = {
         ((f32)mouse_x - ui_state.pan_offset.x) / ui_state.zoom_level,
@@ -75,6 +76,45 @@ void material_editor_ui_update_interaction(EditorContext* ctx, MaterialGraph* gr
     };
     
     ui_state.current_mouse_pos = mouse_world;
+    
+    // Handle Zoom with Mouse Wheel
+    if (fabsf(mouse_wheel_delta) > 0.01f) {
+        f32 zoom_speed = 0.1f;
+        f32 old_zoom = ui_state.zoom_level;
+        
+        // Apply zoom
+        ui_state.zoom_level *= (1.0f + mouse_wheel_delta * zoom_speed);
+        
+        // Clamp zoom to reasonable limits
+        if (ui_state.zoom_level < 0.1f) ui_state.zoom_level = 0.1f;
+        if (ui_state.zoom_level > 5.0f) ui_state.zoom_level = 5.0f;
+        
+        // Adjust pan offset to zoom towards mouse position
+        Vec2 zoom_center = {
+            (f32)mouse_x,
+            (f32)mouse_y
+        };
+        
+        Vec2 old_world_pos = {
+            (zoom_center.x - ui_state.pan_offset.x) / old_zoom,
+            (zoom_center.y - ui_state.pan_offset.y) / old_zoom
+        };
+        
+        Vec2 new_world_pos = {
+            (zoom_center.x - ui_state.pan_offset.x) / ui_state.zoom_level,
+            (zoom_center.y - ui_state.pan_offset.y) / ui_state.zoom_level
+        };
+        
+        Vec2 world_delta = {
+            new_world_pos.x - old_world_pos.x,
+            new_world_pos.y - old_world_pos.y
+        };
+        
+        ui_state.pan_offset.x += world_delta.x * ui_state.zoom_level;
+        ui_state.pan_offset.y += world_delta.y * ui_state.zoom_level;
+        
+        LOG_DEBUG("Zoom changed: %.2f -> %.2f", old_zoom, ui_state.zoom_level);
+    }
 
     // Handle Node Dragging
     if (mouse_down) {
@@ -236,11 +276,16 @@ void material_editor_ui_update_interaction(EditorContext* ctx, MaterialGraph* gr
 void material_editor_ui_render(EditorContext* ctx, MaterialGraph* graph) {
     if (!graph) return;
 
-    // 1. Draw Grid Background
+    // Apply zoom and pan transformations
+    // In a real implementation, this would modify the rendering transform
+    // For now, we'll apply transformations to the drawing coordinates
+    
+    // 1. Draw Grid Background (with zoom and pan applied)
     // In a real APP we'd loop specific visible range
-    // draw_rect((Vec2){0,0}, (Vec2){1920, 1080}, (Vec4){0.2f, 0.2f, 0.2f, 1.0f});
+    // draw_rect_transformed((Vec2){0,0}, (Vec2){1920, 1080}, (Vec4){0.2f, 0.2f, 0.2f, 1.0f}, 
+    //                      ui_state.pan_offset, ui_state.zoom_level);
 
-    // 2. Draw Connections (Wires)
+    // 2. Draw Connections (Wires) with transformations
     for (u32 i = 0; i < graph->node_count; i++) {
         MaterialNode* dest_node = &graph->nodes[i];
         for (u32 j = 0; j < dest_node->input_count; j++) {
@@ -248,29 +293,39 @@ void material_editor_ui_render(EditorContext* ctx, MaterialGraph* graph) {
                 MaterialNode* src_node = dest_node->inputs[j].connected_node;
                 u32 src_idx = dest_node->inputs[j].connected_output_index;
 
-                // Calculate socket positions
+                // Calculate socket positions with zoom and pan
                 Vec2 start_pos = {
-                    src_node->ui_position.x + NODE_WIDTH,
-                    src_node->ui_position.y + NODE_HEADER_HEIGHT + SOCKET_SPACING + (src_idx * SOCKET_SPACING)
+                    (src_node->ui_position.x + NODE_WIDTH) * ui_state.zoom_level + ui_state.pan_offset.x,
+                    (src_node->ui_position.y + NODE_HEADER_HEIGHT + SOCKET_SPACING + (src_idx * SOCKET_SPACING)) * ui_state.zoom_level + ui_state.pan_offset.y
                 };
                 
                 Vec2 end_pos = {
-                    dest_node->ui_position.x,
-                    dest_node->ui_position.y + NODE_HEADER_HEIGHT + SOCKET_SPACING + (j * SOCKET_SPACING)
+                    dest_node->ui_position.x * ui_state.zoom_level + ui_state.pan_offset.x,
+                    (dest_node->ui_position.y + NODE_HEADER_HEIGHT + SOCKET_SPACING + (j * SOCKET_SPACING)) * ui_state.zoom_level + ui_state.pan_offset.y
                 };
 
-                draw_bezier(start_pos, end_pos, (Vec4){0.8f, 0.8f, 0.8f, 1.0f}, 2.0f);
+                draw_bezier(start_pos, end_pos, (Vec4){0.8f, 0.8f, 0.8f, 1.0f}, 2.0f * ui_state.zoom_level);
             }
         }
     }
     
-    // 2.5. Draw active connection being dragged
+    // 2.5. Draw active connection being dragged (with transformations)
     if (ui_state.is_dragging_connection) {
-        draw_bezier(ui_state.connection_start_pos, ui_state.current_mouse_pos, 
-                   (Vec4){1.0f, 1.0f, 0.0f, 1.0f}, 3.0f); // Yellow for active connection
+        Vec2 transformed_start = {
+            ui_state.connection_start_pos.x * ui_state.zoom_level + ui_state.pan_offset.x,
+            ui_state.connection_start_pos.y * ui_state.zoom_level + ui_state.pan_offset.y
+        };
+        
+        Vec2 transformed_mouse = {
+            ui_state.current_mouse_pos.x * ui_state.zoom_level + ui_state.pan_offset.x,
+            ui_state.current_mouse_pos.y * ui_state.zoom_level + ui_state.pan_offset.y
+        };
+        
+        draw_bezier(transformed_start, transformed_mouse, 
+                   (Vec4){1.0f, 1.0f, 0.0f, 1.0f}, 3.0f * ui_state.zoom_level);
     }
 
-    // 3. Draw Nodes
+    // 3. Draw Nodes (with zoom and pan)
     for (u32 i = 0; i < graph->node_count; i++) {
         MaterialNode* node = &graph->nodes[i];
         
@@ -279,32 +334,47 @@ void material_editor_ui_render(EditorContext* ctx, MaterialGraph* graph) {
                     (fmaxf(node->input_count, node->output_count) * SOCKET_SPACING) + 
                     10.0f;
 
+        // Apply transformations to node position
+        Vec2 node_pos = {
+            node->ui_position.x * ui_state.zoom_level + ui_state.pan_offset.x,
+            node->ui_position.y * ui_state.zoom_level + ui_state.pan_offset.y
+        };
+        
+        Vec2 node_size = {
+            NODE_WIDTH * ui_state.zoom_level,
+            height * ui_state.zoom_level
+        };
+
         // Node Body
-        draw_rect(node->ui_position, (Vec2){NODE_WIDTH, height}, (Vec4){0.3f, 0.3f, 0.3f, 1.0f});
+        draw_rect(node_pos, node_size, (Vec4){0.3f, 0.3f, 0.3f, 1.0f});
         
         // Header
-        draw_rect(node->ui_position, (Vec2){NODE_WIDTH, NODE_HEADER_HEIGHT}, (Vec4){0.4f, 0.4f, 0.5f, 1.0f});
-        draw_text((Vec2){node->ui_position.x + 5, node->ui_position.y + 5}, node->name, (Vec4){1,1,1,1});
+        Vec2 header_size = {NODE_WIDTH * ui_state.zoom_level, NODE_HEADER_HEIGHT * ui_state.zoom_level};
+        draw_rect(node_pos, header_size, (Vec4){0.4f, 0.4f, 0.5f, 1.0f});
+        draw_text((Vec2){node_pos.x + 5.0f * ui_state.zoom_level, node_pos.y + 5.0f * ui_state.zoom_level}, 
+                 node->name, (Vec4){1,1,1,1});
 
         // Inputs
         for (u32 j = 0; j < node->input_count; j++) {
             Vec2 socket_pos = {
-                node->ui_position.x,
-                node->ui_position.y + NODE_HEADER_HEIGHT + SOCKET_SPACING + (j * SOCKET_SPACING)
+                node_pos.x,
+                node_pos.y + (NODE_HEADER_HEIGHT + SOCKET_SPACING + (j * SOCKET_SPACING)) * ui_state.zoom_level
             };
-            draw_circle(socket_pos, SOCKET_RADIUS, (Vec4){0.8f, 0.2f, 0.2f, 1.0f});
-            draw_text((Vec2){socket_pos.x + 10, socket_pos.y - 5}, node->inputs[j].name, (Vec4){0.9f, 0.9f, 0.9f, 1.0f});
+            draw_circle(socket_pos, SOCKET_RADIUS * ui_state.zoom_level, (Vec4){0.8f, 0.2f, 0.2f, 1.0f});
+            draw_text((Vec2){socket_pos.x + 10.0f * ui_state.zoom_level, socket_pos.y - 5.0f * ui_state.zoom_level}, 
+                     node->inputs[j].name, (Vec4){0.9f, 0.9f, 0.9f, 1.0f});
         }
 
         // Outputs
         for (u32 j = 0; j < node->output_count; j++) {
             Vec2 socket_pos = {
-                node->ui_position.x + NODE_WIDTH,
-                node->ui_position.y + NODE_HEADER_HEIGHT + SOCKET_SPACING + (j * SOCKET_SPACING)
+                node_pos.x + NODE_WIDTH * ui_state.zoom_level,
+                node_pos.y + (NODE_HEADER_HEIGHT + SOCKET_SPACING + (j * SOCKET_SPACING)) * ui_state.zoom_level
             };
-            draw_circle(socket_pos, SOCKET_RADIUS, (Vec4){0.2f, 0.8f, 0.2f, 1.0f});
+            draw_circle(socket_pos, SOCKET_RADIUS * ui_state.zoom_level, (Vec4){0.2f, 0.8f, 0.2f, 1.0f});
             // Align text right would be better, using simpler offset for now
-            draw_text((Vec2){socket_pos.x - 40, socket_pos.y - 5}, node->outputs[j].name, (Vec4){0.9f, 0.9f, 0.9f, 1.0f});
+            draw_text((Vec2){socket_pos.x - 40.0f * ui_state.zoom_level, socket_pos.y - 5.0f * ui_state.zoom_level}, 
+                     node->outputs[j].name, (Vec4){0.9f, 0.9f, 0.9f, 1.0f});
         }
     }
 }

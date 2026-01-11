@@ -28,6 +28,8 @@
 // Damage types for resistances and weaknesses
 typedef enum {
   DAMAGE_TYPE_PHYSICAL,
+  DAMAGE_TYPE_MELEE,
+  DAMAGE_TYPE_PROJECTILE,
   DAMAGE_TYPE_FIRE,
   DAMAGE_TYPE_ICE,
   DAMAGE_TYPE_POISON,
@@ -72,6 +74,7 @@ typedef struct {
   f32 base_damage;         // Base damage amount
   DamageType damage_type;  // Type of damage dealt
   u32 damage_flags;        // DamageFlag bitfield
+  Entity source_entity;    // Entity that deals the damage
   f32 critical_chance;     // Chance for critical hit (0-1)
   f32 critical_multiplier; // Critical hit damage multiplier
   f32 armor_penetration;   // Armor penetration percentage (0-1)

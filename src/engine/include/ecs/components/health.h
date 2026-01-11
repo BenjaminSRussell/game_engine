@@ -24,11 +24,14 @@
 #ifndef HEALTH_COMPONENT_H
 #define HEALTH_COMPONENT_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef struct {
   f32 health;
   f32 max_health;
+  f32 regeneration_rate;
+  f32 last_damage_time;
+  bool is_alive;
 } HealthComponent;
 
 #endif // HEALTH_COMPONENT_H

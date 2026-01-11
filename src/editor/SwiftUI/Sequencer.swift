@@ -8,6 +8,8 @@ struct SequencerView: View {
     @State private var duration: Double = 60
     @State private var isPlaying = false
     @State private var zoom: CGFloat = 1.0
+    @State private var playbackTimer: Timer?
+    @State private var lastUpdateTime: Date = Date()
     
     var body: some View {
         VStack(spacing: 0) {
@@ -79,7 +81,46 @@ struct SequencerView: View {
     
     func togglePlayback() {
         isPlaying.toggle()
-        // TODO: Start actual playback
+        
+        if isPlaying {
+            lastUpdateTime = Date()
+            playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0/60.0, repeats: true) { _ in
+                let now = Date()
+                let deltaTime = now.timeIntervalSince(lastUpdateTime)
+                lastUpdateTime = now
+                
+                currentTime += deltaTime
+                
+                if currentTime >= duration {
+                    currentTime = duration
+                    isPlaying = false
+                    playbackTimer?.invalidate()
+                    playbackTimer = nil
+                }
+                
+                // Update track animations
+                updateTrackAnimations()
+            }
+        } else {
+            playbackTimer?.invalidate()
+            playbackTimer = nil
+        }
+    }
+    
+    private func updateTrackAnimations() {
+        for track in tracks {
+            for clip in track.clips {
+                if currentTime >= clip.startTime && currentTime <= clip.endTime {
+                    clip.isActive = true
+                    // Trigger animation callbacks
+                    if let animationClip = clip as? AnimationClip {
+                        animationClip.updateAtTime(currentTime - clip.startTime)
+                    }
+                } else {
+                    clip.isActive = false
+                }
+            }
+        }
     }
     
     func addTrack() {

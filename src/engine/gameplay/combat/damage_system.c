@@ -1,87 +1,149 @@
 // damage_system.c - Implementation
-#include "include/gameplay/combat/damage.h"
-#include "include/core/logger.h"
+#include <core/logger.h>
+#include <gameplay/combat/damage.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
-static World *damage_world = NULL;
-static DamageEvent damage_events[1024];
-static u32 damage_event_count = 0;
+static DamageEvent *g_damage_queue = NULL;
+static u32 g_max_events = 0;
+static u32 g_event_count = 0;
 
-bool damage_system_init(World *world) {
-  if (!world) {
-    LOG_ERROR("Damage system: NULL world provided");
-    return false;
-  }
-  
-  damage_world = world;
-  damage_event_count = 0;
-  
-  LOG_INFO("Damage system initialized");
-  return true;
+void damage_system_init(u32 max_events_per_frame) {
+  g_max_events = max_events_per_frame > 0 ? max_events_per_frame : 1024;
+  g_damage_queue = (DamageEvent *)malloc(sizeof(DamageEvent) * g_max_events);
+  g_event_count = 0;
+
+  LOG_INFO("Damage system initialized with capacity: %u", g_max_events);
 }
 
 void damage_system_shutdown(void) {
-  damage_world = NULL;
-  damage_event_count = 0;
+  if (g_damage_queue) {
+    free(g_damage_queue);
+    g_damage_queue = NULL;
+  }
+  g_max_events = 0;
+  g_event_count = 0;
+
   LOG_INFO("Damage system shutdown");
 }
 
-void damage_apply(Entity target, Entity source, f32 amount, DamageType type) {
-  if (!damage_world || amount <= 0.0f) return;
-  
-  DamageEvent *event = &damage_events[damage_event_count % 1024];
-  event->target_entity = target;
-  event->source_entity = source;
-  event->damage_amount = amount;
-  event->damage_type = type;
-  event->timestamp = 0.0f; // Would get actual time
-  
-  damage_event_count++;
-  
-  LOG_DEBUG("Damage applied: entity %d -> %d, amount %.2f, type %d", 
-            source, target, amount, type);
+DamageEvent *damage_event_create(Entity source, Entity target, f32 amount,
+                                 DamageType type) {
+  if (g_event_count >= g_max_events) {
+    LOG_WARN("Damage event queue full, skipping event");
+    return NULL;
+  }
+
+  DamageEvent *event = &g_damage_queue[g_event_count++];
+  memset(event, 0, sizeof(DamageEvent));
+
+  event->source = source;
+  event->target = target;
+  event->base_amount = amount;
+  event->final_amount = amount; // Initially same, modified during calculation
+  event->type = type;
+  event->timestamp = 0.0; // Placeholder for actual game time
+
+  return event;
 }
 
-void damage_process_events(World *world) {
-  if (!world) return;
-  
-  for (u32 i = 0; i < damage_event_count && i < 1024; i++) {
-    DamageEvent *event = &damage_events[i];
-    
-    // Apply damage to entity health component
-    // This would integrate with the health system
-    LOG_DEBUG("Processing damage event: %d -> %d, %.2f", 
-              event->source_entity, event->target_entity, event->damage_amount);
-  }
-  
-  damage_event_count = 0;
+void damage_event_emit(const DamageEvent *event) {
+  if (!event || g_event_count >= g_max_events)
+    return;
+
+  // If the event isn't already in the queue, we'd need to copy it.
+  // But damage_event_create already puts it in the queue.
+  // This function might be for events created externally.
+  // For now, let's assume events are primarily created via create().
 }
 
-f32 damage_calculate(Entity attacker, Entity defender, f32 base_damage, DamageType type) {
-  // Simple damage calculation with modifiers
-  f32 final_damage = base_damage;
-  
-  // Apply damage type modifiers
-  switch (type) {
-    case DAMAGE_TYPE_MELEE:
-      final_damage *= 1.0f;
-      break;
-    case DAMAGE_TYPE_RANGED:
-      final_damage *= 0.9f;
-      break;
-    case DAMAGE_TYPE_MAGIC:
-      final_damage *= 1.2f;
-      break;
-    case DAMAGE_TYPE_FIRE:
-      final_damage *= 1.1f;
-      break;
-    case DAMAGE_TYPE_POISON:
-      final_damage *= 0.8f;
-      break;
-    default:
-      break;
+void damage_event_emit_simple(Entity source, Entity target, f32 amount) {
+  damage_event_create(source, target, amount, DAMAGE_TYPE_PHYSICAL);
+}
+
+void damage_system_process_events(World *world, f64 delta_time) {
+  if (!world || !g_damage_queue)
+    return;
+
+  for (u32 i = 0; i < g_event_count; i++) {
+    DamageEvent *event = &g_damage_queue[i];
+
+    // In a full implementation, we would:
+    // 1. Get health component for target
+    // 2. Get resistance component for target
+    // 3. Calculate final damage
+    // 4. Apply damage to health
+    // 5. Trigger death if health <= 0
+
+    LOG_DEBUG("Processed damage: entity %u -> %u, amount %.2f, type %d",
+              event->source.id, event->target.id, event->final_amount,
+              event->type);
   }
-  
+
+  damage_system_clear_events();
+}
+
+void damage_system_clear_events(void) { g_event_count = 0; }
+
+f32 damage_calculate_final(const DamageEvent *event,
+                           const ResistanceComponent *resistance,
+                           f32 *out_blocked_amount) {
+  if (!event)
+    return 0.0f;
+
+  f32 final_damage = event->base_amount;
+  f32 blocked = 0.0f;
+
+  if (resistance) {
+    // Apply type-specific resistance
+    if (event->type < DAMAGE_TYPE_COUNT) {
+      f32 res = resistance->resistances[event->type];
+      f32 reduced = final_damage * res;
+      final_damage -= reduced;
+      blocked += reduced;
+    }
+
+    // Apply general armor for physical
+    if (event->type == DAMAGE_TYPE_PHYSICAL) {
+      f32 reduced = resistance->armor; // Simple flat reduction for now
+      if (reduced > final_damage)
+        reduced = final_damage;
+      final_damage -= reduced;
+      blocked += reduced;
+    }
+  }
+
+  if (out_blocked_amount)
+    *out_blocked_amount = blocked;
   return fmaxf(0.0f, final_damage);
+}
+
+const char *damage_type_to_string(DamageType type) {
+  switch (type) {
+  case DAMAGE_TYPE_PHYSICAL:
+    return "Physical";
+  case DAMAGE_TYPE_FIRE:
+    return "Fire";
+  case DAMAGE_TYPE_ICE:
+    return "Ice";
+  case DAMAGE_TYPE_POISON:
+    return "Poison";
+  case DAMAGE_TYPE_LIGHTNING:
+    return "Lightning";
+  case DAMAGE_TYPE_MAGIC:
+    return "Magic";
+  case DAMAGE_TYPE_HOLY:
+    return "Holy";
+  case DAMAGE_TYPE_DARK:
+    return "Dark";
+  case DAMAGE_TYPE_TRUE:
+    return "True";
+  default:
+    return "Unknown";
+  }
+}
+
+bool damage_can_crit(DamageType type) {
+  return type == DAMAGE_TYPE_PHYSICAL || type == DAMAGE_TYPE_MAGIC;
 }

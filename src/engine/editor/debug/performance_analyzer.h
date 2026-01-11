@@ -97,6 +97,22 @@ float performance_analyzer_get_cache_efficiency(performance_analyzer_t* analyzer
 uint32_t performance_analyzer_get_hints(performance_analyzer_t* analyzer, optimization_hint_t* out_hints, uint32_t max_hints);
 void performance_analyzer_clear_hints(performance_analyzer_t* analyzer);
 
+// Advanced analysis
+void performance_analyzer_analyze_gpu_utilization(performance_analyzer_t* analyzer);
+void performance_analyzer_analyze_cache_efficiency(performance_analyzer_t* analyzer);
+void performance_analyzer_analyze_draw_calls(performance_analyzer_t* analyzer);
+void performance_analyzer_analyze_bandwidth(performance_analyzer_t* analyzer);
+void performance_analyzer_analyze_frame_time_stability(performance_analyzer_t* analyzer);
+void performance_analyzer_analyze_memory_pressure(performance_analyzer_t* analyzer);
+void performance_analyzer_identify_bottleneck(performance_analyzer_t* analyzer);
+void performance_analyzer_calculate_advanced_metrics(performance_analyzer_t* analyzer);
+
+// Reports and diagnostics
+void performance_analyzer_get_performance_report(performance_analyzer_t* analyzer, char* buffer, u32 buffer_size);
+float performance_analyzer_get_average_frame_time(performance_analyzer_t* analyzer);
+uint32_t performance_analyzer_get_frame_spike_count(performance_analyzer_t* analyzer);
+float performance_analyzer_get_render_pipeline_efficiency(performance_analyzer_t* analyzer);
+
 #ifdef __cplusplus
 }
 #endif

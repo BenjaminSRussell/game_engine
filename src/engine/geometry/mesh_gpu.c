@@ -1,7 +1,81 @@
 #include "geometry/mesh_gpu.h"
+#include "core/logger.h"
+#include "core/memory.h"
+#include "core/sync/thread_pool.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+
+// GPU data storage system
+#define MAX_GPU_MESHES 1024
+static mesh_gpu_data_t* gpu_mesh_storage[MAX_GPU_MESHES] = {0};
+static u32 gpu_mesh_count = 0;
+
+// Global thread pool for async operations
+static ThreadPool* mesh_upload_thread_pool = NULL;
+
+// Initialize thread pool for mesh uploads
+static void init_mesh_upload_thread_pool(void) {
+    if (!mesh_upload_thread_pool) {
+        mesh_upload_thread_pool = thread_pool_create(4); // 4 worker threads
+        if (mesh_upload_thread_pool) {
+            LOG_INFO("Created mesh upload thread pool with 4 workers");
+        } else {
+            LOG_ERROR("Failed to create mesh upload thread pool");
+        }
+    }
+}
+
+// Cleanup thread pool
+static void cleanup_mesh_upload_thread_pool(void) {
+    if (mesh_upload_thread_pool) {
+        thread_pool_wait(mesh_upload_thread_pool); // Wait for all pending uploads
+        thread_pool_destroy(mesh_upload_thread_pool);
+        mesh_upload_thread_pool = NULL;
+        LOG_INFO("Destroyed mesh upload thread pool");
+    }
+}
+
+// Helper functions for GPU data storage
+static u32 store_gpu_data(mesh_gpu_data_t* data) {
+    if (!data) return 0;
+    
+    // Find empty slot
+    for (u32 i = 0; i < MAX_GPU_MESHES; i++) {
+        if (gpu_mesh_storage[i] == NULL) {
+            gpu_mesh_storage[i] = data;
+            gpu_mesh_count++;
+            LOG_INFO("Stored GPU data at slot %u (total: %u)", i, gpu_mesh_count);
+            return i + 1; // Return non-zero handle
+        }
+    }
+    
+    LOG_ERROR("GPU mesh storage full - cannot store mesh data");
+    return 0;
+}
+
+static mesh_gpu_data_t* retrieve_gpu_data(u32 handle) {
+    if (handle == 0 || handle > MAX_GPU_MESHES) {
+        return NULL;
+    }
+    
+    u32 index = handle - 1;
+    return gpu_mesh_storage[index];
+}
+
+static void remove_gpu_data(u32 handle) {
+    if (handle == 0 || handle > MAX_GPU_MESHES) {
+        return;
+    }
+    
+    u32 index = handle - 1;
+    if (gpu_mesh_storage[index]) {
+        free(gpu_mesh_storage[index]);
+        gpu_mesh_storage[index] = NULL;
+        gpu_mesh_count--;
+        LOG_INFO("Removed GPU data from slot %u (total: %u)", index, gpu_mesh_count);
+    }
+}
 
 // Forward declarations for backend integration
 // These will be implemented when the specific backend (Metal/Vulkan) is integrated
@@ -69,20 +143,24 @@ bool mesh_gpu_upload(mesh_t* mesh, struct metal_device* device) {
         return false;
     }
     
-    // Store GPU data pointers in mesh handles (using a simple approach for now)
-    // In a real implementation, these would be proper handles managed by the backend
-    mesh->vertex_buffer_handle = (u32)gpu_data->vertex_buffer;
-    mesh->index_buffer_handle = (u32)gpu_data->index_buffer;
+    // Store GPU data pointers in mesh handles and storage system
+    u32 gpu_handle = store_gpu_data(gpu_data);
+    if (gpu_handle == 0) {
+        printf("Error: Failed to store GPU data for mesh '%s'\n", mesh->name);
+        metal_destroy_buffer(gpu_data->vertex_buffer);
+        metal_destroy_buffer(gpu_data->index_buffer);
+        free(gpu_data);
+        return false;
+    }
+    
+    mesh->vertex_buffer_handle = gpu_handle;
+    mesh->index_buffer_handle = gpu_handle; // Use same handle for both buffers
     
     gpu_data->is_uploaded = true;
     gpu_data->upload_frame = 0; // Would be current frame counter
     
     printf("Successfully uploaded mesh '%s' to GPU (V: %u, I: %u)\n", 
            mesh->name, mesh->vertex_count, mesh->index_count);
-    
-    // TODO: Store gpu_data somewhere for later cleanup
-    // For now, we leak it slightly but this will be fixed with proper handle management
-    (void)gpu_data;
     
     return true;
 }
@@ -96,20 +174,31 @@ void mesh_gpu_unload(mesh_t* mesh) {
         return; // Already unloaded
     }
     
-    // TODO: Retrieve gpu_data from storage system
-    // For now, we'll directly use the handles
-    
-    if (mesh->vertex_buffer_handle != 0) {
-        struct metal_buffer* vertex_buffer = (struct metal_buffer*)mesh->vertex_buffer_handle;
-        metal_destroy_buffer(vertex_buffer);
-        mesh->vertex_buffer_handle = 0;
+    // Retrieve GPU data from storage system
+    mesh_gpu_data_t* gpu_data = retrieve_gpu_data(mesh->vertex_buffer_handle);
+    if (!gpu_data) {
+        printf("Warning: Could not retrieve GPU data for mesh '%s'\n", mesh->name);
+        return;
     }
     
-    if (mesh->index_buffer_handle != 0) {
-        struct metal_buffer* index_buffer = (struct metal_buffer*)mesh->index_buffer_handle;
-        metal_destroy_buffer(index_buffer);
-        mesh->index_buffer_handle = 0;
+    // Destroy vertex buffer
+    if (gpu_data->vertex_buffer) {
+        metal_destroy_buffer(gpu_data->vertex_buffer);
+        gpu_data->vertex_buffer = NULL;
     }
+    
+    // Destroy index buffer
+    if (gpu_data->index_buffer) {
+        metal_destroy_buffer(gpu_data->index_buffer);
+        gpu_data->index_buffer = NULL;
+    }
+    
+    // Remove from storage system
+    remove_gpu_data(mesh->vertex_buffer_handle);
+    
+    // Clear handles
+    mesh->vertex_buffer_handle = 0;
+    mesh->index_buffer_handle = 0;
     
     printf("Unloaded mesh '%s' from GPU\n", mesh->name);
 }
@@ -125,25 +214,27 @@ bool mesh_gpu_update(mesh_t* mesh, struct metal_device* device) {
         return mesh_gpu_upload(mesh, device);
     }
     
-    // TODO: Retrieve gpu_data from storage system
-    mesh_gpu_data_t* gpu_data = NULL; // Would be retrieved
+    // Retrieve GPU data from storage system
+    mesh_gpu_data_t* gpu_data = retrieve_gpu_data(mesh->vertex_buffer_handle);
+    if (!gpu_data) {
+        printf("Warning: Could not retrieve GPU data for mesh '%s' during update\n", mesh->name);
+        return false;
+    }
     
     // Update vertex buffer if needed
     if (mesh->flags & MESH_FLAG_DYNAMIC) {
-        struct metal_buffer* vertex_buffer = (struct metal_buffer*)mesh->vertex_buffer_handle;
-        if (vertex_buffer && mesh->vertices) {
+        if (gpu_data->vertex_buffer && mesh->vertices) {
             u32 vertex_size = mesh->vertex_count * sizeof(vertex_t);
-            bool success = metal_update_buffer(vertex_buffer, mesh->vertices, vertex_size, 0);
+            bool success = metal_update_buffer(gpu_data->vertex_buffer, mesh->vertices, vertex_size, 0);
             if (!success) {
                 printf("Error: Failed to update vertex buffer for mesh '%s'\n", mesh->name);
                 return false;
             }
         }
         
-        struct metal_buffer* index_buffer = (struct metal_buffer*)mesh->index_buffer_handle;
-        if (index_buffer && mesh->indices) {
+        if (gpu_data->index_buffer && mesh->indices) {
             u32 index_size = mesh->index_count * sizeof(u32);
-            bool success = metal_update_buffer(index_buffer, mesh->indices, index_size, 0);
+            bool success = metal_update_buffer(gpu_data->index_buffer, mesh->indices, index_size, 0);
             if (!success) {
                 printf("Error: Failed to update index buffer for mesh '%s'\n", mesh->name);
                 return false;
@@ -185,6 +276,13 @@ bool mesh_gpu_upload_async(mesh_t* mesh, struct metal_device* device,
         return false;
     }
     
+    // Initialize thread pool if needed
+    init_mesh_upload_thread_pool();
+    if (!mesh_upload_thread_pool) {
+        printf("Error: Thread pool not available for async upload\n");
+        return false;
+    }
+    
     // Create upload context
     mesh_upload_context_t* upload_ctx = (mesh_upload_context_t*)malloc(sizeof(mesh_upload_context_t));
     if (!upload_ctx) {
@@ -197,9 +295,10 @@ bool mesh_gpu_upload_async(mesh_t* mesh, struct metal_device* device,
     upload_ctx->callback = callback;
     upload_ctx->userdata = userdata;
     
-    // TODO: Submit to thread pool instead of direct call
-    // For now, we'll simulate async by calling it directly
-    mesh_upload_background_task(upload_ctx);
+    // Submit to thread pool for async execution
+    thread_pool_submit(mesh_upload_thread_pool, mesh_upload_background_task, upload_ctx);
+    
+    LOG_INFO("Submitted mesh '%s' for async upload to thread pool", mesh->name);
     
     return true;
 }
@@ -221,4 +320,22 @@ bool mesh_gpu_is_uploaded(const mesh_t* mesh) {
     }
     
     return (mesh->vertex_buffer_handle != 0 && mesh->index_buffer_handle != 0);
+}
+
+// Cleanup function to be called during engine shutdown
+void mesh_gpu_cleanup(void) {
+    // Clean up any remaining GPU data
+    for (u32 i = 0; i < MAX_GPU_MESHES; i++) {
+        if (gpu_mesh_storage[i]) {
+            printf("Warning: Cleaning up leaked GPU data at slot %u\n", i);
+            free(gpu_mesh_storage[i]);
+            gpu_mesh_storage[i] = NULL;
+        }
+    }
+    gpu_mesh_count = 0;
+    
+    // Cleanup thread pool
+    cleanup_mesh_upload_thread_pool();
+    
+    LOG_INFO("Mesh GPU system cleanup completed");
 }

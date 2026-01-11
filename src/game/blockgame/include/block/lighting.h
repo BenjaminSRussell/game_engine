@@ -21,4 +21,8 @@ u8 block_calculate_light_level(ChunkManager *chunks, BlockRegistry *registry,
 // Get light value at a position
 u8 chunk_get_light(Chunk *chunk, i32 x, i32 y, i32 z, ChunkLightType type);
 
+// Light cache management
+void lighting_cache_update_frame(void);
+void lighting_cache_invalidate(i32 x, i32 y, i32 z);
+
 #endif // BLOCK_LIGHTING_H

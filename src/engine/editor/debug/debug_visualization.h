@@ -12,7 +12,25 @@ extern "C" {
 // Forward declarations
 typedef struct light_system light_system_t;
 typedef struct shadow_system shadow_system_t;
-typedef struct bvh_node bvh_node_t;
+
+// BVH Node Structure
+typedef struct bvh_node {
+    struct bvh_node* left;
+    struct bvh_node* right;
+    struct bvh_node* parent;
+    
+    // Bounding volume
+    simd_float3 bounds_min;
+    simd_float3 bounds_max;
+    
+    // Node properties
+    bool is_leaf;
+    int object_count;
+    
+    // For leaf nodes: object indices
+    int* object_indices;
+    int object_capacity;
+} bvh_node_t;
 
 // Visualization System Configuration
 typedef struct debug_viz_config {

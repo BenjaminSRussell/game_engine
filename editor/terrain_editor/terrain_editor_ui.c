@@ -14,6 +14,9 @@
 bool terrain_editor_raycast_to_terrain(EditorContext* ctx, Vec3* out_hit_position);
 void terrain_editor_render_brush_cursor(EditorContext* ctx, Vec3 position, f32 radius);
 void terrain_editor_render_brush_preview(EditorContext* ctx, Vec3 position, TerrainBrush brush);
+static Vec3 refine_terrain_intersection(Vec3 ray_start, Vec3 ray_dir, 
+                                       f32 min_dist, f32 max_dist, 
+                                       TerrainHeightmap* heightmap);
 
 /**
  * =================================================================================================
@@ -83,21 +86,24 @@ void terrain_editor_ui_render_viewport_overlay(EditorContext* ctx) {
 bool terrain_editor_raycast_to_terrain(EditorContext* ctx, Vec3* out_hit_position) {
     if (!ctx || !out_hit_position) return false;
     
-    // In a real implementation, this would:
-    // 1. Get camera position and direction from viewport
-    // 2. Convert mouse position to world-space ray
-    // 3. Intersect ray with terrain heightmap
-    // 4. Return hit position and normal
+    TerrainSculptingSystem* ts = ctx->terrain_system;
+    if (!ts || !ts->heightmap) {
+        LOG_ERROR("No terrain system or heightmap available for raycast");
+        return false;
+    }
     
-    // For now, simulate a hit at a fixed distance in front of camera
+    // Get camera position and direction
     Vec3 camera_pos = ctx->viewport.camera_position;
+    Vec3 camera_target = ctx->viewport.camera_target;
+    
+    // Calculate camera forward direction
     Vec3 camera_forward = {
-        camera_pos.x - ctx->viewport.camera_target.x,
-        camera_pos.y - ctx->viewport.camera_target.y,
-        camera_pos.z - ctx->viewport.camera_target.z
+        camera_target.x - camera_pos.x,
+        camera_target.y - camera_pos.y,
+        camera_target.z - camera_pos.z
     };
     
-    // Normalize and scale
+    // Normalize direction
     f32 length = sqrtf(camera_forward.x * camera_forward.x + 
                       camera_forward.y * camera_forward.y + 
                       camera_forward.z * camera_forward.z);
@@ -107,12 +113,115 @@ bool terrain_editor_raycast_to_terrain(EditorContext* ctx, Vec3* out_hit_positio
         camera_forward.z /= length;
     }
     
-    // Place hit position 10 units in front of camera
-    out_hit_position->x = camera_pos.x - camera_forward.x * 10.0f;
-    out_hit_position->y = 0.0f; // Place on ground level
-    out_hit_position->z = camera_pos.z - camera_forward.z * 10.0f;
+    // In a real implementation, this would:
+    // 1. Convert mouse position to world-space ray
+    // 2. Intersect ray with terrain heightmap using proper algorithm
+    // 3. Return precise hit position and normal
     
-    return true;
+    // For now, implement a simple heightmap intersection
+    TerrainHeightmap* heightmap = ts->heightmap;
+    
+    // Step along the ray and check heightmap intersection
+    const f32 step_size = 0.5f;
+    const f32 max_distance = 500.0f;
+    Vec3 current_pos = camera_pos;
+    
+    for (f32 distance = 0.0f; distance < max_distance; distance += step_size) {
+        current_pos.x = camera_pos.x + camera_forward.x * distance;
+        current_pos.y = camera_pos.y + camera_forward.y * distance;
+        current_pos.z = camera_pos.z + camera_forward.z * distance;
+        
+        // Convert world position to heightmap coordinates
+        f32 hm_x = (current_pos.x / heightmap->scale_x) + (heightmap->width / 2.0f);
+        f32 hm_z = (current_pos.z / heightmap->scale_z) + (heightmap->height / 2.0f);
+        
+        // Check if within heightmap bounds
+        if (hm_x >= 0.0f && hm_x < heightmap->width && 
+            hm_z >= 0.0f && hm_z < heightmap->height) {
+            
+            // Get height at this position
+            u32 x_index = (u32)hm_x;
+            u32 z_index = (u32)hm_z;
+            u32 index = z_index * heightmap->width + x_index;
+            
+            if (index < heightmap->width * heightmap->height) {
+                f32 terrain_height = heightmap->heights[index] * heightmap->height_scale;
+                
+                // Check if ray is below terrain surface
+                if (current_pos.y <= terrain_height) {
+                    // Found intersection - refine with binary search for precision
+                    Vec3 hit_pos = refine_terrain_intersection(camera_pos, camera_forward, 
+                                                          distance - step_size, distance, 
+                                                          heightmap);
+                    
+                    *out_hit_position = hit_pos;
+                    
+                    LOG_DEBUG("Terrain raycast hit at (%.2f, %.2f, %.2f)", 
+                             hit_pos.x, hit_pos.y, hit_pos.z);
+                    return true;
+                }
+            }
+        }
+        
+        // Early exit if ray goes too far below expected terrain level
+        if (current_pos.y < -100.0f) {
+            break;
+        }
+    }
+    
+    // No intersection found - return ground level at camera position
+    out_hit_position->x = camera_pos.x;
+    out_hit_position->y = 0.0f;
+    out_hit_position->z = camera_pos.z;
+    
+    LOG_DEBUG("Terrain raycast missed - returning ground level");
+    return false;
+}
+
+// Refine terrain intersection using binary search for precision
+static Vec3 refine_terrain_intersection(Vec3 ray_start, Vec3 ray_dir, 
+                                       f32 min_dist, f32 max_dist, 
+                                       TerrainHeightmap* heightmap) {
+    const u32 iterations = 8;
+    Vec3 best_hit = ray_start;
+    
+    for (u32 i = 0; i < iterations; i++) {
+        f32 mid_dist = (min_dist + max_dist) * 0.5f;
+        Vec3 mid_pos = {
+            ray_start.x + ray_dir.x * mid_dist,
+            ray_start.y + ray_dir.y * mid_dist,
+            ray_start.z + ray_dir.z * mid_dist
+        };
+        
+        // Convert to heightmap coordinates
+        f32 hm_x = (mid_pos.x / heightmap->scale_x) + (heightmap->width / 2.0f);
+        f32 hm_z = (mid_pos.z / heightmap->scale_z) + (heightmap->height / 2.0f);
+        
+        if (hm_x >= 0.0f && hm_x < heightmap->width && 
+            hm_z >= 0.0f && hm_z < heightmap->height) {
+            
+            u32 x_index = (u32)hm_x;
+            u32 z_index = (u32)hm_z;
+            u32 index = z_index * heightmap->width + x_index;
+            
+            if (index < heightmap->width * heightmap->height) {
+                f32 terrain_height = heightmap->heights[index] * heightmap->height_scale;
+                
+                if (mid_pos.y <= terrain_height) {
+                    max_dist = mid_dist;
+                    best_hit = mid_pos;
+                } else {
+                    min_dist = mid_dist;
+                }
+            } else {
+                min_dist = mid_dist;
+            }
+        } else {
+            min_dist = mid_dist;
+        }
+    }
+    
+    return best_hit;
 }
 
 // Render 3D brush cursor at specified position
