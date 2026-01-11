@@ -242,11 +242,25 @@ void vehicle_update(VehiclePhysics *vehicle, f32 delta_time) {
     // Update suspension system with force calculations
     vehicle_update_suspension_system(vehicle);
     
+    // Update friction system with slip detection
+    WheelFriction frictions[MAX_WHEELS];
+    vehicle_calculate_friction_forces(vehicle, frictions);
+    
     // Update engine RPM based on wheel speed and gear
     // This would be implemented in the engine todo
     
     // Update physics simulation
     // This would include forces, integration, etc.
+    
+    // Log friction status
+    u32 slipping_wheels = 0;
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        if (frictions[i].is_slipping) slipping_wheels++;
+    }
+    
+    if (slipping_wheels > 0) {
+        LOG_DEBUG("Vehicle has %u slipping wheels", slipping_wheels);
+    }
     
     LOG_TRACE("Updated vehicle physics (%.3fs)", delta_time);
 }
@@ -485,4 +499,229 @@ f32 vehicle_get_total_suspension_force(const VehiclePhysics *vehicle) {
     }
     
     return total_force;
+}
+
+// Wheel friction calculation with slip detection
+typedef struct {
+    Vec3 lateral_force;
+    Vec3 longitudinal_force;
+    Vec3 total_force;
+    f32 slip_ratio;
+    f32 slip_angle;
+    bool is_slipping;
+    f32 friction_coefficient;
+} WheelFriction;
+
+// Calculate wheel velocity for friction calculations
+static Vec3 vehicle_get_wheel_velocity(const VehiclePhysics *vehicle, u32 wheel_index) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return (Vec3){0.0f, 0.0f, 0.0f};
+    }
+    
+    // In a full implementation, this would calculate the actual wheel velocity
+    // considering vehicle linear/angular velocity and wheel position
+    // For now, we'll estimate based on vehicle velocity
+    Vec3 wheel_velocity = vehicle->velocity;
+    
+    // Add rotational component from angular velocity
+    Mat4 chassis_transform = mat4_from_quat_translation(vehicle->rotation, vehicle->position);
+    Vec3 wheel_world_pos = mat4_transform_point(chassis_transform, vehicle->wheels[wheel_index].position);
+    
+    // v = ω × r (cross product of angular velocity and position)
+    Vec3 r = vec3_sub(wheel_world_pos, vehicle->position);
+    Vec3 angular_velocity_contribution = vec3_cross(vehicle->angular_velocity, r);
+    
+    wheel_velocity = vec3_add(wheel_velocity, angular_velocity_contribution);
+    
+    return wheel_velocity;
+}
+
+// Calculate wheel slip ratio (longitudinal slip)
+static f32 vehicle_calculate_slip_ratio(const VehiclePhysics *vehicle, u32 wheel_index) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return 0.0f;
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    
+    if (!wheel->is_grounded) {
+        return 1.0f; // Maximum slip when not grounded
+    }
+    
+    // Get wheel velocity
+    Vec3 wheel_velocity = vehicle_get_wheel_velocity(vehicle, wheel_index);
+    
+    // Calculate wheel angular velocity (rotation speed)
+    f32 wheel_angular_velocity = 0.0f;
+    if (wheel->radius > 0.0f) {
+        // v = ω * r, so ω = v / r
+        Vec3 wheel_direction = vec3_normalize(vec3_cross(wheel->contact_normal, 
+                                                     vec3_cross(vehicle->rotation, wheel->position)));
+        f32 forward_velocity = vec3_dot(wheel_velocity, wheel_direction);
+        wheel_angular_velocity = forward_velocity / wheel->radius;
+    }
+    
+    // Calculate theoretical rolling velocity
+    f32 rolling_velocity = wheel_angular_velocity * wheel->radius;
+    
+    // Get actual forward velocity
+    Vec3 forward = vec3_normalize(vec3_cross(wheel->contact_normal, 
+                                               vec3_cross(vehicle->rotation, wheel->position)));
+    f32 actual_velocity = vec3_dot(wheel_velocity, forward);
+    
+    // Slip ratio = (actual - rolling) / rolling
+    if (fabsf(rolling_velocity) > 0.01f) {
+        f32 slip_ratio = (actual_velocity - rolling_velocity) / rolling_velocity;
+        return fmaxf(-1.0f, fminf(1.0f, slip_ratio));
+    }
+    
+    return 0.0f;
+}
+
+// Calculate wheel slip angle (lateral slip)
+static f32 vehicle_calculate_slip_angle(const VehiclePhysics *vehicle, u32 wheel_index) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return 0.0f;
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    
+    if (!wheel->is_grounded) {
+        return 0.0f; // No slip angle when not grounded
+    }
+    
+    // Get wheel velocity
+    Vec3 wheel_velocity = vehicle_get_wheel_velocity(vehicle, wheel_index);
+    
+    // Calculate forward and lateral components
+    Vec3 forward = vec3_normalize(vec3_cross(wheel->contact_normal, 
+                                               vec3_cross(vehicle->rotation, wheel->position)));
+    Vec3 lateral = vec3_normalize(vec3_cross(forward, wheel->contact_normal));
+    
+    f32 forward_velocity = vec3_dot(wheel_velocity, forward);
+    f32 lateral_velocity = vec3_dot(wheel_velocity, lateral);
+    
+    // Slip angle = arctan(lateral / forward)
+    if (fabsf(forward_velocity) > 0.01f) {
+        f32 slip_angle = atan2f(lateral_velocity, forward_velocity);
+        return slip_angle;
+    }
+    
+    return 0.0f;
+}
+
+// Calculate friction coefficients based on slip
+static void vehicle_calculate_friction_coefficients(const VehiclePhysics *vehicle, u32 wheel_index,
+                                                   f32 *longitudinal_friction, f32 *lateral_friction) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count || 
+        !longitudinal_friction || !lateral_friction) {
+        return;
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    
+    // Get slip values
+    f32 slip_ratio = vehicle_calculate_slip_ratio(vehicle, wheel_index);
+    f32 slip_angle = vehicle_calculate_slip_angle(vehicle, wheel_index);
+    
+    // Base friction coefficient
+    f32 base_friction = wheel->friction_slip;
+    
+    // Reduce friction based on slip (Pacejka-like behavior)
+    f32 slip_factor = fmaxf(0.3f, 1.0f - fabsf(slip_ratio) * 0.7f);
+    f32 angle_factor = fmaxf(0.5f, 1.0f - fabsf(slip_angle) / (PI * 0.5f));
+    
+    *longitudinal_friction = base_friction * slip_factor;
+    *lateral_friction = base_friction * angle_factor * 0.8f; // Lateral typically lower
+    
+    LOG_TRACE("Wheel %u friction: slip_ratio=%.3f, slip_angle=%.3f°, long=%.3f, lat=%.3f",
+             wheel_index, slip_ratio, slip_angle * 180.0f / PI, 
+             *longitudinal_friction, *lateral_friction);
+}
+
+// Calculate total friction forces on wheel
+static WheelFriction vehicle_calculate_wheel_friction(const VehiclePhysics *vehicle, u32 wheel_index) {
+    WheelFriction friction = {0};
+    
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return friction;
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    
+    if (!wheel->is_grounded) {
+        return friction; // No friction when not grounded
+    }
+    
+    // Get wheel velocity
+    Vec3 wheel_velocity = vehicle_get_wheel_velocity(vehicle, wheel_index);
+    
+    // Calculate slip values
+    friction.slip_ratio = vehicle_calculate_slip_ratio(vehicle, wheel_index);
+    friction.slip_angle = vehicle_calculate_slip_angle(vehicle, wheel_index);
+    friction.is_slipping = (fabsf(friction.slip_ratio) > 0.1f) || (fabsf(friction.slip_angle) > 0.1f);
+    
+    // Calculate friction coefficients
+    vehicle_calculate_friction_coefficients(vehicle, wheel_index, 
+                                          &friction.friction_coefficient, 
+                                          &friction.friction_coefficient);
+    
+    // Calculate force directions
+    Vec3 forward = vec3_normalize(vec3_cross(wheel->contact_normal, 
+                                               vec3_cross(vehicle->rotation, wheel->position)));
+    Vec3 lateral = vec3_normalize(vec3_cross(forward, wheel->contact_normal));
+    
+    // Calculate normal force (from suspension)
+    Vec3 suspension_force = vehicle_calculate_suspension_force(vehicle, wheel_index);
+    f32 normal_force = vec3_length(suspension_force);
+    
+    // Calculate friction forces
+    f32 forward_velocity = vec3_dot(wheel_velocity, forward);
+    f32 lateral_velocity = vec3_dot(wheel_velocity, lateral);
+    
+    // Coulomb friction model: F = μ * N
+    friction.longitudinal_force = vec3_scale(forward, -forward_velocity * friction.friction_coefficient * normal_force);
+    friction.lateral_force = vec3_scale(lateral, -lateral_velocity * friction.friction_coefficient * normal_force);
+    
+    // Total friction force
+    friction.total_force = vec3_add(friction.longitudinal_force, friction.lateral_force);
+    
+    LOG_TRACE("Wheel %u friction: F_lat=(%.1f,%.1f,%.1f)N, F_long=(%.1f,%.1f,%.1f)N, slip=%s",
+             wheel_index, friction.lateral_force.x, friction.lateral_force.y, friction.lateral_force.z,
+             friction.longitudinal_force.x, friction.longitudinal_force.y, friction.longitudinal_force.z,
+             friction.is_slipping ? "YES" : "NO");
+    
+    return friction;
+}
+
+// Calculate friction forces for all wheels
+static void vehicle_calculate_friction_forces(const VehiclePhysics *vehicle, WheelFriction *frictions) {
+    if (!vehicle || !frictions) return;
+    
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        frictions[i] = vehicle_calculate_wheel_friction(vehicle, i);
+    }
+}
+
+// Public API for friction system
+f32 vehicle_get_wheel_slip_ratio(const VehiclePhysics *vehicle, u32 wheel_index) {
+    return vehicle_calculate_slip_ratio(vehicle, wheel_index);
+}
+
+f32 vehicle_get_wheel_slip_angle(const VehiclePhysics *vehicle, u32 wheel_index) {
+    return vehicle_calculate_slip_angle(vehicle, wheel_index);
+}
+
+void vehicle_get_wheel_friction_forces(const VehiclePhysics *vehicle, u32 wheel_index,
+                                        Vec3 *lateral, Vec3 *longitudinal, Vec3 *total) {
+    WheelFriction friction = vehicle_calculate_wheel_friction(vehicle, wheel_index);
+    
+    if (lateral) *lateral = friction.lateral_force;
+    if (longitudinal) *longitudinal = friction.longitudinal_force;
+    if (total) *total = friction.total_force;
+}
+
+bool vehicle_is_wheel_slipping(const VehiclePhysics *vehicle, u32 wheel_index) {
+    WheelFriction friction = vehicle_calculate_wheel_friction(vehicle, wheel_index);
+    return friction.is_slipping;
 }

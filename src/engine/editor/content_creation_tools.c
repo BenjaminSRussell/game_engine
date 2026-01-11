@@ -739,8 +739,8 @@ void content_creation_start_item_creation(void) {
     g_context.is_editing = true;
     g_context.current_item = content_creation_create_item_definition();
     
-    // Create preview entity
-    // TODO: Create preview entity with default item mesh
+    // Create preview entity with default item mesh
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_ITEM);
     
     g_context.preview_visible = true;
     LOG_INFO("Started item creation");
@@ -759,12 +759,14 @@ void content_creation_start_item_editing(ItemDefinition* item) {
     g_context.current_item = item;
     
     // Create preview entity with item properties
-    // TODO: Create preview entity with item's mesh and texture
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_ITEM);
+    content_creation_update_preview_from_item(g_context.preview_entity, item);
     
     g_context.preview_visible = true;
     LOG_INFO("Started editing item: %s", item->name);
 }
 
+// ... (rest of the code remains the same)
 void content_creation_finish_item_creation(void) {
     if (!g_context.is_editing || g_context.current_type != CONTENT_TYPE_ITEM || !g_context.current_item) {
         LOG_ERROR("No item creation in progress");
@@ -806,7 +808,7 @@ void content_creation_set_item_texture(const char* texture_path) {
         strncpy(g_context.current_item->texture_path, texture_path, sizeof(g_context.current_item->texture_path) - 1);
         
         // Update preview texture
-        // TODO: Update preview entity texture
+        content_creation_update_preview_from_item(g_context.preview_entity, g_context.current_item);
     }
 }
 
@@ -815,7 +817,7 @@ void content_creation_set_item_model(const char* model_path) {
         strncpy(g_context.current_item->model_path, model_path, sizeof(g_context.current_item->model_path) - 1);
         
         // Update preview model
-        // TODO: Update preview entity model
+        content_creation_update_preview_from_item(g_context.preview_entity, g_context.current_item);
     }
 }
 
@@ -824,7 +826,7 @@ void content_creation_set_item_scale(f32 scale) {
         g_context.current_item->scale = scale;
         
         // Update preview scale
-        // TODO: Update preview entity scale
+        content_creation_update_preview_from_item(g_context.preview_entity, g_context.current_item);
     }
 }
 
@@ -923,8 +925,8 @@ void content_creation_start_mob_creation(void) {
     g_context.is_editing = true;
     g_context.current_mob = content_creation_create_mob_definition();
     
-    // Create preview entity
-    // TODO: Create preview entity with default mob mesh
+    // Create preview entity with default mob mesh
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_MOB);
     
     g_context.preview_visible = true;
     LOG_INFO("Started mob creation");
@@ -943,12 +945,12 @@ void content_creation_start_mob_editing(MobDefinition* mob) {
     g_context.current_mob = mob;
     
     // Create preview entity with mob properties
-    // TODO: Create preview entity with mob's mesh and texture
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_MOB);
+    content_creation_update_preview_from_mob(g_context.preview_entity, mob);
     
     g_context.preview_visible = true;
     LOG_INFO("Started editing mob: %s", mob->name);
 }
-
 void content_creation_finish_mob_creation(void) {
     if (!g_context.is_editing || g_context.current_type != CONTENT_TYPE_MOB || !g_context.current_mob) {
         LOG_ERROR("No mob creation in progress");
