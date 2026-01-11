@@ -18,13 +18,6 @@ extern "C" {
 #endif
 
 // ========================================
-// Forward Declarations
-// ========================================
-
-typedef struct PhysicsWorld PhysicsWorld;
-typedef struct PhysicsObject PhysicsObject;
-
-// ========================================
 // Network Roles
 // ========================================
 
@@ -46,37 +39,14 @@ typedef enum NetworkMessageType {
     NET_MSG_OBJECT_DESTROY,           // Object destruction
     NET_MSG_COLLISION_EVENT,          // Collision event
     NET_MSG_FORCE_APPLY,              // Force application
-    NET_MSG_MATERIAL_CHANGE,          // Material change
-    NET_MSG_CONSTRAINT_UPDATE,        // Constraint update
-    NET_MSG_SIMULATION_SYNC,          // Simulation synchronization
     NET_MSG_CLIENT_INPUT,             // Client input
     NET_MSG_CLIENT_PREDICTION,        // Client prediction correction
     NET_MSG_SERVER_AUTHORITY,         // Server authority update
-    NET_MSG_LAG_COMPENSATION,         // Lag compensation data
-    NET_MSG_DELTA_COMPRESSION,         // Delta compression data
     NET_MSG_HEARTBEAT,                // Heartbeat
     NET_MSG_CONNECT,                  // Connection request
     NET_MSG_DISCONNECT,               // Disconnection
-    NET_MSG_ACK,                      // Acknowledgment
-    NET_MSG_NACK,                     // Negative acknowledgment
     NET_MSG_CUSTOM = 1000             // Custom messages
 } NetworkMessageType;
-
-// ========================================
-// Network Flags
-// ========================================
-
-typedef enum NetworkFlags {
-    NET_FLAG_NONE = 0x00,
-    NET_FLAG_RELIABLE = 0x01,         // Reliable delivery
-    NET_FLAG_ORDERED = 0x02,           // Ordered delivery
-    NET_FLAG_SEQUENCED = 0x04,        // Sequenced delivery
-    NET_FLAG_COMPRESSED = 0x08,        // Compressed data
-    NET_FLAG_ENCRYPTED = 0x10,        // Encrypted data
-    NET_FLAG_PRIORITY_HIGH = 0x20,     // High priority
-    NET_FLAG_IMMEDIATE = 0x40,        // Immediate delivery
-    NET_FLAG_BROADCAST = 0x80         // Broadcast to all
-} NetworkFlags;
 
 // ========================================
 // Network Connection
@@ -93,11 +63,6 @@ typedef struct NetworkConnection {
     float packet_loss;                // Packet loss rate
     uint64_t bytes_sent;              // Bytes sent
     uint64_t bytes_received;          // Bytes received
-    uint32_t packets_sent;            // Packets sent
-    uint32_t packets_received;        // Packets received
-    uint32_t packets_dropped;         // Packets dropped
-    float bandwidth_up;               // Upload bandwidth
-    float bandwidth_down;             // Download bandwidth
     void *user_data;                 // User data pointer
 } NetworkConnection;
 
@@ -113,20 +78,16 @@ typedef struct NetworkMessage {
     uint32_t source_id;               // Source connection ID
     uint32_t target_id;               // Target connection ID (0 for broadcast)
     uint16_t sequence_number;         // Sequence number
-    uint16_t ack_number;             // Acknowledgment number
     
     // Message data
     void *data;                       // Message data
     size_t data_size;                 // Data size
-    size_t compressed_size;          // Compressed size
     
     // Metadata
     bool processed;                   // Message processed
     bool reliable;                    // Reliable delivery required
-    bool ordered;                     // Ordered delivery required
     uint64_t send_time;               // Send time
     uint64_t receive_time;            // Receive time
-    uint32_t retry_count;             // Retry count
     
 } NetworkMessage;
 
@@ -144,7 +105,6 @@ typedef struct ObjectNetworkState {
     // Position state
     float position[3];                // Current position
     float velocity[3];                // Current velocity
-    float acceleration[3];            // Current acceleration
     uint64_t position_timestamp;      // Position timestamp
     
     // Rotation state
@@ -156,7 +116,6 @@ typedef struct ObjectNetworkState {
     bool active;                      // Active state
     bool sleeping;                    // Sleeping state
     float mass;                       // Mass
-    uint32_t material_id;             // Material ID
     
     // Prediction state
     float predicted_position[3];      // Predicted position
@@ -169,7 +128,6 @@ typedef struct ObjectNetworkState {
     uint64_t last_update_time;       // Last update time
     uint32_t update_frequency;        // Update frequency
     bool needs_update;               // Needs update
-    float priority;                  // Update priority
     
 } ObjectNetworkState;
 
@@ -200,59 +158,6 @@ typedef struct ClientPredictionState {
     float correction_strength;        // Correction strength
     
 } ClientPredictionState;
-
-// ========================================
-// Lag Compensation Data
-// ========================================
-
-typedef struct LagCompensationData {
-    uint32_t client_id;               // Client ID
-    uint64_t client_time;             // Client time
-    uint64_t server_time;             // Server time
-    float time_difference;            // Time difference
-    float interpolation_delay;         // Interpolation delay
-    float extrapolation_limit;         // Extrapolation limit
-    
-    // Historical positions
-    float *position_history;          // Position history buffer
-    float *rotation_history;          // Rotation history buffer
-    uint64_t *timestamp_history;      // Timestamp history buffer
-    int history_size;                 // History buffer size
-    int history_count;                // History count
-    int history_index;               // Current history index
-    
-    // Compensation state
-    bool compensation_enabled;         // Compensation enabled
-    float compensation_factor;         // Compensation factor
-    uint64_t last_compensation_time;  // Last compensation time
-    
-} LagCompensationData;
-
-// ========================================
-// Delta Compression
-// ========================================
-
-typedef struct DeltaCompressionData {
-    uint32_t base_sequence;           // Base sequence number
-    uint32_t target_sequence;         // Target sequence number
-    
-    // Changed objects
-    uint64_t *changed_objects;        // Changed object IDs
-    int changed_count;                // Number of changed objects
-    
-    // Delta data
-    void *delta_data;                 // Delta data buffer
-    size_t delta_size;                // Delta data size
-    
-    // Compression stats
-    size_t original_size;             // Original data size
-    size_t compressed_size;           // Compressed size
-    float compression_ratio;          // Compression ratio
-    
-    bool valid;                       // Delta is valid
-    uint64_t creation_time;           // Creation time
-    
-} DeltaCompressionData;
 
 // ========================================
 // Physics Network System
@@ -290,16 +195,6 @@ typedef struct PhysicsNetworkSystem {
     ClientPredictionState *prediction_states; // Prediction states
     int prediction_count;             // Number of prediction states
     int prediction_capacity;          // Prediction capacity
-    
-    // Lag compensation
-    LagCompensationData *lag_compensation; // Lag compensation data
-    int lag_compensation_count;       // Number of clients
-    int lag_compensation_capacity;    // Lag compensation capacity
-    
-    // Delta compression
-    DeltaCompressionData *delta_data; // Delta compression data
-    int delta_count;                  // Number of delta states
-    int delta_capacity;               // Delta capacity
     
     // Synchronization
     float network_tick_rate;          // Network tick rate
@@ -495,73 +390,6 @@ bool physics_network_apply_server_correction(PhysicsNetworkSystem *system, uint3
                                              const float *server_velocity, uint64_t sequence_number);
 
 // ========================================
-// Lag Compensation
-// ========================================
-
-/**
- * Enable/disable lag compensation
- * @param system Network system
- * @param enabled Enable compensation
- */
-void physics_network_set_lag_compensation(PhysicsNetworkSystem *system, bool enabled);
-
-/**
- * Set interpolation delay
- * @param system Network system
- * @param delay Interpolation delay
- */
-void physics_network_set_interpolation_delay(PhysicsNetworkSystem *system, float delay);
-
-/**
- * Set extrapolation limit
- * @param system Network system
- * @param limit Extrapolation limit
- */
-void physics_network_set_extrapolation_limit(PhysicsNetworkSystem *system, float limit);
-
-/**
- * Get compensated position
- * @param system Network system
- * @param client_id Client ID
- * @param object_id Object ID
- * @param client_time Client time
- * @param position Output compensated position
- * @return True if successful
- */
-bool physics_network_get_compensated_position(PhysicsNetworkSystem *system, uint32_t client_id,
-                                               uint64_t object_id, uint64_t client_time,
-                                               float *position);
-
-// ========================================
-// Delta Compression
-// ========================================
-
-/**
- * Enable/disable delta compression
- * @param system Network system
- * @param enabled Enable compression
- */
-void physics_network_set_delta_compression(PhysicsNetworkSystem *system, bool enabled);
-
-/**
- * Create delta compression
- * @param system Network system
- * @param base_sequence Base sequence
- * @param target_sequence Target sequence
- * @return Delta data or NULL on failure
- */
-DeltaCompressionData* physics_network_create_delta(PhysicsNetworkSystem *system,
-                                                  uint32_t base_sequence, uint32_t target_sequence);
-
-/**
- * Apply delta compression
- * @param system Network system
- * @param delta_data Delta data
- * @return True if successful
- */
-bool physics_network_apply_delta(PhysicsNetworkSystem *system, const DeltaCompressionData *delta_data);
-
-// ========================================
 // Message Handling
 // ========================================
 
@@ -618,20 +446,6 @@ void physics_network_get_statistics(PhysicsNetworkSystem *system,
                                      uint64_t *bytes_sent, uint64_t *bytes_received,
                                      float *average_latency, float *packet_loss_rate);
 
-/**
- * Get connection statistics
- * @param system Network system
- * @param connection_id Connection ID
- * @param ping_ms Ping in milliseconds
- * @param packet_loss Packet loss rate
- * @param bandwidth_up Upload bandwidth
- * @param bandwidth_down Download bandwidth
- * @return True if successful
- */
-bool physics_network_get_connection_stats(PhysicsNetworkSystem *system, uint32_t connection_id,
-                                          uint32_t *ping_ms, float *packet_loss,
-                                          float *bandwidth_up, float *bandwidth_down);
-
 // ========================================
 // Configuration
 // ========================================
@@ -651,18 +465,11 @@ void physics_network_set_tick_rate(PhysicsNetworkSystem *system, float tick_rate
 void physics_network_set_position_tolerance(PhysicsNetworkSystem *system, float tolerance);
 
 /**
- * Set rotation tolerance
+ * Set interpolation delay
  * @param system Network system
- * @param tolerance Rotation tolerance
+ * @param delay Interpolation delay
  */
-void physics_network_set_rotation_tolerance(PhysicsNetworkSystem *system, float tolerance);
-
-/**
- * Set velocity tolerance
- * @param system Network system
- * @param tolerance Velocity tolerance
- */
-void physics_network_set_velocity_tolerance(PhysicsNetworkSystem *system, float tolerance);
+void physics_network_set_interpolation_delay(PhysicsNetworkSystem *system, float delay);
 
 #ifdef __cplusplus
 }
