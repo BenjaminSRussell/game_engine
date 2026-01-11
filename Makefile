@@ -32881,6 +32881,30 @@ src/engine/physics/rigid_body/rigid_body_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/rigid_body/rigid_body_impl.c.s
 .PHONY : src/engine/physics/rigid_body/rigid_body_impl.c.s
 
+src/engine/physics/serialization/physics_serialization.o: src/engine/physics/serialization/physics_serialization.c.o
+.PHONY : src/engine/physics/serialization/physics_serialization.o
+
+# target to build an object file
+src/engine/physics/serialization/physics_serialization.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/serialization/physics_serialization.c.o
+.PHONY : src/engine/physics/serialization/physics_serialization.c.o
+
+src/engine/physics/serialization/physics_serialization.i: src/engine/physics/serialization/physics_serialization.c.i
+.PHONY : src/engine/physics/serialization/physics_serialization.i
+
+# target to preprocess a source file
+src/engine/physics/serialization/physics_serialization.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/serialization/physics_serialization.c.i
+.PHONY : src/engine/physics/serialization/physics_serialization.c.i
+
+src/engine/physics/serialization/physics_serialization.s: src/engine/physics/serialization/physics_serialization.c.s
+.PHONY : src/engine/physics/serialization/physics_serialization.s
+
+# target to generate assembly for a file
+src/engine/physics/serialization/physics_serialization.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/serialization/physics_serialization.c.s
+.PHONY : src/engine/physics/serialization/physics_serialization.c.s
+
 src/engine/physics/simulation_impl.o: src/engine/physics/simulation_impl.c.o
 .PHONY : src/engine/physics/simulation_impl.o
 
@@ -57675,6 +57699,9 @@ help:
 	@echo "... src/engine/physics/rigid_body/rigid_body_impl.o"
 	@echo "... src/engine/physics/rigid_body/rigid_body_impl.i"
 	@echo "... src/engine/physics/rigid_body/rigid_body_impl.s"
+	@echo "... src/engine/physics/serialization/physics_serialization.o"
+	@echo "... src/engine/physics/serialization/physics_serialization.i"
+	@echo "... src/engine/physics/serialization/physics_serialization.s"
 	@echo "... src/engine/physics/simulation_impl.o"
 	@echo "... src/engine/physics/simulation_impl.i"
 	@echo "... src/engine/physics/simulation_impl.s"
