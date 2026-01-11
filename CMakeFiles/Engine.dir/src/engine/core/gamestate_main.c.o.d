@@ -141,13 +141,8 @@ CMakeFiles/Engine.dir/src/engine/core/gamestate_main.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/../../game/minecraftv2/include/mesh/mesh.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/../../game/minecraftv2/include/mesh/../game_common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/math.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/utils.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/../common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/vendor/miniaudio.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdalign.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
@@ -168,6 +163,7 @@ CMakeFiles/Engine.dir/src/engine/core/gamestate_main.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk_buffers.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/../game_common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/vulkan.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/camera.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/ecs.h \
@@ -198,6 +194,7 @@ CMakeFiles/Engine.dir/src/engine/core/gamestate_main.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/../game_common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/platform/input/controls.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/lighting.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/mesh.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/item_registry.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/../game_common.h \
@@ -279,6 +276,15 @@ CMakeFiles/Engine.dir/src/engine/core/gamestate_main.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/water_integration.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/water_physics.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/water_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/math.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/utils.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/../common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/aabb.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/plane.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/frustum.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/ray.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/component_ids.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/components/health.h \
   /opt/homebrew/include/GLFW/glfw3.h \

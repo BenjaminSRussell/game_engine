@@ -28,6 +28,7 @@ CMakeFiles/Engine.dir/src/engine/ai/advanced/extended_ai_complete.c.o: src/engin
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -102,6 +103,7 @@ CMakeFiles/Engine.dir/src/engine/ai/advanced/extended_ai_complete.c.o: src/engin
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -112,9 +114,13 @@ CMakeFiles/Engine.dir/src/engine/ai/advanced/extended_ai_complete.c.o: src/engin
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -546,6 +552,7 @@ CMakeFiles/Engine.dir/src/engine/ai/asset_generator.c.o: src/engine/ai/asset_gen
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -639,6 +646,7 @@ CMakeFiles/Engine.dir/src/engine/ai/asset_generator.c.o: src/engine/ai/asset_gen
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -652,9 +660,13 @@ CMakeFiles/Engine.dir/src/engine/ai/asset_generator.c.o: src/engine/ai/asset_gen
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -851,6 +863,7 @@ CMakeFiles/Engine.dir/src/engine/ai/behavior/utility_ai_advanced_impl.c.o: src/e
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -925,6 +938,7 @@ CMakeFiles/Engine.dir/src/engine/ai/behavior/utility_ai_advanced_impl.c.o: src/e
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -935,9 +949,13 @@ CMakeFiles/Engine.dir/src/engine/ai/behavior/utility_ai_advanced_impl.c.o: src/e
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -1072,19 +1090,10 @@ CMakeFiles/Engine.dir/src/engine/ai/behavior_tree.c.o: src/engine/ai/behavior_tr
   src/engine/include/core/logger.h \
   src/engine/include/core/types.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
-  src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
-  src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/ai/behavior_tree.h \
-  src/engine/include/common.h \
-  src/engine/include/core/logger.h \
-  src/engine/include/math/math.h
+  src/engine/include/core/logger.h
 
 CMakeFiles/Engine.dir/src/engine/ai/blackboard.c.o: src/engine/ai/blackboard.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -1114,6 +1123,7 @@ CMakeFiles/Engine.dir/src/engine/ai/blackboard.c.o: src/engine/ai/blackboard.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -1207,6 +1217,7 @@ CMakeFiles/Engine.dir/src/engine/ai/blackboard.c.o: src/engine/ai/blackboard.c \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -1222,9 +1233,13 @@ CMakeFiles/Engine.dir/src/engine/ai/blackboard.c.o: src/engine/ai/blackboard.c \
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -1574,6 +1589,7 @@ CMakeFiles/Engine.dir/src/engine/ai/crowd/flow_field_impl.c.o: src/engine/ai/cro
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -1648,6 +1664,7 @@ CMakeFiles/Engine.dir/src/engine/ai/crowd/flow_field_impl.c.o: src/engine/ai/cro
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -1658,9 +1675,13 @@ CMakeFiles/Engine.dir/src/engine/ai/crowd/flow_field_impl.c.o: src/engine/ai/cro
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -1801,15 +1822,8 @@ CMakeFiles/Engine.dir/src/engine/ai/crowd/mass_crowd.c.o: src/engine/ai/crowd/ma
   src/engine/include/ecs/component_ids.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
-  src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
-  src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
-  src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h
+  src/engine/include/math/vec3.h
 
 CMakeFiles/Engine.dir/src/engine/ai/emotion/emotional_state.c.o: src/engine/ai/emotion/emotional_state.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -1838,6 +1852,7 @@ CMakeFiles/Engine.dir/src/engine/ai/emotion/emotional_state.c.o: src/engine/ai/e
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -1912,6 +1927,7 @@ CMakeFiles/Engine.dir/src/engine/ai/emotion/emotional_state.c.o: src/engine/ai/e
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -1923,9 +1939,13 @@ CMakeFiles/Engine.dir/src/engine/ai/emotion/emotional_state.c.o: src/engine/ai/e
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -2091,6 +2111,7 @@ CMakeFiles/Engine.dir/src/engine/ai/goap.c.o: src/engine/ai/goap.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -2184,6 +2205,7 @@ CMakeFiles/Engine.dir/src/engine/ai/goap.c.o: src/engine/ai/goap.c \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -2198,9 +2220,13 @@ CMakeFiles/Engine.dir/src/engine/ai/goap.c.o: src/engine/ai/goap.c \
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -2316,6 +2342,7 @@ CMakeFiles/Engine.dir/src/engine/ai/learning/genetic_algorithm.c.o: src/engine/a
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -2409,6 +2436,7 @@ CMakeFiles/Engine.dir/src/engine/ai/learning/genetic_algorithm.c.o: src/engine/a
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -2432,12 +2460,15 @@ CMakeFiles/Engine.dir/src/engine/ai/learning/genetic_algorithm.c.o: src/engine/a
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -2474,6 +2505,7 @@ CMakeFiles/Engine.dir/src/engine/ai/logic/fuzzy_logic.c.o: src/engine/ai/logic/f
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -2567,6 +2599,7 @@ CMakeFiles/Engine.dir/src/engine/ai/logic/fuzzy_logic.c.o: src/engine/ai/logic/f
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -2589,12 +2622,15 @@ CMakeFiles/Engine.dir/src/engine/ai/logic/fuzzy_logic.c.o: src/engine/ai/logic/f
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -5345,9 +5381,13 @@ CMakeFiles/Engine.dir/src/engine/ai/ml/frame_interpolation.c.o: src/engine/ai/ml
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -10336,6 +10376,7 @@ CMakeFiles/Engine.dir/src/engine/ai/ml/neural_network.c.o: src/engine/ai/ml/neur
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -10410,6 +10451,7 @@ CMakeFiles/Engine.dir/src/engine/ai/ml/neural_network.c.o: src/engine/ai/ml/neur
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -10420,9 +10462,13 @@ CMakeFiles/Engine.dir/src/engine/ai/ml/neural_network.c.o: src/engine/ai/ml/neur
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -11686,6 +11732,7 @@ CMakeFiles/Engine.dir/src/engine/ai/ml/npc_learning_impl.c.o: src/engine/ai/ml/n
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -11760,6 +11807,7 @@ CMakeFiles/Engine.dir/src/engine/ai/ml/npc_learning_impl.c.o: src/engine/ai/ml/n
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -11770,9 +11818,13 @@ CMakeFiles/Engine.dir/src/engine/ai/ml/npc_learning_impl.c.o: src/engine/ai/ml/n
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -11804,6 +11856,7 @@ CMakeFiles/Engine.dir/src/engine/ai/ml/procedural_ai_impl.c.o: src/engine/ai/ml/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -11878,6 +11931,7 @@ CMakeFiles/Engine.dir/src/engine/ai/ml/procedural_ai_impl.c.o: src/engine/ai/ml/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -11888,9 +11942,13 @@ CMakeFiles/Engine.dir/src/engine/ai/ml/procedural_ai_impl.c.o: src/engine/ai/ml/
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -11923,6 +11981,7 @@ CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o: src/engine/ai/ml_navigati
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -12016,6 +12075,7 @@ CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o: src/engine/ai/ml_navigati
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -12032,9 +12092,13 @@ CMakeFiles/Engine.dir/src/engine/ai/ml_navigation.c.o: src/engine/ai/ml_navigati
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -12183,15 +12247,10 @@ CMakeFiles/Engine.dir/src/engine/ai/ml_training/data_pipeline.c.o: src/engine/ai
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/ai/modular_assets.c.o: src/engine/ai/modular_assets.c \
@@ -12328,15 +12387,9 @@ CMakeFiles/Engine.dir/src/engine/ai/modular_assets.c.o: src/engine/ai/modular_as
   src/engine/include/core/modular_assets.h \
   src/engine/include/core/types.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
-  src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/mesh.h
 
 CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o: src/engine/ai/nav/crowd_avoidance.c \
@@ -12366,6 +12419,7 @@ CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o: src/engine/ai/nav/c
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -12440,6 +12494,7 @@ CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o: src/engine/ai/nav/c
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -12451,9 +12506,13 @@ CMakeFiles/Engine.dir/src/engine/ai/nav/crowd_avoidance.c.o: src/engine/ai/nav/c
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -12759,9 +12818,13 @@ CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_generation.c.o: src/engin
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -12793,6 +12856,7 @@ CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_impl.c.o: src/engine/ai/n
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -12867,6 +12931,7 @@ CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_impl.c.o: src/engine/ai/n
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -12877,9 +12942,13 @@ CMakeFiles/Engine.dir/src/engine/ai/navigation/navmesh_impl.c.o: src/engine/ai/n
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -13188,6 +13257,7 @@ CMakeFiles/Engine.dir/src/engine/ai/nlp_behavior.c.o: src/engine/ai/nlp_behavior
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -13281,6 +13351,7 @@ CMakeFiles/Engine.dir/src/engine/ai/nlp_behavior.c.o: src/engine/ai/nlp_behavior
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -13298,9 +13369,13 @@ CMakeFiles/Engine.dir/src/engine/ai/nlp_behavior.c.o: src/engine/ai/nlp_behavior
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -13449,15 +13524,10 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/behavior_tree_advanced.c.o: src/engine/a
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/ai/npc/npc_behaviors_impl.c.o: src/engine/ai/npc/npc_behaviors_impl.c \
@@ -13487,6 +13557,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/npc_behaviors_impl.c.o: src/engine/ai/np
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -13561,6 +13632,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/npc_behaviors_impl.c.o: src/engine/ai/np
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -13571,9 +13643,13 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/npc_behaviors_impl.c.o: src/engine/ai/np
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -13606,6 +13682,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/perception_system.c.o: src/engine/ai/npc
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -13699,6 +13776,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/perception_system.c.o: src/engine/ai/npc
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -13724,9 +13802,13 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/perception_system.c.o: src/engine/ai/npc
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -13786,6 +13868,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o: src/engine/ai
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -13860,6 +13943,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o: src/engine/ai
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -13872,9 +13956,13 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_civilian.c.o: src/engine/ai
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -13906,6 +13994,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o: src/engine/a
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -13980,6 +14069,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o: src/engine/a
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -13992,9 +14082,13 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_companion.c.o: src/engine/a
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -14026,6 +14120,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_melee.c.o: src/engine
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -14100,6 +14195,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_melee.c.o: src/engine
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -14111,9 +14207,13 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_enemy_melee.c.o: src/engine
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -14260,6 +14360,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_guard.c.o: src/engine/ai/np
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -14334,6 +14435,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_guard.c.o: src/engine/ai/np
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -14345,9 +14447,13 @@ CMakeFiles/Engine.dir/src/engine/ai/npc/prebuilt/npc_guard.c.o: src/engine/ai/np
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -14722,24 +14828,15 @@ CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/behavior_tree_utility.c.o: src/
   src/engine/include/core/logger.h \
   src/engine/include/core/types.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
-  src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
-  src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/ai/behavior_tree.h \
   src/engine/include/ai/npc_advanced/behavior_tree_utility.h \
   src/engine/include/ai/npc_advanced/utility_ai.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/logger.h \
   src/engine/include/core/memory.h \
   src/engine/include/core/types.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/vec3.h
 
 CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/cover_system.c.o: src/engine/ai/npc_advanced/cover_system.c \
@@ -15189,6 +15286,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/memory_system.c.o: src/engine/a
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -15282,6 +15380,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/memory_system.c.o: src/engine/a
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -15301,9 +15400,13 @@ CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/memory_system.c.o: src/engine/a
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -15499,9 +15602,13 @@ CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/utility_ai.c.o: src/engine/ai/n
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -15706,9 +15813,13 @@ CMakeFiles/Engine.dir/src/engine/ai/pathfinding/astar_pathfinder.c.o: src/engine
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -15740,6 +15851,7 @@ CMakeFiles/Engine.dir/src/engine/ai/pathfinding/path_smoothing.c.o: src/engine/a
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -15814,6 +15926,7 @@ CMakeFiles/Engine.dir/src/engine/ai/pathfinding/path_smoothing.c.o: src/engine/a
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -15824,9 +15937,13 @@ CMakeFiles/Engine.dir/src/engine/ai/pathfinding/path_smoothing.c.o: src/engine/a
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -15858,6 +15975,7 @@ CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_complete.c.o: src/en
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -15932,6 +16050,7 @@ CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_complete.c.o: src/en
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -15942,9 +16061,13 @@ CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_complete.c.o: src/en
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -16003,6 +16126,7 @@ CMakeFiles/Engine.dir/src/engine/ai/planning/goap_planner.c.o: src/engine/ai/pla
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -16077,6 +16201,7 @@ CMakeFiles/Engine.dir/src/engine/ai/planning/goap_planner.c.o: src/engine/ai/pla
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -16089,9 +16214,13 @@ CMakeFiles/Engine.dir/src/engine/ai/planning/goap_planner.c.o: src/engine/ai/pla
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -16123,6 +16252,7 @@ CMakeFiles/Engine.dir/src/engine/ai/planning/htn_planner.c.o: src/engine/ai/plan
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -16197,6 +16327,7 @@ CMakeFiles/Engine.dir/src/engine/ai/planning/htn_planner.c.o: src/engine/ai/plan
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -16209,9 +16340,13 @@ CMakeFiles/Engine.dir/src/engine/ai/planning/htn_planner.c.o: src/engine/ai/plan
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -16360,15 +16495,10 @@ CMakeFiles/Engine.dir/src/engine/ai/procedural/wfc_3d.c.o: src/engine/ai/procedu
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/ai/procedural_advanced/city_grid.c.o: src/engine/ai/procedural_advanced/city_grid.c \
@@ -16561,6 +16691,7 @@ CMakeFiles/Engine.dir/src/engine/ai/spatial/influence_maps.c.o: src/engine/ai/sp
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -16654,6 +16785,7 @@ CMakeFiles/Engine.dir/src/engine/ai/spatial/influence_maps.c.o: src/engine/ai/sp
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -16677,12 +16809,15 @@ CMakeFiles/Engine.dir/src/engine/ai/spatial/influence_maps.c.o: src/engine/ai/sp
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -16743,6 +16878,7 @@ CMakeFiles/Engine.dir/src/engine/ai/style_templates.c.o: src/engine/ai/style_tem
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -16836,6 +16972,7 @@ CMakeFiles/Engine.dir/src/engine/ai/style_templates.c.o: src/engine/ai/style_tem
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -16849,9 +16986,13 @@ CMakeFiles/Engine.dir/src/engine/ai/style_templates.c.o: src/engine/ai/style_tem
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -17134,6 +17275,7 @@ CMakeFiles/Engine.dir/src/engine/ai/utility/utility_scorer.c.o: src/engine/ai/ut
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -17208,6 +17350,7 @@ CMakeFiles/Engine.dir/src/engine/ai/utility/utility_scorer.c.o: src/engine/ai/ut
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -17219,9 +17362,13 @@ CMakeFiles/Engine.dir/src/engine/ai/utility/utility_scorer.c.o: src/engine/ai/ut
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -17370,15 +17517,10 @@ CMakeFiles/Engine.dir/src/engine/ai/vision/saliency_map.c.o: src/engine/ai/visio
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/ai/vision/visual_cortex_recognition.c.o: src/engine/ai/vision/visual_cortex_recognition.c \
@@ -17525,15 +17667,10 @@ CMakeFiles/Engine.dir/src/engine/ai/vision/visual_cortex_recognition.c.o: src/en
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o: src/engine/ai/voice/speech_to_text.c \
@@ -17564,6 +17701,7 @@ CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o: src/engine/ai/voic
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/gethostuuid.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
@@ -17680,6 +17818,7 @@ CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o: src/engine/ai/voic
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdalign.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
@@ -17700,9 +17839,13 @@ CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o: src/engine/ai/voic
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -17736,6 +17879,7 @@ CMakeFiles/Engine.dir/src/engine/ai/voice/text_to_speech_neural.c.o: src/engine/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/gethostuuid.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
@@ -17852,6 +17996,7 @@ CMakeFiles/Engine.dir/src/engine/ai/voice/text_to_speech_neural.c.o: src/engine/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdalign.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
@@ -17872,9 +18017,13 @@ CMakeFiles/Engine.dir/src/engine/ai/voice/text_to_speech_neural.c.o: src/engine/
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -18044,6 +18193,7 @@ CMakeFiles/Engine.dir/src/engine/animation/animation_synthesis.c.o: src/engine/a
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -18137,6 +18287,7 @@ CMakeFiles/Engine.dir/src/engine/animation/animation_synthesis.c.o: src/engine/a
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -18160,9 +18311,13 @@ CMakeFiles/Engine.dir/src/engine/animation/animation_synthesis.c.o: src/engine/a
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -18195,6 +18350,7 @@ CMakeFiles/Engine.dir/src/engine/animation/animation_system.c.o: src/engine/anim
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -18288,6 +18444,7 @@ CMakeFiles/Engine.dir/src/engine/animation/animation_system.c.o: src/engine/anim
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -18311,11 +18468,16 @@ CMakeFiles/Engine.dir/src/engine/animation/animation_system.c.o: src/engine/anim
   src/engine/include/core/types.h \
   src/engine/include/core/window.h \
   src/engine/include/common.h \
+  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -18757,15 +18919,10 @@ CMakeFiles/Engine.dir/src/engine/animation/compression/keyframe_reducer.c.o: src
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/animation/control_rig.c.o: src/engine/animation/control_rig.c \
@@ -19148,17 +19305,12 @@ CMakeFiles/Engine.dir/src/engine/animation/core/blend_space_2d.c.o: src/engine/a
   src/engine/include/animation/animation_system.h \
   src/engine/include/animation/core/blend_space_2d.h \
   src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/common.h \
   src/engine/include/common.h \
   src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
-  src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h
+  src/engine/include/math/vec3.h
 
 CMakeFiles/Engine.dir/src/engine/animation/core/inverse_kinematics_solver.c.o: src/engine/animation/core/inverse_kinematics_solver.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -19533,15 +19685,10 @@ CMakeFiles/Engine.dir/src/engine/animation/ik/aim_ik_solver.c.o: src/engine/anim
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/animation/ik/foot_ik_solver.c.o: src/engine/animation/ik/foot_ik_solver.c \
@@ -19688,15 +19835,10 @@ CMakeFiles/Engine.dir/src/engine/animation/ik/foot_ik_solver.c.o: src/engine/ani
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/physics/physics.h \
   src/engine/include/rendering/renderer.h
 
@@ -19844,15 +19986,10 @@ CMakeFiles/Engine.dir/src/engine/animation/ik/hand_ik_solver.c.o: src/engine/ani
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/animation/ik/look_at_solver.c.o: src/engine/animation/ik/look_at_solver.c \
@@ -19999,11 +20136,7 @@ CMakeFiles/Engine.dir/src/engine/animation/ik/look_at_solver.c.o: src/engine/ani
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
@@ -20154,15 +20287,10 @@ CMakeFiles/Engine.dir/src/engine/animation/ik/spine_ik_solver.c.o: src/engine/an
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/animation/ik_advanced/fabrik_impl.c.o: src/engine/animation/ik_advanced/fabrik_impl.c \
@@ -20475,6 +20603,7 @@ CMakeFiles/Engine.dir/src/engine/animation/ik_solver.c.o: src/engine/animation/i
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -20549,6 +20678,7 @@ CMakeFiles/Engine.dir/src/engine/animation/ik_solver.c.o: src/engine/animation/i
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -20560,9 +20690,13 @@ CMakeFiles/Engine.dir/src/engine/animation/ik_solver.c.o: src/engine/animation/i
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -21060,15 +21194,10 @@ CMakeFiles/Engine.dir/src/engine/animation/procedural/proc_recoil.c.o: src/engin
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/animation/procedural/proc_walking.c.o: src/engine/animation/procedural/proc_walking.c \
@@ -21215,15 +21344,10 @@ CMakeFiles/Engine.dir/src/engine/animation/procedural/proc_walking.c.o: src/engi
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/physics/physics.h \
   src/engine/include/rendering/renderer.h
 
@@ -21384,15 +21508,10 @@ CMakeFiles/Engine.dir/src/engine/animation/retargeting/bone_mapper.c.o: src/engi
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/animation/retargeting/pose_corrector.c.o: src/engine/animation/retargeting/pose_corrector.c \
@@ -21539,15 +21658,10 @@ CMakeFiles/Engine.dir/src/engine/animation/retargeting/pose_corrector.c.o: src/e
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/animation/skeletal/skeletal_animation.c.o: src/engine/animation/skeletal/skeletal_animation.c \
@@ -22841,9 +22955,13 @@ CMakeFiles/Engine.dir/src/engine/assets/importer/asset_importer.c.o: src/engine/
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -22994,11 +23112,7 @@ CMakeFiles/Engine.dir/src/engine/assets/importer/gltf_loader.c.o: src/engine/ass
   src/engine/include/core/logger.h \
   src/engine/include/core/memory.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
@@ -23139,11 +23253,7 @@ CMakeFiles/Engine.dir/src/engine/assets/importer/gltf_material_bridge.c.o: src/e
   src/engine/include/core/logger.h \
   src/engine/include/core/types.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
@@ -37818,6 +37928,7 @@ CMakeFiles/Engine.dir/src/engine/assets/textures/streaming/stream_priority.c.o: 
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -37892,6 +38003,7 @@ CMakeFiles/Engine.dir/src/engine/assets/textures/streaming/stream_priority.c.o: 
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -37904,9 +38016,13 @@ CMakeFiles/Engine.dir/src/engine/assets/textures/streaming/stream_priority.c.o: 
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -38856,15 +38972,10 @@ CMakeFiles/Engine.dir/src/engine/audio/audio_loader.c.o: src/engine/audio/audio_
   src/engine/include/core/resource/vfs/vfs.h \
   src/engine/include/core/types.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/lod_system.h \
   src/engine/include/rendering/mesh.h \
   src/engine/include/vendor/miniaudio.h
@@ -39328,9 +39439,13 @@ CMakeFiles/Engine.dir/src/engine/audio/audio_system.c.o: src/engine/audio/audio_
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -74645,6 +74760,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/animation_sampler.c.o: src/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/complex.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -74739,6 +74855,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/animation_sampler.c.o: src/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/arm_bf16.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/arm_neon.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/arm_vector_types.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -74752,9 +74869,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/animation_sampler.c.o: src/
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -74920,6 +75041,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/animation_synthesis.c.o: sr
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -75013,6 +75135,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/animation_synthesis.c.o: sr
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -75036,9 +75159,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/animation_synthesis.c.o: sr
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -75156,6 +75283,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/blend_tree_impl.c.o: src/en
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -75230,6 +75358,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/blend_tree_impl.c.o: src/en
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -75240,9 +75369,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/blend_tree_impl.c.o: src/en
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -75283,6 +75416,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/blending.c.o: src/engine/ch
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -75357,6 +75491,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/blending.c.o: src/engine/ch
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -75374,11 +75509,16 @@ CMakeFiles/Engine.dir/src/engine/character/animation/blending.c.o: src/engine/ch
   src/engine/include/core/types.h \
   src/engine/include/core/window.h \
   src/engine/include/common.h \
+  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -75798,6 +75938,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/blending/blend_tree.c.o: sr
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -75872,6 +76013,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/blending/blend_tree.c.o: sr
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -75883,9 +76025,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/blending/blend_tree.c.o: sr
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -76021,6 +76167,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/compression/keyframe_reduce
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -76114,6 +76261,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/compression/keyframe_reduce
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -76144,11 +76292,16 @@ CMakeFiles/Engine.dir/src/engine/character/animation/compression/keyframe_reduce
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
+  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -76335,6 +76488,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/core/blend_space_2d.c.o: sr
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -76409,6 +76563,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/core/blend_space_2d.c.o: sr
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -76421,9 +76576,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/core/blend_space_2d.c.o: sr
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -76455,6 +76614,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/core/inverse_kinematics_sol
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -76529,6 +76689,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/core/inverse_kinematics_sol
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -76539,9 +76700,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/core/inverse_kinematics_sol
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -76573,6 +76738,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/core/skeleton_manager.c.o: 
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -76647,6 +76813,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/core/skeleton_manager.c.o: 
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -76658,9 +76825,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/core/skeleton_manager.c.o: 
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -76759,6 +76930,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/aim_ik_solver.c.o: src/e
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -76852,6 +77024,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/aim_ik_solver.c.o: src/e
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -76875,12 +77048,15 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/aim_ik_solver.c.o: src/e
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -77205,6 +77381,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/foot_ik_solver.c.o: src/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -77298,6 +77475,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/foot_ik_solver.c.o: src/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -77321,12 +77499,15 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/foot_ik_solver.c.o: src/
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -77458,6 +77639,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/hand_ik_solver.c.o: src/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -77551,6 +77733,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/hand_ik_solver.c.o: src/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -77574,12 +77757,15 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/hand_ik_solver.c.o: src/
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -77710,6 +77896,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/look_at_solver.c.o: src/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -77803,6 +77990,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/look_at_solver.c.o: src/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -77826,12 +78014,15 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/look_at_solver.c.o: src/
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -77865,6 +78056,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/spine_ik_solver.c.o: src
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -77958,6 +78150,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/spine_ik_solver.c.o: src
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -77981,12 +78174,15 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik/spine_ik_solver.c.o: src
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -78116,6 +78312,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik_advanced/fabrik_impl.c.o
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -78190,6 +78387,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik_advanced/fabrik_impl.c.o
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -78200,9 +78398,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik_advanced/fabrik_impl.c.o
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -78719,6 +78921,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik_impl.c.o: src/engine/cha
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -78793,6 +78996,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik_impl.c.o: src/engine/cha
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -78803,9 +79007,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik_impl.c.o: src/engine/cha
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -78837,6 +79045,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik_solver.c.o: src/engine/c
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -78911,6 +79120,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik_solver.c.o: src/engine/c
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -78928,11 +79138,16 @@ CMakeFiles/Engine.dir/src/engine/character/animation/ik_solver.c.o: src/engine/c
   src/engine/include/core/types.h \
   src/engine/include/core/window.h \
   src/engine/include/common.h \
+  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -78964,6 +79179,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/layering/anim_layering_impl
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -79038,6 +79254,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/layering/anim_layering_impl
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -79048,9 +79265,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/layering/anim_layering_impl
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -79750,9 +79971,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/motion_matching.c.o: src/en
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -79881,6 +80106,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/motion_matching_impl.c.o: s
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -79955,6 +80181,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/motion_matching_impl.c.o: s
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -79965,9 +80192,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/motion_matching_impl.c.o: s
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -80581,6 +80812,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_breathing.c
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -80655,6 +80887,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_breathing.c
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -80666,9 +80899,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_breathing.c
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -80700,6 +80937,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_recoil.c.o:
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -80774,6 +81012,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_recoil.c.o:
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -80785,9 +81024,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_recoil.c.o:
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -80819,6 +81062,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_turn_in_pla
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -80893,6 +81137,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_turn_in_pla
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -80904,9 +81149,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_turn_in_pla
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -80938,6 +81187,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_walking.c.o
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -81012,6 +81262,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_walking.c.o
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -81023,9 +81274,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_walking.c.o
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -81058,6 +81313,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_walking_imp
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -81132,6 +81388,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_walking_imp
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -81142,9 +81399,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/procedural/proc_walking_imp
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -81273,6 +81534,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/retargeting/bone_mapper.c.o
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -81347,6 +81609,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/retargeting/bone_mapper.c.o
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -81358,9 +81621,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/retargeting/bone_mapper.c.o
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -81392,6 +81659,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/retargeting/pose_corrector.
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -81466,6 +81734,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/retargeting/pose_corrector.
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -81477,9 +81746,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/retargeting/pose_corrector.
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -81998,6 +82271,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeletal/skeletal_animation
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -82072,6 +82346,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeletal/skeletal_animation
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -82082,9 +82357,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeletal/skeletal_animation
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -82229,6 +82508,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeletal/skinning.c.o: src/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -82303,6 +82583,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeletal/skinning.c.o: src/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -82313,9 +82594,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeletal/skinning.c.o: src/
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -82347,6 +82632,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeletal_impl.c.o: src/engi
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -82421,6 +82707,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeletal_impl.c.o: src/engi
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -82431,9 +82718,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeletal_impl.c.o: src/engi
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -82465,6 +82756,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeleton.c.o: src/engine/ch
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -82539,6 +82831,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeleton.c.o: src/engine/ch
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -82549,9 +82842,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/skeleton.c.o: src/engine/ch
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -83165,6 +83462,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/state_machines/anim_state_m
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -83239,6 +83537,7 @@ CMakeFiles/Engine.dir/src/engine/character/animation/state_machines/anim_state_m
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -83249,9 +83548,13 @@ CMakeFiles/Engine.dir/src/engine/character/animation/state_machines/anim_state_m
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -83932,6 +84235,7 @@ CMakeFiles/Engine.dir/src/engine/character/cloth/rendering_cloth/cloth_shading.c
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -84006,6 +84310,7 @@ CMakeFiles/Engine.dir/src/engine/character/cloth/rendering_cloth/cloth_shading.c
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -84017,9 +84322,13 @@ CMakeFiles/Engine.dir/src/engine/character/cloth/rendering_cloth/cloth_shading.c
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -85006,15 +85315,9 @@ CMakeFiles/Engine.dir/src/engine/character/eyes/eye_rendering/eye_caustics.c.o: 
   src/engine/character/eyes/eye_rendering/eye_rendering.h \
   src/engine/include/common.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
-  src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
-  src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
-  src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h
+  src/engine/include/math/vec3.h
 
 CMakeFiles/Engine.dir/src/engine/character/eyes/eye_rendering/eye_refraction.c.o: src/engine/character/eyes/eye_rendering/eye_refraction.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -87232,6 +87535,7 @@ CMakeFiles/Engine.dir/src/engine/character/skin/skin_diffusion.c.o: src/engine/c
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -87306,6 +87610,7 @@ CMakeFiles/Engine.dir/src/engine/character/skin/skin_diffusion.c.o: src/engine/c
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -87317,9 +87622,13 @@ CMakeFiles/Engine.dir/src/engine/character/skin/skin_diffusion.c.o: src/engine/c
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -87583,12 +87892,15 @@ CMakeFiles/Engine.dir/src/engine/core/algorithms/astar_pathfinding.c.o: src/engi
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -88002,15 +88314,10 @@ CMakeFiles/Engine.dir/src/engine/core/asset_hot_reload.c.o: src/engine/core/asse
   src/engine/include/core/resource/vfs/vfs.h \
   src/engine/include/core/types.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/lod_system.h \
   src/engine/include/rendering/mesh.h
 
@@ -88151,15 +88458,10 @@ CMakeFiles/Engine.dir/src/engine/core/asset_validator.c.o: src/engine/core/asset
   src/engine/include/core/resource/vfs/vfs.h \
   src/engine/include/core/types.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/lod_system.h \
   src/engine/include/rendering/mesh.h
 
@@ -88191,6 +88493,7 @@ CMakeFiles/Engine.dir/src/engine/core/big_int.c.o: src/engine/core/big_int.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -88284,6 +88587,7 @@ CMakeFiles/Engine.dir/src/engine/core/big_int.c.o: src/engine/core/big_int.c \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -88297,9 +88601,13 @@ CMakeFiles/Engine.dir/src/engine/core/big_int.c.o: src/engine/core/big_int.c \
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -89658,6 +89966,7 @@ CMakeFiles/Engine.dir/src/engine/core/containers/bloom_filter.c.o: src/engine/co
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -89751,6 +90060,7 @@ CMakeFiles/Engine.dir/src/engine/core/containers/bloom_filter.c.o: src/engine/co
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -89773,12 +90083,15 @@ CMakeFiles/Engine.dir/src/engine/core/containers/bloom_filter.c.o: src/engine/co
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -90354,15 +90667,10 @@ CMakeFiles/Engine.dir/src/engine/core/containers/ring_queue_lockfree.c.o: src/en
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
-  src/engine/include/core/types.h \
-  src/engine/include/core/utils.h \
   src/engine/include/math/mat4.h \
-  src/engine/include/math/math.h \
   src/engine/include/math/quat.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
-  src/engine/include/math/vec4.h \
   src/engine/include/rendering/renderer.h
 
 CMakeFiles/Engine.dir/src/engine/core/containers/skip_list.c.o: src/engine/core/containers/skip_list.c \
@@ -90393,6 +90701,7 @@ CMakeFiles/Engine.dir/src/engine/core/containers/skip_list.c.o: src/engine/core/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -90486,6 +90795,7 @@ CMakeFiles/Engine.dir/src/engine/core/containers/skip_list.c.o: src/engine/core/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdatomic.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
@@ -90510,12 +90820,15 @@ CMakeFiles/Engine.dir/src/engine/core/containers/skip_list.c.o: src/engine/core/
   src/engine/include/core/performance.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
-  src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -90643,6 +90956,7 @@ CMakeFiles/Engine.dir/src/engine/core/containers/soa_rigidbody.c.o: src/engine/c
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -90717,6 +91031,7 @@ CMakeFiles/Engine.dir/src/engine/core/containers/soa_rigidbody.c.o: src/engine/c
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -90730,9 +91045,13 @@ CMakeFiles/Engine.dir/src/engine/core/containers/soa_rigidbody.c.o: src/engine/c
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -90956,6 +91275,7 @@ CMakeFiles/Engine.dir/src/engine/core/containers_advanced/octree.c.o: src/engine
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -91030,6 +91350,7 @@ CMakeFiles/Engine.dir/src/engine/core/containers_advanced/octree.c.o: src/engine
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
@@ -91041,9 +91362,13 @@ CMakeFiles/Engine.dir/src/engine/core/containers_advanced/octree.c.o: src/engine
   src/engine/include/core/types.h \
   src/engine/include/core/types.h \
   src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
   src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
@@ -124307,8 +124632,6 @@ src/engine/geometry/culling/occlusion/software_rasterizer.c:
 
 src/engine/geometry/culling/occlusion/occlusion_queries.c:
 
-src/engine/geometry/culling/gpu_culling/two_phase_occlusion.c:
-
 src/engine/geometry/culling/gpu_culling/meshlet_cull_gpu.c:
 
 src/engine/geometry/culling/gpu_culling/gpu_cull_compute.c:
@@ -124381,13 +124704,9 @@ src/engine/environment/terrain/terrain_clipmap.c:
 
 src/engine/environment/terrain/core/terrain_lod_manager.c:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/CodeFragments.h:
+src/engine/environment/stylized/voxel_builder.c:
 
-src/engine/environment/stylized/stylized_water.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSWorkspace.h:
-
-src/engine/environment/stylized/outline_renderer.c:
+src/engine/environment/stylized/pixel_art_renderer.c:
 
 src/engine/environment/stylized/low_poly_generator.c:
 
@@ -125073,9 +125392,9 @@ src/game/minecraftv2/include/player/player_magic.h:
 
 src/game/minecraftv2/include/player/player.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBlitPass.h:
-
 src/engine/character/animation/procedural/proc_breathing.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBlitPass.h:
 
 src/game/minecraftv2/include/npc/npc_perf.h:
 
@@ -125160,12 +125479,6 @@ src/engine/gameplay/inventory/item.c:
 src/engine/core/containers_advanced/sparse_set.c:
 
 src/engine/include/core/containers_advanced/slot_map.h:
-
-src/engine/core/sync/fence_pool.h:
-
-src/engine/platform/camera_bookmarks_api_bridge.c:
-
-src/engine/core/containers_advanced/slot_map.c:
 
 src/engine/include/core/performance.h:
 
@@ -125476,8 +125789,6 @@ src/engine/character/animation/ik_advanced/two_bone_ik.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/host_security.h:
 
 src/engine/character/animation/ik_advanced/fullbody_ik.c:
-
-src/engine/environment/stylized/voxel_builder.c:
 
 src/engine/character/animation/ik_advanced/foot_placement.c:
 
@@ -126028,6 +126339,10 @@ src/engine/character/animation/retargeting/pose_corrector.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelMetadataKeys.h:
 
 src/engine/include/core/device/device_memory.h:
+
+src/engine/environment/stylized/outline_renderer.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSWorkspace.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/sysctl.h:
 
@@ -126626,8 +126941,6 @@ src/engine/physics/soft/softbody_manager.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_wchar.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/__wctype.h:
-
-src/engine/environment/stylized/pixel_art_renderer.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/dirent.h:
 
@@ -127265,6 +127578,12 @@ src/engine/assets/io/export/processor_04.h:
 
 src/engine/assets/io/export/processor_04.c:
 
+src/engine/core/memory/memory_pool.c:
+
+src/engine/assets/io/export/manager_01.h:
+
+src/engine/assets/io/export/manager_01.c:
+
 src/game/minecraftv2/include/crafting/advanced_crafting.h:
 
 src/engine/assets/io/export/asset_export_renderer.c:
@@ -127332,6 +127651,8 @@ src/engine/assets/io/caching/asset_cache_manager.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/IOReturn.h:
 
 src/engine/assets/io/bundling/system_02.h:
+
+src/engine/include/math/aabb.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIRAWFilter_Deprecated.h:
 
@@ -127613,13 +127934,13 @@ src/engine/include/ecs/systems/asset_render_system.h:
 
 src/engine/include/core/window.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFFileDescriptor.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/uuid/uuid.h:
 
 src/engine/include/rendering/metal_integration.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/MultiprocessingInfo.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFFileDescriptor.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h:
 
@@ -127692,10 +128013,6 @@ src/engine/ai/procedural_advanced/wfc_3d.c:
 src/engine/materials/weathering/rust/rust_color.c:
 
 src/engine/include/ai/procedural_advanced/dungeon_architect.h:
-
-src/engine/core/memory/memory_pool.c:
-
-src/engine/assets/io/export/manager_01.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTRun.h:
 
@@ -127840,8 +128157,6 @@ src/engine/include/ai/navmesh.h:
 src/engine/ai/navigation/navmesh_generation.c:
 
 src/engine/ai/navigation/navmesh_complete.c:
-
-src/engine/assets/io/export/manager_01.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSIndexSet.h:
 
@@ -129427,17 +129742,17 @@ src/engine/character/animation/ik/hand_ik.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLCommandBuffer.h:
 
-src/engine/rendering/raytracing/denoising/temporal_accumulation.c:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTextTable.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ImageIO.framework/Headers/CGImageAnimation.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNNeuronType.h:
 
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CARenderer.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLFeatureValue+MLImageConversion.h:
+src/engine/include/ai/blackboard.h:
 
-src/engine/effects/vfx/destruction_system.c:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLCaptureScope.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBlitCommandEncoder.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBinaryArchive.h:
 
 src/engine/rendering/scene.c:
 
@@ -130163,11 +130478,11 @@ src/engine/ai/npc/prebuilt/npc_enemy_ranged.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLState.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNGroupNormalization.h:
-
 src/engine/shading/cloth/anisotropic_cloth.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFNetworkDefs.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNGroupNormalization.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h:
 
@@ -130208,10 +130523,6 @@ src/game/minecraftv2/include/npc/npc_housing.h:
 src/engine/core/containers_advanced/static_vector.c:
 
 src/engine/include/assets/import/material_transpiler.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/AXTextAttributedString.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSSearchFieldCell.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_ptrdiff_t.h:
 
@@ -130309,8 +130620,6 @@ src/engine/environment/stylized/cel_shading_material.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/DriverSynchronization.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBinaryArchive.h:
-
 src/engine/materials/special_materials/skin_material.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSSliderCell.h:
@@ -130320,6 +130629,10 @@ src/engine/assets/textures/compression/compression_quality.c:
 src/engine/rendering/shader/compiler_impl.c:
 
 src/engine/include/ai/npc/prebuilt/npc_boss.h:
+
+src/engine/environment/stylized/stylized_water.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/CodeFragments.h:
 
 src/engine/effects/trails/trail_width.c:
 
@@ -130381,13 +130694,23 @@ src/engine/effects/explosions/explosion_effects/explosion_shockwave.c:
 
 src/engine/assets/io/formats/manager_01.c:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLUpdateTask.h:
-
 src/engine/animation/core/animation_state_machine.c:
 
 src/engine/core/services/backend_services_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLUpdateProgressEvent.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLFeatureValue+MLImageConversion.h:
+
+src/engine/effects/vfx/destruction_system.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBlitCommandEncoder.h:
+
+src/engine/rendering/raytracing/denoising/temporal_accumulation.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ImageIO.framework/Headers/CGImageAnimation.h:
 
 src/engine/assets/textures/virtual_texturing/page_provider.c:
 
@@ -130409,8 +130732,6 @@ src/engine/backend/metal/mtl_render_pass.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLSpecializationStrategy.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLSequenceConstraint.h:
-
 src/engine/backend/metal/mtl_timestamp.m:
 
 src/engine/backend/metal/mtl_shader_library_extensions.m:
@@ -130430,6 +130751,10 @@ src/engine/ai/crowd/mass_crowd.c:
 src/engine/rendering/deferred/deferred_lighting.h:
 
 src/engine/include/tools/profiler.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSSearchFieldCell.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/AXTextAttributedString.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSURLCredential.h:
 
@@ -130535,37 +130860,19 @@ src/engine/include/core/containers.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelCollectionEntry.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/machine/boolean.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSAppleEventManager.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSLinguisticTagger.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/OSServices.framework/Headers/WSTypes.h:
-
-src/engine/core/core.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFCalendar.h:
-
-src/engine/platform/swift_bridge_real.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModel.h:
-
-src/engine/environment/procedural/procedural_content.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSDrawer.h:
+src/engine/character/animation/facial/phoneme_mapping.c:
 
 src/engine/environment/builder/road_spline_tool.c:
-
-src/engine/effects/gpu_particles/update_compute.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFStringEncodingExt.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/qos.h:
 
-src/engine/character/animation/facial/phoneme_mapping.c:
+src/engine/effects/gpu_particles/update_compute.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFStringEncodingExt.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLGPUComputeDevice.h:
 
@@ -130584,8 +130891,6 @@ src/engine/core/memory/vma_integration.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreAudio.framework/Headers/AudioHardwareBase.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLFeatureType.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSAppleEventManager.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLFeatureProvider.h:
 
@@ -130621,16 +130926,6 @@ src/engine/physics/broadphase/aabb_tree.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFNetDiagnostics.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTextTable.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNNeuronType.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CARenderer.h:
-
-src/engine/include/ai/blackboard.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLCaptureScope.h:
-
 src/engine/lighting/gi/surfel_gi_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSPortCoder.h:
@@ -130656,6 +130951,10 @@ src/engine/assets/system/asset_system/compression_assets/mesh_compression.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.h:
 
 src/engine/include/core/logger.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSLinguisticTagger.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/machine/boolean.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h:
 
@@ -130858,6 +131157,12 @@ src/engine/geometry/mesh/mesh_data.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTextFinder.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSColorPanel.h:
+
+src/engine/platform/swift_bridge_real.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModel.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h:
 
 src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c:
 
@@ -131101,10 +131406,6 @@ src/game/minecraftv2/include/ui/hud.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATS.framework/Headers/SFNTTypes.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Headers/MDSchema.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_clock_t.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/thread_info.h:
 
 src/engine/core/services/mesh_optimizer.c:
@@ -131140,12 +131441,6 @@ src/engine/physics/broadphase/manager_01.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSUnit.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATS.framework/Headers/ATSDefines.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSXPCConnection.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4SpecializedFunctionDescriptor.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSUserInterfaceValidation.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelStructurePipeline.h:
 
@@ -131184,6 +131479,10 @@ src/engine/assets/io/streaming/asset_stream_system.h:
 src/engine/assets/io/serialization/asset_serializer.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSCoder.h:
+
+src/engine/physics/physics_complete.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h:
 
 src/engine/include/rendering/renderer.h:
 
@@ -131253,6 +131552,10 @@ src/game/minecraftv2/include/npc/dialogue_manager.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_once_t.h:
 
+src/engine/environment/procedural/procedural_content.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSDrawer.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/exception_types.h:
 
 src/engine/platform/swift_bridge_stub_additions.c:
@@ -131260,10 +131563,6 @@ src/engine/platform/swift_bridge_stub_additions.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/signal.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLComputePlan.h:
-
-src/engine/physics/physics_complete.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Headers/CoreServices.h:
 
@@ -131339,6 +131638,10 @@ src/engine/include/core/plugin/plugin_loader.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSMassFormatter.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Headers/MDSchema.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_clock_t.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNDArray.framework/Headers/MPSNDArrayKernel.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/OSServices.framework/Headers/SecurityCore.h:
@@ -131350,6 +131653,12 @@ src/engine/audio/underwater_filter_stubs.c:
 src/engine/include/rendering/mesh.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFCalendar.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/OSServices.framework/Headers/WSTypes.h:
+
+src/engine/core/core.h:
 
 src/engine/include/ai/ai_pipeline.h:
 
@@ -131385,17 +131694,15 @@ src/engine/rendering/texture/texture_system.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLDataType.h:
 
+src/engine/geometry/culling/gpu_culling/two_phase_occlusion.c:
+
+src/engine/include/math/plane.h:
+
 src/engine/include/core/time_system.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSData.h:
 
 src/engine/assets/textures/compression/format_conversion.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctype.h:
-
-src/engine/include/ai/learning/neural_network_inference.h:
 
 src/engine/include/common.h:
 
@@ -131447,6 +131754,8 @@ src/engine/lighting/lumen/final_gather/history_rejection.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTFontCollection.h:
 
+src/engine/include/math/ray.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSSpellChecker.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_id_t.h:
@@ -131479,6 +131788,46 @@ src/engine/character/animation/physics_animation/physics_constraints.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGGradient.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSXPCConnection.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4SpecializedFunctionDescriptor.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSUserInterfaceValidation.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSPrintInfo.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/FixMath.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CloudKit.framework/Headers/CKRecord.h:
+
+src/engine/math/vec2.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelDescription.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlockattr_t.h:
+
+src/engine/rendering/render_pipeline_impl.c:
+
+src/engine/effects/water/simulation/wave_simulation.c:
+
+src/engine/include/rendering/metal_fx.h:
+
+src/engine/rendering/raytracing/raytracing_pipeline.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecRequirement.h:
+
+src/engine/character/hair/rendering/hair_rendering/hair_shadows_render.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLUpdateTask.h:
+
+src/engine/core/sync/fence_pool.h:
+
+src/engine/platform/camera_bookmarks_api_bridge.c:
+
+src/engine/core/containers_advanced/slot_map.c:
+
+src/engine/include/math/frustum.h:
+
 src/engine/ai/content/content_manager.c:
 
 src/engine/backend/metal/mtl_shader_library.h:
@@ -131499,14 +131848,6 @@ src/engine/character/skin/skin_detail.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLCPUComputeDevice.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CloudKit.framework/Headers/CKRecord.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlockattr_t.h:
-
-src/engine/math/vec2.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelDescription.h:
-
 src/engine/materials/special_materials/hair_material.c:
 
 src/engine/materials/material_hot_reload.c:
@@ -131523,19 +131864,13 @@ src/engine/include/vendor/lua/luaconf.h:
 
 src/engine/character/animation/compression/keyframe_reducer.c:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctype.h:
+
+src/engine/include/ai/learning/neural_network_inference.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNLoss.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fsblkcnt_t.h:
-
-src/engine/lighting/direct/volumetric_fog.c:
-
-src/engine/core/lod_generator.c:
-
-src/engine/assets/io/bundling/renderer_03.h:
-
-src/engine/vendor/lua/lutf8lib.c:
-
-src/engine/ai/ml/frame_interpolation.c:
 
 src/engine/physics/constraints/gear_joint.c:
 
@@ -131545,6 +131880,10 @@ src/engine/physics/constraints/gear_joint.c:
 
 src/engine/character/animation/procedural/proc_walking.c:
 
+src/engine/materials/material_serialization_examples.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_endian.h:
 
 src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_rasterization.c:
@@ -131552,6 +131891,8 @@ src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_rasterization.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTokenField.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLSequenceConstraint.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecProtocolTypes.h:
 
@@ -131595,22 +131936,6 @@ src/engine/core/integration/ai_tools/code_snippet_generator.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSScriptSuiteRegistry.h:
 
-src/engine/rendering/render_pipeline_impl.c:
-
-src/engine/effects/water/simulation/wave_simulation.c:
-
-src/engine/include/rendering/metal_fx.h:
-
-src/engine/rendering/raytracing/raytracing_pipeline.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecRequirement.h:
-
-src/engine/character/hair/rendering/hair_rendering/hair_shadows_render.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSPrintInfo.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/FixMath.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/Metadata.framework/Headers/MDQuery.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATS.framework/Headers/SFNTLayoutTypes.h:
@@ -131637,6 +131962,16 @@ src/engine/include/ai/ml/neural_animation.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/dispatch/dispatch.h:
 
+src/engine/character/animation/blend_trees/additive_blend.c:
+
+src/engine/rendering/fixed_angle_camera_controller.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/matrix_types.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSClassDescription.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_wctype_t.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/TargetConditionals.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4Archive.h:
@@ -131659,6 +131994,8 @@ src/engine/character/hair/rendering/hair_rendering/hair_simulation.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fsblkcnt_t.h:
+
 src/engine/platform/thumbnail_generator_api_bridge.c:
 
 src/engine/character/animation/blending/pose_matching.c:
@@ -131677,6 +132014,16 @@ src/engine/rendering/camera/camera_controls.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGPDFScanner.h:
 
+src/engine/lighting/direct/volumetric_fog.c:
+
+src/engine/core/lod_generator.c:
+
+src/engine/assets/io/bundling/renderer_03.h:
+
+src/engine/vendor/lua/lutf8lib.c:
+
+src/engine/ai/ml/frame_interpolation.c:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSCIImageRep.h:
 
 src/engine/assets/io/compression/system_02.h:
@@ -131684,10 +132031,6 @@ src/engine/assets/io/compression/system_02.h:
 src/engine/core/sync/fiber_system.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSDateFormatter.h:
-
-src/engine/materials/material_serialization_examples.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/OSServices.framework/Headers/CSIdentityAuthority.h:
 
@@ -131746,12 +132089,6 @@ src/engine/effects/trails/trail_points.c:
 src/engine/animation/ik_solver.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelStructureProgramValueType.h:
-
-src/engine/character/animation/blend_trees/additive_blend.c:
-
-src/engine/rendering/fixed_angle_camera_controller.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/matrix_types.h:
 
 src/engine/character/cloth/simulation_cloth/cloth_constraints.c:
 
@@ -131818,10 +132155,6 @@ src/engine/geometry/lod/lod_screen_size.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CAValueFunction.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSJSONSerialization.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSClassDescription.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_wctype_t.h:
 
 src/engine/backend/metal/mtl_command_buffer.m:
 
