@@ -215,7 +215,7 @@ if(APPLE)
     list(APPEND ENGINE_SOURCES
         src/engine/rendering/3d_rendering/geometry/bvh/bvh_metal_culling.m
     )
-    target_link_libraries(Engine PUBLIC "-framework OpenGL" "-framework CoreFoundation" "-framework CoreServices" "-framework Metal" "-framework MetalPerformanceShaders" "-framework CoreML")
+    target_link_libraries(Engine PUBLIC "-framework OpenGL" "-framework CoreFoundation" "-framework Foundation" "-framework CoreServices" "-framework Metal" "-framework MetalPerformanceShaders" "-framework CoreML")
 endif()
 
 # Find ZLIB and Threads before they're needed
@@ -477,7 +477,7 @@ endmacro()
 # Full Integration Verification
 # ===========================================
 add_executable(full_integration_test src/engine/core/integration/full_engine_test.c)
-target_link_libraries(full_integration_test PRIVATE Engine)
+target_link_libraries(full_integration_test PRIVATE Engine "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
 target_include_directories(full_integration_test PRIVATE
     ${CMAKE_SOURCE_DIR}/src/engine/include
     ${CMAKE_SOURCE_DIR}/src/engine

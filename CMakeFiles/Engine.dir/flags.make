@@ -81,8 +81,6 @@ OBJC_FLAGS = -std=gnu11 -arch arm64
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.o_FLAGS = -fobjc-arc
 
-# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_example.m.o_FLAGS = -fobjc-arc
-
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.o_FLAGS = -fobjc-arc
@@ -94,8 +92,6 @@ OBJC_FLAGS = -std=gnu11 -arch arm64
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o_FLAGS = -fobjc-arc
-
-# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/swapchain_example.m.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o_FLAGS = -fobjc-arc
 

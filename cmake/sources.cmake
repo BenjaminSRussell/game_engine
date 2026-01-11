@@ -139,7 +139,7 @@ endif()
 # Exclude test files, main.c (added separately), and SIMD platform-specific (added via CMakeLists.txt)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*test.*\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/main\\.c$")
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/simd_math_(x86|neon)\\.c$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*\\.disabled$")
 
 # Temporarily exclude problematic subsystem files that have incomplete header scaffolding
 # Animation subsystem is completely excluded in GLOB_RECURSE above (via commenting out)

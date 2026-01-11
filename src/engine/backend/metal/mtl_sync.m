@@ -193,8 +193,8 @@ uint64_t metal_frame_get_current_index(metal_frame_sync_t *sync) {
   return sync ? sync->frame_index : 0;
 }
 
-void metal_frame_get_stats(metal_frame_sync_t *sync,
-                           metal_frame_timing_stats_t *stats) {
+void metal_frame_sync_get_stats(metal_frame_sync_t *sync,
+                                metal_frame_timing_stats_t *stats) {
   if (!sync || !stats) {
     return;
   }

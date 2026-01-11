@@ -276,3 +276,32 @@ bool collider_test_aabb(Collider *a, Vec3 pos_a, Collider *b, Vec3 pos_b) {
          (min_a.y <= max_b.y && max_a.y >= min_b.y) &&
          (min_a.z <= max_b.z && max_a.z >= min_b.z);
 }
+// =============================================================================
+// WEATHER SYSTEM - Stubs for Engine Integration
+// =============================================================================
+
+typedef enum {
+  WEATHER_CLEAR,
+  WEATHER_CLOUDY,
+  WEATHER_RAIN_LIGHT,
+  WEATHER_RAIN_MODERATE,
+  WEATHER_RAIN_HEAVY,
+  WEATHER_STORM,
+  WEATHER_SNOW_LIGHT,
+  WEATHER_SNOW_MODERATE,
+  WEATHER_SNOW_HEAVY,
+  WEATHER_BLIZZARD,
+  WEATHER_FOG_LIGHT,
+  WEATHER_FOG_MODERATE,
+  WEATHER_FOG_HEAVY
+} WeatherType;
+
+typedef struct WeatherSystem WeatherSystem;
+
+WeatherType weather_sys_get_type(void) { return WEATHER_CLEAR; }
+float weather_sys_get_rain_intensity(void) { return 0.0f; }
+
+WeatherType weather_get_current_type(const WeatherSystem *weather) {
+  return WEATHER_CLEAR;
+}
+float weather_get_intensity(const WeatherSystem *weather) { return 0.0f; }

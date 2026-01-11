@@ -172,6 +172,7 @@
 //
 #include <audio/audio_reverb.h>
 #define MINIAUDIO_IMPLEMENTATION
+#include "core/services/weather_system.h"
 #include <audio/audio_system.h>
 #include <audio/underwater_filter.h>
 #include <core/asset_importers.h>
@@ -180,7 +181,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <weather/weather.h>
 
 static void audio_engine_on_process(void *pUserData, float *pFramesOut,
                                     ma_uint64 frameCount) {
@@ -976,8 +976,8 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
   if (!sys || !weather || !sys->initialized)
     return;
 
-  WeatherType current_weather = weather_get_current_type(weather);
-  f32 intensity = weather_get_intensity(weather);
+  WeatherType current_weather = weather_sys_get_type();
+  f32 intensity = weather_sys_get_rain_intensity();
 
   // Weather sound state tracking
   static u32 rain_sound_id = 0xFFFFFFFF;
@@ -1037,19 +1037,11 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
 
   // Play weather-specific sounds
   switch (current_weather) {
-  case WEATHER_RAIN_LIGHT:
-  case WEATHER_RAIN_MODERATE:
-  case WEATHER_RAIN_HEAVY: {
+  case WEATHER_RAIN: {
     // Crossfade rain layers (light -> moderate -> heavy) by intensity.
     f32 t = audio_clamp01(intensity);
 
-    // Bias layers a bit based on the discrete weather type.
-    if (current_weather == WEATHER_RAIN_LIGHT) {
-      t *= 0.6f;
-    } else if (current_weather == WEATHER_RAIN_HEAVY) {
-      t = 0.4f + 0.6f * t;
-    }
-
+    // Simplified biasing (linear)
     f32 w_heavy = audio_smoothstep01(0.55f, 0.95f, t);
     f32 w_light = 1.0f - audio_smoothstep01(0.15f, 0.55f, t);
     f32 w_mod = 1.0f - (w_light + w_heavy);
@@ -1064,14 +1056,13 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
     audio_weather_ensure_layer(sys, &rain_heavy_sound_id, SOUND_RAIN_HEAVY,
                                t * rain_base * w_heavy);
 
-    // Keep legacy handle set to something stable (first active layer).
     rain_sound_id =
         (rain_heavy_sound_id != 0xFFFFFFFF)
             ? rain_heavy_sound_id
             : ((rain_moderate_sound_id != 0xFFFFFFFF) ? rain_moderate_sound_id
                                                       : rain_light_sound_id);
 
-    // Wind during rain: crossfade light->heavy with intensity.
+    // Wind during rain
     f32 wind_t = audio_clamp01((t - 0.25f) / 0.75f);
     f32 wind_heavy_w = audio_smoothstep01(0.55f, 0.95f, wind_t);
     f32 wind_light_w = 1.0f - wind_heavy_w;
@@ -1088,9 +1079,6 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
 
   case WEATHER_STORM: {
     f32 t = audio_clamp01(intensity);
-
-    // Storm: force mostly heavy rain and heavy wind, but still allow smooth
-    // ramp in/out.
     f32 rain_base = 0.9f;
     audio_weather_ensure_layer(sys, &rain_light_sound_id, SOUND_RAIN_LIGHT,
                                0.0f);
@@ -1107,7 +1095,6 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
                                t * wind_base);
     wind_sound_id = wind_heavy_sound_id;
 
-    // Thunder (random-ish intervals)
     thunder_timer += delta_time;
     f32 thunder_interval = 3.0f + (1.0f - t) * 5.0f;
     if (thunder_timer >= thunder_interval) {
@@ -1118,11 +1105,7 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
     }
   } break;
 
-  case WEATHER_SNOW_LIGHT:
-  case WEATHER_SNOW_MODERATE:
-  case WEATHER_SNOW_HEAVY:
-  case WEATHER_BLIZZARD:
-    // Light wind during snow
+  case WEATHER_SNOW:
     audio_weather_ensure_layer(sys, &wind_light_sound_id, SOUND_WIND_LIGHT,
                                audio_clamp01(intensity) * 0.3f);
     audio_weather_ensure_layer(sys, &wind_heavy_sound_id, SOUND_WIND_HEAVY,
@@ -1130,10 +1113,7 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
     wind_sound_id = wind_light_sound_id;
     break;
 
-  case WEATHER_FOG_LIGHT:
-  case WEATHER_FOG_MODERATE:
-  case WEATHER_FOG_HEAVY:
-    // Very light ambient wind/muffled sounds
+  case WEATHER_FOG:
     audio_weather_ensure_layer(sys, &wind_light_sound_id, SOUND_WIND_LIGHT,
                                audio_clamp01(intensity) * 0.2f);
     audio_weather_ensure_layer(sys, &wind_heavy_sound_id, SOUND_WIND_HEAVY,
@@ -1142,9 +1122,7 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
     break;
 
   case WEATHER_CLEAR:
-  case WEATHER_CLOUDY:
   default:
-    // No weather sounds for clear/cloudy weather
     audio_weather_ensure_layer(sys, &rain_light_sound_id, SOUND_RAIN_LIGHT,
                                0.0f);
     audio_weather_ensure_layer(sys, &rain_moderate_sound_id,

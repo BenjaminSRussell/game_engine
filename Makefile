@@ -7289,14 +7289,6 @@ src/engine/backend/metal/mtl_sync.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.o
 .PHONY : src/engine/backend/metal/mtl_sync.m.o
 
-src/engine/backend/metal/mtl_sync_example.o: src/engine/backend/metal/mtl_sync_example.m.o
-.PHONY : src/engine/backend/metal/mtl_sync_example.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_sync_example.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_example.m.o
-.PHONY : src/engine/backend/metal/mtl_sync_example.m.o
-
 src/engine/backend/metal/mtl_sync_manager.o: src/engine/backend/metal/mtl_sync_manager.m.o
 .PHONY : src/engine/backend/metal/mtl_sync_manager.o
 
@@ -7440,14 +7432,6 @@ src/engine/backend/metal/old/metal_vertex.o: src/engine/backend/metal/old/metal_
 src/engine/backend/metal/old/metal_vertex.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_vertex.m.o
 .PHONY : src/engine/backend/metal/old/metal_vertex.m.o
-
-src/engine/backend/metal/swapchain_example.o: src/engine/backend/metal/swapchain_example.m.o
-.PHONY : src/engine/backend/metal/swapchain_example.o
-
-# target to build an object file
-src/engine/backend/metal/swapchain_example.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/swapchain_example.m.o
-.PHONY : src/engine/backend/metal/swapchain_example.m.o
 
 src/engine/backend/metal/test_mtl_pipeline.o: src/engine/backend/metal/test_mtl_pipeline.m.o
 .PHONY : src/engine/backend/metal/test_mtl_pipeline.o
@@ -14656,6 +14640,30 @@ src/engine/core/simd/simd_math_scalar.s: src/engine/core/simd/simd_math_scalar.c
 src/engine/core/simd/simd_math_scalar.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_scalar.c.s
 .PHONY : src/engine/core/simd/simd_math_scalar.c.s
+
+src/engine/core/simd/simd_math_x86.o: src/engine/core/simd/simd_math_x86.c.o
+.PHONY : src/engine/core/simd/simd_math_x86.o
+
+# target to build an object file
+src/engine/core/simd/simd_math_x86.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_x86.c.o
+.PHONY : src/engine/core/simd/simd_math_x86.c.o
+
+src/engine/core/simd/simd_math_x86.i: src/engine/core/simd/simd_math_x86.c.i
+.PHONY : src/engine/core/simd/simd_math_x86.i
+
+# target to preprocess a source file
+src/engine/core/simd/simd_math_x86.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_x86.c.i
+.PHONY : src/engine/core/simd/simd_math_x86.c.i
+
+src/engine/core/simd/simd_math_x86.s: src/engine/core/simd/simd_math_x86.c.s
+.PHONY : src/engine/core/simd/simd_math_x86.s
+
+# target to generate assembly for a file
+src/engine/core/simd/simd_math_x86.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_x86.c.s
+.PHONY : src/engine/core/simd/simd_math_x86.c.s
 
 src/engine/core/simd_neon.o: src/engine/core/simd_neon.c.o
 .PHONY : src/engine/core/simd_neon.o
@@ -54108,7 +54116,6 @@ help:
 	@echo "... src/engine/backend/metal/mtl_statistics.o"
 	@echo "... src/engine/backend/metal/mtl_swapchain.o"
 	@echo "... src/engine/backend/metal/mtl_sync.o"
-	@echo "... src/engine/backend/metal/mtl_sync_example.o"
 	@echo "... src/engine/backend/metal/mtl_sync_manager.o"
 	@echo "... src/engine/backend/metal/mtl_sync_primitives.o"
 	@echo "... src/engine/backend/metal/mtl_texture.o"
@@ -54127,7 +54134,6 @@ help:
 	@echo "... src/engine/backend/metal/old/metal_shader_compiler.o"
 	@echo "... src/engine/backend/metal/old/metal_texture.o"
 	@echo "... src/engine/backend/metal/old/metal_vertex.o"
-	@echo "... src/engine/backend/metal/swapchain_example.o"
 	@echo "... src/engine/backend/metal/test_mtl_pipeline.o"
 	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.o"
 	@echo "... src/engine/backend/vertex_compression.o"
@@ -55029,6 +55035,9 @@ help:
 	@echo "... src/engine/core/simd/simd_math_scalar.o"
 	@echo "... src/engine/core/simd/simd_math_scalar.i"
 	@echo "... src/engine/core/simd/simd_math_scalar.s"
+	@echo "... src/engine/core/simd/simd_math_x86.o"
+	@echo "... src/engine/core/simd/simd_math_x86.i"
+	@echo "... src/engine/core/simd/simd_math_x86.s"
 	@echo "... src/engine/core/simd_neon.o"
 	@echo "... src/engine/core/simd_neon.i"
 	@echo "... src/engine/core/simd_neon.s"

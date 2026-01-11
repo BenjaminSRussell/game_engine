@@ -1,4 +1,5 @@
-#include "platform/macos_optimizations.h"
+#include "../../include/platform/macos_optimizations.h"
+#include "../../include/common.h"
 #include <Accelerate/Accelerate.h>
 #include <Cocoa/Cocoa.h>
 #include <CoreVideo/CoreVideo.h>
@@ -378,7 +379,6 @@ void macos_activity_begin(const char *activity_name) {
 
 void macos_activity_end(void) {
   os_activity_scope_leave(g_current_activity);
-  os_activity_release(g_current_activity);
   g_current_activity = OS_ACTIVITY_NULL;
 }
 
