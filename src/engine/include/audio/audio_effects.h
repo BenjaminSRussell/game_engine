@@ -24,8 +24,8 @@
 #ifndef AUDIO_EFFECTS_H
 #define AUDIO_EFFECTS_H
 
-#include <common.h>
 #include "include/vendor/miniaudio.h"
+#include <common.h>
 #include <math/vec3.h>
 
 #define MAX_EFFECT_BUSES 4
@@ -108,6 +108,10 @@ void audio_effects_shutdown(AudioEffectsSystem *system);
 
 // Effect creation
 u32 audio_effect_create_reverb(AudioEffectsSystem *system, ReverbPreset preset);
+
+// Reset all effects (clear all active effects)
+void audio_effects_reset(AudioEffectsSystem *system);
+
 u32 audio_effect_create_echo(AudioEffectsSystem *system, f32 delay,
                              f32 feedback);
 u32 audio_effect_create_lowpass(AudioEffectsSystem *system, f32 cutoff_freq);
