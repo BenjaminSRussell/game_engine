@@ -33,8 +33,8 @@
 #ifndef VEC2_H
 #define VEC2_H
 
-#include "common.h"
-#include "math.h"
+#include "../common.h"
+#include <math.h>
 
 typedef union {
   struct {

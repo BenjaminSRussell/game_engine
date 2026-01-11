@@ -1,8 +1,7 @@
 #ifndef VEC4_H
 #define VEC4_H
 
-#include <common.h>
-#include <include/math/math.h>
+#include "../common.h"
 
 typedef struct {
   f32 x, y, z, w;
