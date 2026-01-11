@@ -262,6 +262,9 @@ void vehicle_update(VehiclePhysics *vehicle, f32 delta_time) {
     // Update wheel visual rotation system
     vehicle_update_wheel_visuals(vehicle, delta_time);
     
+    // Update wheel dust and spray effects
+    vehicle_update_wheel_effects(vehicle, delta_time);
+    
     // Update engine RPM based on wheel speed and gear
     // This would be implemented in the engine todo
     
