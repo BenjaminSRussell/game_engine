@@ -1,9 +1,9 @@
 // src/audio/audio_manager.c
 // Unified audio system manager implementation
 
-#include "audio/audio_manager.h"
-#include "audio/audio_occlusion_raycast.h"
-#include <math/math.h>
+#include "include/audio/audio_manager.h"
+#include "include/audio/audio_occlusion_raycast.h"
+#include <include/math/math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -212,6 +212,12 @@ void audio_manager_update(AudioManager *manager, f32 delta_time) {
       audio_effects_update(&manager->effects_system);
       audio_effects_update_dynamic_reverb(
           &manager->effects_system, manager->player_position, update_delta);
+    }
+
+    // Update underwater filter state
+    underwater_filter_set_enabled(manager->underwater);
+    if (manager->underwater) {
+      underwater_filter_update_depth(manager->water_depth);
     }
 
     // Update statistics
