@@ -136,10 +136,4 @@ CMakeFiles/Engine.dir/src/engine/ai/modular_assets.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/mesh.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/math.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/types.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/utils.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/../common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h

@@ -119,11 +119,6 @@ CMakeFiles/Engine.dir/src/engine/animation/ik/look_at_solver.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/renderer.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/gpu_acceleration.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/math.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/types.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/utils.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/../common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/memory.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/../common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/hashmap.h \
@@ -152,4 +147,5 @@ CMakeFiles/Engine.dir/src/engine/animation/ik/look_at_solver.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/time_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/config_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/config_loader.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/utils.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/utils.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h
