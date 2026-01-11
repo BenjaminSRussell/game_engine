@@ -454,3 +454,61 @@ static Mat4 mat4_mul(const Mat4 *a, const Mat4 *b) {
   
   return result;
 }
+
+#else
+
+static DecalSystem *g_decal_system = NULL;
+
+DecalSystem *decal_system_create(MTLDeviceHandle device) {
+  (void)device;
+  LOG_WARN("Decal system requires Objective-C/Metal support");
+  return NULL;
+}
+
+void decal_system_destroy(DecalSystem *system) {
+  (void)system;
+  g_decal_system = NULL;
+}
+
+u32 decal_add(DecalSystem *system, const Vec3 *position, const Vec3 *size,
+              f32 rotation) {
+  (void)system;
+  (void)position;
+  (void)size;
+  (void)rotation;
+  return 0;
+}
+
+void decal_remove(DecalSystem *system, u32 decal_id) {
+  (void)system;
+  (void)decal_id;
+}
+
+void decal_set_textures(DecalSystem *system, u32 decal_id,
+                        MTLTextureHandle albedo, MTLTextureHandle normal,
+                        MTLTextureHandle material) {
+  (void)system;
+  (void)decal_id;
+  (void)albedo;
+  (void)normal;
+  (void)material;
+}
+
+void decal_set_blend_mode(DecalSystem *system, u32 decal_id,
+                          DecalBlendMode mode) {
+  (void)system;
+  (void)decal_id;
+  (void)mode;
+}
+
+void decal_render(DecalSystem *system, MTLRenderCommandEncoderHandle encoder,
+                  MTLTextureHandle gbuffer_depth,
+                  MTLTextureHandle gbuffer_normal, const Mat4 *view_proj) {
+  (void)system;
+  (void)encoder;
+  (void)gbuffer_depth;
+  (void)gbuffer_normal;
+  (void)view_proj;
+}
+
+#endif
