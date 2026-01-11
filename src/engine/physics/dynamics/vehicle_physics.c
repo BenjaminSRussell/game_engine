@@ -220,6 +220,9 @@ VehiclePhysics *vehicle_create(u32 wheel_count) {
     vehicle->gear_ratios[5] = 0.8f; // 5th
     vehicle->differential_ratio = 3.5f;
     
+    // Initialize wheel visual system
+    vehicle_init_wheel_visuals(vehicle);
+    
     LOG_INFO("Created vehicle physics with %u wheels", wheel_count);
     return vehicle;
 }
@@ -245,6 +248,9 @@ void vehicle_update(VehiclePhysics *vehicle, f32 delta_time) {
     // Update friction system with slip detection
     WheelFriction frictions[MAX_WHEELS];
     vehicle_calculate_friction_forces(vehicle, frictions);
+    
+    // Update wheel visual rotation system
+    vehicle_update_wheel_visuals(vehicle, delta_time);
     
     // Update engine RPM based on wheel speed and gear
     // This would be implemented in the engine todo

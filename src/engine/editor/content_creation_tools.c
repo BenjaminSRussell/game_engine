@@ -288,6 +288,177 @@ ContentCreationContext* content_creation_get_context(void) {
     return &g_context;
 }
 
+// MARK: - JSON Parsing Helpers
+
+static void content_creation_parse_block_from_json(BlockDefinition* block, JsonValue* json_root) {
+    if (!block || !json_root) return;
+    
+    // Parse basic properties
+    JsonValue* name_val = json_object_get(json_root, "name");
+    if (name_val && json_get_type(name_val) == JSON_TYPE_STRING) {
+        strncpy(block->name, json_get_string(name_val), sizeof(block->name) - 1);
+    }
+    
+    JsonValue* texture_val = json_object_get(json_root, "texture_path");
+    if (texture_val && json_get_type(texture_val) == JSON_TYPE_STRING) {
+        strncpy(block->texture_path, json_get_string(texture_val), sizeof(block->texture_path) - 1);
+    }
+    
+    JsonValue* model_val = json_object_get(json_root, "model_path");
+    if (model_val && json_get_type(model_val) == JSON_TYPE_STRING) {
+        strncpy(block->model_path, json_get_string(model_val), sizeof(block->model_path) - 1);
+    }
+    
+    // Parse color (RGB array)
+    JsonValue* color_val = json_object_get(json_root, "color");
+    if (color_val && json_get_type(color_val) == JSON_TYPE_ARRAY) {
+        JsonArray* color_array = json_get_array(color_val);
+        if (json_array_size(color_array) >= 3) {
+            block->color.x = (f32)json_get_number(json_array_get(color_array, 0));
+            block->color.y = (f32)json_get_number(json_array_get(color_array, 1));
+            block->color.z = (f32)json_get_number(json_array_get(color_array, 2));
+        }
+    }
+    
+    // Parse boolean properties
+    JsonValue* collidable_val = json_object_get(json_root, "collidable");
+    if (collidable_val && json_get_type(collidable_val) == JSON_TYPE_BOOLEAN) {
+        block->collidable = json_get_boolean(collidable_val);
+    }
+    
+    JsonValue* solid_val = json_object_get(json_root, "solid");
+    if (solid_val && json_get_type(solid_val) == JSON_TYPE_BOOLEAN) {
+        block->solid = json_get_boolean(solid_val);
+    }
+    
+    JsonValue* transparent_val = json_object_get(json_root, "transparent");
+    if (transparent_val && json_get_type(transparent_val) == JSON_TYPE_BOOLEAN) {
+        block->transparent = json_get_boolean(transparent_val);
+    }
+    
+    JsonValue* emissive_val = json_object_get(json_root, "emissive");
+    if (emissive_val && json_get_type(emissive_val) == JSON_TYPE_BOOLEAN) {
+        block->emissive = json_get_boolean(emissive_val);
+    }
+    
+    JsonValue* breakable_val = json_object_get(json_root, "breakable");
+    if (breakable_val && json_get_type(breakable_val) == JSON_TYPE_BOOLEAN) {
+        block->breakable = json_get_boolean(breakable_val);
+    }
+    
+    // Parse numeric properties
+    JsonValue* hardness_val = json_object_get(json_root, "hardness");
+    if (hardness_val && json_get_type(hardness_val) == JSON_TYPE_NUMBER) {
+        block->hardness = (f32)json_get_number(hardness_val);
+    }
+}
+
+static void content_creation_parse_item_from_json(ItemDefinition* item, JsonValue* json_root) {
+    if (!item || !json_root) return;
+    
+    // Parse basic properties
+    JsonValue* name_val = json_object_get(json_root, "name");
+    if (name_val && json_get_type(name_val) == JSON_TYPE_STRING) {
+        strncpy(item->name, json_get_string(name_val), sizeof(item->name) - 1);
+    }
+    
+    JsonValue* texture_val = json_object_get(json_root, "texture_path");
+    if (texture_val && json_get_type(texture_val) == JSON_TYPE_STRING) {
+        strncpy(item->texture_path, json_get_string(texture_val), sizeof(item->texture_path) - 1);
+    }
+    
+    JsonValue* model_val = json_object_get(json_root, "model_path");
+    if (model_val && json_get_type(model_val) == JSON_TYPE_STRING) {
+        strncpy(item->model_path, json_get_string(model_val), sizeof(item->model_path) - 1);
+    }
+    
+    // Parse numeric properties
+    JsonValue* scale_val = json_object_get(json_root, "scale");
+    if (scale_val && json_get_type(scale_val) == JSON_TYPE_NUMBER) {
+        item->scale = (f32)json_get_number(scale_val);
+    }
+    
+    JsonValue* max_stack_val = json_object_get(json_root, "max_stack_size");
+    if (max_stack_val && json_get_type(max_stack_val) == JSON_TYPE_NUMBER) {
+        item->max_stack_size = (u32)json_get_number(max_stack_val);
+    }
+    
+    // Parse boolean properties
+    JsonValue* consumable_val = json_object_get(json_root, "consumable");
+    if (consumable_val && json_get_type(consumable_val) == JSON_TYPE_BOOLEAN) {
+        item->consumable = json_get_boolean(consumable_val);
+    }
+    
+    JsonValue* equippable_val = json_object_get(json_root, "equippable");
+    if (equippable_val && json_get_type(equippable_val) == JSON_TYPE_BOOLEAN) {
+        item->equippable = json_get_boolean(equippable_val);
+    }
+}
+
+static void content_creation_parse_mob_from_json(MobDefinition* mob, JsonValue* json_root) {
+    if (!mob || !json_root) return;
+    
+    // Parse basic properties
+    JsonValue* name_val = json_object_get(json_root, "name");
+    if (name_val && json_get_type(name_val) == JSON_TYPE_STRING) {
+        strncpy(mob->name, json_get_string(name_val), sizeof(mob->name) - 1);
+    }
+    
+    JsonValue* texture_val = json_object_get(json_root, "texture_path");
+    if (texture_val && json_get_type(texture_val) == JSON_TYPE_STRING) {
+        strncpy(mob->texture_path, json_get_string(texture_val), sizeof(mob->texture_path) - 1);
+    }
+    
+    JsonValue* model_val = json_object_get(json_root, "model_path");
+    if (model_val && json_get_type(model_val) == JSON_TYPE_STRING) {
+        strncpy(mob->model_path, json_get_string(model_val), sizeof(mob->model_path) - 1);
+    }
+    
+    JsonValue* ai_val = json_object_get(json_root, "ai_behavior_tree");
+    if (ai_val && json_get_type(ai_val) == JSON_TYPE_STRING) {
+        strncpy(mob->ai_behavior_tree, json_get_string(ai_val), sizeof(mob->ai_behavior_tree) - 1);
+    }
+    
+    // Parse numeric properties
+    JsonValue* width_val = json_object_get(json_root, "width");
+    if (width_val && json_get_type(width_val) == JSON_TYPE_NUMBER) {
+        mob->width = (f32)json_get_number(width_val);
+    }
+    
+    JsonValue* height_val = json_object_get(json_root, "height");
+    if (height_val && json_get_type(height_val) == JSON_TYPE_NUMBER) {
+        mob->height = (f32)json_get_number(height_val);
+    }
+    
+    JsonValue* health_val = json_object_get(json_root, "health");
+    if (health_val && json_get_type(health_val) == JSON_TYPE_NUMBER) {
+        mob->health = (f32)json_get_number(health_val);
+        mob->max_health = mob->health;
+    }
+    
+    JsonValue* speed_val = json_object_get(json_root, "speed");
+    if (speed_val && json_get_type(speed_val) == JSON_TYPE_NUMBER) {
+        mob->speed = (f32)json_get_number(speed_val);
+    }
+    
+    // Parse scale (Vec3 array)
+    JsonValue* scale_val = json_object_get(json_root, "scale");
+    if (scale_val && json_get_type(scale_val) == JSON_TYPE_ARRAY) {
+        JsonArray* scale_array = json_get_array(scale_val);
+        if (json_array_size(scale_array) >= 3) {
+            mob->scale.x = (f32)json_get_number(json_array_get(scale_array, 0));
+            mob->scale.y = (f32)json_get_number(json_array_get(scale_array, 1));
+            mob->scale.z = (f32)json_get_number(json_array_get(scale_array, 2));
+        }
+    }
+    
+    // Parse boolean properties
+    JsonValue* hostile_val = json_object_get(json_root, "hostile");
+    if (hostile_val && json_get_type(hostile_val) == JSON_TYPE_BOOLEAN) {
+        mob->hostile = json_get_boolean(hostile_val);
+    }
+}
+
 // MARK: - Preview Entity System
 
 static Entity content_creation_create_preview_entity(ContentType type) {
