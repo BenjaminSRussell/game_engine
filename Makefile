@@ -33313,6 +33313,30 @@ src/engine/rendering/advanced/rendering_final_batch.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/advanced/rendering_final_batch.c.s
 .PHONY : src/engine/rendering/advanced/rendering_final_batch.c.s
 
+src/engine/rendering/ai_ml/ai_assisted_rendering.o: src/engine/rendering/ai_ml/ai_assisted_rendering.c.o
+.PHONY : src/engine/rendering/ai_ml/ai_assisted_rendering.o
+
+# target to build an object file
+src/engine/rendering/ai_ml/ai_assisted_rendering.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/ai_ml/ai_assisted_rendering.c.o
+.PHONY : src/engine/rendering/ai_ml/ai_assisted_rendering.c.o
+
+src/engine/rendering/ai_ml/ai_assisted_rendering.i: src/engine/rendering/ai_ml/ai_assisted_rendering.c.i
+.PHONY : src/engine/rendering/ai_ml/ai_assisted_rendering.i
+
+# target to preprocess a source file
+src/engine/rendering/ai_ml/ai_assisted_rendering.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/ai_ml/ai_assisted_rendering.c.i
+.PHONY : src/engine/rendering/ai_ml/ai_assisted_rendering.c.i
+
+src/engine/rendering/ai_ml/ai_assisted_rendering.s: src/engine/rendering/ai_ml/ai_assisted_rendering.c.s
+.PHONY : src/engine/rendering/ai_ml/ai_assisted_rendering.s
+
+# target to generate assembly for a file
+src/engine/rendering/ai_ml/ai_assisted_rendering.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/ai_ml/ai_assisted_rendering.c.s
+.PHONY : src/engine/rendering/ai_ml/ai_assisted_rendering.c.s
+
 src/engine/rendering/animation/advanced_animation.o: src/engine/rendering/animation/advanced_animation.c.o
 .PHONY : src/engine/rendering/animation/advanced_animation.o
 
@@ -52593,6 +52617,9 @@ help:
 	@echo "... src/engine/rendering/advanced/rendering_final_batch.o"
 	@echo "... src/engine/rendering/advanced/rendering_final_batch.i"
 	@echo "... src/engine/rendering/advanced/rendering_final_batch.s"
+	@echo "... src/engine/rendering/ai_ml/ai_assisted_rendering.o"
+	@echo "... src/engine/rendering/ai_ml/ai_assisted_rendering.i"
+	@echo "... src/engine/rendering/ai_ml/ai_assisted_rendering.s"
 	@echo "... src/engine/rendering/animation/advanced_animation.o"
 	@echo "... src/engine/rendering/animation/advanced_animation.i"
 	@echo "... src/engine/rendering/animation/advanced_animation.s"

@@ -2829,6 +2829,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Engine.dir/src/engine/rendering/advanced/rendering_complete.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/rendering/advanced/rendering_final_batch.c.o"
   "CMakeFiles/Engine.dir/src/engine/rendering/advanced/rendering_final_batch.c.o.d"
+  "CMakeFiles/Engine.dir/src/engine/rendering/ai_ml/ai_assisted_rendering.c.o"
+  "CMakeFiles/Engine.dir/src/engine/rendering/ai_ml/ai_assisted_rendering.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/rendering/animation/advanced_animation.c.o"
   "CMakeFiles/Engine.dir/src/engine/rendering/animation/advanced_animation.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/rendering/audio_visual/audio_visual_sync.c.o"
