@@ -5,7 +5,9 @@
 #include <simd/simd.h>
 #include <stdbool.h>
 
+#ifndef ATM_PI
 #define ATM_PI 3.14159265359f
+#endif
 
 /**
  * @file atmosphere_lut_parameterization.h
