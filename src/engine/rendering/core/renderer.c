@@ -10,7 +10,7 @@
 
 #include "backend/metal/mtl_device.h"
 #include "backend/metal/mtl_command_buffer.h"
-#include "backend/metal/mtl_render_command_encoder.h"
+#include "backend/metal/mtl_encoder.h"
 #include "../framebuffer.h"
 #include "../render_pipeline.h"
 

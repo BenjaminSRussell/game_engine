@@ -86,6 +86,177 @@ AssetPlacementContext* asset_placement_get_context(void) {
     return &g_context;
 }
 
+// MARK: - Grid Visualization
+
+void asset_placement_render_grid(void) {
+    if (!g_context.grid_snapping_enabled) {
+        return;
+    }
+    
+    // Get camera position for adaptive grid rendering
+    Vec3 camera_pos = camera_get_position();
+    f32 grid_size = g_context.grid_size;
+    
+    // Calculate grid range based on camera position
+    f32 grid_range = 50.0f; // Render grid within 50 units of camera
+    s32 grid_start_x = (s32)floorf((camera_pos.x - grid_range) / grid_size);
+    s32 grid_end_x = (s32)ceilf((camera_pos.x + grid_range) / grid_size);
+    s32 grid_start_z = (s32)floorf((camera_pos.z - grid_range) / grid_size);
+    s32 grid_end_z = (s32)ceilf((camera_pos.z + grid_range) / grid_size);
+    
+    // Set grid line colors
+    Vec3 major_color = (Vec3){0.3f, 0.3f, 0.3f};  // Dark gray for major lines
+    Vec3 minor_color = (Vec3){0.2f, 0.2f, 0.2f};  // Lighter gray for minor lines
+    Vec3 axis_color = (Vec3){0.1f, 0.3f, 0.1f};   // Green tint for axis lines
+    
+    f32 major_line_width = 2.0f;
+    f32 minor_line_width = 1.0f;
+    f32 axis_line_width = 3.0f;
+    
+    // Render X-axis lines (horizontal lines)
+    for (s32 z = grid_start_z; z <= grid_end_z; z++) {
+        f32 z_pos = (f32)z * grid_size;
+        Vec3 start = {(f32)grid_start_x * grid_size, 0.0f, z_pos};
+        Vec3 end = {(f32)grid_end_x * grid_size, 0.0f, z_pos};
+        
+        Vec3 color = minor_color;
+        f32 width = minor_line_width;
+        
+        // Highlight axis lines (z=0)
+        if (z == 0) {
+            color = axis_color;
+            width = axis_line_width;
+        }
+        // Highlight major grid lines (every 5 units)
+        else if (z % 5 == 0) {
+            color = major_color;
+            width = major_line_width;
+        }
+        
+        debug_renderer_draw_line(start, end, color, width);
+    }
+    
+    // Render Z-axis lines (vertical lines)
+    for (s32 x = grid_start_x; x <= grid_end_x; x++) {
+        f32 x_pos = (f32)x * grid_size;
+        Vec3 start = {x_pos, 0.0f, (f32)grid_start_z * grid_size};
+        Vec3 end = {x_pos, 0.0f, (f32)grid_end_z * grid_size};
+        
+        Vec3 color = minor_color;
+        f32 width = minor_line_width;
+        
+        // Highlight axis lines (x=0)
+        if (x == 0) {
+            color = axis_color;
+            width = axis_line_width;
+        }
+        // Highlight major grid lines (every 5 units)
+        else if (x % 5 == 0) {
+            color = major_color;
+            width = major_line_width;
+        }
+        
+        debug_renderer_draw_line(start, end, color, width);
+    }
+    
+    // Render grid origin marker
+    Vec3 origin = {0.0f, 0.0f, 0.0f};
+    f32 marker_size = 0.5f;
+    
+    // X-axis marker (red)
+    debug_renderer_draw_line(origin, (Vec3){marker_size, 0.0f, 0.0f}, (Vec3){1.0f, 0.0f, 0.0f}, 4.0f);
+    
+    // Z-axis marker (blue)
+    debug_renderer_draw_line(origin, (Vec3){0.0f, 0.0f, marker_size}, (Vec3){0.0f, 0.0f, 1.0f}, 4.0f);
+    
+    // Y-axis marker (green, pointing up)
+    debug_renderer_draw_line(origin, (Vec3){0.0f, marker_size, 0.0f}, (Vec3){0.0f, 1.0f, 0.0f}, 4.0f);
+    
+    // Render grid labels at major intersections
+    if (g_context.show_grid_labels) {
+        for (s32 x = grid_start_x; x <= grid_end_x; x += 5) {
+            for (s32 z = grid_start_z; z <= grid_end_z; z += 5) {
+                Vec3 label_pos = {(f32)x * grid_size, 0.1f, (f32)z * grid_size};
+                
+                // Create temporary text entity for grid label
+                char label_text[32];
+                snprintf(label_text, sizeof(label_text), "%d,%d", x, z);
+                
+                // This would use a text rendering system
+                // For now, we'll just draw a small marker at label positions
+                Vec3 marker_color = (Vec3){0.6f, 0.6f, 0.6f};
+                f32 marker_size_small = 0.1f;
+                
+                debug_renderer_draw_line(
+                    (Vec3){label_pos.x - marker_size_small, label_pos.y, label_pos.z},
+                    (Vec3){label_pos.x + marker_size_small, label_pos.y, label_pos.z},
+                    marker_color, 1.0f
+                );
+                debug_renderer_draw_line(
+                    (Vec3){label_pos.x, label_pos.y, label_pos.z - marker_size_small},
+                    (Vec3){label_pos.x, label_pos.y, label_pos.z + marker_size_small},
+                    marker_color, 1.0f
+                );
+            }
+        }
+    }
+    
+    // Render snap position indicator if we have a current snap position
+    if (g_context.snap_position_valid) {
+        Vec3 snap_pos = g_context.snap_position;
+        
+        // Draw crosshair at snap position
+        f32 crosshair_size = grid_size * 0.5f;
+        Vec3 cross_color = (Vec3){1.0f, 1.0f, 0.0f}; // Yellow
+        f32 cross_width = 3.0f;
+        
+        // Horizontal crosshair line
+        debug_renderer_draw_line(
+            (Vec3){snap_pos.x - crosshair_size, snap_pos.y + 0.01f, snap_pos.z},
+            (Vec3){snap_pos.x + crosshair_size, snap_pos.y + 0.01f, snap_pos.z},
+            cross_color, cross_width
+        );
+        
+        // Vertical crosshair line
+        debug_renderer_draw_line(
+            (Vec3){snap_pos.x, snap_pos.y + 0.01f, snap_pos.z - crosshair_size},
+            (Vec3){snap_pos.x, snap_pos.y + 0.01f, snap_pos.z + crosshair_size},
+            cross_color, cross_width
+        );
+        
+        // Draw snap position bounds (if we have bounds)
+        if (g_context.snap_bounds_valid) {
+            Vec3 min = g_context.snap_bounds_min;
+            Vec3 max = g_context.snap_bounds_max;
+            
+            // Draw bounds outline
+            Vec3 bounds_color = (Vec3){1.0f, 0.5f, 0.0f}; // Orange
+            f32 bounds_width = 2.0f;
+            
+            // Bottom face
+            debug_renderer_draw_line((Vec3){min.x, min.y, min.z}, (Vec3){max.x, min.y, min.z}, bounds_color, bounds_width);
+            debug_renderer_draw_line((Vec3){max.x, min.y, min.z}, (Vec3){max.x, min.y, max.z}, bounds_color, bounds_width);
+            debug_renderer_draw_line((Vec3){max.x, min.y, max.z}, (Vec3){min.x, min.y, max.z}, bounds_color, bounds_width);
+            debug_renderer_draw_line((Vec3){min.x, min.y, max.z}, (Vec3){min.x, min.y, min.z}, bounds_color, bounds_width);
+            
+            // Top face
+            debug_renderer_draw_line((Vec3){min.x, max.y, min.z}, (Vec3){max.x, max.y, min.z}, bounds_color, bounds_width);
+            debug_renderer_draw_line((Vec3){max.x, max.y, min.z}, (Vec3){max.x, max.y, max.z}, bounds_color, bounds_width);
+            debug_renderer_draw_line((Vec3){max.x, max.y, max.z}, (Vec3){min.x, max.y, max.z}, bounds_color, bounds_width);
+            debug_renderer_draw_line((Vec3){min.x, max.y, max.z}, (Vec3){min.x, max.y, min.z}, bounds_color, bounds_width);
+            
+            // Vertical edges
+            debug_renderer_draw_line((Vec3){min.x, min.y, min.z}, (Vec3){min.x, max.y, min.z}, bounds_color, bounds_width);
+            debug_renderer_draw_line((Vec3){max.x, min.y, min.z}, (Vec3){max.x, max.y, min.z}, bounds_color, bounds_width);
+            debug_renderer_draw_line((Vec3){min.x, min.y, max.z}, (Vec3){min.x, max.y, max.z}, bounds_color, bounds_width);
+            debug_renderer_draw_line((Vec3){max.x, min.y, max.z}, (Vec3){max.x, max.y, max.z}, bounds_color, bounds_width);
+        }
+    }
+    
+    LOG_TRACE("Rendered grid with %dx%d lines, size=%.2f", 
+             (grid_end_x - grid_start_x + 1), (grid_end_z - grid_start_z + 1), grid_size);
+}
+
 // MARK: - Asset Placement Operations
 
 PlacementResult asset_placement_place(void* asset, Vec3 position) {
