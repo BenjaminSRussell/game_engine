@@ -11,12 +11,32 @@ typedef struct PhysicsWorld PhysicsWorld;
 typedef struct BlockRegistry BlockRegistry;
 struct World;
 
+// Block State Structure
+typedef struct {
+  i32 x, y, z;
+  BlockID block_id;
+  u32 state_data; // Packed state information
+  bool needs_update;
+} BlockState;
+
+// Block State Manager Structure
+typedef struct {
+  BlockState *states;
+  u32 count;
+  u32 capacity;
+} BlockStateManager;
+
 // Block state functions
 void block_update_water_flow(ChunkManager *chunk_manager, i32 x, i32 y, i32 z);
 void block_update_lava_flow(ChunkManager *chunk_manager, i32 x, i32 y, i32 z);
 void block_update_falling(ChunkManager *chunk_manager,
                           BlockRegistry *block_registry, struct World *world,
                           PhysicsWorld *physics_world, i32 x, i32 y, i32 z);
+
+void falling_block_system_update(struct World *world,
+                                 ChunkManager *chunk_manager,
+                                 BlockRegistry *block_registry,
+                                 PhysicsWorld *physics_world, f32 delta_time);
 
 // Manager functions
 void block_state_manager_init(BlockStateManager *manager, u32 capacity);
