@@ -47,12 +47,15 @@
 // TODO: Add falling block batching for performance optimization.
 #include <block/block.h>
 #include <chunk/chunk.h>
+#include <ecs/components/falling_block.h>
+#include <ecs/components/transform.h>
+#include <ecs/ecs.h>
 #include <physics/physics.h>
 #include <stdlib.h>
 
 // Update falling blocks (sand, gravel)
 void block_update_falling(ChunkManager *chunk_manager,
-                          BlockRegistry *block_registry,
+                          BlockRegistry *block_registry, World *world,
                           PhysicsWorld *physics_world, i32 x, i32 y, i32 z) {
   (void)physics_world; // Unused for now
   if (!chunk_manager || !block_registry)
@@ -81,11 +84,52 @@ void block_update_falling(ChunkManager *chunk_manager,
 
   // If air or liquid below, fall
   if (below == BLOCK_AIR || (below_type && block_is_liquid(below_type))) {
-    // Move block down
-    chunk_set_block(chunk, local_x, local_y - 1, local_z, block);
+    // 1. Remove block from chunk
     chunk_set_block(chunk, local_x, local_y, local_z, BLOCK_AIR);
-
-    // Mark chunk for mesh update
     chunk_mark_mesh_dirty(chunk);
+
+    // 2. Create falling block entity
+    if (world && physics_world) {
+      Entity entity = ecs_create_entity(world);
+
+      // Position at block center
+      Vec3 pos = vec3((f32)x + 0.5f, (f32)y + 0.5f, (f32)z + 0.5f);
+
+      // Add Transform component
+      ecs_add_component(world, entity, TRANSFORM_COMPONENT_ID, NULL);
+      TransformComponent *transform = (TransformComponent *)ecs_get_component(
+          world, entity, TRANSFORM_COMPONENT_ID);
+      if (transform) {
+        transform->position = pos;
+        transform->rotation = quat_identity();
+      }
+
+      // Add FallingBlock component
+      ecs_add_component(world, entity, FALLING_BLOCK_COMPONENT_ID, NULL);
+      FallingBlockComponent *falling =
+          (FallingBlockComponent *)ecs_get_component(
+              world, entity, FALLING_BLOCK_COMPONENT_ID);
+      if (falling) {
+        falling->block_type = block;
+        falling->fall_distance = 0.0f;
+        falling->on_ground = false;
+      }
+
+      // Add Physics (RigidBody + Box Collider)
+      RigidBody *body = rigid_body_create(BODY_TYPE_DYNAMIC, pos);
+      if (body) {
+        rigid_body_set_mass(body, 1.0f);
+        rigid_body_set_friction(body, 0.5f);
+
+        // Block is 1.0x1.0x1.0, so half-extents are 0.5
+        Collider *collider = collider_create_box(vec3(0.5f, 0.5f, 0.5f));
+        rigid_body_attach_collider(body, collider);
+
+        physics_world_add_body(physics_world, body);
+
+        // Link to ECS if possible (assuming RIGIDBODY_COMPONENT_ID exists)
+        ecs_add_component(world, entity, RIGIDBODY_COMPONENT_ID, &body);
+      }
+    }
   }
 }
