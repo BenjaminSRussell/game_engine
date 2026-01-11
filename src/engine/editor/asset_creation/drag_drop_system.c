@@ -73,7 +73,38 @@ void drag_drop_render(void) {
     
     // Render ghost entity if dragging
     if (g_context.is_dragging && g_context.show_ghost && g_context.ghost_entity.id != 0) {
-        // TODO: Render ghost entity with transparency
+        // Render ghost entity with transparency
+        entity_set_visibility(g_context.ghost_entity.id, true);
+        
+        // Set ghost material properties for transparency
+        Material ghost_material = {0};
+        ghost_material.albedo = (Vec4){0.8f, 0.8f, 1.0f, 0.5f}; // Semi-transparent blue-white
+        ghost_material.metallic = 0.1f;
+        ghost_material.roughness = 0.8f;
+        ghost_material.emissive = (Vec3){0.1f, 0.1f, 0.2f}; // Slight glow
+        
+        // Apply ghost material override
+        entity_set_material_override(g_context.ghost_entity.id, &ghost_material);
+        
+        // Enable depth testing but disable depth writing for proper transparency
+        entity_set_depth_write_enabled(g_context.ghost_entity.id, false);
+        
+        // Add subtle pulsing effect
+        f32 pulse = sinf(g_context.drag_time * 3.0f) * 0.1f + 0.9f;
+        ghost_material.albedo.w = pulse * 0.5f; // Pulsing transparency
+        entity_set_material_override(g_context.ghost_entity.id, &ghost_material);
+        
+        // Render outline for better visibility
+        Vec3 outline_color = (Vec3){0.2f, 0.6f, 1.0f};
+        f32 outline_width = 2.0f;
+        entity_set_outline(g_context.ghost_entity.id, true, outline_color, outline_width);
+        
+        LOG_TRACE("Rendering ghost entity at position (%.2f, %.2f, %.2f)", 
+                 g_context.ghost_position.x, g_context.ghost_position.y, g_context.ghost_position.z);
+    } else if (g_context.ghost_entity.id != 0) {
+        // Hide ghost entity when not dragging
+        entity_set_visibility(g_context.ghost_entity.id, false);
+        entity_set_outline(g_context.ghost_entity.id, false, (Vec3){0,0,0}, 0.0f);
     }
     
     // Render drop target highlights
