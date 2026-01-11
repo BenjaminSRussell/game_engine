@@ -33,10 +33,10 @@ void serialize_struct(void *data, TypeSchema *schema, BinaryWriter *writer) {
     case TYPE_FLOAT:
       writer_write_float(writer, *(float *)field_ptr);
       break;
-    case TYPE_STRING:
+    case TYPE_STRING: {
       const char *str = *(const char **)field_ptr;
       writer_write_string(writer, str);
-      break;
+    } break;
     case TYPE_STRUCT:
     case TYPE_ARRAY:
       // TODO: Implement recursion for nested types
