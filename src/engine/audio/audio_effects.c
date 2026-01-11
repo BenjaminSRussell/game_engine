@@ -238,6 +238,18 @@ void audio_effect_set_active(AudioEffectsSystem *system, u32 effect_id,
   system->effects[effect_id].active = active;
 }
 
+void audio_effects_reset(AudioEffectsSystem *system) {
+  if (!system || !system->initialized)
+    return;
+
+  for (u32 i = 0; i < MAX_EFFECT_BUSES; i++) {
+    if (system->effects[i].type != EFFECT_TYPE_NONE) {
+      audio_effect_destroy(system, i);
+    }
+  }
+  printf("Audio Effects System Reset\n");
+}
+
 ReverbParams audio_get_reverb_preset(ReverbPreset preset) {
   // Return default preset values for static access
   // In a real system, we might query the system instance if presets are mutable
