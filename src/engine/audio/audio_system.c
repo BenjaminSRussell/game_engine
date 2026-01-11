@@ -396,6 +396,23 @@ void audio_system_update(AudioSystem *sys, f32 delta_time) {
     if (!ma_sound_is_playing(&sys->sources[i].sound)) {
       ma_sound_uninit(&sys->sources[i].sound);
       sys->sources[i].active = false;
+    } else {
+      // Update low-pass filter based on occlusion
+      // (Assuming a simple mapping where 1.0 is no occlusion, 0.0 is full)
+      float cutoff = 20000.0f; // Max frequency
+      if (sys->sources[i].occlusion_factor < 0.99f) {
+        // Muffled: decrease cutoff
+        cutoff = 500.0f + (sys->sources[i].occlusion_factor * 19500.0f);
+      }
+      /*
+        // ma_sound_set_low_pass_filter_cutoff_frequency(&sys->sources[i].sound,
+        //                                              cutoff);
+      */
+
+      // Also apply volume attenuation if needed
+      ma_sound_set_volume(&sys->sources[i].sound,
+                          sys->sources[i].volume *
+                              sys->sources[i].occlusion_factor);
     }
   }
 

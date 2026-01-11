@@ -22,6 +22,7 @@
 #include <player/player.h>
 #include <player/player_vehicle.h>
 #include <string.h>
+#include <physics/physics.h>
 
 // Helper: Get seat position based on vehicle type
 static Vec3 vehicle_get_seat_offset(VehicleType type) {
@@ -178,6 +179,38 @@ bool player_mount_vehicle(PlayerSystem *system, EntityID vehicle_entity,
   vehicle->seat_position = vehicle->local_offset;
   vehicle->control_influence = vehicle_get_speed_multiplier(type);
 
+  // Add VehicleComponent and RigidBody to the vehicle entity
+    if (system->ecs_world && system->physics_world) {
+        Entity e = {.id = vehicle_entity, .generation = 0};
+        if (ecs_entity_exists((World*)system->ecs_world, e)) {
+            if (!ecs_has_component((World*)system->ecs_world, e, VEHICLE_COMPONENT_ID)) {
+                VehicleComponent vc = {
+                    .type = type,
+                    .rider = system->player->entity_id,
+                    .health = 100.0f,
+                    .max_health = 100.0f,
+                    .speed = 10.0f,
+                    .turn_speed = 90.0f,
+                    .acceleration = 5.0f,
+                };
+                ecs_add_component((World*)system->ecs_world, e, VEHICLE_COMPONENT_ID, &vc);
+            }
+            if (!ecs_has_component((World*)system->ecs_world, e, RIGIDBODY_COMPONENT_ID)) {
+                RigidBodyConfig config = {
+                    .shape = SHAPE_BOX,
+                    .mass = 1000.0f,
+                    .box_extents = {1.0f, 1.0f, 1.0f}
+                };
+                TransformComponent* t = ecs_get_component((World*)system->ecs_world, e, TRANSFORM_COMPONENT_ID);
+                if (t) {
+                    RigidBody* body = physics_world_create_rigidbody(system->physics_world, config, t->position, t->rotation);
+                    RigidBodyComponent rbc = { .body = body };
+                    ecs_add_component((World*)system->ecs_world, e, RIGIDBODY_COMPONENT_ID, &rbc);
+                }
+            }
+        }
+    }
+
   LOG_INFO("Player mounted %d-type vehicle (entity: %u)", type, vehicle_entity);
 
   return true;
@@ -296,55 +329,33 @@ void player_vehicle_apply_input(PlayerSystem *system, Vec3 move_input,
     return;
   }
 
-  VehicleState *vehicle = &system->player->vehicle_state;
+  VehicleState *vehicle_state = &system->player->vehicle_state;
 
-  if (!vehicle->can_control || vehicle->control_influence <= 0.0f) {
+  if (!vehicle_state->can_control || vehicle_state->control_influence <= 0.0f) {
     LOG_DEBUG("Cannot control vehicle (control_influence: %.2f)",
-              vehicle->control_influence);
+              vehicle_state->control_influence);
     return;
   }
 
-  // Apply vehicle-type-specific input handling
-  switch (vehicle->type) {
-  case VEHICLE_TYPE_BOAT:
-    // Boats move with input in water, slow on land
-    if (move_input.x != 0.0f || move_input.z != 0.0f) {
-      // Player is controlling boat direction
-      // This would normally apply velocity to the boat entity
-      LOG_DEBUG("Boat input: %.2f, %.2f", move_input.x, move_input.z);
+    if (system->ecs_world && system->physics_world) {
+        Entity e = {.id = vehicle_state->vehicle_entity, .generation = 0};
+        if (ecs_entity_exists((World*)system->ecs_world, e)) {
+            VehicleComponent* vc = ecs_get_component((World*)system->ecs_world, e, VEHICLE_COMPONENT_ID);
+            RigidBodyComponent* rbc = ecs_get_component((World*)system->ecs_world, e, RIGIDBODY_COMPONENT_ID);
+
+            if (vc && rbc && rbc->body) {
+                Vec3 force = {0};
+                force.x = move_input.x * vc->speed * 100.0f;
+                force.z = move_input.z * vc->speed * 100.0f;
+
+                if (jump && vc->can_fly) {
+                    force.y = vc->speed * 100.0f;
+                }
+
+                rigid_body_apply_force(rbc->body, force);
+            }
+        }
     }
-    break;
-
-  case VEHICLE_TYPE_HORSE:
-  case VEHICLE_TYPE_PIG:
-  case VEHICLE_TYPE_LLAMA:
-  case VEHICLE_TYPE_CAMEL:
-  case VEHICLE_TYPE_STRIDER:
-    // Animal mounts respond to speed control
-    if (jump) {
-      LOG_DEBUG("Animal mount jumping");
-      // Would apply upward velocity to mount
-    }
-    if (brake) {
-      LOG_DEBUG("Animal mount braking");
-      // Would reduce mount velocity
-    }
-    break;
-
-  case VEHICLE_TYPE_MINECART:
-    // Minecarts move along rails, limited steering
-    LOG_DEBUG("Minecart control input");
-    break;
-
-  case VEHICLE_TYPE_CHAIR:
-  case VEHICLE_TYPE_BED:
-    // Stationary - no input effect
-    LOG_DEBUG("Stationary vehicle - input ignored");
-    break;
-
-  default:
-    break;
-  }
 }
 
 bool player_is_in_vehicle(const PlayerSystem *system) {

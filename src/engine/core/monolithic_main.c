@@ -2212,10 +2212,10 @@ static void game_init(void) {
   block_registry_init(&g_game.block_registry, 256);
   block_registry_init_defaults(&g_game.block_registry);
 
-  // Initialize item registry
-  init_progress_update_stage("Initializing Item Registry");
-  item_registry_init(&g_game.item_registry);
-
+      // Initialize item registry
+      init_progress_update_stage("Initializing Item Registry");
+      item_registry_init(&g_item_registry);
+      g_game.item_registry = g_item_registry;
   // Initialize recipe system
   init_progress_update_stage("Initializing Recipe System");
   recipe_system_init();
@@ -2920,7 +2920,7 @@ static void game_update(void) {
       }
 
       // Update HUD
-      hud_update(&g_hud, &g_game.player_system, dt);
+      hud_update(&g_hud, g_game.player_system.player, g_game.delta_time);
       // hud_tick(&g_game.hud, g_game.delta_time);
 
       // Update game mode

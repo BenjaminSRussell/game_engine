@@ -8,10 +8,10 @@
  * =================================================================================================
  */
 
-#include <audio/audio_engine_types.h>
-#include <common.h>
+#include "include/audio/audio_engine_types.h"
+#include "include/core/common.h"
+#include "include/math/math.h"
 #include <math.h>
-#include <math/math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

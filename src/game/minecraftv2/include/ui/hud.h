@@ -186,7 +186,7 @@ typedef struct {
 // --- Public API ---
 
 void hud_init(HUDSystem *hud, Vec2 screen_size);
-void hud_update(HUDSystem *hud, struct PlayerSystem *player, f32 delta_time);
+void hud_update(HUDSystem *hud, struct PlayerComponent *player, f32 delta_time);
 void hud_render(HUDSystem *hud, struct VulkanRenderer *renderer);
 void hud_resize(HUDSystem *hud, Vec2 new_size);
 

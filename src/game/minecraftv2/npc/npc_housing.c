@@ -67,18 +67,20 @@ void housing_update(NPCSystem *system) {
   if (!system)
     return;
   // Assign homes to homeless NPCs with jobs
-  ComponentTypeID comps[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
-  EntityQuery q;
-  ecs_query_init(&q, 256);
-  ecs_query_entities((World *)system->ecs, &q, comps, 2);
-  for (u32 i = 0; i < q.count; i++) {
-    EntityID e = q.entities[i];
-    NPCComponent *npc = (NPCComponent *)ecs_get_component(
-        (World *)system->ecs, (Entity){e, 0}, NPC_COMPONENT_ID);
+  QueryDesc desc = {0};
+  ComponentType components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
+  desc.all_components = components;
+  desc.all_count = 2;
+  Query *q = ecs_query_create((World *)system->ecs, &desc);
+
+  Entity e;
+  void *c[2];
+  while (ecs_query_next(q, &e, c)) {
+    NPCComponent *npc = (NPCComponent *)c[0];
     if (npc && npc->job != NPC_JOB_NONE &&
         !(npc->behavior_flags & NPC_FLAG_HAS_HOME)) {
-      housing_assign_to_nearest(system, e);
+      housing_assign_to_nearest(system, e.id);
     }
   }
-  ecs_query_free(&q);
+  ecs_query_destroy((World *)system->ecs, q);
 }

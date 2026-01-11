@@ -55,6 +55,7 @@ typedef struct {
   f32 fuel_amount;    // Current fuel (if applicable)
   f32 max_fuel;
   u32 inventory_slots; // Storage slots for vehicles with inventory
+  RigidBody* physics_body;
 } VehicleComponent;
 
 // Initialize vehicle system

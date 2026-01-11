@@ -1,5 +1,6 @@
 #include "../include/player/player.h"
 #include "../include/ui/hud.h"
+#include "../include/ui/hud_spell_cooldown.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -31,13 +32,13 @@ void hud_init(HUDSystem *hud, Vec2 screen_size) {
   }
 }
 
-void hud_update(HUDSystem *hud, struct PlayerSystem *player, f32 delta_time) {
+void hud_update(HUDSystem *hud, Player *player, f32 delta_time) {
   if (!hud || !player)
     return;
 
-  void hud_update_bars(HUDSystem * hud, struct PlayerSystem * player,
+  void hud_update_bars(HUDSystem * hud, Player * player,
                        f32 delta_time);
-  void hud_update_overlay(HUDSystem * hud, struct PlayerSystem * player,
+  void hud_update_overlay(HUDSystem * hud, Player * player,
                           f32 delta_time);
   void hud_update_logging(HUDSystem * hud, f32 delta_time);
   void hud_update_debug(HUDSystem * hud, f32 delta_time);
@@ -46,6 +47,7 @@ void hud_update(HUDSystem *hud, struct PlayerSystem *player, f32 delta_time) {
   hud_update_overlay(hud, player, delta_time);
   hud_update_logging(hud, delta_time);
   hud_update_debug(hud, delta_time);
+  hud_update_spell_cooldowns(hud, player, delta_time);
 }
 
 void hud_resize(HUDSystem *hud, Vec2 new_size) {

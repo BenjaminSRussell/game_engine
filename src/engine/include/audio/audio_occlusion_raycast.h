@@ -5,10 +5,15 @@
 extern "C" {
 #endif
 
-#include <audio/audio_engine_types.h>
-#include <physics/block_physics.h>
+struct AudioSystem;
+typedef struct AudioSystem AudioSystem;
+struct BlockPhysicsSystem;
+typedef struct BlockPhysicsSystem BlockPhysicsSystem;
 
-void Audio_UpdateOcclusion(AudioSpatialState *sys, BlockPhysicsSystem *bp);
+#include "../physics/block_physics.h"
+#include "audio_engine_types.h"
+
+void Audio_UpdateOcclusion(AudioSystem *sys, BlockPhysicsSystem *bp);
 void audio_occlusion_raycast_init(void);
 void audio_occlusion_raycast_shutdown(void);
 
