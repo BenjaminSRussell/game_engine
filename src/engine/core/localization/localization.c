@@ -785,3 +785,401 @@ bool format_ordinal(LanguageCode language, int64_t value, char *out,
   snprintf(out, out_size, "%lld%s", (long long)value, suffix);
   return true;
 }
+
+static LocalizationManager g_loc_manager;
+
+static LocalizationManager *resolve_manager(LocalizationManager *manager) {
+  return manager ? manager : &g_loc_manager;
+}
+
+static void string_table_release(StringTable *table) {
+  if (!table) {
+    return;
+  }
+  if (table->hash_map) {
+    map_destroy((HashMap *)table->hash_map);
+    table->hash_map = NULL;
+  }
+  free(table->strings);
+  table->strings = NULL;
+  table->string_count = 0;
+  table->string_capacity = 0;
+}
+
+static StringTable *loc_manager_find_table(LocalizationManager *manager,
+                                           LanguageCode language) {
+  uint32_t i;
+
+  if (!manager || !manager->string_tables) {
+    return NULL;
+  }
+
+  for (i = 0; i < manager->table_count; i++) {
+    if (manager->string_tables[i].language == language) {
+      return &manager->string_tables[i];
+    }
+  }
+  return NULL;
+}
+
+static bool replace_token(const char *input, const char *token,
+                          const char *value, char *out, size_t out_size) {
+  const char *cursor = input;
+  size_t token_len = token ? strlen(token) : 0;
+  size_t value_len = value ? strlen(value) : 0;
+  size_t out_len = 0;
+
+  if (!input || !out || out_size == 0 || !token || token_len == 0) {
+    return false;
+  }
+
+  while (*cursor && out_len + 1 < out_size) {
+    const char *found = strstr(cursor, token);
+    if (!found) {
+      size_t remaining = strlen(cursor);
+      if (out_len + remaining >= out_size) {
+        remaining = out_size - out_len - 1;
+      }
+      memcpy(out + out_len, cursor, remaining);
+      out_len += remaining;
+      break;
+    }
+
+    if (found > cursor) {
+      size_t chunk = (size_t)(found - cursor);
+      if (out_len + chunk >= out_size) {
+        chunk = out_size - out_len - 1;
+      }
+      memcpy(out + out_len, cursor, chunk);
+      out_len += chunk;
+    }
+
+    if (value_len > 0 && out_len + value_len < out_size) {
+      memcpy(out + out_len, value, value_len);
+      out_len += value_len;
+    }
+
+    cursor = found + token_len;
+  }
+
+  out[out_len] = '\0';
+  return true;
+}
+
+static const char *format_arg_value(LanguageCode language, const FormatArg *arg,
+                                    char *out, size_t out_size) {
+  if (!arg || !out || out_size == 0) {
+    return "";
+  }
+
+  switch (arg->type) {
+  case FORMAT_ARG_FLOAT:
+    if (format_number(language, arg->value.float_value, out, out_size)) {
+      return out;
+    }
+    break;
+  case FORMAT_ARG_STRING:
+    if (arg->value.string_value) {
+      strncpy(out, arg->value.string_value, out_size - 1);
+      out[out_size - 1] = '\0';
+      return out;
+    }
+    break;
+  case FORMAT_ARG_INT:
+  default:
+    if (format_number(language, (double)arg->value.int_value, out, out_size)) {
+      return out;
+    }
+    break;
+  }
+
+  out[0] = '\0';
+  return out;
+}
+
+LocalizationManager *loc_manager_get_default(void) {
+  return &g_loc_manager;
+}
+
+void loc_manager_init(LocalizationManager *manager) {
+  LocalizationManager *resolved = resolve_manager(manager);
+  uint32_t i;
+
+  memset(resolved, 0, sizeof(*resolved));
+  resolved->current_language = LANG_EN_US;
+  resolved->fallback_language = LANG_EN_US;
+
+  for (i = 0; i < LANG_COUNT; i++) {
+    char decimal_sep = '.';
+    char thousands_sep = ',';
+    get_number_separators((LanguageCode)i, &decimal_sep, &thousands_sep);
+    resolved->format_settings[i].decimal_separator = decimal_sep;
+    resolved->format_settings[i].thousands_separator = thousands_sep;
+    strncpy(resolved->format_settings[i].currency_symbol, "$",
+            sizeof(resolved->format_settings[i].currency_symbol) - 1);
+    resolved->format_settings[i].currency_before = true;
+  }
+}
+
+void loc_manager_shutdown(LocalizationManager *manager) {
+  LocalizationManager *resolved = resolve_manager(manager);
+  uint32_t i;
+
+  if (!resolved) {
+    return;
+  }
+
+  for (i = 0; i < resolved->table_count; i++) {
+    string_table_release(&resolved->string_tables[i]);
+  }
+  free(resolved->string_tables);
+  resolved->string_tables = NULL;
+  resolved->table_count = 0;
+  resolved->font_count = 0;
+  resolved->fonts = NULL;
+}
+
+bool loc_manager_set_language(LocalizationManager *manager,
+                              LanguageCode language) {
+  LocalizationManager *resolved = resolve_manager(manager);
+  if (!resolved) {
+    return false;
+  }
+  resolved->current_language = language;
+  if (resolved->on_language_changed) {
+    resolved->on_language_changed(language);
+  }
+  return true;
+}
+
+const char *loc_manager_get_string(LocalizationManager *manager,
+                                   const char *key) {
+  LocalizationManager *resolved = resolve_manager(manager);
+  StringTable *table = NULL;
+  LocalizedString *entry = NULL;
+
+  if (!resolved || !key) {
+    return "";
+  }
+
+  table = loc_manager_find_table(resolved, resolved->current_language);
+  if (table) {
+    entry = string_table_get(table, key);
+  }
+
+  if (!entry && resolved->fallback_language != resolved->current_language) {
+    table = loc_manager_find_table(resolved, resolved->fallback_language);
+    if (table) {
+      entry = string_table_get(table, key);
+    }
+  }
+
+  if (!entry) {
+    return key;
+  }
+
+  return entry->value[0] ? entry->value : key;
+}
+
+const char *loc_manager_get_plural(LocalizationManager *manager,
+                                   const char *key, int64_t count) {
+  static char plural_buffer[2048];
+  LocalizationManager *resolved = resolve_manager(manager);
+  StringTable *table = NULL;
+  LocalizedString *entry = NULL;
+
+  if (!resolved || !key) {
+    return "";
+  }
+
+  table = loc_manager_find_table(resolved, resolved->current_language);
+  if (table) {
+    entry = string_table_get(table, key);
+  }
+
+  if (!entry && resolved->fallback_language != resolved->current_language) {
+    table = loc_manager_find_table(resolved, resolved->fallback_language);
+    if (table) {
+      entry = string_table_get(table, key);
+    }
+  }
+
+  if (!entry) {
+    return key;
+  }
+
+  if (!entry->is_plural) {
+    return entry->value[0] ? entry->value : key;
+  }
+
+  if (!plural_format(resolved->current_language, entry, count, plural_buffer,
+                     sizeof(plural_buffer))) {
+    return key;
+  }
+
+  return plural_buffer;
+}
+
+const char *loc_manager_format(LocalizationManager *manager, const char *key,
+                               const FormatArg *args, size_t arg_count) {
+  static char format_buffer[2048];
+  char *temp_a = NULL;
+  char *temp_b = NULL;
+  const char *base = NULL;
+  LocalizationManager *resolved = resolve_manager(manager);
+  size_t i;
+
+  if (!resolved || !key) {
+    return "";
+  }
+
+  base = loc_manager_get_string(resolved, key);
+  if (!args || arg_count == 0) {
+    strncpy(format_buffer, base, sizeof(format_buffer) - 1);
+    format_buffer[sizeof(format_buffer) - 1] = '\0';
+    return format_buffer;
+  }
+
+  temp_a = malloc(sizeof(format_buffer));
+  temp_b = malloc(sizeof(format_buffer));
+  if (!temp_a || !temp_b) {
+    free(temp_a);
+    free(temp_b);
+    strncpy(format_buffer, base, sizeof(format_buffer) - 1);
+    format_buffer[sizeof(format_buffer) - 1] = '\0';
+    return format_buffer;
+  }
+
+  strncpy(temp_a, base, sizeof(format_buffer) - 1);
+  temp_a[sizeof(format_buffer) - 1] = '\0';
+
+  for (i = 0; i < arg_count; i++) {
+    char token[48];
+    char value_text[128];
+
+    snprintf(token, sizeof(token), "{%s}", args[i].name);
+    format_arg_value(resolved->current_language, &args[i], value_text,
+                     sizeof(value_text));
+
+    if (!replace_token(temp_a, token, value_text, temp_b,
+                       sizeof(format_buffer))) {
+      strncpy(temp_b, temp_a, sizeof(format_buffer) - 1);
+      temp_b[sizeof(format_buffer) - 1] = '\0';
+    }
+
+    strncpy(temp_a, temp_b, sizeof(format_buffer) - 1);
+    temp_a[sizeof(format_buffer) - 1] = '\0';
+  }
+
+  strncpy(format_buffer, temp_a, sizeof(format_buffer) - 1);
+  format_buffer[sizeof(format_buffer) - 1] = '\0';
+
+  free(temp_a);
+  free(temp_b);
+
+  return format_buffer;
+}
+
+bool loc_manager_load_all(LocalizationManager *manager, const char **paths,
+                          const LanguageCode *languages, size_t count) {
+  LocalizationManager *resolved = resolve_manager(manager);
+  size_t i;
+
+  if (!resolved || !paths || count == 0) {
+    return false;
+  }
+
+  loc_manager_shutdown(resolved);
+
+  resolved->string_tables = calloc(count, sizeof(StringTable));
+  if (!resolved->string_tables) {
+    return false;
+  }
+  resolved->table_count = (uint32_t)count;
+
+  for (i = 0; i < count; i++) {
+    LanguageCode language = languages ? languages[i] : LANG_EN_US;
+    StringTable *created = string_table_create(language, "", "", false);
+    if (!created) {
+      loc_manager_shutdown(resolved);
+      return false;
+    }
+
+    resolved->string_tables[i] = *created;
+    free(created);
+
+    if (!string_table_load_csv(&resolved->string_tables[i], paths[i])) {
+      loc_manager_shutdown(resolved);
+      return false;
+    }
+  }
+
+  return true;
+}
+
+LanguageCode loc_manager_detect_system_language(void) {
+  return LANG_EN_US;
+}
+
+bool loc_manager_validate(const LocalizationManager *manager,
+                          char (*out_keys)[LOCALIZATION_KEY_SIZE],
+                          size_t max_keys) {
+  const LocalizationManager *resolved = resolve_manager((LocalizationManager *)manager);
+  const StringTable *fallback = NULL;
+  const StringTable *current = NULL;
+  uint32_t missing = 0;
+
+  if (!resolved) {
+    return false;
+  }
+
+  fallback = loc_manager_find_table((LocalizationManager *)resolved,
+                                    resolved->fallback_language);
+  current =
+      loc_manager_find_table((LocalizationManager *)resolved,
+                             resolved->current_language);
+
+  if (!fallback || !current) {
+    return false;
+  }
+
+  missing =
+      string_table_find_missing(current, fallback, out_keys, (uint32_t)max_keys);
+  return missing == 0;
+}
+
+bool loc_manager_export_template(const LocalizationManager *manager,
+                                 const char *path) {
+  const LocalizationManager *resolved = resolve_manager((LocalizationManager *)manager);
+  const StringTable *table = NULL;
+  FILE *file = NULL;
+  uint32_t i;
+
+  if (!resolved || !path) {
+    return false;
+  }
+
+  table = loc_manager_find_table((LocalizationManager *)resolved,
+                                 resolved->fallback_language);
+  if (!table) {
+    return false;
+  }
+
+  file = fopen(path, "w");
+  if (!file) {
+    return false;
+  }
+
+  fputs("key,value,context\n", file);
+  for (i = 0; i < table->string_count; i++) {
+    write_csv_field(file, table->strings[i].key);
+    fputc(',', file);
+    write_csv_field(file, "");
+    fputc(',', file);
+    write_csv_field(file, table->strings[i].context);
+    fputc('\n', file);
+  }
+
+  fclose(file);
+  return true;
+}

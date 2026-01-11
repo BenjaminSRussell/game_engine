@@ -134,6 +134,10 @@ typedef struct FormatArg {
   uint32_t type; // int, float, string
 } FormatArg;
 
+#define FORMAT_ARG_INT 0u
+#define FORMAT_ARG_FLOAT 1u
+#define FORMAT_ARG_STRING 2u
+
 // TODO(AGENT_DOCS_1): Implement format_string [Difficulty: 6]
 bool format_number(LanguageCode language, double value, char *out,
                    size_t out_size);
@@ -272,17 +276,24 @@ typedef struct LocalizationManager {
   void (*on_language_changed)(LanguageCode language);
 } LocalizationManager;
 
-// TODO(AGENT_DOCS_1): Implement loc_manager_init [Difficulty: 5]
-// TODO(AGENT_DOCS_1): Implement loc_manager_shutdown [Difficulty: 4]
-// TODO(AGENT_DOCS_1): Implement loc_manager_set_language [Difficulty: 5]
-// TODO(AGENT_DOCS_1): Implement loc_manager_get_string [Difficulty: 4]
-// TODO(AGENT_DOCS_1): Implement loc_manager_get_plural [Difficulty: 5]
-// TODO(AGENT_DOCS_1): Implement loc_manager_format [Difficulty: 6]
-// TODO(AGENT_DOCS_1): Implement loc_manager_load_all [Difficulty: 5]
-// TODO(AGENT_DOCS_1): Implement loc_manager_detect_system_language [Difficulty:
-// 5]
-// TODO(AGENT_DOCS_1): Implement loc_manager_validate [Difficulty: 6]
-// TODO(AGENT_DOCS_1): Implement loc_manager_export_template [Difficulty: 5]
+LocalizationManager *loc_manager_get_default(void);
+void loc_manager_init(LocalizationManager *manager);
+void loc_manager_shutdown(LocalizationManager *manager);
+bool loc_manager_set_language(LocalizationManager *manager,
+                              LanguageCode language);
+const char *loc_manager_get_string(LocalizationManager *manager,
+                                   const char *key);
+const char *loc_manager_get_plural(LocalizationManager *manager,
+                                   const char *key, int64_t count);
+const char *loc_manager_format(LocalizationManager *manager, const char *key,
+                               const FormatArg *args, size_t arg_count);
+bool loc_manager_load_all(LocalizationManager *manager, const char **paths,
+                          const LanguageCode *languages, size_t count);
+LanguageCode loc_manager_detect_system_language(void);
+bool loc_manager_validate(const LocalizationManager *manager,
+                          char (*out_keys)[128], size_t max_keys);
+bool loc_manager_export_template(const LocalizationManager *manager,
+                                 const char *path);
 
 /* =================================================================================================
  *                                    CONVENIENT MACROS
@@ -293,8 +304,10 @@ typedef struct LocalizationManager {
 // LP("key", count) -> pluralized string
 // LF("key", ...) -> formatted localized string
 
-// TODO(AGENT_DOCS_1): Implement L macro [Difficulty: 3]
-// TODO(AGENT_DOCS_1): Implement LP macro [Difficulty: 4]
-// TODO(AGENT_DOCS_1): Implement LF macro [Difficulty: 5]
+#define L(key) loc_manager_get_string(loc_manager_get_default(), (key))
+#define LP(key, count) \
+  loc_manager_get_plural(loc_manager_get_default(), (key), (count))
+#define LF(key, args, arg_count) \
+  loc_manager_format(loc_manager_get_default(), (key), (args), (arg_count))
 
 #endif // LOCALIZATION_H
