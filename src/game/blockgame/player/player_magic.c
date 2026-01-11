@@ -520,15 +520,11 @@ void player_magic_update(PlayerSystem *system, f32 delta_time) {
     }
   }
 
-  // Update spell cooldowns
-  for (int i = 0; i < SPELL_COUNT; i++) {
-    if (magic->spells[i].cooldown > 0.0f) {
-      magic->spells[i].cooldown -= delta_time;
-      if (magic->spells[i].cooldown < 0.0f) {
-        magic->spells[i].cooldown = 0.0f;
-      }
-    }
-  }
+  // Update spell cooldowns using enhanced system
+  update_spell_cooldowns(delta_time);
+  
+  // Render visual indicators
+  render_spell_cooldown_indicators(system);
 
   // Update channeling/active durations
   for (int i = 0; i < SPELL_COUNT; i++) {
@@ -554,10 +550,11 @@ bool player_can_cast_spell(PlayerMagicComponent *magic, SpellType spell) {
   if (!magic || spell >= SPELL_COUNT)
     return false;
 
-  SpellState *spell_state = &magic->spells[spell];
-
-  if (spell_state->cooldown > 0.0f)
+  // Check enhanced cooldown system
+  if (!is_spell_ready(spell))
     return false;
+
+  SpellState *spell_state = &magic->spells[spell];
 
   if (!player_has_mana(magic, spell_state->mana_cost))
     return false;
@@ -575,4 +572,43 @@ bool player_has_mana(PlayerMagicComponent *magic, f32 amount) {
   if (!magic)
     return false;
   return magic->current_mana >= amount;
+}
+
+// Public API for spell cooldown system
+void player_magic_init_cooldown_system(void) {
+    init_spell_cooldown_system();
+}
+
+void player_magic_enable_visual_indicators(bool enable) {
+    g_cooldown_system.visual_indicators_enabled = enable;
+    LOG_INFO("Spell visual indicators %s", enable ? "enabled" : "disabled");
+}
+
+void player_magic_set_cooldown_modifier(f32 modifier) {
+    g_cooldown_system.global_cooldown_modifier = modifier;
+    LOG_INFO("Spell cooldown modifier set to %.2f", modifier);
+}
+
+void player_magic_enable_cooldown_reduction(bool enable) {
+    g_cooldown_system.cooldown_reduction_enabled = enable;
+    LOG_INFO("Spell cooldown reduction %s", enable ? "enabled" : "disabled");
+}
+
+bool player_magic_is_spell_ready(SpellType spell) {
+    return is_spell_ready(spell);
+}
+
+f32 player_magic_get_cooldown_progress(SpellType spell) {
+    return get_spell_cooldown_progress(spell);
+}
+
+void player_magic_get_cooldown_stats(SpellType spell, f32 *remaining, f32 *total) {
+    SpellCooldown *cooldown = get_spell_cooldown(spell);
+    if (cooldown) {
+        if (remaining) *remaining = cooldown->remaining_cooldown;
+        if (total) *total = cooldown->total_cooldown;
+    } else {
+        if (remaining) *remaining = 0.0f;
+        if (total) *total = 0.0f;
+    }
 }

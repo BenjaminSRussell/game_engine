@@ -25,11 +25,6 @@ bool combat_system_init(World *world) {
   }
 
   damage_system_init(1024);
-  if (!world) {
-    LOG_ERROR("Failed to initialize damage system");
-    hitbox_system_shutdown();
-    return false;
-  }
     LOG_ERROR("Failed to initialize damage system");
     hitbox_system_shutdown();
     return false;
