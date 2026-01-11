@@ -407,6 +407,13 @@ void audio_effects_update(AudioEffectsSystem *system) {
 void audio_effect_apply_to_sound(AudioEffectsSystem *system, u32 effect_id,
                                  ma_sound *sound) {}
 
+// Internal helper to estimate room size (stub for raycast)
+static f32 estimate_room_size(Vec3 position) {
+  // In a real implementation: Cast rays in 6 directions
+  // For now, return a default "Medium" size
+  return 10.0f; // meters
+}
+
 void audio_effects_update_dynamic_reverb(AudioEffectsSystem *system,
                                          Vec3 listener_position,
                                          f32 delta_time) {}
