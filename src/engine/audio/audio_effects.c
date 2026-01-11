@@ -19,6 +19,12 @@ static i32 find_free_effect_slot(AudioEffectsSystem *system) {
   return -1;
 }
 
+static inline f32 dB_to_linear(f32 db) { return powf(10.0f, db / 20.0f); }
+
+static inline f32 linear_to_dB(f32 linear) {
+  return 20.0f * log10f(fmaxf(linear, 0.00001f));
+}
+
 // ============================================================================
 // DSP IMPLEMENTATION
 // ============================================================================
