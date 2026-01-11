@@ -29,7 +29,6 @@ typedef struct {
 
 typedef struct {
     metal_device_t *device;
-    metal_command_queue_t *command_queue;
     Framebuffer *main_framebuffer;
     Framebuffer *gbuffer;
     
@@ -67,20 +66,10 @@ Renderer *renderer_create(uint32_t width, uint32_t height) {
         return NULL;
     }
     
-    // Create command queue
-    renderer->command_queue = metal_device_create_command_queue(renderer->device);
-    if (!renderer->command_queue) {
-        LOG_ERROR("Failed to create command queue");
-        metal_device_destroy(renderer->device);
-        free(renderer);
-        return NULL;
-    }
-    
     // Create main framebuffer
     renderer->main_framebuffer = framebuffer_create(width, height);
     if (!renderer->main_framebuffer) {
         LOG_ERROR("Failed to create main framebuffer");
-        metal_command_queue_destroy(renderer->command_queue);
         metal_device_destroy(renderer->device);
         free(renderer);
         return NULL;
@@ -107,10 +96,6 @@ void renderer_destroy(Renderer *renderer) {
     
     if (renderer->gbuffer) {
         framebuffer_destroy(renderer->gbuffer);
-    }
-    
-    if (renderer->command_queue) {
-        metal_command_queue_destroy(renderer->command_queue);
     }
     
     if (renderer->device) {

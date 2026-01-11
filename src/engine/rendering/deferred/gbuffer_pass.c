@@ -197,7 +197,7 @@ GBuffer *gbuffer_create(uint32_t width, uint32_t height) {
     // Albedo texture
     gbuffer->textures[GBUFFER_ALBEDO] = metal_texture_create(device, &tex_desc);
     
-    // Normal texture (RGB10A2 for better precision)
+    // Normal texture (RGBA16F for higher precision)
     tex_desc.format = METAL_PIXEL_FORMAT_RGBA16_FLOAT;
     tex_desc.label = "GBuffer Normal";
     gbuffer->textures[GBUFFER_NORMAL] = metal_texture_create(device, &tex_desc);
@@ -306,7 +306,15 @@ void gbuffer_begin_pass(GBuffer *gbuffer, void *command_encoder) {
     framebuffer_bind(gbuffer->framebuffer);
     
     // Set viewport
-    // metal_render_encoder_set_viewport(command_encoder, 0, 0, gbuffer->width, gbuffer->height);
+    mtl_viewport_t viewport = {
+        .originX = 0.0,
+        .originY = 0.0,
+        .width = (double)gbuffer->width,
+        .height = (double)gbuffer->height,
+        .znear = 0.0,
+        .zfar = 1.0
+    };
+    metal_render_encoder_set_viewport(command_encoder, viewport);
     
     // Clear G-buffer
     framebuffer_clear_color(gbuffer->framebuffer, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -335,8 +343,10 @@ void gbuffer_bind_for_lighting(GBuffer *gbuffer, void *command_encoder) {
     
     // Bind G-buffer textures for lighting pass
     for (int i = 0; i < GBUFFER_COUNT; i++) {
-        // TODO: Bind textures to shader slots
-        // metal_render_encoder_set_fragment_texture(command_encoder, gbuffer->textures[i], i);
+        void *mtl_texture =
+            gbuffer->textures[i] ? gbuffer->textures[i]->texture : NULL;
+        metal_render_encoder_set_fragment_texture(command_encoder, mtl_texture,
+                                                  (unsigned long)i);
     }
     
     LOG_DEBUG("G-buffer bound for lighting pass");
