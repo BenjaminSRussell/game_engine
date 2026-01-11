@@ -9,8 +9,7 @@
 
 #include "backend/metal/mtl_buffer.h"
 #include "backend/metal/mtl_device.h"
-#include "backend/metal/mtl_render_command_encoder.h"
-#include "backend/metal/mtl_render_pipeline.h"
+#include "backend/metal/mtl_encoder.h"
 #include "backend/metal/mtl_texture.h"
 #include "../framebuffer.h"
 #include "../render_pipeline.h"
@@ -36,8 +35,8 @@ typedef struct {
     uint32_t height;
     
     // Rendering pipeline
-    metal_render_pipeline_t *pipeline;
-    metal_depth_stencil_state_t *depth_state;
+    void *pipeline;
+    void *depth_state;
     
     // Statistics
     uint32_t triangles_rendered;
@@ -194,20 +193,24 @@ GBuffer *gbuffer_create(uint32_t width, uint32_t height) {
     // Albedo texture
     gbuffer->textures[GBUFFER_ALBEDO] = metal_texture_create(device, &tex_desc);
     
-    // Normal texture (RGB10A2 for better precision)
-    tex_desc.pixel_format = METAL_PIXEL_FORMAT_RGB10A2_UNORM;
+    // Normal texture (RGBA16F for higher precision)
+    tex_desc.format = METAL_PIXEL_FORMAT_RGBA16_FLOAT;
+    tex_desc.label = "GBuffer Normal";
     gbuffer->textures[GBUFFER_NORMAL] = metal_texture_create(device, &tex_desc);
     
     // Material texture (metallic, roughness, AO)
-    tex_desc.pixel_format = METAL_PIXEL_FORMAT_BGRA8_UNORM;
+    tex_desc.format = METAL_PIXEL_FORMAT_BGRA8_UNORM;
+    tex_desc.label = "GBuffer Material";
     gbuffer->textures[GBUFFER_MATERIAL] = metal_texture_create(device, &tex_desc);
     
     // Motion vectors texture
+    tex_desc.label = "GBuffer Motion";
     gbuffer->textures[GBUFFER_MOTION] = metal_texture_create(device, &tex_desc);
     
     // Depth texture
-    tex_desc.pixel_format = METAL_PIXEL_FORMAT_DEPTH32_FLOAT;
+    tex_desc.format = METAL_PIXEL_FORMAT_DEPTH32_FLOAT;
     tex_desc.usage = METAL_TEXTURE_USAGE_RENDER_TARGET | METAL_TEXTURE_USAGE_SHADER_READ;
+    tex_desc.label = "GBuffer Depth";
     gbuffer->depth_texture = metal_texture_create(device, &tex_desc);
     
     // Verify all textures were created
@@ -299,7 +302,15 @@ void gbuffer_begin_pass(GBuffer *gbuffer, void *command_encoder) {
     framebuffer_bind(gbuffer->framebuffer);
     
     // Set viewport
-    // metal_render_encoder_set_viewport(command_encoder, 0, 0, gbuffer->width, gbuffer->height);
+    mtl_viewport_t viewport = {
+        .originX = 0.0,
+        .originY = 0.0,
+        .width = (double)gbuffer->width,
+        .height = (double)gbuffer->height,
+        .znear = 0.0,
+        .zfar = 1.0
+    };
+    metal_render_encoder_set_viewport(command_encoder, viewport);
     
     // Clear G-buffer
     framebuffer_clear_color(gbuffer->framebuffer, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -328,25 +339,27 @@ void gbuffer_bind_for_lighting(GBuffer *gbuffer, void *command_encoder) {
     
     // Bind G-buffer textures for lighting pass
     for (int i = 0; i < GBUFFER_COUNT; i++) {
-        // TODO: Bind textures to shader slots
-        // metal_render_encoder_set_fragment_texture(command_encoder, gbuffer->textures[i], i);
+        void *mtl_texture =
+            gbuffer->textures[i] ? gbuffer->textures[i]->texture : NULL;
+        metal_render_encoder_set_fragment_texture(command_encoder, mtl_texture,
+                                                  (unsigned long)i);
     }
     
     LOG_DEBUG("G-buffer bound for lighting pass");
 }
 
-void gbuffer_get_texture(GBuffer *gbuffer, GBufferTexture type, void **texture) {
-    if (!gbuffer || !texture || type >= GBUFFER_COUNT)
-        return;
+void *gbuffer_get_texture(GBuffer *gbuffer, GBufferTexture type) {
+    if (!gbuffer || type >= GBUFFER_COUNT)
+        return NULL;
     
-    *texture = gbuffer->textures[type];
+    return gbuffer->textures[type] ? gbuffer->textures[type]->texture : NULL;
 }
 
-void gbuffer_get_depth_texture(GBuffer *gbuffer, void **texture) {
-    if (!gbuffer || !texture)
-        return;
+void *gbuffer_get_depth_texture(GBuffer *gbuffer) {
+    if (!gbuffer)
+        return NULL;
     
-    *texture = gbuffer->depth_texture;
+    return gbuffer->depth_texture ? gbuffer->depth_texture->texture : NULL;
 }
 
 void gbuffer_get_dimensions(GBuffer *gbuffer, uint32_t *width, uint32_t *height) {
