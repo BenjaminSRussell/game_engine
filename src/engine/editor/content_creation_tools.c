@@ -1001,7 +1001,7 @@ void content_creation_set_mob_texture(const char* texture_path) {
         strncpy(g_context.current_mob->texture_path, texture_path, sizeof(g_context.current_mob->texture_path) - 1);
         
         // Update preview texture
-        // TODO: Update preview entity texture
+        content_creation_update_preview_from_mob(g_context.preview_entity, g_context.current_mob);
     }
 }
 
@@ -1010,7 +1010,7 @@ void content_creation_set_mob_scale(Vec3 scale) {
         g_context.current_mob->scale = scale;
         
         // Update preview scale
-        // TODO: Update preview entity scale
+        content_creation_update_preview_from_mob(g_context.preview_entity, g_context.current_mob);
     }
 }
 
@@ -1333,10 +1333,7 @@ void content_creation_reset_context(void) {
     }
     
     // Clean up preview entity
-    if (g_context.preview_entity.id != 0) {
-        // TODO: Destroy preview entity
-        g_context.preview_entity.id = 0;
-    }
+    content_creation_destroy_preview_entity();
     
     memset(&g_context, 0, sizeof(ContentCreationContext));
     g_context.grid_size = 1.0f;
