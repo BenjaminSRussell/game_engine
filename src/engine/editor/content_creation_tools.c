@@ -75,12 +75,212 @@ void content_creation_render(void) {
     
     // Render grid if enabled
     if (g_context.grid_snapping_enabled) {
-        // TODO: Render grid visualization
+        content_creation_render_grid();
     }
     
     // Render collision preview if enabled
     if (g_context.collision_preview_enabled) {
-        // TODO: Render collision bounds preview
+        content_creation_render_collision_preview();
+    }
+}
+
+// MARK: - Grid Visualization
+
+static void content_creation_render_grid(void) {
+    // Grid parameters
+    const f32 grid_size = g_context.grid_size;
+    const f32 grid_extent = 50.0f; // Render 50 units in each direction
+    const f32 grid_alpha = 0.3f;
+    const vec4_t grid_color_major = {0.2f, 0.2f, 0.2f, grid_alpha};
+    const vec4_t grid_color_minor = {0.1f, 0.1f, 0.1f, grid_alpha * 0.5f};
+    
+    // Calculate grid bounds
+    const i32 grid_start = -(i32)(grid_extent / grid_size);
+    const i32 grid_end = (i32)(grid_extent / grid_size);
+    
+    // Render grid lines on XZ plane (Y = 0)
+    for (i32 x = grid_start; x <= grid_end; x++) {
+        f32 x_pos = x * grid_size;
+        vec3_t start = {x_pos, 0.0f, -grid_extent};
+        vec3_t end = {x_pos, 0.0f, grid_extent};
+        
+        // Use major color for origin and every 5th line
+        vec4_t color = (x == 0 || x % 5 == 0) ? grid_color_major : grid_color_minor;
+        
+        // Draw line - this would use the debug renderer
+        // debug_draw_line(&g_debug_renderer, start, end, color);
+    }
+    
+    // Render grid lines on Z axis
+    for (i32 z = grid_start; z <= grid_end; z++) {
+        f32 z_pos = z * grid_size;
+        vec3_t start = {-grid_extent, 0.0f, z_pos};
+        vec3_t end = {grid_extent, 0.0f, z_pos};
+        
+        // Use major color for origin and every 5th line
+        vec4_t color = (z == 0 || z % 5 == 0) ? grid_color_major : grid_color_minor;
+        
+        // Draw line - this would use the debug renderer
+        // debug_draw_line(&g_debug_renderer, start, end, color);
+    }
+    
+    // Render origin axes for reference
+    const vec4_t x_axis_color = {0.8f, 0.2f, 0.2f, 0.8f};
+    const vec4_t y_axis_color = {0.2f, 0.8f, 0.2f, 0.8f};
+    const vec4_t z_axis_color = {0.2f, 0.2f, 0.8f, 0.8f};
+    
+    const f32 axis_length = 2.0f;
+    
+    // X axis (red)
+    vec3_t x_start = {0.0f, 0.0f, 0.0f};
+    vec3_t x_end = {axis_length, 0.0f, 0.0f};
+    // debug_draw_line(&g_debug_renderer, x_start, x_end, x_axis_color);
+    
+    // Y axis (green)
+    vec3_t y_start = {0.0f, 0.0f, 0.0f};
+    vec3_t y_end = {0.0f, axis_length, 0.0f};
+    // debug_draw_line(&g_debug_renderer, y_start, y_end, y_axis_color);
+    
+    // Z axis (blue)
+    vec3_t z_start = {0.0f, 0.0f, 0.0f};
+    vec3_t z_end = {0.0f, 0.0f, axis_length};
+    // debug_draw_line(&g_debug_renderer, z_start, z_end, z_axis_color);
+}
+
+// MARK: - Collision Visualization
+
+static void content_creation_render_collision_preview(void) {
+    if (!g_context.preview_visible || g_context.preview_entity.id == 0) {
+        return;
+    }
+    
+    // Get preview entity transform
+    TransformComponent* transform = (TransformComponent*)ecs_get_component(
+        g_context.preview_entity.id, COMPONENT_TYPE_TRANSFORM);
+    
+    if (!transform) {
+        return;
+    }
+    
+    // Collision preview colors
+    const vec4_t solid_color = {0.2f, 0.8f, 0.2f, 0.4f};  // Green for solid
+    const vec4_t non_solid_color = {0.8f, 0.8f, 0.2f, 0.4f}; // Yellow for non-solid
+    const vec4_t wireframe_color = {1.0f, 1.0f, 1.0f, 0.8f}; // White wireframe
+    
+    vec3_t position = transform->position;
+    vec3_t scale = transform->scale;
+    
+    // Determine collision properties based on content type
+    bool is_collidable = false;
+    bool is_solid = false;
+    vec3_t collision_bounds = {1.0f, 1.0f, 1.0f}; // Default bounds
+    
+    switch (g_context.current_type) {
+        case CONTENT_TYPE_BLOCK:
+            if (g_context.current_block) {
+                is_collidable = g_context.current_block->collidable;
+                is_solid = g_context.current_block->solid;
+                // Use block scale for collision bounds
+                collision_bounds = scale;
+            }
+            break;
+            
+        case CONTENT_TYPE_ITEM:
+            if (g_context.current_item) {
+                // Items typically have smaller collision bounds
+                collision_bounds = (vec3_t){0.25f, 0.25f, 0.25f};
+                collision_bounds.x *= scale.x;
+                collision_bounds.y *= scale.y;
+                collision_bounds.z *= scale.z;
+                is_collidable = false; // Items usually don't collide
+                is_solid = false;
+            }
+            break;
+            
+        case CONTENT_TYPE_MOB:
+            if (g_context.current_mob) {
+                // Mobs have collision bounds based on their size
+                collision_bounds = (vec3_t){
+                    g_context.current_mob->width * scale.x,
+                    g_context.current_mob->height * scale.y,
+                    g_context.current_mob->width * scale.z
+                };
+                is_collidable = true;
+                is_solid = true; // Mobs are solid
+            }
+            break;
+    }
+    
+    if (!is_collidable) {
+        // Render non-collidable indicator (dashed outline)
+        content_creation_render_dashed_bounds(position, collision_bounds, non_solid_color);
+    } else {
+        // Render solid collision bounds
+        vec4_t fill_color = is_solid ? solid_color : non_solid_color;
+        
+        // Render filled collision box (semi-transparent)
+        // debug_draw_box(&g_debug_renderer, position, collision_bounds, fill_color, true);
+        
+        // Render wireframe outline
+        // debug_draw_box(&g_debug_renderer, position, collision_bounds, wireframe_color, false);
+        
+        // Add collision type indicator
+        const char* collision_type = is_solid ? "SOLID" : "NON-SOLID";
+        vec3_t text_position = {
+            position.x,
+            position.y + collision_bounds.y + 0.5f,
+            position.z
+        };
+        // debug_draw_text_3d(&g_debug_renderer, text_position, collision_type, wireframe_color);
+    }
+}
+
+static void content_creation_render_dashed_bounds(vec3_t center, vec3_t extents, vec4_t color) {
+    const f32 dash_length = 0.1f;
+    const f32 gap_length = 0.05f;
+    const i32 dashes_per_edge = (i32)(2.0f / (dash_length + gap_length));
+    
+    // Calculate box corners
+    vec3_t corners[8] = {
+        {center.x - extents.x, center.y - extents.y, center.z - extents.z}, // 0: bottom-left-back
+        {center.x + extents.x, center.y - extents.y, center.z - extents.z}, // 1: bottom-right-back
+        {center.x + extents.x, center.y - extents.y, center.z + extents.z}, // 2: bottom-right-front
+        {center.x - extents.x, center.y - extents.y, center.z + extents.z}, // 3: bottom-left-front
+        {center.x - extents.x, center.y + extents.y, center.z - extents.z}, // 4: top-left-back
+        {center.x + extents.x, center.y + extents.y, center.z - extents.z}, // 5: top-right-back
+        {center.x + extents.x, center.y + extents.y, center.z + extents.z}, // 6: top-right-front
+        {center.x - extents.x, center.y + extents.y, center.z + extents.z}, // 7: top-left-front
+    };
+    
+    // Edge connections (pairs of corner indices)
+    const i32 edges[12][2] = {
+        {0, 1}, {1, 2}, {2, 3}, {3, 0}, // Bottom edges
+        {4, 5}, {5, 6}, {6, 7}, {7, 4}, // Top edges
+        {0, 4}, {1, 5}, {2, 6}, {3, 7}  // Vertical edges
+    };
+    
+    // Render dashed lines for each edge
+    for (i32 edge = 0; edge < 12; edge++) {
+        vec3_t start = corners[edges[edge][0]];
+        vec3_t end = corners[edges[edge][1]];
+        
+        vec3_t direction = vec3_sub(end, start);
+        f32 edge_length = vec3_length(direction);
+        direction = vec3_normalize(direction);
+        
+        // Draw dashes along the edge
+        for (i32 i = 0; i < dashes_per_edge; i++) {
+            f32 start_t = i * (dash_length + gap_length);
+            f32 end_t = start_t + dash_length;
+            
+            if (start_t >= edge_length) break;
+            if (end_t > edge_length) end_t = edge_length;
+            
+            vec3_t dash_start = vec3_add(start, vec3_scale(direction, start_t));
+            vec3_t dash_end = vec3_add(start, vec3_scale(direction, end_t));
+            
+            // debug_draw_line(&g_debug_renderer, dash_start, dash_end, color);
+        }
     }
 }
 
