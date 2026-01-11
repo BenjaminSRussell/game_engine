@@ -285,6 +285,8 @@ u32 audio_effect_create_reverb(AudioEffectsSystem *system,
   u32 sample_rate = 44100;
   u32 buffer_samples = sample_rate * 2;
   effect->buffer = (f32 *)calloc(buffer_samples, sizeof(f32));
+  if (effect->buffer)
+    memset(effect->buffer, 0, buffer_samples * sizeof(f32));
   effect->buffer_size = buffer_samples;
   effect->buffer_position = 0;
 
