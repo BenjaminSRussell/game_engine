@@ -8,6 +8,8 @@
 
 // Forward declarations
 struct material_t;
+typedef struct blend_shape_t blend_shape_t;
+typedef struct skeleton_t skeleton_t;
 
 // ----------------------------------------------------------------------------
 // Vertex Definitions
@@ -133,13 +135,13 @@ typedef struct mesh_t {
   u32 index_buffer_handle;
 
   // Blend Shape Data
-  blend_shape_t* blend_shapes;
+  blend_shape_t *blend_shapes;
   u32 blend_shape_count;
-  vertex_t* base_vertices;  // Original vertices for blend shape evaluation
+  vertex_t *base_vertices; // Original vertices for blend shape evaluation
 
   // Skeletal Animation Data
-  skeleton_t* skeleton;
-  vertex_skinned_t* skinned_vertices;  // Skinned vertex data
+  skeleton_t *skeleton;
+  vertex_skinned_t *skinned_vertices; // Skinned vertex data
 
   // Internal state
   u32 ref_count;
@@ -157,10 +159,10 @@ typedef struct mesh_t {
 typedef struct blend_shape_t {
   char name[MAX_BLEND_SHAPE_NAME];
   u32 vertex_count;
-  Vec3* delta_positions;  // Position deltas from base mesh
-  Vec3* delta_normals;    // Normal deltas from base mesh
-  Vec3* delta_tangents;   // Tangent deltas from base mesh (optional)
-  f32 weight;             // Current weight (0.0 - 1.0)
+  Vec3 *delta_positions; // Position deltas from base mesh
+  Vec3 *delta_normals;   // Normal deltas from base mesh
+  Vec3 *delta_tangents;  // Tangent deltas from base mesh (optional)
+  f32 weight;            // Current weight (0.0 - 1.0)
 } blend_shape_t;
 
 // ----------------------------------------------------------------------------

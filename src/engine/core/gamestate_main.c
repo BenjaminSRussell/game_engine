@@ -2458,7 +2458,7 @@ static void game_update(void) {
 
       // Update HUD
       // Update HUD
-      hud_update(&g_game.hud, &g_game.player_system, g_game.delta_time);
+      hud_update(&g_game.hud, g_game.player_system.player, g_game.delta_time);
       // hud_tick(&g_game.hud, g_game.delta_time); // Integrated into hud_update
 
       // Update game mode
