@@ -69,6 +69,7 @@ void asset_placement_render(void) {
     // Render preview entity
     if (g_context.preview_visible && g_context.preview_entity.id != 0) {
         // Preview entity will be rendered by the main renderer
+        asset_placement_render_preview();
     }
     
     // Render grid if enabled
@@ -85,6 +86,229 @@ void asset_placement_render(void) {
 
 AssetPlacementContext* asset_placement_get_context(void) {
     return &g_context;
+}
+
+// MARK: - Preview Rendering
+
+void asset_placement_render_preview(void) {
+    if (!g_context.preview_visible || g_context.preview_entity.id == 0) {
+        return;
+    }
+    
+    // Get preview entity position and bounds
+    Vec3 preview_pos = entity_get_position(g_context.preview_entity.id);
+    Vec3 min_bounds, max_bounds;
+    if (!entity_get_bounds(g_context.preview_entity.id, &min_bounds, &max_bounds)) {
+        return;
+    }
+    
+    // Calculate world bounds
+    Vec3 world_min = vec3_add(preview_pos, min_bounds);
+    Vec3 world_max = vec3_add(preview_pos, max_bounds);
+    
+    // Set preview material properties
+    Material preview_material = {0};
+    preview_material.albedo = (Vec4){0.7f, 0.7f, 1.0f, 0.6f}; // Semi-transparent blue-white
+    preview_material.metallic = 0.2f;
+    preview_material.roughness = 0.7f;
+    preview_material.emissive = (Vec3){0.1f, 0.1f, 0.3f}; // Subtle blue glow
+    
+    // Apply preview material override
+    entity_set_material_override(g_context.preview_entity.id, &preview_material);
+    
+    // Enable depth testing but disable depth writing for proper transparency
+    entity_set_depth_write_enabled(g_context.preview_entity.id, false);
+    
+    // Add pulsing effect
+    f32 pulse = sinf(g_context.preview_time * 2.0f) * 0.1f + 0.9f;
+    preview_material.albedo.w = pulse * 0.6f; // Pulsing transparency
+    entity_set_material_override(g_context.preview_entity.id, &preview_material);
+    
+    // Render outline for better visibility
+    Vec3 outline_color = (Vec3){0.3f, 0.5f, 1.0f}; // Light blue
+    f32 outline_width = 2.0f;
+    entity_set_outline(g_context.preview_entity.id, true, outline_color, outline_width);
+    
+    // Render placement indicator at base
+    Vec3 base_center = (Vec3){preview_pos.x, world_min.y, preview_pos.z};
+    
+    // Draw placement crosshair
+    f32 crosshair_size = 0.3f;
+    Vec3 cross_color = (Vec3){0.2f, 0.8f, 1.0f}; // Cyan
+    f32 cross_width = 2.0f;
+    
+    debug_renderer_draw_line(
+        (Vec3){base_center.x - crosshair_size, base_center.y + 0.01f, base_center.z},
+        (Vec3){base_center.x + crosshair_size, base_center.y + 0.01f, base_center.z},
+        cross_color, cross_width
+    );
+    debug_renderer_draw_line(
+        (Vec3){base_center.x, base_center.y + 0.01f, base_center.z - crosshair_size},
+        (Vec3){base_center.x, base_center.y + 0.01f, base_center.z + crosshair_size},
+        cross_color, cross_width
+    );
+    
+    // Render height indicator line
+    Vec3 top_center = (Vec3){preview_pos.x, world_max.y, preview_pos.z};
+    debug_renderer_draw_line(
+        base_center,
+        top_center,
+        (Vec3){0.5f, 0.5f, 0.5f}, 1.0f
+    );
+    
+    // Render rotation indicator if rotation is active
+    if (g_context.rotation_active) {
+        f32 rotation_radius = 0.5f;
+        u32 segments = 32;
+        f32 angle_step = 2.0f * PI / segments;
+        
+        // Draw rotation circle
+        for (u32 i = 0; i < segments; i++) {
+            f32 angle1 = i * angle_step;
+            f32 angle2 = (i + 1) * angle_step;
+            
+            Vec3 p1 = {
+                base_center.x + cosf(angle1) * rotation_radius,
+                base_center.y + 0.02f,
+                base_center.z + sinf(angle1) * rotation_radius
+            };
+            Vec3 p2 = {
+                base_center.x + cosf(angle2) * rotation_radius,
+                base_center.y + 0.02f,
+                base_center.z + sinf(angle2) * rotation_radius
+            };
+            
+            debug_renderer_draw_line(p1, p2, (Vec3){1.0f, 1.0f, 0.0f}, 2.0f); // Yellow
+        }
+        
+        // Draw rotation direction indicator
+        Vec3 rotation_dir = (Vec3){cosf(g_context.current_rotation), 0.0f, sinf(g_context.current_rotation)};
+        debug_renderer_draw_line(
+            base_center,
+            vec3_add(base_center, vec3_scale(rotation_dir, rotation_radius * 1.2f)),
+            (Vec3){1.0f, 0.5f, 0.0f}, 3.0f // Orange
+        );
+    }
+    
+    // Render scale indicator if scaling is active
+    if (g_context.scale_active) {
+        f32 scale_indicator_size = 0.2f;
+        Vec3 scale_color = (Vec3){1.0f, 0.0f, 1.0f}; // Magenta
+        
+        // Draw scale handles at corners
+        Vec3 corners[8] = {
+            {world_min.x, world_min.y, world_min.z}, {world_max.x, world_min.y, world_min.z},
+            {world_min.x, world_max.y, world_min.z}, {world_max.x, world_max.y, world_min.z},
+            {world_min.x, world_min.y, world_max.z}, {world_max.x, world_min.y, world_max.z},
+            {world_min.x, world_max.y, world_max.z}, {world_max.x, world_max.y, world_max.z}
+        };
+        
+        for (u32 i = 0; i < 8; i++) {
+            // Draw small cube at each corner
+            Vec3 corner = corners[i];
+            Vec3 corner_size = (Vec3){scale_indicator_size, scale_indicator_size, scale_indicator_size};
+            
+            // Draw corner as wireframe cube
+            Vec3 corner_corners[8] = {
+                {corner.x - corner_size.x, corner.y - corner_size.y, corner.z - corner_size.z},
+                {corner.x + corner_size.x, corner.y - corner_size.y, corner.z - corner_size.z},
+                {corner.x - corner_size.x, corner.y + corner_size.y, corner.z - corner_size.z},
+                {corner.x + corner_size.x, corner.y + corner_size.y, corner.z - corner_size.z},
+                {corner.x - corner_size.x, corner.y - corner_size.y, corner.z + corner_size.z},
+                {corner.x + corner_size.x, corner.y - corner_size.y, corner.z + corner_size.z},
+                {corner.x - corner_size.x, corner.y + corner_size.y, corner.z + corner_size.z},
+                {corner.x + corner_size.x, corner.y + corner_size.y, corner.z + corner_size.z}
+            };
+            
+            // Draw edges of corner cube
+            debug_renderer_draw_line(corner_corners[0], corner_corners[1], scale_color, 1.0f);
+            debug_renderer_draw_line(corner_corners[1], corner_corners[3], scale_color, 1.0f);
+            debug_renderer_draw_line(corner_corners[3], corner_corners[2], scale_color, 1.0f);
+            debug_renderer_draw_line(corner_corners[2], corner_corners[0], scale_color, 1.0f);
+            
+            debug_renderer_draw_line(corner_corners[4], corner_corners[5], scale_color, 1.0f);
+            debug_renderer_draw_line(corner_corners[5], corner_corners[7], scale_color, 1.0f);
+            debug_renderer_draw_line(corner_corners[7], corner_corners[6], scale_color, 1.0f);
+            debug_renderer_draw_line(corner_corners[6], corner_corners[4], scale_color, 1.0f);
+            
+            debug_renderer_draw_line(corner_corners[0], corner_corners[4], scale_color, 1.0f);
+            debug_renderer_draw_line(corner_corners[1], corner_corners[5], scale_color, 1.0f);
+            debug_renderer_draw_line(corner_corners[2], corner_corners[6], scale_color, 1.0f);
+            debug_renderer_draw_line(corner_corners[3], corner_corners[7], scale_color, 1.0f);
+        }
+    }
+    
+    // Render surface alignment indicator if surface snapping is active
+    if (g_context.surface_snapping_enabled && g_context.snap_position_valid) {
+        Vec3 snap_normal = g_context.snap_normal;
+        
+        // Draw normal vector
+        f32 normal_length = 1.0f;
+        Vec3 normal_end = vec3_add(base_center, vec3_scale(snap_normal, normal_length));
+        debug_renderer_draw_line(base_center, normal_end, (Vec3){0.0f, 1.0f, 0.0f}, 2.0f); // Green
+        
+        // Draw surface plane indicator
+        f32 plane_size = 0.4f;
+        Vec3 plane_right = vec3_cross(snap_normal, (Vec3){0.0f, 1.0f, 0.0f});
+        if (vec3_length(plane_right) < 0.1f) {
+            plane_right = vec3_cross(snap_normal, (Vec3){0.0f, 0.0f, 1.0f});
+        }
+        plane_right = vec3_normalize(plane_right);
+        Vec3 plane_forward = vec3_cross(snap_normal, plane_right);
+        
+        // Draw plane as a square
+        Vec3 plane_corners[4] = {
+            vec3_subtract(vec3_subtract(base_center, vec3_scale(plane_right, plane_size)), vec3_scale(plane_forward, plane_size)),
+            vec3_add(vec3_subtract(base_center, vec3_scale(plane_right, plane_size)), vec3_scale(plane_forward, plane_size)),
+            vec3_add(vec3_add(base_center, vec3_scale(plane_right, plane_size)), vec3_scale(plane_forward, plane_size)),
+            vec3_subtract(vec3_add(base_center, vec3_scale(plane_right, plane_size)), vec3_scale(plane_forward, plane_size))
+        };
+        
+        debug_renderer_draw_line(plane_corners[0], plane_corners[1], (Vec3){0.0f, 0.8f, 0.0f}, 1.0f);
+        debug_renderer_draw_line(plane_corners[1], plane_corners[2], (Vec3){0.0f, 0.8f, 0.0f}, 1.0f);
+        debug_renderer_draw_line(plane_corners[2], plane_corners[3], (Vec3){0.0f, 0.8f, 0.0f}, 1.0f);
+        debug_renderer_draw_line(plane_corners[3], plane_corners[0], (Vec3){0.0f, 0.8f, 0.0f}, 1.0f);
+    }
+    
+    // Render asset type indicator
+    if (g_context.current_type != ASSET_TYPE_UNKNOWN) {
+        Vec3 label_pos = (Vec3){preview_pos.x, world_max.y + 0.3f, preview_pos.z};
+        
+        // Create temporary text entity for asset type label
+        const char* type_names[] = {
+            "Unknown", "Static", "Dynamic", "Character", "Vehicle", "Weapon", "Tool", "Prop"
+        };
+        
+        if (g_context.current_type < sizeof(type_names) / sizeof(type_names[0])) {
+            // Draw label background
+            f32 label_size = 0.2f;
+            Vec3 label_color = (Vec3){0.2f, 0.2f, 0.2f};
+            
+            debug_renderer_draw_line(
+                (Vec3){label_pos.x - label_size, label_pos.y, label_pos.z - label_size},
+                (Vec3){label_pos.x + label_size, label_pos.y, label_pos.z - label_size},
+                label_color, 1.0f
+            );
+            debug_renderer_draw_line(
+                (Vec3){label_pos.x + label_size, label_pos.y, label_pos.z - label_size},
+                (Vec3){label_pos.x + label_size, label_pos.y, label_pos.z + label_size},
+                label_color, 1.0f
+            );
+            debug_renderer_draw_line(
+                (Vec3){label_pos.x + label_size, label_pos.y, label_pos.z + label_size},
+                (Vec3){label_pos.x - label_size, label_pos.y, label_pos.z + label_size},
+                label_color, 1.0f
+            );
+            debug_renderer_draw_line(
+                (Vec3){label_pos.x - label_size, label_pos.y, label_pos.z + label_size},
+                (Vec3){label_pos.x - label_size, label_pos.y, label_pos.z - label_size},
+                label_color, 1.0f
+            );
+        }
+    }
+    
+    LOG_TRACE("Rendered asset placement preview at position (%.2f, %.2f, %.2f)", 
+             preview_pos.x, preview_pos.y, preview_pos.z);
 }
 
 // MARK: - Collision Preview
