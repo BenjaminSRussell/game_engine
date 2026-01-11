@@ -12,8 +12,10 @@ extern "C" {
 #endif
 
 // Forward declarations
-typedef struct Skeleton Skeleton;
-typedef struct Bone Bone;
+#include <animation/animation_system.h>
+// Remove conflicting forward declarations as they are defined in animation_system.h
+// typedef struct Skeleton Skeleton;
+// typedef struct Bone Bone;
 
 /**
  * Update global transforms from local transforms.

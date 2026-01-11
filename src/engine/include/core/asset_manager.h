@@ -55,11 +55,12 @@
 // Forward declaration for ECS integration (Phase 3)
 typedef struct World World;
 
-#include "include/common.h"
-#include "include/core/resource/vfs/vfs.h"
-#include "include/core/file_watcher.h"
+#include "../common.h"
+#include "../core/file_watcher.h"
+#include "../rendering/lod_system.h"
+#include "resource/asset_instance.h"
+#include "resource/vfs/vfs.h"
 #include <include/rendering/lod_system.h>
-#include "include/core/resource/asset_instance.h"
 
 // Forward declarations
 typedef struct AssetManager AssetManager;
@@ -121,7 +122,7 @@ typedef struct AssetManager {
 
   // Asset Instance Registry
   AssetInstanceRegistry instance_registry;
-  
+
   // ECS integration (Phase 3)
   World *ecs_world;
 
@@ -130,7 +131,8 @@ typedef struct AssetManager {
 #endif
 } AssetManager;
 
-AssetManager *asset_manager_create(u32 initial_capacity, World *ecs_world);
+AssetManager *asset_manager_create(u32 initial_capacity, World *ecs_world,
+                                   VFS *vfs);
 void asset_manager_destroy(AssetManager *manager);
 Asset *asset_manager_load(AssetManager *manager, const char *id, AssetType type,
                           const char *path);
@@ -138,6 +140,9 @@ Asset *asset_manager_get(AssetManager *manager, const char *id);
 void asset_manager_unload(AssetManager *manager, const char *id);
 void asset_manager_retain(Asset *asset);
 void asset_manager_release(Asset *asset);
+// Manually register an asset (takes ownership of data)
+void asset_manager_register_asset(AssetManager *manager, Asset *asset);
+
 void asset_manager_preload(AssetManager *manager, const char *manifest_path);
 void asset_manager_report(AssetManager *manager);
 
@@ -179,21 +184,28 @@ Asset *asset_manager_get_texture_lod(AssetManager *manager, const char *id,
 // Asset Instance Management (Phase 2)
 // ========================================
 
-#include <math/vec3.h>
 #include <math/quat.h>
+#include <math/vec3.h>
 
 // Create an instance of an asset with transform
 // Returns the instance, or NULL on failure
 // Automatically creates an ECS entity with Transform and AssetInstanceComponent
-AssetInstance *asset_manager_create_instance(AssetManager *manager, const char *asset_id, Vec3 position, Quat rotation);
+AssetInstance *asset_manager_create_instance(AssetManager *manager,
+                                             const char *asset_id,
+                                             Vec3 position, Quat rotation);
 
 // Destroy an asset instance and its associated entity
-void asset_manager_destroy_instance(AssetManager *manager, uint32_t instance_id);
+void asset_manager_destroy_instance(AssetManager *manager,
+                                    uint32_t instance_id);
 
 // Get an instance by ID
-AssetInstance *asset_manager_get_instance(AssetManager *manager, uint32_t instance_id);
+AssetInstance *asset_manager_get_instance(AssetManager *manager,
+                                          uint32_t instance_id);
 
 // Get all instances for a given asset
-uint32_t asset_manager_get_instances_for_asset(AssetManager *manager, const char *asset_id, AssetInstance **out_instances, uint32_t max_count);
+uint32_t asset_manager_get_instances_for_asset(AssetManager *manager,
+                                               const char *asset_id,
+                                               AssetInstance **out_instances,
+                                               uint32_t max_count);
 
 #endif

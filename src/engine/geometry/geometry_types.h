@@ -1,7 +1,7 @@
 #ifndef GEOMETRY_TYPES_H
 #define GEOMETRY_TYPES_H
 
-#include <common.h>
+#include "../include/common.h"
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
@@ -15,16 +15,16 @@ struct material_t;
 
 /**
  * Standard vertex structure for general purpose meshes
- * 
+ *
  * Layout: Interleaved
  * Size: 12 + 12 + 8 + 16 = 48 bytes
  * Alignment: 16 bytes (simd friendly)
  */
 typedef struct vertex_t {
-    Vec3 position;    // 12 bytes
-    Vec3 normal;      // 12 bytes
-    Vec2 uv;          // 8 bytes
-    Vec4 tangent;     // 16 bytes (w component stores handedness for bitangent)
+  Vec3 position; // 12 bytes
+  Vec3 normal;   // 12 bytes
+  Vec2 uv;       // 8 bytes
+  Vec4 tangent;  // 16 bytes (w component stores handedness for bitangent)
 } vertex_t;
 
 /**
@@ -32,12 +32,12 @@ typedef struct vertex_t {
  * Adds bone weights and indices
  */
 typedef struct vertex_skinned_t {
-    Vec3 position;
-    Vec3 normal;
-    Vec2 uv;
-    Vec4 tangent;
-    Vec4 weights;     // Bone weights
-    u32    indices[4];  // Bone indices
+  Vec3 position;
+  Vec3 normal;
+  Vec2 uv;
+  Vec4 tangent;
+  Vec4 weights;     // Bone weights
+  u32 indices[4];   // Bone indices
 } vertex_skinned_t; // Size: 48 + 16 + 16 = 80 bytes
 
 // ----------------------------------------------------------------------------
@@ -45,10 +45,10 @@ typedef struct vertex_skinned_t {
 // ----------------------------------------------------------------------------
 
 typedef struct mesh_bounds_t {
-    Vec3 min;         // AABB min
-    Vec3 max;         // AABB max
-    Vec3 sphere_center;
-    f32    sphere_radius;
+  Vec3 min; // AABB min
+  Vec3 max; // AABB max
+  Vec3 sphere_center;
+  f32 sphere_radius;
 } mesh_bounds_t;
 
 // ----------------------------------------------------------------------------
@@ -60,12 +60,12 @@ typedef struct mesh_bounds_t {
  * This maps to a draw call.
  */
 typedef struct submesh_t {
-    u32 index_start;    // Starting index in the global index buffer
-    u32 index_count;    // Number of indices to draw
-    u32 vertex_start;   // Base vertex offset (for relative indexing)
-    u32 vertex_count;   // Number of vertices used by this submesh
-    u32 material_index; // Index into the mesh material table
-    mesh_bounds_t bounds;
+  u32 index_start;    // Starting index in the global index buffer
+  u32 index_count;    // Number of indices to draw
+  u32 vertex_start;   // Base vertex offset (for relative indexing)
+  u32 vertex_count;   // Number of vertices used by this submesh
+  u32 material_index; // Index into the mesh material table
+  mesh_bounds_t bounds;
 } submesh_t;
 
 // ----------------------------------------------------------------------------
@@ -73,9 +73,9 @@ typedef struct submesh_t {
 // ----------------------------------------------------------------------------
 
 typedef struct mesh_lod_t {
-    u32 index_start;
-    u32 index_count;
-    f32 screen_size_threshold; // Switching threshold (0.0-1.0)
+  u32 index_start;
+  u32 index_count;
+  f32 screen_size_threshold; // Switching threshold (0.0-1.0)
 } mesh_lod_t;
 
 // ----------------------------------------------------------------------------
@@ -83,13 +83,13 @@ typedef struct mesh_lod_t {
 // ----------------------------------------------------------------------------
 
 typedef enum mesh_flags_e {
-    MESH_FLAG_NONE = 0,
-    MESH_FLAG_DYNAMIC = 1 << 0,     // CPU-side updates frequent
-    MESH_FLAG_SKINNED = 1 << 1,     // Has bone data
-    MESH_FLAG_KEEP_CPU = 1 << 2,    // Keep CPU copy after upload
-    MESH_FLAG_TRANSPARENT = 1 << 3, // Hint for sorting
-    MESH_FLAG_SHADOW_CASTER = 1 << 4,
-    MESH_FLAG_SHADOW_RECEIVER = 1 << 5,
+  MESH_FLAG_NONE = 0,
+  MESH_FLAG_DYNAMIC = 1 << 0,     // CPU-side updates frequent
+  MESH_FLAG_SKINNED = 1 << 1,     // Has bone data
+  MESH_FLAG_KEEP_CPU = 1 << 2,    // Keep CPU copy after upload
+  MESH_FLAG_TRANSPARENT = 1 << 3, // Hint for sorting
+  MESH_FLAG_SHADOW_CASTER = 1 << 4,
+  MESH_FLAG_SHADOW_RECEIVER = 1 << 5,
 } mesh_flags_e;
 
 // ----------------------------------------------------------------------------
@@ -100,41 +100,41 @@ typedef enum mesh_flags_e {
 #define MESH_MAX_MATERIALS 16
 
 typedef struct mesh_t {
-    char name[64];
-    u32 id;                     // Unique mesh ID
-    u32 flags;                  // mesh_flags_e combination
+  char name[64];
+  u32 id;    // Unique mesh ID
+  u32 flags; // mesh_flags_e combination
 
-    // CPU Data
-    vertex_t* vertices;
-    u32 vertex_count;
-    u32 vertex_capacity;
+  // CPU Data
+  vertex_t *vertices;
+  u32 vertex_count;
+  u32 vertex_capacity;
 
-    u32* indices;
-    u32 index_count;
-    u32 index_capacity;
+  u32 *indices;
+  u32 index_count;
+  u32 index_capacity;
 
-    // Submeshes
-    submesh_t* submeshes;
-    u32 submesh_count;
+  // Submeshes
+  submesh_t *submeshes;
+  u32 submesh_count;
 
-    // LODs
-    mesh_lod_t lods[MESH_MAX_LODS];
-    u32 lod_count;
+  // LODs
+  mesh_lod_t lods[MESH_MAX_LODS];
+  u32 lod_count;
 
-    // Materials (Referenced by ID/Handle)
-    // Actual material pointers usually resolved at render time or scene graph
-    u32 material_ids[MESH_MAX_MATERIALS];
-    u32 material_count;
+  // Materials (Referenced by ID/Handle)
+  // Actual material pointers usually resolved at render time or scene graph
+  u32 material_ids[MESH_MAX_MATERIALS];
+  u32 material_count;
 
-    mesh_bounds_t bounds;
+  mesh_bounds_t bounds;
 
-    // GPU Handles (Platform agnostic ID)
-    u32 vertex_buffer_handle;
-    u32 index_buffer_handle;
-    
-    // Internal state
-    u32 ref_count;
-    u64 last_accessed_frame;
+  // GPU Handles (Platform agnostic ID)
+  u32 vertex_buffer_handle;
+  u32 index_buffer_handle;
+
+  // Internal state
+  u32 ref_count;
+  u64 last_accessed_frame;
 
 } mesh_t;
 

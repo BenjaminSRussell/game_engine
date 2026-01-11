@@ -1,9 +1,13 @@
-#include "character/animation/ik/two_bone_ik.h"
-#include <include/math/math.h>
+#include "include/common.h"
 
-void two_bone_ik_init() {}
+void two_bone_ik_init(void) {}
 
-void two_bone_ik_solve(float root[3], float mid[3], float end[3], float target[3], 
-                       float *out_mid_angle, float *out_end_angle) {
-    // Solve 2-bone IK (e.g., arm or leg)
+void two_bone_ik_solve(void *root, void *mid, void *end, float target[3],
+                       float pole[3]) {
+  // Solve two bone IK
+  (void)root;
+  (void)mid;
+  (void)end;
+  (void)target;
+  (void)pole;
 }

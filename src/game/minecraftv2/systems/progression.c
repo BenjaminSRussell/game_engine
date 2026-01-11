@@ -1,5 +1,5 @@
 // Progression and tech unlock system.
-#include <systems/progression.h>
+#include <core/systems/progression.h>
 #include <core/logger.h>
 #include <stdlib.h>
 #include <string.h>

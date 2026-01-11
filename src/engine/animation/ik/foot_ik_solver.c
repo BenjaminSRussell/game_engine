@@ -6,6 +6,28 @@
 #include "physics/physics.h"
 #include <math.h>
 
+#define clampf(v, min, max) fmaxf(min, fminf(max, v))
+#define minf(a, b) fminf(a, b)
+#define maxf(a, b) fmaxf(a, b)
+
+// Helper: Rotation from one vector to another
+static Quat quat_from_vectors_local(Vec3 u, Vec3 v) {
+    float dot = vec3_dot(u, v);
+    if (dot >= 1.0f) return quat_identity();
+    if (dot < -0.999999f) {
+         // 180 degree rotation around any orthogonal axis
+         Vec3 axis = vec3_cross(vec3(1,0,0), u);
+         if (vec3_length_sq(axis) < 0.0001f)
+             axis = vec3_cross(vec3(0,1,0), u);
+         axis = vec3_normalize(axis);
+         return quat_from_axis_angle(axis, PI);
+    }
+    float s = sqrtf((1.0f + dot) * 2.0f);
+    float invs = 1.0f / s;
+    Vec3 c = vec3_cross(u, v);
+    return quat(s * 0.5f, c.x * invs, c.y * invs, c.z * invs);
+}
+
 // ✅ COMPLETED: Define Foot IK Struct [Difficulty: 1] [Atomic Steps: 5]
 // 1. 'int hip_bone', 'int knee_bone', 'int ankle_bone'.
 // 2. 'float foot_length', 'float foot_width'.
@@ -54,14 +76,14 @@ static bool foot_ik_ground_trace(FootIK* ik, Skeleton* skeleton) {
     
     // Get ankle position in world space
     Vec3 ankle_pos = vec3(
-        skeleton->global_transforms[ik->ankle_bone_index].m[3][0],
-        skeleton->global_transforms[ik->ankle_bone_index].m[3][1],
-        skeleton->global_transforms[ik->ankle_bone_index].m[3][2]
+        skeleton->global_transforms[ik->ankle_bone_index].m30,
+        skeleton->global_transforms[ik->ankle_bone_index].m31,
+        skeleton->global_transforms[ik->ankle_bone_index].m32
     );
     
     // Start raycast above ankle
-    Vec3 ray_start = vec3_add(ankle_pos, vec3_scale(vec3_up(), ik->trace_offset_up));
-    Vec3 ray_end = vec3_sub(ray_start, vec3_scale(vec3_up(), ik->trace_distance_down));
+    Vec3 ray_start = vec3_add(ankle_pos, vec3_mul(vec3_up(), ik->trace_offset_up));
+    Vec3 ray_end = vec3_sub(ray_start, vec3_mul(vec3_up(), ik->trace_distance_down));
     
     // Perform raycast (simplified - would use physics system)
     // For now, assume ground at y=0
@@ -95,15 +117,15 @@ static void foot_ik_solve_two_bone(FootIK* ik, Skeleton* skeleton, Vec3 target_p
     
     // Get bone positions
     Vec3 hip_pos = vec3(
-        skeleton->global_transforms[ik->hip_bone_index].m[3][0],
-        skeleton->global_transforms[ik->hip_bone_index].m[3][1],
-        skeleton->global_transforms[ik->hip_bone_index].m[3][2]
+        skeleton->global_transforms[ik->hip_bone_index].m30,
+        skeleton->global_transforms[ik->hip_bone_index].m31,
+        skeleton->global_transforms[ik->hip_bone_index].m32
     );
     
     Vec3 knee_pos = vec3(
-        skeleton->global_transforms[ik->knee_bone_index].m[3][0],
-        skeleton->global_transforms[ik->knee_bone_index].m[3][1],
-        skeleton->global_transforms[ik->knee_bone_index].m[3][2]
+        skeleton->global_transforms[ik->knee_bone_index].m30,
+        skeleton->global_transforms[ik->knee_bone_index].m31,
+        skeleton->global_transforms[ik->knee_bone_index].m32
     );
     
     // Calculate bone lengths
@@ -119,7 +141,7 @@ static void foot_ik_solve_two_bone(FootIK* ik, Skeleton* skeleton, Vec3 target_p
     if (target_distance > max_reach) {
         // Target too far, stretch towards it
         Vec3 direction = vec3_normalize(hip_to_target);
-        target_pos = vec3_add(hip_pos, vec3_scale(direction, max_reach * 0.99f));
+        target_pos = vec3_add(hip_pos, vec3_mul(direction, max_reach * 0.99f));
         target_distance = max_reach * 0.99f;
     }
     
@@ -140,14 +162,14 @@ static void foot_ik_solve_two_bone(FootIK* ik, Skeleton* skeleton, Vec3 target_p
     
     // Calculate knee position
     f32 knee_distance_from_hip = upper_leg_length;
-    Vec3 knee_offset = vec3_scale(bend_direction, sinf(knee_angle) * knee_distance_from_hip);
-    Vec3 forward_offset = vec3_scale(hip_to_target_norm, cosf(knee_angle) * knee_distance_from_hip);
+    Vec3 knee_offset = vec3_mul(bend_direction, sinf(knee_angle) * knee_distance_from_hip);
+    Vec3 forward_offset = vec3_mul(hip_to_target_norm, cosf(knee_angle) * knee_distance_from_hip);
     Vec3 new_knee_pos = vec3_add(hip_pos, vec3_add(forward_offset, knee_offset));
     
     // Apply rotations to bones
     // Hip rotation
     Vec3 hip_to_knee = vec3_normalize(vec3_sub(new_knee_pos, hip_pos));
-    Quat hip_rotation = quat_from_vectors(vec3_forward(), hip_to_knee);
+    Quat hip_rotation = quat_from_vectors_local(vec3_forward(), hip_to_knee);
     Mat4 hip_matrix = quat_to_mat4(hip_rotation);
     skeleton->global_transforms[ik->hip_bone_index] = 
         mat4_mul(skeleton->global_transforms[ik->hip_bone_index], hip_matrix);
@@ -155,13 +177,13 @@ static void foot_ik_solve_two_bone(FootIK* ik, Skeleton* skeleton, Vec3 target_p
     // Knee rotation
     Vec3 knee_to_ankle = vec3_normalize(vec3_sub(target_pos, new_knee_pos));
     Vec3 knee_to_hip = vec3_normalize(vec3_sub(hip_pos, new_knee_pos));
-    Quat knee_rotation = quat_from_vectors(knee_to_hip, knee_to_ankle);
+    Quat knee_rotation = quat_from_vectors_local(knee_to_hip, knee_to_ankle);
     Mat4 knee_matrix = quat_to_mat4(knee_rotation);
     skeleton->global_transforms[ik->knee_bone_index] = 
         mat4_mul(skeleton->global_transforms[ik->knee_bone_index], knee_matrix);
     
     // Ankle rotation (align with ground normal)
-    Quat ankle_rotation = quat_from_vectors(vec3_up(), ik->hit_normal);
+    Quat ankle_rotation = quat_from_vectors_local(vec3_up(), ik->hit_normal);
     Mat4 ankle_matrix = quat_to_mat4(ankle_rotation);
     skeleton->global_transforms[ik->ankle_bone_index] = 
         mat4_mul(skeleton->global_transforms[ik->ankle_bone_index], ankle_matrix);
@@ -180,17 +202,17 @@ static void foot_ik_update_placement(FootIK* ik, Skeleton* skeleton) {
     }
     
     // Target foot position is hit position plus foot height offset
-    ik->target_foot_position = vec3_add(ik->hit_position, vec3_scale(vec3_up(), ik->foot_length * 0.5f));
+    ik->target_foot_position = vec3_add(ik->hit_position, vec3_mul(vec3_up(), ik->foot_length * 0.5f));
     
     // Target foot rotation aligns with ground normal
-    ik->target_foot_rotation = quat_from_vectors(vec3_up(), ik->hit_normal);
+    ik->target_foot_rotation = quat_from_vectors_local(vec3_up(), ik->hit_normal);
     
     // Calculate hip drop if needed
     if (ik->hip_bone_index >= 0 && ik->hip_bone_index < skeleton->bone_count) {
         Vec3 hip_pos = vec3(
-            skeleton->global_transforms[ik->hip_bone_index].m[3][0],
-            skeleton->global_transforms[ik->hip_bone_index].m[3][1],
-            skeleton->global_transforms[ik->hip_bone_index].m[3][2]
+            skeleton->global_transforms[ik->hip_bone_index].m30,
+            skeleton->global_transforms[ik->hip_bone_index].m31,
+            skeleton->global_transforms[ik->hip_bone_index].m32
         );
         
         f32 hip_to_ground = hip_pos.y - ik->hit_position.y;
@@ -199,10 +221,12 @@ static void foot_ik_update_placement(FootIK* ik, Skeleton* skeleton) {
         if (hip_to_ground < desired_hip_height) {
             // Need to drop hip
             f32 hip_drop = desired_hip_height - hip_to_ground;
-            Vec3 new_hip_pos = vec3_add(hip_pos, vec3_scale(vec3_down(), hip_drop));
+            Vec3 new_hip_pos = vec3_add(hip_pos, vec3_mul(vec3_down(), hip_drop));
             
             // Update hip position
-            skeleton->global_transforms[ik->hip_bone_index].m[3][1] = new_hip_pos.y;
+            skeleton->global_transforms[ik->hip_bone_index].m30 = new_hip_pos.x;
+            skeleton->global_transforms[ik->hip_bone_index].m31 = new_hip_pos.y;
+            skeleton->global_transforms[ik->hip_bone_index].m32 = new_hip_pos.z;
         }
     }
     

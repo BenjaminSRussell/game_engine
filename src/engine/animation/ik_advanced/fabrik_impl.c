@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include "animation/ik_advanced/fabrik.h"
 
 #define FABRIK_MAX_BONES 32
 #define FABRIK_DEFAULT_ITERATIONS 10
@@ -23,8 +24,8 @@ typedef struct {
   float x, y, z;
 } FabrikVec3;
 
-// FABRIK chain structure
-typedef struct {
+// FABRIK chain structure definition
+struct FABRIKChain {
   uint32_t bone_indices[FABRIK_MAX_BONES];
   uint32_t bone_count;
 
@@ -40,7 +41,7 @@ typedef struct {
   float tolerance;
   bool use_pole_vector;
   bool reached_target;
-} FABRIKChain;
+};
 
 // -----------------------------------------------------------------------------
 // Vector Math

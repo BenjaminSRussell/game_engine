@@ -8,13 +8,15 @@
 #define UNIFIED_ENGINE_H
 
 #include "include/common.h"
+#include "include/core/config_system.h"
+#include "include/core/gpu_acceleration.h"
+#include "include/core/time_system.h"
 #include <math/mat4.h>
 #include <math/vec3.h>
-#include "include/core/gpu_acceleration.h"
 
 // Forward declarations
 typedef struct Engine Engine;
-typedef struct Renderer Renderer;
+typedef struct IRenderer Renderer;
 typedef struct AudioSystem AudioSystem;
 typedef struct InputSystem InputSystem;
 typedef struct PhysicsWorld PhysicsWorld;
@@ -27,6 +29,8 @@ typedef struct WorldGenerator WorldGenerator;
 typedef struct ThreadPool ThreadPool;
 typedef struct VFS VFS;
 typedef struct NPCSystem NPCSystem;
+typedef struct SceneManager SceneManager;
+typedef struct GameModule GameModule;
 
 // Engine state machine
 typedef enum {
@@ -132,29 +136,24 @@ struct Engine {
   NPCSystem *npc_system;
   ThreadPool *thread_pool;
   VFS *vfs;
+  SceneManager *scene_manager;
+
+  // Integrated Systems
+  TimeSystem time_system;
+  ConfigSystem config_system;
 
   // Platform
   void *window;
   void *platform_data;
 
-  // Game module
-  void *game_module;
-  bool (*game_init)(Engine *engine);
-  void (*game_update)(Engine *engine, f32 delta_time);
-  void (*game_render)(Engine *engine);
-  void (*game_shutdown)(Engine *engine);
-
-  // Callbacks
-  void (*on_init)(Engine *engine);
-  void (*on_update)(Engine *engine, f32 delta_time);
-  void (*on_render)(Engine *engine);
-  void (*on_shutdown)(Engine *engine);
+  // Game module (using proper GameModule interface)
+  GameModule *game_module;
 };
 
 // Engine lifecycle
 bool engine_unified_init(Engine *engine, const EngineConfig *config);
 void engine_unified_shutdown(Engine *engine);
-void engine_unified_run(Engine *engine);
+void engine_unified_run(Engine *engine, GameModule *game_module);
 void engine_unified_update(Engine *engine);
 void engine_unified_render(Engine *engine);
 
@@ -193,6 +192,7 @@ WorldGenerator *engine_get_world_generator(Engine *engine);
 ThreadPool *engine_get_thread_pool(Engine *engine);
 VFS *engine_get_vfs(Engine *engine);
 NPCSystem *engine_get_npc_system(Engine *engine);
+SceneManager *engine_get_scene_manager(Engine *engine);
 
 // Configuration
 EngineConfig engine_create_default_config(void);

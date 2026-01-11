@@ -19,12 +19,12 @@ typedef struct BlendSpace2D BlendSpace2D;
 /**
  * Compute barycentric weights for a point inside a triangle.
  */
-vec3 get_barycentric_weights(vec2 p, vec2 a, vec2 b, vec2 c);
+Vec3 get_barycentric_weights(Vec2 p, Vec2 a, Vec2 b, Vec2 c);
 
 /**
  * Evaluate the blend space with given 2D input parameters.
  */
-void blend_space_evaluate(BlendSpace2D *bs, vec2 input, Pose *out_pose);
+void blend_space_evaluate(BlendSpace2D *bs, Vec2 input, Pose *out_pose);
 
 #ifdef __cplusplus
 }

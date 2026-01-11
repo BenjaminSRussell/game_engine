@@ -14,7 +14,7 @@
 #include <rendering/camera.h>
 #include <stdlib.h>
 #include <time.h>
-#include <vfx/visual_effects.h>
+#include <effects/vfx/visual_effects.h>
 
 // Damage immunity system
 typedef struct {

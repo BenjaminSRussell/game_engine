@@ -1,13 +1,21 @@
-#include "animation/synthesis/motion_matching.h"
+#include "include/common.h"
 
-void motion_matching_init() {}
+void motion_matching_init(void) {}
 
 void motion_matching_build_database(void *animation_clips, void *database) {
-    // Build motion matching database from clips
+  (void)animation_clips;
+  (void)database;
 }
 
 void motion_matching_search(void *database, void *query, void *best_match) {
-    // Find best matching pose in database
+  (void)database;
+  (void)query;
+  (void)best_match;
 }
 
-void motion_matching_synthesize(void *database, void *trajectory, void *output_animation) {}
+void motion_matching_synthesize(void *database, void *trajectory,
+                                void *output_animation) {
+  (void)database;
+  (void)trajectory;
+  (void)output_animation;
+}

@@ -37,6 +37,7 @@ typedef struct AnimationChannel {
 typedef struct AnimationClip {
     char name[64];
     f32 duration;
+    f32 ticks_per_second;
     AnimationChannel *channels;
     u32 channel_count;
     bool looping;

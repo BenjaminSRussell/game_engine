@@ -9,18 +9,11 @@
  * =================================================================================================
  */
 
-#include <include/math/math.h>
+#include "include/math/math.h"
+#include <math.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-
-// Matrix/Vector types assumed from math library
-typedef struct {
-  float m[16];
-} Mat4;
-typedef struct {
-  float x, y, z;
-} Vec3;
 
 // Vertex format for skinning
 typedef struct {
@@ -65,7 +58,6 @@ void animation_skin_mesh_cpu(const SkinnedVertex *src_vertices,
 
       // Transform position
       // pos += (bone_mtx * v->position) * weight
-      // (Stub math for brevity)
       float tx = bone_mtx->m[0] * v->position.x +
                  bone_mtx->m[4] * v->position.y +
                  bone_mtx->m[8] * v->position.z + bone_mtx->m[12];

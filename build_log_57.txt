@@ -1,9 +1,0 @@
-[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o
-In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/voice/speech_to_text.c:4:
-/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/audio/audio_system.h:227:17: error: extraneous ')' before ';'
-  227 |         *physics); // Call each frame to update reverb for active sounds
-      |                 ^
-1 error generated.
-make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/voice/speech_to_text.c.o] Error 1
-make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
-make: *** [all] Error 2

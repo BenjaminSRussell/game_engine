@@ -38,16 +38,13 @@
 
 #include "../game_common.h"
 #include "../player/player.h"
+#include "mode.h"  // For Difficulty enum
 
-typedef enum {
-    DIFFICULTY_PEACEFUL,
-    DIFFICULTY_EASY,
-    DIFFICULTY_NORMAL,
-    DIFFICULTY_HARD
-} DifficultyLevel;
+// Use Difficulty from mode.h instead of defining DifficultyLevel
+// This avoids duplicate enum values
 
 typedef struct {
-    DifficultyLevel difficulty;
+    Difficulty difficulty;
     f32 damage_scale;
     f32 hunger_drain_rate;
     f32 mob_spawn_rate;
@@ -105,7 +102,7 @@ void survival_manager_init(SurvivalManager *mgr, PlayerSystem *player_system);
 void survival_manager_free(SurvivalManager *mgr);
 
 void survival_manager_update(SurvivalManager *mgr, f32 delta_time);
-void survival_apply_difficulty(SurvivalManager *mgr, DifficultyLevel difficulty);
+void survival_apply_difficulty(SurvivalManager *mgr, Difficulty difficulty);
 
 void survival_damage_player(SurvivalManager *mgr, f32 damage);
 void survival_hunger_deplete(SurvivalManager *mgr, f32 amount);

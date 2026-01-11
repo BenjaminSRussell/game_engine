@@ -1,12 +1,16 @@
 #pragma once
 
 #include <core/types.h>
+#include <include/common.h>
+#include <include/rendering/camera.h>
 #include <math/mat4.h>
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
-#include <include/rendering/camera.h>
 #include <stdbool.h>
+
+struct VFS;
+struct Engine;
 
 // =================================================================================================
 //                                    EDITOR SYSTEM ARCHITECTURE
@@ -449,6 +453,7 @@ void editor_dockspace_begin(void);
 void editor_dockspace_end(void);
 
 // Window rendering
+void AssetBrowser_Init(struct VFS *vfs, struct AssetManager *assets);
 void editor_main_menu_bar(void);
 void editor_viewport_window(void);
 void editor_asset_browser_window(void);

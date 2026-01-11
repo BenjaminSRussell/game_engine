@@ -37,7 +37,10 @@ void serialize_struct(void *data, TypeSchema *schema, BinaryWriter *writer) {
       const char *str = *(const char **)field_ptr;
       writer_write_string(writer, str);
       break;
-      // ... recursion for nested types ...
+    case TYPE_STRUCT:
+    case TYPE_ARRAY:
+      // TODO: Implement recursion for nested types
+      break;
     }
   }
 }
@@ -51,7 +54,12 @@ void deserialize_struct(void *data, TypeSchema *schema, BinaryReader *reader) {
     case TYPE_INT32:
       *(int32_t *)field_ptr = reader_read_int32(reader);
       break;
-      // ... etc ...
+    case TYPE_FLOAT:
+    case TYPE_STRING:
+    case TYPE_STRUCT:
+    case TYPE_ARRAY:
+      // TODO: Implement deserialization for these types
+      break;
     }
   }
 }

@@ -89,7 +89,7 @@
 // See: docs/ASSET_ACQUISITION_ROADMAP.md Section 2 (UI Assets)
 //
 #include "../include/ui/menu.h"
-#include "../../../engine/include/input/controls.h"
+#include "../../../engine/include/platform/input/controls.h"
 #include "../include/save/save.h"
 #include "../include/ui/menu_renderer.h"
 #include <stdio.h>

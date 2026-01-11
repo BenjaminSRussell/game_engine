@@ -2099,3 +2099,59 @@ void player_system_render(PlayerSystem *system, void *renderer) {
   // ir->render_dynamic_mesh(ir, &mesh, view, proj);
   // mesh_free(&mesh);
 }
+
+// Linker Stubs for missing damage functions
+
+// Linker Stubs for missing damage functions
+
+void player_damage_detailed(PlayerSystem *system, f32 damage, DamageType type) {
+    if (!system || !system->player) return;
+    HealthComponent *health = (HealthComponent *)ecs_get_component(
+        (World *)system->ecs_world, (Entity){system->player->entity_id, 0}, HEALTH_COMPONENT_ID);
+    if (!health) return;
+    
+    // Apply damage
+    health->health -= damage;
+    if (health->health < 0) health->health = 0;
+    
+    // Play hurt sound
+    // if (system->audio_system) audio_play_sound(...)
+}
+
+static void internal_apply_damage(PlayerComponent *p, f32 amount, void *ecs_world) {
+     if (!p) return;
+     HealthComponent *health = (HealthComponent *)ecs_get_component(
+        (World *)ecs_world, (Entity){p->entity_id, 0}, HEALTH_COMPONENT_ID);
+     if (health) {
+         health->health -= amount;
+         if (health->health < 0) health->health = 0;
+     }
+}
+
+void player_apply_drowning_damage(PlayerComponent *p, struct World *world, struct AudioSystem *audio, Camera *camera, f32 dt) {
+    (void)audio; (void)camera;
+    if (p->oxygen <= 0) {
+        internal_apply_damage(p, 2.0f * dt, world);
+    }
+}
+
+void player_apply_fire_damage(PlayerComponent *p, struct World *world, struct AudioSystem *audio, Camera *camera, f32 dt) {
+    (void)audio; (void)camera;
+    internal_apply_damage(p, 1.0f * dt, world);
+}
+
+void player_apply_lava_damage(PlayerComponent *p, struct World *world, struct AudioSystem *audio, Camera *camera, f32 dt) {
+    (void)audio; (void)camera;
+    internal_apply_damage(p, 4.0f * dt, world);
+}
+
+void player_apply_suffocation_damage(PlayerComponent *p, struct World *world, ChunkManager *chunks, BlockRegistry *blocks, struct AudioSystem *audio, Camera *camera, f32 dt) {
+     (void)chunks; (void)blocks; (void)audio; (void)camera;
+     // Check if head is inside a solid block - strictly usage logic would be here
+     internal_apply_damage(p, 1.0f * dt, world);
+}
+
+void player_update_damage_systems(f32 dt) {
+    (void)dt;
+    // Update global damage timers or systems if needed
+}

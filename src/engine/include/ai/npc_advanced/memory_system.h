@@ -1,8 +1,8 @@
 #ifndef MEMORY_SYSTEM_H
 #define MEMORY_SYSTEM_H
 
-#include <core/types.h>
-#include <math/vec3.h>
+#include "../../core/types.h"
+#include "../../math/vec3.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus
@@ -126,6 +126,37 @@ typedef struct {
   f32 average_access_count;
 } MemoryStats;
 
+// === Knowledge Graph (Phase 12) ===
+
+typedef enum {
+  RELATION_OWNS,
+  RELATION_LOCATED_AT,
+  RELATION_HOSTILE_TOWARDS,
+  RELATION_ALLY_OF,
+  RELATION_PART_OF,
+  RELATION_MEMBER_OF,
+  RELATION_KNOWS,
+  RELATION_INTERESTED_IN
+} MemoryRelation;
+
+typedef struct {
+  EntityID target_id;
+  MemoryRelation relation;
+  f32 strength;
+  f64 timestamp;
+} MemoryEdge;
+
+typedef struct {
+  EntityID entity_id;
+  char name[64];
+  Vec3 last_known_pos;
+
+  MemoryEdge edges[16];
+  u32 edge_count;
+
+  bool is_persistent;
+} MemoryNode;
+
 // Memory agent (per NPC)
 struct MemoryAgent {
   EntityID entity_id;
@@ -133,6 +164,10 @@ struct MemoryAgent {
 
   ShortTermMemory stm; // Short-term working memory
   LongTermMemory ltm;  // Long-term consolidated memory
+
+  // Knowledge Graph
+  MemoryNode nodes[64];
+  u32 node_count;
 
   // Configuration
   struct {
@@ -229,6 +264,14 @@ Memory *memory_get_most_recent(MemoryAgent *agent, MemoryType type);
 bool memory_remembers_entity(MemoryAgent *agent, EntityID entity_id);
 f32 memory_get_entity_threat_level(MemoryAgent *agent, EntityID entity_id);
 Vec3 memory_get_last_known_location(MemoryAgent *agent, EntityID entity_id);
+
+// === Knowledge Graph API (Phase 12) ===
+void memory_add_node(MemoryAgent *agent, EntityID entity_id, const char *name);
+void memory_add_edge(MemoryAgent *agent, EntityID from_id, EntityID to_id,
+                     MemoryRelation relation, f32 strength);
+MemoryNode *memory_get_node(MemoryAgent *agent, EntityID entity_id);
+bool memory_has_relation(MemoryAgent *agent, EntityID from_id, EntityID to_id,
+                         MemoryRelation relation);
 
 // === Memory Update ===
 

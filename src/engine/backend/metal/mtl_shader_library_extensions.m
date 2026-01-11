@@ -9,8 +9,11 @@
 #include "backend/metal/mtl_shader_library.h"
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
-#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 /* ============================================================================
  * IMPROVED FUNCTION REFLECTION

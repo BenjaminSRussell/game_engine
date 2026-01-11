@@ -24,7 +24,7 @@
 #include <core/resource/vfs/vfs.h>
 
 // New Subsystems
-// #include <audio/audio_system.h>
+#include <audio/audio_system.h>
 // #include <network/reliable_udp.h>
 // #include <network/rpc_system.h>
 
@@ -161,9 +161,7 @@ void engine_tick(Engine *engine, f32 delta_time) {
   engine_update_callback(engine, delta_time);
 }
 
-void engine_render(Engine *engine) {
-  engine_render_callback(engine, 0.0f);
-}
+void engine_render(Engine *engine) { engine_render_callback(engine, 0.0f); }
 
 void engine_shutdown(Engine *engine) {
   if (!engine || !engine->state.initialized)
@@ -240,7 +238,6 @@ static void engine_update_callback(void *user_data, f32 delta_time) {
   }
 
   // Update AI Subsystems
-  /*
   if (engine->subsystems.perception) {
     perception_system_process_frame(engine->subsystems.perception, delta_time);
   }
@@ -248,7 +245,6 @@ static void engine_update_callback(void *user_data, f32 delta_time) {
   if (engine->subsystems.memory) {
     memory_system_update(engine->subsystems.memory, delta_time);
   }
-  */
 
   // Update Animation System
   // animation_system_update(delta_time);
@@ -290,14 +286,14 @@ void engine_update(Engine *engine, f32 delta_time) {
   if (!engine || !engine->state.initialized) {
     return;
   }
-  
+
   // Ensure running state is set (needed for manual updates)
   bool was_running = engine->state.running;
   engine->state.running = true;
-  
+
   // Directly call the update callback to run one frame
   engine_update_callback(engine, delta_time);
-  
+
   // Restore previous running state if we changed it
   engine->state.running = was_running;
 }
@@ -316,15 +312,16 @@ static bool engine_init_subsystems(Engine *engine) {
 
   // 2. Input
   if (pdata->window.is_hosted) {
-      engine->subsystems.input = create_host_input_system();
+    engine->subsystems.input = create_host_input_system();
   } else {
-      engine->subsystems.input = create_glfw_input_system();
+    engine->subsystems.input = create_glfw_input_system();
   }
-  
+
   if (!engine->subsystems.input) {
     LOG_ERROR("Failed to create input system");
     return false;
-  } InputConfig input_config = input_create_default_config();
+  }
+  InputConfig input_config = input_create_default_config();
   if (!engine->subsystems.input->init(engine->subsystems.input,
                                       &input_config)) {
     LOG_ERROR("Input initialization failed");
@@ -334,7 +331,8 @@ static bool engine_init_subsystems(Engine *engine) {
 
   // 3. ECS
   WorldConfig world_config = ecs_world_create_default_config();
-  engine->subsystems.entities = (EntityManager *)ecs_world_create(&world_config);
+  engine->subsystems.entities =
+      (EntityManager *)ecs_world_create(&world_config);
   if (!engine->subsystems.entities) {
     LOG_ERROR("ECS initialization failed");
     return false;
@@ -342,7 +340,8 @@ static bool engine_init_subsystems(Engine *engine) {
   LOG_INFO("ECS initialized");
 
   // 2. Asset Manager (requires ECS)
-  engine->subsystems.assets = asset_manager_create(512, (World *)engine->subsystems.entities);
+  engine->subsystems.assets =
+      asset_manager_create(512, (World *)engine->subsystems.entities, &g_vfs);
   if (!engine->subsystems.assets) {
     LOG_ERROR("Asset Manager initialization failed");
     return false;
@@ -350,9 +349,9 @@ static bool engine_init_subsystems(Engine *engine) {
   engine->subsystems.assets->vfs = &g_vfs;
   LOG_INFO("Asset Manager initialized");
 
-
   // 4. Renderer
-  engine->subsystems.renderer = renderer_create_with_backend(RENDERER_TYPE_VOXEL, engine->config.renderer_backend);
+  engine->subsystems.renderer = renderer_create_with_backend(
+      RENDERER_TYPE_VOXEL, engine->config.renderer_backend);
   if (!engine->subsystems.renderer) {
     LOG_ERROR("Failed to create renderer");
     return false;
@@ -362,7 +361,8 @@ static bool engine_init_subsystems(Engine *engine) {
                                       .width = engine->config.window_width,
                                       .height = engine->config.window_height,
                                       .type = RENDERER_TYPE_VOXEL,
-                                      .backend = engine->config.renderer_backend,
+                                      .backend =
+                                          engine->config.renderer_backend,
                                       .config = NULL};
   if (!engine->subsystems.renderer->init(engine->subsystems.renderer,
                                          &render_params)) {
@@ -371,7 +371,6 @@ static bool engine_init_subsystems(Engine *engine) {
   }
 
   // 5. Physics
-  /*
   PhysicsConfig phys_config = {.gravity = {0.0f, -9.81f, 0.0f},
                                .fixed_timestep = 1.0f / 60.0f,
                                .velocity_iterations = 8,
@@ -383,7 +382,6 @@ static bool engine_init_subsystems(Engine *engine) {
   } else {
     LOG_INFO("Physics System initialized");
   }
-  */
 
   // 6. Scene Manager
   engine->subsystems.scene_manager =
@@ -395,13 +393,11 @@ static bool engine_init_subsystems(Engine *engine) {
   }
 
   // 10. Audio System
-  /*
   engine->subsystems.audio = (AudioSystem *)calloc(1, sizeof(AudioSystem));
   if (engine->subsystems.audio) {
     audio_system_init(engine->subsystems.audio, 32); // 32 channels
     LOG_INFO("Audio System initialized");
   }
-  */
 
   // 11. Scripting System
   /*
@@ -426,14 +422,30 @@ static bool engine_init_subsystems(Engine *engine) {
   pp_config.enabledEffects = 0; // Default off
 
   // Note: post_process_init requires VulkanRenderer*, but we have IRenderer*.
-  // Post-processing is currently Vulkan-only. If using Metal, skip it.
-  // TODO: Implement Metal-compatible post-processing or check renderer type at runtime
-  if (post_process_init(engine->subsystems.post_processing,
-                        NULL,  // Pass NULL to avoid invalid Vulkan calls on Metal
-                        &pp_config)) {
-    LOG_INFO("Post Processing initialized");
+  // Post-processing is currently Vulkan-only. If using Metal, skip it or use
+  // Metal-native path.
+  bool use_metal_pp = false;
+#ifdef GPU_BACKEND_METAL
+  use_metal_pp = true;
+#endif
+
+  if (use_metal_pp) {
+    LOG_INFO("Post Processing: Metal path detected, using Metal-native pp");
+    if (post_process_init(engine->subsystems.post_processing,
+                          NULL, // No Vulkan instance needed
+                          &pp_config)) {
+      LOG_INFO("Post Processing initialized (Metal)");
+    } else {
+      LOG_INFO("Post Processing initialization skipped or failed (Metal)");
+    }
   } else {
-    LOG_INFO("Post Processing skipped (Vulkan renderer not available)");
+    if (post_process_init(engine->subsystems.post_processing,
+                          NULL, // Pass Vulkan context if available
+                          &pp_config)) {
+      LOG_INFO("Post Processing initialized (Vulkan)");
+    } else {
+      LOG_INFO("Post Processing skipped (Vulkan renderer not available)");
+    }
   }
 
   // 8. Gameplay Systems Integration
@@ -466,7 +478,6 @@ static bool engine_init_subsystems(Engine *engine) {
   }
   */
 
-  /*
   // 9. AI Systems
   // Perception System
   PerceptionSystemConfig perception_config = {.max_agents = 100,
@@ -500,7 +511,6 @@ static bool engine_init_subsystems(Engine *engine) {
   } else {
     LOG_ERROR("GOAP Planner initialization failed");
   }
-  */
 
   return true;
 }
@@ -520,8 +530,6 @@ static void engine_shutdown_subsystems(Engine *engine) {
     free(engine->subsystems.input);
   }
 
-
-
   if (engine->subsystems.renderer) {
     renderer_destroy(engine->subsystems.renderer);
     engine->subsystems.renderer = NULL;
@@ -533,13 +541,11 @@ static void engine_shutdown_subsystems(Engine *engine) {
     // If implemented, uncomment.
   }
 
-  /*
   if (engine->subsystems.audio) {
     audio_system_free(engine->subsystems.audio);
     free(engine->subsystems.audio);
     engine->subsystems.audio = NULL;
   }
-  */
 
   /*
   if (engine->subsystems.scripting) {
@@ -560,28 +566,22 @@ static void engine_shutdown_subsystems(Engine *engine) {
     free(engine->subsystems.scene_manager);
   }
 
-  /*
   // AI Systems Shutdown
   if (engine->subsystems.perception) {
     perception_system_shutdown(engine->subsystems.perception);
     perception_system_destroy(engine->subsystems.perception);
     engine->subsystems.perception = NULL;
   }
-  */
 
-  /*
   if (engine->subsystems.memory) {
     memory_system_destroy(engine->subsystems.memory);
     engine->subsystems.memory = NULL;
   }
-  */
 
-  /*
   if (engine->subsystems.planner) {
     goap_planner_destroy_state(engine->subsystems.planner);
     engine->subsystems.planner = NULL;
   }
-  */
 
   /*
   // Gameplay Systems Shutdown

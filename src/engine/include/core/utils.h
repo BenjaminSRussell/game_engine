@@ -43,9 +43,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "include/common.h"
+#include "../common.h"
 #include <math.h>
-#include <include/math/math.h>
 
 // Math utilities
 static inline f32 clamp(f32 value, f32 min, f32 max) {

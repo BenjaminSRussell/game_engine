@@ -66,7 +66,12 @@ void asm_update(AnimGraph *graph, Blackboard *blackboard, float dt) {
 
     for (int c = 0; c < trans->condition_count; c++) {
       AnimCondition *cond = &trans->conditions[c];
-      float val = blackboard_get_float(blackboard, cond->parameter_name);
+      f32 val = 0.0f;
+      bool found = blackboard_get_float(blackboard, cond->parameter_name, &val);
+      if (!found) {
+          // Parameter not found, treat as 0 or fail logic
+          val = 0.0f; 
+      }
 
       if (cond->type == COND_GREATER && val <= cond->threshold)
         all_met = false;

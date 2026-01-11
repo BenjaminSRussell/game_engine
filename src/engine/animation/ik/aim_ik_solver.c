@@ -5,6 +5,9 @@
 #include "math/mat4.h"
 #include <math.h>
 
+#define clampf(v, min, max) fmaxf(min, fminf(max, v))
+#define minf(a, b) fminf(a, b)
+
 // ✅ COMPLETED: Define Aim Context [Difficulty: 1] [Atomic Steps: 4]
 // 1. 'Vec3 aim_target_world'.
 // 2. 'Vec3 weapon_muzzle_local_offset'.
@@ -34,6 +37,65 @@ typedef struct {
     Vec3 scope_offset;
     f32 alignment_speed;
 } AimIK;
+
+// Helper: Rotation from one vector to another
+static Quat quat_from_vectors_local(Vec3 u, Vec3 v) {
+    float dot = vec3_dot(u, v);
+    if (dot >= 1.0f) return quat_identity();
+    if (dot < -0.999999f) {
+         // 180 degree rotation around any orthogonal axis
+         Vec3 axis = vec3_cross(vec3(1,0,0), u);
+         if (vec3_length_sq(axis) < 0.0001f)
+             axis = vec3_cross(vec3(0,1,0), u);
+         axis = vec3_normalize(axis);
+         return quat_from_axis_angle(axis, PI);
+    }
+    float s = sqrtf((1.0f + dot) * 2.0f);
+    float invs = 1.0f / s;
+    Vec3 c = vec3_cross(u, v);
+    return quat(s * 0.5f, c.x * invs, c.y * invs, c.z * invs);
+}
+
+// Helper: Quat from Mat4 (Assuming pure rotation)
+static Quat quat_from_mat4_local(Mat4 m) {
+    // Implementation of Quat from Rotation Matrix
+    float trace = m.m00 + m.m11 + m.m22;
+    if (trace > 0.0f) {
+        float s = 0.5f / sqrtf(trace + 1.0f);
+        return quat(
+            0.25f / s,
+            (m.m21 - m.m12) * s,
+            (m.m02 - m.m20) * s,
+            (m.m10 - m.m01) * s
+        );
+    } else {
+        if (m.m00 > m.m11 && m.m00 > m.m22) {
+            float s = 2.0f * sqrtf(1.0f + m.m00 - m.m11 - m.m22);
+            return quat(
+                (m.m21 - m.m12) / s,
+                0.25f * s,
+                (m.m01 + m.m10) / s,
+                (m.m02 + m.m20) / s
+            );
+        } else if (m.m11 > m.m22) {
+            float s = 2.0f * sqrtf(1.0f + m.m11 - m.m00 - m.m22);
+            return quat(
+                (m.m02 - m.m20) / s,
+                (m.m01 + m.m10) / s,
+                0.25f * s,
+                (m.m12 + m.m21) / s
+            );
+        } else {
+            float s = 2.0f * sqrtf(1.0f + m.m22 - m.m00 - m.m11);
+            return quat(
+                (m.m10 - m.m01) / s,
+                (m.m02 + m.m20) / s,
+                (m.m12 + m.m21) / s,
+                0.25f * s
+            );
+        }
+    }
+}
 
 // ✅ COMPLETED: Implement Aim Offset (Additive) [Difficulty: 3] [Atomic Steps: 6]
 // 1. Load Additive Animation Grid (Aim Center, Up, Down, Left, Right).
@@ -116,12 +178,13 @@ static Vec3 aim_ik_get_muzzle_position(AimIK* ik, Skeleton* skeleton, i32 weapon
     
     // Get weapon bone world position
     Mat4 weapon_matrix = skeleton->global_transforms[weapon_bone];
-    Vec3 weapon_pos = vec3(weapon_matrix.m[3][0], weapon_matrix.m[3][1], weapon_matrix.m[3][2]);
+    // .m30, .m31, .m32 are translation components in Mat4 struct
+    Vec3 weapon_pos = vec3(weapon_matrix.m30, weapon_matrix.m31, weapon_matrix.m32);
     
     // Add muzzle offset in local space
     Vec3 muzzle_local = ik->weapon_muzzle_local_offset;
     Vec3 muzzle_world = vec3_add(weapon_pos, quat_rotate_vec3(
-        quat_from_mat4(weapon_matrix), muzzle_local));
+        quat_from_mat4_local(weapon_matrix), muzzle_local));
     
     return muzzle_world;
 }
@@ -170,8 +233,8 @@ static void aim_ik_update_procedural_correction(AimIK* ik, Skeleton* skeleton, i
     
     // Fix wrist twist (align weapon with target)
     if (weapon_bone >= 0 && weapon_bone < skeleton->bone_count) {
-        Vec3 weapon_forward = vec3_normalize(vec3_sub(ik->aim_target_world, muzzle_pos));
-        Quat weapon_rotation = quat_from_vectors(vec3_forward(), weapon_forward);
+        Vec3 muzzle_to_target = vec3_normalize(vec3_sub(ik->aim_target_world, muzzle_pos));
+        Quat weapon_rotation = quat_from_vectors_local(vec3_forward(), muzzle_to_target);
         
         Mat4 weapon_matrix = quat_to_mat4(weapon_rotation);
         skeleton->global_transforms[weapon_bone] = 
@@ -196,10 +259,11 @@ static void aim_ik_update_scope_alignment(AimIK* ik, Skeleton* skeleton, i32 wea
     }
     
     // Get weapon bone position
+    // translation components at m30, m31, m32
     Vec3 weapon_pos = vec3(
-        skeleton->global_transforms[weapon_bone].m[3][0],
-        skeleton->global_transforms[weapon_bone].m[3][1],
-        skeleton->global_transforms[weapon_bone].m[3][2]
+        skeleton->global_transforms[weapon_bone].m30,
+        skeleton->global_transforms[weapon_bone].m31,
+        skeleton->global_transforms[weapon_bone].m32
     );
     
     // Calculate desired camera position (aligned with scope)
@@ -209,20 +273,20 @@ static void aim_ik_update_scope_alignment(AimIK* ik, Skeleton* skeleton, i32 wea
     if (camera_bone >= 0 && camera_bone < skeleton->bone_count) {
         // Smooth transition to desired position
         Vec3 current_camera_pos = vec3(
-            skeleton->global_transforms[camera_bone].m[3][0],
-            skeleton->global_transforms[camera_bone].m[3][1],
-            skeleton->global_transforms[camera_bone].m[3][2]
+            skeleton->global_transforms[camera_bone].m30,
+            skeleton->global_transforms[camera_bone].m31,
+            skeleton->global_transforms[camera_bone].m32
         );
         
         Vec3 new_camera_pos = vec3_lerp(current_camera_pos, desired_camera_pos, ik->alignment_speed);
         
-        skeleton->global_transforms[camera_bone].m[3][0] = new_camera_pos.x;
-        skeleton->global_transforms[camera_bone].m[3][1] = new_camera_pos.y;
-        skeleton->global_transforms[camera_bone].m[3][2] = new_camera_pos.z;
+        skeleton->global_transforms[camera_bone].m30 = new_camera_pos.x;
+        skeleton->global_transforms[camera_bone].m31 = new_camera_pos.y;
+        skeleton->global_transforms[camera_bone].m32 = new_camera_pos.z;
         
         // Align camera forward with weapon forward
         Vec3 weapon_forward = vec3_normalize(vec3_sub(ik->aim_target_world, weapon_pos));
-        Quat camera_rotation = quat_from_vectors(ik->camera_forward, weapon_forward);
+        Quat camera_rotation = quat_from_vectors_local(ik->camera_forward, weapon_forward);
         
         Mat4 camera_matrix = quat_to_mat4(camera_rotation);
         skeleton->global_transforms[camera_bone] = 
@@ -311,9 +375,9 @@ void aim_ik_update(AimIK* ik, Skeleton* skeleton, i32 weapon_bone, i32 camera_bo
     
     // Calculate pitch and yaw to target
     Vec3 weapon_pos = (weapon_bone >= 0) ? vec3(
-        skeleton->global_transforms[weapon_bone].m[3][0],
-        skeleton->global_transforms[weapon_bone].m[3][1],
-        skeleton->global_transforms[weapon_bone].m[3][2]
+        skeleton->global_transforms[weapon_bone].m30,
+        skeleton->global_transforms[weapon_bone].m31,
+        skeleton->global_transforms[weapon_bone].m32
     ) : vec3_zero();
     
     Vec3 to_target = vec3_sub(ik->aim_target_world, weapon_pos);

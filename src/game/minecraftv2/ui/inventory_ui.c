@@ -58,8 +58,8 @@
 //     - Valid drop highlighting: IMPLEMENTED (highlight valid drop targets)
 //     - Invalid drop indication: IMPLEMENTED (indicate invalid drops)
 #include "../include/ui/inventory_ui.h"
-#include "../../../engine/include/input/controls.h"
-#include "../../../engine/include/renderer/vulkan.h"
+#include "../../../engine/include/platform/input/controls.h"
+#include "../../../engine/include/rendering/vulkan.h"
 #include "../include/block/block.h"
 #include <math.h>
 #include <math/mat4.h>
@@ -81,9 +81,15 @@ float renderer_get_brightness() { return 1.0f; }
 float renderer_get_render_distance() { return 16.0f; }
 int renderer_get_vsync() { return 1; }
 void renderer_set_vsync(int v) { (void)v; }
-void game_return_to_title() {}
-void game_quit() {}
-void network_disconnect() {}
+void game_return_to_title() {
+  // TODO: Implement return to title screen logic, saving game if necessary.
+}
+void game_quit() {
+  // TODO: Implement clean application shutdown.
+}
+void network_disconnect() {
+  // TODO: Close network sockets and notify peers.
+}
 int network_is_connected() { return 0; }
 float audio_get_master_volume() { return 1.0f; }
 void audio_set_master_volume(float v) { (void)v; }

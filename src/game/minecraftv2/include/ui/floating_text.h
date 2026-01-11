@@ -8,7 +8,7 @@
 #include "../../../../engine/include/math/mat4.h"
 #include "../../../../engine/include/math/vec3.h"
 #include "../../../../engine/include/math/vec4.h"
-#include "../../../../engine/include/renderer/vulkan.h"
+#include "../../../../engine/include/rendering/vulkan.h"
 #include "../game_common.h"
 
 #define MAX_FLOATING_TEXTS 512

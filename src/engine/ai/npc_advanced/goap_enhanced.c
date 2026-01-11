@@ -1,7 +1,10 @@
-#include "ai/npc_advanced/goap_enhanced.h"
-#include <core/logger.h>
-#include <core/memory.h>
-#include <math/vec3.h>
+#include "../../include/ai/npc_advanced/goap_enhanced.h"
+#include "../../include/common.h"
+#include "../../include/core/logger.h"
+#include "../../include/core/memory.h"
+#include "../../include/core/types.h"
+#include "../../include/math/vec3.h"
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -168,7 +171,7 @@ void goap_state_diff(const GoapWorldStateEnhanced *from,
   // Count changes
   u64 changes = diff->changed_bits;
   while (changes) {
-    diff->change_count += changes & 1;
+    diff->change_count += (int)(changes & 1);
     changes >>= 1;
   }
 }
@@ -423,61 +426,370 @@ void goap_state_print(const GoapWorldStateEnhanced *state) {
   }
 }
 // ===========================================================================================
-// PHASE 6: ENHANCED ACTION DEFINITIONS  
+// PHASE 6: ENHANCED ACTION DEFINITIONS
 // ===========================================================================================
 
-GoapActionEnhanced* goap_action_create_enhanced(const char* name, float cost) {
-    GoapActionEnhanced* action = (GoapActionEnhanced*)MALLOC_TAGGED(sizeof(GoapActionEnhanced), MEMORY_TAG_AI);
-    if (!action) {
-        LOG_ERROR("Failed to allocate GOAP action");
-        return NULL;
+GoapActionEnhanced *goap_action_create_enhanced(const char *name, float cost) {
+  GoapActionEnhanced *action = (GoapActionEnhanced *)MALLOC_TAGGED(
+      sizeof(GoapActionEnhanced), MEMORY_TAG_AI);
+  if (!action) {
+    LOG_ERROR("Failed to allocate GOAP action");
+    return NULL;
+  }
+
+  memset(action, 0, sizeof(GoapActionEnhanced));
+  strncpy(action->name, name, sizeof(action->name) - 1);
+  action->cost = cost;
+  action->duration = 1.0f;
+
+  return action;
+}
+
+void goap_action_destroy_enhanced(GoapActionEnhanced *action) {
+  if (!action)
+    return;
+  FREE(0);
+}
+
+void goap_action_add_precondition_bit(GoapActionEnhanced *action,
+                                      GoapAtomID atom, bool value) {
+  if (!action)
+    return;
+  goap_state_set_atom(&action->preconditions, atom, value);
+}
+
+void goap_action_add_effect_bit(GoapActionEnhanced *action, GoapAtomID atom,
+                                bool value) {
+  if (!action)
+    return;
+  goap_state_set_atom(&action->effects, atom, value);
+}
+
+GoapPlan *goap_action_expand_macro(const GoapActionEnhanced *action,
+                                   void *agent,
+                                   const GoapWorldStateEnhanced *state) {
+  if (!action || !action->is_macro)
+    return NULL;
+
+  // Simple hierarchical expansion: Create a sub-plan using the action's effects
+  // as a goal In a more complex system, the macro action might define a
+  // specific sub-goal atom.
+
+  GoapPlannerState *temp_planner = goap_planner_create_state(64);
+
+  // For now, we use a simple heuristic: the macro action is a container for a
+  // sub-plan that achieves the macro's effects from the current state.
+
+  // Note: In Phase 9, we would use a specialized sub-action library here.
+  // For this implementation, we use an empty action set to represent a
+  // "To-be-planned" expansion.
+  LOG_INFO("Expanding macro action: %s using sub-planning", action->name);
+
+  // Clean up existing sub-plan if needed
+  if (action->sub_plan) {
+    goap_plan_destroy(action->sub_plan);
+  }
+
+  return NULL; // Still return NULL as we need a pool of sub-actions to actually
+               // plan.
+}
+
+bool goap_action_can_run(const GoapActionEnhanced *action,
+                         const GoapWorldStateEnhanced *state) {
+  if (!action || !state)
+    return false;
+
+  if (!goap_state_satisfies(state, &action->preconditions)) {
+    return false;
+  }
+
+  if (action->check_precondition) {
+    return action->check_precondition(NULL, state);
+  }
+
+  return true;
+}
+
+float goap_action_get_cost(const GoapActionEnhanced *action, void *agent,
+                           const GoapWorldStateEnhanced *state) {
+  if (!action)
+    return 1000.0f;
+
+  float cost = action->cost;
+
+  // Apply dynamic cost multiplier (Utility)
+  if (action->calculate_dynamic_cost) {
+    cost *= action->calculate_dynamic_cost(agent, state);
+  }
+
+  return cost;
+}
+
+bool goap_action_is_macro(const GoapActionEnhanced *action) {
+  return action ? action->is_macro : false;
+}
+
+// ===========================================================================================
+// PHASE 7: ENHANCED A* PLANNER
+// ===========================================================================================
+
+static void swap_nodes(GoapPlannerNode *a, GoapPlannerNode *b) {
+  GoapPlannerNode temp = *a;
+  *a = *b;
+  *b = temp;
+}
+
+static void heapify_up(GoapPlannerState *planner, int index) {
+  while (index > 0) {
+    int parent = (index - 1) / 2;
+    if (planner->open_list[index].f_cost < planner->open_list[parent].f_cost) {
+      swap_nodes(&planner->open_list[index], &planner->open_list[parent]);
+      index = parent;
+    } else {
+      break;
     }
-    
-    memset(action, 0, sizeof(GoapActionEnhanced));
-    strncpy(action->name, name, sizeof(action->name) - 1);
-    action->cost = cost;
-    action->duration = 1.0f;
-    
-    return action;
+  }
 }
 
-void goap_action_destroy_enhanced(GoapActionEnhanced* action) {
-    if (!action) return;
-    FREE(0);
-}
+static void heapify_down(GoapPlannerState *planner, int index) {
+  while (true) {
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+    int smallest = index;
 
-void goap_action_add_precondition_bit(GoapActionEnhanced* action, GoapAtomID atom, bool value) {
-    if (!action) return;
-    goap_state_set_atom(&action->preconditions, atom, value);
-}
-
-void goap_action_add_effect_bit(GoapActionEnhanced* action, GoapAtomID atom, bool value) {
-    if (!action) return;
-    goap_state_set_atom(&action->effects, atom, value);
-}
-
-bool goap_action_can_run(const GoapActionEnhanced* action, const GoapWorldStateEnhanced* state) {
-    if (!action || !state) return false;
-    
-    if (!goap_state_satisfies(state, &action->preconditions)) {
-        return false;
+    if (left < planner->open_count &&
+        planner->open_list[left].f_cost < planner->open_list[smallest].f_cost) {
+      smallest = left;
     }
-    
-    if (action->check_precondition) {
-        return action->check_precondition(NULL, state);
+    if (right < planner->open_count &&
+        planner->open_list[right].f_cost <
+            planner->open_list[smallest].f_cost) {
+      smallest = right;
     }
-    
-    return true;
+
+    if (smallest != index) {
+      swap_nodes(&planner->open_list[index], &planner->open_list[smallest]);
+      index = smallest;
+    } else {
+      break;
+    }
+  }
 }
 
-void goap_action_apply(const GoapActionEnhanced* action, GoapWorldStateEnhanced* state) {
-    if (!action || !state) return;
-    
-    state->bits.bits |= action->effects.bits.bits;
-    
-    if (action->apply_effects) {
-        action->apply_effects(NULL, state);
+GoapPlannerState *goap_planner_create_state(int capacity) {
+  GoapPlannerState *planner = (GoapPlannerState *)MALLOC_TAGGED(
+      sizeof(GoapPlannerState), MEMORY_TAG_AI);
+  memset(planner, 0, sizeof(GoapPlannerState));
+
+  planner->open_capacity = capacity;
+  planner->closed_capacity = capacity * 2;
+  planner->open_list = (GoapPlannerNode *)MALLOC_TAGGED(
+      sizeof(GoapPlannerNode) * planner->open_capacity, MEMORY_TAG_AI);
+  planner->closed_list = (GoapPlannerNode *)MALLOC_TAGGED(
+      sizeof(GoapPlannerNode) * planner->closed_capacity, MEMORY_TAG_AI);
+
+  return planner;
+}
+
+void goap_planner_destroy_state(GoapPlannerState *planner) {
+  if (!planner)
+    return;
+  FREE(planner->open_list);
+  FREE(planner->closed_list);
+  FREE(planner);
+}
+
+float goap_heuristic_enhanced(const GoapWorldStateEnhanced *current,
+                              const GoapWorldStateEnhanced *goal) {
+  // Use Hamming distance (bit differences)
+  return (float)goap_state_count_differences(current, goal);
+}
+
+GoapPlan *goap_plan_enhanced(GoapPlannerState *planner,
+                             const GoapActionEnhanced **available_actions,
+                             int action_count,
+                             const GoapWorldStateEnhanced *start_state,
+                             const GoapWorldStateEnhanced *goal_state,
+                             int max_plan_length) {
+  if (!planner || !available_actions || action_count <= 0)
+    return NULL;
+
+  planner->open_count = 0;
+  planner->closed_count = 0;
+  planner->nodes_expanded = 0;
+  planner->nodes_generated = 0;
+
+  // Initial node
+  GoapPlannerNode start_node;
+  memset(&start_node, 0, sizeof(GoapPlannerNode));
+  goap_state_copy(&start_node.state, start_state);
+  start_node.parent_index = -1;
+  start_node.g_cost = 0;
+  start_node.h_cost = goap_heuristic_enhanced(start_state, goal_state);
+  start_node.f_cost = start_node.g_cost + start_node.h_cost;
+  start_node.depth = 0;
+
+  planner->open_list[planner->open_count++] = start_node;
+
+  GoapPlannerNode *end_node = NULL;
+
+  while (planner->open_count > 0) {
+    // Pop best node
+    GoapPlannerNode current = planner->open_list[0];
+    planner->open_list[0] = planner->open_list[--planner->open_count];
+    heapify_down(planner, 0);
+
+    // Add to closed list
+    if (planner->closed_count >= planner->closed_capacity) {
+      LOG_ERROR("GOAP: Closed list full");
+      break;
     }
-    
-    state->bits.state_hash = 0;
+    int current_idx = planner->closed_count++;
+    planner->closed_list[current_idx] = current;
+    planner->nodes_expanded++;
+
+    // Goal reached? (Satisfies bits of goal state)
+    if (goap_state_satisfies(&current.state, goal_state)) {
+      end_node = &planner->closed_list[current_idx];
+      break;
+    }
+
+    if (current.depth >= max_plan_length)
+      continue;
+
+    // Expand actions
+    for (int i = 0; i < action_count; i++) {
+      const GoapActionEnhanced *action = available_actions[i];
+
+      if (goap_action_can_run(action, &current.state)) {
+        GoapPlannerNode next;
+        memset(&next, 0, sizeof(GoapPlannerNode));
+        goap_state_copy(&next.state, &current.state);
+        goap_action_apply(action, &next.state);
+
+        next.action = action;
+        next.parent_index = current_idx;
+        next.g_cost =
+            current.g_cost + goap_action_get_cost(action, NULL, &current.state);
+        next.h_cost = goap_heuristic_enhanced(&next.state, goal_state);
+        next.f_cost = next.g_cost + next.h_cost;
+        next.depth = current.depth + 1;
+
+        // Check if state is in closed list with better cost (simplified check)
+        bool exists = false;
+        for (int j = 0; j < planner->closed_count; j++) {
+          if (goap_state_equals(&next.state, &planner->closed_list[j].state)) {
+            exists = true;
+            break;
+          }
+        }
+        if (exists)
+          continue;
+
+        // Add to open list
+        if (planner->open_count < planner->open_capacity) {
+          planner->open_list[planner->open_count++] = next;
+          heapify_up(planner, planner->open_count - 1);
+          planner->nodes_generated++;
+        }
+      }
+    }
+  }
+
+  if (!end_node)
+    return NULL;
+
+  // Reconstruct plan
+  GoapPlan *plan = (GoapPlan *)MALLOC_TAGGED(sizeof(GoapPlan), MEMORY_TAG_AI);
+  plan->max_plan_length = max_plan_length;
+  plan->actions = (const GoapActionEnhanced **)MALLOC_TAGGED(
+      sizeof(GoapActionEnhanced *) * max_plan_length, MEMORY_TAG_AI);
+  plan->action_count = 0;
+
+  GoapPlannerNode *curr = end_node;
+  while (curr && curr->parent_index != -1) {
+    plan->actions[plan->action_count++] = curr->action;
+    curr = &planner->closed_list[curr->parent_index];
+  }
+
+  // Reverse action list
+  for (int i = 0; i < plan->action_count / 2; i++) {
+    const GoapActionEnhanced *temp = plan->actions[i];
+    plan->actions[i] = plan->actions[plan->action_count - 1 - i];
+    plan->actions[plan->action_count - 1 - i] = temp;
+  }
+
+  return plan;
+}
+
+void goap_plan_destroy(GoapPlan *plan) {
+  if (!plan)
+    return;
+  FREE((void *)plan->actions);
+  FREE(plan);
+}
+
+// ===========================================================================================
+// PHASE 8: PLAN EXECUTION & VALIDATION
+// ===========================================================================================
+
+GoapPlanExecutor *goap_executor_create(GoapPlan *plan) {
+  GoapPlanExecutor *executor = (GoapPlanExecutor *)MALLOC_TAGGED(
+      sizeof(GoapPlanExecutor), MEMORY_TAG_AI);
+  memset(executor, 0, sizeof(GoapPlanExecutor));
+  executor->plan = plan;
+  executor->status = GOAP_EXEC_RUNNING;
+  return executor;
+}
+
+void goap_executor_destroy(GoapPlanExecutor *executor) {
+  if (!executor)
+    return;
+  if (executor->plan)
+    goap_plan_destroy(executor->plan);
+  FREE(executor);
+}
+
+GoapExecutionStatus goap_executor_tick(GoapPlanExecutor *executor, void *agent,
+                                       GoapWorldStateEnhanced *current_state,
+                                       float delta_time) {
+  if (!executor || !executor->plan ||
+      executor->current_step >= executor->plan->action_count) {
+    return GOAP_EXEC_SUCCESS;
+  }
+
+  const GoapActionEnhanced *action =
+      executor->plan->actions[executor->current_step];
+
+  // Validate start of action
+  if (!goap_action_can_run(action, current_state)) {
+    executor->status = GOAP_EXEC_INVALID;
+    return GOAP_EXEC_INVALID;
+  }
+
+  // Execute
+  if (action->execute) {
+    action->execute(agent, delta_time);
+  }
+
+  // Check completion
+  bool complete = true;
+  if (action->is_complete) {
+    complete = action->is_complete(agent);
+  }
+
+  if (complete) {
+    executor->current_step++;
+    executor->steps_completed++;
+
+    // Apply effects to external state tracker if needed
+    goap_action_apply(action, current_state);
+
+    if (executor->current_step >= executor->plan->action_count) {
+      executor->status = GOAP_EXEC_SUCCESS;
+      return GOAP_EXEC_SUCCESS;
+    }
+  }
+
+  return GOAP_EXEC_RUNNING;
 }

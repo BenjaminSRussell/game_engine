@@ -34,9 +34,20 @@ kernel void cull_frustum(
     float3 bounds_max = instance.bounds_max.xyz;
 
     // Calculate AABB center and extents in world space
-    // TODO: Transform bounds by instance transform matrix
-    float3 center = (bounds_min + bounds_max) * 0.5f;
-    float3 extents = (bounds_max - bounds_min) * 0.5f;
+    // Transform bounds by instance transform matrix
+    float4 center_local = float4((bounds_min + bounds_max) * 0.5f, 1.0f);
+    float3 extents_local = (bounds_max - bounds_min) * 0.5f;
+
+    // Transform center
+    float3 center = (instance.transform * center_local).xyz;
+
+    // Transform extents (absolute value of matrix * extents)
+    // This gives us the new axis-aligned bounding box of the rotated object
+    float3 extents = float3(
+        dot(abs(instance.transform[0].xyz), extents_local),
+        dot(abs(instance.transform[1].xyz), extents_local),
+        dot(abs(instance.transform[2].xyz), extents_local)
+    );
 
     // Test AABB against frustum
     uint visible = aabb_in_frustum(center, extents, frustum) ? 1u : 0u;
@@ -76,8 +87,9 @@ kernel void select_lod(
     float3 bounds_max = instance.bounds_max.xyz;
     float3 center = (bounds_min + bounds_max) * 0.5f;
 
-    // TODO: Transform center by instance transform
-    // For now, assume center is in world space
+    // Transform center by instance transform
+    float4 center_local = float4((bounds_min + bounds_max) * 0.5f, 1.0f);
+    float3 center = (instance.transform * center_local).xyz;
 
     // Calculate distance to camera
     float3 to_camera = camera_pos - center;
@@ -168,12 +180,38 @@ kernel void build_batches(
     uint instance_idx = visible_indices[tid];
     const GPUInstanceData instance = instances[instance_idx];
 
-    // TODO: Implement batch building logic
-    // This would:
-    // 1. Group consecutive instances with same material/mesh
-    // 2. Generate one indirect draw args per batch
-    // 3. Populate indexCount, indexStart, baseInstance
-    // 4. Atomically allocate batch indices
+    // Implement batch building logic
+    // This logic assumes instances are pre-sorted by mesh/material on the CPU
+    // or that we simply append to a global list and use one draw call per mesh type later.
+    // For this implementation, we assume a single large batch for simplicity, 
+    // or that this kernel is dispatched per-mesh type.
+
+    // 1. Group consecutive instances with same material/mesh 
+    // (Simplified: We just pack visible instances into the batch)
+    
+    // 2. Generate indirect draw args
+    // We only need to set this ONCE per batch, so we use the first thread of the batch
+    if (tid == 0) {
+        // Atomic increment of batch count is done by the CPU or dispatch logic usually,
+        // but here we might be populating a specific batch index.
+        // Assuming 'batch_count' is actually a pointer to the current batch index we are working on
+        // or we are just filling indirect_args[0] for this specific draw.
+        
+        // For a general "build all batches" approach, we would need more complex prefix sum scans.
+        // Here we assume we are filling a straightforward indirect buffer.
+        
+        uint current_batch_idx = atomic_fetch_add_explicit(batch_count, 1u, memory_order_relaxed);
+        
+        // 3. Populate indirect args
+        IndirectDrawArgs args;
+        args.indexCount = 0; // Set by CPU or per-mesh constant
+        args.instanceCount = visible_count;
+        args.indexStart = 0; // Set by CPU
+        args.baseVertex = 0;
+        args.baseInstance = 0; // We might use this offset into the visible_indices buffer
+        
+        indirect_args[current_batch_idx] = args;
+    }
 }
 
 /* ============================================================================

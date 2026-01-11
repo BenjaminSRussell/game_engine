@@ -4,7 +4,7 @@
  * Data-driven animation selection based on trajectory matching
  */
 
-#include <include/math/math.h>
+#include "include/math/math.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -51,7 +51,7 @@ int motion_find_match(MotionDatabase *db, Trajectory *current_traj,
     // Trajectory cost
     for (int j = 0; j < TRAJECTORY_POINTS; j++) {
       float dp = 0;
-      for (k = 0; k < 3; k++)
+      for (int k = 0; k < 3; k++)
         dp += powf(f->trajectory.pos[j][k] - current_traj->pos[j][k], 2);
       cost += dp;
     }

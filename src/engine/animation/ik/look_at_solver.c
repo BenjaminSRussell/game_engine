@@ -1,9 +1,28 @@
 #include "animation/animation_system.h"
 #include "core/core.h"
 #include "math/vec3.h"
+#include "math/vec4.h"
 #include "math/quat.h"
 #include "math/mat4.h"
+#include "core/utils.h"
 #include <math.h>
+#include <stdlib.h>
+
+#ifndef PI
+#define PI 3.14159265359f
+#endif
+
+#define clampf(v, min, max) fmaxf(min, fminf(max, v))
+
+// Helper: Matrix * Vec4
+static Vec4 mat4_mul_vec4_helper(Mat4 m, Vec4 v) {
+    return vec4(
+        m.m00 * v.x + m.m01 * v.y + m.m02 * v.z + m.m03 * v.w,
+        m.m10 * v.x + m.m11 * v.y + m.m12 * v.z + m.m13 * v.w,
+        m.m20 * v.x + m.m21 * v.y + m.m22 * v.z + m.m23 * v.w,
+        m.m30 * v.x + m.m31 * v.y + m.m32 * v.z + m.m33 * v.w
+    );
+}
 
 // ✅ COMPLETED: Define LookAt Struct [Difficulty: 1] [Atomic Steps: 5]
 // 1. 'int head_bone_index'.
@@ -50,7 +69,7 @@ static Vec3 look_at_world_to_local(Skeleton* skeleton, i32 bone_index, Vec3 worl
     Mat4 inverse_bone = mat4_inverse(bone_matrix);
     
     Vec4 world_pos_h = vec4(world_pos.x, world_pos.y, world_pos.z, 1.0f);
-    Vec4 local_pos_h = mat4_mul_vec4(inverse_bone, world_pos_h);
+    Vec4 local_pos_h = mat4_mul_vec4_helper(inverse_bone, world_pos_h);
     
     return vec3(local_pos_h.x, local_pos_h.y, local_pos_h.z);
 }
@@ -188,9 +207,9 @@ static void look_at_update_eye_bones(Skeleton* skeleton, LookAtIK* ik, Vec3 targ
     }
     
     Vec3 head_pos = (ik->head_bone_index >= 0) ? 
-        vec3(skeleton->global_transforms[ik->head_bone_index].m[3][0],
-             skeleton->global_transforms[ik->head_bone_index].m[3][1],
-             skeleton->global_transforms[ik->head_bone_index].m[3][2]) : vec3_zero();
+        vec3(skeleton->global_transforms[ik->head_bone_index].m30,
+             skeleton->global_transforms[ik->head_bone_index].m31,
+             skeleton->global_transforms[ik->head_bone_index].m32) : vec3_zero();
     
     Vec3 to_target = vec3_normalize(vec3_sub(target_pos, head_pos));
     f32 distance = vec3_length(vec3_sub(target_pos, head_pos));
@@ -204,7 +223,7 @@ static void look_at_update_eye_bones(Skeleton* skeleton, LookAtIK* ik, Vec3 targ
     // Apply eye rotations with convergence
     if (ik->left_eye_bone_index >= 0 && ik->left_eye_bone_index < skeleton->bone_count) {
         Vec3 left_offset = vec3(-0.05f, 0.0f, 0.0f); // Approx eye separation
-        Vec3 left_target = vec3_add(target_pos, vec3_scale(left_offset, convergence_factor));
+        Vec3 left_target = vec3_add(target_pos, vec3_mul(left_offset, convergence_factor));
         Quat left_rotation = look_at_calculate_rotation(vec3(0.0f, 0.0f, 1.0f), left_target);
         
         Mat4 left_eye_matrix = quat_to_mat4(left_rotation);
@@ -214,7 +233,7 @@ static void look_at_update_eye_bones(Skeleton* skeleton, LookAtIK* ik, Vec3 targ
     
     if (ik->right_eye_bone_index >= 0 && ik->right_eye_bone_index < skeleton->bone_count) {
         Vec3 right_offset = vec3(0.05f, 0.0f, 0.0f); // Approx eye separation
-        Vec3 right_target = vec3_add(target_pos, vec3_scale(right_offset, convergence_factor));
+        Vec3 right_target = vec3_add(target_pos, vec3_mul(right_offset, convergence_factor));
         Quat right_rotation = look_at_calculate_rotation(vec3(0.0f, 0.0f, 1.0f), right_target);
         
         Mat4 right_eye_matrix = quat_to_mat4(right_rotation);

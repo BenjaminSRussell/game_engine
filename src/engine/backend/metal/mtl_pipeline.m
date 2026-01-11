@@ -439,7 +439,7 @@ metal_create_render_pipeline(MTLDeviceRef device_ref,
     NSLog(@"Invalid MSAA sample count %u, defaulting to 1", sampleCount);
     sampleCount = 1;
   }
-  pipelineDesc.sampleCount = sampleCount;
+  pipelineDesc.rasterSampleCount = sampleCount;
 
   // Rasterization settings
   pipelineDesc.inputPrimitiveTopology = MTLPrimitiveTopologyClassTriangle;

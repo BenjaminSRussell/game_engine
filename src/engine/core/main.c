@@ -39,8 +39,8 @@
 #include "../include/core/config_loader.h"
 #include "../include/core/logger.h"
 #include "../include/core/performance.h"
-#include <core/engine.h>
 #include <core/game_module.h>
+#include <core/unified_engine.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -402,8 +402,8 @@ static bool module_registry_add(ModuleRegistry *registry, const char *name,
 
   if (registry->count >= registry->capacity) {
     registry->capacity *= 2;
-    DiscoveredModuleInfo *new_modules =
-        realloc(registry->modules, sizeof(DiscoveredModuleInfo) * registry->capacity);
+    DiscoveredModuleInfo *new_modules = realloc(
+        registry->modules, sizeof(DiscoveredModuleInfo) * registry->capacity);
     if (!new_modules)
       return false;
     registry->modules = new_modules;
@@ -748,7 +748,7 @@ int main(int argc, char *argv[]) {
 
   // Initialize engine
   Engine engine = {0};
-  if (!engine_init(&engine, &config.engine_config)) {
+  if (!engine_unified_init(&engine, &config.engine_config)) {
     handle_engine_error(ENGINE_ERROR_INIT_FAILED);
   }
 

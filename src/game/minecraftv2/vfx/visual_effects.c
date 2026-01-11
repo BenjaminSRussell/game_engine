@@ -3,7 +3,7 @@
 // Implementation of high-level visual effects system for coordinated
 // particle, audio, and screen effects.
 //
-#include <vfx/visual_effects.h>
+#include <effects/vfx/visual_effects.h>
 #include <core/logger.h>
 #include <stdio.h>
 #include <stdlib.h>

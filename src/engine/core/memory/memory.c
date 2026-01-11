@@ -142,6 +142,36 @@
 //     - Implement allocator chaining (fallback allocators)
 //     - Add allocator statistics and profiling
 //   Use case: Physics uses pool allocator, renderer uses linear allocator
+// TODO: Implement a lock-free memory allocator for low-latency multi-threaded
+// access
+// TODO: Add support for NUMA-aware memory allocation (Node-local affinity)
+// TODO: Implement a virtual memory manager with residency control for streaming
+// assets
+// TODO: Add support for compressed memory pages to reduce swap pressure
+// TODO: Implement a real-time memory fragmentation defragmenter for
+// long-running processes
+// TODO: Add support for GPU-mapped memory regions with cache-coherency control
+// TODO: Implement custom memory-mapped I/O for high-speed asset loading
+// TODO: Add support for encrypted memory segments for sensitive user data
+// TODO: Implement a robust memory profiler with flame-graph and heap-dump
+// support
+// TODO: Research and implement AI-driven memory usage prediction and
+// pre-allocation
+// TODO: Add support for memory-pooled ECS entities with cache-line alignment
+// TODO: Implement a sample-based memory leak detector with zero runtime
+// overhead
+// TODO: Add support for platform-specific high-speed allocators (e.g.,
+// jemalloc, mimalloc)
+// TODO: Implement a virtual "OOM" handler for graceful degradation on
+// low-memory systems
+// TODO: Add logic for automatic memory budget balancing between subsystems
+// TODO: Research and implement persistent memory (PMEM) support for
+// near-instant loading
+// TODO: Implement a robust memory unit test suite with boundary and
+// error-injection tests
+// TODO: Add support for memory-synced multi-process shared memory regions
+// TODO: Implement a virtual "memory pressure" simulator for stress-testing
+// TODO: Research and implement hardware-assisted memory tagging (e.g., ARM MTE)
 //
 #include <core/logger.h>
 #include <core/memory.h>

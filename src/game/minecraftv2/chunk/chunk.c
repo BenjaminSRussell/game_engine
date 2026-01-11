@@ -90,7 +90,7 @@
 #include <string.h>
 #include <core/threading/job.h>
 #include <time.h>
-// #include <vfx/particle_system.h>
+// #include <effects/vfx/particle_system.h>
 #include <world/generator.h>
 #include <zlib.h>
 

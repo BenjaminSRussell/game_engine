@@ -3,7 +3,9 @@
  * Full skeletal animation with blending, state machines, and IK
  */
 
-#include <include/math/math.h>
+#include "include/math/math.h"
+#include <math.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -11,17 +13,9 @@
 #define MAX_BONE_NAME 64
 
 typedef struct {
-  float x, y, z, w;
-} Quaternion;
-
-typedef struct {
-  float x, y, z;
-} Vector3;
-
-typedef struct {
-  Vector3 position;
-  Quaternion rotation;
-  Vector3 scale;
+  Vec3 position;
+  Quat rotation;
+  Vec3 scale;
 } Transform;
 
 typedef struct {
@@ -40,9 +34,9 @@ typedef struct {
 
 typedef struct {
   unsigned int bone_index;
-  Vector3 position;
-  Quaternion rotation;
-  Vector3 scale;
+  Vec3 position;
+  Quat rotation;
+  Vec3 scale;
 } BoneKeyframe;
 
 typedef struct {
@@ -69,76 +63,18 @@ typedef struct {
   Transform bone_transforms[MAX_BONES];
 } AnimationState;
 
-// Quaternion operations
-static Quaternion quat_identity() {
-  Quaternion q = {0, 0, 0, 1};
-  return q;
-}
-
-static Quaternion quat_slerp(Quaternion a, Quaternion b, float t) {
-  // Spherical linear interpolation
-  float dot = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
-
-  if (dot < 0.0f) {
-    b.x = -b.x;
-    b.y = -b.y;
-    b.z = -b.z;
-    b.w = -b.w;
-    dot = -dot;
-  }
-
-  if (dot > 0.9995f) {
-    // Linear interpolation for close quaternions
-    Quaternion result;
-    result.x = a.x + t * (b.x - a.x);
-    result.y = a.y + t * (b.y - a.y);
-    result.z = a.z + t * (b.z - a.z);
-    result.w = a.w + t * (b.w - a.w);
-
-    // Normalize
-    float len = sqrtf(result.x * result.x + result.y * result.y +
-                      result.z * result.z + result.w * result.w);
-    result.x /= len;
-    result.y /= len;
-    result.z /= len;
-    result.w /= len;
-    return result;
-  }
-
-  float theta = acosf(dot);
-  float sin_theta = sinf(theta);
-  float a_weight = sinf((1.0f - t) * theta) / sin_theta;
-  float b_weight = sinf(t * theta) / sin_theta;
-
-  Quaternion result;
-  result.x = a.x * a_weight + b.x * b_weight;
-  result.y = a.y * a_weight + b.y * b_weight;
-  result.z = a.z * a_weight + b.z * b_weight;
-  result.w = a.w * a_weight + b.w * b_weight;
-  return result;
-}
-
-// Vector3 lerp
-static Vector3 vec3_lerp(Vector3 a, Vector3 b, float t) {
-  Vector3 result;
-  result.x = a.x + t * (b.x - a.x);
-  result.y = a.y + t * (b.y - a.y);
-  result.z = a.z + t * (b.z - a.z);
-  return result;
-}
-
 // Create skeleton
 Skeleton *skeleton_create(unsigned int bone_count) {
-  Skeleton *skel = malloc(sizeof(Skeleton));
+  Skeleton *skel = (Skeleton *)malloc(sizeof(Skeleton));
   skel->bone_count = bone_count;
   skel->root_bone_index = 0;
 
   // Initialize bones
   for (unsigned int i = 0; i < bone_count; i++) {
     skel->bones[i].parent_index = -1;
-    skel->bones[i].bind_pose.position = (Vector3){0, 0, 0};
+    skel->bones[i].bind_pose.position = (Vec3){0, 0, 0};
     skel->bones[i].bind_pose.rotation = quat_identity();
-    skel->bones[i].bind_pose.scale = (Vector3){1, 1, 1};
+    skel->bones[i].bind_pose.scale = (Vec3){1, 1, 1};
     snprintf(skel->bones[i].name, MAX_BONE_NAME, "Bone_%d", i);
   }
 
@@ -173,7 +109,7 @@ int skeleton_find_bone(const Skeleton *skel, const char *name) {
 // Create animation clip
 AnimationClip *animation_clip_create(const char *name, float duration,
                                      float tps) {
-  AnimationClip *clip = malloc(sizeof(AnimationClip));
+  AnimationClip *clip = (AnimationClip *)malloc(sizeof(AnimationClip));
   strncpy(clip->name, name, 63);
   clip->duration = duration;
   clip->ticks_per_second = tps;
@@ -185,18 +121,18 @@ AnimationClip *animation_clip_create(const char *name, float duration,
 
 // Add keyframe to animation
 void animation_add_keyframe(AnimationClip *clip, float time,
-                            unsigned int bone_index, Vector3 position,
-                            Quaternion rotation, Vector3 scale) {
+                            unsigned int bone_index, Vec3 position,
+                            Quat rotation, Vec3 scale) {
   // Find or create frame at this time
   // For simplicity, append new frame
   clip->frame_count++;
-  clip->frames =
-      realloc(clip->frames, clip->frame_count * sizeof(AnimationFrame));
+  clip->frames = (AnimationFrame *)realloc(
+      clip->frames, clip->frame_count * sizeof(AnimationFrame));
 
   AnimationFrame *frame = &clip->frames[clip->frame_count - 1];
   frame->time = time;
   frame->keyframe_count = 1;
-  frame->bone_keyframes = malloc(sizeof(BoneKeyframe));
+  frame->bone_keyframes = (BoneKeyframe *)malloc(sizeof(BoneKeyframe));
   frame->bone_keyframes[0].bone_index = bone_index;
   frame->bone_keyframes[0].position = position;
   frame->bone_keyframes[0].rotation = rotation;
@@ -205,7 +141,7 @@ void animation_add_keyframe(AnimationClip *clip, float time,
 
 // Create animation state
 AnimationState *animation_state_create(Skeleton *skeleton) {
-  AnimationState *state = malloc(sizeof(AnimationState));
+  AnimationState *state = (AnimationState *)malloc(sizeof(AnimationState));
   state->skeleton = skeleton;
   state->current_clip = NULL;
   state->current_time = 0.0f;

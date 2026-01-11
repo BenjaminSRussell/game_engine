@@ -3,26 +3,31 @@
 // Purpose: Unified engine implementation integrating all systems
 //
 #include "../include/core/unified_engine.h"
-#include "../include/chunk/chunk.h"
-#include "../include/core/asset_manager.h"
-#include "../include/core/logger.h"
-#include "../include/core/memory.h"
-#include "../include/core/performance.h"
-#include "../include/ecs/ecs.h"
-#include "include/audio/audio.h"
+#include "../../game/minecraftv2/include/npc/npc.h" // For NPCSystem definition
+#include "../include/world/generator.h"
+#include "chunk/chunk.h"
+#include "core/asset_manager.h"
+#include "core/config_system.h"
 #include "core/game_module.h"
+#include "core/logger.h"
+#include "core/memory.h"
+#include "core/performance.h"
+#include "core/resource/vfs/vfs.h"
+#include "core/threading/job.h"
+#include "core/time_system.h"
+#include "ecs/ecs.h"
+#include "include/audio/audio.h"
+#include "include/ecs/components/npc.h"
 #include "include/platform/input/input.h"
 #include "include/rendering/renderer.h"
-#include "include/ecs/components/npc.h"
-#include "../include/physics/physics.h"
-#include "../include/physics/physics_internal.h"  // For PhysicsWorld struct definition
-#include "core/threading/job.h"
-#include "core/resource/vfs/vfs.h"
-#include "../include/world/generator.h"
-#include "../../game/minecraftv2/include/npc/npc.h"  // For NPCSystem definition
+#include "physics/physics.h"
+#include "physics/physics_internal.h"
+#include <core/hot_reload.h>
+#include <scene/scene_system.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <tools/profiler.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -136,6 +141,9 @@ bool engine_unified_init(Engine *engine, const EngineConfig *config) {
   engine->time_scale = 1.0f;
   engine->paused = false;
 
+  // Initialize profiler first
+  profiler_init();
+
   // Initialize time
   engine->start_time = get_high_res_time();
   engine->current_time = engine->start_time;
@@ -165,15 +173,16 @@ bool engine_unified_init(Engine *engine, const EngineConfig *config) {
   }
 
   // Initialize ECS first (Asset Manager may need it)
-  engine->ecs = (ECSWorld *)calloc(1, sizeof(World));  // sizeof(World), not ECSWorld
+  engine->ecs =
+      (ECSWorld *)calloc(1, sizeof(World)); // sizeof(World), not ECSWorld
   if (!engine->ecs) {
     LOG_ERROR("Failed to allocate ECS world");
     return false;
   }
-  ecs_world_init((World*)engine->ecs, 65536, 256, 64);  // Cast to World*
+  ecs_world_init((World *)engine->ecs, 65536, 256, 64); // Cast to World*
 
   // Initialize asset manager
-  engine->assets = asset_manager_create(256, (World *)engine->ecs);
+  engine->assets = asset_manager_create(256, (World *)engine->ecs, engine->vfs);
   if (!engine->assets) {
     LOG_ERROR("Failed to initialize asset manager");
     return false;
@@ -187,14 +196,44 @@ bool engine_unified_init(Engine *engine, const EngineConfig *config) {
   }
   physics_world_init(engine->physics, &config->gravity);
 
-  // Initialize renderer (placeholder - will be implemented)
-  // engine->renderer = renderer_create(...);
+  // Initialize renderer
+  engine->renderer = (Renderer *)renderer_create_with_backend(
+      RENDERER_TYPE_VOXEL, config->renderer_backend);
+  if (!engine->renderer) {
+    LOG_ERROR("Failed to create renderer");
+    return false;
+  }
 
-  // Initialize audio (placeholder)
-  // engine->audio = audio_system_create(...);
+  RendererInitParams render_params = {0};
+  render_params.width = config->window_width;
+  render_params.height = config->window_height;
+  render_params.type = RENDERER_TYPE_VOXEL;
+  render_params.backend = config->renderer_backend;
+  // render_params.window = ... (Platform window handle needs to be passed in
+  // platform_data eventually)
 
-  // Initialize input (placeholder)
-  // engine->input = input_system_create(...);
+  if (!RENDERER_INIT(engine->renderer, &render_params)) {
+    LOG_ERROR("Renderer initialization failed");
+    return false;
+  }
+
+  // Initialize audio
+  engine->audio = create_openal_audio_system();
+  if (engine->audio) {
+    AudioConfig audio_config = audio_create_default_config();
+    if (!engine->audio->init(engine->audio, &audio_config)) {
+      LOG_ERROR("Audio system initialization failed");
+    }
+  }
+
+  // Initialize input
+  engine->input = create_glfw_input_system();
+  if (engine->input) {
+    InputConfig input_config = input_create_default_config();
+    if (!engine->input->init(engine->input, &input_config)) {
+      LOG_ERROR("Input system initialization failed");
+    }
+  }
 
   // Initialize network (if enabled)
   if (config->enable_networking) {
@@ -218,7 +257,8 @@ bool engine_unified_init(Engine *engine, const EngineConfig *config) {
     LOG_ERROR("Failed to allocate NPC system");
     return false;
   }
-  npc_system_init(engine->npc_system, (World*)engine->ecs, engine->physics);  // Cast ECSWorld* to World*
+  npc_system_init(engine->npc_system, (World *)engine->ecs,
+                  engine->physics); // Cast ECSWorld* to World*
 
   // Initialize world generator
   engine->world_generator = (WorldGenerator *)calloc(1, sizeof(WorldGenerator));
@@ -241,6 +281,16 @@ bool engine_unified_init(Engine *engine, const EngineConfig *config) {
 
   // Initialize statistics
   memset(&engine->stats, 0, sizeof(EngineStats));
+
+  // Initialize scene manager
+  engine->scene_manager = (SceneManager *)calloc(1, sizeof(SceneManager));
+  if (engine->scene_manager) {
+    if (!scene_manager_init(engine->scene_manager)) {
+      LOG_WARN("Scene Manager initialization failed");
+    } else {
+      LOG_INFO("Scene Manager initialized");
+    }
+  }
 
   engine->state = ENGINE_STATE_RUNNING;
 
@@ -265,13 +315,8 @@ void engine_unified_shutdown(Engine *engine) {
   LOG_INFO("Shutting down engine...");
 
   // Shutdown game module
-  if (engine->game_shutdown) {
-    engine->game_shutdown(engine);
-  }
-
-  // Shutdown callbacks
-  if (engine->on_shutdown) {
-    engine->on_shutdown(engine);
+  if (engine->game_module && engine->game_module->shutdown) {
+    engine->game_module->shutdown(engine->game_module);
   }
 
   // Shutdown subsystems
@@ -281,6 +326,11 @@ void engine_unified_shutdown(Engine *engine) {
     }
     world_generator_free(engine->world_generator);
     free(engine->world_generator);
+  }
+
+  if (engine->scene_manager) {
+    scene_manager_shutdown(engine->scene_manager);
+    free(engine->scene_manager);
   }
 
   if (engine->npc_system) {
@@ -294,7 +344,7 @@ void engine_unified_shutdown(Engine *engine) {
   }
 
   if (engine->ecs) {
-    ecs_world_free((World*)engine->ecs);  // Cast to World*
+    ecs_world_free((World *)engine->ecs); // Cast to World*
     free(engine->ecs);
   }
 
@@ -317,6 +367,12 @@ void engine_unified_shutdown(Engine *engine) {
     free(engine->vfs);
   }
 
+  // Shutdown hot reload
+  hot_reload_shutdown();
+
+  // Shutdown profiler last
+  profiler_shutdown();
+
   // Shutdown integrated systems
   extern void engine_shutdown_integrated_systems(Engine * engine);
   engine_shutdown_integrated_systems(engine);
@@ -329,6 +385,9 @@ void engine_unified_update(Engine *engine) {
   if (!engine || engine->state != ENGINE_STATE_RUNNING || engine->paused) {
     return;
   }
+
+  // Update hot reload first
+  hot_reload_update();
 
   f64 update_start = get_high_res_time();
 
@@ -364,12 +423,19 @@ void engine_unified_update(Engine *engine) {
 
   // Update ECS systems
   if (engine->ecs) {
-    ecs_update_systems((World*)engine->ecs, engine->delta_time);  // Cast to World*
+    ecs_update_systems((World *)engine->ecs,
+                       engine->delta_time); // Cast to World*
   }
 
   // Update game module
-  if (engine->game_update) {
-    engine->game_update(engine, engine->delta_time);
+  if (engine->game_module) {
+    if (engine->game_module->handle_input) {
+      engine->game_module->handle_input(engine->game_module, engine);
+    }
+    if (engine->game_module->update) {
+      engine->game_module->update(engine->game_module, engine,
+                                  engine->delta_time);
+    }
   }
 
   // Update NPC system
@@ -377,9 +443,11 @@ void engine_unified_update(Engine *engine) {
     npc_update(engine->npc_system, engine->delta_time);
   }
 
-  // Update callbacks
-  if (engine->on_update) {
-    engine->on_update(engine, engine->delta_time);
+  // Poll input events
+  if (engine->input) {
+    if (engine->input->poll_events) {
+      engine->input->poll_events(engine->input);
+    }
   }
 
   f64 update_end = get_high_res_time();
@@ -397,29 +465,28 @@ void engine_unified_render(Engine *engine) {
   extern void engine_render_integrated_systems(Engine * engine);
   engine_render_integrated_systems(engine);
 
-  // Render callbacks
-  if (engine->on_render) {
-    engine->on_render(engine);
+  // Render game module
+  if (engine->game_module && engine->game_module->render) {
+    engine->game_module->render(engine->game_module, engine);
   }
 
   f64 render_end = get_high_res_time();
   engine->stats.render_time_ms = (f32)(render_end - render_start) * 1000.0f;
 }
 
-void engine_unified_run(Engine *engine) {
+void engine_unified_run(Engine *engine, GameModule *game_module) {
   if (!engine || engine->state != ENGINE_STATE_RUNNING) {
     return;
   }
 
-  // Initialize game module
-  if (engine->game_init && !engine->game_init(engine)) {
-    LOG_ERROR("Game module initialization failed");
-    return;
-  }
+  engine->game_module = game_module;
 
-  // Initialize callbacks
-  if (engine->on_init) {
-    engine->on_init(engine);
+  // Initialize game module
+  if (game_module && game_module->initialize) {
+    if (!game_module->initialize(game_module, engine)) {
+      LOG_ERROR("Game module initialization failed");
+      return;
+    }
   }
 
   LOG_INFO("Starting engine main loop");
@@ -433,6 +500,11 @@ void engine_unified_run(Engine *engine) {
   }
 
   LOG_INFO("Engine main loop ended");
+
+  // Shutdown game module
+  if (game_module && game_module->shutdown) {
+    game_module->shutdown(game_module);
+  }
 }
 
 // Control functions
@@ -523,6 +595,9 @@ ThreadPool *engine_get_thread_pool(Engine *engine) {
 VFS *engine_get_vfs(Engine *engine) { return engine ? engine->vfs : NULL; }
 NPCSystem *engine_get_npc_system(Engine *engine) {
   return engine ? engine->npc_system : NULL;
+}
+SceneManager *engine_get_scene_manager(Engine *engine) {
+  return engine ? engine->scene_manager : NULL;
 }
 
 // Platform events

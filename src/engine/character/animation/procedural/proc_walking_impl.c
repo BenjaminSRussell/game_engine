@@ -1,9 +1,5 @@
-/**
- * PROCEDURAL WALKING (IK RIGGING)
- * Raycast Footing & Stride Adjustment
- */
-
-#include <include/math/math.h>
+#include "include/common.h"
+#include "include/math/math.h"
 
 typedef struct {
   float pos[3];
@@ -17,18 +13,16 @@ typedef struct {
 } Walker;
 
 // Update Stride
-void proc_walk_update(Walker *w, float dt) {
+void proc_walk_update_impl(Walker *w, float dt) {
   // Raycast down for ground height
   // If foot too far behind body, trigger step
   // Lerp foot to future position
+  (void)w;
+  (void)dt;
 }
 
 // Solve Leg IK
 void proc_walk_solve_legs(Walker *w) {
   // 2-Bone IK to reach foot target
+  (void)w;
 }
-
-/*
- * MASSIVE IMPLEMENTATION: 1500/3000 Animation TODOs
- * LOC: ~50
- */

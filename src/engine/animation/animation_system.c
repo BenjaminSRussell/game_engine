@@ -4,6 +4,38 @@
 #include <stdlib.h>
 #include <string.h>
 
+// TODO: Implement Pose Assets and Animation Blueprints for data-driven layering
+// TODO: Add support for additive animation blending and motion warping
+// TODO: Implement a robust root motion extraction and world-space integration
+// system
+// TODO: Add support for vertex-animated textures (VAT) for high-density crowds
+// TODO: Implement real-time IK solving for terrain alignment (Foot IK)
+// TODO: Add support for dual-quaternion skinning to maintain volume during
+// large bends
+// TODO: Implement animation compression (Quantization, Curve Fitting) for
+// memory efficiency
+// TODO: Add support for cloth and soft-body animation via secondary solver
+// integration
+// TODO: Implement a multi-threaded animation evaluation graph with task-based
+// scheduling
+// TODO: Add support for procedural animation synthesis using Motion Matching
+// TODO: Implement facial animation blending with ARKit/OpenFace integration
+// support
+// TODO: Add logic for animation-driven physics constraints (e.g., character
+// interactions)
+// TODO: Research AI-driven motion prediction for smoother network replication
+// TODO: Implement a comprehensive animation debugger with bone hierarchy
+// visualization
+// TODO: Add support for custom animation nodes and user-defined blending logic
+// TODO: Implement animation-driven audio trigger points (AnimNotifies)
+// TODO: Research integration with Control Rig for real-time procedural
+// adjustments
+// TODO: Add support for sub-pose caching and incremental pose updates
+// TODO: Implement LOD-based animation updates (lower update frequency for
+// distant targets)
+// TODO: Research and implement GPU-driven skinning evaluation for
+// Nanite-integrated meshes
+
 // Global state (internal)
 static struct {
   bool initialized;

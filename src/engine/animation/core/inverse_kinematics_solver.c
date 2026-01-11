@@ -27,16 +27,17 @@
  * @param length_b Length of lower bone.
  * @param hint_dir Direction to bend the joint (Pole Vector).
  */
-void ik_solve_two_bone(vec3 root_pos, vec3 end_pos, vec3 *joint_pos,
-                       float length_a, float length_b, vec3 hint_dir) {
-  vec3 dir = vec3_sub(end_pos, root_pos);
+// ... (Wait, I should replace blocks, doing replace all via multiple chunks might be tedious. I'll use multi_replace for safer editing)
+void ik_solve_two_bone(Vec3 root_pos, Vec3 end_pos, Vec3 *joint_pos,
+                       float length_a, float length_b, Vec3 hint_dir) {
+  Vec3 dir = vec3_sub(end_pos, root_pos);
   float dist = vec3_length(dir);
 
   // Clamp distance to max reach
   if (dist > length_a + length_b) {
     dist = length_a + length_b;
     dir = vec3_normalize(dir);
-    end_pos = vec3_add(root_pos, vec3_scale(dir, dist));
+    end_pos = vec3_add(root_pos, vec3_mul(dir, dist));
   }
 
   // Law of Cosines to find angle at the root
@@ -56,31 +57,34 @@ void ik_solve_two_bone(vec3 root_pos, vec3 end_pos, vec3 *joint_pos,
   float angle = acosf(cos_angle);
 
   // Construct plane basis
-  vec3 forward = vec3_normalize(dir);
-  vec3 right = vec3_cross(forward, hint_dir);
+  Vec3 forward = vec3_normalize(dir);
+  Vec3 right = vec3_cross(forward, hint_dir);
   if (vec3_length_sq(right) < 0.001f) {
-    right = (vec3){1, 0, 0}; // Fallback
+    right = (Vec3){1, 0, 0}; // Fallback
   }
   right = vec3_normalize(right);
-  vec3 up = vec3_cross(right, forward); // Plane normal
+  Vec3 up = vec3_cross(right, forward); // Plane normal
 
   // Rotate forward vector by angle around 'up' (or 'right' depending on basis)
   // Simplified: Mid joint forms a triangle in the plane defined by start, end,
   // and slight hint
 
   // P_joint = P_root + rotate(forward, angle, axis=right) * length_a
-  quat q = quat_from_axis_angle(right,
-                                angle); // Rotate "up" from the forward vector?
+  Quat q = quat_from_axis_angle(right, angle); // Rotate "up" from the forward vector?
+
   // Actually, simpler geometric construction:
 
   // ... (Geometric circle intersection logic) ...
   // Calculate P_joint
+  
+  // (Note: The implementation seems incomplete there, but I am just fixing types for now)
+  // The original file ended at line 78 for this function.
 }
 
 /**
  * @brief FABRIK Solver for N-link chains.
  */
-void ik_solve_fabrik(vec3 *joints, int count, float *lengths, vec3 target,
+void ik_solve_fabrik(Vec3 *joints, int count, float *lengths, Vec3 target,
                      int iterations) {
   // Check reachability
   float max_reach = 0;
@@ -96,21 +100,21 @@ void ik_solve_fabrik(vec3 *joints, int count, float *lengths, vec3 target,
     }
   } else {
     // Iterative solve
-    vec3 root_pos = joints[0];
+    Vec3 root_pos = joints[0];
 
     for (int iter = 0; iter < iterations; iter++) {
       // BACKWARD: Set end to target, pull towards root
       joints[count - 1] = target;
       for (int i = count - 2; i >= 0; i--) {
-        vec3 dir = vec3_normalize(vec3_sub(joints[i], joints[i + 1]));
-        joints[i] = vec3_add(joints[i + 1], vec3_scale(dir, lengths[i]));
+        Vec3 dir = vec3_normalize(vec3_sub(joints[i], joints[i + 1]));
+        joints[i] = vec3_add(joints[i + 1], vec3_mul(dir, lengths[i]));
       }
 
       // FORWARD: Set root back to start, pull towards end
       joints[0] = root_pos;
       for (int i = 0; i < count - 1; i++) {
-        vec3 dir = vec3_normalize(vec3_sub(joints[i + 1], joints[i]));
-        joints[i + 1] = vec3_add(joints[i], vec3_scale(dir, lengths[i]));
+        Vec3 dir = vec3_normalize(vec3_sub(joints[i + 1], joints[i]));
+        joints[i + 1] = vec3_add(joints[i], vec3_mul(dir, lengths[i]));
       }
     }
   }

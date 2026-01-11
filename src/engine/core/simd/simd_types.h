@@ -20,7 +20,9 @@
     #endif
 #elif defined(__ARM_NEON) || defined(__aarch64__)
     #define SIMD_PLATFORM_ARM
-    #define SIMD_NEON
+    #ifndef SIMD_NEON
+        #define SIMD_NEON
+    #endif
 #endif
 
 // Alignment macros

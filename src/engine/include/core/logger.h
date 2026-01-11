@@ -57,10 +57,10 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include "include/common.h"
+#include "../common.h"
+#include <pthread.h>
 #include <stdio.h>
 #include <time.h>
-#include <pthread.h>
 
 typedef enum {
   LOG_LEVEL_DEBUG = 0,

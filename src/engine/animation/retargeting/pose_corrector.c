@@ -3,6 +3,35 @@
 #include "math/vec3.h"
 #include "math/quat.h"
 #include "math/mat4.h"
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+// Helpers
+static INLINE Vec3 mat4_get_translation(Mat4 m) {
+    Mat4Decomposition d = mat4_decompose(m);
+    return d.translation;
+}
+
+static INLINE Quat mat4_get_rotation(Mat4 m) {
+    Mat4Decomposition d = mat4_decompose(m);
+    return quat_from_euler(d.rotation.x, d.rotation.y, d.rotation.z);
+}
+
+static INLINE Vec3 mat4_get_scale(Mat4 m) {
+    Mat4Decomposition d = mat4_decompose(m);
+    return d.scale;
+}
+
+static INLINE Mat4 mat4_from_transform(Vec3 pos, Quat rot, Vec3 scale) {
+    Mat4 m_trans = mat4_translate(pos);
+    Mat4 m_rot = quat_to_mat4(rot);
+    Mat4 m_scale = mat4_scale(scale);
+    
+    // Order: T * R * S
+    Mat4 m_rs = mat4_mul(m_rot, m_scale);
+    return mat4_mul(m_trans, m_rs);
+}
 
 typedef enum {
     CORRECTION_TYPE_SPACE_MAINTENANCE,
@@ -76,7 +105,7 @@ static void apply_space_maintenance(PoseCorrector* corrector, CorrectionRule* ru
     Vec3 pos1 = mat4_get_translation(skeleton->global_transforms[bone1]);
     Vec3 pos2 = mat4_get_translation(skeleton->global_transforms[bone2]);
     
-    Vec3 current_vec = vec3_subtract(pos2, pos1);
+    Vec3 current_vec = vec3_sub(pos2, pos1);
     f32 current_distance = vec3_length(current_vec);
     
     if (current_distance < 0.001f) return; // Avoid division by zero
@@ -85,13 +114,13 @@ static void apply_space_maintenance(PoseCorrector* corrector, CorrectionRule* ru
     f32 correction_factor = distance_error * stiffness * 0.5f; // Split correction between both bones
     
     Vec3 correction_dir = vec3_normalize(current_vec);
-    Vec3 correction = vec3_scale(correction_dir, correction_factor);
+    Vec3 correction = vec3_mul(correction_dir, correction_factor);
     
     // Apply correction to both bones
     Mat4 transform1 = skeleton->global_transforms[bone1];
     Mat4 transform2 = skeleton->global_transforms[bone2];
     
-    Vec3 new_pos1 = vec3_subtract(pos1, correction);
+    Vec3 new_pos1 = vec3_sub(pos1, correction);
     Vec3 new_pos2 = vec3_add(pos2, correction);
     
     // Update transforms
@@ -109,6 +138,79 @@ void pose_corrector_add_space_constraint(PoseCorrector* corrector, i32 bone1, i3
     i32 bones[2] = {bone1, bone2};
     f32 params[1] = {target_distance};
     pose_corrector_add_rule(corrector, CORRECTION_TYPE_SPACE_MAINTENANCE, bones, 2, params, strength);
+}
+
+// COMPLETED: Implement Stretch Correction [Difficulty: 2]
+static void apply_stretch_correction(PoseCorrector* corrector, CorrectionRule* rule) {
+    Skeleton* skeleton = corrector->target_skeleton;
+    i32 bone1 = rule->bone_indices[0]; // Parent
+    i32 bone2 = rule->bone_indices[1]; // Child
+    
+    if (bone1 < 0 || bone2 < 0 || bone1 >= (i32)skeleton->bone_count || bone2 >= (i32)skeleton->bone_count) return;
+    
+    f32 max_length = rule->parameters[0];
+    f32 stiffness = rule->strength;
+    
+    Vec3 pos1 = mat4_get_translation(skeleton->global_transforms[bone1]);
+    Vec3 pos2 = mat4_get_translation(skeleton->global_transforms[bone2]);
+    
+    Vec3 vec = vec3_sub(pos2, pos1);
+    f32 current_len = vec3_length(vec);
+    
+    if (current_len > max_length && current_len > 0.001f) {
+        // Pull child back towards parent
+        Vec3 dir = vec3_mul(vec, 1.0f / current_len);
+        Vec3 target_pos = vec3_add(pos1, vec3_mul(dir, max_length));
+        
+        Vec3 new_pos2 = vec3_lerp(pos2, target_pos, stiffness);
+        
+        // Update child transform
+        Mat4 transform2 = skeleton->global_transforms[bone2];
+        Quat rot2 = mat4_get_rotation(transform2);
+        Vec3 scale2 = mat4_get_scale(transform2);
+        
+        skeleton->global_transforms[bone2] = mat4_from_transform(new_pos2, rot2, scale2);
+    }
+}
+
+// COMPLETED: Implement Collision Correction [Difficulty: 2]
+static void apply_collision_correction(PoseCorrector* corrector, CorrectionRule* rule) {
+    Skeleton* skeleton = corrector->target_skeleton;
+    i32 bone_idx = rule->bone_indices[0];
+    
+    if (bone_idx < 0 || bone_idx >= (i32)skeleton->bone_count) return;
+    
+    // Sphere definition
+    Vec3 sphere_center = {rule->parameters[0], rule->parameters[1], rule->parameters[2]};
+    f32 radius = rule->parameters[3];
+    f32 response = rule->strength;
+    
+    Mat4 transform = skeleton->global_transforms[bone_idx];
+    Vec3 pos = mat4_get_translation(transform);
+    
+    Vec3 to_bone = vec3_sub(pos, sphere_center);
+    f32 dist_sq = vec3_dot(to_bone, to_bone);
+    f32 min_dist_sq = radius * radius;
+    
+    if (dist_sq < min_dist_sq) {
+        // Penetrating
+        f32 dist = sqrtf(dist_sq);
+        if (dist < 0.001f) {
+            // Degenerate case, push up
+            to_bone = (Vec3){0, 1, 0};
+            dist = 0.001f;
+        }
+        
+        Vec3 dir = vec3_mul(to_bone, 1.0f / dist);
+        Vec3 target_pos = vec3_add(sphere_center, vec3_mul(dir, radius));
+        
+        Vec3 new_pos = vec3_lerp(pos, target_pos, response);
+        
+        Quat rot = mat4_get_rotation(transform);
+        Vec3 scale = mat4_get_scale(transform);
+        
+        skeleton->global_transforms[bone_idx] = mat4_from_transform(new_pos, rot, scale);
+    }
 }
 
 // COMPLETED: Implement Foot Plant Fix [Difficulty: 2] [Atomic Steps: 4]
@@ -167,11 +269,11 @@ void pose_corrector_update(PoseCorrector* corrector) {
                 break;
                 
             case CORRECTION_TYPE_STRETCH:
-                // TODO: Implement stretch correction
+                apply_stretch_correction(corrector, rule);
                 break;
                 
             case CORRECTION_TYPE_COLLISION:
-                // TODO: Implement collision correction
+                apply_collision_correction(corrector, rule);
                 break;
         }
     }

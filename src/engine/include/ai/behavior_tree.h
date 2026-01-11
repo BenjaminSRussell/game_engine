@@ -1,10 +1,10 @@
 #ifndef BEHAVIOR_TREE_H
 #define BEHAVIOR_TREE_H
 
-#include <core/logger.h>
-#include <core/types.h>
-#include <math/vec2.h>
-#include <math/vec3.h>
+#include "../core/logger.h"
+#include "../core/types.h"
+#include "../math/vec2.h"
+#include "../math/vec3.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <time.h>
@@ -49,6 +49,7 @@ typedef enum {
 
   // AGENT_AI_1 Phase 4: Utility AI Integration
   BT_NODE_UTILITY_SELECTOR, // Composite - uses utility scoring to select child
+  BT_NODE_GOAP_GOAL,        // Action - Plans and executes a GOAP goal
 
   BT_NODE_COUNT // Total number of node types
 } BTNodeType;

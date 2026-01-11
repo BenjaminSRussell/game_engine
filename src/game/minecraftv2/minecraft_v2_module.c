@@ -26,7 +26,7 @@
 #include <rendering/renderer.h>
 #include <stdlib.h>
 #include <string.h>
-// #include <vfx/particle_system.h>
+// #include <effects/vfx/particle_system.h>
 
 // Minecraft v2 specific includes (these will be gradually migrated)
 #include <audio/audio_system.h>
@@ -40,7 +40,7 @@
 #include <player/player.h>
 #include <tech/crafting.h>
 #include <ui/hud.h>
-// #include <vfx/particle_system.h>
+// #include <effects/vfx/particle_system.h>
 #include <weather/weather.h>
 #include <world/generator.h>
 

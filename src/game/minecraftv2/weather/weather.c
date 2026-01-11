@@ -84,7 +84,6 @@ static f32 weather_random_f32(u32 *seed) {
   return (f32)weather_random(seed) / (f32)UINT32_MAX;
 }
 
-static f32 lerp(f32 a, f32 b, f32 t) { return a + (b - a) * t; }
 
 // static Vec3 vec3_lerp removed - using math/vec3.h implementation
 

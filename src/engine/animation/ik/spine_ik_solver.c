@@ -3,7 +3,55 @@
 #include "math/vec3.h"
 #include "math/quat.h"
 #include "math/mat4.h"
+#include "core/utils.h"
 #include <math.h>
+#include <stdlib.h>
+
+#ifndef PI
+#define PI 3.14159265359f
+#endif
+
+#define clampf(v, min, max) fmaxf(min, fminf(max, v))
+
+// Helper: Quat from Mat4 (Assuming pure rotation)
+static Quat quat_from_mat4_local(Mat4 m) {
+    float trace = m.m00 + m.m11 + m.m22;
+    if (trace > 0.0f) {
+        float s = 0.5f / sqrtf(trace + 1.0f);
+        return quat(
+            0.25f / s,
+            (m.m21 - m.m12) * s,
+            (m.m02 - m.m20) * s,
+            (m.m10 - m.m01) * s
+        );
+    } else {
+        if (m.m00 > m.m11 && m.m00 > m.m22) {
+            float s = 2.0f * sqrtf(1.0f + m.m00 - m.m11 - m.m22);
+            return quat(
+                (m.m21 - m.m12) / s,
+                0.25f * s,
+                (m.m01 + m.m10) / s,
+                (m.m02 + m.m20) / s
+            );
+        } else if (m.m11 > m.m22) {
+            float s = 2.0f * sqrtf(1.0f + m.m11 - m.m00 - m.m22);
+            return quat(
+                (m.m02 - m.m20) / s,
+                (m.m01 + m.m10) / s,
+                0.25f * s,
+                (m.m12 + m.m21) / s
+            );
+        } else {
+            float s = 2.0f * sqrtf(1.0f + m.m22 - m.m00 - m.m11);
+            return quat(
+                (m.m10 - m.m01) / s,
+                (m.m02 + m.m20) / s,
+                (m.m12 + m.m21) / s,
+                0.25f * s
+            );
+        }
+    }
+}
 
 // ✅ COMPLETED: Define Spine Chain [Difficulty: 1] [Atomic Steps: 4]
 // 1. Array of bone indices (Pelvis -> ... -> Neck).
@@ -55,9 +103,9 @@ static void spine_ik_solve_fabrik(SpineIK* ik, Skeleton* skeleton, Vec3 target_p
         i32 bone_idx = ik->bone_indices[i];
         if (bone_idx >= 0 && bone_idx < skeleton->bone_count) {
             positions[i] = vec3(
-                skeleton->global_transforms[bone_idx].m[3][0],
-                skeleton->global_transforms[bone_idx].m[3][1],
-                skeleton->global_transforms[bone_idx].m[3][2]
+                skeleton->global_transforms[bone_idx].m30,
+                skeleton->global_transforms[bone_idx].m31,
+                skeleton->global_transforms[bone_idx].m32
             );
         }
     }
@@ -74,19 +122,19 @@ static void spine_ik_solve_fabrik(SpineIK* ik, Skeleton* skeleton, Vec3 target_p
         
         for (i32 i = ik->bone_count - 2; i >= 0; i--) {
             Vec3 direction = vec3_normalize(vec3_sub(positions[i + 1], positions[i]));
-            positions[i] = vec3_sub(positions[i + 1], vec3_scale(direction, bone_lengths[i]));
+            positions[i] = vec3_sub(positions[i + 1], vec3_mul(direction, bone_lengths[i]));
         }
         
         // Backward pass: restore root position
         positions[0] = vec3(
-            skeleton->global_transforms[ik->bone_indices[0]].m[3][0],
-            skeleton->global_transforms[ik->bone_indices[0]].m[3][1],
-            skeleton->global_transforms[ik->bone_indices[0]].m[3][2]
+            skeleton->global_transforms[ik->bone_indices[0]].m30,
+            skeleton->global_transforms[ik->bone_indices[0]].m31,
+            skeleton->global_transforms[ik->bone_indices[0]].m32
         );
         
         for (u32 i = 0; i < ik->bone_count - 1; i++) {
             Vec3 direction = vec3_normalize(vec3_sub(positions[i + 1], positions[i]));
-            positions[i + 1] = vec3_add(positions[i], vec3_scale(direction, bone_lengths[i]));
+            positions[i + 1] = vec3_add(positions[i], vec3_mul(direction, bone_lengths[i]));
         }
         
         // Check convergence
@@ -102,15 +150,15 @@ static void spine_ik_solve_fabrik(SpineIK* ik, Skeleton* skeleton, Vec3 target_p
         i32 bone_idx = ik->bone_indices[i];
         if (bone_idx >= 0 && bone_idx < skeleton->bone_count) {
             Vec3 current_pos = vec3(
-                skeleton->global_transforms[bone_idx].m[3][0],
-                skeleton->global_transforms[bone_idx].m[3][1],
-                skeleton->global_transforms[bone_idx].m[3][2]
+                skeleton->global_transforms[bone_idx].m30,
+                skeleton->global_transforms[bone_idx].m31,
+                skeleton->global_transforms[bone_idx].m32
             );
             
             Vec3 new_pos = vec3_lerp(current_pos, positions[i], ik->stiffness);
-            skeleton->global_transforms[bone_idx].m[3][0] = new_pos.x;
-            skeleton->global_transforms[bone_idx].m[3][1] = new_pos.y;
-            skeleton->global_transforms[bone_idx].m[3][2] = new_pos.z;
+            skeleton->global_transforms[bone_idx].m30 = new_pos.x;
+            skeleton->global_transforms[bone_idx].m31 = new_pos.y;
+            skeleton->global_transforms[bone_idx].m32 = new_pos.z;
         }
     }
 }
@@ -189,7 +237,8 @@ static void spine_ik_update_breathing(SpineIK* ik, Skeleton* skeleton, f32 dt) {
             
             // Apply to bone
             Mat4 breath_matrix = quat_to_mat4(breath_rotation);
-            breath_matrix.m[3][1] += breath_offset.y;
+            // .m31 is translation Y
+            breath_matrix.m31 += breath_offset.y;
             skeleton->global_transforms[bone_idx] = 
                 mat4_mul(skeleton->global_transforms[bone_idx], breath_matrix);
         }
@@ -288,28 +337,13 @@ void spine_ik_update(SpineIK* ik, Skeleton* skeleton, Vec3 target_pos, Vec3 velo
             i32 bone_idx = ik->bone_indices[i];
             if (bone_idx >= 0 && bone_idx < skeleton->bone_count) {
                 ik->original_positions[i] = vec3(
-                    skeleton->global_transforms[bone_idx].m[3][0],
-                    skeleton->global_transforms[bone_idx].m[3][1],
-                    skeleton->global_transforms[bone_idx].m[3][2]
+                    skeleton->global_transforms[bone_idx].m30,
+                    skeleton->global_transforms[bone_idx].m31,
+                    skeleton->global_transforms[bone_idx].m32
                 );
-                // Extract rotation from matrix
+                // Extract rotation from matrix using helper
                 Mat4 matrix = skeleton->global_transforms[bone_idx];
-                f32 trace = matrix.m[0][0] + matrix.m[1][1] + matrix.m[2][2];
-                if (trace > 0.0f) {
-                    f32 s = sqrtf(trace + 1.0f) * 0.5f;
-                    f32 rs = 1.0f / (4.0f * s);
-                    ik->original_rotations[i].w = s;
-                    ik->original_rotations[i].x = (matrix.m[2][1] - matrix.m[1][2]) * rs;
-                    ik->original_rotations[i].y = (matrix.m[0][2] - matrix.m[2][0]) * rs;
-                    ik->original_rotations[i].z = (matrix.m[1][0] - matrix.m[0][1]) * rs;
-                } else {
-                    f32 s = sqrtf(1.0f - trace) * 0.5f;
-                    f32 rs = 1.0f / (4.0f * s);
-                    ik->original_rotations[i].w = s;
-                    ik->original_rotations[i].x = (matrix.m[2][1] - matrix.m[1][2]) * rs;
-                    ik->original_rotations[i].y = (matrix.m[0][2] - matrix.m[2][0]) * rs;
-                    ik->original_rotations[i].z = (matrix.m[1][0] - matrix.m[0][1]) * rs;
-                }
+                ik->original_rotations[i] = quat_from_mat4_local(matrix);
             }
         }
         originals_stored = true;

@@ -7,6 +7,10 @@
 #include <math.h>
 #include <stdlib.h>
 
+#ifndef PI
+#define PI 3.14159265359f
+#endif
+
 // Helper: create quaternion that rotates 'from' vector to 'to' vector
 static Quat quat_from_to_vectors(Vec3 from, Vec3 to) {
     Vec3 cross = vec3_cross(from, to);
@@ -14,9 +18,9 @@ static Quat quat_from_to_vectors(Vec3 from, Vec3 to) {
     
     if (dot < -0.999999f) {
         // Vectors are opposite, find orthogonal vector
-        Vec3 ortho = vec3_cross((Vec3){1, 0, 0}, from);
+        Vec3 ortho = vec3_cross(vec3(1, 0, 0), from);
         if (vec3_length_sq(ortho) < 0.01f) {
-            ortho = vec3_cross((Vec3){0, 1, 0}, from);
+            ortho = vec3_cross(vec3(0, 1, 0), from);
         }
         ortho = vec3_normalize(ortho);
         return quat_from_axis_angle(ortho, PI);
@@ -32,7 +36,7 @@ static Quat quat_from_to_vectors(Vec3 from, Vec3 to) {
 
 // Helper: get position from Mat4 (translation component)
 static Vec3 mat4_get_translation(Mat4 m) {
-    return vec3(m.data[12], m.data[13], m.data[14]);
+    return vec3(m.m30, m.m31, m.m32);
 }
 
 // ✅ COMPLETED: Define Hand IK Struct [Difficulty: 1] [Atomic Steps: 4]

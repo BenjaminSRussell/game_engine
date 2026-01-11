@@ -16,9 +16,12 @@ void animation_sample_clip(AnimationClip *clip, f32 time, Pose *out_pose) {
 
   // Handle looping/duration
   if (clip->duration > 0.0f) {
-    // Simple mod for looping
-    // TODO: Use AnimationState for loop control
-    time = fmodf(time, clip->duration);
+    if (clip->looping) {
+        time = fmodf(time, clip->duration);
+    } else {
+        if (time > clip->duration) time = clip->duration;
+        if (time < 0.0f) time = 0.0f;
+    }
   }
 
   out_pose->bone_count = clip->channel_count; // Assuming 1 channel per bone map

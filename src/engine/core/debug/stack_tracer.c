@@ -21,7 +21,9 @@
 // Capture and resolve call stacks for crash reporting and profiling
 
 #define STACK_HASH_SEED 0x9E3779B9
+#ifndef MAX_MODULE_PATH
 #define MAX_MODULE_PATH 256
+#endif
 
 static ModuleInfo g_modules[64];
 static size_t g_module_count = 0;

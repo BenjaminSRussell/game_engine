@@ -347,7 +347,7 @@ void survival_manager_update(SurvivalManager *mgr, f32 delta_time) {
 }
 
 void survival_apply_difficulty(SurvivalManager *mgr,
-                               DifficultyLevel difficulty) {
+                               Difficulty difficulty) {
   if (!mgr)
     return;
 
@@ -373,6 +373,14 @@ void survival_apply_difficulty(SurvivalManager *mgr,
     mgr->base_damage_scale = 1.5f;
     mgr->base_hunger_drain_rate = 1.5f;
     mgr->base_mob_spawn_rate = 1.5f;
+    break;
+  case DIFFICULTY_EXTREME:
+    mgr->base_damage_scale = 2.0f;
+    mgr->base_hunger_drain_rate = 2.0f;
+    mgr->base_mob_spawn_rate = 2.0f;
+    break;
+  case DIFFICULTY_COUNT:
+    // Fallthrough or handle default
     break;
   }
 

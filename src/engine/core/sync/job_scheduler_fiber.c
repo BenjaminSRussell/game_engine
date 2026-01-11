@@ -12,7 +12,10 @@
 #else
 #include <pthread.h>
 #include <sched.h>
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include <ucontext.h>
+#pragma clang diagnostic pop
 #endif
 
 /**
@@ -122,7 +125,10 @@ static void switch_to_fiber(Fiber *from, Fiber *to) {
 // POSIX context switching using ucontext
 static void switch_to_fiber(Fiber *from, Fiber *to) {
     if (from && to) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         swapcontext((ucontext_t*)from->fiber_handle, (ucontext_t*)to->fiber_handle);
+#pragma clang diagnostic pop
     }
 }
 #endif
@@ -185,11 +191,14 @@ static bool create_fiber_pool(size_t pool_size, size_t stack_size) {
         }
         
         ucontext_t *uc = (ucontext_t*)fiber->fiber_handle;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         getcontext(uc);
         uc->uc_stack.ss_sp = fiber->stack_memory;
         uc->uc_stack.ss_size = stack_size;
         uc->uc_link = NULL;
         makecontext(uc, (void(*)())fiber_entry_point, 1, fiber);
+#pragma clang diagnostic pop
 #endif
     }
     

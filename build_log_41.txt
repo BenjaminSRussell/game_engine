@@ -1,8 +1,0 @@
-[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/training/rl_gym_env.c.o
-/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/training/rl_gym_env.c:11:3: error: unknown type name 'bool'
-   11 |   bool done;
-      |   ^
-1 error generated.
-make[2]: *** [CMakeFiles/Engine.dir/src/engine/ai/training/rl_gym_env.c.o] Error 1
-make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
-make: *** [all] Error 2

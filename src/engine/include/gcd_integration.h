@@ -5,10 +5,6 @@
 #include <stdbool.h>
 #include <stdatomic.h>
 
-#ifdef __APPLE__
-#include <Foundation/Foundation.h>
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif

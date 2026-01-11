@@ -320,9 +320,7 @@ void audio_disable_category(const char *category) {
 // ASSET INTEGRATION
 // ============================================================================
 
-void *asset_importer_load_audio(const char *path) {
-  return audio_load_sound_buffer(path);
-}
+// asset_importer_load_audio is defined in asset_importer.c
 
 void *asset_manager_create(u32 initial_capacity, void *world) {
   return calloc(1, 256); // Placeholder

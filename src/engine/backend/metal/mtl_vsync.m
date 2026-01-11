@@ -14,6 +14,9 @@
 #import <stdlib.h>
 #import <string.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 // ============================================================================
 // Internal Structures
 // ============================================================================
@@ -295,3 +298,5 @@ void metal_vsync_manager_destroy(metal_vsync_manager_t *manager) {
 
   free(manager);
 }
+
+#pragma clang diagnostic pop

@@ -18,7 +18,6 @@
 #include <block/block.h>
 #include <block/block_states.h>
 #include <block/interaction.h>
-#include <include/rendering/lighting.h>
 #include <block/mining.h>
 #include <chunk/chunk.h>
 #include <chunk/chunk_buffers.h>
@@ -26,17 +25,20 @@
 #include <combat/combat_animations.h>
 #include <common.h>
 #include <config/config.h>
+#include <core/memory/pool.h>
+#include <core/resource/vfs/vfs.h>
+#include <core/threading/job.h>
 #include <crafting/advanced_crafting.h>
 #include <crafting/furnace.h>
 #include <crafting/resource_processing.h>
 #include <ecs/ecs.h>
 #include <game/mode.h>
-#include <include/platform/input/controls.h>
 #include <include/core/memory.h>
-#include <core/memory/pool.h>
+#include <include/ecs/components/npc.h>
+#include <include/platform/input/controls.h>
+#include <include/rendering/lighting.h>
 #include <include/rendering/mesh.h>
 #include <npc/dialogue_manager.h>
-#include <include/ecs/components/npc.h>
 #include <npc/npc_combat_behavior.h>
 #include <npc/npc_housing.h>
 #include <npc/npc_jobs.h>
@@ -52,11 +54,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <tech/solar_energy.h>
-#include <core/threading/job.h>
 #include <ui/hud.h>
 #include <ui/menu.h>
 #include <ui/menu_renderer.h>
-#include <core/resource/vfs/vfs.h>
 #include <weather/weather.h>
 #include <world/dungeon_generation.h>
 #include <world/generator.h>
@@ -77,11 +77,11 @@
 #include <ecs/component_ids.h>
 #include <ecs/components/health.h>
 #include <ecs/components/rigidbody.h>
-#include <player/player.h>
-#include <physics/physics_system.h>
-#include <unistd.h>
 #include <inventory/inventory.h>
 #include <inventory/item_registry.h>
+#include <physics/physics_system.h>
+#include <player/player.h>
+#include <unistd.h>
 
 // Forward declare texture loading functions
 bool texture_load_atlas(VulkanRenderer *renderer, VFS *vfs,
@@ -251,7 +251,8 @@ typedef struct {
   SolarEnergySystem solar_system;
 
   // Advanced crafting
-  // AdvancedCraftingSystem advanced_crafting_system; // Disabled - type not defined
+  // AdvancedCraftingSystem advanced_crafting_system; // Disabled - type not
+  // defined
 
   // Combat
   CombatSystem combat_system;
@@ -341,7 +342,8 @@ static void render_input_profile_menu(void) {
 }
 
 // Global weather system access for other systems
-WeatherSystem *g_weather_system = NULL;
+// WeatherSystem *g_weather_system = NULL; // Defined in gamestate_main.c
+extern WeatherSystem *g_weather_system;
 
 static f32 g_avg_gen_ms = 0.0f;
 static f32 g_avg_mesh_ms = 0.0f;
@@ -446,7 +448,8 @@ static void mesh_generation_job(void *data) {
   Mesh mesh;
   mesh_init(&mesh, 65536, 131072);
 
-  // mesh_generate_chunk(&mesh, job->chunk, job->registry, job->options); // Disabled - function not declared
+  // mesh_generate_chunk(&mesh, job->chunk, job->registry, job->options); //
+  // Disabled - function not declared
 
   // Post-process: Optimize vertex cache
   mesh_optimize_vertex_cache(&mesh);
@@ -1421,7 +1424,6 @@ static void camera_controller_update(f32 delta_time) {
   g_game.camera.fov = g_camera_controller.current_fov;
 }
 
-
 static void detect_renderer_capabilities(void) {
   LOG_INFO("Detecting renderer capabilities...");
 }
@@ -1515,7 +1517,7 @@ static void update_mining_effects(f32 delta_time) {
   // Play mining sound effects
   sound_timer += delta_time;
   f32 sound_interval = 0.3f; // Play sound every 300ms
-  
+
   ItemID current_tool = ITEM_AIR; // Default to no tool
 
   if (sound_timer >= sound_interval) {
@@ -1903,9 +1905,15 @@ static InitResult init_renderer(void) {
   LOG_INFO("Vulkan renderer initialized successfully");
   return (InitResult){true, INIT_SUCCESS, "Renderer initialized"};
 #else
+#ifdef __APPLE__
+  // macOS/iOS: Use Metal renderer
+  LOG_INFO("Metal renderer ready (initialized via MTKView)");
+  return (InitResult){true, INIT_SUCCESS, "Metal renderer ready"};
+#else
   LOG_WARN("Vulkan not built - renderer disabled");
   return (InitResult){true, INIT_SUCCESS,
                       "Renderer disabled (no Vulkan build)"};
+#endif
 #endif
 }
 
@@ -1993,13 +2001,14 @@ static InitResult init_plant_vfx(void) {
 
 static InitResult init_physics(void) {
   Vec3 gravity = vec3(0.0f, g_game.config.gravity, 0.0f);
-  
+
   PhysicsConfig config = physics_config_get_default();
   config.gravity = gravity;
-  
+
   g_game.physics_world = physics_world_create(config);
   if (!g_game.physics_world) {
-      return (InitResult){false, INIT_ERROR_PHYSICS, "Failed to create physics world"};
+    return (InitResult){false, INIT_ERROR_PHYSICS,
+                        "Failed to create physics world"};
   }
 
   // Validate physics parameters
@@ -2296,10 +2305,10 @@ static void game_init(void) {
   // Initialize player system
   init_progress_update_stage("Player System");
   player_system_init(&g_game.player_system, &g_game.input_state, &g_game.config,
-                     &g_game.game_mode, g_game.physics_world,
-                     &g_game.ecs_world, &g_game.chunk_manager,
-                     &g_game.block_registry, &g_game.camera,
-                     &g_game.combat_system, &g_game.audio_system);
+                     &g_game.game_mode, g_game.physics_world, &g_game.ecs_world,
+                     &g_game.chunk_manager, &g_game.block_registry,
+                     &g_game.camera, &g_game.combat_system,
+                     &g_game.audio_system);
 
   // Initialize NPC visuals
   init_progress_update_stage("NPC Visuals");
@@ -2314,8 +2323,9 @@ static void game_init(void) {
     EntityID npc = npc_create(&g_game.npc_system, npc_pos, NPC_TYPE_ZOMBIE);
     if (npc != 0) {
       // Give the NPC health
-      HealthComponent *health =
-          ecs_get_component(&g_game.ecs_world, (Entity){.id = npc, .generation = 0}, HEALTH_COMPONENT_ID);
+      HealthComponent *health = ecs_get_component(
+          &g_game.ecs_world, (Entity){.id = npc, .generation = 0},
+          HEALTH_COMPONENT_ID);
       if (health) {
         health->health = 20.0f;
         health->max_health = 20.0f;
@@ -2619,8 +2629,13 @@ static void game_update(void) {
       Vec3 spawn_point = find_suitable_spawn_point();
       camera_set_position(&g_game.camera, spawn_point);
       if (g_game.player_system.player) {
-        TransformComponent *trans = (TransformComponent*)ecs_get_component(&g_game.ecs_world, (Entity){.id = g_game.player_system.player->entity_id, .generation = 0}, TRANSFORM_COMPONENT_ID);
-        if (trans) trans->position = spawn_point;
+        TransformComponent *trans = (TransformComponent *)ecs_get_component(
+            &g_game.ecs_world,
+            (Entity){.id = g_game.player_system.player->entity_id,
+                     .generation = 0},
+            TRANSFORM_COMPONENT_ID);
+        if (trans)
+          trans->position = spawn_point;
       }
 
       // Initialize spawn point marker
@@ -2728,7 +2743,7 @@ static void game_update(void) {
         // Record/replay and state hashing are now wrapped around
         // physics_system_update (PHY-014)
         if (g_game.physics_world) {
-            physics_world_step(g_game.physics_world, dt);
+          physics_world_step(g_game.physics_world, dt);
         }
         g_game.physics_accumulator -= dt;
       }
@@ -2823,7 +2838,8 @@ static void game_update(void) {
           weather_get_transition_progress(&g_game.weather_system);
       g_game.hud.weather_type = (u32)current_weather;
       g_game.hud.weather_intensity = weather_intensity;
-      // hud_update_weather(&g_game.hud, (u32)current_weather, weather_intensity, transition_progress);
+      // hud_update_weather(&g_game.hud, (u32)current_weather,
+      // weather_intensity, transition_progress);
 
       // Audio reverb zones: IMPLEMENTED (room size and material properties).
       // Audio occlusion: IMPLEMENTED (sounds behind walls/blocks).
@@ -2893,9 +2909,11 @@ static void game_update(void) {
       // hud_tick(&g_game.hud, g_game.delta_time);
 
       // Update game mode
-      if (g_game.game_mode.mode == GAME_MODE_SURVIVAL) {
+      if (g_game.game_mode.mode == GAME_MODE_SURVIVAL &&
+          g_game.player_system.player) {
         survival_update(&g_game.game_mode, &g_game.ecs_world,
-                        (Entity){.id = g_game.player_system.player->entity_id, .generation = 0},
+                        (Entity){.id = g_game.player_system.player->entity_id,
+                                 .generation = 0},
                         g_game.delta_time);
       }
 
@@ -2921,9 +2939,8 @@ static void game_update(void) {
           {
             // Use modern ECS query API
             QueryDesc query_desc = {
-              .all_components = (ComponentType[]){NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID},
-              .all_count = 2,
-              .any_components = NULL,
+              .all_components = (ComponentType[]){NPC_COMPONENT_ID,
+          TRANSFORM_COMPONENT_ID}, .all_count = 2, .any_components = NULL,
               .any_count = 0,
               .none_components = NULL,
               .none_count = 0,
@@ -2972,8 +2989,8 @@ static void game_update(void) {
       fz = forward.z;
       if (g_game.player_system.player &&
           g_game.player_system.player->physics_body) {
-        Vec3 vel = rigid_body_get_velocity(
-            g_game.player_system.player->physics_body);
+        Vec3 vel =
+            rigid_body_get_velocity(g_game.player_system.player->physics_body);
         f32 spd2 = vel.x * vel.x + vel.z * vel.z;
         if (spd2 > 0.25f) {
           fx = vel.x;

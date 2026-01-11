@@ -72,6 +72,9 @@ add_custom_target(validate_assets
     COMMENT "Validating assets (PNG sizes, atlas constraints)"
 )
 
+# Include new Unreal Engine parity systems
+include(cmake/new_systems.cmake)
+
 add_custom_target(compile_shaders
     COMMAND ${CMAKE_SOURCE_DIR}/src/engine/scripts/compile_shaders.sh
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -139,6 +142,7 @@ if(APPLE)
     set(CORE_OBJC_SOURCES 
         src/engine/core/integration/render_world.m
         src/engine/core/integration/scene_renderer.m
+        src/engine/platform/macos/macos_optimizations.m
     )
     set_source_files_properties(${CORE_OBJC_SOURCES} PROPERTIES LANGUAGE OBJC COMPILE_FLAGS "-fobjc-arc")
 endif()
@@ -468,3 +472,14 @@ endmacro()
 # )
 # 
 # message(STATUS "Render Graph tests configured: test_frame_graph")
+
+# ===========================================
+# Full Integration Verification
+# ===========================================
+add_executable(full_integration_test src/engine/core/integration/full_engine_test.c)
+target_link_libraries(full_integration_test PRIVATE Engine)
+target_include_directories(full_integration_test PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+)
+message(STATUS "Verification target added: full_integration_test")

@@ -1,6 +1,6 @@
 // Environmental effects implementation
-#include <world/environmental_effects.h>
-#include <core/logger.h> // Assuming logger exists
+#include <weather/environmental_effects.h>
+#include <core/logger.h>
 #include <world/biome_features.h>
 #include <math.h>
 #include <string.h>

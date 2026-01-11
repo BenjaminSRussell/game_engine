@@ -1,8 +1,9 @@
 #ifndef GOAP_ENHANCED_H
 #define GOAP_ENHANCED_H
 
-#include <ai/goap.h>
-#include <core/types.h>
+#include "../../core/types.h"
+#include "../../math/vec3.h"
+#include "../goap.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus
@@ -151,7 +152,10 @@ Vec3 goap_state_get_vector(const GoapWorldStateEnhanced *state, GoapAtomID atom,
 
 // === Phase 6: Enhanced Action Definitions ===
 
-typedef struct {
+typedef struct GoapActionEnhanced GoapActionEnhanced;
+typedef struct GoapPlan GoapPlan; // Forward declaration for GoapPlan
+
+struct GoapActionEnhanced {
   char name[64];
   float cost;
   float duration;
@@ -159,6 +163,17 @@ typedef struct {
   // Preconditions & effects using bitfields
   GoapWorldStateEnhanced preconditions;
   GoapWorldStateEnhanced effects;
+
+  // Hierarchical GOAP (Phase 9)
+  // If set, this action is a "Macro" action that expands into a sub-plan
+  GoapPlan *sub_plan;
+  bool is_macro;
+
+  // Dynamic Cost (Utility / Phase 10)
+  // Allows the cost to change based on agent state (e.g., hunger makes "Eat"
+  // cheaper)
+  float (*calculate_dynamic_cost)(void *agent,
+                                  const GoapWorldStateEnhanced *world_state);
 
   // Procedural checks
   bool (*check_precondition)(void *agent,
@@ -174,7 +189,7 @@ typedef struct {
   int execution_count;
   float total_execution_time;
   float average_duration;
-} GoapActionEnhanced;
+};
 
 // Action API
 GoapActionEnhanced *goap_action_create_enhanced(const char *name, float cost);
@@ -217,11 +232,11 @@ typedef struct GoapPlannerState {
   int max_depth_reached;
 } GoapPlannerState;
 
-typedef struct {
+struct GoapPlan {
   const GoapActionEnhanced **actions;
   int action_count;
   int max_plan_length;
-} GoapPlan;
+};
 
 // Planner API
 GoapPlannerState *goap_planner_create_state(int capacity);

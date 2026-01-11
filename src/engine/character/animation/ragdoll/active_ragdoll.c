@@ -1,11 +1,21 @@
-#include "animation/ragdoll/active_ragdoll.h"
+#include "include/common.h"
 
-void active_ragdoll_init() {}
+void ragdoll_init(void) {}
 
-void active_ragdoll_create(void *skeleton, void *physics_world) {}
-
-void active_ragdoll_drive_to_pose(void *ragdoll, void *target_pose, float strength) {
-    // Use motors to drive ragdoll towards animated pose
+void ragdoll_update(void *ragdoll, float dt) {
+  // Simulate physics
+  (void)ragdoll;
+  (void)dt;
 }
 
-void active_ragdoll_update(void *ragdoll, float dt) {}
+void ragdoll_apply_force(void *ragdoll, int bone_index, float force[3]) {
+  (void)ragdoll;
+  (void)bone_index;
+  (void)force;
+}
+
+void ragdoll_blend_to_anim(void *ragdoll, void *anim_pose, float blend_factor) {
+  (void)ragdoll;
+  (void)anim_pose;
+  (void)blend_factor;
+}

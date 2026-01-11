@@ -5,13 +5,17 @@
 #define GLTF_LOADER_H
 
 #include <common.h>
+#include <include/rendering/mesh.h>
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
-#include <include/rendering/mesh.h>
 
 #ifdef VULKAN_BUILD
 #include <include/rendering/vulkan.h>
+#else
+// Vulkan type stubs for non-Vulkan builds
+typedef void *VkBuffer;
+typedef void *VkDeviceMemory;
 #endif
 
 // Forward declarations

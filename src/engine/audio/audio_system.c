@@ -17,7 +17,37 @@
 // TODO: Add audio category volume control tests
 // TODO: Add weather audio integration tests
 // TODO: Add audio performance benchmarking tests
-// TODO: Add audio error handling and recovery tests
+// TODO: Implement HRTF (Head-Related Transfer Function) for true 3D binaural
+// spatialization
+// TODO: Add support for real-time audio convolution reverb using impulse
+// responses
+// TODO: Implement dynamic audio occlusion using raymarching through the Voxel
+// GI volume
+// TODO: Add logic for Doppler shift based on listener/source relative velocity
+// TODO: Implement audio streaming for large music files with double buffering
+// and lookahead
+// TODO: Add support for spectral analysis (FFT) for music-driven visual effects
+// TODO: Research and implement audio voice clustering for massive crowd
+// simulations
+// TODO: Implement sample-accurate synchronization for sequence-based audio
+// events
+// TODO: Add support for compressed audio formats (MP3/FLAC) via secondary
+// loaders
+// TODO: Implement a node-based audio graph for complex procedural sound design
+// TODO: Add support for side-chaining and dynamic range compression per submix
+// TODO: Implement multi-platform audio backend selection (WASAPI, ALSA,
+// CoreAudio)
+// TODO: Add support for MIDI input/output for external tool integration
+// TODO: Implement a virtual microphone system for in-game recording and
+// playback
+// TODO: Add logic for material-dependent audio reflections and absorption
+// TODO: Research AI-driven noise reduction and voice clarity processing
+// TODO: Implement a robust audio debugger with real-time waveform and spectrum
+// visualization
+// TODO: Add support for spatialized audio zones with smooth portal-based
+// transitions
+// TODO: Research and implement physical modeling synthesis for dynamic sound
+// generation
 //
 // Key Flows:
 // 1. **Initialization (`audio_system_init`):** Sets up the `miniaudio` engine,
@@ -1129,9 +1159,9 @@ void audio_update_weather_sounds(AudioSystem *sys, WeatherSystem *weather,
   }
 }
 
-void Audio_SendToOutput(const float* samples, size_t sample_count) {
-    // TODO: Implement audio output routing for Dolby Atmos integration
-    // For now, this is a stub to allow compilation of atmos_integration.c
-    (void)samples;
-    (void)sample_count;
+void Audio_SendToOutput(const float *samples, size_t sample_count) {
+  // TODO: Implement audio output routing for Dolby Atmos integration
+  // For now, this is a stub to allow compilation of atmos_integration.c
+  (void)samples;
+  (void)sample_count;
 }

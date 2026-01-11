@@ -38,30 +38,30 @@
 #ifndef QUAT_H
 #define QUAT_H
 
-#include <common.h>
-#include "include/math/mat4.h"
-#include "include/math/vec3.h"
+#include "../common.h"
+#include "mat4.h"
+#include "vec3.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 
 // Quaternion validation structure
 typedef struct {
-    bool has_nan;
-    bool has_inf;
-    bool is_valid;
-    bool is_normalized;
-    f32 length;
+  bool has_nan;
+  bool has_inf;
+  bool is_valid;
+  bool is_normalized;
+  f32 length;
 } QuatValidation;
 
 // Quaternion statistics structure
 typedef struct {
-    u64 operations_count;
-    u64 simd_operations_count;
-    u64 cache_hits;
-    u64 cache_misses;
-    u64 normalizations_count;
-    f64 total_operation_time;
+  u64 operations_count;
+  u64 simd_operations_count;
+  u64 cache_hits;
+  u64 cache_misses;
+  u64 normalizations_count;
+  f64 total_operation_time;
 } QuatStatistics;
 
 // Quaternion for rotations (w, x, y, z)
@@ -128,12 +128,14 @@ Quat quat_normalize_optimized(Quat q);
 Vec3 quat_rotate_vec3_optimized(Quat q, Vec3 v);
 
 // Debug visualization helpers
-const char* quat_to_string(Quat q, char* buffer, size_t buffer_size);
+const char *quat_to_string(Quat q, char *buffer, size_t buffer_size);
 void quat_print(Quat q);
 
 // Batch operations
-void quat_mul_batch_avx2(const Quat *a, const Quat *b, Quat *result, size_t count);
+void quat_mul_batch_avx2(const Quat *a, const Quat *b, Quat *result,
+                         size_t count);
 void quat_normalize_batch_avx2(const Quat *input, Quat *output, size_t count);
-void quat_rotate_vec3_batch(const Quat *quaternions, const Vec3 *vectors, Vec3 *result, size_t count);
+void quat_rotate_vec3_batch(const Quat *quaternions, const Vec3 *vectors,
+                            Vec3 *result, size_t count);
 
 #endif // QUAT_H

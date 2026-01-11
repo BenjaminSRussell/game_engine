@@ -16,7 +16,7 @@
 // =================================================================================================
 
 typedef struct BlendSample {
-  vec2 point; // X=Direction (-180 to 180), Y=Speed (0 to 600)
+  Vec2 point; // X=Direction (-180 to 180), Y=Speed (0 to 600)
   uint32_t clip_id;
 } BlendSample;
 
@@ -29,7 +29,7 @@ typedef struct BlendSpace2D {
   int sample_count;
   BlendTriangle triangles[32]; // Triangulation of points
   int triangle_count;
-  vec2 min_val, max_val;
+  Vec2 min_val, max_val;
 } BlendSpace2D;
 
 // =================================================================================================
@@ -39,10 +39,10 @@ typedef struct BlendSpace2D {
 /**
  * @brief Computes barycentric weights for a point inside a triangle.
  */
-vec3 get_barycentric_weights(vec2 p, vec2 a, vec2 b, vec2 c) {
-  vec2 v0 = vec2_sub(b, a);
-  vec2 v1 = vec2_sub(c, a);
-  vec2 v2 = vec2_sub(p, a);
+Vec3 get_barycentric_weights(Vec2 p, Vec2 a, Vec2 b, Vec2 c) {
+  Vec2 v0 = vec2_sub(b, a);
+  Vec2 v1 = vec2_sub(c, a);
+  Vec2 v2 = vec2_sub(p, a);
 
   float d00 = vec2_dot(v0, v0);
   float d01 = vec2_dot(v0, v1);
@@ -56,21 +56,21 @@ vec3 get_barycentric_weights(vec2 p, vec2 a, vec2 b, vec2 c) {
   float w = (d00 * d21 - d01 * d20) / denom;
   float u = 1.0f - v - w;
 
-  return (vec3){u, v, w};
+  return (Vec3){u, v, w};
 }
 
-void blend_space_evaluate(BlendSpace2D *bs, vec2 input, Pose *out_pose) {
+void blend_space_evaluate(BlendSpace2D *bs, Vec2 input, Pose *out_pose) {
   // 1. Find which triangle the input falls into
   BlendTriangle *tri = NULL;
-  vec3 weights;
+  Vec3 weights;
 
   for (int i = 0; i < bs->triangle_count; i++) {
-    vec2 p0 = bs->samples[bs->triangles[i].idx0].point;
-    vec2 p1 = bs->samples[bs->triangles[i].idx1].point;
-    vec2 p2 = bs->samples[bs->triangles[i].idx2].point;
+    Vec2 p0 = bs->samples[bs->triangles[i].idx0].point;
+    Vec2 p1 = bs->samples[bs->triangles[i].idx1].point;
+    Vec2 p2 = bs->samples[bs->triangles[i].idx2].point;
 
     weights = get_barycentric_weights(input, p0, p1, p2);
-
+    
     if (weights.x >= 0 && weights.y >= 0 && weights.z >= 0) {
       tri = &bs->triangles[i];
       break;

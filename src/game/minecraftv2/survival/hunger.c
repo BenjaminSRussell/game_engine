@@ -7,37 +7,37 @@
 // Food database with balanced nutritional values
 static const Food FOOD_DATABASE[FOOD_TYPE_COUNT] = {
   // FOOD_TYPE_APPLE
-  {FOOD_TYPE_APPLE, 4.0f, 2.4f, 1.0f, true, 0, 0.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_APPLE, 4.0f, 2.4f, 1.0f, true, 0, 0.0f, 0.0f},
   // FOOD_TYPE_BREAD
-  {FOOD_TYPE_BREAD, 5.0f, 6.0f, 1.5f, true, 0, 0.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_BREAD, 5.0f, 6.0f, 1.5f, true, 0, 0.0f, 0.0f},
   // FOOD_TYPE_MEAT_COOKED
-  {FOOD_TYPE_MEAT_COOKED, 8.0f, 12.8f, 1.6f, true, 0, 0.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_MEAT_COOKED, 8.0f, 12.8f, 1.6f, true, 0, 0.0f, 0.0f},
   // FOOD_TYPE_MEAT_RAW
-  {FOOD_TYPE_MEAT_RAW, 3.0f, 1.8f, 1.6f, true, 0, 0.0f, 0.0f, 0.3f},
+  {FOOD_TYPE_MEAT_RAW, 3.0f, 1.8f, 1.6f, true, 0, 0.0f, 0.3f},
   // FOOD_TYPE_FISH
-  {FOOD_TYPE_FISH, 2.0f, 0.4f, 1.2f, true, 0, 0.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_FISH, 2.0f, 0.4f, 1.2f, true, 0, 0.0f, 0.0f},
   // FOOD_TYPE_CARROT
-  {FOOD_TYPE_CARROT, 3.0f, 3.6f, 1.2f, true, 0, 0.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_CARROT, 3.0f, 3.6f, 1.2f, true, 0, 0.0f, 0.0f},
   // FOOD_TYPE_POTATO
-  {FOOD_TYPE_POTATO, 1.0f, 0.6f, 1.2f, true, 0, 0.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_POTATO, 1.0f, 0.6f, 1.2f, true, 0, 0.0f, 0.0f},
   // FOOD_TYPE_STEW
-  {FOOD_TYPE_STEW, 7.0f, 8.4f, 1.8f, true, 0, 0.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_STEW, 7.0f, 8.4f, 1.8f, true, 0, 0.0f, 0.0f},
   // FOOD_TYPE_CAKE
-  {FOOD_TYPE_CAKE, 14.0f, 2.8f, 2.0f, true, 0, 0.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_CAKE, 14.0f, 2.8f, 2.0f, true, 0, 0.0f, 0.0f},
   // FOOD_TYPE_COOKIE
-  {FOOD_TYPE_COOKIE, 2.0f, 0.4f, 0.8f, true, 0, 0.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_COOKIE, 2.0f, 0.4f, 0.8f, true, 0, 0.0f, 0.0f},
   // FOOD_TYPE_PUMPKIN_PIE
-  {FOOD_TYPE_PUMPKIN_PIE, 8.0f, 4.8f, 1.6f, true, 0, 0.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_PUMPKIN_PIE, 8.0f, 4.8f, 1.6f, true, 0, 0.0f, 0.0f},
   // FOOD_TYPE_GOLDEN_APPLE
-  {FOOD_TYPE_GOLDEN_APPLE, 4.0f, 9.6f, 1.6f, true, 1, 30.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_GOLDEN_APPLE, 4.0f, 9.6f, 1.6f, true, 1, 30.0f, 0.0f},
   // FOOD_TYPE_ENCHANTED_GOLDEN_APPLE
-  {FOOD_TYPE_ENCHANTED_GOLDEN_APPLE, 4.0f, 9.6f, 1.6f, true, 2, 300.0f, 0.0f, 0.0f},
+  {FOOD_TYPE_ENCHANTED_GOLDEN_APPLE, 4.0f, 9.6f, 1.6f, true, 2, 300.0f, 0.0f},
   // FOOD_TYPE_ROTTEN_FLESH
-  {FOOD_TYPE_ROTTEN_FLESH, 4.0f, 0.8f, 1.6f, true, 3, 30.0f, 0.8f, 0.0f},
+  {FOOD_TYPE_ROTTEN_FLESH, 4.0f, 0.8f, 1.6f, true, 3, 30.0f, 0.8f},
   // FOOD_TYPE_SPIDER_EYE
-  {FOOD_TYPE_SPIDER_EYE, 2.0f, 3.2f, 1.0f, true, 4, 5.0f, 1.0f, 0.0f},
+  {FOOD_TYPE_SPIDER_EYE, 2.0f, 3.2f, 1.0f, true, 4, 5.0f, 1.0f},
   // FOOD_TYPE_POISONOUS_POTATO
-  {FOOD_TYPE_POISONOUS_POTATO, 1.0f, 1.2f, 1.2f, true, 4, 5.0f, 0.6f, 0.0f}
+  {FOOD_TYPE_POISONOUS_POTATO, 1.0f, 1.2f, 1.2f, true, 4, 5.0f, 0.6f}
 };
 
 void hunger_component_init(HungerComponent* hunger) {

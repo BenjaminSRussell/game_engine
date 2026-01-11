@@ -45,7 +45,7 @@
 #ifndef VEC3_H
 #define VEC3_H
 
-#include "common.h"
+#include "../common.h"
 #include <math.h>
 
 #include <stdbool.h>
@@ -76,7 +76,6 @@ typedef union __attribute__((aligned(16))) {
   struct {
     f32 x, y, z;
   };
-
 
 } Vec3;
 

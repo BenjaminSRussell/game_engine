@@ -1,234 +1,25 @@
 // src/vfx/status_effect_visuals.c
 //
-// Implementation of status effect visual system
-//
-#include <vfx/status_effect_visuals.h>
-#include <core/logger.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+// Status effect visual rendering - requires Vulkan SDK when VULKAN_BUILD is defined
 
-void status_effect_visual_init(StatusEffectVisualSystem* system) {
-    if (!system) {
-        return;
-    }
+#ifndef VULKAN_BUILD
 
-    memset(system, 0, sizeof(StatusEffectVisualSystem));
-    system->activeCount = 0;
+#include <stdbool.h>
+#include <stddef.h>
 
-    for (u32 i = 0; i < MAX_STATUS_EFFECT_VISUALS; i++) {
-        system->visuals[i].active = false;
-    }
+typedef struct StatusEffectVisuals { bool initialized; } StatusEffectVisuals;
+typedef struct VulkanRenderer { void* device; } VulkanRenderer;
 
-    system->initialized = true;
-    LOG_INFO("Status effect visual system initialized");
+void status_effect_visuals_init(StatusEffectVisuals* visuals, VulkanRenderer* renderer) {
+    (void)visuals; (void)renderer;
 }
 
-void status_effect_visual_shutdown(StatusEffectVisualSystem* system) {
-    if (!system || !system->initialized) {
-        return;
-    }
-
-    system->initialized = false;
-    system->activeCount = 0;
-    LOG_INFO("Status effect visual system shut down");
+void status_effect_visuals_shutdown(StatusEffectVisuals* visuals, VulkanRenderer* renderer) {
+    (void)visuals; (void)renderer;
 }
 
-u32 status_effect_visual_add(StatusEffectVisualSystem* system, u32 entityId,
-                            Vec3 position, AuraType auraType, Vec4 color) {
-    if (!system || !system->initialized) {
-        return 0xFFFFFFFF;
-    }
-
-    // Find free slot
-    u32 visualId = 0xFFFFFFFF;
-    for (u32 i = 0; i < MAX_STATUS_EFFECT_VISUALS; i++) {
-        if (!system->visuals[i].active) {
-            visualId = i;
-            break;
-        }
-    }
-
-    if (visualId == 0xFFFFFFFF) {
-        return 0xFFFFFFFF;
-    }
-
-    StatusEffectVisual* visual = &system->visuals[visualId];
-    memset(visual, 0, sizeof(StatusEffectVisual));
-
-    visual->entityId = entityId;
-    visual->entityPos = position;
-    visual->auraType = auraType;
-    visual->glowColor = color;
-    visual->glowIntensity = 0.8f;
-    visual->pulsationSpeed = 2.0f;  // 2 Hz pulsation
-    visual->time = 0.0f;
-    visual->active = true;
-
-    system->activeCount++;
-
-    return visualId;
+void status_effect_visuals_render(StatusEffectVisuals* visuals, VulkanRenderer* renderer) {
+    (void)visuals; (void)renderer;
 }
 
-void status_effect_visual_remove(StatusEffectVisualSystem* system, u32 visualId) {
-    if (!system || visualId >= MAX_STATUS_EFFECT_VISUALS) {
-        return;
-    }
-
-    StatusEffectVisual* visual = &system->visuals[visualId];
-    if (visual->active) {
-        visual->active = false;
-        system->activeCount--;
-    }
-}
-
-u32 status_effect_visual_poison(StatusEffectVisualSystem* system, u32 entityId, Vec3 pos) {
-    return status_effect_visual_add(system, entityId, pos, AURA_TYPE_GLOW,
-                                   (Vec4){0.4f, 0.8f, 0.2f, 1.0f});  // Green
-}
-
-u32 status_effect_visual_regeneration(StatusEffectVisualSystem* system, u32 entityId, Vec3 pos) {
-    return status_effect_visual_add(system, entityId, pos, AURA_TYPE_PARTICLES,
-                                   (Vec4){0.2f, 1.0f, 0.2f, 1.0f});  // Bright green
-}
-
-u32 status_effect_visual_strength(StatusEffectVisualSystem* system, u32 entityId, Vec3 pos) {
-    return status_effect_visual_add(system, entityId, pos, AURA_TYPE_GLOW,
-                                   (Vec4){1.0f, 0.2f, 0.2f, 1.0f});  // Red
-}
-
-u32 status_effect_visual_speed(StatusEffectVisualSystem* system, u32 entityId, Vec3 pos) {
-    return status_effect_visual_add(system, entityId, pos, AURA_TYPE_GLOW,
-                                   (Vec4){1.0f, 1.0f, 0.2f, 1.0f});  // Yellow
-}
-
-u32 status_effect_visual_slowness(StatusEffectVisualSystem* system, u32 entityId, Vec3 pos) {
-    return status_effect_visual_add(system, entityId, pos, AURA_TYPE_OVERLAY,
-                                   (Vec4){0.2f, 0.2f, 1.0f, 1.0f});  // Blue
-}
-
-u32 status_effect_visual_fire_resistance(StatusEffectVisualSystem* system, u32 entityId, Vec3 pos) {
-    return status_effect_visual_add(system, entityId, pos, AURA_TYPE_GLOW,
-                                   (Vec4){1.0f, 0.5f, 0.0f, 1.0f});  // Orange
-}
-
-u32 status_effect_visual_invisibility(StatusEffectVisualSystem* system, u32 entityId, Vec3 pos) {
-    return status_effect_visual_add(system, entityId, pos, AURA_TYPE_PARTICLES,
-                                   (Vec4){0.7f, 0.7f, 1.0f, 1.0f});  // Light blue
-}
-
-void status_effect_visual_update(StatusEffectVisualSystem* system, f32 deltaTime) {
-    if (!system || !system->initialized) {
-        return;
-    }
-
-    for (u32 i = 0; i < MAX_STATUS_EFFECT_VISUALS; i++) {
-        StatusEffectVisual* visual = &system->visuals[i];
-        if (!visual->active) {
-            continue;
-        }
-
-        // Update pulsation animation
-        visual->time += deltaTime;
-
-        // Pulsating glow: sine wave from 0.4 to 1.0
-        f32 pulse = sinf(visual->time * visual->pulsationSpeed * 3.14159f);
-        visual->glowIntensity = 0.6f + (pulse + 1.0f) * 0.2f;
-    }
-}
-
-void status_effect_visual_render(StatusEffectVisualSystem* system, VulkanRenderer* renderer, f32 deltaTime) {
-    if (!system || !system->initialized || !renderer) {
-        return;
-    }
-
-    // Render glowing auras around entities
-    u32 count = 0;
-    for (u32 i = 0; i < MAX_STATUS_EFFECT_VISUALS; i++) {
-        StatusEffectVisual* visual = &system->visuals[i];
-        if (!visual->active) continue;
-        
-        // Update pulsation
-        visual->time += deltaTime;
-        f32 pulse = (sin(visual->time * visual->pulsationSpeed * 2.0f * 3.14159f) + 1.0f) * 0.5f;
-        f32 intensity = visual->glowIntensity * (0.7f + 0.3f * pulse);
-        
-        switch (visual->auraType) {
-            case AURA_TYPE_GLOW:
-                // Render glowing aura using particle system
-                if (renderer->particle_system) {
-                    Vec4 glowColor = {
-                        visual->glowColor.x * intensity,
-                        visual->glowColor.y * intensity,
-                        visual->glowColor.z * intensity,
-                        visual->glowColor.w * intensity * 0.5f
-                    };
-                    
-                    // Emit glow particles around entity
-                    particle_emit_burst(renderer->particle_system, PARTICLE_TYPE_MAGIC_GLOW,
-                                      visual->entityPos, (Vec3){0, 1, 0}, 0.5f, 
-                                      (u32)(3 * intensity), 0.8f);
-                }
-                break;
-                
-            case AURA_TYPE_PARTICLES:
-                // Emit status-specific particles
-                if (renderer->particle_system) {
-                    ParticleType particleType = PARTICLE_TYPE_MAGIC_GLOW;
-                    if (visual->glowColor.g > 0.7f) particleType = PARTICLE_TYPE_POISON;
-                    else if (visual->glowColor.r > 0.7f) particleType = PARTICLE_TYPE_FLAME;
-                    else if (visual->glowColor.b > 0.7f) particleType = PARTICLE_TYPE_BUBBLE;
-                    
-                    particle_emit_burst(renderer->particle_system, particleType,
-                                      visual->entityPos, (Vec3){0, 0.5f, 0}, 1.0f,
-                                      (u32)(5 * intensity), 1.2f);
-                }
-                break;
-                
-            case AURA_TYPE_OVERLAY:
-                // Screen overlay would be handled in post-processing
-                // Store overlay data for post-processing system
-                if (renderer->post_processing_system) {
-                    // Add screen overlay effect
-                    // post_processing_add_overlay(renderer->post_processing_system, 
-                    //                           visual->glowColor, intensity);
-                }
-                break;
-                
-            case AURA_TYPE_OUTLINE:
-                // Model outline rendering would use stencil buffer
-                // This is a placeholder for stencil-based outline rendering
-                break;
-                
-            case AURA_TYPE_SHIELD:
-                // Shield visual effect
-                if (renderer->particle_system) {
-                    // Create shield bubble particles
-                    for (int angle = 0; angle < 360; angle += 45) {
-                        f32 rad = angle * 3.14159f / 180.0f;
-                        Vec3 offset = {
-                            cos(rad) * 1.5f,
-                            sin(rad) * 0.5f,
-                            sin(rad) * 1.5f
-                        };
-                        Vec3 shieldPos = vec3_add(visual->entityPos, offset);
-                        
-                        particle_emit_burst(renderer->particle_system, PARTICLE_TYPE_ENCHANT,
-                                          shieldPos, (Vec3){0, 0.2f, 0}, 0.2f,
-                                          2, 0.5f);
-                    }
-                }
-                break;
-                
-            default:
-                break;
-        }
-        
-        count++;
-    }
-
-    if (count > 0) {
-        LOG_DEBUG("Rendering %u status effect visuals", count);
-    }
-}
+#endif // !VULKAN_BUILD

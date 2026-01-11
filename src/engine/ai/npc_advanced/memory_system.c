@@ -1,6 +1,25 @@
-#include "ai/npc_advanced/memory_system.h"
+#include "../../include/ai/npc_advanced/memory_system.h"
 #include <ai/npc/perception_system.h>
 #include <core/logger.h>
+// ai/npc_advanced/memory_system.c
+// Advanced AI Memory and Knowledge Graph system.
+//
+// TODO: Implement Knowledge Graph (RDF-like) for storing world facts and
+// relations.
+// TODO: Add support for Episodic Memory (past events) with temporal decay.
+// TODO: Implement Sensory Memory for short-term spatial awareness.
+// TODO: Add support for belief-propagation between agents (Knowledge Sharing).
+// TODO: Implement forgetting-mechanisms based on priority and age.
+// TODO: Add support for "False Memories" and deception logic for high-fidelity
+// NPCs.
+// TODO: Implement spatial-memory querying for "where was I last?" logic.
+// TODO: Add support for hierarchical memory (Global -> Local -> Immediate).
+// TODO: Research and implement Neural-Memory integration for pattern
+// recognition.
+// TODO: Implement a query language (SPARQL-lite) for memory retrieval.
+// TODO: Add support for emotion-weighted memory priority.
+
+#include <common.h>
 #include <core/memory.h>
 #include <include/math/math.h>
 #include <stdlib.h>
@@ -607,6 +626,92 @@ const char *memory_importance_to_string(MemoryImportance importance) {
   }
 }
 
+// ===========================================================================================
+// PHASE 12: KNOWLEDGE GRAPH
+// ===========================================================================================
+
+void memory_add_node(MemoryAgent *agent, EntityID entity_id, const char *name) {
+  if (!agent || agent->node_count >= 64)
+    return;
+
+  // Check if node already exists
+  for (u32 i = 0; i < agent->node_count; i++) {
+    if (agent->nodes[i].entity_id == entity_id) {
+      if (name) {
+        strncpy(agent->nodes[i].name, name, sizeof(agent->nodes[i].name) - 1);
+      }
+      return;
+    }
+  }
+
+  MemoryNode *node = &agent->nodes[agent->node_count++];
+  memset(node, 0, sizeof(MemoryNode));
+  node->entity_id = entity_id;
+  if (name) {
+    strncpy(node->name, name, sizeof(node->name) - 1);
+  }
+}
+
+void memory_add_edge(MemoryAgent *agent, EntityID from_id, EntityID to_id,
+                     MemoryRelation relation, f32 strength) {
+  if (!agent)
+    return;
+
+  MemoryNode *from_node = memory_get_node(agent, from_id);
+  if (!from_node) {
+    memory_add_node(agent, from_id, NULL);
+    from_node = memory_get_node(agent, from_id);
+  }
+
+  if (!from_node || from_node->edge_count >= 16)
+    return;
+
+  // Check if edge already exists
+  for (u32 i = 0; i < from_node->edge_count; i++) {
+    if (from_node->edges[i].target_id == to_id &&
+        from_node->edges[i].relation == relation) {
+      from_node->edges[i].strength = strength;
+      from_node->edges[i].timestamp = 0; // Should use actual time
+      return;
+    }
+  }
+
+  MemoryEdge *edge = &from_node->edges[from_node->edge_count++];
+  edge->target_id = to_id;
+  edge->relation = relation;
+  edge->strength = strength;
+  edge->timestamp = 0; // Should use actual time
+}
+
+MemoryNode *memory_get_node(MemoryAgent *agent, EntityID entity_id) {
+  if (!agent)
+    return NULL;
+
+  for (u32 i = 0; i < agent->node_count; i++) {
+    if (agent->nodes[i].entity_id == entity_id) {
+      return &agent->nodes[i];
+    }
+  }
+
+  return NULL;
+}
+
+bool memory_has_relation(MemoryAgent *agent, EntityID from_id, EntityID to_id,
+                         MemoryRelation relation) {
+  MemoryNode *from_node = memory_get_node(agent, from_id);
+  if (!from_node)
+    return false;
+
+  for (u32 i = 0; i < from_node->edge_count; i++) {
+    if (from_node->edges[i].target_id == to_id &&
+        from_node->edges[i].relation == relation) {
+      return from_node->edges[i].strength > 0.1f;
+    }
+  }
+
+  return false;
+}
+
 void memory_agent_print_stats(const MemoryAgent *agent) {
   if (!agent)
     return;
@@ -614,6 +719,7 @@ void memory_agent_print_stats(const MemoryAgent *agent) {
   LOG_INFO("=== Memory Stats for %s ===", agent->name);
   LOG_INFO("STM Count: %u / %d", agent->stm.count, MEMORY_STM_CAPACITY);
   LOG_INFO("LTM Count: %u / %d", agent->ltm.count, MEMORY_LTM_CAPACITY);
+  LOG_INFO("Node Count: %u / 64", agent->node_count);
   LOG_INFO("Total Created: %u", agent->stats.total_memories_created);
   LOG_INFO("Total Decayed: %u", agent->stats.total_memories_decayed);
   LOG_INFO("Consolidations: %u", agent->stats.total_consolidations);

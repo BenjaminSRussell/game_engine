@@ -118,14 +118,28 @@ create_mtl_compile_options(const metal_compile_options_t *options) {
   // Set optimization level
   switch (options->optimization_level) {
   case METAL_OPTIMIZATION_NONE:
-    // Note: Metal doesn't have a direct "no optimization" mode
-    mtlOptions.fastMathEnabled = NO;
+    if (@available(macOS 15.0, *)) {
+      mtlOptions.mathMode = MTLMathModeSafe;
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+      mtlOptions.fastMathEnabled = NO;
+#pragma clang diagnostic pop
+    }
     break;
   case METAL_OPTIMIZATION_SIZE:
   case METAL_OPTIMIZATION_SPEED:
   case METAL_OPTIMIZATION_DEFAULT:
   default:
-    mtlOptions.fastMathEnabled = options->fast_math_enabled ? YES : NO;
+    if (@available(macOS 15.0, *)) {
+      mtlOptions.mathMode =
+          options->fast_math_enabled ? MTLMathModeFast : MTLMathModeSafe;
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+      mtlOptions.fastMathEnabled = options->fast_math_enabled ? YES : NO;
+#pragma clang diagnostic pop
+    }
     break;
   }
 

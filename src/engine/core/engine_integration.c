@@ -8,6 +8,24 @@
 #include <core/engine_core.h>
 #include <core/game_module.h>
 #include <core/logger.h>
+// core/engine_integration.c
+// High-level Subsystem Integration and Lifecycle management.
+//
+// TODO: Implement a robust Scripting Bridge (Lua/Python) for game-logic
+// extension.
+// TODO: Add support for live-code hot-reloading (shared-library swapping).
+// TODO: Implement a cross-subsystem messaging bus (Event Bus).
+// TODO: Add support for distributed engine services (Headless-Server mode).
+// TODO: Implement a global engine-profiler with visual-frame-pacing analysis.
+// TODO: Add support for multi-viewport rendering (Split-screen / Editor-view).
+// TODO: Implement a robust startup-dependency graph for subsystem
+// initialization.
+// TODO: Add support for engine-side crash-reporting and telemetry.
+// TODO: Implement a unified asset-database for rapid cross-subsystem querying.
+// TODO: Research and implement AI-driven performance optimization (Dynamic
+// Budgeting).
+
+#include <common.h>
 #include <stdlib.h>
 #include <string.h>
 

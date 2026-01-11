@@ -25,7 +25,7 @@ static f32 calculate_position_error(Vec3 pos1, Vec3 pos2) {
 }
 
 static f32 calculate_rotation_error(Quat rot1, Quat rot2) {
-    Quat diff = quat_multiply(quat_inverse(rot1), rot2);
+    Quat diff = quat_mul(quat_inverse(rot1), rot2);
     f32 angle = 2.0f * acosf(fminf(1.0f, fabsf(diff.w)));
     return fabsf(angle);
 }

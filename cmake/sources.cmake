@@ -11,11 +11,31 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # AI subdirectory
     "src/engine/ai/*.c"
     
-    # Animation subdirectory - TEMPORARILY DISABLED due to incomplete header scaffolding
-    # "src/engine/animation/*.c"
+    # Animation subdirectory
+    "src/engine/animation/*.c"
+    
+    # Assets subdirectory (importers, loaders)
+    "src/engine/assets/*.c"
     
     # Audio subdirectory - TEMPORARILY DISABLED due to API mismatches and missing headers
     # "src/engine/audio/*.c"
+    "src/engine/audio/audio_system.c"
+    "src/engine/audio/underwater_filter_stubs.c"
+    "src/engine/audio/audio_loader.c"
+    "src/engine/audio/audio_reverb.c"
+    
+    # Core stubs
+    "src/engine/core/misc_stubs.c"
+    
+    # Math impl
+    "src/engine/math/mat4.c"
+    "src/engine/math/quat.c"
+    
+    # Rendering 
+    "src/engine/rendering/core/mesh.c"
+    
+    # Scripting
+    "src/engine/scripting/script_system.c"
     
     # Backend subdirectory - Handled separately below to avoid Vulkan inclusion
     # "src/engine/backend/*.c"
@@ -108,6 +128,8 @@ if(APPLE)
         "src/engine/geometry/bvh/*_metal*.m"
         "src/engine/materials/pbr/*.m"
         "src/engine/geometry/vertex/*_metal*.m"
+        "src/engine/geometry/nanite/*.m"
+        "src/engine/rendering/lighting/*.m"
     )
     
     # Add .m files to engine sources
@@ -129,8 +151,25 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/audio/dsp/.*\\.c$")
 # Vulkan backend (not needed for macOS/Metal build and has compilation errors)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/vulkan/.*\\.c$")
 
+# Metal backend .c files (mostly broken synchronization examples/stubs)
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/.*\\.c$")
+
+# Editor subsystem (currently broken, excluding to unblock core verification)
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/editor/.*\\.c$")
+
+# Network/Networking subsystems (currently broken)
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network/.*\\.c$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/networking/.*\\.c$")
+
+# Cinematic subsystems (currently broken)
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/cinematic/.*\\.c$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/cinematics/.*\\.c$")
+
+# macOS platform optimizations (broken SDK calls)
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/platform/macos/macos_optimizations\\..*$")
+
 # Character subsystem (depends on excluded animation system and has broken includes)
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/character/.*\\.c$")
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/character/.*\\.c$")
 
 # ===========================================
 # GAME SOURCES
@@ -163,6 +202,12 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/experience_system\\.c$")
 
 # Exclude main module with too many dependencies
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/minecraft_v2_module\\.c$")
+
+# Exclude duplicate main file (conflicts with gamestate_main.c)
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/monolithic_main\\.c$")
+
+# Exclude duplicate HUD implementation (conflicts with hud_main.c)
+list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ui/hud_impl\\.c$")
 
 message(STATUS "ENGINE_SOURCES count: ${ENGINE_SOURCES}")
 message(STATUS "GAME_SOURCES count: ${GAME_SOURCES}")

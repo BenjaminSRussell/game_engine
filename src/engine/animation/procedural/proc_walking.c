@@ -4,6 +4,9 @@
 #include "math/quat.h"
 #include "math/mat4.h"
 #include "physics/physics.h"
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
 
 #define MAX_LEGS 8
 
@@ -117,23 +120,23 @@ void procedural_walk_update(ProceduralWalk* walk, f32 dt, Vec3 velocity) {
     if (walk->cycle_phase >= 1.0f) walk->cycle_phase -= 1.0f;
     
     walk->body_velocity = velocity;
-    walk->body_position = vec3_add(walk->body_position, vec3_scale(velocity, dt));
+    walk->body_position = vec3_add(walk->body_position, vec3_mul(velocity, dt));
     
     update_gait_phases(walk);
     
     for (i32 i = 0; i < walk->num_legs; i++) {
         LegData* leg = &walk->legs[i];
         Vec3 hip_world = vec3_add(walk->body_position, leg->hip_offset);
-        Vec3 predicted_body = vec3_add(walk->body_position, vec3_scale(velocity, 0.5f));
+        Vec3 predicted_body = vec3_add(walk->body_position, vec3_mul(velocity, 0.5f));
         Vec3 predicted_hip = vec3_add(predicted_body, leg->hip_offset);
         
-        Vec3 foot_offset = vec3_scale(vec3_normalize(velocity), -walk->step_distance);
+        Vec3 foot_offset = vec3_mul(vec3_normalize(velocity), -walk->step_distance);
         leg->ideal_foot_pos = vec3_add(predicted_hip, foot_offset);
         leg->ideal_foot_pos.y = hip_world.y - leg->leg_length;
         
         f32 leg_phase = fmodf(walk->cycle_phase + leg->step_phase, 1.0f);
         if (leg_phase < 0.5f && !leg->is_stepping) {
-            Vec3 diff = vec3_subtract(leg->ideal_foot_pos, leg->current_foot_pos);
+            Vec3 diff = vec3_sub(leg->ideal_foot_pos, leg->current_foot_pos);
             if (vec3_length(diff) > walk->foot_plant_threshold && leg->can_move) {
                 leg->old_foot_pos = leg->current_foot_pos;
                 leg->new_foot_pos = leg->ideal_foot_pos;
@@ -160,7 +163,7 @@ void procedural_walk_update(ProceduralWalk* walk, f32 dt, Vec3 velocity) {
 static Vec3 raycast_terrain(Vec3 origin, Vec3 direction, f32 max_distance) {
     f32 t = -origin.y / direction.y;
     if (t > 0.0f && t < max_distance) {
-        return vec3_add(origin, vec3_scale(direction, t));
+        return vec3_add(origin, vec3_mul(direction, t));
     }
     return origin;
 }
@@ -170,8 +173,8 @@ void procedural_walk_update_terrain_adaptation(ProceduralWalk* walk) {
     
     for (i32 i = 0; i < walk->num_legs; i++) {
         LegData* leg = &walk->legs[i];
-        Vec3 ray_start = vec3_add(leg->ideal_foot_pos, vec3_create(0.0f, 1.0f, 0.0f));
-        Vec3 ray_dir = vec3_create(0.0f, -1.0f, 0.0f);
+        Vec3 ray_start = vec3_add(leg->ideal_foot_pos, vec3(0.0f, 1.0f, 0.0f));
+        Vec3 ray_dir = vec3(0.0f, -1.0f, 0.0f);
         Vec3 terrain_hit = raycast_terrain(ray_start, ray_dir, 3.0f);
         leg->ideal_foot_pos = terrain_hit;
     }

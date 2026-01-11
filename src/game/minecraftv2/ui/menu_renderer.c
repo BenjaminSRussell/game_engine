@@ -11,7 +11,7 @@
 #include "../include/ui/menu_renderer.h"
 #include "../../../engine/include/common.h"
 #include "../../../engine/include/core/logger.h"
-#include "../../../engine/include/input/controls.h"
+#include "../../../engine/include/platform/input/controls.h"
 #include <stdio.h>
 #include <string.h>
 

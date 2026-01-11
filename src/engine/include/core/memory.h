@@ -56,7 +56,7 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
-#include "include/common.h"
+#include "../common.h"
 #include <stdint.h>
 
 // Memory tagging system
@@ -344,7 +344,8 @@ void memory_free_resolved_stack_trace(char **symbols);
 // ============================================================================
 // Vulkan Memory Integration
 // ============================================================================
-// Unified memory tracking for Vulkan driver allocations via VkAllocationCallbacks
+// Unified memory tracking for Vulkan driver allocations via
+// VkAllocationCallbacks
 
 // Vulkan allocator context for tracking driver allocations
 typedef struct {
@@ -359,11 +360,12 @@ typedef struct {
 // Initialize Vulkan allocation system (internal)
 // Callbacks are exposed via memory_get_vulkan_callbacks()
 
-// Get VkAllocationCallbacks structure (opaque pointer to avoid Vulkan dependency in this header)
-void* memory_get_vulkan_callbacks(void);
+// Get VkAllocationCallbacks structure (opaque pointer to avoid Vulkan
+// dependency in this header)
+void *memory_get_vulkan_callbacks(void);
 
 // Vulkan allocator statistics
-void memory_get_vulkan_stats(VulkanAllocatorStats* stats);
+void memory_get_vulkan_stats(VulkanAllocatorStats *stats);
 void memory_print_vulkan_stats(void);
 
 #endif

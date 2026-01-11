@@ -5,7 +5,6 @@
 #ifndef ENGINE_MESH_H
 #define ENGINE_MESH_H
 
-#include <chunk/chunk.h>
 #include <math/vec2.h>
 #include <math/vec3.h>
 
@@ -58,8 +57,6 @@ typedef struct Mesh {
 #endif
 } Mesh;
 
-
-
 // Mesh lifecycle
 bool mesh_create(Mesh *mesh, Vertex *vertices, u32 vertex_count, u32 *indices,
                  u32 index_count);
@@ -69,10 +66,7 @@ void mesh_destroy(Mesh *mesh);
 void mesh_upload_to_gpu(Mesh *mesh);
 void mesh_render(const Mesh *mesh);
 
-// Mesh generators
-Mesh *mesh_create_cube(f32 size);
-Mesh *mesh_create_plane(f32 width, f32 height);
-Mesh *mesh_create_sphere(f32 radius, u32 segments);
+// Mesh generators moved to geometry/mesh_primitives.h
 
 // MeshQuality and MeshOptions - use include guards to avoid redefinition
 #ifndef MESH_QUALITY_DEFINED

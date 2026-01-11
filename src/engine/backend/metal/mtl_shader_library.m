@@ -14,6 +14,9 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 /* ============================================================================
  * LIBRARY MANAGER
  * ============================================================================
@@ -59,6 +62,8 @@ void metal_shader_library_manager_destroy(
   free(manager);
 }
 
+#pragma clang diagnostic pop
+
 /* ============================================================================
  * LIBRARY LOADING
  * ============================================================================
@@ -93,9 +98,26 @@ metal_library_manager_load_file(metal_shader_library_manager_t *manager,
 
   // Load from file
   NSString *nsPath = [NSString stringWithUTF8String:path];
-  NSURL *url = [NSURL fileURLWithPath:nsPath];
+
+  id<MTLLibrary> library = nil;
   NSError *error = nil;
-  id<MTLLibrary> library = [device newLibraryWithURL:url error:&error];
+
+  if ([nsPath hasSuffix:@".metal"]) {
+    // Load source and compile at runtime
+    NSString *source = [NSString stringWithContentsOfFile:nsPath
+                                                 encoding:NSUTF8StringEncoding
+                                                    error:&error];
+    if (source) {
+      MTLCompileOptions *options = [[MTLCompileOptions alloc] init];
+      library = [device newLibraryWithSource:source
+                                     options:options
+                                       error:&error];
+    }
+  } else {
+    // Assume compiled library
+    NSURL *url = [NSURL fileURLWithPath:nsPath];
+    library = [device newLibraryWithURL:url error:&error];
+  }
 
   if (error || !library) {
     NSLog(@"Failed to load shader library from %@: %@", nsPath, error);

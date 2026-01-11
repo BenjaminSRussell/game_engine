@@ -3,27 +3,16 @@
  *                          TRANSFORM GIZMO SYSTEM
  *                          Phase 7: Editor & Tools
  * =================================================================================================
- *
- * PURPOSE: 3D manipulation gizmos (translation, rotation, scaling) for scene
- * editor
- * =================================================================================================
  */
 
-#include <include/math/math.h>
+#include "../include/math/mat4.h"
+#include "../include/math/quat.h"
+#include "../include/math/vec3.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-typedef struct {
-  float x, y, z;
-} GizmoVec3;
-typedef struct {
-  float x, y, z, w;
-} GizmoQuat;
-typedef struct {
-  float m[16];
-} GizmoMat4;
 
 // Gizmo Modes
 typedef enum {
@@ -42,7 +31,7 @@ typedef enum {
   GIZMO_AXIS_XY,
   GIZMO_AXIS_XZ,
   GIZMO_AXIS_YZ,
-  GIZMO_AXIS_XYZ // Center/Screen
+  GIZMO_AXIS_XYZ
 } GizmoAxis;
 
 // Gizmo Space
@@ -54,64 +43,80 @@ typedef struct {
   GizmoAxis active_axis;
   GizmoSpace space;
 
-  GizmoVec3 initial_position;
-  GizmoQuat initial_rotation;
-  GizmoVec3 initial_scale;
+  Vec3 initial_position;
+  Quat initial_rotation;
+  Vec3 initial_scale;
 
-  GizmoVec3 drag_start_point;
-  GizmoVec3 drag_current_point;
-  float drag_start_offset;
+  Vec3 drag_start_point;
+  float drag_start_factor; // t-value or similar
 
   bool is_dragging;
-  float snap_increment; // 0 = disabled
+  float snap_increment;
 } GizmoState;
 
 // Simple Ray structure
 typedef struct {
-  GizmoVec3 origin;
-  GizmoVec3 direction;
+  Vec3 origin;
+  Vec3 direction;
 } GizmoRay;
 
-// -----------------------------------------------------------------------------
-// Vector Math Helpers
-// -----------------------------------------------------------------------------
-
-static inline GizmoVec3 gizmo_vec3_add(GizmoVec3 a, GizmoVec3 b) {
-  return (GizmoVec3){a.x + b.x, a.y + b.y, a.z + b.z};
-}
-static inline GizmoVec3 gizmo_vec3_sub(GizmoVec3 a, GizmoVec3 b) {
-  return (GizmoVec3){a.x - b.x, a.y - b.y, a.z - b.z};
-}
-static inline GizmoVec3 gizmo_vec3_scale(GizmoVec3 v, float s) {
-  return (GizmoVec3){v.x * s, v.y * s, v.z * s};
-}
-static inline float gizmo_vec3_dot(GizmoVec3 a, GizmoVec3 b) {
-  return a.x * b.x + a.y * b.y + a.z * b.z;
-}
-static inline GizmoVec3 gizmo_vec3_cross(GizmoVec3 a, GizmoVec3 b) {
-  return (GizmoVec3){a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z,
-                     a.x * b.y - a.y * b.x};
-}
-
-static inline float gizmo_vec3_dist_sq_segment(GizmoVec3 p, GizmoVec3 a,
-                                               GizmoVec3 b) {
-  GizmoVec3 ab = gizmo_vec3_sub(b, a);
-  GizmoVec3 ap = gizmo_vec3_sub(p, a);
-  float t = gizmo_vec3_dot(ap, ab) / gizmo_vec3_dot(ab, ab);
-  if (t < 0.0f)
-    t = 0.0f;
-  if (t > 1.0f)
-    t = 1.0f;
-  GizmoVec3 closest = gizmo_vec3_add(a, gizmo_vec3_scale(ab, t));
-  GizmoVec3 d = gizmo_vec3_sub(p, closest);
-  return gizmo_vec3_dot(d, d);
-}
+static GizmoState g_gizmo_state = {0};
 
 // -----------------------------------------------------------------------------
-// Gizmo Context
+// Math Helpers
 // -----------------------------------------------------------------------------
 
-GizmoState g_gizmo_state = {0};
+// Ray-Cylinder Intersection
+static bool gizmo_intersect_axis(GizmoRay ray, Vec3 origin, Vec3 axis_dir,
+                                 float length, float radius, float *out_t) {
+  Vec3 q = vec3_sub(origin, ray.origin);
+  float dot_ua = vec3_dot(axis_dir, ray.direction);
+  float dot_uq = vec3_dot(axis_dir, q);
+  float dot_aq = vec3_dot(ray.direction, q);
+
+  float denom = 1.0f - dot_ua * dot_ua;
+  if (denom < 1e-6f)
+    return false; // Parallel
+
+  // Closest point on ray (t) and axis (s)
+  float t = (dot_ua * dot_uq - dot_aq) / denom;
+  float s = (dot_uq - dot_ua * dot_aq) / denom;
+
+  // Clamp s to cylinder segment
+  if (s < 0.0f)
+    s = 0.0f;
+  if (s > length)
+    s = length;
+
+  Vec3 p_ray = vec3_add(ray.origin, vec3_mul(ray.direction, t));
+  Vec3 p_axis = vec3_add(origin, vec3_mul(axis_dir, s));
+
+  if (vec3_length_sq(vec3_sub(p_ray, p_axis)) <= radius * radius) {
+    *out_t = t;
+    return true;
+  }
+  return false;
+}
+
+// Project ray closest point onto line
+static float closest_t_on_line(GizmoRay ray, Vec3 line_origin, Vec3 line_dir) {
+  Vec3 w0 = vec3_sub(ray.origin, line_origin);
+  float a = vec3_dot(ray.direction, ray.direction);
+  float b = vec3_dot(ray.direction, line_dir);
+  float c = vec3_dot(line_dir, line_dir);
+  float d = vec3_dot(ray.direction, w0);
+  float e = vec3_dot(line_dir, w0);
+
+  float denom = a * c - b * b;
+  if (denom < 1e-6f)
+    return 0.0f;
+
+  return (a * e - b * d) / denom;
+}
+
+// -----------------------------------------------------------------------------
+// API
+// -----------------------------------------------------------------------------
 
 void gizmo_init(void) {
   g_gizmo_state.mode = GIZMO_MODE_TRANSLATE;
@@ -125,139 +130,78 @@ void gizmo_set_snap(float increment) {
   g_gizmo_state.snap_increment = increment;
 }
 
-// -----------------------------------------------------------------------------
-// Intersection Tests
-// -----------------------------------------------------------------------------
+void gizmo_update(GizmoRay ray, bool mouse_down, Vec3 *position, Quat *rotation,
+                  Vec3 *scale) {
+  Vec3 axis_x = {1, 0, 0};
+  Vec3 axis_y = {0, 1, 0};
+  Vec3 axis_z = {0, 0, 1};
 
-// Ray-Cylinder intersection approximation for axes
-static bool gizmo_intersect_axis(GizmoRay ray, GizmoVec3 origin,
-                                 GizmoVec3 axis_dir, float length, float radius,
-                                 float *out_t) {
-  GizmoVec3 end = gizmo_vec3_add(origin, gizmo_vec3_scale(axis_dir, length));
+  float axis_length = 2.0f;
+  float axis_radius = 0.1f;
 
-  // Closest point on rays approach
-  GizmoVec3 u = axis_dir;
-  GizmoVec3 v = ray.direction;
-  GizmoVec3 w = gizmo_vec3_sub(origin, ray.origin);
-  float a = gizmo_vec3_dot(u, u); // always 1 if normalized
-  float b = gizmo_vec3_dot(u, v);
-  float c = gizmo_vec3_dot(v, v); // always 1 if normalized
-  float d = gizmo_vec3_dot(u, w);
-  float e = gizmo_vec3_dot(v, w);
-  float D = a * c - b * b;
+  // 1. Mouse Up -> Stop Dragging
+  if (!mouse_down) {
+    g_gizmo_state.is_dragging = false;
 
-  float sc, tc;
-  if (D < 1e-6f) {
-    sc = 0.0f;
-    tc = (b > c ? d / b : e / c);
-  } else {
-    sc = (b * e - c * d) / D;
-    tc = (a * e - b * d) / D;
-  }
-
-  // Clamp sc to cylinder segment
-  if (sc < 0.0f)
-    sc = 0.0f;
-  if (sc > length)
-    sc = length;
-
-  GizmoVec3 p_axis = gizmo_vec3_add(origin, gizmo_vec3_scale(u, sc));
-  GizmoVec3 p_ray = gizmo_vec3_add(ray.origin, gizmo_vec3_scale(v, tc));
-
-  GizmoVec3 diff = gizmo_vec3_sub(p_ray, p_axis);
-  float dist_sq = gizmo_vec3_dot(diff, diff);
-
-  if (dist_sq <= radius * radius) {
-    *out_t = tc;
-    return true;
-  }
-  return false;
-}
-
-// -----------------------------------------------------------------------------
-// Gizmo Update Logic
-// -----------------------------------------------------------------------------
-
-void gizmo_update(GizmoRay ray, bool mouse_down, GizmoVec3 *position,
-                  GizmoQuat *rotation, GizmoVec3 *scale) {
-
-  // Calculate axes based on rotation/space
-  GizmoVec3 axis_x = {1, 0, 0};
-  GizmoVec3 axis_y = {0, 1, 0};
-  GizmoVec3 axis_z = {0, 0, 1};
-
-  if (g_gizmo_state.space == GIZMO_SPACE_LOCAL && rotation) {
-    // Rotate axes by object rotation (stub math)
-    // q * v * q_conj
-  }
-
-  float axis_length = 1.0f; // Could be scaled by distance to camera
-  float axis_radius = 0.05f * axis_length;
-
-  // Hover Check (if not dragging)
-  if (!g_gizmo_state.is_dragging) {
+    // Hover Check
     g_gizmo_state.active_axis = GIZMO_AXIS_NONE;
     float min_t = 1e9f;
     float t;
 
-    // Check X axis
     if (gizmo_intersect_axis(ray, *position, axis_x, axis_length, axis_radius,
-                             &t)) {
-      if (t < min_t) {
-        min_t = t;
-        g_gizmo_state.active_axis = GIZMO_AXIS_X;
-      }
+                             &t) &&
+        t < min_t) {
+      min_t = t;
+      g_gizmo_state.active_axis = GIZMO_AXIS_X;
     }
-    // Check Y axis
     if (gizmo_intersect_axis(ray, *position, axis_y, axis_length, axis_radius,
-                             &t)) {
-      if (t < min_t) {
-        min_t = t;
-        g_gizmo_state.active_axis = GIZMO_AXIS_Y;
-      }
+                             &t) &&
+        t < min_t) {
+      min_t = t;
+      g_gizmo_state.active_axis = GIZMO_AXIS_Y;
     }
-    // Check Z axis
     if (gizmo_intersect_axis(ray, *position, axis_z, axis_length, axis_radius,
-                             &t)) {
-      if (t < min_t) {
-        min_t = t;
-        g_gizmo_state.active_axis = GIZMO_AXIS_Z;
-      }
+                             &t) &&
+        t < min_t) {
+      min_t = t;
+      g_gizmo_state.active_axis = GIZMO_AXIS_Z;
+    }
+    return;
+  }
+
+  // 2. Mouse Down (Initial Click)
+  if (mouse_down && !g_gizmo_state.is_dragging &&
+      g_gizmo_state.active_axis != GIZMO_AXIS_NONE) {
+    g_gizmo_state.is_dragging = true;
+    g_gizmo_state.initial_position = *position;
+
+    Vec3 axis_dir = (g_gizmo_state.active_axis == GIZMO_AXIS_X)   ? axis_x
+                    : (g_gizmo_state.active_axis == GIZMO_AXIS_Y) ? axis_y
+                                                                  : axis_z;
+
+    g_gizmo_state.drag_start_factor =
+        closest_t_on_line(ray, *position, axis_dir);
+    return;
+  }
+
+  // 3. Dragging
+  if (g_gizmo_state.is_dragging) {
+    Vec3 axis_dir = (g_gizmo_state.active_axis == GIZMO_AXIS_X)   ? axis_x
+                    : (g_gizmo_state.active_axis == GIZMO_AXIS_Y) ? axis_y
+                                                                  : axis_z;
+
+    float current_factor =
+        closest_t_on_line(ray, g_gizmo_state.initial_position, axis_dir);
+    float delta = current_factor - g_gizmo_state.drag_start_factor;
+
+    // Snapping
+    if (g_gizmo_state.snap_increment > 0.0f) {
+      // Logic for snapping would go here
     }
 
-    // Handle Mouse Down
-    if (mouse_down && g_gizmo_state.active_axis != GIZMO_AXIS_NONE) {
-      g_gizmo_state.is_dragging = true;
-      g_gizmo_state.initial_position = *position;
-      if (rotation)
-        g_gizmo_state.initial_rotation = *rotation;
-      if (scale)
-        g_gizmo_state.initial_scale = *scale;
-
-      // Calculate drag start point logic (project ray to axis/plane)
-    }
-  } else {
-    // Dragging Logic
-    if (!mouse_down) {
-      g_gizmo_state.is_dragging = false;
-    } else {
-      // Calculate delta based on active axis
-      GizmoVec3 axis_dir = {0, 0, 0};
-      if (g_gizmo_state.active_axis == GIZMO_AXIS_X)
-        axis_dir = axis_x;
-      if (g_gizmo_state.active_axis == GIZMO_AXIS_Y)
-        axis_dir = axis_y;
-      if (g_gizmo_state.active_axis == GIZMO_AXIS_Z)
-        axis_dir = axis_z;
-
-      // Project ray to closest point on axis line
-      // For now, simplified logic
-
-      // Apply transform delta
-      if (g_gizmo_state.mode == GIZMO_MODE_TRANSLATE) {
-        // Compute new position
-      }
-      // Rotate/Scale logic...
+    if (g_gizmo_state.mode == GIZMO_MODE_TRANSLATE) {
+      *position =
+          vec3_add(g_gizmo_state.initial_position, vec3_mul(axis_dir, delta));
     }
   }
 }

@@ -2,6 +2,7 @@
 #include <core/asset_manager.h>
 #include <core/hashmap.h>
 #include <core/hot_reload.h>
+#include <core/logger.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>

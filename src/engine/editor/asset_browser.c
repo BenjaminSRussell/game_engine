@@ -1,9 +1,12 @@
-#include <core/asset_manager.h>
-#include <core/logger.h>
-#include <core/memory.h>
-#include <core/time_system.h>
-#include <editor/editor_main.h>
-#include <include/math/math.h>
+#include "../include/common.h"
+#include "../include/core/asset_manager.h"
+#include "../include/core/logger.h"
+#include "../include/core/memory.h"
+#include "../include/core/resource/vfs/vfs.h"
+#include "../include/core/time_system.h"
+#include "../include/editor/editor_main.h"
+#include "../include/math/math.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,9 +59,17 @@ typedef struct {
   // Performance
   u32 scan_count;
   f32 average_scan_time;
+
+  // External systems
+  struct VFS *vfs;
+  struct AssetManager *asset_manager;
 } AssetBrowserState;
 
 static AssetBrowserState g_browser = {0};
+
+// Drag and drop state
+static bool is_dragging_asset = false;
+static char dragged_asset_path[256] = {0};
 
 // Forward declarations
 static void asset_browser_init_file_watcher(void);
@@ -79,10 +90,19 @@ static u64 get_current_time_ns(void) {
 
 static int fmaxi(int a, int b) { return (a > b) ? a : b; }
 
+void AssetBrowser_Init(struct VFS *vfs, struct AssetManager *assets) {
+  if (g_browser.is_initialized)
+    return;
+  g_browser.vfs = vfs;
+  g_browser.asset_manager = assets;
+  asset_browser_init_file_watcher();
+  g_browser.is_initialized = true;
+}
+
 void Editor_DrawAssetBrowser() {
   if (!g_browser.is_initialized) {
-    asset_browser_init_file_watcher();
-    g_browser.is_initialized = true;
+    LOG_WARN("Asset Browser not initialized with VFS!");
+    return;
   }
 
   // 1. TOOLBAR
@@ -163,7 +183,8 @@ void AssetBrowser_GetStats(u32 *total_assets, u32 *filtered_assets,
 // IMPLEMENTATION FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 
-static void asset_browser_file_callback(const FileEvent *event, void *user_data) {
+static void asset_browser_file_callback(const FileEvent *event,
+                                        void *user_data) {
   LOG_INFO("Asset Browser: File change detected: %s", event->path);
   asset_browser_process_file(event->path);
 }
@@ -186,11 +207,12 @@ static void asset_browser_init_file_watcher() {
   g_browser.watch_directory = strdup("assets/");
   g_browser.watcher = file_watcher_create(g_browser.watch_directory);
   if (g_browser.watcher) {
-    file_watcher_add_callback(g_browser.watcher, asset_browser_file_callback, NULL);
+    file_watcher_add_callback(g_browser.watcher, asset_browser_file_callback,
+                              NULL);
     file_watcher_start(g_browser.watcher);
     g_browser.is_watching = true;
   }
-  
+
   LOG_INFO("Asset Browser: File system watcher initialized");
 }
 
@@ -201,20 +223,25 @@ void AssetBrowser_Update(f32 delta_time) {
 }
 
 static void asset_browser_scan_directory() {
-  if (!g_browser.watch_directory)
-    return;
-
-  // Use engine's global VFS or similar.
-  // For integration test purposes, let's assume there's a global VFS.
-  extern struct VFS g_vfs; 
+  if (!g_browser.asset_manager) {
+    LOG_WARN("Asset Manager not available for asset browser!");
+  }
 
   u64 start_time = get_current_time_ns();
   u32 count = 0;
-  
-  if (vfs_list_directory(&g_vfs, g_browser.watch_directory, NULL, &count)) {
-    char **files = malloc(sizeof(char*) * count);
+
+  // Ensure VFS is valid
+  if (!g_browser.vfs) {
+    LOG_ERROR("Asset Browser VFS not set!");
+    return;
+  }
+
+  if (vfs_list_directory(g_browser.vfs, g_browser.watch_directory, NULL,
+                         &count)) {
+    char **files = malloc(sizeof(char *) * count);
     u32 actual_count = count;
-    if (vfs_list_directory(&g_vfs, g_browser.watch_directory, files, &actual_count)) {
+    if (vfs_list_directory(g_browser.vfs, g_browser.watch_directory, files,
+                           &actual_count)) {
       for (u32 i = 0; i < actual_count; i++) {
         char full_path[512];
         vfs_join_path(full_path, g_browser.watch_directory, files[i]);
@@ -269,8 +296,12 @@ static void asset_browser_process_file(const char *file_path) {
     new_asset.type = type;
     new_asset.last_modified = get_current_time_ns();
 
-    // Get file size (in a real implementation)
-    new_asset.file_size = 1024 * 1024; // Placeholder
+    // Get file size from VFS
+    if (g_browser.vfs) {
+      new_asset.file_size = vfs_file_size(g_browser.vfs, file_path);
+    } else {
+      new_asset.file_size = 0;
+    }
 
     asset_browser_add_asset(&new_asset);
   }
@@ -280,8 +311,8 @@ static void asset_browser_add_asset(BrowserAsset *asset) {
   if (g_browser.asset_count >= g_browser.asset_capacity) {
     // Expand asset array
     g_browser.asset_capacity *= 2;
-    g_browser.assets =
-        realloc(g_browser.assets, sizeof(Asset) * g_browser.asset_capacity);
+    g_browser.assets = realloc(g_browser.assets,
+                               sizeof(BrowserAsset) * g_browser.asset_capacity);
   }
 
   // Check if asset already exists
@@ -299,6 +330,10 @@ static void asset_browser_add_asset(BrowserAsset *asset) {
   g_browser.asset_count++;
 
   printf("    Added new asset: %s\n", asset->name);
+
+  // Register with AssetManager if possible (optional, maybe we only want to
+  // view) For now we just ensure it's in the browser list. If we wanted to
+  // preload, we would call asset_manager_load here.
 
   // Trigger thumbnail generation
   asset_browser_update_thumbnails();
@@ -323,8 +358,8 @@ static void asset_browser_remove_asset(const char *file_path) {
 static void asset_browser_update_thumbnails() {
   printf("  Updating thumbnails...\n");
 
-  // In a real implementation, this would generate thumbnails for new/updated
-  // assets For now, we'll just simulate the process
+  // TODO: In a real implementation, this would generate thumbnails for
+  // new/updated assets For now, we'll just simulate the process
 
   for (u32 i = 0; i < g_browser.asset_count; i++) {
     BrowserAsset *asset = &g_browser.assets[i];
@@ -332,7 +367,23 @@ static void asset_browser_update_thumbnails() {
     if (!asset->thumbnail_generated) {
       // Generate thumbnail for this asset
       asset->thumbnail_generated = true;
-      asset->thumbnail_size = 128;
+      asset->thumbnail_size =
+          g_browser.thumbnail_size > 0 ? (u32)g_browser.thumbnail_size : 128;
+
+      // Integration with AssetManager for Textures
+      if (asset->type == ASSET_TYPE_TEXTURE && g_browser.asset_manager) {
+        // We load the texture to ensure it's valid and cached.
+        // In a real rendering scenario, we would get the texture ID and
+        // render it to a framebuffer or use it directly in the UI.
+        Asset *loaded_asset =
+            asset_manager_load(g_browser.asset_manager, asset->name,
+                               ASSET_TYPE_TEXTURE, asset->file_path);
+        if (loaded_asset) {
+          // Success - in a GUI we'd store the texture handle here
+          // asset->texture_handle = loaded_asset->id; (hypothetically)
+          printf("    Loaded texture for thumbnail: %s\n", asset->name);
+        }
+      }
 
       printf("    Generated thumbnail for: %s\n", asset->name);
     }
@@ -343,8 +394,7 @@ static void asset_browser_filter_assets() {
   printf("  Filtering assets (type: %d, query: '%s')\n", g_browser.filter_type,
          g_browser.search_query);
 
-  // In a real implementation, this would filter the asset list based on type
-  // and search query For now, we'll just simulate the filtering process
+  // Filtering logic: matches both type and search query
 
   u32 filtered_count = 0;
   for (u32 i = 0; i < g_browser.asset_count; i++) {
@@ -368,7 +418,7 @@ static void asset_browser_draw_toolbar() {
          g_browser.search_query, g_browser.filter_type,
          g_browser.thumbnail_size);
 
-  // In a real implementation with ImGui, this would draw:
+  // TODO: In a real implementation with ImGui, this would draw:
   // - Search box
   // - Filter dropdown (All, Textures, Models, Audio, Materials)
   // - Thumbnail size slider
@@ -379,7 +429,7 @@ static void asset_browser_draw_grid() {
   printf("  [Grid] %d assets in %d columns\n", g_browser.asset_count,
          g_browser.grid_columns);
 
-  // In a real implementation with ImGui, this would:
+  // TODO: In a real implementation with ImGui, this would:
   // - Calculate grid layout
   // - Draw asset thumbnails
   // - Draw asset names
@@ -395,24 +445,20 @@ static void asset_browser_draw_grid() {
   }
 }
 
-static void asset_browser_handle_drag_drop() {
-  printf("  [DragDrop] Ready for drag source operations\n");
+// Public API to start a drag operation (called by UI when mouse moves with
+// button down)
+void AssetBrowser_StartDrag(const char *file_path) {
+  if (file_path && strlen(file_path) > 0) {
+    is_dragging_asset = true;
+    strncpy(dragged_asset_path, file_path, sizeof(dragged_asset_path) - 1);
+    dragged_asset_path[sizeof(dragged_asset_path) - 1] = '\0';
+    printf("Asset Browser: Started dragging '%s'\n", dragged_asset_path);
+  }
+}
 
-  // In a real implementation with ImGui, this would:
-  // - Handle drag source when asset is dragged
-  // - Set drag drop payload with asset information
-  // - Handle drop targets in viewport
-
-  // PSEUDO-CODE:
-  // for (Asset asset : g_AssetList) {
-  //     DrawThumbnail(asset.preview_texture);
-  //     DrawText(asset.name);
-  //
-  //     // DRAG SOURCE
-  //     if (IsItemHovered() && MouseDown) {
-  //         BeginDragDropSource();
-  //         SetDragDropPayload("ASSET_MODEL", &asset.id, sizeof(UUID));
-  //         EndDragDropSource();
-  //     }
-  // }
+static void asset_browser_handle_drag_drop(void) {
+  if (is_dragging_asset) {
+    // Draw drag visual...
+    printf("  [DragDrop] Dragging asset: %s\n", dragged_asset_path);
+  }
 }

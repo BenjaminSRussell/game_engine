@@ -9,6 +9,7 @@ using namespace metal;
 #endif
 
 // LUT Dimensions
+#define ATM_PI 3.14159265359f
 #define TRANSMITTANCE_WIDTH 256
 #define TRANSMITTANCE_HEIGHT 64
 
@@ -30,28 +31,28 @@ using namespace metal;
 #define IRRADIANCE_HEIGHT 16
 
 typedef struct {
-    float planet_radius;           // 6360 km
-    float atmosphere_height;       // 100 km
-    simd_float3 rayleigh_coeff;    // Scattering coefficients
-    float rayleigh_scale_height;   // 8 km
-    float mie_coeff;
-    float mie_scale_height;        // 1.2 km
-    float mie_g;                   // Asymmetry factor
-    simd_float3 sun_direction;
-    float padding0;
-    simd_float3 sun_intensity;
-    float padding1;
+  float planet_radius;         // 6360 km
+  float atmosphere_height;     // 100 km
+  simd_float3 rayleigh_coeff;  // Scattering coefficients
+  float rayleigh_scale_height; // 8 km
+  float mie_coeff;
+  float mie_scale_height; // 1.2 km
+  float mie_g;            // Asymmetry factor
+  simd_float3 sun_direction;
+  float padding0;
+  simd_float3 sun_intensity;
+  float padding1;
 } AtmosphereParams;
 
 typedef struct {
-    simd_float4x4 inv_view_proj;
-    simd_float3 camera_pos;
-    float planet_radius;
-    simd_float3 sun_direction;
-    float padding0;
-    simd_float3 sun_intensity;
-    float padding1;
-    simd_float2 screen_size;
+  simd_float4x4 inv_view_proj;
+  simd_float3 camera_pos;
+  float planet_radius;
+  simd_float3 sun_direction;
+  float padding0;
+  simd_float3 sun_intensity;
+  float padding1;
+  simd_float2 screen_size;
 } SkyUniforms;
 
 #endif // ATMOSPHERE_COMMON_H

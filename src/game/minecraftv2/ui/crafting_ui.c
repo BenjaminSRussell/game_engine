@@ -53,8 +53,8 @@
 //     - Suggestion display: IMPLEMENTED (display suggested recipes)
 #include "../include/ui/crafting_ui.h"
 #include "../../../engine/include/core/logger.h"
-#include "../../../engine/include/input/controls.h"
-#include "../../../engine/include/renderer/vulkan.h"
+#include "../../../engine/include/platform/input/controls.h"
+#include "../../../engine/include/rendering/vulkan.h"
 #include <math.h>
 #include <math/mat4.h>
 #include <string.h>
