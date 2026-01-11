@@ -498,6 +498,15 @@ static void update_biquad(Equalizer *eq, u32 band) {
     a2 = (A + 1.0f) + (A - 1.0f) * cos_w0 - 2.0f * sqrt_A * alpha;
     break;
 
+  case EQ_FILTER_TYPE_HIGH_SHELF:
+    b0 = A * ((A + 1.0f) + (A - 1.0f) * cos_w0 + 2.0f * sqrt_A * alpha);
+    b1 = -2.0f * A * ((A - 1.0f) + (A + 1.0f) * cos_w0);
+    b2 = A * ((A + 1.0f) + (A - 1.0f) * cos_w0 - 2.0f * sqrt_A * alpha);
+    a0 = (A + 1.0f) - (A - 1.0f) * cos_w0 + 2.0f * sqrt_A * alpha;
+    a1 = 2.0f * ((A - 1.0f) - (A + 1.0f) * cos_w0);
+    a2 = (A + 1.0f) - (A - 1.0f) * cos_w0 - 2.0f * sqrt_A * alpha;
+    break;
+
   // Stub for others
   default:
     b0 = 1.0f;
