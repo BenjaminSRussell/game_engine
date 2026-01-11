@@ -4,9 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __OBJC__
+
 static DecalSystem *g_decal_system = NULL;
 
-DecalSystem* decal_system_create(id<MTLDevice> device) {
+DecalSystem* decal_system_create(MTLDeviceHandle device) {
   if (!device) {
     LOG_ERROR("Cannot create decal system without Metal device");
     return NULL;
@@ -178,8 +180,8 @@ void decal_remove(DecalSystem *system, u32 decal_id) {
 }
 
 void decal_set_textures(DecalSystem *system, u32 decal_id,
-                       id<MTLTexture> albedo, id<MTLTexture> normal,
-                       id<MTLTexture> material) {
+                       MTLTextureHandle albedo, MTLTextureHandle normal,
+                       MTLTextureHandle material) {
   if (!system || decal_id >= system->decal_count) return;
   
   Decal *decal = &system->decals[decal_id];
@@ -279,9 +281,9 @@ void decal_update_transform(DecalSystem *system, u32 decal_id, const Vec3 *posit
   decal->size = *size;
 }
 
-void decal_render(DecalSystem *system, id<MTLRenderCommandEncoder> encoder,
-                  id<MTLTexture> gbuffer_depth, id<MTLTexture> gbuffer_normal,
-                  const Mat4 *view_proj) {
+void decal_render(DecalSystem *system, MTLRenderCommandEncoderHandle encoder,
+                  MTLTextureHandle gbuffer_depth,
+                  MTLTextureHandle gbuffer_normal, const Mat4 *view_proj) {
   if (!system || !encoder || system->decal_count == 0) return;
   
   // Set render pipeline
