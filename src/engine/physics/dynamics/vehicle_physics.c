@@ -242,6 +242,9 @@ void vehicle_update(VehiclePhysics *vehicle, f32 delta_time) {
         vehicle_update_wheel_contact(vehicle, i);
     }
     
+    // Update surface detection and friction coefficients
+    vehicle_update_surface_detection(vehicle);
+    
     // Update suspension system with force calculations
     vehicle_update_suspension_system(vehicle);
     

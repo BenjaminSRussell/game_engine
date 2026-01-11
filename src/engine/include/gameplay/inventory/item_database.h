@@ -34,6 +34,9 @@ bool item_database_load_from_json(const char *filepath);
 // Get item by ID
 const Item *item_database_get(u32 item_id);
 const Item *item_database_get_by_name(const char *name);
+u32 item_database_get_max_stack(u32 item_id);
+f32 item_database_get_weight(u32 item_id);
+u32 item_database_get_value(u32 item_id);
 
 // Query items
 u32 item_database_get_items_by_type(ItemType type, const Item **out_items,
