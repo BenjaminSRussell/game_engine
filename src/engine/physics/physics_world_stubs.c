@@ -3,10 +3,13 @@
 #include <physics/physics_engine_core.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdatomic.h>
 
 // ============================================================================
 // INTERNAL HELPERS
 // ============================================================================
+
+static _Atomic uint32_t global_body_id_counter = ATOMIC_VAR_INIT(1);
 
 static void integrate_body(RigidBody *body, f32 dt, const Vec3 gravity) {
   if (!body || body->type == RIGID_BODY_STATIC || !body->is_active) {
@@ -126,7 +129,7 @@ RigidBody *rigid_body_create(BodyType type, Vec3 position) {
   if (!body)
     return NULL;
 
-  body->id = 0; // TODO: Generating unique IDs
+  body->id = atomic_fetch_add(&global_body_id_counter, 1);
 
   // Map BodyType to RigidBodyType
   switch (type) {
