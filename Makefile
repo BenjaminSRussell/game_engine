@@ -29017,6 +29017,30 @@ src/engine/math/math_simd_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/math_simd_impl.c.s
 .PHONY : src/engine/math/math_simd_impl.c.s
 
+src/engine/math/matrix.o: src/engine/math/matrix.c.o
+.PHONY : src/engine/math/matrix.o
+
+# target to build an object file
+src/engine/math/matrix.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/matrix.c.o
+.PHONY : src/engine/math/matrix.c.o
+
+src/engine/math/matrix.i: src/engine/math/matrix.c.i
+.PHONY : src/engine/math/matrix.i
+
+# target to preprocess a source file
+src/engine/math/matrix.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/matrix.c.i
+.PHONY : src/engine/math/matrix.c.i
+
+src/engine/math/matrix.s: src/engine/math/matrix.c.s
+.PHONY : src/engine/math/matrix.s
+
+# target to generate assembly for a file
+src/engine/math/matrix.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/matrix.c.s
+.PHONY : src/engine/math/matrix.c.s
+
 src/engine/math/quat.o: src/engine/math/quat.c.o
 .PHONY : src/engine/math/quat.o
 
@@ -30073,6 +30097,30 @@ src/engine/physics/cloth/system_02.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/cloth/system_02.c.s
 .PHONY : src/engine/physics/cloth/system_02.c.s
 
+src/engine/physics/cloth_simulation/cloth_solver.o: src/engine/physics/cloth_simulation/cloth_solver.c.o
+.PHONY : src/engine/physics/cloth_simulation/cloth_solver.o
+
+# target to build an object file
+src/engine/physics/cloth_simulation/cloth_solver.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/cloth_simulation/cloth_solver.c.o
+.PHONY : src/engine/physics/cloth_simulation/cloth_solver.c.o
+
+src/engine/physics/cloth_simulation/cloth_solver.i: src/engine/physics/cloth_simulation/cloth_solver.c.i
+.PHONY : src/engine/physics/cloth_simulation/cloth_solver.i
+
+# target to preprocess a source file
+src/engine/physics/cloth_simulation/cloth_solver.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/cloth_simulation/cloth_solver.c.i
+.PHONY : src/engine/physics/cloth_simulation/cloth_solver.c.i
+
+src/engine/physics/cloth_simulation/cloth_solver.s: src/engine/physics/cloth_simulation/cloth_solver.c.s
+.PHONY : src/engine/physics/cloth_simulation/cloth_solver.s
+
+# target to generate assembly for a file
+src/engine/physics/cloth_simulation/cloth_solver.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/cloth_simulation/cloth_solver.c.s
+.PHONY : src/engine/physics/cloth_simulation/cloth_solver.c.s
+
 src/engine/physics/collision/broadphase.o: src/engine/physics/collision/broadphase.c.o
 .PHONY : src/engine/physics/collision/broadphase.o
 
@@ -31008,6 +31056,30 @@ src/engine/physics/core_rigid_body.s: src/engine/physics/core_rigid_body.c.s
 src/engine/physics/core_rigid_body.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/core_rigid_body.c.s
 .PHONY : src/engine/physics/core_rigid_body.c.s
+
+src/engine/physics/destruction/connectivity_graph.o: src/engine/physics/destruction/connectivity_graph.c.o
+.PHONY : src/engine/physics/destruction/connectivity_graph.o
+
+# target to build an object file
+src/engine/physics/destruction/connectivity_graph.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/destruction/connectivity_graph.c.o
+.PHONY : src/engine/physics/destruction/connectivity_graph.c.o
+
+src/engine/physics/destruction/connectivity_graph.i: src/engine/physics/destruction/connectivity_graph.c.i
+.PHONY : src/engine/physics/destruction/connectivity_graph.i
+
+# target to preprocess a source file
+src/engine/physics/destruction/connectivity_graph.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/destruction/connectivity_graph.c.i
+.PHONY : src/engine/physics/destruction/connectivity_graph.c.i
+
+src/engine/physics/destruction/connectivity_graph.s: src/engine/physics/destruction/connectivity_graph.c.s
+.PHONY : src/engine/physics/destruction/connectivity_graph.s
+
+# target to generate assembly for a file
+src/engine/physics/destruction/connectivity_graph.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/destruction/connectivity_graph.c.s
+.PHONY : src/engine/physics/destruction/connectivity_graph.c.s
 
 src/engine/physics/destruction/destruction_impl.o: src/engine/physics/destruction/destruction_impl.c.o
 .PHONY : src/engine/physics/destruction/destruction_impl.o
@@ -32016,6 +32088,30 @@ src/engine/physics/narrowphase/system_02.s: src/engine/physics/narrowphase/syste
 src/engine/physics/narrowphase/system_02.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/narrowphase/system_02.c.s
 .PHONY : src/engine/physics/narrowphase/system_02.c.s
+
+src/engine/physics/optimizer/physics_pipeline_optimizer.o: src/engine/physics/optimizer/physics_pipeline_optimizer.c.o
+.PHONY : src/engine/physics/optimizer/physics_pipeline_optimizer.o
+
+# target to build an object file
+src/engine/physics/optimizer/physics_pipeline_optimizer.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/optimizer/physics_pipeline_optimizer.c.o
+.PHONY : src/engine/physics/optimizer/physics_pipeline_optimizer.c.o
+
+src/engine/physics/optimizer/physics_pipeline_optimizer.i: src/engine/physics/optimizer/physics_pipeline_optimizer.c.i
+.PHONY : src/engine/physics/optimizer/physics_pipeline_optimizer.i
+
+# target to preprocess a source file
+src/engine/physics/optimizer/physics_pipeline_optimizer.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/optimizer/physics_pipeline_optimizer.c.i
+.PHONY : src/engine/physics/optimizer/physics_pipeline_optimizer.c.i
+
+src/engine/physics/optimizer/physics_pipeline_optimizer.s: src/engine/physics/optimizer/physics_pipeline_optimizer.c.s
+.PHONY : src/engine/physics/optimizer/physics_pipeline_optimizer.s
+
+# target to generate assembly for a file
+src/engine/physics/optimizer/physics_pipeline_optimizer.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/optimizer/physics_pipeline_optimizer.c.s
+.PHONY : src/engine/physics/optimizer/physics_pipeline_optimizer.c.s
 
 src/engine/physics/particles/builder_05.o: src/engine/physics/particles/builder_05.c.o
 .PHONY : src/engine/physics/particles/builder_05.o
@@ -34080,6 +34176,30 @@ src/engine/physics/vehicles/vehicle_dynamics.s: src/engine/physics/vehicles/vehi
 src/engine/physics/vehicles/vehicle_dynamics.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/vehicles/vehicle_dynamics.c.s
 .PHONY : src/engine/physics/vehicles/vehicle_dynamics.c.s
+
+src/engine/physics/world/physics_world_manager.o: src/engine/physics/world/physics_world_manager.c.o
+.PHONY : src/engine/physics/world/physics_world_manager.o
+
+# target to build an object file
+src/engine/physics/world/physics_world_manager.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/world/physics_world_manager.c.o
+.PHONY : src/engine/physics/world/physics_world_manager.c.o
+
+src/engine/physics/world/physics_world_manager.i: src/engine/physics/world/physics_world_manager.c.i
+.PHONY : src/engine/physics/world/physics_world_manager.i
+
+# target to preprocess a source file
+src/engine/physics/world/physics_world_manager.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/world/physics_world_manager.c.i
+.PHONY : src/engine/physics/world/physics_world_manager.c.i
+
+src/engine/physics/world/physics_world_manager.s: src/engine/physics/world/physics_world_manager.c.s
+.PHONY : src/engine/physics/world/physics_world_manager.s
+
+# target to generate assembly for a file
+src/engine/physics/world/physics_world_manager.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/world/physics_world_manager.c.s
+.PHONY : src/engine/physics/world/physics_world_manager.c.s
 
 src/engine/platform/biome_api_bridge.o: src/engine/platform/biome_api_bridge.c.o
 .PHONY : src/engine/platform/biome_api_bridge.o
@@ -38209,6 +38329,30 @@ src/engine/rendering/camera_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/camera_system.c.s
 .PHONY : src/engine/rendering/camera_system.c.s
 
+src/engine/rendering/compression/mesh_compression.o: src/engine/rendering/compression/mesh_compression.c.o
+.PHONY : src/engine/rendering/compression/mesh_compression.o
+
+# target to build an object file
+src/engine/rendering/compression/mesh_compression.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/compression/mesh_compression.c.o
+.PHONY : src/engine/rendering/compression/mesh_compression.c.o
+
+src/engine/rendering/compression/mesh_compression.i: src/engine/rendering/compression/mesh_compression.c.i
+.PHONY : src/engine/rendering/compression/mesh_compression.i
+
+# target to preprocess a source file
+src/engine/rendering/compression/mesh_compression.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/compression/mesh_compression.c.i
+.PHONY : src/engine/rendering/compression/mesh_compression.c.i
+
+src/engine/rendering/compression/mesh_compression.s: src/engine/rendering/compression/mesh_compression.c.s
+.PHONY : src/engine/rendering/compression/mesh_compression.s
+
+# target to generate assembly for a file
+src/engine/rendering/compression/mesh_compression.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/compression/mesh_compression.c.s
+.PHONY : src/engine/rendering/compression/mesh_compression.c.s
+
 src/engine/rendering/compute/gpu_compute.o: src/engine/rendering/compute/gpu_compute.c.o
 .PHONY : src/engine/rendering/compute/gpu_compute.o
 
@@ -38736,6 +38880,30 @@ src/engine/rendering/core/render_graph.s: src/engine/rendering/core/render_graph
 src/engine/rendering/core/render_graph.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/core/render_graph.c.s
 .PHONY : src/engine/rendering/core/render_graph.c.s
+
+src/engine/rendering/core/render_stats.o: src/engine/rendering/core/render_stats.c.o
+.PHONY : src/engine/rendering/core/render_stats.o
+
+# target to build an object file
+src/engine/rendering/core/render_stats.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/core/render_stats.c.o
+.PHONY : src/engine/rendering/core/render_stats.c.o
+
+src/engine/rendering/core/render_stats.i: src/engine/rendering/core/render_stats.c.i
+.PHONY : src/engine/rendering/core/render_stats.i
+
+# target to preprocess a source file
+src/engine/rendering/core/render_stats.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/core/render_stats.c.i
+.PHONY : src/engine/rendering/core/render_stats.c.i
+
+src/engine/rendering/core/render_stats.s: src/engine/rendering/core/render_stats.c.s
+.PHONY : src/engine/rendering/core/render_stats.s
+
+# target to generate assembly for a file
+src/engine/rendering/core/render_stats.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/core/render_stats.c.s
+.PHONY : src/engine/rendering/core/render_stats.c.s
 
 src/engine/rendering/core/renderer.o: src/engine/rendering/core/renderer.c.o
 .PHONY : src/engine/rendering/core/renderer.o
@@ -40033,6 +40201,30 @@ src/engine/rendering/gbuffer/gbuffer_stats.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/gbuffer/gbuffer_stats.c.s
 .PHONY : src/engine/rendering/gbuffer/gbuffer_stats.c.s
 
+src/engine/rendering/global_illumination/global_illumination.o: src/engine/rendering/global_illumination/global_illumination.c.o
+.PHONY : src/engine/rendering/global_illumination/global_illumination.o
+
+# target to build an object file
+src/engine/rendering/global_illumination/global_illumination.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/global_illumination/global_illumination.c.o
+.PHONY : src/engine/rendering/global_illumination/global_illumination.c.o
+
+src/engine/rendering/global_illumination/global_illumination.i: src/engine/rendering/global_illumination/global_illumination.c.i
+.PHONY : src/engine/rendering/global_illumination/global_illumination.i
+
+# target to preprocess a source file
+src/engine/rendering/global_illumination/global_illumination.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/global_illumination/global_illumination.c.i
+.PHONY : src/engine/rendering/global_illumination/global_illumination.c.i
+
+src/engine/rendering/global_illumination/global_illumination.s: src/engine/rendering/global_illumination/global_illumination.c.s
+.PHONY : src/engine/rendering/global_illumination/global_illumination.s
+
+# target to generate assembly for a file
+src/engine/rendering/global_illumination/global_illumination.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/global_illumination/global_illumination.c.s
+.PHONY : src/engine/rendering/global_illumination/global_illumination.c.s
+
 src/engine/rendering/gpu/gpu_lighting.o: src/engine/rendering/gpu/gpu_lighting.c.o
 .PHONY : src/engine/rendering/gpu/gpu_lighting.o
 
@@ -40801,6 +40993,30 @@ src/engine/rendering/lighting.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/lighting.c.s
 .PHONY : src/engine/rendering/lighting.c.s
 
+src/engine/rendering/lighting/lighting_system.o: src/engine/rendering/lighting/lighting_system.c.o
+.PHONY : src/engine/rendering/lighting/lighting_system.o
+
+# target to build an object file
+src/engine/rendering/lighting/lighting_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/lighting/lighting_system.c.o
+.PHONY : src/engine/rendering/lighting/lighting_system.c.o
+
+src/engine/rendering/lighting/lighting_system.i: src/engine/rendering/lighting/lighting_system.c.i
+.PHONY : src/engine/rendering/lighting/lighting_system.i
+
+# target to preprocess a source file
+src/engine/rendering/lighting/lighting_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/lighting/lighting_system.c.i
+.PHONY : src/engine/rendering/lighting/lighting_system.c.i
+
+src/engine/rendering/lighting/lighting_system.s: src/engine/rendering/lighting/lighting_system.c.s
+.PHONY : src/engine/rendering/lighting/lighting_system.s
+
+# target to generate assembly for a file
+src/engine/rendering/lighting/lighting_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/lighting/lighting_system.c.s
+.PHONY : src/engine/rendering/lighting/lighting_system.c.s
+
 src/engine/rendering/lighting/lumen_gi.o: src/engine/rendering/lighting/lumen_gi.m.o
 .PHONY : src/engine/rendering/lighting/lumen_gi.o
 
@@ -40808,6 +41024,30 @@ src/engine/rendering/lighting/lumen_gi.o: src/engine/rendering/lighting/lumen_gi
 src/engine/rendering/lighting/lumen_gi.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o
 .PHONY : src/engine/rendering/lighting/lumen_gi.m.o
+
+src/engine/rendering/lod/lod_system.o: src/engine/rendering/lod/lod_system.c.o
+.PHONY : src/engine/rendering/lod/lod_system.o
+
+# target to build an object file
+src/engine/rendering/lod/lod_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/lod/lod_system.c.o
+.PHONY : src/engine/rendering/lod/lod_system.c.o
+
+src/engine/rendering/lod/lod_system.i: src/engine/rendering/lod/lod_system.c.i
+.PHONY : src/engine/rendering/lod/lod_system.i
+
+# target to preprocess a source file
+src/engine/rendering/lod/lod_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/lod/lod_system.c.i
+.PHONY : src/engine/rendering/lod/lod_system.c.i
+
+src/engine/rendering/lod/lod_system.s: src/engine/rendering/lod/lod_system.c.s
+.PHONY : src/engine/rendering/lod/lod_system.s
+
+# target to generate assembly for a file
+src/engine/rendering/lod/lod_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/lod/lod_system.c.s
+.PHONY : src/engine/rendering/lod/lod_system.c.s
 
 src/engine/rendering/material_system.o: src/engine/rendering/material_system.c.o
 .PHONY : src/engine/rendering/material_system.o
@@ -41336,6 +41576,30 @@ src/engine/rendering/materials_impl.s: src/engine/rendering/materials_impl.c.s
 src/engine/rendering/materials_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/materials_impl.c.s
 .PHONY : src/engine/rendering/materials_impl.c.s
+
+src/engine/rendering/memory/gpu_memory_manager.o: src/engine/rendering/memory/gpu_memory_manager.c.o
+.PHONY : src/engine/rendering/memory/gpu_memory_manager.o
+
+# target to build an object file
+src/engine/rendering/memory/gpu_memory_manager.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/memory/gpu_memory_manager.c.o
+.PHONY : src/engine/rendering/memory/gpu_memory_manager.c.o
+
+src/engine/rendering/memory/gpu_memory_manager.i: src/engine/rendering/memory/gpu_memory_manager.c.i
+.PHONY : src/engine/rendering/memory/gpu_memory_manager.i
+
+# target to preprocess a source file
+src/engine/rendering/memory/gpu_memory_manager.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/memory/gpu_memory_manager.c.i
+.PHONY : src/engine/rendering/memory/gpu_memory_manager.c.i
+
+src/engine/rendering/memory/gpu_memory_manager.s: src/engine/rendering/memory/gpu_memory_manager.c.s
+.PHONY : src/engine/rendering/memory/gpu_memory_manager.s
+
+# target to generate assembly for a file
+src/engine/rendering/memory/gpu_memory_manager.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/memory/gpu_memory_manager.c.s
+.PHONY : src/engine/rendering/memory/gpu_memory_manager.c.s
 
 src/engine/rendering/mesh/mesh_processing_impl.o: src/engine/rendering/mesh/mesh_processing_impl.c.o
 .PHONY : src/engine/rendering/mesh/mesh_processing_impl.o
@@ -41937,6 +42201,30 @@ src/engine/rendering/particles/gpu_particles.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/particles/gpu_particles.c.s
 .PHONY : src/engine/rendering/particles/gpu_particles.c.s
 
+src/engine/rendering/particles/particle_system.o: src/engine/rendering/particles/particle_system.c.o
+.PHONY : src/engine/rendering/particles/particle_system.o
+
+# target to build an object file
+src/engine/rendering/particles/particle_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/particles/particle_system.c.o
+.PHONY : src/engine/rendering/particles/particle_system.c.o
+
+src/engine/rendering/particles/particle_system.i: src/engine/rendering/particles/particle_system.c.i
+.PHONY : src/engine/rendering/particles/particle_system.i
+
+# target to preprocess a source file
+src/engine/rendering/particles/particle_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/particles/particle_system.c.i
+.PHONY : src/engine/rendering/particles/particle_system.c.i
+
+src/engine/rendering/particles/particle_system.s: src/engine/rendering/particles/particle_system.c.s
+.PHONY : src/engine/rendering/particles/particle_system.s
+
+# target to generate assembly for a file
+src/engine/rendering/particles/particle_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/particles/particle_system.c.s
+.PHONY : src/engine/rendering/particles/particle_system.c.s
+
 src/engine/rendering/particles/ribbon_renderer.o: src/engine/rendering/particles/ribbon_renderer.c.o
 .PHONY : src/engine/rendering/particles/ribbon_renderer.o
 
@@ -42008,6 +42296,30 @@ src/engine/rendering/pbr/pbr_brdf.s: src/engine/rendering/pbr/pbr_brdf.c.s
 src/engine/rendering/pbr/pbr_brdf.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/pbr/pbr_brdf.c.s
 .PHONY : src/engine/rendering/pbr/pbr_brdf.c.s
+
+src/engine/rendering/post_process/post_process_pipeline.o: src/engine/rendering/post_process/post_process_pipeline.c.o
+.PHONY : src/engine/rendering/post_process/post_process_pipeline.o
+
+# target to build an object file
+src/engine/rendering/post_process/post_process_pipeline.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/post_process/post_process_pipeline.c.o
+.PHONY : src/engine/rendering/post_process/post_process_pipeline.c.o
+
+src/engine/rendering/post_process/post_process_pipeline.i: src/engine/rendering/post_process/post_process_pipeline.c.i
+.PHONY : src/engine/rendering/post_process/post_process_pipeline.i
+
+# target to preprocess a source file
+src/engine/rendering/post_process/post_process_pipeline.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/post_process/post_process_pipeline.c.i
+.PHONY : src/engine/rendering/post_process/post_process_pipeline.c.i
+
+src/engine/rendering/post_process/post_process_pipeline.s: src/engine/rendering/post_process/post_process_pipeline.c.s
+.PHONY : src/engine/rendering/post_process/post_process_pipeline.s
+
+# target to generate assembly for a file
+src/engine/rendering/post_process/post_process_pipeline.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/post_process/post_process_pipeline.c.s
+.PHONY : src/engine/rendering/post_process/post_process_pipeline.c.s
 
 src/engine/rendering/post_processing.o: src/engine/rendering/post_processing.c.o
 .PHONY : src/engine/rendering/post_processing.o
@@ -42512,6 +42824,30 @@ src/engine/rendering/ray_tracing.s: src/engine/rendering/ray_tracing.c.s
 src/engine/rendering/ray_tracing.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing.c.s
 .PHONY : src/engine/rendering/ray_tracing.c.s
+
+src/engine/rendering/ray_tracing/ray_tracing_system.o: src/engine/rendering/ray_tracing/ray_tracing_system.c.o
+.PHONY : src/engine/rendering/ray_tracing/ray_tracing_system.o
+
+# target to build an object file
+src/engine/rendering/ray_tracing/ray_tracing_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing/ray_tracing_system.c.o
+.PHONY : src/engine/rendering/ray_tracing/ray_tracing_system.c.o
+
+src/engine/rendering/ray_tracing/ray_tracing_system.i: src/engine/rendering/ray_tracing/ray_tracing_system.c.i
+.PHONY : src/engine/rendering/ray_tracing/ray_tracing_system.i
+
+# target to preprocess a source file
+src/engine/rendering/ray_tracing/ray_tracing_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing/ray_tracing_system.c.i
+.PHONY : src/engine/rendering/ray_tracing/ray_tracing_system.c.i
+
+src/engine/rendering/ray_tracing/ray_tracing_system.s: src/engine/rendering/ray_tracing/ray_tracing_system.c.s
+.PHONY : src/engine/rendering/ray_tracing/ray_tracing_system.s
+
+# target to generate assembly for a file
+src/engine/rendering/ray_tracing/ray_tracing_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/ray_tracing/ray_tracing_system.c.s
+.PHONY : src/engine/rendering/ray_tracing/ray_tracing_system.c.s
 
 src/engine/rendering/raytracing/acceleration/as_compaction.o: src/engine/rendering/raytracing/acceleration/as_compaction.c.o
 .PHONY : src/engine/rendering/raytracing/acceleration/as_compaction.o
@@ -44457,6 +44793,30 @@ src/engine/rendering/render_pipeline_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_impl.c.s
 .PHONY : src/engine/rendering/render_pipeline_impl.c.s
 
+src/engine/rendering/render_pipeline_integration.o: src/engine/rendering/render_pipeline_integration.c.o
+.PHONY : src/engine/rendering/render_pipeline_integration.o
+
+# target to build an object file
+src/engine/rendering/render_pipeline_integration.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_integration.c.o
+.PHONY : src/engine/rendering/render_pipeline_integration.c.o
+
+src/engine/rendering/render_pipeline_integration.i: src/engine/rendering/render_pipeline_integration.c.i
+.PHONY : src/engine/rendering/render_pipeline_integration.i
+
+# target to preprocess a source file
+src/engine/rendering/render_pipeline_integration.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_integration.c.i
+.PHONY : src/engine/rendering/render_pipeline_integration.c.i
+
+src/engine/rendering/render_pipeline_integration.s: src/engine/rendering/render_pipeline_integration.c.s
+.PHONY : src/engine/rendering/render_pipeline_integration.s
+
+# target to generate assembly for a file
+src/engine/rendering/render_pipeline_integration.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/render_pipeline_integration.c.s
+.PHONY : src/engine/rendering/render_pipeline_integration.c.s
+
 src/engine/rendering/renderer_complete.o: src/engine/rendering/renderer_complete.c.o
 .PHONY : src/engine/rendering/renderer_complete.o
 
@@ -44576,6 +44936,30 @@ src/engine/rendering/shader/pbr_stylized_impl.s: src/engine/rendering/shader/pbr
 src/engine/rendering/shader/pbr_stylized_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/shader/pbr_stylized_impl.c.s
 .PHONY : src/engine/rendering/shader/pbr_stylized_impl.c.s
+
+src/engine/rendering/shader/shader_hot_reload.o: src/engine/rendering/shader/shader_hot_reload.c.o
+.PHONY : src/engine/rendering/shader/shader_hot_reload.o
+
+# target to build an object file
+src/engine/rendering/shader/shader_hot_reload.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/shader/shader_hot_reload.c.o
+.PHONY : src/engine/rendering/shader/shader_hot_reload.c.o
+
+src/engine/rendering/shader/shader_hot_reload.i: src/engine/rendering/shader/shader_hot_reload.c.i
+.PHONY : src/engine/rendering/shader/shader_hot_reload.i
+
+# target to preprocess a source file
+src/engine/rendering/shader/shader_hot_reload.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/shader/shader_hot_reload.c.i
+.PHONY : src/engine/rendering/shader/shader_hot_reload.c.i
+
+src/engine/rendering/shader/shader_hot_reload.s: src/engine/rendering/shader/shader_hot_reload.c.s
+.PHONY : src/engine/rendering/shader/shader_hot_reload.s
+
+# target to generate assembly for a file
+src/engine/rendering/shader/shader_hot_reload.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/shader/shader_hot_reload.c.s
+.PHONY : src/engine/rendering/shader/shader_hot_reload.c.s
 
 src/engine/rendering/shader/sss_impl.o: src/engine/rendering/shader/sss_impl.c.o
 .PHONY : src/engine/rendering/shader/sss_impl.o
@@ -44721,6 +45105,30 @@ src/engine/rendering/shaders/ocean_water.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/shaders/ocean_water.c.s
 .PHONY : src/engine/rendering/shaders/ocean_water.c.s
 
+src/engine/rendering/shadows/shadow_mapping.o: src/engine/rendering/shadows/shadow_mapping.c.o
+.PHONY : src/engine/rendering/shadows/shadow_mapping.o
+
+# target to build an object file
+src/engine/rendering/shadows/shadow_mapping.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/shadows/shadow_mapping.c.o
+.PHONY : src/engine/rendering/shadows/shadow_mapping.c.o
+
+src/engine/rendering/shadows/shadow_mapping.i: src/engine/rendering/shadows/shadow_mapping.c.i
+.PHONY : src/engine/rendering/shadows/shadow_mapping.i
+
+# target to preprocess a source file
+src/engine/rendering/shadows/shadow_mapping.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/shadows/shadow_mapping.c.i
+.PHONY : src/engine/rendering/shadows/shadow_mapping.c.i
+
+src/engine/rendering/shadows/shadow_mapping.s: src/engine/rendering/shadows/shadow_mapping.c.s
+.PHONY : src/engine/rendering/shadows/shadow_mapping.s
+
+# target to generate assembly for a file
+src/engine/rendering/shadows/shadow_mapping.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/shadows/shadow_mapping.c.s
+.PHONY : src/engine/rendering/shadows/shadow_mapping.c.s
+
 src/engine/rendering/sky/atmosphere_scattering.o: src/engine/rendering/sky/atmosphere_scattering.c.o
 .PHONY : src/engine/rendering/sky/atmosphere_scattering.o
 
@@ -44768,6 +45176,30 @@ src/engine/rendering/sky/atmosphere_scattering_impl.s: src/engine/rendering/sky/
 src/engine/rendering/sky/atmosphere_scattering_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.s
 .PHONY : src/engine/rendering/sky/atmosphere_scattering_impl.c.s
+
+src/engine/rendering/sky/sky_rendering.o: src/engine/rendering/sky/sky_rendering.c.o
+.PHONY : src/engine/rendering/sky/sky_rendering.o
+
+# target to build an object file
+src/engine/rendering/sky/sky_rendering.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/sky/sky_rendering.c.o
+.PHONY : src/engine/rendering/sky/sky_rendering.c.o
+
+src/engine/rendering/sky/sky_rendering.i: src/engine/rendering/sky/sky_rendering.c.i
+.PHONY : src/engine/rendering/sky/sky_rendering.i
+
+# target to preprocess a source file
+src/engine/rendering/sky/sky_rendering.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/sky/sky_rendering.c.i
+.PHONY : src/engine/rendering/sky/sky_rendering.c.i
+
+src/engine/rendering/sky/sky_rendering.s: src/engine/rendering/sky/sky_rendering.c.s
+.PHONY : src/engine/rendering/sky/sky_rendering.s
+
+# target to generate assembly for a file
+src/engine/rendering/sky/sky_rendering.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/sky/sky_rendering.c.s
+.PHONY : src/engine/rendering/sky/sky_rendering.c.s
 
 src/engine/rendering/sky/volumetric_clouds.o: src/engine/rendering/sky/volumetric_clouds.c.o
 .PHONY : src/engine/rendering/sky/volumetric_clouds.o
@@ -45464,6 +45896,30 @@ src/engine/rendering/texture/texture_atlas.s: src/engine/rendering/texture/textu
 src/engine/rendering/texture/texture_atlas.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_atlas.c.s
 .PHONY : src/engine/rendering/texture/texture_atlas.c.s
+
+src/engine/rendering/texture/texture_streaming.o: src/engine/rendering/texture/texture_streaming.c.o
+.PHONY : src/engine/rendering/texture/texture_streaming.o
+
+# target to build an object file
+src/engine/rendering/texture/texture_streaming.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_streaming.c.o
+.PHONY : src/engine/rendering/texture/texture_streaming.c.o
+
+src/engine/rendering/texture/texture_streaming.i: src/engine/rendering/texture/texture_streaming.c.i
+.PHONY : src/engine/rendering/texture/texture_streaming.i
+
+# target to preprocess a source file
+src/engine/rendering/texture/texture_streaming.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_streaming.c.i
+.PHONY : src/engine/rendering/texture/texture_streaming.c.i
+
+src/engine/rendering/texture/texture_streaming.s: src/engine/rendering/texture/texture_streaming.c.s
+.PHONY : src/engine/rendering/texture/texture_streaming.s
+
+# target to generate assembly for a file
+src/engine/rendering/texture/texture_streaming.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/texture/texture_streaming.c.s
+.PHONY : src/engine/rendering/texture/texture_streaming.c.s
 
 src/engine/rendering/texture/texture_system.o: src/engine/rendering/texture/texture_system.c.o
 .PHONY : src/engine/rendering/texture/texture_system.o
@@ -46208,6 +46664,30 @@ src/engine/rendering/water/fft_ocean.s: src/engine/rendering/water/fft_ocean.c.s
 src/engine/rendering/water/fft_ocean.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/water/fft_ocean.c.s
 .PHONY : src/engine/rendering/water/fft_ocean.c.s
+
+src/engine/rendering/water/water_rendering.o: src/engine/rendering/water/water_rendering.c.o
+.PHONY : src/engine/rendering/water/water_rendering.o
+
+# target to build an object file
+src/engine/rendering/water/water_rendering.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/water/water_rendering.c.o
+.PHONY : src/engine/rendering/water/water_rendering.c.o
+
+src/engine/rendering/water/water_rendering.i: src/engine/rendering/water/water_rendering.c.i
+.PHONY : src/engine/rendering/water/water_rendering.i
+
+# target to preprocess a source file
+src/engine/rendering/water/water_rendering.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/water/water_rendering.c.i
+.PHONY : src/engine/rendering/water/water_rendering.c.i
+
+src/engine/rendering/water/water_rendering.s: src/engine/rendering/water/water_rendering.c.s
+.PHONY : src/engine/rendering/water/water_rendering.s
+
+# target to generate assembly for a file
+src/engine/rendering/water/water_rendering.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/water/water_rendering.c.s
+.PHONY : src/engine/rendering/water/water_rendering.c.s
 
 src/engine/scene/scene_impl.o: src/engine/scene/scene_impl.c.o
 .PHONY : src/engine/scene/scene_impl.o
@@ -48344,6 +48824,30 @@ src/engine/tools/analytics/telemetry.s: src/engine/tools/analytics/telemetry.c.s
 src/engine/tools/analytics/telemetry.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.s
 .PHONY : src/engine/tools/analytics/telemetry.c.s
+
+src/engine/tools/analytics_dashboard.o: src/engine/tools/analytics_dashboard.c.o
+.PHONY : src/engine/tools/analytics_dashboard.o
+
+# target to build an object file
+src/engine/tools/analytics_dashboard.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard.c.o
+.PHONY : src/engine/tools/analytics_dashboard.c.o
+
+src/engine/tools/analytics_dashboard.i: src/engine/tools/analytics_dashboard.c.i
+.PHONY : src/engine/tools/analytics_dashboard.i
+
+# target to preprocess a source file
+src/engine/tools/analytics_dashboard.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard.c.i
+.PHONY : src/engine/tools/analytics_dashboard.c.i
+
+src/engine/tools/analytics_dashboard.s: src/engine/tools/analytics_dashboard.c.s
+.PHONY : src/engine/tools/analytics_dashboard.s
+
+# target to generate assembly for a file
+src/engine/tools/analytics_dashboard.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard.c.s
+.PHONY : src/engine/tools/analytics_dashboard.c.s
 
 src/engine/tools/asset_browser/asset_view.o: src/engine/tools/asset_browser/asset_view.c.o
 .PHONY : src/engine/tools/asset_browser/asset_view.o
@@ -56688,6 +57192,9 @@ help:
 	@echo "... src/engine/math/math_simd_impl.o"
 	@echo "... src/engine/math/math_simd_impl.i"
 	@echo "... src/engine/math/math_simd_impl.s"
+	@echo "... src/engine/math/matrix.o"
+	@echo "... src/engine/math/matrix.i"
+	@echo "... src/engine/math/matrix.s"
 	@echo "... src/engine/math/quat.o"
 	@echo "... src/engine/math/quat.i"
 	@echo "... src/engine/math/quat.s"
@@ -56820,6 +57327,9 @@ help:
 	@echo "... src/engine/physics/cloth/system_02.o"
 	@echo "... src/engine/physics/cloth/system_02.i"
 	@echo "... src/engine/physics/cloth/system_02.s"
+	@echo "... src/engine/physics/cloth_simulation/cloth_solver.o"
+	@echo "... src/engine/physics/cloth_simulation/cloth_solver.i"
+	@echo "... src/engine/physics/cloth_simulation/cloth_solver.s"
 	@echo "... src/engine/physics/collision/broadphase.o"
 	@echo "... src/engine/physics/collision/broadphase.i"
 	@echo "... src/engine/physics/collision/broadphase.s"
@@ -56937,6 +57447,9 @@ help:
 	@echo "... src/engine/physics/core_rigid_body.o"
 	@echo "... src/engine/physics/core_rigid_body.i"
 	@echo "... src/engine/physics/core_rigid_body.s"
+	@echo "... src/engine/physics/destruction/connectivity_graph.o"
+	@echo "... src/engine/physics/destruction/connectivity_graph.i"
+	@echo "... src/engine/physics/destruction/connectivity_graph.s"
 	@echo "... src/engine/physics/destruction/destruction_impl.o"
 	@echo "... src/engine/physics/destruction/destruction_impl.i"
 	@echo "... src/engine/physics/destruction/destruction_impl.s"
@@ -57063,6 +57576,9 @@ help:
 	@echo "... src/engine/physics/narrowphase/system_02.o"
 	@echo "... src/engine/physics/narrowphase/system_02.i"
 	@echo "... src/engine/physics/narrowphase/system_02.s"
+	@echo "... src/engine/physics/optimizer/physics_pipeline_optimizer.o"
+	@echo "... src/engine/physics/optimizer/physics_pipeline_optimizer.i"
+	@echo "... src/engine/physics/optimizer/physics_pipeline_optimizer.s"
 	@echo "... src/engine/physics/particles/builder_05.o"
 	@echo "... src/engine/physics/particles/builder_05.i"
 	@echo "... src/engine/physics/particles/builder_05.s"
@@ -57321,6 +57837,9 @@ help:
 	@echo "... src/engine/physics/vehicles/vehicle_dynamics.o"
 	@echo "... src/engine/physics/vehicles/vehicle_dynamics.i"
 	@echo "... src/engine/physics/vehicles/vehicle_dynamics.s"
+	@echo "... src/engine/physics/world/physics_world_manager.o"
+	@echo "... src/engine/physics/world/physics_world_manager.i"
+	@echo "... src/engine/physics/world/physics_world_manager.s"
 	@echo "... src/engine/platform/biome_api_bridge.o"
 	@echo "... src/engine/platform/biome_api_bridge.i"
 	@echo "... src/engine/platform/biome_api_bridge.s"
@@ -57837,6 +58356,9 @@ help:
 	@echo "... src/engine/rendering/camera_system.o"
 	@echo "... src/engine/rendering/camera_system.i"
 	@echo "... src/engine/rendering/camera_system.s"
+	@echo "... src/engine/rendering/compression/mesh_compression.o"
+	@echo "... src/engine/rendering/compression/mesh_compression.i"
+	@echo "... src/engine/rendering/compression/mesh_compression.s"
 	@echo "... src/engine/rendering/compute/gpu_compute.o"
 	@echo "... src/engine/rendering/compute/gpu_compute.i"
 	@echo "... src/engine/rendering/compute/gpu_compute.s"
@@ -57903,6 +58425,9 @@ help:
 	@echo "... src/engine/rendering/core/render_graph.o"
 	@echo "... src/engine/rendering/core/render_graph.i"
 	@echo "... src/engine/rendering/core/render_graph.s"
+	@echo "... src/engine/rendering/core/render_stats.o"
+	@echo "... src/engine/rendering/core/render_stats.i"
+	@echo "... src/engine/rendering/core/render_stats.s"
 	@echo "... src/engine/rendering/core/renderer.o"
 	@echo "... src/engine/rendering/core/renderer.i"
 	@echo "... src/engine/rendering/core/renderer.s"
@@ -58065,6 +58590,9 @@ help:
 	@echo "... src/engine/rendering/gbuffer/gbuffer_stats.o"
 	@echo "... src/engine/rendering/gbuffer/gbuffer_stats.i"
 	@echo "... src/engine/rendering/gbuffer/gbuffer_stats.s"
+	@echo "... src/engine/rendering/global_illumination/global_illumination.o"
+	@echo "... src/engine/rendering/global_illumination/global_illumination.i"
+	@echo "... src/engine/rendering/global_illumination/global_illumination.s"
 	@echo "... src/engine/rendering/gpu/gpu_lighting.o"
 	@echo "... src/engine/rendering/gpu/gpu_lighting.i"
 	@echo "... src/engine/rendering/gpu/gpu_lighting.s"
@@ -58161,7 +58689,13 @@ help:
 	@echo "... src/engine/rendering/lighting.o"
 	@echo "... src/engine/rendering/lighting.i"
 	@echo "... src/engine/rendering/lighting.s"
+	@echo "... src/engine/rendering/lighting/lighting_system.o"
+	@echo "... src/engine/rendering/lighting/lighting_system.i"
+	@echo "... src/engine/rendering/lighting/lighting_system.s"
 	@echo "... src/engine/rendering/lighting/lumen_gi.o"
+	@echo "... src/engine/rendering/lod/lod_system.o"
+	@echo "... src/engine/rendering/lod/lod_system.i"
+	@echo "... src/engine/rendering/lod/lod_system.s"
 	@echo "... src/engine/rendering/material_system.o"
 	@echo "... src/engine/rendering/material_system.i"
 	@echo "... src/engine/rendering/material_system.s"
@@ -58228,6 +58762,9 @@ help:
 	@echo "... src/engine/rendering/materials_impl.o"
 	@echo "... src/engine/rendering/materials_impl.i"
 	@echo "... src/engine/rendering/materials_impl.s"
+	@echo "... src/engine/rendering/memory/gpu_memory_manager.o"
+	@echo "... src/engine/rendering/memory/gpu_memory_manager.i"
+	@echo "... src/engine/rendering/memory/gpu_memory_manager.s"
 	@echo "... src/engine/rendering/mesh/mesh_processing_impl.o"
 	@echo "... src/engine/rendering/mesh/mesh_processing_impl.i"
 	@echo "... src/engine/rendering/mesh/mesh_processing_impl.s"
@@ -58303,6 +58840,9 @@ help:
 	@echo "... src/engine/rendering/particles/gpu_particles.o"
 	@echo "... src/engine/rendering/particles/gpu_particles.i"
 	@echo "... src/engine/rendering/particles/gpu_particles.s"
+	@echo "... src/engine/rendering/particles/particle_system.o"
+	@echo "... src/engine/rendering/particles/particle_system.i"
+	@echo "... src/engine/rendering/particles/particle_system.s"
 	@echo "... src/engine/rendering/particles/ribbon_renderer.o"
 	@echo "... src/engine/rendering/particles/ribbon_renderer.i"
 	@echo "... src/engine/rendering/particles/ribbon_renderer.s"
@@ -58312,6 +58852,9 @@ help:
 	@echo "... src/engine/rendering/pbr/pbr_brdf.o"
 	@echo "... src/engine/rendering/pbr/pbr_brdf.i"
 	@echo "... src/engine/rendering/pbr/pbr_brdf.s"
+	@echo "... src/engine/rendering/post_process/post_process_pipeline.o"
+	@echo "... src/engine/rendering/post_process/post_process_pipeline.i"
+	@echo "... src/engine/rendering/post_process/post_process_pipeline.s"
 	@echo "... src/engine/rendering/post_processing.o"
 	@echo "... src/engine/rendering/post_processing.i"
 	@echo "... src/engine/rendering/post_processing.s"
@@ -58375,6 +58918,9 @@ help:
 	@echo "... src/engine/rendering/ray_tracing.o"
 	@echo "... src/engine/rendering/ray_tracing.i"
 	@echo "... src/engine/rendering/ray_tracing.s"
+	@echo "... src/engine/rendering/ray_tracing/ray_tracing_system.o"
+	@echo "... src/engine/rendering/ray_tracing/ray_tracing_system.i"
+	@echo "... src/engine/rendering/ray_tracing/ray_tracing_system.s"
 	@echo "... src/engine/rendering/raytracing/acceleration/as_compaction.o"
 	@echo "... src/engine/rendering/raytracing/acceleration/as_compaction.i"
 	@echo "... src/engine/rendering/raytracing/acceleration/as_compaction.s"
@@ -58618,6 +59164,9 @@ help:
 	@echo "... src/engine/rendering/render_pipeline_impl.o"
 	@echo "... src/engine/rendering/render_pipeline_impl.i"
 	@echo "... src/engine/rendering/render_pipeline_impl.s"
+	@echo "... src/engine/rendering/render_pipeline_integration.o"
+	@echo "... src/engine/rendering/render_pipeline_integration.i"
+	@echo "... src/engine/rendering/render_pipeline_integration.s"
 	@echo "... src/engine/rendering/renderer_complete.o"
 	@echo "... src/engine/rendering/renderer_complete.i"
 	@echo "... src/engine/rendering/renderer_complete.s"
@@ -58633,6 +59182,9 @@ help:
 	@echo "... src/engine/rendering/shader/pbr_stylized_impl.o"
 	@echo "... src/engine/rendering/shader/pbr_stylized_impl.i"
 	@echo "... src/engine/rendering/shader/pbr_stylized_impl.s"
+	@echo "... src/engine/rendering/shader/shader_hot_reload.o"
+	@echo "... src/engine/rendering/shader/shader_hot_reload.i"
+	@echo "... src/engine/rendering/shader/shader_hot_reload.s"
 	@echo "... src/engine/rendering/shader/sss_impl.o"
 	@echo "... src/engine/rendering/shader/sss_impl.i"
 	@echo "... src/engine/rendering/shader/sss_impl.s"
@@ -58651,12 +59203,18 @@ help:
 	@echo "... src/engine/rendering/shaders/ocean_water.o"
 	@echo "... src/engine/rendering/shaders/ocean_water.i"
 	@echo "... src/engine/rendering/shaders/ocean_water.s"
+	@echo "... src/engine/rendering/shadows/shadow_mapping.o"
+	@echo "... src/engine/rendering/shadows/shadow_mapping.i"
+	@echo "... src/engine/rendering/shadows/shadow_mapping.s"
 	@echo "... src/engine/rendering/sky/atmosphere_scattering.o"
 	@echo "... src/engine/rendering/sky/atmosphere_scattering.i"
 	@echo "... src/engine/rendering/sky/atmosphere_scattering.s"
 	@echo "... src/engine/rendering/sky/atmosphere_scattering_impl.o"
 	@echo "... src/engine/rendering/sky/atmosphere_scattering_impl.i"
 	@echo "... src/engine/rendering/sky/atmosphere_scattering_impl.s"
+	@echo "... src/engine/rendering/sky/sky_rendering.o"
+	@echo "... src/engine/rendering/sky/sky_rendering.i"
+	@echo "... src/engine/rendering/sky/sky_rendering.s"
 	@echo "... src/engine/rendering/sky/volumetric_clouds.o"
 	@echo "... src/engine/rendering/sky/volumetric_clouds.i"
 	@echo "... src/engine/rendering/sky/volumetric_clouds.s"
@@ -58744,6 +59302,9 @@ help:
 	@echo "... src/engine/rendering/texture/texture_atlas.o"
 	@echo "... src/engine/rendering/texture/texture_atlas.i"
 	@echo "... src/engine/rendering/texture/texture_atlas.s"
+	@echo "... src/engine/rendering/texture/texture_streaming.o"
+	@echo "... src/engine/rendering/texture/texture_streaming.i"
+	@echo "... src/engine/rendering/texture/texture_streaming.s"
 	@echo "... src/engine/rendering/texture/texture_system.o"
 	@echo "... src/engine/rendering/texture/texture_system.i"
 	@echo "... src/engine/rendering/texture/texture_system.s"
@@ -58837,6 +59398,9 @@ help:
 	@echo "... src/engine/rendering/water/fft_ocean.o"
 	@echo "... src/engine/rendering/water/fft_ocean.i"
 	@echo "... src/engine/rendering/water/fft_ocean.s"
+	@echo "... src/engine/rendering/water/water_rendering.o"
+	@echo "... src/engine/rendering/water/water_rendering.i"
+	@echo "... src/engine/rendering/water/water_rendering.s"
 	@echo "... src/engine/scene/scene_impl.o"
 	@echo "... src/engine/scene/scene_impl.i"
 	@echo "... src/engine/scene/scene_impl.s"
@@ -59104,6 +59668,9 @@ help:
 	@echo "... src/engine/tools/analytics/telemetry.o"
 	@echo "... src/engine/tools/analytics/telemetry.i"
 	@echo "... src/engine/tools/analytics/telemetry.s"
+	@echo "... src/engine/tools/analytics_dashboard.o"
+	@echo "... src/engine/tools/analytics_dashboard.i"
+	@echo "... src/engine/tools/analytics_dashboard.s"
 	@echo "... src/engine/tools/asset_browser/asset_view.o"
 	@echo "... src/engine/tools/asset_browser/asset_view.i"
 	@echo "... src/engine/tools/asset_browser/asset_view.s"
