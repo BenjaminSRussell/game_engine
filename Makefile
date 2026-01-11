@@ -7337,102 +7337,6 @@ src/engine/backend/metal/mtl_vsync.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o
 .PHONY : src/engine/backend/metal/mtl_vsync.m.o
 
-src/engine/backend/metal/old/metal_argument_buffers.o: src/engine/backend/metal/old/metal_argument_buffers.m.o
-.PHONY : src/engine/backend/metal/old/metal_argument_buffers.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_argument_buffers.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_argument_buffers.m.o
-.PHONY : src/engine/backend/metal/old/metal_argument_buffers.m.o
-
-src/engine/backend/metal/old/metal_buffer.o: src/engine/backend/metal/old/metal_buffer.m.o
-.PHONY : src/engine/backend/metal/old/metal_buffer.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_buffer.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_buffer.m.o
-.PHONY : src/engine/backend/metal/old/metal_buffer.m.o
-
-src/engine/backend/metal/old/metal_command_buffer.o: src/engine/backend/metal/old/metal_command_buffer.m.o
-.PHONY : src/engine/backend/metal/old/metal_command_buffer.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_command_buffer.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_command_buffer.m.o
-.PHONY : src/engine/backend/metal/old/metal_command_buffer.m.o
-
-src/engine/backend/metal/old/metal_compute_pipeline.o: src/engine/backend/metal/old/metal_compute_pipeline.m.o
-.PHONY : src/engine/backend/metal/old/metal_compute_pipeline.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_compute_pipeline.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_compute_pipeline.m.o
-.PHONY : src/engine/backend/metal/old/metal_compute_pipeline.m.o
-
-src/engine/backend/metal/old/metal_device.o: src/engine/backend/metal/old/metal_device.m.o
-.PHONY : src/engine/backend/metal/old/metal_device.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_device.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_device.m.o
-.PHONY : src/engine/backend/metal/old/metal_device.m.o
-
-src/engine/backend/metal/old/metal_io.o: src/engine/backend/metal/old/metal_io.m.o
-.PHONY : src/engine/backend/metal/old/metal_io.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_io.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_io.m.o
-.PHONY : src/engine/backend/metal/old/metal_io.m.o
-
-src/engine/backend/metal/old/metal_mesh_shaders.o: src/engine/backend/metal/old/metal_mesh_shaders.m.o
-.PHONY : src/engine/backend/metal/old/metal_mesh_shaders.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_mesh_shaders.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_mesh_shaders.m.o
-.PHONY : src/engine/backend/metal/old/metal_mesh_shaders.m.o
-
-src/engine/backend/metal/old/metal_raytracing.o: src/engine/backend/metal/old/metal_raytracing.m.o
-.PHONY : src/engine/backend/metal/old/metal_raytracing.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_raytracing.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_raytracing.m.o
-.PHONY : src/engine/backend/metal/old/metal_raytracing.m.o
-
-src/engine/backend/metal/old/metal_render_pipeline.o: src/engine/backend/metal/old/metal_render_pipeline.m.o
-.PHONY : src/engine/backend/metal/old/metal_render_pipeline.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_render_pipeline.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_render_pipeline.m.o
-.PHONY : src/engine/backend/metal/old/metal_render_pipeline.m.o
-
-src/engine/backend/metal/old/metal_shader_compiler.o: src/engine/backend/metal/old/metal_shader_compiler.m.o
-.PHONY : src/engine/backend/metal/old/metal_shader_compiler.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_shader_compiler.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_shader_compiler.m.o
-.PHONY : src/engine/backend/metal/old/metal_shader_compiler.m.o
-
-src/engine/backend/metal/old/metal_texture.o: src/engine/backend/metal/old/metal_texture.m.o
-.PHONY : src/engine/backend/metal/old/metal_texture.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_texture.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_texture.m.o
-.PHONY : src/engine/backend/metal/old/metal_texture.m.o
-
-src/engine/backend/metal/old/metal_vertex.o: src/engine/backend/metal/old/metal_vertex.m.o
-.PHONY : src/engine/backend/metal/old/metal_vertex.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_vertex.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_vertex.m.o
-.PHONY : src/engine/backend/metal/old/metal_vertex.m.o
-
 src/engine/backend/metal/test_mtl_pipeline.o: src/engine/backend/metal/test_mtl_pipeline.m.o
 .PHONY : src/engine/backend/metal/test_mtl_pipeline.o
 
@@ -7688,30 +7592,6 @@ src/engine/character/animation/animation_synthesis.s: src/engine/character/anima
 src/engine/character/animation/animation_synthesis.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/animation/animation_synthesis.c.s
 .PHONY : src/engine/character/animation/animation_synthesis.c.s
-
-src/engine/character/animation/animation_system.o: src/engine/character/animation/animation_system.c.o
-.PHONY : src/engine/character/animation/animation_system.o
-
-# target to build an object file
-src/engine/character/animation/animation_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/animation/animation_system.c.o
-.PHONY : src/engine/character/animation/animation_system.c.o
-
-src/engine/character/animation/animation_system.i: src/engine/character/animation/animation_system.c.i
-.PHONY : src/engine/character/animation/animation_system.i
-
-# target to preprocess a source file
-src/engine/character/animation/animation_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/animation/animation_system.c.i
-.PHONY : src/engine/character/animation/animation_system.c.i
-
-src/engine/character/animation/animation_system.s: src/engine/character/animation/animation_system.c.s
-.PHONY : src/engine/character/animation/animation_system.s
-
-# target to generate assembly for a file
-src/engine/character/animation/animation_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/animation/animation_system.c.s
-.PHONY : src/engine/character/animation/animation_system.c.s
 
 src/engine/character/animation/authoring_impl.o: src/engine/character/animation/authoring_impl.c.o
 .PHONY : src/engine/character/animation/authoring_impl.o
@@ -54122,18 +54002,6 @@ help:
 	@echo "... src/engine/backend/metal/mtl_timestamp.o"
 	@echo "... src/engine/backend/metal/mtl_transfer.o"
 	@echo "... src/engine/backend/metal/mtl_vsync.o"
-	@echo "... src/engine/backend/metal/old/metal_argument_buffers.o"
-	@echo "... src/engine/backend/metal/old/metal_buffer.o"
-	@echo "... src/engine/backend/metal/old/metal_command_buffer.o"
-	@echo "... src/engine/backend/metal/old/metal_compute_pipeline.o"
-	@echo "... src/engine/backend/metal/old/metal_device.o"
-	@echo "... src/engine/backend/metal/old/metal_io.o"
-	@echo "... src/engine/backend/metal/old/metal_mesh_shaders.o"
-	@echo "... src/engine/backend/metal/old/metal_raytracing.o"
-	@echo "... src/engine/backend/metal/old/metal_render_pipeline.o"
-	@echo "... src/engine/backend/metal/old/metal_shader_compiler.o"
-	@echo "... src/engine/backend/metal/old/metal_texture.o"
-	@echo "... src/engine/backend/metal/old/metal_vertex.o"
 	@echo "... src/engine/backend/metal/test_mtl_pipeline.o"
 	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.o"
 	@echo "... src/engine/backend/vertex_compression.o"
@@ -54166,9 +54034,6 @@ help:
 	@echo "... src/engine/character/animation/animation_synthesis.o"
 	@echo "... src/engine/character/animation/animation_synthesis.i"
 	@echo "... src/engine/character/animation/animation_synthesis.s"
-	@echo "... src/engine/character/animation/animation_system.o"
-	@echo "... src/engine/character/animation/animation_system.i"
-	@echo "... src/engine/character/animation/animation_system.s"
 	@echo "... src/engine/character/animation/authoring_impl.o"
 	@echo "... src/engine/character/animation/authoring_impl.i"
 	@echo "... src/engine/character/animation/authoring_impl.s"

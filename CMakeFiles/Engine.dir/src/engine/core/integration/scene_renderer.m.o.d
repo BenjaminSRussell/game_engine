@@ -906,7 +906,10 @@ CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/camera.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/character/animation/animation_system.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/character/animation/../../math/mat4.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/character/animation/../../math/quat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/character/animation/../../math/../common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/character/animation/../../math/vec3.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/engine.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/window.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/config_loader.h \
@@ -915,6 +918,7 @@ CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/types.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/utils.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/../common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/culling.h \

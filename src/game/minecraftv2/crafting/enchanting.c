@@ -17,10 +17,10 @@
 #include <chunk/chunk.h>
 #include <core/logger.h>
 #include <crafting/enchanting.h>
+#include <effects/vfx/particle_system.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <vfx/particle_system.h>
 
 // Enchantment properties
 typedef struct {
@@ -428,7 +428,7 @@ bool enchanting_apply(Enchantment *enchantment, InventorySlot *item_slot,
 
 // Emit visual/audio effects for applying an enchantment at a given position.
 void enchanting_emit_apply_vfx(Enchantment *enchantment, Vec3 position,
-                               struct ParticleSystem *particle_system,
+                               ParticleSystem *particle_system,
                                struct AudioSystem *audio_system) {
   if (!enchantment || !particle_system)
     return;
@@ -467,8 +467,9 @@ void enchanting_calculate_cost(EnchantingTable *table, u32 offer_index,
   if (!table || offer_index >= 3 || !out_xp_cost || !out_lapis_cost)
     return;
 
-  *out_xp_cost = table->current_offers[offer_index].max_level;
-  *out_lapis_cost = 1 + (table->current_offers[offer_index].level / 2);
+  *out_xp_cost = table->current_offers[offer_index].enchantment.max_level;
+  *out_lapis_cost =
+      1 + (table->current_offers[offer_index].enchantment.level / 2);
 }
 
 // Check if enchantment can be applied to item

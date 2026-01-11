@@ -112,6 +112,9 @@ CMakeFiles/Engine.dir/src/engine/character/animation/animation_synthesis.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/mat4.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/character/animation/animation_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/character/animation/../../math/mat4.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/character/animation/../../math/quat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/character/animation/../../math/vec3.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/engine.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/window.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \

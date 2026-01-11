@@ -140,6 +140,7 @@ endif()
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*test.*\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/main\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*\\.disabled$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/old/.*")
 
 # Temporarily exclude problematic subsystem files that have incomplete header scaffolding
 # Animation subsystem is completely excluded in GLOB_RECURSE above (via commenting out)

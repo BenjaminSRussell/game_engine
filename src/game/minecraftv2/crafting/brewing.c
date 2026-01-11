@@ -15,10 +15,10 @@
 #include <core/logger.h>
 #include <core/memory.h>
 #include <crafting/brewing.h>
+#include <effects/vfx/particle_system.h>
 #include <inventory/item_registry.h>
 #include <stdlib.h>
 #include <string.h>
-#include <vfx/particle_system.h>
 
 // ============= Brewing Recipes =============
 
@@ -231,7 +231,7 @@ bool brewing_start_brew(BrewingStand *stand, u32 bottle_index,
 }
 
 void brewing_stand_update(BrewingStand *stand, f32 delta_time,
-                          struct ParticleSystem *particle_system,
+                          ParticleSystem *particle_system,
                           struct AudioSystem *audio_system) {
   if (!stand || !stand->is_brewing)
     return;
@@ -454,7 +454,7 @@ void brewing_init_default_recipes(void) {
 
 // Emit visual and audio effects for brewing completion
 void brewing_emit_complete_vfx(const BrewingStand *stand,
-                               struct ParticleSystem *particle_system,
+                               ParticleSystem *particle_system,
                                struct AudioSystem *audio_system) {
   if (!stand || !particle_system)
     return;
@@ -475,7 +475,7 @@ void brewing_emit_complete_vfx(const BrewingStand *stand,
 
 // Emit periodic progress particles (bubbles/steam)
 void brewing_emit_progress_vfx(const BrewingStand *stand,
-                               struct ParticleSystem *particle_system) {
+                               ParticleSystem *particle_system) {
   if (!stand || !particle_system)
     return;
 

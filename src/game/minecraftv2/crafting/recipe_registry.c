@@ -1,90 +1,97 @@
-// Recipe registry storage and lookup.
 #include <block/block.h>
-#include <crafting/recipe.h>
-#include <crafting/recipe_manager.h>
-#include <crafting/recipe_registry.h>
+#include <crafting/recipe_system.h>
 #include <stdlib.h>
 #include <string.h>
 
 // Initialize recipe registry
-void recipe_registry_init(RecipeRegistry *registry, u32 capacity) {
-  registry->recipes = (Recipe *)calloc(capacity, sizeof(Recipe));
-  registry->capacity = capacity;
-  registry->count = 0;
-  recipe_manager_init();
+void recipe_registry_init(RecipeRegistry *registry) {
+  if (!registry)
+    return;
+  memset(registry, 0, sizeof(RecipeRegistry));
+  // Mutex init if needed
 }
 
 // Free recipe registry
 void recipe_registry_free(RecipeRegistry *registry) {
   if (!registry)
     return;
-
-  for (u32 i = 0; i < registry->count; i++) {
-    recipe_free(&registry->recipes[i]);
+  // Static array, nothing to free unless patterns are dynamic
+  for (u32 i = 0; i < registry->recipe_count; i++) {
+    if (registry->recipes[i].pattern) {
+      free(registry->recipes[i].pattern);
+      registry->recipes[i].pattern = NULL;
+    }
   }
-
-  if (registry->recipes) {
-    free(registry->recipes);
-    registry->recipes = NULL;
-  }
-
-  registry->capacity = 0;
-  registry->count = 0;
-  recipe_manager_shutdown();
+  registry->recipe_count = 0;
 }
 
 // Register recipe
-bool recipe_registry_register(RecipeRegistry *registry, Recipe *recipe) {
-  if (!registry || !recipe || registry->count >= registry->capacity) {
-    return false;
+u32 recipe_registry_add(RecipeRegistry *registry, Recipe *recipe) {
+  if (!registry || !recipe || registry->recipe_count >= MAX_RECIPES) {
+    return INVALID_RECIPE_ID;
   }
 
-  // Copy recipe
-  u32 index = registry->count;
-  memcpy(&registry->recipes[index], recipe, sizeof(Recipe));
-  registry->count++;
-  recipe_manager_add(&registry->recipes[index]);
+  u32 index = registry->recipe_count;
+  registry->recipes[index] = *recipe; // Copy struct
 
-  return true;
+  // If pattern is dynamic, we need to deep copy it or ensure ownership
+  // transfer. Assuming ownership transfer for now or static usage. But legacy
+  // code allocs pattern. We'll handle it if pattern is set.
+  if (recipe->pattern) {
+    registry->recipes[index].pattern = (u32 *)malloc(
+        sizeof(u32) * recipe->pattern_width * recipe->pattern_height);
+    memcpy(registry->recipes[index].pattern, recipe->pattern,
+           sizeof(u32) * recipe->pattern_width * recipe->pattern_height);
+  }
+
+  registry->recipes[index].id = index + 1; // ID 0 is invalid usually
+  registry->recipe_count++;
+
+  return registry->recipes[index].id;
 }
 
-// Find recipe by result
-Recipe *recipe_registry_find_by_result(RecipeRegistry *registry, u32 item_id) {
-  if (!registry)
+Recipe *recipe_registry_get(RecipeRegistry *registry, u32 recipe_id) {
+  if (!registry || recipe_id == 0 || recipe_id > registry->recipe_count)
     return NULL;
-
-  for (u32 i = 0; i < registry->count; i++) {
-    if (registry->recipes[i].result_item == item_id) {
-      return &registry->recipes[i];
-    }
-  }
-
-  return NULL;
+  return &registry->recipes[recipe_id - 1];
 }
 
 // Initialize default recipes
-void recipe_registry_init_defaults(RecipeRegistry *registry) {
+void recipe_registry_add_defaults(RecipeRegistry *registry) {
   if (!registry)
     return;
 
   // Example: Wooden Planks from Logs
-  Recipe planks_recipe;
-  recipe_init(&planks_recipe, 2, 4);           // Assuming BLOCK_PLANKS = 2
-  recipe_add_ingredient(&planks_recipe, 1, 1); // Assuming BLOCK_LOG = 1
-  recipe_registry_register(registry, &planks_recipe);
+  Recipe planks;
+  memset(&planks, 0, sizeof(Recipe));
+  planks.type = RECIPE_TYPE_SHAPELESS;
+  planks.result_item = 2; // BLOCK_PLANKS
+  planks.result_quantity = 4;
+  planks.ingredient_count = 1;
+  planks.ingredients[0].item_id = 1; // BLOCK_LOG
+  planks.ingredients[0].quantity = 1;
+  recipe_registry_add(registry, &planks);
 
-  // Example: Sticks from Planks (shapeless)
-  Recipe sticks_recipe;
-  recipe_init(&sticks_recipe, 100, 4);         // Assuming ITEM_STICK = 100
-  recipe_add_ingredient(&sticks_recipe, 2, 2); // Assuming BLOCK_PLANKS = 2
-  recipe_registry_register(registry, &sticks_recipe);
+  // Example: Sticks from Planks
+  Recipe sticks;
+  memset(&sticks, 0, sizeof(Recipe));
+  sticks.type = RECIPE_TYPE_SHAPELESS;
+  sticks.result_item = 100; // ITEM_STICK
+  sticks.result_quantity = 4;
+  sticks.ingredient_count = 1;
+  sticks.ingredients[0].item_id = 2; // BLOCK_PLANKS
+  sticks.ingredients[0].quantity = 2;
+  recipe_registry_add(registry, &sticks);
 
   // Example: Crafting Table (shaped)
-  Recipe crafting_table_recipe;
-  recipe_init(&crafting_table_recipe, 3,
-              1);        // Assuming BLOCK_CRAFTING_TABLE = 3
-  u32 pattern[] = {2, 2, // Assuming BLOCK_PLANKS = 2
-                   2, 2};
-  recipe_set_pattern(&crafting_table_recipe, 2, 2, pattern);
-  recipe_registry_register(registry, &crafting_table_recipe);
+  Recipe table;
+  memset(&table, 0, sizeof(Recipe));
+  table.type = RECIPE_TYPE_SHAPED;
+  table.result_item = 3; // BLOCK_CRAFTING_TABLE
+  table.result_quantity = 1;
+  table.pattern_width = 2;
+  table.pattern_height = 2;
+  u32 table_pattern[] = {2, 2, 2, 2};
+  table.pattern = table_pattern; // Temporary pointer, add() will copy
+  recipe_registry_add(registry, &table);
 }

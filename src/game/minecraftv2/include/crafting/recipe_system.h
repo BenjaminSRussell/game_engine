@@ -63,10 +63,19 @@ typedef enum {
 
 typedef struct {
   u32 item_id;
-  u16 count;
+  u16 quantity;
   // TODO: Add support for item tags (e.g. "logs", "stone_tool") to allow
   // generic ingredients. bool is_tag; char tag_name[32];
 } RecipeIngredient;
+
+typedef struct {
+  WorkbenchType type;
+  u32 block_id;
+  char name[32];
+  u32 recipe_slots;
+  bool supports_shaped;
+  bool supports_shapeless;
+} Workbench;
 
 typedef struct {
   u32 item_id;
@@ -100,6 +109,14 @@ typedef struct {
   u32 result_item;
   u32 result_quantity;
 } Recipe;
+
+typedef struct {
+  Recipe *recipes;
+  u32 recipe_capacity;
+  u32 recipe_count;
+  Workbench *workbenches;
+  u32 workbench_count;
+} AdvancedCraftingSystem;
 
 #ifndef PLATFORM_WEB
 #include <pthread.h>
