@@ -1,8 +1,9 @@
 // include/engine/networking/massive_networking.h
 //
-// Purpose: Massive networking system supporting 1000+ players with client-side prediction
-// This system provides cutting-edge networking capabilities that surpass Unity's Netcode for GameObjects
-// with advanced prediction, server authority, and massive scale optimization.
+// Purpose: Massive networking system supporting 1000+ players with client-side
+// prediction This system provides cutting-edge networking capabilities that
+// surpass Unity's Netcode for GameObjects with advanced prediction, server
+// authority, and massive scale optimization.
 //
 // Key Features:
 // - Client-side prediction with server reconciliation
@@ -16,10 +17,10 @@
 //
 // Performance Advantages over Unity Networking:
 // - Better prediction algorithms with rollback
-- - More efficient delta compression
-- - Superior interest management
-- - Better load balancing and scaling
-- - Advanced anti-cheat integration
+// - More efficient delta compression
+// - Superior interest management
+// - Better load balancing and scaling
+// - Advanced anti-cheat integration
 // - Integration with our superior ECS architecture
 //
 // Public APIs:
@@ -36,8 +37,8 @@
 #define MASSIVE_NETWORKING_H
 
 #include "include/common.h"
-#include "include/ecs/ecs.h"
 #include "include/core/performance.h"
+#include "include/ecs/ecs.h"
 #include <stdbool.h>
 
 // ============================================================================
@@ -98,10 +99,10 @@ typedef struct {
 // Prediction state
 typedef struct {
   Entity entity;
-  vec3 predicted_position;
-  vec3 predicted_velocity;
-  quat predicted_orientation;
-  vec3 predicted_angular_velocity;
+  Vec3 predicted_position;
+  Vec3 predicted_velocity;
+  Quat predicted_orientation;
+  Vec3 predicted_angular_velocity;
   u32 sequence_number;
   f64 timestamp;
   bool is_confirmed;
@@ -111,8 +112,8 @@ typedef struct {
 // Input command for prediction
 typedef struct {
   u32 sequence_number;
-  vec3 move_input;
-  vec3 look_input;
+  Vec3 move_input;
+  Vec3 look_input;
   bool jump_pressed;
   bool crouch_pressed;
   bool sprint_pressed;
@@ -144,9 +145,9 @@ typedef struct {
 // Server state validation
 typedef struct {
   Entity entity;
-  vec3 server_position;
-  vec3 server_velocity;
-  quat server_orientation;
+  Vec3 server_position;
+  Vec3 server_velocity;
+  Quat server_orientation;
   u32 last_update_sequence;
   f64 last_update_time;
   bool needs_correction;
@@ -200,26 +201,26 @@ typedef enum {
 
 // Interest region
 typedef struct {
-  vec3 center;
-  vec3 extents;
+  Vec3 center;
+  Vec3 extents;
   u32 priority_level;
   u32 update_rate;
   bool is_active;
-  u32 client_mask;  // Bitmask of interested clients
+  u32 client_mask; // Bitmask of interested clients
 } InterestRegion;
 
 // Interest management system
 typedef struct {
   InterestMethod method;
-  vec3 world_bounds_min;
-  vec3 world_bounds_max;
+  Vec3 world_bounds_min;
+  Vec3 world_bounds_max;
   u32 grid_resolution_x;
   u32 grid_resolution_y;
   u32 grid_resolution_z;
   InterestRegion *regions;
   u32 region_count;
   u32 max_regions;
-  u32 **client_interests;  // Grid of client interests
+  u32 **client_interests; // Grid of client interests
   u32 grid_cell_count;
   f32 update_frequency;
   bool enable_dynamic_regions;
@@ -279,7 +280,7 @@ typedef enum {
 
 // Replicated component
 typedef struct {
-  ComponentID component_id;
+  ECSComponentID component_id;
   u32 component_size;
   void *component_data;
   u32 last_update_sequence;
@@ -302,7 +303,7 @@ typedef struct {
   bool is_owner_authoritative;
   u32 last_update_sequence;
   f64 last_update_time;
-  vec3 last_known_position;
+  Vec3 last_known_position;
   f32 position_change_threshold;
 } ReplicatedEntity;
 
@@ -449,17 +450,17 @@ typedef struct {
 typedef struct {
   // Configuration
   NetworkConfig config;
-  
+
   // Client or server mode
   bool is_server;
   NetworkClient *client;
   NetworkServer *server;
-  
+
   // Distributed system
   LoadBalancer load_balancer;
   u32 region_id;
   bool enable_distributed;
-  
+
   // Performance
   Profiler *network_profiler;
   f64 total_network_time;
@@ -467,14 +468,14 @@ typedef struct {
   f64 replication_time;
   f64 prediction_time;
   f64 interest_time;
-  
+
   // ECS integration
   World *ecs_world;
-  
+
   // Threading
   void *network_threads;
   u32 network_thread_count;
-  
+
   // Quality adaptation
   NetworkQuality current_quality;
   f64 last_quality_adaptation;
@@ -486,7 +487,8 @@ typedef struct {
 // ============================================================================
 
 // Network system management
-MassiveNetworkSystem *massive_network_create(const NetworkConfig *config, World *ecs_world);
+MassiveNetworkSystem *massive_network_create(const NetworkConfig *config,
+                                             World *ecs_world);
 void massive_network_destroy(MassiveNetworkSystem *system);
 void massive_network_update(MassiveNetworkSystem *system, f32 delta_time);
 
@@ -500,18 +502,25 @@ NetworkConfig massive_network_create_client_config(const char *server_address);
 // ============================================================================
 
 // Client connection
-bool massive_network_connect(MassiveNetworkSystem *system, const char *server_address, u16 port);
+bool massive_network_connect(MassiveNetworkSystem *system,
+                             const char *server_address, u16 port);
 void massive_network_disconnect(MassiveNetworkSystem *system);
 bool massive_network_reconnect(MassiveNetworkSystem *system);
 
 // Client input
-void massive_network_send_input(MassiveNetworkSystem *system, const InputCommand *input);
-void massive_network_send_rpc(MassiveNetworkSystem *system, const char *rpc_name, void *data, u32 data_size);
+void massive_network_send_input(MassiveNetworkSystem *system,
+                                const InputCommand *input);
+void massive_network_send_rpc(MassiveNetworkSystem *system,
+                              const char *rpc_name, void *data, u32 data_size);
 
 // Client prediction
-void massive_network_enable_prediction(MassiveNetworkSystem *system, bool enable);
-void massive_network_set_prediction_tolerance(MassiveNetworkSystem *system, f32 tolerance);
-PredictionState *massive_network_get_predicted_state(MassiveNetworkSystem *system, Entity entity);
+void massive_network_enable_prediction(MassiveNetworkSystem *system,
+                                       bool enable);
+void massive_network_set_prediction_tolerance(MassiveNetworkSystem *system,
+                                              f32 tolerance);
+PredictionState *
+massive_network_get_predicted_state(MassiveNetworkSystem *system,
+                                    Entity entity);
 
 // Client statistics
 NetworkStats massive_network_get_stats(MassiveNetworkSystem *system);
@@ -528,59 +537,92 @@ bool massive_network_is_running(MassiveNetworkSystem *system);
 
 // Client management
 u32 massive_network_get_client_count(MassiveNetworkSystem *system);
-ConnectedClient *massive_network_get_client(MassiveNetworkSystem *system, u32 client_id);
-bool massive_network_kick_client(MassiveNetworkSystem *system, u32 client_id, const char *reason);
-bool massive_network_ban_client(MassiveNetworkSystem *system, u32 client_id, const char *reason);
+ConnectedClient *massive_network_get_client(MassiveNetworkSystem *system,
+                                            u32 client_id);
+bool massive_network_kick_client(MassiveNetworkSystem *system, u32 client_id,
+                                 const char *reason);
+bool massive_network_ban_client(MassiveNetworkSystem *system, u32 client_id,
+                                const char *reason);
 
 // Server broadcasting
-void massive_network_broadcast_to_all(MassiveNetworkSystem *system, const void *data, u32 data_size);
-void massive_network_broadcast_to_client(MassiveNetworkSystem *system, u32 client_id, const void *data, u32 data_size);
-void massive_network_broadcast_to_region(MassiveNetworkSystem *system, vec3 center, f32 radius, const void *data, u32 data_size);
+void massive_network_broadcast_to_all(MassiveNetworkSystem *system,
+                                      const void *data, u32 data_size);
+void massive_network_broadcast_to_client(MassiveNetworkSystem *system,
+                                         u32 client_id, const void *data,
+                                         u32 data_size);
+void massive_network_broadcast_to_region(MassiveNetworkSystem *system,
+                                         Vec3 center, f32 radius,
+                                         const void *data, u32 data_size);
 
 // ============================================================================
 // REPLICATION API
 // ============================================================================
 
 // Entity replication
-bool massive_network_replicate_entity(MassiveNetworkSystem *system, Entity entity, ReplicationPriority priority);
-bool massive_network_stop_replicating_entity(MassiveNetworkSystem *system, Entity entity);
-bool massive_network_set_entity_owner(MassiveNetworkSystem *system, Entity entity, u32 client_id);
+bool massive_network_replicate_entity(MassiveNetworkSystem *system,
+                                      Entity entity,
+                                      ReplicationPriority priority);
+bool massive_network_stop_replicating_entity(MassiveNetworkSystem *system,
+                                             Entity entity);
+bool massive_network_set_entity_owner(MassiveNetworkSystem *system,
+                                      Entity entity, u32 client_id);
 
 // Component replication
-bool massive_network_replicate_component(MassiveNetworkSystem *system, Entity entity, ComponentID component_id, ReplicationPriority priority);
-bool massive_network_set_component_dirty(MassiveNetworkSystem *system, Entity entity, ComponentID component_id);
-bool massive_network_set_component_update_frequency(MassiveNetworkSystem *system, Entity entity, ComponentID component_id, f32 frequency);
+bool massive_network_replicate_component(MassiveNetworkSystem *system,
+                                         Entity entity,
+                                         ECSComponentID component_id,
+                                         ReplicationPriority priority);
+bool massive_network_set_component_dirty(MassiveNetworkSystem *system,
+                                         Entity entity,
+                                         ECSComponentID component_id);
+bool massive_network_set_component_update_frequency(
+    MassiveNetworkSystem *system, Entity entity, ECSComponentID component_id,
+    f32 frequency);
 
 // Replication configuration
-void massive_network_set_replication_rate(MassiveNetworkSystem *system, f32 rate);
-void massive_network_set_bandwidth_budget(MassiveNetworkSystem *system, f32 budget_mbps);
+void massive_network_set_replication_rate(MassiveNetworkSystem *system,
+                                          f32 rate);
+void massive_network_set_bandwidth_budget(MassiveNetworkSystem *system,
+                                          f32 budget_mbps);
 
 // ============================================================================
 // INTEREST MANAGEMENT API
 // ============================================================================
 
 // Interest configuration
-void massive_network_set_interest_method(MassiveNetworkSystem *system, InterestMethod method);
-void massive_network_set_world_bounds(MassiveNetworkSystem *system, vec3 min_bounds, vec3 max_bounds);
-void massive_network_set_grid_resolution(MassiveNetworkSystem *system, u32 resolution);
+void massive_network_set_interest_method(MassiveNetworkSystem *system,
+                                         InterestMethod method);
+void massive_network_set_world_bounds(MassiveNetworkSystem *system,
+                                      Vec3 min_bounds, Vec3 max_bounds);
+void massive_network_set_grid_resolution(MassiveNetworkSystem *system,
+                                         u32 resolution);
 
 // Interest regions
-InterestRegion *massive_network_create_interest_region(MassiveNetworkSystem *system, vec3 center, vec3 extents);
-void massive_network_destroy_interest_region(MassiveNetworkSystem *system, InterestRegion *region);
-void massive_network_set_region_priority(MassiveNetworkSystem *system, InterestRegion *region, u32 priority);
+InterestRegion *
+massive_network_create_interest_region(MassiveNetworkSystem *system,
+                                       Vec3 center, Vec3 extents);
+void massive_network_destroy_interest_region(MassiveNetworkSystem *system,
+                                             InterestRegion *region);
+void massive_network_set_region_priority(MassiveNetworkSystem *system,
+                                         InterestRegion *region, u32 priority);
 
 // Client interests
-void massive_network_set_client_interest(MassiveNetworkSystem *system, u32 client_id, InterestRegion *region);
-void massive_network_clear_client_interests(MassiveNetworkSystem *system, u32 client_id);
+void massive_network_set_client_interest(MassiveNetworkSystem *system,
+                                         u32 client_id, InterestRegion *region);
+void massive_network_clear_client_interests(MassiveNetworkSystem *system,
+                                            u32 client_id);
 
 // ============================================================================
 // COMPRESSION API
 // ============================================================================
 
 // Compression configuration
-void massive_network_set_compression_algorithm(MassiveNetworkSystem *system, CompressionAlgorithm algorithm);
-void massive_network_set_compression_level(MassiveNetworkSystem *system, u32 level);
-void massive_network_enable_adaptive_compression(MassiveNetworkSystem *system, bool enable);
+void massive_network_set_compression_algorithm(MassiveNetworkSystem *system,
+                                               CompressionAlgorithm algorithm);
+void massive_network_set_compression_level(MassiveNetworkSystem *system,
+                                           u32 level);
+void massive_network_enable_adaptive_compression(MassiveNetworkSystem *system,
+                                                 bool enable);
 
 // Compression statistics
 f32 massive_network_get_compression_ratio(MassiveNetworkSystem *system);
@@ -591,32 +633,49 @@ f64 massive_network_get_compression_time(MassiveNetworkSystem *system);
 // ============================================================================
 
 // Load balancing
-bool massive_network_enable_distributed(MassiveNetworkSystem *system, LoadBalancerType type);
-ServerNode *massive_network_add_server_node(MassiveNetworkSystem *system, const char *address, u16 port, u32 max_clients);
-void massive_network_remove_server_node(MassiveNetworkSystem *system, u32 node_id);
-u32 massive_network_get_optimal_node(MassiveNetworkSystem *system, const char *client_address);
+bool massive_network_enable_distributed(MassiveNetworkSystem *system,
+                                        LoadBalancerType type);
+ServerNode *massive_network_add_server_node(MassiveNetworkSystem *system,
+                                            const char *address, u16 port,
+                                            u32 max_clients);
+void massive_network_remove_server_node(MassiveNetworkSystem *system,
+                                        u32 node_id);
+u32 massive_network_get_optimal_node(MassiveNetworkSystem *system,
+                                     const char *client_address);
 
 // Server migration
-bool massive_network_migrate_client(MassiveNetworkSystem *system, u32 client_id, u32 target_node_id);
-void massive_network_enable_server_migration(MassiveNetworkSystem *system, bool enable);
+bool massive_network_migrate_client(MassiveNetworkSystem *system, u32 client_id,
+                                    u32 target_node_id);
+void massive_network_enable_server_migration(MassiveNetworkSystem *system,
+                                             bool enable);
 
 // Health monitoring
-void massive_network_enable_health_checks(MassiveNetworkSystem *system, bool enable);
-void massive_network_set_health_check_interval(MassiveNetworkSystem *system, f64 interval);
+void massive_network_enable_health_checks(MassiveNetworkSystem *system,
+                                          bool enable);
+void massive_network_set_health_check_interval(MassiveNetworkSystem *system,
+                                               f64 interval);
 
 // ============================================================================
 // QUALITY ADAPTATION API
 // ============================================================================
 
 // Quality adaptation
-void massive_network_enable_quality_adaptation(MassiveNetworkSystem *system, bool enable);
-void massive_network_set_quality_thresholds(MassiveNetworkSystem *system, f32 excellent_threshold, f32 good_threshold, f32 poor_threshold);
-void massive_network_adapt_quality(MassiveNetworkSystem *system, NetworkQuality quality);
+void massive_network_enable_quality_adaptation(MassiveNetworkSystem *system,
+                                               bool enable);
+void massive_network_set_quality_thresholds(MassiveNetworkSystem *system,
+                                            f32 excellent_threshold,
+                                            f32 good_threshold,
+                                            f32 poor_threshold);
+void massive_network_adapt_quality(MassiveNetworkSystem *system,
+                                   NetworkQuality quality);
 
 // Adaptive settings
-void massive_network_adapt_tick_rate(MassiveNetworkSystem *system, u32 new_tick_rate);
-void massive_network_adapt_send_rate(MassiveNetworkSystem *system, u32 new_send_rate);
-void massive_network_adapt_compression(MassiveNetworkSystem *system, CompressionAlgorithm algorithm);
+void massive_network_adapt_tick_rate(MassiveNetworkSystem *system,
+                                     u32 new_tick_rate);
+void massive_network_adapt_send_rate(MassiveNetworkSystem *system,
+                                     u32 new_send_rate);
+void massive_network_adapt_compression(MassiveNetworkSystem *system,
+                                       CompressionAlgorithm algorithm);
 
 // ============================================================================
 // DEBUGGING AND MONITORING
@@ -624,7 +683,8 @@ void massive_network_adapt_compression(MassiveNetworkSystem *system, Compression
 
 // Network debugging
 void massive_network_debug_render_connections(MassiveNetworkSystem *system);
-void massive_network_debug_render_interest_regions(MassiveNetworkSystem *system);
+void massive_network_debug_render_interest_regions(
+    MassiveNetworkSystem *system);
 void massive_network_debug_render_replication(MassiveNetworkSystem *system);
 
 // Performance monitoring
@@ -641,7 +701,8 @@ typedef struct {
   f64 prediction_accuracy;
 } NetworkPerformanceReport;
 
-NetworkPerformanceReport massive_network_get_performance_report(MassiveNetworkSystem *system);
+NetworkPerformanceReport
+massive_network_get_performance_report(MassiveNetworkSystem *system);
 void massive_network_print_performance_report(MassiveNetworkSystem *system);
 
 // ============================================================================
@@ -649,59 +710,50 @@ void massive_network_print_performance_report(MassiveNetworkSystem *system);
 // ============================================================================
 
 // Network configuration macros
-#define MASSIVE_NETWORK_SERVER_CONFIG(max_clients, port) \
-  (NetworkConfig){ \
-    .protocol = NETWORK_PROTOCOL_UDP, \
-    .max_clients = max_clients, \
-    .tick_rate = 60, \
-    .send_rate = 30, \
-    .max_packet_size = 1200, \
-    .client_timeout = 30.0f, \
-    .server_timeout = 30.0f, \
-    .enable_compression = true, \
-    .enable_encryption = true, \
-    .enable_prediction = true, \
-    .enable_interpolation = true, \
-    .enable_reconciliation = true, \
-    .compression_level = 3, \
-    .encryption_key_size = 256, \
-    .server_address = NULL, \
-    .server_port = port, \
-    .client_port = 0 \
-  }
+#define MASSIVE_NETWORK_SERVER_CONFIG(max_clients, port)                       \
+  (NetworkConfig){.protocol = NETWORK_PROTOCOL_UDP,                            \
+                  .max_clients = max_clients,                                  \
+                  .tick_rate = 60,                                             \
+                  .send_rate = 30,                                             \
+                  .max_packet_size = 1200,                                     \
+                  .client_timeout = 30.0f,                                     \
+                  .server_timeout = 30.0f,                                     \
+                  .enable_compression = true,                                  \
+                  .enable_encryption = true,                                   \
+                  .enable_prediction = true,                                   \
+                  .enable_interpolation = true,                                \
+                  .enable_reconciliation = true,                               \
+                  .compression_level = 3,                                      \
+                  .encryption_key_size = 256,                                  \
+                  .server_address = NULL,                                      \
+                  .server_port = port,                                         \
+                  .client_port = 0}
 
-#define MASSIVE_NETWORK_CLIENT_CONFIG(server_addr, port) \
-  (NetworkConfig){ \
-    .protocol = NETWORK_PROTOCOL_UDP, \
-    .max_clients = 1, \
-    .tick_rate = 60, \
-    .send_rate = 30, \
-    .max_packet_size = 1200, \
-    .client_timeout = 30.0f, \
-    .server_timeout = 30.0f, \
-    .enable_compression = true, \
-    .enable_encryption = true, \
-    .enable_prediction = true, \
-    .enable_interpolation = true, \
-    .enable_reconciliation = true, \
-    .compression_level = 3, \
-    .encryption_key_size = 256, \
-    .server_address = server_addr, \
-    .server_port = port, \
-    .client_port = 0 \
-  }
+#define MASSIVE_NETWORK_CLIENT_CONFIG(server_addr, port)                       \
+  (NetworkConfig){.protocol = NETWORK_PROTOCOL_UDP,                            \
+                  .max_clients = 1,                                            \
+                  .tick_rate = 60,                                             \
+                  .send_rate = 30,                                             \
+                  .max_packet_size = 1200,                                     \
+                  .client_timeout = 30.0f,                                     \
+                  .server_timeout = 30.0f,                                     \
+                  .enable_compression = true,                                  \
+                  .enable_encryption = true,                                   \
+                  .enable_prediction = true,                                   \
+                  .enable_interpolation = true,                                \
+                  .enable_reconciliation = true,                               \
+                  .compression_level = 3,                                      \
+                  .encryption_key_size = 256,                                  \
+                  .server_address = server_addr,                               \
+                  .server_port = port,                                         \
+                  .client_port = 0}
 
 // Input command creation macro
-#define MASSIVE_INPUT_CREATE(seq, move, look, jump, crouch, sprint, actions) \
-  (InputCommand){ \
-    .sequence_number = seq, \
-    .move_input = move, \
-    .look_input = look, \
-    .jump_pressed = jump, \
-    .crouch_pressed = crouch, \
-    .sprint_pressed = sprint, \
-    .action_flags = actions, \
-    .timestamp = massive_network_get_time() \
+#define MASSIVE_INPUT_CREATE(seq, move, look, jump, crouch, sprint, actions)   \
+  (InputCommand) {                                                             \
+    .sequence_number = seq, .move_input = move, .look_input = look,            \
+    .jump_pressed = jump, .crouch_pressed = crouch, .sprint_pressed = sprint,  \
+    .action_flags = actions, .timestamp = massive_network_get_time()           \
   }
 
 // ============================================================================
@@ -709,22 +761,33 @@ void massive_network_print_performance_report(MassiveNetworkSystem *system);
 // ============================================================================
 
 // Network simulation
-void massive_network_enable_simulation(MassiveNetworkSystem *system, bool enable);
-void massive_network_set_latency_simulation(MassiveNetworkSystem *system, f64 latency_ms, f64 jitter_ms);
-void massive_network_set_packet_loss_simulation(MassiveNetworkSystem *system, f32 packet_loss_rate);
+void massive_network_enable_simulation(MassiveNetworkSystem *system,
+                                       bool enable);
+void massive_network_set_latency_simulation(MassiveNetworkSystem *system,
+                                            f64 latency_ms, f64 jitter_ms);
+void massive_network_set_packet_loss_simulation(MassiveNetworkSystem *system,
+                                                f32 packet_loss_rate);
 
 // Network recording and replay
-void massive_network_start_recording(MassiveNetworkSystem *system, const char *filename);
+void massive_network_start_recording(MassiveNetworkSystem *system,
+                                     const char *filename);
 void massive_network_stop_recording(MassiveNetworkSystem *system);
-void massive_network_replay_recording(MassiveNetworkSystem *system, const char *filename);
+void massive_network_replay_recording(MassiveNetworkSystem *system,
+                                      const char *filename);
 
 // Network security
-void massive_network_enable_ddos_protection(MassiveNetworkSystem *system, bool enable);
-void massive_network_set_rate_limiting(MassiveNetworkSystem *system, u32 max_packets_per_second);
-void massive_network_enable_connection_throttling(MassiveNetworkSystem *system, bool enable);
+void massive_network_enable_ddos_protection(MassiveNetworkSystem *system,
+                                            bool enable);
+void massive_network_set_rate_limiting(MassiveNetworkSystem *system,
+                                       u32 max_packets_per_second);
+void massive_network_enable_connection_throttling(MassiveNetworkSystem *system,
+                                                  bool enable);
 
 // Network analytics
-void massive_network_enable_analytics(MassiveNetworkSystem *system, bool enable);
-void massive_network_track_network_event(MassiveNetworkSystem *system, const char *event_type, const char *data);
+void massive_network_enable_analytics(MassiveNetworkSystem *system,
+                                      bool enable);
+void massive_network_track_network_event(MassiveNetworkSystem *system,
+                                         const char *event_type,
+                                         const char *data);
 
 #endif // MASSIVE_NETWORKING_H

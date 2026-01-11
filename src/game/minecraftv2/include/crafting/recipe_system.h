@@ -79,7 +79,7 @@ typedef struct {
 
 typedef struct {
   u32 item_id;
-  u16 count;
+  u16 quantity;
 } RecipeOutput;
 
 typedef struct {
@@ -148,6 +148,9 @@ u32 recipe_registry_add(RecipeRegistry *registry, Recipe *recipe);
 
 // Get a recipe by ID
 Recipe *recipe_registry_get(RecipeRegistry *registry, u32 recipe_id);
+
+// Find a recipe that produces a specific item ID
+Recipe *recipe_registry_find_by_result(RecipeRegistry *registry, u32 item_id);
 
 // Populate with defaults
 void recipe_registry_add_defaults(RecipeRegistry *registry);

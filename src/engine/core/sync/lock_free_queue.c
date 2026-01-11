@@ -304,7 +304,8 @@ void *lock_free_mpmc_dequeue(LockFreeQueue *queue, size_t thread_id) {
 static void retire_node(LockFreeQueue *queue, QueueNode *node,
                         size_t thread_id) {
   // Add to retired list
-  node->next.ptr = queue->retired_nodes[thread_id];
+  TaggedPointer tp = {.ptr = queue->retired_nodes[thread_id], .tag = 0};
+  atomic_store(&node->next, tp);
   queue->retired_nodes[thread_id] = node;
   queue->retired_counts[thread_id]++;
 
@@ -319,22 +320,30 @@ static void reclaim_nodes(LockFreeQueue *queue, size_t thread_id) {
   for (size_t i = 0; i < queue->max_threads; i++) {
     void *hazard = atomic_load(&queue->hazard_pointers[i].pointer);
 
-    QueueNode **prev = &queue->retired_nodes[thread_id];
-    QueueNode *current = *prev;
+    QueueNode *prev = NULL;
+    QueueNode *current = queue->retired_nodes[thread_id];
 
     while (current) {
-      QueueNode *next = (QueueNode *)current->next.ptr;
+      TaggedPointer tp_next = atomic_load(&current->next);
+      QueueNode *next = (QueueNode *)tp_next.ptr;
 
       if (current == hazard) {
-        prev = (QueueNode **)&current->next.ptr;
+        prev = current;
+        current = next;
       } else {
         // Safe to reclaim
-        *prev = next;
+        if (prev) {
+          TaggedPointer tp_prev = atomic_load(&prev->next);
+          tp_prev.ptr = next;
+          atomic_store(&prev->next, tp_prev);
+        } else {
+          queue->retired_nodes[thread_id] = next;
+        }
+
         free(current);
         queue->retired_counts[thread_id]--;
+        current = next;
       }
-
-      current = next;
     }
   }
 }
@@ -348,7 +357,8 @@ void lock_free_queue_destroy(LockFreeQueue *queue) {
   for (size_t i = 0; i < queue->max_threads; i++) {
     QueueNode *node = queue->retired_nodes[i];
     while (node) {
-      QueueNode *next = (QueueNode *)node->next.ptr;
+      TaggedPointer tp_next = atomic_load(&node->next);
+      QueueNode *next = (QueueNode *)tp_next.ptr;
       free(node);
       node = next;
     }
@@ -359,7 +369,8 @@ void lock_free_queue_destroy(LockFreeQueue *queue) {
   if (head_tagged.ptr) {
     QueueNode *node = (QueueNode *)head_tagged.ptr;
     while (node) {
-      QueueNode *next = (QueueNode *)node->next.ptr;
+      TaggedPointer tp_next = atomic_load(&node->next);
+      QueueNode *next = (QueueNode *)tp_next.ptr;
       free(node);
       node = next;
     }

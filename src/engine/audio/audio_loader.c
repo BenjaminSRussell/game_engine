@@ -1,4 +1,5 @@
 #include "include/audio/audio_loader.h"
+#include "include/core/asset_manager.h"
 #include <audio/audio_system.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -144,4 +145,43 @@ void audio_loader_unload_sound(ma_sound *sound) {
 
 ma_sound *audio_loader_stream_sound(const char *filepath, ma_engine *engine) {
   return audio_loader_load_sound(filepath, engine, MA_SOUND_FLAG_STREAM);
+}
+
+ma_sound *audio_loader_create_sound_from_asset(ma_engine *engine,
+                                               Asset *asset) {
+  if (!engine || !asset || !asset->data || !asset->loaded)
+    return NULL;
+
+  // We need a decoder to read from memory
+  ma_decoder *decoder = (ma_decoder *)malloc(sizeof(ma_decoder));
+  if (!decoder)
+    return NULL;
+
+  ma_result result =
+      ma_decoder_init_memory(asset->data, asset->size, NULL, decoder);
+  if (result != MA_SUCCESS) {
+    printf("Failed to init memory decoder for asset %s: %d\n", asset->id,
+           result);
+    free(decoder);
+    return NULL;
+  }
+
+  // Now init sound from data source (the decoder)
+  ma_sound *sound = (ma_sound *)malloc(sizeof(ma_sound));
+  if (!sound) {
+    ma_decoder_uninit(decoder);
+    free(decoder);
+    return NULL;
+  }
+
+  result = ma_sound_init_from_data_source(engine, decoder, 0, NULL, sound);
+  if (result != MA_SUCCESS) {
+    printf("Failed to init sound from asset %s: %d\n", asset->id, result);
+    ma_decoder_uninit(decoder);
+    free(decoder);
+    free(sound);
+    return NULL;
+  }
+
+  return sound;
 }

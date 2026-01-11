@@ -289,7 +289,7 @@ void tracker_dump_leaks(void) {
   for (size_t i = 0; i < g_tracker.capacity; i++) {
     AllocationRecord *record = &g_tracker.records[i];
     if (record->ptr && !record->freed) {
-      printf("LEAK %llu: %zu bytes from %s (ID: %llu)\n", leak_count + 1,
+      printf("LEAK %zu: %zu bytes from %s (ID: %llu)\n", leak_count + 1,
              record->size, record->system_tag,
              (unsigned long long)record->allocation_id);
 

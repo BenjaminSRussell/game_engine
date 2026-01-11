@@ -277,10 +277,10 @@ bool metal_function_get_metadata(MTLFunctionRef function_ref,
   out_metadata->buffer_binding_count = 0;
   out_metadata->texture_binding_count = 0;
 
-  for (MTLArgument *arg in arguments) {
-    if (arg.type == MTLArgumentTypeBuffer) {
+  for (id<MTLBinding> arg in function.vertexAttributes ?: @[]) {
+    if (arg.type == MTLBindingTypeBuffer) {
       out_metadata->buffer_binding_count++;
-    } else if (arg.type == MTLArgumentTypeTexture) {
+    } else if (arg.type == MTLBindingTypeTexture) {
       out_metadata->texture_binding_count++;
     }
   }
@@ -322,8 +322,8 @@ uint32_t metal_function_get_buffer_bindings(MTLFunctionRef function_ref,
   NSArray<MTLArgument *> *arguments = function.vertexAttributes ?: @[];
 
   uint32_t count = 0;
-  for (MTLArgument *arg in arguments) {
-    if (arg.type == MTLArgumentTypeBuffer && count < max_count) {
+  for (id<MTLBinding> arg in function.vertexAttributes ?: @[]) {
+    if (arg.type == MTLBindingTypeBuffer && count < max_count) {
       out_indices[count++] = (uint32_t)arg.index;
     }
   }
@@ -343,8 +343,8 @@ uint32_t metal_function_get_texture_bindings(MTLFunctionRef function_ref,
   NSArray<MTLArgument *> *arguments = function.vertexAttributes ?: @[];
 
   uint32_t count = 0;
-  for (MTLArgument *arg in arguments) {
-    if (arg.type == MTLArgumentTypeTexture && count < max_count) {
+  for (id<MTLBinding> arg in function.vertexAttributes ?: @[]) {
+    if (arg.type == MTLBindingTypeTexture && count < max_count) {
       out_indices[count++] = (uint32_t)arg.index;
     }
   }

@@ -94,9 +94,9 @@ void game_quit() {
 }
 
 void network_disconnect() {
-  if (g_engine_ref && g_engine_ref->network) {
-    // massive_network_disconnect(g_engine_ref->network);
-    // Note: defined in header but verify system casting
+  if (g_engine_ref && g_engine_ref->subsystems.network) {
+    massive_network_disconnect(
+        (MassiveNetworkSystem *)g_engine_ref->subsystems.network);
   }
 }
 

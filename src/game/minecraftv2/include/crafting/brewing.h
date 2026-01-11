@@ -124,8 +124,8 @@ bool brewing_start_brew(BrewingStand *stand, u32 bottle_index,
 
 // Update brewing process
 // Forward declarations for systems used by optional VFX/audio hooks
-struct ParticleSystem; /* forward */
-struct AudioSystem;    /* forward */
+#include <effects/vfx/particle_system.h>
+struct AudioSystem; /* forward */
 void brewing_stand_update(BrewingStand *stand, f32 delta_time,
                           struct ParticleSystem *particle_system,
                           struct AudioSystem *audio_system);

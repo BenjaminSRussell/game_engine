@@ -55,6 +55,7 @@ static int get_smelt_result(int input) {
   return 0;
 }
 
+/*
 void furnace_update(f32 dt) {
   for (int i = 0; i < g_furnace_count; i++) {
     FurnaceState *furnace = &g_furnaces[i];
@@ -92,6 +93,7 @@ void furnace_update(f32 dt) {
     }
   }
 }
+*/
 
 // =============================================================================
 // PHYSICS CONFIG - Real Implementation
@@ -301,7 +303,7 @@ typedef struct WeatherSystem WeatherSystem;
 WeatherType weather_sys_get_type(void) { return WEATHER_CLEAR; }
 float weather_sys_get_rain_intensity(void) { return 0.0f; }
 
-WeatherType weather_get_current_type(const WeatherSystem *weather) {
-  return WEATHER_CLEAR;
-}
-float weather_get_intensity(const WeatherSystem *weather) { return 0.0f; }
+// WeatherType weather_get_current_type(const WeatherSystem *weather) {
+//   return WEATHER_CLEAR;
+// }
+// float weather_get_intensity(const WeatherSystem *weather) { return 0.0f; }

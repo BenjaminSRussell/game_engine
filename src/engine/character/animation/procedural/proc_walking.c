@@ -95,6 +95,11 @@ static void update_gait_phases(ProceduralWalk *walk) {
       walk->legs[i].step_phase = (f32)i / (f32)walk->num_legs;
     }
     break;
+  case GAIT_RIPPLE:
+    for (i32 i = 0; i < walk->num_legs; i++) {
+      walk->legs[i].step_phase = (f32)i / (f32)walk->num_legs;
+    }
+    break;
   case GAIT_TROT:
     if (walk->num_legs == 4) {
       walk->legs[0].step_phase = 0.0f;

@@ -39,7 +39,8 @@ void crafting_table_update(CraftingTable *table) {
   inventory_clear(&table->output_inventory);
 
   // Try cache-backed lookup first
-  Recipe *matched = recipe_manager_find_matching(&table->input_inventory);
+  Recipe *matched = recipe_find_match(table->registry, RECIPE_TYPE_SHAPED,
+                                      table->input_inventory.slots, 3, 3);
   if (matched) {
     inventory_set_slot(&table->output_inventory, 0, matched->result_item,
                        (u16)matched->result_quantity);
@@ -47,7 +48,7 @@ void crafting_table_update(CraftingTable *table) {
   }
 
   // Fallback: manual scan
-  for (u32 i = 0; i < table->registry->count; i++) {
+  for (u32 i = 0; i < table->registry->recipe_count; i++) {
     Recipe *recipe = &table->registry->recipes[i];
 
     if (recipe_can_craft(recipe, &table->input_inventory)) {
@@ -83,7 +84,7 @@ bool crafting_table_take_output(CraftingTable *table,
     return false;
 
   // Consume recipe inputs from the crafting grid
-  if (recipe_consume_inputs(recipe, &table->input_inventory)) {
+  if (recipe_craft(recipe, &table->input_inventory)) {
     // Add to player inventory
     if (inventory_add_item(player_inventory, item_id, quantity)) {
       // Clear output

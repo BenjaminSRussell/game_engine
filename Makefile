@@ -50913,30 +50913,6 @@ src/game/minecraftv2/combat/shield.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/combat/shield.c.s
 .PHONY : src/game/minecraftv2/combat/shield.c.s
 
-src/game/minecraftv2/crafting/advanced_crafting.o: src/game/minecraftv2/crafting/advanced_crafting.c.o
-.PHONY : src/game/minecraftv2/crafting/advanced_crafting.o
-
-# target to build an object file
-src/game/minecraftv2/crafting/advanced_crafting.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/advanced_crafting.c.o
-.PHONY : src/game/minecraftv2/crafting/advanced_crafting.c.o
-
-src/game/minecraftv2/crafting/advanced_crafting.i: src/game/minecraftv2/crafting/advanced_crafting.c.i
-.PHONY : src/game/minecraftv2/crafting/advanced_crafting.i
-
-# target to preprocess a source file
-src/game/minecraftv2/crafting/advanced_crafting.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/advanced_crafting.c.i
-.PHONY : src/game/minecraftv2/crafting/advanced_crafting.c.i
-
-src/game/minecraftv2/crafting/advanced_crafting.s: src/game/minecraftv2/crafting/advanced_crafting.c.s
-.PHONY : src/game/minecraftv2/crafting/advanced_crafting.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/crafting/advanced_crafting.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/advanced_crafting.c.s
-.PHONY : src/game/minecraftv2/crafting/advanced_crafting.c.s
-
 src/game/minecraftv2/crafting/brewing.o: src/game/minecraftv2/crafting/brewing.c.o
 .PHONY : src/game/minecraftv2/crafting/brewing.o
 
@@ -51033,54 +51009,6 @@ src/game/minecraftv2/crafting/furnace.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/furnace.c.s
 .PHONY : src/game/minecraftv2/crafting/furnace.c.s
 
-src/game/minecraftv2/crafting/recipe.o: src/game/minecraftv2/crafting/recipe.c.o
-.PHONY : src/game/minecraftv2/crafting/recipe.o
-
-# target to build an object file
-src/game/minecraftv2/crafting/recipe.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/recipe.c.o
-.PHONY : src/game/minecraftv2/crafting/recipe.c.o
-
-src/game/minecraftv2/crafting/recipe.i: src/game/minecraftv2/crafting/recipe.c.i
-.PHONY : src/game/minecraftv2/crafting/recipe.i
-
-# target to preprocess a source file
-src/game/minecraftv2/crafting/recipe.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/recipe.c.i
-.PHONY : src/game/minecraftv2/crafting/recipe.c.i
-
-src/game/minecraftv2/crafting/recipe.s: src/game/minecraftv2/crafting/recipe.c.s
-.PHONY : src/game/minecraftv2/crafting/recipe.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/crafting/recipe.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/recipe.c.s
-.PHONY : src/game/minecraftv2/crafting/recipe.c.s
-
-src/game/minecraftv2/crafting/recipe_expansion.o: src/game/minecraftv2/crafting/recipe_expansion.c.o
-.PHONY : src/game/minecraftv2/crafting/recipe_expansion.o
-
-# target to build an object file
-src/game/minecraftv2/crafting/recipe_expansion.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/recipe_expansion.c.o
-.PHONY : src/game/minecraftv2/crafting/recipe_expansion.c.o
-
-src/game/minecraftv2/crafting/recipe_expansion.i: src/game/minecraftv2/crafting/recipe_expansion.c.i
-.PHONY : src/game/minecraftv2/crafting/recipe_expansion.i
-
-# target to preprocess a source file
-src/game/minecraftv2/crafting/recipe_expansion.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/recipe_expansion.c.i
-.PHONY : src/game/minecraftv2/crafting/recipe_expansion.c.i
-
-src/game/minecraftv2/crafting/recipe_expansion.s: src/game/minecraftv2/crafting/recipe_expansion.c.s
-.PHONY : src/game/minecraftv2/crafting/recipe_expansion.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/crafting/recipe_expansion.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/recipe_expansion.c.s
-.PHONY : src/game/minecraftv2/crafting/recipe_expansion.c.s
-
 src/game/minecraftv2/crafting/recipe_manager.o: src/game/minecraftv2/crafting/recipe_manager.c.o
 .PHONY : src/game/minecraftv2/crafting/recipe_manager.o
 
@@ -51176,30 +51104,6 @@ src/game/minecraftv2/crafting/resource_processing.s: src/game/minecraftv2/crafti
 src/game/minecraftv2/crafting/resource_processing.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/crafting/resource_processing.c.s
 .PHONY : src/game/minecraftv2/crafting/resource_processing.c.s
-
-src/game/minecraftv2/ecs/ecs.o: src/game/minecraftv2/ecs/ecs.c.o
-.PHONY : src/game/minecraftv2/ecs/ecs.o
-
-# target to build an object file
-src/game/minecraftv2/ecs/ecs.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ecs/ecs.c.o
-.PHONY : src/game/minecraftv2/ecs/ecs.c.o
-
-src/game/minecraftv2/ecs/ecs.i: src/game/minecraftv2/ecs/ecs.c.i
-.PHONY : src/game/minecraftv2/ecs/ecs.i
-
-# target to preprocess a source file
-src/game/minecraftv2/ecs/ecs.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ecs/ecs.c.i
-.PHONY : src/game/minecraftv2/ecs/ecs.c.i
-
-src/game/minecraftv2/ecs/ecs.s: src/game/minecraftv2/ecs/ecs.c.s
-.PHONY : src/game/minecraftv2/ecs/ecs.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/ecs/ecs.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ecs/ecs.c.s
-.PHONY : src/game/minecraftv2/ecs/ecs.c.s
 
 src/game/minecraftv2/game.o: src/game/minecraftv2/game.c.o
 .PHONY : src/game/minecraftv2/game.o
@@ -52280,30 +52184,6 @@ src/game/minecraftv2/utils.s: src/game/minecraftv2/utils.c.s
 src/game/minecraftv2/utils.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/utils.c.s
 .PHONY : src/game/minecraftv2/utils.c.s
-
-src/game/minecraftv2/vehicle/vehicle_system.o: src/game/minecraftv2/vehicle/vehicle_system.c.o
-.PHONY : src/game/minecraftv2/vehicle/vehicle_system.o
-
-# target to build an object file
-src/game/minecraftv2/vehicle/vehicle_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/vehicle/vehicle_system.c.o
-.PHONY : src/game/minecraftv2/vehicle/vehicle_system.c.o
-
-src/game/minecraftv2/vehicle/vehicle_system.i: src/game/minecraftv2/vehicle/vehicle_system.c.i
-.PHONY : src/game/minecraftv2/vehicle/vehicle_system.i
-
-# target to preprocess a source file
-src/game/minecraftv2/vehicle/vehicle_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/vehicle/vehicle_system.c.i
-.PHONY : src/game/minecraftv2/vehicle/vehicle_system.c.i
-
-src/game/minecraftv2/vehicle/vehicle_system.s: src/game/minecraftv2/vehicle/vehicle_system.c.s
-.PHONY : src/game/minecraftv2/vehicle/vehicle_system.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/vehicle/vehicle_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/vehicle/vehicle_system.c.s
-.PHONY : src/game/minecraftv2/vehicle/vehicle_system.c.s
 
 src/game/minecraftv2/vfx/gpu_pipeline_setup.o: src/game/minecraftv2/vfx/gpu_pipeline_setup.c.o
 .PHONY : src/game/minecraftv2/vfx/gpu_pipeline_setup.o
@@ -59449,9 +59329,6 @@ help:
 	@echo "... src/game/minecraftv2/combat/shield.o"
 	@echo "... src/game/minecraftv2/combat/shield.i"
 	@echo "... src/game/minecraftv2/combat/shield.s"
-	@echo "... src/game/minecraftv2/crafting/advanced_crafting.o"
-	@echo "... src/game/minecraftv2/crafting/advanced_crafting.i"
-	@echo "... src/game/minecraftv2/crafting/advanced_crafting.s"
 	@echo "... src/game/minecraftv2/crafting/brewing.o"
 	@echo "... src/game/minecraftv2/crafting/brewing.i"
 	@echo "... src/game/minecraftv2/crafting/brewing.s"
@@ -59464,12 +59341,6 @@ help:
 	@echo "... src/game/minecraftv2/crafting/furnace.o"
 	@echo "... src/game/minecraftv2/crafting/furnace.i"
 	@echo "... src/game/minecraftv2/crafting/furnace.s"
-	@echo "... src/game/minecraftv2/crafting/recipe.o"
-	@echo "... src/game/minecraftv2/crafting/recipe.i"
-	@echo "... src/game/minecraftv2/crafting/recipe.s"
-	@echo "... src/game/minecraftv2/crafting/recipe_expansion.o"
-	@echo "... src/game/minecraftv2/crafting/recipe_expansion.i"
-	@echo "... src/game/minecraftv2/crafting/recipe_expansion.s"
 	@echo "... src/game/minecraftv2/crafting/recipe_manager.o"
 	@echo "... src/game/minecraftv2/crafting/recipe_manager.i"
 	@echo "... src/game/minecraftv2/crafting/recipe_manager.s"
@@ -59482,9 +59353,6 @@ help:
 	@echo "... src/game/minecraftv2/crafting/resource_processing.o"
 	@echo "... src/game/minecraftv2/crafting/resource_processing.i"
 	@echo "... src/game/minecraftv2/crafting/resource_processing.s"
-	@echo "... src/game/minecraftv2/ecs/ecs.o"
-	@echo "... src/game/minecraftv2/ecs/ecs.i"
-	@echo "... src/game/minecraftv2/ecs/ecs.s"
 	@echo "... src/game/minecraftv2/game.o"
 	@echo "... src/game/minecraftv2/game.i"
 	@echo "... src/game/minecraftv2/game.s"
@@ -59620,9 +59488,6 @@ help:
 	@echo "... src/game/minecraftv2/utils.o"
 	@echo "... src/game/minecraftv2/utils.i"
 	@echo "... src/game/minecraftv2/utils.s"
-	@echo "... src/game/minecraftv2/vehicle/vehicle_system.o"
-	@echo "... src/game/minecraftv2/vehicle/vehicle_system.i"
-	@echo "... src/game/minecraftv2/vehicle/vehicle_system.s"
 	@echo "... src/game/minecraftv2/vfx/gpu_pipeline_setup.o"
 	@echo "... src/game/minecraftv2/vfx/gpu_pipeline_setup.i"
 	@echo "... src/game/minecraftv2/vfx/gpu_pipeline_setup.s"

@@ -198,9 +198,20 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ai/enemy_ai\\.c$")
 # Exclude entire NPC subsystem (deprecated ECS API usage)
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/npc/.*\\.c$")
 
-# Exclude player modules with missing component IDs
+# Exclude broken player modules
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_damage\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/experience_system\\.c$")
+
+# Exclude broken game ECS and legacy recipe
+list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ecs/ecs\\.c$")
+list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/crafting/recipe\\.c$")
+
+# Exclude broken crafting modules
+list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/crafting/recipe_expansion\\.c$")
+list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/crafting/advanced_crafting\\.c$")
+
+# Exclude broken vehicle system
+list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/vehicle/.*\\.c$")
 
 # Exclude main module with too many dependencies
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/minecraft_v2_module\\.c$")
