@@ -78,7 +78,8 @@ void asset_placement_render(void) {
     
     // Render collision preview if enabled
     if (g_context.collision_check_enabled) {
-        // TODO: Render collision bounds preview
+        // Render collision bounds preview
+        asset_placement_render_collision_preview();
     }
 }
 
