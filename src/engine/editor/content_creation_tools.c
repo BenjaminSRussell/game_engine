@@ -992,7 +992,7 @@ void content_creation_set_mob_model(const char* model_path) {
         strncpy(g_context.current_mob->model_path, model_path, sizeof(g_context.current_mob->model_path) - 1);
         
         // Update preview model
-        // TODO: Update preview entity model
+        content_creation_update_preview_from_mob(g_context.preview_entity, g_context.current_mob);
     }
 }
 
