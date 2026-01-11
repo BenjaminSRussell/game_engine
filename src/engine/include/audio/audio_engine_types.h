@@ -1,7 +1,6 @@
 #ifndef AUDIO_ENGINE_TYPES_H
 #define AUDIO_ENGINE_TYPES_H
 
-#include <include/math/math.h>
 #include <stdbool.h>
 #include <stdint.h>
 

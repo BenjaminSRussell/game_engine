@@ -4,15 +4,60 @@
  * =================================================================================================
  *                                   AUDIO - OCCLUSION
  * =================================================================================================
- * 
+ *
  * GOAL: Muffle sounds behind walls.
  */
 
-void Audio_UpdateOcclusion() {
-    // ✅ COMPLETED: [TASK_660] Iterate active 3D sounds.
-    
-    // ✅ COMPLETED: [TASK_661] Raycast(ListenerPos, SoundPos).
-    
-    // ✅ COMPLETED: [TASK_662] If Hit:
-    //       Apply Low-Pass Filter (LPF) based on material thickness.
+void Audio_UpdateOcclusion(AudioSystem *sys, BlockPhysicsSystem *bp) {
+  if (!sys || !bp)
+    return;
+
+  for (uint32_t i = 0; i < AUDIO_MAX_SOURCES; i++) {
+    AudioSource *src = &sys->sources[i];
+    if (!src->active || !src->playing || src->is_2d) {
+      src->occlusion = 0.0f;
+      continue;
+    }
+
+    // Calculate vector from listener to source
+    Vec3 listener_pos = {sys->listener.position.x, sys->listener.position.y,
+                         sys->listener.position.z};
+    Vec3 source_pos = {src->position.x, src->position.y, src->position.z};
+
+    Vec3 to_source = vec3_sub(source_pos, listener_pos);
+    f32 dist = vec3_length(to_source);
+
+    if (dist < 0.1f) {
+      src->occlusion = 0.0f;
+      continue;
+    }
+
+    Vec3 dir = vec3_normalize(to_source);
+
+    // Raycast
+    BlockRaycast hit = block_raycast(bp, listener_pos, dir, dist);
+
+    if (hit.hit) {
+      // Check if hit distance is significantly less than source distance
+      // (allowing for small epsilon to avoid self-occlusion if source is inside
+      // a block? but source is usually an entity)
+      if (hit.distance < dist - 0.5f) { // 0.5f buffer
+        // Occluded!
+        // For now, binary occlusion or hard low-pass
+        src->occlusion = 1.0f;
+      } else {
+        src->occlusion = 0.0f;
+      }
+    } else {
+      src->occlusion = 0.0f;
+    }
+  }
+}
+
+void audio_occlusion_raycast_init(void) {
+  // No specific local init needed yet
+}
+
+void audio_occlusion_raycast_shutdown(void) {
+  // Cleanup if needed
 }
