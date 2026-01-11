@@ -297,8 +297,8 @@ void content_creation_start_block_creation(void) {
     g_context.is_editing = true;
     g_context.current_block = content_creation_create_block_definition();
     
-    // Create preview entity
-    // TODO: Create preview entity with default block mesh
+    // Create preview entity with default block mesh
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_BLOCK);
     
     g_context.preview_visible = true;
     LOG_INFO("Started block creation");
