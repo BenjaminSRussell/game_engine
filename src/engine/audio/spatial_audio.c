@@ -14,16 +14,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define AUDIO_MAX_SOURCES 64
-#define AUDIO_MAX_LISTENERS 1
-#define AUDIO_MAX_ZONES 16
-#define AUDIO_SAMPLE_RATE 44100
-#define AUDIO_BUFFER_SIZE 1024
+#include <include/audio/audio_engine_types.h>
 
-// Vector math helper
-typedef struct {
-  float x, y, z;
-} AudioVec3;
+// Vector helpers (keeping static inline implementations here or moving to
+// header if needed) For now, removing the typedefs and defines that are moved.
 
 static inline AudioVec3 audio_vec3_sub(AudioVec3 a, AudioVec3 b) {
   AudioVec3 r = {a.x - b.x, a.y - b.y, a.z - b.z};
@@ -56,74 +50,6 @@ static inline AudioVec3 audio_vec3_cross(AudioVec3 a, AudioVec3 b) {
 static inline float audio_vec3_distance(AudioVec3 a, AudioVec3 b) {
   return audio_vec3_length(audio_vec3_sub(a, b));
 }
-
-// Audio Source
-typedef struct {
-  uint32_t id;
-  bool active;
-  bool playing;
-  bool looping;
-
-  AudioVec3 position;
-  AudioVec3 velocity;
-  float volume;
-  float pitch;
-
-  // Spatial properties
-  bool is_2d;
-  float min_distance;
-  float max_distance;
-  float roll_off;
-  float cone_inner_angle;
-  float cone_outer_angle;
-  float cone_outer_gain;
-  AudioVec3 direction;
-
-  // DSP
-  float low_pass_gain;
-  float reverb_mix;
-  float occlusion;
-
-  // Playback state
-  uint32_t buffer_id;
-  uint32_t cursor;
-} AudioSource;
-
-// Listener
-typedef struct {
-  AudioVec3 position;
-  AudioVec3 velocity;
-  AudioVec3 forward;
-  AudioVec3 up;
-} AudioListener;
-
-// Reverb Zone
-typedef struct {
-  AudioVec3 position;
-  float radius;
-  float decay_time;
-  float reflections_delay;
-  float reflections_gain;
-  float late_reverb_delay;
-  float late_reverb_gain;
-  float density;
-  float diffusion;
-} ReverbZone;
-
-// Audio System
-typedef struct {
-  AudioSource sources[AUDIO_MAX_SOURCES];
-  AudioListener listener;
-  ReverbZone zones[AUDIO_MAX_ZONES];
-  uint32_t zone_count;
-
-  float master_volume;
-  bool initialized;
-
-  // HRTF Data (simplified)
-  float hrtf_left[180]; // Azimuth -90 to +90
-  float hrtf_right[180];
-} AudioSystem;
 
 // -----------------------------------------------------------------------------
 // Initialization
