@@ -23,7 +23,7 @@ static void recipe_log_crafted(const Recipe *recipe) {
   LOG_INFO("Crafted recipe %u", recipe->id);
   for (u32 i = 0; i < recipe->output_count; i++) {
     LOG_INFO("  Output %u: item_id=%u x%u", i, recipe->outputs[i].item_id,
-             (u32)recipe->outputs[i].count);
+             (u32)recipe->outputs[i].quantity);
   }
 }
 
@@ -94,6 +94,30 @@ Recipe *recipe_registry_get(RecipeRegistry *registry, u32 recipe_id) {
   return r;
 }
 
+Recipe *recipe_registry_find_by_result(RecipeRegistry *registry, u32 item_id) {
+  if (!registry)
+    return NULL;
+
+#ifndef PLATFORM_WEB
+  pthread_mutex_lock(&registry->mutex);
+#endif
+  for (u32 i = 0; i < registry->recipe_count; i++) {
+    Recipe *r = &registry->recipes[i];
+    for (u32 j = 0; j < r->output_count; j++) {
+      if (r->outputs[j].item_id == item_id) {
+#ifndef PLATFORM_WEB
+        pthread_mutex_unlock(&registry->mutex);
+#endif
+        return r;
+      }
+    }
+  }
+#ifndef PLATFORM_WEB
+  pthread_mutex_unlock(&registry->mutex);
+#endif
+  return NULL;
+}
+
 Recipe *recipe_find_match(RecipeRegistry *registry, RecipeType type,
                           InventorySlot *grid_items, u32 grid_width,
                           u32 grid_height) {
@@ -116,7 +140,7 @@ bool recipe_can_craft(Recipe *recipe, Inventory *inventory) {
 
   for (u32 i = 0; i < recipe->ingredient_count; i++) {
     if (!inventory_has_item(inventory, recipe->ingredients[i].item_id,
-                            recipe->ingredients[i].count)) {
+                            recipe->ingredients[i].quantity)) {
       return false;
     }
   }
@@ -129,15 +153,14 @@ bool recipe_craft(Recipe *recipe, Inventory *inventory) {
     return false;
   }
 
-  // Transaction: Remove all ingredients first
   for (u32 i = 0; i < recipe->ingredient_count; i++) {
     if (!inventory_remove_item(inventory, recipe->ingredients[i].item_id,
-                               recipe->ingredients[i].count)) {
+                               recipe->ingredients[i].quantity)) {
       // Rollback: restore previously removed ingredients
       LOG_ERROR("Crafting failed at ingredient %u, rolling back", i);
       for (u32 j = 0; j < i; j++) {
         inventory_add_item(inventory, recipe->ingredients[j].item_id,
-                           recipe->ingredients[j].count);
+                           recipe->ingredients[j].quantity);
       }
       return false;
     }
@@ -146,16 +169,16 @@ bool recipe_craft(Recipe *recipe, Inventory *inventory) {
   // Transaction: Add all outputs
   for (u32 i = 0; i < recipe->output_count; i++) {
     if (!inventory_add_item(inventory, recipe->outputs[i].item_id,
-                            recipe->outputs[i].count)) {
+                            recipe->outputs[i].quantity)) {
       // Rollback: restore ingredients, remove partial outputs
       LOG_ERROR("Crafting failed at output %u, rolling back", i);
       for (u32 j = 0; j < i; j++) {
         inventory_remove_item(inventory, recipe->outputs[j].item_id,
-                              recipe->outputs[j].count);
+                              recipe->outputs[j].quantity);
       }
       for (u32 j = 0; j < recipe->ingredient_count; j++) {
         inventory_add_item(inventory, recipe->ingredients[j].item_id,
-                           recipe->ingredients[j].count);
+                           recipe->ingredients[j].quantity);
       }
       return false;
     }
@@ -175,7 +198,8 @@ bool recipe_craft(Recipe *recipe, Inventory *inventory) {
     // Trigger inventory event for crafted items
     for (u32 i = 0; i < recipe->output_count; i++) {
       inventory->on_event(inventory, INVENTORY_EVENT_ADD,
-                          recipe->outputs[i].item_id, recipe->outputs[i].count,
+                          recipe->outputs[i].item_id,
+                          recipe->outputs[i].quantity,
                           0, // slot_index (not applicable for bulk add)
                           inventory->user_data);
     }
