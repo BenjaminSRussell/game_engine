@@ -4,13 +4,13 @@
 #ifndef AUDIO_MANAGER_H
 #define AUDIO_MANAGER_H
 
-#include "include/audio/ambient_system.h"
-#include "include/audio/audio_effects.h"
-#include "include/audio/audio_system.h"
-#include "include/audio/music_system.h"
-#include "include/physics/block_physics.h"
+#include <audio/ambient_system.h>
+#include <audio/audio_effects.h>
+#include <audio/audio_system.h>
+#include <audio/music_system.h>
 #include <common.h>
 #include <math/vec3.h>
+#include <physics/block_physics.h>
 
 // Master audio manager that coordinates all audio subsystems
 typedef struct AudioManager {
