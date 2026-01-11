@@ -1,9 +1,9 @@
 #ifndef ENGINE_ANIMATION_SYSTEM_H
 #define ENGINE_ANIMATION_SYSTEM_H
 
-#include "math/mat4.h"
-#include "math/quat.h"
-#include "math/vec3.h"
+#include "../../math/mat4.h"
+#include "../../math/quat.h"
+#include "../../math/vec3.h"
 #include <core/engine.h>
 
 #define MAX_BONES 100

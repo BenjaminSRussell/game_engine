@@ -170,6 +170,7 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/platform/macos/macos_optimizations\
 
 # Character subsystem (depends on excluded animation system and has broken includes)
 # list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/character/.*\\.c$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/character/animation/animation_system\\.c$")
 
 # ===========================================
 # GAME SOURCES

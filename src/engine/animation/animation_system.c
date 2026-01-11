@@ -1,43 +1,11 @@
-#include <character/animation/animation_system.h>
+#include "../include/character/animation/animation_system.h"
+#include "../include/math/mat4.h"
+#include "../include/math/quat.h"
+#include "../include/math/vec3.h"
 #include <core/logger.h>
 #include <core/memory.h>
-#include <math/mat4.h>
-#include <math/quat.h>
-#include <math/vec3.h>
 #include <stdlib.h>
 #include <string.h>
-
-// TODO: Implement Pose Assets and Animation Blueprints for data-driven layering
-// TODO: Add support for additive animation blending and motion warping
-// TODO: Implement a robust root motion extraction and world-space integration
-// system
-// TODO: Add support for vertex-animated textures (VAT) for high-density crowds
-// TODO: Implement real-time IK solving for terrain alignment (Foot IK)
-// TODO: Add support for dual-quaternion skinning to maintain volume during
-// large bends
-// TODO: Implement animation compression (Quantization, Curve Fitting) for
-// memory efficiency
-// TODO: Add support for cloth and soft-body animation via secondary solver
-// integration
-// TODO: Implement a multi-threaded animation evaluation graph with task-based
-// scheduling
-// TODO: Add support for procedural animation synthesis using Motion Matching
-// TODO: Implement facial animation blending with ARKit/OpenFace integration
-// support
-// TODO: Add logic for animation-driven physics constraints (e.g., character
-// interactions)
-// TODO: Research AI-driven motion prediction for smoother network replication
-// TODO: Implement a comprehensive animation debugger with bone hierarchy
-// visualization
-// TODO: Add support for custom animation nodes and user-defined blending logic
-// TODO: Implement animation-driven audio trigger points (AnimNotifies)
-// TODO: Research integration with Control Rig for real-time procedural
-// adjustments
-// TODO: Add support for sub-pose caching and incremental pose updates
-// TODO: Implement LOD-based animation updates (lower update frequency for
-// distant targets)
-// TODO: Research and implement GPU-driven skinning evaluation for
-// Nanite-integrated meshes
 
 // Global state (internal)
 static struct {
@@ -54,11 +22,7 @@ void animation_system_init(void) {
 void animation_system_update(f32 dt) {
   if (!anim_sys_state.initialized)
     return;
-  // In a component-based system, usually systems iterate over entities.
-  // If we had a central registry of skeletons, we'd update them here.
-  // For now, Ecs or GameLoop likely calls updates on components individually,
-  // or we might add a global skeleton list later.
-  // So this is a placeholder or global manager update.
+  // Implementation placeholder
 }
 
 void animation_system_shutdown(void) {
@@ -96,9 +60,8 @@ void animation_sample_clip(AnimationClip *clip, f32 time, Pose *out_pose) {
   if (!clip || !out_pose)
     return;
 
-  out_pose->bone_count = MAX_BONES; // Ensure we initialize all bones
+  out_pose->bone_count = MAX_BONES;
 
-  // Default pose as identity
   for (u32 i = 0; i < MAX_BONES; i++) {
     out_pose->positions[i] = vec3(0, 0, 0);
     out_pose->rotations[i] = quat_identity();
@@ -111,11 +74,9 @@ void animation_sample_clip(AnimationClip *clip, f32 time, Pose *out_pose) {
       continue;
 
     u32 bone_idx = (u32)channel->bone_index;
-
     if (channel->keyframe_count == 0)
       continue;
 
-    // Find keyframes to interpolate
     u32 k0 = 0;
     u32 k1 = 0;
 
@@ -140,7 +101,6 @@ void animation_sample_clip(AnimationClip *clip, f32 time, Pose *out_pose) {
     } else {
       AnimationKeyframe *kf0 = &channel->keyframes[k0];
       AnimationKeyframe *kf1 = &channel->keyframes[k1];
-
       f32 t = (time - kf0->time) / (kf1->time - kf0->time);
 
       out_pose->positions[bone_idx] =
@@ -167,18 +127,27 @@ void animation_blend_poses(const Pose *a, const Pose *b, f32 weight,
   }
 }
 
+static Mat4 mat4_trs(Vec3 t, Quat r, Vec3 s) {
+  Mat4 m = mat4_identity();
+  Mat4 t_mat = mat4_translate(t);
+  Mat4 r_mat = quat_to_mat4(r);
+  Mat4 s_mat = mat4_scale(s);
+
+  m = mat4_mul(t_mat, r_mat);
+  m = mat4_mul(m, s_mat);
+  return m;
+}
+
 void animation_apply_pose_to_skeleton(const Pose *pose, Skeleton *skeleton) {
   if (!pose || !skeleton)
     return;
 
-  // Compute local matrices from Pose
   Mat4 local_matrices[MAX_BONES];
   for (u32 i = 0; i < skeleton->bone_count; i++) {
     local_matrices[i] =
         mat4_trs(pose->positions[i], pose->rotations[i], pose->scales[i]);
   }
 
-  // Hierarchical evaluation: Global = Parent_Global * Local
   for (u32 i = 0; i < skeleton->bone_count; i++) {
     i32 parent = skeleton->bones[i].parent_index;
     if (parent == -1) {
@@ -187,8 +156,6 @@ void animation_apply_pose_to_skeleton(const Pose *pose, Skeleton *skeleton) {
       skeleton->global_transforms[i] =
           mat4_mul(skeleton->global_transforms[parent], local_matrices[i]);
     }
-
-    // Final skinning matrix: Transform * InverseBindPose
     skeleton->global_transforms[i] = mat4_mul(
         skeleton->global_transforms[i], skeleton->bones[i].inverse_bind_pose);
   }
@@ -198,16 +165,7 @@ void animation_update_skeleton(Skeleton *skeleton, AnimationState *state) {
   if (!skeleton || !state || !state->current_clip)
     return;
 
-  // 1. Advance time
   if (state->is_playing) {
-    // Current time advancement
-    // Note: We use 1/60 if dt isn't passed as previously discussed,
-    // but typically GameLoop updates state->current_time externally.
-    // For safety, let's assume we advance it here if called.
-
-    // Advancement logic moved to be explicit if missing
-    // state->current_time += dt; // Ideally
-
     if (state->current_time > state->current_clip->duration) {
       if (state->is_looping) {
         state->current_time =
@@ -219,10 +177,7 @@ void animation_update_skeleton(Skeleton *skeleton, AnimationState *state) {
     }
   }
 
-  // 2. Sample Clip
   Pose local_pose;
   animation_sample_clip(state->current_clip, state->current_time, &local_pose);
-
-  // 3. Apply to Skeleton
   animation_apply_pose_to_skeleton(&local_pose, skeleton);
 }
