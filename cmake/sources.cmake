@@ -79,8 +79,30 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/network/*.c"
     "src/engine/networking/*.c"
     
-    # Physics subdirectory
-    "src/engine/physics/*.c"
+    # Physics subdirectory - CONSOLIDATED: Only essential files
+    # Using block physics as canonical voxel physics implementation
+    "src/engine/physics/block_physics.c"
+    # Collision detection
+    "src/engine/physics/collision/collision_gjk_epa.c"
+    "src/engine/physics/collision/gjk_solver.c"
+    "src/engine/physics/collision/epa_solver.c"
+    # Broadphase
+    "src/engine/physics/broadphase/aabb_tree.c"
+    # Contact generation
+    "src/engine/physics/narrowphase/contact_manifold.c"
+    # Physics integration (links everything together)
+    "src/engine/physics/integration/physics_integration.c"
+    # Math/queries
+    "src/engine/physics/queries/physics_queries.c"
+
+    # DISABLED SUBSYSTEMS (Future work):
+    # - Rigid body dynamics
+    # - Cloth simulation
+    # - Fluid simulation
+    # - Particle physics
+    # - Ragdoll physics
+    # - Vehicle dynamics
+    # - Destruction/fracture
     
     # Platform subdirectory
     "src/engine/platform/*.c"
