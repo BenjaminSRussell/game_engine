@@ -70,26 +70,36 @@
 #include <vulkan/vulkan.h>
 #endif
 
-// STUBS for missing engine functions
-typedef int SoundType;
-void audio_play_ui_sound(const char *name) { (void)name; }
-// u32 audio_play_sound(void *sys, SoundType sound, void* position, float
-// volume, float pitch, int loop) { return 0; }
-void renderer_set_brightness(float v) { (void)v; }
-void renderer_set_render_distance(unsigned int v) { (void)v; }
-float renderer_get_brightness() { return 1.0f; }
-float renderer_get_render_distance() { return 16.0f; }
-int renderer_get_vsync() { return 1; }
-void renderer_set_vsync(int v) { (void)v; }
+#include "../include/game_commands.h"
+#include <core/engine.h>
+#include <network/massive_networking.h>
+
+static Engine *g_engine_ref = NULL;
+
+void inventory_ui_set_engine(Engine *engine) { g_engine_ref = engine; }
+
+// Implementations of game commands
 void game_return_to_title() {
-  // TODO: Implement return to title screen logic, saving game if necessary.
+  // TODO: Implement scene switching logic when SceneManager is fully exposed
+  // if (g_engine_ref && g_engine_ref->scene_manager) {
+  //   scene_manager_load_scene(g_engine_ref->scene_manager,
+  //   "scenes/title_screen.scene");
+  // }
 }
+
 void game_quit() {
-  // TODO: Implement clean application shutdown.
+  if (g_engine_ref) {
+    engine_stop(g_engine_ref);
+  }
 }
+
 void network_disconnect() {
-  // TODO: Close network sockets and notify peers.
+  if (g_engine_ref && g_engine_ref->network) {
+    // massive_network_disconnect(g_engine_ref->network);
+    // Note: defined in header but verify system casting
+  }
 }
+
 int network_is_connected() { return 0; }
 float audio_get_master_volume() { return 1.0f; }
 void audio_set_master_volume(float v) { (void)v; }
