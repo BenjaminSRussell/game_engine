@@ -112736,7 +112736,8 @@ CMakeFiles/Engine.dir/src/engine/gameplay/inventory/item.c.o: /Users/benjaminrus
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/inventory/item.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/inventory/item.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/inventory/item_database.h
 
 CMakeFiles/Engine.dir/src/engine/gameplay/inventory/item_db.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/inventory/item_db.c
 
@@ -126204,11 +126205,11 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/quest_system.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/inventory/item_database.h:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/inventory_system.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/inventory/item_db.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/inventory/item_database.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/passes/shadow_pass_example.c:
 

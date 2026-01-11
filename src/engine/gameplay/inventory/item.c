@@ -94,6 +94,21 @@ const Item *item_database_get_by_name(const char *name) {
   return NULL;
 }
 
+u32 item_database_get_max_stack(u32 item_id) {
+  const Item *item = item_database_get(item_id);
+  return item ? item_get_max_stack(item) : 1;
+}
+
+f32 item_database_get_weight(u32 item_id) {
+  const Item *item = item_database_get(item_id);
+  return item ? item->weight : 0.0f;
+}
+
+u32 item_database_get_value(u32 item_id) {
+  const Item *item = item_database_get(item_id);
+  return item ? item->value : 0;
+}
+
 u32 item_database_get_items_by_type(ItemType type, const Item **out_items,
                                     u32 max_items) {
   u32 count = 0;
@@ -151,6 +166,7 @@ ItemStack item_create_stack(u32 item_id, u32 quantity) {
     quantity = max_stack;
   }
 
+  stack.item_id = item->id;
   stack.item = item;
   stack.quantity = quantity;
   stack.durability = item_get_max_durability(item);
@@ -188,7 +204,7 @@ bool item_can_stack_with(const ItemStack *a, const ItemStack *b) {
   if (!item_stack_is_valid(a) || !item_stack_is_valid(b)) {
     return false;
   }
-  return a->item == b->item && a->durability == b->durability;
+  return a->item_id == b->item_id && a->durability == b->durability;
 }
 
 u32 item_stack_merge(ItemStack *dest, ItemStack *src) {
@@ -196,7 +212,7 @@ u32 item_stack_merge(ItemStack *dest, ItemStack *src) {
     return 0;
   }
 
-  u32 max_stack = item_get_max_stack(dest->item);
+  u32 max_stack = item_database_get_max_stack(dest->item_id);
   u32 space = max_stack > dest->quantity ? max_stack - dest->quantity : 0;
   u32 transfer = src->quantity < space ? src->quantity : space;
 
@@ -204,6 +220,7 @@ u32 item_stack_merge(ItemStack *dest, ItemStack *src) {
   src->quantity -= transfer;
 
   if (src->quantity == 0) {
+    src->item_id = 0;
     src->item = NULL;
     src->durability = 0;
     src->instance_id = 0;
@@ -221,11 +238,13 @@ bool item_stack_split(ItemStack *source, ItemStack *dest, u32 amount) {
 
   *dest = *source;
   dest->quantity = amount;
+  dest->item_id = source->item_id;
   dest->instance_id = 0;
   dest->is_equipped = false;
 
   source->quantity -= amount;
   if (source->quantity == 0) {
+    source->item_id = 0;
     source->item = NULL;
     source->durability = 0;
     source->instance_id = 0;
@@ -283,5 +302,5 @@ const char *item_rarity_to_string(ItemRarity rarity) {
 bool item_is_valid(const Item *item) { return item && item->id != 0; }
 
 bool item_stack_is_valid(const ItemStack *stack) {
-  return stack && item_is_valid(stack->item) && stack->quantity > 0;
+  return stack && stack->item_id != 0 && stack->quantity > 0;
 }

@@ -30,7 +30,7 @@ void container_init(Container *container, u32 capacity, f32 max_weight) {
   container->capacity = capacity;
   container->max_weight = max_weight;
   container->current_weight = 0.0f;
-  container->owner = 0;
+  container->owner = INVALID_ENTITY;
   container->name = NULL;
 }
 

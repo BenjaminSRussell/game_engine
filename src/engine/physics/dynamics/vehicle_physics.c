@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
 // Raycast system for wheel-ground detection
 #define RAYCAST_LENGTH 2.0f
@@ -222,6 +223,12 @@ VehiclePhysics *vehicle_create(u32 wheel_count) {
     
     // Initialize wheel visual system
     vehicle_init_wheel_visuals(vehicle);
+    
+    // Initialize wheel effects system
+    vehicle_init_wheel_effects(vehicle);
+    
+    // Seed random number generator for particle effects
+    srand((u32)time(NULL));
     
     LOG_INFO("Created vehicle physics with %u wheels", wheel_count);
     return vehicle;
@@ -1331,4 +1338,326 @@ void vehicle_get_wheel_surface_color(const VehiclePhysics *vehicle, u32 wheel_in
                                       Vec3 *color_tint) {
     const SurfaceProperties *surface = vehicle_get_surface_properties(vehicle, wheel_index);
     if (color_tint) *color_tint = surface->color_tint;
+}
+
+// Wheel dust and spray effects system
+#define MAX_DUST_PARTICLES 128
+#define MAX_SPRAY_PARTICLES 64
+#define PARTICLE_LIFETIME 3.0f
+
+typedef struct {
+    Vec3 position;
+    Vec3 velocity;
+    Vec3 color;
+    f32 size;
+    f32 lifetime;
+    f32 max_lifetime;
+    bool active;
+    u32 type; // 0 = dust, 1 = spray, 2 = mud
+} Particle;
+
+typedef struct {
+    Particle dust_particles[MAX_DUST_PARTICLES];
+    Particle spray_particles[MAX_SPRAY_PARTICLES];
+    u32 dust_count;
+    u32 spray_count;
+    f32 emission_timer;
+    f32 spray_intensity;
+    Vec3 wind_velocity;
+    bool effects_enabled;
+} WheelEffects;
+
+static WheelEffects g_wheel_effects[MAX_WHEELS];
+
+// Initialize wheel effects system
+static void vehicle_init_wheel_effects(VehiclePhysics *vehicle) {
+    if (!vehicle) return;
+    
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        WheelEffects *effects = &g_wheel_effects[i];
+        
+        memset(effects, 0, sizeof(WheelEffects));
+        effects->emission_timer = 0.0f;
+        effects->spray_intensity = 0.0f;
+        effects->wind_velocity = (Vec3){0.0f, 0.0f, 0.0f};
+        effects->effects_enabled = true;
+        
+        LOG_TRACE("Initialized effects for wheel %u", i);
+    }
+}
+
+// Create dust particle
+static void vehicle_create_dust_particle(WheelEffects *effects, Vec3 position, Vec3 velocity, 
+                                          Vec3 color, f32 size, u32 type) {
+    if (effects->dust_count >= MAX_DUST_PARTICLES) {
+        return; // Particle limit reached
+    }
+    
+    Particle *particle = &effects->dust_particles[effects->dust_count];
+    particle->position = position;
+    particle->velocity = velocity;
+    particle->color = color;
+    particle->size = size;
+    particle->lifetime = 0.0f;
+    particle->max_lifetime = PARTICLE_LIFETIME;
+    particle->active = true;
+    particle->type = type;
+    
+    effects->dust_count++;
+}
+
+// Create spray particle
+static void vehicle_create_spray_particle(WheelEffects *effects, Vec3 position, Vec3 velocity, 
+                                          Vec3 color, f32 size) {
+    if (effects->spray_count >= MAX_SPRAY_PARTICLES) {
+        return; // Particle limit reached
+    }
+    
+    Particle *particle = &effects->spray_particles[effects->spray_count];
+    particle->position = position;
+    particle->velocity = velocity;
+    particle->color = color;
+    particle->size = size;
+    particle->lifetime = 0.0f;
+    particle->max_lifetime = PARTICLE_LIFETIME * 0.5f; // Spray particles live shorter
+    particle->active = true;
+    particle->type = 1; // Spray type
+    
+    effects->spray_count++;
+}
+
+// Generate dust particles based on wheel motion
+static void vehicle_generate_dust_particles(VehiclePhysics *vehicle, u32 wheel_index, f32 delta_time) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return;
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    WheelEffects *effects = &g_wheel_effects[wheel_index];
+    
+    if (!effects->effects_enabled || !wheel->is_grounded) {
+        return;
+    }
+    
+    // Get surface properties
+    const SurfaceProperties *surface = vehicle_get_surface_properties(vehicle, wheel_index);
+    
+    // Check if surface generates dust
+    if (surface->dust_factor <= 0.0f) {
+        return;
+    }
+    
+    // Get wheel velocity
+    Vec3 wheel_velocity = vehicle_get_wheel_velocity(vehicle, wheel_index);
+    f32 speed = vec3_length(wheel_velocity);
+    
+    // Generate particles based on speed and surface
+    if (speed > 1.0f) {
+        effects->emission_timer += delta_time;
+        
+        f32 emission_rate = surface->dust_factor * (speed / 10.0f); // Particles per second
+        f32 emission_interval = 1.0f / emission_rate;
+        
+        while (effects->emission_timer >= emission_interval) {
+            effects->emission_timer -= emission_interval;
+            
+            // Calculate particle spawn position
+            Vec3 spawn_pos = wheel->contact_point;
+            spawn_pos.y += wheel->radius * 0.1f; // Slightly above ground
+            
+            // Calculate particle velocity (random spread + wheel velocity)
+            Vec3 random_spread = {
+                (rand() / (f32)RAND_MAX - 0.5f) * 2.0f,
+                (rand() / (f32)RAND_MAX) * 3.0f + 1.0f, // Upward bias
+                (rand() / (f32)RAND_MAX - 0.5f) * 2.0f
+            };
+            
+            Vec3 particle_velocity = vec3_add(vec3_scale(wheel_velocity, 0.1f), random_spread);
+            particle_velocity = vec3_add(particle_velocity, effects->wind_velocity);
+            
+            // Particle color based on surface
+            Vec3 particle_color = surface->color_tint;
+            
+            // Particle size variation
+            f32 particle_size = 0.05f + (rand() / (f32)RAND_MAX) * 0.1f;
+            
+            // Determine particle type
+            u32 particle_type = 0; // Default dust
+            if (surface->wetness > 0.5f) {
+                particle_type = 1; // Spray (wet surface)
+            } else if (surface->type == SURFACE_MUD) {
+                particle_type = 2; // Mud
+            }
+            
+            if (particle_type == 1) {
+                vehicle_create_spray_particle(effects, spawn_pos, particle_velocity, 
+                                              particle_color, particle_size);
+            } else {
+                vehicle_create_dust_particle(effects, spawn_pos, particle_velocity, 
+                                              particle_color, particle_size, particle_type);
+            }
+        }
+    }
+}
+
+// Update particle physics
+static void vehicle_update_particles(WheelEffects *effects, f32 delta_time) {
+    // Update dust particles
+    for (u32 i = 0; i < effects->dust_count; i++) {
+        Particle *particle = &effects->dust_particles[i];
+        
+        if (!particle->active) continue;
+        
+        // Update lifetime
+        particle->lifetime += delta_time;
+        
+        // Remove dead particles
+        if (particle->lifetime >= particle->max_lifetime) {
+            particle->active = false;
+            continue;
+        }
+        
+        // Update position
+        particle->position = vec3_add(particle->position, vec3_scale(particle->velocity, delta_time));
+        
+        // Apply gravity
+        particle->velocity.y -= 9.81f * delta_time;
+        
+        // Apply wind
+        particle->velocity = vec3_add(particle->velocity, vec3_scale(effects->wind_velocity, delta_time));
+        
+        // Apply damping
+        particle->velocity = vec3_scale(particle->velocity, 0.98f);
+        
+        // Fade out over lifetime
+        f32 fade_factor = 1.0f - (particle->lifetime / particle->max_lifetime);
+        particle->color = vec3_scale(particle->color, fade_factor);
+    }
+    
+    // Update spray particles
+    for (u32 i = 0; i < effects->spray_count; i++) {
+        Particle *particle = &effects->spray_particles[i];
+        
+        if (!particle->active) continue;
+        
+        // Update lifetime
+        particle->lifetime += delta_time;
+        
+        // Remove dead particles
+        if (particle->lifetime >= particle->max_lifetime) {
+            particle->active = false;
+            continue;
+        }
+        
+        // Update position
+        particle->position = vec3_add(particle->position, vec3_scale(particle->velocity, delta_time));
+        
+        // Apply gravity (stronger for spray)
+        particle->velocity.y -= 15.0f * delta_time;
+        
+        // Apply wind
+        particle->velocity = vec3_add(particle->velocity, vec3_scale(effects->wind_velocity, delta_time * 2.0f));
+        
+        // Apply damping
+        particle->velocity = vec3_scale(particle->velocity, 0.95f);
+        
+        // Fade out over lifetime
+        f32 fade_factor = 1.0f - (particle->lifetime / particle->max_lifetime);
+        particle->color = vec3_scale(particle->color, fade_factor);
+    }
+    
+    // Remove inactive particles (compact arrays)
+    u32 dust_write = 0;
+    for (u32 i = 0; i < effects->dust_count; i++) {
+        if (effects->dust_particles[i].active) {
+            effects->dust_particles[dust_write] = effects->dust_particles[i];
+            dust_write++;
+        }
+    }
+    effects->dust_count = dust_write;
+    
+    u32 spray_write = 0;
+    for (u32 i = 0; i < effects->spray_count; i++) {
+        if (effects->spray_particles[i].active) {
+            effects->spray_particles[spray_write] = effects->spray_particles[i];
+            spray_write++;
+        }
+    }
+    effects->spray_count = spray_write;
+}
+
+// Update all wheel effects
+static void vehicle_update_wheel_effects(VehiclePhysics *vehicle, f32 delta_time) {
+    if (!vehicle) return;
+    
+    // Update wind (simple wind simulation)
+    f32 wind_time = delta_time * 0.1f;
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        g_wheel_effects[i].wind_velocity.x = sinf(wind_time) * 2.0f;
+        g_wheel_effects[i].wind_velocity.z = cosf(wind_time * 0.7f) * 2.0f;
+    }
+    
+    // Generate and update particles
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        vehicle_generate_dust_particles(vehicle, i, delta_time);
+        vehicle_update_particles(&g_wheel_effects[i], delta_time);
+    }
+}
+
+// Public API for wheel effects
+void vehicle_set_wheel_effects_enabled(VehiclePhysics *vehicle, bool enabled) {
+    if (!vehicle) return;
+    
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        g_wheel_effects[i].effects_enabled = enabled;
+    }
+    
+    LOG_INFO("Wheel effects %s", enabled ? "enabled" : "disabled");
+}
+
+void vehicle_set_wind_velocity(VehiclePhysics *vehicle, Vec3 wind) {
+    if (!vehicle) return;
+    
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        g_wheel_effects[i].wind_velocity = wind;
+    }
+}
+
+u32 vehicle_get_wheel_particle_count(const VehiclePhysics *vehicle, u32 wheel_index, 
+                                     u32 *dust_count, u32 *spray_count) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        if (dust_count) *dust_count = 0;
+        if (spray_count) *spray_count = 0;
+        return 0;
+    }
+    
+    const WheelEffects *effects = &g_wheel_effects[wheel_index];
+    if (dust_count) *dust_count = effects->dust_count;
+    if (spray_count) *spray_count = effects->spray_count;
+    
+    return effects->dust_count + effects->spray_count;
+}
+
+void vehicle_get_wheel_particles(const VehiclePhysics *vehicle, u32 wheel_index,
+                                Particle *dust_particles, u32 *dust_returned,
+                                Particle *spray_particles, u32 *spray_returned) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        if (dust_returned) *dust_returned = 0;
+        if (spray_returned) *spray_returned = 0;
+        return;
+    }
+    
+    const WheelEffects *effects = &g_wheel_effects[wheel_index];
+    
+    if (dust_particles && dust_returned) {
+        u32 count = fminf(*dust_returned, effects->dust_count);
+        memcpy(dust_particles, effects->dust_particles, count * sizeof(Particle));
+        *dust_returned = count;
+    }
+    
+    if (spray_particles && spray_returned) {
+        u32 count = fminf(*spray_returned, effects->spray_count);
+        memcpy(spray_particles, effects->spray_particles, count * sizeof(Particle));
+        *spray_returned = count;
+    }
 }
