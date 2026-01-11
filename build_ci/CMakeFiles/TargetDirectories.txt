@@ -3,7 +3,7 @@
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/compile_instancing_shaders.dir
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/Engine.dir
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/Game.dir
-/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/MinecraftApp.dir
+/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/BlockGameApp.dir
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/full_integration_test.dir
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/edit_cache.dir
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/rebuild_cache.dir

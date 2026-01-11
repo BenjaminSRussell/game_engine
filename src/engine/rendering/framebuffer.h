@@ -27,6 +27,12 @@ typedef struct Framebuffer Framebuffer;
  */
 #define FRAMEBUFFER_MAX_COLOR_ATTACHMENTS 8
 
+/**
+ * Framebuffer resize callback function type
+ */
+typedef void (*FramebufferResizeCallback)(Framebuffer *fb, u32 old_width, u32 old_height, 
+                                        u32 new_width, u32 new_height, void *user_data);
+
 /* =================================================================================================
  *                                    PUBLIC API
  * =================================================================================================
@@ -121,3 +127,91 @@ u32 framebuffer_get_width(Framebuffer *fb);
  * @return Height in pixels
  */
 u32 framebuffer_get_height(Framebuffer *fb);
+
+/**
+ * Resizes the framebuffer to new dimensions.
+ * Automatically recreates textures if needed.
+ * 
+ * @param fb Framebuffer handle
+ * @param width New width in pixels
+ * @param height New height in pixels
+ * @return true if resize was successful, false otherwise
+ */
+bool framebuffer_resize(Framebuffer *fb, u32 width, u32 height);
+
+/**
+ * Sets a resize callback that will be called when the framebuffer is resized.
+ * 
+ * @param fb Framebuffer handle
+ * @param callback Callback function to call on resize
+ * @param user_data User data to pass to callback
+ */
+void framebuffer_set_resize_callback(Framebuffer *fb, FramebufferResizeCallback callback, 
+                                     void *user_data);
+
+/**
+ * Checks if the framebuffer needs to be resized (dimensions changed).
+ * 
+ * @param fb Framebuffer handle
+ * @return true if framebuffer dimensions have changed since last resize
+ */
+bool framebuffer_needs_resize(Framebuffer *fb);
+
+/**
+ * Gets the aspect ratio of the framebuffer.
+ * 
+ * @param fb Framebuffer handle
+ * @return Aspect ratio (width / height)
+ */
+f32 framebuffer_get_aspect_ratio(Framebuffer *fb);
+
+/**
+ * Blits (copies) framebuffer contents to another framebuffer.
+ * 
+ * @param src Source framebuffer
+ * @param dst Destination framebuffer
+ * @param filter Filtering mode (0 = nearest, 1 = linear)
+ * @return true if blit was successful, false otherwise
+ */
+bool framebuffer_blit(Framebuffer *src, Framebuffer *dst, u32 filter);
+
+/**
+ * Reads pixel data from a color attachment.
+ * 
+ * @param fb Framebuffer handle
+ * @param slot Color attachment index
+ * @param x X coordinate to read from
+ * @param y Y coordinate to read from
+ * @param width Width of region to read
+ * @param height Height of region to read
+ * @param format Pixel format of output data
+ * @param data Output buffer to store pixel data
+ * @return true if read was successful, false otherwise
+ */
+bool framebuffer_read_pixels(Framebuffer *fb, u32 slot, u32 x, u32 y, 
+                            u32 width, u32 height, u32 format, void *data);
+
+/**
+ * Gets the number of active color attachments.
+ * 
+ * @param fb Framebuffer handle
+ * @return Number of attached color textures
+ */
+u32 framebuffer_get_color_attachment_count(Framebuffer *fb);
+
+/**
+ * Gets the texture handle for a specific color attachment.
+ * 
+ * @param fb Framebuffer handle
+ * @param slot Color attachment index
+ * @return Texture handle, or NULL if no attachment at that slot
+ */
+void* framebuffer_get_color_texture(Framebuffer *fb, u32 slot);
+
+/**
+ * Gets the depth texture handle.
+ * 
+ * @param fb Framebuffer handle
+ * @return Depth texture handle, or NULL if no depth attachment
+ */
+void* framebuffer_get_depth_texture(Framebuffer *fb);

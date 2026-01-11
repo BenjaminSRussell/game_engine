@@ -1,7 +1,7 @@
 CMakeFiles/Game.dir/src/game/minecraftv2/combat/equipment_system.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/combat/equipment_system.c \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/equipment.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/equipment.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/ecs.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../core/types.h \
@@ -100,7 +100,7 @@ CMakeFiles/Game.dir/src/game/minecraftv2/combat/equipment_system.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../core/performance.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_static_assert.h \

@@ -314,13 +314,13 @@ bool macos_unified_memory_is_available(void) {
 bool macos_gcd_init(void) {
   // Create dispatch queues with appropriate QoS
   g_gcd.user_interactive_queue = dispatch_queue_create(
-      "com.minecraftv2.user-interactive", DISPATCH_QUEUE_CONCURRENT);
-  g_gcd.background_queue = dispatch_queue_create("com.minecraftv2.background",
+      "com.blockgame.user-interactive", DISPATCH_QUEUE_CONCURRENT);
+  g_gcd.background_queue = dispatch_queue_create("com.blockgame.background",
                                                  DISPATCH_QUEUE_CONCURRENT);
-  g_gcd.utility_queue = dispatch_queue_create("com.minecraftv2.utility",
-                                              DISPATCH_QUEUE_CONCURRENT);
+  g_gcd.utility_queue =
+      dispatch_queue_create("com.blockgame.utility", DISPATCH_QUEUE_CONCURRENT);
   g_gcd.rendering_queue =
-      dispatch_queue_create("com.minecraftv2.rendering", DISPATCH_QUEUE_SERIAL);
+      dispatch_queue_create("com.blockgame.rendering", DISPATCH_QUEUE_SERIAL);
 
   // Set QoS classes
   dispatch_set_qos_class_f(g_gcd.user_interactive_queue,

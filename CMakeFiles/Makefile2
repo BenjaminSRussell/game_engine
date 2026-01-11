@@ -65,7 +65,7 @@ CMAKE_BINARY_DIR = "/Users/benjaminrussell/Desktop/Minecraft v2"
 # The main recursive "all" target.
 all: CMakeFiles/Engine.dir/all
 all: CMakeFiles/Game.dir/all
-all: CMakeFiles/MinecraftApp.dir/all
+all: CMakeFiles/BlockGameApp.dir/all
 all: CMakeFiles/full_integration_test.dir/all
 all: Vendor/Catch2/all
 .PHONY : all
@@ -73,7 +73,7 @@ all: Vendor/Catch2/all
 # The main recursive "codegen" target.
 codegen: CMakeFiles/Engine.dir/codegen
 codegen: CMakeFiles/Game.dir/codegen
-codegen: CMakeFiles/MinecraftApp.dir/codegen
+codegen: CMakeFiles/BlockGameApp.dir/codegen
 codegen: CMakeFiles/full_integration_test.dir/codegen
 codegen: Vendor/Catch2/codegen
 .PHONY : codegen
@@ -88,7 +88,7 @@ clean: CMakeFiles/compile_shaders.dir/clean
 clean: CMakeFiles/compile_instancing_shaders.dir/clean
 clean: CMakeFiles/Engine.dir/clean
 clean: CMakeFiles/Game.dir/clean
-clean: CMakeFiles/MinecraftApp.dir/clean
+clean: CMakeFiles/BlockGameApp.dir/clean
 clean: CMakeFiles/full_integration_test.dir/clean
 clean: Vendor/Catch2/clean
 .PHONY : clean
@@ -295,37 +295,37 @@ CMakeFiles/Game.dir/clean:
 .PHONY : CMakeFiles/Game.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/MinecraftApp.dir
+# Target rules for target CMakeFiles/BlockGameApp.dir
 
 # All Build rule for target.
-CMakeFiles/MinecraftApp.dir/all: CMakeFiles/Engine.dir/all
-CMakeFiles/MinecraftApp.dir/all: CMakeFiles/Game.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MinecraftApp.dir/build.make CMakeFiles/MinecraftApp.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MinecraftApp.dir/build.make CMakeFiles/MinecraftApp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num= "Built target MinecraftApp"
-.PHONY : CMakeFiles/MinecraftApp.dir/all
+CMakeFiles/BlockGameApp.dir/all: CMakeFiles/Engine.dir/all
+CMakeFiles/BlockGameApp.dir/all: CMakeFiles/Game.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num= "Built target BlockGameApp"
+.PHONY : CMakeFiles/BlockGameApp.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/MinecraftApp.dir/rule: cmake_check_build_system
+CMakeFiles/BlockGameApp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" 95
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/MinecraftApp.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/BlockGameApp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" 0
-.PHONY : CMakeFiles/MinecraftApp.dir/rule
+.PHONY : CMakeFiles/BlockGameApp.dir/rule
 
 # Convenience name for target.
-MinecraftApp: CMakeFiles/MinecraftApp.dir/rule
-.PHONY : MinecraftApp
+BlockGameApp: CMakeFiles/BlockGameApp.dir/rule
+.PHONY : BlockGameApp
 
 # codegen rule for target.
-CMakeFiles/MinecraftApp.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MinecraftApp.dir/build.make CMakeFiles/MinecraftApp.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num= "Finished codegen for target MinecraftApp"
-.PHONY : CMakeFiles/MinecraftApp.dir/codegen
+CMakeFiles/BlockGameApp.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num= "Finished codegen for target BlockGameApp"
+.PHONY : CMakeFiles/BlockGameApp.dir/codegen
 
 # clean rule for target.
-CMakeFiles/MinecraftApp.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MinecraftApp.dir/build.make CMakeFiles/MinecraftApp.dir/clean
-.PHONY : CMakeFiles/MinecraftApp.dir/clean
+CMakeFiles/BlockGameApp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/clean
+.PHONY : CMakeFiles/BlockGameApp.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/full_integration_test.dir

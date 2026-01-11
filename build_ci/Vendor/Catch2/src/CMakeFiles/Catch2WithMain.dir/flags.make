@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I"/Users/benjaminrussell/Desktop/Minecraft v2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include_private" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor/lua" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/Core/Bridges/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/Vendor/Catch2/src/catch2/.." -I"/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/Vendor/Catch2/generated-includes"
+CXX_INCLUDES = -I"/Users/benjaminrussell/Desktop/Minecraft v2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include_private" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor/lua" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/Core/Bridges/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/Vendor/Catch2/src/catch2/.." -I"/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/Vendor/Catch2/generated-includes"
 
 CXX_FLAGSarm64 = -g -arch arm64
 

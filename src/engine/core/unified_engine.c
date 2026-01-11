@@ -3,7 +3,6 @@
 // Purpose: Unified engine implementation integrating all systems
 //
 #include "../include/core/unified_engine.h"
-#include "../../game/minecraftv2/include/npc/npc.h" // For NPCSystem definition
 #include "../include/world/generator.h"
 #include "chunk/chunk.h"
 #include "core/asset_manager.h"
@@ -23,6 +22,7 @@
 #include "physics/physics.h"
 #include "physics/physics_internal.h"
 #include <core/hot_reload.h>
+#include <npc/npc.h> // For NPCSystem definition
 #include <scene/scene_system.h>
 #include <stdlib.h>
 #include <string.h>

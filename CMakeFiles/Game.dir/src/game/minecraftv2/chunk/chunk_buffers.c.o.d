@@ -1,7 +1,7 @@
 CMakeFiles/Game.dir/src/game/minecraftv2/chunk/chunk_buffers.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/chunk/chunk_buffers.c \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk_buffers.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk_buffers.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/../game_common.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h \
@@ -71,10 +71,10 @@ CMakeFiles/Game.dir/src/game/minecraftv2/chunk/chunk_buffers.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_strings.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/mat4.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/types.h \

@@ -89949,8 +89949,8 @@ CMakeFiles/Engine.dir/src/engine/core/config.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/common.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/types.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/config/config.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/config/config.h
 
 CMakeFiles/Engine.dir/src/engine/core/config_loader.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/config_loader.c
@@ -94318,90 +94318,90 @@ CMakeFiles/Engine.dir/src/engine/core/gamestate_main.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/vulkan.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/scripting/script_system.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/vendor/miniaudio.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block_states.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/interaction.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/mining.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk_buffers.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/combat/combat.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/combat/combat_animations.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/config/config.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/inventory.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/crafting/advanced_crafting.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/crafting/furnace.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/crafting/recipe_system.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/crafting/resource_processing.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game/mode.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/inventory.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/item_registry.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc_types.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/dialogue_manager.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc_combat_behavior.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc_housing.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc_jobs.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc_perf.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc_schedule.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc_types.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc_visuals.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/combat/combat.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/item_registry.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_combat.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_food.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_magic.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_vehicle.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/spirit_model.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/status_effects.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/save/save.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/tech/solar_energy.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block_states.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/interaction.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/mining.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk_buffers.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/combat/combat.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/combat/combat_animations.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/config/config.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/inventory.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/crafting/advanced_crafting.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/crafting/furnace.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/crafting/recipe_system.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/crafting/resource_processing.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game/mode.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/inventory.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/item_registry.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc_types.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/dialogue_manager.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc_combat_behavior.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc_housing.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc_jobs.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc_perf.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc_schedule.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc_types.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc_visuals.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/combat/combat.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/item_registry.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_combat.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_food.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_magic.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_vehicle.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/spirit_model.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/status_effects.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/save/save.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/tech/solar_energy.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec2.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec4.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/inventory.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/ui/menu.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/ui/hotbar.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/ui/hud.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/ui/menu.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/ui/menu_renderer.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/weather/weather.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/weather/weather.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/generator.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/biome_features.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/dungeon_generation.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/generator.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/plant_varieties.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/plant_vfx.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/settlement_generation.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/structures.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/tree_varieties.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/water_integration.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/water_physics.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/water_system.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/inventory.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/ui/menu.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/ui/hotbar.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/ui/hud.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/ui/menu.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/ui/menu_renderer.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/weather/weather.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/weather/weather.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/generator.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/biome_features.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/dungeon_generation.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/generator.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/plant_varieties.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/plant_vfx.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/settlement_generation.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/structures.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/tree_varieties.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/water_integration.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/water_physics.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/water_system.h
  /opt/homebrew/include/GLFW/glfw3.h
 
 CMakeFiles/Engine.dir/src/engine/core/hot_reload.c.o
@@ -100806,11 +100806,11 @@ CMakeFiles/Engine.dir/src/engine/core/misc_stubs.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/quat.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/physics/physics.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/combat/combat.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/combat/combat_animations.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/combat/equipment.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/combat/combat.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/combat/combat_animations.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/combat/equipment.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
 
 CMakeFiles/Engine.dir/src/engine/core/modding/mod_loader.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/modding/mod_loader.c
@@ -103389,8 +103389,8 @@ CMakeFiles/Engine.dir/src/engine/core/services/camera_controls.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec4.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/platform/input/controls.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/camera.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/config/config.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/config/config.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/gpu_particle_system.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/services/gpu_particle_system.c
@@ -103670,10 +103670,10 @@ CMakeFiles/Engine.dir/src/engine/core/services/mesh.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec2.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/mesh.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/mesh_optimizer.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/services/mesh_optimizer.c
@@ -103946,21 +103946,21 @@ CMakeFiles/Engine.dir/src/engine/core/services/particle_renderer.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec4.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/particle_renderer.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/weather/weather_particles.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/weather/weather.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/biome_features.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/generator.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/plant_varieties.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/plant_vfx.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/weather/weather_particles.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/weather/weather.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/biome_features.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/generator.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/plant_varieties.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/plant_vfx.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/post_processing.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/services/post_processing.c
@@ -104225,37 +104225,37 @@ CMakeFiles/Engine.dir/src/engine/core/services/sprite_3d_renderer.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/camera.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/mesh.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/renderer.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/combat/combat.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/config/config.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game/mode.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/inventory.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/combat/combat.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/inventory.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/item_registry.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_combat.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_food.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_magic.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_vehicle.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/spirit_model.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/status_effects.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/combat/combat.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/config/config.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game/mode.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/inventory.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/combat/combat.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/inventory.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/item_registry.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_combat.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_food.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_magic.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_vehicle.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/spirit_model.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/status_effects.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/common.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec2.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec4.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/inventory.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/ui/hotbar.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/inventory.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/ui/hotbar.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/sprite_renderer_2_5d.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/services/sprite_renderer_2_5d.c
@@ -105050,37 +105050,37 @@ CMakeFiles/Engine.dir/src/engine/core/services/voxel_renderer.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/camera.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/mesh.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/renderer.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/combat/combat.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/config/config.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game/mode.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/inventory.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/combat/combat.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/inventory.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/item_registry.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_combat.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_food.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_magic.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/player_vehicle.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/spirit_model.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/player/status_effects.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/combat/combat.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/config/config.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game/mode.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/inventory.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/combat/combat.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/inventory.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/item_registry.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_combat.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_food.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_magic.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/player_vehicle.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/spirit_model.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/player/status_effects.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/common.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec2.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec4.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/inventory/inventory.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/ui/hotbar.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/inventory/inventory.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/ui/hotbar.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/weather_system.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/services/weather_system.c
@@ -108392,17 +108392,17 @@ CMakeFiles/Engine.dir/src/engine/core/unified_engine.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/renderer.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/tools/profiler.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/scene/scene_system.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/biome_features.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/world/generator.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/block/block.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/chunk/chunk.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/npc/npc_types.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/biome_features.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/world/generator.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/block/block.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/chunk/chunk.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/npc/npc_types.h
 
 CMakeFiles/Engine.dir/src/engine/core/unified_engine_integration.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/unified_engine_integration.c
@@ -118292,8 +118292,8 @@ CMakeFiles/Engine.dir/src/engine/platform/input/input.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec2.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec3.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/platform/input/controls.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/config/config.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/config/config.h
 
 CMakeFiles/Engine.dir/src/engine/platform/input/input_factory.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/platform/input/input_factory.c
@@ -118424,8 +118424,8 @@ CMakeFiles/Engine.dir/src/engine/platform/input/input_factory.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/math/vec4.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/platform/input/controls.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/platform/input/input.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/game_common.h
- /Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include/config/config.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/game_common.h
+ /Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/config/config.h
 
 CMakeFiles/Engine.dir/src/engine/platform/input/input_impl.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/platform/input/input_impl.c

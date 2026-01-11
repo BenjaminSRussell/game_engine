@@ -139,24 +139,24 @@ CMakeFiles/Game.dir/src/game/minecraftv2/crafting/enchanting.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_reverb.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/../game_common.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/mat4.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/../common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/enchanting.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../inventory/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../inventory/../block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../inventory/item_registry.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/enchanting.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../inventory/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../inventory/../block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../inventory/item_registry.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/effects/vfx/particle_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/vulkan.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \

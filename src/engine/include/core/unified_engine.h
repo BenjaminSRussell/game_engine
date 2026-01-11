@@ -7,10 +7,10 @@
 #ifndef UNIFIED_ENGINE_H
 #define UNIFIED_ENGINE_H
 
-#include "include/common.h"
-#include "include/core/config_system.h"
-#include "include/core/gpu_acceleration.h"
-#include "include/core/time_system.h"
+#include <common.h>
+#include <core/config_system.h>
+#include <core/gpu_acceleration.h>
+#include <core/time_system.h>
 #include <math/mat4.h>
 #include <math/vec3.h>
 

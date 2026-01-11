@@ -103,7 +103,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/compile_instancing_shaders.dir/DependInfo.cmake"
   "CMakeFiles/Engine.dir/DependInfo.cmake"
   "CMakeFiles/Game.dir/DependInfo.cmake"
-  "CMakeFiles/MinecraftApp.dir/DependInfo.cmake"
+  "CMakeFiles/BlockGameApp.dir/DependInfo.cmake"
   "CMakeFiles/full_integration_test.dir/DependInfo.cmake"
   "Vendor/Catch2/src/CMakeFiles/Catch2.dir/DependInfo.cmake"
   "Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/DependInfo.cmake"

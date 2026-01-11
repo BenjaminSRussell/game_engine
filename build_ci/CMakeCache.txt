@@ -20,6 +20,15 @@ BUILD_EDITOR:BOOL=OFF
 //Build lean runtime without any editor code
 BUILD_RUNTIME_ONLY:BOOL=OFF
 
+//Value Computed by CMake
+BlockGame_BINARY_DIR:STATIC=/Users/benjaminrussell/Desktop/Minecraft v2/build_ci
+
+//Value Computed by CMake
+BlockGame_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+BlockGame_SOURCE_DIR:STATIC=/Users/benjaminrussell/Desktop/Minecraft v2
+
 //Read docs/configuration.md for details
 CATCH_CONFIG_ANDROID_LOGWRITE:BOOL=OFF
 
@@ -386,7 +395,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Minecraft
+CMAKE_PROJECT_NAME:STATIC=BlockGame
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=3.5.0

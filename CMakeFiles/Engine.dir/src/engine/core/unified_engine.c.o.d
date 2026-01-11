@@ -115,13 +115,13 @@ CMakeFiles/Engine.dir/src/engine/core/unified_engine.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_max_align_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/../../game/minecraftv2/include/npc/npc.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/../game_common.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/sched.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/pthread_impl.h \
@@ -145,16 +145,16 @@ CMakeFiles/Engine.dir/src/engine/core/unified_engine.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/ecs.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../core/performance.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_types.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/../game_common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/physics/physics.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/components/npc.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/../include/world/generator.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/../include/world/../block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/../include/world/../chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/../include/world/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/../include/world/biome_features.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/../include/world/generator.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/../include/world/../block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/../include/world/../chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/../include/world/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/../include/world/biome_features.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/asset_manager.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/../common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/../core/file_watcher.h \

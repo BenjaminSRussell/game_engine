@@ -108,7 +108,6 @@ static inline vec3_t vec3_cross(vec3_t a, vec3_t b) {
     v._w = 0.0f;
 #endif
     return v;
-    return v;
 }
 
 static inline vec3_t vec3_scale(vec3_t a, float s) {

@@ -10,6 +10,18 @@
 #define AUDIO_SAMPLE_RATE 44100
 #define AUDIO_BUFFER_SIZE 1024
 
+typedef enum {
+  DISTANCE_MODEL_LINEAR,
+  DISTANCE_MODEL_INVERSE,
+  DISTANCE_MODEL_EXPONENTIAL
+} DistanceModel;
+
+typedef enum {
+  OCCLUSION_NONE,
+  OCCLUSION_MUFFLED,
+  OCCLUSION_OBSTRUCTED
+} OcclusionState;
+
 // Vector math helper
 typedef struct {
   float x, y, z;
@@ -41,6 +53,10 @@ typedef struct {
   float low_pass_gain;
   float reverb_mix;
   float occlusion;
+  DistanceModel distance_model;
+  OcclusionState occlusion_state;
+  float target_occlusion;
+  float occlusion_factor;
 
   // Playback state
   uint32_t buffer_id;

@@ -1,9 +1,9 @@
 CMakeFiles/Game.dir/src/game/minecraftv2/player/food_spoilage.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/player/food_spoilage.c \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/food_spoilage.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/food_spoilage.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/../game_common.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h \
@@ -73,7 +73,7 @@ CMakeFiles/Game.dir/src/game/minecraftv2/player/food_spoilage.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_strings.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/ecs.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../core/types.h \
@@ -117,11 +117,11 @@ CMakeFiles/Game.dir/src/game/minecraftv2/player/food_spoilage.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../core/performance.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game/mode.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game/../chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game/mode.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game/../chunk/chunk.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/mat4.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/sched.h \
@@ -143,34 +143,34 @@ CMakeFiles/Game.dir/src/game/minecraftv2/player/food_spoilage.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/qos.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/qos.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mach_port_t.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game/../game_common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/platform/input/controls.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/config/config.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/config/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/config/config.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/config/../game_common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/../block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/../block/block.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/physics/physics.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/../combat/combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_magic.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_vehicle.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/spirit_model.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/status_effects.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/../combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_magic.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_vehicle.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/spirit_model.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/status_effects.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/camera.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/hotbar.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/../../../../engine/include/math/vec2.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/../../../../engine/include/math/vec4.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/../../../../engine/include/math/../common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/../inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_food.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/../inventory/item_registry.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/../inventory/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/../inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/item_registry.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/hotbar.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/../../../../engine/include/math/vec2.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/../../../../engine/include/math/vec4.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/../../../../engine/include/math/../common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/../inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_food.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/../inventory/item_registry.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/../inventory/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/../inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/item_registry.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/../common.h

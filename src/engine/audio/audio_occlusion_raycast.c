@@ -1,9 +1,9 @@
-#include "../include/audio/audio_occlusion_raycast.h"
-#include "../include/audio/audio_system.h"
-#include "../include/core/common.h"
-#include "../include/math/vec3.h"
-#include "../include/physics/block_physics.h"
+#include <audio/audio_occlusion_raycast.h>
+#include <audio/audio_system.h>
+#include <common.h>
 #include <math.h>
+#include <math/vec3.h>
+#include <physics/block_physics.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -43,18 +43,43 @@ void Audio_UpdateOcclusion(AudioSystem *sys, BlockPhysicsSystem *bp) {
     // Raycast
     BlockRaycast hit = block_raycast(bp, listener_pos, dir, dist);
 
-    if (hit.hit) {
-      // Check if hit distance is significantly less than source distance
-      // (allowing for small epsilon to avoid self-occlusion if source is inside
-      // a block? but source is usually an entity)
-      if (hit.distance < dist - 0.5f) { // 0.5f buffer
-        // Occluded!
-        src->target_occlusion = 0.3f;
+    if (hit.hit && hit.distance < dist - 0.5f) {
+      // Direct path is blocked. Check for diffraction (obstructed vs muffled).
+      // Find a vector perpendicular to the direction.
+      Vec3 up = {0, 1, 0};
+      if (fabsf(dir.y) > 0.9f) {
+        up = (Vec3){1, 0, 0};
+      }
+      Vec3 side = vec3_cross(dir, up);
+      side = vec3_normalize(side);
+
+      // Check slightly to the sides to see if we're near an edge
+      Vec3 left_p = vec3_add(listener_pos, vec3_mul(side, 0.5f));
+      Vec3 right_p = vec3_sub(listener_pos, vec3_mul(side, 0.5f));
+
+      BlockRaycast hit_l = block_raycast(bp, left_p, dir, dist);
+      BlockRaycast hit_r = block_raycast(bp, right_p, dir, dist);
+
+      if (!hit_l.hit || !hit_r.hit) {
+        // We're near an edge: Obstructed (Hear diffraction)
+        src->occlusion_state = OCCLUSION_OBSTRUCTED;
+        src->target_occlusion = 0.6f;
       } else {
-        src->target_occlusion = 1.0f;
+        // Fully behind geometry: Muffled (Sound passes through/around more
+        // blocks)
+        src->occlusion_state = OCCLUSION_MUFFLED;
+        src->target_occlusion = 0.2f;
       }
     } else {
-      src->occlusion = 0.0f;
+      // No hit or hit is behind source
+      src->occlusion_state = OCCLUSION_NONE;
+      src->target_occlusion = 1.0f;
+    }
+
+    // Initial value for factor if it hasn't been set
+    if (src->occlusion_factor < 0.001f &&
+        src->occlusion_state == OCCLUSION_NONE) {
+      src->occlusion_factor = 1.0f;
     }
   }
 }

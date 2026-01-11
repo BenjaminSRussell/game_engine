@@ -10,10 +10,10 @@ file(GLOB_RECURSE ENGINE_CORE_SOURCES
 
 # Game Sources
 file(GLOB_RECURSE GAME_SOURCES
-    "src/game/minecraftv2/*.c"
-    "src/game/minecraftv2/*.m"
-    "src/game/minecraftv2/*.mm"
-    "src/game/minecraftv2/*.cpp"
+    "src/game/blockgame/*.c"
+    "src/game/blockgame/*.m"
+    "src/game/blockgame/*.mm"
+    "src/game/blockgame/*.cpp"
 )
 
 set(ENGINE_SOURCES ${ENGINE_CORE_SOURCES} ${GAME_SOURCES})

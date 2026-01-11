@@ -32,19 +32,20 @@
 #ifndef AUDIO_SYSTEM_H
 #define AUDIO_SYSTEM_H
 
-#include "../core/common.h"
+#include <common.h>
 #include <math/vec3.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 #undef PI
-#include "../../vendor/miniaudio.h"
+#include <vendor/miniaudio.h>
 #ifndef PI
 #define PI 3.14159265358979323846f
 #endif
 
 // Audio reverb effect
-#include "include/audio/audio_reverb.h"
+#include <audio/audio_engine_types.h>
+#include <audio/audio_reverb.h>
 
 typedef enum {
   SOUND_FOOTSTEP_GRASS,
@@ -106,18 +107,6 @@ typedef enum {
   SOUND_CATEGORY_PLAYER,
   SOUND_CATEGORY_RECORD
 } SoundCategory;
-
-typedef enum {
-  DISTANCE_MODEL_LINEAR,
-  DISTANCE_MODEL_INVERSE,
-  DISTANCE_MODEL_EXPONENTIAL
-} DistanceModel;
-
-typedef enum {
-  OCCLUSION_NONE,
-  OCCLUSION_MUFFLED,
-  OCCLUSION_OBSTRUCTED
-} OcclusionState;
 
 typedef struct {
   ma_sound sound; // miniaudio sound instance

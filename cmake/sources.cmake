@@ -1,5 +1,5 @@
 # cmake/sources.cmake
-# Auto-generated source file lists for MinecraftV2 engine and game
+# Auto-generated source file lists for BlockGame engine and game
 
 # ===========================================
 # ENGINE SOURCES
@@ -177,7 +177,7 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/character/animation/animation_syste
 # GAME SOURCES
 # ===========================================
 file(GLOB_RECURSE GAME_SOURCES
-    "src/game/minecraftv2/*.c"
+    "src/game/blockgame/*.c"
 )
 
 # Exclude any demo or test files

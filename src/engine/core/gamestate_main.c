@@ -11,12 +11,11 @@
 // Crash reporting: IMPLEMENTED (automatic error logging to file).
 // Hot-reload config: IMPLEMENTED (configuration files without restart).
 // workflow.
-#include "../../game/minecraftv2/include/block/lighting.h"
-#include "../../game/minecraftv2/include/mesh/mesh.h"
 #include <audio/audio_system.h>
 #include <block/block.h>
 #include <block/block_states.h>
 #include <block/interaction.h>
+#include <block/lighting.h>
 #include <block/mining.h>
 #include <chunk/chunk.h>
 #include <chunk/chunk_buffers.h>
@@ -38,6 +37,7 @@
 #include <include/rendering/lighting.h>
 #include <include/rendering/mesh.h>
 #include <inventory/item_registry.h>
+#include <mesh/mesh.h>
 #include <npc/dialogue_manager.h>
 #include <npc/npc_combat_behavior.h>
 #include <npc/npc_housing.h>

@@ -68,12 +68,25 @@ static bool generate_node_code(MaterialNode* node, char* code_buffer, size_t buf
                             input_vars[i], sizeof(input_vars[i]));
         } else {
             // Use default values if not connected
-            // TODO: Handle different types properly. For now assuming floats/vecs are zero-initialized or reasonable defaults
-             switch (node->inputs[i].type) {
-                case CONNECTION_TYPE_FLOAT: snprintf(input_vars[i], sizeof(input_vars[i]), "0.0"); break;
-                case CONNECTION_TYPE_VEC3: snprintf(input_vars[i], sizeof(input_vars[i]), "vec3(0.0)"); break;
-                case CONNECTION_TYPE_VEC4: snprintf(input_vars[i], sizeof(input_vars[i]), "vec4(0.0)"); break;
-                default: snprintf(input_vars[i], sizeof(input_vars[i]), "0.0"); break; // Fallback
+            switch (node->inputs[i].type) {
+                case CONNECTION_TYPE_FLOAT: 
+                    snprintf(input_vars[i], sizeof(input_vars[i]), "0.0"); 
+                    break;
+                case CONNECTION_TYPE_VEC2: 
+                    snprintf(input_vars[i], sizeof(input_vars[i]), "vec2(0.0)"); 
+                    break;
+                case CONNECTION_TYPE_VEC3: 
+                    snprintf(input_vars[i], sizeof(input_vars[i]), "vec3(0.0)"); 
+                    break;
+                case CONNECTION_TYPE_VEC4: 
+                    snprintf(input_vars[i], sizeof(input_vars[i]), "vec4(0.0)"); 
+                    break;
+                case CONNECTION_TYPE_TEXTURE: 
+                    snprintf(input_vars[i], sizeof(input_vars[i]), "u_default_white_texture"); 
+                    break;
+                default: 
+                    snprintf(input_vars[i], sizeof(input_vars[i]), "0.0"); 
+                    break;
             }
         }
     }
@@ -81,18 +94,40 @@ static bool generate_node_code(MaterialNode* node, char* code_buffer, size_t buf
     // Generate operation logic
     switch (node->type) {
         case NODE_TYPE_CONSTANT_FLOAT:
-             // Extract value from parameters (simplified)
-            snprintf(line, sizeof(line), "    float node_%u_out_0 = 1.0; // TODO: Extract from param\n", node->node_id);
+            // Extract value from parameters
+            if (node->parameters && node->parameter_size >= sizeof(f32)) {
+                f32 value = *(f32*)node->parameters;
+                snprintf(line, sizeof(line), "    float node_%u_out_0 = %.6f;\n", node->node_id, value);
+            } else {
+                // Fallback to default value if parameters not available
+                snprintf(line, sizeof(line), "    float node_%u_out_0 = 1.0; // Default value\n", node->node_id);
+            }
             break;
             
         case NODE_TYPE_CONSTANT_VEC3:
-            snprintf(line, sizeof(line), "    vec3 node_%u_out_0 = vec3(1.0, 1.0, 1.0); // TODO\n", node->node_id);
+            // Extract value from parameters (should be 3 floats)
+            if (node->parameters && node->parameter_size >= 3 * sizeof(f32)) {
+                f32* vec3_data = (f32*)node->parameters;
+                snprintf(line, sizeof(line), "    vec3 node_%u_out_0 = vec3(%.6f, %.6f, %.6f);\n", 
+                        node->node_id, vec3_data[0], vec3_data[1], vec3_data[2]);
+            } else {
+                // Fallback to default white color if parameters not available
+                snprintf(line, sizeof(line), "    vec3 node_%u_out_0 = vec3(1.0, 1.0, 1.0); // Default white\n", node->node_id);
+            }
             break;
 
         case NODE_TYPE_TEXTURE_SAMPLE:
-            // Assumes standard UVs are available as 'v_uv'
+            // Check if UV input is connected, otherwise use default UVs
+            char uv_input[64];
+            if (node->input_count > 0 && node->inputs[0].connected_node) {
+                get_node_var_name(node->inputs[0].connected_node->node_id, 
+                                node->inputs[0].connected_output_index, 
+                                uv_input, sizeof(uv_input));
+            } else {
+                snprintf(uv_input, sizeof(uv_input), "v_uv"); // Default UV coordinates
+            }
             snprintf(line, sizeof(line), "    vec4 node_%u_out_0 = texture(u_texture_%u, %s);\n", 
-                    node->node_id, node->node_id, "v_uv"); // TODO: Input UV
+                    node->node_id, node->node_id, uv_input);
             break;
 
         case NODE_TYPE_MULTIPLY:

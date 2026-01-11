@@ -10,8 +10,8 @@ typedef struct AudioSystem AudioSystem;
 struct BlockPhysicsSystem;
 typedef struct BlockPhysicsSystem BlockPhysicsSystem;
 
-#include "../physics/block_physics.h"
-#include "audio_engine_types.h"
+#include <audio/audio_engine_types.h>
+#include <physics/block_physics.h>
 
 void Audio_UpdateOcclusion(AudioSystem *sys, BlockPhysicsSystem *bp);
 void audio_occlusion_raycast_init(void);

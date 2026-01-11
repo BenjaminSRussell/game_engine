@@ -141,15 +141,15 @@ CMakeFiles/Game.dir/src/game/minecraftv2/crafting/recipe_system.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_reverb.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/../common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/recipe_system.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/recipe_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../game_common.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../inventory/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../inventory/../block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/../inventory/../block/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/item_registry.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../inventory/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../inventory/../block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/../inventory/../block/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/item_registry.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h

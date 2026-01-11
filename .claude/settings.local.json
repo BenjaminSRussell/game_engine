@@ -3,7 +3,12 @@
     "allow": [
       "Bash(cd:*)",
       "Bash(grep:*)",
-      "Bash(git -C /Users/benjaminrussell/Desktop/\"Minecraft v2\" log --oneline --all)"
+      "Bash(git -C /Users/benjaminrussell/Desktop/\"Minecraft v2\" log --oneline --all)",
+      "Bash(find:*)",
+      "Bash(for dir in src/game/blockgame/*)",
+      "Bash(do if [ -d \"$dir\" ])",
+      "Bash(for dir in src/frontend/Sources/*)",
+      "Bash(xargs -I {} sh -c 'echo \"\"===== {} =====\"\"; head -1 \"\"{}\"\"')"
     ]
   }
 }

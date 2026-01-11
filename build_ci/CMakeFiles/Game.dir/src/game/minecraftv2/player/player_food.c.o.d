@@ -171,4 +171,18 @@ CMakeFiles/Game.dir/src/game/minecraftv2/player/player_food.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_food.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/../inventory/item_registry.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/../inventory/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/../inventory/inventory.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/../inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/vendor/miniaudio.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdalign.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_list.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_arg.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_reverb.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/effects/vfx/particle_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/vulkan.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h

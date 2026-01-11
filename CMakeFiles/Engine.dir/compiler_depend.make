@@ -89469,8 +89469,8 @@ CMakeFiles/Engine.dir/src/engine/core/config.c.o: src/engine/core/config.c \
   src/engine/include/common.h \
   src/engine/include/core/types.h \
   src/engine/include/core/logger.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/config/config.h
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/config/config.h
 
 CMakeFiles/Engine.dir/src/engine/core/config_loader.c.o: src/engine/core/config_loader.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -93801,90 +93801,90 @@ CMakeFiles/Engine.dir/src/engine/core/gamestate_main.c.o: src/engine/core/gamest
   src/engine/include/rendering/vulkan.h \
   src/engine/include/scripting/script_system.h \
   src/engine/include/vendor/miniaudio.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/block/block_states.h \
-  src/game/minecraftv2/include/block/interaction.h \
-  src/game/minecraftv2/include/block/mining.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/chunk/chunk_buffers.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/combat/combat.h \
-  src/game/minecraftv2/include/combat/combat_animations.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/config/config.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/inventory/inventory.h \
-  src/game/minecraftv2/include/crafting/advanced_crafting.h \
-  src/game/minecraftv2/include/crafting/furnace.h \
-  src/game/minecraftv2/include/crafting/recipe_system.h \
-  src/game/minecraftv2/include/crafting/resource_processing.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/game/mode.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/inventory/inventory.h \
-  src/game/minecraftv2/include/inventory/item_registry.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/npc/npc.h \
-  src/game/minecraftv2/include/npc/npc_types.h \
-  src/game/minecraftv2/include/npc/dialogue_manager.h \
-  src/game/minecraftv2/include/npc/npc_combat_behavior.h \
-  src/game/minecraftv2/include/npc/npc_housing.h \
-  src/game/minecraftv2/include/npc/npc_jobs.h \
-  src/game/minecraftv2/include/npc/npc_perf.h \
-  src/game/minecraftv2/include/npc/npc_schedule.h \
-  src/game/minecraftv2/include/npc/npc_types.h \
-  src/game/minecraftv2/include/npc/npc_visuals.h \
-  src/game/minecraftv2/include/combat/combat.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/inventory/item_registry.h \
-  src/game/minecraftv2/include/player/player.h \
-  src/game/minecraftv2/include/player/player_combat.h \
-  src/game/minecraftv2/include/player/player_food.h \
-  src/game/minecraftv2/include/player/player_magic.h \
-  src/game/minecraftv2/include/player/player_vehicle.h \
-  src/game/minecraftv2/include/player/spirit_model.h \
-  src/game/minecraftv2/include/player/status_effects.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/save/save.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/tech/solar_energy.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/block/block_states.h \
+  src/game/blockgame/include/block/interaction.h \
+  src/game/blockgame/include/block/mining.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/chunk/chunk_buffers.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/combat/combat.h \
+  src/game/blockgame/include/combat/combat_animations.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/config/config.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/inventory/inventory.h \
+  src/game/blockgame/include/crafting/advanced_crafting.h \
+  src/game/blockgame/include/crafting/furnace.h \
+  src/game/blockgame/include/crafting/recipe_system.h \
+  src/game/blockgame/include/crafting/resource_processing.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/game/mode.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/inventory/inventory.h \
+  src/game/blockgame/include/inventory/item_registry.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/npc/npc.h \
+  src/game/blockgame/include/npc/npc_types.h \
+  src/game/blockgame/include/npc/dialogue_manager.h \
+  src/game/blockgame/include/npc/npc_combat_behavior.h \
+  src/game/blockgame/include/npc/npc_housing.h \
+  src/game/blockgame/include/npc/npc_jobs.h \
+  src/game/blockgame/include/npc/npc_perf.h \
+  src/game/blockgame/include/npc/npc_schedule.h \
+  src/game/blockgame/include/npc/npc_types.h \
+  src/game/blockgame/include/npc/npc_visuals.h \
+  src/game/blockgame/include/combat/combat.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/inventory/item_registry.h \
+  src/game/blockgame/include/player/player.h \
+  src/game/blockgame/include/player/player_combat.h \
+  src/game/blockgame/include/player/player_food.h \
+  src/game/blockgame/include/player/player_magic.h \
+  src/game/blockgame/include/player/player_vehicle.h \
+  src/game/blockgame/include/player/spirit_model.h \
+  src/game/blockgame/include/player/status_effects.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/save/save.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/tech/solar_energy.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/inventory/inventory.h \
-  src/game/minecraftv2/include/ui/menu.h \
-  src/game/minecraftv2/include/ui/hotbar.h \
-  src/game/minecraftv2/include/ui/hud.h \
-  src/game/minecraftv2/include/ui/menu.h \
-  src/game/minecraftv2/include/ui/menu_renderer.h \
-  src/game/minecraftv2/include/weather/weather.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/npc/npc.h \
-  src/game/minecraftv2/include/weather/weather.h \
-  src/game/minecraftv2/include/world/generator.h \
-  src/game/minecraftv2/include/world/biome_features.h \
-  src/game/minecraftv2/include/world/dungeon_generation.h \
-  src/game/minecraftv2/include/world/generator.h \
-  src/game/minecraftv2/include/world/plant_varieties.h \
-  src/game/minecraftv2/include/world/plant_vfx.h \
-  src/game/minecraftv2/include/world/settlement_generation.h \
-  src/game/minecraftv2/include/world/structures.h \
-  src/game/minecraftv2/include/world/tree_varieties.h \
-  src/game/minecraftv2/include/world/water_integration.h \
-  src/game/minecraftv2/include/world/water_physics.h \
-  src/game/minecraftv2/include/world/water_system.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/inventory/inventory.h \
+  src/game/blockgame/include/ui/menu.h \
+  src/game/blockgame/include/ui/hotbar.h \
+  src/game/blockgame/include/ui/hud.h \
+  src/game/blockgame/include/ui/menu.h \
+  src/game/blockgame/include/ui/menu_renderer.h \
+  src/game/blockgame/include/weather/weather.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/npc/npc.h \
+  src/game/blockgame/include/weather/weather.h \
+  src/game/blockgame/include/world/generator.h \
+  src/game/blockgame/include/world/biome_features.h \
+  src/game/blockgame/include/world/dungeon_generation.h \
+  src/game/blockgame/include/world/generator.h \
+  src/game/blockgame/include/world/plant_varieties.h \
+  src/game/blockgame/include/world/plant_vfx.h \
+  src/game/blockgame/include/world/settlement_generation.h \
+  src/game/blockgame/include/world/structures.h \
+  src/game/blockgame/include/world/tree_varieties.h \
+  src/game/blockgame/include/world/water_integration.h \
+  src/game/blockgame/include/world/water_physics.h \
+  src/game/blockgame/include/world/water_system.h \
   /opt/homebrew/include/GLFW/glfw3.h
 
 CMakeFiles/Engine.dir/src/engine/core/hot_reload.c.o: src/engine/core/hot_reload.c \
@@ -100224,11 +100224,11 @@ CMakeFiles/Engine.dir/src/engine/core/misc_stubs.c.o: src/engine/core/misc_stubs
   src/engine/include/math/quat.h \
   src/engine/include/math/vec3.h \
   src/engine/include/physics/physics.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/combat/combat.h \
-  src/game/minecraftv2/include/combat/combat_animations.h \
-  src/game/minecraftv2/include/combat/equipment.h \
-  src/game/minecraftv2/include/game_common.h
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/combat/combat.h \
+  src/game/blockgame/include/combat/combat_animations.h \
+  src/game/blockgame/include/combat/equipment.h \
+  src/game/blockgame/include/game_common.h
 
 CMakeFiles/Engine.dir/src/engine/core/modding/mod_loader.c.o: src/engine/core/modding/mod_loader.c \
   src/engine/include/core/modding/mod_loader.h
@@ -102780,8 +102780,8 @@ CMakeFiles/Engine.dir/src/engine/core/services/camera_controls.c.o: src/engine/c
   src/engine/include/math/vec4.h \
   src/engine/include/platform/input/controls.h \
   src/engine/include/rendering/camera.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/config/config.h
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/config/config.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/gpu_particle_system.c.o: src/engine/core/services/gpu_particle_system.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -103059,10 +103059,10 @@ CMakeFiles/Engine.dir/src/engine/core/services/mesh.c.o: src/engine/core/service
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/rendering/mesh.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/mesh_optimizer.c.o: src/engine/core/services/mesh_optimizer.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -103333,21 +103333,21 @@ CMakeFiles/Engine.dir/src/engine/core/services/particle_renderer.c.o: src/engine
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
   src/engine/include/rendering/particle_renderer.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/weather/weather_particles.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/weather/weather.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/world/biome_features.h \
-  src/game/minecraftv2/include/world/generator.h \
-  src/game/minecraftv2/include/world/plant_varieties.h \
-  src/game/minecraftv2/include/world/plant_vfx.h
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/weather/weather_particles.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/weather/weather.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/world/biome_features.h \
+  src/game/blockgame/include/world/generator.h \
+  src/game/blockgame/include/world/plant_varieties.h \
+  src/game/blockgame/include/world/plant_vfx.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/post_processing.c.o: src/engine/core/services/post_processing.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -103610,37 +103610,37 @@ CMakeFiles/Engine.dir/src/engine/core/services/sprite_3d_renderer.c.o: src/engin
   src/engine/include/rendering/camera.h \
   src/engine/include/rendering/mesh.h \
   src/engine/include/rendering/renderer.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/combat/combat.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/config/config.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/game/mode.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/inventory/inventory.h \
-  src/game/minecraftv2/include/combat/combat.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/inventory/inventory.h \
-  src/game/minecraftv2/include/inventory/item_registry.h \
-  src/game/minecraftv2/include/player/player.h \
-  src/game/minecraftv2/include/player/player_combat.h \
-  src/game/minecraftv2/include/player/player_food.h \
-  src/game/minecraftv2/include/player/player_magic.h \
-  src/game/minecraftv2/include/player/player_vehicle.h \
-  src/game/minecraftv2/include/player/spirit_model.h \
-  src/game/minecraftv2/include/player/status_effects.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/combat/combat.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/config/config.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/game/mode.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/inventory/inventory.h \
+  src/game/blockgame/include/combat/combat.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/inventory/inventory.h \
+  src/game/blockgame/include/inventory/item_registry.h \
+  src/game/blockgame/include/player/player.h \
+  src/game/blockgame/include/player/player_combat.h \
+  src/game/blockgame/include/player/player_food.h \
+  src/game/blockgame/include/player/player_magic.h \
+  src/game/blockgame/include/player/player_vehicle.h \
+  src/game/blockgame/include/player/spirit_model.h \
+  src/game/blockgame/include/player/status_effects.h \
   src/engine/include/common.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec4.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/inventory/inventory.h \
-  src/game/minecraftv2/include/ui/hotbar.h
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/inventory/inventory.h \
+  src/game/blockgame/include/ui/hotbar.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/sprite_renderer_2_5d.c.o: src/engine/core/services/sprite_renderer_2_5d.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -104428,37 +104428,37 @@ CMakeFiles/Engine.dir/src/engine/core/services/voxel_renderer.c.o: src/engine/co
   src/engine/include/rendering/camera.h \
   src/engine/include/rendering/mesh.h \
   src/engine/include/rendering/renderer.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/combat/combat.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/config/config.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/game/mode.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/inventory/inventory.h \
-  src/game/minecraftv2/include/combat/combat.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/inventory/inventory.h \
-  src/game/minecraftv2/include/inventory/item_registry.h \
-  src/game/minecraftv2/include/player/player.h \
-  src/game/minecraftv2/include/player/player_combat.h \
-  src/game/minecraftv2/include/player/player_food.h \
-  src/game/minecraftv2/include/player/player_magic.h \
-  src/game/minecraftv2/include/player/player_vehicle.h \
-  src/game/minecraftv2/include/player/spirit_model.h \
-  src/game/minecraftv2/include/player/status_effects.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/combat/combat.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/config/config.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/game/mode.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/inventory/inventory.h \
+  src/game/blockgame/include/combat/combat.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/inventory/inventory.h \
+  src/game/blockgame/include/inventory/item_registry.h \
+  src/game/blockgame/include/player/player.h \
+  src/game/blockgame/include/player/player_combat.h \
+  src/game/blockgame/include/player/player_food.h \
+  src/game/blockgame/include/player/player_magic.h \
+  src/game/blockgame/include/player/player_vehicle.h \
+  src/game/blockgame/include/player/spirit_model.h \
+  src/game/blockgame/include/player/status_effects.h \
   src/engine/include/common.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec4.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/inventory/inventory.h \
-  src/game/minecraftv2/include/ui/hotbar.h
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/inventory/inventory.h \
+  src/game/blockgame/include/ui/hotbar.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/weather_system.c.o: src/engine/core/services/weather_system.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -107738,17 +107738,17 @@ CMakeFiles/Engine.dir/src/engine/core/unified_engine.c.o: src/engine/core/unifie
   src/engine/include/rendering/renderer.h \
   src/engine/include/tools/profiler.h \
   src/engine/scene/scene_system.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/world/biome_features.h \
-  src/game/minecraftv2/include/world/generator.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/block/block.h \
-  src/game/minecraftv2/include/chunk/chunk.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/npc/npc_types.h
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/world/biome_features.h \
+  src/game/blockgame/include/world/generator.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/block/block.h \
+  src/game/blockgame/include/chunk/chunk.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/npc/npc_types.h
 
 CMakeFiles/Engine.dir/src/engine/core/unified_engine_integration.c.o: src/engine/core/unified_engine_integration.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -116813,8 +116813,8 @@ CMakeFiles/Engine.dir/src/engine/platform/input/input.c.o: src/engine/platform/i
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/platform/input/controls.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/config/config.h
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/config/config.h
 
 CMakeFiles/Engine.dir/src/engine/platform/input/input_factory.c.o: src/engine/platform/input/input_factory.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -116944,8 +116944,8 @@ CMakeFiles/Engine.dir/src/engine/platform/input/input_factory.c.o: src/engine/pl
   src/engine/include/math/vec4.h \
   src/engine/include/platform/input/controls.h \
   src/engine/include/platform/input/input.h \
-  src/game/minecraftv2/include/game_common.h \
-  src/game/minecraftv2/include/config/config.h
+  src/game/blockgame/include/game_common.h \
+  src/game/blockgame/include/config/config.h
 
 CMakeFiles/Engine.dir/src/engine/platform/input/input_impl.c.o: src/engine/platform/input/input_impl.c
 
@@ -123091,8 +123091,6 @@ src/engine/include/vendor/lua/lopcodes.h:
 
 src/engine/vendor/lua/lcode.c:
 
-src/engine/include/vendor/lua/lzio.h:
-
 src/engine/include/vendor/lua/lvm.h:
 
 src/engine/include/vendor/lua/lua.h:
@@ -123142,6 +123140,8 @@ src/engine/tools/profiler/gpu_profiler_impl.c:
 src/engine/tools/profiler/comprehensive_profiler_impl.c:
 
 src/engine/tools/profiler.c:
+
+src/engine/tools/pipeline/distributed_build.c:
 
 src/engine/tools/pipeline/converters/asset_converters.c:
 
@@ -123373,8 +123373,6 @@ src/engine/rendering/raytracing/raytracing/bvh_builder.c:
 
 src/engine/rendering/raytracing/path_tracing/reference_renderer.c:
 
-src/engine/rendering/raytracing/path_tracing/path_integrator.c:
-
 src/engine/rendering/raytracing/path_tracing/mis_weights.c:
 
 src/engine/rendering/raytracing/hybrid_rt_impl.c:
@@ -123480,6 +123478,8 @@ src/engine/include/rendering/lumen_gi.h:
 src/engine/rendering/hdr_tonemap.c:
 
 src/engine/rendering/grid_renderer.c:
+
+src/engine/rendering/graph/render_graph_impl.c:
 
 src/engine/rendering/gpu_shader_reload.c:
 
@@ -123787,8 +123787,6 @@ src/engine/platform/input/gamepad.c:
 
 src/engine/platform/input/controls.c:
 
-src/engine/platform/hot_reload_api_bridge.c:
-
 src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c:
 
 src/engine/platform/graphics_api_bridge.c:
@@ -123847,8 +123845,6 @@ src/engine/physics/vehicles/tire_model.c:
 
 src/engine/physics/vehicles/suspension_bridge.c:
 
-src/engine/physics/vehicle/vehicle_physics_impl.c:
-
 src/engine/platform/input/action_mapper_impl.c:
 
 src/engine/physics/vehicle/tire_model.c:
@@ -123886,10 +123882,6 @@ src/engine/physics/solver/constraint_solver_impl.c:
 src/engine/physics/solver/builder_05.c:
 
 src/engine/physics/softbody/fem_deformable.c:
-
-src/engine/physics/solver/physics_solver_system.c:
-
-src/engine/physics/soft/renderer_03.c:
 
 src/engine/shading/clearcoat/car_paint.c:
 
@@ -123999,8 +123991,6 @@ src/engine/physics/core/physics_shapes.c:
 
 src/engine/physics/core/physics_broadphase.c:
 
-src/engine/physics/continuous_collision.c:
-
 src/engine/postprocess/anti_aliasing/taa_sharpening.c:
 
 src/engine/physics/constraints/spring_joint.c:
@@ -124017,8 +124007,6 @@ src/engine/platform/swift_bridge.c:
 
 src/engine/physics/constraints/manager_01.c:
 
-src/engine/physics/constraints/hinge_joint.c:
-
 src/engine/physics/constraints/constraint_renderer.c:
 
 src/engine/physics/constraints/builder_05.c:
@@ -124034,8 +124022,6 @@ src/engine/physics/collision/system_02.c:
 src/engine/physics/collision/narrowphase.c:
 
 src/engine/physics/collision/gjk_solver.c:
-
-src/engine/physics/collision/epa_solver.c:
 
 src/engine/physics/collision/collision_system.c:
 
@@ -124251,8 +124237,6 @@ src/engine/lighting/sources/light_culling.c:
 
 src/engine/lighting/shadows_advanced/shadow_techniques/sdsm.c:
 
-src/engine/lighting/shadows_advanced/shadow_techniques/moment_shadow.c:
-
 src/engine/lighting/shadows_advanced/shadow_techniques/capsule_shadows.c:
 
 src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_ray.c:
@@ -124308,6 +124292,8 @@ src/engine/lighting/probes/probe_blending.c:
 src/engine/physics/soft/softbody_system.c:
 
 src/engine/lighting/probes/irradiance_probe.c:
+
+src/engine/lighting/lumen/tracing_lumen/trace_dispatch.c:
 
 src/engine/lighting/lumen/tracing_lumen/trace_cache.c:
 
@@ -124422,6 +124408,10 @@ src/engine/geometry/streaming/prefetch_system.c:
 src/engine/geometry/streaming/mesh_streamer.c:
 
 src/engine/geometry/procedural_mesh/procedural_mesh_streaming.c:
+
+src/engine/rendering/forward/forward_renderer.c:
+
+src/engine/geometry/procedural_mesh/procedural_mesh_generation.c:
 
 src/engine/geometry/nanite_impl.c:
 
@@ -124607,8 +124597,6 @@ src/engine/lighting/lightmaps/lightmap_packer.c:
 
 src/engine/gameplay/crafting/crafting_system.c:
 
-src/engine/gameplay/combat_system_impl.c:
-
 src/engine/scripting/lua_bindings.c:
 
 src/engine/lighting/sources/directional_light.c:
@@ -124637,11 +124625,9 @@ src/engine/environment/stylized/voxel_builder.c:
 
 src/engine/environment/stylized/pixel_art_renderer.c:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSWorkspace.h:
-
-src/engine/environment/stylized/outline_renderer.c:
-
 src/engine/environment/stylized/low_poly_generator.c:
+
+src/engine/environment/stylized/hand_drawn_effect.c:
 
 src/engine/rendering/forward/forward_batching.c:
 
@@ -124801,8 +124787,6 @@ src/engine/core/jobs/job_system_impl.c:
 
 src/engine/effects/water/ocean/ocean_displacement.c:
 
-src/game/minecraftv2/include/npc/npc_types.h:
-
 src/engine/effects/water/ocean/fft_waves.c:
 
 src/engine/effects/vfx_graph/vfx_execution.c:
@@ -124840,12 +124824,6 @@ src/engine/effects/puddles/puddle_rendering.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CAConstraintLayoutManager.h:
 
 src/engine/effects/particles/vfx/vfx_events.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSObjectController.h:
-
-src/engine/environment/atmosphere/core/atmosphere/sky/sky_renderer.c:
-
-src/engine/effects/particles/vfx/vfx_context.c:
 
 src/engine/backend/metal/mtl_metalfx.m:
 
@@ -124953,6 +124931,8 @@ src/engine/core/sync/semaphore_manager.c:
 
 src/engine/core/sync/semaphore_manager.h:
 
+src/engine/include/core/logging.h:
+
 src/engine/character/animation/blending/blend_space_2d.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/ucontext.h:
@@ -124998,8 +124978,6 @@ src/engine/core/simd_neon.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4LibraryFunctionDescriptor.h:
 
 src/engine/core/simd/simd_math_x86.c:
-
-src/engine/core/simd/simd_math_neon.c:
 
 src/engine/core/simd/avx512_kernels.c:
 
@@ -125068,6 +125046,10 @@ src/engine/character/animation/ik/foot_ik_solver.c:
 src/engine/include/core/serialization/schema_validator.h:
 
 src/engine/include/core/serialization/json_validator.h:
+
+src/engine/rendering/sky/atmosphere_scattering_impl.c:
+
+src/engine/core/serialization/json_validator.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSAppleScriptExtensions.h:
 
@@ -125144,8 +125126,6 @@ src/engine/core/memory/arena.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSURLResponse.h:
 
 src/engine/include/core/memory/allocator_stack.h:
-
-src/engine/include/core/memory/allocator_pool.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/time_value.h:
 
@@ -125293,57 +125273,99 @@ src/engine/core/integration/ai_tools/copilot_context.c:
 
 src/engine/core/id/uuid_generator.c:
 
-src/engine/rendering/gpu_texture.c:
+src/engine/include/core/memory/allocator_pool.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/vm_sync.h:
+src/game/blockgame/include/world/water_physics.h:
 
-src/game/minecraftv2/include/world/water_system.h:
+src/game/blockgame/include/world/water_integration.h:
 
-src/game/minecraftv2/include/world/structures.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSCursor.h:
 
-src/game/minecraftv2/include/world/settlement_generation.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/common.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATSUI.framework/Headers/ATSUnicodeDirectAccess.h:
+src/game/blockgame/include/world/tree_varieties.h:
 
-src/game/minecraftv2/include/weather/weather.h:
+src/engine/physics/vehicle/vehicle_physics_impl.c:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/select.h:
+src/game/blockgame/include/world/generator.h:
 
-src/engine/backend/metal/mtl_frame_sync.m:
+src/engine/animation/ik_solver.c:
 
-src/game/minecraftv2/include/save/save.h:
+src/game/blockgame/include/ui/menu_renderer.h:
 
-src/game/minecraftv2/include/player/status_effects.h:
+src/engine/rendering/raytracing/path_tracing/path_integrator.c:
 
-src/game/minecraftv2/include/player/spirit_model.h:
+src/game/blockgame/include/ui/hotbar.h:
 
-src/game/minecraftv2/include/player/player_vehicle.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_in_port_t.h:
 
-src/engine/assets/system/asset_system/compression_assets/animation_compression.h:
+src/game/blockgame/include/ui/menu.h:
 
-src/game/minecraftv2/include/player/player_magic.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTextFieldCell.h:
 
-src/game/minecraftv2/include/player/player.h:
+src/engine/character/animation/morph_targets/facial_morphs.h:
 
-src/engine/character/animation/procedural/proc_breathing.c:
+src/game/blockgame/include/tech/solar_energy.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBlitPass.h:
+src/game/blockgame/include/save/save.h:
 
-src/game/minecraftv2/include/npc/npc_perf.h:
+src/engine/physics/solver/physics_solver_system.c:
 
-src/engine/include/core/logging.h:
+src/engine/physics/soft/renderer_03.c:
 
-src/game/minecraftv2/include/npc/npc_jobs.h:
+src/game/blockgame/include/player/player_vehicle.h:
 
-src/engine/rendering/sky/atmosphere_scattering_impl.c:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSObjectController.h:
 
-src/engine/core/serialization/json_validator.c:
+src/engine/environment/atmosphere/core/atmosphere/sky/sky_renderer.c:
 
-src/game/minecraftv2/include/inventory/item_registry.h:
+src/engine/effects/particles/vfx/vfx_context.c:
 
-src/game/minecraftv2/include/chunk/chunk_buffers.h:
+src/game/blockgame/include/player/player_food.h:
 
-src/game/minecraftv2/include/block/block_states.h:
+src/engine/rendering/lighting/lumen_gi.m:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/FoundationErrors.h:
+
+src/game/blockgame/include/player/player.h:
+
+src/game/blockgame/include/npc/npc_housing.h:
+
+src/engine/gameplay/combat_system_impl.c:
+
+src/game/blockgame/include/npc/npc.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/fenv.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecTask.h:
+
+src/game/blockgame/include/game/mode.h:
+
+src/game/blockgame/include/crafting/recipe_system.h:
+
+src/engine/physics/collision/epa_solver.c:
+
+src/game/blockgame/include/crafting/advanced_crafting.h:
+
+src/engine/core/simd/simd_math_neon.c:
+
+src/game/blockgame/include/combat/combat.h:
+
+src/engine/math/aabb.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/netinet/ip.h:
+
+src/game/blockgame/include/chunk/chunk_buffers.h:
+
+src/game/blockgame/include/block/mining.h:
+
+src/engine/assets/io/async/processor_04.c:
+
+src/game/blockgame/include/block/block_states.h:
+
+src/engine/core/memory/linear_allocator.c:
+
+src/game/blockgame/include/chunk/chunk.h:
 
 src/engine/materials/pbr/material_reflection.c:
 
@@ -125483,6 +125505,10 @@ src/engine/include/math/mat4.h:
 
 src/engine/core/containers/advanced_containers_impl.c:
 
+src/engine/physics/continuous_collision.c:
+
+src/game/blockgame/include/config/config.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/AE.framework/Headers/AE.h:
 
 src/engine/core/config.c:
@@ -125498,8 +125524,6 @@ src/engine/vendor/lua/lstring.c:
 src/engine/tools/asset_editor/management/import_export.c:
 
 src/engine/core/command/command_queue.c:
-
-src/game/minecraftv2/include/npc/npc_combat_behavior.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/dirent.h:
 
@@ -125541,6 +125565,10 @@ src/engine/include/core/json.h:
 
 src/engine/core/algorithms/sorting.c:
 
+src/engine/effects/trails/trail_points.c:
+
+src/game/blockgame/include/world/structures.h:
+
 src/engine/include/core/algorithms/random.h:
 
 src/engine/core/algorithms/random.c:
@@ -125572,6 +125600,8 @@ src/engine/character/animation/authoring_impl.c:
 src/engine/character/cloth/simulation_cloth/cloth_wind.h:
 
 src/engine/character/cloth/simulation_cloth/cloth_tearing.h:
+
+src/game/blockgame/include/game_common.h:
 
 src/engine/character/cloth/simulation_cloth/cloth_tearing.c:
 
@@ -125769,10 +125799,6 @@ src/engine/ai/npc/prebuilt/npc_faction_system.c:
 
 src/engine/character/animation/blending/blend_tree.h:
 
-src/engine/ai/navigation/navmesh_impl.c:
-
-src/game/minecraftv2/include/game/mode.h:
-
 src/engine/character/animation/blending/blend_tree.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreData.framework/Headers/NSEntityMigrationPolicy.h:
@@ -125781,11 +125807,15 @@ src/engine/character/animation/blending/blend_space_2d.c:
 
 src/engine/character/animation/blending/blend_space_1d.h:
 
+src/game/blockgame/include/player/spirit_model.h:
+
 src/engine/character/animation/blending/blend_space_1d.c:
 
 src/engine/character/animation/blending/blend_masks.h:
 
 src/engine/character/animation/blending/blend_masks.c:
+
+src/game/blockgame/include/inventory/inventory.h:
 
 src/engine/ai/goap.c:
 
@@ -125866,8 +125896,6 @@ src/engine/backend/vertex_compression.h:
 src/engine/backend/vertex_compression.c:
 
 src/engine/backend/metal/tests/mtl_resource_tests.m:
-
-src/game/minecraftv2/include/world/tree_varieties.h:
 
 src/engine/character/animation/ik_impl.c:
 
@@ -125989,11 +126017,17 @@ src/engine/backend/metal/mtl_frame_sync.h:
 
 src/engine/character/animation/ragdoll/active_ragdoll.c:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/select.h:
+
+src/engine/backend/metal/mtl_frame_sync.m:
+
 src/engine/ai/npc_advanced/goap_planner_enhanced.c:
 
 src/engine/backend/metal/mtl_encoder.m:
 
 src/engine/backend/metal/mtl_display.h:
+
+src/game/blockgame/include/combat/equipment.h:
 
 src/engine/gameplay/combat/damage_system.c:
 
@@ -126053,6 +126087,8 @@ src/engine/tools/profiler_impl.c:
 
 src/engine/physics/fluid/manager_01.c:
 
+src/game/blockgame/include/world/plant_vfx.h:
+
 src/engine/ecs/mass_ecb.c:
 
 src/engine/include/core/integration/blender_pipeline/blender_batch_export.h:
@@ -126104,8 +126140,6 @@ src/engine/include/core/logger/structured_logger.h:
 src/engine/assets/resources/resource_management/resource_handle.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.h:
-
-src/game/minecraftv2/include/weather/weather_particles.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIVector.h:
 
@@ -126273,6 +126307,12 @@ src/engine/character/animation/retargeting/pose_corrector.c:
 
 src/engine/include/core/device/device_memory.h:
 
+src/engine/environment/stylized/outline_renderer.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSWorkspace.h:
+
+src/game/blockgame/include/npc/npc_perf.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/sysctl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSWindowTab.h:
@@ -126416,6 +126456,8 @@ src/engine/assets/io/compression/compression_processor.c:
 src/engine/character/animation/physics_animation/ragdoll_setup.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSStringDrawing.h:
+
+src/game/blockgame/include/ui/hud.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSStoryboardSegue.h:
 
@@ -126561,6 +126603,8 @@ src/engine/core/integration/render_config.h:
 
 src/engine/core/memory/fragmentation_metric.c:
 
+src/game/blockgame/include/world/water_system.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/LaunchServices.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSOpenGLLayer.h:
@@ -126584,8 +126628,6 @@ src/engine/materials/types/wood/wood_grain.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSMenu.h:
 
 src/engine/include/core/memory/fragmentation_metric.h:
-
-src/game/minecraftv2/include/combat/combat_animations.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSLevelIndicatorCell.h:
 
@@ -126665,6 +126707,10 @@ src/engine/character/hair/rendering/hair_rendering/hair_transparency.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSDocumentScripting.h:
 
+src/engine/lighting/shadows_advanced/shadow_techniques/moment_shadow.c:
+
+src/game/blockgame/include/combat/combat_animations.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSDocument.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSDockTile.h:
@@ -126716,10 +126762,6 @@ src/engine/character/cloth/cloth_rendering.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSColorPicker.h:
 
 src/engine/environment/ocean/ocean_mesh.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSFontAssetRequest.h:
-
-src/game/minecraftv2/include/world/water_physics.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLResourceStatePass.h:
 
@@ -126913,6 +126955,8 @@ src/engine/core/services/vfx_optimizer.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLCounters.h:
 
+src/game/blockgame/include/player/status_effects.h:
+
 src/engine/ecs/ecs_system.h:
 
 src/engine/tools/profiler_advanced/overlay_ui.c:
@@ -127093,6 +127137,10 @@ src/engine/materials/weathering/age/weathering_system.c:
 
 src/engine/environment/builder/atmosphere_editor.c:
 
+src/engine/platform/hot_reload_api_bridge.c:
+
+src/game/blockgame/include/world/settlement_generation.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/SearchKit.framework/Headers/SKSummary.h:
 
 src/engine/assets/textures/sampling/cubemap_filtering.h:
@@ -127123,6 +127171,10 @@ src/engine/assets/textures/compression/astc_compression.c:
 
 src/engine/core/integration/blender_pipeline/blender_material_convert.c:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h:
+
+src/game/blockgame/include/player/player_combat.h:
+
 src/engine/assets/system/asset_system/loading/async_loading.c:
 
 src/engine/lighting/lumen/tracing_lumen/trace_cache.h:
@@ -127140,6 +127192,8 @@ src/engine/geometry/mesh.c:
 src/engine/environment/landscape/terrain/landscape/vegetation/foliage_culling.c:
 
 src/engine/assets/system/asset_system/loading/asset_loader.h:
+
+src/game/blockgame/include/world/biome_features.h:
 
 src/engine/assets/system/asset_system/loading/asset_hot_reload.c:
 
@@ -127210,6 +127264,8 @@ src/engine/assets/system/asset_system/compression_assets/lod_generation.h:
 src/engine/assets/system/asset_system/compression_assets/lod_generation.c:
 
 src/engine/assets/system/asset_system/compression_assets/asset_streaming.h:
+
+src/engine/assets/system/asset_system/compression_assets/animation_compression.h:
 
 src/engine/assets/system/asset_system/compression_assets/animation_compression.c:
 
@@ -127289,8 +127345,6 @@ src/engine/effects/water/rendering_water/water_normals.c:
 
 src/engine/assets/io/serialization/system_02.c:
 
-src/game/minecraftv2/include/player/player_food.h:
-
 src/engine/assets/io/serialization/serialization_renderer.c:
 
 src/engine/postprocess/screen_space_reflections.c:
@@ -127302,8 +127356,6 @@ src/engine/rendering/output/swapchain.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/certextensions.h:
 
 src/engine/assets/io/serialization/serialization_processor.c:
-
-src/game/minecraftv2/include/crafting/recipe_system.h:
 
 src/engine/assets/io/serialization/serialization_manager.h:
 
@@ -127511,8 +127563,6 @@ src/engine/assets/io/export/manager_01.h:
 
 src/engine/assets/io/export/manager_01.c:
 
-src/game/minecraftv2/include/crafting/advanced_crafting.h:
-
 src/engine/assets/io/export/asset_export_renderer.c:
 
 src/engine/effects/decals/decal_clustering.c:
@@ -127614,12 +127664,6 @@ src/engine/assets/io/async/system_02.c:
 src/engine/geometry/lod/lod_bias.c:
 
 src/engine/assets/io/async/manager_01.h:
-
-src/engine/physics/collision/continuous_collision.c:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/arm_neon.h:
-
-src/game/minecraftv2/include/config/config.h:
 
 src/engine/character/cloth/rendering_cloth/cloth_thickness.h:
 
@@ -127787,9 +127831,7 @@ src/engine/lighting/lumen/surface_cache/surface_atlas.c:
 
 src/engine/include/animation/core/inverse_kinematics_solver.h:
 
-src/engine/lighting/lumen/tracing_lumen/trace_dispatch.c:
-
-src/game/minecraftv2/include/inventory/inventory.h:
+src/game/blockgame/include/block/block.h:
 
 src/engine/include/core/integration/blender_pipeline/blender_material_convert.h:
 
@@ -127812,8 +127854,6 @@ src/engine/vendor/lua/lparser.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CAReplicatorLayer.h:
 
 src/engine/include/animation/blending/inertialization.h:
-
-src/game/minecraftv2/include/block/interaction.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSResponder.h:
 
@@ -127925,6 +127965,8 @@ src/engine/materials/weathering/wear/tear_damage.c:
 
 src/engine/ai/spatial/influence_maps.c:
 
+src/game/blockgame/include/weather/weather.h:
+
 src/engine/ai/sense/sensory_memory.c:
 
 src/engine/geometry/bvh/bvh_simd.c:
@@ -128027,17 +128069,11 @@ src/engine/assets/io/serialization/processor_04.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/machine/vm_param.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/fenv.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecTask.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGEvent.h:
 
 src/engine/ai/npc/prebuilt/npc_boss.c:
 
 src/engine/assets/io/bundling/manager_01.c:
-
-src/game/minecraftv2/include/crafting/furnace.h:
 
 src/engine/ai/ml_navigation.c:
 
@@ -128141,8 +128177,6 @@ src/engine/ai/ml/neural_animation.c:
 
 src/engine/effects/weather/snow_system.c:
 
-src/game/minecraftv2/include/npc/npc_visuals.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSScriptStandardSuiteCommands.h:
 
 src/engine/include/ai/ml/ml_inference.h:
@@ -128211,6 +128245,8 @@ src/engine/include/vendor/miniaudio.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/unistd.h:
 
+src/game/blockgame/include/block/interaction.h:
+
 src/engine/assets/io/serialization/serialization_manager.c:
 
 src/engine/ai/coding/ai_coding_impl.c:
@@ -128271,8 +128307,6 @@ src/engine/assets/import/material_transpiler.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_suseconds_t.h:
 
-src/game/minecraftv2/include/player/player_combat.h:
-
 src/engine/core/command/command_pool.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_o_dsync.h:
@@ -128282,8 +128316,6 @@ src/engine/include/rendering/ui_renderer.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_key_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_iovec_t.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_in_port_t.h:
 
 src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c:
 
@@ -128351,10 +128383,6 @@ src/engine/physics/ragdoll/ragdoll_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/conversion.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSCursor.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/common.h:
-
 src/engine/character/animation/state_machines/state_editor.c:
 
 src/engine/core/command/command_buffer.c:
@@ -128402,6 +128430,8 @@ src/engine/assets/system/asset_system/compression_assets/asset_streaming.c:
 src/engine/physics/collision/processor_04.c:
 
 src/engine/effects/particles/particle_emitter.c:
+
+src/game/blockgame/include/npc/npc_combat_behavior.h:
 
 src/engine/physics/physics_api_impl.c:
 
@@ -128453,8 +128483,6 @@ src/engine/ai/npc_advanced/investigation.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFArray.h:
 
-src/game/minecraftv2/include/tech/solar_energy.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/limits.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIPlugInInterface.h:
@@ -128472,6 +128500,10 @@ src/engine/assets/io/formats/asset_format_manager.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h:
 
 src/engine/ai/ml/dlaa.c:
+
+src/engine/rendering/gpu_texture.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/vm_sync.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTextCheckingClient.h:
 
@@ -128692,10 +128724,6 @@ src/engine/ai/navigation_advanced/crowd_detour.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/rpc.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/boolean.h:
-
-src/engine/rendering/graph/render_graph_impl.c:
-
-src/game/minecraftv2/include/crafting/resource_processing.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/locale.h:
 
@@ -128965,6 +128993,8 @@ src/engine/character/cloth/simulation_cloth/cloth_constraints.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/cssmtpi.h:
 
+src/game/blockgame/include/npc/npc_schedule.h:
+
 src/engine/core/sync/fiber_system.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CoreVideo.h:
@@ -129171,11 +129201,11 @@ src/engine/rendering/core/texture_loader_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSPolygonBuffer.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSFontAssetRequest.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSPolygonAccelerationStructure.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSInstanceAccelerationStructure.h:
-
-src/game/minecraftv2/include/block/mining.h:
 
 src/engine/assets/io/compression/processor_04.h:
 
@@ -129607,11 +129637,11 @@ src/engine/core/simd/simd_math_scalar.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSDateInterval.h:
 
+src/engine/ai/navigation/navmesh_impl.c:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLIOCompressor.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach_debug/ipc_info.h:
-
-src/engine/environment/stylized/hand_drawn_effect.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ImageIO.framework/Headers/ImageIOBase.h:
 
@@ -129620,10 +129650,6 @@ src/engine/environment/stylized/hand_drawn_effect.c:
 src/engine/character/animation/skeletal/skeleton_data.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLFunctionStitching.h:
-
-src/engine/math/aabb.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/netinet/ip.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLFunctionLog.h:
 
@@ -129679,6 +129705,10 @@ src/engine/include/ai/blackboard.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLCaptureScope.h:
 
+src/engine/character/animation/procedural/proc_breathing.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBlitPass.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBinaryArchive.h:
 
 src/engine/rendering/scene.c:
@@ -129694,8 +129724,6 @@ src/engine/core/hot_reload.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4PipelineState.h:
 
 src/engine/environment/landscape/terrain/landscape/splatmaps/splat_materials.c:
-
-src/game/minecraftv2/include/world/biome_features.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_time.h:
 
@@ -129811,8 +129839,6 @@ src/engine/platform/input/input_system.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelStructureProgramBlock.h:
 
-src/game/minecraftv2/include/ui/menu_renderer.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSRange.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLDictionaryFeatureProvider.h:
@@ -129842,6 +129868,8 @@ src/engine/core/sync/thread_pool.h:
 src/engine/rendering/post_processing/auto_exposure.c:
 
 src/engine/postprocess/motion_blur/object_motion_blur.c:
+
+src/game/blockgame/include/npc/dialogue_manager.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/IOSharedLock.h:
 
@@ -129991,6 +130019,8 @@ src/engine/core/integration/blender/addon_bridge.c:
 
 src/engine/core/asset_compression.c:
 
+src/game/blockgame/include/crafting/resource_processing.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATS.framework/Headers/ATSFont.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTFontTraits.h:
@@ -130090,8 +130120,6 @@ src/engine/physics/fluids/flip_solver.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGColorSpace.h:
-
-src/game/minecraftv2/include/combat/equipment.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSNotificationQueue.h:
 
@@ -130238,6 +130266,10 @@ src/engine/ai/ml/npc_learning_impl.c:
 src/engine/rendering/shaders/foliage_wind_shader.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h:
+
+src/engine/physics/constraints/hinge_joint.c:
+
+src/game/blockgame/include/player/player_magic.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVPixelBuffer.h:
 
@@ -130441,12 +130473,6 @@ src/engine/include/ai/ml/ml_core.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Threads.h:
 
-src/engine/rendering/forward/forward_renderer.c:
-
-src/engine/geometry/procedural_mesh/procedural_mesh_generation.c:
-
-src/game/minecraftv2/include/npc/npc_housing.h:
-
 src/engine/core/containers_advanced/static_vector.c:
 
 src/engine/include/assets/import/material_transpiler.h:
@@ -130462,10 +130488,6 @@ src/engine/shading/subsurface/pre_integrated_sss.c:
 src/engine/core/string_utils.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/TextCommon.h:
-
-src/game/minecraftv2/include/world/generator.h:
-
-src/game/minecraftv2/include/ui/hotbar.h:
 
 src/engine/scripting/visual_scripting/visual_scripting_core.c:
 
@@ -130507,8 +130529,6 @@ src/engine/rendering/materials/material_system.c:
 
 src/engine/environment/landscape/terrain/landscape/vegetation/tree_renderer.c:
 
-src/game/minecraftv2/include/world/dungeon_generation.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/LowMem.h:
 
 src/engine/vendor/lua/ltablib.c:
@@ -130541,8 +130561,6 @@ src/engine/rendering/advanced/rendering_final_batch.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sa_family_t.h:
 
-src/game/minecraftv2/include/world/plant_varieties.h:
-
 src/engine/environment/stylized/cel_shading_material.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/DriverSynchronization.h:
@@ -130568,6 +130586,8 @@ src/engine/include/ai/terrain_enhancement.h:
 src/engine/include/ai/ml/neural_upscaling.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSUUID.h:
+
+src/game/blockgame/include/crafting/furnace.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/OSAtomicDeprecated.h:
 
@@ -130604,8 +130624,6 @@ src/engine/rendering/free_camera_controller.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVBase.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSMeasurement.h:
-
-src/engine/core/memory/linear_allocator.c:
 
 src/engine/assets/io/bundling/renderer_03.c:
 
@@ -130644,8 +130662,6 @@ src/engine/assets/textures/virtual_texturing/page_provider.c:
 src/engine/rendering/materials/material_serialization_examples.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTFrame.h:
-
-src/engine/assets/io/async/processor_04.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_blksize_t.h:
 
@@ -130695,6 +130711,10 @@ src/engine/assets/textures/compression/compression_quality.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLParameterDescription.h:
 
+src/engine/physics/collision/continuous_collision.c:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/arm_neon.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_gid_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelStructureProgramOperation.h:
@@ -130712,8 +130732,6 @@ src/engine/backend/vertex_format_compressed.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/emmtype.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSThread.h:
-
-src/game/minecraftv2/include/npc/npc_schedule.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Collections.h:
 
@@ -130789,6 +130807,8 @@ src/engine/include/core/containers.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSAppleEventManager.h:
 
+src/game/blockgame/include/inventory/item_registry.h:
+
 src/engine/character/animation/facial/phoneme_mapping.c:
 
 src/engine/environment/builder/road_spline_tool.c:
@@ -130824,6 +130844,10 @@ src/engine/core/memory/vma_integration.c:
 src/engine/core/unified_engine_integration.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLExport.h:
+
+src/engine/ai/training/rl_gym_env.c:
+
+src/game/blockgame/include/npc/npc_types.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/dispatch/workloop.h:
 
@@ -130885,6 +130909,8 @@ src/engine/include/core/logger.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h:
 
+src/game/blockgame/include/npc/npc_jobs.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNDropout.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLAllComputeDevices.h:
@@ -130902,10 +130928,6 @@ src/engine/backend/metal/mtl_sync_manager.m:
 src/engine/assets/io/bundling/processor_04.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGRemoteOperation.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTextFieldCell.h:
-
-src/engine/character/animation/morph_targets/facial_morphs.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGPSConverter.h:
 
@@ -131133,6 +131155,8 @@ src/engine/character/animation/ik/ccd_solver.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_t.h:
 
+src/game/blockgame/include/world/plant_varieties.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFProxySupport.h:
 
 src/engine/platform/mobile/thermal_manager.c:
@@ -131281,17 +131305,11 @@ src/engine/include/rendering/vulkan.h:
 
 src/engine/include/core/memory/buddy_allocator.h:
 
-src/engine/rendering/lighting/lumen_gi.m:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/FoundationErrors.h:
-
 src/engine/assets/io/compression/manager_01.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/AXNotificationConstants.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/thread_status.h:
-
-src/game/minecraftv2/include/combat/combat.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/AXConstants.h:
 
@@ -131311,6 +131329,8 @@ src/engine/character/animation/motion_matching.c:
 
 src/engine/effects/particles/particle_simulation.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATSUI.framework/Headers/ATSUnicodeDirectAccess.h:
+
 src/engine/character/eyes/eye_rendering/eye_refraction.c:
 
 src/engine/physics/particles/renderer_03.c:
@@ -131326,10 +131346,6 @@ src/engine/tools/pipeline/asset_pipeline_impl.c:
 src/engine/assets/textures/streaming/streaming_budget.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGFont.h:
-
-src/engine/tools/pipeline/distributed_build.c:
-
-src/game/minecraftv2/include/ui/hud.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFBundle.h:
 
@@ -131459,8 +131475,6 @@ src/engine/geometry/mesh_utils.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFHTTPStream.h:
 
-src/engine/ai/training/rl_gym_env.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGImage.h:
 
 src/engine/include/ai/group/squad_tactics.h:
@@ -131476,8 +131490,6 @@ src/engine/core/resource/resource_manager.h:
 src/engine/lighting/sources/spot_light.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h:
-
-src/game/minecraftv2/include/npc/dialogue_manager.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_once_t.h:
 
@@ -131581,6 +131593,10 @@ src/engine/audio/underwater_filter_stubs.c:
 
 src/engine/include/rendering/mesh.h:
 
+src/engine/include/vendor/lua/lzio.h:
+
+src/game/blockgame/include/world/dungeon_generation.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFCalendar.h:
@@ -131642,8 +131658,6 @@ src/engine/scene/scene_impl.c:
 src/engine/include/ai/cover/dynamic_cover.h:
 
 src/engine/include/core/file_watcher.h:
-
-src/game/minecraftv2/include/world/plant_vfx.h:
 
 src/engine/rendering/controllers/free_camera_controller.c:
 
@@ -131722,6 +131736,8 @@ src/engine/character/animation/physics_animation/physics_constraints.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4SpecializedFunctionDescriptor.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSUserInterfaceValidation.h:
+
+src/game/blockgame/include/npc/npc_visuals.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSPrintInfo.h:
 
@@ -131819,8 +131835,6 @@ src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_rasterization.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTokenField.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTStringAttributes.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLSequenceConstraint.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecProtocolTypes.h:
@@ -131840,8 +131854,6 @@ src/engine/include/core/resource/asset_instance.h:
 src/engine/include/core/engine.h:
 
 src/engine/include/ecs/ecs.h:
-
-src/game/minecraftv2/include/world/water_integration.h:
 
 src/engine/core/debug/crash_handler_impl.c:
 
@@ -131981,8 +131993,6 @@ src/engine/character/eyes/eye_rendering/eye_rendering.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/MachineExceptions.h:
 
-src/game/minecraftv2/include/ui/menu.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint16_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h:
@@ -131996,6 +132006,8 @@ src/engine/assets/io/import/renderer_03.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/AE.framework/Headers/AERegistry.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/OSServices.framework/Headers/CSIdentityBase.h:
+
+src/game/blockgame/include/weather/weather_particles.h:
 
 src/engine/ai/group/squad_tactics.c:
 
@@ -132012,10 +132024,6 @@ src/engine/geometry/nanite/nanite/rendering_nanite/shadow_pass.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arpa/inet.h:
-
-src/engine/effects/trails/trail_points.c:
-
-src/engine/animation/ik_solver.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelStructureProgramValueType.h:
 

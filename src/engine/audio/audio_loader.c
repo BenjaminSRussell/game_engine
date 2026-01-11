@@ -1,10 +1,12 @@
-#include "include/audio/audio_loader.h"
-#include "include/core/asset_manager.h"
+#include <audio/audio_loader.h>
 #include <audio/audio_system.h>
+#include <core/asset_manager.h>
+#include <core/logger.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <vendor/miniaudio.h>
 
 // Stubs for Audio Loader
 

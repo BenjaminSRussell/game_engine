@@ -397,22 +397,23 @@ void audio_system_update(AudioSystem *sys, f32 delta_time) {
       ma_sound_uninit(&sys->sources[i].sound);
       sys->sources[i].active = false;
     } else {
-      // Update low-pass filter based on occlusion
-      // (Assuming a simple mapping where 1.0 is no occlusion, 0.0 is full)
-      float cutoff = 20000.0f; // Max frequency
-      if (sys->sources[i].occlusion_factor < 0.99f) {
-        // Muffled: decrease cutoff
-        cutoff = 500.0f + (sys->sources[i].occlusion_factor * 19500.0f);
-      }
-      /*
-        // ma_sound_set_low_pass_filter_cutoff_frequency(&sys->sources[i].sound,
-        //                                              cutoff);
-      */
+      // Update occlusion effects
+      float occlusion_attenuation = sys->sources[i].occlusion_factor;
 
-      // Also apply volume attenuation if needed
+      // Use additional volume reduction for muffled/obstructed states
+      if (sys->sources[i].occlusion_state == OCCLUSION_MUFFLED) {
+        occlusion_attenuation *= 0.5f; // Extra reduction for muffled
+      } else if (sys->sources[i].occlusion_state == OCCLUSION_OBSTRUCTED) {
+        occlusion_attenuation *= 0.8f; // Slight extra reduction for obstructed
+      }
+
+      // TODO: Implement proper low-pass filtering when miniaudio node graph is
+      // ready. The previous ma_sound_set_low_pass_filter_cutoff_frequency is
+      // missing in this version.
+
+      // Apply total volume attenuation
       ma_sound_set_volume(&sys->sources[i].sound,
-                          sys->sources[i].volume *
-                              sys->sources[i].occlusion_factor);
+                          sys->sources[i].volume * occlusion_attenuation);
     }
   }
 

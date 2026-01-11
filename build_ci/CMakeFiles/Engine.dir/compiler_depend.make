@@ -38968,6 +38968,7 @@ CMakeFiles/Engine.dir/src/engine/audio/audio_loader.c.o: /Users/benjaminrussell/
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/file_watcher.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/lod_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/asset_manager.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/resource/asset_instance.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/resource/vfs/vfs.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
@@ -38993,6 +38994,7 @@ CMakeFiles/Engine.dir/src/engine/audio/audio_reverb.c.o: /Users/benjaminrussell/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_time.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint16_t.h \
@@ -39020,10 +39022,15 @@ CMakeFiles/Engine.dir/src/engine/audio/audio_reverb.c.o: /Users/benjaminrussell/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_ptrcheck.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/pthread_impl.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/qos.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/sched.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_common.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_stdio.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_strings.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdlib.h \
@@ -39032,9 +39039,19 @@ CMakeFiles/Engine.dir/src/engine/audio/audio_reverb.c.o: /Users/benjaminrussell/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_posix_availability.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_cond_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_condattr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_key_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_once_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlock_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlockattr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_clock_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ct_rune_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h \
@@ -39044,6 +39061,7 @@ CMakeFiles/Engine.dir/src/engine/audio/audio_reverb.c.o: /Users/benjaminrussell/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mach_port_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h \
@@ -39055,6 +39073,8 @@ CMakeFiles/Engine.dir/src/engine/audio/audio_reverb.c.o: /Users/benjaminrussell/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigset_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_time_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timespec.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h \
@@ -39067,16 +39087,36 @@ CMakeFiles/Engine.dir/src/engine/audio/audio_reverb.c.o: /Users/benjaminrussell/
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_wchar_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/appleapiopts.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/qos.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/time.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_arg.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_list.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_max_align_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_ptrdiff_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdalign.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_reverb.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/vendor/miniaudio.h
 
 CMakeFiles/Engine.dir/src/engine/audio/audio_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/audio/audio_system.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AUAudioUnit.h \
@@ -89469,8 +89509,8 @@ CMakeFiles/Engine.dir/src/engine/core/config.c.o: /Users/benjaminrussell/Desktop
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/config/config.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/config/config.h
 
 CMakeFiles/Engine.dir/src/engine/core/config_loader.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/config_loader.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -93752,13 +93792,6 @@ CMakeFiles/Engine.dir/src/engine/core/gamestate_main.c.o: /Users/benjaminrussell
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/lighting.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/mesh/mesh.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_reverb.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
@@ -93801,90 +93834,93 @@ CMakeFiles/Engine.dir/src/engine/core/gamestate_main.c.o: /Users/benjaminrussell
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/vulkan.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/scripting/script_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/vendor/miniaudio.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block_states.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/interaction.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/mining.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk_buffers.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat_animations.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/config/config.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/advanced_crafting.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/furnace.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/recipe_system.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/resource_processing.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game/mode.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/item_registry.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_types.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/dialogue_manager.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_combat_behavior.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_housing.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_jobs.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_perf.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_schedule.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_types.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_visuals.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/item_registry.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_food.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_magic.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_vehicle.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/spirit_model.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/status_effects.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/save/save.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/tech/solar_energy.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block_states.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/interaction.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/lighting.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/mining.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk_buffers.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat_animations.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/config/config.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/advanced_crafting.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/furnace.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/recipe_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/resource_processing.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game/mode.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/item_registry.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/mesh/mesh.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/dialogue_manager.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_combat_behavior.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_housing.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_jobs.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_perf.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_schedule.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_visuals.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/item_registry.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_food.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_magic.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_vehicle.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/spirit_model.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/status_effects.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/save/save.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/tech/solar_energy.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/menu.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/hotbar.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/hud.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/menu.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/menu_renderer.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/weather/weather.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/weather/weather.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/generator.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/biome_features.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/dungeon_generation.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/generator.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/plant_varieties.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/plant_vfx.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/settlement_generation.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/structures.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/tree_varieties.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/water_integration.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/water_physics.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/water_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/menu.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/hotbar.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/hud.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/menu.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/menu_renderer.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/weather/weather.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/weather/weather.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/generator.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/biome_features.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/dungeon_generation.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/generator.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/plant_varieties.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/plant_vfx.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/settlement_generation.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/structures.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/tree_varieties.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/water_integration.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/water_physics.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/water_system.h \
   /opt/homebrew/include/GLFW/glfw3.h
 
 CMakeFiles/Engine.dir/src/engine/core/hot_reload.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/hot_reload.c \
@@ -96885,30 +96921,116 @@ CMakeFiles/Engine.dir/src/engine/core/localization/loc_system_impl.c.o: /Users/b
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h
 
 CMakeFiles/Engine.dir/src/engine/core/localization/localization.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/localization/localization.c \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_abort.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_bounds.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctype.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_printf.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint16_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint32_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/alloca.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/ctype.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/machine/_structs.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_mcontext.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/signal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_ptrcheck.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/runetype.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_common.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_strings.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdlib.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/string.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/__endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_posix_availability.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ct_rune_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_id_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int32_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_pid_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rune_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_seek_set.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigaltstack.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigset_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int64_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int8_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ucontext.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uid_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_wint_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/appleapiopts.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_max_align_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_ptrdiff_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/docs/localization/localization.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/docs/localization/localization.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/containers_advanced/hash_map.h
 
 CMakeFiles/Engine.dir/src/engine/core/lod_generator.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/lod_generator.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -100224,11 +100346,11 @@ CMakeFiles/Engine.dir/src/engine/core/misc_stubs.c.o: /Users/benjaminrussell/Des
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/physics/physics.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat_animations.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/equipment.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat_animations.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/equipment.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h
 
 CMakeFiles/Engine.dir/src/engine/core/modding/mod_loader.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/modding/mod_loader.c \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/modding/mod_loader.h
@@ -102780,8 +102902,8 @@ CMakeFiles/Engine.dir/src/engine/core/services/camera_controls.c.o: /Users/benja
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/platform/input/controls.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/camera.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/config/config.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/config/config.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/gpu_particle_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/gpu_particle_system.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -103051,18 +103173,18 @@ CMakeFiles/Engine.dir/src/engine/core/services/mesh.c.o: /Users/benjaminrussell/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/mesh/mesh.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/mat4.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/mesh.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/mesh/mesh.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/mesh_optimizer.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/mesh_optimizer.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -103333,21 +103455,21 @@ CMakeFiles/Engine.dir/src/engine/core/services/particle_renderer.c.o: /Users/ben
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/particle_renderer.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/weather/weather_particles.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/weather/weather.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/biome_features.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/generator.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/plant_varieties.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/plant_vfx.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/weather/weather_particles.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/weather/weather.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/biome_features.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/generator.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/plant_varieties.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/plant_vfx.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/post_processing.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/post_processing.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -103610,37 +103732,37 @@ CMakeFiles/Engine.dir/src/engine/core/services/sprite_3d_renderer.c.o: /Users/be
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/camera.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/mesh.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/renderer.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/config/config.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game/mode.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/item_registry.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_food.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_magic.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_vehicle.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/spirit_model.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/status_effects.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/config/config.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game/mode.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/item_registry.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_food.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_magic.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_vehicle.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/spirit_model.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/status_effects.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/hotbar.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/hotbar.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/sprite_renderer_2_5d.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/sprite_renderer_2_5d.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -104428,37 +104550,37 @@ CMakeFiles/Engine.dir/src/engine/core/services/voxel_renderer.c.o: /Users/benjam
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/camera.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/mesh.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/renderer.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/config/config.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game/mode.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/item_registry.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_combat.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_food.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_magic.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_vehicle.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/spirit_model.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/status_effects.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/config/config.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game/mode.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/item_registry.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_food.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_magic.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_vehicle.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/spirit_model.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/status_effects.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/hotbar.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/hotbar.h
 
 CMakeFiles/Engine.dir/src/engine/core/services/weather_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/weather_system.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -107691,7 +107813,6 @@ CMakeFiles/Engine.dir/src/engine/core/unified_engine.c.o: /Users/benjaminrussell
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/unified_engine.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
@@ -107738,17 +107859,18 @@ CMakeFiles/Engine.dir/src/engine/core/unified_engine.c.o: /Users/benjaminrussell
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/renderer.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/tools/profiler.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/scene/scene_system.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/biome_features.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/generator.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_types.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/biome_features.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/generator.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_types.h
 
 CMakeFiles/Engine.dir/src/engine/core/unified_engine_integration.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/unified_engine_integration.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -111095,7 +111217,158 @@ CMakeFiles/Engine.dir/src/engine/gameplay/combat/projectile.c.o: /Users/benjamin
 
 CMakeFiles/Engine.dir/src/engine/gameplay/combat/status_effects.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/combat/status_effects.c
 
-CMakeFiles/Engine.dir/src/engine/gameplay/combat_system_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/combat_system_impl.c
+CMakeFiles/Engine.dir/src/engine/gameplay/combat_system_impl.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/combat_system_impl.c \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternalLegacy.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityVersions.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_abort.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_bounds.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_printf.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_strings.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_time.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint16_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint32_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/alloca.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/machine/_structs.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_mcontext.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/signal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_malloc_type.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/malloc/_ptrcheck.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/pthread_impl.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/qos.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/pthread/sched.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_common.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_strings.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stddef.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdlib.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/string.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/__endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_endian.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_posix_availability.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_attr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_cond_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_condattr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_key_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_once_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlock_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_rwlockattr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_symbol_aliasing.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_clock_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ct_rune_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_id_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int32_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int64_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_int8_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_intptr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mach_port_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_pid_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rsize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_rune_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_seek_set.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigaltstack.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_sigset_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_size_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_time_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timespec.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int16_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int32_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int64_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int8_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ucontext.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uid_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/appleapiopts.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/qos.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/resource.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/signal.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/wait.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/time.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_max_align_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_ptrdiff_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/performance.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/ecs.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/combat/combat_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/combat/damage.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/combat/hitbox.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/combat/projectile.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/utils.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/aabb.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/frustum.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/mat4.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/math.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/plane.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/ray.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h
 
 CMakeFiles/Engine.dir/src/engine/gameplay/crafting/crafting_system.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/crafting/crafting_system.c
 
@@ -123471,6 +123744,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/output/vsync_modes.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/output/swapchain.c:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/output/hdr_output.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/output/frame_pacing.c:
@@ -123498,6 +123773,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/materials_impl.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/materials_advanced/subsurface_scattering.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/materials_advanced/hair_shader.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/materials_advanced/glitter_shader.c:
 
@@ -123577,10 +123854,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/environment/environment_manager.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/gpu_driven/render_graph_integration.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/thin_gbuffer.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/gbuffer_pass.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/gbuffer_layout.c:
@@ -123642,8 +123915,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/backends/raytracing_pipeline.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/backends/metal_backend.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/advanced/rendering_final_batch.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ui/ui_animation.c:
 
@@ -123797,6 +124068,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/input/input_system.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/input/controls.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/input/action_mapper_impl.c:
@@ -123935,8 +124208,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_integration.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_core_impl.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_complete.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_api_impl_alt.c:
@@ -123997,8 +124268,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/flip_solver.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/system_02.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/processor_04.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/manager_01.c:
@@ -124022,8 +124291,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/destruction/destruction_impl.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core_rigid_body.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_rigid_body_helpers.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/constraints/slider_joint.c:
 
@@ -124056,6 +124323,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/epa_solver.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/continuous_collision.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_renderer.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/screen_space/ssr_resolve.c:
 
@@ -124218,6 +124487,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/material.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/layering/material_layers.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/layering/layer_weights.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/layering/layer_masks.c:
 
@@ -124607,6 +124878,14 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/dialogue_system.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/combat/projectile.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/advanced/rendering_final_batch.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/combat/hitbox.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/combat/combat_system.h:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/combat_system_impl.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/gameplay/combat/hitbox.c:
@@ -124687,8 +124966,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/landscape/terrain/landscape/terrain/terrain_normals.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/landscape/terrain/landscape/terrain/terrain_lod.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/QD.framework/Headers/ColorSyncDeprecated.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h:
@@ -124708,12 +124985,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/event.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_modification.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/npc_advanced/suppression.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/import/asset_import_renderer.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/environment/landscape_spline.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/vendor/miniaudio.h:
 
@@ -124833,8 +125104,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/trails/trail_points.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block.h:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/puddles/puddle_rendering.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/containers_advanced/bloom_filter.h:
@@ -124876,6 +125145,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ImageIO.framework/Headers/CGImageProperties.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/decals/decals/decal_system.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/decals/decals/decal_projection.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/morph_targets/gpu_morphing.h:
 
@@ -124944,6 +125215,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/particles/gpu_particles.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_ray.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/mining.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/sync/fiber_system.h:
 
@@ -125037,11 +125310,7 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/post_processing.c:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4LibraryDescriptor.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/integration/blender_pipeline/blender_material_convert.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/weather/weather_particles.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/weather/weather_particles.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/particle_renderer.c:
 
@@ -125077,8 +125346,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/scene_graph.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/resource/vfs_async.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/textures/virtual_texturing/page_provider.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/resource/resource_manager.h:
@@ -125105,8 +125372,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/vma_integration.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/item_registry.h:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/tracker_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4LinkingDescriptor.h:
@@ -125121,10 +125386,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/stack_buddy_impl.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/destruction/fracture/runtime_fracture.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/linear_allocator.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/memory/gpu_allocator.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/dynamics/rigid_body.c:
@@ -125138,6 +125399,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/animation/synthesis/motion_matching.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/arena.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/allocators_impl.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/modding/mod_loader_impl.c:
 
@@ -125156,6 +125419,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/lod_generator.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/docs/localization/localization.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/io/file_watcher.c:
 
@@ -125193,8 +125458,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/gpu_particles.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk_buffers.h:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/scene.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/solver/island_solver.c:
@@ -125220,6 +125483,10 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/integration/blender_pipeline/blender_skeleton_import.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/integration/blender_pipeline/blender_mesh_import.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4LibraryDescriptor.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/integration/blender_pipeline/blender_material_convert.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/footprints/footprint_system.c:
 
@@ -125273,87 +125540,105 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /opt/homebrew/include/GLFW/glfw3.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/water_system.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/water_physics.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/settlement_generation.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/core/physics_rigid_body_helpers.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/dungeon_generation.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/structures.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/weather/weather.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/settlement_generation.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/hud.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/gpu_driven/render_graph_integration.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/skeletal/skinning.c:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/thin_gbuffer.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/hotbar.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/plant_varieties.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/menu.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/destruction/fracture/runtime_fracture.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/command/command_list.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/linear_allocator.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/save/save.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/biome_features.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/spirit_model.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/generator.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/dispatch/dispatch_swift_shims.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_vehicle.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/weather/weather.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSDateComponentsFormatter.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSPathControlItem.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_magic.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/hud.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_visuals.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/hair/system/hair_system/simulation/hair_forces.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/allocators_impl.c:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/hotbar.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/ml/frame_interpolation.c:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/physics_core_impl.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_perf.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/tree_varieties.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/decals/decals/decal_projection.c:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/tech/solar_energy.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_combat_behavior.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/status_effects.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/dialogue_manager.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluid/system_02.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/nanite/nanite/culling_nanite/persistent_cull.c:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/spirit_model.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTFramesetter.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/landscape/terrain/landscape/terrain/terrain_lod.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/recipe_system.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_vehicle.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/nanite/cluster_builder_alt.m:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_magic.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/command/command_pool.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/async/async_io_processor.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/furnace.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_food.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/components/health.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/resource/vfs_async.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/advanced_crafting.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player_combat.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CATextLayer.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/player/player.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/inventory/inventory.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_perf.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/collision/collision_renderer.c:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLIndirectCommandBuffer.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat_animations.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/mining.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/particles/ribbon_renderer.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGITUToneMapping.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/sync/barrier_batch.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/block_states.h:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_jobs.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CoreVideo.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/scripting/script_system.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/recipe_system.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSOrderedCollectionDifference.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/inventory.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/npc_advanced/suppression.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/import/asset_import_renderer.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/environment/landscape_spline.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/engine_core.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat_animations.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/cloth/cloth_ao.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSSwitch.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/particle_renderer.h:
 
@@ -125362,6 +125647,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/bundling/asset_bundle_system.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/sync/fiber_context.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/save/save.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/mesh_optimizer.h:
 
@@ -125433,6 +125720,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/containers_advanced/ring_buffer.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_types.h:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/streaming/asset_streaming_priority.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/containers_advanced/hash_map.c:
@@ -125455,10 +125744,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/containers/containers.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/limits.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/water_integration.h:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/containers/cache_friendly_containers.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/thread_state.h:
@@ -125478,6 +125763,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/command/indirect_commands.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/command/command_queue.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/command/command_list.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/command/command_list.c:
 
@@ -125643,6 +125930,12 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/synthesis/motion_matching.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/particles/ribbon_renderer.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGITUToneMapping.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/sync/barrier_batch.h:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/types/glass/glass_thickness.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSPathComponentCell.h:
@@ -125727,6 +126020,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/physics_animation/cloth_bones.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game/mode.h:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/softbody/fem_deformable.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSAttributedString.h:
@@ -125778,6 +126073,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/kmod.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/ik_advanced/two_bone_ik.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/skeletal/skinning.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSPointerArray.h:
 
@@ -125860,8 +126157,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/particles/particle_simulation.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/vertex_format_reflect.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_schedule.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/vertex_format_cache.h:
 
@@ -125969,8 +126264,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalFX.framework/Headers/MTL4FXTemporalScaler.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/water_physics.h:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/bvh/bvh_builder.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalFX.framework/Headers/MTL4FXSpatialScaler.h:
@@ -126017,6 +126310,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/integration/master_init_impl.c:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CATextLayer.h:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/fluids/buoyancy_solver.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CAScrollLayer.h:
@@ -126036,6 +126331,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/skeletal_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CAGradientLayer.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_housing.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/common/memory/allocator.c:
 
@@ -126122,8 +126419,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/caching/system_02.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CIKernelMetalLib.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/tree_varieties.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/shaders/foliage_wind_shader.c:
 
@@ -126341,6 +126636,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_time.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/plant_vfx.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTintProminence.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/particles/particle_physics_manager.c:
@@ -126424,10 +126721,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTableHeaderCell.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTableColumn.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/formats/format_processor.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/crafting/resource_processing.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/math.h:
 
@@ -126556,8 +126849,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSPickerTouchBarItem.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/physics/debug_visualization.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSPathControlItem.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/endian.h:
 
@@ -126694,10 +126985,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSImage.framework/Headers/MPSImageMedian.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSDirection.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/ui_renderer.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/plant_vfx.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTGlyphInfo.h:
 
@@ -126847,8 +127134,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKitErrors.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/AppKit.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFMachPort.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/npc_advanced/suppressive_fire.h:
@@ -126874,8 +127159,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CATransform3D.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec4.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/plant_varieties.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/cloth/rendering_cloth/cloth_thickness.c:
 
@@ -127193,14 +127476,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/memory_pool.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/decals/decal_projection.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTabView.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_jobs.h:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/skin/skin_rendering.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/textures/sampling/cubemap_filtering.c:
@@ -127250,8 +127525,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/d3d12/dx_command_list.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/system/asset_system/loading/asset_hot_reload.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/menu_renderer.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/integration/vscode/language_server.c:
 
@@ -127331,6 +127604,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/system/asset_system/compression_assets/asset_bundling.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/resource_processing.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/mach.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/atmosphere/sky/atmosphere_common.h:
@@ -127406,10 +127681,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/streaming/asset_stream_manager.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/serialization/system_02.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/output/swapchain.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/chunk/chunk.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/lighting/vsm/virtual_shadow_maps/page_management/vsm_page_pool.c:
 
@@ -127607,6 +127878,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/export/system_02.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_visuals.h:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/export/renderer_03.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/export/processor_04.h:
@@ -127622,6 +127895,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/export/asset_export_manager.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/compression/renderer_03.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/dialogue_manager.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/compression/manager_01.h:
 
@@ -127648,8 +127923,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/net/net_kev.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/npc/prebuilt/npc_shopkeeper.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_housing.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGToneMapping.h:
 
@@ -127813,6 +128086,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/animation/motion_matching_impl.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/block_states.h:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/animation/layering/anim_layering_impl.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/raytracing/raytracing_acceleration_structures.c:
@@ -127844,8 +128119,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/ik/look_at_ik.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/ik/fabrik_solver.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc_types.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/animation/ik_advanced/fabrik.h:
 
@@ -127953,14 +128226,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/threading.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sched.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreData.framework/Headers/NSFetchRequest.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_combat.h:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/physics/soft/processor_04.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_system.h:
@@ -127972,8 +128237,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_reverb.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/unified_engine.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/interaction.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/voice/speech_to_text.h:
 
@@ -128000,8 +128263,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/procedural_advanced/l_system.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLFunctionDescriptor.h:
 
@@ -128086,8 +128347,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/command/command_encoder.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/MachineExceptions.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/async/async_io_processor.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/npc/prebuilt/npc_scheduling.h:
 
@@ -128317,8 +128576,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/procedural/procedural_foliage.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/npc/npc.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_setsize.h:
@@ -128326,8 +128583,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/sync/async_compute_sync.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_clr.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game/mode.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/ik/foot_ik_solver.c:
 
@@ -128356,6 +128611,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSProcessInfo.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/packed.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/menu_renderer.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_vsync.m:
 
@@ -128551,6 +128808,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/sync_policy.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/equipment.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/std_types.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/perception/visual_cortex.c:
@@ -128600,6 +128859,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/facial/phoneme_mapping.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/netinet/in.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/dungeon_generation.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModel+MLModelCompilation.h:
 
@@ -128693,8 +128954,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSFileWrapper.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/tech/solar_energy.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/host_security.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/texture/virtual_texture.h:
@@ -128722,6 +128981,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/skeletal/animation_sampling.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/vm_param.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/config/config.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/rpc.h:
 
@@ -128834,6 +129095,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioOutputUnit.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/dispatch/group.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/dispatch/dispatch_swift_shims.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/graphics/IOGraphicsTypes.h:
 
@@ -128965,6 +129228,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/x509defs.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_combat_behavior.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLImageSize.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/oidscrl.h:
@@ -129061,8 +129326,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/hair/system/hair_system/simulation/hair_forces.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/Security.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdalign.h:
@@ -129078,6 +129341,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecTrust.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/smoke/smoke_density.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/formats/format_processor.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/post_processing/dof_bokeh.c:
 
@@ -129183,6 +129448,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecAccess.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/water_system.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/CipherSuite.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/cups/ipp.h:
@@ -129204,6 +129471,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/async/async_io_system.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/resource/asset_manager.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/ml/frame_interpolation.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_select.h:
 
@@ -129300,6 +129569,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/math/frustum.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/SecKeychain.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/interaction.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNInstanceNormalization.h:
 
@@ -129533,6 +129804,12 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/skeletal/animation_player.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/decals/decal_projection.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTabView.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_caddr_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLVertexDescriptor.h:
@@ -129597,6 +129874,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLLinkedFunctions.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/chunk/chunk_buffers.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/PEFBinaryFormat.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLLibrary.h:
@@ -129624,6 +129903,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/serialization/manager_01.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ImageIO.framework/Headers/ImageIOBase.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/limits.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLFunctionStitching.h:
 
@@ -129927,10 +130208,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/IOKitLib.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/shading/cloth/cloth_ao.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSSwitch.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGBase.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/IOKitKeys.h:
@@ -130013,10 +130290,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/mach_interface.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/pool_allocator.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/string.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSGeometry.h:
@@ -130088,6 +130361,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSPersonNameComponents.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/gpu_particles/dead_list.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/furnace.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/bounds.h:
 
@@ -130170,8 +130445,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSOrderedCollectionDifference.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/shaders/shader_cache.c:
 
@@ -130283,6 +130556,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSRayIntersectorTypes.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/ui/menu.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLParameterKey.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/platform/vfx_optimization_api_bridge.c:
@@ -130303,15 +130578,9 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/jobs/job_system_impl.c:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/LSInfoDeprecated.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/block/lighting.h:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/procedural/quality_validator.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/FoundationLegacySwiftCompatibility.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/equipment.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreVideo.framework/Headers/CVReturn.h:
 
@@ -130343,9 +130612,17 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/spatial/influence_maps.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/inventory/item_registry.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/Authorization.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/Accessibility.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/raytracing/gi_rt/gi_denoiser.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sched.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreData.framework/Headers/NSFetchRequest.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/nanite/software_rasterizer.c:
 
@@ -130410,6 +130687,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/streaming/mesh_streamer.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/SearchKit.framework/Headers/SKAnalysis.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/gameplay/combat/damage.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/npc_advanced/investigation.h:
 
@@ -130659,6 +130938,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreData.framework/Headers/NSEntityDescription.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/block/lighting.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/MacMemory.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/os/workgroup_object.h:
@@ -130685,13 +130966,13 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4SpecializedFunctionDescriptor.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/pool_allocator.c:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSSliderCell.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/streaming/processor_04.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSTimer.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/biome_features.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/CodeFragments.h:
 
@@ -130863,8 +131144,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSPathUtilities.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSMatrix.framework/Headers/MPSMatrixTypes.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/stdio.h:
@@ -130906,10 +131185,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSUserInterfaceLayout.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSScriptCommand.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/materials_advanced/hair_shader.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/structures.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLModelStructureProgramFunction.h:
 
@@ -131095,6 +131370,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGDataConsumer.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/mesh/mesh.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGPDFArray.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/async/processor_04.h:
@@ -131103,9 +131380,9 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGConvertColorDataWithFormat.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/world/generator.h:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/pathfinding/astar_pathfinder.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/world/water_integration.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/group/squad_tactics.c:
 
@@ -131114,10 +131391,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/cache.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSURLCredentialStorage.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/layering/layer_weights.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_food.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGPDFDocument.h:
 
@@ -131170,6 +131443,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSAccelerationStructureGroup.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/export/asset_export_manager.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/crafting/advanced_crafting.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_max_align_t.h:
 
@@ -131225,7 +131500,13 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/clouds/volumetric_clouds/volumetric_cloud_shadows.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/nanite/cluster_builder_alt.m:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/command/command_pool.h:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/textures/sampling/sampler_cache.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/LSInfoDeprecated.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/animation_system.h:
 
@@ -131527,6 +131808,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/memory/knowledge_graph.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/services/ui_renderer.c:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/blending/blend_space_1d.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/streaming/asset_stream_system.c:
@@ -131570,8 +131853,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/bundling/processor_04.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSApplication.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/engine_core.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/core.h:
 
@@ -131632,6 +131913,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTokenField.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/animation/blend_tree_impl.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/npc/npc_schedule.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/lighting/lumen/surface_cache/surface_update.c:
 
@@ -131698,8 +131981,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATSUI.framework/Headers/ATSUnicode.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/mesh/mesh.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLBlitCommandEncoder.h:
 
@@ -131849,8 +132130,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTFontCollection.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLIndirectCommandBuffer.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityMacros.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/compression/acl_wrapper.c:
@@ -131874,8 +132153,6 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNLoss.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/status_effects.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLMetricKey.h:
 
@@ -131918,6 +132195,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_errno_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/certextensions.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSDateComponentsFormatter.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h:
 
@@ -132039,6 +132318,8 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_abort.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/components/health.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ColorSync.framework/Headers/ColorSyncCMM.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/formats/asset_format_manager.c:
@@ -132100,6 +132381,10 @@ CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.o: /Users/benjaminrussell/Des
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/optimization/dynamic_resolution.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFSocketStream.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/nanite/nanite/culling_nanite/persistent_cull.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTFramesetter.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/material_system.c:
 

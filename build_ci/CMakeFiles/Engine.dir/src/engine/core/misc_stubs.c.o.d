@@ -1,6 +1,6 @@
 CMakeFiles/Engine.dir/src/engine/core/misc_stubs.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/misc_stubs.c \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/ecs.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../core/types.h \
@@ -99,7 +99,7 @@ CMakeFiles/Engine.dir/src/engine/core/misc_stubs.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../core/performance.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/game_common.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
@@ -116,9 +116,9 @@ CMakeFiles/Engine.dir/src/engine/core/misc_stubs.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/combat_animations.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/../game_common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/combat/equipment.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/combat_animations.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/../game_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/include/combat/equipment.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/physics/physics.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/mat4.h

@@ -8,10 +8,10 @@
  * =================================================================================================
  */
 
-#include "include/audio/audio_engine_types.h"
-#include "include/core/common.h"
-#include "include/math/math.h"
+#include <audio/audio_engine_types.h>
+#include <common.h>
 #include <math.h>
+#include <math/math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -158,10 +158,25 @@ static void calculate_spatial_params(AudioSpatialState *sys,
 
   float attenuation = 1.0f;
   if (dist > src->min_distance) {
-    // Inverse distance model
-    attenuation =
-        src->min_distance /
-        (src->min_distance + src->roll_off * (dist - src->min_distance));
+    switch (src->distance_model) {
+    case DISTANCE_MODEL_LINEAR:
+      if (src->max_distance > src->min_distance) {
+        attenuation = 1.0f - (dist - src->min_distance) /
+                                 (src->max_distance - src->min_distance);
+      } else {
+        attenuation = 0.0f;
+      }
+      break;
+    case DISTANCE_MODEL_EXPONENTIAL:
+      attenuation = powf(dist / src->min_distance, -src->roll_off);
+      break;
+    case DISTANCE_MODEL_INVERSE:
+    default:
+      attenuation =
+          src->min_distance /
+          (src->min_distance + src->roll_off * (dist - src->min_distance));
+      break;
+    }
   }
   if (dist > src->max_distance)
     attenuation = 0.0f;

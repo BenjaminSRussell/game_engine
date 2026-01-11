@@ -1,9 +1,9 @@
-# CMakeLists.txt for MinecraftV2 - Refactored for Modularity
+# CMakeLists.txt for BlockGame - Refactored for Modularity
 # TODO: High - Investigate dependency management (e.g., Conan, vcpkg) for third-party libraries.
 # TODO: Medium - Add support for other platforms (Linux, Windows) by abstracting platform-specific code.
 
 cmake_minimum_required(VERSION 3.20)
-project(Minecraft C CXX OBJC)
+project(BlockGame C CXX OBJC)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -57,7 +57,7 @@ include_directories(
     include/vendor 
     include/vendor/lua
     src/engine/include
-    src/game/minecraftv2/include
+    src/game/blockgame/include
     src/engine
     src
     src/frontend/Core/Bridges/include
@@ -121,7 +121,7 @@ target_include_directories(Engine PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/engine/include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/engine>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/engine/geometry/instancing>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/game/minecraftv2/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/game/blockgame/include>
     $<INSTALL_INTERFACE:include>
 )
 set_target_properties(Engine PROPERTIES C_STANDARD 11 C_STANDARD_REQUIRED ON)
@@ -226,7 +226,7 @@ add_library(Game STATIC ${GAME_SOURCES})
 target_link_libraries(Game PUBLIC Engine ZLIB::ZLIB)
 target_include_directories(Game PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/game/minecraftv2/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/game/blockgame/include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/engine/include>
 )
 
@@ -239,32 +239,32 @@ if(APPLE AND IOS)
         App/Sources/MainMenuViewController.swift
         App/Sources/SettingsViewController.swift
         App/Sources/AssetEditorViewController.swift
-        App/Sources/Minecraft-Bridging-Header.h
+        App/Sources/BlockGame-Bridging-Header.h
     )
-    add_executable(MinecraftApp MACOSX_BUNDLE ${APP_SOURCES})
-    set_target_properties(MinecraftApp PROPERTIES
+    add_executable(BlockGameApp MACOSX_BUNDLE ${APP_SOURCES})
+    set_target_properties(BlockGameApp PROPERTIES
         BUNDLE TRUE
         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/App/Resources/Info.plist
-        XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.benjaminrussell.MinecraftV2"
+        XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.benjaminrussell.BlockGame"
         XCODE_ATTRIBUTE_INFOPLIST_FILE ${CMAKE_CURRENT_SOURCE_DIR}/App/Resources/Info.plist
-        XCODE_ATTRIBUTE_SWIFT_OBJC_BRIDGING_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/App/Sources/Minecraft-Bridging-Header.h
+        XCODE_ATTRIBUTE_SWIFT_OBJC_BRIDGING_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/App/Sources/BlockGame-Bridging-Header.h
         XCODE_ATTRIBUTE_SWIFT_VERSION "5.0"
         XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2" # iPhone, iPad
     )
 
 if(APPLE)
-    target_link_libraries(MinecraftApp PRIVATE Game ZLIB::ZLIB Threads::Threads "-framework UIKit" "-framework SwiftUI" "-framework Metal" "-framework MetalKit")
+    target_link_libraries(BlockGameApp PRIVATE Game ZLIB::ZLIB Threads::Threads "-framework UIKit" "-framework SwiftUI" "-framework Metal" "-framework MetalKit")
 else()
-    target_link_libraries(MinecraftApp PRIVATE Game Engine ZLIB::ZLIB Threads::Threads)
+    target_link_libraries(BlockGameApp PRIVATE Game Engine ZLIB::ZLIB Threads::Threads)
 endif()
 endif()
 
 # Placeholder for other platforms (e.g. macOS Desktop)
-message(STATUS "Checking MinecraftApp target conditions: IOS=${IOS}, APPLE=${APPLE}")
+message(STATUS "Checking BlockGameApp target conditions: IOS=${IOS}, APPLE=${APPLE}")
 if(NOT IOS)
-    message(STATUS "Adding MinecraftApp executable target")
-    add_executable(MinecraftApp src/engine/core/monolithic_main.c)
-    target_link_libraries(MinecraftApp PRIVATE Game Engine ZLIB::ZLIB Threads::Threads "-framework Metal" "-framework MetalKit" "-framework Cocoa" "-framework IOKit" "-framework QuartzCore")
+    message(STATUS "Adding BlockGameApp executable target")
+    add_executable(BlockGameApp src/engine/core/monolithic_main.c)
+    target_link_libraries(BlockGameApp PRIVATE Game Engine ZLIB::ZLIB Threads::Threads "-framework Metal" "-framework MetalKit" "-framework Cocoa" "-framework IOKit" "-framework QuartzCore")
 endif()
 
 # ===========================================

@@ -1,12 +1,19 @@
 // src/audio/audio_manager.c
 // Unified audio system manager implementation
 
-#include "include/audio/audio_manager.h"
-#include "include/audio/audio_occlusion_raycast.h"
-#include <include/math/math.h>
+#include <audio/audio_manager.h>
+#include <audio/audio_occlusion_raycast.h>
+#include <audio/audio_system.h>
+#include <audio/underwater_filter.h>
+#include <core/common.h>
+#include <core/logger.h>
+#include <math/math.h>
+#include <math/vec3.h>
+#include <physics/block_physics.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <vendor/miniaudio.h>
 
 #define AUDIO_UPDATE_RATE 0.016f // ~60 FPS
 

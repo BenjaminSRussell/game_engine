@@ -1,6 +1,7 @@
 #include "editor_common.h"
 #include "core/logger.h"
 #include "core/memory.h"
+#include "rendering/vulkan.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -77,13 +78,13 @@ void editor_context_shutdown(EditorContext* ctx) {
     
     // Shutdown tool-specific systems
     if (ctx->terrain_system) {
-        // This would call terrain_sculpting_destroy() when implemented
+        terrain_sculpting_destroy(ctx->terrain_system);
         LOG_INFO("Shutting down terrain system");
         ctx->terrain_system = NULL;
     }
     
     if (ctx->material_graph) {
-        // This would call material_graph_destroy() when implemented
+        material_graph_destroy(ctx->material_graph);
         LOG_INFO("Shutting down material graph");
         ctx->material_graph = NULL;
     }
@@ -178,8 +179,84 @@ bool editor_viewport_init(EditorViewport* viewport, u32 width, u32 height) {
     viewport->camera_yaw = 0.0f;
     viewport->camera_pitch = -30.0f;
     
-    // TODO: Create framebuffer and textures
-    // This would require OpenGL/Vulkan calls which aren't available yet
+    // Initialize view and projection matrices
+    viewport->view_matrix = mat4_identity();
+    viewport->projection_matrix = mat4_identity();
+    
+    // Create framebuffer and textures for editor viewport
+    LOG_INFO("Creating editor viewport framebuffer: %ux%u", width, height);
+    
+    // Get global Vulkan renderer from context (will be passed in real implementation)
+    // For now, we'll create stub handles that would be replaced with actual Vulkan objects
+    // In a real implementation, this would:
+    // 1. Create color texture (VK_FORMAT_R8G8B8A8_SRGB)
+    // 2. Create depth texture (VK_FORMAT_D32_SFLOAT) 
+    // 3. Create render pass for editor rendering
+    // 4. Create framebuffer with both attachments
+    
+    // Placeholder handles - these would be actual Vulkan objects
+    viewport->framebuffer = 0;
+    viewport->color_texture = 0;
+    viewport->depth_texture = 0;
+    
+    // Example of what the real implementation would look like:
+    /*
+    VulkanRenderer* vk_renderer = (VulkanRenderer*)renderer;
+    if (vk_renderer) {
+        // Create color image
+        VkImageCreateInfo color_info = {
+            .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
+            .imageType = VK_IMAGE_TYPE_2D,
+            .extent.width = width,
+            .extent.height = height,
+            .extent.depth = 1,
+            .mipLevels = 1,
+            .arrayLayers = 1,
+            .format = VK_FORMAT_R8G8B8A8_SRGB,
+            .tiling = VK_IMAGE_TILING_OPTIMAL,
+            .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
+            .usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
+            .samples = VK_SAMPLE_COUNT_1_BIT
+        };
+        
+        vkCreateImage(vk_renderer->device, &color_info, NULL, &viewport->color_texture);
+        // ... allocate memory, create image view, etc.
+        
+        // Create depth image
+        VkImageCreateInfo depth_info = {
+            .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
+            .imageType = VK_IMAGE_TYPE_2D,
+            .extent.width = width,
+            .extent.height = height,
+            .extent.depth = 1,
+            .mipLevels = 1,
+            .arrayLayers = 1,
+            .format = VK_FORMAT_D32_SFLOAT,
+            .tiling = VK_IMAGE_TILING_OPTIMAL,
+            .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
+            .usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+            .samples = VK_SAMPLE_COUNT_1_BIT
+        };
+        
+        vkCreateImage(vk_renderer->device, &depth_info, NULL, &viewport->depth_texture);
+        // ... allocate memory, create image view, etc.
+        
+        // Create framebuffer
+        VkImageView attachments[] = {color_view, depth_view};
+        VkFramebufferCreateInfo fb_info = {
+            .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
+            .renderPass = editor_render_pass,
+            .attachmentCount = 2,
+            .pAttachments = attachments,
+            .width = width,
+            .height = height,
+            .layers = 1
+        };
+        
+        vkCreateFramebuffer(vk_renderer->device, &fb_info, NULL, &viewport->framebuffer);
+    }
+    */
+    
     LOG_INFO("Initialized editor viewport: %ux%u", width, height);
     
     return true;
@@ -188,7 +265,23 @@ bool editor_viewport_init(EditorViewport* viewport, u32 width, u32 height) {
 void editor_viewport_shutdown(EditorViewport* viewport) {
     if (!viewport) return;
     
-    // TODO: Delete framebuffer and textures
+    // Cleanup framebuffer and textures
+    LOG_INFO("Destroying editor viewport framebuffer and textures");
+    
+    // TODO: Get global Vulkan renderer instance and destroy:
+    // - vkDestroyFramebuffer(device, viewport->framebuffer, allocator)
+    // - vkDestroyImageView(device, viewport->color_texture_view, allocator)
+    // - vkDestroyImage(device, viewport->color_texture, allocator)
+    // - vkFreeMemory(device, viewport->color_texture_memory, allocator)
+    // - vkDestroyImageView(device, viewport->depth_texture_view, allocator)
+    // - vkDestroyImage(device, viewport->depth_texture, allocator)
+    // - vkFreeMemory(device, viewport->depth_texture_memory, allocator)
+    
+    // Clear handles
+    viewport->framebuffer = 0;
+    viewport->color_texture = 0;
+    viewport->depth_texture = 0;
+    
     LOG_INFO("Shutdown editor viewport");
     
     memset(viewport, 0, sizeof(EditorViewport));
@@ -197,10 +290,35 @@ void editor_viewport_shutdown(EditorViewport* viewport) {
 void editor_viewport_resize(EditorViewport* viewport, u32 width, u32 height) {
     if (!viewport) return;
     
+    // Only recreate if dimensions actually changed
+    if (viewport->width == width && viewport->height == height) {
+        return;
+    }
+    
+    LOG_INFO("Resizing editor viewport: %ux%u -> %ux%u", viewport->width, viewport->height, width, height);
+    
+    // Cleanup existing framebuffer and textures
+    LOG_INFO("Destroying old viewport resources");
+    // TODO: Call cleanup functions here (same as shutdown but without memset)
+    
+    // Update dimensions
     viewport->width = width;
     viewport->height = height;
     
-    // TODO: Recreate framebuffer and textures with new size
+    // Recreate framebuffer and textures with new size
+    LOG_INFO("Recreating viewport resources: %ux%u", width, height);
+    
+    // TODO: Get global Vulkan renderer instance and recreate:
+    // - Color texture with new dimensions
+    // - Depth texture with new dimensions  
+    // - Framebuffer with new attachments
+    // - Update any descriptor sets that reference these resources
+    
+    // Update projection matrix for new aspect ratio
+    f32 aspect_ratio = (f32)width / (f32)height;
+    // TODO: Update projection matrix when camera system is implemented
+    (void)aspect_ratio; // Suppress unused variable warning for now
+    
     LOG_INFO("Resized editor viewport: %ux%u", width, height);
 }
 
@@ -218,8 +336,16 @@ void editor_viewport_update_camera(EditorViewport* viewport, f32 delta_time) {
     viewport->camera_position.z = viewport->camera_target.z + 
         viewport->camera_distance * cosf(pitch_rad) * cosf(yaw_rad);
     
-    // TODO: Update view and projection matrices
-    // This would use the math library to create proper matrices
+    // Update view matrix using look-at function
+    Vec3 up = (Vec3){0.0f, 1.0f, 0.0f};
+    viewport->view_matrix = mat4_look_at(viewport->camera_position, viewport->camera_target, up);
+    
+    // Update projection matrix with perspective
+    f32 aspect_ratio = (f32)viewport->width / (f32)viewport->height;
+    f32 fov_y = 45.0f * (3.14159f / 180.0f); // 45 degrees in radians
+    f32 near_z = 0.1f;
+    f32 far_z = 10000.0f;
+    viewport->projection_matrix = mat4_perspective(fov_y, aspect_ratio, near_z, far_z);
 }
 
 void editor_viewport_handle_input(EditorViewport* viewport, i32 mouse_x, i32 mouse_y, bool mouse_down) {

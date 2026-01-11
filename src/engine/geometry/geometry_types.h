@@ -132,10 +132,53 @@ typedef struct mesh_t {
   u32 vertex_buffer_handle;
   u32 index_buffer_handle;
 
+  // Blend Shape Data
+  blend_shape_t* blend_shapes;
+  u32 blend_shape_count;
+  vertex_t* base_vertices;  // Original vertices for blend shape evaluation
+
+  // Skeletal Animation Data
+  skeleton_t* skeleton;
+  vertex_skinned_t* skinned_vertices;  // Skinned vertex data
+
   // Internal state
   u32 ref_count;
   u64 last_accessed_frame;
 
 } mesh_t;
+
+// ----------------------------------------------------------------------------
+// Blend Shapes
+// ----------------------------------------------------------------------------
+
+#define MAX_BLEND_SHAPES 32
+#define MAX_BLEND_SHAPE_NAME 64
+
+typedef struct blend_shape_t {
+  char name[MAX_BLEND_SHAPE_NAME];
+  u32 vertex_count;
+  Vec3* delta_positions;  // Position deltas from base mesh
+  Vec3* delta_normals;    // Normal deltas from base mesh
+  Vec3* delta_tangents;   // Tangent deltas from base mesh (optional)
+  f32 weight;             // Current weight (0.0 - 1.0)
+} blend_shape_t;
+
+// ----------------------------------------------------------------------------
+// Skeletal Animation
+// ----------------------------------------------------------------------------
+
+#define MAX_BONES_PER_VERTEX 4
+#define MAX_BONES 256
+
+typedef struct bone_weight_t {
+  u32 bone_index;
+  f32 weight;
+} bone_weight_t;
+
+typedef struct skeleton_t {
+  char name[64];
+  u32 bone_count;
+  // TODO: Add bone hierarchy data when skeleton system is implemented
+} skeleton_t;
 
 #endif // GEOMETRY_TYPES_H

@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = 
 
-C_INCLUDES = -I"/Users/benjaminrussell/Desktop/Minecraft v2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include_private" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor/lua" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/game/minecraftv2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/Core/Bridges/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/instancing" -isystem /opt/homebrew/include
+C_INCLUDES = -I"/Users/benjaminrussell/Desktop/Minecraft v2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include_private" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor/lua" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/Core/Bridges/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/instancing" -isystem /opt/homebrew/include
 
 C_FLAGSarm64 = -std=gnu11 -arch arm64
 

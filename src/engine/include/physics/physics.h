@@ -96,7 +96,7 @@ RaycastResult physics_raycast(PhysicsWorld *world, Vec3 origin, Vec3 direction,
 // Configuration presets
 typedef enum {
   PHYSICS_PRESET_DEFAULT,
-  PHYSICS_PRESET_MINECRAFT,
+  PHYSICS_PRESET_BLOCK_GAME,
   PHYSICS_PRESET_SPACE,
   PHYSICS_PRESET_LOW_GRAVITY,
   PHYSICS_PRESET_CUSTOM
@@ -105,7 +105,7 @@ typedef enum {
 // Configuration management
 void physics_config_init(void);
 PhysicsConfig physics_config_get_default(void);
-PhysicsConfig physics_config_get_minecraft(void);
+PhysicsConfig physics_config_get_block_game(void);
 PhysicsConfig physics_config_get_space(void);
 PhysicsConfig physics_config_get_low_gravity(void);
 PhysicsConfig physics_config_get_current(void);
