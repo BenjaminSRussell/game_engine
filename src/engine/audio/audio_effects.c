@@ -479,6 +479,15 @@ static void update_biquad(Equalizer *eq, u32 band) {
     a2 = 1.0f - alpha;
     break;
 
+  case EQ_FILTER_TYPE_PEAK:
+    b0 = 1.0f + alpha * A;
+    b1 = -2.0f * cos_w0;
+    b2 = 1.0f - alpha * A;
+    a0 = 1.0f + alpha / A;
+    a1 = -2.0f * cos_w0;
+    a2 = 1.0f - alpha / A;
+    break;
+
   // Stub for others
   default:
     b0 = 1.0f;
