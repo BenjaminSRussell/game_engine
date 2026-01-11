@@ -87,6 +87,218 @@ AssetPlacementContext* asset_placement_get_context(void) {
     return &g_context;
 }
 
+// MARK: - Collision Preview
+
+void asset_placement_render_collision_preview(void) {
+    if (!g_context.collision_check_enabled || !g_context.preview_entity.id != 0) {
+        return;
+    }
+    
+    // Get preview entity bounds
+    Vec3 min_bounds, max_bounds;
+    if (!entity_get_bounds(g_context.preview_entity.id, &min_bounds, &max_bounds)) {
+        LOG_WARN("Failed to get preview entity bounds for collision preview");
+        return;
+    }
+    
+    // Get preview entity position
+    Vec3 preview_pos = entity_get_position(g_context.preview_entity.id);
+    
+    // Calculate world bounds
+    Vec3 world_min = vec3_add(preview_pos, min_bounds);
+    Vec3 world_max = vec3_add(preview_pos, max_bounds);
+    
+    // Perform collision check
+    bool has_collision = asset_placement_check_collision_at_position(preview_pos, g_context.current_type);
+    
+    // Set collision preview colors based on result
+    Vec3 collision_color = has_collision ? (Vec3){1.0f, 0.2f, 0.2f} : (Vec3){0.2f, 1.0f, 0.2f}; // Red for collision, green for valid
+    Vec3 bounds_color = has_collision ? (Vec3){0.8f, 0.1f, 0.1f} : (Vec3){0.1f, 0.8f, 0.1f};
+    f32 line_width = has_collision ? 3.0f : 2.0f;
+    
+    // Render collision bounds as wireframe box
+    Vec3 corners[8] = {
+        {world_min.x, world_min.y, world_min.z}, {world_max.x, world_min.y, world_min.z},
+        {world_min.x, world_max.y, world_min.z}, {world_max.x, world_max.y, world_min.z},
+        {world_min.x, world_min.y, world_max.z}, {world_max.x, world_min.y, world_max.z},
+        {world_min.x, world_max.y, world_max.z}, {world_max.x, world_max.y, world_max.z}
+    };
+    
+    // Bottom face
+    debug_renderer_draw_line(corners[0], corners[1], bounds_color, line_width);
+    debug_renderer_draw_line(corners[1], corners[3], bounds_color, line_width);
+    debug_renderer_draw_line(corners[3], corners[2], bounds_color, line_width);
+    debug_renderer_draw_line(corners[2], corners[0], bounds_color, line_width);
+    
+    // Top face
+    debug_renderer_draw_line(corners[4], corners[5], bounds_color, line_width);
+    debug_renderer_draw_line(corners[5], corners[7], bounds_color, line_width);
+    debug_renderer_draw_line(corners[7], corners[6], bounds_color, line_width);
+    debug_renderer_draw_line(corners[6], corners[4], bounds_color, line_width);
+    
+    // Vertical edges
+    debug_renderer_draw_line(corners[0], corners[4], bounds_color, line_width);
+    debug_renderer_draw_line(corners[1], corners[5], bounds_color, line_width);
+    debug_renderer_draw_line(corners[2], corners[6], bounds_color, line_width);
+    debug_renderer_draw_line(corners[3], corners[7], bounds_color, line_width);
+    
+    // Render collision indicator at center
+    Vec3 center = vec3_multiply(vec3_add(world_min, world_max), 0.5f);
+    
+    if (has_collision) {
+        // Render red X for collision
+        f32 indicator_size = 0.3f;
+        debug_renderer_draw_line(
+            (Vec3){center.x - indicator_size, center.y + 0.1f, center.z - indicator_size},
+            (Vec3){center.x + indicator_size, center.y + 0.1f, center.z + indicator_size},
+            collision_color, 4.0f
+        );
+        debug_renderer_draw_line(
+            (Vec3){center.x + indicator_size, center.y + 0.1f, center.z - indicator_size},
+            (Vec3){center.x - indicator_size, center.y + 0.1f, center.z + indicator_size},
+            collision_color, 4.0f
+        );
+        
+        // Render pulsing effect
+        f32 pulse = sinf(g_context.preview_time * 5.0f) * 0.2f + 0.8f;
+        Vec3 pulse_color = vec3_scale(collision_color, pulse);
+        
+        // Draw additional outline with pulsing
+        debug_renderer_draw_line(corners[0], corners[1], pulse_color, line_width + 1.0f);
+        debug_renderer_draw_line(corners[1], corners[3], pulse_color, line_width + 1.0f);
+        debug_renderer_draw_line(corners[3], corners[2], pulse_color, line_width + 1.0f);
+        debug_renderer_draw_line(corners[2], corners[0], pulse_color, line_width + 1.0f);
+        
+        debug_renderer_draw_line(corners[4], corners[5], pulse_color, line_width + 1.0f);
+        debug_renderer_draw_line(corners[5], corners[7], pulse_color, line_width + 1.0f);
+        debug_renderer_draw_line(corners[7], corners[6], pulse_color, line_width + 1.0f);
+        debug_renderer_draw_line(corners[6], corners[4], pulse_color, line_width + 1.0f);
+        
+        debug_renderer_draw_line(corners[0], corners[4], pulse_color, line_width + 1.0f);
+        debug_renderer_draw_line(corners[1], corners[5], pulse_color, line_width + 1.0f);
+        debug_renderer_draw_line(corners[2], corners[6], pulse_color, line_width + 1.0f);
+        debug_renderer_draw_line(corners[3], corners[7], pulse_color, line_width + 1.0f);
+    } else {
+        // Render green checkmark for valid placement
+        f32 check_size = 0.2f;
+        debug_renderer_draw_line(
+            (Vec3){center.x - check_size, center.y + 0.1f, center.z},
+            (Vec3){center.x, center.y + 0.1f, center.z + check_size},
+            collision_color, 3.0f
+        );
+        debug_renderer_draw_line(
+            (Vec3){center.x, center.y + 0.1f, center.z + check_size},
+            (Vec3){center.x + check_size * 1.5f, center.y + 0.1f, center.z - check_size * 0.5f},
+            collision_color, 3.0f
+        );
+    }
+    
+    // Render collision spheres for detailed collision checking
+    if (g_context.show_collision_spheres) {
+        u32 sphere_count = entity_get_collision_sphere_count(g_context.preview_entity.id);
+        for (u32 i = 0; i < sphere_count; i++) {
+            Vec3 sphere_center;
+            f32 sphere_radius;
+            if (entity_get_collision_sphere(g_context.preview_entity.id, i, &sphere_center, &sphere_radius)) {
+                Vec3 world_sphere_center = vec3_add(preview_pos, sphere_center);
+                
+                // Draw sphere as wireframe using circles
+                u32 segments = 16;
+                f32 angle_step = 2.0f * PI / segments;
+                
+                // XY plane circle
+                for (u32 j = 0; j < segments; j++) {
+                    f32 angle1 = j * angle_step;
+                    f32 angle2 = (j + 1) * angle_step;
+                    
+                    Vec3 p1 = {
+                        world_sphere_center.x + cosf(angle1) * sphere_radius,
+                        world_sphere_center.y + sinf(angle1) * sphere_radius,
+                        world_sphere_center.z
+                    };
+                    Vec3 p2 = {
+                        world_sphere_center.x + cosf(angle2) * sphere_radius,
+                        world_sphere_center.y + sinf(angle2) * sphere_radius,
+                        world_sphere_center.z
+                    };
+                    
+                    debug_renderer_draw_line(p1, p2, bounds_color, 1.0f);
+                }
+                
+                // XZ plane circle
+                for (u32 j = 0; j < segments; j++) {
+                    f32 angle1 = j * angle_step;
+                    f32 angle2 = (j + 1) * angle_step;
+                    
+                    Vec3 p1 = {
+                        world_sphere_center.x + cosf(angle1) * sphere_radius,
+                        world_sphere_center.y,
+                        world_sphere_center.z + sinf(angle1) * sphere_radius
+                    };
+                    Vec3 p2 = {
+                        world_sphere_center.x + cosf(angle2) * sphere_radius,
+                        world_sphere_center.y,
+                        world_sphere_center.z + sinf(angle2) * sphere_radius
+                    };
+                    
+                    debug_renderer_draw_line(p1, p2, bounds_color, 1.0f);
+                }
+                
+                // YZ plane circle
+                for (u32 j = 0; j < segments; j++) {
+                    f32 angle1 = j * angle_step;
+                    f32 angle2 = (j + 1) * angle_step;
+                    
+                    Vec3 p1 = {
+                        world_sphere_center.x,
+                        world_sphere_center.y + cosf(angle1) * sphere_radius,
+                        world_sphere_center.z + sinf(angle1) * sphere_radius
+                    };
+                    Vec3 p2 = {
+                        world_sphere_center.x,
+                        world_sphere_center.y + cosf(angle2) * sphere_radius,
+                        world_sphere_center.z + sinf(angle2) * sphere_radius
+                    };
+                    
+                    debug_renderer_draw_line(p1, p2, bounds_color, 1.0f);
+                }
+            }
+        }
+    }
+    
+    // Render ground contact point if valid placement
+    if (!has_collision && g_context.show_ground_contact) {
+        f32 ground_height = asset_placement_get_ground_height_at_position(preview_pos.x, preview_pos.z);
+        if (ground_height != FLT_MAX) {
+            Vec3 ground_point = {preview_pos.x, ground_height, preview_pos.z};
+            
+            // Draw ground contact indicator
+            f32 contact_size = 0.15f;
+            Vec3 contact_color = (Vec3){0.0f, 0.8f, 0.0f}; // Green
+            
+            debug_renderer_draw_line(
+                (Vec3){ground_point.x - contact_size, ground_point.y + 0.01f, ground_point.z - contact_size},
+                (Vec3){ground_point.x + contact_size, ground_point.y + 0.01f, ground_point.z + contact_size},
+                contact_color, 2.0f
+            );
+            debug_renderer_draw_line(
+                (Vec3){ground_point.x + contact_size, ground_point.y + 0.01f, ground_point.z - contact_size},
+                (Vec3){ground_point.x - contact_size, ground_point.y + 0.01f, ground_point.z + contact_size},
+                contact_color, 2.0f
+            );
+            
+            // Draw line from preview entity to ground contact
+            debug_renderer_draw_line(
+                (Vec3){preview_pos.x, world_min.y, preview_pos.z},
+                ground_point,
+                (Vec3){0.5f, 0.5f, 0.5f}, 1.0f
+            );
+        }
+    }
+    
+    LOG_TRACE("Rendered collision preview: %s", has_collision ? "COLLISION" : "VALID");
+}
+
 // MARK: - Grid Visualization
 
 void asset_placement_render_grid(void) {
