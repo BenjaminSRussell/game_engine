@@ -88,9 +88,10 @@ typedef struct {
 
 // Item instance with quantity
 typedef struct {
-  const Item *item; // Reference to item template
+  u32 item_id;      // Item definition ID
   u32 quantity;     // Stack size (1 to max_stack_size)
   u32 durability;   // Current durability (for equipment)
+  const Item *item; // Optional cached pointer to item template
 
   // Runtime data
   u32 instance_id;  // Unique instance ID for this stack
