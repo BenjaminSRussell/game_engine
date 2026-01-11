@@ -125,8 +125,8 @@ static void octree_subdivide(OctreeNode *node, uint32_t max_items) {
 
   for (int i = 0; i < 8; ++i) {
     OctreeAABB child_bounds = octree_child_bounds(&node->bounds, i);
-    node->children[i] = octree_node_create(child_bounds, node->depth + 1,
-                                           max_items);
+    node->children[i] =
+        octree_node_create(child_bounds, node->depth + 1, max_items);
   }
   node->is_leaf = false;
 
@@ -209,7 +209,8 @@ static bool octree_node_remove(OctreeNode *node, const OctreeItem *item) {
   return false;
 }
 
-static bool ray_intersects_aabb(const OctreeRay *ray, const OctreeAABB *box) {
+static bool octree_ray_intersects_aabb(const OctreeRay *ray,
+                                       const OctreeAABB *box) {
   float tmin = -INFINITY;
   float tmax = INFINITY;
 
@@ -260,8 +261,8 @@ static bool sphere_intersects_aabb(const float center[3], float radius,
   return dist_sq <= radius * radius;
 }
 
-static bool frustum_intersects_aabb(const OctreeFrustum *frustum,
-                                    const OctreeAABB *box) {
+static bool octree_frustum_intersects_aabb(const OctreeFrustum *frustum,
+                                           const OctreeAABB *box) {
   for (int i = 0; i < 6; ++i) {
     const float *p = frustum->planes[i];
     float x = p[0] >= 0.0f ? box->max[0] : box->min[0];
@@ -301,11 +302,11 @@ static void octree_query_node(const OctreeNode *node,
 }
 
 static bool bounds_test_frustum(const OctreeAABB *bounds, const void *query) {
-  return frustum_intersects_aabb((const OctreeFrustum *)query, bounds);
+  return octree_frustum_intersects_aabb((const OctreeFrustum *)query, bounds);
 }
 
 static bool bounds_test_ray(const OctreeAABB *bounds, const void *query) {
-  return ray_intersects_aabb((const OctreeRay *)query, bounds);
+  return octree_ray_intersects_aabb((const OctreeRay *)query, bounds);
 }
 
 typedef struct SphereQuery {
@@ -392,7 +393,8 @@ static bool octree_expand_root(Octree *tree, const OctreeItem *item) {
   }
   for (int i = 0; i < 8; ++i) {
     OctreeAABB child_bounds = octree_child_bounds(&bounds, i);
-    new_root->children[i] = octree_node_create(child_bounds, 1, tree->max_items);
+    new_root->children[i] =
+        octree_node_create(child_bounds, 1, tree->max_items);
   }
   if (new_root->children[child_index]) {
     octree_node_destroy(new_root->children[child_index]);
@@ -413,8 +415,7 @@ bool octree_insert(Octree *tree, OctreeItem item) {
     return false;
   }
 
-  return octree_node_insert(tree->root, item, tree->max_depth,
-                            tree->max_items);
+  return octree_node_insert(tree->root, item, tree->max_depth, tree->max_items);
 }
 
 bool octree_remove(Octree *tree, const OctreeItem *item) {
@@ -504,8 +505,7 @@ static void octree_dump_node(const OctreeNode *node, FILE *out) {
     return;
   }
 
-  fprintf(out,
-          "depth=%u items=%u bounds=[%.2f %.2f %.2f]-[%.2f %.2f %.2f]\n",
+  fprintf(out, "depth=%u items=%u bounds=[%.2f %.2f %.2f]-[%.2f %.2f %.2f]\n",
           node->depth, node->item_count, node->bounds.min[0],
           node->bounds.min[1], node->bounds.min[2], node->bounds.max[0],
           node->bounds.max[1], node->bounds.max[2]);
