@@ -20,7 +20,6 @@ typedef enum {
     VK_TEXTURE_TYPE_COUNT
 } vk_texture_type_t;
 
-<<<<<<< HEAD
 typedef enum {
     VK_TEXTURE_FORMAT_UNDEFINED = 0,
     VK_TEXTURE_FORMAT_R8_UNORM,
@@ -74,8 +73,6 @@ typedef enum {
     VK_TEXTURE_FORMAT_COUNT
 } vk_texture_format_t;
 
-=======
->>>>>>> feature/geometry-system-implementation
 typedef struct vk_texture {
     VkImage image;
     VkImageView image_view;
