@@ -726,3 +726,303 @@ bool skeleton_template_validate_all(void) {
     LOG_INFO("Skeleton template validation complete: %s", all_valid ? "All valid" : "Some invalid");
     return all_valid;
 }
+
+// Skeleton retargeting system
+typedef struct {
+    s32 source_bone_index;
+    s32 target_bone_index;
+    f32 weight;
+    bool is_essential;
+} BoneMapping;
+
+typedef struct {
+    BoneMapping mappings[MAX_BONES_PER_SKELETON];
+    u32 mapping_count;
+    f32 overall_quality;
+    bool is_retargetable;
+} RetargetingData;
+
+typedef struct {
+    char source_bone[32];
+    char target_bone[32];
+    f32 weight;
+} BoneMappingRule;
+
+// Common bone mapping rules for humanoid skeletons
+static const BoneMappingRule k_humanoid_mapping_rules[] = {
+    {"Root", "Root", 1.0f},
+    {"Pelvis", "Pelvis", 1.0f},
+    {"Hips", "Pelvis", 1.0f},
+    {"Spine", "Spine_1", 0.8f},
+    {"Spine1", "Spine_1", 1.0f},
+    {"Spine2", "Spine_2", 1.0f},
+    {"Spine_3", "Spine_3", 1.0f},
+    {"Chest", "Chest", 1.0f},
+    {"UpperChest", "Chest", 0.9f},
+    {"Neck", "Neck", 1.0f},
+    {"Head", "Head", 1.0f},
+    {"LeftShoulder", "Left_Clavicle", 0.8f},
+    {"LeftArm", "Left_Arm", 1.0f},
+    {"LeftForeArm", "Left_Forearm", 1.0f},
+    {"LeftHand", "Left_Hand", 1.0f},
+    {"RightShoulder", "Right_Clavicle", 0.8f},
+    {"RightArm", "Right_Arm", 1.0f},
+    {"RightForeArm", "Right_Forearm", 1.0f},
+    {"RightHand", "Right_Hand", 1.0f},
+    {"LeftUpLeg", "Left_Hip", 0.9f},
+    {"LeftThigh", "Left_Thigh", 1.0f},
+    {"LeftLeg", "Left_Calf", 0.9f},
+    {"LeftShin", "Left_Calf", 1.0f},
+    {"LeftFoot", "Left_Foot", 1.0f},
+    {"LeftToeBase", "Left_Foot", 0.8f},
+    {"RightUpLeg", "Right_Hip", 0.9f},
+    {"RightThigh", "Right_Thigh", 1.0f},
+    {"RightLeg", "Right_Calf", 0.9f},
+    {"RightShin", "Right_Calf", 1.0f},
+    {"RightFoot", "Right_Foot", 1.0f},
+    {"RightToeBase", "Right_Foot", 0.8f},
+};
+
+// Find bone index by name (case-insensitive)
+static s32 find_bone_index(const SkeletonTemplate* template, const char* bone_name) {
+    if (!template || !bone_name || !template->bones) {
+        return -1;
+    }
+    
+    for (u32 i = 0; i < template->bone_count; i++) {
+        if (strcasecmp(template->bones[i].name, bone_name) == 0) {
+            return (s32)i;
+        }
+    }
+    
+    return -1;
+}
+
+// Calculate bone similarity based on position and hierarchy
+static f32 calculate_bone_similarity(const SkeletonTemplate* source, u32 source_index,
+                                   const SkeletonTemplate* target, u32 target_index) {
+    if (!source || !target || source_index >= source->bone_count || target_index >= target->bone_count) {
+        return 0.0f;
+    }
+    
+    const BoneDefinition* source_bone = &source->bones[source_index];
+    const BoneDefinition* target_bone = &target->bones[target_index];
+    
+    f32 similarity = 0.0f;
+    
+    // Name similarity (case-insensitive)
+    if (strcasecmp(source_bone->name, target_bone->name) == 0) {
+        similarity += 0.5f;
+    } else {
+        // Partial name match
+        if (strstr(source_bone->name, target_bone->name) || strstr(target_bone->name, source_bone->name)) {
+            similarity += 0.2f;
+        }
+    }
+    
+    // Position similarity
+    f32 pos_diff = fabsf(source_bone->local_position[0] - target_bone->local_position[0]) +
+                    fabsf(source_bone->local_position[1] - target_bone->local_position[1]) +
+                    fabsf(source_bone->local_position[2] - target_bone->local_position[2]);
+    f32 pos_similarity = fmaxf(0.0f, 1.0f - pos_diff * 0.1f);
+    similarity += pos_similarity * 0.3f;
+    
+    // Essential bone bonus
+    if (source_bone->is_essential && target_bone->is_essential) {
+        similarity += 0.2f;
+    }
+    
+    return fminf(1.0f, similarity);
+}
+
+// Create bone mapping between skeletons
+static RetargetingData create_bone_mapping(const SkeletonTemplate* source, 
+                                           const SkeletonTemplate* target) {
+    RetargetingData mapping = {0};
+    mapping.overall_quality = 0.0f;
+    mapping.is_retargetable = false;
+    
+    if (!source || !target || !source->bones || !target->bones) {
+        return mapping;
+    }
+    
+    // First, try exact name matches and rule-based matches
+    u32 rule_matches = 0;
+    for (u32 i = 0; i < sizeof(k_humanoid_mapping_rules) / sizeof(k_humanoid_mapping_rules[0]); i++) {
+        const BoneMappingRule* rule = &k_humanoid_mapping_rules[i];
+        
+        s32 source_index = find_bone_index(source, rule->source_bone);
+        s32 target_index = find_bone_index(target, rule->target_bone);
+        
+        if (source_index >= 0 && target_index >= 0) {
+            if (mapping.mapping_count < MAX_BONES_PER_SKELETON) {
+                BoneMapping* bone_map = &mapping.mappings[mapping.mapping_count++];
+                bone_map->source_bone_index = source_index;
+                bone_map->target_bone_index = target_index;
+                bone_map->weight = rule->weight;
+                bone_map->is_essential = source->bones[source_index].is_essential;
+                rule_matches++;
+            }
+        }
+    }
+    
+    // Then, find additional matches based on similarity
+    for (u32 source_idx = 0; source_idx < source->bone_count && mapping.mapping_count < MAX_BONES_PER_SKELETON; source_idx++) {
+        // Skip if already mapped
+        bool already_mapped = false;
+        for (u32 j = 0; j < mapping.mapping_count; j++) {
+            if (mapping.mappings[j].source_bone_index == (s32)source_idx) {
+                already_mapped = true;
+                break;
+            }
+        }
+        
+        if (already_mapped) continue;
+        
+        // Find best match in target
+        f32 best_similarity = 0.0f;
+        s32 best_target_index = -1;
+        
+        for (u32 target_idx = 0; target_idx < target->bone_count; target_idx++) {
+            f32 similarity = calculate_bone_similarity(source, source_idx, target, target_idx);
+            if (similarity > best_similarity) {
+                best_similarity = similarity;
+                best_target_index = (s32)target_idx;
+            }
+        }
+        
+        // Add mapping if similarity is good enough
+        if (best_similarity > 0.3f && best_target_index >= 0) {
+            BoneMapping* bone_map = &mapping.mappings[mapping.mapping_count++];
+            bone_map->source_bone_index = (s32)source_idx;
+            bone_map->target_bone_index = best_target_index;
+            bone_map->weight = best_similarity;
+            bone_map->is_essential = source->bones[source_idx].is_essential;
+        }
+    }
+    
+    // Calculate overall quality
+    f32 total_weight = 0.0f;
+    f32 essential_mapped = 0.0f;
+    u32 essential_count = 0;
+    
+    for (u32 i = 0; i < mapping.mapping_count; i++) {
+        total_weight += mapping.mappings[i].weight;
+        if (mapping.mappings[i].is_essential) {
+            essential_mapped += mapping.mappings[i].weight;
+            essential_count++;
+        }
+    }
+    
+    u32 source_essential_count = 0;
+    for (u32 i = 0; i < source->bone_count; i++) {
+        if (source->bones[i].is_essential) {
+            source_essential_count++;
+        }
+    }
+    
+    mapping.overall_quality = total_weight / (f32)source->bone_count;
+    
+    // Check if retargeting is viable
+    if (essential_count > 0) {
+        f32 essential_ratio = essential_mapped / (f32)essential_count;
+        mapping.is_retargetable = (essential_ratio >= 0.7f && mapping.overall_quality >= 0.5f);
+    } else {
+        mapping.is_retargetable = (mapping.overall_quality >= 0.6f);
+    }
+    
+    LOG_DEBUG("Retargeting analysis: %u mappings, quality=%.2f, essential=%.2f/%u, retargetable=%s",
+             mapping.mapping_count, mapping.overall_quality, essential_mapped, essential_count,
+             mapping.is_retargetable ? "YES" : "NO");
+    
+    return mapping;
+}
+
+// Apply retargeting to animation data
+static bool apply_retargeting(const SkeletonTemplate* source, const SkeletonTemplate* target,
+                             const RetargetingData* mapping, const f32* source_anim_data,
+                             f32* target_anim_data, u32 bone_count) {
+    if (!source || !target || !mapping || !source_anim_data || !target_anim_data) {
+        return false;
+    }
+    
+    // Initialize target animation data to identity
+    for (u32 i = 0; i < bone_count * 16; i++) { // 16 floats per bone (4x4 matrix)
+        target_anim_data[i] = (i % 5 == 0) ? 1.0f : 0.0f; // Identity matrix
+    }
+    
+    // Apply mappings
+    for (u32 i = 0; i < mapping->mapping_count; i++) {
+        const BoneMapping* bone_map = &mapping->mappings[i];
+        
+        if (bone_map->source_bone_index >= 0 && bone_map->target_bone_index >= 0 &&
+            (u32)bone_map->source_bone_index < source->bone_count &&
+            (u32)bone_map->target_bone_index < target->bone_count) {
+            
+            // Copy animation data with weight
+            u32 source_offset = (u32)bone_map->source_bone_index * 16;
+            u32 target_offset = (u32)bone_map->target_bone_index * 16;
+            
+            for (u32 j = 0; j < 16; j++) {
+                target_anim_data[target_offset + j] = source_anim_data[source_offset + j] * bone_map->weight;
+            }
+        }
+    }
+    
+    return true;
+}
+
+// Public API for skeleton retargeting
+RetargetingData skeleton_create_retargeting(const SkeletonTemplate* source, 
+                                            const SkeletonTemplate* target) {
+    return create_bone_mapping(source, target);
+}
+
+bool skeleton_retarget_animation(const SkeletonTemplate* source, const SkeletonTemplate* target,
+                                const RetargetingData* mapping, const f32* source_anim_data,
+                                f32* target_anim_data, u32 bone_count) {
+    return apply_retargeting(source, target, mapping, source_anim_data, target_anim_data, bone_count);
+}
+
+bool skeleton_can_retarget(const SkeletonTemplate* source, const SkeletonTemplate* target) {
+    RetargetingData mapping = create_bone_mapping(source, target);
+    return mapping.is_retargetable;
+}
+
+f32 skeleton_get_retargeting_quality(const SkeletonTemplate* source, const SkeletonTemplate* target) {
+    RetargetingData mapping = create_bone_mapping(source, target);
+    return mapping.overall_quality;
+}
+
+// Export retargeting data to file
+bool skeleton_export_retargeting_data(const RetargetingData* mapping, const char* file_path) {
+    if (!mapping || !file_path) {
+        return false;
+    }
+    
+    FILE* file = fopen(file_path, "w");
+    if (!file) {
+        LOG_ERROR("Failed to open retargeting data file: %s", file_path);
+        return false;
+    }
+    
+    fprintf(file, "# Skeleton Retargeting Data\n");
+    fprintf(file, "# Generated automatically\n\n");
+    fprintf(file, "quality: %.3f\n", mapping->overall_quality);
+    fprintf(file, "is_retargetable: %s\n", mapping->is_retargetable ? "true" : "false");
+    fprintf(file, "mapping_count: %u\n\n", mapping->mapping_count);
+    
+    fprintf(file, "# Bone Mappings\n");
+    fprintf(file, "# source_index, target_index, weight, is_essential\n");
+    
+    for (u32 i = 0; i < mapping->mapping_count; i++) {
+        const BoneMapping* bone_map = &mapping->mappings[i];
+        fprintf(file, "%d, %d, %.3f, %s\n",
+               bone_map->source_bone_index, bone_map->target_bone_index,
+               bone_map->weight, bone_map->is_essential ? "true" : "false");
+    }
+    
+    fclose(file);
+    LOG_INFO("Exported retargeting data to: %s", file_path);
+    return true;
+}
