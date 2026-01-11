@@ -2,8 +2,8 @@
 // Unified audio system manager implementation
 
 #include "audio/audio_manager.h"
-#include "include/audio/audio_occlusion_raycast.h"
-#include <include/math/math.h>
+#include "audio/audio_occlusion_raycast.h"
+#include <math/math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
