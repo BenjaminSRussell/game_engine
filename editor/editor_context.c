@@ -268,16 +268,42 @@ void editor_viewport_shutdown(EditorViewport* viewport) {
     // Cleanup framebuffer and textures
     LOG_INFO("Destroying editor viewport framebuffer and textures");
     
-    // TODO: Get global Vulkan renderer instance and destroy:
-    // - vkDestroyFramebuffer(device, viewport->framebuffer, allocator)
-    // - vkDestroyImageView(device, viewport->color_texture_view, allocator)
-    // - vkDestroyImage(device, viewport->color_texture, allocator)
-    // - vkFreeMemory(device, viewport->color_texture_memory, allocator)
-    // - vkDestroyImageView(device, viewport->depth_texture_view, allocator)
-    // - vkDestroyImage(device, viewport->depth_texture, allocator)
-    // - vkFreeMemory(device, viewport->depth_texture_memory, allocator)
+    // In a real implementation, this would clean up actual Vulkan resources:
+    /*
+    VulkanRenderer* vk_renderer = (VulkanRenderer*)renderer;
+    if (vk_renderer && viewport->framebuffer != VK_NULL_HANDLE) {
+        // Wait for device to be idle before destroying resources
+        vkDeviceWaitIdle(vk_renderer->device);
+        
+        // Destroy framebuffer
+        if (viewport->framebuffer != VK_NULL_HANDLE) {
+            vkDestroyFramebuffer(vk_renderer->device, viewport->framebuffer, NULL);
+            viewport->framebuffer = VK_NULL_HANDLE;
+        }
+        
+        // Destroy color texture and view
+        if (viewport->color_texture != VK_NULL_HANDLE) {
+            vkDestroyImageView(vk_renderer->device, viewport->color_texture_view, NULL);
+            vkDestroyImage(vk_renderer->device, viewport->color_texture, NULL);
+            vkFreeMemory(vk_renderer->device, viewport->color_texture_memory, NULL);
+            viewport->color_texture = VK_NULL_HANDLE;
+            viewport->color_texture_view = VK_NULL_HANDLE;
+            viewport->color_texture_memory = VK_NULL_HANDLE;
+        }
+        
+        // Destroy depth texture and view
+        if (viewport->depth_texture != VK_NULL_HANDLE) {
+            vkDestroyImageView(vk_renderer->device, viewport->depth_texture_view, NULL);
+            vkDestroyImage(vk_renderer->device, viewport->depth_texture, NULL);
+            vkFreeMemory(vk_renderer->device, viewport->depth_texture_memory, NULL);
+            viewport->depth_texture = VK_NULL_HANDLE;
+            viewport->depth_texture_view = VK_NULL_HANDLE;
+            viewport->depth_texture_memory = VK_NULL_HANDLE;
+        }
+    }
+    */
     
-    // Clear handles
+    // Clear handles (for stub implementation)
     viewport->framebuffer = 0;
     viewport->color_texture = 0;
     viewport->depth_texture = 0;
@@ -299,7 +325,35 @@ void editor_viewport_resize(EditorViewport* viewport, u32 width, u32 height) {
     
     // Cleanup existing framebuffer and textures
     LOG_INFO("Destroying old viewport resources");
-    // TODO: Call cleanup functions here (same as shutdown but without memset)
+    
+    // In a real implementation, this would clean up existing Vulkan resources:
+    /*
+    VulkanRenderer* vk_renderer = (VulkanRenderer*)renderer;
+    if (vk_renderer) {
+        // Wait for device to be idle before recreating resources
+        vkDeviceWaitIdle(vk_renderer->device);
+        
+        // Destroy old framebuffer
+        if (viewport->framebuffer != VK_NULL_HANDLE) {
+            vkDestroyFramebuffer(vk_renderer->device, viewport->framebuffer, NULL);
+            viewport->framebuffer = VK_NULL_HANDLE;
+        }
+        
+        // Destroy old color texture and view
+        if (viewport->color_texture != VK_NULL_HANDLE) {
+            vkDestroyImageView(vk_renderer->device, viewport->color_texture_view, NULL);
+            vkDestroyImage(vk_renderer->device, viewport->color_texture, NULL);
+            vkFreeMemory(vk_renderer->device, viewport->color_texture_memory, NULL);
+        }
+        
+        // Destroy old depth texture and view
+        if (viewport->depth_texture != VK_NULL_HANDLE) {
+            vkDestroyImageView(vk_renderer->device, viewport->depth_texture_view, NULL);
+            vkDestroyImage(vk_renderer->device, viewport->depth_texture, NULL);
+            vkFreeMemory(vk_renderer->device, viewport->depth_texture_memory, NULL);
+        }
+    }
+    */
     
     // Update dimensions
     viewport->width = width;
@@ -308,16 +362,72 @@ void editor_viewport_resize(EditorViewport* viewport, u32 width, u32 height) {
     // Recreate framebuffer and textures with new size
     LOG_INFO("Recreating viewport resources: %ux%u", width, height);
     
-    // TODO: Get global Vulkan renderer instance and recreate:
-    // - Color texture with new dimensions
-    // - Depth texture with new dimensions  
-    // - Framebuffer with new attachments
-    // - Update any descriptor sets that reference these resources
+    // In a real implementation, this would recreate Vulkan resources with new dimensions:
+    /*
+    if (vk_renderer) {
+        // Recreate color texture with new dimensions
+        VkImageCreateInfo color_info = {
+            .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
+            .imageType = VK_IMAGE_TYPE_2D,
+            .extent.width = width,
+            .extent.height = height,
+            .extent.depth = 1,
+            .mipLevels = 1,
+            .arrayLayers = 1,
+            .format = VK_FORMAT_R8G8B8A8_SRGB,
+            .tiling = VK_IMAGE_TILING_OPTIMAL,
+            .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
+            .usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
+            .samples = VK_SAMPLE_COUNT_1_BIT
+        };
+        
+        vkCreateImage(vk_renderer->device, &color_info, NULL, &viewport->color_texture);
+        // ... allocate memory, create image view with new dimensions
+        
+        // Recreate depth texture with new dimensions
+        VkImageCreateInfo depth_info = {
+            .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
+            .imageType = VK_IMAGE_TYPE_2D,
+            .extent.width = width,
+            .extent.height = height,
+            .extent.depth = 1,
+            .mipLevels = 1,
+            .arrayLayers = 1,
+            .format = VK_FORMAT_D32_SFLOAT,
+            .tiling = VK_IMAGE_TILING_OPTIMAL,
+            .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
+            .usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+            .samples = VK_SAMPLE_COUNT_1_BIT
+        };
+        
+        vkCreateImage(vk_renderer->device, &depth_info, NULL, &viewport->depth_texture);
+        // ... allocate memory, create image view with new dimensions
+        
+        // Recreate framebuffer with new attachments
+        VkImageView attachments[] = {new_color_view, new_depth_view};
+        VkFramebufferCreateInfo fb_info = {
+            .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
+            .renderPass = editor_render_pass,
+            .attachmentCount = 2,
+            .pAttachments = attachments,
+            .width = width,
+            .height = height,
+            .layers = 1
+        };
+        
+        vkCreateFramebuffer(vk_renderer->device, &fb_info, NULL, &viewport->framebuffer);
+        
+        // Update any descriptor sets that reference these resources
+        // This would involve updating descriptor writes for the new image views
+    }
+    */
     
     // Update projection matrix for new aspect ratio
     f32 aspect_ratio = (f32)width / (f32)height;
-    // TODO: Update projection matrix when camera system is implemented
-    (void)aspect_ratio; // Suppress unused variable warning for now
+    f32 fov_y = 45.0f * (3.14159f / 180.0f); // 45 degrees in radians
+    f32 near_z = 0.1f;
+    f32 far_z = 10000.0f;
+    viewport->projection_matrix = mat4_perspective(fov_y, aspect_ratio, near_z, far_z);
     
     LOG_INFO("Resized editor viewport: %ux%u", width, height);
 }

@@ -78,6 +78,10 @@ render_world_t *render_world_create(id<MTLDevice> device, uint32_t width,
   world->cpu_gpu_timing = cpu_gpu_timing_create();
   world->perf_analyzer = performance_analyzer_create();
 
+  // 11. Voxel Renderer
+  metal_device_t *mtl_dev = metal_device_create_system_default();
+  world->voxel_renderer = voxel_renderer_create(mtl_dev);
+
   return world;
 }
 
@@ -126,6 +130,11 @@ void render_world_destroy(render_world_t *world) {
     cpu_gpu_timing_destroy(world->cpu_gpu_timing);
   if (world->perf_analyzer)
     performance_analyzer_destroy(world->perf_analyzer);
+
+  // Voxel Renderer cleanup
+  if (world->voxel_renderer) {
+    voxel_renderer_destroy(world->voxel_renderer);
+  }
 
   free(world);
 }
