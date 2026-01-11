@@ -15,7 +15,9 @@
  */
 
 // Physical constants
+#ifndef ATM_PI
 #define ATM_PI 3.14159265358979323846
+#endif
 #define ATM_SPEED_OF_LIGHT 299792458.0 // m/s
 #define ATM_EARTH_RADIUS 6360.0        // km
 #define ATM_ATMOSPHERE_HEIGHT 100.0    // km
