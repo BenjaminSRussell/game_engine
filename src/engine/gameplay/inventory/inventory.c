@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+void inventory_destroy(InventoryComponent *inventory);
+
 bool inventory_system_init(void) {
   LOG_INFO("Inventory system initialized");
   return true;

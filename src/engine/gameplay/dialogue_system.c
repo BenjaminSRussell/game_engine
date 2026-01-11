@@ -55,6 +55,8 @@ static DialogueTree g_dialogue_database[MAX_DIALOGUE_NODES];
 static u32 g_dialogue_count = 0;
 static DialogueSession g_current_session = {0};
 
+static bool dialogue_check_node_conditions(u32 node_index);
+
 bool dialogue_init(void) {
   memset(g_dialogue_database, 0, sizeof(g_dialogue_database));
   memset(&g_current_session, 0, sizeof(g_current_session));
