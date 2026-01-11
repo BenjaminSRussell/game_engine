@@ -1,6 +1,9 @@
 #include <character/animation/animation_system.h>
 #include <core/logger.h>
 #include <core/memory.h>
+#include <math/mat4.h>
+#include <math/quat.h>
+#include <math/vec3.h>
 #include <stdlib.h>
 #include <string.h>
 
