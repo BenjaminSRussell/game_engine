@@ -239,6 +239,9 @@ void vehicle_update(VehiclePhysics *vehicle, f32 delta_time) {
         vehicle_update_wheel_contact(vehicle, i);
     }
     
+    // Update suspension system with force calculations
+    vehicle_update_suspension_system(vehicle);
+    
     // Update engine RPM based on wheel speed and gear
     // This would be implemented in the engine todo
     
@@ -331,4 +334,155 @@ bool vehicle_perform_wheel_raycast(const VehiclePhysics *vehicle, u32 wheel_inde
     if (success && hit_distance) *hit_distance = raycast.hit_distance;
     
     return success;
+}
+
+// Suspension force calculation using spring-damper model
+static Vec3 vehicle_calculate_suspension_force(const VehiclePhysics *vehicle, u32 wheel_index) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return (Vec3){0.0f, 0.0f, 0.0f};
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    
+    if (!wheel->is_grounded || wheel->compression <= 0.0f) {
+        return (Vec3){0.0f, 0.0f, 0.0f};
+    }
+    
+    // Spring force: F = -k * x (Hooke's law)
+    f32 spring_force = wheel->suspension_stiffness * wheel->compression;
+    
+    // Damping force: F = -c * v
+    // We need wheel velocity relative to ground contact point
+    // For now, we'll estimate damping based on compression rate
+    f32 damping_force = wheel->suspension_damping * wheel->compression * 0.1f;
+    
+    // Total suspension force (upward, opposing compression)
+    f32 total_force = spring_force + damping_force;
+    
+    // Apply force in direction of contact normal (usually upward)
+    Vec3 force = vec3_scale(wheel->contact_normal, total_force);
+    
+    LOG_TRACE("Wheel %u suspension: spring=%.1fN, damping=%.1fN, total=%.1fN", 
+             wheel_index, spring_force, damping_force, total_force);
+    
+    return force;
+}
+
+// Calculate suspension forces for all wheels
+static void vehicle_calculate_suspension_forces(VehiclePhysics *vehicle, Vec3 *forces) {
+    if (!vehicle || !forces) return;
+    
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        forces[i] = vehicle_calculate_suspension_force(vehicle, i);
+    }
+}
+
+// Anti-roll bar calculation for improved stability
+static Vec3 vehicle_calculate_anti_roll_force(const VehiclePhysics *vehicle) {
+    if (!vehicle || vehicle->wheel_count < 4) {
+        return (Vec3){0.0f, 0.0f, 0.0f};
+    }
+    
+    // Calculate roll angle from wheel compression differences
+    f32 left_compression = 0.0f, right_compression = 0.0f;
+    u32 left_count = 0, right_count = 0;
+    
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        const VehicleWheel *wheel = &vehicle->wheels[i];
+        
+        // Simple left/right classification based on position
+        if (wheel->position.x < 0.0f) {
+            left_compression += wheel->compression;
+            left_count++;
+        } else {
+            right_compression += wheel->compression;
+            right_count++;
+        }
+    }
+    
+    if (left_count > 0) left_compression /= left_count;
+    if (right_count > 0) right_compression /= right_count;
+    
+    // Anti-roll force proportional to compression difference
+    f32 compression_diff = left_compression - right_compression;
+    f32 anti_roll_stiffness = 5000.0f; // Anti-roll bar stiffness
+    
+    Vec3 anti_roll_force = (Vec3){0.0f, 0.0f, compression_diff * anti_roll_stiffness};
+    
+    LOG_TRACE("Anti-roll: left=%.3f, right=%.3f, force=%.1fN", 
+             left_compression, right_compression, vec3_length(anti_roll_force));
+    
+    return anti_roll_force;
+}
+
+// Enhanced suspension system with load balancing
+static void vehicle_update_suspension_system(VehiclePhysics *vehicle) {
+    if (!vehicle) return;
+    
+    Vec3 suspension_forces[MAX_WHEELS];
+    vehicle_calculate_suspension_forces(vehicle, suspension_forces);
+    
+    // Calculate total suspension forces for load balancing
+    Vec3 total_suspension_force = {0.0f, 0.0f, 0.0f};
+    u32 grounded_wheels = 0;
+    
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        if (vehicle->wheels[i].is_grounded) {
+            total_suspension_force = vec3_add(total_suspension_force, suspension_forces[i]);
+            grounded_wheels++;
+        }
+    }
+    
+    // Apply load balancing if vehicle is unevenly loaded
+    if (grounded_wheels > 0) {
+        Vec3 avg_suspension_force = vec3_scale(total_suspension_force, 1.0f / grounded_wheels);
+        
+        for (u32 i = 0; i < vehicle->wheel_count; i++) {
+            if (vehicle->wheels[i].is_grounded) {
+                // Calculate force difference from average
+                Vec3 force_diff = vec3_sub(suspension_forces[i], avg_suspension_force);
+                
+                // Apply load balancing (soft constraint)
+                f32 balance_factor = 0.1f; // How strongly to balance loads
+                Vec3 balancing_force = vec3_scale(force_diff, -balance_factor);
+                
+                // Update suspension force with balancing
+                suspension_forces[i] = vec3_add(suspension_forces[i], balancing_force);
+            }
+        }
+    }
+    
+    // Apply anti-roll forces
+    Vec3 anti_roll_force = vehicle_calculate_anti_roll_force(vehicle);
+    
+    // In a full implementation, these forces would be applied to the vehicle body
+    // For now, we'll just log the results
+    LOG_DEBUG("Suspension system updated: total_force=(%.1f,%.1f,%.1f)N, anti_roll=%.1fN",
+             total_suspension_force.x, total_suspension_force.y, total_suspension_force.z,
+             vec3_length(anti_roll_force));
+}
+
+// Public API for suspension system
+f32 vehicle_get_suspension_force_magnitude(const VehiclePhysics *vehicle, u32 wheel_index) {
+    Vec3 force = vehicle_calculate_suspension_force(vehicle, wheel_index);
+    return vec3_length(force);
+}
+
+void vehicle_get_suspension_force_vector(const VehiclePhysics *vehicle, u32 wheel_index,
+                                          Vec3 *force) {
+    if (force) {
+        *force = vehicle_calculate_suspension_force(vehicle, wheel_index);
+    }
+}
+
+f32 vehicle_get_total_suspension_force(const VehiclePhysics *vehicle) {
+    if (!vehicle) return 0.0f;
+    
+    f32 total_force = 0.0f;
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        Vec3 force = vehicle_calculate_suspension_force(vehicle, i);
+        total_force += vec3_length(force);
+    }
+    
+    return total_force;
 }

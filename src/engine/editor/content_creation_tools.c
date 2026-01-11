@@ -288,6 +288,254 @@ ContentCreationContext* content_creation_get_context(void) {
     return &g_context;
 }
 
+// MARK: - Preview Entity System
+
+static Entity content_creation_create_preview_entity(ContentType type) {
+    // Create a preview entity based on content type
+    Entity preview_entity = {0};
+    
+    // Create entity through ECS system
+    preview_entity = ecs_create_entity();
+    if (preview_entity.id == 0) {
+        LOG_ERROR("Failed to create preview entity");
+        return preview_entity;
+    }
+    
+    // Add transform component
+    TransformComponent* transform = (TransformComponent*)ecs_add_component(preview_entity.id, COMPONENT_TYPE_TRANSFORM);
+    if (!transform) {
+        LOG_ERROR("Failed to add transform to preview entity");
+        return preview_entity;
+    }
+    
+    // Set initial transform
+    transform->position = (vec3_t){0.0f, 0.0f, 0.0f};
+    transform->rotation = (vec4_t){0.0f, 0.0f, 0.0f, 1.0f};
+    transform->scale = (vec3_t){1.0f, 1.0f, 1.0f};
+    
+    // Add render component
+    RenderComponent* render = (RenderComponent*)ecs_add_component(preview_entity.id, COMPONENT_TYPE_RENDER);
+    if (!render) {
+        LOG_ERROR("Failed to add render component to preview entity");
+        return preview_entity;
+    }
+    
+    // Set default render properties based on content type
+    switch (type) {
+        case CONTENT_TYPE_BLOCK:
+            content_creation_setup_block_preview(preview_entity, render);
+            break;
+        case CONTENT_TYPE_ITEM:
+            content_creation_setup_item_preview(preview_entity, render);
+            break;
+        case CONTENT_TYPE_MOB:
+            content_creation_setup_mob_preview(preview_entity, render);
+            break;
+        default:
+            LOG_ERROR("Unknown content type for preview: %d", type);
+            break;
+    }
+    
+    // Add physics component for collision preview
+    PhysicsComponent* physics = (PhysicsComponent*)ecs_add_component(preview_entity.id, COMPONENT_TYPE_PHYSICS);
+    if (physics) {
+        physics->collidable = true;
+        physics->solid = true;
+        physics->bounds = (vec3_t){0.5f, 0.5f, 0.5f}; // Default bounds
+    }
+    
+    LOG_INFO("Created preview entity for type %d", type);
+    return preview_entity;
+}
+
+static void content_creation_setup_block_preview(Entity entity, RenderComponent* render) {
+    if (!render) return;
+    
+    // Set default block render properties
+    render->mesh_id = 0; // Default cube mesh
+    render->material_id = 0; // Default material
+    render->visible = true;
+    render->cast_shadows = true;
+    render->receive_shadows = true;
+    
+    // Apply current block properties if available
+    if (g_context.current_block) {
+        content_creation_update_preview_from_block(entity, g_context.current_block);
+    }
+}
+
+static void content_creation_setup_item_preview(Entity entity, RenderComponent* render) {
+    if (!render) return;
+    
+    // Set default item render properties (smaller scale)
+    render->mesh_id = 1; // Default item mesh
+    render->material_id = 1; // Default item material
+    render->visible = true;
+    render->cast_shadows = false; // Items typically don't cast shadows
+    render->receive_shadows = true;
+    
+    // Apply current item properties if available
+    if (g_context.current_item) {
+        content_creation_update_preview_from_item(entity, g_context.current_item);
+    }
+}
+
+static void content_creation_setup_mob_preview(Entity entity, RenderComponent* render) {
+    if (!render) return;
+    
+    // Set default mob render properties
+    render->mesh_id = 2; // Default humanoid mesh
+    render->material_id = 2; // Default mob material
+    render->visible = true;
+    render->cast_shadows = true;
+    render->receive_shadows = true;
+    
+    // Apply current mob properties if available
+    if (g_context.current_mob) {
+        content_creation_update_preview_from_mob(entity, g_context.current_mob);
+    }
+}
+
+static void content_creation_update_preview_from_block(Entity entity, BlockDefinition* block) {
+    if (!block) return;
+    
+    // Update render component
+    RenderComponent* render = (RenderComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_RENDER);
+    if (render) {
+        // Load block texture if specified
+        if (strlen(block->texture_path) > 0) {
+            render->texture_id = content_creation_load_texture(block->texture_path);
+        }
+        
+        // Load block model if specified
+        if (strlen(block->model_path) > 0) {
+            render->mesh_id = content_creation_load_mesh(block->model_path);
+        }
+        
+        // Apply color tint
+        render->color_tint = block->color;
+        render->transparent = block->transparent;
+        render->emissive = block->emissive;
+        
+        // Update physics based on block properties
+        PhysicsComponent* physics = (PhysicsComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_PHYSICS);
+        if (physics) {
+            physics->collidable = block->collidable;
+            physics->solid = block->solid;
+            physics->bounds = (vec3_t){0.5f, 0.5f, 0.5f}; // Standard block size
+        }
+    }
+    
+    // Update transform
+    TransformComponent* transform = (TransformComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_TRANSFORM);
+    if (transform) {
+        transform->position = g_context.preview_position;
+    }
+}
+
+static void content_creation_update_preview_from_item(Entity entity, ItemDefinition* item) {
+    if (!item) return;
+    
+    // Update render component
+    RenderComponent* render = (RenderComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_RENDER);
+    if (render) {
+        // Load item texture if specified
+        if (strlen(item->texture_path) > 0) {
+            render->texture_id = content_creation_load_texture(item->texture_path);
+        }
+        
+        // Load item model if specified
+        if (strlen(item->model_path) > 0) {
+            render->mesh_id = content_creation_load_mesh(item->model_path);
+        }
+        
+        // Apply item scale (items are typically smaller)
+        TransformComponent* transform = (TransformComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_TRANSFORM);
+        if (transform) {
+            transform->scale = (vec3_t){item->scale, item->scale, item->scale};
+            transform->position = g_context.preview_position;
+        }
+        
+        // Update physics (items typically don't collide)
+        PhysicsComponent* physics = (PhysicsComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_PHYSICS);
+        if (physics) {
+            physics->collidable = false;
+            physics->solid = false;
+            physics->bounds = (vec3_t){0.25f, 0.25f, 0.25f}; // Smaller bounds for items
+        }
+    }
+}
+
+static void content_creation_update_preview_from_mob(Entity entity, MobDefinition* mob) {
+    if (!mob) return;
+    
+    // Update render component
+    RenderComponent* render = (RenderComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_RENDER);
+    if (render) {
+        // Load mob texture if specified
+        if (strlen(mob->texture_path) > 0) {
+            render->texture_id = content_creation_load_texture(mob->texture_path);
+        }
+        
+        // Load mob model if specified
+        if (strlen(mob->model_path) > 0) {
+            render->mesh_id = content_creation_load_mesh(mob->model_path);
+        }
+        
+        // Update transform with mob dimensions
+        TransformComponent* transform = (TransformComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_TRANSFORM);
+        if (transform) {
+            transform->scale = (vec3_t){mob->width, mob->height, mob->width}; // Use mob dimensions
+            transform->position = g_context.preview_position;
+        }
+        
+        // Update physics with mob dimensions
+        PhysicsComponent* physics = (PhysicsComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_PHYSICS);
+        if (physics) {
+            physics->collidable = true;
+            physics->solid = true;
+            physics->bounds = (vec3_t){mob->width * 0.5f, mob->height * 0.5f, mob->width * 0.5f};
+        }
+    }
+}
+
+static u32 content_creation_load_texture(const char* texture_path) {
+    // Load texture through asset manager
+    if (g_context.asset_manager) {
+        Asset* texture_asset = asset_manager_load(g_context.asset_manager, 
+                                                  texture_path, 
+                                                  ASSET_TYPE_TEXTURE, 
+                                                  texture_path);
+        if (texture_asset) {
+            return texture_asset->id;
+        }
+    }
+    return 0; // Default texture ID
+}
+
+static u32 content_creation_load_mesh(const char* mesh_path) {
+    // Load mesh through asset manager
+    if (g_context.asset_manager) {
+        Asset* mesh_asset = asset_manager_load(g_context.asset_manager, 
+                                                mesh_path, 
+                                                ASSET_TYPE_MODEL, 
+                                                mesh_path);
+        if (mesh_asset) {
+            return mesh_asset->id;
+        }
+    }
+    return 0; // Default mesh ID
+}
+
+static void content_creation_destroy_preview_entity(void) {
+    if (g_context.preview_entity.id != 0) {
+        // Destroy preview entity through ECS system
+        ecs_destroy_entity(g_context.preview_entity.id);
+        g_context.preview_entity.id = 0;
+        LOG_INFO("Destroyed preview entity");
+    }
+}
+
 // MARK: - Block Creation Tools
 
 void content_creation_start_block_creation(void) {
@@ -317,7 +565,8 @@ void content_creation_start_block_editing(BlockDefinition* block) {
     g_context.current_block = block;
     
     // Create preview entity with block properties
-    // TODO: Create preview entity with block's mesh and texture
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_BLOCK);
+    content_creation_update_preview_from_block(g_context.preview_entity, block);
     
     g_context.preview_visible = true;
     LOG_INFO("Started editing block: %s", block->name);
@@ -364,7 +613,7 @@ void content_creation_set_block_texture(const char* texture_path) {
         strncpy(g_context.current_block->texture_path, texture_path, sizeof(g_context.current_block->texture_path) - 1);
         
         // Update preview texture
-        // TODO: Update preview entity texture
+        content_creation_update_preview_from_block(g_context.preview_entity, g_context.current_block);
     }
 }
 
@@ -373,7 +622,7 @@ void content_creation_set_block_model(const char* model_path) {
         strncpy(g_context.current_block->model_path, model_path, sizeof(g_context.current_block->model_path) - 1);
         
         // Update preview model
-        // TODO: Update preview entity model
+        content_creation_update_preview_from_block(g_context.preview_entity, g_context.current_block);
     }
 }
 
@@ -382,7 +631,7 @@ void content_creation_set_block_color(Vec3 color) {
         g_context.current_block->color = color;
         
         // Update preview color
-        // TODO: Update preview entity color
+        content_creation_update_preview_from_block(g_context.preview_entity, g_context.current_block);
     }
 }
 
@@ -402,7 +651,7 @@ void content_creation_set_block_transparent(bool transparent) {
         g_context.current_block->transparent = transparent;
         
         // Update preview transparency
-        // TODO: Update preview entity transparency
+        content_creation_update_preview_from_block(g_context.preview_entity, g_context.current_block);
     }
 }
 
