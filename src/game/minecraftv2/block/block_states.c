@@ -104,12 +104,3 @@ void block_update_lava_flow(ChunkManager *chunk_manager, i32 x, i32 y, i32 z) {
   (void)y;
   (void)z;
 }
-
-void block_update_falling(ChunkManager *chunk_manager,
-                          PhysicsWorld *physics_world, i32 x, i32 y, i32 z) {
-  (void)chunk_manager;
-  (void)physics_world;
-  (void)x;
-  (void)y;
-  (void)z;
-}
