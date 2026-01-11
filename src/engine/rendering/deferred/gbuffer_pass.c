@@ -181,13 +181,17 @@ GBuffer *gbuffer_create(uint32_t width, uint32_t height) {
     
     // Create G-buffer textures
     metal_texture_desc_t tex_desc = {
+        .type = METAL_TEXTURE_TYPE_2D,
+        .format = METAL_PIXEL_FORMAT_BGRA8_UNORM,
         .width = width,
         .height = height,
         .depth = 1,
-        .pixel_format = METAL_PIXEL_FORMAT_BGRA8_UNORM,
-        .texture_type = METAL_TEXTURE_TYPE_2D,
+        .array_length = 1,
+        .mip_levels = 1,
         .usage = METAL_TEXTURE_USAGE_RENDER_TARGET | METAL_TEXTURE_USAGE_SHADER_READ,
-        .storage_mode = METAL_STORAGE_PRIVATE
+        .storage_mode = METAL_TEXTURE_STORAGE_PRIVATE,
+        .generate_mipmaps = false,
+        .label = "GBuffer Albedo"
     };
     
     // Albedo texture
@@ -352,14 +356,14 @@ void *gbuffer_get_texture(GBuffer *gbuffer, GBufferTexture type) {
     if (!gbuffer || type >= GBUFFER_COUNT)
         return NULL;
     
-    return gbuffer->textures[type] ? gbuffer->textures[type]->texture : NULL;
+    return gbuffer->textures[type];
 }
 
 void *gbuffer_get_depth_texture(GBuffer *gbuffer) {
     if (!gbuffer)
         return NULL;
     
-    return gbuffer->depth_texture ? gbuffer->depth_texture->texture : NULL;
+    return gbuffer->depth_texture;
 }
 
 void gbuffer_get_dimensions(GBuffer *gbuffer, uint32_t *width, uint32_t *height) {

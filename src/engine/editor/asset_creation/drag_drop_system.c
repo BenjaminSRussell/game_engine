@@ -564,22 +564,83 @@ static void drag_drop_create_ghost_entity(void) {
     // Create ghost entity based on drag data type
     switch (g_context.current_drag.type) {
         case DRAG_DATA_TYPE_ASSET:
-            // TODO: Create ghost entity with asset mesh
+            // Create ghost entity with asset mesh
+            {
+                AssetDragData* asset_data = (AssetDragData*)g_context.current_drag.data;
+                if (asset_data && asset_data->asset_id != 0) {
+                    // Create ghost entity with the asset's mesh
+                    g_context.ghost_entity.id = entity_create();
+                    if (g_context.ghost_entity.id != 0) {
+                        // Load asset mesh and assign to ghost entity
+                        entity_add_mesh_component(g_context.ghost_entity.id, asset_data->asset_id);
+                        entity_set_material(g_context.ghost_entity.id, 0xFFFFFFFF); // Ghost material
+                        entity_set_visibility(g_context.ghost_entity.id, false); // Initially hidden
+                        entity_set_collision_enabled(g_context.ghost_entity.id, false); // No collision
+                        LOG_DEBUG("Created ghost entity for asset %u", asset_data->asset_id);
+                    }
+                }
+            }
             break;
             
         case DRAG_DATA_TYPE_ENTITY:
-            // TODO: Create ghost entity copy
+            // Create ghost entity copy
+            {
+                EntityDragData* entity_data = (EntityDragData*)g_context.current_drag.data;
+                if (entity_data && entity_data->entity_id != 0) {
+                    // Create copy of the entity
+                    g_context.ghost_entity.id = entity_clone(entity_data->entity_id);
+                    if (g_context.ghost_entity.id != 0) {
+                        entity_set_visibility(g_context.ghost_entity.id, false); // Initially hidden
+                        entity_set_collision_enabled(g_context.ghost_entity.id, false); // No collision
+                        entity_set_material(g_context.ghost_entity.id, 0xFFFFFFFF); // Ghost material
+                        LOG_DEBUG("Created ghost entity copy of entity %u", entity_data->entity_id);
+                    }
+                }
+            }
             break;
             
         case DRAG_DATA_TYPE_FILE:
-            // TODO: Create file icon ghost
+            // Create file icon ghost
+            {
+                FileDragData* file_data = (FileDragData*)g_context.current_drag.data;
+                if (file_data && file_data->file_path[0] != '\0') {
+                    // Create simple ghost entity with file icon mesh
+                    g_context.ghost_entity.id = entity_create();
+                    if (g_context.ghost_entity.id != 0) {
+                        // Use a simple cube as file icon placeholder
+                        entity_add_mesh_component(g_context.ghost_entity.id, MESH_CUBE_ID);
+                        entity_set_material(g_context.ghost_entity.id, 0xFFFFFFFF); // Ghost material
+                        entity_set_scale(g_context.ghost_entity.id, (Vec3){0.5f, 0.5f, 0.1f}); // File-like proportions
+                        entity_set_visibility(g_context.ghost_entity.id, false); // Initially hidden
+                        entity_set_collision_enabled(g_context.ghost_entity.id, false); // No collision
+                        LOG_DEBUG("Created ghost entity for file '%s'", file_data->file_path);
+                    }
+                }
+            }
             break;
             
         case DRAG_DATA_TYPE_TEXT:
-            // TODO: Create text ghost
+            // Create text ghost
+            {
+                TextDragData* text_data = (TextDragData*)g_context.current_drag.data;
+                if (text_data && text_data->text[0] != '\0') {
+                    // Create simple ghost entity for text
+                    g_context.ghost_entity.id = entity_create();
+                    if (g_context.ghost_entity.id != 0) {
+                        // Use a simple plane as text placeholder
+                        entity_add_mesh_component(g_context.ghost_entity.id, MESH_PLANE_ID);
+                        entity_set_material(g_context.ghost_entity.id, 0xFFFFFFFF); // Ghost material
+                        entity_set_scale(g_context.ghost_entity.id, (Vec3){1.0f, 0.2f, 1.0f}); // Text-like proportions
+                        entity_set_visibility(g_context.ghost_entity.id, false); // Initially hidden
+                        entity_set_collision_enabled(g_context.ghost_entity.id, false); // No collision
+                        LOG_DEBUG("Created ghost entity for text '%.20s...'", text_data->text);
+                    }
+                }
+            }
             break;
             
         default:
+            LOG_WARN("Unknown drag data type for ghost entity creation");
             break;
     }
 }
