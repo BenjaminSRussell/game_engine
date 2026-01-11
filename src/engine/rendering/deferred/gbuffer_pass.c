@@ -9,8 +9,7 @@
 
 #include "backend/metal/mtl_buffer.h"
 #include "backend/metal/mtl_device.h"
-#include "backend/metal/mtl_render_command_encoder.h"
-#include "backend/metal/mtl_render_pipeline.h"
+#include "backend/metal/mtl_encoder.h"
 #include "backend/metal/mtl_texture.h"
 #include "../framebuffer.h"
 #include "../render_pipeline.h"
@@ -36,8 +35,8 @@ typedef struct {
     uint32_t height;
     
     // Rendering pipeline
-    metal_render_pipeline_t *pipeline;
-    metal_depth_stencil_state_t *depth_state;
+    void *pipeline;
+    void *depth_state;
     
     // Statistics
     uint32_t triangles_rendered;
@@ -182,32 +181,40 @@ GBuffer *gbuffer_create(uint32_t width, uint32_t height) {
     
     // Create G-buffer textures
     metal_texture_desc_t tex_desc = {
+        .type = METAL_TEXTURE_TYPE_2D,
+        .format = METAL_PIXEL_FORMAT_BGRA8_UNORM,
         .width = width,
         .height = height,
         .depth = 1,
-        .pixel_format = METAL_PIXEL_FORMAT_BGRA8_UNORM,
-        .texture_type = METAL_TEXTURE_TYPE_2D,
+        .array_length = 1,
+        .mip_levels = 1,
         .usage = METAL_TEXTURE_USAGE_RENDER_TARGET | METAL_TEXTURE_USAGE_SHADER_READ,
-        .storage_mode = METAL_STORAGE_PRIVATE
+        .storage_mode = METAL_TEXTURE_STORAGE_PRIVATE,
+        .generate_mipmaps = false,
+        .label = "GBuffer Albedo"
     };
     
     // Albedo texture
     gbuffer->textures[GBUFFER_ALBEDO] = metal_texture_create(device, &tex_desc);
     
     // Normal texture (RGB10A2 for better precision)
-    tex_desc.pixel_format = METAL_PIXEL_FORMAT_RGB10A2_UNORM;
+    tex_desc.format = METAL_PIXEL_FORMAT_RGBA16_FLOAT;
+    tex_desc.label = "GBuffer Normal";
     gbuffer->textures[GBUFFER_NORMAL] = metal_texture_create(device, &tex_desc);
     
     // Material texture (metallic, roughness, AO)
-    tex_desc.pixel_format = METAL_PIXEL_FORMAT_BGRA8_UNORM;
+    tex_desc.format = METAL_PIXEL_FORMAT_BGRA8_UNORM;
+    tex_desc.label = "GBuffer Material";
     gbuffer->textures[GBUFFER_MATERIAL] = metal_texture_create(device, &tex_desc);
     
     // Motion vectors texture
+    tex_desc.label = "GBuffer Motion";
     gbuffer->textures[GBUFFER_MOTION] = metal_texture_create(device, &tex_desc);
     
     // Depth texture
-    tex_desc.pixel_format = METAL_PIXEL_FORMAT_DEPTH32_FLOAT;
+    tex_desc.format = METAL_PIXEL_FORMAT_DEPTH32_FLOAT;
     tex_desc.usage = METAL_TEXTURE_USAGE_RENDER_TARGET | METAL_TEXTURE_USAGE_SHADER_READ;
+    tex_desc.label = "GBuffer Depth";
     gbuffer->depth_texture = metal_texture_create(device, &tex_desc);
     
     // Verify all textures were created
@@ -335,18 +342,18 @@ void gbuffer_bind_for_lighting(GBuffer *gbuffer, void *command_encoder) {
     LOG_DEBUG("G-buffer bound for lighting pass");
 }
 
-void gbuffer_get_texture(GBuffer *gbuffer, GBufferTexture type, void **texture) {
-    if (!gbuffer || !texture || type >= GBUFFER_COUNT)
-        return;
+void *gbuffer_get_texture(GBuffer *gbuffer, GBufferTexture type) {
+    if (!gbuffer || type >= GBUFFER_COUNT)
+        return NULL;
     
-    *texture = gbuffer->textures[type];
+    return gbuffer->textures[type];
 }
 
-void gbuffer_get_depth_texture(GBuffer *gbuffer, void **texture) {
-    if (!gbuffer || !texture)
-        return;
+void *gbuffer_get_depth_texture(GBuffer *gbuffer) {
+    if (!gbuffer)
+        return NULL;
     
-    *texture = gbuffer->depth_texture;
+    return gbuffer->depth_texture;
 }
 
 void gbuffer_get_dimensions(GBuffer *gbuffer, uint32_t *width, uint32_t *height) {
