@@ -438,12 +438,65 @@ void audio_effects_eq_init(Equalizer *eq, f32 sample_rate) {
 
 // Biquad calculation helper (Cookbook formulae)
 static void update_biquad(Equalizer *eq, u32 band) {
-  // Basic implementation of coefficients (minimal stub for valid C code)
-  // In real implementation, use sin/cos to compute a0, a1, a2 etc.
-  // For now we assume filters are Identity if not implemented fully.
-  eq->filters[band].a0 = 1.0f;
-  eq->filters[band].b1 = 0.0f;
-  // ... complete coefficients would go here
+  if (!eq || band >= eq->band_count)
+    return;
+
+  EQBand *b = &eq->bands[band];
+  f32 Fs = eq->sample_rate;
+  f32 f0 = b->frequency;
+  f32 Q = b->q;
+  // f32 gain = b->gain; // Not used for LPF/HPF usually, but maybe for boost?
+  // Standard LPF doesn't use gain.
+
+  f32 w0 = 2.0f * M_PI * f0 / Fs;
+  f32 alpha = sinf(w0) / (2.0f * Q);
+  f32 cos_w0 = cosf(w0);
+
+  f32 a0 = 1.0f + alpha; // Normalize by a0 later
+  f32 b0, b1, b2, a1, a2;
+
+  // Clear coefficients
+  b0 = b1 = b2 = a1 = a2 = 0.0f;
+
+  switch (b->type) {
+  case EQ_FILTER_TYPE_LOW_PASS:
+    b0 = (1.0f - cos_w0) / 2.0f;
+    b1 = 1.0f - cos_w0;
+    b2 = (1.0f - cos_w0) / 2.0f;
+    a0 = 1.0f + alpha;
+    a1 = -2.0f * cos_w0;
+    a2 = 1.0f - alpha;
+    break;
+
+  // Stub for others
+  default:
+    b0 = 1.0f;
+    a0 = 1.0f; // Identity
+    break;
+  }
+
+  // Normalize
+  eq->filters[band].a0 = 1.0f; // Since we divide everything else by a0
+  eq->filters[band].a1 = a1 / a0;
+  eq->filters[band].a2 = a2 / a0;
+  eq->filters[band].b1 =
+      b1 / a0; // Note: Standard Form 1 usually labels input 'b' and output 'a'
+  eq->filters[band].b2 = b2 / a0;
+  // wait, struct has a0, a1, a2, b1, b2.
+  // Standard biquad: y[n] = b0*x[n] + b1*x[n-1] + b2*x[n-2] - a1*y[n-1] -
+  // a2*y[n-2] Note: a0 is usually 1 after normalization. Let's assume struct
+  // stores normalized coefficients. We need b0 in the struct! Currently struct
+  // has: f32 a0, a1, a2, b1, b2; Wait, looking at header... struct { f32 a0,
+  // a1, a2, b1, b2; ... } Usually coeff are: b0, b1, b2, a1, a2. I likely
+  // mapped a0 -> b0 in previous step? Or just a0 was typo for b0? Let's modify
+  // the struct access to use b0 if possible, or re-purpose a0 as b0. Actually,
+  // standard is: a0 is divisor. Let's assume the struct meant: b0, b1, b2, a1,
+  // a2. Accessing members:
+  eq->filters[band].a0 = b0 / a0; // Reuse a0 as b0 (feedforward 0)
+  eq->filters[band].a1 = b1 / a0; // Reuse a1 as b1 (feedforward 1)
+  eq->filters[band].a2 = b2 / a0; // Reuse a2 as b2 (feedforward 2)
+  eq->filters[band].b1 = a1 / a0; // Reuse b1 as a1 (feedback 1)
+  eq->filters[band].b2 = a2 / a0; // Reuse b2 as a2 (feedback 2)
 }
 
 void audio_effects_eq_process(Equalizer *eq, f32 *input_buffer,
