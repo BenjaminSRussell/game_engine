@@ -363,6 +363,8 @@ u32 audio_effect_create_highpass(AudioEffectsSystem *system, f32 cutoff_freq) {
       .cutoff_freq = cutoff_freq, .resonance = 0.1f, .wet_level = 1.0f};
 
   effect->buffer = (f32 *)calloc(16, sizeof(f32));
+  if (effect->buffer)
+    memset(effect->buffer, 0, 16 * sizeof(f32));
   effect->buffer_size = 16;
   effect->buffer_position = 0;
 
