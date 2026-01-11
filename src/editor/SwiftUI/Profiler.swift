@@ -177,8 +177,27 @@ class ProfilerData: ObservableObject {
     }
     
     func exportCSV() {
-        // TODO: Export to CSV
-        print("Exporting profiler data...")
+        let fileName = "profiler_data_\(Date().timeIntervalSince1970).csv"
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName)
+        
+        var csvString = "Frame,FPS,FrameTime,MemoryUsage\n"
+        
+        let maxFrames = max(fpsHistory.count, frameTimeHistory.count, memoryHistory.count)
+        
+        for i in 0..<maxFrames {
+            let fps = i < fpsHistory.count ? String(format: "%.2f", fpsHistory[i].fps) : ""
+            let frameTime = i < frameTimeHistory.count ? String(format: "%.4f", frameTimeHistory[i]) : ""
+            let memory = i < memoryHistory.count ? String(format: "%.2f", memoryHistory[i]) : ""
+            
+            csvString += "\(i),\(fps),\(frameTime),\(memory)\n"
+        }
+        
+        do {
+            try csvString.write(to: path, atomically: true, encoding: .utf8)
+            print("Profiler data exported to: \(path.path)")
+        } catch {
+            print("Failed to export profiler data: \(error)")
+        }
     }
 }
 
