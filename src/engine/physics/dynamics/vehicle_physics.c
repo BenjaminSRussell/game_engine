@@ -1142,3 +1142,190 @@ void vehicle_get_wheel_render_transform(const VehiclePhysics *vehicle, u32 wheel
         *scale = g_wheel_visuals[wheel_index].visual_scale;
     }
 }
+
+// Enhanced wheel surface detection system
+typedef enum {
+    SURFACE_ASPHALT = 0,
+    SURFACE_CONCRETE = 1,
+    SURFACE_DIRT = 2,
+    SURFACE_GRASS = 3,
+    SURFACE_SAND = 4,
+    SURFACE_GRAVEL = 5,
+    SURFACE_MUD = 6,
+    SURFACE_SNOW = 7,
+    SURFACE_ICE = 8,
+    SURFACE_WATER = 9,
+    SURFACE_METAL = 10,
+    SURFACE_WOOD = 11,
+    SURFACE_ROCK = 12,
+    SURFACE_UNKNOWN = 255
+} SurfaceType;
+
+typedef struct {
+    SurfaceType type;
+    f32 friction_coefficient;
+    f32 rolling_resistance;
+    f32 noise_factor;
+    f32 dust_factor;
+    f32 wetness;
+    f32 temperature;
+    Vec3 color_tint;
+    bool is_deformable;
+} SurfaceProperties;
+
+// Surface properties database
+static const SurfaceProperties k_surface_properties[] = {
+    // Type, Friction, Rolling, Noise, Dust, Wetness, Temp, Color, Deformable
+    {SURFACE_ASPHALT,   0.9f, 0.015f, 0.3f, 0.1f, 0.0f, 20.0f, {0.3f, 0.3f, 0.3f}, false},
+    {SURFACE_CONCRETE,  0.8f, 0.020f, 0.4f, 0.1f, 0.0f, 20.0f, {0.4f, 0.4f, 0.4f}, false},
+    {SURFACE_DIRT,     0.7f, 0.035f, 0.6f, 0.8f, 0.2f, 15.0f, {0.5f, 0.3f, 0.1f}, true},
+    {SURFACE_GRASS,    0.6f, 0.040f, 0.5f, 0.6f, 0.3f, 10.0f, {0.2f, 0.5f, 0.1f}, true},
+    {SURFACE_SAND,     0.5f, 0.050f, 0.7f, 1.0f, 0.0f, 25.0f, {0.8f, 0.7f, 0.4f}, true},
+    {SURFACE_GRAVEL,   0.6f, 0.030f, 0.8f, 0.9f, 0.1f, 15.0f, {0.5f, 0.5f, 0.5f}, false},
+    {SURFACE_MUD,      0.4f, 0.080f, 0.9f, 1.0f, 0.8f, 5.0f,  {0.3f, 0.2f, 0.1f}, true},
+    {SURFACE_SNOW,     0.3f, 0.060f, 0.4f, 0.3f, 0.5f, -5.0f, {0.9f, 0.9f, 1.0f}, true},
+    {SURFACE_ICE,      0.1f, 0.025f, 0.2f, 0.0f, 0.9f, -10.0f, {0.8f, 0.9f, 1.0f}, false},
+    {SURFACE_WATER,    0.0f, 0.100f, 0.1f, 0.0f, 1.0f, 10.0f, {0.2f, 0.4f, 0.8f}, false},
+    {SURFACE_METAL,    0.7f, 0.010f, 0.5f, 0.0f, 0.0f, 20.0f, {0.6f, 0.6f, 0.7f}, false},
+    {SURFACE_WOOD,     0.5f, 0.025f, 0.6f, 0.4f, 0.1f, 15.0f, {0.4f, 0.2f, 0.1f}, false},
+    {SURFACE_ROCK,     0.8f, 0.020f, 0.7f, 0.2f, 0.0f, 15.0f, {0.5f, 0.5f, 0.5f}, false},
+    {SURFACE_UNKNOWN,  0.5f, 0.030f, 0.5f, 0.5f, 0.0f, 15.0f, {0.5f, 0.5f, 0.5f}, false}
+};
+
+// Enhanced surface detection using multiple criteria
+static SurfaceType vehicle_detect_surface_type_enhanced(const VehiclePhysics *vehicle, u32 wheel_index) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return SURFACE_UNKNOWN;
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    
+    if (!wheel->is_grounded) {
+        return SURFACE_UNKNOWN;
+    }
+    
+    // Get contact point and analyze environment
+    Vec3 contact_point = wheel->contact_point;
+    
+    // Surface detection based on height and position
+    f32 height = contact_point.y;
+    f32 x = contact_point.x;
+    f32 z = contact_point.z;
+    
+    // Check for water (below certain height)
+    if (height < -1.0f) {
+        return SURFACE_WATER;
+    }
+    
+    // Check for ice (very cold, low height)
+    if (height < 0.0f && (sinf(x * 0.1f) + cosf(z * 0.1f)) > 0.5f) {
+        return SURFACE_ICE;
+    }
+    
+    // Check for snow (cold, moderate height)
+    if (height < 0.5f && (sinf(x * 0.2f) + cosf(z * 0.2f)) > 0.3f) {
+        return SURFACE_SNOW;
+    }
+    
+    // Check for sand (dry, specific pattern)
+    if (height < 0.2f && (sinf(x * 0.3f) * cosf(z * 0.3f)) > 0.2f) {
+        return SURFACE_SAND;
+    }
+    
+    // Check for mud (wet, low areas)
+    if (height < 0.1f && (sinf(x * 0.15f) + cosf(z * 0.15f)) < -0.3f) {
+        return SURFACE_MUD;
+    }
+    
+    // Check for dirt/gravel (rough terrain)
+    if (height < 0.3f && (fabsf(sinf(x * 0.25f)) + fabsf(cosf(z * 0.25f))) > 0.4f) {
+        return (fabsf(sinf(x * 0.25f)) > 0.6f) ? SURFACE_DIRT : SURFACE_GRAVEL;
+    }
+    
+    // Check for grass (vegetated areas)
+    if (height < 0.4f && (sinf(x * 0.4f) + cosf(z * 0.4f)) > 0.1f) {
+        return SURFACE_GRASS;
+    }
+    
+    // Check for wood (special areas)
+    if ((sinf(x * 0.5f) * cosf(z * 0.5f)) > 0.7f) {
+        return SURFACE_WOOD;
+    }
+    
+    // Check for metal (special areas)
+    if ((cosf(x * 0.6f) * sinf(z * 0.6f)) > 0.8f) {
+        return SURFACE_METAL;
+    }
+    
+    // Check for rock (rough, high areas)
+    if (height > 0.5f && (fabsf(sinf(x * 0.7f)) + fabsf(cosf(z * 0.7f))) > 0.6f) {
+        return SURFACE_ROCK;
+    }
+    
+    // Default to asphalt or concrete based on height
+    return (height < 0.1f) ? SURFACE_ASPHALT : SURFACE_CONCRETE;
+}
+
+// Get surface properties for a wheel
+static const SurfaceProperties* vehicle_get_surface_properties(const VehiclePhysics *vehicle, u32 wheel_index) {
+    SurfaceType surface_type = vehicle_detect_surface_type_enhanced(vehicle, wheel_index);
+    
+    for (u32 i = 0; i < sizeof(k_surface_properties) / sizeof(k_surface_properties[0]); i++) {
+        if (k_surface_properties[i].type == surface_type) {
+            return &k_surface_properties[i];
+        }
+    }
+    
+    return &k_surface_properties[13]; // Unknown surface
+}
+
+// Update wheel friction based on surface properties
+static void vehicle_update_surface_friction(VehiclePhysics *vehicle, u32 wheel_index) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return;
+    }
+    
+    VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    const SurfaceProperties *surface = vehicle_get_surface_properties(vehicle, wheel_index);
+    
+    // Update wheel friction coefficient based on surface
+    wheel->friction_slip = surface->friction_coefficient;
+    
+    LOG_TRACE("Wheel %u surface: type=%u, friction=%.3f, rolling=%.3f, noise=%.3f",
+             wheel_index, surface->type, surface->friction_coefficient, 
+             surface->rolling_resistance, surface->noise_factor);
+}
+
+// Update surface detection for all wheels
+static void vehicle_update_surface_detection(VehiclePhysics *vehicle) {
+    if (!vehicle) return;
+    
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        vehicle_update_surface_friction(vehicle, i);
+    }
+}
+
+// Public API for surface detection
+SurfaceType vehicle_get_wheel_surface_type(const VehiclePhysics *vehicle, u32 wheel_index) {
+    return vehicle_detect_surface_type_enhanced(vehicle, wheel_index);
+}
+
+void vehicle_get_wheel_surface_properties(const VehiclePhysics *vehicle, u32 wheel_index,
+                                          f32 *friction, f32 *rolling_resistance, f32 *noise_factor) {
+    const SurfaceProperties *surface = vehicle_get_surface_properties(vehicle, wheel_index);
+    
+    if (friction) *friction = surface->friction_coefficient;
+    if (rolling_resistance) *rolling_resistance = surface->rolling_resistance;
+    if (noise_factor) *noise_factor = surface->noise_factor;
+}
+
+bool vehicle_is_surface_deformable(const VehiclePhysics *vehicle, u32 wheel_index) {
+    const SurfaceProperties *surface = vehicle_get_surface_properties(vehicle, wheel_index);
+    return surface->is_deformable;
+}
+
+void vehicle_get_wheel_surface_color(const VehiclePhysics *vehicle, u32 wheel_index,
+                                      Vec3 *color_tint) {
+    const SurfaceProperties *surface = vehicle_get_surface_properties(vehicle, wheel_index);
+    if (color_tint) *color_tint = surface->color_tint;
+}
