@@ -466,6 +466,17 @@ static void update_biquad(Equalizer *eq, u32 band) {
     a0 = 1.0f + alpha;
     a1 = -2.0f * cos_w0;
     a2 = 1.0f - alpha;
+    a1 = -2.0f * cos_w0;
+    a2 = 1.0f - alpha;
+    break;
+
+  case EQ_FILTER_TYPE_HIGH_PASS:
+    b0 = (1.0f + cos_w0) / 2.0f;
+    b1 = -(1.0f + cos_w0);
+    b2 = (1.0f + cos_w0) / 2.0f;
+    a0 = 1.0f + alpha;
+    a1 = -2.0f * cos_w0;
+    a2 = 1.0f - alpha;
     break;
 
   // Stub for others
