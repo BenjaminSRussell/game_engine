@@ -190,11 +190,400 @@ void debug_draw_grid(debug_renderer_t* dbg, simd_float3 center, float size, int 
 
 void debug_draw_text_3d(debug_renderer_t* dbg, simd_float3 position, const char* text, simd_float4 color) {
 #ifdef __OBJC__
-    // TODO: Implement 3D text rendering using billboards or SDF text
-    // For now, draw a small sphere as a placeholder marker
     if (!dbg || !text) return;
-    debug_draw_sphere(dbg, position, 0.1f, color);
+    
+    // Calculate text dimensions (approximate)
+    const float char_width = 0.1f;
+    const float char_height = 0.15f;
+    const float char_spacing = 0.05f;
+    
+    size_t text_length = strlen(text);
+    float total_width = text_length * (char_width + char_spacing) - char_spacing;
+    
+    // Create billboard quad for text background
+    simd_float3 camera_pos = {0}; // This should come from the active camera
+    simd_float3 to_camera = simd_normalize(camera_pos - position);
+    simd_float3 right = simd_normalize(simd_cross(to_camera, (simd_float3){0, 1, 0}));
+    simd_float3 up = simd_cross(right, to_camera);
+    
+    // Scale factors for the text quad
+    float quad_width = total_width * 0.5f;
+    float quad_height = char_height * 0.5f;
+    
+    // Calculate quad corners
+    simd_float3 bottom_left = position - right * quad_width - up * quad_height;
+    simd_float3 bottom_right = position + right * quad_width - up * quad_height;
+    simd_float3 top_right = position + right * quad_width + up * quad_height;
+    simd_float3 top_left = position - right * quad_width + up * quad_height;
+    
+    // Draw text background quad
+    simd_float4 bg_color = {0.0f, 0.0f, 0.0f, 0.7f}; // Semi-transparent black
+    debug_draw_quad(dbg, bottom_left, bottom_right, top_right, top_left, bg_color);
+    
+    // Draw text outline
+    simd_float4 outline_color = {1.0f, 1.0f, 1.0f, 0.9f};
+    debug_draw_quad(dbg, bottom_left, bottom_right, top_right, top_left, outline_color);
+    
+    // For each character, draw a simple representation
+    simd_float3 char_pos = bottom_left + right * (char_width * 0.5f) + up * (char_height * 0.5f);
+    
+    for (size_t i = 0; i < text_length; i++) {
+        // Draw a small sphere to represent each character
+        debug_draw_sphere(dbg, char_pos, 0.02f, color);
+        
+        // Move to next character position
+        char_pos = char_pos + right * (char_width + char_spacing);
+    }
+    
+    // Alternative: Draw text as connected lines forming character outlines
+    debug_draw_text_outline(dbg, position, text, color);
 #endif
+}
+
+static void debug_draw_quad(debug_renderer_t* dbg, simd_float3 bl, simd_float3 br, simd_float3 tr, simd_float3 tl, simd_float4 color) {
+#ifdef __OBJC__
+    // Draw quad as two triangles using lines
+    debug_draw_line(dbg, bl, br, color);
+    debug_draw_line(dbg, br, tr, color);
+    debug_draw_line(dbg, tr, tl, color);
+    debug_draw_line(dbg, tl, bl, color);
+    
+    // Draw diagonal lines for better visibility
+    debug_draw_line(dbg, bl, tr, color);
+    debug_draw_line(dbg, br, tl, color);
+#endif
+}
+
+static void debug_draw_text_outline(debug_renderer_t* dbg, simd_float3 position, const char* text, simd_float4 color) {
+#ifdef __OBJC__
+    if (!dbg || !text) return;
+    
+    // Simple bitmap-style text rendering using line segments
+    const float char_size = 0.08f;
+    const float char_spacing = 0.1f;
+    
+    simd_float3 camera_pos = {0}; // Should come from active camera
+    simd_float3 to_camera = simd_normalize(camera_pos - position);
+    simd_float3 right = simd_normalize(simd_cross(to_camera, (simd_float3){0, 1, 0}));
+    simd_float3 up = simd_cross(right, to_camera);
+    
+    simd_float3 char_start = position - right * (strlen(text) * char_spacing * 0.5f);
+    
+    for (size_t i = 0; i < strlen(text); i++) {
+        char c = text[i];
+        simd_float3 char_pos = char_start + right * (i * char_spacing);
+        
+        // Draw simple character representations
+        switch (c) {
+            case 'A':
+            case 'a':
+                debug_draw_char_A(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'B':
+            case 'b':
+                debug_draw_char_B(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'C':
+            case 'c':
+                debug_draw_char_C(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'D':
+            case 'd':
+                debug_draw_char_D(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'E':
+            case 'e':
+                debug_draw_char_E(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'F':
+            case 'f':
+                debug_draw_char_F(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'G':
+            case 'g':
+                debug_draw_char_G(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'H':
+            case 'h':
+                debug_draw_char_H(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'I':
+            case 'i':
+                debug_draw_char_I(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'L':
+            case 'l':
+                debug_draw_char_L(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'N':
+            case 'n':
+                debug_draw_char_N(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'O':
+            case 'o':
+                debug_draw_char_O(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'R':
+            case 'r':
+                debug_draw_char_R(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'S':
+            case 's':
+                debug_draw_char_S(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'T':
+            case 't':
+                debug_draw_char_T(dbg, char_pos, char_size, up, right, color);
+                break;
+            case 'U':
+            case 'u':
+                debug_draw_char_U(dbg, char_pos, char_size, up, right, color);
+                break;
+            case '-':
+                debug_draw_char_dash(dbg, char_pos, char_size, up, right, color);
+                break;
+            case ' ':
+                // Skip spaces
+                break;
+            default:
+                // Draw a box for unknown characters
+                debug_draw_char_box(dbg, char_pos, char_size, up, right, color);
+                break;
+        }
+    }
+#endif
+}
+
+// Character drawing helper functions
+static void debug_draw_char_A(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    simd_float3 middle = pos + up * size * 0.1f;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, top, right_pt, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, right_pt, bottom, color);
+    debug_draw_line(dbg, left + right * size * 0.4f, middle, right_pt - right * size * 0.4f, color);
+}
+
+static void debug_draw_char_B(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    simd_float3 middle = pos;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, top, right_pt, color);
+    debug_draw_line(dbg, right_pt, middle, color);
+    debug_draw_line(dbg, left, middle, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, bottom, right_pt, color);
+}
+
+static void debug_draw_char_C(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    
+    debug_draw_line(dbg, right_pt, top, color);
+    debug_draw_line(dbg, top, left, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, bottom, right_pt, color);
+}
+
+static void debug_draw_char_D(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.3f;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, top, right_pt, color);
+    debug_draw_line(dbg, right_pt, bottom, color);
+    debug_draw_line(dbg, bottom, left, color);
+}
+
+static void debug_draw_char_E(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    simd_float3 middle = pos;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, top, right_pt, color);
+    debug_draw_line(dbg, left, middle, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, bottom, right_pt, color);
+}
+
+static void debug_draw_char_F(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    simd_float3 middle = pos;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, top, right_pt, color);
+    debug_draw_line(dbg, left, middle, color);
+    debug_draw_line(dbg, left, bottom, color);
+}
+
+static void debug_draw_char_G(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    simd_float3 middle = pos;
+    
+    debug_draw_line(dbg, right_pt, top, color);
+    debug_draw_line(dbg, top, left, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, bottom, right_pt, color);
+    debug_draw_line(dbg, right_pt, middle, color);
+    debug_draw_line(dbg, middle, middle + right * size * 0.3f, color);
+}
+
+static void debug_draw_char_H(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, right_pt, top, color);
+    debug_draw_line(dbg, right_pt, bottom, color);
+    debug_draw_line(dbg, left, bottom, right_pt, bottom, color);
+}
+
+static void debug_draw_char_I(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.2f;
+    simd_float3 right_pt = pos + right * size * 0.2f;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, right_pt, top, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, right_pt, bottom, color);
+    debug_draw_line(dbg, pos, top, pos, bottom, color);
+}
+
+static void debug_draw_char_L(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, bottom, right_pt, color);
+}
+
+static void debug_draw_char_N(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, right_pt, top, color);
+    debug_draw_line(dbg, right_pt, bottom, color);
+    debug_draw_line(dbg, left, top, right_pt, bottom, color);
+}
+
+static void debug_draw_char_O(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, top, right_pt, color);
+    debug_draw_line(dbg, right_pt, bottom, color);
+    debug_draw_line(dbg, bottom, left, color);
+}
+
+static void debug_draw_char_R(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    simd_float3 middle = pos;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, top, right_pt, color);
+    debug_draw_line(dbg, right_pt, middle, color);
+    debug_draw_line(dbg, left, middle, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, middle, right_pt, color);
+}
+
+static void debug_draw_char_S(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    simd_float3 middle = pos;
+    
+    debug_draw_line(dbg, right_pt, top, color);
+    debug_draw_line(dbg, top, left, color);
+    debug_draw_line(dbg, left, middle, color);
+    debug_draw_line(dbg, right_pt, middle, color);
+    debug_draw_line(dbg, right_pt, bottom, color);
+    debug_draw_line(dbg, bottom, left, color);
+}
+
+static void debug_draw_char_T(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, right_pt, top, color);
+    debug_draw_line(dbg, pos, top, pos, bottom, color);
+}
+
+static void debug_draw_char_U(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.5f;
+    simd_float3 bottom = pos - up * size * 0.5f;
+    simd_float3 left = pos - right * size * 0.4f;
+    simd_float3 right_pt = pos + right * size * 0.4f;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, left, bottom, color);
+    debug_draw_line(dbg, right_pt, top, color);
+    debug_draw_line(dbg, right_pt, bottom, color);
+    debug_draw_line(dbg, bottom, right_pt, color);
+}
+
+static void debug_draw_char_dash(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 left = pos - right * size * 0.3f;
+    simd_float3 right_pt = pos + right * size * 0.3f;
+    
+    debug_draw_line(dbg, left, pos, color);
+    debug_draw_line(dbg, pos, right_pt, color);
+}
+
+static void debug_draw_char_box(debug_renderer_t* dbg, simd_float3 pos, float size, simd_float3 up, simd_float3 right, simd_float4 color) {
+    simd_float3 top = pos + up * size * 0.4f;
+    simd_float3 bottom = pos - up * size * 0.4f;
+    simd_float3 left = pos - right * size * 0.3f;
+    simd_float3 right_pt = pos + right * size * 0.3f;
+    
+    debug_draw_line(dbg, left, top, color);
+    debug_draw_line(dbg, top, right_pt, color);
+    debug_draw_line(dbg, right_pt, bottom, color);
+    debug_draw_line(dbg, bottom, left, color);
 }
 
 void debug_render(debug_renderer_t* dbg, id encoder_ptr, simd_float4x4 view_proj, bool depth_test) {

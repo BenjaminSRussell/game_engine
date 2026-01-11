@@ -22,9 +22,9 @@
 #ifndef HITBOX_COMPONENT_H
 #define HITBOX_COMPONENT_H
 
-#include "include/common.h"
-#include "include/ecs/ecs.h"
-#include "include/math/vec3.h"
+#include <common.h>
+#include <ecs/ecs.h>
+#include <math/vec3.h>
 
 // Hitbox shape types
 typedef enum {
@@ -79,10 +79,19 @@ typedef struct {
 // HITBOX MANAGEMENT
 // ============================================================================
 
+// System lifecycle
+bool hitbox_system_init(World *world);
+void hitbox_system_shutdown(void);
+void hitbox_system_update(World *world, f32 delta_time);
+
 // Create hitbox components
 HitboxComponent hitbox_create_sphere(f32 radius, u32 team_id);
 HitboxComponent hitbox_create_box(Vec3 half_extents, u32 team_id);
 HitboxComponent hitbox_create_capsule(f32 radius, f32 height, u32 team_id);
+
+// Create a temporary hitbox entity that lasts for a short duration
+Entity hitbox_create_temporary(World *world, Vec3 position, Vec3 direction,
+                               f32 range, f32 duration);
 
 // Hitbox activation (for attack frames)
 void hitbox_activate(HitboxComponent *hitbox);

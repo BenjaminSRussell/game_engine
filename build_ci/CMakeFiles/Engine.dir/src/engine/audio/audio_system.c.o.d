@@ -365,6 +365,7 @@ CMakeFiles/Engine.dir/src/engine/audio/audio_system.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AUMIDIController.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/CoreAudioClock.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioSession.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_engine_types.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/underwater_filter.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/asset_importers.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/renderer.h \

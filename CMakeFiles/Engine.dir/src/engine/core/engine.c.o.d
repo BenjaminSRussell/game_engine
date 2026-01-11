@@ -176,6 +176,7 @@ CMakeFiles/Engine.dir/src/engine/core/engine.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_arg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_engine_types.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_reverb.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/hot_reload.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/post_processing.h \

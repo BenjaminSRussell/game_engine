@@ -28,4 +28,7 @@ bool mesh_gpu_upload_async(mesh_t* mesh, struct metal_device* device,
 u64 mesh_gpu_get_memory_usage(const mesh_t* mesh);
 bool mesh_gpu_is_uploaded(const mesh_t* mesh);
 
+// System Cleanup
+void mesh_gpu_cleanup(void);
+
 #endif // GEOMETRY_MESH_GPU_H

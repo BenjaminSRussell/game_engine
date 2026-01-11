@@ -2,12 +2,10 @@
 #define FLOCKING_SYSTEM_H
 
 #include <core/types.h>
+#include <ecs/ecs.h>
+#include <math/vec3.h>
 #include <stdbool.h>
 #include <stddef.h>
-
-// Forward declarations
-typedef struct Vec3 Vec3;
-typedef struct Entity Entity;
 
 // Boid structure for flocking behavior
 typedef struct {

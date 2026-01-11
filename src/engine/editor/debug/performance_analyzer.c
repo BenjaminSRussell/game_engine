@@ -1,16 +1,81 @@
+// performance_analyzer.c - Enhanced Performance Analysis Tools
 #include "editor/debug/performance_analyzer.h"
+#include <core/logger.h>
 #include <stdlib.h>
 #include <string.h>
 #include <include/math/math.h>
 
+#define PERF_HISTORY_SIZE 60 // 60 frames of history
+#define PERF_THRESHOLD_HIGH_UTILIZATION 0.85f
+#define PERF_THRESHOLD_LOW_CACHE_HIT 0.70f
+#define PERF_THRESHOLD_HIGH_DRAW_CALLS 1000
+
+typedef struct {
+    perf_metrics_t metrics;
+    float timestamp;
+} perf_history_entry_t;
+
+typedef struct performance_analyzer {
+    perf_metrics_t current_metrics;
+    perf_metrics_t average_metrics;
+    
+    bottleneck_type_t detected_bottleneck;
+    float bottleneck_confidence;
+    
+    optimization_hint_t hints[PERF_ANALYSIS_MAX_HINTS];
+    uint32_t hint_count;
+    
+    // Analysis history
+    uint32_t analysis_frame_count;
+    perf_history_entry_t history[PERF_HISTORY_SIZE];
+    uint32_t history_index;
+    
+    // Advanced metrics
+    float frame_time_variance;
+    float memory_pressure_score;
+    float render_pipeline_efficiency;
+    uint32_t frame_spikes_count;
+    float average_frame_time;
+    
+} performance_analyzer_t;
+
 performance_analyzer_t* performance_analyzer_create(void) {
     performance_analyzer_t* analyzer = (performance_analyzer_t*)calloc(1, sizeof(performance_analyzer_t));
+    if (!analyzer) {
+        LOG_ERROR("Failed to create performance analyzer");
+        return NULL;
+    }
+    
+    // Initialize metrics
+    analyzer->average_metrics.gpu_utilization_percent = 0.0f;
+    analyzer->average_metrics.alu_utilization_percent = 0.0f;
+    analyzer->average_metrics.texture_utilization_percent = 0.0f;
+    analyzer->average_metrics.bandwidth_utilization_percent = 0.0f;
+    analyzer->average_metrics.texture_cache_hit_rate = 0.0f;
+    analyzer->average_metrics.l1_cache_hit_rate = 0.0f;
+    analyzer->average_metrics.l2_cache_hit_rate = 0.0f;
+    
+    analyzer->detected_bottleneck = BOTTLENECK_NONE;
+    analyzer->bottleneck_confidence = 0.0f;
+    analyzer->hint_count = 0;
+    analyzer->analysis_frame_count = 0;
+    analyzer->history_index = 0;
+    
+    // Initialize advanced metrics
+    analyzer->frame_time_variance = 0.0f;
+    analyzer->memory_pressure_score = 0.0f;
+    analyzer->render_pipeline_efficiency = 1.0f;
+    analyzer->frame_spikes_count = 0;
+    analyzer->average_frame_time = 16.67f; // 60 FPS target
+    
+    LOG_INFO("Performance analyzer created");
     return analyzer;
 }
 
 void performance_analyzer_destroy(performance_analyzer_t* analyzer) {
     if (analyzer) {
         free(analyzer);
+        LOG_INFO("Performance analyzer destroyed");
     }
 }
 
@@ -18,6 +83,13 @@ void performance_analyzer_update(performance_analyzer_t* analyzer, const perf_me
     if (!analyzer || !metrics) return;
     
     analyzer->current_metrics = *metrics;
+    
+    // Add to history
+    perf_history_entry_t* entry = &analyzer->history[analyzer->history_index];
+    entry->metrics = *metrics;
+    entry->timestamp = (float)analyzer->analysis_frame_count;
+    
+    analyzer->history_index = (analyzer->history_index + 1) % PERF_HISTORY_SIZE;
     
     // Update running averages
     float alpha = 0.1f; // Exponential moving average factor
@@ -37,17 +109,15 @@ void performance_analyzer_update(performance_analyzer_t* analyzer, const perf_me
     
     #undef UPDATE_AVG
     
-    analyzer->analysis_frame_count++;
-}
-
-static void add_hint(performance_analyzer_t* analyzer, const char* description, float impact_score) {
-    if (!analyzer || analyzer->hint_count >= PERF_ANALYSIS_MAX_HINTS) return;
+    // Update advanced metrics
+    performance_analyzer_calculate_advanced_metrics(analyzer);
     
-    optimization_hint_t* hint = &analyzer->hints[analyzer->hint_count++];
-    strncpy(hint->description, description, sizeof(hint->description) - 1);
-    hint->description[sizeof(hint->description) - 1] = '\0';
-    hint->impact_score = impact_score;
-    hint->actionable = true;
+    analyzer->analysis_frame_count++;
+    
+    // Run analysis every 10 frames
+    if (analyzer->analysis_frame_count % 10 == 0) {
+        performance_analyzer_run_analysis(analyzer);
+    }
 }
 
 void performance_analyzer_run_analysis(performance_analyzer_t* analyzer) {
