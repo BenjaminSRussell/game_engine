@@ -237,12 +237,12 @@ CMakeFiles/compile_instancing_shaders.dir/clean:
 CMakeFiles/Engine.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94 "Built target Engine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94 "Built target Engine"
 .PHONY : CMakeFiles/Engine.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Engine.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 90
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 89
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Engine.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 0
 .PHONY : CMakeFiles/Engine.dir/rule
@@ -254,7 +254,7 @@ Engine: CMakeFiles/Engine.dir/rule
 # codegen rule for target.
 CMakeFiles/Engine.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94 "Finished codegen for target Engine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94 "Finished codegen for target Engine"
 .PHONY : CMakeFiles/Engine.dir/codegen
 
 # clean rule for target.
@@ -274,7 +274,7 @@ CMakeFiles/Game.dir/all: CMakeFiles/Engine.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Game.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 95
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 94
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Game.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 0
 .PHONY : CMakeFiles/Game.dir/rule
@@ -307,7 +307,7 @@ CMakeFiles/BlockGameApp.dir/all: CMakeFiles/Game.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/BlockGameApp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 95
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 94
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/BlockGameApp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 0
 .PHONY : CMakeFiles/BlockGameApp.dir/rule
@@ -339,7 +339,7 @@ CMakeFiles/full_integration_test.dir/all: CMakeFiles/Engine.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/full_integration_test.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 90
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 89
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/full_integration_test.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 0
 .PHONY : CMakeFiles/full_integration_test.dir/rule
@@ -366,12 +366,12 @@ CMakeFiles/full_integration_test.dir/clean:
 Vendor/Catch2/src/CMakeFiles/Catch2.dir/all:
 	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2.dir/depend
 	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=1,2,3,4 "Built target Catch2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=1,2,3,4,5 "Built target Catch2"
 .PHONY : Vendor/Catch2/src/CMakeFiles/Catch2.dir/all
 
 # Build rule for subdir invocation for target.
 Vendor/Catch2/src/CMakeFiles/Catch2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 4
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Vendor/Catch2/src/CMakeFiles/Catch2.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 0
 .PHONY : Vendor/Catch2/src/CMakeFiles/Catch2.dir/rule
@@ -383,7 +383,7 @@ Catch2: Vendor/Catch2/src/CMakeFiles/Catch2.dir/rule
 # codegen rule for target.
 Vendor/Catch2/src/CMakeFiles/Catch2.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=1,2,3,4 "Finished codegen for target Catch2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=1,2,3,4,5 "Finished codegen for target Catch2"
 .PHONY : Vendor/Catch2/src/CMakeFiles/Catch2.dir/codegen
 
 # clean rule for target.
@@ -403,7 +403,7 @@ Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/all: Vendor/Catch2/src/CMakeFile
 
 # Build rule for subdir invocation for target.
 Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 4
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" 0
 .PHONY : Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/rule

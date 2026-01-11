@@ -73,12 +73,145 @@ void drag_drop_render(void) {
     
     // Render ghost entity if dragging
     if (g_context.is_dragging && g_context.show_ghost && g_context.ghost_entity.id != 0) {
-        // TODO: Render ghost entity with transparency
+        // Render ghost entity with transparency
+        entity_set_visibility(g_context.ghost_entity.id, true);
+        
+        // Set ghost material properties for transparency
+        Material ghost_material = {0};
+        ghost_material.albedo = (Vec4){0.8f, 0.8f, 1.0f, 0.5f}; // Semi-transparent blue-white
+        ghost_material.metallic = 0.1f;
+        ghost_material.roughness = 0.8f;
+        ghost_material.emissive = (Vec3){0.1f, 0.1f, 0.2f}; // Slight glow
+        
+        // Apply ghost material override
+        entity_set_material_override(g_context.ghost_entity.id, &ghost_material);
+        
+        // Enable depth testing but disable depth writing for proper transparency
+        entity_set_depth_write_enabled(g_context.ghost_entity.id, false);
+        
+        // Add subtle pulsing effect
+        f32 pulse = sinf(g_context.drag_time * 3.0f) * 0.1f + 0.9f;
+        ghost_material.albedo.w = pulse * 0.5f; // Pulsing transparency
+        entity_set_material_override(g_context.ghost_entity.id, &ghost_material);
+        
+        // Render outline for better visibility
+        Vec3 outline_color = (Vec3){0.2f, 0.6f, 1.0f};
+        f32 outline_width = 2.0f;
+        entity_set_outline(g_context.ghost_entity.id, true, outline_color, outline_width);
+        
+        LOG_TRACE("Rendering ghost entity at position (%.2f, %.2f, %.2f)", 
+                 g_context.ghost_position.x, g_context.ghost_position.y, g_context.ghost_position.z);
+    } else if (g_context.ghost_entity.id != 0) {
+        // Hide ghost entity when not dragging
+        entity_set_visibility(g_context.ghost_entity.id, false);
+        entity_set_outline(g_context.ghost_entity.id, false, (Vec3){0,0,0}, 0.0f);
     }
     
     // Render drop target highlights
     if (g_context.current_target) {
-        // TODO: Highlight current drop target
+        // Highlight current drop target
+        DropTarget* target = g_context.current_target;
+        
+        // Create highlight effect based on target type
+        if (target->entity_id != 0) {
+            // Highlight entity with glowing effect
+            Material highlight_material = {0};
+            highlight_material.albedo = (Vec4){0.2f, 1.0f, 0.2f, 0.3f}; // Green with transparency
+            highlight_material.emissive = (Vec3){0.1f, 0.5f, 0.1f}; // Green glow
+            highlight_material.metallic = 0.0f;
+            highlight_material.roughness = 0.9f;
+            
+            entity_set_material_override(target->entity_id, &highlight_material);
+            entity_set_outline(target->entity_id, true, (Vec3){0.0f, 1.0f, 0.0f}, 3.0f);
+            
+            // Add pulsing effect
+            f32 pulse = sinf(g_context.drag_time * 4.0f) * 0.2f + 0.8f;
+            highlight_material.albedo.w = pulse * 0.3f;
+            entity_set_material_override(target->entity_id, &highlight_material);
+        }
+        
+        // Render target bounds visualization
+        if (target->bounds_valid) {
+            // Draw bounding box around target area
+            Vec3 min = target->bounds_min;
+            Vec3 max = target->bounds_max;
+            
+            // Create 8 corners of the bounding box
+            Vec3 corners[8] = {
+                {min.x, min.y, min.z}, {max.x, min.y, min.z},
+                {min.x, max.y, min.z}, {max.x, max.y, min.z},
+                {min.x, min.y, max.z}, {max.x, min.y, max.z},
+                {min.x, max.y, max.z}, {max.x, max.y, max.z}
+            };
+            
+            // Draw edges of the bounding box
+            Vec3 line_color = (Vec3){0.0f, 1.0f, 0.0f}; // Green
+            f32 line_width = 2.0f;
+            
+            // Bottom face
+            debug_renderer_draw_line(corners[0], corners[1], line_color, line_width);
+            debug_renderer_draw_line(corners[1], corners[3], line_color, line_width);
+            debug_renderer_draw_line(corners[3], corners[2], line_color, line_width);
+            debug_renderer_draw_line(corners[2], corners[0], line_color, line_width);
+            
+            // Top face
+            debug_renderer_draw_line(corners[4], corners[5], line_color, line_width);
+            debug_renderer_draw_line(corners[5], corners[7], line_color, line_width);
+            debug_renderer_draw_line(corners[7], corners[6], line_color, line_width);
+            debug_renderer_draw_line(corners[6], corners[4], line_color, line_width);
+            
+            // Vertical edges
+            debug_renderer_draw_line(corners[0], corners[4], line_color, line_width);
+            debug_renderer_draw_line(corners[1], corners[5], line_color, line_width);
+            debug_renderer_draw_line(corners[2], corners[6], line_color, line_width);
+            debug_renderer_draw_line(corners[3], corners[7], line_color, line_width);
+        }
+        
+        // Render target icon or indicator
+        if (target->icon_texture_id != 0) {
+            // Render drop target icon at target position
+            Vec3 icon_pos = target->world_position;
+            icon_pos.y += target->bounds_max.y + 0.5f; // Position above target
+            
+            // Create temporary icon entity
+            u32 icon_entity = entity_create();
+            if (icon_entity != 0) {
+                entity_add_mesh_component(icon_entity, MESH_PLANE_ID);
+                entity_set_material(icon_entity, target->icon_texture_id);
+                entity_set_position(icon_entity, icon_pos);
+                entity_set_scale(icon_entity, (Vec3){0.5f, 0.5f, 0.5f});
+                entity_set_billboard(icon_entity, true); // Always face camera
+                
+                // Make icon semi-transparent and glowing
+                Material icon_material = {0};
+                icon_material.albedo = (Vec4){1.0f, 1.0f, 1.0f, 0.7f};
+                icon_material.emissive = (Vec3){0.3f, 0.8f, 0.3f};
+                entity_set_material_override(icon_entity, &icon_material);
+                
+                // Render and immediately destroy (temporary)
+                entity_render(icon_entity);
+                entity_destroy(icon_entity);
+            }
+        }
+        
+        LOG_TRACE("Highlighting drop target at position (%.2f, %.2f, %.2f)", 
+                 target->world_position.x, target->world_position.y, target->world_position.z);
+    }
+    
+    // Render potential target highlights (dimmed)
+    for (u32 i = 0; i < g_context.target_count; i++) {
+        DropTarget* potential_target = &g_context.potential_targets[i];
+        if (potential_target == g_context.current_target) continue; // Skip current target
+        
+        if (potential_target->entity_id != 0) {
+            // Dimmed highlight for potential targets
+            Material dim_material = {0};
+            dim_material.albedo = (Vec4){0.5f, 0.5f, 1.0f, 0.1f}; // Very dim blue
+            dim_material.emissive = (Vec3){0.05f, 0.05f, 0.2f};
+            
+            entity_set_material_override(potential_target->entity_id, &dim_material);
+            entity_set_outline(potential_target->entity_id, true, (Vec3){0.3f, 0.3f, 1.0f}, 1.0f);
+        }
     }
 }
 
