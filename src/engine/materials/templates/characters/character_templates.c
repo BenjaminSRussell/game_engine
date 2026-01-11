@@ -423,3 +423,306 @@ void skeleton_template_cleanup(void) {
     memset(&g_skeleton_system, 0, sizeof(SkeletonTemplateSystem));
     LOG_INFO("Skeleton template system cleaned up");
 }
+
+// Skeleton validation system
+typedef enum {
+    SKELETON_VALID = 0,
+    SKELETON_INVALID_ROOT,
+    SKELETON_INVALID_PARENT,
+    SKELETON_CIRCULAR_REFERENCE,
+    SKELETON_MISSING_ESSENTIAL_BONES,
+    SKELETON_INVALID_IK_CHAIN,
+    SKELETON_INVALID_TWIST_BONES,
+    SKELETON_TOO_MANY_BONES,
+    SKELETON_INVALID_BONE_DATA
+} SkeletonValidationError;
+
+typedef struct {
+    SkeletonValidationError error_type;
+    u32 bone_index;
+    char error_message[256];
+} ValidationIssue;
+
+typedef struct {
+    ValidationIssue issues[32];
+    u32 issue_count;
+    bool is_valid;
+} SkeletonValidationResult;
+
+// Validate bone hierarchy
+static bool validate_bone_hierarchy(const SkeletonTemplate* template, 
+                                    SkeletonValidationResult* result) {
+    if (!template || !result || !template->bones) {
+        return false;
+    }
+    
+    bool valid = true;
+    
+    // Check for root bone
+    bool has_root = false;
+    for (u32 i = 0; i < template->bone_count; i++) {
+        if (template->bones[i].parent_index == -1) {
+            has_root = true;
+            break;
+        }
+    }
+    
+    if (!has_root) {
+        ValidationIssue* issue = &result->issues[result->issue_count++];
+        issue->error_type = SKELETON_INVALID_ROOT;
+        issue->bone_index = -1;
+        strncpy(issue->error_message, "Skeleton missing root bone", sizeof(issue->error_message) - 1);
+        valid = false;
+    }
+    
+    // Check parent indices and detect circular references
+    for (u32 i = 0; i < template->bone_count; i++) {
+        s32 parent = template->bones[i].parent_index;
+        
+        if (parent >= 0 && (u32)parent >= template->bone_count) {
+            ValidationIssue* issue = &result->issues[result->issue_count++];
+            issue->error_type = SKELETON_INVALID_PARENT;
+            issue->bone_index = i;
+            snprintf(issue->error_message, sizeof(issue->error_message), 
+                    "Bone '%s' has invalid parent index %d", template->bones[i].name, parent);
+            valid = false;
+            continue;
+        }
+        
+        // Check for circular references by following parent chain
+        u32 current = i;
+        u32 depth = 0;
+        while (template->bones[current].parent_index != -1 && depth < template->bone_count) {
+            current = (u32)template->bones[current].parent_index;
+            depth++;
+            
+            if (current == i) {
+                ValidationIssue* issue = &result->issues[result->issue_count++];
+                issue->error_type = SKELETON_CIRCULAR_REFERENCE;
+                issue->bone_index = i;
+                snprintf(issue->error_message, sizeof(issue->error_message), 
+                        "Circular reference detected in bone '%s'", template->bones[i].name);
+                valid = false;
+                break;
+            }
+        }
+    }
+    
+    return valid;
+}
+
+// Validate IK chains
+static bool validate_ik_chains(const SkeletonTemplate* template, 
+                               SkeletonValidationResult* result) {
+    if (!template || !result) {
+        return false;
+    }
+    
+    bool valid = true;
+    
+    for (u32 i = 0; i < template->ik_chain_count; i++) {
+        s32 start = template->ik_chains[i].start;
+        s32 end = template->ik_chains[i].end;
+        
+        // Validate bone indices
+        if (start < 0 || (u32)start >= template->bone_count) {
+            ValidationIssue* issue = &result->issues[result->issue_count++];
+            issue->error_type = SKELETON_INVALID_IK_CHAIN;
+            issue->bone_index = start;
+            snprintf(issue->error_message, sizeof(issue->error_message), 
+                    "IK chain %u has invalid start bone index %d", i, start);
+            valid = false;
+        }
+        
+        if (end < 0 || (u32)end >= template->bone_count) {
+            ValidationIssue* issue = &result->issues[result->issue_count++];
+            issue->error_type = SKELETON_INVALID_IK_CHAIN;
+            issue->bone_index = end;
+            snprintf(issue->error_message, sizeof(issue->error_message), 
+                    "IK chain %u has invalid end bone index %d", i, end);
+            valid = false;
+        }
+        
+        // Check if end bone is descendant of start bone
+        if (start >= 0 && end >= 0) {
+            bool is_descendant = false;
+            u32 current = (u32)end;
+            while (template->bones[current].parent_index != -1) {
+                current = (u32)template->bones[current].parent_index;
+                if (current == (u32)start) {
+                    is_descendant = true;
+                    break;
+                }
+            }
+            
+            if (!is_descendant) {
+                ValidationIssue* issue = &result->issues[result->issue_count++];
+                issue->error_type = SKELETON_INVALID_IK_CHAIN;
+                issue->bone_index = start;
+                snprintf(issue->error_message, sizeof(issue->error_message), 
+                        "IK chain %u: end bone is not descendant of start bone", i);
+                valid = false;
+            }
+        }
+    }
+    
+    return valid;
+}
+
+// Validate twist bones
+static bool validate_twist_bones(const SkeletonTemplate* template, 
+                                 SkeletonValidationResult* result) {
+    if (!template || !result) {
+        return false;
+    }
+    
+    bool valid = true;
+    
+    for (u32 i = 0; i < template->twist_bone_count; i++) {
+        s32 bone_index = template->twist_bone_indices[i];
+        
+        // Validate bone index
+        if (bone_index < 0 || (u32)bone_index >= template->bone_count) {
+            ValidationIssue* issue = &result->issues[result->issue_count++];
+            issue->error_type = SKELETON_INVALID_TWIST_BONES;
+            issue->bone_index = bone_index;
+            snprintf(issue->error_message, sizeof(issue->error_message), 
+                    "Twist bone %u has invalid bone index %d", i, bone_index);
+            valid = false;
+        }
+    }
+    
+    return valid;
+}
+
+// Validate bone data integrity
+static bool validate_bone_data(const SkeletonTemplate* template, 
+                               SkeletonValidationResult* result) {
+    if (!template || !result || !template->bones) {
+        return false;
+    }
+    
+    bool valid = true;
+    
+    for (u32 i = 0; i < template->bone_count; i++) {
+        const BoneDefinition* bone = &template->bones[i];
+        
+        // Check bone name
+        if (bone->name[0] == '\0') {
+            ValidationIssue* issue = &result->issues[result->issue_count++];
+            issue->error_type = SKELETON_INVALID_BONE_DATA;
+            issue->bone_index = i;
+            snprintf(issue->error_message, sizeof(issue->error_message), 
+                    "Bone %u has empty name", i);
+            valid = false;
+        }
+        
+        // Check for valid quaternion
+        f32 quat_length = sqrtf(bone->local_rotation[0] * bone->local_rotation[0] +
+                               bone->local_rotation[1] * bone->local_rotation[1] +
+                               bone->local_rotation[2] * bone->local_rotation[2] +
+                               bone->local_rotation[3] * bone->local_rotation[3]);
+        
+        if (quat_length < 0.9f || quat_length > 1.1f) {
+            ValidationIssue* issue = &result->issues[result->issue_count++];
+            issue->error_type = SKELETON_INVALID_BONE_DATA;
+            issue->bone_index = i;
+            snprintf(issue->error_message, sizeof(issue->error_message), 
+                    "Bone '%s' has invalid quaternion (length: %.3f)", bone->name, quat_length);
+            valid = false;
+        }
+        
+        // Check scale values
+        if (bone->local_scale[0] <= 0.0f || bone->local_scale[1] <= 0.0f || bone->local_scale[2] <= 0.0f) {
+            ValidationIssue* issue = &result->issues[result->issue_count++];
+            issue->error_type = SKELETON_INVALID_BONE_DATA;
+            issue->bone_index = i;
+            snprintf(issue->error_message, sizeof(issue->error_message), 
+                    "Bone '%s' has invalid scale values", bone->name);
+            valid = false;
+        }
+    }
+    
+    return valid;
+}
+
+// Main skeleton validation function
+SkeletonValidationResult skeleton_template_validate(const SkeletonTemplate* template) {
+    SkeletonValidationResult result = {0};
+    result.is_valid = true;
+    
+    if (!template) {
+        ValidationIssue* issue = &result.issues[result.issue_count++];
+        issue->error_type = SKELETON_INVALID_BONE_DATA;
+        issue->bone_index = -1;
+        strncpy(issue->error_message, "Null template provided", sizeof(issue->error_message) - 1);
+        result.is_valid = false;
+        return result;
+    }
+    
+    if (!template->bones || template->bone_count == 0) {
+        ValidationIssue* issue = &result.issues[result.issue_count++];
+        issue->error_type = SKELETON_INVALID_BONE_DATA;
+        issue->bone_index = -1;
+        strncpy(issue->error_message, "Template has no bones", sizeof(issue->error_message) - 1);
+        result.is_valid = false;
+        return result;
+    }
+    
+    if (template->bone_count > MAX_BONES_PER_SKELETON) {
+        ValidationIssue* issue = &result.issues[result.issue_count++];
+        issue->error_type = SKELETON_TOO_MANY_BONES;
+        issue->bone_index = -1;
+        snprintf(issue->error_message, sizeof(issue->error_message), 
+                "Template has too many bones: %u (max: %u)", template->bone_count, MAX_BONES_PER_SKELETON);
+        result.is_valid = false;
+    }
+    
+    // Run all validation checks
+    bool hierarchy_valid = validate_bone_hierarchy(template, &result);
+    bool ik_valid = validate_ik_chains(template, &result);
+    bool twist_valid = validate_twist_bones(template, &result);
+    bool data_valid = validate_bone_data(template, &result);
+    
+    result.is_valid = result.is_valid && hierarchy_valid && ik_valid && twist_valid && data_valid;
+    
+    // Log validation results
+    if (result.is_valid) {
+        LOG_INFO("Skeleton template '%s' validation passed", template->name);
+    } else {
+        LOG_ERROR("Skeleton template '%s' validation failed with %u issues", 
+                 template->name, result.issue_count);
+        for (u32 i = 0; i < result.issue_count; i++) {
+            LOG_ERROR("  Issue %u: %s", i + 1, result.issues[i].error_message);
+        }
+    }
+    
+    return result;
+}
+
+// Quick validation check (returns only valid/invalid)
+bool skeleton_template_is_valid(const SkeletonTemplate* template) {
+    SkeletonValidationResult result = skeleton_template_validate(template);
+    return result.is_valid;
+}
+
+// Get validation error count
+u32 skeleton_template_get_validation_error_count(const SkeletonTemplate* template) {
+    SkeletonValidationResult result = skeleton_template_validate(template);
+    return result.issue_count;
+}
+
+// Public API for skeleton validation
+bool skeleton_template_validate_all(void) {
+    bool all_valid = true;
+    
+    for (u32 i = 0; i < g_skeleton_system.template_count; i++) {
+        SkeletonValidationResult result = skeleton_template_validate(&g_skeleton_system.templates[i]);
+        if (!result.is_valid) {
+            all_valid = false;
+        }
+    }
+    
+    LOG_INFO("Skeleton template validation complete: %s", all_valid ? "All valid" : "Some invalid");
+    return all_valid;
+}
