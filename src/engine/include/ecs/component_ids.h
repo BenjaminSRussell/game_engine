@@ -47,6 +47,7 @@ typedef enum {
   ITEM_COMPONENT_ID,
   // Asset system components
   ASSET_INSTANCE_COMPONENT_ID,
+  FALLING_BLOCK_COMPONENT_ID,
   // Add new component IDs here
   COMPONENT_ID_COUNT,
 } ComponentID;
