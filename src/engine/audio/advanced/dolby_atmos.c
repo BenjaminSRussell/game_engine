@@ -738,7 +738,11 @@ bool Atmos_ApplyOcclusion(AtmosRenderer *renderer, uint32_t object_index) {
   }
 
   printf("Applying occlusion to object %u\n", object_index + 1);
-  // TODO: Implement occlusion/obstruction modeling
+
+  // Occlusion: Sound is blocked by an object (low-pass filter effect)
+  // In this simplified implementation, we apply a gain reduction
+  renderer->objects[object_index].gain *= 0.3f; // Significant attenuation
+
   return true;
 }
 
@@ -749,7 +753,11 @@ bool Atmos_ApplyDiffraction(AtmosRenderer *renderer, uint32_t object_index) {
   }
 
   printf("Applying diffraction to object %u\n", object_index + 1);
-  // TODO: Implement diffraction modeling for sound around obstacles
+
+  // Diffraction: Sound bending around obstacles (slight high-shelf cut)
+  // In this simplified implementation, we apply a moderate attenuation
+  renderer->objects[object_index].gain *= 0.7f; // Moderate attenuation
+
   return true;
 }
 
