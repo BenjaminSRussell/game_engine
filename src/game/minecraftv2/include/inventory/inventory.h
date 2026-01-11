@@ -84,6 +84,7 @@ typedef struct {
     u32 item_id;
     u16 count;
     f32 durability;
+    f32 spoil_progress; // 0.0 = fresh, 1.0 = spoiled
     // Enchantments (stored as void* to avoid circular dependency with enchanting.h)
     // In enchanting.c, cast to Enchantment* when accessing
     void *enchantments;            // Array of enchantments on this item

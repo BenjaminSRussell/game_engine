@@ -29,11 +29,32 @@
 // ... (rest of the comments)
 void npc_system_init(NPCSystem *system, struct World *ecs,
                      struct PhysicsWorld *physics) {
-  if (!system || !ecs || !physics)
+  if (!system)
     return;
-  system->ecs = (World *)ecs;
-  system->physics = (PhysicsWorld *)physics;
-  LOG_INFO("NPC system initialized");
+  system->ecs = ecs;
+  system->physics = physics;
+  LOG_INFO("NPC System initialized");
+}
+
+void npc_system_free(NPCSystem *system) {
+  if (!system)
+    return;
+  LOG_INFO("NPC System freed");
+  memset(system, 0, sizeof(NPCSystem));
+}
+
+void npc_spawn_in_chunk(NPCSystem *system, Chunk *chunk,
+                        struct WorldGenerator *generator) {
+  if (!system || !chunk || !generator)
+    return;
+  // TODO: Implement procedural NPC spawning based on biomes and world
+  // generation
+}
+
+void npc_despawn_distant(NPCSystem *system) {
+  if (!system)
+    return;
+  // TODO: Implement despawning NPCs that are too far from players
 }
 
 // ... (npc_create implementation)

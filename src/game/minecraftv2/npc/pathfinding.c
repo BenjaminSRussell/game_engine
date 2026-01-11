@@ -184,7 +184,7 @@ static void smooth_path(Vec3 *path, u32 *path_length) {
 }
 
 // Optimized A* pathfinding with priority queue
-bool npc_find_path(struct ECSWorld *ecs, EntityID entity,
+bool npc_find_path(struct World *ecs, EntityID entity,
                    ChunkManager *chunk_manager, BlockRegistry *block_registry,
                    Vec3 start_pos, Vec3 goal_pos, Vec3 *path, u32 *path_length,
                    u32 max_path_length) {

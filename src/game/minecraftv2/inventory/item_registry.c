@@ -122,10 +122,6 @@ void item_registry_init(ItemRegistry *registry) {
     registry->dependency_count = 0;
     registry->dependency_capacity = 0;
 
-    // Register all default items
-    item_registry_init_defaults(registry);
-    item_registry_validate(registry);
-
     LOG_INFO("Item registry initialized with %u items", registry->count);
 }
 
@@ -724,7 +720,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition apple = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Apple",
                  .description = "Crisp and nutritious", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 4.0f, .saturation_modifier = 0.3f, .eat_duration = 1.6f, .has_effects = false}},
+        .properties = {.food = {.hunger_restored = 4.0f, .saturation_modifier = 0.3f, .eat_duration = 1.6f, .has_effects = false, .quality = 1.0f, .spoil_time = 1200.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_APPLE, apple);
@@ -732,7 +728,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition golden_apple = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Golden Apple",
                  .description = "Grants regeneration and absorption", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 4.0f, .saturation_modifier = 1.2f, .eat_duration = 1.6f, .has_effects = true, .effect_id = 1, .effect_chance = 1.0f}},
+        .properties = {.food = {.hunger_restored = 4.0f, .saturation_modifier = 1.2f, .eat_duration = 1.6f, .has_effects = true, .effect_id = 1, .effect_chance = 1.0f, .quality = 1.5f, .spoil_time = 0.0f}},
         .is_stackable = true, .rarity = 3
     };
     REGISTER_ITEM(ITEM_GOLDEN_APPLE, golden_apple);
@@ -740,7 +736,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition bread = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Bread",
                  .description = "Filling and satisfying", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 5.0f, .saturation_modifier = 0.6f, .eat_duration = 1.6f, .has_effects = false}},
+        .properties = {.food = {.hunger_restored = 5.0f, .saturation_modifier = 0.6f, .eat_duration = 1.6f, .has_effects = false, .quality = 1.0f, .spoil_time = 900.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_BREAD, bread);
@@ -748,7 +744,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition cooked_porkchop = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Cooked Porkchop",
                  .description = "Delicious and nutritious", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 8.0f, .saturation_modifier = 0.8f, .eat_duration = 1.6f, .has_effects = false}},
+        .properties = {.food = {.hunger_restored = 8.0f, .saturation_modifier = 0.8f, .eat_duration = 1.6f, .has_effects = false, .quality = 1.2f, .spoil_time = 600.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_COOKED_PORKCHOP, cooked_porkchop);
@@ -756,7 +752,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition raw_porkchop = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Raw Porkchop",
                  .description = "Best cooked before eating", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 3.0f, .saturation_modifier = 0.3f, .eat_duration = 1.6f, .has_effects = false}},
+        .properties = {.food = {.hunger_restored = 3.0f, .saturation_modifier = 0.3f, .eat_duration = 1.6f, .has_effects = false, .quality = 0.8f, .spoil_time = 300.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_RAW_PORKCHOP, raw_porkchop);
@@ -764,7 +760,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition cooked_beef = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Steak",
                  .description = "Highly nutritious meat", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 8.0f, .saturation_modifier = 0.8f, .eat_duration = 1.6f, .has_effects = false}},
+        .properties = {.food = {.hunger_restored = 8.0f, .saturation_modifier = 0.8f, .eat_duration = 1.6f, .has_effects = false, .quality = 1.2f, .spoil_time = 600.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_COOKED_BEEF, cooked_beef);
@@ -772,7 +768,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition raw_beef = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Raw Beef",
                  .description = "Requires cooking", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 3.0f, .saturation_modifier = 0.3f, .eat_duration = 1.6f, .has_effects = false}},
+        .properties = {.food = {.hunger_restored = 3.0f, .saturation_modifier = 0.3f, .eat_duration = 1.6f, .has_effects = false, .quality = 0.8f, .spoil_time = 300.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_RAW_BEEF, raw_beef);
@@ -780,7 +776,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition cooked_chicken = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Cooked Chicken",
                  .description = "Light and tasty", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 6.0f, .saturation_modifier = 0.6f, .eat_duration = 1.6f, .has_effects = false}},
+        .properties = {.food = {.hunger_restored = 6.0f, .saturation_modifier = 0.6f, .eat_duration = 1.6f, .has_effects = false, .quality = 1.1f, .spoil_time = 600.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_COOKED_CHICKEN, cooked_chicken);
@@ -788,7 +784,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition raw_chicken = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Raw Chicken",
                  .description = "May cause food poisoning", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 2.0f, .saturation_modifier = 0.3f, .eat_duration = 1.6f, .has_effects = true, .effect_id = 0, .effect_chance = 0.3f}},
+        .properties = {.food = {.hunger_restored = 2.0f, .saturation_modifier = 0.3f, .eat_duration = 1.6f, .has_effects = true, .effect_id = 0, .effect_chance = 0.3f, .quality = 0.5f, .spoil_time = 300.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_RAW_CHICKEN, raw_chicken);
@@ -796,7 +792,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition carrot = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Carrot",
                  .description = "Crunchy vegetable", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 3.0f, .saturation_modifier = 0.6f, .eat_duration = 1.6f, .has_effects = false}},
+        .properties = {.food = {.hunger_restored = 3.0f, .saturation_modifier = 0.6f, .eat_duration = 1.6f, .has_effects = false, .quality = 1.0f, .spoil_time = 1200.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_CARROT, carrot);
@@ -804,7 +800,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition potato = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Potato",
                  .description = "Plain but filling", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 1.0f, .saturation_modifier = 0.3f, .eat_duration = 1.6f, .has_effects = false}},
+        .properties = {.food = {.hunger_restored = 1.0f, .saturation_modifier = 0.3f, .eat_duration = 1.6f, .has_effects = false, .quality = 1.0f, .spoil_time = 1200.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_POTATO, potato);
@@ -812,7 +808,7 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     ExtendedItemDefinition baked_potato = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Baked Potato",
                  .description = "Warm and filling", .max_stack_size = 64, .durability = 0, .max_durability = 0},
-        .properties = {.food = {.hunger_restored = 5.0f, .saturation_modifier = 0.6f, .eat_duration = 1.6f, .has_effects = false}},
+        .properties = {.food = {.hunger_restored = 5.0f, .saturation_modifier = 0.6f, .eat_duration = 1.6f, .has_effects = false, .quality = 1.1f, .spoil_time = 900.0f}},
         .is_stackable = true, .rarity = 0
     };
     REGISTER_ITEM(ITEM_BAKED_POTATO, baked_potato);
@@ -825,7 +821,30 @@ void item_registry_init_defaults(ItemRegistry *registry) {
     };
     REGISTER_ITEM(ITEM_POISONOUS_POTATO, poisonous_potato);
 
-    // === MATERIALS ===
+    ExtendedItemDefinition spoiled_food = {
+        .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Spoiled Food",
+                 .description = "Smells funky. Eating this is probably a bad idea.", .max_stack_size = 64, .durability = 0, .max_durability = 0},
+        .properties = {.food = {.hunger_restored = 1.0f, .saturation_modifier = 0.1f, .eat_duration = 1.6f, .has_effects = true, .effect_id = 0, .effect_chance = 0.8f, .quality = 0.1f, .spoil_time = 0.0f}},
+        .is_stackable = true, .rarity = 0
+    };
+    REGISTER_ITEM(ITEM_SPOILED_FOOD, spoiled_food);
+
+    ExtendedItemDefinition bowl = {
+        .base = {.block_id = 0, .item_type = ITEM_TYPE_MATERIAL, .name = "Bowl",
+                 .description = "A simple wooden bowl.", .max_stack_size = 64, .durability = 0, .max_durability = 0},
+        .is_stackable = true, .rarity = 0
+    };
+    REGISTER_ITEM(ITEM_BOWL, bowl);
+
+    ExtendedItemDefinition hearty_stew = {
+        .base = {.block_id = 0, .item_type = ITEM_TYPE_FOOD, .name = "Hearty Stew",
+                 .description = "A thick, nutritious stew.", .max_stack_size = 1, .durability = 0, .max_durability = 0},
+        .properties = {.food = {.hunger_restored = 10.0f, .saturation_modifier = 1.2f, .eat_duration = 2.4f, .has_effects = false, .quality = 1.8f, .spoil_time = 900.0f}},
+        .is_stackable = false, .rarity = 1
+    };
+    REGISTER_ITEM(ITEM_HEARTY_STEW, hearty_stew);
+
+    // === MATERIALS (768-1023) ===
 
     ExtendedItemDefinition stick = {
         .base = {.block_id = 0, .item_type = ITEM_TYPE_MATERIAL, .name = "Stick",

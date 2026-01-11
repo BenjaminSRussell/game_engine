@@ -8,14 +8,15 @@
  * =================================================================================================
  */
 
-#include <include/math/math.h>
+#include <audio/audio_engine_types.h>
+#include <common.h>
 #include <math.h>
+#include <math/math.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <include/audio/audio_engine_types.h>
 
 // Vector helpers (keeping static inline implementations here or moving to
 // header if needed) For now, removing the typedefs and defines that are moved.
@@ -56,8 +57,9 @@ static inline float audio_vec3_distance(AudioVec3 a, AudioVec3 b) {
 // Initialization
 // -----------------------------------------------------------------------------
 
-AudioSystem *audio_create(void) {
-  AudioSystem *sys = (AudioSystem *)calloc(1, sizeof(AudioSystem));
+AudioSpatialState *audio_create(void) {
+  AudioSpatialState *sys =
+      (AudioSpatialState *)calloc(1, sizeof(AudioSpatialState));
   if (!sys)
     return NULL;
 
@@ -79,7 +81,7 @@ AudioSystem *audio_create(void) {
   return sys;
 }
 
-void audio_destroy(AudioSystem *sys) {
+void audio_destroy(AudioSpatialState *sys) {
   if (sys)
     free(sys);
 }
@@ -88,16 +90,16 @@ void audio_destroy(AudioSystem *sys) {
 // Source Management
 // -----------------------------------------------------------------------------
 
-uint32_t audio_play_sound(AudioSystem *sys, uint32_t buffer_id, AudioVec3 pos,
-                          float vol, bool loop) {
+uint32_t audio_play_sound(AudioSpatialState *sys, uint32_t buffer_id,
+                          AudioVec3 pos, float vol, bool loop) {
   if (!sys)
     return UINT32_MAX;
 
   // Find free source
   for (uint32_t i = 0; i < AUDIO_MAX_SOURCES; i++) {
     if (!sys->sources[i].active) {
-      AudioSource *s = &sys->sources[i];
-      memset(s, 0, sizeof(AudioSource));
+      AudioSourceState *s = &sys->sources[i];
+      memset(s, 0, sizeof(AudioSourceState));
       s->id = i;
       s->active = true;
       s->playing = true;
@@ -117,7 +119,7 @@ uint32_t audio_play_sound(AudioSystem *sys, uint32_t buffer_id, AudioVec3 pos,
   return UINT32_MAX;
 }
 
-void audio_stop_source(AudioSystem *sys, uint32_t source_id) {
+void audio_stop_source(AudioSpatialState *sys, uint32_t source_id) {
   if (!sys || source_id >= AUDIO_MAX_SOURCES)
     return;
   sys->sources[source_id].active = false;
@@ -128,8 +130,8 @@ void audio_stop_source(AudioSystem *sys, uint32_t source_id) {
 // Listener Update
 // -----------------------------------------------------------------------------
 
-void audio_set_listener(AudioSystem *sys, AudioVec3 pos, AudioVec3 forward,
-                        AudioVec3 up) {
+void audio_set_listener(AudioSpatialState *sys, AudioVec3 pos,
+                        AudioVec3 forward, AudioVec3 up) {
   if (!sys)
     return;
   sys->listener.position = pos;
@@ -141,8 +143,9 @@ void audio_set_listener(AudioSystem *sys, AudioVec3 pos, AudioVec3 forward,
 // DSP & Spatialization
 // -----------------------------------------------------------------------------
 
-static void calculate_spatial_params(AudioSystem *sys, AudioSource *src,
-                                     float *out_gain_l, float *out_gain_r) {
+static void calculate_spatial_params(AudioSpatialState *sys,
+                                     AudioSourceState *src, float *out_gain_l,
+                                     float *out_gain_r) {
   if (src->is_2d) {
     *out_gain_l = src->volume * sys->master_volume;
     *out_gain_r = src->volume * sys->master_volume;

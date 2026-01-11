@@ -1,6 +1,8 @@
 #include <block/block.h>
+#include <ecs/component_ids.h>
 #include <ecs/components/health.h>
 #include <ecs/components/transform.h>
+#include <ecs/ecs.h>
 #include <inventory/inventory.h>
 #include <player/experience_system.h>
 
@@ -100,7 +102,7 @@ static float experience_required_for_level(int level) {
   }
 }
 
-bool experience_system_init(ExperienceSystem *system, struct World *ecs_world) {
+bool experience_system_init(ExperienceSystem *system, World *ecs_world) {
   if (!system || !ecs_world)
     return false;
 
@@ -244,7 +246,7 @@ bool experience_add_experience(ExperienceSystem *system, EntityID entity,
   // Spawn experience orbs
   if (system->enable_orb_effects) {
     TransformComponent *transform = (TransformComponent *)ecs_get_component(
-        system->ecs_world, entity, TRANSFORM_COMPONENT_ID);
+        system->ecs_world, (Entity){entity, 0}, TRANSFORM_COMPONENT_ID);
     if (transform) {
       experience_orb_spawn_multiple(system, transform->position, amount,
                                     (uint32_t)(amount / 10.0f) + 1);
@@ -428,7 +430,7 @@ void experience_orb_update(ExperienceSystem *system, float delta_time) {
 
       for (u32 p = 0; p < g_player_entry_count; p++) {
         TransformComponent *transform = (TransformComponent *)ecs_get_component(
-            system->ecs_world, g_player_entries[p].entity,
+            system->ecs_world, (Entity){g_player_entries[p].entity, 0},
             TRANSFORM_COMPONENT_ID);
         if (!transform)
           continue;
@@ -492,7 +494,7 @@ void experience_orb_attract_to_player(ExperienceSystem *system,
     return;
 
   TransformComponent *transform = (TransformComponent *)ecs_get_component(
-      system->ecs_world, player, TRANSFORM_COMPONENT_ID);
+      system->ecs_world, (Entity){player, 0}, TRANSFORM_COMPONENT_ID);
   if (!transform)
     return;
 
@@ -546,7 +548,7 @@ void experience_create_level_up_particles(ExperienceSystem *system,
     return;
 
   TransformComponent *transform = (TransformComponent *)ecs_get_component(
-      system->ecs_world, entity, TRANSFORM_COMPONENT_ID);
+      system->ecs_world, (Entity){entity, 0}, TRANSFORM_COMPONENT_ID);
   if (!transform)
     return;
 
@@ -603,7 +605,7 @@ void experience_award_combat(ExperienceSystem *system, EntityID killer,
 
   // Get victim's health to calculate experience
   HealthComponent *victim_health = (HealthComponent *)ecs_get_component(
-      system->ecs_world, victim, HEALTH_COMPONENT_ID);
+      system->ecs_world, (Entity){victim, 0}, HEALTH_COMPONENT_ID);
   if (victim_health) {
     // More experience for tougher enemies
     base_amount *= (1.0f + victim_health->max_health * 0.1f);
@@ -1052,7 +1054,8 @@ float experience_get_distance_to_nearest_player(const ExperienceSystem *system,
   float best = 1e9f;
   for (u32 i = 0; i < g_player_entry_count; i++) {
     TransformComponent *transform = (TransformComponent *)ecs_get_component(
-        system->ecs_world, g_player_entries[i].entity, TRANSFORM_COMPONENT_ID);
+        system->ecs_world, (Entity){g_player_entries[i].entity, 0},
+        TRANSFORM_COMPONENT_ID);
     if (!transform)
       continue;
     float dist = vec3_distance(position, transform->position);
@@ -1245,7 +1248,7 @@ void experience_debug_print_stats(const ExperienceSystem *system) {
 // Global accessor functions
 ExperienceSystem *get_experience_system(void) { return &g_experience_system; }
 
-bool init_experience_system(ECSWorld *ecs_world) {
+bool init_experience_system(World *ecs_world) {
   return experience_system_init(&g_experience_system, ecs_world);
 }
 

@@ -26,23 +26,25 @@
 #include <rendering/renderer.h>
 #include <stdlib.h>
 #include <string.h>
-// #include <effects/vfx/particle_system.h>
+#include <effects/vfx/particle_system.h>
 
 // Minecraft v2 specific includes (these will be gradually migrated)
 #include <audio/audio_system.h>
 #include <block/block.h>
 #include <chunk/chunk.h>
 #include <combat/combat.h>
-#include <input/input.h> // For KEY_ESCAPE
 #include <inventory/inventory.h>
 #include <npc/npc.h>
 #include <physics/physics.h>
+#include <platform/input/input.h> // For KEY_ESCAPE
 #include <player/player.h>
 #include <tech/crafting.h>
 #include <ui/hud.h>
-// #include <effects/vfx/particle_system.h>
 #include <weather/weather.h>
 #include <world/generator.h>
+
+AudioSystem* g_audio_system = NULL;
+ParticleSystem* g_particle_system = NULL;
 
 // Minecraft v2 game state
 typedef struct {
@@ -170,8 +172,9 @@ static bool minecraft_v2_initialize(GameModule *module, Engine *engine) {
   chunk_manager_init(&game_state->chunk_manager, 32);
 
   // Initialize particle system for VFX (renderer not yet wired in, pass NULL)
-  // particle_system_init(&game_state->particles, NULL);
-  game_state->particles = NULL; // TODO: Allocate and initialize particle system
+  game_state->particles = malloc(sizeof(ParticleSystem));
+  particle_system_init(game_state->particles, game_state->renderer);
+  g_particle_system = game_state->particles;
 
   GenerationContext gen_context = {&game_state->chunk_manager};
   u32 seed = 12345; // Placeholder for actual seed
@@ -196,6 +199,8 @@ static bool minecraft_v2_initialize(GameModule *module, Engine *engine) {
 
   // Initialize camera
   camera_init(&game_state->camera, vec3(0, 64, 0), 0.0f, 0.0f);
+
+  g_audio_system = game_state->audio;
 
   // Set initial game state
   game_state->in_world = false;
@@ -228,9 +233,9 @@ static void minecraft_v2_shutdown(GameModule *module) {
   world_generator_free(&game_state->world_generator);
 
   // Shutdown particle system
-  // particle_system_shutdown(&game_state->particles, NULL);
   if (game_state->particles) {
-    // TODO: Free particle system
+    particle_system_shutdown(game_state->particles, game_state->renderer);
+    free(game_state->particles);
   }
 
   chunk_manager_free(&game_state->chunk_manager);
@@ -259,6 +264,9 @@ static void minecraft_v2_update(GameModule *module, Engine *engine,
 
   // Update game systems
   // TODO: Migrate to engine APIs
+  if (game_state->particles) {
+    particle_system_update(game_state->particles, delta_time);
+  }
 
   // Update player
   player_system_update(&game_state->player_system, (f32)delta_time,
@@ -301,6 +309,7 @@ static void minecraft_v2_render(GameModule *module, Engine *engine) {
 
   Mat4 view = camera_get_view_matrix(&game_state->camera);
   Mat4 proj = camera_get_projection_matrix(&game_state->camera, aspect);
+  Mat4 view_proj = mat4_mul(proj, view);
 
   // Set camera in renderer
   if (game_state->renderer && game_state->renderer->update_camera) {
@@ -312,6 +321,10 @@ static void minecraft_v2_render(GameModule *module, Engine *engine) {
   chunk_manager_render(&game_state->chunk_manager, game_state->renderer, view,
                        proj);
   player_system_render(&game_state->player_system, game_state->renderer);
+
+  if (game_state->particles) {
+    particle_system_render(game_state->particles, game_state->renderer, view_proj);
+  }
 
   // Render weather effects
   if (game_state->weather_system.initialized) {

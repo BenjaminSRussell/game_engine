@@ -160,6 +160,9 @@ typedef u32 ItemID;
 #define ITEM_BEETROOT_SOUP 660
 #define ITEM_RABBIT_STEW 661
 #define ITEM_PUMPKIN_PIE 662
+#define ITEM_SPOILED_FOOD 663
+#define ITEM_HEARTY_STEW 664
+#define ITEM_BOWL 665
 
 // === MATERIALS (768-1023) ===
 #define ITEM_STICK 768
@@ -239,6 +242,7 @@ typedef struct {
   u32 effect_id;           // Status effect ID if applicable
   f32 effect_chance;       // Chance of effect (0.0-1.0)
   f32 quality;             // Food quality, affects hunger/saturation. 1.0 is normal.
+  f32 spoil_time;          // Time in seconds for food to spoil. 0 means it doesn't spoil.
 } FoodProperties;
 
 // Tool properties

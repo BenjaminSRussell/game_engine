@@ -112,6 +112,7 @@ typedef struct BlockRegistry {
 #define BLOCK_SPRUCE_LEAVES 22
 #define BLOCK_IRON_ORE 30
 #define BLOCK_GOLD_ORE 31
+#define BLOCK_EMERALD_ORE 32
 #define BLOCK_DIAMOND_ORE 22
 #define BLOCK_COAL_ORE 23
 #define BLOCK_RAIL 50

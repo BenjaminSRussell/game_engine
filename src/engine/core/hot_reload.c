@@ -98,7 +98,7 @@ HotReloadModule *hot_reload_register_module(const char *module_name,
   module->handle = handle;
   module->last_modified = mod_time;
 
-  hashmap_set(g_hot_reload.modules, module_name, module);
+  hashmap_insert(g_hot_reload.modules, module_name, module);
   LOG_INFO("Registered hot-reload module: %s", module_name);
 
   return module;
@@ -153,7 +153,7 @@ bool hot_reload_save_state(const char *module_path, void *state_data,
   state->data = malloc(state_size);
   memcpy(state->data, state_data, state_size);
 
-  hashmap_set(g_hot_reload.states, module_path, state);
+  hashmap_insert(g_hot_reload.states, module_path, state);
   return true;
 }
 

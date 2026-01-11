@@ -1,4 +1,9 @@
-#include "audio/audio_occlusion_raycast.h"
+#include "include/audio/audio_occlusion_raycast.h"
+#include "include/core/common.h"
+#include "include/math/vec3.h"
+#include <math.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 /**
  * =================================================================================================
@@ -8,12 +13,12 @@
  * GOAL: Muffle sounds behind walls.
  */
 
-void Audio_UpdateOcclusion(AudioSystem *sys, BlockPhysicsSystem *bp) {
+void Audio_UpdateOcclusion(AudioSpatialState *sys, BlockPhysicsSystem *bp) {
   if (!sys || !bp)
     return;
 
   for (uint32_t i = 0; i < AUDIO_MAX_SOURCES; i++) {
-    AudioSource *src = &sys->sources[i];
+    AudioSourceState *src = &sys->sources[i];
     if (!src->active || !src->playing || src->is_2d) {
       src->occlusion = 0.0f;
       continue;

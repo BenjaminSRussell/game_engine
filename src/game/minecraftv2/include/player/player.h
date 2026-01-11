@@ -234,6 +234,7 @@ typedef struct PlayerComponent {
 
   // Food/Eating state
   EatingState eating_state;
+  FoodStats food_stats;
 
   // Vehicle
   EntityID vehicle;

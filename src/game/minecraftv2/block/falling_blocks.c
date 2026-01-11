@@ -47,6 +47,7 @@
 // TODO: Add falling block batching for performance optimization.
 #include <block/block.h>
 #include <chunk/chunk.h>
+#include <ecs/component_ids.h>
 #include <ecs/components/falling_block.h>
 #include <ecs/components/transform.h>
 #include <ecs/ecs.h>
@@ -165,18 +166,16 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
   // updates. Many of them seem to be direct component updates.
 
   // Let's try to use ecs_query_entities.
-  ComponentTypeID query_types[] = {FALLING_BLOCK_COMPONENT_ID,
-                                   TRANSFORM_COMPONENT_ID};
-  EntityQuery query;
-  ecs_query_init(&query, 128); // Standard capacity
-  ecs_query_entities(world, &query, query_types, 2);
+  ComponentType query_types[] = {FALLING_BLOCK_COMPONENT_ID,
+                                 TRANSFORM_COMPONENT_ID};
+  QueryDesc desc = {.all_components = query_types, .all_count = 2};
+  Query *query = ecs_query_create(world, &desc);
 
-  for (u32 i = 0; i < query.count; i++) {
-    EntityID entity = query.entities[i];
-    FallingBlockComponent *falling = (FallingBlockComponent *)ecs_get_component(
-        world, entity, FALLING_BLOCK_COMPONENT_ID);
-    TransformComponent *transform = (TransformComponent *)ecs_get_component(
-        world, entity, TRANSFORM_COMPONENT_ID);
+  Entity entity;
+  void *components[2];
+  while (ecs_query_next(query, &entity, components)) {
+    FallingBlockComponent *falling = (FallingBlockComponent *)components[0];
+    TransformComponent *transform = (TransformComponent *)components[1];
 
     if (!falling || !transform)
       continue;
@@ -213,9 +212,10 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
           i32 local_z = grid_z - cp.z * CHUNK_SIZE;
 
           BlockID current = chunk_get_block(chunk, local_x, local_y, local_z);
+          const BlockType *current_type =
+              block_registry_get(block_registry, current);
           if (current == BLOCK_AIR ||
-              (block_registry_get(block_registry, current) &&
-               block_is_liquid(block_registry_get(block_registry, current)))) {
+              (current_type && block_is_liquid(current_type))) {
             chunk_set_block(chunk, local_x, local_y, local_z,
                             falling->block_type);
             chunk_mark_mesh_dirty(chunk);
@@ -232,5 +232,5 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
     falling->fall_distance += delta_time; // Dummy tracking
   }
 
-  ecs_query_free(&query);
+  ecs_query_destroy(world, query);
 }

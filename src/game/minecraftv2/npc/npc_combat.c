@@ -142,28 +142,30 @@ void npc_spawn_loot(struct NPCSystem *system, Vec3 position,
     return;
 
   // Try to give drops to nearest player within pickup radius (simple fallback)
-  ComponentTypeID player_components[] = {PLAYER_COMPONENT_ID,
-                                         TRANSFORM_COMPONENT_ID};
-  EntityQuery query;
-  ecs_query_init(&query, 16);
-  ecs_query_entities((World *)system->ecs, &query, player_components, 2);
+  QueryDesc desc = {0};
+  ComponentType player_components[] = {PLAYER_COMPONENT_ID,
+                                       TRANSFORM_COMPONENT_ID};
+  desc.all_components = player_components;
+  desc.all_count = 2;
+  Query *query = ecs_query_create((World *)system->ecs, &desc);
 
   EntityID nearest_player = 0;
   f32 nearest_dist = 999999.0f;
-  for (u32 p = 0; p < query.count; p++) {
-    EntityID player_entity = query.entities[p];
-    TransformComponent *pt = (TransformComponent *)ecs_get_component(
-        (World *)system->ecs, (Entity){player_entity, 0},
-        TRANSFORM_COMPONENT_ID);
+  Entity p_entity;
+  void *p_comps[2];
+  while (ecs_query_next(query, &p_entity, p_comps)) {
+    EntityID player_id = p_entity.id;
+    TransformComponent *pt = (TransformComponent *)p_comps[1];
     if (!pt)
       continue;
     f32 d = vec3_length(vec3_sub(pt->position, position));
     if (d < nearest_dist) {
       nearest_dist = d;
-      nearest_player = player_entity;
+      nearest_player = player_id;
     }
   }
 
+  ecs_query_destroy((World *)system->ecs, query);
   const f32 pickup_radius = 5.0f;
   for (u32 i = 0; i < loot_table->drop_count; i++) {
     const LootDrop *drop = &loot_table->drops[i];
@@ -196,8 +198,6 @@ void npc_spawn_loot(struct NPCSystem *system, Vec3 position,
     LOG_INFO("Dropped item %u x%u at (%f,%f,%f)", drop->item_id, drop->count,
              position.x, position.y, position.z);
   }
-
-  ecs_query_free(&query);
 }
 
 // Spawn experience orbs
@@ -206,27 +206,30 @@ void npc_spawn_experience(struct NPCSystem *system, Vec3 position, u32 amount) {
     return;
 
   // Give experience to nearest player (simple fallback)
-  ComponentTypeID player_components[] = {PLAYER_COMPONENT_ID,
-                                         TRANSFORM_COMPONENT_ID};
-  EntityQuery query;
-  ecs_query_init(&query, 16);
-  ecs_query_entities((World *)system->ecs, &query, player_components, 2);
+  QueryDesc exp_desc = {0};
+  ComponentType player_components[] = {PLAYER_COMPONENT_ID,
+                                       TRANSFORM_COMPONENT_ID};
+  exp_desc.all_components = player_components;
+  exp_desc.all_count = 2;
+  Query *exp_query = ecs_query_create((World *)system->ecs, &exp_desc);
 
   EntityID nearest_player = 0;
   f32 nearest_dist = 999999.0f;
-  for (u32 p = 0; p < query.count; p++) {
-    EntityID player_entity = query.entities[p];
-    TransformComponent *pt =
-        ecs_get_component(system->ecs, player_entity, TRANSFORM_COMPONENT_ID);
+  Entity p_entity_exp;
+  void *p_comps_exp[2];
+  while (ecs_query_next(exp_query, &p_entity_exp, p_comps_exp)) {
+    EntityID player_id = p_entity_exp.id;
+    TransformComponent *pt = (TransformComponent *)p_comps_exp[1];
     if (!pt)
       continue;
     f32 d = vec3_length(vec3_sub(pt->position, position));
     if (d < nearest_dist) {
       nearest_dist = d;
-      nearest_player = player_entity;
+      nearest_player = player_id;
     }
   }
 
+  ecs_query_destroy((World *)system->ecs, exp_query);
   const f32 pickup_radius = 5.0f;
   if (nearest_player != 0 && nearest_dist <= pickup_radius) {
     PlayerComponent *player = (PlayerComponent *)ecs_get_component(

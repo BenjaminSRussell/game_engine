@@ -116,10 +116,10 @@ void npc_schedule_update(NPCSystem *system, EntityID entity, NPCComponent *npc,
   case NPC_TASK_SLEEP:
     // Go home and sleep
     if (npc->home) {
-      TransformComponent *home =
-          ecs_get_component(system->ecs, npc->home, TRANSFORM_COMPONENT_ID);
-      TransformComponent *self =
-          ecs_get_component(system->ecs, entity, TRANSFORM_COMPONENT_ID);
+      TransformComponent *home = (TransformComponent *)ecs_get_component(
+          (World *)system->ecs, (Entity){npc->home, 0}, TRANSFORM_COMPONENT_ID);
+      TransformComponent *self = (TransformComponent *)ecs_get_component(
+          (World *)system->ecs, (Entity){entity, 0}, TRANSFORM_COMPONENT_ID);
       if (home && self) {
         f32 dist = vec3_length(vec3_sub(home->position, self->position));
         if (dist > 2.0f) {

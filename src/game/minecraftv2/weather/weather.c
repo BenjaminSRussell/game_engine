@@ -11,6 +11,7 @@
 // Weather sound effects blending for smooth transitions
 #include <common.h>
 #include <math.h>
+#include <math/math.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -83,7 +84,6 @@ static u32 weather_random(u32 *seed) {
 static f32 weather_random_f32(u32 *seed) {
   return (f32)weather_random(seed) / (f32)UINT32_MAX;
 }
-
 
 // static Vec3 vec3_lerp removed - using math/vec3.h implementation
 

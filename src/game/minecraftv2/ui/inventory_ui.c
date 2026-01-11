@@ -58,6 +58,7 @@
 //     - Valid drop highlighting: IMPLEMENTED (highlight valid drop targets)
 //     - Invalid drop indication: IMPLEMENTED (indicate invalid drops)
 #include "../include/ui/inventory_ui.h"
+#include "../include/ui/hud_tooltip.h"
 #include "../../../engine/include/platform/input/controls.h"
 #include "../../../engine/include/rendering/vulkan.h"
 #include "../include/block/block.h"
@@ -426,6 +427,16 @@ bool inventory_ui_handle_input(InventoryUI *ui, struct InputState *input,
   // Handle hover
   u32 hovered_slot = inventory_ui_get_slot_at_pos(ui, mouse_pos);
   inventory_ui_set_hovered_slot(ui, hovered_slot);
+
+    if (hovered_slot < MAX_INVENTORY_SLOTS) {
+        InventorySlot* slot = &inventory->slots[hovered_slot];
+        if (slot->item_id != 0) {
+            extern HUDSystem g_hud;
+            extern ItemRegistry g_item_registry;
+            const ExtendedItemDefinition* item = item_registry_get(&g_item_registry, slot->item_id);
+            hud_tooltip_draw(&g_hud, item);
+        }
+    }
 
   // Handle mouse clicks
   if (input->mouse_buttons[0]) { // Left click

@@ -15,8 +15,13 @@
 #include <player/player.h>
 #include <player/player_food.h>
 #include <player/status_effects.h>
+#include <audio/audio_system.h>
+#include <effects/vfx/particle_system.h>
 #include <stdlib.h>
 #include <string.h>
+
+extern AudioSystem* g_audio_system;
+extern ParticleSystem* g_particle_system;
 
 // Check if player can eat
 bool player_can_eat(Player *player, u32 food_item_id,
@@ -90,6 +95,10 @@ bool player_start_eating(Player *player, u32 slot_index,
   LOG_DEBUG("Player started eating %s (duration: %.2fs)", item->base.name,
             item->properties.food.eat_duration);
 
+    if (g_audio_system) {
+        audio_play_sound_2d(g_audio_system, SOUND_ITEM_PICKUP, 1.0f, SOUND_CATEGORY_PLAYER);
+    }
+
   return true;
 }
 
@@ -103,6 +112,13 @@ void player_update_eating(Player *player, f32 delta_time,
   player->eating_state.eat_timer += delta_time;
   player->eating_state.eat_progress =
       player->eating_state.eat_timer / player->eating_state.eat_duration;
+
+    // Emit particles
+    if (g_particle_system) {
+        Vec3 pos = player->position;
+        pos.y += 1.5f; // Mouth height
+        particle_emit_burst(g_particle_system, PARTICLE_TYPE_DEBRIS, pos, vec3_zero(), 0.5f, 2, 0.5f);
+    }
 
   // Check if eating is complete
   if (player->eating_state.eat_progress >= 1.0f) {
@@ -132,26 +148,32 @@ void player_finish_eating(Player *player, const ItemRegistry *item_registry) {
   const FoodProperties *food = &item->properties.food;
 
   // Restore hunger
-  player->hunger += food->hunger_restored;
+  player->hunger += food->hunger_restored * food->quality;
   if (player->hunger > 20.0f) {
     player->hunger = 20.0f;
   }
 
   // Restore saturation
-  f32 saturation_gained = food->hunger_restored * food->saturation_modifier;
+  f32 saturation_gained = food->hunger_restored * food->saturation_modifier * food->quality;
   player->saturation += saturation_gained;
   if (player->saturation > player->hunger) {
     player->saturation = player->hunger;
   }
 
   LOG_INFO("Player ate %s: +%.1f hunger, +%.1f saturation", item->base.name,
-           food->hunger_restored, saturation_gained);
+           food->hunger_restored * food->quality, saturation_gained);
+
+  // Update food stats
+  player->food_stats.total_items_eaten++;
+  player->food_stats.total_hunger_restored += food->hunger_restored * food->quality;
+  player->food_stats.total_saturation_gained += saturation_gained;
 
   // Apply status effects if applicable
   if (food->has_effects && food->effect_chance > 0.0f) {
     // Roll for effect chance
     f32 roll = (f32)rand() / (f32)RAND_MAX;
     if (roll <= food->effect_chance) {
+      player->food_stats.effects_applied++;
       // Map effect_id to status effect type
       // 0 = Poison, 1 = Regeneration
       if (food->effect_id == 0) {
@@ -165,6 +187,10 @@ void player_finish_eating(Player *player, const ItemRegistry *item_registry) {
       }
     }
   }
+
+    if (g_audio_system) {
+        audio_play_sound_2d(g_audio_system, SOUND_PLAYER_HEAL, 1.0f, SOUND_CATEGORY_PLAYER);
+    }
 
   // Remove item from inventory
   inventory_remove_item(&player->inventory, player->eating_state.food_item_id,

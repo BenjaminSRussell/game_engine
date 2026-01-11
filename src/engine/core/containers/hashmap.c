@@ -77,7 +77,8 @@
 u32 hash_string(const void *key) {
   // Key is a pointer to char*, we need to dereference it
   const char *str = *(const char **)key;
-  if (!str) return 0;
+  if (!str)
+    return 0;
   u32 hash = 5381;
   int c;
   while ((c = *str++))
@@ -89,12 +90,13 @@ bool equals_string(const void *a, const void *b) {
   // Both a and b are pointers to char*, dereference them
   const char *str_a = *(const char **)a;
   const char *str_b = *(const char **)b;
-  if (!str_a || !str_b) return str_a == str_b;
+  if (!str_a || !str_b)
+    return str_a == str_b;
   return strcmp(str_a, str_b) == 0;
 }
 
-void hashmap_set_string(HashMap *map, const char *key, const void *value) {
-  hashmap_set(map, &key, value);
+void hashmap_insert_string(HashMap *map, const char *key, const void *value) {
+  hashmap_insert(map, &key, value);
 }
 
 void *hashmap_get_string(HashMap *map, const char *key) {
@@ -132,7 +134,7 @@ void hashmap_destroy(HashMap *map) {
   free(map);
 }
 
-void hashmap_set(HashMap *map, const void *key, const void *value) {
+void hashmap_insert(HashMap *map, const void *key, const void *value) {
   if (!map || !key || !value)
     return;
 
@@ -236,7 +238,7 @@ void hashmap_rehash(HashMap *map, u32 new_capacity) {
 
   for (u32 i = 0; i < old_capacity; i++) {
     if (old_entries[i].used) {
-      hashmap_set(map, old_entries[i].key, old_entries[i].value);
+      hashmap_insert(map, old_entries[i].key, old_entries[i].value);
       free((void *)old_entries[i].key);
       free(old_entries[i].value);
     }

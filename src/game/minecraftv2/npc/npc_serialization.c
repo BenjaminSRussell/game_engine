@@ -222,37 +222,32 @@ bool save_npcs(struct SaveSystem *save, const char *world_name,
   if (!file)
     return false;
 
-  ComponentTypeID components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
-  EntityQuery query;
-  ecs_query_init(&query, 2048);
-  ecs_query_entities((World *)npc_system->ecs, &query, components, 2);
+  QueryDesc desc = {0};
+  ComponentType components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
+  desc.all_components = components;
+  desc.all_count = 2;
+  Query *query = ecs_query_create((World *)npc_system->ecs, &desc);
 
   NPCSaveHeader header = {.magic = NPC_SAVE_MAGIC,
                           .version = NPC_SAVE_VERSION,
                           .endianness = NPC_SAVE_ENDIANNESS,
-                          .count = query.count};
+                          .count = ecs_query_count(query)};
 
   bool ok = write_bytes(file, &header, sizeof(header));
   if (ok) {
-    for (u32 i = 0; i < query.count; i++) {
-      EntityID entity = query.entities[i];
-      NPCComponent *npc = (NPCComponent *)ecs_get_component(
-          (World *)npc_system->ecs, (Entity){entity, 0}, NPC_COMPONENT_ID);
-      TransformComponent *transform = (TransformComponent *)ecs_get_component(
-          (World *)npc_system->ecs, (Entity){entity, 0},
-          TRANSFORM_COMPONENT_ID);
-      if (!npc || !transform) {
-        ok = false;
-        break;
-      }
-      if (!write_npc_entry(file, entity, npc, transform)) {
+    Entity entity;
+    void *comps[2];
+    while (ecs_query_next(query, &entity, comps)) {
+      NPCComponent *npc = (NPCComponent *)comps[0];
+      TransformComponent *transform = (TransformComponent *)comps[1];
+      if (!write_npc_entry(file, entity.id, npc, transform)) {
         ok = false;
         break;
       }
     }
   }
 
-  ecs_query_free(&query);
+  ecs_query_destroy((World *)npc_system->ecs, query);
 
   if (!ok) {
     fclose(file);
@@ -264,7 +259,7 @@ bool save_npcs(struct SaveSystem *save, const char *world_name,
 }
 
 bool load_npcs(struct SaveSystem *save, const char *world_name,
-               struct NPCSystem *npc_system, struct ECSWorld *ecs,
+               struct NPCSystem *npc_system, struct World *ecs,
                EntityID *id_map) {
   char npcs_path[512];
   get_npcs_path(save, world_name, npcs_path, sizeof(npcs_path));
@@ -300,7 +295,7 @@ bool load_npcs(struct SaveSystem *save, const char *world_name,
     return false;
   }
 
-  bool *used = calloc(ecs->entity_capacity, sizeof(bool));
+  bool *used = calloc(ecs->config.max_entities, sizeof(bool));
   if (!used) {
     fclose(file);
     return false;
@@ -369,46 +364,45 @@ bool load_npcs(struct SaveSystem *save, const char *world_name,
     }
 
     EntityID new_entity_id = 0;
-    if (saved_id < ecs->entity_capacity) {
+    if (saved_id < ecs->config.max_entities) {
       new_entity_id = id_map[saved_id];
     }
-    if (new_entity_id == 0 || new_entity_id >= ecs->entity_capacity ||
+    if (new_entity_id == 0 || new_entity_id >= ecs->config.max_entities ||
         used[new_entity_id]) {
       continue;
     }
     used[new_entity_id] = true;
 
-    NPCComponent *npc = ecs_add_component(ecs, new_entity_id, NPC_COMPONENT_ID);
+    NPCComponent *npc = (NPCComponent *)ecs_add_component(
+        ecs, (Entity){new_entity_id, 0}, NPC_COMPONENT_ID, NULL);
     TransformComponent *transform_comp =
-        ecs_add_component(ecs, new_entity_id, TRANSFORM_COMPONENT_ID);
+        (TransformComponent *)ecs_add_component(ecs, (Entity){new_entity_id, 0},
+                                                TRANSFORM_COMPONENT_ID, NULL);
     if (!npc || !transform_comp) {
       LOG_WARN("Failed to create NPC or components during load at index %u", i);
       continue;
     }
 
-    npc->entity_id =
-        new_entity_id; // Corrected: use entity.id for older EntityID fields if
-                       // needed, or update the field
     npc->type = (type < NPC_TYPE_COUNT) ? (NPCType)type : NPC_TYPE_VILLAGER;
     npc->state = (state < NPC_STATE_COUNT) ? (NPCState)state : NPC_STATE_IDLE;
-    npc->target = (target < ecs->entity_capacity) ? id_map[target] : 0;
+    npc->target = (target < ecs->config.max_entities) ? id_map[target] : 0;
     npc->path_length =
         path_length > NPC_PATH_CAPACITY ? NPC_PATH_CAPACITY : path_length;
-    npc_comp->current_path_index =
-        path_index > npc_comp->path_length ? npc_comp->path_length : path_index;
-    npc_comp->behavior_flags = behavior_flags;
-    npc_comp->flee_target =
-        (flee_target < ecs->entity_capacity) ? id_map[flee_target] : 0;
-    npc_comp->behavior_timer = behavior_timer;
-    npc_comp->breed_cooldown = breed_cooldown;
-    npc_comp->panic_timer = panic_timer;
-    npc_comp->growth_timer = growth_timer;
+    npc->current_path_index =
+        path_index > npc->path_length ? npc->path_length : path_index;
+    npc->behavior_flags = behavior_flags;
+    npc->flee_target =
+        (flee_target < ecs->config.max_entities) ? id_map[flee_target] : 0;
+    npc->behavior_timer = behavior_timer;
+    npc->breed_cooldown = breed_cooldown;
+    npc->panic_timer = panic_timer;
+    npc->growth_timer = growth_timer;
 
-    for (u32 j = 0; j < npc_comp->path_length; j++) {
-      npc_comp->path[j] = path[j];
+    for (u32 j = 0; j < npc->path_length; j++) {
+      npc->path[j] = path[j];
     }
-    for (u32 j = npc_comp->path_length; j < NPC_PATH_CAPACITY; j++) {
-      npc_comp->path[j] = vec3(0.0f, 0.0f, 0.0f);
+    for (u32 j = npc->path_length; j < NPC_PATH_CAPACITY; j++) {
+      npc->path[j] = vec3(0.0f, 0.0f, 0.0f);
     }
 
     *transform_comp = transform;

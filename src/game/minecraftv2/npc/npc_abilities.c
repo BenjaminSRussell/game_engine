@@ -24,19 +24,20 @@ void npc_creeper_explode(struct NPCSystem *system, EntityID entity,
   f32 explosion_damage = 25.0f;
 
   // Find all entities in explosion radius
-  EntityQuery query;
-  ecs_query_init(&query, 1024);
-  ComponentTypeID components[] = {TRANSFORM_COMPONENT_ID};
-  ecs_query_entities((World *)system->ecs, &query, components, 1);
+  QueryDesc desc = {0};
+  ComponentType components[] = {TRANSFORM_COMPONENT_ID};
+  desc.all_components = components;
+  desc.all_count = 1;
+  Query *query = ecs_query_create((World *)system->ecs, &desc);
 
-  for (u32 i = 0; i < query.count; i++) {
-    EntityID target = query.entities[i];
+  Entity target_entity;
+  void *comps[1];
+  while (ecs_query_next(query, &target_entity, comps)) {
+    EntityID target = target_entity.id;
     if (target == entity)
       continue; // Don't damage self
 
-    TransformComponent *target_transform =
-        (TransformComponent *)ecs_get_component(
-            (World *)system->ecs, (Entity){target, 0}, TRANSFORM_COMPONENT_ID);
+    TransformComponent *target_transform = (TransformComponent *)comps[0];
     if (!target_transform)
       continue;
 
@@ -62,24 +63,23 @@ void npc_creeper_explode(struct NPCSystem *system, EntityID entity,
                          .knockback_force = knockback_force};
 
     // Apply damage
-    void *player_comp = ecs_get_component(
-        (World *)system->ecs, (Entity){target, 0}, PLAYER_COMPONENT_ID);
+    void *player_comp = ecs_get_component((World *)system->ecs, target_entity,
+                                          PLAYER_COMPONENT_ID);
     if (player_comp) {
-      survival_take_damage((World *)system->ecs, (Entity){target, 0},
-                           damage.amount);
+      survival_take_damage((World *)system->ecs, target_entity, damage.amount);
       LOG_INFO("Creeper explosion damaged player %u for %.2f damage", target,
                damage.amount);
       continue;
     }
 
     HealthComponent *health = (HealthComponent *)ecs_get_component(
-        (World *)system->ecs, (Entity){target, 0}, HEALTH_COMPONENT_ID);
+        (World *)system->ecs, target_entity, HEALTH_COMPONENT_ID);
     if (health) {
       npc_take_damage(system, target, &damage);
     }
   }
 
-  ecs_query_free(&query);
+  ecs_query_destroy((World *)system->ecs, query);
 
   // Spawn explosion particles and sound
   LOG_INFO(
@@ -98,17 +98,17 @@ void npc_creeper_update(struct NPCSystem *system, EntityID entity,
     return;
 
   // Check if near player
-  EntityQuery player_query;
-  ecs_query_init(&player_query, 1);
-  ComponentTypeID player_components[] = {PLAYER_COMPONENT_ID,
-                                         TRANSFORM_COMPONENT_ID};
-  ecs_query_entities((World *)system->ecs, &player_query, player_components, 2);
+  QueryDesc player_desc = {0};
+  ComponentType player_components[] = {PLAYER_COMPONENT_ID,
+                                       TRANSFORM_COMPONENT_ID};
+  player_desc.all_components = player_components;
+  player_desc.all_count = 2;
+  Query *player_query = ecs_query_create((World *)system->ecs, &player_desc);
 
-  if (player_query.count > 0) {
-    TransformComponent *player_transform =
-        (TransformComponent *)ecs_get_component(
-            (World *)system->ecs, (Entity){player_query.entities[0], 0},
-            TRANSFORM_COMPONENT_ID);
+  Entity p_entity;
+  void *p_comps[2];
+  if (ecs_query_next(player_query, &p_entity, p_comps)) {
+    TransformComponent *player_transform = (TransformComponent *)p_comps[1];
     if (player_transform) {
       f32 distance = vec3_length(
           vec3_sub(player_transform->position, transform->position));
@@ -134,7 +134,7 @@ void npc_creeper_update(struct NPCSystem *system, EntityID entity,
     }
   }
 
-  ecs_query_free(&player_query);
+  ecs_query_destroy((World *)system->ecs, player_query);
 }
 
 // Skeleton ranged attack
@@ -178,17 +178,16 @@ void npc_skeleton_update(struct NPCSystem *system, EntityID entity,
     return;
 
   // Check if player in range
-  EntityQuery player_query;
-  ecs_query_init(&player_query, 1);
-  ComponentTypeID player_components[] = {PLAYER_COMPONENT_ID,
-                                         TRANSFORM_COMPONENT_ID};
-  ecs_query_entities((World *)system->ecs, &player_query, player_components, 2);
+  QueryDesc p_desc = {0};
+  ComponentType p_components[] = {PLAYER_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
+  p_desc.all_components = p_components;
+  p_desc.all_count = 2;
+  Query *p_query = ecs_query_create((World *)system->ecs, &p_desc);
 
-  if (player_query.count > 0) {
-    TransformComponent *player_transform =
-        (TransformComponent *)ecs_get_component(
-            (World *)system->ecs, (Entity){player_query.entities[0], 0},
-            TRANSFORM_COMPONENT_ID);
+  Entity p_ent;
+  void *p_c[2];
+  if (ecs_query_next(p_query, &p_ent, p_c)) {
+    TransformComponent *player_transform = (TransformComponent *)p_c[1];
     if (player_transform) {
       f32 distance = vec3_length(
           vec3_sub(player_transform->position, transform->position));
@@ -198,7 +197,7 @@ void npc_skeleton_update(struct NPCSystem *system, EntityID entity,
       // If too close, back away
       if (distance < stats.attack_range * 0.5f) {
         skeleton->state = NPC_STATE_FLEEING;
-        skeleton->flee_target = player_query.entities[0];
+        skeleton->flee_target = p_ent.id;
         skeleton->panic_timer = 2.0f;
       }
       // If in range, shoot
@@ -211,7 +210,7 @@ void npc_skeleton_update(struct NPCSystem *system, EntityID entity,
     }
   }
 
-  ecs_query_free(&player_query);
+  ecs_query_destroy((World *)system->ecs, p_query);
 }
 
 // Check and execute special abilities for NPCs

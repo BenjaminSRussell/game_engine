@@ -46,6 +46,7 @@
 #include <npc/npc_schedule.h>
 #include <npc/npc_visuals.h>
 #include <physics/physics.h>
+#include <player/food_spoilage.h>
 #include <player/player.h>
 #include <rendering/mesh_optimizer.h>
 #include <rendering/particle_renderer.h>
@@ -195,6 +196,7 @@ typedef enum {
 typedef struct {
   // Core systems
   BlockRegistry block_registry;
+  ItemRegistry item_registry;
   ChunkManager chunk_manager;
   WorldGenerator world_generator;
   GenerationContext gen_context; // Context for world generation
@@ -238,7 +240,6 @@ typedef struct {
 
   // Menu
   MenuSystem menu_system;
-  HUDSystem hud;
 
   // Mining
   MiningState mining_state;
@@ -293,6 +294,8 @@ typedef struct {
 
 static GameState g_game = {0};
 InGameState g_in_game_state;
+HUDSystem g_hud;
+ItemRegistry g_item_registry;
 
 static u32 input_profiles_active_index(const InputProfiles *profiles) {
   if (!profiles || profiles->count == 0) {
@@ -2209,6 +2212,14 @@ static void game_init(void) {
   block_registry_init(&g_game.block_registry, 256);
   block_registry_init_defaults(&g_game.block_registry);
 
+  // Initialize item registry
+  init_progress_update_stage("Initializing Item Registry");
+  item_registry_init(&g_game.item_registry);
+
+  // Initialize recipe system
+  init_progress_update_stage("Initializing Recipe System");
+  recipe_system_init();
+
   // Initialize block state manager
   init_progress_update_stage("Block State Manager");
   block_state_manager_init(&g_game.block_state_manager, 1024);
@@ -2410,7 +2421,7 @@ static void game_init(void) {
   // Initialize HUD
   init_progress_update_stage("HUD System");
   Vec2 hud_size = vec2((f32)g_game.window_width, (f32)g_game.window_height);
-  hud_init(&g_game.hud, hud_size);
+  hud_init(&g_hud, hud_size);
 
   // Initialize menu renderer
   init_progress_update_stage("Menu Renderer");
@@ -2758,6 +2769,10 @@ static void game_update(void) {
                            &g_game.chunk_manager, g_game.physics_world,
                            &g_game.block_registry);
 
+      // Update food spoilage
+      food_spoilage_system_update(g_game.player_system.player,
+                                  &g_game.item_registry, g_game.delta_time);
+
       // Update damage systems (particles, immunity, etc.)
       player_update_damage_systems(g_game.delta_time);
 
@@ -2905,7 +2920,7 @@ static void game_update(void) {
       }
 
       // Update HUD
-      hud_update(&g_game.hud, &g_game.player_system, dt);
+      hud_update(&g_hud, &g_game.player_system, dt);
       // hud_tick(&g_game.hud, g_game.delta_time);
 
       // Update game mode
@@ -3344,7 +3359,7 @@ static void game_render(void) {
     // Screen-space effects: IMPLEMENTED (reflections and ambient occlusion).
     // Cinematic effects: IMPLEMENTED (film grain, vignette, etc.).
     // Render HUD
-    hud_render(&g_game.hud, &g_game.renderer);
+    hud_render(&g_hud, &g_game.renderer);
     if (g_game.in_game_state == IN_GAME_STATE_MENU) {
       render_input_profile_menu();
     }

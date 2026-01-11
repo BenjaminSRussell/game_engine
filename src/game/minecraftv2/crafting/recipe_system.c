@@ -13,18 +13,23 @@
 #include <audio/audio_system.h>
 #include <core/logger.h>
 #include <crafting/recipe_system.h>
+#include <inventory/item_registry.h>
 #include <stdlib.h>
 #include <string.h>
 
+RecipeRegistry g_recipe_registry;
+
+// Log recipe crafting for statistics
 static void recipe_log_crafted(const Recipe *recipe) {
   if (!recipe)
     return;
+  // TODO: Implement persistent crafting statistics
+  LOG_DEBUG("Recipe %u logged as crafted", recipe->id);
+}
 
-  LOG_INFO("Crafted recipe %u", recipe->id);
-  for (u32 i = 0; i < recipe->output_count; i++) {
-    LOG_INFO("  Output %u: item_id=%u x%u", i, recipe->outputs[i].item_id,
-             (u32)recipe->outputs[i].quantity);
-  }
+void recipe_system_init(void) {
+  recipe_registry_init(&g_recipe_registry);
+  recipe_registry_add_defaults(&g_recipe_registry);
 }
 
 void recipe_registry_init(RecipeRegistry *registry) {
@@ -221,6 +226,35 @@ void recipe_registry_add_defaults(RecipeRegistry *registry) {
   // TODO: Add default recipes with proper block IDs
   // These are placeholders and need to be updated with actual block IDs from
   // block.h
+
+  Recipe bowl_recipe = {.type = RECIPE_TYPE_SHAPELESS,
+                        .craft_time = 1.0f,
+                        .unlocked = true,
+                        .ingredient_count = 3,
+                        .output_count = 1};
+  bowl_recipe.ingredients[0] =
+      (RecipeIngredient){.item_id = ITEM_PLANKS, .quantity = 1};
+  bowl_recipe.ingredients[1] =
+      (RecipeIngredient){.item_id = ITEM_PLANKS, .quantity = 1};
+  bowl_recipe.ingredients[2] =
+      (RecipeIngredient){.item_id = ITEM_PLANKS, .quantity = 1};
+  bowl_recipe.outputs[0] = (RecipeOutput){.item_id = ITEM_BOWL, .quantity = 4};
+  recipe_registry_add(registry, &bowl_recipe);
+
+  Recipe hearty_stew_recipe = {.type = RECIPE_TYPE_SHAPELESS,
+                               .craft_time = 5.0f,
+                               .unlocked = true,
+                               .ingredient_count = 3,
+                               .output_count = 1};
+  hearty_stew_recipe.ingredients[0] =
+      (RecipeIngredient){.item_id = ITEM_CARROT, .quantity = 1};
+  hearty_stew_recipe.ingredients[1] =
+      (RecipeIngredient){.item_id = ITEM_POTATO, .quantity = 1};
+  hearty_stew_recipe.ingredients[2] =
+      (RecipeIngredient){.item_id = ITEM_BOWL, .quantity = 1};
+  hearty_stew_recipe.outputs[0] =
+      (RecipeOutput){.item_id = ITEM_HEARTY_STEW, .quantity = 1};
+  recipe_registry_add(registry, &hearty_stew_recipe);
 
   /*
   Recipe stick_recipe = {

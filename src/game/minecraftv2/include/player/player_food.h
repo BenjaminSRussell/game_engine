@@ -11,6 +11,13 @@
 // Forward declaration to break circular dependency
 struct PlayerComponent;
 
+typedef struct {
+  u32 total_items_eaten;
+  f32 total_hunger_restored;
+  f32 total_saturation_gained;
+  u32 effects_applied;
+} FoodStats;
+
 // Eating state
 typedef struct {
   bool is_eating;

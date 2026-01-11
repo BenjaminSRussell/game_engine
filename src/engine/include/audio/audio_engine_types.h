@@ -15,7 +15,7 @@ typedef struct {
   float x, y, z;
 } AudioVec3;
 
-// Audio Source
+// Audio Source State (Spatial only)
 typedef struct {
   uint32_t id;
   bool active;
@@ -45,17 +45,17 @@ typedef struct {
   // Playback state
   uint32_t buffer_id;
   uint32_t cursor;
-} AudioSource;
+} AudioSourceState;
 
-// Listener
+// Listener State
 typedef struct {
   AudioVec3 position;
   AudioVec3 velocity;
   AudioVec3 forward;
   AudioVec3 up;
-} AudioListener;
+} AudioListenerState;
 
-// Reverb Zone
+// Reverb Zone State
 typedef struct {
   AudioVec3 position;
   float radius;
@@ -66,13 +66,13 @@ typedef struct {
   float late_reverb_gain;
   float density;
   float diffusion;
-} ReverbZone;
+} ReverbZoneState;
 
-// Audio System
+// Audio Spatial State (The lightweight state shared with other systems)
 typedef struct {
-  AudioSource sources[AUDIO_MAX_SOURCES];
-  AudioListener listener;
-  ReverbZone zones[AUDIO_MAX_ZONES];
+  AudioSourceState sources[AUDIO_MAX_SOURCES];
+  AudioListenerState listener;
+  ReverbZoneState zones[AUDIO_MAX_ZONES];
   uint32_t zone_count;
 
   float master_volume;
@@ -81,6 +81,6 @@ typedef struct {
   // HRTF Data (simplified)
   float hrtf_left[180]; // Azimuth -90 to +90
   float hrtf_right[180];
-} AudioSystem;
+} AudioSpatialState;
 
 #endif // AUDIO_ENGINE_TYPES_H

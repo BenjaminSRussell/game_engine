@@ -198,8 +198,8 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/mobs/mob_system\\.c$")
 # Exclude broken AI logic (re-added)
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ai/enemy_ai\\.c$")
 
-# Exclude entire NPC subsystem (deprecated ECS API usage)
-list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/npc/.*\\.c$")
+# Exclude entire NPC subsystem (deprecated ECS API usage) - RE-ENABLING
+# list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/npc/.*\\.c$")
 
 # Exclude broken player modules
 # list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_damage\\.c$")
@@ -216,8 +216,8 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/crafting/advanced_crafting\\.c$")
 # Exclude broken vehicle system
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/vehicle/.*\\.c$")
 
-# Exclude main module with too many dependencies
-list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/minecraft_v2_module\\.c$")
+# Exclude main module with too many dependencies - RE-ENABLING
+# list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/minecraft_v2_module\\.c$")
 
 # Exclude duplicate main file (conflicts with gamestate_main.c)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/monolithic_main\\.c$")

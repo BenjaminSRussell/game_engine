@@ -138,6 +138,7 @@ typedef struct {
 // --- Registry Management ---
 
 // Initialize the global recipe registry
+void recipe_system_init(void);
 void recipe_registry_init(RecipeRegistry *registry);
 
 // Free resources

@@ -50,7 +50,7 @@ void hot_reload_watch_asset(const char *asset_path,
   watch->user_data = user_data;
   watch->last_modified = get_asset_time(asset_path);
 
-  hashmap_set(g_asset_watches, asset_path, watch);
+  hashmap_insert(g_asset_watches, asset_path, watch);
   LOG_INFO("Watching asset for hot-reload: %s", asset_path);
 }
 
