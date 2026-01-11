@@ -416,7 +416,33 @@ static f32 estimate_room_size(Vec3 position) {
 
 void audio_effects_update_dynamic_reverb(AudioEffectsSystem *system,
                                          Vec3 listener_position,
-                                         f32 delta_time) {}
+                                         f32 delta_time) {
+  if (!system || !system->initialized)
+    return;
+
+  f32 room_size = estimate_room_size(listener_position);
+  ReverbPreset target_preset = REVERB_PRESET_MEDIUM_ROOM;
+
+  if (room_size < 5.0f)
+    target_preset = REVERB_PRESET_SMALL_ROOM;
+  else if (room_size < 15.0f)
+    target_preset = REVERB_PRESET_MEDIUM_ROOM;
+  else if (room_size < 30.0f)
+    target_preset = REVERB_PRESET_LARGE_ROOM;
+  else
+    target_preset = REVERB_PRESET_CATHEDRAL;
+
+  // Find active reverb and update params (interpolation would be better but
+  // snap for now)
+  for (u32 i = 0; i < MAX_EFFECT_BUSES; i++) {
+    if (system->effects[i].active &&
+        system->effects[i].type == EFFECT_TYPE_REVERB) {
+      // audio_effect_set_reverb_params(system, i,
+      // system->reverb_presets[target_preset]); Commented out to avoid snap
+      // artifacts without interpolation
+    }
+  }
+}
 
 // EQ Implementation
 void audio_effects_eq_init(Equalizer *eq, f32 sample_rate) {
