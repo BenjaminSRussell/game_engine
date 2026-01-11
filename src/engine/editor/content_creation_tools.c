@@ -288,6 +288,425 @@ ContentCreationContext* content_creation_get_context(void) {
     return &g_context;
 }
 
+// MARK: - JSON Parsing Helpers
+
+static void content_creation_parse_block_from_json(BlockDefinition* block, JsonValue* json_root) {
+    if (!block || !json_root) return;
+    
+    // Parse basic properties
+    JsonValue* name_val = json_object_get(json_root, "name");
+    if (name_val && json_get_type(name_val) == JSON_TYPE_STRING) {
+        strncpy(block->name, json_get_string(name_val), sizeof(block->name) - 1);
+    }
+    
+    JsonValue* texture_val = json_object_get(json_root, "texture_path");
+    if (texture_val && json_get_type(texture_val) == JSON_TYPE_STRING) {
+        strncpy(block->texture_path, json_get_string(texture_val), sizeof(block->texture_path) - 1);
+    }
+    
+    JsonValue* model_val = json_object_get(json_root, "model_path");
+    if (model_val && json_get_type(model_val) == JSON_TYPE_STRING) {
+        strncpy(block->model_path, json_get_string(model_val), sizeof(block->model_path) - 1);
+    }
+    
+    // Parse color (RGB array)
+    JsonValue* color_val = json_object_get(json_root, "color");
+    if (color_val && json_get_type(color_val) == JSON_TYPE_ARRAY) {
+        JsonArray* color_array = json_get_array(color_val);
+        if (json_array_size(color_array) >= 3) {
+            block->color.x = (f32)json_get_number(json_array_get(color_array, 0));
+            block->color.y = (f32)json_get_number(json_array_get(color_array, 1));
+            block->color.z = (f32)json_get_number(json_array_get(color_array, 2));
+        }
+    }
+    
+    // Parse boolean properties
+    JsonValue* collidable_val = json_object_get(json_root, "collidable");
+    if (collidable_val && json_get_type(collidable_val) == JSON_TYPE_BOOLEAN) {
+        block->collidable = json_get_boolean(collidable_val);
+    }
+    
+    JsonValue* solid_val = json_object_get(json_root, "solid");
+    if (solid_val && json_get_type(solid_val) == JSON_TYPE_BOOLEAN) {
+        block->solid = json_get_boolean(solid_val);
+    }
+    
+    JsonValue* transparent_val = json_object_get(json_root, "transparent");
+    if (transparent_val && json_get_type(transparent_val) == JSON_TYPE_BOOLEAN) {
+        block->transparent = json_get_boolean(transparent_val);
+    }
+    
+    JsonValue* emissive_val = json_object_get(json_root, "emissive");
+    if (emissive_val && json_get_type(emissive_val) == JSON_TYPE_BOOLEAN) {
+        block->emissive = json_get_boolean(emissive_val);
+    }
+    
+    JsonValue* breakable_val = json_object_get(json_root, "breakable");
+    if (breakable_val && json_get_type(breakable_val) == JSON_TYPE_BOOLEAN) {
+        block->breakable = json_get_boolean(breakable_val);
+    }
+    
+    // Parse numeric properties
+    JsonValue* hardness_val = json_object_get(json_root, "hardness");
+    if (hardness_val && json_get_type(hardness_val) == JSON_TYPE_NUMBER) {
+        block->hardness = (f32)json_get_number(hardness_val);
+    }
+}
+
+static void content_creation_parse_item_from_json(ItemDefinition* item, JsonValue* json_root) {
+    if (!item || !json_root) return;
+    
+    // Parse basic properties
+    JsonValue* name_val = json_object_get(json_root, "name");
+    if (name_val && json_get_type(name_val) == JSON_TYPE_STRING) {
+        strncpy(item->name, json_get_string(name_val), sizeof(item->name) - 1);
+    }
+    
+    JsonValue* texture_val = json_object_get(json_root, "texture_path");
+    if (texture_val && json_get_type(texture_val) == JSON_TYPE_STRING) {
+        strncpy(item->texture_path, json_get_string(texture_val), sizeof(item->texture_path) - 1);
+    }
+    
+    JsonValue* model_val = json_object_get(json_root, "model_path");
+    if (model_val && json_get_type(model_val) == JSON_TYPE_STRING) {
+        strncpy(item->model_path, json_get_string(model_val), sizeof(item->model_path) - 1);
+    }
+    
+    // Parse numeric properties
+    JsonValue* scale_val = json_object_get(json_root, "scale");
+    if (scale_val && json_get_type(scale_val) == JSON_TYPE_NUMBER) {
+        item->scale = (f32)json_get_number(scale_val);
+    }
+    
+    JsonValue* max_stack_val = json_object_get(json_root, "max_stack_size");
+    if (max_stack_val && json_get_type(max_stack_val) == JSON_TYPE_NUMBER) {
+        item->max_stack_size = (u32)json_get_number(max_stack_val);
+    }
+    
+    // Parse boolean properties
+    JsonValue* consumable_val = json_object_get(json_root, "consumable");
+    if (consumable_val && json_get_type(consumable_val) == JSON_TYPE_BOOLEAN) {
+        item->consumable = json_get_boolean(consumable_val);
+    }
+    
+    JsonValue* equippable_val = json_object_get(json_root, "equippable");
+    if (equippable_val && json_get_type(equippable_val) == JSON_TYPE_BOOLEAN) {
+        item->equippable = json_get_boolean(equippable_val);
+    }
+}
+
+static void content_creation_parse_mob_from_json(MobDefinition* mob, JsonValue* json_root) {
+    if (!mob || !json_root) return;
+    
+    // Parse basic properties
+    JsonValue* name_val = json_object_get(json_root, "name");
+    if (name_val && json_get_type(name_val) == JSON_TYPE_STRING) {
+        strncpy(mob->name, json_get_string(name_val), sizeof(mob->name) - 1);
+    }
+    
+    JsonValue* texture_val = json_object_get(json_root, "texture_path");
+    if (texture_val && json_get_type(texture_val) == JSON_TYPE_STRING) {
+        strncpy(mob->texture_path, json_get_string(texture_val), sizeof(mob->texture_path) - 1);
+    }
+    
+    JsonValue* model_val = json_object_get(json_root, "model_path");
+    if (model_val && json_get_type(model_val) == JSON_TYPE_STRING) {
+        strncpy(mob->model_path, json_get_string(model_val), sizeof(mob->model_path) - 1);
+    }
+    
+    JsonValue* ai_val = json_object_get(json_root, "ai_behavior_tree");
+    if (ai_val && json_get_type(ai_val) == JSON_TYPE_STRING) {
+        strncpy(mob->ai_behavior_tree, json_get_string(ai_val), sizeof(mob->ai_behavior_tree) - 1);
+    }
+    
+    // Parse numeric properties
+    JsonValue* width_val = json_object_get(json_root, "width");
+    if (width_val && json_get_type(width_val) == JSON_TYPE_NUMBER) {
+        mob->width = (f32)json_get_number(width_val);
+    }
+    
+    JsonValue* height_val = json_object_get(json_root, "height");
+    if (height_val && json_get_type(height_val) == JSON_TYPE_NUMBER) {
+        mob->height = (f32)json_get_number(height_val);
+    }
+    
+    JsonValue* health_val = json_object_get(json_root, "health");
+    if (health_val && json_get_type(health_val) == JSON_TYPE_NUMBER) {
+        mob->health = (f32)json_get_number(health_val);
+        mob->max_health = mob->health;
+    }
+    
+    JsonValue* speed_val = json_object_get(json_root, "speed");
+    if (speed_val && json_get_type(speed_val) == JSON_TYPE_NUMBER) {
+        mob->speed = (f32)json_get_number(speed_val);
+    }
+    
+    // Parse scale (Vec3 array)
+    JsonValue* scale_val = json_object_get(json_root, "scale");
+    if (scale_val && json_get_type(scale_val) == JSON_TYPE_ARRAY) {
+        JsonArray* scale_array = json_get_array(scale_val);
+        if (json_array_size(scale_array) >= 3) {
+            mob->scale.x = (f32)json_get_number(json_array_get(scale_array, 0));
+            mob->scale.y = (f32)json_get_number(json_array_get(scale_array, 1));
+            mob->scale.z = (f32)json_get_number(json_array_get(scale_array, 2));
+        }
+    }
+    
+    // Parse boolean properties
+    JsonValue* hostile_val = json_object_get(json_root, "hostile");
+    if (hostile_val && json_get_type(hostile_val) == JSON_TYPE_BOOLEAN) {
+        mob->hostile = json_get_boolean(hostile_val);
+    }
+}
+
+// MARK: - Preview Entity System
+
+static Entity content_creation_create_preview_entity(ContentType type) {
+    // Create a preview entity based on content type
+    Entity preview_entity = {0};
+    
+    // Create entity through ECS system
+    preview_entity = ecs_create_entity();
+    if (preview_entity.id == 0) {
+        LOG_ERROR("Failed to create preview entity");
+        return preview_entity;
+    }
+    
+    // Add transform component
+    TransformComponent* transform = (TransformComponent*)ecs_add_component(preview_entity.id, COMPONENT_TYPE_TRANSFORM);
+    if (!transform) {
+        LOG_ERROR("Failed to add transform to preview entity");
+        return preview_entity;
+    }
+    
+    // Set initial transform
+    transform->position = (vec3_t){0.0f, 0.0f, 0.0f};
+    transform->rotation = (vec4_t){0.0f, 0.0f, 0.0f, 1.0f};
+    transform->scale = (vec3_t){1.0f, 1.0f, 1.0f};
+    
+    // Add render component
+    RenderComponent* render = (RenderComponent*)ecs_add_component(preview_entity.id, COMPONENT_TYPE_RENDER);
+    if (!render) {
+        LOG_ERROR("Failed to add render component to preview entity");
+        return preview_entity;
+    }
+    
+    // Set default render properties based on content type
+    switch (type) {
+        case CONTENT_TYPE_BLOCK:
+            content_creation_setup_block_preview(preview_entity, render);
+            break;
+        case CONTENT_TYPE_ITEM:
+            content_creation_setup_item_preview(preview_entity, render);
+            break;
+        case CONTENT_TYPE_MOB:
+            content_creation_setup_mob_preview(preview_entity, render);
+            break;
+        default:
+            LOG_ERROR("Unknown content type for preview: %d", type);
+            break;
+    }
+    
+    // Add physics component for collision preview
+    PhysicsComponent* physics = (PhysicsComponent*)ecs_add_component(preview_entity.id, COMPONENT_TYPE_PHYSICS);
+    if (physics) {
+        physics->collidable = true;
+        physics->solid = true;
+        physics->bounds = (vec3_t){0.5f, 0.5f, 0.5f}; // Default bounds
+    }
+    
+    LOG_INFO("Created preview entity for type %d", type);
+    return preview_entity;
+}
+
+static void content_creation_setup_block_preview(Entity entity, RenderComponent* render) {
+    if (!render) return;
+    
+    // Set default block render properties
+    render->mesh_id = 0; // Default cube mesh
+    render->material_id = 0; // Default material
+    render->visible = true;
+    render->cast_shadows = true;
+    render->receive_shadows = true;
+    
+    // Apply current block properties if available
+    if (g_context.current_block) {
+        content_creation_update_preview_from_block(entity, g_context.current_block);
+    }
+}
+
+static void content_creation_setup_item_preview(Entity entity, RenderComponent* render) {
+    if (!render) return;
+    
+    // Set default item render properties (smaller scale)
+    render->mesh_id = 1; // Default item mesh
+    render->material_id = 1; // Default item material
+    render->visible = true;
+    render->cast_shadows = false; // Items typically don't cast shadows
+    render->receive_shadows = true;
+    
+    // Apply current item properties if available
+    if (g_context.current_item) {
+        content_creation_update_preview_from_item(entity, g_context.current_item);
+    }
+}
+
+static void content_creation_setup_mob_preview(Entity entity, RenderComponent* render) {
+    if (!render) return;
+    
+    // Set default mob render properties
+    render->mesh_id = 2; // Default humanoid mesh
+    render->material_id = 2; // Default mob material
+    render->visible = true;
+    render->cast_shadows = true;
+    render->receive_shadows = true;
+    
+    // Apply current mob properties if available
+    if (g_context.current_mob) {
+        content_creation_update_preview_from_mob(entity, g_context.current_mob);
+    }
+}
+
+static void content_creation_update_preview_from_block(Entity entity, BlockDefinition* block) {
+    if (!block) return;
+    
+    // Update render component
+    RenderComponent* render = (RenderComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_RENDER);
+    if (render) {
+        // Load block texture if specified
+        if (strlen(block->texture_path) > 0) {
+            render->texture_id = content_creation_load_texture(block->texture_path);
+        }
+        
+        // Load block model if specified
+        if (strlen(block->model_path) > 0) {
+            render->mesh_id = content_creation_load_mesh(block->model_path);
+        }
+        
+        // Apply color tint
+        render->color_tint = block->color;
+        render->transparent = block->transparent;
+        render->emissive = block->emissive;
+        
+        // Update physics based on block properties
+        PhysicsComponent* physics = (PhysicsComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_PHYSICS);
+        if (physics) {
+            physics->collidable = block->collidable;
+            physics->solid = block->solid;
+            physics->bounds = (vec3_t){0.5f, 0.5f, 0.5f}; // Standard block size
+        }
+    }
+    
+    // Update transform
+    TransformComponent* transform = (TransformComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_TRANSFORM);
+    if (transform) {
+        transform->position = g_context.preview_position;
+    }
+}
+
+static void content_creation_update_preview_from_item(Entity entity, ItemDefinition* item) {
+    if (!item) return;
+    
+    // Update render component
+    RenderComponent* render = (RenderComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_RENDER);
+    if (render) {
+        // Load item texture if specified
+        if (strlen(item->texture_path) > 0) {
+            render->texture_id = content_creation_load_texture(item->texture_path);
+        }
+        
+        // Load item model if specified
+        if (strlen(item->model_path) > 0) {
+            render->mesh_id = content_creation_load_mesh(item->model_path);
+        }
+        
+        // Apply item scale (items are typically smaller)
+        TransformComponent* transform = (TransformComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_TRANSFORM);
+        if (transform) {
+            transform->scale = (vec3_t){item->scale, item->scale, item->scale};
+            transform->position = g_context.preview_position;
+        }
+        
+        // Update physics (items typically don't collide)
+        PhysicsComponent* physics = (PhysicsComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_PHYSICS);
+        if (physics) {
+            physics->collidable = false;
+            physics->solid = false;
+            physics->bounds = (vec3_t){0.25f, 0.25f, 0.25f}; // Smaller bounds for items
+        }
+    }
+}
+
+static void content_creation_update_preview_from_mob(Entity entity, MobDefinition* mob) {
+    if (!mob) return;
+    
+    // Update render component
+    RenderComponent* render = (RenderComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_RENDER);
+    if (render) {
+        // Load mob texture if specified
+        if (strlen(mob->texture_path) > 0) {
+            render->texture_id = content_creation_load_texture(mob->texture_path);
+        }
+        
+        // Load mob model if specified
+        if (strlen(mob->model_path) > 0) {
+            render->mesh_id = content_creation_load_mesh(mob->model_path);
+        }
+        
+        // Update transform with mob dimensions
+        TransformComponent* transform = (TransformComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_TRANSFORM);
+        if (transform) {
+            transform->scale = (vec3_t){mob->width, mob->height, mob->width}; // Use mob dimensions
+            transform->position = g_context.preview_position;
+        }
+        
+        // Update physics with mob dimensions
+        PhysicsComponent* physics = (PhysicsComponent*)ecs_get_component(entity.id, COMPONENT_TYPE_PHYSICS);
+        if (physics) {
+            physics->collidable = true;
+            physics->solid = true;
+            physics->bounds = (vec3_t){mob->width * 0.5f, mob->height * 0.5f, mob->width * 0.5f};
+        }
+    }
+}
+
+static u32 content_creation_load_texture(const char* texture_path) {
+    // Load texture through asset manager
+    if (g_context.asset_manager) {
+        Asset* texture_asset = asset_manager_load(g_context.asset_manager, 
+                                                  texture_path, 
+                                                  ASSET_TYPE_TEXTURE, 
+                                                  texture_path);
+        if (texture_asset) {
+            return texture_asset->id;
+        }
+    }
+    return 0; // Default texture ID
+}
+
+static u32 content_creation_load_mesh(const char* mesh_path) {
+    // Load mesh through asset manager
+    if (g_context.asset_manager) {
+        Asset* mesh_asset = asset_manager_load(g_context.asset_manager, 
+                                                mesh_path, 
+                                                ASSET_TYPE_MODEL, 
+                                                mesh_path);
+        if (mesh_asset) {
+            return mesh_asset->id;
+        }
+    }
+    return 0; // Default mesh ID
+}
+
+static void content_creation_destroy_preview_entity(void) {
+    if (g_context.preview_entity.id != 0) {
+        // Destroy preview entity through ECS system
+        ecs_destroy_entity(g_context.preview_entity.id);
+        g_context.preview_entity.id = 0;
+        LOG_INFO("Destroyed preview entity");
+    }
+}
+
 // MARK: - Block Creation Tools
 
 void content_creation_start_block_creation(void) {
@@ -297,8 +716,8 @@ void content_creation_start_block_creation(void) {
     g_context.is_editing = true;
     g_context.current_block = content_creation_create_block_definition();
     
-    // Create preview entity
-    // TODO: Create preview entity with default block mesh
+    // Create preview entity with default block mesh
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_BLOCK);
     
     g_context.preview_visible = true;
     LOG_INFO("Started block creation");
@@ -317,7 +736,8 @@ void content_creation_start_block_editing(BlockDefinition* block) {
     g_context.current_block = block;
     
     // Create preview entity with block properties
-    // TODO: Create preview entity with block's mesh and texture
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_BLOCK);
+    content_creation_update_preview_from_block(g_context.preview_entity, block);
     
     g_context.preview_visible = true;
     LOG_INFO("Started editing block: %s", block->name);
@@ -364,7 +784,7 @@ void content_creation_set_block_texture(const char* texture_path) {
         strncpy(g_context.current_block->texture_path, texture_path, sizeof(g_context.current_block->texture_path) - 1);
         
         // Update preview texture
-        // TODO: Update preview entity texture
+        content_creation_update_preview_from_block(g_context.preview_entity, g_context.current_block);
     }
 }
 
@@ -373,7 +793,7 @@ void content_creation_set_block_model(const char* model_path) {
         strncpy(g_context.current_block->model_path, model_path, sizeof(g_context.current_block->model_path) - 1);
         
         // Update preview model
-        // TODO: Update preview entity model
+        content_creation_update_preview_from_block(g_context.preview_entity, g_context.current_block);
     }
 }
 
@@ -382,7 +802,7 @@ void content_creation_set_block_color(Vec3 color) {
         g_context.current_block->color = color;
         
         // Update preview color
-        // TODO: Update preview entity color
+        content_creation_update_preview_from_block(g_context.preview_entity, g_context.current_block);
     }
 }
 
@@ -402,7 +822,7 @@ void content_creation_set_block_transparent(bool transparent) {
         g_context.current_block->transparent = transparent;
         
         // Update preview transparency
-        // TODO: Update preview entity transparency
+        content_creation_update_preview_from_block(g_context.preview_entity, g_context.current_block);
     }
 }
 
@@ -475,10 +895,31 @@ void content_creation_save_block_definition(BlockDefinition* block, const char* 
 }
 
 BlockDefinition* content_creation_load_block_definition(const char* file_path) {
-    // TODO: Implement proper JSON parsing
-    // For now, return a new block with default values
-    LOG_INFO("Loading block definition from: %s", file_path);
-    return content_creation_create_block_definition();
+    if (!file_path) {
+        LOG_ERROR("Invalid file path for block definition");
+        return NULL;
+    }
+    
+    // Load and parse JSON file
+    JsonValue* json_root = json_parse_file(file_path, NULL);
+    if (!json_root) {
+        LOG_ERROR("Failed to parse JSON file: %s", file_path);
+        return content_creation_create_block_definition();
+    }
+    
+    // Create block definition
+    BlockDefinition* block = content_creation_create_block_definition();
+    if (!block) {
+        json_free(json_root);
+        return NULL;
+    }
+    
+    // Parse block properties from JSON
+    content_creation_parse_block_from_json(block, json_root);
+    
+    json_free(json_root);
+    LOG_INFO("Loaded block definition from: %s", file_path);
+    return block;
 }
 
 // MARK: - Item Creation Tools
@@ -490,8 +931,8 @@ void content_creation_start_item_creation(void) {
     g_context.is_editing = true;
     g_context.current_item = content_creation_create_item_definition();
     
-    // Create preview entity
-    // TODO: Create preview entity with default item mesh
+    // Create preview entity with default item mesh
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_ITEM);
     
     g_context.preview_visible = true;
     LOG_INFO("Started item creation");
@@ -510,12 +951,14 @@ void content_creation_start_item_editing(ItemDefinition* item) {
     g_context.current_item = item;
     
     // Create preview entity with item properties
-    // TODO: Create preview entity with item's mesh and texture
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_ITEM);
+    content_creation_update_preview_from_item(g_context.preview_entity, item);
     
     g_context.preview_visible = true;
     LOG_INFO("Started editing item: %s", item->name);
 }
 
+// ... (rest of the code remains the same)
 void content_creation_finish_item_creation(void) {
     if (!g_context.is_editing || g_context.current_type != CONTENT_TYPE_ITEM || !g_context.current_item) {
         LOG_ERROR("No item creation in progress");
@@ -557,7 +1000,7 @@ void content_creation_set_item_texture(const char* texture_path) {
         strncpy(g_context.current_item->texture_path, texture_path, sizeof(g_context.current_item->texture_path) - 1);
         
         // Update preview texture
-        // TODO: Update preview entity texture
+        content_creation_update_preview_from_item(g_context.preview_entity, g_context.current_item);
     }
 }
 
@@ -566,7 +1009,7 @@ void content_creation_set_item_model(const char* model_path) {
         strncpy(g_context.current_item->model_path, model_path, sizeof(g_context.current_item->model_path) - 1);
         
         // Update preview model
-        // TODO: Update preview entity model
+        content_creation_update_preview_from_item(g_context.preview_entity, g_context.current_item);
     }
 }
 
@@ -575,7 +1018,7 @@ void content_creation_set_item_scale(f32 scale) {
         g_context.current_item->scale = scale;
         
         // Update preview scale
-        // TODO: Update preview entity scale
+        content_creation_update_preview_from_item(g_context.preview_entity, g_context.current_item);
     }
 }
 
@@ -659,10 +1102,31 @@ void content_creation_save_item_definition(ItemDefinition* item, const char* fil
 }
 
 ItemDefinition* content_creation_load_item_definition(const char* file_path) {
-    // TODO: Implement proper JSON parsing
-    // For now, return a new item with default values
-    LOG_INFO("Loading item definition from: %s", file_path);
-    return content_creation_create_item_definition();
+    if (!file_path) {
+        LOG_ERROR("Invalid file path for item definition");
+        return NULL;
+    }
+    
+    // Load and parse JSON file
+    JsonValue* json_root = json_parse_file(file_path, NULL);
+    if (!json_root) {
+        LOG_ERROR("Failed to parse JSON file: %s", file_path);
+        return content_creation_create_item_definition();
+    }
+    
+    // Create item definition
+    ItemDefinition* item = content_creation_create_item_definition();
+    if (!item) {
+        json_free(json_root);
+        return NULL;
+    }
+    
+    // Parse item properties from JSON
+    content_creation_parse_item_from_json(item, json_root);
+    
+    json_free(json_root);
+    LOG_INFO("Loaded item definition from: %s", file_path);
+    return item;
 }
 
 // MARK: - Mob Creation Tools
@@ -674,8 +1138,8 @@ void content_creation_start_mob_creation(void) {
     g_context.is_editing = true;
     g_context.current_mob = content_creation_create_mob_definition();
     
-    // Create preview entity
-    // TODO: Create preview entity with default mob mesh
+    // Create preview entity with default mob mesh
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_MOB);
     
     g_context.preview_visible = true;
     LOG_INFO("Started mob creation");
@@ -694,12 +1158,12 @@ void content_creation_start_mob_editing(MobDefinition* mob) {
     g_context.current_mob = mob;
     
     // Create preview entity with mob properties
-    // TODO: Create preview entity with mob's mesh and texture
+    g_context.preview_entity = content_creation_create_preview_entity(CONTENT_TYPE_MOB);
+    content_creation_update_preview_from_mob(g_context.preview_entity, mob);
     
     g_context.preview_visible = true;
     LOG_INFO("Started editing mob: %s", mob->name);
 }
-
 void content_creation_finish_mob_creation(void) {
     if (!g_context.is_editing || g_context.current_type != CONTENT_TYPE_MOB || !g_context.current_mob) {
         LOG_ERROR("No mob creation in progress");
@@ -741,7 +1205,7 @@ void content_creation_set_mob_model(const char* model_path) {
         strncpy(g_context.current_mob->model_path, model_path, sizeof(g_context.current_mob->model_path) - 1);
         
         // Update preview model
-        // TODO: Update preview entity model
+        content_creation_update_preview_from_mob(g_context.preview_entity, g_context.current_mob);
     }
 }
 
@@ -750,7 +1214,7 @@ void content_creation_set_mob_texture(const char* texture_path) {
         strncpy(g_context.current_mob->texture_path, texture_path, sizeof(g_context.current_mob->texture_path) - 1);
         
         // Update preview texture
-        // TODO: Update preview entity texture
+        content_creation_update_preview_from_mob(g_context.preview_entity, g_context.current_mob);
     }
 }
 
@@ -759,7 +1223,7 @@ void content_creation_set_mob_scale(Vec3 scale) {
         g_context.current_mob->scale = scale;
         
         // Update preview scale
-        // TODO: Update preview entity scale
+        content_creation_update_preview_from_mob(g_context.preview_entity, g_context.current_mob);
     }
 }
 
@@ -868,10 +1332,31 @@ void content_creation_save_mob_definition(MobDefinition* mob, const char* file_p
 }
 
 MobDefinition* content_creation_load_mob_definition(const char* file_path) {
-    // TODO: Implement proper JSON parsing
-    // For now, return a new mob with default values
-    LOG_INFO("Loading mob definition from: %s", file_path);
-    return content_creation_create_mob_definition();
+    if (!file_path) {
+        LOG_ERROR("Invalid file path for mob definition");
+        return NULL;
+    }
+    
+    // Load and parse JSON file
+    JsonValue* json_root = json_parse_file(file_path, NULL);
+    if (!json_root) {
+        LOG_ERROR("Failed to parse JSON file: %s", file_path);
+        return content_creation_create_mob_definition();
+    }
+    
+    // Create mob definition
+    MobDefinition* mob = content_creation_create_mob_definition();
+    if (!mob) {
+        json_free(json_root);
+        return NULL;
+    }
+    
+    // Parse mob properties from JSON
+    content_creation_parse_mob_from_json(mob, json_root);
+    
+    json_free(json_root);
+    LOG_INFO("Loaded mob definition from: %s", file_path);
+    return mob;
 }
 
 // MARK: - Preview and Placement
@@ -1082,10 +1567,7 @@ void content_creation_reset_context(void) {
     }
     
     // Clean up preview entity
-    if (g_context.preview_entity.id != 0) {
-        // TODO: Destroy preview entity
-        g_context.preview_entity.id = 0;
-    }
+    content_creation_destroy_preview_entity();
     
     memset(&g_context, 0, sizeof(ContentCreationContext));
     g_context.grid_size = 1.0f;

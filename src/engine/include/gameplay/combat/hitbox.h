@@ -24,6 +24,7 @@
 
 #include <common.h>
 #include <ecs/ecs.h>
+#include <math/aabb.h>
 #include <math/vec3.h>
 
 // Hitbox shape types
@@ -117,11 +118,6 @@ void hitbox_update_world_position(HitboxComponent *hitbox,
 // ============================================================================
 
 // Get hitbox world bounds
-typedef struct {
-  Vec3 min;
-  Vec3 max;
-} AABB;
-
 AABB hitbox_get_world_bounds(const HitboxComponent *hitbox);
 
 // Calculate approximate volume (for damage scaling)

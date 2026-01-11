@@ -1,34 +1,631 @@
-/*
- * asset_loader.c
- * Asset loading system
- *
- * Part of the Asset System subsystem
- * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement Vulkan backend
- * TODO: Implement Metal backend
- * TODO: Implement D3D12 backend
- * TODO: Add thread-safe access patterns
- * TODO: Implement proper error handling with error codes
- * TODO: Add memory tracking and leak detection
- * TODO: Implement hot-reload support
- * TODO: Add validation layer integration
- * TODO: Implement resource state tracking
- * TODO: Add GPU debugging markers
- * TODO: Implement asset loader initialization
- * TODO: Add asset loader cleanup/shutdown
- * TODO: Implement asset loader validation
- * TODO: Add asset loader error handling
- * TODO: Implement asset loader serialization
- * TODO: Add asset loader debug output
- * TODO: Implement asset loader unit tests
- * TODO: Add asset loader performance counters
- * TODO: Implement asset loader hot-reload
- * TODO: Add asset loader thread safety
- * TODO: Implement asset loader memory pooling
- * TODO: Add asset loader caching layer
- * TODO: Implement asset loader async operations
+#include "core/logger.h"
+#include "core/memory.h"
+#include "core/sync/thread_pool.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <pthread.h>
+
+// Asset loader core implementation
+#define MAX_ASSET_LOADERS 64
+#define MAX_CONCURRENT_LOADS 32
+#define ASSET_CACHE_SIZE_MB 1024
+
+typedef enum {
+    ASSET_TYPE_UNKNOWN = 0,
+    ASSET_TYPE_TEXTURE,
+    ASSET_TYPE_MESH,
+    ASSET_TYPE_MATERIAL,
+    ASSET_TYPE_SHADER,
+    ASSET_TYPE_AUDIO,
+    ASSET_TYPE_ANIMATION,
+    ASSET_TYPE_SCENE,
+    ASSET_TYPE_COUNT
+} asset_type_t;
+
+typedef enum {
+    ASSET_STATE_UNLOADED = 0,
+    ASSET_STATE_LOADING,
+    ASSET_STATE_LOADED,
+    ASSET_STATE_ERROR,
+    ASSET_STATE_UNLOADING
+} asset_state_t;
+
+typedef struct asset_handle {
+    u32 id;
+    char path[256];
+    asset_type_t type;
+    asset_state_t state;
+    void* data;
+    u32 size_bytes;
+    u64 last_modified;
+    u32 ref_count;
+    pthread_mutex_t mutex;
+} asset_handle_t;
+
+typedef struct asset_loader_interface {
+    const char* extensions[8];
+    asset_type_t type;
+    bool (*load)(const char* path, void** out_data, u32* out_size);
+    bool (*unload)(void* data);
+    bool (*validate)(const char* path);
+    u32 (*get_memory_usage)(const void* data);
+} asset_loader_interface_t;
+
+typedef struct asset_cache_entry {
+    char path[256];
+    void* data;
+    u32 size;
+    u64 last_access;
+    u32 access_count;
+    asset_type_t type;
+} asset_cache_entry_t;
+
+typedef struct asset_loader_system {
+    asset_handle_t assets[MAX_ASSET_LOADERS];
+    asset_loader_interface_t loaders[ASSET_TYPE_COUNT];
+    asset_cache_entry_t* cache;
+    u32 cache_count;
+    u32 cache_capacity;
+    u32 total_cache_size;
+    u32 max_cache_size;
+    
+    ThreadPool* thread_pool;
+    pthread_mutex_t cache_mutex;
+    pthread_mutex_t loader_mutex;
+    
+    u32 next_asset_id;
+    bool initialized;
+} asset_loader_system_t;
+
+static asset_loader_system_t g_asset_system = {0};
+
+static bool asset_loader_unload(u32 asset_id);
+
+// Initialize asset loader system
+bool asset_loader_init(u32 max_concurrent_loads, u32 cache_size_mb) {
+    if (g_asset_system.initialized) {
+        LOG_WARN("Asset loader system already initialized");
+        return true;
+    }
+    
+    memset(&g_asset_system, 0, sizeof(g_asset_system));
+    
+    // Initialize thread pool
+    g_asset_system.thread_pool = thread_pool_create(max_concurrent_loads);
+    if (!g_asset_system.thread_pool) {
+        LOG_ERROR("Failed to create asset loader thread pool");
+        return false;
+    }
+    
+    // Initialize mutexes
+    if (pthread_mutex_init(&g_asset_system.cache_mutex, NULL) != 0) {
+        LOG_ERROR("Failed to initialize cache mutex");
+        thread_pool_destroy(g_asset_system.thread_pool);
+        return false;
+    }
+    
+    if (pthread_mutex_init(&g_asset_system.loader_mutex, NULL) != 0) {
+        LOG_ERROR("Failed to initialize loader mutex");
+        pthread_mutex_destroy(&g_asset_system.cache_mutex);
+        thread_pool_destroy(g_asset_system.thread_pool);
+        return false;
+    }
+    
+    // Initialize cache
+    g_asset_system.max_cache_size = cache_size_mb * 1024 * 1024;
+    g_asset_system.cache_capacity = 1024;
+    g_asset_system.cache = (asset_cache_entry_t*)calloc(g_asset_system.cache_capacity, sizeof(asset_cache_entry_t));
+    
+    if (!g_asset_system.cache) {
+        LOG_ERROR("Failed to allocate asset cache");
+        pthread_mutex_destroy(&g_asset_system.cache_mutex);
+        pthread_mutex_destroy(&g_asset_system.loader_mutex);
+        thread_pool_destroy(g_asset_system.thread_pool);
+        return false;
+    }
+    
+    g_asset_system.next_asset_id = 1;
+    g_asset_system.initialized = true;
+    
+    LOG_INFO("Asset loader system initialized with %u workers, %u MB cache", 
+             max_concurrent_loads, cache_size_mb);
+    return true;
+}
+
+// Shutdown asset loader system
+void asset_loader_shutdown(void) {
+    if (!g_asset_system.initialized) {
+        return;
+    }
+    
+    // Wait for all pending loads
+    if (g_asset_system.thread_pool) {
+        thread_pool_wait(g_asset_system.thread_pool);
+        thread_pool_destroy(g_asset_system.thread_pool);
+    }
+    
+    // Unload all assets
+    for (u32 i = 0; i < MAX_ASSET_LOADERS; i++) {
+        if (g_asset_system.assets[i].state == ASSET_STATE_LOADED) {
+            asset_loader_unload(g_asset_system.assets[i].id);
+        }
+        pthread_mutex_destroy(&g_asset_system.assets[i].mutex);
+    }
+    
+    // Clear cache
+    pthread_mutex_lock(&g_asset_system.cache_mutex);
+    for (u32 i = 0; i < g_asset_system.cache_count; i++) {
+        if (g_asset_system.cache[i].data) {
+            free(g_asset_system.cache[i].data);
+        }
+    }
+    free(g_asset_system.cache);
+    pthread_mutex_unlock(&g_asset_system.cache_mutex);
+    
+    // Destroy mutexes
+    pthread_mutex_destroy(&g_asset_system.cache_mutex);
+    pthread_mutex_destroy(&g_asset_system.loader_mutex);
+    
+    memset(&g_asset_system, 0, sizeof(g_asset_system));
+    
+    LOG_INFO("Asset loader system shutdown complete");
+}
+
+// Register an asset loader
+bool asset_loader_register(asset_type_t type, const asset_loader_interface_t* loader) {
+    if (!g_asset_system.initialized || !loader || type >= ASSET_TYPE_COUNT) {
+        return false;
+    }
+    
+    pthread_mutex_lock(&g_asset_system.loader_mutex);
+    
+    g_asset_system.loaders[type] = *loader;
+    
+    pthread_mutex_unlock(&g_asset_system.loader_mutex);
+    
+    LOG_INFO("Registered asset loader for type %u", type);
+    return true;
+}
+
+// Get file extension
+static const char* get_file_extension(const char* path) {
+    if (!path) return NULL;
+    
+    const char* ext = strrchr(path, '.');
+    return ext ? ext + 1 : NULL;
+}
+
+// Determine asset type from file extension
+static asset_type_t determine_asset_type(const char* path) {
+    const char* ext = get_file_extension(path);
+    if (!ext) return ASSET_TYPE_UNKNOWN;
+    
+    // Check against registered loaders
+    for (asset_type_t type = 1; type < ASSET_TYPE_COUNT; type++) {
+        const asset_loader_interface_t* loader = &g_asset_system.loaders[type];
+        
+        for (int i = 0; i < 8 && loader->extensions[i]; i++) {
+            if (strcasecmp(ext, loader->extensions[i]) == 0) {
+                return type;
+            }
+        }
+    }
+    
+    return ASSET_TYPE_UNKNOWN;
+}
+
+// Find free asset slot
+static u32 find_free_asset_slot(void) {
+    for (u32 i = 0; i < MAX_ASSET_LOADERS; i++) {
+        if (g_asset_system.assets[i].state == ASSET_STATE_UNLOADED) {
+            return i;
+        }
+    }
+    return MAX_ASSET_LOADERS;
+}
+
+// Load asset task data
+typedef struct asset_load_task {
+    char path[256];
+    asset_type_t type;
+    u32 asset_id;
+    void (*callback)(u32 asset_id, bool success, void* data);
+    void* userdata;
+} asset_load_task_t;
+
+// Asset loading worker function
+static void asset_load_worker(void* task_data) {
+    asset_load_task_t* task = (asset_load_task_t*)task_data;
+    
+    if (!task || !g_asset_system.initialized) {
+        if (task && task->callback) {
+            task->callback(0, false, task->userdata);
+        }
+        free(task);
+        return;
+    }
+    
+    // Find asset handle
+    asset_handle_t* asset = NULL;
+    for (u32 i = 0; i < MAX_ASSET_LOADERS; i++) {
+        if (g_asset_system.assets[i].id == task->asset_id) {
+            asset = &g_asset_system.assets[i];
+            break;
+        }
+    }
+    
+    if (!asset) {
+        LOG_ERROR("Asset handle not found for ID %u", task->asset_id);
+        if (task->callback) {
+            task->callback(0, false, task->userdata);
+        }
+        free(task);
+        return;
+    }
+    
+    pthread_mutex_lock(&asset->mutex);
+    
+    // Check if already loaded
+    if (asset->state == ASSET_STATE_LOADED) {
+        asset->ref_count++;
+        pthread_mutex_unlock(&asset->mutex);
+        
+        if (task->callback) {
+            task->callback(asset->id, true, asset->data);
+        }
+        free(task);
+        return;
+    }
+    
+    asset->state = ASSET_STATE_LOADING;
+    
+    // Get loader
+    const asset_loader_interface_t* loader = &g_asset_system.loaders[task->type];
+    
+    // Load asset
+    void* data = NULL;
+    u32 size = 0;
+    bool success = false;
+    
+    if (loader && loader->load) {
+        success = loader->load(task->path, &data, &size);
+    }
+    
+    if (success && data) {
+        // Update asset
+        asset->data = data;
+        asset->size_bytes = size;
+        asset->state = ASSET_STATE_LOADED;
+        asset->ref_count = 1;
+        
+        LOG_INFO("Successfully loaded asset '%s' (ID: %u, %u bytes)", task->path, asset->id, size);
+    } else {
+        asset->state = ASSET_STATE_ERROR;
+        LOG_ERROR("Failed to load asset '%s'", task->path);
+    }
+    
+    pthread_mutex_unlock(&asset->mutex);
+    
+    // Call callback
+    if (task->callback) {
+        task->callback(asset->id, success, success ? data : NULL);
+    }
+    
+    free(task);
+}
+
+// Load asset asynchronously
+u32 asset_loader_load_async(const char* path, void (*callback)(u32 asset_id, bool success, void* data), void* userdata) {
+    if (!g_asset_system.initialized || !path) {
+        return 0;
+    }
+    
+    // Determine asset type
+    asset_type_t type = determine_asset_type(path);
+    if (type == ASSET_TYPE_UNKNOWN) {
+        LOG_ERROR("Unknown asset type for path '%s'", path);
+        return 0;
+    }
+    
+    // Check if already loaded
+    pthread_mutex_lock(&g_asset_system.loader_mutex);
+    
+    for (u32 i = 0; i < MAX_ASSET_LOADERS; i++) {
+        if (g_asset_system.assets[i].state == ASSET_STATE_LOADED && 
+            strcmp(g_asset_system.assets[i].path, path) == 0) {
+            
+            pthread_mutex_lock(&g_asset_system.assets[i].mutex);
+            g_asset_system.assets[i].ref_count++;
+            pthread_mutex_unlock(&g_asset_system.assets[i].mutex);
+            
+            u32 asset_id = g_asset_system.assets[i].id;
+            pthread_mutex_unlock(&g_asset_system.loader_mutex);
+            
+            if (callback) {
+                callback(asset_id, true, g_asset_system.assets[i].data);
+            }
+            
+            return asset_id;
+        }
+    }
+    
+    pthread_mutex_unlock(&g_asset_system.loader_mutex);
+    
+    // Find free slot
+    pthread_mutex_lock(&g_asset_system.loader_mutex);
+    u32 slot = find_free_asset_slot();
+    
+    if (slot >= MAX_ASSET_LOADERS) {
+        LOG_ERROR("No free asset slots available");
+        pthread_mutex_unlock(&g_asset_system.loader_mutex);
+        return 0;
+    }
+    
+    // Initialize asset handle
+    asset_handle_t* asset = &g_asset_system.assets[slot];
+    asset->id = g_asset_system.next_asset_id++;
+    strncpy(asset->path, path, 255);
+    asset->path[255] = '\0';
+    asset->type = type;
+    asset->state = ASSET_STATE_UNLOADED;
+    asset->data = NULL;
+    asset->size_bytes = 0;
+    asset->last_modified = 0;
+    asset->ref_count = 0;
+    
+    if (pthread_mutex_init(&asset->mutex, NULL) != 0) {
+        LOG_ERROR("Failed to initialize asset mutex");
+        pthread_mutex_unlock(&g_asset_system.loader_mutex);
+        return 0;
+    }
+    
+    u32 asset_id = asset->id;
+    pthread_mutex_unlock(&g_asset_system.loader_mutex);
+    
+    // Create load task
+    asset_load_task_t* task = (asset_load_task_t*)malloc(sizeof(asset_load_task_t));
+    if (!task) {
+        LOG_ERROR("Failed to allocate load task");
+        return 0;
+    }
+    
+    strncpy(task->path, path, 255);
+    task->path[255] = '\0';
+    task->type = type;
+    task->asset_id = asset_id;
+    task->callback = callback;
+    task->userdata = userdata;
+    
+    // Submit to thread pool
+    thread_pool_submit(g_asset_system.thread_pool, asset_load_worker, task);
+    
+    LOG_INFO("Submitted asset '%s' for async loading (ID: %u)", path, asset_id);
+    return asset_id;
+}
+
+// Load asset synchronously
+u32 asset_loader_load_sync(const char* path) {
+    if (!g_asset_system.initialized || !path) {
+        return 0;
+    }
+    
+    // Determine asset type
+    asset_type_t type = determine_asset_type(path);
+    if (type == ASSET_TYPE_UNKNOWN) {
+        LOG_ERROR("Unknown asset type for path '%s'", path);
+        return 0;
+    }
+    
+    // Check if already loaded
+    pthread_mutex_lock(&g_asset_system.loader_mutex);
+    
+    for (u32 i = 0; i < MAX_ASSET_LOADERS; i++) {
+        if (g_asset_system.assets[i].state == ASSET_STATE_LOADED && 
+            strcmp(g_asset_system.assets[i].path, path) == 0) {
+            
+            pthread_mutex_lock(&g_asset_system.assets[i].mutex);
+            g_asset_system.assets[i].ref_count++;
+            pthread_mutex_unlock(&g_asset_system.assets[i].mutex);
+            
+            u32 asset_id = g_asset_system.assets[i].id;
+            pthread_mutex_unlock(&g_asset_system.loader_mutex);
+            
+            return asset_id;
+        }
+    }
+    
+    pthread_mutex_unlock(&g_asset_system.loader_mutex);
+    
+    // Find free slot
+    pthread_mutex_lock(&g_asset_system.loader_mutex);
+    u32 slot = find_free_asset_slot();
+    
+    if (slot >= MAX_ASSET_LOADERS) {
+        LOG_ERROR("No free asset slots available");
+        pthread_mutex_unlock(&g_asset_system.loader_mutex);
+        return 0;
+    }
+    
+    // Initialize asset handle
+    asset_handle_t* asset = &g_asset_system.assets[slot];
+    asset->id = g_asset_system.next_asset_id++;
+    strncpy(asset->path, path, 255);
+    asset->path[255] = '\0';
+    asset->type = type;
+    asset->state = ASSET_STATE_LOADING;
+    asset->data = NULL;
+    asset->size_bytes = 0;
+    asset->last_modified = 0;
+    asset->ref_count = 0;
+    
+    if (pthread_mutex_init(&asset->mutex, NULL) != 0) {
+        LOG_ERROR("Failed to initialize asset mutex");
+        pthread_mutex_unlock(&g_asset_system.loader_mutex);
+        return 0;
+    }
+    
+    u32 asset_id = asset->id;
+    pthread_mutex_unlock(&g_asset_system.loader_mutex);
+    
+    // Load asset synchronously
+    const asset_loader_interface_t* loader = &g_asset_system.loaders[type];
+    
+    if (loader && loader->load) {
+        void* data = NULL;
+        u32 size = 0;
+        bool success = loader->load(path, &data, &size);
+        
+        pthread_mutex_lock(&asset->mutex);
+        
+        if (success && data) {
+            asset->data = data;
+            asset->size_bytes = size;
+            asset->state = ASSET_STATE_LOADED;
+            asset->ref_count = 1;
+            
+            LOG_INFO("Successfully loaded asset '%s' (ID: %u, %u bytes)", path, asset_id, size);
+        } else {
+            asset->state = ASSET_STATE_ERROR;
+            LOG_ERROR("Failed to load asset '%s'", path);
+        }
+        
+        pthread_mutex_unlock(&asset->mutex);
+    }
+    
+    return asset_id;
+}
+
+// Unload asset
+static bool asset_loader_unload(u32 asset_id) {
+    if (!g_asset_system.initialized || asset_id == 0) {
+        return false;
+    }
+    
+    pthread_mutex_lock(&g_asset_system.loader_mutex);
+    
+    // Find asset
+    asset_handle_t* asset = NULL;
+    for (u32 i = 0; i < MAX_ASSET_LOADERS; i++) {
+        if (g_asset_system.assets[i].id == asset_id) {
+            asset = &g_asset_system.assets[i];
+            break;
+        }
+    }
+    
+    if (!asset) {
+        LOG_ERROR("Asset ID %u not found", asset_id);
+        pthread_mutex_unlock(&g_asset_system.loader_mutex);
+        return false;
+    }
+    
+    pthread_mutex_lock(&asset->mutex);
+    
+    // Decrement ref count
+    if (asset->ref_count > 0) {
+        asset->ref_count--;
+    }
+    
+    // Unload if no references
+    if (asset->ref_count == 0 && asset->state == ASSET_STATE_LOADED) {
+        const asset_loader_interface_t* loader = &g_asset_system.loaders[asset->type];
+        
+        if (loader && loader->unload) {
+            loader->unload(asset->data);
+        }
+        
+        asset->data = NULL;
+        asset->size_bytes = 0;
+        asset->state = ASSET_STATE_UNLOADED;
+        
+        LOG_INFO("Unloaded asset '%s' (ID: %u)", asset->path, asset_id);
+    }
+    
+    pthread_mutex_unlock(&asset->mutex);
+    pthread_mutex_unlock(&g_asset_system.loader_mutex);
+    
+    return true;
+}
+
+// Get asset data
+void* asset_loader_get_data(u32 asset_id) {
+    if (!g_asset_system.initialized || asset_id == 0) {
+        return NULL;
+    }
+    
+    pthread_mutex_lock(&g_asset_system.loader_mutex);
+    
+    for (u32 i = 0; i < MAX_ASSET_LOADERS; i++) {
+        if (g_asset_system.assets[i].id == asset_id) {
+            pthread_mutex_lock(&g_asset_system.assets[i].mutex);
+            
+            void* data = NULL;
+            if (g_asset_system.assets[i].state == ASSET_STATE_LOADED) {
+                data = g_asset_system.assets[i].data;
+            }
+            
+            pthread_mutex_unlock(&g_asset_system.assets[i].mutex);
+            pthread_mutex_unlock(&g_asset_system.loader_mutex);
+            
+            return data;
+        }
+    }
+    
+    pthread_mutex_unlock(&g_asset_system.loader_mutex);
+    return NULL;
+}
+
+// Get asset state
+asset_state_t asset_loader_get_state(u32 asset_id) {
+    if (!g_asset_system.initialized || asset_id == 0) {
+        return ASSET_STATE_ERROR;
+    }
+    
+    pthread_mutex_lock(&g_asset_system.loader_mutex);
+    
+    for (u32 i = 0; i < MAX_ASSET_LOADERS; i++) {
+        if (g_asset_system.assets[i].id == asset_id) {
+            asset_state_t state = g_asset_system.assets[i].state;
+            pthread_mutex_unlock(&g_asset_system.loader_mutex);
+            return state;
+        }
+    }
+    
+    pthread_mutex_unlock(&g_asset_system.loader_mutex);
+    return ASSET_STATE_ERROR;
+}
+
+// Get asset statistics
+void asset_loader_get_stats(u32* loaded_count, u32* loading_count, u32* total_memory) {
+    if (!g_asset_system.initialized) {
+        if (loaded_count) *loaded_count = 0;
+        if (loading_count) *loading_count = 0;
+        if (total_memory) *total_memory = 0;
+        return;
+    }
+    
+    u32 loaded = 0;
+    u32 loading = 0;
+    u32 memory = 0;
+    
+    pthread_mutex_lock(&g_asset_system.loader_mutex);
+    
+    for (u32 i = 0; i < MAX_ASSET_LOADERS; i++) {
+        if (g_asset_system.assets[i].state == ASSET_STATE_LOADED) {
+            loaded++;
+            memory += g_asset_system.assets[i].size_bytes;
+        } else if (g_asset_system.assets[i].state == ASSET_STATE_LOADING) {
+            loading++;
+        }
+    }
+    
+    pthread_mutex_unlock(&g_asset_system.loader_mutex);
+    
+    if (loaded_count) *loaded_count = loaded;
+    if (loading_count) *loading_count = loading;
+    if (total_memory) *total_memory = memory;
+}
+/* TODO: Implement asset loader async operations
  * TODO: Add asset loader GPU integration
  * TODO: Implement asset loader SIMD optimization
  * TODO: Add asset loader batch processing

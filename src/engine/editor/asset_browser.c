@@ -739,6 +739,108 @@ static bool asset_browser_asset_exists(BrowserAsset* asset) {
   return true;
 }
 
+#ifdef ENABLE_IMGUI
+static ImTextureID asset_browser_get_imgui_texture(BrowserAsset* asset) {
+  // Convert thumbnail data to ImGui texture
+  // This would use the renderer's texture management system
+  // For now, return 0 as placeholder
+  return 0;
+}
+
+static ImVec4 asset_browser_get_asset_color(AssetType type) {
+  // Get color for asset type
+  switch (type) {
+    case ASSET_TYPE_TEXTURE: return ImVec4(1.0f, 0.8f, 0.4f, 1.0f);  // Orange
+    case ASSET_TYPE_MODEL: return ImVec4(0.4f, 0.8f, 1.0f, 1.0f);    // Blue
+    case ASSET_TYPE_AUDIO: return ImVec4(1.0f, 0.4f, 0.8f, 1.0f);    // Pink
+    case ASSET_TYPE_MATERIAL: return ImVec4(0.8f, 1.0f, 0.4f, 1.0f); // Green
+    case ASSET_TYPE_SHADER: return ImVec4(0.8f, 0.4f, 1.0f, 1.0f);   // Purple
+    default: return ImVec4(0.5f, 0.5f, 0.5f, 1.0f);              // Gray
+  }
+}
+
+static const char* asset_browser_get_type_name(AssetType type) {
+  switch (type) {
+    case ASSET_TYPE_TEXTURE: return "Texture";
+    case ASSET_TYPE_MODEL: return "Model";
+    case ASSET_TYPE_AUDIO: return "Audio";
+    case ASSET_TYPE_MATERIAL: return "Material";
+    case ASSET_TYPE_SHADER: return "Shader";
+    default: return "Unknown";
+  }
+}
+
+static ImVec4 asset_browser_get_type_color(AssetType type) {
+  // Get color for type badge
+  switch (type) {
+    case ASSET_TYPE_TEXTURE: return ImVec4(1.0f, 0.7f, 0.3f, 1.0f);  // Orange
+    case ASSET_TYPE_MODEL: return ImVec4(0.3f, 0.7f, 1.0f, 1.0f);    // Blue
+    case ASSET_TYPE_AUDIO: return ImVec4(1.0f, 0.3f, 0.7f, 1.0f);    // Pink
+    case ASSET_TYPE_MATERIAL: return ImVec4(0.7f, 1.0f, 0.3f, 1.0f); // Green
+    case ASSET_TYPE_SHADER: return ImVec4(0.7f, 0.3f, 1.0f, 1.0f);   // Purple
+    default: return ImVec4(0.4f, 0.4f, 0.4f, 1.0f);              // Gray
+  }
+}
+
+static void asset_browser_select_asset(BrowserAsset* asset) {
+  if (!asset) return;
+  
+  // Clear previous selection
+  for (u32 i = 0; i < g_browser.asset_count; i++) {
+    g_browser.assets[i].selected = false;
+  }
+  
+  // Select new asset
+  asset->selected = true;
+  g_browser.selected_asset = asset;
+  
+  printf("Selected asset: %s\n", asset->name);
+}
+
+static void asset_browser_open_asset(BrowserAsset* asset) {
+  if (!asset) return;
+  
+  // Open asset with appropriate application
+  printf("Opening asset: %s (%s)\n", asset->name, asset->file_path);
+  
+  // This would use the system's default application for the file type
+  // For example, opening images with image viewer, models with 3D viewer, etc.
+}
+
+static void asset_browser_edit_asset(BrowserAsset* asset) {
+  if (!asset) return;
+  
+  // Open asset in editor
+  printf("Editing asset: %s\n", asset->name);
+  
+  // This would open the asset in the appropriate editor
+  // For example, textures in image editor, models in 3D modeling software, etc.
+}
+
+static void asset_browser_delete_asset(BrowserAsset* asset) {
+  if (!asset) return;
+  
+  // Confirm deletion
+  printf("Deleting asset: %s\n", asset->name);
+  
+  // This would delete the file and remove it from the browser
+  // For now, just mark it for deletion
+  asset->needs_update = true;
+}
+
+static void asset_browser_refresh(void) {
+  printf("Refreshing asset browser...\n");
+  
+  // Rescan directories and update asset list
+  // This would reload all assets and regenerate thumbnails
+  for (u32 i = 0; i < g_browser.asset_count; i++) {
+    g_browser.assets[i].thumbnail_generated = false;
+  }
+  
+  asset_browser_update_thumbnails();
+}
+#endif
+
 static void asset_browser_filter_assets() {
   printf("  Filtering assets (type: %d, query: '%s')\n", g_browser.filter_type,
          g_browser.search_query);
@@ -767,23 +869,162 @@ static void asset_browser_draw_toolbar() {
          g_browser.search_query, g_browser.filter_type,
          g_browser.thumbnail_size);
 
-  // TODO: In a real implementation with ImGui, this would draw:
-  // - Search box
-  // - Filter dropdown (All, Textures, Models, Audio, Materials)
-  // - Thumbnail size slider
-  // - Refresh button
+  // ImGui-based toolbar implementation
+#ifdef ENABLE_IMGUI
+  if (ImGui::Begin("Asset Browser Toolbar", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
+    
+    // Search box
+    static char search_buffer[256];
+    strncpy(search_buffer, g_browser.search_query, sizeof(search_buffer) - 1);
+    if (ImGui::InputText("Search", search_buffer, sizeof(search_buffer))) {
+      strncpy(g_browser.search_query, search_buffer, sizeof(g_browser.search_query) - 1);
+      g_browser.search_query[sizeof(g_browser.search_query) - 1] = '\0';
+      asset_browser_filter_assets();
+    }
+    
+    ImGui::SameLine();
+    
+    // Filter dropdown
+    const char* filter_items[] = { "All", "Textures", "Models", "Audio", "Materials", "Shaders" };
+    int current_filter = g_browser.filter_type;
+    if (ImGui::Combo("Filter", &current_filter, filter_items, IM_ARRAYSIZE(filter_items))) {
+      g_browser.filter_type = current_filter;
+      asset_browser_filter_assets();
+    }
+    
+    ImGui::SameLine();
+    
+    // Thumbnail size slider
+    if (ImGui::SliderFloat("Thumbnail Size", &g_browser.thumbnail_size, 64.0f, 256.0f, "%.0fpx")) {
+      // Regenerate all thumbnails when size changes
+      for (u32 i = 0; i < g_browser.asset_count; i++) {
+        g_browser.assets[i].thumbnail_generated = false;
+      }
+      asset_browser_update_thumbnails();
+    }
+    
+    ImGui::SameLine();
+    
+    // Refresh button
+    if (ImGui::Button("Refresh")) {
+      asset_browser_refresh();
+    }
+    
+    ImGui::SameLine();
+    
+    // Asset count
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%d assets", g_browser.asset_count);
+    
+  }
+  ImGui::End();
+#endif
 }
 
 static void asset_browser_draw_grid() {
   printf("  [Grid] %d assets in %d columns\n", g_browser.asset_count,
          g_browser.grid_columns);
 
-  // TODO: In a real implementation with ImGui, this would:
-  // - Calculate grid layout
-  // - Draw asset thumbnails
-  // - Draw asset names
-  // - Handle selection
-
+#ifdef ENABLE_IMGUI
+  // ImGui-based grid implementation
+  if (ImGui::Begin("Asset Browser", nullptr, 0)) {
+    
+    // Calculate grid layout
+    float window_width = ImGui::GetContentRegionAvail().x;
+    float thumbnail_size = g_browser.thumbnail_size;
+    float padding = 8.0f;
+    float item_size = thumbnail_size + padding * 2.0f;
+    
+    int columns = (int)(window_width / item_size);
+    if (columns < 1) columns = 1;
+    g_browser.grid_columns = columns;
+    
+    // Create asset grid
+    for (u32 i = 0; i < g_browser.asset_count; i++) {
+      BrowserAsset* asset = &g_browser.assets[i];
+      
+      int column = i % columns;
+      int row = i / columns;
+      
+      // Calculate position
+      if (column > 0) {
+        ImGui::SameLine();
+      }
+      
+      // Begin group for this asset
+      ImGui::PushID(i);
+      
+      // Asset thumbnail
+      if (asset->thumbnail_data && asset->thumbnail_generated) {
+        // Convert thumbnail data to ImGui texture
+        ImTextureID texture_id = asset_browser_get_imgui_texture(asset);
+        if (texture_id) {
+          ImGui::Image(texture_id, ImVec2(thumbnail_size, thumbnail_size));
+        } else {
+          // Fallback to colored rectangle
+          ImVec4 color = asset_browser_get_asset_color(asset->type);
+          ImGui::ColorButton("##thumbnail", color, ImVec2(thumbnail_size, thumbnail_size));
+        }
+      } else {
+        // Show loading placeholder
+        ImVec4 loading_color = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
+        ImGui::ColorButton("##loading", loading_color, ImVec2(thumbnail_size, thumbnail_size));
+      }
+      
+      // Asset name
+      ImGui::PushTextWrapPos(thumbnail_size);
+      ImGui::TextWrapped("%s", asset->name);
+      ImGui::PopTextWrapPos();
+      
+      // Asset type badge
+      ImVec2 badge_size = ImVec2(ImGui::GetContentRegionAvail().x, 20.0f);
+      const char* type_name = asset_browser_get_type_name(asset->type);
+      ImVec4 badge_color = asset_browser_get_type_color(asset->type);
+      ImGui::PushStyleColor(ImGuiCol_Button, badge_color);
+      ImGui::Button(type_name, badge_size);
+      ImGui::PopStyleColor();
+      
+      // Handle selection
+      if (ImGui::IsItemClicked()) {
+        asset_browser_select_asset(asset);
+      }
+      
+      // Context menu
+      if (ImGui::BeginPopupContextItem()) {
+        if (ImGui::MenuItem("Open")) {
+          asset_browser_open_asset(asset);
+        }
+        if (ImGui::MenuItem("Edit")) {
+          asset_browser_edit_asset(asset);
+        }
+        if (ImGui::MenuItem("Delete")) {
+          asset_browser_delete_asset(asset);
+        }
+        ImGui::Separator();
+        if (ImGui::MenuItem("Regenerate Thumbnail")) {
+          asset_browser_regenerate_thumbnail(asset);
+        }
+        ImGui::EndPopup();
+      }
+      
+      // Tooltip
+      if (ImGui::IsItemHovered()) {
+        ImGui::BeginTooltip();
+        ImGui::Text("Name: %s", asset->name);
+        ImGui::Text("Type: %s", asset_browser_get_type_name(asset->type));
+        ImGui::Text("Path: %s", asset->file_path);
+        if (asset->thumbnail_generated) {
+          ImGui::Text("Thumbnail: %dx%d", asset->thumbnail_width, asset->thumbnail_height);
+        }
+        ImGui::EndTooltip();
+      }
+      
+      ImGui::PopID();
+    }
+    
+  }
+  ImGui::End();
+#else
+  // Fallback console output
   for (u32 i = 0; i < g_browser.asset_count; i++) {
     BrowserAsset *asset = &g_browser.assets[i];
     int column = i % g_browser.grid_columns;
@@ -792,6 +1033,8 @@ static void asset_browser_draw_grid() {
     printf("    [%d,%d] %s (%s)\n", row, column, asset->name,
            asset->thumbnail_generated ? "thumbnail" : "no thumbnail");
   }
+#endif
+}
 }
 
 // Public API to start a drag operation (called by UI when mouse moves with

@@ -6,7 +6,24 @@
 #include "include/common.h"
 #include "include/math/mat4.h"
 #include "include/math/vec3.h"
+#include "include/math/vec4.h"
+
+#ifdef __OBJC__
 #import <Metal/Metal.h>
+typedef id<MTLTexture> MTLTextureHandle;
+typedef id<MTLDevice> MTLDeviceHandle;
+typedef id<MTLRenderPipelineState> MTLRenderPipelineStateHandle;
+typedef id<MTLDepthStencilState> MTLDepthStencilStateHandle;
+typedef id<MTLBuffer> MTLBufferHandle;
+typedef id<MTLRenderCommandEncoder> MTLRenderCommandEncoderHandle;
+#else
+typedef void *MTLTextureHandle;
+typedef void *MTLDeviceHandle;
+typedef void *MTLRenderPipelineStateHandle;
+typedef void *MTLDepthStencilStateHandle;
+typedef void *MTLBufferHandle;
+typedef void *MTLRenderCommandEncoderHandle;
+#endif
 
 #define MAX_DECALS 2048
 
@@ -25,9 +42,9 @@ typedef struct {
   Vec3 size; // Box extents
   f32 fade_distance;
 
-  id<MTLTexture> albedo_texture;
-  id<MTLTexture> normal_texture;
-  id<MTLTexture> material_texture; // R=metallic, G=roughness, B=AO
+  MTLTextureHandle albedo_texture;
+  MTLTextureHandle normal_texture;
+  MTLTextureHandle material_texture; // R=metallic, G=roughness, B=AO
 
   Vec4 tint_color;
   f32 opacity;
@@ -44,10 +61,10 @@ typedef struct {
   Decal decals[MAX_DECALS];
   u32 decal_count;
 
-  id<MTLDevice> device;
-  id<MTLRenderPipelineState> pipeline_state;
-  id<MTLDepthStencilState> depth_stencil;
-  id<MTLBuffer> decal_buffer;
+  MTLDeviceHandle device;
+  MTLRenderPipelineStateHandle pipeline_state;
+  MTLDepthStencilStateHandle depth_stencil;
+  MTLBufferHandle decal_buffer;
 
 } DecalSystem;
 
@@ -56,7 +73,7 @@ extern "C" {
 #endif
 
 // System
-DecalSystem *decal_system_create(id<MTLDevice> device);
+DecalSystem *decal_system_create(MTLDeviceHandle device);
 void decal_system_destroy(DecalSystem *system);
 
 // Decal management
@@ -64,15 +81,15 @@ u32 decal_add(DecalSystem *system, const Vec3 *position, const Vec3 *size,
               f32 rotation);
 void decal_remove(DecalSystem *system, u32 decal_id);
 void decal_set_textures(DecalSystem *system, u32 decal_id,
-                        id<MTLTexture> albedo, id<MTLTexture> normal,
-                        id<MTLTexture> material);
+                        MTLTextureHandle albedo, MTLTextureHandle normal,
+                        MTLTextureHandle material);
 void decal_set_blend_mode(DecalSystem *system, u32 decal_id,
                           DecalBlendMode mode);
 
 // Rendering (deferred)
-void decal_render(DecalSystem *system, id<MTLRenderCommandEncoder> encoder,
-                  id<MTLTexture> gbuffer_depth, id<MTLTexture> gbuffer_normal,
-                  const Mat4 *view_proj);
+void decal_render(DecalSystem *system, MTLRenderCommandEncoderHandle encoder,
+                  MTLTextureHandle gbuffer_depth,
+                  MTLTextureHandle gbuffer_normal, const Mat4 *view_proj);
 
 #ifdef __cplusplus
 }

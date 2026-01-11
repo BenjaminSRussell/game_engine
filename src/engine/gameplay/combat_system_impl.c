@@ -24,11 +24,7 @@ bool combat_system_init(World *world) {
     return false;
   }
 
-  if (!damage_system_init(world)) {
-    LOG_ERROR("Failed to initialize damage system");
-    hitbox_system_shutdown();
-    return false;
-  }
+  damage_system_init(1024);
 
   if (!projectile_system_init(world)) {
     LOG_ERROR("Failed to initialize projectile system");
@@ -56,7 +52,7 @@ void combat_system_update(World *world, f32 delta_time) {
   // Update all combat subsystems
   combat_system_update_hitboxes(world, delta_time);
   projectile_system_update(world, delta_time);
-  damage_system_process_events(world);
+  damage_system_process_events(world, delta_time);
 }
 
 void combat_system_update_hitboxes(World *world, f32 delta_time) {
