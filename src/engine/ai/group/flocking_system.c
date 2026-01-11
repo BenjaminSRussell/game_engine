@@ -19,16 +19,21 @@ static Vec3 vec3_normalize_safe(Vec3 v) {
     if (length < 0.0001f) {
         return (Vec3){0, 0, 0};
     }
-    return vec3_scale(v, 1.0f / length);
+    return vec3_mul(v, 1.0f / length);
 }
 
-static float vec3_distance_sq(Vec3 a, Vec3 b) {
-    Vec3 diff = vec3_sub(a, b);
-    return vec3_length_sq(diff);
-}
-
-static float vec3_distance(Vec3 a, Vec3 b) {
-    return sqrtf(vec3_distance_sq(a, b));
+static Vec3 boid_seek_force(const Boid* boid, Vec3 target) {
+    Vec3 desired = vec3_sub(target, boid->position);
+    desired = vec3_normalize_safe(desired);
+    desired = vec3_mul(desired, boid->max_speed);
+    
+    Vec3 steer = vec3_sub(desired, boid->velocity);
+    float steer_length = vec3_length(steer);
+    if (steer_length > boid->max_force) {
+        steer = vec3_mul(vec3_normalize_safe(steer), boid->max_force);
+    }
+    
+    return steer;
 }
 
 // MARK: - Flocking System Management
@@ -91,9 +96,9 @@ void flocking_update(Flock* flock, float delta_time) {
         Vec3 cohesion = flocking_calculate_cohesion(boid, flock, flock->config.cohesion_radius);
         
         // Apply weighted forces
-        separation = vec3_scale(separation, boid->separation_weight);
-        alignment = vec3_scale(alignment, boid->alignment_weight);
-        cohesion = vec3_scale(cohesion, boid->cohesion_weight);
+        separation = vec3_mul(separation, boid->separation_weight);
+        alignment = vec3_mul(alignment, boid->alignment_weight);
+        cohesion = vec3_mul(cohesion, boid->cohesion_weight);
         
         boid_apply_force(boid, separation);
         boid_apply_force(boid, alignment);
@@ -102,7 +107,7 @@ void flocking_update(Flock* flock, float delta_time) {
         // Obstacle avoidance
         if (flock->config.enable_obstacle_avoidance && g_obstacles) {
             Vec3 avoidance = flocking_calculate_obstacle_avoidance(boid, g_obstacles, g_obstacle_count, flock->config.obstacle_avoidance_radius);
-            avoidance = vec3_scale(avoidance, boid->obstacle_avoidance_weight);
+            avoidance = vec3_mul(avoidance, boid->obstacle_avoidance_weight);
             boid_apply_force(boid, avoidance);
         }
         
@@ -118,11 +123,11 @@ void flocking_update(Flock* flock, float delta_time) {
         // Limit speed
         float speed = vec3_length(boid->velocity);
         if (speed > boid->max_speed) {
-            boid->velocity = vec3_scale(vec3_normalize_safe(boid->velocity), boid->max_speed);
+            boid->velocity = vec3_mul(vec3_normalize_safe(boid->velocity), boid->max_speed);
         }
         
         // Update position
-        boid->position = vec3_add(boid->position, vec3_scale(boid->velocity, delta_time));
+        boid->position = vec3_add(boid->position, vec3_mul(boid->velocity, delta_time));
     }
     
     // Update flock statistics
@@ -235,22 +240,22 @@ Vec3 flocking_calculate_separation(const Boid* boid, const Flock* flock, float r
         if (d > 0 && d < radius) {
             Vec3 diff = vec3_sub(boid->position, flock->boids[i].position);
             diff = vec3_normalize_safe(diff);
-            diff = vec3_scale(diff, 1.0f / d); // Weight by distance
+            diff = vec3_mul(diff, 1.0f / d); // Weight by distance
             steer = vec3_add(steer, diff);
             count++;
         }
     }
     
     if (count > 0) {
-        steer = vec3_scale(steer, 1.0f / count);
+        steer = vec3_mul(steer, 1.0f / count);
         steer = vec3_normalize_safe(steer);
-        steer = vec3_scale(steer, boid->max_speed);
+        steer = vec3_mul(steer, boid->max_speed);
         steer = vec3_sub(steer, boid->velocity);
         
         // Limit to max force
         float steer_length = vec3_length(steer);
         if (steer_length > boid->max_force) {
-            steer = vec3_scale(vec3_normalize_safe(steer), boid->max_force);
+            steer = vec3_mul(vec3_normalize_safe(steer), boid->max_force);
         }
     }
     
@@ -274,15 +279,15 @@ Vec3 flocking_calculate_alignment(const Boid* boid, const Flock* flock, float ra
     }
     
     if (count > 0) {
-        sum = vec3_scale(sum, 1.0f / count);
+        sum = vec3_mul(sum, 1.0f / count);
         sum = vec3_normalize_safe(sum);
-        sum = vec3_scale(sum, boid->max_speed);
+        sum = vec3_mul(sum, boid->max_speed);
         Vec3 steer = vec3_sub(sum, boid->velocity);
         
         // Limit to max force
         float steer_length = vec3_length(steer);
         if (steer_length > boid->max_force) {
-            steer = vec3_scale(vec3_normalize_safe(steer), boid->max_force);
+            steer = vec3_mul(vec3_normalize_safe(steer), boid->max_force);
         }
         
         return steer;
@@ -308,7 +313,7 @@ Vec3 flocking_calculate_cohesion(const Boid* boid, const Flock* flock, float rad
     }
     
     if (count > 0) {
-        sum = vec3_scale(sum, 1.0f / count);
+        sum = vec3_mul(sum, 1.0f / count);
         return boid_seek((Boid*)boid, sum, 1.0f); // Cast away const for seek function
     }
     
@@ -324,22 +329,22 @@ Vec3 flocking_calculate_obstacle_avoidance(const Boid* boid, const Obstacle* obs
         if (d < radius + obstacles[i].radius) {
             Vec3 diff = vec3_sub(boid->position, obstacles[i].position);
             diff = vec3_normalize_safe(diff);
-            diff = vec3_scale(diff, 1.0f / (d + 0.01f)); // Weight by distance
+            diff = vec3_mul(diff, 1.0f / (d + 0.01f)); // Weight by distance
             steer = vec3_add(steer, diff);
             count++;
         }
     }
     
     if (count > 0) {
-        steer = vec3_scale(steer, 1.0f / count);
+        steer = vec3_mul(steer, 1.0f / count);
         steer = vec3_normalize_safe(steer);
-        steer = vec3_scale(steer, boid->max_speed);
+        steer = vec3_mul(steer, boid->max_speed);
         steer = vec3_sub(steer, boid->velocity);
         
         // Limit to max force
         float steer_length = vec3_length(steer);
         if (steer_length > boid->max_force) {
-            steer = vec3_scale(vec3_normalize_safe(steer), boid->max_force);
+            steer = vec3_mul(vec3_normalize_safe(steer), boid->max_force);
         }
     }
     
@@ -438,8 +443,8 @@ void flocking_calculate_flock_statistics(Flock* flock) {
         average_velocity = vec3_add(average_velocity, flock->boids[i].velocity);
     }
     
-    center_of_mass = vec3_scale(center_of_mass, 1.0f / flock->boid_count);
-    average_velocity = vec3_scale(average_velocity, 1.0f / flock->boid_count);
+    center_of_mass = vec3_mul(center_of_mass, 1.0f / flock->boid_count);
+    average_velocity = vec3_mul(average_velocity, 1.0f / flock->boid_count);
     
     flock->center_of_mass = center_of_mass;
     flock->average_velocity = average_velocity;
@@ -591,7 +596,7 @@ void crowd_simulation_update(CrowdSimulation* crowd, float delta_time) {
                     // Apply separation force between flocks
                     Vec3 separation = vec3_sub(flock_i_center, flock_j_center);
                     separation = vec3_normalize_safe(separation);
-                    separation = vec3_scale(separation, crowd->flock_avoidance_weight / distance);
+                    separation = vec3_mul(separation, crowd->flock_avoidance_weight / distance);
                     
                     // Apply force to all boids in both flocks
                     for (u32 k = 0; k < crowd->flocks[i].boid_count; k++) {
@@ -599,7 +604,7 @@ void crowd_simulation_update(CrowdSimulation* crowd, float delta_time) {
                     }
                     
                     for (u32 k = 0; k < crowd->flocks[j].boid_count; k++) {
-                        boid_apply_force(&crowd->flocks[j].boids[k], vec3_scale(separation, -1.0f));
+                        boid_apply_force(&crowd->flocks[j].boids[k], vec3_mul(separation, -1.0f));
                     }
                 }
             }
@@ -699,12 +704,12 @@ void boid_update(Boid* boid, Vec3 force, float delta_time) {
     boid->acceleration = force;
     
     // Update velocity: v = v0 + a*t
-    boid->velocity = vec3_add(boid->velocity, vec3_scale(boid->acceleration, delta_time));
+    boid->velocity = vec3_add(boid->velocity, vec3_mul(boid->acceleration, delta_time));
     
     // Limit velocity to max speed
     float speed = vec3_length(boid->velocity);
     if (speed > boid->max_speed) {
-        boid->velocity = vec3_scale(vec3_normalize_safe(boid->velocity), boid->max_speed);
+        boid->velocity = vec3_mul(vec3_normalize_safe(boid->velocity), boid->max_speed);
     }
 }
 
@@ -723,17 +728,17 @@ void boid_seek(Boid* boid, Vec3 target, float weight) {
     
     Vec3 desired = vec3_sub(target, boid->position);
     desired = vec3_normalize_safe(desired);
-    desired = vec3_scale(desired, boid->max_speed);
+    desired = vec3_mul(desired, boid->max_speed);
     
     Vec3 steer = vec3_sub(desired, boid->velocity);
     
     // Limit to max force
     float steer_length = vec3_length(steer);
     if (steer_length > boid->max_force) {
-        steer = vec3_scale(vec3_normalize_safe(steer), boid->max_force);
+        steer = vec3_mul(vec3_normalize_safe(steer), boid->max_force);
     }
     
-    steer = vec3_scale(steer, weight);
+    steer = vec3_mul(steer, weight);
     boid_apply_force(boid, steer);
 }
 
@@ -744,17 +749,17 @@ void boid_flee(Boid* boid, Vec3 threat, float weight) {
     
     Vec3 desired = vec3_sub(boid->position, threat);
     desired = vec3_normalize_safe(desired);
-    desired = vec3_scale(desired, boid->max_speed);
+    desired = vec3_mul(desired, boid->max_speed);
     
     Vec3 steer = vec3_sub(desired, boid->velocity);
     
     // Limit to max force
     float steer_length = vec3_length(steer);
     if (steer_length > boid->max_force) {
-        steer = vec3_scale(vec3_normalize_safe(steer), boid->max_force);
+        steer = vec3_mul(vec3_normalize_safe(steer), boid->max_force);
     }
     
-    steer = vec3_scale(steer, weight);
+    steer = vec3_mul(steer, weight);
     boid_apply_force(boid, steer);
 }
 
@@ -770,11 +775,11 @@ void boid_arrive(Boid* boid, Vec3 target, float slowing_radius, float weight) {
         // Inside slowing radius, map speed to radius
         float speed = (d / slowing_radius) * boid->max_speed;
         desired = vec3_normalize_safe(desired);
-        desired = vec3_scale(desired, speed);
+        desired = vec3_mul(desired, speed);
     } else {
         // Outside slowing radius, full speed
         desired = vec3_normalize_safe(desired);
-        desired = vec3_scale(desired, boid->max_speed);
+        desired = vec3_mul(desired, boid->max_speed);
     }
     
     Vec3 steer = vec3_sub(desired, boid->velocity);
@@ -782,10 +787,10 @@ void boid_arrive(Boid* boid, Vec3 target, float slowing_radius, float weight) {
     // Limit to max force
     float steer_length = vec3_length(steer);
     if (steer_length > boid->max_force) {
-        steer = vec3_scale(vec3_normalize_safe(steer), boid->max_force);
+        steer = vec3_mul(vec3_normalize_safe(steer), boid->max_force);
     }
     
-    steer = vec3_scale(steer, weight);
+    steer = vec3_mul(steer, weight);
     boid_apply_force(boid, steer);
 }
 
