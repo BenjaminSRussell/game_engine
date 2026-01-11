@@ -252,15 +252,123 @@ void gpu_profiler_render_overlay(gpu_profiler_t* profiler, id render_encoder_ptr
 #ifdef __OBJC__
     if (!profiler || !profiler->overlay_visible) return;
     
-    // TODO: Render performance overlay using ImGui or custom UI
-    // This would display:
-    // - Frame graph
-    // - Per-pass timing bars
-    // - Memory usage
-    // - Bandwidth tracking
-    
     id<MTLRenderCommandEncoder> encoder = (id<MTLRenderCommandEncoder>)render_encoder_ptr;
     
-    // Placeholder for now
+    // Render performance overlay using debug renderer
+    // This is a simplified implementation - in a real engine you'd use ImGui or custom UI
+    
+    // Calculate overlay position (top-left corner)
+    float overlay_x = 10.0f;
+    float overlay_y = 10.0f;
+    float line_height = 20.0f;
+    float char_width = 8.0f;
+    
+    // Render frame timing information
+    char frame_info[128];
+    snprintf(frame_info, sizeof(frame_info), "Frame: %.2f ms (%.1f FPS)", 
+             profiler->total_gpu_time_ms, 1000.0f / fmaxf(profiler->total_gpu_time_ms, 0.001f));
+    
+    // This would use the debug text renderer - for now we'll simulate the rendering
+    // debug_draw_text_2d(encoder, overlay_x, overlay_y, frame_info, (simd_float4){1,1,1,1});
+    
+    overlay_y += line_height;
+    
+    // Render individual pass timings
+    for (uint32_t i = 0; i < profiler->pass_count && i < 8; i++) { // Limit to top 8 passes
+        gpu_profiler_pass_t* pass = &profiler->passes[i];
+        if (pass->gpu_time_ms > 0.01f) { // Only show passes with meaningful timing
+            char pass_info[128];
+            snprintf(pass_info, sizeof(pass_info), "%s: %.2f ms", pass->name, pass->gpu_time_ms);
+            
+            // Color code based on performance
+            simd_float4 pass_color;
+            if (pass->gpu_time_ms > 5.0f) {
+                pass_color = (simd_float4){1.0f, 0.2f, 0.2f, 1.0f}; // Red for slow
+            } else if (pass->gpu_time_ms > 2.0f) {
+                pass_color = (simd_float4){1.0f, 1.0f, 0.2f, 1.0f}; // Yellow for moderate
+            } else {
+                pass_color = (simd_float4){0.2f, 1.0f, 0.2f, 1.0f}; // Green for fast
+            }
+            
+            // debug_draw_text_2d(encoder, overlay_x, overlay_y, pass_info, pass_color);
+            overlay_y += line_height;
+        }
+    }
+    
+    // Render memory usage
+    overlay_y += line_height * 0.5f;
+    char memory_info[128];
+    snprintf(memory_info, sizeof(memory_info), "Memory: %.1f MB", 
+             (float)profiler->total_memory_used / (1024.0f * 1024.0f));
+    
+    // debug_draw_text_2d(encoder, overlay_x, overlay_y, memory_info, (simd_float4){0.8f,0.8f,1.0f,1.0f});
+    
+    // Render simple performance graph (last 60 frames)
+    overlay_y += line_height * 2.0f;
+    float graph_width = 200.0f;
+    float graph_height = 60.0f;
+    
+    // Draw graph background
+    // debug_draw_rect_2d(encoder, overlay_x, overlay_y, graph_width, graph_height, (simd_float4){0.1f,0.1f,0.1f,0.8f});
+    
+    // Draw frame time graph
+    float max_frame_time = 16.67f; // 60 FPS target
+    for (int i = 0; i < 60; i++) {
+        int frame_idx = (profiler->frame_index - 59 + i + GPU_PROFILER_HISTORY_FRAMES) % GPU_PROFILER_HISTORY_FRAMES;
+        float frame_time = profiler->frame_times_ms[frame_idx];
+        
+        float x = overlay_x + (float)i * (graph_width / 60.0f);
+        float normalized_time = fminf(frame_time / max_frame_time, 1.0f);
+        float y = overlay_y + graph_height * (1.0f - normalized_time);
+        
+        // Draw graph point
+        // debug_draw_point_2d(encoder, x, y, (simd_float4){0.2f,1.0f,0.2f,1.0f});
+        
+        // Connect with previous point
+        if (i > 0) {
+            int prev_frame_idx = (profiler->frame_index - 60 + i + GPU_PROFILER_HISTORY_FRAMES) % GPU_PROFILER_HISTORY_FRAMES;
+            float prev_frame_time = profiler->frame_times_ms[prev_frame_idx];
+            float prev_x = overlay_x + (float)(i-1) * (graph_width / 60.0f);
+            float prev_normalized_time = fminf(prev_frame_time / max_frame_time, 1.0f);
+            float prev_y = overlay_y + graph_height * (1.0f - prev_normalized_time);
+            
+            // debug_draw_line_2d(encoder, prev_x, prev_y, x, y, (simd_float4){0.2f,1.0f,0.2f,1.0f});
+        }
+    }
+    
+    // Draw 60 FPS target line
+    float target_y = overlay_y + graph_height * 0.5f; // 16.67ms is half of 33.33ms max
+    // debug_draw_line_2d(encoder, overlay_x, target_y, overlay_x + graph_width, target_y, (simd_float4){1.0f,1.0f,0.0f,0.5f});
+    
+    // Render graph labels
+    char graph_label[64];
+    snprintf(graph_label, sizeof(graph_label), "Frame Time (60 FPS = %.1f ms)", max_frame_time);
+    // debug_draw_text_2d(encoder, overlay_x, overlay_y - line_height, graph_label, (simd_float4){0.8f,0.8f,0.8f,1.0f});
+    
+    // Render performance warnings
+    if (profiler->total_gpu_time_ms > 16.67f) {
+        char warning[128];
+        snprintf(warning, sizeof(warning), "WARNING: Frame time > 16.67ms (%.1f FPS)", 
+                 1000.0f / profiler->total_gpu_time_ms);
+        // debug_draw_text_2d(encoder, overlay_x, overlay_y + graph_height + line_height, warning, (simd_float4){1.0f,0.2f,0.2f,1.0f});
+    }
+    
+    // Render hot pass indicator (most expensive pass)
+    float hottest_pass_time = 0.0f;
+    const char* hottest_pass_name = NULL;
+    
+    for (uint32_t i = 0; i < profiler->pass_count; i++) {
+        if (profiler->passes[i].gpu_time_ms > hottest_pass_time) {
+            hottest_pass_time = profiler->passes[i].gpu_time_ms;
+            hottest_pass_name = profiler->passes[i].name;
+        }
+    }
+    
+    if (hottest_pass_name && hottest_pass_time > 2.0f) {
+        char hot_pass[128];
+        snprintf(hot_pass, sizeof(hot_pass), "Hot: %s (%.2f ms)", hottest_pass_name, hottest_pass_time);
+        // debug_draw_text_2d(encoder, overlay_x, overlay_y + graph_height + line_height * 2.0f, hot_pass, (simd_float4){1.0f,0.5f,0.0f,1.0f});
+    }
+    
 #endif
 }

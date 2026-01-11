@@ -314,7 +314,7 @@ Vec3 flocking_calculate_cohesion(const Boid* boid, const Flock* flock, float rad
     
     if (count > 0) {
         sum = vec3_mul(sum, 1.0f / count);
-        return boid_seek((Boid*)boid, sum, 1.0f); // Cast away const for seek function
+        return boid_seek_force(boid, sum);
     }
     
     return (Vec3){0, 0, 0};
