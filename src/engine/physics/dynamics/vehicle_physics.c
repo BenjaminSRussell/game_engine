@@ -227,6 +227,9 @@ VehiclePhysics *vehicle_create(u32 wheel_count) {
     // Initialize wheel effects system
     vehicle_init_wheel_effects(vehicle);
     
+    // Initialize skid mark system
+    vehicle_init_skid_mark_system();
+    
     // Seed random number generator for particle effects
     srand((u32)time(NULL));
     
@@ -264,6 +267,9 @@ void vehicle_update(VehiclePhysics *vehicle, f32 delta_time) {
     
     // Update wheel dust and spray effects
     vehicle_update_wheel_effects(vehicle, delta_time);
+    
+    // Update skid mark system
+    vehicle_update_skid_mark_system(vehicle, delta_time);
     
     // Update engine RPM based on wheel speed and gear
     // This would be implemented in the engine todo
@@ -1663,4 +1669,204 @@ void vehicle_get_wheel_particles(const VehiclePhysics *vehicle, u32 wheel_index,
         memcpy(spray_particles, effects->spray_particles, count * sizeof(Particle));
         *spray_returned = count;
     }
+}
+
+// Wheel skid marks system
+#define MAX_SKID_MARKS 256
+#define SKID_MARK_LIFETIME 30.0f
+#define SKID_MARK_FADE_TIME 10.0f
+
+typedef struct {
+    Vec3 start_point;
+    Vec3 end_point;
+    Vec3 direction;
+    f32 width;
+    f32 intensity;
+    f32 lifetime;
+    f32 max_lifetime;
+    u32 surface_type;
+    bool active;
+    u32 mark_id;
+} SkidMark;
+
+typedef struct {
+    SkidMark skid_marks[MAX_SKID_MARKS];
+    u32 skid_count;
+    u32 next_mark_id;
+    f32 total_skid_intensity;
+    bool skid_marks_enabled;
+} SkidMarkSystem;
+
+static SkidMarkSystem g_skid_system = {0};
+
+// Initialize skid mark system
+static void vehicle_init_skid_mark_system(void) {
+    memset(&g_skid_system, 0, sizeof(SkidMarkSystem));
+    g_skid_system.next_mark_id = 1;
+    g_skid_system.skid_marks_enabled = true;
+    LOG_INFO("Initialized skid mark system");
+}
+
+// Create skid mark
+static u32 vehicle_create_skid_mark(Vec3 start, Vec3 end, Vec3 direction, f32 width, 
+                                 f32 intensity, u32 surface_type) {
+    if (g_skid_system.skid_count >= MAX_SKID_MARKS) {
+        return 0; // Mark limit reached
+    }
+    
+    SkidMark *mark = &g_skid_system.skid_marks[g_skid_system.skid_count];
+    
+    mark->start_point = start;
+    mark->end_point = end;
+    mark->direction = direction;
+    mark->width = width;
+    mark->intensity = fminf(1.0f, intensity);
+    mark->lifetime = 0.0f;
+    mark->max_lifetime = SKID_MARK_LIFETIME;
+    mark->surface_type = surface_type;
+    mark->active = true;
+    mark->mark_id = g_skid_system.next_mark_id++;
+    
+    g_skid_system.skid_count++;
+    g_skid_system.total_skid_intensity += mark->intensity;
+    
+    LOG_TRACE("Created skid mark %u: intensity=%.2f, surface=%u", 
+             mark->mark_id, mark->intensity, surface_type);
+    
+    return mark->mark_id;
+}
+
+// Generate skid marks based on wheel slip
+static void vehicle_generate_skid_marks(VehiclePhysics *vehicle, u32 wheel_index, f32 delta_time) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return;
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    
+    if (!wheel->is_grounded || !g_skid_system.skid_marks_enabled) {
+        return;
+    }
+    
+    // Check if wheel is slipping
+    WheelFriction friction = vehicle_calculate_wheel_friction(vehicle, wheel_index);
+    
+    if (!friction.is_slipping || friction.slip_ratio < 0.1f) {
+        return;
+    }
+    
+    // Get surface properties
+    const SurfaceProperties *surface = vehicle_get_surface_properties(vehicle, wheel_index);
+    
+    // Check if surface supports skid marks
+    if (surface->friction_coefficient < 0.3f) {
+        return; // Too slippery for skid marks
+    }
+    
+    // Calculate skid mark parameters
+    Vec3 wheel_velocity = vehicle_get_wheel_velocity(vehicle, wheel_index);
+    f32 speed = vec3_length(wheel_velocity);
+    
+    // Skid mark intensity based on slip and speed
+    f32 skid_intensity = fminf(1.0f, friction.slip_ratio * (speed / 20.0f));
+    
+    // Skid mark width based on wheel width
+    f32 skid_width = wheel->width * 0.8f;
+    
+    // Calculate skid mark direction (perpendicular to wheel direction)
+    Vec3 forward = vec3_normalize(vec3_cross(wheel->contact_normal, 
+                                               vec3_cross(vehicle->rotation, wheel->position)));
+    Vec3 lateral = vec3_normalize(vec3_cross(forward, wheel->contact_normal));
+    
+    // Skid mark start and end points
+    Vec3 skid_start = wheel->contact_point;
+    Vec3 skid_end = vec3_add(skid_start, vec3_scale(lateral, skid_width * 0.5f));
+    
+    // Create skid mark
+    vehicle_create_skid_mark(skid_start, skid_end, lateral, skid_width, 
+                            skid_intensity, surface->type);
+}
+
+// Update skid marks (fade out old marks)
+static void vehicle_update_skid_marks(f32 delta_time) {
+    for (u32 i = 0; i < g_skid_system.skid_count; i++) {
+        SkidMark *mark = &g_skid_system.skid_marks[i];
+        
+        if (!mark->active) continue;
+        
+        // Update lifetime
+        mark->lifetime += delta_time;
+        
+        // Remove expired marks
+        if (mark->lifetime >= mark->max_lifetime) {
+            mark->active = false;
+            g_skid_system.total_skid_intensity -= mark->intensity;
+            continue;
+        }
+        
+        // Fade out over time
+        if (mark->lifetime > SKID_MARK_LIFETIME - SKID_MARK_FADE_TIME) {
+            f32 fade_progress = (mark->lifetime - (SKID_MARK_LIFETIME - SKID_MARK_FADE_TIME)) / SKID_MARK_FADE_TIME;
+            mark->intensity *= (1.0f - fade_progress);
+        }
+    }
+    
+    // Remove inactive marks (compact array)
+    u32 write_index = 0;
+    for (u32 i = 0; i < g_skid_system.skid_count; i++) {
+        if (g_skid_system.skid_marks[i].active) {
+            g_skid_system.skid_marks[write_index] = g_skid_system.skid_marks[i];
+            write_index++;
+        }
+    }
+    g_skid_system.skid_count = write_index;
+}
+
+// Update all skid marks
+static void vehicle_update_skid_mark_system(VehiclePhysics *vehicle, f32 delta_time) {
+    if (!vehicle) return;
+    
+    // Generate new skid marks
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        vehicle_generate_skid_marks(vehicle, i, delta_time);
+    }
+    
+    // Update existing skid marks
+    vehicle_update_skid_marks(delta_time);
+}
+
+// Public API for skid mark system
+void vehicle_set_skid_marks_enabled(VehiclePhysics *vehicle, bool enabled) {
+    if (!vehicle) return;
+    
+    g_skid_system.skid_marks_enabled = enabled;
+    LOG_INFO("Skid marks %s", enabled ? "enabled" : "disabled");
+}
+
+u32 vehicle_get_skid_mark_count(const VehiclePhysics *vehicle) {
+    return g_skid_system.skid_count;
+}
+
+void vehicle_get_skid_marks(const VehiclePhysics *vehicle, SkidMark *marks, u32 *count) {
+    if (!vehicle || !marks || !count) {
+        if (count) *count = 0;
+        return;
+    }
+    
+    u32 return_count = fminf(*count, g_skid_system.skid_count);
+    memcpy(marks, g_skid_marks, return_count * sizeof(SkidMark));
+    *count = return_count;
+}
+
+f32 vehicle_get_total_skid_intensity(const VehiclePhysics *vehicle) {
+    return g_skid_system.total_skid_intensity;
+}
+
+void vehicle_clear_skid_marks(VehiclePhysics *vehicle) {
+    if (!vehicle) return;
+    
+    memset(&g_skid_system, 0, sizeof(SkidMarkSystem));
+    vehicle_init_skid_mark_system();
+    
+    LOG_INFO("Cleared all skid marks");
 }
