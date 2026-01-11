@@ -934,3 +934,205 @@ void vehicle_get_pacejka_tire_forces(const VehiclePhysics *vehicle, u32 wheel_in
                                                    normal_force, 0.0f);
     }
 }
+
+// Wheel visual rotation system
+typedef struct {
+    f32 rotation_angle;        // Current rotation angle in radians
+    f32 angular_velocity;      // Current angular velocity in rad/s
+    f32 target_velocity;       // Target angular velocity for smooth transitions
+    f32 steering_angle;        // Current steering angle
+    f32 target_steering;       // Target steering angle
+    f32 visual_scale;          // Scale factor for visual wheel size
+    Vec3 visual_offset;        // Visual offset from physics position
+    bool is_rotating;          // Is wheel currently rotating
+    f32 rotation_damping;      // Damping factor for smooth rotation
+} WheelVisualState;
+
+static WheelVisualState g_wheel_visuals[MAX_WHEELS];
+
+// Initialize wheel visual system
+static void vehicle_init_wheel_visuals(VehiclePhysics *vehicle) {
+    if (!vehicle) return;
+    
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        WheelVisualState *visual = &g_wheel_visuals[i];
+        const VehicleWheel *wheel = &vehicle->wheels[i];
+        
+        visual->rotation_angle = 0.0f;
+        visual->angular_velocity = 0.0f;
+        visual->target_velocity = 0.0f;
+        visual->steering_angle = 0.0f;
+        visual->target_steering = 0.0f;
+        visual->visual_scale = 1.0f;
+        visual->visual_offset = (Vec3){0.0f, 0.0f, 0.0f};
+        visual->is_rotating = false;
+        visual->rotation_damping = 5.0f;
+        
+        LOG_TRACE("Initialized visual state for wheel %u", i);
+    }
+}
+
+// Calculate wheel angular velocity from vehicle motion
+static f32 vehicle_calculate_wheel_angular_velocity(const VehiclePhysics *vehicle, u32 wheel_index) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return 0.0f;
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    
+    if (!wheel->is_grounded || wheel->radius <= 0.0f) {
+        return 0.0f; // No rotation when not grounded or invalid radius
+    }
+    
+    // Get wheel velocity at contact point
+    Vec3 wheel_velocity = vehicle_get_wheel_velocity(vehicle, wheel_index);
+    
+    // Calculate forward direction
+    Vec3 forward = vec3_normalize(vec3_cross(wheel->contact_normal, 
+                                               vec3_cross(vehicle->rotation, wheel->position)));
+    
+    // Get forward velocity component
+    f32 forward_velocity = vec3_dot(wheel_velocity, forward);
+    
+    // Angular velocity = linear velocity / radius
+    f32 angular_velocity = -forward_velocity / wheel->radius; // Negative for correct rotation direction
+    
+    return angular_velocity;
+}
+
+// Update wheel visual rotation
+static void vehicle_update_wheel_rotation(VehiclePhysics *vehicle, u32 wheel_index, f32 delta_time) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return;
+    }
+    
+    WheelVisualState *visual = &g_wheel_visuals[wheel_index];
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    
+    // Calculate target angular velocity from vehicle motion
+    visual->target_velocity = vehicle_calculate_wheel_angular_velocity(vehicle, wheel_index);
+    
+    // Smooth angular velocity transition
+    f32 velocity_diff = visual->target_velocity - visual->angular_velocity;
+    visual->angular_velocity += velocity_diff * (1.0f - expf(-visual->rotation_damping * delta_time));
+    
+    // Update rotation angle
+    visual->rotation_angle += visual->angular_velocity * delta_time;
+    
+    // Keep angle in reasonable range (0 to 2π)
+    while (visual->rotation_angle > 2.0f * PI) {
+        visual->rotation_angle -= 2.0f * PI;
+    }
+    while (visual->rotation_angle < 0.0f) {
+        visual->rotation_angle += 2.0f * PI;
+    }
+    
+    // Update steering angle (smooth transition)
+    if (wheel->is_steered) {
+        visual->target_steering = vehicle->steering * wheel->steering_angle;
+        f32 steering_diff = visual->target_steering - visual->steering_angle;
+        visual->steering_angle += steering_diff * (1.0f - expf(-visual->rotation_damping * delta_time));
+    } else {
+        visual->steering_angle = 0.0f;
+        visual->target_steering = 0.0f;
+    }
+    
+    // Check if wheel is rotating
+    visual->is_rotating = fabsf(visual->angular_velocity) > 0.1f;
+    
+    // Update wheel physics rotation for consistency
+    wheel->wheel_rotation = visual->rotation_angle;
+    
+    LOG_TRACE("Wheel %u visual: angle=%.3f°, angular_vel=%.3f rad/s, steering=%.3f°, rotating=%s",
+             wheel_index, visual->rotation_angle * 180.0f / PI, visual->angular_velocity,
+             visual->steering_angle * 180.0f / PI, visual->is_rotating ? "YES" : "NO");
+}
+
+// Update all wheel visual states
+static void vehicle_update_wheel_visuals(VehiclePhysics *vehicle, f32 delta_time) {
+    if (!vehicle) return;
+    
+    for (u32 i = 0; i < vehicle->wheel_count; i++) {
+        vehicle_update_wheel_rotation(vehicle, i, delta_time);
+    }
+}
+
+// Calculate wheel world transform for rendering
+static void vehicle_get_wheel_world_transform(const VehiclePhysics *vehicle, u32 wheel_index,
+                                            Vec3 *position, Quat *rotation) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count || !position || !rotation) {
+        return;
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    const WheelVisualState *visual = &g_wheel_visuals[wheel_index];
+    
+    // Calculate chassis transform
+    Mat4 chassis_transform = mat4_from_quat_translation(vehicle->rotation, vehicle->position);
+    
+    // Get wheel base position
+    Vec3 wheel_base_pos = mat4_transform_point(chassis_transform, wheel->position);
+    
+    // Add visual offset
+    Vec3 wheel_world_pos = vec3_add(wheel_base_pos, visual->visual_offset);
+    
+    // Calculate wheel rotation
+    // Start with chassis rotation
+    Quat wheel_rotation = vehicle->rotation;
+    
+    // Add steering rotation (around Y axis)
+    if (wheel->is_steered) {
+        Quat steering_quat = quat_from_axis_angle((Vec3){0.0f, 1.0f, 0.0f}, visual->steering_angle);
+        wheel_rotation = quat_multiply(wheel_rotation, steering_quat);
+    }
+    
+    // Add wheel rotation (around forward axis)
+    Vec3 forward = vec3_normalize(vec3_cross(wheel->contact_normal, 
+                                               vec3_cross(vehicle->rotation, wheel->position)));
+    Quat wheel_spin_quat = quat_from_axis_angle(forward, visual->rotation_angle);
+    wheel_rotation = quat_multiply(wheel_rotation, wheel_spin_quat);
+    
+    *position = wheel_world_pos;
+    *rotation = wheel_rotation;
+}
+
+// Public API for wheel visual system
+void vehicle_get_wheel_visual_state(const VehiclePhysics *vehicle, u32 wheel_index,
+                                    f32 *rotation_angle, f32 *steering_angle, bool *is_rotating) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        if (rotation_angle) *rotation_angle = 0.0f;
+        if (steering_angle) *steering_angle = 0.0f;
+        if (is_rotating) *is_rotating = false;
+        return;
+    }
+    
+    const WheelVisualState *visual = &g_wheel_visuals[wheel_index];
+    
+    if (rotation_angle) *rotation_angle = visual->rotation_angle;
+    if (steering_angle) *steering_angle = visual->steering_angle;
+    if (is_rotating) *is_rotating = visual->is_rotating;
+}
+
+void vehicle_set_wheel_visual_scale(VehiclePhysics *vehicle, u32 wheel_index, f32 scale) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) return;
+    
+    g_wheel_visuals[wheel_index].visual_scale = fmaxf(0.1f, scale);
+    LOG_DEBUG("Wheel %u visual scale set to %.2f", wheel_index, scale);
+}
+
+void vehicle_set_wheel_visual_offset(VehiclePhysics *vehicle, u32 wheel_index, Vec3 offset) {
+    if (!vehicle || wheel_index >= vehicle->wheel_count) return;
+    
+    g_wheel_visuals[wheel_index].visual_offset = offset;
+    LOG_DEBUG("Wheel %u visual offset set to (%.2f,%.2f,%.2f)", 
+             wheel_index, offset.x, offset.y, offset.z);
+}
+
+void vehicle_get_wheel_render_transform(const VehiclePhysics *vehicle, u32 wheel_index,
+                                        Vec3 *position, Quat *rotation, f32 *scale) {
+    vehicle_get_wheel_world_transform(vehicle, wheel_index, position, rotation);
+    
+    if (scale) {
+        *scale = g_wheel_visuals[wheel_index].visual_scale;
+    }
+}

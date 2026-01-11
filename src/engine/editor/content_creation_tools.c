@@ -724,10 +724,31 @@ void content_creation_save_block_definition(BlockDefinition* block, const char* 
 }
 
 BlockDefinition* content_creation_load_block_definition(const char* file_path) {
-    // TODO: Implement proper JSON parsing
-    // For now, return a new block with default values
-    LOG_INFO("Loading block definition from: %s", file_path);
-    return content_creation_create_block_definition();
+    if (!file_path) {
+        LOG_ERROR("Invalid file path for block definition");
+        return NULL;
+    }
+    
+    // Load and parse JSON file
+    JsonValue* json_root = json_parse_file(file_path, NULL);
+    if (!json_root) {
+        LOG_ERROR("Failed to parse JSON file: %s", file_path);
+        return content_creation_create_block_definition();
+    }
+    
+    // Create block definition
+    BlockDefinition* block = content_creation_create_block_definition();
+    if (!block) {
+        json_free(json_root);
+        return NULL;
+    }
+    
+    // Parse block properties from JSON
+    content_creation_parse_block_from_json(block, json_root);
+    
+    json_free(json_root);
+    LOG_INFO("Loaded block definition from: %s", file_path);
+    return block;
 }
 
 // MARK: - Item Creation Tools
@@ -910,10 +931,31 @@ void content_creation_save_item_definition(ItemDefinition* item, const char* fil
 }
 
 ItemDefinition* content_creation_load_item_definition(const char* file_path) {
-    // TODO: Implement proper JSON parsing
-    // For now, return a new item with default values
-    LOG_INFO("Loading item definition from: %s", file_path);
-    return content_creation_create_item_definition();
+    if (!file_path) {
+        LOG_ERROR("Invalid file path for item definition");
+        return NULL;
+    }
+    
+    // Load and parse JSON file
+    JsonValue* json_root = json_parse_file(file_path, NULL);
+    if (!json_root) {
+        LOG_ERROR("Failed to parse JSON file: %s", file_path);
+        return content_creation_create_item_definition();
+    }
+    
+    // Create item definition
+    ItemDefinition* item = content_creation_create_item_definition();
+    if (!item) {
+        json_free(json_root);
+        return NULL;
+    }
+    
+    // Parse item properties from JSON
+    content_creation_parse_item_from_json(item, json_root);
+    
+    json_free(json_root);
+    LOG_INFO("Loaded item definition from: %s", file_path);
+    return item;
 }
 
 // MARK: - Mob Creation Tools
@@ -1119,10 +1161,31 @@ void content_creation_save_mob_definition(MobDefinition* mob, const char* file_p
 }
 
 MobDefinition* content_creation_load_mob_definition(const char* file_path) {
-    // TODO: Implement proper JSON parsing
-    // For now, return a new mob with default values
-    LOG_INFO("Loading mob definition from: %s", file_path);
-    return content_creation_create_mob_definition();
+    if (!file_path) {
+        LOG_ERROR("Invalid file path for mob definition");
+        return NULL;
+    }
+    
+    // Load and parse JSON file
+    JsonValue* json_root = json_parse_file(file_path, NULL);
+    if (!json_root) {
+        LOG_ERROR("Failed to parse JSON file: %s", file_path);
+        return content_creation_create_mob_definition();
+    }
+    
+    // Create mob definition
+    MobDefinition* mob = content_creation_create_mob_definition();
+    if (!mob) {
+        json_free(json_root);
+        return NULL;
+    }
+    
+    // Parse mob properties from JSON
+    content_creation_parse_mob_from_json(mob, json_root);
+    
+    json_free(json_root);
+    LOG_INFO("Loaded mob definition from: %s", file_path);
+    return mob;
 }
 
 // MARK: - Preview and Placement

@@ -80,6 +80,8 @@ typedef struct asset_loader_system {
 
 static asset_loader_system_t g_asset_system = {0};
 
+static bool asset_loader_unload(u32 asset_id);
+
 // Initialize asset loader system
 bool asset_loader_init(u32 max_concurrent_loads, u32 cache_size_mb) {
     if (g_asset_system.initialized) {
@@ -495,7 +497,7 @@ u32 asset_loader_load_sync(const char* path) {
 }
 
 // Unload asset
-bool asset_loader_unload(u32 asset_id) {
+static bool asset_loader_unload(u32 asset_id) {
     if (!g_asset_system.initialized || asset_id == 0) {
         return false;
     }
@@ -623,7 +625,7 @@ void asset_loader_get_stats(u32* loaded_count, u32* loading_count, u32* total_me
     if (loading_count) *loading_count = loading;
     if (total_memory) *total_memory = memory;
 }
- * TODO: Implement asset loader async operations
+/* TODO: Implement asset loader async operations
  * TODO: Add asset loader GPU integration
  * TODO: Implement asset loader SIMD optimization
  * TODO: Add asset loader batch processing
