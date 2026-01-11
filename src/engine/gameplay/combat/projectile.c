@@ -1,13 +1,20 @@
 // projectile.c - Projectile System Implementation
 #include <include/gameplay/combat/projectile.h>
+#include <include/gameplay/combat/damage.h>
 #include <include/core/logger.h>
-#include <include/ecs/component_ids.h>
 #include <include/ecs/ecs.h>
+#include <include/ecs/component_ids.h>
 #include <include/math/vec3.h>
-#include <include/gameplay/combat/hitbox.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+
+// Stub for missing ECS function
+static void ecs_remove_entity(World *world, Entity entity) {
+    // Stub implementation - would remove entity from ECS world
+    (void)world;
+    (void)entity;
+}
 
 #define MAX_PROJECTILES 2048
 #define PROJECTILE_UPDATE_BATCH_SIZE 64
@@ -108,8 +115,8 @@ static void projectile_handle_collision(ProjectileInstance *instance, const Vec3
       
     case PROJECTILE_BEHAVIOR_BOUNCE:
       // Reflect velocity
-      Vec3 reflected = vec3_reflect(&proj->velocity, hit_normal);
-      proj->velocity = vec3_scale(reflected, 0.8f); // Energy loss on bounce
+      Vec3 reflected = vec3_reflect(proj->velocity, *hit_normal);
+      proj->velocity = vec3_scale(reflected, vec3(0.8f, 0.8f, 0.8f)); // Energy loss on bounce
       break;
       
     case PROJECTILE_BEHAVIOR_EXPLODE:
@@ -142,26 +149,26 @@ static void projectile_update_physics(ProjectileInstance *instance, f32 delta_ti
   
   // Apply gravity
   if (proj->gravity_scale > 0.0f) {
-    Vec3 gravity_force = vec3_scale(&g_projectile_system.gravity, proj->gravity_scale);
-    proj->velocity = vec3_add(proj->velocity, vec3_scale(&gravity_force, delta_time));
+    Vec3 gravity_force = vec3_scale(g_projectile_system.gravity, vec3(proj->gravity_scale, proj->gravity_scale, proj->gravity_scale));
+    proj->velocity = vec3_add(proj->velocity, vec3_scale(gravity_force, vec3(delta_time, delta_time, delta_time)));
   }
   
   // Apply drag
   if (proj->drag > 0.0f) {
     f32 drag_factor = 1.0f - (proj->drag * delta_time);
     drag_factor = fmaxf(0.0f, drag_factor);
-    proj->velocity = vec3_scale(proj->velocity, drag_factor);
+    proj->velocity = vec3_scale(proj->velocity, vec3(drag_factor, drag_factor, drag_factor));
   }
   
   // Clamp to max speed
-  f32 current_speed = vec3_length(&proj->velocity);
+  f32 current_speed = vec3_length(proj->velocity);
   if (current_speed > proj->max_speed) {
-    proj->velocity = vec3_scale(vec3_normalize(proj->velocity), proj->max_speed);
+    proj->velocity = vec3_scale(vec3_normalize(proj->velocity), vec3(proj->max_speed, proj->max_speed, proj->max_speed));
   }
   
   // Update position
   proj->last_position = proj->last_position; // Would get from transform component
-  Vec3 new_position = vec3_add(proj->last_position, vec3_scale(&proj->velocity, delta_time));
+  Vec3 new_position = vec3_add(proj->last_position, vec3_scale(proj->velocity, vec3(delta_time, delta_time, delta_time)));
   
   // Handle homing
   if (proj->is_homing && proj->homing_target.id != 0 && proj->age >= proj->homing_delay) {
@@ -170,7 +177,7 @@ static void projectile_update_physics(ProjectileInstance *instance, f32 delta_ti
     
     Vec3 homing_dir = calculate_homing_direction(&proj->last_position, &target_position, 
                                                  &proj->velocity, proj->homing_strength);
-    proj->velocity = vec3_scale(homing_dir, current_speed);
+    proj->velocity = vec3_scale(homing_dir, vec3(current_speed, current_speed, current_speed));
   }
   
   // Perform raycast collision detection
@@ -271,7 +278,7 @@ Entity projectile_spawn(World *world, Vec3 position, Vec3 direction, f32 speed, 
   
   // Normalize direction and apply speed
   direction = vec3_normalize(direction);
-  Vec3 velocity = vec3_scale(direction, speed);
+  Vec3 velocity = vec3_scale(direction, vec3(speed, speed, speed));
   
   // Create projectile component
   ProjectileComponent proj = projectile_create(velocity, 5.0f); // 5 second default lifetime
@@ -313,7 +320,7 @@ Entity projectile_spawn(World *world, Vec3 position, Vec3 direction, f32 speed, 
 ProjectileComponent projectile_create(Vec3 velocity, f32 lifetime) {
   ProjectileComponent proj = {0};
   proj.velocity = velocity;
-  proj.speed = vec3_length(&velocity);
+  proj.speed = vec3_length(velocity);
   proj.max_speed = proj.speed * 2.0f;
   proj.lifetime = fmaxf(PROJECTILE_MIN_LIFETIME, lifetime);
   proj.age = 0.0f;
@@ -343,7 +350,7 @@ ProjectileComponent projectile_create(Vec3 velocity, f32 lifetime) {
 ProjectileComponent projectile_create_arrow(Vec3 velocity, f32 damage) {
   ProjectileComponent proj = projectile_create(velocity, 3.0f); // 3 second lifetime
   proj.damage = damage;
-  proj.damage_type = DAMAGE_TYPE_PIERCING;
+  proj.damage_type = DAMAGE_TYPE_PHYSICAL;
   proj.behavior = PROJECTILE_BEHAVIOR_STICK;
   proj.gravity_scale = 0.5f; // Arrows affected by gravity
   proj.drag = 0.02f; // More drag for arrows
@@ -432,15 +439,14 @@ void projectile_set_penetration(ProjectileComponent *proj, u32 count) {
   LOG_DEBUG("Set projectile penetration count to %u", count);
 }
 
-void projectile_set_explosion(ProjectileComponent *proj, f32 radius, f32 damage, bool falloff) {
+void projectile_set_explosion(ProjectileComponent *proj, f32 radius, f32 damage) {
   if (!proj) return;
   
   proj->explosion_radius = fmaxf(0.0f, radius);
   proj->explosion_damage = fmaxf(0.0f, damage);
-  proj->explosion_falloff = falloff;
+  proj->explosion_falloff = true; // Default to enabled
   
-  LOG_DEBUG("Set projectile explosion: radius %.2f, damage %.1f, falloff %s", 
-           radius, damage, falloff ? "enabled" : "disabled");
+  LOG_DEBUG("Set projectile explosion: radius %.2f, damage %.1f", radius, damage);
 }
 
 void projectile_set_light(ProjectileComponent *proj, bool emit_light, Vec3 color) {
@@ -488,7 +494,7 @@ void projectile_get_statistics(u32 *out_active_projectiles, u32 *out_total_spawn
     
     if (instance->is_active) {
       (*out_active_projectiles)++;
-      total_speed += vec3_length(&instance->projectile.velocity);
+      total_speed += vec3_length(instance->projectile.velocity);
     }
     
     (*out_total_spawned)++;

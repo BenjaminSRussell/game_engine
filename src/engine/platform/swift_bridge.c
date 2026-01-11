@@ -6,13 +6,16 @@
 #include "swift_bridge.h"
 #include "core/logger.h"
 #include "core/engine.h"
+#include "core/types.h"
+#include "math/math.h"
 #include "rendering/renderer.h"
 #include "audio/audio_system.h"
-#include "physics/physics_world.h"
-#include "assets/asset_manager.h"
-#include "input/input_manager.h"
+// #include "physics/physics_world.h" // Disabled due to missing header
+// #include "assets/asset_manager.h" // Disabled due to missing header
+// #include "input/input_manager.h" // Disabled due to missing header
 #include "core/memory.h"
 #include <time.h>
+#include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
 

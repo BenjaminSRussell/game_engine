@@ -76,7 +76,7 @@ static u32 g_falling_block_count = 0;
 static Entity create_falling_block_entity(World *world, PhysicsWorld *physics_world, 
                                           BlockID block_type, Vec3 position) {
     if (!world || !physics_world)
-        return 0;
+        return INVALID_ENTITY;
     
     Entity entity = ecs_create_entity(world);
     
@@ -119,7 +119,7 @@ static Entity create_falling_block_entity(World *world, PhysicsWorld *physics_wo
         rigid_body_set_mass(body, mass);
         rigid_body_set_friction(body, 0.3f);
         rigid_body_set_restitution(body, 0.1f); // Low bounciness
-        rigid_body_set_gravity_scale(body, 1.0f);
+        // rigid_body_set_gravity_scale(body, 1.0f); // Function not available
         
         // Enhanced collider with proper shape
         Collider *collider = collider_create_box(vec3(0.5f, 0.5f, 0.5f));
@@ -263,7 +263,7 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
       
       // Update falling block state tracking
       for (u32 i = 0; i < g_falling_block_count; i++) {
-        if (g_falling_blocks[i].entity == entity) {
+        if (g_falling_blocks[i].entity.id == entity.id) {
           g_falling_blocks[i].velocity = velocity;
           g_falling_blocks[i].fall_time += delta_time;
           g_falling_blocks[i].total_distance += vec3_length(velocity) * delta_time;
@@ -276,7 +276,15 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
       }
 
       // Enhanced settling logic
-      if (at_rest && falling->fall_time > 0.1f) { // Minimum fall time
+      FallingBlockState *state = NULL;
+      for (u32 i = 0; i < g_falling_block_count; i++) {
+        if (g_falling_blocks[i].entity.id == entity.id) {
+          state = &g_falling_blocks[i];
+          break;
+        }
+      }
+      
+      if (state && at_rest && state->fall_time > 0.1f) { // Minimum fall time
         // Check if position is valid for placement
         ChunkPos current_cp = world_to_chunk_pos(grid_x, grid_y, grid_z);
         Chunk *current_chunk = chunk_manager_get(chunk_manager, current_cp);
@@ -307,7 +315,7 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
             
             // Remove from tracking
             for (u32 i = 0; i < g_falling_block_count; i++) {
-              if (g_falling_blocks[i].entity == entity) {
+              if (g_falling_blocks[i].entity.id == entity.id) {
                 // Move last element to current position
                 if (i < g_falling_block_count - 1) {
                   g_falling_blocks[i] = g_falling_blocks[g_falling_block_count - 1];

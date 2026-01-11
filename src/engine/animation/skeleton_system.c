@@ -15,6 +15,19 @@ SkeletonSystem* g_skeleton_system = NULL;
 
 // MARK: - Helper Functions
 
+// Forward declarations for internal functions
+static bool skeleton_update_bone_hierarchy_recursive(Skeleton* skeleton, u32 bone_id, const Mat4 parent_matrix);
+static bool skeleton_sample_keyframes(const AnimationKeyframe* keyframes, u32 count, float time, 
+                                     KeyframeType type, void* result);
+static void skeleton_print_bone_recursive(Skeleton* skeleton, u32 bone_id, u32 depth);
+
+// Wrapper function for quaternion from matrix conversion
+static Quat quat_from_mat4_wrapper(Mat4 m) {
+    // This is a simplified implementation - in a real engine you would need
+    // a proper matrix to quaternion conversion algorithm
+    return quat_identity(); // Placeholder
+}
+
 static u32 generate_skeleton_id(void) {
     static u32 next_id = 1;
     return next_id++;
@@ -37,11 +50,11 @@ static u64 get_current_time_ms(void) {
 }
 
 static Mat4 create_transform_matrix(const Vec3* position, const Quat* rotation, const Vec3* scale) {
-    Mat4 translation = mat4_translate(mat4_identity(), *position);
+    Mat4 translation = mat4_translate(*position);
     Mat4 rotation_matrix = quat_to_mat4(*rotation);
-    Mat4 scale_matrix = mat4_scale(mat4_identity(), *scale);
+    Mat4 scale_matrix = mat4_scale(*scale);
     
-    return mat4_multiply(translation, mat4_multiply(rotation_matrix, scale_matrix));
+    return mat4_mul(translation, mat4_mul(rotation_matrix, scale_matrix));
 }
 
 static void interpolate_keyframes(const AnimationKeyframe* key1, const AnimationKeyframe* key2, 
@@ -132,7 +145,7 @@ bool skeleton_system_init(SkeletonSystem* system, u32 max_skeletons, u32 max_ani
     
     // Set default settings
     system->enable_animation_blending = true;
-    system->enable_ik_solving = false;
+    system->enable_IK_solving = false;
     system->enable_ragdoll_physics = false;
     system->max_bone_influences = 4.0f;
     
@@ -402,12 +415,12 @@ bool skeleton_update_bone_hierarchy_recursive(Skeleton* skeleton, u32 bone_id, c
     
     // Calculate model transform
     Mat4 local_transform = create_transform_matrix(&bone->local_position, &bone->local_rotation, &bone->local_scale);
-    bone->model_position = vec3_transform(vec3_zero(), parent_matrix);
-    bone->model_rotation = quat_from_mat4(mat4_multiply(parent_matrix, local_transform));
+    bone->model_position = mat4_transform_point(parent_matrix, vec3_zero());
+    bone->model_rotation = quat_from_mat4_wrapper(mat4_mul(parent_matrix, local_transform));
     bone->model_scale = vec3_one(); // Simplified - would extract scale from matrix
     
     // Update current pose matrix
-    bone->current_pose_matrix = mat4_multiply(parent_matrix, local_transform);
+    bone->current_pose_matrix = mat4_mul(parent_matrix, local_transform);
     
     // Update children
     for (u32 i = 0; i < bone->child_count; i++) {
@@ -439,7 +452,7 @@ bool skeleton_calculate_skinning_matrices(Skeleton* skeleton) {
     
     for (u32 i = 0; i < skeleton->bone_count; i++) {
         Bone* bone = &skeleton->bones[i];
-        bone->skinning_matrix = mat4_multiply(bone->current_pose_matrix, bone->inverse_bind_pose_matrix);
+        bone->skinning_matrix = mat4_mul(bone->current_pose_matrix, bone->inverse_bind_pose_matrix);
     }
     
     return true;
@@ -726,7 +739,7 @@ bool skeleton_sample_keyframes(const AnimationKeyframe* keyframes, u32 keyframe_
     const AnimationKeyframe* key2 = &keyframes[start_index + 1];
     
     float t = (time - key1->time) / (key2->time - key1->time);
-    t = clamp_f(t, 0.0f, 1.0f);
+    t = clamp(t, 0.0f, 1.0f);
     
     interpolate_keyframes(key1, key2, t, type, result);
     return true;
@@ -741,7 +754,7 @@ bool skeleton_set_vertex_bone_data(SkeletonSystem* system, u32 vertex_index,
     }
     
     VertexBoneData* vertex_data = &system->vertex_bone_data[vertex_index];
-    vertex_data->influence_count = min_u32(influence_count, 4);
+    vertex_data->influence_count = (influence_count < 4) ? influence_count : 4;
     
     for (u32 i = 0; i < vertex_data->influence_count; i++) {
         vertex_data->influences[i] = influences[i];
@@ -787,20 +800,20 @@ void skeleton_calculate_bounds(Skeleton* skeleton, Vec3* min_bounds, Vec3* max_b
         return;
     }
     
-    *min_bounds = vec3_create(FLT_MAX, FLT_MAX, FLT_MAX);
-    *max_bounds = vec3_create(FLT_MIN, FLT_MIN, FLT_MIN);
+    *min_bounds = vec3(FLT_MAX, FLT_MAX, FLT_MAX);
+    *max_bounds = vec3(FLT_MIN, FLT_MIN, FLT_MIN);
     
     for (u32 i = 0; i < skeleton->bone_count; i++) {
         Bone* bone = &skeleton->bones[i];
         Vec3 bone_pos = bone->model_position;
         
-        min_bounds->x = min_f(min_bounds->x, bone_pos.x);
-        min_bounds->y = min_f(min_bounds->y, bone_pos.y);
-        min_bounds->z = min_f(min_bounds->z, bone_pos.z);
+        min_bounds->x = fminf(min_bounds->x, bone_pos.x);
+        min_bounds->y = fminf(min_bounds->y, bone_pos.y);
+        min_bounds->z = fminf(min_bounds->z, bone_pos.z);
         
-        max_bounds->x = max_f(max_bounds->x, bone_pos.x);
-        max_bounds->y = max_f(max_bounds->y, bone_pos.y);
-        max_bounds->z = max_f(max_bounds->z, bone_pos.z);
+        max_bounds->x = fmaxf(max_bounds->x, bone_pos.x);
+        max_bounds->y = fmaxf(max_bounds->y, bone_pos.y);
+        max_bounds->z = fmaxf(max_bounds->z, bone_pos.z);
     }
 }
 

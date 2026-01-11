@@ -4,6 +4,7 @@
 #include <core/types.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <time.h>
 
 // =================================================================================================
 //                                   ANALYTICS & METRICS SYSTEM API

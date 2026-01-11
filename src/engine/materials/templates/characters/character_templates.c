@@ -13,6 +13,7 @@
 #include "character_templates.h"
 #include <core/logger.h>
 #include <core/memory.h>
+#include <core/types.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -96,7 +97,7 @@ SkeletonTemplate* skeleton_template_create(const char* name, u32 bone_count) {
 
 // Add bone to skeleton template
 bool skeleton_template_add_bone(SkeletonTemplate* template, const char* name,
-                               s32 parent_index, const f32 position[3], 
+                               i32 parent_index, const f32 position[3], 
                                const f32 rotation[4], const f32 scale[3],
                                bool is_essential) {
     if (!template || !name || !template->bones) {
@@ -155,7 +156,7 @@ bool skeleton_template_add_bone(SkeletonTemplate* template, const char* name,
 }
 
 // Create IK chain in skeleton template
-bool skeleton_template_add_ik_chain(SkeletonTemplate* template, s32 start_bone, s32 end_bone) {
+bool skeleton_template_add_ik_chain(SkeletonTemplate* template, i32 start_bone, i32 end_bone) {
     if (!template || !template->bones) {
         LOG_ERROR("Invalid template for IK chain");
         return false;
@@ -183,7 +184,7 @@ bool skeleton_template_add_ik_chain(SkeletonTemplate* template, s32 start_bone, 
 }
 
 // Add twist bone to skeleton template
-bool skeleton_template_add_twist_bone(SkeletonTemplate* template, s32 bone_index) {
+bool skeleton_template_add_twist_bone(SkeletonTemplate* template, i32 bone_index) {
     if (!template || !template->bones) {
         LOG_ERROR("Invalid template for twist bone");
         return false;
@@ -225,14 +226,14 @@ SkeletonTemplate* skeleton_template_find(const char* name) {
 }
 
 // Get bone index by name
-s32 skeleton_template_get_bone_index(const SkeletonTemplate* template, const char* bone_name) {
+i32 skeleton_template_get_bone_index(const SkeletonTemplate* template, const char* bone_name) {
     if (!template || !bone_name || !template->bones) {
         return -1;
     }
     
     for (u32 i = 0; i < template->bone_count; i++) {
         if (strcmp(template->bones[i].name, bone_name) == 0) {
-            return (s32)i;
+            return (i32)i;
         }
     }
     
@@ -477,7 +478,7 @@ static bool validate_bone_hierarchy(const SkeletonTemplate* template,
     
     // Check parent indices and detect circular references
     for (u32 i = 0; i < template->bone_count; i++) {
-        s32 parent = template->bones[i].parent_index;
+        i32 parent = template->bones[i].parent_index;
         
         if (parent >= 0 && (u32)parent >= template->bone_count) {
             ValidationIssue* issue = &result->issues[result->issue_count++];
@@ -521,8 +522,8 @@ static bool validate_ik_chains(const SkeletonTemplate* template,
     bool valid = true;
     
     for (u32 i = 0; i < template->ik_chain_count; i++) {
-        s32 start = template->ik_chains[i].start;
-        s32 end = template->ik_chains[i].end;
+        i32 start = template->ik_chains[i].start;
+        i32 end = template->ik_chains[i].end;
         
         // Validate bone indices
         if (start < 0 || (u32)start >= template->bone_count) {
@@ -579,7 +580,7 @@ static bool validate_twist_bones(const SkeletonTemplate* template,
     bool valid = true;
     
     for (u32 i = 0; i < template->twist_bone_count; i++) {
-        s32 bone_index = template->twist_bone_indices[i];
+        i32 bone_index = template->twist_bone_indices[i];
         
         // Validate bone index
         if (bone_index < 0 || (u32)bone_index >= template->bone_count) {
@@ -729,8 +730,8 @@ bool skeleton_template_validate_all(void) {
 
 // Skeleton retargeting system
 typedef struct {
-    s32 source_bone_index;
-    s32 target_bone_index;
+    i32 source_bone_index;
+    i32 target_bone_index;
     f32 weight;
     bool is_essential;
 } BoneMapping;
@@ -784,14 +785,14 @@ static const BoneMappingRule k_humanoid_mapping_rules[] = {
 };
 
 // Find bone index by name (case-insensitive)
-static s32 find_bone_index(const SkeletonTemplate* template, const char* bone_name) {
+static i32 find_bone_index(const SkeletonTemplate* template, const char* bone_name) {
     if (!template || !bone_name || !template->bones) {
         return -1;
     }
     
     for (u32 i = 0; i < template->bone_count; i++) {
         if (strcasecmp(template->bones[i].name, bone_name) == 0) {
-            return (s32)i;
+            return (i32)i;
         }
     }
     
@@ -851,8 +852,8 @@ static RetargetingData create_bone_mapping(const SkeletonTemplate* source,
     for (u32 i = 0; i < sizeof(k_humanoid_mapping_rules) / sizeof(k_humanoid_mapping_rules[0]); i++) {
         const BoneMappingRule* rule = &k_humanoid_mapping_rules[i];
         
-        s32 source_index = find_bone_index(source, rule->source_bone);
-        s32 target_index = find_bone_index(target, rule->target_bone);
+        i32 source_index = find_bone_index(source, rule->source_bone);
+        i32 target_index = find_bone_index(target, rule->target_bone);
         
         if (source_index >= 0 && target_index >= 0) {
             if (mapping.mapping_count < MAX_BONES_PER_SKELETON) {
@@ -871,7 +872,7 @@ static RetargetingData create_bone_mapping(const SkeletonTemplate* source,
         // Skip if already mapped
         bool already_mapped = false;
         for (u32 j = 0; j < mapping.mapping_count; j++) {
-            if (mapping.mappings[j].source_bone_index == (s32)source_idx) {
+            if (mapping.mappings[j].source_bone_index == (i32)source_idx) {
                 already_mapped = true;
                 break;
             }
@@ -881,20 +882,20 @@ static RetargetingData create_bone_mapping(const SkeletonTemplate* source,
         
         // Find best match in target
         f32 best_similarity = 0.0f;
-        s32 best_target_index = -1;
+        i32 best_target_index = -1;
         
         for (u32 target_idx = 0; target_idx < target->bone_count; target_idx++) {
             f32 similarity = calculate_bone_similarity(source, source_idx, target, target_idx);
             if (similarity > best_similarity) {
                 best_similarity = similarity;
-                best_target_index = (s32)target_idx;
+                best_target_index = (i32)target_idx;
             }
         }
         
         // Add mapping if similarity is good enough
         if (best_similarity > 0.3f && best_target_index >= 0) {
             BoneMapping* bone_map = &mapping.mappings[mapping.mapping_count++];
-            bone_map->source_bone_index = (s32)source_idx;
+            bone_map->source_bone_index = (i32)source_idx;
             bone_map->target_bone_index = best_target_index;
             bone_map->weight = best_similarity;
             bone_map->is_essential = source->bones[source_idx].is_essential;

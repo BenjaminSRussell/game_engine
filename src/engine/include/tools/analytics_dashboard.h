@@ -2,13 +2,9 @@
 #define ANALYTICS_DASHBOARD_H
 
 #include <core/types.h>
+#include <math/math.h>
 #include <stdbool.h>
 #include <stddef.h>
-
-// Forward declarations
-typedef struct Vec2 Vec2;
-typedef struct Vec3 Vec3;
-typedef struct Vec4 Vec4;
 
 // Chart types
 typedef enum {
@@ -186,7 +182,7 @@ StatusIndicator* analytics_dashboard_create_status_indicator(AnalyticsDashboard*
                                                        Vec4 active_color, Vec4 inactive_color);
 TextLabel* analytics_dashboard_create_text_label(AnalyticsDashboard* dashboard, const char* text, 
                                              Vec4 text_color, Vec4 bg_color, float font_size);
-Button* analytics_dashboard_create_button(Analytics_dashboard* dashboard, const char* text, 
+Button* analytics_dashboard_create_button(AnalyticsDashboard* dashboard, const char* text, 
                                          Vec4 button_color, Vec4 text_color, 
                                          void (*on_click)(void*, void*), void* user_data);
 

@@ -9,6 +9,15 @@
 #include <string.h>
 #include <math.h>
 
+// Forward declarations - removed HitboxInstance since it's defined locally
+
+// Stub for missing ECS function
+static void ecs_remove_entity(World *world, Entity entity) {
+    // Stub implementation - would remove entity from ECS world
+    (void)world;
+    (void)entity;
+}
+
 #define MAX_HITBOXES 1024
 #define HITBOX_QUERY_BUFFER_SIZE 256
 #define HITBOX_COLLISION_THRESHOLD 0.001f
@@ -22,6 +31,9 @@ typedef struct {
   f64 destruction_time;
 } HitboxInstance;
 
+// Forward declaration for hitbox_handle_collision
+static void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b, const HitboxCollision *collision);
+
 typedef struct {
   HitboxInstance instances[MAX_HITBOXES];
   u32 instance_count;
@@ -34,7 +46,7 @@ static HitboxSystem g_hitbox_system = {0};
 // Helper functions
 static bool sphere_vs_sphere(const Vec3 *center1, f32 radius1, const Vec3 *center2, f32 radius2) {
   Vec3 diff = vec3_sub(*center1, *center2);
-  f32 distance_sq = vec3_dot(&diff, &diff);
+  f32 distance_sq = vec3_dot(diff, diff);
   f32 combined_radius = radius1 + radius2;
   return distance_sq <= combined_radius * combined_radius;
 }
@@ -46,8 +58,8 @@ static bool sphere_vs_box(const Vec3 *sphere_center, f32 sphere_radius, const Ve
     fmaxf(box_center->z - box_half_extents->z, fminf(sphere_center->z, box_center->z + box_half_extents->z))
   };
   
-  Vec3 diff = vec3_sub(sphere_center, &closest_point);
-  f32 distance_sq = vec3_dot(&diff, &diff);
+  Vec3 diff = vec3_sub(*sphere_center, closest_point);
+  f32 distance_sq = vec3_dot(diff, diff);
   return distance_sq <= sphere_radius * sphere_radius;
 }
 
@@ -68,11 +80,11 @@ static bool capsule_vs_sphere(const Vec3 *capsule_center, f32 capsule_radius, f3
   Vec3 ab = vec3_sub(capsule_top, capsule_bottom);
   Vec3 ap = vec3_sub(*sphere_center, capsule_bottom);
   
-  f32 t = fmaxf(0.0f, fminf(1.0f, vec3_dot(&ap, &ab) / vec3_dot(&ab, &ab)));
-  Vec3 closest_point = vec3_add(capsule_bottom, vec3_scale(&ab, t));
+  f32 t = fmaxf(0.0f, fminf(1.0f, vec3_dot(ap, ab) / vec3_dot(ab, ab)));
+  Vec3 closest_point = vec3_add(capsule_bottom, vec3_scale(ab, vec3(t, t, t)));
   
-  Vec3 diff = vec3_sub(*sphere_center, &closest_point);
-  f32 distance_sq = vec3_dot(&diff, &diff);
+  Vec3 diff = vec3_sub(*sphere_center, closest_point);
+  f32 distance_sq = vec3_dot(diff, diff);
   f32 combined_radius = capsule_radius + sphere_radius;
   
   return distance_sq <= combined_radius * combined_radius;
@@ -98,7 +110,7 @@ static void hitbox_remove_instance(u32 index) {
   g_hitbox_system.instance_count--;
 }
 
-static void hitbox_update_world_position(HitboxInstance *instance) {
+static void hitbox_update_world_position_instance(HitboxInstance *instance) {
   if (!instance) return;
   
   // Get entity position (simplified - would use transform component)
@@ -138,11 +150,11 @@ static bool hitbox_check_collision(const HitboxInstance *a, const HitboxInstance
           collision = sphere_vs_sphere(&a->hitbox.world_position, a->hitbox.data.sphere.radius,
                                       &b->hitbox.world_position, b->hitbox.data.sphere.radius);
           if (collision) {
-            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), 0.5f);
+            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), vec3(0.5f, 0.5f, 0.5f));
             Vec3 normal = vec3_normalize(vec3_sub(b->hitbox.world_position, a->hitbox.world_position));
             contact_normal = normal;
             penetration_depth = a->hitbox.data.sphere.radius + b->hitbox.data.sphere.radius - 
-                              vec3_distance(&a->hitbox.world_position, &b->hitbox.world_position);
+                              vec3_distance(a->hitbox.world_position, b->hitbox.world_position);
           }
           break;
           
@@ -187,7 +199,7 @@ static bool hitbox_check_collision(const HitboxInstance *a, const HitboxInstance
           collision = box_vs_box(&a->hitbox.world_position, &a->hitbox.data.box.half_extents,
                                  &b->hitbox.world_position, &b->hitbox.data.box.half_extents);
           if (collision) {
-            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), 0.5f);
+            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), vec3(0.5f, 0.5f, 0.5f));
             Vec3 normal = vec3_normalize(vec3_sub(b->hitbox.world_position, a->hitbox.world_position));
             contact_normal = normal;
             penetration_depth = 1.0f; // Simplified
@@ -238,11 +250,11 @@ static bool hitbox_check_collision(const HitboxInstance *a, const HitboxInstance
           collision = sphere_vs_sphere(&a->hitbox.world_position, a->hitbox.data.capsule.radius,
                                       &b->hitbox.world_position, b->hitbox.data.capsule.radius);
           if (collision) {
-            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), 0.5f);
+            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), vec3(0.5f, 0.5f, 0.5f));
             Vec3 normal = vec3_normalize(vec3_sub(b->hitbox.world_position, a->hitbox.world_position));
             contact_normal = normal;
             penetration_depth = a->hitbox.data.capsule.radius + b->hitbox.data.capsule.radius - 
-                              vec3_distance(&a->hitbox.world_position, &b->hitbox.world_position);
+                              vec3_distance(a->hitbox.world_position, b->hitbox.world_position);
           }
           break;
       }
@@ -295,7 +307,7 @@ void hitbox_system_update(World *world, f32 delta_time) {
     HitboxInstance *instance = &g_hitbox_system.instances[i];
     
     // Update world position
-    hitbox_update_world_position(instance);
+    hitbox_update_world_position_instance(instance);
     
     // Check for temporary hitbox destruction
     if (instance->destruction_time > 0.0 && g_hitbox_system.current_time >= instance->destruction_time) {

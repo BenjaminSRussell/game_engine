@@ -2,14 +2,9 @@
 #define SKELETON_SYSTEM_H
 
 #include <core/types.h>
+#include <math/math.h>
 #include <stdbool.h>
 #include <stddef.h>
-
-// Forward declarations
-typedef struct Vec3 Vec3;
-typedef struct Vec4 Vec4;
-typedef struct Mat4 Mat4;
-typedef struct Quat Quat;
 
 // Bone types
 typedef enum {
@@ -256,13 +251,12 @@ typedef struct {
     
     // Global settings
     bool enable_animation_blending;
-    bool enable IK_solving;
+    bool enable_IK_solving;
     bool enable_ragdoll_physics;
     float max_bone_influences;
     
     // Performance tracking
     u64 last_update_time_ms;
-    u32 updated_skeletons_last_frame;
     u32 updated_animations_last_frame;
     
     // Callbacks

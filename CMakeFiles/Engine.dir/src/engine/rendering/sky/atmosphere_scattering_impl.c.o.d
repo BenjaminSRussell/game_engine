@@ -1,2 +1,0 @@
-CMakeFiles/Engine.dir/src/engine/rendering/sky/atmosphere_scattering_impl.c.o: \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/sky/atmosphere_scattering_impl.c

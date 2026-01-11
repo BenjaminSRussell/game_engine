@@ -13,9 +13,13 @@
 #include "character_templates.h"
 #include <core/logger.h>
 #include <core/memory.h>
+#include <math/math.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+
+// Forward declaration
+static void body_morph_system_cleanup(void);
 
 // Body morph blending system
 #define MAX_MORPH_TARGETS 128
@@ -363,19 +367,19 @@ void body_morph_update(f32 delta_time) {
             for (u32 v = 0; v < target->vertex_count && v < g_morph_system.base_vertex_count; v++) {
                 // Apply vertex position delta
                 g_morph_system.blended_vertices[v] = vec3_add(g_morph_system.blended_vertices[v],
-                                                              vec3_scale(target->delta_vertices[v], target->current_weight));
+                                                              vec3_scale(target->delta_vertices[v], vec3(target->current_weight, target->current_weight, target->current_weight)));
                 
                 // Apply normal delta
                 if (target->delta_normals) {
                     g_morph_system.blended_normals[v] = vec3_add(g_morph_system.blended_normals[v],
-                                                              vec3_scale(target->delta_normals[v], target->current_weight));
+                                                              vec3_scale(target->delta_normals[v], vec3(target->current_weight, target->current_weight, target->current_weight)));
                     g_morph_system.blended_normals[v] = vec3_normalize(g_morph_system.blended_normals[v]);
                 }
                 
                 // Apply tangent delta
                 if (target->delta_tangents) {
                     g_morph_system.blended_tangents[v] = vec3_add(g_morph_system.blended_tangents[v],
-                                                              vec3_scale(target->delta_tangents[v], target->current_weight));
+                                                              vec3_scale(target->delta_tangents[v], vec3(target->current_weight, target->current_weight, target->current_weight)));
                     g_morph_system.blended_tangents[v] = vec3_normalize(g_morph_system.blended_tangents[v]);
                 }
                 
