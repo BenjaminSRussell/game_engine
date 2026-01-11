@@ -13537,30 +13537,6 @@ src/engine/core/optimization/memory_allocators.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/optimization/memory_allocators.c.s
 .PHONY : src/engine/core/optimization/memory_allocators.c.s
 
-src/engine/core/optimization/optimization_systems_complete.o: src/engine/core/optimization/optimization_systems_complete.c.o
-.PHONY : src/engine/core/optimization/optimization_systems_complete.o
-
-# target to build an object file
-src/engine/core/optimization/optimization_systems_complete.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/optimization/optimization_systems_complete.c.o
-.PHONY : src/engine/core/optimization/optimization_systems_complete.c.o
-
-src/engine/core/optimization/optimization_systems_complete.i: src/engine/core/optimization/optimization_systems_complete.c.i
-.PHONY : src/engine/core/optimization/optimization_systems_complete.i
-
-# target to preprocess a source file
-src/engine/core/optimization/optimization_systems_complete.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/optimization/optimization_systems_complete.c.i
-.PHONY : src/engine/core/optimization/optimization_systems_complete.c.i
-
-src/engine/core/optimization/optimization_systems_complete.s: src/engine/core/optimization/optimization_systems_complete.c.s
-.PHONY : src/engine/core/optimization/optimization_systems_complete.s
-
-# target to generate assembly for a file
-src/engine/core/optimization/optimization_systems_complete.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/optimization/optimization_systems_complete.c.s
-.PHONY : src/engine/core/optimization/optimization_systems_complete.c.s
-
 src/engine/core/optimization/platform_opts_impl.o: src/engine/core/optimization/platform_opts_impl.c.o
 .PHONY : src/engine/core/optimization/platform_opts_impl.o
 
@@ -51369,6 +51345,30 @@ src/game/minecraftv2/ore/ore_generation.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ore/ore_generation.c.s
 .PHONY : src/game/minecraftv2/ore/ore_generation.c.s
 
+src/game/minecraftv2/player/experience_system.o: src/game/minecraftv2/player/experience_system.c.o
+.PHONY : src/game/minecraftv2/player/experience_system.o
+
+# target to build an object file
+src/game/minecraftv2/player/experience_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/experience_system.c.o
+.PHONY : src/game/minecraftv2/player/experience_system.c.o
+
+src/game/minecraftv2/player/experience_system.i: src/game/minecraftv2/player/experience_system.c.i
+.PHONY : src/game/minecraftv2/player/experience_system.i
+
+# target to preprocess a source file
+src/game/minecraftv2/player/experience_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/experience_system.c.i
+.PHONY : src/game/minecraftv2/player/experience_system.c.i
+
+src/game/minecraftv2/player/experience_system.s: src/game/minecraftv2/player/experience_system.c.s
+.PHONY : src/game/minecraftv2/player/experience_system.s
+
+# target to generate assembly for a file
+src/game/minecraftv2/player/experience_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/experience_system.c.s
+.PHONY : src/game/minecraftv2/player/experience_system.c.s
+
 src/game/minecraftv2/player/player.o: src/game/minecraftv2/player/player.c.o
 .PHONY : src/game/minecraftv2/player/player.o
 
@@ -51416,6 +51416,30 @@ src/game/minecraftv2/player/player_combat.s: src/game/minecraftv2/player/player_
 src/game/minecraftv2/player/player_combat.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_combat.c.s
 .PHONY : src/game/minecraftv2/player/player_combat.c.s
+
+src/game/minecraftv2/player/player_damage.o: src/game/minecraftv2/player/player_damage.c.o
+.PHONY : src/game/minecraftv2/player/player_damage.o
+
+# target to build an object file
+src/game/minecraftv2/player/player_damage.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_damage.c.o
+.PHONY : src/game/minecraftv2/player/player_damage.c.o
+
+src/game/minecraftv2/player/player_damage.i: src/game/minecraftv2/player/player_damage.c.i
+.PHONY : src/game/minecraftv2/player/player_damage.i
+
+# target to preprocess a source file
+src/game/minecraftv2/player/player_damage.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_damage.c.i
+.PHONY : src/game/minecraftv2/player/player_damage.c.i
+
+src/game/minecraftv2/player/player_damage.s: src/game/minecraftv2/player/player_damage.c.s
+.PHONY : src/game/minecraftv2/player/player_damage.s
+
+# target to generate assembly for a file
+src/game/minecraftv2/player/player_damage.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_damage.c.s
+.PHONY : src/game/minecraftv2/player/player_damage.c.s
 
 src/game/minecraftv2/player/player_food.o: src/game/minecraftv2/player/player_food.c.o
 .PHONY : src/game/minecraftv2/player/player_food.o
@@ -54657,9 +54681,6 @@ help:
 	@echo "... src/engine/core/optimization/memory_allocators.o"
 	@echo "... src/engine/core/optimization/memory_allocators.i"
 	@echo "... src/engine/core/optimization/memory_allocators.s"
-	@echo "... src/engine/core/optimization/optimization_systems_complete.o"
-	@echo "... src/engine/core/optimization/optimization_systems_complete.i"
-	@echo "... src/engine/core/optimization/optimization_systems_complete.s"
 	@echo "... src/engine/core/optimization/platform_opts_impl.o"
 	@echo "... src/engine/core/optimization/platform_opts_impl.i"
 	@echo "... src/engine/core/optimization/platform_opts_impl.s"
@@ -59386,12 +59407,18 @@ help:
 	@echo "... src/game/minecraftv2/ore/ore_generation.o"
 	@echo "... src/game/minecraftv2/ore/ore_generation.i"
 	@echo "... src/game/minecraftv2/ore/ore_generation.s"
+	@echo "... src/game/minecraftv2/player/experience_system.o"
+	@echo "... src/game/minecraftv2/player/experience_system.i"
+	@echo "... src/game/minecraftv2/player/experience_system.s"
 	@echo "... src/game/minecraftv2/player/player.o"
 	@echo "... src/game/minecraftv2/player/player.i"
 	@echo "... src/game/minecraftv2/player/player.s"
 	@echo "... src/game/minecraftv2/player/player_combat.o"
 	@echo "... src/game/minecraftv2/player/player_combat.i"
 	@echo "... src/game/minecraftv2/player/player_combat.s"
+	@echo "... src/game/minecraftv2/player/player_damage.o"
+	@echo "... src/game/minecraftv2/player/player_damage.i"
+	@echo "... src/game/minecraftv2/player/player_damage.s"
 	@echo "... src/game/minecraftv2/player/player_food.o"
 	@echo "... src/game/minecraftv2/player/player_food.i"
 	@echo "... src/game/minecraftv2/player/player_food.s"

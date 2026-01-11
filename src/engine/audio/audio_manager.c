@@ -2,6 +2,7 @@
 // Unified audio system manager implementation
 
 #include "audio/audio_manager.h"
+#include "include/audio/audio_occlusion_raycast.h"
 #include <include/math/math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -150,6 +151,11 @@ void audio_manager_update(AudioManager *manager, f32 delta_time) {
     // Update core audio system
     audio_system_update(&manager->audio_system, update_delta);
 
+    // Update occlusion if physics system is available
+    if (manager->block_physics) {
+      Audio_UpdateOcclusion(&manager->audio_system, manager->block_physics);
+    }
+
     // Update music system with game state
     if (manager->enable_music) {
       music_system_update(&manager->music_system, update_delta);
@@ -233,6 +239,13 @@ void audio_manager_set_player_velocity(AudioManager *manager, Vec3 velocity) {
   if (!manager)
     return;
   manager->player_velocity = velocity;
+}
+
+void audio_manager_set_physics_system(AudioManager *manager,
+                                      BlockPhysicsSystem *physics) {
+  if (!manager)
+    return;
+  manager->block_physics = physics;
 }
 
 void audio_manager_set_time_of_day(AudioManager *manager, f32 time) {

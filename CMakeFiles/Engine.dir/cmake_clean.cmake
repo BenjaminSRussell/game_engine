@@ -1173,8 +1173,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/Engine.dir/src/engine/core/optimization/job_scheduler.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/core/optimization/memory_allocators.c.o"
   "CMakeFiles/Engine.dir/src/engine/core/optimization/memory_allocators.c.o.d"
-  "CMakeFiles/Engine.dir/src/engine/core/optimization/optimization_systems_complete.c.o"
-  "CMakeFiles/Engine.dir/src/engine/core/optimization/optimization_systems_complete.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/core/optimization/platform_opts_impl.c.o"
   "CMakeFiles/Engine.dir/src/engine/core/optimization/platform_opts_impl.c.o.d"
   "CMakeFiles/Engine.dir/src/engine/core/optimization/simd_math_ops.c.o"

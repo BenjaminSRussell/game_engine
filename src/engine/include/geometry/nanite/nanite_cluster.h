@@ -5,6 +5,7 @@
 
 #include "include/common.h"
 #include "include/math/bounds.h"
+#include "include/math/mat4.h"
 #include "include/math/vec2.h"
 #include "include/math/vec3.h"
 

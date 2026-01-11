@@ -32,9 +32,9 @@
 #define MESH_OPTIMIZER_H
 
 #include <common.h>
+#include <include/rendering/mesh.h>
 #include <math/mat4.h>
 #include <math/vec3.h>
-#include <include/rendering/mesh.h>
 
 // Forward declarations
 struct Camera;
@@ -116,9 +116,11 @@ void mesh_compressed_free(CompressedMesh *compressed);
 
 #include <math/vec4.h>
 
-typedef struct {
-  Vec4 planes[6]; // Frustum planes (left, right, bottom, top, near, far)
-} Frustum;
+#include <math/frustum.h>
+
+// typedef struct {
+//   Vec4 planes[6]; // Frustum planes (left, right, bottom, top, near, far)
+// } Frustum;
 
 typedef struct {
   bool *visible;     // Array of visibility flags (one per mesh)

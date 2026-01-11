@@ -188,6 +188,9 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*test.*\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/memory/gpu_memory\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/services/particle_system_gpu\\.c$")
 
+# Exclude redundant optimization complete file
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/optimization/optimization_systems_complete\\.c$")
+
 # Exclude broken mob system  
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/mobs/mob_spawning\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/mobs/mob_system\\.c$")
@@ -199,8 +202,8 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ai/enemy_ai\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/npc/.*\\.c$")
 
 # Exclude broken player modules
-list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_damage\\.c$")
-list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/experience_system\\.c$")
+# list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_damage\\.c$")
+# list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/experience_system\\.c$")
 
 # Exclude broken game ECS and legacy recipe
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ecs/ecs\\.c$")

@@ -238,6 +238,7 @@ typedef struct {
   bool has_effects;        // Can apply status effects
   u32 effect_id;           // Status effect ID if applicable
   f32 effect_chance;       // Chance of effect (0.0-1.0)
+  f32 quality;             // Food quality, affects hunger/saturation. 1.0 is normal.
 } FoodProperties;
 
 // Tool properties
