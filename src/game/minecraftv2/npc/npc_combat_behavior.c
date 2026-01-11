@@ -36,22 +36,22 @@ void npc_combat_behavior_update(NPCSystem *system, EntityID entity,
     if (!self)
       return;
 
-    // Find nearby allies in combat
-    ComponentTypeID comps[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID,
-                               HEALTH_COMPONENT_ID};
-    EntityQuery q;
-    ecs_query_init(&q, 64);
-    ecs_query_entities((World *)system->ecs, &q, comps, 3);
-    for (u32 i = 0; i < q.count; i++) {
-      EntityID other = q.entities[i];
+    QueryDesc desc = {0};
+    ComponentType components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID,
+                                  HEALTH_COMPONENT_ID};
+    desc.all_components = components;
+    desc.all_count = 3;
+    Query *q = ecs_query_create((World *)system->ecs, &desc);
+
+    Entity other_ent;
+    void *c[3];
+    while (ecs_query_next(q, &other_ent, c)) {
+      EntityID other = other_ent.id;
       if (other == entity)
         continue;
-      NPCComponent *other_npc = (NPCComponent *)ecs_get_component(
-          (World *)system->ecs, (Entity){other, 0}, NPC_COMPONENT_ID);
-      TransformComponent *other_t = (TransformComponent *)ecs_get_component(
-          (World *)system->ecs, (Entity){other, 0}, TRANSFORM_COMPONENT_ID);
-      HealthComponent *other_h = (HealthComponent *)ecs_get_component(
-          (World *)system->ecs, (Entity){other, 0}, HEALTH_COMPONENT_ID);
+      NPCComponent *other_npc = (NPCComponent *)c[0];
+      TransformComponent *other_t = (TransformComponent *)c[1];
+      HealthComponent *other_h = (HealthComponent *)c[2];
       if (!other_npc || !other_t || !other_h)
         continue;
       if (other_npc->state == NPC_STATE_FLEEING &&
@@ -63,7 +63,7 @@ void npc_combat_behavior_update(NPCSystem *system, EntityID entity,
         break;
       }
     }
-    ecs_query_free(&q);
+    ecs_query_destroy((World *)system->ecs, q);
   }
 }
 

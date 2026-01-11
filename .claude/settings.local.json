@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(cd:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(git -C /Users/benjaminrussell/Desktop/\"Minecraft v2\" log --oneline --all)"
     ]
   }
 }

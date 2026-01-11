@@ -20,13 +20,13 @@
 #include <core/engine_core.h>
 #include <core/game_module.h>
 #include <core/logger.h>
+#include <effects/vfx/particle_system.h>
 #include <math/mat4.h>
 #include <math/math.h>
 #include <math/vec3.h>
 #include <rendering/renderer.h>
 #include <stdlib.h>
 #include <string.h>
-#include <effects/vfx/particle_system.h>
 
 // Minecraft v2 specific includes (these will be gradually migrated)
 #include <audio/audio_system.h>
@@ -43,8 +43,8 @@
 #include <weather/weather.h>
 #include <world/generator.h>
 
-AudioSystem* g_audio_system = NULL;
-ParticleSystem* g_particle_system = NULL;
+AudioSystem *g_audio_system = NULL;
+ParticleSystem *g_particle_system = NULL;
 
 // Minecraft v2 game state
 typedef struct {
@@ -173,7 +173,8 @@ static bool minecraft_v2_initialize(GameModule *module, Engine *engine) {
 
   // Initialize particle system for VFX (renderer not yet wired in, pass NULL)
   game_state->particles = malloc(sizeof(ParticleSystem));
-  particle_system_init(game_state->particles, game_state->renderer);
+  particle_system_init(game_state->particles,
+                       (VulkanRenderer *)game_state->renderer);
   g_particle_system = game_state->particles;
 
   GenerationContext gen_context = {&game_state->chunk_manager};
@@ -234,7 +235,8 @@ static void minecraft_v2_shutdown(GameModule *module) {
 
   // Shutdown particle system
   if (game_state->particles) {
-    particle_system_shutdown(game_state->particles, game_state->renderer);
+    particle_system_shutdown(game_state->particles,
+                             (VulkanRenderer *)game_state->renderer);
     free(game_state->particles);
   }
 
@@ -323,7 +325,8 @@ static void minecraft_v2_render(GameModule *module, Engine *engine) {
   player_system_render(&game_state->player_system, game_state->renderer);
 
   if (game_state->particles) {
-    particle_system_render(game_state->particles, game_state->renderer, view_proj);
+    particle_system_render(game_state->particles,
+                           (VulkanRenderer *)game_state->renderer, view_proj);
   }
 
   // Render weather effects

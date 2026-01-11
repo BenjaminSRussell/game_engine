@@ -161,6 +161,9 @@ CMakeFiles/Game.dir/src/game/minecraftv2/minecraft_v2_module.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/renderer.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/game_module.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/effects/vfx/particle_system.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/vulkan.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/camera.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/vendor/miniaudio.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdalign.h \
@@ -203,7 +206,6 @@ CMakeFiles/Game.dir/src/game/minecraftv2/minecraft_v2_module.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/player_vehicle.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/spirit_model.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/player/status_effects.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/camera.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/hotbar.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/../../../../engine/include/math/vec2.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/minecraftv2/include/ui/../../../../engine/include/math/vec4.h \

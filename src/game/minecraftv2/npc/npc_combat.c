@@ -242,8 +242,6 @@ void npc_spawn_experience(struct NPCSystem *system, Vec3 position, u32 amount) {
     LOG_INFO("XP orbs (%u XP) dropped at (%f,%f,%f)", amount, position.x,
              position.y, position.z);
   }
-
-  ecs_query_free(&query);
 }
 
 // Handle NPC death

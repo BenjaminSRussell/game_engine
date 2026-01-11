@@ -22769,13 +22769,13 @@ src/engine/geometry/nanite/cluster_builder.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o
 .PHONY : src/engine/geometry/nanite/cluster_builder.m.o
 
-src/engine/geometry/nanite/cluster_builder_2.o: src/engine/geometry/nanite/cluster_builder_2.m.o
-.PHONY : src/engine/geometry/nanite/cluster_builder_2.o
+src/engine/geometry/nanite/cluster_builder_alt.o: src/engine/geometry/nanite/cluster_builder_alt.m.o
+.PHONY : src/engine/geometry/nanite/cluster_builder_alt.o
 
 # target to build an object file
-src/engine/geometry/nanite/cluster_builder_2.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o
-.PHONY : src/engine/geometry/nanite/cluster_builder_2.m.o
+src/engine/geometry/nanite/cluster_builder_alt.m.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o
+.PHONY : src/engine/geometry/nanite/cluster_builder_alt.m.o
 
 src/engine/geometry/nanite/cluster_streaming.o: src/engine/geometry/nanite/cluster_streaming.c.o
 .PHONY : src/engine/geometry/nanite/cluster_streaming.o
@@ -32305,29 +32305,29 @@ src/engine/physics/physics_api_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.s
 .PHONY : src/engine/physics/physics_api_impl.c.s
 
-src/engine/physics/physics_api_impl_2.o: src/engine/physics/physics_api_impl_2.c.o
-.PHONY : src/engine/physics/physics_api_impl_2.o
+src/engine/physics/physics_api_impl_alt.o: src/engine/physics/physics_api_impl_alt.c.o
+.PHONY : src/engine/physics/physics_api_impl_alt.o
 
 # target to build an object file
-src/engine/physics/physics_api_impl_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o
-.PHONY : src/engine/physics/physics_api_impl_2.c.o
+src/engine/physics/physics_api_impl_alt.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o
+.PHONY : src/engine/physics/physics_api_impl_alt.c.o
 
-src/engine/physics/physics_api_impl_2.i: src/engine/physics/physics_api_impl_2.c.i
-.PHONY : src/engine/physics/physics_api_impl_2.i
+src/engine/physics/physics_api_impl_alt.i: src/engine/physics/physics_api_impl_alt.c.i
+.PHONY : src/engine/physics/physics_api_impl_alt.i
 
 # target to preprocess a source file
-src/engine/physics/physics_api_impl_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.i
-.PHONY : src/engine/physics/physics_api_impl_2.c.i
+src/engine/physics/physics_api_impl_alt.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.i
+.PHONY : src/engine/physics/physics_api_impl_alt.c.i
 
-src/engine/physics/physics_api_impl_2.s: src/engine/physics/physics_api_impl_2.c.s
-.PHONY : src/engine/physics/physics_api_impl_2.s
+src/engine/physics/physics_api_impl_alt.s: src/engine/physics/physics_api_impl_alt.c.s
+.PHONY : src/engine/physics/physics_api_impl_alt.s
 
 # target to generate assembly for a file
-src/engine/physics/physics_api_impl_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.s
-.PHONY : src/engine/physics/physics_api_impl_2.c.s
+src/engine/physics/physics_api_impl_alt.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.s
+.PHONY : src/engine/physics/physics_api_impl_alt.c.s
 
 src/engine/physics/physics_complete.o: src/engine/physics/physics_complete.c.o
 .PHONY : src/engine/physics/physics_complete.o
@@ -51753,30 +51753,6 @@ src/game/minecraftv2/npc/npc_spawning.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_spawning.c.s
 .PHONY : src/game/minecraftv2/npc/npc_spawning.c.s
 
-src/game/minecraftv2/npc/npc_stubs.o: src/game/minecraftv2/npc/npc_stubs.c.o
-.PHONY : src/game/minecraftv2/npc/npc_stubs.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_stubs.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_stubs.c.o
-.PHONY : src/game/minecraftv2/npc/npc_stubs.c.o
-
-src/game/minecraftv2/npc/npc_stubs.i: src/game/minecraftv2/npc/npc_stubs.c.i
-.PHONY : src/game/minecraftv2/npc/npc_stubs.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_stubs.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_stubs.c.i
-.PHONY : src/game/minecraftv2/npc/npc_stubs.c.i
-
-src/game/minecraftv2/npc/npc_stubs.s: src/game/minecraftv2/npc/npc_stubs.c.s
-.PHONY : src/game/minecraftv2/npc/npc_stubs.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_stubs.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_stubs.c.s
-.PHONY : src/game/minecraftv2/npc/npc_stubs.c.s
-
 src/game/minecraftv2/npc/npc_system.o: src/game/minecraftv2/npc/npc_system.c.o
 .PHONY : src/game/minecraftv2/npc/npc_system.o
 
@@ -52640,6 +52616,54 @@ src/game/minecraftv2/ui/hud_renderer.s: src/game/minecraftv2/ui/hud_renderer.c.s
 src/game/minecraftv2/ui/hud_renderer.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_renderer.c.s
 .PHONY : src/game/minecraftv2/ui/hud_renderer.c.s
+
+src/game/minecraftv2/ui/hud_spell_cooldown.o: src/game/minecraftv2/ui/hud_spell_cooldown.c.o
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.o
+
+# target to build an object file
+src/game/minecraftv2/ui/hud_spell_cooldown.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_spell_cooldown.c.o
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.c.o
+
+src/game/minecraftv2/ui/hud_spell_cooldown.i: src/game/minecraftv2/ui/hud_spell_cooldown.c.i
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.i
+
+# target to preprocess a source file
+src/game/minecraftv2/ui/hud_spell_cooldown.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_spell_cooldown.c.i
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.c.i
+
+src/game/minecraftv2/ui/hud_spell_cooldown.s: src/game/minecraftv2/ui/hud_spell_cooldown.c.s
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.s
+
+# target to generate assembly for a file
+src/game/minecraftv2/ui/hud_spell_cooldown.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_spell_cooldown.c.s
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.c.s
+
+src/game/minecraftv2/ui/hud_tooltip.o: src/game/minecraftv2/ui/hud_tooltip.c.o
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.o
+
+# target to build an object file
+src/game/minecraftv2/ui/hud_tooltip.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_tooltip.c.o
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.c.o
+
+src/game/minecraftv2/ui/hud_tooltip.i: src/game/minecraftv2/ui/hud_tooltip.c.i
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.i
+
+# target to preprocess a source file
+src/game/minecraftv2/ui/hud_tooltip.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_tooltip.c.i
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.c.i
+
+src/game/minecraftv2/ui/hud_tooltip.s: src/game/minecraftv2/ui/hud_tooltip.c.s
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.s
+
+# target to generate assembly for a file
+src/game/minecraftv2/ui/hud_tooltip.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_tooltip.c.s
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.c.s
 
 src/game/minecraftv2/ui/inventory_ui.o: src/game/minecraftv2/ui/inventory_ui.c.o
 .PHONY : src/game/minecraftv2/ui/inventory_ui.o
@@ -56435,7 +56459,7 @@ help:
 	@echo "... src/engine/geometry/meshlets/meshlet_renderer.i"
 	@echo "... src/engine/geometry/meshlets/meshlet_renderer.s"
 	@echo "... src/engine/geometry/nanite/cluster_builder.o"
-	@echo "... src/engine/geometry/nanite/cluster_builder_2.o"
+	@echo "... src/engine/geometry/nanite/cluster_builder_alt.o"
 	@echo "... src/engine/geometry/nanite/cluster_streaming.o"
 	@echo "... src/engine/geometry/nanite/cluster_streaming.i"
 	@echo "... src/engine/geometry/nanite/cluster_streaming.s"
@@ -57627,9 +57651,9 @@ help:
 	@echo "... src/engine/physics/physics_api_impl.o"
 	@echo "... src/engine/physics/physics_api_impl.i"
 	@echo "... src/engine/physics/physics_api_impl.s"
-	@echo "... src/engine/physics/physics_api_impl_2.o"
-	@echo "... src/engine/physics/physics_api_impl_2.i"
-	@echo "... src/engine/physics/physics_api_impl_2.s"
+	@echo "... src/engine/physics/physics_api_impl_alt.o"
+	@echo "... src/engine/physics/physics_api_impl_alt.i"
+	@echo "... src/engine/physics/physics_api_impl_alt.s"
 	@echo "... src/engine/physics/physics_complete.o"
 	@echo "... src/engine/physics/physics_complete.i"
 	@echo "... src/engine/physics/physics_complete.s"
@@ -60058,9 +60082,6 @@ help:
 	@echo "... src/game/minecraftv2/npc/npc_spawning.o"
 	@echo "... src/game/minecraftv2/npc/npc_spawning.i"
 	@echo "... src/game/minecraftv2/npc/npc_spawning.s"
-	@echo "... src/game/minecraftv2/npc/npc_stubs.o"
-	@echo "... src/game/minecraftv2/npc/npc_stubs.i"
-	@echo "... src/game/minecraftv2/npc/npc_stubs.s"
 	@echo "... src/game/minecraftv2/npc/npc_system.o"
 	@echo "... src/game/minecraftv2/npc/npc_system.i"
 	@echo "... src/game/minecraftv2/npc/npc_system.s"
@@ -60169,6 +60190,12 @@ help:
 	@echo "... src/game/minecraftv2/ui/hud_renderer.o"
 	@echo "... src/game/minecraftv2/ui/hud_renderer.i"
 	@echo "... src/game/minecraftv2/ui/hud_renderer.s"
+	@echo "... src/game/minecraftv2/ui/hud_spell_cooldown.o"
+	@echo "... src/game/minecraftv2/ui/hud_spell_cooldown.i"
+	@echo "... src/game/minecraftv2/ui/hud_spell_cooldown.s"
+	@echo "... src/game/minecraftv2/ui/hud_tooltip.o"
+	@echo "... src/game/minecraftv2/ui/hud_tooltip.i"
+	@echo "... src/game/minecraftv2/ui/hud_tooltip.s"
 	@echo "... src/game/minecraftv2/ui/inventory_ui.o"
 	@echo "... src/game/minecraftv2/ui/inventory_ui.i"
 	@echo "... src/game/minecraftv2/ui/inventory_ui.s"

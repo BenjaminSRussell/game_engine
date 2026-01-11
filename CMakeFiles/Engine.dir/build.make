@@ -18552,24 +18552,10 @@ CMakeFiles/Engine.dir/src/engine/physics/physics_advanced_impl.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/engine/physics/physics_advanced_impl.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/physics_advanced_impl.c" -o CMakeFiles/Engine.dir/src/engine/physics/physics_advanced_impl.c.s
 
-CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o: CMakeFiles/Engine.dir/flags.make
-CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o: src/engine/physics/physics_api_impl\ 2.c
-CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1321) "Building C object CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o -MF CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o.d -o CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/physics_api_impl 2.c"
-
-CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/physics_api_impl 2.c" > CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.i
-
-CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/physics_api_impl 2.c" -o CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.s
-
 CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o: src/engine/physics/physics_api_impl.c
 CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1322) "Building C object CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1321) "Building C object CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o -MF CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o.d -o CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/physics_api_impl.c"
 
 CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.i: cmake_force
@@ -18579,6 +18565,20 @@ CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.i: cmake_force
 CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/physics_api_impl.c" -o CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.s
+
+CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o: src/engine/physics/physics_api_impl_alt.c
+CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1322) "Building C object CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o -MF CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o.d -o CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/physics_api_impl_alt.c"
+
+CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/physics_api_impl_alt.c" > CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.i
+
+CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/physics_api_impl_alt.c" -o CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.s
 
 CMakeFiles/Engine.dir/src/engine/physics/physics_complete.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/physics/physics_complete.c.o: src/engine/physics/physics_complete.c
@@ -29752,24 +29752,10 @@ CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.s"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/bvh/bvh_metal_culling.m" -o CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.s
 
-CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o: CMakeFiles/Engine.dir/flags.make
-CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o: src/engine/geometry/nanite/cluster_builder\ 2.m
-CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2121) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o"
-	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o -MF CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o.d -o CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/cluster_builder 2.m"
-
-CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing OBJC source to CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.i"
-	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/cluster_builder 2.m" > CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.i
-
-CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.s"
-	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/cluster_builder 2.m" -o CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.s
-
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o: src/engine/geometry/nanite/cluster_builder.m
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2122) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2121) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o -MF CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o.d -o CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/cluster_builder.m"
 
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.i: cmake_force
@@ -29779,6 +29765,20 @@ CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.i: cmake_forc
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.s"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/cluster_builder.m" -o CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.s
+
+CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o: src/engine/geometry/nanite/cluster_builder_alt.m
+CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2122) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o -MF CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o.d -o CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/cluster_builder_alt.m"
+
+CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing OBJC source to CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.i"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/cluster_builder_alt.m" > CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.i
+
+CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.s"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/cluster_builder_alt.m" -o CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.s
 
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o: src/engine/geometry/nanite/nanite_render.m
@@ -31158,8 +31158,8 @@ Engine_OBJECTS = \
 "CMakeFiles/Engine.dir/src/engine/physics/particles/system_02.c.o" \
 "CMakeFiles/Engine.dir/src/engine/physics/pbd/pbd_solver.c.o" \
 "CMakeFiles/Engine.dir/src/engine/physics/physics_advanced_impl.c.o" \
-"CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o" \
 "CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o" \
+"CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o" \
 "CMakeFiles/Engine.dir/src/engine/physics/physics_complete.c.o" \
 "CMakeFiles/Engine.dir/src/engine/physics/physics_core_impl.c.o" \
 "CMakeFiles/Engine.dir/src/engine/physics/physics_integration.c.o" \
@@ -31958,8 +31958,8 @@ Engine_OBJECTS = \
 "CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o" \
 "CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o" \
 "CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.o" \
-"CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o" \
 "CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o" \
+"CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o" \
 "CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o" \
 "CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.o" \
 "CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o" \
@@ -33288,8 +33288,8 @@ libEngine.a: CMakeFiles/Engine.dir/src/engine/physics/particles/renderer_03.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/physics/particles/system_02.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/physics/pbd/pbd_solver.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/physics/physics_advanced_impl.c.o
-libEngine.a: CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o
+libEngine.a: CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/physics/physics_complete.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/physics/physics_core_impl.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/physics/physics_integration.c.o
@@ -34088,8 +34088,8 @@ libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_t
 libEngine.a: CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.o
-libEngine.a: CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o
+libEngine.a: CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o

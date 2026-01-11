@@ -198,12 +198,12 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/mobs/mob_system\\.c$")
 # Exclude broken AI logic (re-added)
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ai/enemy_ai\\.c$")
 
-# Exclude entire NPC subsystem (deprecated ECS API usage) - RE-ENABLING
-# list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/npc/.*\\.c$")
+# Exclude entire NPC subsystem (deprecated ECS API usage)
+list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/npc/.*\\.c$")
 
-# Exclude broken player modules
-# list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_damage\\.c$")
-# list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/experience_system\\.c$")
+# Exclude broken player modules with undefined component APIs
+list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_vehicle\\.c$")
+list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_damage\\.c$")
 
 # Exclude broken game ECS and legacy recipe
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ecs/ecs\\.c$")

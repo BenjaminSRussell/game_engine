@@ -32,14 +32,13 @@
 #ifndef AUDIO_SYSTEM_H
 #define AUDIO_SYSTEM_H
 
-#include <common.h>
+#include "../core/common.h"
 #include <math/vec3.h>
-
-// Forward declarations
-struct PhysicsWorld;
-
+#include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
 #undef PI
-#include <vendor/miniaudio.h>
+#include "../../vendor/miniaudio.h"
 #ifndef PI
 #define PI 3.14159265358979323846f
 #endif
@@ -108,6 +107,18 @@ typedef enum {
   SOUND_CATEGORY_RECORD
 } SoundCategory;
 
+typedef enum {
+  DISTANCE_MODEL_LINEAR,
+  DISTANCE_MODEL_INVERSE,
+  DISTANCE_MODEL_EXPONENTIAL
+} DistanceModel;
+
+typedef enum {
+  OCCLUSION_NONE,
+  OCCLUSION_MUFFLED,
+  OCCLUSION_OBSTRUCTED
+} OcclusionState;
+
 typedef struct {
   ma_sound sound; // miniaudio sound instance
   SoundType sound_type;
@@ -129,9 +140,10 @@ typedef struct {
   f32 cone_outer_angle; // Outer cone angle in radians
   f32 cone_outer_gain;  // Volume multiplier outside cone
 
-  // Occlusion state
-  f32 occlusion_factor; // 0.0 = fully occluded, 1.0 = no occlusion
-  f32 target_occlusion; // Target occlusion for smooth transitions
+  DistanceModel distance_model;
+  OcclusionState occlusion_state;
+  f32 target_occlusion; // Target for smoothing
+  f32 occlusion_factor; // Current smoothed factor
 } SoundSource;
 
 typedef struct {
@@ -225,6 +237,6 @@ u32 audio_add_reverb_zone(AudioSystem *sys, Vec3 min_bounds, Vec3 max_bounds,
 void audio_remove_reverb_zone(AudioSystem *sys, u32 zone_index);
 void audio_update_reverb_zones(AudioSystem *sys, PhysicsWorld *physics);
 
-void Audio_SendToOutput(const float* samples, size_t sample_count);
+void Audio_SendToOutput(const float *samples, size_t sample_count);
 
 #endif

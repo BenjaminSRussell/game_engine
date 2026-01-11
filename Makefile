@@ -22769,13 +22769,13 @@ src/engine/geometry/nanite/cluster_builder.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o
 .PHONY : src/engine/geometry/nanite/cluster_builder.m.o
 
-src/engine/geometry/nanite/cluster_builder_2.o: src/engine/geometry/nanite/cluster_builder_2.m.o
-.PHONY : src/engine/geometry/nanite/cluster_builder_2.o
+src/engine/geometry/nanite/cluster_builder_alt.o: src/engine/geometry/nanite/cluster_builder_alt.m.o
+.PHONY : src/engine/geometry/nanite/cluster_builder_alt.o
 
 # target to build an object file
-src/engine/geometry/nanite/cluster_builder_2.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o
-.PHONY : src/engine/geometry/nanite/cluster_builder_2.m.o
+src/engine/geometry/nanite/cluster_builder_alt.m.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o
+.PHONY : src/engine/geometry/nanite/cluster_builder_alt.m.o
 
 src/engine/geometry/nanite/cluster_streaming.o: src/engine/geometry/nanite/cluster_streaming.c.o
 .PHONY : src/engine/geometry/nanite/cluster_streaming.o
@@ -32305,29 +32305,29 @@ src/engine/physics/physics_api_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.s
 .PHONY : src/engine/physics/physics_api_impl.c.s
 
-src/engine/physics/physics_api_impl_2.o: src/engine/physics/physics_api_impl_2.c.o
-.PHONY : src/engine/physics/physics_api_impl_2.o
+src/engine/physics/physics_api_impl_alt.o: src/engine/physics/physics_api_impl_alt.c.o
+.PHONY : src/engine/physics/physics_api_impl_alt.o
 
 # target to build an object file
-src/engine/physics/physics_api_impl_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o
-.PHONY : src/engine/physics/physics_api_impl_2.c.o
+src/engine/physics/physics_api_impl_alt.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o
+.PHONY : src/engine/physics/physics_api_impl_alt.c.o
 
-src/engine/physics/physics_api_impl_2.i: src/engine/physics/physics_api_impl_2.c.i
-.PHONY : src/engine/physics/physics_api_impl_2.i
+src/engine/physics/physics_api_impl_alt.i: src/engine/physics/physics_api_impl_alt.c.i
+.PHONY : src/engine/physics/physics_api_impl_alt.i
 
 # target to preprocess a source file
-src/engine/physics/physics_api_impl_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.i
-.PHONY : src/engine/physics/physics_api_impl_2.c.i
+src/engine/physics/physics_api_impl_alt.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.i
+.PHONY : src/engine/physics/physics_api_impl_alt.c.i
 
-src/engine/physics/physics_api_impl_2.s: src/engine/physics/physics_api_impl_2.c.s
-.PHONY : src/engine/physics/physics_api_impl_2.s
+src/engine/physics/physics_api_impl_alt.s: src/engine/physics/physics_api_impl_alt.c.s
+.PHONY : src/engine/physics/physics_api_impl_alt.s
 
 # target to generate assembly for a file
-src/engine/physics/physics_api_impl_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.s
-.PHONY : src/engine/physics/physics_api_impl_2.c.s
+src/engine/physics/physics_api_impl_alt.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.s
+.PHONY : src/engine/physics/physics_api_impl_alt.c.s
 
 src/engine/physics/physics_complete.o: src/engine/physics/physics_complete.c.o
 .PHONY : src/engine/physics/physics_complete.o
@@ -51345,558 +51345,6 @@ src/game/minecraftv2/mods/flight_dev_mod.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/mods/flight_dev_mod.c.s
 .PHONY : src/game/minecraftv2/mods/flight_dev_mod.c.s
 
-src/game/minecraftv2/npc/dialogue.o: src/game/minecraftv2/npc/dialogue.c.o
-.PHONY : src/game/minecraftv2/npc/dialogue.o
-
-# target to build an object file
-src/game/minecraftv2/npc/dialogue.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue.c.o
-.PHONY : src/game/minecraftv2/npc/dialogue.c.o
-
-src/game/minecraftv2/npc/dialogue.i: src/game/minecraftv2/npc/dialogue.c.i
-.PHONY : src/game/minecraftv2/npc/dialogue.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/dialogue.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue.c.i
-.PHONY : src/game/minecraftv2/npc/dialogue.c.i
-
-src/game/minecraftv2/npc/dialogue.s: src/game/minecraftv2/npc/dialogue.c.s
-.PHONY : src/game/minecraftv2/npc/dialogue.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/dialogue.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue.c.s
-.PHONY : src/game/minecraftv2/npc/dialogue.c.s
-
-src/game/minecraftv2/npc/dialogue_builder.o: src/game/minecraftv2/npc/dialogue_builder.c.o
-.PHONY : src/game/minecraftv2/npc/dialogue_builder.o
-
-# target to build an object file
-src/game/minecraftv2/npc/dialogue_builder.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue_builder.c.o
-.PHONY : src/game/minecraftv2/npc/dialogue_builder.c.o
-
-src/game/minecraftv2/npc/dialogue_builder.i: src/game/minecraftv2/npc/dialogue_builder.c.i
-.PHONY : src/game/minecraftv2/npc/dialogue_builder.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/dialogue_builder.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue_builder.c.i
-.PHONY : src/game/minecraftv2/npc/dialogue_builder.c.i
-
-src/game/minecraftv2/npc/dialogue_builder.s: src/game/minecraftv2/npc/dialogue_builder.c.s
-.PHONY : src/game/minecraftv2/npc/dialogue_builder.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/dialogue_builder.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue_builder.c.s
-.PHONY : src/game/minecraftv2/npc/dialogue_builder.c.s
-
-src/game/minecraftv2/npc/dialogue_manager.o: src/game/minecraftv2/npc/dialogue_manager.c.o
-.PHONY : src/game/minecraftv2/npc/dialogue_manager.o
-
-# target to build an object file
-src/game/minecraftv2/npc/dialogue_manager.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue_manager.c.o
-.PHONY : src/game/minecraftv2/npc/dialogue_manager.c.o
-
-src/game/minecraftv2/npc/dialogue_manager.i: src/game/minecraftv2/npc/dialogue_manager.c.i
-.PHONY : src/game/minecraftv2/npc/dialogue_manager.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/dialogue_manager.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue_manager.c.i
-.PHONY : src/game/minecraftv2/npc/dialogue_manager.c.i
-
-src/game/minecraftv2/npc/dialogue_manager.s: src/game/minecraftv2/npc/dialogue_manager.c.s
-.PHONY : src/game/minecraftv2/npc/dialogue_manager.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/dialogue_manager.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue_manager.c.s
-.PHONY : src/game/minecraftv2/npc/dialogue_manager.c.s
-
-src/game/minecraftv2/npc/dialogue_tree.o: src/game/minecraftv2/npc/dialogue_tree.c.o
-.PHONY : src/game/minecraftv2/npc/dialogue_tree.o
-
-# target to build an object file
-src/game/minecraftv2/npc/dialogue_tree.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue_tree.c.o
-.PHONY : src/game/minecraftv2/npc/dialogue_tree.c.o
-
-src/game/minecraftv2/npc/dialogue_tree.i: src/game/minecraftv2/npc/dialogue_tree.c.i
-.PHONY : src/game/minecraftv2/npc/dialogue_tree.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/dialogue_tree.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue_tree.c.i
-.PHONY : src/game/minecraftv2/npc/dialogue_tree.c.i
-
-src/game/minecraftv2/npc/dialogue_tree.s: src/game/minecraftv2/npc/dialogue_tree.c.s
-.PHONY : src/game/minecraftv2/npc/dialogue_tree.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/dialogue_tree.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/dialogue_tree.c.s
-.PHONY : src/game/minecraftv2/npc/dialogue_tree.c.s
-
-src/game/minecraftv2/npc/npc_abilities.o: src/game/minecraftv2/npc/npc_abilities.c.o
-.PHONY : src/game/minecraftv2/npc/npc_abilities.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_abilities.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_abilities.c.o
-.PHONY : src/game/minecraftv2/npc/npc_abilities.c.o
-
-src/game/minecraftv2/npc/npc_abilities.i: src/game/minecraftv2/npc/npc_abilities.c.i
-.PHONY : src/game/minecraftv2/npc/npc_abilities.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_abilities.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_abilities.c.i
-.PHONY : src/game/minecraftv2/npc/npc_abilities.c.i
-
-src/game/minecraftv2/npc/npc_abilities.s: src/game/minecraftv2/npc/npc_abilities.c.s
-.PHONY : src/game/minecraftv2/npc/npc_abilities.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_abilities.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_abilities.c.s
-.PHONY : src/game/minecraftv2/npc/npc_abilities.c.s
-
-src/game/minecraftv2/npc/npc_ai.o: src/game/minecraftv2/npc/npc_ai.c.o
-.PHONY : src/game/minecraftv2/npc/npc_ai.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_ai.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_ai.c.o
-.PHONY : src/game/minecraftv2/npc/npc_ai.c.o
-
-src/game/minecraftv2/npc/npc_ai.i: src/game/minecraftv2/npc/npc_ai.c.i
-.PHONY : src/game/minecraftv2/npc/npc_ai.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_ai.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_ai.c.i
-.PHONY : src/game/minecraftv2/npc/npc_ai.c.i
-
-src/game/minecraftv2/npc/npc_ai.s: src/game/minecraftv2/npc/npc_ai.c.s
-.PHONY : src/game/minecraftv2/npc/npc_ai.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_ai.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_ai.c.s
-.PHONY : src/game/minecraftv2/npc/npc_ai.c.s
-
-src/game/minecraftv2/npc/npc_combat.o: src/game/minecraftv2/npc/npc_combat.c.o
-.PHONY : src/game/minecraftv2/npc/npc_combat.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_combat.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_combat.c.o
-.PHONY : src/game/minecraftv2/npc/npc_combat.c.o
-
-src/game/minecraftv2/npc/npc_combat.i: src/game/minecraftv2/npc/npc_combat.c.i
-.PHONY : src/game/minecraftv2/npc/npc_combat.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_combat.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_combat.c.i
-.PHONY : src/game/minecraftv2/npc/npc_combat.c.i
-
-src/game/minecraftv2/npc/npc_combat.s: src/game/minecraftv2/npc/npc_combat.c.s
-.PHONY : src/game/minecraftv2/npc/npc_combat.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_combat.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_combat.c.s
-.PHONY : src/game/minecraftv2/npc/npc_combat.c.s
-
-src/game/minecraftv2/npc/npc_combat_behavior.o: src/game/minecraftv2/npc/npc_combat_behavior.c.o
-.PHONY : src/game/minecraftv2/npc/npc_combat_behavior.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_combat_behavior.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.o
-.PHONY : src/game/minecraftv2/npc/npc_combat_behavior.c.o
-
-src/game/minecraftv2/npc/npc_combat_behavior.i: src/game/minecraftv2/npc/npc_combat_behavior.c.i
-.PHONY : src/game/minecraftv2/npc/npc_combat_behavior.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_combat_behavior.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.i
-.PHONY : src/game/minecraftv2/npc/npc_combat_behavior.c.i
-
-src/game/minecraftv2/npc/npc_combat_behavior.s: src/game/minecraftv2/npc/npc_combat_behavior.c.s
-.PHONY : src/game/minecraftv2/npc/npc_combat_behavior.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_combat_behavior.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_combat_behavior.c.s
-.PHONY : src/game/minecraftv2/npc/npc_combat_behavior.c.s
-
-src/game/minecraftv2/npc/npc_housing.o: src/game/minecraftv2/npc/npc_housing.c.o
-.PHONY : src/game/minecraftv2/npc/npc_housing.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_housing.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_housing.c.o
-.PHONY : src/game/minecraftv2/npc/npc_housing.c.o
-
-src/game/minecraftv2/npc/npc_housing.i: src/game/minecraftv2/npc/npc_housing.c.i
-.PHONY : src/game/minecraftv2/npc/npc_housing.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_housing.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_housing.c.i
-.PHONY : src/game/minecraftv2/npc/npc_housing.c.i
-
-src/game/minecraftv2/npc/npc_housing.s: src/game/minecraftv2/npc/npc_housing.c.s
-.PHONY : src/game/minecraftv2/npc/npc_housing.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_housing.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_housing.c.s
-.PHONY : src/game/minecraftv2/npc/npc_housing.c.s
-
-src/game/minecraftv2/npc/npc_jobs.o: src/game/minecraftv2/npc/npc_jobs.c.o
-.PHONY : src/game/minecraftv2/npc/npc_jobs.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_jobs.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_jobs.c.o
-.PHONY : src/game/minecraftv2/npc/npc_jobs.c.o
-
-src/game/minecraftv2/npc/npc_jobs.i: src/game/minecraftv2/npc/npc_jobs.c.i
-.PHONY : src/game/minecraftv2/npc/npc_jobs.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_jobs.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_jobs.c.i
-.PHONY : src/game/minecraftv2/npc/npc_jobs.c.i
-
-src/game/minecraftv2/npc/npc_jobs.s: src/game/minecraftv2/npc/npc_jobs.c.s
-.PHONY : src/game/minecraftv2/npc/npc_jobs.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_jobs.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_jobs.c.s
-.PHONY : src/game/minecraftv2/npc/npc_jobs.c.s
-
-src/game/minecraftv2/npc/npc_lod.o: src/game/minecraftv2/npc/npc_lod.c.o
-.PHONY : src/game/minecraftv2/npc/npc_lod.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_lod.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_lod.c.o
-.PHONY : src/game/minecraftv2/npc/npc_lod.c.o
-
-src/game/minecraftv2/npc/npc_lod.i: src/game/minecraftv2/npc/npc_lod.c.i
-.PHONY : src/game/minecraftv2/npc/npc_lod.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_lod.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_lod.c.i
-.PHONY : src/game/minecraftv2/npc/npc_lod.c.i
-
-src/game/minecraftv2/npc/npc_lod.s: src/game/minecraftv2/npc/npc_lod.c.s
-.PHONY : src/game/minecraftv2/npc/npc_lod.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_lod.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_lod.c.s
-.PHONY : src/game/minecraftv2/npc/npc_lod.c.s
-
-src/game/minecraftv2/npc/npc_profiler.o: src/game/minecraftv2/npc/npc_profiler.c.o
-.PHONY : src/game/minecraftv2/npc/npc_profiler.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_profiler.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_profiler.c.o
-.PHONY : src/game/minecraftv2/npc/npc_profiler.c.o
-
-src/game/minecraftv2/npc/npc_profiler.i: src/game/minecraftv2/npc/npc_profiler.c.i
-.PHONY : src/game/minecraftv2/npc/npc_profiler.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_profiler.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_profiler.c.i
-.PHONY : src/game/minecraftv2/npc/npc_profiler.c.i
-
-src/game/minecraftv2/npc/npc_profiler.s: src/game/minecraftv2/npc/npc_profiler.c.s
-.PHONY : src/game/minecraftv2/npc/npc_profiler.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_profiler.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_profiler.c.s
-.PHONY : src/game/minecraftv2/npc/npc_profiler.c.s
-
-src/game/minecraftv2/npc/npc_schedule.o: src/game/minecraftv2/npc/npc_schedule.c.o
-.PHONY : src/game/minecraftv2/npc/npc_schedule.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_schedule.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_schedule.c.o
-.PHONY : src/game/minecraftv2/npc/npc_schedule.c.o
-
-src/game/minecraftv2/npc/npc_schedule.i: src/game/minecraftv2/npc/npc_schedule.c.i
-.PHONY : src/game/minecraftv2/npc/npc_schedule.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_schedule.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_schedule.c.i
-.PHONY : src/game/minecraftv2/npc/npc_schedule.c.i
-
-src/game/minecraftv2/npc/npc_schedule.s: src/game/minecraftv2/npc/npc_schedule.c.s
-.PHONY : src/game/minecraftv2/npc/npc_schedule.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_schedule.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_schedule.c.s
-.PHONY : src/game/minecraftv2/npc/npc_schedule.c.s
-
-src/game/minecraftv2/npc/npc_scheduler.o: src/game/minecraftv2/npc/npc_scheduler.c.o
-.PHONY : src/game/minecraftv2/npc/npc_scheduler.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_scheduler.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_scheduler.c.o
-.PHONY : src/game/minecraftv2/npc/npc_scheduler.c.o
-
-src/game/minecraftv2/npc/npc_scheduler.i: src/game/minecraftv2/npc/npc_scheduler.c.i
-.PHONY : src/game/minecraftv2/npc/npc_scheduler.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_scheduler.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_scheduler.c.i
-.PHONY : src/game/minecraftv2/npc/npc_scheduler.c.i
-
-src/game/minecraftv2/npc/npc_scheduler.s: src/game/minecraftv2/npc/npc_scheduler.c.s
-.PHONY : src/game/minecraftv2/npc/npc_scheduler.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_scheduler.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_scheduler.c.s
-.PHONY : src/game/minecraftv2/npc/npc_scheduler.c.s
-
-src/game/minecraftv2/npc/npc_serialization.o: src/game/minecraftv2/npc/npc_serialization.c.o
-.PHONY : src/game/minecraftv2/npc/npc_serialization.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_serialization.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_serialization.c.o
-.PHONY : src/game/minecraftv2/npc/npc_serialization.c.o
-
-src/game/minecraftv2/npc/npc_serialization.i: src/game/minecraftv2/npc/npc_serialization.c.i
-.PHONY : src/game/minecraftv2/npc/npc_serialization.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_serialization.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_serialization.c.i
-.PHONY : src/game/minecraftv2/npc/npc_serialization.c.i
-
-src/game/minecraftv2/npc/npc_serialization.s: src/game/minecraftv2/npc/npc_serialization.c.s
-.PHONY : src/game/minecraftv2/npc/npc_serialization.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_serialization.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_serialization.c.s
-.PHONY : src/game/minecraftv2/npc/npc_serialization.c.s
-
-src/game/minecraftv2/npc/npc_social.o: src/game/minecraftv2/npc/npc_social.c.o
-.PHONY : src/game/minecraftv2/npc/npc_social.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_social.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_social.c.o
-.PHONY : src/game/minecraftv2/npc/npc_social.c.o
-
-src/game/minecraftv2/npc/npc_social.i: src/game/minecraftv2/npc/npc_social.c.i
-.PHONY : src/game/minecraftv2/npc/npc_social.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_social.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_social.c.i
-.PHONY : src/game/minecraftv2/npc/npc_social.c.i
-
-src/game/minecraftv2/npc/npc_social.s: src/game/minecraftv2/npc/npc_social.c.s
-.PHONY : src/game/minecraftv2/npc/npc_social.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_social.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_social.c.s
-.PHONY : src/game/minecraftv2/npc/npc_social.c.s
-
-src/game/minecraftv2/npc/npc_spawning.o: src/game/minecraftv2/npc/npc_spawning.c.o
-.PHONY : src/game/minecraftv2/npc/npc_spawning.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_spawning.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_spawning.c.o
-.PHONY : src/game/minecraftv2/npc/npc_spawning.c.o
-
-src/game/minecraftv2/npc/npc_spawning.i: src/game/minecraftv2/npc/npc_spawning.c.i
-.PHONY : src/game/minecraftv2/npc/npc_spawning.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_spawning.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_spawning.c.i
-.PHONY : src/game/minecraftv2/npc/npc_spawning.c.i
-
-src/game/minecraftv2/npc/npc_spawning.s: src/game/minecraftv2/npc/npc_spawning.c.s
-.PHONY : src/game/minecraftv2/npc/npc_spawning.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_spawning.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_spawning.c.s
-.PHONY : src/game/minecraftv2/npc/npc_spawning.c.s
-
-src/game/minecraftv2/npc/npc_stubs.o: src/game/minecraftv2/npc/npc_stubs.c.o
-.PHONY : src/game/minecraftv2/npc/npc_stubs.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_stubs.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_stubs.c.o
-.PHONY : src/game/minecraftv2/npc/npc_stubs.c.o
-
-src/game/minecraftv2/npc/npc_stubs.i: src/game/minecraftv2/npc/npc_stubs.c.i
-.PHONY : src/game/minecraftv2/npc/npc_stubs.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_stubs.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_stubs.c.i
-.PHONY : src/game/minecraftv2/npc/npc_stubs.c.i
-
-src/game/minecraftv2/npc/npc_stubs.s: src/game/minecraftv2/npc/npc_stubs.c.s
-.PHONY : src/game/minecraftv2/npc/npc_stubs.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_stubs.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_stubs.c.s
-.PHONY : src/game/minecraftv2/npc/npc_stubs.c.s
-
-src/game/minecraftv2/npc/npc_system.o: src/game/minecraftv2/npc/npc_system.c.o
-.PHONY : src/game/minecraftv2/npc/npc_system.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_system.c.o
-.PHONY : src/game/minecraftv2/npc/npc_system.c.o
-
-src/game/minecraftv2/npc/npc_system.i: src/game/minecraftv2/npc/npc_system.c.i
-.PHONY : src/game/minecraftv2/npc/npc_system.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_system.c.i
-.PHONY : src/game/minecraftv2/npc/npc_system.c.i
-
-src/game/minecraftv2/npc/npc_system.s: src/game/minecraftv2/npc/npc_system.c.s
-.PHONY : src/game/minecraftv2/npc/npc_system.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_system.c.s
-.PHONY : src/game/minecraftv2/npc/npc_system.c.s
-
-src/game/minecraftv2/npc/npc_visuals.o: src/game/minecraftv2/npc/npc_visuals.c.o
-.PHONY : src/game/minecraftv2/npc/npc_visuals.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_visuals.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_visuals.c.o
-.PHONY : src/game/minecraftv2/npc/npc_visuals.c.o
-
-src/game/minecraftv2/npc/npc_visuals.i: src/game/minecraftv2/npc/npc_visuals.c.i
-.PHONY : src/game/minecraftv2/npc/npc_visuals.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_visuals.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_visuals.c.i
-.PHONY : src/game/minecraftv2/npc/npc_visuals.c.i
-
-src/game/minecraftv2/npc/npc_visuals.s: src/game/minecraftv2/npc/npc_visuals.c.s
-.PHONY : src/game/minecraftv2/npc/npc_visuals.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_visuals.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_visuals.c.s
-.PHONY : src/game/minecraftv2/npc/npc_visuals.c.s
-
-src/game/minecraftv2/npc/npc_work.o: src/game/minecraftv2/npc/npc_work.c.o
-.PHONY : src/game/minecraftv2/npc/npc_work.o
-
-# target to build an object file
-src/game/minecraftv2/npc/npc_work.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_work.c.o
-.PHONY : src/game/minecraftv2/npc/npc_work.c.o
-
-src/game/minecraftv2/npc/npc_work.i: src/game/minecraftv2/npc/npc_work.c.i
-.PHONY : src/game/minecraftv2/npc/npc_work.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/npc_work.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_work.c.i
-.PHONY : src/game/minecraftv2/npc/npc_work.c.i
-
-src/game/minecraftv2/npc/npc_work.s: src/game/minecraftv2/npc/npc_work.c.s
-.PHONY : src/game/minecraftv2/npc/npc_work.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/npc_work.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/npc_work.c.s
-.PHONY : src/game/minecraftv2/npc/npc_work.c.s
-
-src/game/minecraftv2/npc/pathfinding.o: src/game/minecraftv2/npc/pathfinding.c.o
-.PHONY : src/game/minecraftv2/npc/pathfinding.o
-
-# target to build an object file
-src/game/minecraftv2/npc/pathfinding.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/pathfinding.c.o
-.PHONY : src/game/minecraftv2/npc/pathfinding.c.o
-
-src/game/minecraftv2/npc/pathfinding.i: src/game/minecraftv2/npc/pathfinding.c.i
-.PHONY : src/game/minecraftv2/npc/pathfinding.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/pathfinding.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/pathfinding.c.i
-.PHONY : src/game/minecraftv2/npc/pathfinding.c.i
-
-src/game/minecraftv2/npc/pathfinding.s: src/game/minecraftv2/npc/pathfinding.c.s
-.PHONY : src/game/minecraftv2/npc/pathfinding.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/pathfinding.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/pathfinding.c.s
-.PHONY : src/game/minecraftv2/npc/pathfinding.c.s
-
-src/game/minecraftv2/npc/villager_trading.o: src/game/minecraftv2/npc/villager_trading.c.o
-.PHONY : src/game/minecraftv2/npc/villager_trading.o
-
-# target to build an object file
-src/game/minecraftv2/npc/villager_trading.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/villager_trading.c.o
-.PHONY : src/game/minecraftv2/npc/villager_trading.c.o
-
-src/game/minecraftv2/npc/villager_trading.i: src/game/minecraftv2/npc/villager_trading.c.i
-.PHONY : src/game/minecraftv2/npc/villager_trading.i
-
-# target to preprocess a source file
-src/game/minecraftv2/npc/villager_trading.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/villager_trading.c.i
-.PHONY : src/game/minecraftv2/npc/villager_trading.c.i
-
-src/game/minecraftv2/npc/villager_trading.s: src/game/minecraftv2/npc/villager_trading.c.s
-.PHONY : src/game/minecraftv2/npc/villager_trading.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/npc/villager_trading.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/npc/villager_trading.c.s
-.PHONY : src/game/minecraftv2/npc/villager_trading.c.s
-
 src/game/minecraftv2/ore/ore_generation.o: src/game/minecraftv2/ore/ore_generation.c.o
 .PHONY : src/game/minecraftv2/ore/ore_generation.o
 
@@ -52017,30 +51465,6 @@ src/game/minecraftv2/player/player_combat.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_combat.c.s
 .PHONY : src/game/minecraftv2/player/player_combat.c.s
 
-src/game/minecraftv2/player/player_damage.o: src/game/minecraftv2/player/player_damage.c.o
-.PHONY : src/game/minecraftv2/player/player_damage.o
-
-# target to build an object file
-src/game/minecraftv2/player/player_damage.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_damage.c.o
-.PHONY : src/game/minecraftv2/player/player_damage.c.o
-
-src/game/minecraftv2/player/player_damage.i: src/game/minecraftv2/player/player_damage.c.i
-.PHONY : src/game/minecraftv2/player/player_damage.i
-
-# target to preprocess a source file
-src/game/minecraftv2/player/player_damage.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_damage.c.i
-.PHONY : src/game/minecraftv2/player/player_damage.c.i
-
-src/game/minecraftv2/player/player_damage.s: src/game/minecraftv2/player/player_damage.c.s
-.PHONY : src/game/minecraftv2/player/player_damage.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/player/player_damage.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_damage.c.s
-.PHONY : src/game/minecraftv2/player/player_damage.c.s
-
 src/game/minecraftv2/player/player_food.o: src/game/minecraftv2/player/player_food.c.o
 .PHONY : src/game/minecraftv2/player/player_food.o
 
@@ -52136,30 +51560,6 @@ src/game/minecraftv2/player/player_system_update.s: src/game/minecraftv2/player/
 src/game/minecraftv2/player/player_system_update.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_system_update.c.s
 .PHONY : src/game/minecraftv2/player/player_system_update.c.s
-
-src/game/minecraftv2/player/player_vehicle.o: src/game/minecraftv2/player/player_vehicle.c.o
-.PHONY : src/game/minecraftv2/player/player_vehicle.o
-
-# target to build an object file
-src/game/minecraftv2/player/player_vehicle.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_vehicle.c.o
-.PHONY : src/game/minecraftv2/player/player_vehicle.c.o
-
-src/game/minecraftv2/player/player_vehicle.i: src/game/minecraftv2/player/player_vehicle.c.i
-.PHONY : src/game/minecraftv2/player/player_vehicle.i
-
-# target to preprocess a source file
-src/game/minecraftv2/player/player_vehicle.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_vehicle.c.i
-.PHONY : src/game/minecraftv2/player/player_vehicle.c.i
-
-src/game/minecraftv2/player/player_vehicle.s: src/game/minecraftv2/player/player_vehicle.c.s
-.PHONY : src/game/minecraftv2/player/player_vehicle.s
-
-# target to generate assembly for a file
-src/game/minecraftv2/player/player_vehicle.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/player/player_vehicle.c.s
-.PHONY : src/game/minecraftv2/player/player_vehicle.c.s
 
 src/game/minecraftv2/player/spirit_model.o: src/game/minecraftv2/player/spirit_model.c.o
 .PHONY : src/game/minecraftv2/player/spirit_model.o
@@ -52640,6 +52040,54 @@ src/game/minecraftv2/ui/hud_renderer.s: src/game/minecraftv2/ui/hud_renderer.c.s
 src/game/minecraftv2/ui/hud_renderer.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_renderer.c.s
 .PHONY : src/game/minecraftv2/ui/hud_renderer.c.s
+
+src/game/minecraftv2/ui/hud_spell_cooldown.o: src/game/minecraftv2/ui/hud_spell_cooldown.c.o
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.o
+
+# target to build an object file
+src/game/minecraftv2/ui/hud_spell_cooldown.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_spell_cooldown.c.o
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.c.o
+
+src/game/minecraftv2/ui/hud_spell_cooldown.i: src/game/minecraftv2/ui/hud_spell_cooldown.c.i
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.i
+
+# target to preprocess a source file
+src/game/minecraftv2/ui/hud_spell_cooldown.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_spell_cooldown.c.i
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.c.i
+
+src/game/minecraftv2/ui/hud_spell_cooldown.s: src/game/minecraftv2/ui/hud_spell_cooldown.c.s
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.s
+
+# target to generate assembly for a file
+src/game/minecraftv2/ui/hud_spell_cooldown.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_spell_cooldown.c.s
+.PHONY : src/game/minecraftv2/ui/hud_spell_cooldown.c.s
+
+src/game/minecraftv2/ui/hud_tooltip.o: src/game/minecraftv2/ui/hud_tooltip.c.o
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.o
+
+# target to build an object file
+src/game/minecraftv2/ui/hud_tooltip.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_tooltip.c.o
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.c.o
+
+src/game/minecraftv2/ui/hud_tooltip.i: src/game/minecraftv2/ui/hud_tooltip.c.i
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.i
+
+# target to preprocess a source file
+src/game/minecraftv2/ui/hud_tooltip.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_tooltip.c.i
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.c.i
+
+src/game/minecraftv2/ui/hud_tooltip.s: src/game/minecraftv2/ui/hud_tooltip.c.s
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.s
+
+# target to generate assembly for a file
+src/game/minecraftv2/ui/hud_tooltip.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/minecraftv2/ui/hud_tooltip.c.s
+.PHONY : src/game/minecraftv2/ui/hud_tooltip.c.s
 
 src/game/minecraftv2/ui/inventory_ui.o: src/game/minecraftv2/ui/inventory_ui.c.o
 .PHONY : src/game/minecraftv2/ui/inventory_ui.o
@@ -56435,7 +55883,7 @@ help:
 	@echo "... src/engine/geometry/meshlets/meshlet_renderer.i"
 	@echo "... src/engine/geometry/meshlets/meshlet_renderer.s"
 	@echo "... src/engine/geometry/nanite/cluster_builder.o"
-	@echo "... src/engine/geometry/nanite/cluster_builder_2.o"
+	@echo "... src/engine/geometry/nanite/cluster_builder_alt.o"
 	@echo "... src/engine/geometry/nanite/cluster_streaming.o"
 	@echo "... src/engine/geometry/nanite/cluster_streaming.i"
 	@echo "... src/engine/geometry/nanite/cluster_streaming.s"
@@ -57627,9 +57075,9 @@ help:
 	@echo "... src/engine/physics/physics_api_impl.o"
 	@echo "... src/engine/physics/physics_api_impl.i"
 	@echo "... src/engine/physics/physics_api_impl.s"
-	@echo "... src/engine/physics/physics_api_impl_2.o"
-	@echo "... src/engine/physics/physics_api_impl_2.i"
-	@echo "... src/engine/physics/physics_api_impl_2.s"
+	@echo "... src/engine/physics/physics_api_impl_alt.o"
+	@echo "... src/engine/physics/physics_api_impl_alt.i"
+	@echo "... src/engine/physics/physics_api_impl_alt.s"
 	@echo "... src/engine/physics/physics_complete.o"
 	@echo "... src/engine/physics/physics_complete.i"
 	@echo "... src/engine/physics/physics_complete.s"
@@ -60007,75 +59455,6 @@ help:
 	@echo "... src/game/minecraftv2/mods/flight_dev_mod.o"
 	@echo "... src/game/minecraftv2/mods/flight_dev_mod.i"
 	@echo "... src/game/minecraftv2/mods/flight_dev_mod.s"
-	@echo "... src/game/minecraftv2/npc/dialogue.o"
-	@echo "... src/game/minecraftv2/npc/dialogue.i"
-	@echo "... src/game/minecraftv2/npc/dialogue.s"
-	@echo "... src/game/minecraftv2/npc/dialogue_builder.o"
-	@echo "... src/game/minecraftv2/npc/dialogue_builder.i"
-	@echo "... src/game/minecraftv2/npc/dialogue_builder.s"
-	@echo "... src/game/minecraftv2/npc/dialogue_manager.o"
-	@echo "... src/game/minecraftv2/npc/dialogue_manager.i"
-	@echo "... src/game/minecraftv2/npc/dialogue_manager.s"
-	@echo "... src/game/minecraftv2/npc/dialogue_tree.o"
-	@echo "... src/game/minecraftv2/npc/dialogue_tree.i"
-	@echo "... src/game/minecraftv2/npc/dialogue_tree.s"
-	@echo "... src/game/minecraftv2/npc/npc_abilities.o"
-	@echo "... src/game/minecraftv2/npc/npc_abilities.i"
-	@echo "... src/game/minecraftv2/npc/npc_abilities.s"
-	@echo "... src/game/minecraftv2/npc/npc_ai.o"
-	@echo "... src/game/minecraftv2/npc/npc_ai.i"
-	@echo "... src/game/minecraftv2/npc/npc_ai.s"
-	@echo "... src/game/minecraftv2/npc/npc_combat.o"
-	@echo "... src/game/minecraftv2/npc/npc_combat.i"
-	@echo "... src/game/minecraftv2/npc/npc_combat.s"
-	@echo "... src/game/minecraftv2/npc/npc_combat_behavior.o"
-	@echo "... src/game/minecraftv2/npc/npc_combat_behavior.i"
-	@echo "... src/game/minecraftv2/npc/npc_combat_behavior.s"
-	@echo "... src/game/minecraftv2/npc/npc_housing.o"
-	@echo "... src/game/minecraftv2/npc/npc_housing.i"
-	@echo "... src/game/minecraftv2/npc/npc_housing.s"
-	@echo "... src/game/minecraftv2/npc/npc_jobs.o"
-	@echo "... src/game/minecraftv2/npc/npc_jobs.i"
-	@echo "... src/game/minecraftv2/npc/npc_jobs.s"
-	@echo "... src/game/minecraftv2/npc/npc_lod.o"
-	@echo "... src/game/minecraftv2/npc/npc_lod.i"
-	@echo "... src/game/minecraftv2/npc/npc_lod.s"
-	@echo "... src/game/minecraftv2/npc/npc_profiler.o"
-	@echo "... src/game/minecraftv2/npc/npc_profiler.i"
-	@echo "... src/game/minecraftv2/npc/npc_profiler.s"
-	@echo "... src/game/minecraftv2/npc/npc_schedule.o"
-	@echo "... src/game/minecraftv2/npc/npc_schedule.i"
-	@echo "... src/game/minecraftv2/npc/npc_schedule.s"
-	@echo "... src/game/minecraftv2/npc/npc_scheduler.o"
-	@echo "... src/game/minecraftv2/npc/npc_scheduler.i"
-	@echo "... src/game/minecraftv2/npc/npc_scheduler.s"
-	@echo "... src/game/minecraftv2/npc/npc_serialization.o"
-	@echo "... src/game/minecraftv2/npc/npc_serialization.i"
-	@echo "... src/game/minecraftv2/npc/npc_serialization.s"
-	@echo "... src/game/minecraftv2/npc/npc_social.o"
-	@echo "... src/game/minecraftv2/npc/npc_social.i"
-	@echo "... src/game/minecraftv2/npc/npc_social.s"
-	@echo "... src/game/minecraftv2/npc/npc_spawning.o"
-	@echo "... src/game/minecraftv2/npc/npc_spawning.i"
-	@echo "... src/game/minecraftv2/npc/npc_spawning.s"
-	@echo "... src/game/minecraftv2/npc/npc_stubs.o"
-	@echo "... src/game/minecraftv2/npc/npc_stubs.i"
-	@echo "... src/game/minecraftv2/npc/npc_stubs.s"
-	@echo "... src/game/minecraftv2/npc/npc_system.o"
-	@echo "... src/game/minecraftv2/npc/npc_system.i"
-	@echo "... src/game/minecraftv2/npc/npc_system.s"
-	@echo "... src/game/minecraftv2/npc/npc_visuals.o"
-	@echo "... src/game/minecraftv2/npc/npc_visuals.i"
-	@echo "... src/game/minecraftv2/npc/npc_visuals.s"
-	@echo "... src/game/minecraftv2/npc/npc_work.o"
-	@echo "... src/game/minecraftv2/npc/npc_work.i"
-	@echo "... src/game/minecraftv2/npc/npc_work.s"
-	@echo "... src/game/minecraftv2/npc/pathfinding.o"
-	@echo "... src/game/minecraftv2/npc/pathfinding.i"
-	@echo "... src/game/minecraftv2/npc/pathfinding.s"
-	@echo "... src/game/minecraftv2/npc/villager_trading.o"
-	@echo "... src/game/minecraftv2/npc/villager_trading.i"
-	@echo "... src/game/minecraftv2/npc/villager_trading.s"
 	@echo "... src/game/minecraftv2/ore/ore_generation.o"
 	@echo "... src/game/minecraftv2/ore/ore_generation.i"
 	@echo "... src/game/minecraftv2/ore/ore_generation.s"
@@ -60091,9 +59470,6 @@ help:
 	@echo "... src/game/minecraftv2/player/player_combat.o"
 	@echo "... src/game/minecraftv2/player/player_combat.i"
 	@echo "... src/game/minecraftv2/player/player_combat.s"
-	@echo "... src/game/minecraftv2/player/player_damage.o"
-	@echo "... src/game/minecraftv2/player/player_damage.i"
-	@echo "... src/game/minecraftv2/player/player_damage.s"
 	@echo "... src/game/minecraftv2/player/player_food.o"
 	@echo "... src/game/minecraftv2/player/player_food.i"
 	@echo "... src/game/minecraftv2/player/player_food.s"
@@ -60106,9 +59482,6 @@ help:
 	@echo "... src/game/minecraftv2/player/player_system_update.o"
 	@echo "... src/game/minecraftv2/player/player_system_update.i"
 	@echo "... src/game/minecraftv2/player/player_system_update.s"
-	@echo "... src/game/minecraftv2/player/player_vehicle.o"
-	@echo "... src/game/minecraftv2/player/player_vehicle.i"
-	@echo "... src/game/minecraftv2/player/player_vehicle.s"
 	@echo "... src/game/minecraftv2/player/spirit_model.o"
 	@echo "... src/game/minecraftv2/player/spirit_model.i"
 	@echo "... src/game/minecraftv2/player/spirit_model.s"
@@ -60169,6 +59542,12 @@ help:
 	@echo "... src/game/minecraftv2/ui/hud_renderer.o"
 	@echo "... src/game/minecraftv2/ui/hud_renderer.i"
 	@echo "... src/game/minecraftv2/ui/hud_renderer.s"
+	@echo "... src/game/minecraftv2/ui/hud_spell_cooldown.o"
+	@echo "... src/game/minecraftv2/ui/hud_spell_cooldown.i"
+	@echo "... src/game/minecraftv2/ui/hud_spell_cooldown.s"
+	@echo "... src/game/minecraftv2/ui/hud_tooltip.o"
+	@echo "... src/game/minecraftv2/ui/hud_tooltip.i"
+	@echo "... src/game/minecraftv2/ui/hud_tooltip.s"
 	@echo "... src/game/minecraftv2/ui/inventory_ui.o"
 	@echo "... src/game/minecraftv2/ui/inventory_ui.i"
 	@echo "... src/game/minecraftv2/ui/inventory_ui.s"

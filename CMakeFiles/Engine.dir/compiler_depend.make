@@ -112451,7 +112451,7 @@ CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o: src/engine
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h
 
-CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_2.m.o: src/engine/geometry/nanite/cluster_builder\ 2.m \
+CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o: src/engine/geometry/nanite/cluster_builder_alt.m \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFFTPStream.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFHTTPAuthentication.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFHTTPMessage.h \
@@ -115970,7 +115970,7 @@ CMakeFiles/Engine.dir/src/engine/physics/physics_advanced_impl.c.o: src/engine/p
 
 CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl.c.o: src/engine/physics/physics_api_impl.c
 
-CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_2.c.o: src/engine/physics/physics_api_impl\ 2.c
+CMakeFiles/Engine.dir/src/engine/physics/physics_api_impl_alt.c.o: src/engine/physics/physics_api_impl_alt.c
 
 CMakeFiles/Engine.dir/src/engine/physics/physics_complete.c.o: src/engine/physics/physics_complete.c
 
@@ -123917,8 +123917,6 @@ src/engine/physics/physics_world_stubs.c:
 
 src/engine/physics/physics_core_impl.c:
 
-src/engine/physics/physics_api_impl\ 2.c:
-
 src/engine/physics/particles/system_02.c:
 
 src/engine/physics/particles/processor_04.c:
@@ -124457,7 +124455,7 @@ src/engine/geometry/nanite/nanite/cluster/cluster_lod.c:
 
 src/engine/geometry/nanite/cluster_streaming.c:
 
-src/engine/geometry/nanite/cluster_builder\ 2.m:
+src/engine/geometry/nanite/cluster_builder_alt.m:
 
 src/engine/materials/templates/asset_templates_batch.c:
 
@@ -130940,6 +130938,8 @@ src/engine/platform/grid_rendering_api_bridge.c:
 src/engine/ai/logic/fuzzy_logic.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ColorSync.framework/Headers/ColorSyncBase.h:
+
+src/engine/physics/physics_api_impl_alt.c:
 
 src/engine/effects/vfx/vfx_impl.c:
 
