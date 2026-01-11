@@ -305,4 +305,3 @@ WeatherType weather_get_current_type(const WeatherSystem *weather) {
   return WEATHER_CLEAR;
 }
 float weather_get_intensity(const WeatherSystem *weather) { return 0.0f; }
-// Force update
