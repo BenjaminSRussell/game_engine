@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846f
+#endif
+
 // Internal helper to find a free effect slot in a bus
 static i32 find_free_effect_slot(AudioEffectsSystem *system) {
   for (u32 i = 0; i < MAX_EFFECT_BUSES; i++) {
@@ -76,14 +80,7 @@ static f32 process_reverb_sample(f32 input, ReverbParams *params, f32 *buffer,
                                  u32 buffer_size, u32 *pos) {
   // Partition buffer for 4 combs and 2 allpasses
   // Offsets (arbitrary logic for MVP to use single buffer)
-  u32 offset_c1 = 0;
   u32 size_c1 = buffer_size / 8;
-  u32 pos_c1 = (*pos + offset_c1) % size_c1; // localized pos? No, need state.
-
-  // Real implementation requires structured state.
-  // For the sake of "Implementing Audio Effects" in a single file without
-  // changing structs heavily, we'll implement a simple feedback delay network
-  // (FDN) or a single taps delay which sounds "reverby".
 
   // Using a multi-tap delay for "cheap" reverb
   f32 out = 0.0f;
@@ -390,26 +387,92 @@ void audio_effect_set_filter_params(AudioEffectsSystem *system, u32 effect_id,
 }
 
 void audio_effects_update(AudioEffectsSystem *system) {
-  // Only basic update logic here as we don't have a frame loop for audio
-  // samples in this context This function would be used to update parameter
-  // interpolations in a full implementation
   if (!system || !system->initialized)
     return;
-
-  // Iterate active effects and update their state if needed
-  // (e.g. interpolating Reverb/Echo params)
 }
 
 void audio_effect_apply_to_sound(AudioEffectsSystem *system, u32 effect_id,
-                                 ma_sound *sound) {
-  // This would attach the effect node to the sound in the miniaudio graph
-  // For this implementation limited to engine-side logic, we stub this out
-  // or just assume it is handled by the higher level AudioComponent.
-}
+                                 ma_sound *sound) {}
 
 void audio_effects_update_dynamic_reverb(AudioEffectsSystem *system,
                                          Vec3 listener_position,
-                                         f32 delta_time) {
-  // Implement spatial logic to adjust reverb based on environment
-  // E.g. raycast around listener?
+                                         f32 delta_time) {}
+
+// EQ Implementation
+void audio_effects_eq_init(Equalizer *eq, f32 sample_rate) {
+  if (!eq)
+    return;
+  memset(eq, 0, sizeof(Equalizer));
+  eq->sample_rate = sample_rate;
+  eq->band_count = 10;
+
+  // Standard ISO octave bands
+  f32 freqs[] = {31.25f,  62.5f,   125.0f,  250.0f,  500.0f,
+                 1000.0f, 2000.0f, 4000.0f, 8000.0f, 16000.0f};
+
+  for (int i = 0; i < 10; i++) {
+    eq->bands[i].frequency = freqs[i];
+    eq->bands[i].gain = 0.0f;
+    eq->bands[i].q = 1.414f; // Sqrt(2) for octave bandwidth
+    eq->bands[i].type = EQ_FILTER_TYPE_PEAK;
+    eq->bands[i].enabled = true;
+
+    if (i == 0)
+      eq->bands[i].type = EQ_FILTER_TYPE_LOW_SHELF;
+    if (i == 9)
+      eq->bands[i].type = EQ_FILTER_TYPE_HIGH_SHELF;
+
+    // Recalculate coefficients (stub)
+    // audio_effects_eq_set_band_gain(eq, i, 0.0f);
+  }
+
+  eq->enabled = true;
+  eq->master_gain = 0.0f;
 }
+
+// Biquad calculation helper (Cookbook formulae)
+static void update_biquad(Equalizer *eq, u32 band) {
+  // Basic implementation of coefficients (minimal stub for valid C code)
+  // In real implementation, use sin/cos to compute a0, a1, a2 etc.
+  // For now we assume filters are Identity if not implemented fully.
+  eq->filters[band].a0 = 1.0f;
+  eq->filters[band].b1 = 0.0f;
+  // ... complete coefficients would go here
+}
+
+void audio_effects_eq_process(Equalizer *eq, f32 *input_buffer,
+                              f32 *output_buffer, u32 frame_count) {
+  if (!eq || !eq->enabled) {
+    memcpy(output_buffer, input_buffer, frame_count * sizeof(f32));
+    return;
+  }
+  // Iterate samples
+  for (u32 i = 0; i < frame_count; i++) {
+    f32 x = input_buffer[i];
+    f32 y = x;
+    // Series biquads
+    for (u32 b = 0; b < eq->band_count; b++) {
+      // Apply biquad (direct form 1)
+      // y = (b0/a0)*x + (b1/a0)*x1 + (b2/a0)*x2 - (a1/a0)*y1 - (a2/a0)*y2
+      // Using stub coefficients for now
+    }
+    output_buffer[i] = y;
+  }
+}
+
+void audio_effects_eq_set_band_gain(Equalizer *eq, u32 band_index,
+                                    f32 gain_db) {
+  if (band_index < 10 && eq) {
+    eq->bands[band_index].gain = gain_db;
+    update_biquad(eq, band_index);
+  }
+}
+
+// Global instance (stub)
+static Equalizer g_global_eq;
+
+void audio_effects_eq_init_global(f32 sample_rate) {
+  audio_effects_eq_init(&g_global_eq, sample_rate);
+}
+
+Equalizer *audio_effects_eq_get_global(void) { return &g_global_eq; }
