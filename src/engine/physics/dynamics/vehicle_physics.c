@@ -725,3 +725,212 @@ bool vehicle_is_wheel_slipping(const VehiclePhysics *vehicle, u32 wheel_index) {
     WheelFriction friction = vehicle_calculate_wheel_friction(vehicle, wheel_index);
     return friction.is_slipping;
 }
+
+// Pacejka Magic Formula tire model implementation
+typedef struct {
+    // Longitudinal coefficients
+    f32 a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13;
+    
+    // Lateral coefficients  
+    f32 b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10;
+    
+    // Combined slip coefficients
+    f32 c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17;
+    
+    // Aligning moment coefficients
+    f32 d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17;
+    
+    // Tire parameters
+    f32 vertical_load;
+    f32 friction_coefficient;
+    f32 camber_angle;
+} PacejkaCoefficients;
+
+// Default Pacejka coefficients for a typical passenger car tire
+static const PacejkaCoefficients k_default_pacejka = {
+    // Longitudinal coefficients
+    .a0 = 1.65, .a1 = -34.0, .a2 = 1250.0, .a3 = 3000.0, .a4 = 60.0, .a5 = 0.0,
+    .a6 = 0.0, .a7 = 0.0, .a8 = -0.6, .a9 = 1.0, .a10 = 0.0, .a11 = 0.0, .a12 = 0.0, .a13 = 0.0,
+    
+    // Lateral coefficients
+    .b0 = 1.65, .b1 = -34.0, .b2 = 1250.0, .b3 = 3000.0, .b4 = 60.0, .b5 = 0.0,
+    .b6 = 0.0, .b7 = 0.0, .b8 = -0.6, .b9 = 1.0, .b10 = 0.0,
+    
+    // Combined slip coefficients
+    .c0 = 1.65, .c1 = -34.0, .c2 = 1250.0, .c3 = 3000.0, .c4 = 60.0, .c5 = 0.0,
+    .c6 = 0.0, .c7 = 0.0, .c8 = -0.6, .c9 = 1.0, .c10 = 0.0, .c11 = 0.0, .c12 = 0.0, .c13 = 0.0,
+    .c14 = 0.0, .c15 = 0.0, .c16 = 0.0, .c17 = 0.0,
+    
+    // Aligning moment coefficients
+    .d0 = 1.65, .d1 = -34.0, .d2 = 1250.0, .d3 = 3000.0, .d4 = 60.0, .d5 = 0.0,
+    .d6 = 0.0, .d7 = 0.0, .d8 = -0.6, .d9 = 1.0, .d10 = 0.0, .d11 = 0.0, .d12 = 0.0, .d13 = 0.0,
+    .d14 = 0.0, .d15 = 0.0, .d16 = 0.0, .d17 = 0.0,
+    
+    // Default tire parameters
+    .vertical_load = 4000.0f, // 4000N (400kg) per wheel
+    .friction_coefficient = 0.9f,
+    .camber_angle = 0.0f
+};
+
+// Pacejka Magic Formula helper functions
+static f32 pacejka_magic_formula(f32 B, f32 C, f32 D, f32 E, f32 S, f32 K, f32 x) {
+    // F(x) = D * sin(C * arctan(B * x - E * (B * x - S - arctan(B * x)))) + K * x
+    f32 bx = B * x;
+    f32 bx_s = bx - S;
+    f32 atan_bx_s = atanf(bx_s);
+    f32 bx_s_atan = bx_s - atan_bx_s;
+    f32 c_atan = C * atan_bx_s;
+    f32 sin_c_atan = sinf(c_atan);
+    f32 e_term = E * bx_s_atan;
+    f32 argument = c_atan - e_term;
+    f32 sin_argument = sinf(argument);
+    
+    return D * sin_argument + K * x;
+}
+
+// Calculate longitudinal tire force using Pacejka model
+static f32 pacejka_longitudinal_force(const PacejkaCoefficients *coeff, f32 slip_ratio, f32 load) {
+    // Normalize load
+    f32 fz_n = load / coeff->vertical_load;
+    
+    // Shape factors
+    f32 B = coeff->a3 * sinf(coeff->a2 * atanf(coeff->a1 * fz_n)) * (1.0f - coeff->a5 * fabsf(slip_ratio));
+    f32 C = coeff->a4;
+    f32 D = coeff->a1 * fz_n * coeff->friction_coefficient;
+    f32 E = coeff->a6 * fz_n + coeff->a7;
+    f32 S = coeff->a8 * fz_n + coeff->a9 + coeff->a10 * fz_n * fz_n;
+    f32 K = coeff->a11 * fz_n + coeff->a12;
+    
+    return pacejka_magic_formula(B, C, D, E, S, K, slip_ratio);
+}
+
+// Calculate lateral tire force using Pacejka model
+static f32 pacejka_lateral_force(const PacejkaCoefficients *coeff, f32 slip_angle, f32 load, f32 camber) {
+    // Normalize load and convert slip angle to radians
+    f32 fz_n = load / coeff->vertical_load;
+    f32 alpha = slip_angle; // Already in radians
+    
+    // Shape factors
+    f32 B = coeff->b3 * sinf(coeff->b2 * atanf(coeff->b1 * fz_n)) * (1.0f - coeff->b5 * fabsf(camber));
+    f32 C = coeff->b4;
+    f32 D = coeff->b1 * fz_n * coeff->friction_coefficient;
+    f32 E = coeff->b6 * fz_n + coeff->b7;
+    f32 S = coeff->b8 * fz_n + coeff->b9 + coeff->b10 * camber * fz_n;
+    f32 K = coeff->b11 * fz_n + coeff->b12;
+    
+    return pacejka_magic_formula(B, C, D, E, S, K, alpha);
+}
+
+// Calculate combined slip forces (longitudinal + lateral)
+static void pacejka_combined_forces(const PacejkaCoefficients *coeff, f32 slip_ratio, f32 slip_angle, 
+                                    f32 load, f32 camber, f32 *longitudinal, f32 *lateral) {
+    // Calculate pure forces
+    f32 fx_pure = pacejka_longitudinal_force(coeff, slip_ratio, load);
+    f32 fy_pure = pacejka_lateral_force(coeff, slip_angle, load, camber);
+    
+    // Combined slip reduction factors
+    f32 slip_ratio_abs = fabsf(slip_ratio);
+    f32 slip_angle_abs = fabsf(slip_angle);
+    
+    // Simplified combined slip model
+    f32 reduction_factor = 1.0f;
+    if (slip_ratio_abs > 0.01f && slip_angle_abs > 0.01f) {
+        // Both longitudinal and lateral slip present
+        f32 combined_slip = sqrtf(slip_ratio_abs * slip_ratio_abs + slip_angle_abs * slip_angle_abs);
+        reduction_factor = fmaxf(0.5f, 1.0f - combined_slip * 0.3f);
+    }
+    
+    *longitudinal = fx_pure * reduction_factor;
+    *lateral = fy_pure * reduction_factor;
+    
+    LOG_TRACE("Pacejka: slip_ratio=%.3f, slip_angle=%.3f°, Fx=%.1fN, Fy=%.1fN, reduction=%.3f",
+             slip_ratio, slip_angle * 180.0f / PI, *longitudinal, *lateral, reduction_factor);
+}
+
+// Calculate aligning moment (self-aligning torque)
+static f32 pacejka_aligning_moment(const PacejkaCoefficients *coeff, f32 slip_angle, f32 load, f32 camber) {
+    // Normalize load
+    f32 fz_n = load / coeff->vertical_load;
+    f32 alpha = slip_angle; // Already in radians
+    
+    // Shape factors
+    f32 B = coeff->d3 * sinf(coeff->d2 * atanf(coeff->d1 * fz_n)) * (1.0f - coeff->d5 * fabsf(camber));
+    f32 C = coeff->d4;
+    f32 D = coeff->d1 * fz_n * coeff->friction_coefficient * coeff->vertical_load * 0.1f; // Scale for moment
+    f32 E = coeff->d6 * fz_n + coeff->d7;
+    f32 S = coeff->d8 * fz_n + coeff->d9 + coeff->d10 * camber * fz_n;
+    f32 K = coeff->d11 * fz_n + coeff->d12;
+    
+    return pacejka_magic_formula(B, C, D, E, S, K, alpha);
+}
+
+// Enhanced wheel friction using Pacejka model
+static WheelFriction vehicle_calculate_pacejka_friction(const VehiclePhysics *vehicle, u32 wheel_index) {
+    WheelFriction friction = {0};
+    
+    if (!vehicle || wheel_index >= vehicle->wheel_count) {
+        return friction;
+    }
+    
+    const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
+    
+    if (!wheel->is_grounded) {
+        return friction; // No friction when not grounded
+    }
+    
+    // Get slip values
+    friction.slip_ratio = vehicle_calculate_slip_ratio(vehicle, wheel_index);
+    friction.slip_angle = vehicle_calculate_slip_angle(vehicle, wheel_index);
+    friction.is_slipping = (fabsf(friction.slip_ratio) > 0.1f) || (fabsf(friction.slip_angle) > 0.1f);
+    
+    // Get normal force (from suspension)
+    Vec3 suspension_force = vehicle_calculate_suspension_force(vehicle, wheel_index);
+    f32 normal_force = vec3_length(suspension_force);
+    
+    // Use Pacejka model for force calculation
+    f32 longitudinal_force, lateral_force;
+    pacejka_combined_forces(&k_default_pacejka, friction.slip_ratio, friction.slip_angle,
+                            normal_force, 0.0f, &longitudinal_force, &lateral_force);
+    
+    // Calculate force directions
+    Vec3 forward = vec3_normalize(vec3_cross(wheel->contact_normal, 
+                                               vec3_cross(vehicle->rotation, wheel->position)));
+    Vec3 lateral_dir = vec3_normalize(vec3_cross(forward, wheel->contact_normal));
+    
+    // Apply forces in correct directions
+    friction.longitudinal_force = vec3_scale(forward, longitudinal_force);
+    friction.lateral_force = vec3_scale(lateral_dir, lateral_force);
+    friction.total_force = vec3_add(friction.longitudinal_force, friction.lateral_force);
+    friction.friction_coefficient = k_default_pacejka.friction_coefficient;
+    
+    // Calculate aligning moment (for steering feel)
+    f32 aligning_moment = pacejka_aligning_moment(&k_default_pacejka, friction.slip_angle, 
+                                                   normal_force, 0.0f);
+    
+    LOG_TRACE("Pacejka wheel %u: Fx=%.1fN, Fy=%.1fN, Mz=%.1fNm, slip_ratio=%.3f, slip_angle=%.3f°",
+             wheel_index, longitudinal_force, lateral_force, aligning_moment,
+             friction.slip_ratio, friction.slip_angle * 180.0f / PI);
+    
+    return friction;
+}
+
+// Public API for Pacejka tire model
+void vehicle_set_pacejka_tire_model(VehiclePhysics *vehicle, bool enable) {
+    // In a full implementation, this would switch between simple and Pacejka models
+    LOG_INFO("Pacejka tire model %s", enable ? "enabled" : "disabled");
+}
+
+void vehicle_get_pacejka_tire_forces(const VehiclePhysics *vehicle, u32 wheel_index,
+                                      f32 *longitudinal, f32 *lateral, f32 *aligning_moment) {
+    WheelFriction friction = vehicle_calculate_pacejka_friction(vehicle, wheel_index);
+    
+    if (longitudinal) *longitudinal = vec3_length(friction.longitudinal_force);
+    if (lateral) *lateral = vec3_length(friction.lateral_force);
+    
+    if (aligning_moment) {
+        Vec3 suspension_force = vehicle_calculate_suspension_force(vehicle, wheel_index);
+        f32 normal_force = vec3_length(suspension_force);
+        *aligning_moment = pacejka_aligning_moment(&k_default_pacejka, friction.slip_angle, 
+                                                   normal_force, 0.0f);
+    }
+}
