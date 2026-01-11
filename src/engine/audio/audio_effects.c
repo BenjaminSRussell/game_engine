@@ -395,6 +395,13 @@ void audio_effect_set_filter_params(AudioEffectsSystem *system, u32 effect_id,
 void audio_effects_update(AudioEffectsSystem *system) {
   if (!system || !system->initialized)
     return;
+
+  // Update active effects
+  for (u32 i = 0; i < MAX_EFFECT_BUSES; i++) {
+    if (system->effects[i].active) {
+      // Future: Update modulators, LFOs, or smooth parameter changes here
+    }
+  }
 }
 
 void audio_effect_apply_to_sound(AudioEffectsSystem *system, u32 effect_id,
