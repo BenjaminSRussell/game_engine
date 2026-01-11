@@ -229,6 +229,24 @@ void spirit_model_init(SpiritModelComponent *spirit) {
   spirit->lod_near_distance = 12.0f;
   spirit->lod_far_distance = 30.0f;
   spirit->lod_level = 0;
+  
+  // Initialize extended fields
+  spirit->is_loaded = false;
+  spirit->is_valid = false;
+  spirit->is_optimized = false;
+  spirit->texture_loaded = false;
+  spirit->load_count = 0;
+  spirit->total_render_time = 0.0f;
+  spirit->last_used_time = 0.0f;
+  
+  // Load assets using enhanced system
+  if (load_spirit_model_assets(spirit)) {
+    load_spirit_texture(spirit);
+    optimize_spirit_model(spirit);
+    LOG_INFO("Spirit model system initialized successfully");
+  } else {
+    LOG_ERROR("Failed to initialize spirit model system");
+  }
 }
 
 void spirit_model_update_animation(SpiritModelComponent *spirit, f32 delta_time,
@@ -270,6 +288,9 @@ void spirit_model_update_animation(SpiritModelComponent *spirit, f32 delta_time,
     spirit->anim_time = duration;
     spirit->anim_playing = false;
   }
+  
+  // Update statistics
+  update_spirit_model_stats(spirit);
 }
 
 void spirit_model_set_visible(SpiritModelComponent *spirit, bool visible) {
@@ -294,5 +315,55 @@ void spirit_model_update_lod(SpiritModelComponent *spirit, f32 distance) {
 void spirit_model_cleanup(SpiritModelComponent *spirit) {
   if (!spirit)
     return;
+    
+  // Decrement reference count in asset cache
+  for (u32 i = 0; i < g_model_count; i++) {
+    if (strcmp(g_loaded_models[i].model_path, spirit->model_path) == 0) {
+      g_loaded_models[i].reference_count--;
+      if (g_loaded_models[i].reference_count == 0) {
+        // Unload model assets
+        LOG_INFO("Unloading spirit model: %s", spirit->model_path);
+        // In a real implementation, this would free GPU resources
+        memset(&g_loaded_models[i], 0, sizeof(SpiritModelAsset));
+        
+        // Move last element to current position
+        if (i < g_model_count - 1) {
+          g_loaded_models[i] = g_loaded_models[g_model_count - 1];
+        }
+        g_model_count--;
+      }
+      break;
+    }
+  }
+  
   memset(spirit, 0, sizeof(SpiritModelComponent));
+}
+
+// Public API for spirit model system
+bool spirit_model_is_loaded(const SpiritModelComponent *spirit) {
+  return spirit && spirit->is_loaded;
+}
+
+bool spirit_model_is_valid(const SpiritModelComponent *spirit) {
+  return spirit && spirit->is_valid;
+}
+
+void spirit_model_get_load_stats(const SpiritModelComponent *spirit, u32 *load_count, 
+                                   f32 *avg_render_time) {
+  if (load_count) *load_count = spirit ? spirit->load_count : 0;
+  if (avg_render_time) *avg_render_time = spirit ? (spirit->total_render_time / spirit->load_count) : 0.0f;
+}
+
+void spirit_model_cleanup_system(void) {
+  // Clear all loaded models
+  for (u32 i = 0; i < g_model_count; i++) {
+    if (g_loaded_models[i].reference_count > 0) {
+      LOG_WARN("Force unloading spirit model with %u references: %s", 
+              g_loaded_models[i].reference_count, g_loaded_models[i].model_path);
+    }
+  }
+  
+  memset(g_loaded_models, 0, sizeof(g_loaded_models));
+  g_model_count = 0;
+  LOG_INFO("Spirit model system cleanup completed");
 }

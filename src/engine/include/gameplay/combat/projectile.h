@@ -108,11 +108,11 @@ void projectile_set_gravity(ProjectileComponent *proj, f32 gravity_scale);
 // ============================================================================
 
 // Initialize projectile system
-void projectile_system_init(void);
+bool projectile_system_init(World *world);
 void projectile_system_shutdown(void);
 
 // Update projectiles (movement, collision, lifetime)
-void projectile_system_update(World *world, f64 delta_time);
+void projectile_system_update(World *world, f32 delta_time);
 
 // Spawn projectile entity
 Entity projectile_spawn(World *world, Vec3 position, Vec3 direction, f32 speed,
