@@ -35,9 +35,8 @@ float renderer_get_brightness() { return 1.0f; }
 float renderer_get_render_distance() { return 16.0f; }
 int renderer_get_vsync() { return 1; }
 void renderer_set_vsync(int v) { (void)v; }
-void game_return_to_title() {}
-void game_quit() {}
-void network_disconnect() {}
+#include "../include/game_commands.h"
+
 int network_is_connected() { return 0; }
 float audio_get_master_volume() { return 1.0f; }
 void audio_set_master_volume(float v) { (void)v; }
