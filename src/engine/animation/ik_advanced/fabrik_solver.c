@@ -27,6 +27,64 @@ typedef struct FabrikChain {
 static FabrikChain g_chains[MAX_FABRIK_CHAINS];
 static uint32_t g_chain_count = 0;
 
+/* ============================================================================
+ * PRIVATE FUNCTIONS
+ * ============================================================================ */
+
+static Vec3 rotate_point_around_axis(const Vec3* point, const Vec3* axis_origin, 
+                                     const Vec3* axis, float angle) {
+    // Rodrigues' rotation formula
+    Vec3 p = vec3_sub(*point, *axis_origin);
+    Vec3 k = vec3_normalize(*axis);
+    
+    float cos_angle = cosf(angle);
+    float sin_angle = sinf(angle);
+    
+    Vec3 term1 = vec3_mul(p, cos_angle);
+    Vec3 term2 = vec3_mul(vec3_cross(&k, &p), sin_angle);
+    Vec3 term3 = vec3_mul(k, vec3_dot(&k, &p) * (1.0f - cos_angle));
+    
+    return vec3_add(*axis_origin, vec3_add(vec3_add(term1, term2), term3));
+}
+
+static void apply_joint_constraints(FabrikChain* chain, int joint_index) {
+    if (!chain->joints[joint_index].constrained || 
+        joint_index <= 0 || joint_index >= (int)chain->joint_count - 1) {
+        return;
+    }
+    
+    // Calculate angle between adjacent bones
+    Vec3 bone1 = vec3_normalize(vec3_sub(chain->joints[joint_index].position, 
+                                         chain->joints[joint_index-1].position));
+    Vec3 bone2 = vec3_normalize(vec3_sub(chain->joints[joint_index+1].position, 
+                                         chain->joints[joint_index].position));
+    float angle = acosf(fmaxf(-1.0f, fminf(1.0f, vec3_dot(&bone1, &bone2))));
+    float angle_deg = angle * 180.0f / M_PI;
+    
+    // Enforce angle constraints
+    if (angle_deg < chain->joints[joint_index].min_angle) {
+        // Rotate to minimum angle
+        float rotation_needed = (chain->joints[joint_index].min_angle - angle_deg) * M_PI / 180.0f;
+        Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
+        chain->joints[joint_index+1].position = rotate_point_around_axis(
+            &chain->joints[joint_index+1].position,
+            &chain->joints[joint_index].position,
+            &axis, rotation_needed);
+    } else if (angle_deg > chain->joints[joint_index].max_angle) {
+        // Rotate to maximum angle
+        float rotation_needed = (angle_deg - chain->joints[joint_index].max_angle) * M_PI / 180.0f;
+        Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
+        chain->joints[joint_index+1].position = rotate_point_around_axis(
+            &chain->joints[joint_index+1].position,
+            &chain->joints[joint_index].position,
+            &axis, -rotation_needed);
+    }
+}
+
+/* ============================================================================
+ * PUBLIC API
+ * ============================================================================ */
+
 void fabrik_init() {
     memset(g_chains, 0, sizeof(g_chains));
     g_chain_count = 0;
@@ -88,25 +146,8 @@ void fabrik_solve(uint32_t chain_id, const Vec3* target, int iterations) {
             chain->joints[i].position = vec3_add(chain->joints[i + 1].position, 
                                                vec3_mul(direction, chain->bone_lengths[i]));
             
-            // Apply constraints if needed
-            if (chain->joints[i].constrained && i > 0 && i < chain->joint_count - 1) {
-                // Simple angle constraint - limit bending
-                Vec3 bone1 = vec3_normalize(vec3_sub(chain->joints[i].position, chain->joints[i-1].position));
-                Vec3 bone2 = vec3_normalize(vec3_sub(chain->joints[i+1].position, chain->joints[i].position));
-                float angle = acosf(fmaxf(-1.0f, fminf(1.0f, vec3_dot(&bone1, &bone2))));
-                
-                if (angle < chain->joints[i].min_angle * M_PI / 180.0f) {
-                    // Enforce minimum angle
-                    Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
-                    // Rotate bone2 to minimum angle
-                    // Simplified constraint handling
-                } else if (angle > chain->joints[i].max_angle * M_PI / 180.0f) {
-                    // Enforce maximum angle
-                    Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
-                    // Rotate bone2 to maximum angle
-                    // Simplified constraint handling
-                }
-            }
+            // Apply constraints using the helper function
+            apply_joint_constraints(chain, i);
         }
         
         // Backward reaching - move root back to original position

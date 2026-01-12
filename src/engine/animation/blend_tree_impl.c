@@ -9,28 +9,19 @@
 #include <string.h>
 
 #include "blend_tree_impl.h"
+#include "math/vec3.h"
+#include "math/quat.h"
+#include "animation/animation_system.h"
 
 #define MAX_BLEND_CHILDREN 16
 #define MAX_BONES 256
 
+// Use types from proper headers
 typedef struct {
-  float x, y, z, w;
-} Quaternion;
-
-typedef struct {
-  float x, y, z;
-} Vector3;
-
-typedef struct {
-  Vector3 position;
-  Quaternion rotation;
-  Vector3 scale;
+  vec3_t position;
+  quat_t rotation;
+  vec3_t scale;
 } Transform;
-
-typedef struct {
-  Transform transforms[MAX_BONES];
-  unsigned int bone_count;
-} Pose;
 
 typedef struct AnimationClip AnimationClip;
 typedef struct AnimState AnimState;
@@ -38,7 +29,7 @@ typedef struct AnimState AnimState;
 typedef struct {
   float weight;
   AnimState *state;
-  Vector3 blend_point;  // For 2D blending
+  vec3_t blend_point;  // For 2D blending
 } BlendChild;
 
 struct AnimState {
@@ -72,35 +63,40 @@ void animation_clip_sample(AnimationClip *clip, float time, Pose *out_pose);
 // Pose operations
 void pose_identity(Pose *pose, unsigned int bone_count) {
   for (unsigned int i = 0; i < bone_count; i++) {
-    pose->transforms[i].position = (Vector3){0, 0, 0};
-    pose->transforms[i].rotation = (Quaternion){0, 0, 0, 1};
-    pose->transforms[i].scale = (Vector3){1, 1, 1};
+    pose->positions[i] = (Vec3){0, 0, 0};
+    pose->rotations[i] = (Quat){1, 0, 0, 0};  // w=1, x=y=z=0 for identity
+    pose->scales[i] = (Vec3){1, 1, 1};
   }
 }
 
 void pose_lerp(const Pose *a, const Pose *b, float t, Pose *out_pose, unsigned int bone_count) {
   for (unsigned int i = 0; i < bone_count; i++) {
-    out_pose->transforms[i].position.x = a->transforms[i].position.x + t * (b->transforms[i].position.x - a->transforms[i].position.x);
-    out_pose->transforms[i].position.y = a->transforms[i].position.y + t * (b->transforms[i].position.y - a->transforms[i].position.y);
-    out_pose->transforms[i].position.z = a->transforms[i].position.z + t * (b->transforms[i].position.z - a->transforms[i].position.z);
+    // Interpolate positions
+    out_pose->positions[i].x = a->positions[i].x + t * (b->positions[i].x - a->positions[i].x);
+    out_pose->positions[i].y = a->positions[i].y + t * (b->positions[i].y - a->positions[i].y);
+    out_pose->positions[i].z = a->positions[i].z + t * (b->positions[i].z - a->positions[i].z);
     
-    // Simplified quaternion slerp
-    out_pose->transforms[i].rotation = a->transforms[i].rotation; // Would use proper slerp
+    // Simplified quaternion slerp - using proper lerp for now
+    out_pose->rotations[i].w = a->rotations[i].w + t * (b->rotations[i].w - a->rotations[i].w);
+    out_pose->rotations[i].x = a->rotations[i].x + t * (b->rotations[i].x - a->rotations[i].x);
+    out_pose->rotations[i].y = a->rotations[i].y + t * (b->rotations[i].y - a->rotations[i].y);
+    out_pose->rotations[i].z = a->rotations[i].z + t * (b->rotations[i].z - a->rotations[i].z);
     
-    out_pose->transforms[i].scale.x = a->transforms[i].scale.x + t * (b->transforms[i].scale.x - a->transforms[i].scale.x);
-    out_pose->transforms[i].scale.y = a->transforms[i].scale.y + t * (b->transforms[i].scale.y - a->transforms[i].scale.y);
-    out_pose->transforms[i].scale.z = a->transforms[i].scale.z + t * (b->transforms[i].scale.z - a->transforms[i].scale.z);
+    // Interpolate scales
+    out_pose->scales[i].x = a->scales[i].x + t * (b->scales[i].x - a->scales[i].x);
+    out_pose->scales[i].y = a->scales[i].y + t * (b->scales[i].y - a->scales[i].y);
+    out_pose->scales[i].z = a->scales[i].z + t * (b->scales[i].z - a->scales[i].z);
   }
 }
 
 void pose_add(const Pose *base, const Pose *additive, float weight, Pose *out_pose, unsigned int bone_count) {
   for (unsigned int i = 0; i < bone_count; i++) {
-    out_pose->transforms[i].position.x = base->transforms[i].position.x + additive->transforms[i].position.x * weight;
-    out_pose->transforms[i].position.y = base->transforms[i].position.y + additive->transforms[i].position.y * weight;
-    out_pose->transforms[i].position.z = base->transforms[i].position.z + additive->transforms[i].position.z * weight;
+    out_pose->positions[i].x = base->positions[i].x + additive->positions[i].x * weight;
+    out_pose->positions[i].y = base->positions[i].y + additive->positions[i].y * weight;
+    out_pose->positions[i].z = base->positions[i].z + additive->positions[i].z * weight;
     
-    out_pose->transforms[i].rotation = base->transforms[i].rotation; // Simplified
-    out_pose->transforms[i].scale = base->transforms[i].scale;
+    out_pose->rotations[i] = base->rotations[i]; // Simplified - should use proper quaternion multiplication
+    out_pose->scales[i] = base->scales[i];
   }
 }
 

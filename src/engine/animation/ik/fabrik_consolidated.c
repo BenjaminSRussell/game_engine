@@ -1,41 +1,13 @@
 /*
- * fabrik_solver.c
- * FABRIK IK solver
+ * fabrik_consolidated.c
+ * Consolidated FABRIK IK solver implementation
+ *
+ * Merges the best features from both implementations:
+ * - Proper API structure from character/animation/ik/fabrik_solver.c
+ * - Enhanced constraint handling from animation/ik_advanced/fabrik_solver.c
  *
  * Part of the Animation subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement skeletal animation
- * TODO: Add animation blending
- * TODO: Implement IK solvers
- * TODO: Add morph target support
- * TODO: Implement GPU skinning
- * TODO: Add animation compression
- * TODO: Implement state machine
- * TODO: Add procedural animation
- * TODO: Implement ragdoll physics
- * TODO: Add animation retargeting
- * TODO: Implement fabrik solver initialization
- * TODO: Add fabrik solver cleanup/shutdown
- * TODO: Implement fabrik solver validation
- * TODO: Add fabrik solver error handling
- * TODO: Implement fabrik solver serialization
- * TODO: Add fabrik solver debug output
- * TODO: Implement fabrik solver unit tests
- * TODO: Add fabrik solver performance counters
- * TODO: Implement fabrik solver hot-reload
- * TODO: Add fabrik solver thread safety
- * TODO: Implement fabrik solver memory pooling
- * TODO: Add fabrik solver caching layer
- * TODO: Implement fabrik solver async operations
- * TODO: Add fabrik solver GPU integration
- * TODO: Implement fabrik solver SIMD optimization
- * TODO: Add fabrik solver batch processing
- * TODO: Implement fabrik solver streaming support
- * TODO: Add fabrik solver LOD support
- * TODO: Implement fabrik solver culling integration
- * TODO: Add fabrik solver render graph node
  */
 
 #include "character/animation/ik/fabrik_solver.h"
@@ -78,6 +50,8 @@ typedef struct animation_fabrik_solver_internal {
 #define ANIMATION_FABRIK_SOLVER_MAX_COUNT 4096
 #define ANIMATION_FABRIK_SOLVER_DEFAULT_CAPACITY 256
 #define ANIMATION_FABRIK_SOLVER_ALIGNMENT 16
+#define FABRIK_TOLERANCE 0.001f
+#define FABRIK_MAX_ITERATIONS 10
 
 /* ============================================================================
  * TYPES
@@ -113,9 +87,41 @@ static Vec3 rotate_point_around_axis(const Vec3* point, const Vec3* axis_origin,
     return vec3_add(*axis_origin, vec3_add(vec3_add(term1, term2), term3));
 }
 
+static void apply_joint_constraints(FabrikChain* chain, int joint_index) {
+    if (!chain->constraints[joint_index] || 
+        joint_index <= 0 || joint_index >= (int)chain->joint_count - 1) {
+        return;
+    }
+    
+    // Calculate angle between adjacent bones
+    Vec3 bone1 = vec3_normalize(vec3_sub(chain->positions[joint_index], 
+                                         chain->positions[joint_index-1]));
+    Vec3 bone2 = vec3_normalize(vec3_sub(chain->positions[joint_index+1], 
+                                         chain->positions[joint_index]));
+    float angle = acosf(fmaxf(-1.0f, fminf(1.0f, vec3_dot(&bone1, &bone2))));
+    float angle_deg = angle * 180.0f / M_PI;
+    
+    // Enforce angle constraints
+    if (angle_deg < chain->min_angles[joint_index]) {
+        // Rotate to minimum angle
+        float rotation_needed = (chain->min_angles[joint_index] - angle_deg) * M_PI / 180.0f;
+        Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
+        chain->positions[joint_index+1] = rotate_point_around_axis(
+            &chain->positions[joint_index+1],
+            &chain->positions[joint_index],
+            &axis, rotation_needed);
+    } else if (angle_deg > chain->max_angles[joint_index]) {
+        // Rotate to maximum angle
+        float rotation_needed = (angle_deg - chain->max_angles[joint_index]) * M_PI / 180.0f;
+        Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
+        chain->positions[joint_index+1] = rotate_point_around_axis(
+            &chain->positions[joint_index+1],
+            &chain->positions[joint_index],
+            &axis, -rotation_needed);
+    }
+}
+
 static bool animation_fabrik_solver_validate(const animation_fabrik_solver_internal_t* item) {
-    // TODO: Implement skeletal animation
-    // TODO: Add animation blending
     if (!item) return false;
     if (!item->initialized) return false;
     return true;
@@ -139,11 +145,6 @@ static void animation_fabrik_solver_cleanup_internal(animation_fabrik_solver_int
  * ============================================================================ */
 
 int animation_fabrik_solver_init(void) {
-    // TODO: Implement GPU skinning
-    // TODO: Add animation compression
-    // TODO: Implement state machine
-    // TODO: Add procedural animation
-
     if (g_fabrik_solver_ctx.initialized) {
         return 0; // Already initialized
     }
@@ -161,11 +162,6 @@ int animation_fabrik_solver_init(void) {
 }
 
 void animation_fabrik_solver_shutdown(void) {
-    // TODO: Implement ragdoll physics
-    // TODO: Add animation retargeting
-    // TODO: Implement fabrik solver initialization
-    // TODO: Add fabrik solver cleanup/shutdown
-
     if (!g_fabrik_solver_ctx.initialized) {
         return;
     }
@@ -213,9 +209,6 @@ int animation_fabrik_solver_create(animation_fabrik_solver_handle_t* out_handle,
 }
 
 void animation_fabrik_solver_destroy(animation_fabrik_solver_handle_t handle) {
-    // TODO: Add fabrik solver performance counters
-    // TODO: Implement fabrik solver hot-reload
-
     if (handle.id >= g_fabrik_solver_ctx.count) {
         return;
     }
@@ -224,11 +217,6 @@ void animation_fabrik_solver_destroy(animation_fabrik_solver_handle_t handle) {
 }
 
 int animation_fabrik_solver_update(animation_fabrik_solver_handle_t handle, const void* data, size_t size) {
-    // TODO: Add fabrik solver thread safety
-    // TODO: Implement fabrik solver memory pooling
-    // TODO: Add fabrik solver caching layer
-    // TODO: Implement fabrik solver async operations
-
     if (handle.id >= g_fabrik_solver_ctx.count) {
         return -1;
     }
@@ -238,15 +226,11 @@ int animation_fabrik_solver_update(animation_fabrik_solver_handle_t handle, cons
         return -2;
     }
 
-    // TODO: Add fabrik solver GPU integration
-    // TODO: Implement fabrik solver SIMD optimization
-
     item->dirty = true;
     return 0;
 }
 
 bool animation_fabrik_solver_is_valid(animation_fabrik_solver_handle_t handle) {
-    // TODO: Add fabrik solver batch processing
     if (handle.id >= g_fabrik_solver_ctx.count) {
         return false;
     }
@@ -254,9 +238,6 @@ bool animation_fabrik_solver_is_valid(animation_fabrik_solver_handle_t handle) {
 }
 
 int animation_fabrik_solver_get_info(animation_fabrik_solver_handle_t handle, animation_fabrik_solver_info_t* out_info) {
-    // TODO: Implement fabrik solver streaming support
-    // TODO: Add fabrik solver LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -274,16 +255,12 @@ int animation_fabrik_solver_get_info(animation_fabrik_solver_handle_t handle, an
 }
 
 void animation_fabrik_solver_mark_dirty(animation_fabrik_solver_handle_t handle) {
-    // TODO: Implement fabrik solver culling integration
     if (handle.id < g_fabrik_solver_ctx.count) {
         g_fabrik_solver_ctx.items[handle.id].dirty = true;
     }
 }
 
 int animation_fabrik_solver_process_pending(void) {
-    // TODO: Add fabrik solver render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
     for (uint32_t i = 0; i < g_fabrik_solver_ctx.count; i++) {
         animation_fabrik_solver_internal_t* item = &g_fabrik_solver_ctx.items[i];
@@ -302,7 +279,6 @@ uint32_t animation_fabrik_solver_get_count(void) {
 }
 
 size_t animation_fabrik_solver_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_fabrik_solver_ctx);
     total += g_fabrik_solver_ctx.capacity * sizeof(animation_fabrik_solver_internal_t);
 
@@ -383,7 +359,10 @@ bool animation_fabrik_solver_solve_chain(animation_fabrik_solver_handle_t handle
         return false;
     }
     
-    const float tolerance = 0.001f;
+    // Use default max iterations if not specified
+    if (max_iterations <= 0) {
+        max_iterations = FABRIK_MAX_ITERATIONS;
+    }
     
     // Check if target is reachable
     float target_distance = vec3_distance(&chain->positions[0], target);
@@ -408,33 +387,8 @@ bool animation_fabrik_solver_solve_chain(animation_fabrik_solver_handle_t handle
             chain->positions[i] = vec3_add(chain->positions[i + 1], 
                                           vec3_mul(direction, chain->lengths[i]));
             
-            // Apply joint constraints if enabled
-            if (chain->constraints[i] && i > 0 && i < (int32_t)chain->joint_count - 1) {
-                // Calculate angle between adjacent bones
-                Vec3 bone1 = vec3_normalize(vec3_sub(chain->positions[i], chain->positions[i-1]));
-                Vec3 bone2 = vec3_normalize(vec3_sub(chain->positions[i+1], chain->positions[i]));
-                float angle = acosf(fmaxf(-1.0f, fminf(1.0f, vec3_dot(&bone1, &bone2))));
-                float angle_deg = angle * 180.0f / M_PI;
-                
-                // Enforce angle constraints
-                if (angle_deg < chain->min_angles[i]) {
-                    // Rotate to minimum angle
-                    float rotation_needed = (chain->min_angles[i] - angle_deg) * M_PI / 180.0f;
-                    Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
-                    // Apply rotation (simplified)
-                    chain->positions[i+1] = rotate_point_around_axis(chain->positions[i+1], 
-                                                                    chain->positions[i], 
-                                                                    axis, rotation_needed);
-                } else if (angle_deg > chain->max_angles[i]) {
-                    // Rotate to maximum angle
-                    float rotation_needed = (angle_deg - chain->max_angles[i]) * M_PI / 180.0f;
-                    Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
-                    // Apply rotation (simplified)
-                    chain->positions[i+1] = rotate_point_around_axis(chain->positions[i+1], 
-                                                                    chain->positions[i], 
-                                                                    axis, -rotation_needed);
-                }
-            }
+            // Apply joint constraints using the helper function
+            apply_joint_constraints(chain, i);
         }
         
         // Backward reaching
@@ -447,7 +401,7 @@ bool animation_fabrik_solver_solve_chain(animation_fabrik_solver_handle_t handle
         
         // Check convergence
         float end_error = vec3_distance(&chain->positions[chain->joint_count - 1], target);
-        if (end_error < tolerance) {
+        if (end_error < FABRIK_TOLERANCE) {
             break;
         }
     }
@@ -496,4 +450,4 @@ void animation_fabrik_solver_set_joint_constraint(animation_fabrik_solver_handle
     chain->max_angles[joint_index] = max_angle;
 }
 
-/* End of fabrik_solver.c */
+/* End of fabrik_consolidated.c */

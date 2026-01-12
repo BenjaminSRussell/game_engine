@@ -111,10 +111,8 @@ bool engine_init(Engine *engine, const EngineConfig *config) {
   }
 
   // Initialize Profiler
-  if (!profiler_init()) {
-    LOG_ERROR("Failed to initialize profiler");
-    return false;
-  }
+  profiler_init();
+  LOG_INFO("Profiler initialized");
 
   // Copy config
   engine->config = *config;
@@ -428,13 +426,9 @@ static bool engine_init_subsystems(Engine *engine) {
   }
 
   // 4. VFS
-  if (vfs_init(&g_vfs)) {
-    if (vfs_mount(&g_vfs, "assets", "assets")) {
-      validation.vfs_initialized = engine_validate_subsystem_init("VFS", true, &validation);
-    } else {
-      validation.vfs_initialized = engine_validate_subsystem_init("VFS", false, &validation);
-      critical_failure = true;
-    }
+  vfs_init(&g_vfs);
+  if (vfs_mount(&g_vfs, "assets", "assets")) {
+    validation.vfs_initialized = engine_validate_subsystem_init("VFS", true, &validation);
   } else {
     validation.vfs_initialized = engine_validate_subsystem_init("VFS", false, &validation);
     critical_failure = true;

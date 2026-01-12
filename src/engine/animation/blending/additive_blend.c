@@ -269,7 +269,7 @@ void additive_blender_evaluate(AdditiveBlender *blender, Pose *result_out) {
                         layer->weight
                     );
                     temp_pose.transforms[bone_idx].position = vec3_add(
-                        result_pose->transforms[bone_idx].position,
+                        result_out->transforms[bone_idx].position,
                         additive_pos
                     );
                     
@@ -282,7 +282,7 @@ void additive_blender_evaluate(AdditiveBlender *blender, Pose *result_out) {
                     additive_rot = quat_normalize(additive_rot);
                     
                     temp_pose.transforms[bone_idx].rotation = quat_multiply(
-                        result_pose->transforms[bone_idx].rotation,
+                        result_out->transforms[bone_idx].rotation,
                         additive_rot
                     );
                     temp_pose.transforms[bone_idx].rotation = quat_normalize(temp_pose.transforms[bone_idx].rotation);
