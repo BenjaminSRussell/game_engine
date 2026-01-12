@@ -29,10 +29,10 @@ static void trigger_scene_loaded(const char* scenePath);
 
 // MARK: - Initialization & Lifecycle
 
-void engine_init(EntityCallback on_entity_created,
-                 EntityCallback on_entity_deleted,
-                 EntityCallback on_entity_modified, LogCallback on_log_message,
-                 SceneCallback on_scene_loaded) {
+void swift_engine_init(EntityCallback on_entity_created,
+                      EntityCallback on_entity_deleted,
+                      EntityCallback on_entity_modified, LogCallback on_log_message,
+                      SceneCallback on_scene_loaded) {
     
     // Store callbacks
     g_entity_created_callback = on_entity_created;
@@ -419,6 +419,219 @@ void engine_set_scale_snap_enabled(bool enabled) {
 
 void engine_set_scale_snap_increment(float increment) {
     renderer_set_scale_snap_increment(increment);
+}
+
+// MARK: - Enhanced Entity Functions
+
+bool engine_get_entity_active(uint64_t entityID) {
+    if (entityID == 0) return false;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return false;
+    
+    return entity->active;
+}
+
+bool engine_get_entity_static(uint64_t entityID) {
+    if (entityID == 0) return false;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return false;
+    
+    return entity->static_entity;
+}
+
+const char* engine_get_entity_tag(uint64_t entityID) {
+    if (entityID == 0) return NULL;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return NULL;
+    
+    return entity->tag;
+}
+
+const char* engine_get_entity_layer(uint64_t entityID) {
+    if (entityID == 0) return NULL;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return NULL;
+    
+    return entity->layer;
+}
+
+void engine_set_entity_active(uint64_t entityID, bool active) {
+    if (entityID == 0) return;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return;
+    
+    entity->active = active;
+}
+
+void engine_set_entity_static(uint64_t entityID, bool isStatic) {
+    if (entityID == 0) return;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return;
+    
+    entity->static_entity = isStatic;
+}
+
+void engine_set_entity_tag(uint64_t entityID, const char* tag) {
+    if (entityID == 0 || !tag) return;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return;
+    
+    // Free existing tag if any
+    if (entity->tag) {
+        free((void*)entity->tag);
+    }
+    
+    // Allocate and copy new tag
+    entity->tag = strdup(tag);
+}
+
+void engine_set_entity_layer(uint64_t entityID, const char* layer) {
+    if (entityID == 0 || !layer) return;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return;
+    
+    // Free existing layer if any
+    if (entity->layer) {
+        free((void*)entity->layer);
+    }
+    
+    // Allocate and copy new layer
+    entity->layer = strdup(layer);
+}
+
+int32_t engine_get_component_count(uint64_t entityID) {
+    if (entityID == 0) return 0;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return 0;
+    
+    // Count components (simplified - would need actual component system integration)
+    int32_t count = 0;
+    if (entity_has_transform((EntityID)entityID)) count++;
+    if (entity_has_mesh_renderer((EntityID)entityID)) count++;
+    if (entity_has_physics((EntityID)entityID)) count++;
+    
+    return count;
+}
+
+void engine_get_component_types(uint64_t entityID, int32_t* outTypes, int32_t maxCount) {
+    if (entityID == 0 || !outTypes || maxCount == 0) return;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return;
+    
+    int32_t count = 0;
+    
+    // Add component types (simplified - would need actual component system integration)
+    if (count < maxCount && entity_has_transform((EntityID)entityID)) {
+        outTypes[count++] = 1; // Transform component type
+    }
+    if (count < maxCount && entity_has_mesh_renderer((EntityID)entityID)) {
+        outTypes[count++] = 2; // Mesh renderer component type
+    }
+    if (count < maxCount && entity_has_physics((EntityID)entityID)) {
+        outTypes[count++] = 3; // Physics component type
+    }
+}
+
+// MARK: - Component Management
+
+void engine_add_component(uint64_t entityID, int32_t componentType) {
+    if (entityID == 0) return;
+    
+    // This would need actual component system integration
+    // For now, just log the request
+    LOG_INFO("Add component type %d to entity %lu", componentType, entityID);
+}
+
+void engine_remove_component(uint64_t entityID, int32_t componentType) {
+    if (entityID == 0) return;
+    
+    // This would need actual component system integration
+    // For now, just log the request
+    LOG_INFO("Remove component type %d from entity %lu", componentType, entityID);
+}
+
+void engine_create_entity_with_id(uint64_t entityID, const char* name) {
+    if (entityID == 0 || !name) return;
+    
+    // This would need actual entity system integration
+    // For now, just log the request
+    LOG_INFO("Create entity with ID %lu and name %s", entityID, name);
+}
+
+// MARK: - Mesh Visualization
+
+void engine_set_mesh_overlay_color(uint64_t entityID, float r, float g, float b, float a) {
+    if (entityID == 0) return;
+    
+    // This would need actual renderer integration
+    // For now, just log the request
+    LOG_INFO("Set mesh overlay color for entity %lu: (%.2f, %.2f, %.2f, %.2f)", entityID, r, g, b, a);
+}
+
+void engine_set_mesh_wireframe_enabled(uint64_t entityID, bool enabled) {
+    if (entityID == 0) return;
+    
+    // This would need actual renderer integration
+    // For now, just log the request
+    LOG_INFO("Set mesh wireframe %s for entity %lu", enabled ? "enabled" : "disabled", entityID);
+}
+
+void engine_set_mesh_vertex_colors_enabled(uint64_t entityID, bool enabled) {
+    if (entityID == 0) return;
+    
+    LOG_INFO("Set mesh vertex colors %s for entity %lu", enabled ? "enabled" : "disabled", entityID);
+}
+
+void engine_set_mesh_uv_visualization(uint64_t entityID, int32_t mode) {
+    if (entityID == 0) return;
+    
+    LOG_INFO("Set mesh UV visualization mode %d for entity %lu", mode, entityID);
+}
+
+void engine_set_mesh_normals_visualization(uint64_t entityID, bool enabled) {
+    if (entityID == 0) return;
+    
+    LOG_INFO("Set mesh normals visualization %s for entity %lu", enabled ? "enabled" : "disabled", entityID);
+}
+
+void engine_set_mesh_bounds_visualization(uint64_t entityID, bool enabled) {
+    if (entityID == 0) return;
+    
+    LOG_INFO("Set mesh bounds visualization %s for entity %lu", enabled ? "enabled" : "disabled", entityID);
+}
+
+void engine_set_material_override(uint64_t entityID, uint64_t materialID) {
+    if (entityID == 0) return;
+    
+    LOG_INFO("Set material override %lu for entity %lu", materialID, entityID);
+}
+
+void engine_clear_material_override(uint64_t entityID) {
+    if (entityID == 0) return;
+    
+    LOG_INFO("Clear material override for entity %lu", entityID);
+}
+
+void engine_set_selection_outline_color(float r, float g, float b) {
+    LOG_INFO("Set selection outline color: (%.2f, %.2f, %.2f)", r, g, b);
+}
+
+void engine_set_selection_outline_width(float width) {
+    LOG_INFO("Set selection outline width: %.2f", width);
+}
+
+void engine_set_hover_highlight_enabled(bool enabled) {
+    LOG_INFO("Set hover highlight %s", enabled ? "enabled" : "disabled");
 }
 
 // MARK: - Internal Callback Triggers

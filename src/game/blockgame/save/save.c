@@ -11,6 +11,7 @@
 // Save checksums: IMPLEMENTED (integrity checksums).
 // Save optimization: IMPLEMENTED (defragmentation, cleanup).
 #include <chunk/chunk.h>
+#include <core/logger.h>
 #include <ecs/component_ids.h>
 #include <ecs/components/npc.h>
 #include <ecs/ecs.h>

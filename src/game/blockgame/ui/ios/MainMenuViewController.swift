@@ -139,7 +139,19 @@ class MainMenuViewController: UIViewController {
         navigationController?.pushViewController(editorViewController, animated: true)
     }
     
-    @objc private func quitTapped() {
-        exit(0)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        animateButtons()
     }
-}
+
+    private func animateButtons() {
+        let stackView = view.subviews.first { $0 is UIStackView } as? UIStackView
+        stackView?.subviews.forEach { $0.alpha = 0 }
+        
+        for (index, subview) in (stackView?.subviews.enumerated())! {
+            UIView.animate(withDuration: 0.5, delay: 0.1 * Double(index), options: .curveEaseInOut, animations: {
+                subview.alpha = 1
+            }, completion: nil)
+        }
+    }
+

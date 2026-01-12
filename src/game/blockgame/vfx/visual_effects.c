@@ -119,8 +119,6 @@ void vfx_play_block_break(VFXSystem* system, Vec3 position, u16 block_type) {
             effect->audio_synced = true;
         }
     }
-
-            position.x, position.y, position.z);
 }
 
 void vfx_play_block_place(VFXSystem* system, Vec3 position, u16 block_type) {

@@ -11,9 +11,8 @@
 //  COMPLETED: Add mesh format conversion system.
 #include <block/block.h>
 #include <chunk/chunk.h>
-#include <include/rendering/mesh.h>
 #include <math/vec2.h>
-#include <mesh/mesh.h>
+#include <include/rendering/mesh.h>
 #include <stdlib.h>
 #include <string.h>
 

@@ -1,5 +1,4 @@
-#if defined(__AVX512F__)
-#include "avx512_kernels.h"
+#include "core/simd/avx512_kernels.h"
 
 void avx512_memcpy(void *dest, const void *src, size_t size) {
     // AVX-512 optimized memcpy stub
@@ -9,4 +8,3 @@ void avx512_memcpy(void *dest, const void *src, size_t size) {
 void avx512_matrix_mul(const float *a, const float *b, float *result, int size) {
     // AVX-512 optimized matrix multiplication
 }
-#endif // defined(__AVX512F__)

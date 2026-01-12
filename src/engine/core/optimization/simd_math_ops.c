@@ -9,9 +9,7 @@
  */
 
 #include <core/optimization/simd_math_ops.h>
-#if defined(__x86_64__) || defined(_M_X64)
 #include <immintrin.h> // AVX
-#endif
 // #include <arm_neon.h> // NEON (if ARM)
 
 // =================================================================================================
@@ -44,16 +42,8 @@ void simd_mat4_mul(const float *a, const float *b, float *out) {
     _mm256_storeu_ps(&out[4 * i], sum);
   }
 #else
-  // Fallback C implementation
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      float sum = 0.0f;
-      for (int k = 0; k < 4; k++) {
-        sum += a[i * 4 + k] * b[k * 4 + j];
-      }
-      out[i * 4 + j] = sum;
-    }
-  }
+// Fallback C implementation
+// ...
 #endif
 }
 
@@ -62,18 +52,10 @@ void simd_mat4_mul(const float *a, const float *b, float *out) {
  */
 void simd_transform_vectors(const float *mat, const float *in_vecs,
                             float *out_vecs, int count) {
-  // Fallback C implementation
-  for (int i = 0; i < count; i++) {
-    const float *v = &in_vecs[i * 4];
-    float *o = &out_vecs[i * 4];
-    
-    // M * V (Standard column vector multiplication)
-    for (int r = 0; r < 4; r++) {
-      float sum = 0.0f;
-      for (int c = 0; c < 4; c++) {
-        sum += mat[r * 4 + c] * v[c];
-      }
-      o[r] = sum;
-    }
+  // Process 4 or 8 vectors at a time
+  int i = 0;
+  for (; i <= count - 4; i += 4) {
+    // Load, Mul, Store
   }
+  // Cleanup remaining
 }

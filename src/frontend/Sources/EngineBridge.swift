@@ -818,161 +818,161 @@ extension UUID {
 
 // MARK: - C Function Declarations
 
-@_silgen_name("vf_engine_init")
+@_silgen_name("swift_engine_init")
 func engine_init(_ callbacks: EngineCallbacks)
 
-@_silgen_name("vf_engine_shutdown")
+@_silgen_name("engine_shutdown")
 func engine_shutdown()
 
-@_silgen_name("vf_engine_update")
+@_silgen_name("engine_update")
 func engine_update(_ deltaTime: Float)
 
-@_silgen_name("vf_engine_create_entity")
+@_silgen_name("engine_create_entity")
 func engine_create_entity(_ name: String) -> UInt64
 
-@_silgen_name("vf_engine_delete_entity")
+@_silgen_name("engine_delete_entity")
 func engine_delete_entity(_ entityID: UInt64)
 
-@_silgen_name("vf_engine_entity_exists")
+@_silgen_name("engine_entity_exists")
 func engine_entity_exists(_ entityID: UInt64) -> Bool
 
-@_silgen_name("vf_engine_get_entity_name")
+@_silgen_name("engine_get_entity_name")
 func engine_get_entity_name(_ entityID: UInt64) -> UnsafePointer<CChar>?
 
-@_silgen_name("vf_engine_set_entity_name")
+@_silgen_name("engine_set_entity_name")
 func engine_set_entity_name(_ entityID: UInt64, _ name: String)
 
-@_silgen_name("vf_engine_get_all_entities")
+@_silgen_name("engine_get_all_entities")
 func engine_get_all_entities(_ outEntities: UnsafeMutablePointer<UInt64>, _ maxCount: UInt32) -> UInt32
 
-@_silgen_name("vf_engine_set_transform")
+@_silgen_name("engine_set_transform")
 func engine_set_transform(_ entityID: UInt64, _ transform: UnsafePointer<Transform_C>)
 
-@_silgen_name("vf_engine_get_transform")
+@_silgen_name("engine_get_transform")
 func engine_get_transform(_ entityID: UInt64, _ outTransform: UnsafeMutablePointer<Transform_C>)
 
-@_silgen_name("vf_engine_has_component")
+@_silgen_name("engine_has_component")
 func engine_has_component(_ entityID: UInt64, _ type: Int32) -> Bool
 
-@_silgen_name("vf_engine_set_mesh_renderer")
+@_silgen_name("engine_set_mesh_renderer")
 func engine_set_mesh_renderer(_ entityID: UInt64, _ data: UnsafePointer<MeshRendererData_C>)
 
-@_silgen_name("vf_engine_get_mesh_renderer")
+@_silgen_name("engine_get_mesh_renderer")
 func engine_get_mesh_renderer(_ entityID: UInt64, _ outData: UnsafeMutablePointer<MeshRendererData_C>)
 
-@_silgen_name("vf_engine_set_physics")
+@_silgen_name("engine_set_physics")
 func engine_set_physics(_ entityID: UInt64, _ data: UnsafePointer<PhysicsData_C>)
 
-@_silgen_name("vf_engine_get_physics")
+@_silgen_name("engine_get_physics")
 func engine_get_physics(_ entityID: UInt64, _ outData: UnsafeMutablePointer<PhysicsData_C>)
 
-@_silgen_name("vf_engine_load_scene")
+@_silgen_name("engine_load_scene")
 func engine_load_scene(_ path: String)
 
-@_silgen_name("vf_engine_save_scene")
+@_silgen_name("engine_save_scene")
 func engine_save_scene(_ path: String)
 
-@_silgen_name("vf_engine_new_scene")
+@_silgen_name("engine_new_scene")
 func engine_new_scene()
 
-@_silgen_name("vf_engine_get_render_stats")
+@_silgen_name("engine_get_render_stats")
 func engine_get_render_stats(_ outStats: UnsafeMutablePointer<RenderStats_C>)
 
-@_silgen_name("vf_engine_log")
+@_silgen_name("engine_log")
 func engine_log(_ level: Int32, _ source: String, _ message: String)
 
 // Grid and Snapping Controls
-@_silgen_name("vf_engine_set_grid_enabled")
+@_silgen_name("engine_set_grid_enabled")
 func engine_set_grid_enabled(_ enabled: Bool)
 
-@_silgen_name("vf_engine_set_grid_spacing")
+@_silgen_name("engine_set_grid_spacing")
 func engine_set_grid_spacing(_ spacing: Float)
 
-@_silgen_name("vf_engine_set_position_snap_enabled")
+@_silgen_name("engine_set_position_snap_enabled")
 func engine_set_position_snap_enabled(_ enabled: Bool)
 
-@_silgen_name("vf_engine_set_position_snap_increment")
+@_silgen_name("engine_set_position_snap_increment")
 func engine_set_position_snap_increment(_ increment: Float)
 
-@_silgen_name("vf_engine_set_rotation_snap_enabled")
+@_silgen_name("engine_set_rotation_snap_enabled")
 func engine_set_rotation_snap_enabled(_ enabled: Bool)
 
-@_silgen_name("vf_engine_set_rotation_snap_increment")
+@_silgen_name("engine_set_rotation_snap_increment")
 func engine_set_rotation_snap_increment(_ increment: Float)
 
-@_silgen_name("vf_engine_set_scale_snap_enabled")
+@_silgen_name("engine_set_scale_snap_enabled")
 func engine_set_scale_snap_enabled(_ enabled: Bool)
 
-@_silgen_name("vf_engine_set_scale_snap_increment")
+@_silgen_name("engine_set_scale_snap_increment")
 func engine_set_scale_snap_increment(_ increment: Float)
 
 // MARK: - Enhanced Inspector C Functions
 
-@_silgen_name("vf_engine_get_entity_active")
+@_silgen_name("engine_get_entity_active")
 func engine_get_entity_active(_ entityID: UInt64) -> Bool
 
-@_silgen_name("vf_engine_get_entity_static")
+@_silgen_name("engine_get_entity_static")
 func engine_get_entity_static(_ entityID: UInt64) -> Bool
 
-@_silgen_name("vf_engine_get_entity_tag")
+@_silgen_name("engine_get_entity_tag")
 func engine_get_entity_tag(_ entityID: UInt64) -> UnsafePointer<CChar>?
 
-@_silgen_name("vf_engine_get_entity_layer")
+@_silgen_name("engine_get_entity_layer")
 func engine_get_entity_layer(_ entityID: UInt64) -> UnsafePointer<CChar>?
 
-@_silgen_name("vf_engine_set_entity_active")
+@_silgen_name("engine_set_entity_active")
 func engine_set_entity_active(_ entityID: UInt64, _ active: Bool)
 
-@_silgen_name("vf_engine_set_entity_static")
+@_silgen_name("engine_set_entity_static")
 func engine_set_entity_static(_ entityID: UInt64, _ isStatic: Bool)
 
-@_silgen_name("vf_engine_set_entity_tag")
+@_silgen_name("engine_set_entity_tag")
 func engine_set_entity_tag(_ entityID: UInt64, _ tag: String)
 
-@_silgen_name("vf_engine_set_entity_layer")
+@_silgen_name("engine_set_entity_layer")
 func engine_set_entity_layer(_ entityID: UInt64, _ layer: String)
 
-@_silgen_name("vf_engine_get_component_count")
+@_silgen_name("engine_get_component_count")
 func engine_get_component_count(_ entityID: UInt64) -> Int32
 
-@_silgen_name("vf_engine_get_component_types")
+@_silgen_name("engine_get_component_types")
 func engine_get_component_types(_ entityID: UInt64, _ outTypes: UnsafeMutablePointer<Int32>, _ maxCount: Int32)
 
 // MARK: - Component Management C Functions
 
-@_silgen_name("vf_engine_add_component")
+@_silgen_name("engine_add_component")
 func engine_add_component(_ entityID: UInt64, _ componentType: Int32)
 
-@_silgen_name("vf_engine_remove_component")
+@_silgen_name("engine_remove_component")
 func engine_remove_component(_ entityID: UInt64, _ componentType: Int32)
 
-@_silgen_name("vf_engine_create_entity_with_id")
+@_silgen_name("engine_create_entity_with_id")
 func engine_create_entity_with_id(_ entityID: UInt64, _ name: String)
 
 // MARK: - Mesh Overlay & Visualization C Functions
 
-@_silgen_name("vf_engine_set_mesh_overlay_color")
+@_silgen_name("engine_set_mesh_overlay_color")
 func engine_set_mesh_overlay_color(_ entityID: UInt64, _ r: Float, _ g: Float, _ b: Float, _ a: Float)
 
-@_silgen_name("vf_engine_set_mesh_wireframe_enabled")
+@_silgen_name("engine_set_mesh_wireframe_enabled")
 func engine_set_mesh_wireframe_enabled(_ entityID: UInt64, _ enabled: Bool)
 
-@_silgen_name("vf_engine_set_mesh_vertex_colors_enabled")
+@_silgen_name("engine_set_mesh_vertex_colors_enabled")
 func engine_set_mesh_vertex_colors_enabled(_ entityID: UInt64, _ enabled: Bool)
 
-@_silgen_name("vf_engine_set_mesh_uv_visualization")
+@_silgen_name("engine_set_mesh_uv_visualization")
 func engine_set_mesh_uv_visualization(_ entityID: UInt64, _ mode: Int32)
 
-@_silgen_name("vf_engine_set_mesh_normals_visualization")
+@_silgen_name("engine_set_mesh_normals_visualization")
 func engine_set_mesh_normals_visualization(_ entityID: UInt64, _ enabled: Bool)
 
-@_silgen_name("vf_engine_set_mesh_bounds_visualization")
+@_silgen_name("engine_set_mesh_bounds_visualization")
 func engine_set_mesh_bounds_visualization(_ entityID: UInt64, _ enabled: Bool)
 
-@_silgen_name("vf_engine_set_material_override")
+@_silgen_name("engine_set_material_override")
 func engine_set_material_override(_ entityID: UInt64, _ materialID: UInt64)
 
-@_silgen_name("vf_engine_clear_material_override")
+@_silgen_name("engine_clear_material_override")
 func engine_clear_material_override(_ entityID: UInt64)
 
 @_silgen_name("vf_engine_set_selection_outline_color")

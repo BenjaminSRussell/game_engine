@@ -8,9 +8,25 @@
 #include <math.h>
 
 // Include our new geometry system
-#include "geometry/mesh.h"
-#include "geometry/mesh_primitives.h"
-#include "geometry/mesh_gpu.h"
+// #include "engine/geometry/mesh.h"
+// #include "engine/geometry/mesh_primitives.h"
+// #include "engine/geometry/mesh_gpu.h"
+
+// Simple vertex structure for testing
+typedef struct {
+    float position[3];
+    float color[3];
+    float normal[3];
+    float uv[2];
+} SimpleVertex;
+
+// Simple mesh structure
+typedef struct {
+    SimpleVertex* vertices;
+    int vertex_count;
+    unsigned int* indices;
+    int index_count;
+} SimpleMesh;
 
 typedef struct {
     vector_float3 position;
@@ -32,7 +48,8 @@ typedef struct {
 @property (nonatomic, assign) float rotationY;
 @property (nonatomic, assign) int vertexCount;
 @property (nonatomic, assign) int indexCount;
-@property (nonatomic, assign) mesh_t* mesh;
+// @property (nonatomic, assign) mesh_t* mesh;
+@property (nonatomic, assign) SimpleMesh* simpleMesh;
 @end
 
 @implementation MetalView
@@ -61,6 +78,7 @@ typedef struct {
             NSLog(@"Failed to create default shaders");
             return;
         }
+        // Use the newly created library to get functions
         vertexFunction = [library newFunctionWithName:@"vertex_main"];
         fragmentFunction = [library newFunctionWithName:@"fragment_main"];
     }
@@ -181,30 +199,38 @@ typedef struct {
 }
 
 - (void)createGeometryFromMesh {
-    // Use our new geometry system to create a more interesting mesh
-    self.mesh = mesh_create_sphere(1.0f, 16);  // Create a sphere with 16 segments
+    // Create a simple triangle for testing
+    self.simpleMesh = malloc(sizeof(SimpleMesh));
+    self.simpleMesh->vertex_count = 3;
+    self.simpleMesh->index_count = 3;
     
-    if (!self.mesh) {
-        NSLog(@"Failed to create mesh");
-        return;
-    }
+    self.simpleMesh->vertices = malloc(sizeof(SimpleVertex) * 3);
+    self.simpleMesh->indices = malloc(sizeof(unsigned int) * 3);
     
-    // Calculate normals and tangents
-    mesh_calculate_normals(self.mesh);
-    mesh_calculate_tangents(self.mesh);
+    // Triangle vertices
+    self.simpleMesh->vertices[0] = (SimpleVertex){{0.0f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.5f, 0.0f}};
+    self.simpleMesh->vertices[1] = (SimpleVertex){{-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}};
+    self.simpleMesh->vertices[2] = (SimpleVertex){{0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}};
     
-    // Upload to GPU
-    if (!mesh_upload(self.mesh)) {
-        NSLog(@"Failed to upload mesh to GPU");
-    }
+    // Triangle indices
+    self.simpleMesh->indices[0] = 0;
+    self.simpleMesh->indices[1] = 1;
+    self.simpleMesh->indices[2] = 2;
     
-    self.vertexCount = self.mesh->vertex_count;
-    self.indexCount = self.mesh->index_count;
+    self.vertexCount = self.simpleMesh->vertex_count;
+    self.indexCount = self.simpleMesh->index_count;
     
-    NSLog(@"Created mesh with %d vertices and %d indices", self.vertexCount, self.indexCount);
+    NSLog(@"Created simple triangle with %d vertices and %d indices", self.vertexCount, self.indexCount);
     
-    // Print mesh stats
-    mesh_print_stats(self.mesh);
+    // Create vertex buffer
+    self.vertexBuffer = [self.device newBufferWithBytes:self.simpleMesh->vertices 
+                                               length:self.vertexCount * sizeof(SimpleVertex) 
+                                              options:MTLResourceStorageModeShared];
+    
+    // Create index buffer
+    self.indexBuffer = [self.device newBufferWithBytes:self.simpleMesh->indices 
+                                              length:self.indexCount * sizeof(unsigned int) 
+                                             options:MTLResourceStorageModeShared];
 }
 
 - (void)setupMatrices {
@@ -287,13 +313,7 @@ typedef struct {
 
         [renderEncoder setRenderPipelineState:self.pipelineState];
         
-        // Set vertex and index buffers from our mesh system
-        if (self.mesh && self.mesh->vertex_buffer_handle && self.mesh->index_buffer_handle) {
-            // In a real implementation, we'd get the actual Metal buffers from the mesh system
-            // For now, we'll create them from the mesh data
-            [self createMetalBuffersFromMesh];
-        }
-        
+        // Set vertex and index buffers from our simple mesh
         [renderEncoder setVertexBuffer:self.vertexBuffer offset:0 atIndex:0];
         [renderEncoder setVertexBuffer:self.uniformBuffer offset:0 atIndex:1];
         [renderEncoder setFragmentBuffer:self.uniformBuffer offset:0 atIndex:0];
@@ -310,57 +330,15 @@ typedef struct {
     }
 }
 
-- (void)createMetalBuffersFromMesh {
-    if (!self.mesh || !self.mesh->vertices || !self.mesh->indices) {
-        return;
-    }
-    
-    // Convert our vertex format to Metal format
-    Vertex* metalVertices = (Vertex*)malloc(self.mesh->vertex_count * sizeof(Vertex));
-    u32* metalIndices = (u32*)malloc(self.mesh->index_count * sizeof(u32));
-    
-    if (!metalVertices || !metalIndices) {
-        free(metalVertices);
-        free(metalIndices);
-        return;
-    }
-    
-    // Convert vertices
-    for (u32 i = 0; i < self.mesh->vertex_count; i++) {
-        vertex_t* src = &self.mesh->vertices[i];
-        Vertex* dst = &metalVertices[i];
-        
-        dst.position = (vector_float3){src->position.x, src->position.y, src->position.z};
-        dst.color = (vector_float3){1.0f, 1.0f, 1.0f}; // Default white
-        dst.normal = (vector_float3){src->normal.x, src->normal.y, src->normal.z};
-        dst.uv = (vector_float2){src->uv.x, src->uv.y};
-        dst.tangent = (vector_float4){src->tangent.x, src->tangent.y, src->tangent.z, src->tangent.w};
-    }
-    
-    // Copy indices
-    memcpy(metalIndices, self.mesh->indices, self.mesh->index_count * sizeof(u32));
-    
-    // Create Metal buffers
-    self.vertexBuffer = [self.device newBufferWithBytes:metalVertices
-                                               length:self.mesh->vertex_count * sizeof(Vertex)
-                                              options:MTLResourceStorageModeShared];
-    
-    self.indexBuffer = [self.device newBufferWithBytes:metalIndices
-                                              length:self.mesh->index_count * sizeof(u32)
-                                             options:MTLResourceStorageModeShared];
-    
-    free(metalVertices);
-    free(metalIndices);
-}
-
 - (void)mtkView:(MTKView *)view drawableSizeWillChange:(CGSize)size {
     [self setupMatrices];
 }
 
 - (void)dealloc {
-    if (self.mesh) {
-        mesh_unload(self.mesh);
-        mesh_destroy(self.mesh);
+    if (self.simpleMesh) {
+        free(self.simpleMesh->vertices);
+        free(self.simpleMesh->indices);
+        free(self.simpleMesh);
     }
 }
 

@@ -10,7 +10,6 @@
 
 #define MAX_THREADS 64
 #define MAX_SCOPES_PER_THREAD 1024
-#define SCOPE_NAME_LENGTH 64
 #define CALIBRATION_SAMPLES 1000
 
 // Thread-local storage for profiler data
@@ -19,8 +18,6 @@ __declspec(thread) static int g_thread_id = -1;
 #else
 __thread static int g_thread_id = -1;
 #endif
-
-// ProfileScope is defined in profiler_hooks.h
 
 typedef struct {
     ProfileScope scopes[MAX_SCOPES_PER_THREAD];

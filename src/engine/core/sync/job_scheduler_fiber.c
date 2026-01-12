@@ -1,4 +1,3 @@
-#define _XOPEN_SOURCE 600
 #include "core/threading/job_scheduler_fiber.h"
 #include <stdlib.h>
 #include <string.h>
@@ -12,10 +11,7 @@
 #else
 #include <pthread.h>
 #include <sched.h>
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include <ucontext.h>
-#pragma clang diagnostic pop
 #endif
 
 /**
@@ -32,7 +28,14 @@ typedef enum {
     FIBER_STATE_COMPLETED
 } FiberState;
 
-// JobPriority is defined in header
+// Job priority levels
+typedef enum {
+    JOB_PRIORITY_CRITICAL = 0,
+    JOB_PRIORITY_HIGH = 1,
+    JOB_PRIORITY_NORMAL = 2,
+    JOB_PRIORITY_LOW = 3,
+    JOB_PRIORITY_COUNT
+} JobPriority;
 
 // Job structure
 typedef struct Job {
@@ -63,14 +66,6 @@ typedef struct {
     #endif
 } Fiber;
 
-// Job queue (lock-free) - Moved before WorkerThread
-typedef struct {
-    Job *jobs[1024];  // Fixed-size ring buffer
-    atomic_int head;
-    atomic_int tail;
-    atomic_int count;
-} JobQueue;
-
 // Worker thread context
 typedef struct {
     pthread_t thread_handle;
@@ -84,6 +79,14 @@ typedef struct {
     double utilization;
 } WorkerThread;
 
+// Job queue (lock-free)
+typedef struct {
+    Job *jobs[1024];  // Fixed-size ring buffer
+    atomic_int head;
+    atomic_int tail;
+    atomic_int count;
+} JobQueue;
+
 // Main job scheduler
 typedef struct {
     WorkerThread *workers;
@@ -91,14 +94,14 @@ typedef struct {
     Fiber *fiber_pool;
     uint32_t fiber_pool_size;
     uint32_t fiber_pool_capacity;
-    atomic_uint next_job_id;
-    atomic_uint next_fiber_id;
+    atomic_uint32_t next_job_id;
+    atomic_uint32_t next_fiber_id;
     bool initialized;
     
     // Statistics
-    atomic_uint_least64_t total_jobs_submitted;
-    atomic_uint_least64_t total_jobs_completed;
-    atomic_uint_least64_t total_context_switches;
+    atomic_uint64_t total_jobs_submitted;
+    atomic_uint64_t total_jobs_completed;
+    atomic_uint64_t total_context_switches;
 } JobScheduler;
 
 static JobScheduler g_scheduler = {0};
@@ -106,8 +109,7 @@ static JobScheduler g_scheduler = {0};
 // Forward declarations
 static void worker_thread_main(void *arg);
 static void fiber_entry_point(void *arg);
-static Job* dequeue_job(WorkerThread *worker); 
-static Job* dequeue_job_queue(JobQueue *queue);
+static Job* dequeue_job(WorkerThread *worker);
 static void enqueue_job(JobQueue *queue, Job *job);
 static Job* steal_job(WorkerThread *worker);
 static Fiber* acquire_fiber(void);
@@ -125,10 +127,7 @@ static void switch_to_fiber(Fiber *from, Fiber *to) {
 // POSIX context switching using ucontext
 static void switch_to_fiber(Fiber *from, Fiber *to) {
     if (from && to) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         swapcontext((ucontext_t*)from->fiber_handle, (ucontext_t*)to->fiber_handle);
-#pragma clang diagnostic pop
     }
 }
 #endif
@@ -191,14 +190,11 @@ static bool create_fiber_pool(size_t pool_size, size_t stack_size) {
         }
         
         ucontext_t *uc = (ucontext_t*)fiber->fiber_handle;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         getcontext(uc);
         uc->uc_stack.ss_sp = fiber->stack_memory;
         uc->uc_stack.ss_size = stack_size;
         uc->uc_link = NULL;
         makecontext(uc, (void(*)())fiber_entry_point, 1, fiber);
-#pragma clang diagnostic pop
 #endif
     }
     
@@ -383,7 +379,7 @@ static void enqueue_job(JobQueue *queue, Job *job) {
     atomic_fetch_add(&queue->count, 1);
 }
 
-static Job* dequeue_job_queue(JobQueue *queue) {
+static Job* dequeue_job(JobQueue *queue) {
     int count = atomic_load(&queue->count);
     if (count == 0) {
         return NULL;
@@ -397,15 +393,6 @@ static Job* dequeue_job_queue(JobQueue *queue) {
     atomic_fetch_sub(&queue->count, 1);
     
     return job;
-}
-
-// Implement dequeue_job for WorkerThread (iterate priorities)
-static Job* dequeue_job(WorkerThread *worker) {
-    for (int i = 0; i < JOB_PRIORITY_COUNT; i++) {
-        Job *job = dequeue_job_queue(&worker->job_queues[i]);
-        if (job) return job;
-    }
-    return NULL;
 }
 
 // TASK_502: Implement Work Stealing (idle threads steal from busy queues)
@@ -422,7 +409,7 @@ static Job* steal_job(WorkerThread *worker) {
         
         // Try to steal from highest priority to lowest
         for (int priority = 0; priority < JOB_PRIORITY_COUNT; priority++) {
-            Job *job = dequeue_job_queue(&target_worker->job_queues[priority]);
+            Job *job = dequeue_job(&target_worker->job_queues[priority]);
             if (job) {
                 atomic_store(&worker->steal_target, (target + 1) % g_scheduler.worker_count);
                 return job;

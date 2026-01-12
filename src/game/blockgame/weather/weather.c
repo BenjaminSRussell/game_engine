@@ -10,6 +10,7 @@
 // Weather particle effects optimization (LOD for distant weather)
 // Weather sound effects blending for smooth transitions
 #include <common.h>
+#include <core/logger.h>
 #include <math.h>
 #include <math/math.h>
 #include <stdbool.h>

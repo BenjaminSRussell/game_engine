@@ -15,7 +15,26 @@
 //                                      STRUCTS
 // =================================================================================================
 
-// Structs and Enums defined in binary_serializer.h
+typedef enum FieldType {
+  TYPE_INT32,
+  TYPE_FLOAT,
+  TYPE_STRING,
+  TYPE_STRUCT,
+  TYPE_ARRAY
+} FieldType;
+
+typedef struct FieldSchema {
+  const char *name;
+  FieldType type;
+  size_t offset;
+  // ... metadata ...
+} FieldSchema;
+
+typedef struct TypeSchema {
+  const char *name;
+  FieldSchema fields[32];
+  int field_count;
+} TypeSchema;
 
 // =================================================================================================
 //                                      IMPLEMENTATION
@@ -33,14 +52,11 @@ void serialize_struct(void *data, TypeSchema *schema, BinaryWriter *writer) {
     case TYPE_FLOAT:
       writer_write_float(writer, *(float *)field_ptr);
       break;
-    case TYPE_STRING: {
+    case TYPE_STRING:
       const char *str = *(const char **)field_ptr;
       writer_write_string(writer, str);
-    } break;
-    case TYPE_STRUCT:
-    case TYPE_ARRAY:
-      // TODO: Implement recursion for nested types
       break;
+      // ... recursion for nested types ...
     }
   }
 }
@@ -54,12 +70,7 @@ void deserialize_struct(void *data, TypeSchema *schema, BinaryReader *reader) {
     case TYPE_INT32:
       *(int32_t *)field_ptr = reader_read_int32(reader);
       break;
-    case TYPE_FLOAT:
-    case TYPE_STRING:
-    case TYPE_STRUCT:
-    case TYPE_ARRAY:
-      // TODO: Implement deserialization for these types
-      break;
+      // ... etc ...
     }
   }
 }

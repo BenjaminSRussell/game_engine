@@ -231,25 +231,89 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/network/*.c"
     "src/engine/networking/*.c"
     
-    # Physics subdirectory - CONSOLIDATED: Only essential files
-    # Using block physics as canonical voxel physics implementation
-    # "src/engine/physics/block_physics.c"  # Disabled due to missing functions
-    "src/engine/physics/collision/gjk_solver.c"
-    "src/engine/physics/collision/collision_gjk_epa.c"  # Disabled due to SIMD issues
-    "src/engine/physics/collision/epa_solver.c"
-    "src/engine/physics/broadphase/aabb_tree.c"
-    "src/engine/physics/narrowphase/contact_manifold.c"
+    # Physics subdirectory - FULLY ENABLED: All physics systems
+    "src/engine/physics/block_physics.c"
+
+    # Core Physics
+    "src/engine/physics/core/physics_core.c"
+    "src/engine/physics/core/physics_broadphase.c"
+    "src/engine/physics/core/physics_shapes.c"
+    "src/engine/physics/core/physics_rigid_body_api.c"
+    "src/engine/physics/core/physics_rigid_body_helpers.c"
+
+    # Collision Detection (Complete)
+    "src/engine/physics/collision/*.c"
+
+    # Broadphase (Complete SAP + AABB)
+    "src/engine/physics/broadphase/*.c"
+
+    # Narrowphase Contact
+    "src/engine/physics/narrowphase/*.c"
+
+    # Constraints System (Complete)
+    "src/engine/physics/constraints/*.c"
+
+    # Rigid Body Dynamics (Complete)
+    "src/engine/physics/rigid/*.c"
+    "src/engine/physics/dynamics/*.c"
+
+    # Soft Body Physics (Complete)
+    "src/engine/physics/soft/*.c"
+    "src/engine/physics/softbody/*.c"
+
+    # Cloth Simulation (Complete)
+    "src/engine/physics/cloth/*.c"
+    "src/engine/physics/character/cloth/*.c"
+
+    # Fluid Dynamics (Complete)
+    "src/engine/physics/fluid/*.c"
+    "src/engine/physics/fluids/*.c"
+
+    # Ragdoll Physics (Complete)
+    "src/engine/physics/ragdoll/*.c"
+    "src/engine/physics/character/*.c"
+
+    # Vehicle Physics (Complete)
+    "src/engine/physics/vehicle/*.c"
+    "src/engine/physics/vehicles/*.c"
+
+    # Solver Systems (Complete)
+    "src/engine/physics/solver/*.c"
+    "src/engine/physics/dynamics/physics_solver.c"
+
+    # Integration & Simulation Loop
     "src/engine/physics/integration/physics_integration.c"
+    "src/engine/physics/simulation_impl.c"
+    "src/engine/physics/simulation_loop.c"
+
+    # Physics Queries & Raycasting
     "src/engine/physics/queries/physics_queries.c"
 
-    # DISABLED SUBSYSTEMS (Future work):
-    # - Rigid body dynamics
-    # - Cloth simulation
-    # - Fluid simulation
-    # - Particle physics
-    # - Ragdoll physics
-    # - Vehicle dynamics
-    # - Destruction/fracture
+    # Destruction & Fracture
+    "src/engine/physics/destruction/*.c"
+    "src/engine/physics/fracture/*.c"
+
+    # Advanced Features
+    "src/engine/physics/pbd/pbd_solver.c"
+    "src/engine/physics/optimizer/physics_pipeline_optimizer.c"
+    "src/engine/physics/serialization/physics_serialization.c"
+    "src/engine/physics/physics_complete.c"
+    "src/engine/physics/physics_core_impl.c"
+    "src/engine/physics/physics_api_impl.c"
+    "src/engine/physics/physics_advanced_impl.c"
+    "src/engine/physics/physics_world_stubs.c"
+
+    # Character Physics
+    "src/engine/physics/core_rigid_body.c"
+    "src/engine/physics/continuous_collision.c"
+    "src/engine/physics/collision_detection.c"
+
+    # Ballistics & Advanced
+    "src/engine/physics/ballistics/trajectory_sim.c"
+
+    # Physics System Manager
+    "src/engine/physics/system/physics_system.c"
+    "src/engine/physics/world/physics_world_manager.c"
     
     # Platform subdirectory - DISABLED due to swift_bridge issues (except input system)
     "src/engine/platform/input/*.c"
@@ -325,9 +389,9 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/old/.*")
 # Temporarily exclude problematic subsystem files that have incomplete header scaffolding
 # Animation subsystem is completely excluded in GLOB_RECURSE above (via commenting out)
 
-# Audio core and dsp (has missing headers and API mismatches)
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/audio/core/.*\\.c$")
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/audio/dsp/.*\\.c$")
+# Audio core and dsp - RE-ENABLED for testing
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/audio/core/.*\\.c$")
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/audio/dsp/.*\\.c$")
 
 # Vulkan backend (not needed for macOS/Metal build and has compilation errors)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/vulkan/.*\\.c$")
@@ -335,12 +399,12 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/vulkan/.*\\.c$")
 # Metal backend .c files (mostly broken synchronization examples/stubs)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/.*\\.c$")
 
-# Editor subsystem (currently broken, excluding to unblock core verification)
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/editor/.*\\.c$")
+# Editor subsystem - RE-ENABLED for testing
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/editor/.*\\.c$")
 
-# Network/Networking subsystems (currently broken)
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network/.*\\.c$")
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/networking/.*\\.c$")
+# Network/Networking subsystems - RE-ENABLED for testing
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network/.*\\.c$")
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/networking/.*\\.c$")
 
 # Cinematic subsystems (currently broken)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/cinematic/.*\\.c$")

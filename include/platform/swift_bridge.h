@@ -56,10 +56,10 @@ typedef struct {
 } RenderStats_C;
 
 // Initialization & Lifecycle
-void engine_init(EntityCallback on_entity_created,
-                 EntityCallback on_entity_deleted,
-                 EntityCallback on_entity_modified, LogCallback on_log_message,
-                 SceneCallback on_scene_loaded);
+void swift_engine_init(EntityCallback on_entity_created,
+                      EntityCallback on_entity_deleted,
+                      EntityCallback on_entity_modified, LogCallback on_log_message,
+                      SceneCallback on_scene_loaded);
 void engine_shutdown(void);
 void engine_update(float deltaTime);
 
@@ -107,6 +107,27 @@ void engine_set_rotation_snap_enabled(bool enabled);
 void engine_set_rotation_snap_increment(float increment);
 void engine_set_scale_snap_enabled(bool enabled);
 void engine_set_scale_snap_increment(float increment);
+
+// Enhanced Entity Functions
+bool engine_get_entity_active(uint64_t entityID);
+bool engine_get_entity_static(uint64_t entityID);
+const char* engine_get_entity_tag(uint64_t entityID);
+const char* engine_get_entity_layer(uint64_t entityID);
+void engine_set_entity_active(uint64_t entityID, bool active);
+void engine_set_entity_static(uint64_t entityID, bool isStatic);
+void engine_set_entity_tag(uint64_t entityID, const char* tag);
+void engine_set_entity_layer(uint64_t entityID, const char* layer);
+int32_t engine_get_component_count(uint64_t entityID);
+void engine_get_component_types(uint64_t entityID, int32_t* outTypes, int32_t maxCount);
+
+// Component Management
+void engine_add_component(uint64_t entityID, int32_t componentType);
+void engine_remove_component(uint64_t entityID, int32_t componentType);
+void engine_create_entity_with_id(uint64_t entityID, const char* name);
+
+// Mesh Visualization
+void engine_set_mesh_overlay_color(uint64_t entityID, float r, float g, float b, float a);
+void engine_set_mesh_wireframe_enabled(uint64_t entityID, bool enabled);
 
 #ifdef __cplusplus
 }

@@ -1,7 +1,6 @@
 #include "core/resource/streaming/streaming_memory_pool.h"
 #include "core/logger.h"
 #include "core/memory.h"
-#include "core/time_system.h"
 #include <stdlib.h>
 #include <string.h>
 #include <include/math/math.h>
@@ -110,7 +109,7 @@ bool streaming_pool_init(StreamingMemoryPool* pool, u64 size) {
     size = align_size((u32)size, STREAMING_POOL_ALIGNMENT);
     
     // Allocate pool memory
-    pool->pool_memory = (u8*)memory_alloc(size, __FILE__, __LINE__);
+    pool->pool_memory = (u8*)memory_alloc(size);
     if (!pool->pool_memory) {
         LOG_ERROR("Failed to allocate streaming memory pool of size %llu", (unsigned long long)size);
         return false;
@@ -121,7 +120,7 @@ bool streaming_pool_init(StreamingMemoryPool* pool, u64 size) {
     pool->peak_memory = 0;
     
     // Initialize free list with entire pool
-    pool->free_list_nodes = (FreeListNode*)memory_alloc(sizeof(FreeListNode) * STREAMING_POOL_MAX_BLOCKS, __FILE__, __LINE__);
+    pool->free_list_nodes = (FreeListNode*)memory_alloc(sizeof(FreeListNode) * STREAMING_POOL_MAX_BLOCKS);
     if (!pool->free_list_nodes) {
         LOG_ERROR("Failed to allocate free list nodes");
         memory_free(pool->pool_memory);
@@ -180,7 +179,7 @@ bool streaming_pool_resize(StreamingMemoryPool* pool, u64 new_size) {
     }
     
     // Reallocate memory
-    u8* new_memory = (u8*)memory_realloc(pool->pool_memory, new_size, __FILE__, __LINE__);
+    u8* new_memory = (u8*)memory_realloc(pool->pool_memory, new_size);
     if (!new_memory) {
         LOG_ERROR("Failed to resize streaming memory pool");
         streaming_pool_unlock(pool);
@@ -372,7 +371,7 @@ StreamingMemoryBlock* streaming_pool_get_block(StreamingMemoryPool* pool, void* 
     for (u32 i = 0; i < STREAMING_POOL_MAX_BLOCKS; i++) {
         StreamingMemoryBlock* block = &pool->blocks[i];
         if (block->status != BLOCK_STATUS_FREE && 
-            (u8*)ptr >= block->data && (u8*)ptr < block->data + block->size) {
+            ptr >= block->data && ptr < block->data + block->size) {
             return block;
         }
     }

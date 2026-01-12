@@ -15,6 +15,7 @@
 // - Quit game with proper cleanup
 //
 #include "../include/ui/pause_menu.h"
+#include "../../../engine/include/core/logger.h"
 // #include "../../../engine/include/audio/audio_system.h"
 #include "../../../engine/include/common.h"
 // #include "../../../engine/include/game/game_world.h"
