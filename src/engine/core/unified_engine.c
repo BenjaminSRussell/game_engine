@@ -102,6 +102,12 @@ EngineConfig engine_create_default_config(void) {
   config.max_clients = 32;
   config.enable_networking = false;
 
+#if defined(__APPLE__)
+  config.renderer_backend = GPU_BACKEND_METAL;
+#else
+  config.renderer_backend = GPU_BACKEND_VULKAN;
+#endif
+
   return config;
 }
 
