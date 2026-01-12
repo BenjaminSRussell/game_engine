@@ -423,7 +423,6 @@ void logger_log_with_category(LogCategory category, LogLevel level, const char *
                             "%s[%-6s]%s ", category_colors[category],
                             g_logger.category_filters[category].name, color_reset);
         if (written < 0 || (size_t)written >= sizeof(log_line) - line_len) {
-            fprintf(stderr, "[LOGGER] Warning: log line truncated (category)\n");
             line_len = sizeof(log_line) - 1;
         } else {
             line_len += written;
@@ -432,7 +431,6 @@ void logger_log_with_category(LogCategory category, LogLevel level, const char *
         int written = snprintf(log_line + line_len, sizeof(log_line) - line_len, "[%-6s] ",
                             g_logger.category_filters[category].name);
         if (written < 0 || (size_t)written >= sizeof(log_line) - line_len) {
-            fprintf(stderr, "[LOGGER] Warning: log line truncated (category)\n");
             line_len = sizeof(log_line) - 1;
         } else {
             line_len += written;
@@ -442,7 +440,6 @@ void logger_log_with_category(LogCategory category, LogLevel level, const char *
     // Guard snprintf against truncation and detect overflow
     int written = snprintf(log_line + line_len, sizeof(log_line) - line_len, "[%s] %s\n", function, buffer);
     if (written < 0 || (size_t)written >= sizeof(log_line) - line_len) {
-        fprintf(stderr, "[LOGGER] Warning: log line truncated (message too long)\n");
         line_len = sizeof(log_line) - 1;
         log_line[line_len - 1] = '\n'; // Ensure newline at end
     } else {

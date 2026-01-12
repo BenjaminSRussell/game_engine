@@ -143,7 +143,7 @@ struct LightingEditorView: View {
                             
                             ColorPropertyEditor(label: "Ambient Color", value: $manager.ambientColor)
                             FloatPropertyEditor(label: "Intensity", value: $manager.ambientIntensity, range: 0...2, step: 0.1)
-                            EditorToggle(label: "Skybox Enabled", isOn: $manager.skyboxEnabled)
+                            EditorToggle("Skybox Enabled", isOn: $manager.skyboxEnabled)
                         }
                         .padding(8)
                         .background(DesignSystem.Colors.backgroundTertiary)

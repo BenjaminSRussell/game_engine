@@ -78,7 +78,7 @@ struct ParticleEditorPanel: View {
                             .pickerStyle(.menu)
                             
                             if viewModel.emitterShape == .box {
-                                EditorVector3Field(label: "Box Size", x: $viewModel.shapeSize.x, y: $viewModel.shapeSize.y, z: $viewModel.shapeSize.z)
+                                EditorVector3Field("Box Size", x: $viewModel.shapeSize.x, y: $viewModel.shapeSize.y, z: $viewModel.shapeSize.z)
                             } else if viewModel.emitterShape == .sphere {
                                 EditorNumericField(label: "Radius", value: $viewModel.shapeRadius, range: 0...10, step: 0.1)
                             } else if viewModel.emitterShape == .cone {

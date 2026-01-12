@@ -140,7 +140,6 @@ void vs_graph_execute(VSGraph *graph, VSNodeID entry_node_id) {
   while (current) {
     // Execute Node Logic
     if (current->type_id == VS_NODE_PRINT) {
-      printf("VS LOG: %s\n", "Hello World (Mock Data)");
       // In real logic, we'd pull inputs here
     }
 

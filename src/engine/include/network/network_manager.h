@@ -1,48 +1,134 @@
 #ifndef NETWORK_MANAGER_H
 #define NETWORK_MANAGER_H
 
-#include "include/network/network_types.h"
-#include "include/network/packet.h"
-#include "include/network/socket.h"
+#include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
 
+// Network constants
+#define MAX_PACKET_SIZE 4096
+#define MAX_CLIENTS 64
+#define MAX_USERNAME_LENGTH 64
+#define MAX_PASSWORD_LENGTH 64
+#define MAX_SERVER_NAME_LENGTH 128
+
+// Packet types
+typedef enum {
+    PACKET_TYPE_CONNECT = 1,
+    PACKET_TYPE_DISCONNECT = 2,
+    PACKET_TYPE_HEARTBEAT = 3,
+    PACKET_TYPE_CHAT = 4,
+    PACKET_TYPE_PLAYER_UPDATE = 5,
+    PACKET_TYPE_WORLD_UPDATE = 6,
+    PACKET_TYPE_ENTITY_SPAWN = 7,
+    PACKET_TYPE_ENTITY_DESTROY = 8,
+    PACKET_TYPE_ENTITY_UPDATE = 9,
+    PACKET_TYPE_BLOCK_CHANGE = 10,
+    PACKET_TYPE_CHUNK_DATA = 11,
+    PACKET_TYPE_SERVER_INFO = 12,
+    PACKET_TYPE_CLIENT_INFO = 13,
+    PACKET_TYPE_AUTH_REQUEST = 14,
+    PACKET_TYPE_AUTH_RESPONSE = 15
+} PacketType;
+
+// Network address structure
 typedef struct {
-  NetSocket *socket;
-  NetworkConfig config;
-  ConnectionState state;
-  bool is_server;
+    char ip[64];
+    uint16_t port;
+} NetAddress;
 
-  // Server specific
-  // For now simple single connection handling or small array
-  //  COMPLETED: Dynamic client list
+// Client info structure
+typedef struct {
+    uint32_t client_id;
+    char username[MAX_USERNAME_LENGTH];
+} ClientInfo;
 
-  // Client specific
-  NetAddress server_addr;
-} NetworkManager;
+// Authentication response
+typedef struct {
+    bool success;
+    uint32_t client_id;
+    char message[256];
+} AuthResponse;
 
-// Initialize the network manager
-// If is_server is true, binds to config.port
-// If is_server is false, binds to any available port
-bool network_init(NetworkManager *net, NetworkConfig config, bool is_server);
+// Chat message
+typedef struct {
+    uint32_t sender_id;
+    char username[MAX_USERNAME_LENGTH];
+    char message[512];
+} ChatMessage;
 
-// Shutdown and cleanup
-void network_shutdown(NetworkManager *net);
+// Player update
+typedef struct {
+    uint32_t player_id;
+    float position[3];
+    float rotation[3];
+    float velocity[3];
+    bool on_ground;
+} PlayerUpdate;
 
-// Update loop (call every frame)
-void network_update(NetworkManager *net, float delta_time);
+// Entity spawn
+typedef struct {
+    uint32_t entity_id;
+    uint32_t entity_type;
+    float position[3];
+    float rotation[3];
+    float scale[3];
+} EntitySpawn;
 
-// Client: Connect to server
-bool network_client_connect(NetworkManager *net, const char *host,
-                            uint16_t port);
+// Entity update
+typedef struct {
+    uint32_t entity_id;
+    float position[3];
+    float rotation[3];
+    float velocity[3];
+    bool active;
+} EntityUpdate;
 
-// Client: Disconnect
-void network_client_disconnect(NetworkManager *net);
+// Block change
+typedef struct {
+    int32_t x, y, z;
+    uint32_t block_type;
+    uint32_t metadata;
+} BlockChange;
 
-// Send packet
-bool network_send_packet(NetworkManager *net, Packet *packet,
-                         const NetAddress *dest);
+// Chunk data
+typedef struct {
+    int32_t chunk_x, chunk_z;
+    uint32_t chunk_size;
+    uint8_t* block_data;
+    uint8_t* metadata_data;
+} ChunkData;
 
-// Broadcast (Server only)
-bool network_broadcast(NetworkManager *net, Packet *packet);
+// Server info
+typedef struct {
+    char server_name[MAX_SERVER_NAME_LENGTH];
+    uint32_t max_players;
+    uint32_t current_players;
+    bool password_required;
+    char motd[256];
+} ServerInfo;
+
+// Server functions
+int network_server_start(const char* server_name, uint16_t port, uint32_t max_players, const char* password);
+int network_server_stop(void);
+int network_server_broadcast(PacketType type, const void* data, size_t data_size);
+int network_server_send_to_client(uint32_t client_id, PacketType type, const void* data, size_t data_size);
+uint32_t network_server_get_client_count(void);
+
+// Client functions
+int network_client_connect(const char* server_address, uint16_t port, const char* username, const char* password);
+int network_client_disconnect(void);
+int network_client_send(PacketType type, const void* data, size_t data_size);
+bool network_client_is_connected(void);
+uint32_t network_client_get_id(void);
+
+// Network update
+int network_update(float delta_time);
+
+// Utility functions
+const char* network_get_error_string(int error_code);
+bool network_is_valid_address(const char* address);
+bool network_is_valid_port(uint16_t port);
+uint32_t network_get_local_ip(void);
 
 #endif // NETWORK_MANAGER_H

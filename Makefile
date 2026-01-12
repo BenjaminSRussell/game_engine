@@ -3561,30 +3561,6 @@ src/engine/animation/skeleton_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system.c.s
 .PHONY : src/engine/animation/skeleton_system.c.s
 
-src/engine/animation/skeleton_system_2.o: src/engine/animation/skeleton_system_2.c.o
-.PHONY : src/engine/animation/skeleton_system_2.o
-
-# target to build an object file
-src/engine/animation/skeleton_system_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system_2.c.o
-.PHONY : src/engine/animation/skeleton_system_2.c.o
-
-src/engine/animation/skeleton_system_2.i: src/engine/animation/skeleton_system_2.c.i
-.PHONY : src/engine/animation/skeleton_system_2.i
-
-# target to preprocess a source file
-src/engine/animation/skeleton_system_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system_2.c.i
-.PHONY : src/engine/animation/skeleton_system_2.c.i
-
-src/engine/animation/skeleton_system_2.s: src/engine/animation/skeleton_system_2.c.s
-.PHONY : src/engine/animation/skeleton_system_2.s
-
-# target to generate assembly for a file
-src/engine/animation/skeleton_system_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system_2.c.s
-.PHONY : src/engine/animation/skeleton_system_2.c.s
-
 src/engine/animation/state_machines/anim_state_machine.o: src/engine/animation/state_machines/anim_state_machine.c.o
 .PHONY : src/engine/animation/state_machines/anim_state_machine.o
 
@@ -22665,30 +22641,6 @@ src/engine/tools/analytics_dashboard.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard.c.s
 .PHONY : src/engine/tools/analytics_dashboard.c.s
 
-src/engine/tools/analytics_dashboard_2.o: src/engine/tools/analytics_dashboard_2.c.o
-.PHONY : src/engine/tools/analytics_dashboard_2.o
-
-# target to build an object file
-src/engine/tools/analytics_dashboard_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.o
-.PHONY : src/engine/tools/analytics_dashboard_2.c.o
-
-src/engine/tools/analytics_dashboard_2.i: src/engine/tools/analytics_dashboard_2.c.i
-.PHONY : src/engine/tools/analytics_dashboard_2.i
-
-# target to preprocess a source file
-src/engine/tools/analytics_dashboard_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.i
-.PHONY : src/engine/tools/analytics_dashboard_2.c.i
-
-src/engine/tools/analytics_dashboard_2.s: src/engine/tools/analytics_dashboard_2.c.s
-.PHONY : src/engine/tools/analytics_dashboard_2.s
-
-# target to generate assembly for a file
-src/engine/tools/analytics_dashboard_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.s
-.PHONY : src/engine/tools/analytics_dashboard_2.c.s
-
 src/engine/tools/asset_browser/asset_view.o: src/engine/tools/asset_browser/asset_view.c.o
 .PHONY : src/engine/tools/asset_browser/asset_view.o
 
@@ -27766,9 +27718,6 @@ help:
 	@echo "... src/engine/animation/skeleton_system.o"
 	@echo "... src/engine/animation/skeleton_system.i"
 	@echo "... src/engine/animation/skeleton_system.s"
-	@echo "... src/engine/animation/skeleton_system_2.o"
-	@echo "... src/engine/animation/skeleton_system_2.i"
-	@echo "... src/engine/animation/skeleton_system_2.s"
 	@echo "... src/engine/animation/state_machines/anim_state_machine.o"
 	@echo "... src/engine/animation/state_machines/anim_state_machine.i"
 	@echo "... src/engine/animation/state_machines/anim_state_machine.s"
@@ -30154,9 +30103,6 @@ help:
 	@echo "... src/engine/tools/analytics_dashboard.o"
 	@echo "... src/engine/tools/analytics_dashboard.i"
 	@echo "... src/engine/tools/analytics_dashboard.s"
-	@echo "... src/engine/tools/analytics_dashboard_2.o"
-	@echo "... src/engine/tools/analytics_dashboard_2.i"
-	@echo "... src/engine/tools/analytics_dashboard_2.s"
 	@echo "... src/engine/tools/asset_browser/asset_view.o"
 	@echo "... src/engine/tools/asset_browser/asset_view.i"
 	@echo "... src/engine/tools/asset_browser/asset_view.s"

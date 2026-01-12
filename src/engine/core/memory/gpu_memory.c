@@ -44,7 +44,6 @@ static u64 align_size(u64 size, u64 alignment) {
 bool gpu_memory_init(GPUMemoryAllocator* allocator, VkDevice device,
                      VkPhysicalDevice physical_device, u64 device_local_budget) {
     if (!allocator || !device || !physical_device) {
-        fprintf(stderr, "[GPU_MEMORY] Invalid parameters\n");
         return false;
     }
 
@@ -62,31 +61,23 @@ bool gpu_memory_init(GPUMemoryAllocator* allocator, VkDevice device,
 
     // Create default memory pools
     if (!gpu_memory_create_pool(allocator, MEMORY_POOL_STAGING, allocator->staging_buffer_size)) {
-        fprintf(stderr, "[GPU_MEMORY] Failed to create staging pool\n");
         return false;
     }
 
     if (!gpu_memory_create_pool(allocator, MEMORY_POOL_DEVICE_LOCAL, device_local_budget)) {
-        fprintf(stderr, "[GPU_MEMORY] Failed to create device-local pool\n");
         return false;
     }
 
     if (!gpu_memory_create_pool(allocator, MEMORY_POOL_DYNAMIC, allocator->dynamic_buffer_size)) {
-        fprintf(stderr, "[GPU_MEMORY] Failed to create dynamic pool\n");
         return false;
     }
 
     if (!gpu_memory_create_pool(allocator, MEMORY_POOL_READBACK, 128 * 1024 * 1024)) {
-        fprintf(stderr, "[GPU_MEMORY] Failed to create readback pool\n");
         return false;
     }
 
     allocator->initialized = true;
 
-    fprintf(stderr, "[GPU_MEMORY] GPU memory allocator initialized\n");
-    fprintf(stderr, "[GPU_MEMORY]  - Device local budget: %.0f MB\n", device_local_budget / (1024.0 * 1024.0));
-    fprintf(stderr, "[GPU_MEMORY]  - Staging pool: %.0f MB\n", allocator->staging_buffer_size / (1024.0 * 1024.0));
-    fprintf(stderr, "[GPU_MEMORY]  - Dynamic pool: %.0f MB\n", allocator->dynamic_buffer_size / (1024.0 * 1024.0));
 
     return true;
 }
@@ -103,7 +94,6 @@ void gpu_memory_shutdown(GPUMemoryAllocator* allocator) {
 
     allocator->initialized = false;
 
-    fprintf(stderr, "[GPU_MEMORY] GPU memory allocator shut down\n");
 }
 
 // ==============================================================================
@@ -172,7 +162,6 @@ bool gpu_memory_create_pool(GPUMemoryAllocator* allocator, MemoryPoolType pool_t
 
     pool->initialized = true;
 
-    fprintf(stderr, "[GPU_MEMORY] Created memory pool (%d): %.0f MB\n",
             pool_type, size / (1024.0 * 1024.0));
 
     return true;
@@ -208,7 +197,6 @@ void gpu_memory_destroy_pool(GPUMemoryAllocator* allocator, MemoryPoolType pool_
 
     pool->initialized = false;
 
-    fprintf(stderr, "[GPU_MEMORY] Destroyed memory pool (%d)\n", pool_type);
 }
 
 void gpu_memory_reset_pool(GPUMemoryAllocator* allocator, MemoryPoolType pool_type) {
@@ -231,7 +219,6 @@ void gpu_memory_reset_pool(GPUMemoryAllocator* allocator, MemoryPoolType pool_ty
     pool->free_blocks[0].size = pool->total_size;
     pool->free_block_count = 1;
 
-    fprintf(stderr, "[GPU_MEMORY] Reset memory pool (%d)\n", pool_type);
 }
 
 // ==============================================================================
@@ -261,13 +248,11 @@ bool gpu_memory_allocate_buffer(GPUMemoryAllocator* allocator, u64 size,
     }
 
     if (best_block == -1) {
-        fprintf(stderr, "[GPU_MEMORY] Allocation failed: insufficient free space in pool %d\n", pool_type);
         return false;
     }
 
     // Record allocation
     if (pool->allocation_count >= 512) {
-        fprintf(stderr, "[GPU_MEMORY] Allocation limit reached for pool %d\n", pool_type);
         return false;
     }
 
@@ -304,7 +289,6 @@ bool gpu_memory_allocate_buffer(GPUMemoryAllocator* allocator, u64 size,
     *out_info = alloc;
     allocator->allocation_count++;
 
-    fprintf(stderr, "[GPU_MEMORY] Allocated %llu bytes (ID: %u, Pool: %d)\n", size, alloc.allocation_id, pool_type);
 
     return true;
 }
@@ -347,7 +331,6 @@ void gpu_memory_deallocate_buffer(GPUMemoryAllocator* allocator, u32 allocation_
 
                 allocator->deallocation_count++;
 
-                fprintf(stderr, "[GPU_MEMORY] Deallocated buffer (ID: %u, Pool: %d)\n", allocation_id, i);
                 return;
             }
         }
@@ -578,33 +561,22 @@ u32 gpu_memory_get_allocation_count(GPUMemoryAllocator* allocator, MemoryPoolTyp
 
 void gpu_memory_log_info(GPUMemoryAllocator* allocator) {
     if (!allocator || !allocator->initialized) {
-        fprintf(stderr, "[GPU_MEMORY] Manager not initialized\n");
         return;
     }
 
-    fprintf(stderr, "[GPU_MEMORY] GPU Memory Allocator Info:\n");
-    fprintf(stderr, "[GPU_MEMORY]   Total allocated: %.0f MB\n",
             gpu_memory_get_allocated_size(allocator) / (1024.0 * 1024.0));
-    fprintf(stderr, "[GPU_MEMORY]   Total free: %.0f MB\n",
             gpu_memory_get_free_size(allocator) / (1024.0 * 1024.0));
-    fprintf(stderr, "[GPU_MEMORY]   Usage: %.1f%%\n", gpu_memory_get_usage_percentage(allocator));
 }
 
 void gpu_memory_log_statistics(GPUMemoryAllocator* allocator) {
     if (!allocator || !allocator->initialized) {
-        fprintf(stderr, "[GPU_MEMORY] Manager not initialized\n");
         return;
     }
 
-    fprintf(stderr, "[GPU_MEMORY] ===== Memory Statistics =====\n");
-    fprintf(stderr, "[GPU_MEMORY] Total allocations: %u\n", allocator->allocation_count);
-    fprintf(stderr, "[GPU_MEMORY] Total deallocations: %u\n", allocator->deallocation_count);
-    fprintf(stderr, "[GPU_MEMORY] Defragmentations: %u\n", allocator->defragmentations);
 
     for (u32 i = 0; i < MEMORY_POOL_COUNT; i++) {
         MemoryPool* pool = &allocator->pools[i];
         if (pool->initialized) {
-            fprintf(stderr, "[GPU_MEMORY] Pool %d: %u allocs, %.0f/%.0f MB used\n",
                     i, pool->allocation_count,
                     pool->allocated_size / (1024.0 * 1024.0),
                     pool->total_size / (1024.0 * 1024.0));
@@ -614,18 +586,15 @@ void gpu_memory_log_statistics(GPUMemoryAllocator* allocator) {
 
 void gpu_memory_log_fragmentation(GPUMemoryAllocator* allocator) {
     if (!allocator || !allocator->initialized) {
-        fprintf(stderr, "[GPU_MEMORY] Manager not initialized\n");
         return;
     }
 
-    fprintf(stderr, "[GPU_MEMORY] ===== Fragmentation Analysis =====\n");
 
     for (u32 i = 0; i < MEMORY_POOL_COUNT; i++) {
         MemoryPool* pool = &allocator->pools[i];
         if (pool->initialized) {
             f32 ratio = gpu_memory_get_fragmentation_ratio(allocator, (MemoryPoolType)i);
             u64 largest = gpu_memory_get_largest_free_block(allocator, (MemoryPoolType)i);
-            fprintf(stderr, "[GPU_MEMORY] Pool %d: fragmentation %.2f, largest free block %.0f MB\n",
                     i, ratio, largest / (1024.0 * 1024.0));
         }
     }
@@ -633,11 +602,9 @@ void gpu_memory_log_fragmentation(GPUMemoryAllocator* allocator) {
 
 void gpu_memory_log_allocations(GPUMemoryAllocator* allocator) {
     if (!allocator || !allocator->initialized) {
-        fprintf(stderr, "[GPU_MEMORY] Manager not initialized\n");
         return;
     }
 
-    fprintf(stderr, "[GPU_MEMORY] ===== Active Allocations =====\n");
 
     for (u32 i = 0; i < MEMORY_POOL_COUNT; i++) {
         MemoryPool* pool = &allocator->pools[i];
@@ -645,10 +612,8 @@ void gpu_memory_log_allocations(GPUMemoryAllocator* allocator) {
             continue;
         }
 
-        fprintf(stderr, "[GPU_MEMORY] Pool %d:\n", i);
         for (u32 j = 0; j < pool->allocation_count; j++) {
             AllocationInfo* alloc = &pool->allocations[j];
-            fprintf(stderr, "[GPU_MEMORY]   ID %u: %.0f bytes @ offset %llu\n",
                     alloc->allocation_id, (f32)alloc->size, alloc->offset);
         }
     }
@@ -664,24 +629,20 @@ void gpu_memory_dump_pool_layout(GPUMemoryAllocator* allocator, MemoryPoolType p
         return;
     }
 
-    fprintf(stderr, "[GPU_MEMORY] Memory layout for pool %d (%.0f MB total):\n",
             pool_type, pool->total_size / (1024.0 * 1024.0));
 
     // Visualize blocks
     for (u32 i = 0; i < pool->allocation_count && i < 32; i++) {
-        fprintf(stderr, "[  A %u  ]", pool->allocations[i].allocation_id);
     }
     fprintf(stderr, "\n");
 
     for (u32 i = 0; i < pool->free_block_count && i < 32; i++) {
-        fprintf(stderr, "[  FREE  ]");
     }
     fprintf(stderr, "\n");
 }
 
 bool gpu_memory_validate(GPUMemoryAllocator* allocator) {
     if (!allocator || !allocator->initialized) {
-        fprintf(stderr, "[GPU_MEMORY] Manager not initialized\n");
         return false;
     }
 
@@ -695,7 +656,6 @@ bool gpu_memory_validate(GPUMemoryAllocator* allocator) {
         // Check that allocated + free = total
         u64 expected_free = pool->total_size - pool->allocated_size;
         if (pool->free_size != expected_free) {
-            fprintf(stderr, "[GPU_MEMORY] Pool %d free size mismatch\n", i);
             return false;
         }
     }
