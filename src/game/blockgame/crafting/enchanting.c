@@ -318,33 +318,97 @@ void enchanting_get_offers(EnchantingTable *table, EnchantmentOffer *out_offers,
   if (!table || !out_offers || offer_count == 0)
     return;
 
-  // Generate 3 random enchantment offers
-  for (u32 i = 0; i < offer_count && i < 3; i++) {
-    // Random enchantment
-    u32 enchant_type = rand() % ENCHANT_COUNT;
-    u32 max_level = enchant_properties[enchant_type].max_level;
-    u32 level = 1 + (rand() % max_level);
+  // Use seeded random for consistent offers based on table position and seed
+  srand(table->xp_seed + (u32)table->position.x + (u32)table->position.y + 
+       (u32)table->position.z);
 
+  // Generate 3 distinct enchantment offers based on bookshelf power
+  u32 used_enchantments[3] = {0}; // Track used enchantments to avoid duplicates
+  
+  for (u32 i = 0; i < offer_count && i < 3; i++) {
+    EnchantmentType enchant_type;
+    u32 attempts = 0;
+    
+    // Try to find a distinct enchantment (avoid duplicates)
+    do {
+      // Weight enchantment selection based on rarity and bookshelf power
+      f32 power_factor = table->enchantment_power / 8.25f; // Normalize to 0-1
+      f32 rand_val = (f32)rand() / RAND_MAX;
+      
+      if (power_factor > 0.7f && rand_val < 0.1f) {
+        // High power: chance for rare enchantments
+        enchant_type = ENCHANT_MENDING + (rand() % (ENCHANT_COUNT - ENCHANT_MENDING));
+      } else if (power_factor > 0.4f && rand_val < 0.3f) {
+        // Medium power: uncommon enchantments
+        enchant_type = ENCHANT_FEATHER_FALLING + (rand() % (ENCHANT_MENDING - ENCHANT_FEATHER_FALLING));
+      } else {
+        // Low power: common enchantments
+        enchant_type = rand() % ENCHANT_FEATHER_FALLING;
+      }
+      
+      attempts++;
+    } while ((enchant_type == used_enchantments[0] || 
+              enchant_type == used_enchantments[1] || 
+              enchant_type == used_enchantments[2]) && attempts < 10);
+    
+    used_enchantments[i] = enchant_type;
+    
+    // Calculate level based on bookshelf power
+    u32 max_level = enchant_properties[enchant_type].max_level;
+    u32 level = 1;
+    
+    // Higher bookshelf power allows higher levels
+    f32 level_chance = (table->enchantment_power / 8.25f) * (f32)max_level;
+    level = 1 + (u32)(level_chance * ((f32)rand() / RAND_MAX));
+    if (level > max_level) level = max_level;
+    
     out_offers[i].enchantment.type = enchant_type;
     out_offers[i].enchantment.level = level;
     out_offers[i].enchantment.max_level = max_level;
 
-    // Calculate cost based on level and bookshelf power
+    // Calculate cost based on enchantment rarity, level, and bookshelf power
     u32 base_cost = enchant_properties[enchant_type].base_cost;
+    EnchantmentRarity rarity = enchant_properties[enchant_type].rarity;
+    
+    // Rarity multiplier
+    f32 rarity_multiplier = 1.0f;
+    switch (rarity) {
+      case RARITY_UNCOMMON: rarity_multiplier = 1.5f; break;
+      case RARITY_RARE: rarity_multiplier = 2.0f; break;
+      case RARITY_VERY_RARE: rarity_multiplier = 3.0f; break;
+      default: break;
+    }
+    
+    // Level and power-based cost calculation
     f32 cost_multiplier = 1.0f + (level - 1) * 0.5f;
     f32 bookshelf_bonus = 1.0f + (table->enchantment_power / 30.0f) * 0.5f;
-
-    out_offers[i].cost_levels =
-        (u32)(base_cost * cost_multiplier * bookshelf_bonus);
+    
+    out_offers[i].cost_levels = (u32)(base_cost * cost_multiplier * 
+                                      rarity_multiplier * bookshelf_bonus);
+    
+    // Cap costs appropriately
+    u32 max_cost = 15 + (u32)(table->enchantment_power * 1.5f);
+    if (out_offers[i].cost_levels > max_cost) {
+      out_offers[i].cost_levels = max_cost;
+    }
     if (out_offers[i].cost_levels > 30) {
-      out_offers[i].cost_levels = 30; // Cap at 30 levels
+      out_offers[i].cost_levels = 30; // Hard cap at 30 levels
     }
 
+    // Lapis cost scales with enchantment level
     out_offers[i].cost_lapis = 1 + (level / 2); // 1-3 lapis based on level
+    
+    // Check if player can afford (placeholder - would check player XP/Lapis)
     out_offers[i].is_available = true;
   }
 
-  LOG_DEBUG("Generated %u enchantment offers", offer_count);
+  // Store offers in table for reference
+  for (u32 i = 0; i < 3; i++) {
+    table->current_offers[i] = out_offers[i];
+  }
+
+  LOG_DEBUG("Generated %u distinct enchantment offers with power %.2f", 
+            offer_count, table->enchantment_power);
 }
 
 // Apply enchantment to item

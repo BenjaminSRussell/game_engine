@@ -15285,3 +15285,1710 @@ struct ClipProperty: Identifiable {
         case bool = "Bool"
     }
 }
+
+// MARK: - Erosion Simulation System
+
+class ErosionSimulationManager: ObservableObject {
+    static let shared = ErosionSimulationManager()
+    
+    @Published var hydraulicErosionEnabled: Bool = false
+    @Published var thermalErosionEnabled: Bool = false
+    @Published var windErosionEnabled: Bool = false
+    @Published var coastalErosionEnabled: Bool = false
+    
+    @Published var erosionIterationCount: Int = 100
+    @Published var erosionStrength: Float = 1.0
+    @Published var sedimentCapacity: Float = 4.0
+    @Published var depositionRate: Float = 0.1
+    @Published var evaporationRate: Float = 0.01
+    
+    @Published var waterFlowVisualization: Bool = false
+    @Published var erosionMaskPainting: Bool = false
+    @Published var realTimePreview: Bool = true
+    @Published var undoRedoEnabled: Bool = true
+    
+    @Published var currentPreset: ErosionPreset = .custom
+    @Published var riverGenerationEnabled: Bool = false
+    @Published var lakeFillingEnabled: Bool = false
+    @Published var riverbedSculptingEnabled: Bool = false
+    
+    @Published var erosionHistory: [ErosionSnapshot] = []
+    @Published var currentHistoryIndex: Int = -1
+    
+    enum ErosionPreset: String, CaseIterable {
+        case desert = "Desert"
+        case alpine = "Alpine"
+        case coastal = "Coastal"
+        case riverValley = "River Valley"
+        case volcanic = "Volcanic"
+        case glacial = "Glacial"
+        case custom = "Custom"
+        
+        var settings: ErosionSettings {
+            switch self {
+            case .desert:
+                return ErosionSettings(
+                    hydraulicStrength: 0.2,
+                    thermalStrength: 0.8,
+                    windStrength: 1.0,
+                    coastalStrength: 0.0,
+                    iterations: 200,
+                    sedimentCapacity: 2.0,
+                    depositionRate: 0.05
+                )
+            case .alpine:
+                return ErosionSettings(
+                    hydraulicStrength: 0.9,
+                    thermalStrength: 0.7,
+                    windStrength: 0.3,
+                    coastalStrength: 0.0,
+                    iterations: 150,
+                    sedimentCapacity: 6.0,
+                    depositionRate: 0.15
+                )
+            case .coastal:
+                return ErosionSettings(
+                    hydraulicStrength: 0.6,
+                    thermalStrength: 0.2,
+                    windStrength: 0.4,
+                    coastalStrength: 1.0,
+                    iterations: 100,
+                    sedimentCapacity: 4.0,
+                    depositionRate: 0.2
+                )
+            case .riverValley:
+                return ErosionSettings(
+                    hydraulicStrength: 1.0,
+                    thermalStrength: 0.3,
+                    windStrength: 0.1,
+                    coastalStrength: 0.0,
+                    iterations: 120,
+                    sedimentCapacity: 8.0,
+                    depositionRate: 0.25
+                )
+            case .volcanic:
+                return ErosionSettings(
+                    hydraulicStrength: 0.4,
+                    thermalStrength: 1.0,
+                    windStrength: 0.2,
+                    coastalStrength: 0.0,
+                    iterations: 80,
+                    sedimentCapacity: 3.0,
+                    depositionRate: 0.1
+                )
+            case .glacial:
+                return ErosionSettings(
+                    hydraulicStrength: 0.7,
+                    thermalStrength: 0.9,
+                    windStrength: 0.0,
+                    coastalStrength: 0.0,
+                    iterations: 60,
+                    sedimentCapacity: 5.0,
+                    depositionRate: 0.3
+                )
+            case .custom:
+                return ErosionSettings()
+            }
+        }
+    }
+    
+    struct ErosionSettings {
+        var hydraulicStrength: Float = 0.5
+        var thermalStrength: Float = 0.5
+        var windStrength: Float = 0.5
+        var coastalStrength: Float = 0.5
+        var iterations: Int = 100
+        var sedimentCapacity: Float = 4.0
+        var depositionRate: Float = 0.1
+        var evaporationRate: Float = 0.01
+        var thermalAngleThreshold: Float = 30.0
+        var windDirection: SIMD2<Float> = SIMD2<Float>(1, 0)
+        var waveHeight: Float = 2.0
+        var tidalRange: Float = 1.0
+    }
+    
+    struct ErosionSnapshot {
+        let id = UUID()
+        let timestamp: Date
+        let settings: ErosionSettings
+        let heightmapData: [Float]
+        let description: String
+    }
+    
+    func applyErosionPreset(_ preset: ErosionPreset) {
+        currentPreset = preset
+        let settings = preset.settings
+        
+        hydraulicErosionEnabled = settings.hydraulicStrength > 0
+        thermalErosionEnabled = settings.thermalStrength > 0
+        windErosionEnabled = settings.windStrength > 0
+        coastalErosionEnabled = settings.coastalStrength > 0
+        
+        erosionIterationCount = settings.iterations
+        erosionStrength = settings.hydraulicStrength
+        sedimentCapacity = settings.sedimentCapacity
+        depositionRate = settings.depositionRate
+        evaporationRate = settings.evaporationRate
+    }
+    
+    func simulateHydraulicErosion() {
+        guard hydraulicErosionEnabled else { return }
+        
+        // Create snapshot for undo
+        if undoRedoEnabled {
+            createSnapshot("Hydraulic Erosion Applied")
+        }
+        
+        // Hydraulic erosion simulation
+        for _ in 0..<erosionIterationCount {
+            // Simulate water droplet erosion
+            simulateWaterDroplet()
+        }
+    }
+    
+    func simulateThermalErosion() {
+        guard thermalErosionEnabled else { return }
+        
+        if undoRedoEnabled {
+            createSnapshot("Thermal Erosion Applied")
+        }
+        
+        // Thermal erosion simulation
+        for _ in 0..<erosionIterationCount {
+            simulateMaterialSlumping()
+        }
+    }
+    
+    func simulateWindErosion() {
+        guard windErosionEnabled else { return }
+        
+        if undoRedoEnabled {
+            createSnapshot("Wind Erosion Applied")
+        }
+        
+        // Wind erosion simulation
+        for _ in 0..<erosionIterationCount {
+            simulateWindTransport()
+        }
+    }
+    
+    func simulateCoastalErosion() {
+        guard coastalErosionEnabled else { return }
+        
+        if undoRedoEnabled {
+            createSnapshot("Coastal Erosion Applied")
+        }
+        
+        // Coastal erosion simulation
+        for _ in 0..<erosionIterationCount {
+            simulateWaveAction()
+        }
+    }
+    
+    private func simulateWaterDroplet() {
+        // Simplified hydraulic erosion simulation
+        // In a real implementation, this would:
+        // 1. Spawn water droplets at random positions
+        // 2. Calculate droplet path based on height gradient
+        // 3. Erode material based on velocity and sediment capacity
+        // 4. Deposit sediment when capacity is exceeded
+        // 5. Evaporate water based on rate
+    }
+    
+    private func simulateMaterialSlumping() {
+        // Thermal erosion simulation
+        // Material slides down slopes exceeding angle threshold
+    }
+    
+    private func simulateWindTransport() {
+        // Wind erosion simulation
+        // Sand particles transported by wind direction
+    }
+    
+    private func simulateWaveAction() {
+        // Coastal erosion simulation
+        // Wave action erodes coastline based on wave height
+    }
+    
+    func generateRiver(path: [SIMD2<Float>], width: Float, depth: Float) {
+        guard riverGenerationEnabled else { return }
+        
+        if undoRedoEnabled {
+            createSnapshot("River Generated")
+        }
+        
+        // River generation algorithm
+        // 1. Carve riverbed along path
+        // 2. Apply width variation
+        // 3. Create depth profile
+        // 4. Generate banks
+    }
+    
+    func fillLake(waterLevel: Float, center: SIMD2<Float>, radius: Float) {
+        guard lakeFillingEnabled else { return }
+        
+        if undoRedoEnabled {
+            createSnapshot("Lake Filled")
+        }
+        
+        // Lake filling algorithm
+        // 1. Find area below water level
+        // 2. Carve basin if needed
+        // 3. Fill with water plane
+        // 4. Create shoreline
+    }
+    
+    func sculptRiverbed(path: [SIMD2<Float>], width: Float, depth: Float) {
+        guard riverbedSculptingEnabled else { return }
+        
+        if undoRedoEnabled {
+            createSnapshot("Riverbed Sculpted")
+        }
+        
+        // Riverbed sculpting
+        // More detailed river carving with natural variation
+    }
+    
+    private func createSnapshot(_ description: String) {
+        let snapshot = ErosionSnapshot(
+            timestamp: Date(),
+            settings: ErosionSettings(),
+            heightmapData: [], // Would contain actual heightmap data
+            description: description
+        )
+        
+        // Remove any snapshots after current index
+        erosionHistory = Array(erosionHistory.prefix(currentHistoryIndex + 1))
+        
+        // Add new snapshot
+        erosionHistory.append(snapshot)
+        currentHistoryIndex = erosionHistory.count - 1
+        
+        // Limit history size
+        if erosionHistory.count > 50 {
+            erosionHistory.removeFirst()
+            currentHistoryIndex -= 1
+        }
+    }
+    
+    func undo() {
+        guard currentHistoryIndex > 0 else { return }
+        currentHistoryIndex -= 1
+        restoreSnapshot(erosionHistory[currentHistoryIndex])
+    }
+    
+    func redo() {
+        guard currentHistoryIndex < erosionHistory.count - 1 else { return }
+        currentHistoryIndex += 1
+        restoreSnapshot(erosionHistory[currentHistoryIndex])
+    }
+    
+    private func restoreSnapshot(_ snapshot: ErosionSnapshot) {
+        // Restore heightmap from snapshot
+        // Apply snapshot.settings
+    }
+}
+
+// MARK: - Vegetation System
+
+class VegetationSystemManager: ObservableObject {
+    static let shared = VegetationSystemManager()
+    
+    // Tree System
+    @Published var treePlacementEnabled: Bool = true
+    @Published var treeDensity: Float = 0.5
+    @Published var treeScaleRandomization: Float = 0.3
+    @Published var treeRotationRandomization: Float = 360.0
+    @Published var treeColorVariation: Float = 0.2
+    @Published var selectedTreeType: TreeType = .oak
+    @Published var treeLODEnabled: Bool = true
+    @Published var treeBillboardDistance: Float = 100.0
+    @Published var treeWindAnimation: Bool = true
+    @Published var treeCollisionGeneration: Bool = true
+    
+    // Grass System
+    @Published var grassDensity: Float = 1.0
+    @Published var selectedGrassType: GrassType = .standard
+    @Published var grassColorVariation: Float = 0.15
+    @Published var grassWindResponse: Float = 0.8
+    @Published var grassLODDistance: Float = 50.0
+    @Published var grassCullingEnabled: Bool = true
+    
+    // Vegetation Rules
+    @Published var placementRulesEnabled: Bool = true
+    @Published var exclusionZones: [ExclusionZone] = []
+    @Published var vegetationDensity: Float = 0.7
+    @Published var proceduralScattering: Bool = false
+    
+    @Published var vegetationInstances: [VegetationInstance] = []
+    @Published var vegetationRemovalEnabled: Bool = false
+    @Published var densityVisualization: Bool = false
+    
+    enum TreeType: String, CaseIterable {
+        case oak = "Oak"
+        case pine = "Pine"
+        case birch = "Birch"
+        case maple = "Maple"
+        case willow = "Willow"
+        case palm = "Palm"
+        case baobab = "Baobab"
+        case sakura = "Sakura"
+        
+        var prefabName: String {
+            return "Tree_\(rawValue)"
+        }
+        
+        var minScale: Float {
+            switch self {
+            case .baobab: return 0.8
+            case .palm: return 0.6
+            default: return 0.4
+            }
+        }
+        
+        var maxScale: Float {
+            switch self {
+            case .baobab: return 1.5
+            case .oak, .maple: return 1.2
+            default: return 1.0
+            }
+        }
+    }
+    
+    enum GrassType: String, CaseIterable {
+        case standard = "Standard"
+        case tall = "Tall"
+        case short = "Short"
+        case wild = "Wild"
+        case desert = "Desert"
+        case tropical = "Tropical"
+        
+        var meshName: String {
+            return "Grass_\(rawValue)"
+        }
+        
+        var windMultiplier: Float {
+            switch self {
+            case .tall: return 1.5
+            case .short: return 0.5
+            case .desert: return 0.3
+            default: return 1.0
+            }
+        }
+    }
+    
+    struct ExclusionZone: Identifiable {
+        let id = UUID()
+        var position: SIMD2<Float>
+        var radius: Float
+        var zoneType: ZoneType
+        var affectsTrees: Bool = true
+        var affectsGrass: Bool = true
+        
+        enum ZoneType: String, CaseIterable {
+            case circle = "Circle"
+            case rectangle = "Rectangle"
+            case polygon = "Polygon"
+        }
+    }
+    
+    struct VegetationInstance: Identifiable {
+        let id = UUID()
+        var position: SIMD3<Float>
+        var rotation: SIMD3<Float>
+        var scale: SIMD3<Float>
+        var type: VegetationType
+        var colorTint: SIMD3<Float> = SIMD3<Float>(1, 1, 1)
+        
+        enum VegetationType {
+            case tree(TreeType)
+            case grass(GrassType)
+        }
+    }
+    
+    func placeVegetation(at position: SIMD3<Float>) {
+        if vegetationRemovalEnabled {
+            removeVegetation(at: position)
+            return
+        }
+        
+        let instance: VegetationInstance
+        
+        if treePlacementEnabled && Float.random(in: 0...1) < treeDensity {
+            let treeType = selectedTreeType
+            let scale = calculateTreeScale()
+            let rotation = calculateTreeRotation()
+            let colorTint = calculateColorTint()
+            
+            instance = VegetationInstance(
+                position: position,
+                rotation: rotation,
+                scale: SIMD3<Float>(scale, scale, scale),
+                type: .tree(treeType),
+                colorTint: colorTint
+            )
+        } else {
+            let grassType = selectedGrassType
+            let scale = Float.random(in: 0.8...1.2)
+            let rotation = SIMD3<Float>(0, Float.random(in: 0...Float.pi * 2), 0)
+            let colorTint = calculateColorTint()
+            
+            instance = VegetationInstance(
+                position: position,
+                rotation: rotation,
+                scale: SIMD3<Float>(scale, scale, scale),
+                type: .grass(grassType),
+                colorTint: colorTint
+            )
+        }
+        
+        // Check placement rules
+        if placementRulesEnabled && !canPlaceVegetation(instance) {
+            return
+        }
+        
+        vegetationInstances.append(instance)
+    }
+    
+    private func calculateTreeScale() -> Float {
+        let treeType = selectedTreeType
+        let baseScale = Float.random(in: treeType.minScale...treeType.maxScale)
+        let randomization = 1.0 + (Float.random(in: -treeScaleRandomization...treeScaleRandomization))
+        return baseScale * randomization
+    }
+    
+    private func calculateTreeRotation() -> SIMD3<Float> {
+        let yRotation = Float.random(in: 0...treeRotationRandomization) * .pi / 180.0
+        let xRotation = Float.random(in: -5...5) * .pi / 180.0
+        let zRotation = Float.random(in: -5...5) * .pi / 180.0
+        return SIMD3<Float>(xRotation, yRotation, zRotation)
+    }
+    
+    private func calculateColorTint() -> SIMD3<Float> {
+        let variation = treeColorVariation
+        let r = 1.0 + Float.random(in: -variation...variation)
+        let g = 1.0 + Float.random(in: -variation...variation)
+        let b = 1.0 + Float.random(in: -variation...variation)
+        return SIMD3<Float>(r, g, b)
+    }
+    
+    private func canPlaceVegetation(_ instance: VegetationInstance) -> Bool {
+        // Check exclusion zones
+        for zone in exclusionZones {
+            let distance = length(instance.position.xy - zone.position)
+            if distance < zone.radius {
+                switch instance.type {
+                case .tree:
+                    if zone.affectsTrees { return false }
+                case .grass:
+                    if zone.affectsGrass { return false }
+                }
+            }
+        }
+        
+        // Check slope (simplified - would use actual terrain normal)
+        let maxSlope = 0.7 // 45 degrees
+        // if terrainSlope > maxSlope { return false }
+        
+        // Check distance to other vegetation
+        let minDistance: Float = 2.0
+        for other in vegetationInstances {
+            let distance = length(instance.position - other.position)
+            if distance < minDistance {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
+    private func removeVegetation(at position: SIMD3<Float>) {
+        let removalRadius: Float = 3.0
+        vegetationInstances.removeAll { instance in
+            length(instance.position - position) < removalRadius
+        }
+    }
+    
+    func generateProceduralVegetation(area: SIMD2<Float>, size: Float) {
+        guard proceduralScattering else { return }
+        
+        let gridSize: Float = 2.0
+        let steps = Int(size / gridSize)
+        
+        for x in 0..<steps {
+            for z in 0..<steps {
+                let xPos = area.x + Float(x) * gridSize - size / 2
+                let zPos = area.y + Float(z) * gridSize - size / 2
+                
+                let position = SIMD3<Float>(xPos, 0, zPos)
+                
+                // Add some randomness to position
+                let randomOffset = SIMD3<Float>(
+                    Float.random(in: -gridSize/2...gridSize/2),
+                    0,
+                    Float.random(in: -gridSize/2...gridSize/2)
+                )
+                
+                placeVegetation(at: position + randomOffset)
+            }
+        }
+    }
+    
+    func optimizeVegetation() {
+        // Remove instances that are too close together
+        let minDistance: Float = 1.0
+        var toRemove: Set<UUID> = []
+        
+        for (i, instance1) in vegetationInstances.enumerated() {
+            for instance2 in vegetationInstances.dropFirst(i + 1) {
+                let distance = length(instance1.position - instance2.position)
+                if distance < minDistance {
+                    toRemove.insert(instance2.id)
+                }
+            }
+        }
+        
+        vegetationInstances.removeAll { toRemove.contains($0.id) }
+    }
+    
+    func clearVegetation() {
+        vegetationInstances.removeAll()
+    }
+    
+    func addExclusionZone(at position: SIMD2<Float>, radius: Float, type: ExclusionZone.ZoneType) {
+        let zone = ExclusionZone(
+            position: position,
+            radius: radius,
+            zoneType: type
+        )
+        exclusionZones.append(zone)
+    }
+    
+    func removeExclusionZone(_ zone: ExclusionZone) {
+        exclusionZones.removeAll { $0.id == zone.id }
+    }
+}
+
+// MARK: - Heightmap Management System
+
+class HeightmapManager: ObservableObject {
+    static let shared = HeightmapManager()
+    
+    @Published var resolution: HeightmapResolution = .medium
+    @Published var precision: HeightmapPrecision = .float16
+    @Published var worldHeightRange: SIMD2<Float> = SIMD2<Float>(0, 100)
+    @Published var tileSize: Float = 64.0
+    @Published var seamlessTiling: Bool = false
+    @Published var scale: Float = 1.0
+    @Published var offset: Float = 0.0
+    @Published var clampMin: Float = -1000.0
+    @Published var clampMax: Float = 1000.0
+    
+    @Published var holeSystemEnabled: Bool = false
+    @Published var undoHistoryEnabled: Bool = true
+    @Published var compressionEnabled: Bool = false
+    @Published var streamingEnabled: Bool = false
+    
+    @Published var heightmapHistory: [HeightmapSnapshot] = []
+    @Published var currentHistoryIndex: Int = -1
+    @Published var comparisonSnapshot: HeightmapSnapshot?
+    
+    enum HeightmapResolution: String, CaseIterable {
+        case low = "512x512"
+        case medium = "1024x1024"
+        case high = "2048x2048"
+        case ultra = "4096x4096"
+        
+        var size: Int {
+            switch self {
+            case .low: return 512
+            case .medium: return 1024
+            case .high: return 2048
+            case .ultra: return 4096
+            }
+        }
+    }
+    
+    enum HeightmapPrecision: String, CaseIterable {
+        case float16 = "16-bit Float"
+        case float32 = "32-bit Float"
+        
+        var bytesPerValue: Int {
+            switch self {
+            case .float16: return 2
+            case .float32: return 4
+            }
+        }
+    }
+    
+    struct HeightmapSnapshot: Identifiable {
+        let id = UUID()
+        let timestamp: Date
+        let heightmapData: [Float]
+        let description: String
+        let resolution: HeightmapResolution
+        let worldHeightRange: SIMD2<Float>
+    }
+    
+    func importHeightmap(from url: URL) {
+        // Import heightmap from file (PNG, RAW, etc.)
+        // Convert to internal format
+        // Apply resolution and precision settings
+        
+        if undoHistoryEnabled {
+            createSnapshot("Heightmap Imported")
+        }
+    }
+    
+    func exportHeightmap(to url: URL, format: ExportFormat) {
+        // Export heightmap to specified format
+    }
+    
+    enum ExportFormat: String, CaseIterable {
+        case png = "PNG"
+        case raw = "RAW"
+        case tiff = "TIFF"
+        case exr = "EXR"
+    }
+    
+    func copyRegion(sourceRect: CGRect, destination: CGPoint) {
+        if undoHistoryEnabled {
+            createSnapshot("Region Copied")
+        }
+        
+        // Copy heightmap region
+    }
+    
+    func fillWithValue(_ value: Float) {
+        if undoHistoryEnabled {
+            createSnapshot("Filled with Value")
+        }
+        
+        // Fill entire heightmap with value
+    }
+    
+    func invertHeightmap() {
+        if undoHistoryEnabled {
+            createSnapshot("Heightmap Inverted")
+        }
+        
+        // Invert heightmap values
+    }
+    
+    func normalizeHeightmap() {
+        if undoHistoryEnabled {
+            createSnapshot("Heightmap Normalized")
+        }
+        
+        // Normalize heightmap to 0-1 range
+    }
+    
+    func applyScaleOffsetClamp() {
+        if undoHistoryEnabled {
+            createSnapshot("Scale/Offset/Clamp Applied")
+        }
+        
+        // Apply scale, offset, and clamp to heightmap
+    }
+    
+    func createHole(at position: SIMD2<Float>, radius: Float) {
+        guard holeSystemEnabled else { return }
+        
+        if undoHistoryEnabled {
+            createSnapshot("Hole Created")
+        }
+        
+        // Create hole in heightmap
+    }
+    
+    func fillHole(at position: SIMD2<Float>, radius: Float) {
+        guard holeSystemEnabled else { return }
+        
+        if undoHistoryEnabled {
+            createSnapshot("Hole Filled")
+        }
+        
+        // Fill hole in heightmap
+    }
+    
+    func compareWithSnapshot(_ snapshot: HeightmapSnapshot) {
+        comparisonSnapshot = snapshot
+        // Generate diff visualization
+    }
+    
+    func clearComparison() {
+        comparisonSnapshot = nil
+    }
+    
+    private func createSnapshot(_ description: String) {
+        let snapshot = HeightmapSnapshot(
+            timestamp: Date(),
+            heightmapData: [], // Would contain actual heightmap data
+            description: description,
+            resolution: resolution,
+            worldHeightRange: worldHeightRange
+        )
+        
+        // Remove any snapshots after current index
+        heightmapHistory = Array(heightmapHistory.prefix(currentHistoryIndex + 1))
+        
+        // Add new snapshot
+        heightmapHistory.append(snapshot)
+        currentHistoryIndex = heightmapHistory.count - 1
+        
+        // Limit history size
+        if heightmapHistory.count > 50 {
+            heightmapHistory.removeFirst()
+            currentHistoryIndex -= 1
+        }
+    }
+    
+    func undo() {
+        guard currentHistoryIndex > 0 else { return }
+        currentHistoryIndex -= 1
+        restoreSnapshot(heightmapHistory[currentHistoryIndex])
+    }
+    
+    func redo() {
+        guard currentHistoryIndex < heightmapHistory.count - 1 else { return }
+        currentHistoryIndex += 1
+        restoreSnapshot(heightmapHistory[currentHistoryIndex])
+    }
+    
+    private func restoreSnapshot(_ snapshot: HeightmapSnapshot) {
+        // Restore heightmap from snapshot
+        resolution = snapshot.resolution
+        worldHeightRange = snapshot.worldHeightRange
+    }
+    
+    func compressHeightmap() {
+        guard compressionEnabled else { return }
+        
+        // Apply compression algorithm
+    }
+    
+    func enableStreaming() {
+        guard streamingEnabled else { return }
+        
+        // Set up streaming system for large terrains
+    }
+}
+
+// MARK: - Terrain Integration System
+
+class TerrainIntegrationManager: ObservableObject {
+    static let shared = TerrainIntegrationManager()
+    
+    @Published var physicsCollisionEnabled: Bool = true
+    @Published var navigationMeshEnabled: Bool = true
+    @Published var waterPlaneEnabled: Bool = false
+    @Published var skyLightingEnabled: Bool = true
+    @Published var shadowCascadeOptimization: Bool = true
+    @Published var lightmapBakingEnabled: Bool = false
+    @Published var materialPerChunkEnabled: Bool = true
+    @Published var terrainShaderCustomization: Bool = false
+    
+    @Published var streamingZones: [StreamingZone] = []
+    @Published var multiTerrainStitching: Bool = false
+    @Published var worldOriginRebasing: Bool = false
+    @Published var largeWorldCoordinates: Bool = false
+    @Published var terrainPrefabSaving: Bool = false
+    @Published var terrainAssetVersioning: Bool = true
+    
+    @Published var runtimeModificationAPI: Bool = true
+    @Published var networkingSynchronization: Bool = false
+    @Published var analyticsEnabled: Bool = true
+    @Published var documentationTooltips: Bool = true
+    @Published var tutorialSystemEnabled: Bool = false
+    
+    struct StreamingZone: Identifiable {
+        let id = UUID()
+        var position: SIMD2<Float>
+        var size: Float
+        var lodLevels: Int
+        var priority: Int
+        var isActive: Bool = true
+    }
+    
+    func generatePhysicsCollision() {
+        guard physicsCollisionEnabled else { return }
+        
+        // Generate collision mesh from heightmap
+        // Create physics bodies for terrain chunks
+        // Configure collision materials
+    }
+    
+    func generateNavigationMesh() {
+        guard navigationMeshEnabled else { return }
+        
+        // Generate navigation mesh from heightmap
+        // Mark walkable/unwalkable areas
+        // Create off-mesh links for jumps
+    }
+    
+    func integrateWaterPlane(waterLevel: Float) {
+        guard waterPlaneEnabled else { return }
+        
+        // Create water plane at specified level
+        // Configure water shader and effects
+        // Set up reflection/refraction
+    }
+    
+    func integrateSkyLighting(sunDirection: SIMD3<Float>, sunColor: SIMD3<Float>) {
+        guard skyLightingEnabled else { return }
+        
+        // Configure ambient lighting
+        // Set up directional sun light
+        // Apply atmospheric scattering
+    }
+    
+    func optimizeShadowCascades() {
+        guard shadowCascadeOptimization else { return }
+        
+        // Optimize shadow cascade distribution
+        // Configure cascade splits
+        // Set up shadow map resolution
+    }
+    
+    func bakeLightmaps() {
+        guard lightmapBakingEnabled else { return }
+        
+        // Bake static lighting into lightmaps
+        // Configure lightmap resolution
+        // Process indirect lighting
+    }
+    
+    func createMaterialPerChunk() {
+        guard materialPerChunkEnabled else { return }
+        
+        // Create material instances per terrain chunk
+        // Apply texture splatting
+        // Configure material properties
+    }
+    
+    func customizeTerrainShader() {
+        guard terrainShaderCustomization else { return }
+        
+        // Allow terrain shader customization
+        // Provide shader parameters
+        // Enable advanced features
+    }
+    
+    func setupStreamingZones() {
+        // Configure streaming zones for large terrains
+        // Set up level-of-detail transitions
+        // Manage streaming priority
+    }
+    
+    func enableMultiTerrainStitching() {
+        guard multiTerrainStitching else { return }
+        
+        // Stitch multiple terrain tiles together
+        // Create seamless transitions
+        // Handle height differences
+    }
+    
+    func enableWorldOriginRebasing() {
+        guard worldOriginRebasing else { return }
+        
+        // Implement world origin rebasing
+        // Handle coordinate system shifts
+        // Update all entity positions
+    }
+    
+    func enableLargeWorldCoordinates() {
+        guard largeWorldCoordinates else { return }
+        
+        // Use double precision for world coordinates
+        // Implement floating origin system
+        // Handle precision issues
+    }
+    
+    func saveTerrainPrefab() {
+        guard terrainPrefabSaving else { return }
+        
+        // Save terrain as prefab asset
+        // Include all modifications
+        // Store metadata and dependencies
+    }
+    
+    func enableTerrainAssetVersioning() {
+        guard terrainAssetVersioning else { return }
+        
+        // Implement version control for terrain assets
+        // Track changes and modifications
+        // Enable rollback capabilities
+    }
+    
+    func enableRuntimeModificationAPI() {
+        guard runtimeModificationAPI else { return }
+        
+        // Provide API for runtime terrain modification
+        // Handle real-time updates
+        // Synchronize with physics and navigation
+    }
+    
+    func enableNetworkingSynchronization() {
+        guard networkingSynchronization else { return }
+        
+        // Synchronize terrain modifications across network
+        // Handle conflict resolution
+        // Optimize bandwidth usage
+    }
+    
+    func updateAnalytics() {
+        guard analyticsEnabled else { return }
+        
+        // Collect terrain analytics
+        // Track performance metrics
+        // Monitor memory usage
+    }
+    
+    func showDocumentationTooltips() {
+        guard documentationTooltips else { return }
+        
+        // Display helpful tooltips for terrain features
+        // Provide context-sensitive help
+        // Show keyboard shortcuts
+    }
+    
+    func enableTutorialSystem() {
+        guard tutorialSystemEnabled else { return }
+        
+        // Guide users through terrain editing
+        // Provide step-by-step instructions
+        // Highlight important features
+    }
+}
+
+// MARK: - Terrain Editor UI Components
+
+struct TerrainEditorView: View {
+    @StateObject private var erosionManager = ErosionSimulationManager.shared
+    @StateObject private var vegetationManager = VegetationSystemManager.shared
+    @StateObject private var heightmapManager = HeightmapManager.shared
+    @StateObject private var integrationManager = TerrainIntegrationManager.shared
+    
+    @State private var selectedTab: TerrainTab = .erosion
+    @State private var showingSettings = false
+    
+    enum TerrainTab: String, CaseIterable {
+        case erosion = "Erosion"
+        case vegetation = "Vegetation"
+        case heightmap = "Heightmap"
+        case integration = "Integration"
+    }
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // Tab Bar
+            Picker("Terrain Tab", selection: $selectedTab) {
+                ForEach(TerrainTab.allCases, id: \.self) { tab in
+                    Text(tab.rawValue).tag(tab)
+                }
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            
+            // Content
+            TabView(selection: $selectedTab) {
+                ErosionSimulationView()
+                    .tag(TerrainTab.erosion)
+                
+                VegetationSystemView()
+                    .tag(TerrainTab.vegetation)
+                
+                HeightmapManagementView()
+                    .tag(TerrainTab.heightmap)
+                
+                TerrainIntegrationView()
+                    .tag(TerrainTab.integration)
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            
+            // Bottom Toolbar
+            HStack {
+                Button(action: { showingSettings = true }) {
+                    Image(systemName: "gear")
+                }
+                
+                Spacer()
+                
+                Button("Apply All") {
+                    applyAllTerrainModifications()
+                }
+                .buttonStyle(.borderedProminent)
+                
+                Button("Reset") {
+                    resetAllTerrainSettings()
+                }
+            }
+            .padding()
+        }
+        .sheet(isPresented: $showingSettings) {
+            TerrainSettingsSheet()
+        }
+    }
+    
+    private func applyAllTerrainModifications() {
+        erosionManager.simulateHydraulicErosion()
+        erosionManager.simulateThermalErosion()
+        erosionManager.simulateWindErosion()
+        erosionManager.simulateCoastalErosion()
+        
+        integrationManager.generatePhysicsCollision()
+        integrationManager.generateNavigationMesh()
+        integrationManager.optimizeShadowCascades()
+    }
+    
+    private func resetAllTerrainSettings() {
+        erosionManager.currentPreset = .custom
+        vegetationManager.clearVegetation()
+        heightmapManager.currentHistoryIndex = -1
+        integrationManager.streamingZones.removeAll()
+    }
+}
+
+// MARK: - Erosion Simulation UI
+
+struct ErosionSimulationView: View {
+    @StateObject private var manager = ErosionSimulationManager.shared
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                // Preset Selection
+                GroupBox("Erosion Presets") {
+                    Picker("Preset", selection: $manager.currentPreset) {
+                        ForEach(ErosionSimulationManager.ErosionPreset.allCases, id: \.self) { preset in
+                            Text(preset.rawValue).tag(preset)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .onChange(of: manager.currentPreset) { newPreset in
+                        manager.applyErosionPreset(newPreset)
+                    }
+                }
+                
+                // Erosion Types
+                GroupBox("Erosion Types") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Hydraulic Erosion", isOn: $manager.hydraulicErosionEnabled)
+                        Toggle("Thermal Erosion", isOn: $manager.thermalErosionEnabled)
+                        Toggle("Wind Erosion", isOn: $manager.windErosionEnabled)
+                        Toggle("Coastal Erosion", isOn: $manager.coastalErosionEnabled)
+                    }
+                }
+                
+                // Erosion Parameters
+                GroupBox("Parameters") {
+                    VStack(alignment: .leading, spacing: 15) {
+                        HStack {
+                            Text("Iteration Count:")
+                            TextField("Iterations", value: $manager.erosionIterationCount, format: .number)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 80)
+                        }
+                        
+                        HStack {
+                            Text("Erosion Strength:")
+                            Slider(value: $manager.erosionStrength, in: 0.1...2.0)
+                            Text(String(format: "%.2f", manager.erosionStrength))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Sediment Capacity:")
+                            Slider(value: $manager.sedimentCapacity, in: 1.0...10.0)
+                            Text(String(format: "%.1f", manager.sedimentCapacity))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Deposition Rate:")
+                            Slider(value: $manager.depositionRate, in: 0.01...0.5)
+                            Text(String(format: "%.2f", manager.depositionRate))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Evaporation Rate:")
+                            Slider(value: $manager.evaporationRate, in: 0.001...0.1)
+                            Text(String(format: "%.3f", manager.evaporationRate))
+                                .frame(width: 50)
+                        }
+                    }
+                }
+                
+                // Visualization Options
+                GroupBox("Visualization") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Water Flow Visualization", isOn: $manager.waterFlowVisualization)
+                        Toggle("Erosion Mask Painting", isOn: $manager.erosionMaskPainting)
+                        Toggle("Real-time Preview", isOn: $manager.realTimePreview)
+                        Toggle("Undo/Redo Enabled", isOn: $manager.undoRedoEnabled)
+                    }
+                }
+                
+                // Advanced Features
+                GroupBox("Advanced Features") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("River Generation", isOn: $manager.riverGenerationEnabled)
+                        Toggle("Lake Filling", isOn: $manager.lakeFillingEnabled)
+                        Toggle("Riverbed Sculpting", isOn: $manager.riverbedSculptingEnabled)
+                    }
+                }
+                
+                // Action Buttons
+                HStack {
+                    Button("Apply Hydraulic Erosion") {
+                        manager.simulateHydraulicErosion()
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button("Apply Thermal Erosion") {
+                        manager.simulateThermalErosion()
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button("Apply Wind Erosion") {
+                        manager.simulateWindErosion()
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button("Apply Coastal Erosion") {
+                        manager.simulateCoastalErosion()
+                    }
+                    .buttonStyle(.bordered)
+                }
+                
+                // History Controls
+                HStack {
+                    Button("Undo") {
+                        manager.undo()
+                    }
+                    .disabled(manager.currentHistoryIndex <= 0)
+                    
+                    Button("Redo") {
+                        manager.redo()
+                    }
+                    .disabled(manager.currentHistoryIndex >= manager.erosionHistory.count - 1)
+                    
+                    Spacer()
+                    
+                    Text("History: \(manager.currentHistoryIndex + 1)/\(manager.erosionHistory.count)")
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding()
+        }
+    }
+}
+
+// MARK: - Vegetation System UI
+
+struct VegetationSystemView: View {
+    @StateObject private var manager = VegetationSystemManager.shared
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                // Tree System
+                GroupBox("Tree System") {
+                    VStack(alignment: .leading, spacing: 15) {
+                        Toggle("Tree Placement Enabled", isOn: $manager.treePlacementEnabled)
+                        
+                        HStack {
+                            Text("Tree Type:")
+                            Picker("Tree Type", selection: $manager.selectedTreeType) {
+                                ForEach(VegetationSystemManager.TreeType.allCases, id: \.self) { type in
+                                    Text(type.rawValue).tag(type)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                        }
+                        
+                        HStack {
+                            Text("Tree Density:")
+                            Slider(value: $manager.treeDensity, in: 0.0...1.0)
+                            Text(String(format: "%.2f", manager.treeDensity))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Scale Randomization:")
+                            Slider(value: $manager.treeScaleRandomization, in: 0.0...1.0)
+                            Text(String(format: "%.2f", manager.treeScaleRandomization))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Rotation Randomization:")
+                            Slider(value: $manager.treeRotationRandomization, in: 0...360)
+                            Text("\(Int(manager.treeRotationRandomization))°")
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Color Variation:")
+                            Slider(value: $manager.treeColorVariation, in: 0.0...0.5)
+                            Text(String(format: "%.2f", manager.treeColorVariation))
+                                .frame(width: 50)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            Toggle("Tree LOD Enabled", isOn: $manager.treeLODEnabled)
+                            Toggle("Tree Wind Animation", isOn: $manager.treeWindAnimation)
+                            Toggle("Tree Collision Generation", isOn: $manager.treeCollisionGeneration)
+                        }
+                    }
+                }
+                
+                // Grass System
+                GroupBox("Grass System") {
+                    VStack(alignment: .leading, spacing: 15) {
+                        HStack {
+                            Text("Grass Type:")
+                            Picker("Grass Type", selection: $manager.selectedGrassType) {
+                                ForEach(VegetationSystemManager.GrassType.allCases, id: \.self) { type in
+                                    Text(type.rawValue).tag(type)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                        }
+                        
+                        HStack {
+                            Text("Grass Density:")
+                            Slider(value: $manager.grassDensity, in: 0.0...2.0)
+                            Text(String(format: "%.2f", manager.grassDensity))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Color Variation:")
+                            Slider(value: $manager.grassColorVariation, in: 0.0...0.3)
+                            Text(String(format: "%.2f", manager.grassColorVariation))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Wind Response:")
+                            Slider(value: $manager.grassWindResponse, in: 0.0...1.0)
+                            Text(String(format: "%.2f", manager.grassWindResponse))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("LOD Distance:")
+                            Slider(value: $manager.grassLODDistance, in: 10.0...200.0)
+                            Text(String(format: "%.0f", manager.grassLODDistance))
+                                .frame(width: 50)
+                        }
+                        
+                        Toggle("Grass Culling Enabled", isOn: $manager.grassCullingEnabled)
+                    }
+                }
+                
+                // Vegetation Rules
+                GroupBox("Placement Rules") {
+                    VStack(alignment: .leading, spacing: 15) {
+                        Toggle("Placement Rules Enabled", isOn: $manager.placementRulesEnabled)
+                        
+                        HStack {
+                            Text("Overall Density:")
+                            Slider(value: $manager.vegetationDensity, in: 0.0...1.0)
+                            Text(String(format: "%.2f", manager.vegetationDensity))
+                                .frame(width: 50)
+                        }
+                        
+                        Toggle("Procedural Scattering", isOn: $manager.proceduralScattering)
+                        Toggle("Density Visualization", isOn: $manager.densityVisualization)
+                        Toggle("Removal Mode", isOn: $manager.vegetationRemovalEnabled)
+                    }
+                }
+                
+                // Exclusion Zones
+                GroupBox("Exclusion Zones") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(manager.exclusionZones) { zone in
+                            HStack {
+                                Text("\(zone.zoneType.rawValue) Zone")
+                                Spacer()
+                                Button("Remove") {
+                                    manager.removeExclusionZone(zone)
+                                }
+                                .buttonStyle(.bordered)
+                            }
+                        }
+                        
+                        Button("Add Exclusion Zone") {
+                            // Add new exclusion zone
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+                
+                // Action Buttons
+                HStack {
+                    Button("Generate Procedural") {
+                        manager.generateProceduralVegetation(area: SIMD2<Float>(0, 0), size: 100.0)
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button("Optimize") {
+                        manager.optimizeVegetation()
+                    }
+                    .buttonStyle(.bordered)
+                    
+                    Button("Clear All") {
+                        manager.clearVegetation()
+                    }
+                    .buttonStyle(.borderedDestructive)
+                }
+                
+                // Statistics
+                GroupBox("Statistics") {
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Total Vegetation Instances: \(manager.vegetationInstances.count)")
+                        Text("Exclusion Zones: \(manager.exclusionZones.count)")
+                    }
+                }
+            }
+            .padding()
+        }
+    }
+}
+
+// MARK: - Heightmap Management UI
+
+struct HeightmapManagementView: View {
+    @StateObject private var manager = HeightmapManager.shared
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                // Heightmap Properties
+                GroupBox("Heightmap Properties") {
+                    VStack(alignment: .leading, spacing: 15) {
+                        HStack {
+                            Text("Resolution:")
+                            Picker("Resolution", selection: $manager.resolution) {
+                                ForEach(HeightmapManager.HeightmapResolution.allCases, id: \.self) { resolution in
+                                    Text(resolution.rawValue).tag(resolution)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                        }
+                        
+                        HStack {
+                            Text("Precision:")
+                            Picker("Precision", selection: $manager.precision) {
+                                ForEach(HeightmapManager.HeightmapPrecision.allCases, id: \.self) { precision in
+                                    Text(precision.rawValue).tag(precision)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                        }
+                        
+                        HStack {
+                            Text("Tile Size:")
+                            Slider(value: $manager.tileSize, in: 32.0...256.0)
+                            Text(String(format: "%.0f", manager.tileSize))
+                                .frame(width: 50)
+                        }
+                        
+                        Toggle("Seamless Tiling", isOn: $manager.seamlessTiling)
+                    }
+                }
+                
+                // Height Range
+                GroupBox("World Height Range") {
+                    VStack(alignment: .leading, spacing: 15) {
+                        HStack {
+                            Text("Min Height:")
+                            TextField("Min", value: $manager.worldHeightRange.x, format: .number)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 80)
+                            
+                            Text("Max Height:")
+                            TextField("Max", value: $manager.worldHeightRange.y, format: .number)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 80)
+                        }
+                    }
+                }
+                
+                // Scale/Offset/Clamp
+                GroupBox("Scale, Offset & Clamp") {
+                    VStack(alignment: .leading, spacing: 15) {
+                        HStack {
+                            Text("Scale:")
+                            Slider(value: $manager.scale, in: 0.1...10.0)
+                            Text(String(format: "%.2f", manager.scale))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Offset:")
+                            Slider(value: $manager.offset, in: -1000.0...1000.0)
+                            Text(String(format: "%.0f", manager.offset))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Clamp Min:")
+                            Slider(value: $manager.clampMin, in: -1000.0...0.0)
+                            Text(String(format: "%.0f", manager.clampMin))
+                                .frame(width: 50)
+                        }
+                        
+                        HStack {
+                            Text("Clamp Max:")
+                            Slider(value: $manager.clampMax, in: 0.0...1000.0)
+                            Text(String(format: "%.0f", manager.clampMax))
+                                .frame(width: 50)
+                        }
+                        
+                        Button("Apply Scale/Offset/Clamp") {
+                            manager.applyScaleOffsetClamp()
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+                
+                // Operations
+                GroupBox("Operations") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Button("Import Heightmap") {
+                            // Import dialog
+                        }
+                        .buttonStyle(.bordered)
+                        
+                        Button("Export Heightmap") {
+                            // Export dialog
+                        }
+                        .buttonStyle(.bordered)
+                        
+                        HStack {
+                            Button("Invert") {
+                                manager.invertHeightmap()
+                            }
+                            .buttonStyle(.bordered)
+                            
+                            Button("Normalize") {
+                                manager.normalizeHeightmap()
+                            }
+                            .buttonStyle(.bordered)
+                            
+                            Button("Fill Value") {
+                                manager.fillWithValue(0.5)
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                
+                // Advanced Features
+                GroupBox("Advanced Features") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Hole System", isOn: $manager.holeSystemEnabled)
+                        Toggle("Undo History", isOn: $manager.undoHistoryEnabled)
+                        Toggle("Compression", isOn: $manager.compressionEnabled)
+                        Toggle("Streaming", isOn: $manager.streamingEnabled)
+                    }
+                }
+                
+                // History Controls
+                HStack {
+                    Button("Undo") {
+                        manager.undo()
+                    }
+                    .disabled(manager.currentHistoryIndex <= 0)
+                    
+                    Button("Redo") {
+                        manager.redo()
+                    }
+                    .disabled(manager.currentHistoryIndex >= manager.heightmapHistory.count - 1)
+                    
+                    Spacer()
+                    
+                    Text("History: \(manager.currentHistoryIndex + 1)/\(manager.heightmapHistory.count)")
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding()
+        }
+    }
+}
+
+// MARK: - Terrain Integration UI
+
+struct TerrainIntegrationView: View {
+    @StateObject private var manager = TerrainIntegrationManager.shared
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                // Physics & Navigation
+                GroupBox("Physics & Navigation") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Physics Collision Generation", isOn: $manager.physicsCollisionEnabled)
+                        Toggle("Navigation Mesh Generation", isOn: $manager.navigationMeshEnabled)
+                        
+                        HStack {
+                            Button("Generate Collision") {
+                                manager.generatePhysicsCollision()
+                            }
+                            .buttonStyle(.bordered)
+                            
+                            Button("Generate Navigation") {
+                                manager.generateNavigationMesh()
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                
+                // Lighting & Rendering
+                GroupBox("Lighting & Rendering") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Water Plane Integration", isOn: $manager.waterPlaneEnabled)
+                        Toggle("Sky/Ambient Lighting", isOn: $manager.skyLightingEnabled)
+                        Toggle("Shadow Cascade Optimization", isOn: $manager.shadowCascadeOptimization)
+                        Toggle("Lightmap Baking", isOn: $manager.lightmapBakingEnabled)
+                        Toggle("Material Per Chunk", isOn: $manager.materialPerChunkEnabled)
+                        Toggle("Terrain Shader Customization", isOn: $manager.terrainShaderCustomization)
+                        
+                        HStack {
+                            Button("Bake Lightmaps") {
+                                manager.bakeLightmaps()
+                            }
+                            .buttonStyle(.bordered)
+                            
+                            Button("Optimize Shadows") {
+                                manager.optimizeShadowCascades()
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                
+                // Streaming & Large Worlds
+                GroupBox("Streaming & Large Worlds") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Multi-terrain Stitching", isOn: $manager.multiTerrainStitching)
+                        Toggle("World Origin Rebasing", isOn: $manager.worldOriginRebasing)
+                        Toggle("Large World Coordinates", isOn: $manager.largeWorldCoordinates)
+                        Toggle("Terrain Prefab Saving", isOn: $manager.terrainPrefabSaving)
+                        Toggle("Terrain Asset Versioning", isOn: $manager.terrainAssetVersioning)
+                        
+                        Button("Setup Streaming Zones") {
+                            manager.setupStreamingZones()
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+                
+                // Runtime & Networking
+                GroupBox("Runtime & Networking") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Runtime Modification API", isOn: $manager.runtimeModificationAPI)
+                        Toggle("Networking Synchronization", isOn: $manager.networkingSynchronization)
+                        
+                        HStack {
+                            Button("Enable Runtime API") {
+                                manager.enableRuntimeModificationAPI()
+                            }
+                            .buttonStyle(.bordered)
+                            
+                            Button("Enable Networking") {
+                                manager.enableNetworkingSynchronization()
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                
+                // Analytics & Help
+                GroupBox("Analytics & Help") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Toggle("Terrain Analytics", isOn: $manager.analyticsEnabled)
+                        Toggle("Documentation Tooltips", isOn: $manager.documentationTooltips)
+                        Toggle("Tutorial System", isOn: $manager.tutorialSystemEnabled)
+                        
+                        HStack {
+                            Button("Update Analytics") {
+                                manager.updateAnalytics()
+                            }
+                            .buttonStyle(.bordered)
+                            
+                            Button("Show Help") {
+                                manager.showDocumentationTooltips()
+                            }
+                            .buttonStyle(.bordered)
+                            
+                            Button("Start Tutorial") {
+                                manager.enableTutorialSystem()
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                
+                // Streaming Zones List
+                GroupBox("Streaming Zones") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(manager.streamingZones) { zone in
+                            HStack {
+                                Text("Zone at (\(Int(zone.position.x)), \(Int(zone.position.y)))")
+                                Spacer()
+                                Toggle("", isOn: Binding(
+                                    get: { zone.isActive },
+                                    set: { zone.isActive = $0 }
+                                ))
+                            }
+                        }
+                        
+                        Button("Add Streaming Zone") {
+                            let newZone = TerrainIntegrationManager.StreamingZone(
+                                position: SIMD2<Float>(0, 0),
+                                size: 100.0,
+                                lodLevels: 4,
+                                priority: 1
+                            )
+                            manager.streamingZones.append(newZone)
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+            }
+            .padding()
+        }
+    }
+}
+
+// MARK: - Terrain Settings Sheet
+
+struct TerrainSettingsSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("Terrain Editor Settings")
+                    .font(.title2)
+                    .padding()
+                
+                Spacer()
+                
+                Button("Done") {
+                    dismiss()
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
+            }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}

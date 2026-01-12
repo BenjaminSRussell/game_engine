@@ -10209,3 +10209,138 @@ struct BoundsPropertyEditor: View {
         }
     }
 }
+
+// MARK: - Range Editor (min-max pair) (TODO-1755)
+struct RangePropertyEditor: View {
+    let label: String
+    @Binding var range: ClosedRange<Float>
+    var minLimit: Float = -Float.infinity
+    var maxLimit: Float = Float.infinity
+    var step: Float = 0.1
+    
+    @State private var minValue: Float
+    @State private var maxValue: Float
+    
+    init(label: String, range: Binding<ClosedRange<Float>>, minLimit: Float = -Float.infinity, maxLimit: Float = Float.infinity, step: Float = 0.1) {
+        self.label = label
+        self._range = range
+        self.minLimit = minLimit
+        self.maxLimit = maxLimit
+        self.step = step
+        self._minValue = State(initialValue: range.wrappedValue.lowerBound)
+        self._maxValue = State(initialValue: range.wrappedValue.upperBound)
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            HStack(spacing: 8) {
+                // Min value
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Min")
+                        .font(DesignSystem.Typography.caption)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                    
+                    HStack(spacing: 4) {
+                        TextField("", value: $minValue, format: .number.precision(.fractionLength(2)))
+                            .textFieldStyle(.plain)
+                            .font(DesignSystem.Typography.mono)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
+                            .frame(width: 80)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 4)
+                            .background(DesignSystem.Colors.backgroundTertiary)
+                            .cornerRadius(4)
+                            .onChange(of: minValue) { newValue in
+                                let clampedValue = max(minLimit, min(newValue, maxValue - step))
+                                minValue = clampedValue
+                                updateRange()
+                            }
+                        
+                        Stepper("", value: $minValue, in: minLimit...maxValue, step: step)
+                            .frame(width: 20)
+                    }
+                }
+                
+                // Max value
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Max")
+                        .font(DesignSystem.Typography.caption)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                    
+                    HStack(spacing: 4) {
+                        TextField("", value: $maxValue, format: .number.precision(.fractionLength(2)))
+                            .textFieldStyle(.plain)
+                            .font(DesignSystem.Typography.mono)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
+                            .frame(width: 80)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 4)
+                            .background(DesignSystem.Colors.backgroundTertiary)
+                            .cornerRadius(4)
+                            .onChange(of: maxValue) { newValue in
+                                let clampedValue = min(maxLimit, max(newValue, minValue + step))
+                                maxValue = clampedValue
+                                updateRange()
+                            }
+                        
+                        Stepper("", value: $maxValue, in: minLimit...maxLimit, step: step)
+                            .frame(width: 20)
+                    }
+                }
+                
+                Spacer()
+                
+                // Range info
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Span: \(String(format: "%.2f", maxValue - minValue))")
+                        .font(DesignSystem.Typography.mono)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                    
+                    Text("Center: \(String(format: "%.2f", (maxValue + minValue) / 2))")
+                        .font(DesignSystem.Typography.mono)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+            }
+            
+            // Visual range slider
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Range Visual")
+                    .font(DesignSystem.Typography.caption)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        // Background track
+                        Rectangle()
+                            .fill(DesignSystem.Colors.border)
+                            .frame(height: 4)
+                            .cornerRadius(2)
+                        
+                        // Range fill
+                        Rectangle()
+                            .fill(DesignSystem.Colors.accentPrimary)
+                            .frame(
+                                width: max(0, CGFloat((maxValue - minValue) / (maxLimit - minLimit)) * geometry.size.width),
+                                height: 4
+                            )
+                            .cornerRadius(2)
+                            .offset(x: CGFloat((minValue - minLimit) / (maxLimit - minLimit)) * geometry.size.width)
+                    }
+                }
+                .frame(height: 20)
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(DesignSystem.Colors.backgroundSecondary)
+            .cornerRadius(4)
+        }
+    }
+    
+    private func updateRange() {
+        range = minValue...maxValue
+    }
+}

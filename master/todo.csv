@@ -1557,8 +1557,6 @@ TODO-31225,todo_md,Master TODO,master/todo.md,Add crafting recipe discovery thro
 TODO-31220,todo_md,Master TODO,master/todo.md,Implement multi-step crafting recipes with intermediate products. (line 3) (src/game/blockgame/crafting/advanced_crafting.c),open
 TODO-31216,todo_md,Master TODO,master/todo.md,Implement enchanting cost scaling with item usage. (line 11) (src/game/blockgame/crafting/enchanting.c),open
 TODO-31212,todo_md,Master TODO,master/todo.md,Implement enchantment compatibility checking. (line 7) (src/game/blockgame/crafting/enchanting.c),open
-TODO-31205,todo_md,Master TODO,master/todo.md,Implement potion recipe book with ingredient hints. (line 12) (src/game/blockgame/crafting/brewing.c),completed
-TODO-31203,todo_md,Master TODO,master/todo.md,Implement potion splash and lingering variants. (line 10) (src/game/blockgame/crafting/brewing.c),completed
 TODO-31198,todo_md,Master TODO,master/todo.md,Get global registry (line 317) (src/game/blockgame/crafting/furnace.c),open
 TODO-31197,todo_md,Master TODO,master/todo.md,Implement rendering (line 157) (src/game/blockgame/weather/weather_particles.c),open
 TODO-31196,todo_md,Master TODO,master/todo.md,Add ECS performance metrics and profiling hooks. (line 13) (src/game/blockgame/ecs/ecs.c),open
@@ -1568,11 +1566,11 @@ TODO-31193,todo_md,Master TODO,master/todo.md,Implement ECS component versioning
 TODO-31192,todo_md,Master TODO,master/todo.md,Add ECS multi-threading support for parallel system execution. (line 9) (src/game/blockgame/ecs/ecs.c),open
 TODO-31191,todo_md,Master TODO,master/todo.md,Implement ECS system dependency graph for execution order. (line 8) (src/game/blockgame/ecs/ecs.c),open
 TODO-31190,todo_md,Master TODO,master/todo.md,Add ECS component validation system to catch invalid states. (line 7) (src/game/blockgame/ecs/ecs.c),open
-TODO-31189,todo_md,Master TODO,master/todo.md,Implement ECS serialization system for save/load functionality. (line 6) (src/game/blockgame/ecs/ecs.c),open
-TODO-31188,todo_md,Master TODO,master/todo.md,Add ECS event system for component change notifications. (line 5) (src/game/blockgame/ecs/ecs.c),open
-TODO-31187,todo_md,Master TODO,master/todo.md,Implement ECS query system for efficient component filtering. (line 4) (src/game/blockgame/ecs/ecs.c),open
-TODO-31186,todo_md,Master TODO,master/todo.md,Add ECS component pooling system to reduce allocations. (line 3) (src/game/blockgame/ecs/ecs.c),open
-TODO-31185,todo_md,Master TODO,master/todo.md,Implement ECS archetype-based storage for better cache performance. (line 2) (src/game/blockgame/ecs/ecs.c),open
+TODO-31189,todo_md,Master TODO,master/todo.md,Implement ECS serialization system for save/load functionality. (line 6) (src/game/blockgame/ecs/ecs.c),completed
+TODO-31188,todo_md,Master TODO,master/todo.md,Add ECS event system for component change notifications. (line 5) (src/game/blockgame/ecs/ecs.c),completed
+TODO-31187,todo_md,Master TODO,master/todo.md,Implement ECS query system for efficient component filtering. (line 4) (src/game/blockgame/ecs/ecs.c),completed
+TODO-31186,todo_md,Master TODO,master/todo.md,Add ECS component pooling system to reduce allocations. (line 3) (src/game/blockgame/ecs/ecs.c),completed
+TODO-31185,todo_md,Master TODO,master/todo.md,Implement ECS archetype-based storage for better cache performance. (line 2) (src/game/blockgame/ecs/ecs.c),completed
 TODO-31184,todo_md,Master TODO,master/todo.md,Check block registry for transparent property (line 165) (src/game/blockgame/world/voxel_world_data.c),completed
 TODO-31183,todo_md,Master TODO,master/todo.md,Check block registry for solid property (line 159) (src/game/blockgame/world/voxel_world_data.c),completed
 TODO-31182,todo_md,Master TODO,master/todo.md,Add mod loader documentation system. (line 11) (src/game/blockgame/modding/mod_loader.c),open

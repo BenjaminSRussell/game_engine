@@ -32,7 +32,8 @@
       "Bash(clang:*)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nImplement advanced camera controller and transform features\n\nIMPLEMENTED FEATURES:\n\nCamera System \\(AdvancedCameraController\\):\n- Orbital camera with zoom limits and clamped pitch/yaw\n- Free-fly camera with WASD + mouse support and inertia\n- Lock camera to selected object\n- Follow camera mode with distance and height control\n- First-person camera at eye level\n- Third-person camera behind target\n- Orthographic views: Top-down, Side, Front\n- Isometric view with 45° horizontal and 35.264° vertical angles\n\nBookmark System:\n- Save/load camera bookmarks with persistent storage \\(UserDefaults\\)\n- Smooth animation to bookmark positions using Codable encoding\n- Full persistence with JSON serialization\n\nPath Recording & Playback:\n- Record camera keyframes with position, rotation, and FOV\n- Playback recorded paths with variable speed control\n- Linear, ease-in-out, and Bezier curve interpolation\n- Proper keyframe sampling during playback\n\nAdvanced Camera Effects:\n- Orbit around pivot point with continuous angular velocity\n- Dolly zoom effect \\(Vertigo\\) maintaining perceived object size\n- Camera shake simulation and handheld effects\n- Frustum visualization\n\nTransform System \\(TransformController\\):\n- Undo/Redo integration via CommandManager\n- Rotate around pivot point instead of individual origins\n- 3D cursor system for custom pivot points\n- Euler angle based rotation with proper matrix application\n- Full command pattern implementation for transform history\n\nAll implementations follow SwiftUI reactive patterns and use SIMD for math operations.\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

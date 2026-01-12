@@ -150,6 +150,12 @@ struct CameraComponentInspector: View {
                 }
                 
                 IntPropertyEditor(label: "Depth", value: $camera.depth, range: -100...100)
+                
+                EditorDivider()
+                
+                // Additional properties
+                IntPropertyEditor(label: "Culling Mask", value: $camera.cullingMask, range: -1...32)
+                BoolPropertyEditor(label: "Is Main Camera", value: $camera.isMainCamera)
             }
         }
     }

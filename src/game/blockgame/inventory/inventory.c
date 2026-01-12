@@ -926,3 +926,43 @@ void inventory_optimize_stacking(Inventory *inv) {
   inventory_mark_dirty(inv);
   LOG_DEBUG("Inventory stacking optimized");
 }
+
+bool inventory_serialize(const Inventory *inv, char *buffer, u32 buffer_size) {
+  if (!inv || !buffer || buffer_size == 0)
+    return false;
+
+  // Simple JSON-like serialization format
+  // Format: {"total_items":X,"selected_hotbar":Y,"slots":[{"item_id":...,"count":...,...},...]}
+  
+  int written = snprintf(buffer, buffer_size,
+    "{\"total_items\":%u,\"selected_hotbar\":%u,\"slots\":[",
+    inv->total_items, inv->selected_hotbar);
+  
+  if (written < 0 || written >= buffer_size)
+    return false;
+
+  bool first = true;
+  for (u32 i = 0; i < MAX_INVENTORY_SLOTS; i++) {
+    if (inv->slots[i].item_id != 0) {
+      const char *prefix = first ? "" : ",";
+      int slot_written = snprintf(buffer + written, buffer_size - written,
+        "%s{\"item_id\":%u,\"count\":%u,\"durability\":%.2f,"
+        "\"spoil_progress\":%.2f,\"quality_modifier\":%.2f,"
+        "\"enchantment_count\":%u,\"is_favorite\":%s,\"is_locked\":%s}",
+        prefix, inv->slots[i].item_id, inv->slots[i].count,
+        inv->slots[i].durability, inv->slots[i].spoil_progress,
+        inv->slots[i].quality_modifier, inv->slots[i].enchantment_count,
+        inv->slots[i].is_favorite ? "true" : "false",
+        inv->slots[i].is_locked ? "true" : "false");
+      
+      if (slot_written < 0 || written + slot_written >= buffer_size)
+        return false;
+      
+      written += slot_written;
+      first = false;
+    }
+  }
+
+  int closing = snprintf(buffer + written, buffer_size - written, "]}");
+  return (closing > 0 && written + closing < buffer_size);
+}

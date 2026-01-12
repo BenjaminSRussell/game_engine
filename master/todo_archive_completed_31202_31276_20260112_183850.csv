@@ -37,3 +37,5 @@ TODO-31207,todo_md,Master TODO,master/todo.md,Implement persistent crafting stat
 TODO-31206,todo_md,Master TODO,master/todo.md,Add brewing failure system with negative effects. (line 13) (src/game/blockgame/crafting/brewing.c),completed
 TODO-31204,todo_md,Master TODO,master/todo.md,Add brewing automation system with redstone. (line 11) (src/game/blockgame/crafting/brewing.c),completed
 TODO-31202,todo_md,Master TODO,master/todo.md,Add potion bottle system with different container types. (line 9) (src/game/blockgame/crafting/brewing.c),completed
+TODO-31205,todo_md,Master TODO,master/todo.md,Implement potion recipe book with ingredient hints. (line 12) (src/game/blockgame/crafting/brewing.c),completed
+TODO-31203,todo_md,Master TODO,master/todo.md,Implement potion splash and lingering variants. (line 10) (src/game/blockgame/crafting/brewing.c),completed
