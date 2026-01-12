@@ -1,6 +1,5 @@
-#import <Metal/Metal.h>
-#import <Foundation/Foundation.h>
-#include "core/types.h"
+#include <metal/metal.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -135,6 +134,7 @@ struct mtl_sampler* mtl_sampler_create(id<MTLDevice> device, const char* name) {
     
     // Create sampler state
     sampler->sampler_state = [device newSamplerStateWithDescriptor:descriptor];
+    [descriptor release];
     
     if (!sampler->sampler_state) {
         free(sampler);
@@ -192,6 +192,7 @@ struct mtl_sampler* mtl_sampler_create_with_desc(id<MTLDevice> device, const mtl
     
     // Create sampler state
     sampler->sampler_state = [device newSamplerStateWithDescriptor:descriptor];
+    [descriptor release];
     
     if (!sampler->sampler_state) {
         free(sampler);
@@ -220,6 +221,7 @@ void mtl_sampler_destroy(struct mtl_sampler* sampler) {
     mtl_sampler_t* mtl_sampler = (mtl_sampler_t*)sampler;
     
     if (mtl_sampler->sampler_state) {
+        [mtl_sampler->sampler_state release];
     }
     
     printf("Destroyed Metal sampler '%s' (ID: %u)\n", mtl_sampler->name, mtl_sampler->id);
@@ -349,14 +351,16 @@ struct mtl_sampler* mtl_sampler_create_anisotropic(id<MTLDevice> device, f32 max
     snprintf(name, 64, "Anisotropic_%.0f", max_anisotropy);
     return mtl_sampler_create_with_desc(device, &desc, name);
 }
-/* TODO: Add mtl sampler error handling */
-/* TODO: Implement mtl sampler serialization */
-/* TODO: Add mtl sampler debug output */
-/* TODO: Implement mtl sampler unit tests */
-/* TODO: Add mtl sampler performance counters */
-/* TODO: Implement mtl sampler hot-reload */
-/* TODO: Add mtl sampler thread safety */
-/* TODO: Add mtl sampler error handling */
+ * TODO: Implement mtl sampler validation
+ * TODO: Add mtl sampler error handling
+ * TODO: Implement mtl sampler serialization
+ * TODO: Add mtl sampler debug output
+ * TODO: Implement mtl sampler unit tests
+ * TODO: Add mtl sampler performance counters
+ * TODO: Implement mtl sampler hot-reload
+ * TODO: Add mtl sampler thread safety
+ * TODO: Implement mtl sampler memory pooling
+ * TODO: Add mtl sampler caching layer
  * TODO: Implement mtl sampler async operations
  * TODO: Add mtl sampler GPU integration
  * TODO: Implement mtl sampler SIMD optimization
