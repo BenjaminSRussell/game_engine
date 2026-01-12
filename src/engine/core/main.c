@@ -178,9 +178,6 @@ static AppConfig parse_arguments(int argc, char *argv[]) {
       config.engine_config.window_height = config.window_height;
     } else if (strcmp(argv[i], "--module") == 0 && i + 1 < argc) {
       config.game_module_path = argv[++i];
-    } else if (strcmp(argv[i], "--log-level") == 0 && i + 1 < argc) {
-      config.log_level = argv[++i];
-      config.engine_config.log_level = config.log_level;
     } else if (strcmp(argv[i], "--config") == 0 && i + 1 < argc) {
       config.config_file = argv[++i];
     } else if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
@@ -189,8 +186,6 @@ static AppConfig parse_arguments(int argc, char *argv[]) {
       printf("  --fullscreen         Start in fullscreen mode\n");
       printf("  --window <w> <h>     Set window dimensions\n");
       printf("  --module <path>      Specify game module path\n");
-      printf("  --log-level <level>  Set logging level (DEBUG, INFO, WARN, "
-             "ERROR)\n");
       printf("  --config <file>      Specify configuration file path\n");
       printf("  --help, -h           Show this help message\n");
       exit(0);

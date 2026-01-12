@@ -12,6 +12,8 @@
 #include "backend/metal/mtl_encoder.h"
 #include "backend/metal/mtl_pipeline.h"
 #include "backend/metal/mtl_shader_library.h"
+#include <rendering/camera.h>
+#include <rendering/renderer.h>
 
 // ============================================================================
 // Voxel Renderer Types
@@ -73,31 +75,33 @@ static bool voxel_renderer_init_pipeline(VoxelRenderer *renderer) {
 
   // Load shader library using the shader library manager
   // This handles both .metal source files and compiled .metallib files
-  metal_shader_library_manager_t *shader_manager = 
+  metal_shader_library_manager_t *shader_manager =
       metal_shader_library_manager_create(metal_get_device(renderer->device));
   if (!shader_manager) {
     LOG_ERROR("Failed to create shader library manager");
     return false;
   }
-  
-  MTLLibraryRef library_ref = metal_library_manager_load_file(shader_manager,
-                                "src/engine/rendering/shaders/voxel.metal");
+
+  MTLLibraryRef library_ref = metal_library_manager_load_file(
+      shader_manager, "src/engine/rendering/shaders/voxel.metal");
   if (!library_ref) {
     LOG_ERROR("Failed to load voxel shader library");
     metal_shader_library_manager_destroy(shader_manager);
     return false;
   }
-  
+
   // Create wrapper structure for consistency
-  renderer->library = (metal_shader_library_t *)calloc(1, sizeof(metal_shader_library_t));
+  renderer->library =
+      (metal_shader_library_t *)calloc(1, sizeof(metal_shader_library_t));
   if (!renderer->library) {
     LOG_ERROR("Failed to allocate shader library structure");
     metal_shader_library_manager_destroy(shader_manager);
     return false;
   }
   renderer->library->library = library_ref;
-  strncpy(renderer->library->name, "voxel.metal", sizeof(renderer->library->name) - 1);
-  
+  strncpy(renderer->library->name, "voxel.metal",
+          sizeof(renderer->library->name) - 1);
+
   metal_shader_library_manager_destroy(shader_manager);
 
   // Create vertex descriptor
@@ -510,4 +514,252 @@ void voxel_renderer_enable_reflections(VoxelRenderer *renderer, bool enable) {
   if (!renderer)
     return;
   renderer->enable_reflections = enable;
+}
+
+// ============================================================================
+// IRenderer Interface Implementation
+// ============================================================================
+
+static bool voxel_renderer_init_impl(IRenderer *self,
+                                     RendererInitParams *params) {
+  if (!self || !params)
+    return false;
+
+  // Create new VoxelRenderer if one doesn't exist or use impl_data
+  VoxelRenderer *vr = (VoxelRenderer *)self->impl_data;
+  if (!vr) {
+    // Assume device is passed or create default
+    vr = voxel_renderer_create(NULL);
+    if (!vr)
+      return false;
+    self->impl_data = vr;
+  }
+
+  // Configure based on params
+  voxel_renderer_set_render_distance(
+      vr, params->config ? params->config->render_distance : 256.0f);
+
+  return true;
+}
+
+static void voxel_renderer_cleanup_impl(IRenderer *self) {
+  if (!self)
+    return;
+  VoxelRenderer *vr = (VoxelRenderer *)self->impl_data;
+  if (vr) {
+    voxel_renderer_destroy(vr);
+    self->impl_data = NULL;
+  }
+}
+
+static void voxel_renderer_resize_impl(IRenderer *self, u32 width, u32 height) {
+  // Metal handles resize via layer, but we might need to update depth texture
+  // etc. For now, no-op or handled internally
+  (void)self;
+  (void)width;
+  (void)height;
+}
+
+static bool voxel_renderer_begin_frame_impl(IRenderer *self, u32 *image_index) {
+  if (!self)
+    return false;
+  VoxelRenderer *vr = (VoxelRenderer *)self->impl_data;
+  voxel_renderer_begin_frame(vr);
+  *image_index = 0; // Dummy index for Metal
+  return true;
+}
+
+static void voxel_renderer_end_frame_impl(IRenderer *self, u32 image_index) {
+  if (!self)
+    return;
+  VoxelRenderer *vr = (VoxelRenderer *)self->impl_data;
+  voxel_renderer_end_frame(vr);
+}
+
+static void voxel_renderer_render_chunk_mesh_impl(IRenderer *self, Chunk *chunk,
+                                                  Mat4 view, Mat4 proj) {
+  if (!self || !chunk)
+    return;
+  VoxelRenderer *vr = (VoxelRenderer *)self->impl_data;
+
+  // We need a way to get the mesh from the chunk and the command encoder
+  // This part requires integration with the upper layer providing the encoder
+  // For IRenderer abstraction, we might need to store the current encoder in
+  // VoxelRenderer during begin_frame or pass it differently. For now, assume
+  // VoxelRenderer manages its own encoder internally if possible, or we are
+  // just verifying compilation.
+
+  // TODO: Metal encoding integration
+}
+
+static const char *voxel_renderer_get_backend_name_impl(IRenderer *self) {
+  return "Metal";
+}
+
+// Stubs for other interface methods
+static void voxel_renderer_update_camera_impl(IRenderer *self, Camera *camera,
+                                              f32 aspect) {
+  (void)self;
+  (void)camera;
+  (void)aspect;
+}
+static void voxel_renderer_update_camera_uniforms_impl(IRenderer *self,
+                                                       Camera *camera,
+                                                       f32 aspect) {
+  (void)self;
+  (void)camera;
+  (void)aspect;
+}
+static void voxel_renderer_render_chunk_impl(IRenderer *self, Chunk *chunk,
+                                             Mat4 view, Mat4 proj) {
+  (void)self;
+  (void)chunk;
+  (void)view;
+  (void)proj;
+}
+static void voxel_renderer_render_dynamic_mesh_impl(IRenderer *self, Mesh *mesh,
+                                                    Mat4 view, Mat4 proj) {
+  (void)self;
+  (void)mesh;
+  (void)view;
+  (void)proj;
+}
+static void voxel_renderer_render_sprite_impl(IRenderer *self, Vec3 position,
+                                              Vec2 size, u32 texture_id,
+                                              f32 rotation) {
+  (void)self;
+  (void)position;
+  (void)size;
+  (void)texture_id;
+  (void)rotation;
+}
+static void voxel_renderer_render_entity_sprite_impl(IRenderer *self,
+                                                     Entity entity,
+                                                     Vec3 position, Vec2 size,
+                                                     u32 texture_id) {
+  (void)self;
+  (void)entity;
+  (void)position;
+  (void)size;
+  (void)texture_id;
+}
+static void voxel_renderer_render_ui_quad_impl(IRenderer *self, Vec2 pos,
+                                               Vec2 size, u32 texture_id) {
+  (void)self;
+  (void)pos;
+  (void)size;
+  (void)texture_id;
+}
+static void voxel_renderer_render_text_impl(IRenderer *self, const char *text,
+                                            Vec2 pos, f32 scale, Vec3 color) {
+  (void)self;
+  (void)text;
+  (void)pos;
+  (void)scale;
+  (void)color;
+}
+static void
+voxel_renderer_render_block_highlight_impl(IRenderer *self,
+                                           struct PlayerSystem *player_system) {
+  (void)self;
+  (void)player_system;
+}
+static void voxel_renderer_render_physics_debug_impl(IRenderer *self, Mat4 view,
+                                                     Mat4 proj) {
+  (void)self;
+  (void)view;
+  (void)proj;
+}
+static void voxel_renderer_render_debug_line_impl(IRenderer *self, Vec3 start,
+                                                  Vec3 end, Vec3 color) {
+  (void)self;
+  (void)start;
+  (void)end;
+  (void)color;
+}
+static void voxel_renderer_render_debug_box_impl(IRenderer *self, Vec3 center,
+                                                 Vec3 size, Quat rotation,
+                                                 Vec3 color) {
+  (void)self;
+  (void)center;
+  (void)size;
+  (void)rotation;
+  (void)color;
+}
+static void voxel_renderer_render_debug_sphere_impl(IRenderer *self,
+                                                    Vec3 center, f32 radius,
+                                                    Vec3 color) {
+  (void)self;
+  (void)center;
+  (void)radius;
+  (void)color;
+}
+static void voxel_renderer_set_ambient_light_impl(IRenderer *self,
+                                                  f32 ambient_light) {
+  VoxelRenderer *vr = (VoxelRenderer *)self->impl_data;
+  if (vr)
+    vr->enable_ao = (ambient_light > 0.5f); // Simplified
+}
+static bool voxel_renderer_create_chunk_buffers_impl(IRenderer *self,
+                                                     Mesh *mesh,
+                                                     void **vertex_buffer,
+                                                     void **index_buffer) {
+  (void)self;
+  (void)mesh;
+  (void)vertex_buffer;
+  (void)index_buffer;
+  return false;
+}
+static bool voxel_renderer_update_chunk_buffers_impl(IRenderer *self,
+                                                     Mesh *mesh,
+                                                     void *vertex_buffer,
+                                                     void *index_buffer) {
+  (void)self;
+  (void)mesh;
+  (void)vertex_buffer;
+  (void)index_buffer;
+  return false;
+}
+
+// Factory Implementation
+IRenderer *renderer_create_with_backend(RendererType type, GPUBackend backend) {
+  if (type == RENDERER_TYPE_VOXEL && backend == GPU_BACKEND_METAL) {
+    IRenderer *renderer = calloc(1, sizeof(IRenderer));
+    if (!renderer)
+      return NULL;
+
+    renderer->type = type;
+    renderer->init = voxel_renderer_init_impl;
+    renderer->cleanup = voxel_renderer_cleanup_impl;
+    renderer->resize = voxel_renderer_resize_impl;
+    renderer->begin_frame = voxel_renderer_begin_frame_impl;
+    renderer->end_frame = voxel_renderer_end_frame_impl;
+    renderer->update_camera = voxel_renderer_update_camera_impl;
+    renderer->update_camera_uniforms =
+        voxel_renderer_update_camera_uniforms_impl;
+    renderer->render_chunk = voxel_renderer_render_chunk_impl;
+    renderer->render_chunk_mesh = voxel_renderer_render_chunk_mesh_impl;
+    renderer->render_dynamic_mesh = voxel_renderer_render_dynamic_mesh_impl;
+    renderer->render_sprite = voxel_renderer_render_sprite_impl;
+    renderer->render_entity_sprite = voxel_renderer_render_entity_sprite_impl;
+    renderer->render_ui_quad = voxel_renderer_render_ui_quad_impl;
+    renderer->render_text = voxel_renderer_render_text_impl;
+    renderer->render_block_highlight =
+        voxel_renderer_render_block_highlight_impl;
+    renderer->render_physics_debug = voxel_renderer_render_physics_debug_impl;
+    renderer->render_debug_line = voxel_renderer_render_debug_line_impl;
+    renderer->render_debug_box = voxel_renderer_render_debug_box_impl;
+    renderer->render_debug_sphere = voxel_renderer_render_debug_sphere_impl;
+    renderer->set_ambient_light = voxel_renderer_set_ambient_light_impl;
+    renderer->create_chunk_buffers = voxel_renderer_create_chunk_buffers_impl;
+    renderer->update_chunk_buffers = voxel_renderer_update_chunk_buffers_impl;
+    renderer->get_backend_name = voxel_renderer_get_backend_name_impl;
+
+    // Initialize the concrete renderer
+    // Note: We delay actual creation until init() is called with window
+    renderer->impl_data = NULL;
+
+    return renderer;
+  }
+  return NULL;
 }

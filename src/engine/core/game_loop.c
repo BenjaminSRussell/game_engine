@@ -29,8 +29,7 @@ static f64 get_time(void) {
   if (timebase.denom == 0) {
     kern_return_t kr = mach_timebase_info(&timebase);
     if (kr != KERN_SUCCESS) {
-      // fprintf(stderr, "mach_timebase_info failed\n");
-      return 0.0;
+            return 0.0;
     }
   }
   if (timebase.denom == 0)

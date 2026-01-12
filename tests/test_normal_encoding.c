@@ -4,8 +4,8 @@
  * =================================================================================================
  */
 
-#include <core/logger/logger.h>
-#include <core/math/math.h> // Assuming math library for vectors
+#include <core/logger.h>
+#include <math/math.h> // Assuming math library for vectors
 #include <math.h>
 #include <stdlib.h>
 
