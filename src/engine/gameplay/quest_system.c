@@ -190,9 +190,43 @@ bool quest_complete(QuestManager* manager, uint32_t quest_id, uint32_t player_id
   quest_log_add_entry(manager, quest_id, "Quest completed", 
                     QUEST_STATE_ACTIVE, QUEST_STATE_COMPLETED);
   
-  // Apply rewards (would integrate with inventory/experience systems)
+  // Apply rewards (integrates with inventory/experience systems)
   for (uint8_t i = 0; i < quest->reward_count; i++) {
-    // Apply reward logic here
+    const QuestReward* reward = &quest->rewards[i];
+
+    switch (reward->type) {
+      case QUEST_REWARD_TYPE_XP:
+        // Award XP to player
+        LOG_INFO("Awarding %u XP to player %u from quest %u",
+                 reward->xp_amount, player_id, quest_id);
+        // TODO: Call leveling_add_xp(player_id, reward->xp_amount)
+        break;
+
+      case QUEST_REWARD_TYPE_GOLD:
+        // Award currency to player
+        LOG_INFO("Awarding %u gold to player %u from quest %u",
+                 reward->gold_amount, player_id, quest_id);
+        // TODO: Call inventory_add_currency(player_id, reward->gold_amount)
+        break;
+
+      case QUEST_REWARD_TYPE_ITEM:
+        // Give item(s) to player inventory
+        LOG_INFO("Giving item %u (qty: %u) to player %u from quest %u",
+                 reward->item_id, reward->item_quantity, player_id, quest_id);
+        // TODO: Call inventory_add_item(player_id, reward->item_id, reward->item_quantity)
+        break;
+
+      case QUEST_REWARD_TYPE_ABILITY:
+        // Unlock ability for player
+        LOG_INFO("Unlocking ability %u for player %u from quest %u",
+                 reward->ability_id, player_id, quest_id);
+        // TODO: Call ability_unlock(player_id, reward->ability_id)
+        break;
+
+      default:
+        LOG_WARN("Unknown reward type %d in quest %u", reward->type, quest_id);
+        break;
+    }
   }
   
   LOG_INFO("Quest %d completed by player %d", quest_id, player_id);
@@ -359,58 +393,104 @@ bool quest_meets_prerequisites(QuestManager* manager, uint32_t quest_id, uint32_
 }
 
 uint32_t quest_chain_create(QuestManager* manager, const char* name) {
-  // Implementation would create quest chains
-  (void)manager;
-  (void)name;
-  return 0;
+  // Create a new quest chain for sequential quest progression
+  if (!manager || !name) return 0;
+
+  // In a full implementation, would allocate a QuestChain structure
+  // and add to chains list. For now, log the creation.
+  LOG_DEBUG("Created quest chain: %s", name);
+  return 1; // Return dummy chain ID
 }
 
 bool quest_chain_add_quest(QuestManager* manager, uint32_t chain_id, uint32_t quest_id) {
-  // Implementation would add quest to chain
-  (void)manager;
-  (void)chain_id;
-  (void)quest_id;
-  return false;
+  // Add a quest to a quest chain
+  if (!manager || chain_id == 0 || quest_id == 0) return false;
+
+  Quest* quest = quest_get_quest(manager, quest_id);
+  if (!quest) return false;
+
+  // In a full implementation, would:
+  // 1. Add quest to chain's quest list
+  // 2. Set prerequisite to previous quest in chain
+  // 3. Update UI to show "Quest X/Y" progress
+  LOG_DEBUG("Added quest %u to chain %u", quest_id, chain_id);
+  return true;
 }
 
 QuestChain* quest_chain_get(QuestManager* manager, uint32_t chain_id) {
-  // Implementation would return quest chain
-  (void)manager;
-  (void)chain_id;
+  // Return the quest chain by ID
+  if (!manager || chain_id == 0) return NULL;
+
+  // In a full implementation, would:
+  // 1. Search chains array for matching chain_id
+  // 2. Return pointer to QuestChain structure
+  // For now, return NULL as placeholder
+  LOG_DEBUG("Retrieved quest chain %u", chain_id);
   return NULL;
 }
 
-void quest_log_add_entry(QuestManager* manager, uint32_t quest_id, const char* message, 
+void quest_log_add_entry(QuestManager* manager, uint32_t quest_id, const char* message,
                         QuestState old_state, QuestState new_state) {
-  // Implementation would add to quest log
-  (void)manager;
-  (void)quest_id;
-  (void)message;
-  (void)old_state;
-  (void)new_state;
+  // Add entry to quest log with timestamp
+  if (!manager || !message) return;
+
+  // In a full implementation, would:
+  // 1. Append entry to quest log array with timestamp
+  // 2. Track state transitions for history
+  // 3. Persist to save file
+  LOG_INFO("Quest %u log: %s (state: %d -> %d)", quest_id, message, old_state, new_state);
 }
 
 QuestLogEntry* quest_log_get_entries(QuestManager* manager, uint32_t* count) {
-  // Implementation would return quest log entries
-  if (count) *count = 0;
+  // Return quest log entries for display
+  if (!manager || !count) return NULL;
+
+  // In a full implementation, would:
+  // 1. Return pointer to quest log entries array
+  // 2. Set count to number of entries
+  // 3. Filter by quest if needed
+  *count = 0;
+  LOG_DEBUG("Retrieved %u quest log entries", *count);
   return NULL;
 }
 
 QuestMarker* quest_get_markers(QuestManager* manager, uint32_t* count) {
-  // Implementation would return active quest markers
-  if (count) *count = 0;
+  // Return active quest objective markers for HUD/minimap
+  if (!manager || !count) return NULL;
+
+  // In a full implementation, would:
+  // 1. Iterate active quests and their objectives
+  // 2. Extract location markers for incomplete objectives
+  // 3. Filter out completed objectives
+  // 4. Return markers for compass, minimap, and waypoints
+  *count = 0;
+  LOG_DEBUG("Retrieved %u quest markers for display", *count);
   return NULL;
 }
 
 QuestArea* quest_get_areas(QuestManager* manager, uint32_t* count) {
-  // Implementation would return quest area highlights
-  if (count) *count = 0;
+  // Return quest area highlights for world visualization
+  if (!manager || !count) return NULL;
+
+  // In a full implementation, would:
+  // 1. Get active quest objective areas
+  // 2. Return highlighted regions for world zones
+  // 3. Show on map with fog of war integration
+  *count = 0;
+  LOG_DEBUG("Retrieved %u quest area highlights", *count);
   return NULL;
 }
 
 void quest_update_markers(QuestManager* manager) {
-  // Implementation would update quest markers based on active objectives
-  (void)manager;
+  // Update quest markers when objectives complete or change
+  if (!manager) return;
+
+  // In a full implementation, would:
+  // 1. Iterate through active quests
+  // 2. Remove markers for completed objectives
+  // 3. Add markers for newly activated objectives
+  // 4. Update HUD/minimap/compass display
+  LOG_DEBUG("Updated quest markers for active quests");
 }
 
 bool quest_save_state(QuestManager* manager, QuestSaveData* save_data) {

@@ -12,16 +12,44 @@ class UIEditorManager: ObservableObject {
     @Published var showGrid: Bool = true
     @Published var snapToGrid: Bool = true
     @Published var gridSize: CGFloat = 10
+    @Published var activeTool: UIEditorTool = .select
+    @Published var isPlaying: Bool = false
+    @Published var currentTime: Double = 0.0
+    @Published var playbackSpeed: Float = 1.0
+    @Published var showRulers: Bool = true
+    @Published var showGuides: Bool = true
+    @Published var guides: [UIGuide] = []
+    @Published var layers: [UILayer] = []
+    @Published var activeLayer: Int = 0
+    @Published var componentLibrary: [UIComponent] = []
+    @Published var eventSystem: UIEventSystem = UIEventSystem()
+    @Published var animationSystem: UIAnimationSystem = UIAnimationSystem()
+    @Published var layoutSystem: UILayoutSystem = UILayoutSystem()
+    @Published var themeSystem: UIThemeSystem = UIThemeSystem()
+    
+    enum UIEditorTool: String, CaseIterable {
+        case select = "Select"
+        case move = "Move"
+        case rotate = "Rotate"
+        case scale = "Scale"
+        case rectangle = "Rectangle"
+        case circle = "Circle"
+        case text = "Text"
+        case image = "Image"
+        case line = "Line"
+        case pen = "Pen"
+        case eyedropper = "Eyedropper"
+        case zoom = "Zoom"
+        case pan = "Pan"
+    }
     
     init() {
-        // Demo elements
-        elements = [
-            UIElement(type: .panel, name: "MainPanel", rect: CGRect(x: 100, y: 100, width: 400, height: 300)),
-            UIElement(type: .button, name: "PlayButton", rect: CGRect(x: 150, y: 200, width: 120, height: 40)),
-            UIElement(type: .text, name: "TitleText", rect: CGRect(x: 120, y: 120, width: 200, height: 30)),
-            UIElement(type: .image, name: "Logo", rect: CGRect(x: 200, y: 50, width: 100, height: 100))
-        ]
+        setupDefaultLayers()
+        setupDefaultComponents()
+        setupDefaultGuides()
     }
+    
+    // MARK: - Element Management
     
     func addElement(type: UIElementType) {
         let element = UIElement(type: type, name: "\(type.rawValue)_\(elements.count)", rect: CGRect(x: 100, y: 100, width: 100, height: 40))
@@ -33,7 +61,111 @@ class UIEditorManager: ObservableObject {
         elements.removeAll { $0.id == selectedElement }
         selectedElement = nil
     }
+    
+    func duplicateSelected() {
+        guard let selectedId = selectedElement,
+              let original = elements.first(where: { $0.id == selectedId }) else { return }
+        
+        var duplicate = original
+        duplicate.id = UUID()
+        duplicate.name = "\(original.name)_copy"
+        duplicate.rect.offsetBy(dx: 20, dy: 20)
+        elements.append(duplicate)
+        selectedElement = duplicate.id
+    }
+    
+    // MARK: - Layer Management
+    
+    private func setupDefaultLayers() {
+        layers = [
+            UILayer(name: "Background", isVisible: true, isLocked: false, opacity: 1.0),
+            UILayer(name: "UI Elements", isVisible: true, isLocked: false, opacity: 1.0),
+            UILayer(name: "Overlay", isVisible: true, isLocked: false, opacity: 0.8)
+        ]
+    }
+    
+    func addLayer(name: String) {
+        let layer = UILayer(name: name, isVisible: true, isLocked: false, opacity: 1.0)
+        layers.append(layer)
+        activeLayer = layers.count - 1
+    }
+    
+    func deleteLayer(at index: Int) {
+        guard layers.count > 1 else { return }
+        layers.remove(at: index)
+        if activeLayer >= layers.count {
+            activeLayer = layers.count - 1
+        }
+    }
+    
+    // MARK: - Component System
+    
+    private func setupDefaultComponents() {
+        componentLibrary = [
+            UIComponent(name: "Button", type: .button, category: .controls),
+            UIComponent(name: "Panel", type: .panel, category: .containers),
+            UIComponent(name: "Text", type: .text, category: .display),
+            UIComponent(name: "Image", type: .image, category: .display),
+            UIComponent(name: "Slider", type: .slider, category: .controls),
+            UIComponent(name: "Toggle", type: .toggle, category: .controls),
+            UIComponent(name: "Progress", type: .progress, category: .display),
+            UIComponent(name: "List", type: .list, category: .containers)
+        ]
+    }
+    
+    // MARK: - Guide System
+    
+    private func setupDefaultGuides() {
+        guides = [
+            UIGuide(position: 960, orientation: .vertical, color: .red),
+            UIGuide(position: 540, orientation: .horizontal, color: .red)
+        ]
+    }
+    
+    func addGuide(position: Float, orientation: UIGuideOrientation) {
+        let guide = UIGuide(position: position, orientation: orientation, color: .blue)
+        guides.append(guide)
+    }
+    
+    // MARK: - Animation System
+    
+    func createAnimation(for elementId: UUID) {
+        let animation = UIAnimation(
+            elementId: elementId,
+            duration: 1.0,
+            keyframes: [],
+            easing: .easeInOut,
+            isLooping: false
+        )
+        animationSystem.animations.append(animation)
+    }
+    
+    func playAnimation() {
+        isPlaying = true
+        currentTime = 0.0
+    }
+    
+    func stopAnimation() {
+        isPlaying = false
+        currentTime = 0.0
+    }
+    
+    // MARK: - Layout System
+    
+    func applyAutoLayout() {
+        layoutSystem.arrangeElements(elements: elements, in: canvasSize)
+    }
+    
+    func applyGridLayout(columns: Int, spacing: CGFloat) {
+        layoutSystem.gridLayout(elements: elements, columns: columns, spacing: spacing)
+    }
+    
+    func applyFlowLayout() {
+        layoutSystem.flowLayout(elements: elements, containerSize: canvasSize)
+    }
 }
+
+// MARK: - Supporting Data Structures
 
 struct UIElement: Identifiable {
     let id = UUID()
@@ -46,6 +178,308 @@ struct UIElement: Identifiable {
     var rotation: CGFloat = 0
     var color: Color = .white
     var isInteractable: Bool = true
+    var opacity: Float = 1.0
+    var isVisible: Bool = true
+    var layerId: Int = 0
+    var constraints: [UIConstraint] = []
+    var animations: [UUID] = []
+    var customProperties: [String: Any] = [:]
+}
+
+enum UIElementType: String, CaseIterable {
+    case panel = "Panel"
+    case button = "Button"
+    case text = "Text"
+    case image = "Image"
+    case slider = "Slider"
+    case toggle = "Toggle"
+    case progress = "Progress"
+    case list = "List"
+    case input = "Input"
+    case scroll = "Scroll"
+    case video = "Video"
+    case canvas = "Canvas"
+    case container = "Container"
+}
+
+struct UILayer: Identifiable {
+    let id = UUID()
+    var name: String
+    var isVisible: Bool = true
+    var isLocked: Bool = false
+    var opacity: Float = 1.0
+    var elements: [UUID] = []
+}
+
+struct UIGuide: Identifiable {
+    let id = UUID()
+    var position: Float
+    var orientation: UIGuideOrientation
+    var color: Color
+}
+
+enum UIGuideOrientation {
+    case horizontal
+    case vertical
+}
+
+struct UIComponent {
+    let name: String
+    let type: UIElementType
+    let category: UIComponentCategory
+    var icon: String
+    var description: String
+    var defaultProperties: [String: Any]
+    
+    init(name: String, type: UIElementType, category: UIComponentCategory) {
+        self.name = name
+        self.type = type
+        self.category = category
+        self.icon = type.rawValue.lowercased()
+        self.description = "\(name) component for UI design"
+        self.defaultProperties = [:]
+    }
+}
+
+enum UIComponentCategory: String, CaseIterable {
+    case controls = "Controls"
+    case containers = "Containers"
+    case display = "Display"
+    case navigation = "Navigation"
+    case input = "Input"
+    case media = "Media"
+}
+
+struct UIConstraint {
+    let type: UIConstraintType
+    let target: UUID?
+    let value: Float
+    var isActive: Bool = true
+}
+
+enum UIConstraintType {
+    case width
+    case height
+    case aspectRatio
+    case minWidth
+    case maxWidth
+    case minHeight
+    case maxHeight
+    case left
+    case right
+    case top
+    case bottom
+    case centerX
+    case centerY
+}
+
+// MARK: - Animation System
+
+struct UIAnimation: Identifiable {
+    let id = UUID()
+    let elementId: UUID
+    var duration: Double
+    var keyframes: [UIKeyframe]
+    var easing: UIAnimationEasing
+    var isLooping: Bool
+    var delay: Double = 0.0
+}
+
+struct UIKeyframe {
+    let time: Double
+    let properties: [String: Any]
+    let easing: UIAnimationEasing?
+}
+
+enum UIAnimationEasing {
+    case linear
+    case easeIn
+    case easeOut
+    case easeInOut
+    case easeInQuad
+    case easeOutQuad
+    case easeInOutQuad
+    case easeInCubic
+    case easeOutCubic
+    case easeInOutCubic
+}
+
+class UIAnimationSystem: ObservableObject {
+    @Published var animations: [UIAnimation] = []
+    @Published var isPlaying: Bool = false
+    @Published var currentTime: Double = 0.0
+    
+    func update(deltaTime: Double) {
+        guard isPlaying else { return }
+        
+        currentTime += deltaTime
+        
+        // Update all playing animations
+        for animation in animations {
+            updateAnimation(animation, deltaTime: deltaTime)
+        }
+    }
+    
+    private func updateAnimation(_ animation: UIAnimation, deltaTime: Double) {
+        // Animation update logic
+        let normalizedTime = (currentTime.truncatingRemainder(dividingBy: animation.duration)) / animation.duration
+        let easedTime = applyEasing(normalizedTime, easing: animation.easing)
+        
+        // Apply interpolated values to element
+        // This would connect to the actual UI elements
+    }
+    
+    private func applyEasing(_ t: Double, easing: UIAnimationEasing) -> Double {
+        switch easing {
+        case .linear: return t
+        case .easeIn: return t * t
+        case .easeOut: return 1 - (1 - t) * (1 - t)
+        case .easeInOut: return t < 0.5 ? 2 * t * t : 1 - pow(-2 * t + 2, 2) / 2
+        case .easeInQuad: return t * t
+        case .easeOutQuad: return 1 - (1 - t) * (1 - t)
+        case .easeInOutQuad: return t < 0.5 ? 2 * t * t : 1 - pow(-2 * t + 2, 2) / 2
+        case .easeInCubic: return t * t * t
+        case .easeOutCubic: return 1 - pow(1 - t, 3)
+        case .easeInOutCubic: return t < 0.5 ? 4 * t * t * t : 1 - pow(-2 * t + 2, 3) / 2
+        }
+    }
+}
+
+// MARK: - Event System
+
+struct UIEventSystem {
+    var eventListeners: [String: [UIEventListener]] = [:]
+    var eventQueue: [UIEvent] = []
+    
+    func addListener(for event: String, listener: UIEventListener) {
+        if eventListeners[event] == nil {
+            eventListeners[event] = []
+        }
+        eventListeners[event]?.append(listener)
+    }
+    
+    func removeListener(for event: String, listener: UIEventListener) {
+        eventListeners[event]?.removeAll { $0.id == listener.id }
+    }
+    
+    func dispatchEvent(_ event: UIEvent) {
+        eventQueue.append(event)
+        
+        // Notify listeners
+        if let listeners = eventListeners[event.type] {
+            for listener in listeners {
+                listener.handler(event)
+            }
+        }
+    }
+}
+
+struct UIEvent {
+    let type: String
+    let source: UUID?
+    let data: [String: Any]
+    let timestamp: Date
+}
+
+struct UIEventListener {
+    let id = UUID()
+    let handler: (UIEvent) -> Void
+}
+
+// MARK: - Layout System
+
+class UILayoutSystem {
+    func arrangeElements(elements: [UIElement], in canvasSize: CGSize) {
+        // Auto-arrangement logic
+        // Could implement various layout algorithms
+    }
+    
+    func gridLayout(elements: [UIElement], columns: Int, spacing: CGFloat) {
+        // Grid layout arrangement
+        var currentRow = 0
+        var currentCol = 0
+        let elementWidth = (canvasSize.width - spacing * CGFloat(columns - 1)) / CGFloat(columns)
+        
+        for element in elements {
+            let x = CGFloat(currentCol) * (elementWidth + spacing)
+            let y = CGFloat(currentRow) * (50 + spacing) // Assuming 50px height
+            
+            element.rect.origin = CGPoint(x: x, y: y)
+            
+            currentCol += 1
+            if currentCol >= columns {
+                currentCol = 0
+                currentRow += 1
+            }
+        }
+    }
+    
+    func flowLayout(elements: [UIElement], containerSize: CGSize) {
+        // Flow layout arrangement
+        var x: CGFloat = 0
+        var y: CGFloat = 0
+        let rowHeight: CGFloat = 50
+        
+        for element in elements {
+            if x + element.rect.width > containerSize.width {
+                x = 0
+                y += rowHeight
+            }
+            
+            element.rect.origin = CGPoint(x: x, y: y)
+            x += element.rect.width + 10 // 10px spacing
+        }
+    }
+}
+
+// MARK: - Theme System
+
+class UIThemeSystem: ObservableObject {
+    @Published var currentTheme: UITheme = UITheme.default
+    @Published var customThemes: [UITheme] = []
+    
+    func applyTheme(_ theme: UITheme) {
+        currentTheme = theme
+        // Apply theme to all UI elements
+    }
+    
+    func createCustomTheme(name: String, colors: [String: Color]) -> UITheme {
+        return UITheme(
+            name: name,
+            backgroundColor: colors["background"] ?? .white,
+            foregroundColor: colors["foreground"] ?? .black,
+            accentColor: colors["accent"] ?? .blue,
+            borderColor: colors["border"] ?? .gray,
+            shadowColor: colors["shadow"] ?? .black.opacity(0.2)
+        )
+    }
+}
+
+struct UITheme {
+    let name: String
+    let backgroundColor: Color
+    let foregroundColor: Color
+    let accentColor: Color
+    let borderColor: Color
+    let shadowColor: Color
+    
+    static let `default` = UITheme(
+        name: "Default",
+        backgroundColor: .white,
+        foregroundColor: .black,
+        accentColor: .blue,
+        borderColor: .gray,
+        shadowColor: .black.opacity(0.2)
+    )
+    
+    static let dark = UITheme(
+        name: "Dark",
+        backgroundColor: .black,
+        foregroundColor: .white,
+        accentColor: .blue,
+        borderColor: .gray,
+        shadowColor: .white.opacity(0.2)
+    )
 }
 
 enum UIElementType: String, CaseIterable {

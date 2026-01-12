@@ -1,5 +1,6 @@
 // hitbox.c - Hitbox System Implementation
 #include <include/gameplay/combat/hitbox.h>
+#include <include/gameplay/combat/damage.h>
 #include <include/core/logger.h>
 #include <include/ecs/component_ids.h>
 #include <include/ecs/ecs.h>
@@ -11,12 +12,14 @@
 
 // Forward declarations - removed HitboxInstance since it's defined locally
 
-// Stub for missing ECS function
-static void ecs_remove_entity(World *world, Entity entity) {
-    // Stub implementation - would remove entity from ECS world
-    (void)world;
-    (void)entity;
-}
+// Internal hit tracking for hitboxes to prevent double-hits
+typedef struct {
+  Entity hitbox_entity;
+  Entity hit_entities[64];
+  u32 hit_count;
+} HitboxHitTracker;
+
+static HitboxHitTracker g_hitbox_trackers[MAX_HITBOXES] = {0};
 
 #define MAX_HITBOXES 1024
 #define HITBOX_QUERY_BUFFER_SIZE 256
@@ -97,6 +100,53 @@ static HitboxInstance* hitbox_find_instance(Entity entity) {
     }
   }
   return NULL;
+}
+
+// Helper: Check if hitbox has already hit this entity (prevent double-hits)
+static bool hitbox_has_hit_entity(Entity hitbox_entity, Entity target_entity) {
+  for (u32 i = 0; i < MAX_HITBOXES; i++) {
+    if (g_hitbox_trackers[i].hitbox_entity.id == hitbox_entity.id) {
+      for (u32 j = 0; j < g_hitbox_trackers[i].hit_count; j++) {
+        if (g_hitbox_trackers[i].hit_entities[j].id == target_entity.id) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+  return false;
+}
+
+// Helper: Mark entity as hit by this hitbox
+static void hitbox_mark_hit_entity(Entity hitbox_entity, Entity target_entity) {
+  for (u32 i = 0; i < MAX_HITBOXES; i++) {
+    if (g_hitbox_trackers[i].hitbox_entity.id == hitbox_entity.id) {
+      if (g_hitbox_trackers[i].hit_count < 64) {
+        g_hitbox_trackers[i].hit_entities[g_hitbox_trackers[i].hit_count++] = target_entity;
+      }
+      return;
+    }
+  }
+
+  // Create new tracker if not found
+  for (u32 i = 0; i < MAX_HITBOXES; i++) {
+    if (g_hitbox_trackers[i].hitbox_entity.id == 0) {
+      g_hitbox_trackers[i].hitbox_entity = hitbox_entity;
+      g_hitbox_trackers[i].hit_entities[0] = target_entity;
+      g_hitbox_trackers[i].hit_count = 1;
+      return;
+    }
+  }
+}
+
+// Helper: Clear hit list for hitbox
+static void hitbox_clear_hits(Entity hitbox_entity) {
+  for (u32 i = 0; i < MAX_HITBOXES; i++) {
+    if (g_hitbox_trackers[i].hitbox_entity.id == hitbox_entity.id) {
+      memset(&g_hitbox_trackers[i], 0, sizeof(HitboxHitTracker));
+      return;
+    }
+  }
 }
 
 static void hitbox_remove_instance(u32 index) {
@@ -299,36 +349,39 @@ void hitbox_system_shutdown(void) {
 
 void hitbox_system_update(World *world, f32 delta_time) {
   if (!g_hitbox_system.is_initialized) return;
-  
+
   g_hitbox_system.current_time += delta_time;
-  
+
   // Update all hitbox instances
   for (u32 i = 0; i < g_hitbox_system.instance_count; i++) {
     HitboxInstance *instance = &g_hitbox_system.instances[i];
-    
+
     // Update world position
     hitbox_update_world_position_instance(instance);
-    
+
     // Check for temporary hitbox destruction
     if (instance->destruction_time > 0.0 && g_hitbox_system.current_time >= instance->destruction_time) {
-      ecs_remove_entity(world, instance->entity);
+      // Clear hit tracking for this hitbox
+      hitbox_clear_hits(instance->entity);
+      // Destroy the entity
+      ecs_destroy_entity(world, instance->entity);
       hitbox_remove_instance(i);
       i--; // Adjust index since we removed an element
       continue;
     }
   }
-  
+
   // Perform collision detection
   for (u32 i = 0; i < g_hitbox_system.instance_count; i++) {
     HitboxInstance *instance_a = &g_hitbox_system.instances[i];
-    
+
     if (!instance_a->hitbox.active) continue;
-    
+
     for (u32 j = i + 1; j < g_hitbox_system.instance_count; j++) {
       HitboxInstance *instance_b = &g_hitbox_system.instances[j];
-      
+
       if (!instance_b->hitbox.active) continue;
-      
+
       HitboxCollision collision;
       if (hitbox_check_collision(instance_a, instance_b, &collision)) {
         // Handle collision
@@ -340,20 +393,49 @@ void hitbox_system_update(World *world, f32 delta_time) {
 
 void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b, const HitboxCollision *collision) {
   if (!world || !a || !b || !collision) return;
-  
+
   LOG_DEBUG("Hitbox collision: entity %u hit entity %u", a->entity.id, b->entity.id);
-  
-  // Apply damage if this is a trigger hitbox
+
+  // Apply damage if this is a trigger hitbox (e.g., attack hitbox)
   if (a->hitbox.is_trigger) {
-    // This would integrate with the health system
-    // For now, we'll just log the collision
-    f32 damage = 10.0f * a->hitbox.damage_multiplier;
-    LOG_DEBUG("Dealing %.1f damage to entity %u", damage, b->entity.id);
+    // Check if this hitbox has already hit target b
+    if (!hitbox_has_hit_entity(a->entity, b->entity)) {
+      // Calculate damage with multiplier
+      f32 base_damage = 10.0f;
+      f32 final_damage = base_damage * a->hitbox.damage_multiplier;
+
+      // Create damage event from hitbox owner to target
+      Entity source = a->entity;
+      Entity target = b->entity;
+      damage_event_create(source, target, final_damage, DAMAGE_TYPE_PHYSICAL);
+
+      // Mark that this hitbox has hit target b
+      hitbox_mark_hit_entity(a->entity, b->entity);
+
+      LOG_DEBUG("Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
+               a->entity.id, final_damage, b->entity.id, a->hitbox.damage_multiplier);
+    }
   }
-  
+
+  // Apply damage if target hitbox is also a trigger (two-way collision)
   if (b->hitbox.is_trigger) {
-    f32 damage = 10.0f * b->hitbox.damage_multiplier;
-    LOG_DEBUG("Dealing %.1f damage to entity %u", damage, a->entity.id);
+    // Check if this hitbox has already hit target a
+    if (!hitbox_has_hit_entity(b->entity, a->entity)) {
+      // Calculate damage with multiplier
+      f32 base_damage = 10.0f;
+      f32 final_damage = base_damage * b->hitbox.damage_multiplier;
+
+      // Create damage event from hitbox owner to target
+      Entity source = b->entity;
+      Entity target = a->entity;
+      damage_event_create(source, target, final_damage, DAMAGE_TYPE_PHYSICAL);
+
+      // Mark that this hitbox has hit target a
+      hitbox_mark_hit_entity(b->entity, a->entity);
+
+      LOG_DEBUG("Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
+               b->entity.id, final_damage, a->entity.id, b->hitbox.damage_multiplier);
+    }
   }
 }
 

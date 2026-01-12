@@ -7949,6 +7949,19 @@ struct CurveEditorToolbar: View {
             Divider()
                 .frame(height: 16)
             
+            // Visual options
+            Toggle("Keyframe Colors", isOn: $AnimationEditorManager.shared.keyframeColorByProperty)
+                .toggleStyle(.button)
+            
+            Toggle("Keyframe Shapes", isOn: $AnimationEditorManager.shared.keyframeShapeByInterpolation)
+                .toggleStyle(.button)
+            
+            Toggle("Selection Highlight", isOn: $AnimationEditorManager.shared.selectionHighlightIntensity > 0.5)
+                .toggleStyle(.button)
+            
+            Divider()
+                .frame(height: 16)
+            
             // Infinity mode
             Picker("Infinity", selection: $curveManager.infinityMode) {
                 ForEach(CurveEditorManager.InfinityMode.allCases, id: \.self) { mode in
@@ -8072,60 +8085,95 @@ struct CurveKeyframeView: View {
     let isHovered: Bool
     let showTangents: Bool
     let showWeights: Bool
+    @ObservedObject var manager: CurveEditorManager
     
     var body: some View {
+        let keyframePosition = CGPoint(
+            x: CGFloat(keyframe.time / curve.duration) * size.width,
+            y: CGFloat(size.height / 2) * (1.0 - (keyframe.value - minValue) / (maxValue - minValue))
+        )
+        
+        // Determine keyframe color and shape
+        let keyframeColor = AnimationEditorManager.shared.getKeyframeColor(for: curve.propertyPath, interpolation: keyframe.interpolation)
+        let keyframeShape = AnimationEditorManager.shared.getKeyframeShape(for: keyframe.interpolation)
+        
         ZStack {
-            // Keyframe point
-            let keyframePosition = getKeyframePosition()
-            
-            Circle()
-                .fill(isSelected ? DesignSystem.Colors.accentPrimary : curve.color)
-                .frame(width: 10, height: 10)
-                .overlay(
-                    Circle()
-                        .stroke(Color.white, lineWidth: isSelected ? 2 : 0)
-                )
+            // Keyframe shape
+            Group {
+                Path { path in
+                    switch keyframeShape {
+                    case "circle":
+                        Circle()
+                            .fill(keyframeColor)
+                            .frame(width: 8, height: 8)
+                    case "diamond":
+                        Path { path in
+                            Move(to: CGPoint(x: 4, y: 0))
+                            Line(to: CGPoint(x: 8, y: 8))
+                            Line(to: CGPoint(x: 0, y: 8))
+                            Line(to: CGPoint(x: -4, y: 0))
+                            Line(to: CGPoint(x: -4, y: 8))
+                            Line(to: CGPoint(x: 0, y: 8))
+                            Line(to: CGPoint(x: 4, y: 0))
+                            ClosePath()
+                        }
+                    case "square":
+                        Path { path in
+                            Rectangle()
+                                .fill(keyframeColor)
+                                .frame(width: 8, height: 8)
+                    }
+                    default:
+                        Circle()
+                            .fill(keyframeColor)
+                            .frame(width: 8, height: 8)
+                    }
+                }
+                .offset(keyframePosition)
                 .scaleEffect(isHovered ? 1.2 : 1.0)
                 .position(keyframePosition)
             
-            // Tangent handles
+            // Selection highlight
+            if isSelected {
+                Circle()
+                    .stroke(Color.accentPrimary, lineWidth: 2)
+                    .scaleEffect(1.2)
+                    .position(keyframePosition)
+            }
+            
+            // Hover effect
+            if isHovered {
+                Circle()
+                    .fill(Color.accentPrimary.opacity(0.3))
+                    .frame(width: 12, height: 12)
+                    .position(keyframePosition)
+            }
+            
+            // Tangent controls
             if showTangents {
                 // In tangent
                 Path { path in
-                    path.move(to: keyframePosition)
-                    path.addLine(to: keyframePosition + CGPoint(x: -keyframe.inTangent.x * 30, y: -keyframe.inTangent.y * 30))
+                    Move(to: CGPoint(x: -8, y: 0))
+                    Line(to: CGPoint(x: 0, y: 0))
+                    Circle()
+                        .fill(Color.orange)
+                        .frame(width: 4, height: 4)
                 }
-                .stroke(Color.orange, lineWidth: 1)
-                
-                Circle()
-                    .fill(Color.orange)
-                    .frame(width: 6, height: 6)
-                    .position(keyframePosition + CGPoint(x: -keyframe.inTangent.x * 30, y: -keyframe.inTangent.y * 30))
+                .offset(keyframePosition)
+                .scaleEffect(1.0)
+                .position(keyframePosition)
                 
                 // Out tangent
                 Path { path in
-                    path.move(to: keyframePosition)
-                    path.addLine(to: keyframePosition + CGPoint(x: keyframe.outTangent.x * 30, y: keyframe.outTangent.y * 30))
+                    Move(to: CGPoint(x: 8, y: 0))
+                    Line(to: CGPoint(x: 0, y: 0))
+                    Circle()
+                        .fill(Color.orange)
+                        .frame(width: 4, height: 4)
                 }
-                .stroke(Color.cyan, lineWidth: 1)
-                
-                Circle()
-                    .fill(Color.cyan)
-                    .frame(width: 6, height: 6)
-                    .position(keyframePosition + CGPoint(x: keyframe.outTangent.x * 30, y: keyframe.outTangent.y * 30))
-                
-                // Weight indicators
-                if showWeights {
-                    Text(String(format: "%.1f", keyframe.inWeight))
-                        .font(.system(size: 8))
-                        .foregroundColor(Color.orange)
-                        .position(keyframePosition + CGPoint(x: -keyframe.inTangent.x * 30 - 10, y: -keyframe.inTangent.y * 30))
-                    
-                    Text(String(format: "%.1f", keyframe.outWeight))
-                        .font(.system(size: 8))
-                        .foregroundColor(Color.cyan)
-                        .position(keyframePosition + CGPoint(x: keyframe.outTangent.x * 30 + 10, y: keyframe.outTangent.y * 30))
-                }
+                .offset(keyframePosition)
+                .scaleEffect(1.0)
+                .position(keyframePosition)
             }
         }
     }

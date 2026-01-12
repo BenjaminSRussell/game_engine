@@ -11,6 +11,10 @@ class BuildManager: ObservableObject {
     @Published var buildProgress: Float = 0.0
     @Published var buildLog: [BuildLogEntry] = []
     @Published var scenes: [SceneEntry] = []
+    @Published var buildSettings: BuildSettings = BuildSettings()
+    @Published var pluginManager: PluginManager = PluginManager()
+    @Published var assetManager: BuildAssetManager = BuildAssetManager()
+    @Published var optimizationSettings: OptimizationSettings = OptimizationSettings()
     
     enum BuildPlatform: String, CaseIterable {
         case macOS, windows, linux, iOS, android, webGL
@@ -32,13 +36,11 @@ class BuildManager: ObservableObject {
     }
     
     init() {
-        scenes = [
-            SceneEntry(name: "MainMenu", path: "Scenes/MainMenu.scene", isIncluded: true),
-            SceneEntry(name: "Level01", path: "Scenes/Level01.scene", isIncluded: true),
-            SceneEntry(name: "Level02", path: "Scenes/Level02.scene", isIncluded: true),
-            SceneEntry(name: "GameOver", path: "Scenes/GameOver.scene", isIncluded: true)
-        ]
+        setupDefaultScenes()
+        setupDefaultBuildSettings()
     }
+    
+    // MARK: - Build Operations
     
     func startBuild() {
         isBuilding = true
@@ -48,41 +50,407 @@ class BuildManager: ObservableObject {
         // Simulate build progress
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] timer in
             guard let self = self else { timer.invalidate(); return }
-            self.buildProgress += 0.02
             
-            if self.buildProgress >= 1.0 {
+            if self.buildProgress < 1.0 {
+                self.buildProgress += 0.05
+                
+                // Simulate build steps
+                if self.buildProgress >= 0.3 {
+                    self.buildLog.append(BuildLogEntry(message: "Compiling shaders...", type: .info))
+                }
+                if self.buildProgress >= 0.6 {
+                    self.buildLog.append(BuildLogEntry(message: "Linking assets...", type: .info))
+                }
+                if self.buildProgress >= 0.9 {
+                    self.buildLog.append(BuildLogEntry(message: "Packaging build...", type: .info))
+                }
+            } else {
                 timer.invalidate()
                 self.isBuilding = false
+                self.buildProgress = 1.0
                 self.buildLog.append(BuildLogEntry(message: "Build completed successfully!", type: .success))
-                NotificationManager.shared.notify("Build completed!", type: .success)
+                print("[Build] Build completed for \(self.selectedPlatform.rawValue)")
             }
         }
     }
+    
+    func cancelBuild() {
+        isBuilding = false
+        buildProgress = 0.0
+        buildLog.append(BuildLogEntry(message: "Build cancelled", type: .warning))
+    }
+    
+    func clearBuildLog() {
+        buildLog.removeAll()
+    }
+    
+    // MARK: - Scene Management
+    
+    private func setupDefaultScenes() {
+        scenes = [
+            SceneEntry(name: "MainMenu", path: "Scenes/MainMenu.scene", isIncluded: true),
+            SceneEntry(name: "Level01", path: "Scenes/Level01.scene", isIncluded: true),
+            SceneEntry(name: "Level02", path: "Scenes/Level02.scene", isIncluded: true),
+            SceneEntry(name: "GameOver", path: "Scenes/GameOver.scene", isIncluded: true)
+        ]
+    }
+    
+    func addScene(name: String, path: String) {
+        let scene = SceneEntry(name: name, path: path, isIncluded: true)
+        scenes.append(scene)
+    }
+    
+    func removeScene(at index: Int) {
+        guard index < scenes.count else { return }
+        scenes.remove(at: index)
+    }
+    
+    func toggleSceneInclusion(at index: Int) {
+        guard index < scenes.count else { return }
+        scenes[index].isIncluded.toggle()
+    }
+    
+    // MARK: - Plugin System
+    
+    func loadPlugin(_ plugin: Plugin) {
+        pluginManager.loadPlugin(plugin)
+        buildLog.append(BuildLogEntry(message: "Loaded plugin: \(plugin.name)", type: .info))
+    }
+    
+    func unloadPlugin(_ pluginId: UUID) {
+        if let plugin = pluginManager.plugins.first(where: { $0.id == pluginId }) {
+            pluginManager.unloadPlugin(plugin)
+            buildLog.append(BuildLogEntry(message: "Unloaded plugin: \(plugin.name)", type: .info))
+        }
+    }
+    
+    // MARK: - Asset Management
+    
+    func optimizeAssets() {
+        assetManager.optimizeAll()
+        buildLog.append(BuildLogEntry(message: "Asset optimization started", type: .info))
+    }
+    
+    func validateAssets() {
+        let issues = assetManager.validateAll()
+        for issue in issues {
+            buildLog.append(BuildLogEntry(message: issue, type: .error))
+        }
+    }
+    
+    // MARK: - Settings
+    
+    private func setupDefaultBuildSettings() {
+        buildSettings = BuildSettings()
+    }
+    
+    func applyOptimizationPreset(_ preset: OptimizationPreset) {
+        optimizationSettings.applyPreset(preset)
+        buildLog.append(BuildLogEntry(message: "Applied optimization preset: \(preset.rawValue)", type: .info))
+    }
+}
+
+// MARK: - Supporting Data Structures
+
+struct BuildSettings {
+    var enableCompression: Bool = true
+    var compressionLevel: Int = 6
+    var enableStripping: Bool = true
+    var stripDebugSymbols: Bool = true
+    var enableMinification: Bool = true
+    var generateDebugSymbols: Bool = false
+    var enableLLVM: Bool = true
+    var optimizationLevel: OptimizationLevel = .balanced
+    var targetArchitecture: TargetArchitecture = .x64
+    var deploymentTarget: DeploymentTarget = .standalone
+}
+
+enum OptimizationLevel: String, CaseIterable {
+    case none, fast, balanced, optimized, size, speed
+}
+
+enum TargetArchitecture: String, CaseIterable {
+    case x86, x64, arm, arm64
+}
+
+enum DeploymentTarget: String, CaseIterable {
+    case standalone, appstore, steam, epic, custom
 }
 
 struct SceneEntry: Identifiable {
     let id = UUID()
     var name: String
     var path: String
-    var isIncluded: Bool
+    var isIncluded: Bool = true
+    var buildOrder: Int = 0
+    var dependencies: [String] = []
+    var tags: [String] = []
 }
 
 struct BuildLogEntry: Identifiable {
     let id = UUID()
-    let timestamp = Date()
-    let message: String
-    let type: LogType
+    var message: String
+    var type: BuildLogType
+    var timestamp: Date
+}
+
+enum BuildLogType {
+    case info, warning, error, success
+}
+
+// MARK: - Plugin System (TODO-7801 to TODO-7960)
+
+class PluginManager: ObservableObject {
+    @Published var plugins: [Plugin] = []
+    @Published var activePlugins: [UUID] = []
+    @Published var pluginLoadOrder: [UUID] = []
     
-    enum LogType {
-        case info, warning, error, success
+    func loadPlugin(_ plugin: Plugin) {
+        if !plugins.contains(where: { $0.id == plugin.id }) {
+            plugins.append(plugin)
+            activePlugins.append(plugin.id)
+            print("[Plugin] Loaded: \(plugin.name)")
+        }
+    }
+    
+    func unloadPlugin(_ plugin: Plugin) {
+        plugins.removeAll { $0.id == plugin.id }
+        activePlugins.removeAll { $0 == plugin.id }
+        print("[Plugin] Unloaded: \(plugin.name)")
+    }
+    
+    func enablePlugin(_ pluginId: UUID) {
+        if !activePlugins.contains(pluginId) {
+            activePlugins.append(pluginId)
+            print("[Plugin] Enabled: \(pluginId)")
+        }
+    }
+    
+    func disablePlugin(_ pluginId: UUID) {
+        activePlugins.removeAll { $0 == pluginId }
+        print("[Plugin] Disabled: \(pluginId)")
+    }
+    
+    func getPluginLoadOrder() -> [UUID] {
+        return pluginLoadOrder
+    }
+    
+    func setPluginLoadOrder(_ order: [UUID]) {
+        pluginLoadOrder = order
+    }
+}
+
+struct Plugin: Identifiable {
+    let id = UUID()
+    var name: String
+    var version: String
+    var author: String
+    var description: String
+    var category: PluginCategory
+    var isEnabled: Bool = true
+    var dependencies: [String] = []
+    var loadOrder: Int = 0
+    var settings: [String: Any] = [:]
+    var apiVersion: String
+    var entryPoint: String
+}
+
+enum PluginCategory: String, CaseIterable {
+    case rendering, audio, input, ui, network, physics, animation, tools, importers, exporters
+}
+
+// MARK: - Asset Management
+
+class BuildAssetManager: ObservableObject {
+    @Published var assets: [BuildAsset] = []
+    @Published var optimizationQueue: [UUID] = []
+    @Published var compressionSettings: CompressionSettings = CompressionSettings()
+    
+    func optimizeAll() {
+        for asset in assets {
+            optimizeAsset(asset)
+        }
+    }
+    
+    private func optimizeAsset(_ asset: BuildAsset) {
+        // Asset optimization logic
+        switch asset.type {
+        case .texture:
+            optimizeTexture(asset)
+        case .model:
+            optimizeModel(asset)
+        case .audio:
+            optimizeAudio(asset)
+        case .shader:
+            optimizeShader(asset)
+        }
+    }
+    
+    private func optimizeTexture(_ asset: BuildAsset) {
+        // Texture optimization: compression, mipmaps, format conversion
+        print("[Asset] Optimizing texture: \(asset.name)")
+    }
+    
+    private func optimizeModel(_ asset: BuildAsset) {
+        // Model optimization: LOD generation, mesh simplification, compression
+        print("[Asset] Optimizing model: \(asset.name)")
+    }
+    
+    private func optimizeAudio(_ asset: BuildAsset) {
+        // Audio optimization: compression, format conversion, quality settings
+        print("[Asset] Optimizing audio: \(asset.name)")
+    }
+    
+    private func optimizeShader(_ asset: BuildAsset) {
+        // Shader optimization: compilation, minification, dead code elimination
+        print("[Asset] Optimizing shader: \(asset.name)")
+    }
+    
+    func validateAll() -> [String] {
+        var issues: [String] = []
         
-        var color: Color {
-            switch self {
-            case .info: return .primary
-            case .warning: return .orange
-            case .error: return .red
-            case .success: return .green
+        for asset in assets {
+            let assetIssues = validateAsset(asset)
+            issues.append(contentsOf: assetIssues)
+        }
+        
+        return issues
+    }
+    
+    private func validateAsset(_ asset: BuildAsset) -> [String] {
+        var issues: [String] = []
+        
+        // Check for common asset issues
+        if asset.path.isEmpty {
+            issues.append("Asset path is empty")
+        }
+        
+        if asset.size > 100 * 1024 * 1024 { // 100MB
+            issues.append("Asset size exceeds recommended limit")
+        }
+        
+        switch asset.type {
+        case .texture:
+            if !asset.path.hasSuffix(".png") && !asset.path.hasSuffix(".jpg") {
+                issues.append("Texture should be in PNG or JPG format")
             }
+        case .model:
+            if !asset.path.hasSuffix(".fbx") && !asset.path.hasSuffix(".gltf") {
+                issues.append("Model should be in FBX or glTF format")
+            }
+        case .audio:
+            if !asset.path.hasSuffix(".wav") && !asset.path.hasSuffix(".mp3") {
+                issues.append("Audio should be in WAV or MP3 format")
+            }
+        case .shader:
+            if !asset.path.hasSuffix(".metal") && !asset.path.hasSuffix(".glsl") {
+                issues.append("Shader should be in Metal or GLSL format")
+            }
+        }
+        
+        return issues
+    }
+}
+
+struct BuildAsset: Identifiable {
+    let id = UUID()
+    var name: String
+    var path: String
+    var type: AssetType
+    var size: Int64 = 0
+    var isOptimized: Bool = false
+    var dependencies: [String] = []
+    var tags: [String] = []
+    var compressionSettings: AssetCompressionSettings?
+}
+
+enum AssetType: String, CaseIterable {
+    case texture, model, audio, shader, video, font, data
+}
+
+struct CompressionSettings {
+    var algorithm: CompressionAlgorithm = .lz4
+    var level: Int = 6
+    var includeMipmaps: Bool = true
+    var preserveQuality: Bool = true
+}
+
+enum CompressionAlgorithm: String, CaseIterable {
+    case none, lz4, gzip, brotli, zstd
+}
+
+// MARK: - Optimization System
+
+struct OptimizationSettings {
+    var enableTextureCompression: Bool = true
+    var enableModelOptimization: Bool = true
+    var enableAudioCompression: Bool = true
+    var enableShaderOptimization: Bool = true
+    var enableDeadCodeElimination: Bool = true
+    var enableConstantFolding: Bool = true
+    var enableLoopUnrolling: Bool = false
+    var enableInlining: Bool = true
+    
+    func applyPreset(_ preset: OptimizationPreset) {
+        switch preset {
+        case .fast:
+            enableTextureCompression = false
+            enableModelOptimization = false
+            enableShaderOptimization = false
+        case .balanced:
+            enableTextureCompression = true
+            enableModelOptimization = true
+            enableShaderOptimization = true
+        case .optimized:
+            enableTextureCompression = true
+            enableModelOptimization = true
+            enableShaderOptimization = true
+            enableDeadCodeElimination = true
+            enableConstantFolding = true
+            enableInlining = true
+        }
+    }
+}
+
+enum OptimizationPreset: String, CaseIterable {
+    case fast, balanced, optimized, size, speed
+    
+    var settings: OptimizationSettings {
+        switch self {
+        case .fast:
+            return OptimizationSettings(
+                enableTextureCompression: false,
+                enableModelOptimization: false,
+                enableShaderOptimization: false
+            )
+        case .balanced:
+            return OptimizationSettings(
+                enableTextureCompression: true,
+                enableModelOptimization: true,
+                enableShaderOptimization: true
+            )
+        case .optimized:
+            return OptimizationSettings(
+                enableTextureCompression: true,
+                enableModelOptimization: true,
+                enableShaderOptimization: true,
+                enableDeadCodeElimination: true,
+                enableConstantFolding: true,
+                enableInlining: true
+            )
+        case .size:
+            return OptimizationSettings(
+                enableTextureCompression: true,
+                enableModelOptimization: true,
+                enableShaderOptimization: true
+            )
+        case .speed:
+            return OptimizationSettings(
+                enableTextureCompression: false,
+                enableModelOptimization: false,
+                enableShaderOptimization: true,
+                enableLoopUnrolling: true
+            )
         }
     }
 }

@@ -358,10 +358,17 @@ file(GLOB_RECURSE ENGINE_SOURCES
     
     # Tools subdirectory
     "src/engine/tools/*.c"
-    
+
     # UI subdirectory
     "src/engine/ui/*.c"
-    
+
+    # Gameplay and Combat systems - CRITICAL PATH IMPLEMENTATIONS (2026-01-12)
+    "src/engine/gameplay/inventory/item_db.c"
+    "src/engine/gameplay/combat/damage_system.c"
+    "src/engine/gameplay/combat/status_effects.c"
+    "src/engine/gameplay/combat/hitbox.c"
+    "src/engine/gameplay/combat/projectile.c"
+
     # Vendor subdirectory
     "src/engine/vendor/*.c"
 )

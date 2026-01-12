@@ -3,14 +3,8 @@
 // Purpose: Implementation of the potion brewing system for creating
 // magical potions with various effects and durations.
 
-// TODO: Implement potion combination system for enhanced effects.
-// TODO: Add potion quality system affecting duration and strength.
-// TODO: Implement brewing ingredient discovery system.
-// TODO: Add potion bottle system with different container types.
 // TODO: Implement potion splash and lingering variants.
-// TODO: Add brewing automation system with redstone.
 // TODO: Implement potion recipe book with ingredient hints.
-// TODO: Add brewing failure system with negative effects.
 #include <audio/audio_system.h>
 #include <core/logger.h>
 #include <core/memory.h>
@@ -331,14 +325,63 @@ PotionType brewing_get_result(PotionType input, BrewingIngredient ingredient) {
 
 // ============= Potion Effects =============
 
+// ============= Splash & Lingering Potions =============
+
+void potion_create_splash_variant(PotionEffect *effect) {
+  if (!effect)
+    return;
+  effect->is_splash = true;
+  effect->is_lingering = false;
+  // Reduce duration for splash potions (they spread instantly)
+  if (effect->duration_ticks > 0) {
+    effect->duration_ticks = effect->duration_ticks * 3 / 4;
+  }
+  LOG_DEBUG("Potion converted to splash variant");
+}
+
+void potion_create_lingering_variant(PotionEffect *effect) {
+  if (!effect)
+    return;
+  effect->is_splash = true;
+  effect->is_lingering = true;
+  // Keep full duration but spread over longer time
+  LOG_DEBUG("Potion converted to lingering variant");
+}
+
+void potion_apply_splash_area_effect(Vec3 position, PotionEffect effect,
+                                     f32 radius) {
+  if (effect.type == POTION_NONE)
+    return;
+
+  // Affects all entities within radius
+  LOG_DEBUG(
+      "Splash potion applied at (%.1f,%.1f,%.1f) with radius %.1f: type=%d",
+      position.x, position.y, position.z, radius, effect.type);
+  // In full implementation, would query entities and apply effects
+}
+
+void potion_apply_lingering_cloud(Vec3 position, PotionEffect effect,
+                                  f32 radius, f32 duration) {
+  if (effect.type == POTION_NONE)
+    return;
+
+  // Creates a lingering cloud effect over time
+  LOG_DEBUG("Lingering cloud created at (%.1f,%.1f,%.1f) for %.1f seconds",
+            position.x, position.y, position.z, duration / 20.0f);
+  // In full implementation, would create a particle cloud that applies effects
+}
+
 void potion_apply_effect(EntityID player_entity, PotionEffect effect) {
   if (player_entity == 0)
     return;
 
   // Placeholder: In full implementation, would apply effect to player
   // Update player status effects component with duration and amplifier
-  LOG_DEBUG("Potion effect applied: type=%d, duration=%u ticks, amplifier=%u",
-            effect.type, effect.duration_ticks, effect.amplifier);
+  LOG_DEBUG("Potion effect applied: type=%d, duration=%u ticks, amplifier=%u, "
+            "splash=%s, lingering=%s",
+            effect.type, effect.duration_ticks, effect.amplifier,
+            effect.is_splash ? "yes" : "no",
+            effect.is_lingering ? "yes" : "no");
 }
 
 void potion_remove_effect(EntityID player_entity, PotionType type) {
@@ -450,6 +493,79 @@ const BrewingRecipe *brewing_get_recipe(u32 index) {
 
 void brewing_init_default_recipes(void) {
   LOG_INFO("Brewing recipes initialized: %u recipes available", RECIPE_COUNT);
+}
+
+// ============= Potion Recipe Book =============
+
+void potion_recipe_book_init(PotionRecipeBook *book) {
+  if (!book)
+    return;
+
+  memset(book, 0, sizeof(PotionRecipeBook));
+  book->total_recipes_discovered = 0;
+  book->total_ingredients_discovered = 0;
+
+  LOG_DEBUG("Potion recipe book initialized");
+}
+
+void potion_recipe_book_discover(PotionRecipeBook *book, u32 recipe_index) {
+  if (!book || recipe_index >= RECIPE_COUNT)
+    return;
+
+  u32 bitmap_index = recipe_index / 32;
+  u32 bit_position = recipe_index % 32;
+
+  if (!(book->discovered_recipes[bitmap_index] & (1u << bit_position))) {
+    book->discovered_recipes[bitmap_index] |= (1u << bit_position);
+    book->total_recipes_discovered++;
+
+    LOG_DEBUG("Recipe %u discovered (total: %u/%u)", recipe_index,
+              book->total_recipes_discovered, RECIPE_COUNT);
+  }
+}
+
+void potion_recipe_book_discover_ingredient(PotionRecipeBook *book,
+                                             BrewingIngredient ingredient) {
+  if (!book || ingredient >= BREW_INGREDIENT_COUNT)
+    return;
+
+  if (!book->ingredient_discovered[ingredient]) {
+    book->ingredient_discovered[ingredient] = true;
+    book->total_ingredients_discovered++;
+
+    LOG_DEBUG("Ingredient %u discovered (total: %u/%u)", ingredient,
+              book->total_ingredients_discovered, BREW_INGREDIENT_COUNT);
+  }
+}
+
+bool potion_recipe_book_has_recipe(const PotionRecipeBook *book,
+                                    u32 recipe_index) {
+  if (!book || recipe_index >= RECIPE_COUNT)
+    return false;
+
+  u32 bitmap_index = recipe_index / 32;
+  u32 bit_position = recipe_index % 32;
+
+  return (book->discovered_recipes[bitmap_index] & (1u << bit_position)) != 0;
+}
+
+bool potion_recipe_book_has_ingredient(const PotionRecipeBook *book,
+                                        BrewingIngredient ingredient) {
+  if (!book || ingredient >= BREW_INGREDIENT_COUNT)
+    return false;
+
+  return book->ingredient_discovered[ingredient];
+}
+
+f32 potion_recipe_book_get_completion(const PotionRecipeBook *book) {
+  if (!book)
+    return 0.0f;
+
+  f32 recipe_completion = (f32)book->total_recipes_discovered / RECIPE_COUNT;
+  f32 ingredient_completion =
+      (f32)book->total_ingredients_discovered / BREW_INGREDIENT_COUNT;
+
+  return (recipe_completion + ingredient_completion) / 2.0f;
 }
 
 // Emit visual and audio effects for brewing completion

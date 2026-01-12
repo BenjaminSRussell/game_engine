@@ -1,5 +1,6 @@
 // status_effects.c - Status Effects System Implementation
 #include <include/gameplay/combat/status_effects.h>
+#include <include/gameplay/combat/damage.h>
 #include <include/core/logger.h>
 #include <include/ecs/component_ids.h>
 #include <include/ecs/ecs.h>
@@ -75,56 +76,74 @@ static bool can_stack_with(StatusEffectType type, StatusEffectType existing_type
 
 static void apply_effect_logic(StatusEffectInstance *effect, u64 entity_id, float delta_time) {
   if (!effect || !effect->is_active) return;
-  
+
   effect->duration_remaining -= delta_time;
   effect->tick_timer += delta_time;
-  
+
   // Check if effect has expired
   if (!effect->is_permanent && effect->duration_remaining <= 0.0f) {
     effect->is_active = false;
     LOG_DEBUG("Effect %s expired for entity %llu", get_effect_name(effect->type), entity_id);
     return;
   }
-  
+
   // Apply effect logic based on type (every EFFECT_UPDATE_INTERVAL seconds)
   if (effect->tick_timer >= EFFECT_UPDATE_INTERVAL) {
     effect->tick_timer = 0.0f;
-    
+
     switch (effect->type) {
       case EFFECT_BURNING:
-        // Apply fire damage over time
-        LOG_DEBUG("Burning: Applied %.1f fire damage to entity %llu", effect->magnitude, entity_id);
-        // This would integrate with the health system
+        // Apply fire damage over time (1.0 damage per tick interval)
+        // Create damage event and emit to damage system queue
+        {
+          Entity source = {.id = effect->source_entity_id};
+          Entity target = {.id = entity_id};
+          damage_event_create(source, target, effect->magnitude, DAMAGE_TYPE_FIRE);
+          LOG_DEBUG("Burning: Applied %.1f fire damage to entity %llu", effect->magnitude, entity_id);
+        }
         break;
-        
+
       case EFFECT_POISON:
-        // Apply poison damage over time
-        LOG_DEBUG("Poison: Applied %.1f poison damage to entity %llu", effect->magnitude, entity_id);
-        // This would integrate with the health system
+        // Apply poison damage over time (0.5 damage per tick interval)
+        // Create damage event and emit to damage system queue
+        {
+          Entity source = {.id = effect->source_entity_id};
+          Entity target = {.id = entity_id};
+          damage_event_create(source, target, effect->magnitude, DAMAGE_TYPE_POISON);
+          LOG_DEBUG("Poison: Applied %.1f poison damage to entity %llu", effect->magnitude, entity_id);
+        }
         break;
-        
+
       case EFFECT_FREEZING:
-        // Slow down entity movement
-        LOG_DEBUG("Freezing: Slowed entity %llu by %.1f%%", entity_id, effect->magnitude * 100.0f);
-        // This would integrate with the movement system
+        // Slow down entity movement - magnitude is the speed multiplier (0.5 = 50% speed)
+        // This would be applied by movement system checking status effects
+        LOG_DEBUG("Freezing: Slowed entity %llu by %.1f%%", entity_id, (1.0f - effect->magnitude) * 100.0f);
         break;
-        
+
       case EFFECT_HEALING:
-        // Heal entity over time
-        LOG_DEBUG("Healing: Healed entity %llu for %.1f HP", entity_id, effect->magnitude);
-        // This would integrate with the health system
+        // Heal entity over time by magnitude per tick
+        // Get health component and apply healing
+        {
+          // Note: Would need World context to get component
+          // For now, healing is queued as a negative damage event with DAMAGE_TYPE_TRUE
+          Entity source = {.id = effect->source_entity_id};
+          Entity target = {.id = entity_id};
+          // Negative damage = healing, TRUE damage type bypasses resistances
+          damage_event_create(source, target, -effect->magnitude, DAMAGE_TYPE_TRUE);
+          LOG_DEBUG("Healing: Healed entity %llu for %.1f HP", entity_id, effect->magnitude);
+        }
         break;
-        
+
       case EFFECT_SHIELD:
-        // Provide damage absorption
+        // Provide damage absorption - typically applied to a shield component
+        // Magnitude is the shield amount (reduces incoming damage up to shield value)
         LOG_DEBUG("Shield: Entity %llu has %.1f shield points", entity_id, effect->magnitude);
-        // This would integrate with the damage system
         break;
-        
+
       case EFFECT_SPEED:
-        // Increase movement speed
-        LOG_DEBUG("Speed: Entity %llu speed increased by %.1f%%", entity_id, effect->magnitude * 100.0f);
-        // This would integrate with the movement system
+        // Increase movement speed - magnitude is the speed multiplier (1.5 = 150% speed)
+        // This would be applied by movement system checking status effects
+        LOG_DEBUG("Speed: Entity %llu speed increased by %.1f%%", entity_id, (effect->magnitude - 1.0f) * 100.0f);
         break;
     }
   }

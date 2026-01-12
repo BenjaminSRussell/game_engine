@@ -301,40 +301,2023 @@ class PropertyClipboardManager: ObservableObject {
 }
 
 // MARK: - Float Property Editor TODOs (TODO-1501 to TODO-1520)
+
 // TODO-1501: Float editor with logarithmic scale option
+struct LogarithmicFloatEditor: View {
+    @Binding var value: Float
+    let range: ClosedRange<Float>
+    let logarithmicBase: Float
+    
+    init(value: Binding<Float>, in range: ClosedRange<Float> = 0.001...1000, base: Float = 10) {
+        self._value = value
+        self.range = range
+        self.logarithmicBase = base
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Log Scale")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text(String(format: "%.3f", value))
+                    .font(.caption.monospaced())
+            }
+            
+            Slider(
+                value: Binding(
+                    get: {
+                        guard value > 0 else { return 0 }
+                        return log(value) / log(logarithmicBase)
+                    },
+                    set: { newValue in
+                        value = pow(logarithmicBase, newValue)
+                        value = max(range.lowerBound, min(range.upperBound, value))
+                    }
+                ),
+                in: log(range.lowerBound) / log(logarithmicBase)...log(range.upperBound) / log(logarithmicBase)
+            )
+        }
+    }
+}
+
 // TODO-1502: Float editor with custom curve mapping
+struct CurveMappedFloatEditor: View {
+    @Binding var value: Float
+    let curve: (Float) -> Float
+    let range: ClosedRange<Float>
+    
+    init(value: Binding<Float>, in range: ClosedRange<Float> = 0...1, curve: @escaping (Float) -> Float = { $0 }) {
+        self._value = value
+        self.range = range
+        self.curve = curve
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Curve Mapped")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text(String(format: "%.3f", value))
+                    .font(.caption.monospaced())
+            }
+            
+            Slider(
+                value: Binding(
+                    get: {
+                        let normalized = (value - range.lowerBound) / (range.upperBound - range.lowerBound)
+                        return curve(normalized)
+                    },
+                    set: { newValue in
+                        let denormalized = newValue * (range.upperBound - range.lowerBound) + range.lowerBound
+                        value = max(range.lowerBound, min(range.upperBound, denormalized))
+                    }
+                ),
+                in: 0...1
+            )
+        }
+    }
+}
+
 // TODO-1503: Float editor with percentage display mode
+struct PercentageFloatEditor: View {
+    @Binding var value: Float
+    let range: ClosedRange<Float>
+    
+    init(value: Binding<Float>, in range: ClosedRange<Float> = 0...1) {
+        self._value = value
+        self.range = range
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Percentage")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text(String(format: "%.1f%%", value * 100))
+                    .font(.caption.monospaced())
+            }
+            
+            Slider(value: $value, in: range)
+        }
+    }
+}
+
 // TODO-1504: Float editor with scientific notation
+struct ScientificFloatEditor: View {
+    @Binding var value: Float
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Scientific")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text(value.formatted(.number.precision(.fractionLength(2)).notation(.scientific)))
+                    .font(.caption.monospaced())
+            }
+            
+            TextField("Value", value: $value, format: .number.precision(.fractionLength(6)).notation(.scientific))
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .keyboardType(.decimalPad)
+        }
+    }
+}
+
 // TODO-1505: Float editor with infinity/NaN handling
+struct RobustFloatEditor: View {
+    @Binding var value: Float
+    @State private var textValue: String = ""
+    @State private var isValid: Bool = true
+    
+    init(value: Binding<Float>) {
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Value")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                if !isValid {
+                    Image(systemName: "exclamationmark.triangle")
+                        .foregroundColor(.orange)
+                        .font(.caption)
+                }
+                
+                Spacer()
+                
+                Menu {
+                    Button("Infinity") { value = .infinity }
+                    Button("-Infinity") { value = -.infinity }
+                    Button("NaN") { value = .nan }
+                    Button("Zero") { value = 0 }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .font(.caption)
+                }
+            }
+            
+            TextField("Enter value", text: $textValue)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(isValid ? Color.gray : Color.orange, lineWidth: 1)
+                )
+                .onSubmit {
+                    if let newValue = Float(textValue) {
+                        value = newValue
+                        isValid = true
+                    } else {
+                        isValid = false
+                    }
+                }
+        }
+        .onAppear {
+            updateTextFromValue()
+        }
+        .onChange(of: value) { _ in
+            updateTextFromValue()
+        }
+    }
+    
+    private func updateTextFromValue() {
+        if value.isInfinity {
+            textValue = value > 0 ? "∞" : "-∞"
+        } else if value.isNaN {
+            textValue = "NaN"
+        } else {
+            textValue = String(format: "%.6f", value)
+        }
+        isValid = true
+    }
+}
+
 // TODO-1506: Float editor with visual power indicator
+struct PowerIndicatorFloatEditor: View {
+    @Binding var value: Float
+    let maxPower: Float
+    
+    init(value: Binding<Float>, maxPower: Float = 100) {
+        self._value = value
+        self.maxPower = maxPower
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Power")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text(String(format: "%.1f / %.1f", value, maxPower))
+                    .font(.caption.monospaced())
+            }
+            
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    // Background
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(height: 8)
+                        .cornerRadius(4)
+                    
+                    // Power fill
+                    Rectangle()
+                        .fill(powerGradient)
+                        .frame(width: geometry.size.width * CGFloat(min(value, maxPower) / maxPower), height: 8)
+                        .cornerRadius(4)
+                    
+                    // Power level markers
+                    ForEach(0..<5) { i in
+                        let x = geometry.size.width * CGFloat(i) / 4
+                        Rectangle()
+                            .fill(Color.black.opacity(0.3))
+                            .frame(width: 1, height: 12)
+                            .position(x: x, y: 4)
+                    }
+                }
+            }
+            .frame(height: 12)
+            
+            Slider(value: $value, in: 0...maxPower)
+        }
+    }
+    
+    private var powerGradient: LinearGradient {
+        let ratio = min(value, maxPower) / maxPower
+        let color: Color
+        if ratio < 0.25 {
+            color = .green
+        } else if ratio < 0.5 {
+            color = .yellow
+        } else if ratio < 0.75 {
+            color = .orange
+        } else {
+            color = .red
+        }
+        return LinearGradient(colors: [color.opacity(0.7), color], startPoint: .leading, endPoint: .trailing)
+    }
+}
+
 // TODO-1507: Float editor with audio-style dB display
+struct DecibelFloatEditor: View {
+    @Binding var value: Float // Value in dB
+    let range: ClosedRange<Float> // dB range (typically -60 to 0)
+    
+    init(value: Binding<Float>, in range: ClosedRange<Float> = -60...0) {
+        self._value = value
+        self.range = range
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Level (dB)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text(String(format: "%.1f dB", value))
+                    .font(.caption.monospaced())
+            }
+            
+            // dB meter visualization
+            GeometryReader { geometry in
+                HStack(spacing: 0) {
+                    ForEach(0..<Int(geometry.size.width)) { i in
+                        let normalizedPos = Float(i) / Float(geometry.size.width)
+                        let dbValue = range.lowerBound + (range.upperBound - range.lowerBound) * normalizedPos
+                        let isActive = value >= dbValue
+                        let color: Color
+                        
+                        if dbValue < -40 {
+                            color = isActive ? Color.green : Color.green.opacity(0.2)
+                        } else if dbValue < -20 {
+                            color = isActive ? Color.yellow : Color.yellow.opacity(0.2)
+                        } else if dbValue < -6 {
+                            color = isActive ? Color.orange : Color.orange.opacity(0.2)
+                        } else {
+                            color = isActive ? Color.red : Color.red.opacity(0.2)
+                        }
+                        
+                        Rectangle()
+                            .fill(color)
+                            .frame(width: 1)
+                    }
+                }
+            }
+            .frame(height: 8)
+            
+            Slider(value: $value, in: range)
+        }
+    }
+}
+
 // TODO-1508: Float editor with time format (hh:mm:ss)
+struct TimeFormatFloatEditor: View {
+    @Binding var value: Float // Value in seconds
+    let allowNegative: Bool
+    
+    init(value: Binding<Float>, allowNegative: Bool = false) {
+        self._value = value
+        self.allowNegative = allowNegative
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Time")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text(formatTime(value))
+                    .font(.caption.monospaced())
+            }
+            
+            HStack {
+                TextField("Hours", value: Binding(
+                    get: { Int(abs(value) / 3600) },
+                    set: { newValue in
+                        let seconds = value.truncatingRemainder(dividingBy: 3600)
+                        value = Float(newValue) * 3600 + seconds
+                        if !allowNegative && value < 0 { value = 0 }
+                    }
+                ), format: .number)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 60)
+                
+                Text(":")
+                
+                TextField("Min", value: Binding(
+                    get: { Int(abs(value).truncatingRemainder(dividingBy: 3600) / 60) },
+                    set: { newValue in
+                        let seconds = value.truncatingRemainder(dividingBy: 60)
+                        let hours = Int(value / 3600)
+                        value = Float(hours) * 3600 + Float(newValue) * 60 + seconds
+                        if !allowNegative && value < 0 { value = 0 }
+                    }
+                ), format: .number)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 60)
+                
+                Text(":")
+                
+                TextField("Sec", value: Binding(
+                    get: { Int(abs(value).truncatingRemainder(dividingBy: 60)) },
+                    set: { newValue in
+                        let minutes = Int(value / 60)
+                        let hours = Int(value / 3600)
+                        value = Float(hours) * 3600 + Float(minutes) * 60 + Float(newValue)
+                        if !allowNegative && value < 0 { value = 0 }
+                    }
+                ), format: .number)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 60)
+            }
+            
+            Slider(value: $value, in: allowNegative ? -3600...3600 : 0...3600)
+        }
+    }
+    
+    private func formatTime(_ seconds: Float) -> String {
+        let absSeconds = abs(seconds)
+        let hours = Int(absSeconds / 3600)
+        let minutes = Int(absSeconds.truncatingRemainder(dividingBy: 3600) / 60)
+        let secs = Int(absSeconds.truncatingRemainder(dividingBy: 60))
+        let sign = seconds < 0 ? "-" : ""
+        return String(format: "%@%02d:%02d:%02d", sign, hours, minutes, secs)
+    }
+}
+
 // TODO-1509: Float editor with angle format (degrees/radians)
+struct AngleFloatEditor: View {
+    @Binding var value: Float // Value in radians
+    @State private var useDegrees: Bool = true
+    
+    init(value: Binding<Float>) {
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Angle")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Toggle("°", isOn: $useDegrees)
+                    .toggleStyle(ButtonToggleStyle())
+                    .frame(width: 30)
+                
+                Text(displayValue)
+                    .font(.caption.monospaced())
+            }
+            
+            // Angle visualization
+            GeometryReader { geometry in
+                ZStack {
+                    Circle()
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    
+                    // Angle arc
+                    Path { path in
+                        let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        let radius = min(geometry.size.width, geometry.size.height) / 2 - 10
+                        path.move(to: center)
+                        path.addArc(center: center, radius: radius, startAngle: .zero, endAngle: .radians(Double(value)), clockwise: false)
+                    }
+                    .stroke(Color.blue, lineWidth: 2)
+                    
+                    // Angle line
+                    Path { path in
+                        let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        let radius = min(geometry.size.width, geometry.size.height) / 2 - 10
+                        let end = CGPoint(
+                            x: center.x + radius * cos(value),
+                            y: center.y + radius * sin(value)
+                        )
+                        path.move(to: center)
+                        path.addLine(to: end)
+                    }
+                    .stroke(Color.blue, lineWidth: 2)
+                }
+            }
+            .frame(height: 60)
+            
+            TextField("Value", value: Binding(
+                get: { useDegrees ? value * 180 / .pi : value },
+                set: { newValue in
+                    value = useDegrees ? newValue * .pi / 180 : newValue
+                }
+            ), format: .number.precision(.fractionLength(3)))
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+        }
+    }
+    
+    private var displayValue: String {
+        if useDegrees {
+            return String(format: "%.1f°", value * 180 / .pi)
+        } else {
+            return String(format: "%.3f rad", value)
+        }
+    }
+}
+
 // TODO-1510: Float editor with distance format (m/km/mi)
+struct DistanceFloatEditor: View {
+    @Binding var value: Float // Value in meters
+    @State private var unit: DistanceUnit = .meters
+    
+    enum DistanceUnit: String, CaseIterable {
+        case meters = "m"
+        case kilometers = "km"
+        case miles = "mi"
+        case feet = "ft"
+        case yards = "yd"
+        
+        var conversionToMeters: Float {
+            switch self {
+            case .meters: return 1.0
+            case .kilometers: return 1000.0
+            case .miles: return 1609.34
+            case .feet: return 0.3048
+            case .yards: return 0.9144
+            }
+        }
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Distance")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Picker("Unit", selection: $unit) {
+                    ForEach(DistanceUnit.allCases, id: \.self) { unit in
+                        Text(unit.rawValue).tag(unit)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .frame(width: 200)
+            }
+            
+            HStack {
+                TextField("Value", value: Binding(
+                    get: { value / unit.conversionToMeters },
+                    set: { value = $0 * unit.conversionToMeters }
+                ), format: .number.precision(.fractionLength(2)))
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                Text(unit.rawValue)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Text("≈ \(String(format: "%.2f", value))m")
+                    .font(.caption.monospaced())
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+}
 
 // MARK: - Vector Property Editor TODOs (TODO-1521 to TODO-1540)
+
 // TODO-1521: Vector2 property editor
+struct Vector2Editor: View {
+    @Binding var value: SIMD2<Float>
+    let label: String
+    
+    init(_ label: String = "Vector2", value: Binding<SIMD2<Float>>) {
+        self.label = label
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            HStack {
+                VStack {
+                    Text("X")
+                        .font(.caption2)
+                    TextField("X", value: $value.x, format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 80)
+                }
+                
+                VStack {
+                    Text("Y")
+                        .font(.caption2)
+                    TextField("Y", value: $value.y, format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 80)
+                }
+                
+                Spacer()
+                
+                VStack {
+                    Text("Length")
+                        .font(.caption2)
+                    Text(String(format: "%.3f", length(value)))
+                        .font(.caption.monospaced())
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+    }
+    
+    private func length(_ vector: SIMD2<Float>) -> Float {
+        return sqrt(vector.x * vector.x + vector.y * vector.y)
+    }
+}
+
 // TODO-1522: Vector4 property editor
+struct Vector4Editor: View {
+    @Binding var value: SIMD4<Float>
+    let label: String
+    
+    init(_ label: String = "Vector4", value: Binding<SIMD4<Float>>) {
+        self.label = label
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            HStack {
+                ForEach(0..<4, id: \.self) { i in
+                    VStack {
+                        Text(["X", "Y", "Z", "W"][i])
+                            .font(.caption2)
+                        TextField(["X", "Y", "Z", "W"][i], value: Binding(
+                            get: { value[i] },
+                            set: { value[i] = $0 }
+                        ), format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 70)
+                    }
+                }
+                
+                Spacer()
+                
+                VStack {
+                    Text("Length")
+                        .font(.caption2)
+                    Text(String(format: "%.3f", length(value)))
+                        .font(.caption.monospaced())
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+    }
+    
+    private func length(_ vector: SIMD4<Float>) -> Float {
+        return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z + vector.w * vector.w)
+    }
+}
+
 // TODO-1523: Vector editor with swizzle operations
+struct SwizzleVectorEditor: View {
+    @Binding var value: SIMD3<Float>
+    @State private var swizzlePattern: String = "xyz"
+    @State private var swizzledValue: SIMD3<Float> = SIMD3<Float>(0, 0, 0)
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Vector with Swizzle")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            // Original vector
+            HStack {
+                ForEach(0..<3, id: \.self) { i in
+                    VStack {
+                        Text(["X", "Y", "Z"][i])
+                            .font(.caption2)
+                        TextField(["X", "Y", "Z"][i], value: Binding(
+                            get: { value[i] },
+                            set: { value[i] = $0 }
+                        ), format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 70)
+                    }
+                }
+                
+                Spacer()
+            }
+            
+            // Swizzle controls
+            HStack {
+                Text("Swizzle:")
+                    .font(.caption)
+                
+                TextField("Pattern", text: $swizzlePattern)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 60)
+                    .onChange(of: swizzlePattern) { _ in
+                        updateSwizzledValue()
+                    }
+                
+                Button("Apply") {
+                    applySwizzle()
+                }
+                .buttonStyle(.bordered)
+                
+                Spacer()
+                
+                Text("Result: (\(String(format: "%.2f", swizzledValue.x)), \(String(format: "%.2f", swizzledValue.y)), \(String(format: "%.2f", swizzledValue.z)))")
+                    .font(.caption.monospaced())
+                    .foregroundColor(.secondary)
+            }
+        }
+        .onAppear {
+            updateSwizzledValue()
+        }
+    }
+    
+    private func updateSwizzledValue() {
+        let pattern = swizzlePattern.lowercased()
+        swizzledValue = SIMD3<Float>(
+            getValueForComponent(pattern.first ?? "x"),
+            getValueForComponent(pattern.count > 1 ? pattern[pattern.index(pattern.startIndex, offsetBy: 1)] : "x"),
+            getValueForComponent(pattern.count > 2 ? pattern[pattern.index(pattern.startIndex, offsetBy: 2)] : "x")
+        )
+    }
+    
+    private func getValueForComponent(_ component: Character) -> Float {
+        switch component {
+        case "x": return value.x
+        case "y": return value.y
+        case "z": return value.z
+        case "0": return 0
+        case "1": return 1
+        default: return 0
+        }
+    }
+    
+    private func applySwizzle() {
+        value = swizzledValue
+    }
+}
+
 // TODO-1524: Vector editor with normalize button
+struct NormalizableVectorEditor: View {
+    @Binding var value: SIMD3<Float>
+    let label: String
+    
+    init(_ label: String = "Vector3", value: Binding<SIMD3<Float>>) {
+        self.label = label
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            HStack {
+                ForEach(0..<3, id: \.self) { i in
+                    VStack {
+                        Text(["X", "Y", "Z"][i])
+                            .font(.caption2)
+                        TextField(["X", "Y", "Z"][i], value: Binding(
+                            get: { value[i] },
+                            set: { value[i] = $0 }
+                        ), format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 70)
+                    }
+                }
+                
+                Spacer()
+                
+                VStack {
+                    Text("Length")
+                        .font(.caption2)
+                    Text(String(format: "%.3f", length(value)))
+                        .font(.caption.monospaced())
+                        .foregroundColor(.secondary)
+                    
+                    Button("Normalize") {
+                        normalizeVector()
+                    }
+                    .buttonStyle(.bordered)
+                    .font(.caption)
+                }
+            }
+        }
+    }
+    
+    private func length(_ vector: SIMD3<Float>) -> Float {
+        return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+    }
+    
+    private func normalizeVector() {
+        let len = length(value)
+        if len > 0.001 {
+            value = value / len
+        }
+    }
+}
+
 // TODO-1525: Vector editor with length display
+struct VectorWithLengthEditor: View {
+    @Binding var value: SIMD3<Float>
+    let label: String
+    
+    init(_ label: String = "Vector3", value: Binding<SIMD3<Float>>) {
+        self.label = label
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            HStack {
+                ForEach(0..<3, id: \.self) { i in
+                    VStack {
+                        Text(["X", "Y", "Z"][i])
+                            .font(.caption2)
+                        TextField(["X", "Y", "Z"][i], value: Binding(
+                            get: { value[i] },
+                            set: { value[i] = $0 }
+                        ), format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 70)
+                    }
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Length")
+                        .font(.caption2)
+                    Text(String(format: "%.3f", length(value)))
+                        .font(.caption.monospaced())
+                        .foregroundColor(.secondary)
+                    
+                    Text("Length²")
+                        .font(.caption2)
+                    Text(String(format: "%.3f", lengthSquared(value)))
+                        .font(.caption.monospaced())
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+    }
+    
+    private func length(_ vector: SIMD3<Float>) -> Float {
+        return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+    }
+    
+    private func lengthSquared(_ vector: SIMD3<Float>) -> Float {
+        return vector.x * vector.x + vector.y * vector.y + vector.z * vector.z
+    }
+}
+
 // TODO-1526: Vector editor with direction visualization
+struct VectorDirectionEditor: View {
+    @Binding var value: SIMD3<Float>
+    let label: String
+    
+    init(_ label: String = "Vector3", value: Binding<SIMD3<Float>>) {
+        self.label = label
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            HStack {
+                ForEach(0..<3, id: \.self) { i in
+                    VStack {
+                        Text(["X", "Y", "Z"][i])
+                            .font(.caption2)
+                        TextField(["X", "Y", "Z"][i], value: Binding(
+                            get: { value[i] },
+                            set: { value[i] = $0 }
+                        ), format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 70)
+                    }
+                }
+                
+                Spacer()
+                
+                // Direction visualization
+                VStack {
+                    Text("Direction")
+                        .font(.caption2)
+                    
+                    GeometryReader { geometry in
+                        ZStack {
+                            // Background circle
+                            Circle()
+                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                            
+                            // Grid lines
+                            Path { path in
+                                let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                                let radius = min(geometry.size.width, geometry.size.height) / 2 - 10
+                                
+                                // X axis
+                                path.move(to: CGPoint(x: center.x - radius, y: center.y))
+                                path.addLine(to: CGPoint(x: center.x + radius, y: center.y))
+                                
+                                // Y axis
+                                path.move(to: CGPoint(x: center.x, y: center.y - radius))
+                                path.addLine(to: CGPoint(x: center.x, y: center.y + radius))
+                            }
+                            .stroke(Color.gray.opacity(0.2), lineWidth: 0.5)
+                            
+                            // Direction arrow
+                            Path { path in
+                                let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                                let radius = min(geometry.size.width, geometry.size.height) / 2 - 15
+                                let normalized = normalize(value)
+                                let end = CGPoint(
+                                    x: center.x + radius * CGFloat(normalized.x),
+                                    y: center.y - radius * CGFloat(normalized.y) // Flip Y for visualization
+                                )
+                                
+                                path.move(to: center)
+                                path.addLine(to: end)
+                                
+                                // Arrow head
+                                let arrowSize: CGFloat = 8
+                                let angle = atan2(end.y - center.y, end.x - center.x)
+                                path.move(to: end)
+                                path.addLine(to: CGPoint(
+                                    x: end.x - arrowSize * cos(angle - .pi / 6),
+                                    y: end.y - arrowSize * sin(angle - .pi / 6)
+                                ))
+                                path.move(to: end)
+                                path.addLine(to: CGPoint(
+                                    x: end.x - arrowSize * cos(angle + .pi / 6),
+                                    y: end.y - arrowSize * sin(angle + .pi / 6)
+                                ))
+                            }
+                            .stroke(Color.blue, lineWidth: 2)
+                        }
+                    }
+                    .frame(width: 80, height: 80)
+                }
+            }
+        }
+    }
+    
+    private func normalize(_ vector: SIMD3<Float>) -> SIMD3<Float> {
+        let len = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+        return len > 0.001 ? vector / len : SIMD3<Float>(0, 0, 1)
+    }
+}
+
 // TODO-1527: Vector editor with world/local toggle
+struct WorldLocalVectorEditor: View {
+    @Binding var value: SIMD3<Float>
+    @State private var coordinateSpace: CoordinateSpace = .world
+    
+    enum CoordinateSpace: String, CaseIterable {
+        case world = "World"
+        case local = "Local"
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Vector")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Picker("Space", selection: $coordinateSpace) {
+                    ForEach(CoordinateSpace.allCases, id: \.self) { space in
+                        Text(space.rawValue).tag(space)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .frame(width: 120)
+            }
+            
+            HStack {
+                ForEach(0..<3, id: \.self) { i in
+                    VStack {
+                        Text(["X", "Y", "Z"][i])
+                            .font(.caption2)
+                        TextField(["X", "Y", "Z"][i], value: Binding(
+                            get: { value[i] },
+                            set: { value[i] = $0 }
+                        ), format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 70)
+                    }
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text(coordinateSpace.rawValue)
+                        .font(.caption2)
+                        .foregroundColor(.blue)
+                    
+                    Text(String(format: "%.3f", length(value)))
+                        .font(.caption.monospaced())
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+    }
+    
+    private func length(_ vector: SIMD3<Float>) -> Float {
+        return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+    }
+}
+
 // TODO-1528: Vector editor with snap to axis
+struct SnapToAxisVectorEditor: View {
+    @Binding var value: SIMD3<Float>
+    let snapThreshold: Float
+    
+    init(value: Binding<SIMD3<Float>>, snapThreshold: Float = 0.1) {
+        self._value = value
+        self.snapThreshold = snapThreshold
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Vector (Snap to Axis)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Button("Snap X") { snapToAxis(.x) }
+                    .buttonStyle(.bordered)
+                    .font(.caption)
+                
+                Button("Snap Y") { snapToAxis(.y) }
+                    .buttonStyle(.bordered)
+                    .font(.caption)
+                
+                Button("Snap Z") { snapToAxis(.z) }
+                    .buttonStyle(.bordered)
+                    .font(.caption)
+            }
+            
+            HStack {
+                ForEach(0..<3, id: \.self) { i in
+                    VStack {
+                        Text(["X", "Y", "Z"][i])
+                            .font(.caption2)
+                        TextField(["X", "Y", "Z"][i], value: Binding(
+                            get: { value[i] },
+                            set: { newValue in
+                                value[i] = newValue
+                                autoSnapToAxis(axis: i)
+                            }
+                        ), format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 70)
+                    }
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Length")
+                        .font(.caption2)
+                    Text(String(format: "%.3f", length(value)))
+                        .font(.caption.monospaced())
+                        .foregroundColor(.secondary)
+                    
+                    if isNearAxis {
+                        Text("Near Axis")
+                            .font(.caption2)
+                            .foregroundColor(.orange)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func length(_ vector: SIMD3<Float>) -> Float {
+        return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+    }
+    
+    private func snapToAxis(_ axis: Int) {
+        var snapped = value
+        for i in 0..<3 {
+            if i != axis {
+                snapped[i] = 0
+            }
+        }
+        value = snapped
+    }
+    
+    private func autoSnapToAxis(axis: Int) {
+        for i in 0..<3 {
+            if i != axis && abs(value[i]) < snapThreshold {
+                value[i] = 0
+            }
+        }
+    }
+    
+    private var isNearAxis: Bool {
+        let nonZeroAxes = (0..<3).filter { abs(value[$0]) > snapThreshold }.count
+        return nonZeroAxes <= 1
+    }
+}
+
 // TODO-1529: Vector editor with copy/paste individual axes
+struct CopyPasteVectorEditor: View {
+    @Binding var value: SIMD3<Float>
+    @State private var copiedAxis: Int?
+    @State private var copiedValue: Float = 0
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Vector (Copy/Paste Axes)")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            
+            HStack {
+                ForEach(0..<3, id: \.self) { i in
+                    VStack {
+                        HStack {
+                            Text(["X", "Y", "Z"][i])
+                                .font(.caption2)
+                            
+                            Spacer()
+                            
+                            Button(copiedAxis == i ? "✓" : "📋") {
+                                copyAxis(i)
+                            }
+                            .buttonStyle(.plain)
+                            .font(.caption)
+                            .foregroundColor(copiedAxis == i ? .green : .blue)
+                            
+                            if copiedAxis != nil {
+                                Button("📄") {
+                                    pasteToAxis(i)
+                                }
+                                .buttonStyle(.plain)
+                                .font(.caption)
+                                .foregroundColor(.purple)
+                            }
+                        }
+                        
+                        TextField(["X", "Y", "Z"][i], value: Binding(
+                            get: { value[i] },
+                            set: { value[i] = $0 }
+                        ), format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 80)
+                    }
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Length")
+                        .font(.caption2)
+                    Text(String(format: "%.3f", length(value)))
+                        .font(.caption.monospaced())
+                        .foregroundColor(.secondary)
+                    
+                    if let copiedAxis = copiedAxis {
+                        Text("Copied: \(["X", "Y", "Z"][copiedAxis]) = \(String(format: "%.3f", copiedValue))")
+                            .font(.caption2)
+                            .foregroundColor(.green)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func length(_ vector: SIMD3<Float>) -> Float {
+        return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+    }
+    
+    private func copyAxis(_ axis: Int) {
+        copiedAxis = axis
+        copiedValue = value[axis]
+    }
+    
+    private func pasteToAxis(_ axis: Int) {
+        if let copiedAxis = copiedAxis {
+            value[axis] = copiedValue
+        }
+    }
+}
+
 // TODO-1530: Vector editor with proportional scaling lock
+struct ProportionalVectorEditor: View {
+    @Binding var value: SIMD3<Float>
+    @State private var proportionalScale: Bool = false
+    @State private var originalRatio: SIMD3<Float> = SIMD3<Float>(1, 1, 1)
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Vector (Proportional)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Toggle("🔗", isOn: $proportionalScale)
+                    .toggleStyle(ButtonToggleStyle())
+                    .help("Proportional scaling")
+            }
+            
+            HStack {
+                ForEach(0..<3, id: \.self) { i in
+                    VStack {
+                        Text(["X", "Y", "Z"][i])
+                            .font(.caption2)
+                        TextField(["X", "Y", "Z"][i], value: Binding(
+                            get: { value[i] },
+                            set: { newValue in
+                                if proportionalScale {
+                                    updateProportional(axis: i, newValue: newValue)
+                                } else {
+                                    value[i] = newValue
+                                    updateRatio()
+                                }
+                            }
+                        ), format: .number.precision(.fractionLength(3)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 70)
+                    }
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Length")
+                        .font(.caption2)
+                    Text(String(format: "%.3f", length(value)))
+                        .font(.caption.monospaced())
+                        .foregroundColor(.secondary)
+                    
+                    if proportionalScale {
+                        Text("🔗 Locked")
+                            .font(.caption2)
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
+        }
+        .onAppear {
+            updateRatio()
+        }
+    }
+    
+    private func length(_ vector: SIMD3<Float>) -> Float {
+        return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+    }
+    
+    private func updateRatio() {
+        let maxComponent = max(abs(value.x), max(abs(value.y), abs(value.z)))
+        if maxComponent > 0.001 {
+            originalRatio = value / maxComponent
+        } else {
+            originalRatio = SIMD3<Float>(1, 1, 1)
+        }
+    }
+    
+    private func updateProportional(axis: Int, newValue: Float) {
+        if abs(newValue) < 0.001 {
+            value = SIMD3<Float>(0, 0, 0)
+            return
+        }
+        
+        let scale = newValue / value[axis]
+        value = value * scale
+        updateRatio()
+    }
+}
 
 // MARK: - Rotation Property Editor TODOs (TODO-1541 to TODO-1560)
+
 // TODO-1541: Euler angles editor with gimbal lock warning
+struct EulerAnglesEditor: View {
+    @Binding var value: SIMD3<Float> // XYZ Euler angles in radians
+    @State private var useDegrees: Bool = true
+    @State private var showGimbalWarning: Bool = false
+    
+    init(value: Binding<SIMD3<Float>>) {
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Euler Angles")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Toggle("°", isOn: $useDegrees)
+                    .toggleStyle(ButtonToggleStyle())
+                    .frame(width: 30)
+                
+                if showGimbalWarning {
+                    HStack {
+                        Image(systemName: "exclamationmark.triangle")
+                            .foregroundColor(.orange)
+                            .font(.caption)
+                        Text("Gimbal Lock")
+                            .font(.caption2)
+                            .foregroundColor(.orange)
+                    }
+                }
+            }
+            
+            HStack {
+                ForEach(0..<3, id: \.self) { i in
+                    VStack {
+                        Text(["X", "Y", "Z"][i] + " (" + ["Pitch", "Yaw", "Roll"][i] + ")")
+                            .font(.caption2)
+                        TextField(["X", "Y", "Z"][i], value: Binding(
+                            get: {
+                                let angle = value[i]
+                                return useDegrees ? angle * 180 / .pi : angle
+                            },
+                            set: { newValue in
+                                let radians = useDegrees ? newValue * .pi / 180 : newValue
+                                value[i] = radians
+                                checkGimbalLock()
+                            }
+                        ), format: .number.precision(.fractionLength(2)))
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 80)
+                    }
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Quaternion")
+                        .font(.caption2)
+                    Text(String(format: "(%.3f, %.3f, %.3f, %.3f)", quaternion.x, quaternion.y, quaternion.z, quaternion.w))
+                        .font(.caption.monospaced())
+                        .foregroundColor(.secondary)
+                }
+            }
+            
+            // Euler angle visualization
+            GeometryReader { geometry in
+                ZStack {
+                    // Gimbal visualization
+                    ForEach(0..<3, id: \.self) { i in
+                        Path { path in
+                            let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                            let radius = min(geometry.size.width, geometry.size.height) / 2 - CGFloat(20 + i * 15)
+                            
+                            path.addEllipse(
+                                center: center,
+                                radii: CGSize(width: radius, height: radius),
+                                startAngle: .zero,
+                                endAngle: .radians(2 * .pi),
+                        clockwise: false
+                            )
+                        }
+                        .stroke([Color.red, Color.green, Color.blue][i], lineWidth: 2)
+                        .opacity(0.6)
+                    }
+                }
+            }
+            .frame(height: 100)
+        }
+        .onAppear {
+            checkGimbalLock()
+        }
+        .onChange(of: value) { _ in
+            checkGimbalLock()
+        }
+    }
+    
+    private var quaternion: simd_quatf {
+        return simd_quatf(
+            angle: value.y,
+            axis: SIMD3<Float>(0, 1, 0)
+        ) * simd_quatf(
+            angle: value.x,
+            axis: SIMD3<Float>(1, 0, 0)
+        ) * simd_quatf(
+            angle: value.z,
+            axis: SIMD3<Float>(0, 0, 1)
+        )
+    }
+    
+    private func checkGimbalLock() {
+        // Check if we're close to gimbal lock (when Y angle approaches ±90°)
+        let pitch = abs(value.x)
+        let yaw = abs(value.y)
+        let roll = abs(value.z)
+        
+        // Gimbal lock occurs when pitch approaches ±90° (π/2 radians)
+        let gimbalThreshold: Float = .pi / 2 - 0.1 // Within 0.1 radians of 90°
+        showGimbalWarning = pitch > gimbalThreshold
+    }
+}
+
 // TODO-1542: Quaternion editor with visualization
+struct QuaternionEditor: View {
+    @Binding var value: simd_quatf
+    @State private var useEuler: Bool = false
+    @State private var eulerAngles: SIMD3<Float> = SIMD3<Float>(0, 0, 0)
+    
+    init(value: Binding<simd_quatf>) {
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Quaternion")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Toggle("Euler", isOn: $useEuler)
+                    .toggleStyle(ButtonToggleStyle())
+                    .frame(width: 60)
+                
+                Button("Normalize") {
+                    normalizeQuaternion()
+                }
+                .buttonStyle(.bordered)
+                .font(.caption)
+            }
+            
+            if useEuler {
+                // Euler angles mode
+                HStack {
+                    ForEach(0..<3, id: \.self) { i in
+                        VStack {
+                            Text(["X", "Y", "Z"][i] + " (deg)")
+                                .font(.caption2)
+                            TextField(["X", "Y", "Z"][i], value: Binding(
+                                get: { eulerAngles[i] * 180 / .pi },
+                                set: { newValue in
+                                    eulerAngles[i] = newValue * .pi / 180
+                                    updateQuaternionFromEuler()
+                                }
+                            ), format: .number.precision(.fractionLength(2)))
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 70)
+                        }
+                    }
+                    
+                    Spacer()
+                }
+            } else {
+                // Quaternion components mode
+                HStack {
+                    ForEach(0..<4, id: \.self) { i in
+                        VStack {
+                            Text(["X", "Y", "Z", "W"][i])
+                                .font(.caption2)
+                            TextField(["X", "Y", "Z", "W"][i], value: Binding(
+                                get: { [value.x, value.y, value.z, value.w][i] },
+                                set: { newValue in
+                                    switch i {
+                                    case 0: value.x = newValue
+                                    case 1: value.y = newValue
+                                    case 2: value.z = newValue
+                                    case 3: value.w = newValue
+                                    default: break
+                                    }
+                                }
+                            ), format: .number.precision(.fractionLength(3)))
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 70)
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("Length")
+                            .font(.caption2)
+                        Text(String(format: "%.3f", quaternionLength))
+                            .font(.caption.monospaced())
+                            .foregroundColor(quaternionLength > 0.99 && quaternionLength < 1.01 ? .green : .orange)
+                    }
+                }
+            }
+            
+            // Quaternion visualization
+            GeometryReader { geometry in
+                ZStack {
+                    // Unit sphere
+                    Circle()
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    
+                    // Rotation axis and angle
+                    Path { path in
+                        let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        let radius = min(geometry.size.width, geometry.size.height) / 2 - 20
+                        
+                        // Rotation axis
+                        let axis = normalize(value.vector)
+                        let axisEnd = CGPoint(
+                            x: center.x + radius * CGFloat(axis.x),
+                            y: center.y - radius * CGFloat(axis.y)
+                        )
+                        
+                        path.move(to: center)
+                        path.addLine(to: axisEnd)
+                        
+                        // Axis arrow
+                        let arrowSize: CGFloat = 8
+                        let angle = atan2(axisEnd.y - center.y, axisEnd.x - center.x)
+                        path.move(to: axisEnd)
+                        path.addLine(to: CGPoint(
+                            x: axisEnd.x - arrowSize * cos(angle - .pi / 6),
+                            y: axisEnd.y - arrowSize * sin(angle - .pi / 6)
+                        ))
+                        path.move(to: axisEnd)
+                        path.addLine(to: CGPoint(
+                            x: axisEnd.x - arrowSize * cos(angle + .pi / 6),
+                            y: axisEnd.y - arrowSize * sin(angle + .pi / 6)
+                        ))
+                    }
+                    .stroke(Color.blue, lineWidth: 2)
+                    
+                    // Rotation arc
+                    Path { path in
+                        let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        let radius = min(geometry.size.width, geometry.size.height) / 2 - 30
+                        let angle = acos(value.w) * 2
+                        
+                        path.addArc(
+                            center: center,
+                            radius: radius,
+                            startAngle: .zero,
+                            endAngle: .radians(Double(angle)),
+                            clockwise: false
+                        )
+                    }
+                    .stroke(Color.orange, lineWidth: 2)
+                }
+            }
+            .frame(height: 80)
+        }
+        .onAppear {
+            updateEulerFromQuaternion()
+        }
+        .onChange(of: value) { _ in
+            updateEulerFromQuaternion()
+        }
+    }
+    
+    private var quaternionLength: Float {
+        return sqrt(value.x * value.x + value.y * value.y + value.z * value.z + value.w * value.w)
+    }
+    
+    private func normalizeQuaternion() {
+        let len = quaternionLength
+        if len > 0.001 {
+            value = value / len
+        }
+    }
+    
+    private func updateEulerFromQuaternion() {
+        // Convert quaternion to Euler angles
+        let q = normalize(value)
+        
+        // Roll (X-axis rotation)
+        let sinr_cosp = 2 * (q.w * q.x + q.y * q.z)
+        let cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y)
+        eulerAngles.x = atan2(sinr_cosp, cosr_cosp)
+        
+        // Pitch (Y-axis rotation)
+        let sinp = 2 * (q.w * q.y - q.z * q.x)
+        eulerAngles.y = abs(sinp) >= 1 ? .pi / 2 : asin(sinp)
+        
+        // Yaw (Z-axis rotation)
+        let siny_cosp = 2 * (q.w * q.z + q.x * q.y)
+        let cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z)
+        eulerAngles.z = atan2(siny_cosp, cosy_cosp)
+    }
+    
+    private func updateQuaternionFromEuler() {
+        // Convert Euler angles to quaternion
+        let halfAngles = eulerAngles / 2
+        
+        let cx = cos(halfAngles.x)
+        let sx = sin(halfAngles.x)
+        let cy = cos(halfAngles.y)
+        let sy = sin(halfAngles.y)
+        let cz = cos(halfAngles.z)
+        let sz = sin(halfAngles.z)
+        
+        value = simd_quatf(
+            ix: sx * cy * cz - cx * sy * sz,
+            iy: cx * sy * cz + sx * cy * sz,
+            iz: cx * cy * sz - sx * sy * cz,
+            r: cx * cy * cz + sx * sy * sz
+        )
+    }
+    
+    private func normalize(_ q: simd_quatf) -> simd_quatf {
+        let len = sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w)
+        return len > 0.001 ? q / len : simd_quatf(ix: 0, iy: 0, iz: 0, r: 1)
+    }
+    
+    private func normalize(_ vector: SIMD3<Float>) -> SIMD3<Float> {
+        let len = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+        return len > 0.001 ? vector / len : SIMD3<Float>(0, 0, 1)
+    }
+}
+
 // TODO-1543: Rotation editor with axis-angle mode
+struct AxisAngleEditor: View {
+    @Binding var value: simd_quatf
+    @State private var axis: SIMD3<Float> = SIMD3<Float>(0, 1, 0)
+    @State private var angle: Float = 0
+    @State private var useDegrees: Bool = true
+    
+    init(value: Binding<simd_quatf>) {
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Axis-Angle")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Toggle("°", isOn: $useDegrees)
+                    .toggleStyle(ButtonToggleStyle())
+                    .frame(width: 30)
+                
+                Button("Apply") {
+                    applyAxisAngle()
+                }
+                .buttonStyle(.bordered)
+                    .font(.caption)
+            }
+            
+            // Axis controls
+            HStack {
+                Text("Axis:")
+                    .font(.caption)
+                
+                ForEach(0..<3, id: \.self) { i in
+                    TextField(["X", "Y", "Z"][i], value: Binding(
+                        get: { axis[i] },
+                        set: { axis[i] = $0 }
+                    ), format: .number.precision(.fractionLength(3)))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 60)
+                }
+                
+                Button("Normalize") {
+                    normalizeAxis()
+                }
+                .buttonStyle(.bordered)
+                .font(.caption)
+                
+                Spacer()
+                
+                Text(String(format: "%.3f", axisLength))
+                    .font(.caption.monospaced())
+                    .foregroundColor(axisLength > 0.99 && axisLength < 1.01 ? .green : .orange)
+            }
+            
+            // Angle control
+            HStack {
+                Text("Angle:")
+                    .font(.caption)
+                
+                TextField("Angle", value: Binding(
+                    get: { useDegrees ? angle * 180 / .pi : angle },
+                    set: { angle = useDegrees ? $0 * .pi / 180 : $0 }
+                ), format: .number.precision(.fractionLength(2)))
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 80)
+                
+                Spacer()
+                
+                Text(useDegrees ? "deg" : "rad")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            // Quick angle presets
+            HStack {
+                Text("Quick:")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                ForEach([0, 45, 90, 180, 270, 360], id: \.self) { presetAngle in
+                    Button("\(presetAngle)°") {
+                        angle = Float(presetAngle) * .pi / 180
+                        applyAxisAngle()
+                    }
+                    .buttonStyle(.bordered)
+                    .font(.caption2)
+                }
+                
+                Spacer()
+            }
+            
+            // Visualization
+            GeometryReader { geometry in
+                ZStack {
+                    // Reference circle
+                    Circle()
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    
+                    // Axis vector
+                    Path { path in
+                        let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        let radius = min(geometry.size.width, geometry.size.height) / 2 - 20
+                        let normalizedAxis = normalize(axis)
+                        let axisEnd = CGPoint(
+                            x: center.x + radius * CGFloat(normalizedAxis.x),
+                            y: center.y - radius * CGFloat(normalizedAxis.y)
+                        )
+                        
+                        path.move(to: center)
+                        path.addLine(to: axisEnd)
+                    }
+                    .stroke(Color.blue, lineWidth: 2)
+                    
+                    // Rotation arc
+                    Path { path in
+                        let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        let radius = min(geometry.size.width, geometry.size.height) / 2 - 30
+                        
+                        path.addArc(
+                            center: center,
+                            radius: radius,
+                            startAngle: .zero,
+                            endAngle: .radians(Double(angle)),
+                            clockwise: false
+                        )
+                    }
+                    .stroke(Color.orange, lineWidth: 2)
+                }
+            }
+            .frame(height: 80)
+        }
+        .onAppear {
+            updateAxisAngleFromQuaternion()
+        }
+        .onChange(of: value) { _ in
+            updateAxisAngleFromQuaternion()
+        }
+    }
+    
+    private var axisLength: Float {
+        return sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z)
+    }
+    
+    private func normalizeAxis() {
+        let len = axisLength
+        if len > 0.001 {
+            axis = axis / len
+        }
+    }
+    
+    private func applyAxisAngle() {
+        if axisLength > 0.001 {
+            let normalizedAxis = axis / axisLength
+            value = simd_quatf(angle: angle, axis: normalizedAxis)
+        }
+    }
+    
+    private func updateAxisAngleFromQuaternion() {
+        // Extract axis and angle from quaternion
+        let q = normalize(value)
+        
+        angle = acos(max(-1, min(1, q.w))) * 2
+        
+        if abs(angle) > 0.001 {
+            let sinHalfAngle = sin(angle / 2)
+            axis = SIMD3<Float>(q.x, q.y, q.z) / sinHalfAngle
+        } else {
+            axis = SIMD3<Float>(0, 1, 0) // Default axis
+        }
+    }
+    
+    private func normalize(_ q: simd_quatf) -> simd_quatf {
+        let len = sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w)
+        return len > 0.001 ? q / len : simd_quatf(ix: 0, iy: 0, iz: 0, r: 1)
+    }
+    
+    private func normalize(_ vector: SIMD3<Float>) -> SIMD3<Float> {
+        let len = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+        return len > 0.001 ? vector / len : SIMD3<Float>(0, 0, 1)
+    }
+}
+
 // TODO-1544: Rotation editor with look-at helper
-// TODO-1545: Rotation editor with snap to world axes
-// TODO-1546: Rotation editor with flip/mirror operations
-// TODO-1547: Rotation editor with rotation constraints
-// TODO-1548: Rotation editor with degrees/radians toggle
-// TODO-1549: Rotation editor with animation curve integration
-// TODO-1550: Rotation editor with slerp/lerp preview
+struct LookAtRotationEditor: View {
+    @Binding var value: simd_quatf
+    @State private var target: SIMD3<Float> = SIMD3<Float>(0, 0, 1)
+    @State private var upVector: SIMD3<Float> = SIMD3<Float>(0, 1, 0)
+    
+    init(value: Binding<simd_quatf>) {
+        self._value = value
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Look At")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Button("Apply Look At") {
+                    applyLookAt()
+                }
+                .buttonStyle(.bordered)
+                .font(.caption)
+            }
+            
+            // Target position
+            HStack {
+                Text("Target:")
+                    .font(.caption)
+                
+                ForEach(0..<3, id: \.self) { i in
+                    TextField(["X", "Y", "Z"][i], value: Binding(
+                        get: { target[i] },
+                        set: { target[i] = $0 }
+                    ), format: .number.precision(.fractionLength(2)))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 70)
+                }
+                
+                Spacer()
+            }
+            
+            // Up vector
+            HStack {
+                Text("Up:")
+                    .font(.caption)
+                
+                ForEach(0..<3, id: \.self) { i in
+                    TextField(["X", "Y", "Z"][i], value: Binding(
+                        get: { upVector[i] },
+                        set: { upVector[i] = $0 }
+                    ), format: .number.precision(.fractionLength(2)))
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 70)
+                }
+                
+                Button("Normalize") {
+                    normalizeUpVector()
+                }
+                .buttonStyle(.bordered)
+                .font(.caption)
+                
+                Spacer()
+                
+                Text(String(format: "%.3f", upVectorLength))
+                    .font(.caption.monospaced())
+                    .foregroundColor(upVectorLength > 0.99 && upVectorLength < 1.01 ? .green : .orange)
+            }
+            
+            // Quick targets
+            HStack {
+                Text("Quick:")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Button("+X") { target = SIMD3<Float>(1, 0, 0); applyLookAt() }
+                Button("+Y") { target = SIMD3<Float>(0, 1, 0); applyLookAt() }
+                Button("+Z") { target = SIMD3<Float>(0, 0, 1); applyLookAt() }
+                Button("-X") { target = SIMD3<Float>(-1, 0, 0); applyLookAt() }
+                Button("-Y") { target = SIMD3<Float>(0, -1, 0); applyLookAt() }
+                Button("-Z") { target = SIMD3<Float>(0, 0, -1); applyLookAt() }
+                
+                ForEach(["+X", "+Y", "+Z", "-X", "-Y", "-Z"], id: \.self) { direction in
+                    Button(direction) {
+                        switch direction {
+                        case "+X": target = SIMD3<Float>(1, 0, 0)
+                        case "+Y": target = SIMD3<Float>(0, 1, 0)
+                        case "+Z": target = SIMD3<Float>(0, 0, 1)
+                        case "-X": target = SIMD3<Float>(-1, 0, 0)
+                        case "-Y": target = SIMD3<Float>(0, -1, 0)
+                        case "-Z": target = SIMD3<Float>(0, 0, -1)
+                        default: break
+                        }
+                        applyLookAt()
+                    }
+                    .buttonStyle(.bordered)
+                    .font(.caption2)
+                }
+                
+                Spacer()
+            }
+            
+            // Visualization
+            GeometryReader { geometry in
+                ZStack {
+                    // Coordinate system
+                    Path { path in
+                        let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        let radius = min(geometry.size.width, geometry.size.height) / 2 - 20
+                        
+                        // X axis (red)
+                        path.move(to: center)
+                        path.addLine(to: CGPoint(x: center.x + radius, y: center.y))
+                        
+                        // Y axis (green)
+                        path.move(to: center)
+                        path.addLine(to: CGPoint(x: center.x, y: center.y - radius))
+                        
+                        // Z axis (blue) - represented diagonally
+                        path.move(to: center)
+                        path.addLine(to: CGPoint(x: center.x + radius * 0.7, y: center.y + radius * 0.7))
+                    }
+                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    
+                    // Look direction
+                    Path { path in
+                        let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        let normalizedTarget = normalize(target)
+                        let targetEnd = CGPoint(
+                            x: center.x + CGFloat(normalizedTarget.x) * 40,
+                            y: center.y - CGFloat(normalizedTarget.y) * 40
+                        )
+                        
+                        path.move(to: center)
+                        path.addLine(to: targetEnd)
+                    }
+                    .stroke(Color.orange, lineWidth: 3)
+                }
+            }
+            .frame(height: 80)
+        }
+    }
+    
+    private var upVectorLength: Float {
+        return sqrt(upVector.x * upVector.x + upVector.y * upVector.y + upVector.z * upVector.z)
+    }
+    
+    private func normalizeUpVector() {
+        let len = upVectorLength
+        if len > 0.001 {
+            upVector = upVector / len
+        }
+    }
+    
+    private func applyLookAt() {
+        let normalizedTarget = normalize(target)
+        let normalizedUp = normalize(upVector)
+        
+        // Calculate look-at rotation
+        let forward = normalizedTarget
+        let right = normalize(cross(normalizedUp, forward))
+        let actualUp = cross(forward, right)
+        
+        // Create rotation matrix from basis vectors
+        let rotationMatrix = SIMD4<Float>(
+            SIMD4<Float>(right.x, actualUp.x, forward.x, 0),
+            SIMD4<Float>(right.y, actualUp.y, forward.y, 0),
+            SIMD4<Float>(right.z, actualUp.z, forward.z, 0),
+            SIMD4<Float>(0, 0, 0, 1)
+        )
+        
+        // Convert to quaternion
+        value = quaternionFromMatrix(rotationMatrix)
+    }
+    
+    private func quaternionFromMatrix(_ matrix: SIMD4<Float>) -> simd_quatf {
+        let trace = matrix[0][0] + matrix[1][1] + matrix[2][2]
+        
+        if trace > 0 {
+            let s = sqrt(trace + 1.0) * 2
+            return simd_quatf(
+                ix: (matrix[2][1] - matrix[1][2]) / s,
+                iy: (matrix[0][2] - matrix[2][0]) / s,
+                iz: (matrix[1][0] - matrix[0][1]) / s,
+                r: 0.25 * s
+            )
+        } else if matrix[0][0] > matrix[1][1] && matrix[0][0] > matrix[2][2] {
+            let s = sqrt(1.0 + matrix[0][0] - matrix[1][1] - matrix[2][2]) * 2
+            return simd_quatf(
+                ix: 0.25 * s,
+                iy: (matrix[0][1] + matrix[1][0]) / s,
+                iz: (matrix[0][2] + matrix[2][0]) / s,
+                r: (matrix[2][1] - matrix[1][2]) / s
+            )
+        } else if matrix[1][1] > matrix[2][2] {
+            let s = sqrt(1.0 + matrix[1][1] - matrix[0][0] - matrix[2][2]) * 2
+            return simd_quatf(
+                ix: (matrix[0][1] + matrix[1][0]) / s,
+                iy: 0.25 * s,
+                iz: (matrix[1][2] + matrix[2][1]) / s,
+                r: (matrix[0][2] - matrix[2][0]) / s
+            )
+        } else {
+            let s = sqrt(1.0 + matrix[2][2] - matrix[0][0] - matrix[1][1]) * 2
+            return simd_quatf(
+                ix: (matrix[0][2] + matrix[2][0]) / s,
+                iy: (matrix[1][2] + matrix[2][1]) / s,
+                iz: 0.25 * s,
+                r: (matrix[1][0] - matrix[0][1]) / s
+            )
+        }
+    }
+    
+    private func normalize(_ vector: SIMD3<Float>) -> SIMD3<Float> {
+        let len = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z)
+        return len > 0.001 ? vector / len : SIMD3<Float>(0, 0, 1)
+    }
+    
+    private func cross(_ a: SIMD3<Float>, _ b: SIMD3<Float>) -> SIMD3<Float> {
+        return SIMD3<Float>(
+            a.y * b.z - a.z * b.y,
+            a.z * b.x - a.x * b.z,
+            a.x * b.y - a.y * b.x
+        )
+    }
+}
 
 // MARK: - Color Property Editor TODOs (TODO-1561 to TODO-1600)
 // TODO-1561: Color editor with HDR support
@@ -3218,49 +5201,1103 @@ struct AssetReferenceEditor: View {
     }
 }
 
-// MARK: - Array/List Editor (TODO-1490)
-struct ArrayPropertyEditor<Element: Identifiable>: View {
+// MARK: - Enhanced Array/List Editor with Comprehensive Features (TODO-1651 to TODO-1668)
+struct EnhancedArrayPropertyEditor<Element: Identifiable & Codable>: View, PropertyEditor {
     let label: String
     @Binding var items: [Element]
     let itemView: (Binding<Element>) -> AnyView
     let createNew: () -> Element
+    let itemDescription: (Element) -> String
+    
+    // Configuration
+    let config: PropertyEditorConfig<[Element]>
+    let maxItems: Int?
+    let enableVirtualization: Bool
+    let pageSize: Int
+    
+    // Protocol conformance
+    var defaultValue: [Element]? { config.defaultValue }
+    var isLocked: Bool { config.isLocked }
+    var isOverridden: Bool { config.isOverridden }
+    var tooltip: String? { config.tooltip }
+    var unit: String? { config.unit }
+    var propertyType: PropertyType { config.propertyType }
+    var onValueChanged: (([Element]) -> Void)? { config.onValueChanged }
+    var onReset: (() -> Void)? { config.onReset }
+    var onLockToggle: ((Bool) -> Void)? { config.onLockToggle }
+    var onAnimationKeyframe: (() -> Void)? { config.onAnimationKeyframe }
+    var onExpressionInput: (() -> Void)? { config.onExpressionInput }
+    var onLinkProperty: (() -> Void)? { config.onLinkProperty }
+    
+    // State
+    @State private var selectedItems: Set<Element.ID> = []
+    @State private var isMultiSelecting = false
+    @State private var draggedItem: Element?
+    @State private var searchFilter = ""
+    @State private var sortOrder: SortOrder = .none
+    @State private var isReversed = false
+    @State private var allExpanded = true
+    @State private var showClearConfirmation = false
+    @State private var showImportDialog = false
+    @State private var showExportDialog = false
+    @State private var currentPage = 0
+    @State private var showSizeWarning = false
+    
+    // Managers
+    @StateObject private var undoManager = PropertyUndoManager()
+    @EnvironmentObject private var clipboardManager: PropertyClipboardManager
+    
+    enum SortOrder: String, CaseIterable {
+        case none = "None"
+        case ascending = "A-Z"
+        case descending = "Z-A"
+        case custom = "Custom"
+    }
+    
+    private var filteredAndSortedItems: [Element] {
+        var result = items
+        
+        // Apply search filter
+        if !searchFilter.isEmpty {
+            result = result.filter { itemDescription($0).localizedCaseInsensitiveContains(searchFilter) }
+        }
+        
+        // Apply sort order
+        switch sortOrder {
+        case .ascending:
+            result.sort { itemDescription($0) < itemDescription($1) }
+        case .descending:
+            result.sort { itemDescription($0) > itemDescription($1) }
+        case .none, .custom:
+            break
+        }
+        
+        // Apply reverse
+        if isReversed {
+            result.reverse()
+        }
+        
+        return result
+    }
+    
+    private var paginatedItems: [Element] {
+        if enableVirtualization && filteredAndSortedItems.count > pageSize {
+            let startIndex = currentPage * pageSize
+            let endIndex = min(startIndex + pageSize, filteredAndSortedItems.count)
+            return Array(filteredAndSortedItems[startIndex..<endIndex])
+        }
+        return filteredAndSortedItems
+    }
+    
+    private var totalPages: Int {
+        if enableVirtualization {
+            return Int(ceil(Double(filteredAndSortedItems.count) / Double(pageSize)))
+        }
+        return 1
+    }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(label)
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+            // Header with controls
+            headerSection
+            
+            // Size warning
+            if showSizeWarning {
+                sizeWarningSection
+            }
+            
+            // Search and filter controls
+            searchAndFilterSection
+            
+            // Items list
+            itemsSection
+            
+            // Pagination controls
+            if enableVirtualization && totalPages > 1 {
+                paginationSection
+            }
+        }
+        .sheet(isPresented: $showImportDialog) {
+            ImportExportDialog(isImport: true, items: $items, itemDescription: itemDescription)
+        }
+        .sheet(isPresented: $showExportDialog) {
+            ImportExportDialog(isImport: false, items: $items, itemDescription: itemDescription)
+        }
+        .alert("Clear All Items", isPresented: $showClearConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Clear All", role: .destructive) {
+                undoManager.recordState(items)
+                items.removeAll()
+                selectedItems.removeAll()
+            }
+        } message: {
+            Text("Are you sure you want to remove all \(items.count) items? This action cannot be undone.")
+        }
+    }
+    
+    @ViewBuilder
+    private var headerSection: some View {
+        HStack {
+            Text(label)
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            Spacer()
+            
+            // Item count with warning
+            HStack(spacing: 4) {
+                Text("\(items.count)")
+                    .font(DesignSystem.Typography.mono)
+                    .foregroundColor(itemsCountColor)
+                
+                if let maxItems = maxItems {
+                    Text("/ \(maxItems)")
+                        .font(DesignSystem.Typography.mono)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+                
+                Text("items")
                     .font(DesignSystem.Typography.small)
-                    .foregroundColor(DesignSystem.Colors.textSecondary)
-                
-                Spacer()
-                
-                Text("\(items.count) items")
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+            
+            // Add button
+            Button(action: addItem) {
+                Image(systemName: "plus.circle")
+                    .foregroundColor(DesignSystem.Colors.accentPrimary)
+            }
+            .buttonStyle(.plain)
+            .disabled(isLocked || (maxItems != nil && items.count >= maxItems!))
+        }
+    }
+    
+    private var itemsCountColor: Color {
+        if let maxItems = maxItems {
+            if items.count >= maxItems {
+                return DesignSystem.Colors.accentDanger
+            } else if items.count >= Int(Double(maxItems) * 0.8) {
+                return DesignSystem.Colors.accentWarning
+            }
+        }
+        return DesignSystem.Colors.textPrimary
+    }
+    
+    @ViewBuilder
+    private var sizeWarningSection: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundColor(DesignSystem.Colors.accentWarning)
+            
+            Text("Large array detected (\(items.count) items). Consider using pagination or virtualization for better performance.")
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            Spacer()
+            
+            Button("Dismiss") {
+                showSizeWarning = false
+            }
+            .font(DesignSystem.Typography.small)
+            .foregroundColor(DesignSystem.Colors.accentPrimary)
+        }
+        .padding(DesignSystem.Spacing.sm)
+        .background(DesignSystem.Colors.pastelRed)
+        .cornerRadius(DesignSystem.CornerRadius.small)
+    }
+    
+    @ViewBuilder
+    private var searchAndFilterSection: some View {
+        HStack(spacing: DesignSystem.Spacing.xs) {
+            // Search field
+            HStack(spacing: 6) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
                     .font(DesignSystem.Typography.small)
-                    .foregroundColor(DesignSystem.Colors.textDisabled)
                 
-                Button(action: { items.append(createNew()) }) {
-                    Image(systemName: "plus.circle")
+                TextField("Filter items...", text: $searchFilter)
+                    .textFieldStyle(.plain)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                if !searchFilter.isEmpty {
+                    Button(action: { searchFilter = "" }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(DesignSystem.Colors.textTertiary)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(DesignSystem.Spacing.xs)
+            .background(DesignSystem.Colors.backgroundTertiary)
+            .cornerRadius(DesignSystem.CornerRadius.small)
+            
+            // Sort order picker
+            Picker("", selection: $sortOrder) {
+                ForEach(SortOrder.allCases, id: \.self) { order in
+                    Text(order.rawValue).tag(order)
+                }
+            }
+            .pickerStyle(.menu)
+            .frame(width: 80)
+            
+            // Reverse button
+            Button(action: { isReversed.toggle() }) {
+                Image(systemName: isReversed ? "arrow.up.arrow.down" : "arrow.up.arrow.down")
+                    .foregroundColor(isReversed ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.textTertiary)
+            }
+            .buttonStyle(.plain)
+            
+            // Multi-select toggle
+            Button(action: { isMultiSelecting.toggle() }) {
+                Image(systemName: isMultiSelecting ? "checkmark.square" : "square")
+                    .foregroundColor(isMultiSelecting ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.textTertiary)
+            }
+            .buttonStyle(.plain)
+            
+            // Expand/Collapse all
+            Button(action: { allExpanded.toggle() }) {
+                Image(systemName: allExpanded ? "chevron.up.square" : "chevron.down.square")
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+            .buttonStyle(.plain)
+            
+            Spacer()
+            
+            // Action menu
+            Menu {
+                Button("Duplicate Selected") { duplicateSelected() }
+                    .disabled(selectedItems.isEmpty)
+                
+                Button("Move Selected to Top") { moveSelectedToTop() }
+                    .disabled(selectedItems.isEmpty)
+                
+                Button("Move Selected to Bottom") { moveSelectedToBottom() }
+                    .disabled(selectedItems.isEmpty)
+                
+                Divider()
+                
+                Button("Import from File") { showImportDialog = true }
+                
+                Button("Export to File") { showExportDialog = true }
+                    .disabled(items.isEmpty)
+                
+                Divider()
+                
+                Button("Clear All", role: .destructive) { showClearConfirmation = true }
+                    .disabled(items.isEmpty)
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+    
+    @ViewBuilder
+    private var itemsSection: some View {
+        ScrollView {
+            LazyVStack(spacing: DesignSystem.Spacing.xs) {
+                ForEach(paginatedItems) { item in
+                    ItemRow(
+                        item: binding(for: item),
+                        isSelected: selectedItems.contains(item.id),
+                        isMultiSelecting: isMultiSelecting,
+                        allExpanded: allExpanded,
+                        itemView: itemView,
+                        itemDescription: itemDescription,
+                        onTap: { toggleSelection(item.id) },
+                        onDrag: { draggedItem = item },
+                        onDrop: { handleDrop(at: item) },
+                        onDuplicate: { duplicateItem(item) },
+                        onDelete: { deleteItem(item) }
+                    )
+                    .onDrag {
+                        draggedItem = item
+                        return NSItemProvider(object: String(item.id.hashValue) as NSString)
+                    }
+                    .onDrop(of: [.text], delegate: DropDelegate(
+                        items: $items,
+                        draggedItem: $draggedItem,
+                        targetItem: item
+                    ))
+                }
+            }
+        }
+        .frame(maxHeight: enableVirtualization ? 300 : .infinity)
+    }
+    
+    @ViewBuilder
+    private var paginationSection: some View {
+        HStack {
+            Button(action: { if currentPage > 0 { currentPage -= 1 } }) {
+                Image(systemName: "chevron.left")
+            }
+            .buttonStyle(.plain)
+            .disabled(currentPage == 0)
+            
+            Text("Page \(currentPage + 1) of \(totalPages)")
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            Button(action: { if currentPage < totalPages - 1 { currentPage += 1 } }) {
+                Image(systemName: "chevron.right")
+            }
+            .buttonStyle(.plain)
+            .disabled(currentPage >= totalPages - 1)
+            
+            Spacer()
+        }
+        .padding(.horizontal, DesignSystem.Spacing.sm)
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func binding(for item: Element) -> Binding<Element> {
+        guard let index = items.firstIndex(where: { $0.id == item.id }) else {
+            fatalError("Item not found in array")
+        }
+        return $items[index]
+    }
+    
+    private func addItem() {
+        guard let maxItems = maxItems else {
+            items.append(createNew())
+            return
+        }
+        
+        if items.count < maxItems {
+            items.append(createNew())
+        } else {
+            showSizeWarning = true
+        }
+    }
+    
+    private func toggleSelection(_ itemId: Element.ID) {
+        if selectedItems.contains(itemId) {
+            selectedItems.remove(itemId)
+        } else {
+            selectedItems.insert(itemId)
+        }
+    }
+    
+    private func duplicateItem(_ item: Element) {
+        guard let index = items.firstIndex(where: { $0.id == item.id }) else { return }
+        
+        // Create a deep copy (this is a simplified approach)
+        let encoder = JSONEncoder()
+        let decoder = JSONDecoder()
+        
+        if let data = try? encoder.encode(item),
+           let copy = try? decoder.decode(Element.self, from: data) {
+            items.insert(copy, at: index + 1)
+        }
+    }
+    
+    private func deleteItem(_ item: Element) {
+        items.removeAll { $0.id == item.id }
+        selectedItems.remove(item.id)
+    }
+    
+    private func duplicateSelected() {
+        var newItems: [Element] = []
+        
+        for itemId in selectedItems {
+            if let item = items.first(where: { $0.id == itemId }) {
+                let encoder = JSONEncoder()
+                let decoder = JSONDecoder()
+                
+                if let data = try? encoder.encode(item),
+                   let copy = try? decoder.decode(Element.self, from: data) {
+                    newItems.append(copy)
+                }
+            }
+        }
+        
+        items.append(contentsOf: newItems)
+        selectedItems.removeAll()
+    }
+    
+    private func moveSelectedToTop() {
+        let selectedItemsArray = items.filter { selectedItems.contains($0.id) }
+        let otherItems = items.filter { !selectedItems.contains($0.id) }
+        items = selectedItemsArray + otherItems
+    }
+    
+    private func moveSelectedToBottom() {
+        let selectedItemsArray = items.filter { selectedItems.contains($0.id) }
+        let otherItems = items.filter { !selectedItems.contains($0.id) }
+        items = otherItems + selectedItemsArray
+    }
+    
+    private func handleDrop(at targetItem: Element) {
+        guard let draggedItem = draggedItem,
+              let draggedIndex = items.firstIndex(where: { $0.id == draggedItem.id }),
+              let targetIndex = items.firstIndex(where: { $0.id == targetItem.id }) else {
+            return
+        }
+        
+        let item = items.remove(at: draggedIndex)
+        items.insert(item, at: targetIndex)
+        self.draggedItem = nil
+    }
+}
+
+// MARK: - Item Row Component
+private struct ItemRow<Element: Identifiable>: View {
+    @Binding var item: Element
+    let isSelected: Bool
+    let isMultiSelecting: Bool
+    let allExpanded: Bool
+    let itemView: (Binding<Element>) -> AnyView
+    let itemDescription: (Element) -> String
+    let onTap: () -> Void
+    let onDrag: () -> Void
+    let onDrop: () -> Void
+    let onDuplicate: () -> Void
+    let onDelete: () -> Void
+    
+    var body: some View {
+        HStack(spacing: DesignSystem.Spacing.xs) {
+            // Multi-select checkbox
+            if isMultiSelecting {
+                Button(action: onTap) {
+                    Image(systemName: isSelected ? "checkmark.square.fill" : "square")
+                        .foregroundColor(isSelected ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.textTertiary)
                 }
                 .buttonStyle(.plain)
             }
             
-            ForEach($items) { $item in
-                HStack {
+            // Drag handle
+            Image(systemName: "line.3.horizontal")
+                .foregroundColor(DesignSystem.Colors.textTertiary)
+                .font(DesignSystem.Typography.small)
+                .onDrag { onDrag(); return NSItemProvider() }
+            
+            // Item content
+            VStack(alignment: .leading, spacing: DesignSystem.Spacing.xxs) {
+                if allExpanded {
                     itemView($item)
-                    
-                    Button(action: {
-                        items.removeAll { $0.id == item.id }
-                    }) {
-                        Image(systemName: "minus.circle")
-                            .foregroundColor(.red)
+                } else {
+                    Text(itemDescription(item))
+                        .font(DesignSystem.Typography.body)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            // Action buttons
+            HStack(spacing: 4) {
+                Button(action: onDuplicate) {
+                    Image(systemName: "doc.on.doc")
+                        .font(DesignSystem.Typography.small)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+                .buttonStyle(.plain)
+                
+                Button(action: onDelete) {
+                    Image(systemName: "trash")
+                        .font(DesignSystem.Typography.small)
+                        .foregroundColor(DesignSystem.Colors.accentDanger)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(DesignSystem.Spacing.sm)
+        .background(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                .fill(isSelected ? DesignSystem.Colors.selection : DesignSystem.Colors.backgroundTertiary)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                .stroke(isSelected ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.border, lineWidth: 1)
+        )
+    }
+}
+
+// MARK: - Drop Delegate
+private struct DropDelegate<Element: Identifiable>: DropDelegate {
+    @Binding var items: [Element]
+    @Binding var draggedItem: Element?
+    let targetItem: Element
+    
+    func performDrop(info: DropInfo) -> Bool {
+        draggedItem = nil
+        return true
+    }
+    
+    func dropEntered(info: DropInfo) {
+        guard let draggedItem = draggedItem,
+              let draggedIndex = items.firstIndex(where: { $0.id == draggedItem.id }),
+              let targetIndex = items.firstIndex(where: { $0.id == targetItem.id }),
+              draggedIndex != targetIndex else {
+            return
+        }
+        
+        let item = items.remove(at: draggedIndex)
+        items.insert(item, at: targetIndex)
+    }
+}
+
+// MARK: - Import/Export Dialog
+private struct ImportExportDialog<Element: Identifiable & Codable>: View {
+    let isImport: Bool
+    @Binding var items: [Element]
+    let itemDescription: (Element) -> String
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var selectedFile: URL?
+    @State private var importText = ""
+    @State private var exportText = ""
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    
+    var body: some View {
+        VStack(spacing: DesignSystem.Spacing.md) {
+            Text(isImport ? "Import Items" : "Export Items")
+                .font(DesignSystem.Typography.title3)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+            
+            if isImport {
+                importSection
+            } else {
+                exportSection
+            }
+            
+            HStack {
+                Button("Cancel") { dismiss() }
+                    .buttonStyle(.bordered)
+                
+                Spacer()
+                
+                Button(isImport ? "Import" : "Export") {
+                    if isImport {
+                        performImport()
+                    } else {
+                        performExport()
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(isImport ? importText.isEmpty : false)
+            }
+        }
+        .padding(DesignSystem.Spacing.lg)
+        .frame(width: 500, height: 400)
+        .alert("Import/Export", isPresented: $showAlert) {
+            Button("OK") { }
+        } message: {
+            Text(alertMessage)
+        }
+    }
+    
+    @ViewBuilder
+    private var importSection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+            Text("Paste JSON data or select a file:")
+                .font(DesignSystem.Typography.body)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            TextEditor(text: $importText)
+                .font(DesignSystem.Typography.mono)
+                .padding(DesignSystem.Spacing.xs)
+                .background(DesignSystem.Colors.backgroundTertiary)
+                .cornerRadius(DesignSystem.CornerRadius.small)
+        }
+    }
+    
+    @ViewBuilder
+    private var exportSection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+            Text("JSON data for \(items.count) items:")
+                .font(DesignSystem.Typography.body)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            ScrollView {
+                Text(exportText)
+                    .font(DesignSystem.Typography.mono)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(DesignSystem.Spacing.xs)
+            .background(DesignSystem.Colors.backgroundTertiary)
+            .cornerRadius(DesignSystem.CornerRadius.small)
+        }
+        .onAppear {
+            generateExportText()
+        }
+    }
+    
+    private func performImport() {
+        do {
+            guard let data = importText.data(using: .utf8) else {
+                throw ImportError.invalidData
+            }
+            
+            let decoder = JSONDecoder()
+            let importedItems = try decoder.decode([Element].self, from: data)
+            items.append(contentsOf: importedItems)
+            dismiss()
+        } catch {
+            alertMessage = "Failed to import data: \(error.localizedDescription)"
+            showAlert = true
+        }
+    }
+    
+    private func performExport() {
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.json]
+        panel.nameFieldStringValue = "array_export.json"
+        
+        if panel.runModal() == .OK, let url = panel.url {
+            do {
+                let data = try JSONEncoder().encode(items)
+                try data.write(to: url)
+                dismiss()
+            } catch {
+                alertMessage = "Failed to export data: \(error.localizedDescription)"
+                showAlert = true
+            }
+        }
+    }
+    
+    private func generateExportText() {
+        do {
+            let data = try JSONEncoder().encode(items)
+            exportText = String(data: data, encoding: .utf8) ?? "Failed to encode data"
+        } catch {
+            exportText = "Failed to encode data: \(error.localizedDescription)"
+        }
+    }
+    
+    enum ImportError: LocalizedError {
+        case invalidData
+        
+        var errorDescription: String? {
+            switch self {
+            case .invalidData:
+                return "Invalid data format"
+            }
+        }
+    }
+}
+
+// MARK: - Dictionary Editor with Key-Value Pairs (TODO-1664)
+struct DictionaryPropertyEditor<Key: Hashable & Codable, Value: Codable & Identifiable>: View, PropertyEditor {
+    let label: String
+    @Binding var dictionary: [Key: Value]
+    let keyView: (Binding<Key>) -> AnyView
+    let valueView: (Binding<Value>) -> AnyView
+    let createNewKey: () -> Key
+    let createNewValue: () -> Value
+    
+    // Configuration
+    let config: PropertyEditorConfig<[Key: Value]>
+    let maxItems: Int?
+    
+    // Protocol conformance
+    var defaultValue: [Key: Value]? { config.defaultValue }
+    var isLocked: Bool { config.isLocked }
+    var isOverridden: Bool { config.isOverridden }
+    var tooltip: String? { config.tooltip }
+    var unit: String? { config.unit }
+    var propertyType: PropertyType { config.propertyType }
+    var onValueChanged: (([Key: Value]) -> Void)? { config.onValueChanged }
+    var onReset: (() -> Void)? { config.onReset }
+    var onLockToggle: ((Bool) -> Void)? { config.onLockToggle }
+    var onAnimationKeyframe: (() -> Void)? { config.onAnimationKeyframe }
+    var onExpressionInput: (() -> Void)? { config.onExpressionInput }
+    var onLinkProperty: (() -> Void)? { config.onLinkProperty }
+    
+    // State
+    @State private var selectedKeys: Set<Key> = []
+    @State private var searchFilter = ""
+    @State private var sortOrder: DictionarySortOrder = .keyAscending
+    @State private var showClearConfirmation = false
+    @State private var showAddDialog = false
+    @State private var newKey = ""
+    @State private var showSizeWarning = false
+    
+    // Managers
+    @StateObject private var undoManager = PropertyUndoManager()
+    
+    enum DictionarySortOrder: String, CaseIterable {
+        case keyAscending = "Key ↑"
+        case keyDescending = "Key ↓"
+        case valueAscending = "Value ↑"
+        case valueDescending = "Value ↓"
+        case none = "None"
+    }
+    
+    private var filteredAndSortedItems: [(key: Key, value: Value)] {
+        var result = Array(dictionary)
+        
+        // Apply search filter
+        if !searchFilter.isEmpty {
+            result = result.filter { pair in
+                "\(pair.key)".localizedCaseInsensitiveContains(searchFilter) ||
+                "\(pair.value)".localizedCaseInsensitiveContains(searchFilter)
+            }
+        }
+        
+        // Apply sort order
+        switch sortOrder {
+        case .keyAscending:
+            result.sort { "\($0.key)" < "\($1.key)" }
+        case .keyDescending:
+            result.sort { "\($0.key)" > "\($1.key)" }
+        case .valueAscending:
+            result.sort { "\($0.value)" < "\($1.value)" }
+        case .valueDescending:
+            result.sort { "\($0.value)" > "\($1.value)" }
+        case .none:
+            break
+        }
+        
+        return result
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+            // Header
+            headerSection
+            
+            // Size warning
+            if showSizeWarning {
+                sizeWarningSection
+            }
+            
+            // Search and filter controls
+            searchAndFilterSection
+            
+            // Dictionary entries
+            entriesSection
+        }
+        .sheet(isPresented: $showAddDialog) {
+            AddKeyValueDialog(
+                newKey: $newKey,
+                onAdd: { key, value in
+                    dictionary[key] = value
+                    showAddDialog = false
+                    newKey = ""
+                },
+                createNewKey: createNewKey,
+                createNewValue: createNewValue
+            )
+        }
+        .alert("Clear All Entries", isPresented: $showClearConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Clear All", role: .destructive) {
+                undoManager.recordState(dictionary)
+                dictionary.removeAll()
+                selectedKeys.removeAll()
+            }
+        } message: {
+            Text("Are you sure you want to remove all \(dictionary.count) entries? This action cannot be undone.")
+        }
+    }
+    
+    @ViewBuilder
+    private var headerSection: some View {
+        HStack {
+            Text(label)
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            Spacer()
+            
+            // Entry count with warning
+            HStack(spacing: 4) {
+                Text("\(dictionary.count)")
+                    .font(DesignSystem.Typography.mono)
+                    .foregroundColor(entryCountColor)
+                
+                if let maxItems = maxItems {
+                    Text("/ \(maxItems)")
+                        .font(DesignSystem.Typography.mono)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+                
+                Text("entries")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+            
+            // Add button
+            Button(action: { showAddDialog = true }) {
+                Image(systemName: "plus.circle")
+                    .foregroundColor(DesignSystem.Colors.accentPrimary)
+            }
+            .buttonStyle(.plain)
+            .disabled(isLocked || (maxItems != nil && dictionary.count >= maxItems!))
+        }
+    }
+    
+    private var entryCountColor: Color {
+        if let maxItems = maxItems {
+            if dictionary.count >= maxItems {
+                return DesignSystem.Colors.accentDanger
+            } else if dictionary.count >= Int(Double(maxItems) * 0.8) {
+                return DesignSystem.Colors.accentWarning
+            }
+        }
+        return DesignSystem.Colors.textPrimary
+    }
+    
+    @ViewBuilder
+    private var sizeWarningSection: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundColor(DesignSystem.Colors.accentWarning)
+            
+            Text("Large dictionary detected (\(dictionary.count) entries). Consider using pagination for better performance.")
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            Spacer()
+            
+            Button("Dismiss") {
+                showSizeWarning = false
+            }
+            .font(DesignSystem.Typography.small)
+            .foregroundColor(DesignSystem.Colors.accentPrimary)
+        }
+        .padding(DesignSystem.Spacing.sm)
+        .background(DesignSystem.Colors.pastelRed)
+        .cornerRadius(DesignSystem.CornerRadius.small)
+    }
+    
+    @ViewBuilder
+    private var searchAndFilterSection: some View {
+        HStack(spacing: DesignSystem.Spacing.xs) {
+            // Search field
+            HStack(spacing: 6) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                    .font(DesignSystem.Typography.small)
+                
+                TextField("Filter keys/values...", text: $searchFilter)
+                    .textFieldStyle(.plain)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                if !searchFilter.isEmpty {
+                    Button(action: { searchFilter = "" }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(DesignSystem.Colors.textTertiary)
                     }
                     .buttonStyle(.plain)
                 }
-                .padding(8)
-                .background(DesignSystem.Colors.backgroundTertiary)
-                .cornerRadius(4)
+            }
+            .padding(DesignSystem.Spacing.xs)
+            .background(DesignSystem.Colors.backgroundTertiary)
+            .cornerRadius(DesignSystem.CornerRadius.small)
+            
+            // Sort order picker
+            Picker("", selection: $sortOrder) {
+                ForEach(DictionarySortOrder.allCases, id: \.self) { order in
+                    Text(order.rawValue).tag(order)
+                }
+            }
+            .pickerStyle(.menu)
+            .frame(width: 100)
+            
+            Spacer()
+            
+            // Action menu
+            Menu {
+                Button("Clear All", role: .destructive) { showClearConfirmation = true }
+                    .disabled(dictionary.isEmpty)
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+    
+    @ViewBuilder
+    private var entriesSection: some View {
+        ScrollView {
+            LazyVStack(spacing: DesignSystem.Spacing.xs) {
+                ForEach(filteredAndSortedItems, id: \.key) { pair in
+                    DictionaryEntryRow(
+                        key: bindingForKey(pair.key),
+                        value: bindingForValue(pair.key),
+                        isSelected: selectedKeys.contains(pair.key),
+                        keyString: "\(pair.key)",
+                        valueString: "\(pair.value)",
+                        onSelect: { toggleSelection(pair.key) },
+                        onDelete: { deleteEntry(pair.key) }
+                    )
+                }
             }
         }
+        .frame(maxHeight: 300)
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func bindingForKey(_ key: Key) -> Binding<Key> {
+        Binding<Key>(
+            get: { key },
+            set: { newValue in
+                if let value = dictionary[key] {
+                    dictionary.removeValue(forKey: key)
+                    dictionary[newValue] = value
+                }
+            }
+        )
+    }
+    
+    private func bindingForValue(_ key: Key) -> Binding<Value> {
+        Binding<Value>(
+            get: { dictionary[key]! },
+            set: { dictionary[key] = $0 }
+        )
+    }
+    
+    private func toggleSelection(_ key: Key) {
+        if selectedKeys.contains(key) {
+            selectedKeys.remove(key)
+        } else {
+            selectedKeys.insert(key)
+        }
+    }
+    
+    private func deleteEntry(_ key: Key) {
+        dictionary.removeValue(forKey: key)
+        selectedKeys.remove(key)
+    }
+}
+
+// MARK: - Dictionary Entry Row
+private struct DictionaryEntryRow<Key: Hashable, Value: Identifiable>: View {
+    @Binding var key: Key
+    @Binding var value: Value
+    let isSelected: Bool
+    let keyString: String
+    let valueString: String
+    let onSelect: () -> Void
+    let onDelete: () -> Void
+    
+    var body: some View {
+        HStack(spacing: DesignSystem.Spacing.xs) {
+            // Selection checkbox
+            Button(action: onSelect) {
+                Image(systemName: isSelected ? "checkmark.square.fill" : "square")
+                    .foregroundColor(isSelected ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.textTertiary)
+            }
+            .buttonStyle(.plain)
+            
+            // Key column
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Key:")
+                    .font(DesignSystem.Typography.micro)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                
+                Text(keyString)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            // Separator
+            Rectangle()
+                .fill(DesignSystem.Colors.border)
+                .frame(width: 1)
+                .padding(.horizontal, DesignSystem.Spacing.xs)
+            
+            // Value column
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Value:")
+                    .font(DesignSystem.Typography.micro)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                
+                Text(valueString)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            // Delete button
+            Button(action: onDelete) {
+                Image(systemName: "trash")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.accentDanger)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(DesignSystem.Spacing.sm)
+        .background(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                .fill(isSelected ? DesignSystem.Colors.selection : DesignSystem.Colors.backgroundTertiary)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                .stroke(isSelected ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.border, lineWidth: 1)
+        )
+    }
+}
+
+// MARK: - Add Key-Value Dialog
+private struct AddKeyValueDialog<Key: Hashable, Value: Identifiable>: View {
+    @Binding var newKey: String
+    let onAdd: (Key, Value) -> Void
+    let createNewKey: () -> Key
+    let createNewValue: () -> Value
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var keyValue: Key
+    @State private var valueValue: Value
+    
+    init(newKey: Binding<String>, onAdd: @escaping (Key, Value) -> Void, createNewKey: @escaping () -> Key, createNewValue: @escaping () -> Value) {
+        self._newKey = newKey
+        self.onAdd = onAdd
+        self.createNewKey = createNewKey
+        self.createNewValue = createNewValue
+        self._keyValue = State(initialValue: createNewKey())
+        self._valueValue = State(initialValue: createNewValue())
+    }
+    
+    var body: some View {
+        VStack(spacing: DesignSystem.Spacing.md) {
+            Text("Add Dictionary Entry")
+                .font(DesignSystem.Typography.title3)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+            
+            VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+                Text("Key:")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                TextField("Enter key...", text: $newKey)
+                    .textFieldStyle(.roundedBorder)
+                
+                Text("Value:")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                Text("\(valueValue)")
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                    .padding(DesignSystem.Spacing.xs)
+                    .background(DesignSystem.Colors.backgroundTertiary)
+                    .cornerRadius(DesignSystem.CornerRadius.small)
+            }
+            
+            HStack {
+                Button("Cancel") { dismiss() }
+                    .buttonStyle(.bordered)
+                
+                Spacer()
+                
+                Button("Add") {
+                    onAdd(keyValue, valueValue)
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(newKey.isEmpty)
+            }
+        }
+        .padding(DesignSystem.Spacing.lg)
+        .frame(width: 400)
     }
 }
 
@@ -5139,26 +8176,6 @@ struct JSONPropertyEditor: View {
             }
         }
     }
-    
-    private func validateJSON() {
-        guard !jsonString.isEmpty else {
-            isValidJSON = true
-            errorMessage = ""
-            return
-        }
-        
-        do {
-            _ = try JSONSerialization.jsonObject(with: jsonString.data(using: .utf8) ?? Data())
-            isValidJSON = true
-            errorMessage = ""
-        } catch {
-            isValidJSON = false
-            errorMessage = error.localizedDescription
-        }
-    }
-    
-    private func formatJSON() {
-        guard isValidJSON, !jsonString.isEmpty else { return }
         
         do {
             let jsonObject = try JSONSerialization.jsonObject(with: jsonString.data(using: .utf8) ?? Data())
@@ -5834,6 +8851,1360 @@ struct LocalizedStringPropertyEditor: View {
             // Initialize with default value for current language
             if localizedValues[selectedLanguage] == nil {
                 localizedValues[selectedLanguage] = defaultValue
+            }
+        }
+    }
+}
+
+// MARK: - Layer Mask Editor with Visual Checkboxes (TODO-1751)
+struct LayerMaskPropertyEditor: View {
+    let label: String
+    @Binding var mask: Int32
+    @State private var layerNames: [String] = [
+        "Default", "TransparentFX", "Ignore Raycast", "Water", "UI", 
+        "PostProcessing", "Player", "Enemy", "Pickup", "Scenery",
+        "Projectile", "Static", "Dynamic", "Trigger", "NoCollision"
+    ]
+    @State private var layerColors: [Color] = [
+        .gray, .cyan, .yellow, .blue, .purple,
+        .orange, .green, .red, .mint, .indigo,
+        .pink, .brown, .teal, .white, .black
+    ]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 4) {
+                ForEach(0..<min(layerNames.count, 32), id: \.self) { index in
+                    HStack(spacing: 4) {
+                        Button(action: { toggleLayer(index) }) {
+                            Image(systemName: isLayerActive(index) ? "checkmark.square.fill" : "square")
+                                .foregroundColor(isLayerActive(index) ? layerColors[index % layerColors.count] : DesignSystem.Colors.textTertiary)
+                                .font(DesignSystem.Typography.small)
+                        }
+                        .buttonStyle(.plain)
+                        
+                        Text(layerNames[index])
+                            .font(DesignSystem.Typography.small)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
+                        
+                        Spacer()
+                        
+                        Text("\(index)")
+                            .font(DesignSystem.Typography.mono)
+                            .foregroundColor(DesignSystem.Colors.textTertiary)
+                            .frame(width: 20, alignment: .trailing)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 2)
+                    .background(isLayerActive(index) ? layerColors[index % layerColors.count].opacity(0.1) : DesignSystem.Colors.backgroundTertiary)
+                    .cornerRadius(4)
+                }
+            }
+            
+            HStack {
+                Text("Mask Value:")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                Text(String(mask, radix: 2).prefix(32))
+                    .font(DesignSystem.Typography.mono)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Spacer()
+                
+                Text("Decimal: \(mask)")
+                    .font(DesignSystem.Typography.mono)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(DesignSystem.Colors.backgroundSecondary)
+            .cornerRadius(4)
+        }
+    }
+    
+    private func isLayerActive(_ index: Int) -> Bool {
+        return (mask & (1 << index)) != 0
+    }
+    
+    private func toggleLayer(_ index: Int) {
+        if isLayerActive(index) {
+            mask &= ~(1 << index)
+        } else {
+            mask |= (1 << index)
+        }
+    }
+}
+
+// MARK: - Set Editor with Unique Value Enforcement (TODO-1665)
+struct SetPropertyEditor<Element: Hashable & Codable & Identifiable>: View, PropertyEditor {
+    let label: String
+    @Binding var set: Set<Element>
+    let itemView: (Binding<Element>) -> AnyView
+    let createNew: () -> Element
+    
+    // Configuration
+    let config: PropertyEditorConfig<Set<Element>>
+    let maxItems: Int?
+    
+    // Protocol conformance
+    var defaultValue: Set<Element>? { config.defaultValue }
+    var isLocked: Bool { config.isLocked }
+    var isOverridden: Bool { config.isOverridden }
+    var tooltip: String? { config.tooltip }
+    var unit: String? { config.unit }
+    var propertyType: PropertyType { config.propertyType }
+    var onValueChanged: ((Set<Element>) -> Void)? { config.onValueChanged }
+    var onReset: (() -> Void)? { config.onReset }
+    var onLockToggle: ((Bool) -> Void)? { config.onLockToggle }
+    var onAnimationKeyframe: (() -> Void)? { config.onAnimationKeyframe }
+    var onExpressionInput: (() -> Void)? { config.onExpressionInput }
+    var onLinkProperty: (() -> Void)? { config.onLinkProperty }
+    
+    // State
+    @State private var selectedItems: Set<Element> = []
+    @State private var searchFilter = ""
+    @State private var sortOrder: SetSortOrder = .none
+    @State private var showClearConfirmation = false
+    @State private var showAddDialog = false
+    @State private var duplicateWarning: String? = nil
+    
+    // Managers
+    @StateObject private var undoManager = PropertyUndoManager()
+    
+    enum SetSortOrder: String, CaseIterable {
+        case none = "None"
+        case ascending = "A-Z"
+        case descending = "Z-A"
+    }
+    
+    private var filteredAndSortedItems: [Element] {
+        var result = Array(set)
+        
+        // Apply search filter
+        if !searchFilter.isEmpty {
+            result = result.filter { item in
+                "\(item)".localizedCaseInsensitiveContains(searchFilter)
+            }
+        }
+        
+        // Apply sort order
+        switch sortOrder {
+        case .ascending:
+            result.sort { "\($0)" < "\($1)" }
+        case .descending:
+            result.sort { "\($0)" > "\($1)" }
+        case .none:
+            break
+        }
+        
+        return result
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+            // Header
+            headerSection
+            
+            // Duplicate warning
+            if let warning = duplicateWarning {
+                duplicateWarningSection(warning)
+            }
+            
+            // Search and filter controls
+            searchAndFilterSection
+            
+            // Set entries
+            entriesSection
+        }
+        .sheet(isPresented: $showAddDialog) {
+            AddSetItemDialog(
+                onAdd: { item in
+                    if set.contains(item) {
+                        duplicateWarning = "Item already exists in set"
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            duplicateWarning = nil
+                        }
+                    } else {
+                        set.insert(item)
+                        showAddDialog = false
+                    }
+                },
+                createNew: createNew
+            )
+        }
+        .alert("Clear All Items", isPresented: $showClearConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Clear All", role: .destructive) {
+                undoManager.recordState(set)
+                set.removeAll()
+                selectedItems.removeAll()
+            }
+        } message: {
+            Text("Are you sure you want to remove all \(set.count) unique items? This action cannot be undone.")
+        }
+    }
+    
+    @ViewBuilder
+    private var headerSection: some View {
+        HStack {
+            Text(label)
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            Spacer()
+            
+            // Item count with warning
+            HStack(spacing: 4) {
+                Text("\(set.count)")
+                    .font(DesignSystem.Typography.mono)
+                    .foregroundColor(entryCountColor)
+                
+                if let maxItems = maxItems {
+                    Text("/ \(maxItems)")
+                        .font(DesignSystem.Typography.mono)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+                
+                Text("unique items")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+            
+            // Add button
+            Button(action: { showAddDialog = true }) {
+                Image(systemName: "plus.circle")
+                    .foregroundColor(DesignSystem.Colors.accentPrimary)
+            }
+            .buttonStyle(.plain)
+            .disabled(isLocked || (maxItems != nil && set.count >= maxItems!))
+        }
+    }
+    
+    private var entryCountColor: Color {
+        if let maxItems = maxItems {
+            if set.count >= maxItems {
+                return DesignSystem.Colors.accentDanger
+            } else if set.count >= Int(Double(maxItems) * 0.8) {
+                return DesignSystem.Colors.accentWarning
+            }
+        }
+        return DesignSystem.Colors.textPrimary
+    }
+    
+    @ViewBuilder
+    private func duplicateWarningSection(_ warning: String) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundColor(DesignSystem.Colors.accentWarning)
+            
+            Text(warning)
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            Spacer()
+        }
+        .padding(DesignSystem.Spacing.sm)
+        .background(DesignSystem.Colors.pastelRed)
+        .cornerRadius(DesignSystem.CornerRadius.small)
+    }
+    
+    @ViewBuilder
+    private var searchAndFilterSection: some View {
+        HStack(spacing: DesignSystem.Spacing.xs) {
+            // Search field
+            HStack(spacing: 6) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                    .font(DesignSystem.Typography.small)
+                
+                TextField("Filter items...", text: $searchFilter)
+                    .textFieldStyle(.plain)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                if !searchFilter.isEmpty {
+                    Button(action: { searchFilter = "" }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(DesignSystem.Colors.textTertiary)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(DesignSystem.Spacing.xs)
+            .background(DesignSystem.Colors.backgroundTertiary)
+            .cornerRadius(DesignSystem.CornerRadius.small)
+            
+            // Sort order picker
+            Picker("", selection: $sortOrder) {
+                ForEach(SetSortOrder.allCases, id: \.self) { order in
+                    Text(order.rawValue).tag(order)
+                }
+            }
+            .pickerStyle(.menu)
+            .frame(width: 80)
+            
+            Spacer()
+            
+            // Action menu
+            Menu {
+                Button("Clear All", role: .destructive) { showClearConfirmation = true }
+                    .disabled(set.isEmpty)
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+    
+    @ViewBuilder
+    private var entriesSection: some View {
+        ScrollView {
+            LazyVStack(spacing: DesignSystem.Spacing.xs) {
+                ForEach(filteredAndSortedItems, id: \.self) { item in
+                    SetItemRow(
+                        item: bindingForItem(item),
+                        isSelected: selectedItems.contains(item),
+                        itemString: "\(item)",
+                        onSelect: { toggleSelection(item) },
+                        onDelete: { deleteItem(item) }
+                    )
+                }
+            }
+        }
+        .frame(maxHeight: 300)
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func bindingForItem(_ item: Element) -> Binding<Element> {
+        Binding<Element>(
+            get: { item },
+            set: { newValue in
+                set.remove(item)
+                set.insert(newValue)
+            }
+        )
+    }
+    
+    private func toggleSelection(_ item: Element) {
+        if selectedItems.contains(item) {
+            selectedItems.remove(item)
+        } else {
+            selectedItems.insert(item)
+        }
+    }
+    
+    private func deleteItem(_ item: Element) {
+        set.remove(item)
+        selectedItems.remove(item)
+    }
+}
+
+// MARK: - Set Item Row
+private struct SetItemRow<Element: Hashable & Identifiable>: View {
+    @Binding var item: Element
+    let isSelected: Bool
+    let itemString: String
+    let onSelect: () -> Void
+    let onDelete: () -> Void
+    
+    var body: some View {
+        HStack(spacing: DesignSystem.Spacing.xs) {
+            // Selection checkbox
+            Button(action: onSelect) {
+                Image(systemName: isSelected ? "checkmark.square.fill" : "square")
+                    .foregroundColor(isSelected ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.textTertiary)
+            }
+            .buttonStyle(.plain)
+            
+            // Item content
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Item:")
+                    .font(DesignSystem.Typography.micro)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                
+                Text(itemString)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            // Delete button
+            Button(action: onDelete) {
+                Image(systemName: "trash")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.accentDanger)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(DesignSystem.Spacing.sm)
+        .background(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                .fill(isSelected ? DesignSystem.Colors.selection : DesignSystem.Colors.backgroundTertiary)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                .stroke(isSelected ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.border, lineWidth: 1)
+        )
+    }
+}
+
+// MARK: - Add Set Item Dialog
+private struct AddSetItemDialog<Element: Hashable & Identifiable>: View {
+    let onAdd: (Element) -> Void
+    let createNew: () -> Element
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var newItem: Element
+    
+    init(onAdd: @escaping (Element) -> Void, createNew: @escaping () -> Element) {
+        self.onAdd = onAdd
+        self.createNew = createNew
+        self._newItem = State(initialValue: createNew())
+    }
+    
+    var body: some View {
+        VStack(spacing: DesignSystem.Spacing.md) {
+            Text("Add Set Item")
+                .font(DesignSystem.Typography.title3)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+            
+            VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+                Text("Item:")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                Text("\(newItem)")
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                    .padding(DesignSystem.Spacing.xs)
+                    .background(DesignSystem.Colors.backgroundTertiary)
+                    .cornerRadius(DesignSystem.CornerRadius.small)
+            }
+            
+            HStack {
+                Button("Cancel") { dismiss() }
+                    .buttonStyle(.bordered)
+                
+                Spacer()
+                
+                Button("Add") {
+                    onAdd(newItem)
+                }
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .padding(DesignSystem.Spacing.lg)
+        .frame(width: 400)
+    }
+}
+
+// MARK: - Queue/Stack Editor Visualization (TODO-1666)
+struct CollectionStructurePropertyEditor<Element: Codable & Identifiable>: View, PropertyEditor {
+    let label: String
+    @Binding var collection: [Element]
+    let structureType: CollectionStructureType
+    let itemView: (Binding<Element>) -> AnyView
+    let createNew: () -> Element
+    
+    enum CollectionStructureType {
+        case queue
+        case stack
+        
+        var name: String {
+            switch self {
+            case .queue: return "Queue"
+            case .stack: return "Stack"
+            }
+        }
+        
+        var iconName: String {
+            switch self {
+            case .queue: return "arrow.right.circle"
+            case .stack: return "arrow.up.circle"
+            }
+        }
+        
+        var operationName: String {
+            switch self {
+            case .queue: return "Enqueue"
+            case .stack: return "Push"
+            }
+        }
+        
+        var removeOperationName: String {
+            switch self {
+            case .queue: return "Dequeue"
+            case .stack: return "Pop"
+            }
+        }
+    }
+    
+    // Configuration
+    let config: PropertyEditorConfig<[Element]>
+    let maxItems: Int?
+    
+    // Protocol conformance
+    var defaultValue: [Element]? { config.defaultValue }
+    var isLocked: Bool { config.isLocked }
+    var isOverridden: Bool { config.isOverridden }
+    var tooltip: String? { config.tooltip }
+    var unit: String? { config.unit }
+    var propertyType: PropertyType { config.propertyType }
+    var onValueChanged: (([Element]) -> Void)? { config.onValueChanged }
+    var onReset: (() -> Void)? { config.onReset }
+    var onLockToggle: ((Bool) -> Void)? { config.onLockToggle }
+    var onAnimationKeyframe: (() -> Void)? { config.onAnimationKeyframe }
+    var onExpressionInput: (() -> Void)? { config.onExpressionInput }
+    var onLinkProperty: (() -> Void)? { config.onLinkProperty }
+    
+    // State
+    @State private var showAddDialog = false
+    @State private var showRemoveConfirmation = false
+    @State private var showClearConfirmation = false
+    
+    // Managers
+    @StateObject private var undoManager = PropertyUndoManager()
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+            // Header
+            headerSection
+            
+            // Structure visualization
+            structureVisualization
+            
+            // Controls
+            controlsSection
+        }
+        .sheet(isPresented: $showAddDialog) {
+            AddCollectionItemDialog(
+                structureType: structureType,
+                onAdd: { item in
+                    if structureType == .queue {
+                        collection.append(item)
+                    } else {
+                        collection.insert(item, at: 0)
+                    }
+                    showAddDialog = false
+                },
+                createNew: createNew
+            )
+        }
+        .alert("Remove Item", isPresented: $showRemoveConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Remove", role: .destructive) {
+                if !collection.isEmpty {
+                    undoManager.recordState(collection)
+                    if structureType == .queue {
+                        collection.removeFirst()
+                    } else {
+                        collection.removeFirst()
+                    }
+                }
+            }
+        } message: {
+            Text("Are you sure you want to \(structureType.removeOperationName.lowercased()) the top item?")
+        }
+        .alert("Clear All Items", isPresented: $showClearConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Clear All", role: .destructive) {
+                undoManager.recordState(collection)
+                collection.removeAll()
+            }
+        } message: {
+            Text("Are you sure you want to clear all \(collection.count) items from the \(structureType.name.lowercased())?")
+        }
+    }
+    
+    @ViewBuilder
+    private var headerSection: some View {
+        HStack {
+            HStack(spacing: 6) {
+                Image(systemName: structureType.iconName)
+                    .foregroundColor(DesignSystem.Colors.accentPrimary)
+                
+                Text(label)
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                Text("(\(structureType.name))")
+                    .font(DesignSystem.Typography.micro)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+            
+            Spacer()
+            
+            // Item count
+            HStack(spacing: 4) {
+                Text("\(collection.count)")
+                    .font(DesignSystem.Typography.mono)
+                    .foregroundColor(entryCountColor)
+                
+                if let maxItems = maxItems {
+                    Text("/ \(maxItems)")
+                        .font(DesignSystem.Typography.mono)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+                
+                Text("items")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+        }
+    }
+    
+    private var entryCountColor: Color {
+        if let maxItems = maxItems {
+            if collection.count >= maxItems {
+                return DesignSystem.Colors.accentDanger
+            } else if collection.count >= Int(Double(maxItems) * 0.8) {
+                return DesignSystem.Colors.accentWarning
+            }
+        }
+        return DesignSystem.Colors.textPrimary
+    }
+    
+    @ViewBuilder
+    private var structureVisualization: some View {
+        VStack(spacing: DesignSystem.Spacing.xs) {
+            // Top/Bottom indicators
+            HStack {
+                if structureType == .stack {
+                    Text("Top")
+                        .font(DesignSystem.Typography.micro)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                } else {
+                    Text("Front")
+                        .font(DesignSystem.Typography.micro)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+                Spacer()
+                if structureType == .stack {
+                    Text("Bottom")
+                        .font(DesignSystem.Typography.micro)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                } else {
+                    Text("Back")
+                        .font(DesignSystem.Typography.micro)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+            }
+            
+            // Visual stack/queue representation
+            ScrollView {
+                LazyVStack(spacing: 2) {
+                    ForEach(Array(collection.enumerated()), id: \.element.id) { index, item in
+                        CollectionStructureItemRow(
+                            item: bindingForItem(index),
+                            itemString: "\(item)",
+                            index: index,
+                            isTop: structureType == .stack ? index == 0 : index == collection.count - 1,
+                            structureType: structureType
+                        )
+                    }
+                }
+            }
+            .frame(maxHeight: 200)
+        }
+        .padding(DesignSystem.Spacing.sm)
+        .background(DesignSystem.Colors.backgroundTertiary)
+        .cornerRadius(DesignSystem.CornerRadius.small)
+    }
+    
+    @ViewBuilder
+    private var controlsSection: some View {
+        HStack(spacing: DesignSystem.Spacing.xs) {
+            // Add button
+            Button(action: { showAddDialog = true }) {
+                HStack(spacing: 4) {
+                    Image(systemName: "plus.circle")
+                    Text(structureType.operationName)
+                }
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.accentPrimary)
+            }
+            .buttonStyle(.plain)
+            .disabled(isLocked || (maxItems != nil && collection.count >= maxItems!))
+            
+            // Remove button
+            Button(action: { showRemoveConfirmation = true }) {
+                HStack(spacing: 4) {
+                    Image(systemName: "minus.circle")
+                    Text(structureType.removeOperationName)
+                }
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.accentWarning)
+            }
+            .buttonStyle(.plain)
+            .disabled(isLocked || collection.isEmpty)
+            
+            Spacer()
+            
+            // Clear button
+            Button(action: { showClearConfirmation = true }) {
+                HStack(spacing: 4) {
+                    Image(systemName: "trash")
+                    Text("Clear")
+                }
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.accentDanger)
+            }
+            .buttonStyle(.plain)
+            .disabled(isLocked || collection.isEmpty)
+        }
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func bindingForItem(_ index: Int) -> Binding<Element> {
+        Binding<Element>(
+            get: { collection[index] },
+            set: { collection[index] = $0 }
+        )
+    }
+}
+
+// MARK: - Collection Structure Item Row
+private struct CollectionStructureItemRow<Element: Identifiable>: View {
+    @Binding var item: Element
+    let itemString: String
+    let index: Int
+    let isTop: Bool
+    let structureType: CollectionStructurePropertyEditor<Element>.CollectionStructureType
+    
+    var body: some View {
+        HStack(spacing: DesignSystem.Spacing.xs) {
+            // Position indicator
+            VStack {
+                if isTop {
+                    Image(systemName: structureType == .stack ? "arrow.up.circle.fill" : "arrow.right.circle.fill")
+                        .foregroundColor(DesignSystem.Colors.accentPrimary)
+                        .font(DesignSystem.Typography.small)
+                } else {
+                    Circle()
+                        .fill(DesignSystem.Colors.border)
+                        .frame(width: 8, height: 8)
+                }
+            }
+            .frame(width: 20)
+            
+            // Item content
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Item \(index)")
+                    .font(DesignSystem.Typography.micro)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                
+                Text(itemString)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, DesignSystem.Spacing.sm)
+        .padding(.vertical, DesignSystem.Spacing.xs)
+        .background(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                .fill(isTop ? DesignSystem.Colors.accentPrimary.opacity(0.1) : DesignSystem.Colors.backgroundPrimary)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                .stroke(isTop ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.border, lineWidth: 1)
+        )
+    }
+}
+
+// MARK: - Add Collection Item Dialog
+private struct AddCollectionItemDialog<Element: Identifiable>: View {
+    let structureType: CollectionStructurePropertyEditor<Element>.CollectionStructureType
+    let onAdd: (Element) -> Void
+    let createNew: () -> Element
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var newItem: Element
+    
+    init(structureType: CollectionStructurePropertyEditor<Element>.CollectionStructureType, onAdd: @escaping (Element) -> Void, createNew: @escaping () -> Element) {
+        self.structureType = structureType
+        self.onAdd = onAdd
+        self.createNew = createNew
+        self._newItem = State(initialValue: createNew())
+    }
+    
+    var body: some View {
+        VStack(spacing: DesignSystem.Spacing.md) {
+            Text("\(structureType.operationName) Item")
+                .font(DesignSystem.Typography.title3)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+            
+            VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+                Text("New Item:")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                Text("\(newItem)")
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                    .padding(DesignSystem.Spacing.xs)
+                    .background(DesignSystem.Colors.backgroundTertiary)
+                    .cornerRadius(DesignSystem.CornerRadius.small)
+            }
+            
+            HStack {
+                Button("Cancel") { dismiss() }
+                    .buttonStyle(.bordered)
+                
+                Spacer()
+                
+                Button(structureType.operationName) {
+                    onAdd(newItem)
+                }
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .padding(DesignSystem.Spacing.lg)
+        .frame(width: 400)
+    }
+}
+
+// MARK: - Nested Collection Editors (TODO-1667)
+struct NestedCollectionPropertyEditor: View {
+    let label: String
+    @Binding var nestedData: NestedCollectionData
+    let maxDepth: Int
+    let maxItemsPerLevel: Int
+    
+    struct NestedCollectionData: Codable {
+        var arrays: [String: [String]]
+        var dictionaries: [String: [String: String]]
+        var sets: [String: Set<String>]
+        
+        init() {
+            arrays = [:]
+            dictionaries = [:]
+            sets = [:]
+        }
+    }
+    
+    // State
+    @State private var expandedSections: Set<String> = []
+    @State private var selectedPath: String? = nil
+    @State private var showAddDialog = false
+    @State private var newCollectionType: CollectionType = .array
+    @State private var newCollectionName = ""
+    
+    enum CollectionType: String, CaseIterable {
+        case array = "Array"
+        case dictionary = "Dictionary"
+        case set = "Set"
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+            // Header
+            headerSection
+            
+            // Nested collection tree
+            nestedCollectionTree
+        }
+        .sheet(isPresented: $showAddDialog) {
+            AddNestedCollectionDialog(
+                collectionType: $newCollectionType,
+                collectionName: $newCollectionName,
+                onAdd: { type, name in
+                    addNestedCollection(type: type, name: name)
+                    showAddDialog = false
+                    newCollectionName = ""
+                }
+            )
+        }
+    }
+    
+    @ViewBuilder
+    private var headerSection: some View {
+        HStack {
+            Text(label)
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            Spacer()
+            
+            // Total count
+            Text("\(nestedData.arrays.count + nestedData.dictionaries.count + nestedData.sets.count) collections")
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textTertiary)
+            
+            // Add button
+            Button(action: { showAddDialog = true }) {
+                Image(systemName: "plus.circle")
+                    .foregroundColor(DesignSystem.Colors.accentPrimary)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+    
+    @ViewBuilder
+    private var nestedCollectionTree: some View {
+        ScrollView {
+            LazyVStack(spacing: DesignSystem.Spacing.xs) {
+                // Arrays section
+                NestedCollectionSection(
+                    title: "Arrays",
+                    items: Array(nestedData.arrays.keys),
+                    expandedSections: $expandedSections,
+                    selectedPath: $selectedPath,
+                    sectionKey: "arrays",
+                    icon: "list.bullet",
+                    color: DesignSystem.Colors.accentPrimary
+                )
+                
+                // Dictionaries section
+                NestedCollectionSection(
+                    title: "Dictionaries",
+                    items: Array(nestedData.dictionaries.keys),
+                    expandedSections: $expandedSections,
+                    selectedPath: $selectedPath,
+                    sectionKey: "dictionaries",
+                    icon: "list.bullet.indent",
+                    color: DesignSystem.Colors.accentSecondary
+                )
+                
+                // Sets section
+                NestedCollectionSection(
+                    title: "Sets",
+                    items: Array(nestedData.sets.keys),
+                    expandedSections: $expandedSections,
+                    selectedPath: $selectedPath,
+                    sectionKey: "sets",
+                    icon: "list.bullet.rectangle",
+                    color: DesignSystem.Colors.accentTertiary
+                )
+            }
+        }
+        .frame(maxHeight: 400)
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func addNestedCollection(type: CollectionType, name: String) {
+        guard !name.isEmpty else { return }
+        
+        switch type {
+        case .array:
+            nestedData.arrays[name] = []
+        case .dictionary:
+            nestedData.dictionaries[name] = [:]
+        case .set:
+            nestedData.sets[name] = []
+        }
+        
+        expandedSections.insert("\(type.rawValue)_\(name)")
+    }
+}
+
+// MARK: - Nested Collection Section
+private struct NestedCollectionSection: View {
+    let title: String
+    let items: [String]
+    @Binding var expandedSections: Set<String>
+    @Binding var selectedPath: String?
+    let sectionKey: String
+    let icon: String
+    let color: Color
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+            // Section header
+            Button(action: {
+                if expandedSections.contains(sectionKey) {
+                    expandedSections.remove(sectionKey)
+                } else {
+                    expandedSections.insert(sectionKey)
+                }
+            }) {
+                HStack(spacing: 6) {
+                    Image(systemName: expandedSections.contains(sectionKey) ? "chevron.down" : "chevron.right")
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                        .font(DesignSystem.Typography.micro)
+                    
+                    Image(systemName: icon)
+                        .foregroundColor(color)
+                        .font(DesignSystem.Typography.small)
+                    
+                    Text(title)
+                        .font(DesignSystem.Typography.small)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                    
+                    Text("(\(items.count))")
+                        .font(DesignSystem.Typography.micro)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                    
+                    Spacer()
+                }
+            }
+            .buttonStyle(.plain)
+            
+            // Section items
+            if expandedSections.contains(sectionKey) {
+                VStack(spacing: 2) {
+                    ForEach(items, id: \.self) { item in
+                        NestedCollectionItem(
+                            name: item,
+                            path: "\(sectionKey).\(item)",
+                            selectedPath: $selectedPath,
+                            color: color
+                        )
+                    }
+                }
+                .padding(.leading, DesignSystem.Spacing.lg)
+            }
+        }
+    }
+}
+
+// MARK: - Nested Collection Item
+private struct NestedCollectionItem: View {
+    let name: String
+    let path: String
+    @Binding var selectedPath: String?
+    let color: Color
+    
+    var body: some View {
+        Button(action: {
+            selectedPath = path
+        }) {
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(color)
+                    .frame(width: 6, height: 6)
+                
+                Text(name)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                
+                Spacer()
+            }
+            .padding(.horizontal, DesignSystem.Spacing.sm)
+            .padding(.vertical, DesignSystem.Spacing.xs)
+            .background(
+                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                    .fill(selectedPath == path ? DesignSystem.Colors.selection : DesignSystem.Colors.backgroundTertiary)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                    .stroke(selectedPath == path ? color : DesignSystem.Colors.border, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Add Nested Collection Dialog
+private struct AddNestedCollectionDialog: View {
+    @Binding var collectionType: NestedCollectionPropertyEditor.CollectionType
+    @Binding var collectionName: String
+    let onAdd: (NestedCollectionPropertyEditor.CollectionType, String) -> Void
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        VStack(spacing: DesignSystem.Spacing.md) {
+            Text("Add Nested Collection")
+                .font(DesignSystem.Typography.title3)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+            
+            VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+                Text("Collection Type:")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                Picker("", selection: $collectionType) {
+                    ForEach(NestedCollectionPropertyEditor.CollectionType.allCases, id: \.self) { type in
+                        Text(type.rawValue).tag(type)
+                    }
+                }
+                .pickerStyle(.segmented)
+                
+                Text("Collection Name:")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                TextField("Enter collection name...", text: $collectionName)
+                    .textFieldStyle(.roundedBorder)
+            }
+            
+            HStack {
+                Button("Cancel") { dismiss() }
+                    .buttonStyle(.bordered)
+                
+                Spacer()
+                
+                Button("Add") {
+                    onAdd(collectionType, collectionName)
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(collectionName.isEmpty)
+            }
+        }
+        .padding(DesignSystem.Spacing.lg)
+        .frame(width: 400)
+    }
+}
+
+// MARK: - Rendering Layer Mask Editor (TODO-1752)
+struct RenderingLayerMaskPropertyEditor: View {
+    let label: String
+    @Binding var mask: Int32
+    @State private var renderingLayers: [String] = [
+        "Background", "Skybox", "Geometry", "Transparent", "Effects",
+        "Overlay", "UI", "PostProcess", "Debug", "Wireframe"
+    ]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 4) {
+                ForEach(0..<min(renderingLayers.count, 32), id: \.self) { index in
+                    HStack(spacing: 4) {
+                        Toggle("", isOn: Binding(
+                            get: { isLayerActive(index) },
+                            set: { _ in toggleLayer(index) }
+                        ))
+                        .toggleStyle(.switch)
+                        
+                        Text(renderingLayers[index])
+                            .font(DesignSystem.Typography.small)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
+                        
+                        Spacer()
+                        
+                        Text("\(index)")
+                            .font(DesignSystem.Typography.mono)
+                            .foregroundColor(DesignSystem.Colors.textTertiary)
+                            .frame(width: 20, alignment: .trailing)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 2)
+                    .background(isLayerActive(index) ? DesignSystem.Colors.accentPrimary.opacity(0.1) : DesignSystem.Colors.backgroundTertiary)
+                    .cornerRadius(4)
+                }
+            }
+        }
+    }
+    
+    private func isLayerActive(_ index: Int) -> Bool {
+        return (mask & (1 << index)) != 0
+    }
+    
+    private func toggleLayer(_ index: Int) {
+        if isLayerActive(index) {
+            mask &= ~(1 << index)
+        } else {
+            mask |= (1 << index)
+        }
+    }
+}
+
+// MARK: - Physics Layer Mask Matrix (TODO-1753)
+struct PhysicsLayerMatrixPropertyEditor: View {
+    let label: String
+    @Binding var matrix: [[Bool]]
+    @State private var layerNames: [String] = [
+        "Default", "Player", "Enemy", "Pickup", "Scenery",
+        "Projectile", "Static", "Dynamic", "Trigger", "Water"
+    ]
+    
+    init(label: String, matrix: Binding<[[Bool]]>) {
+        self.label = label
+        self._matrix = matrix
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(DesignSystem.Typography.small)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            ScrollView([.horizontal, .vertical]) {
+                VStack(spacing: 2) {
+                    // Header row
+                    HStack(spacing: 2) {
+                        Text("")
+                            .frame(width: 60, alignment: .trailing)
+                        
+                        ForEach(0..<layerNames.count, id: \.self) { col in
+                            VStack {
+                                Text("\(col)")
+                                    .font(DesignSystem.Typography.caption)
+                                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                                    .frame(width: 40)
+                                
+                                Text(layerNames[col])
+                                    .font(DesignSystem.Typography.caption)
+                                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                                    .frame(width: 40)
+                                    .lineLimit(1)
+                                    .truncationMode(.tail)
+                            }
+                        }
+                    }
+                    
+                    // Matrix rows
+                    ForEach(0..<matrix.count, id: \.self) { row in
+                        HStack(spacing: 2) {
+                            Text("\(row)")
+                                .font(DesignSystem.Typography.caption)
+                                .foregroundColor(DesignSystem.Colors.textTertiary)
+                                .frame(width: 20, alignment: .trailing)
+                            
+                            Text(layerNames[row])
+                                .font(DesignSystem.Typography.caption)
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                                .frame(width: 40)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+                            
+                            ForEach(0..<matrix[row].count, id: \.self) { col in
+                                Button(action: {
+                                    matrix[row][col].toggle()
+                                }) {
+                                    Image(systemName: matrix[row][col] ? "checkmark.square.fill" : "square")
+                                        .foregroundColor(matrix[row][col] ? DesignSystem.Colors.accentSuccess : DesignSystem.Colors.textTertiary)
+                                        .font(DesignSystem.Typography.caption)
+                                }
+                                .buttonStyle(.plain)
+                                .frame(width: 30, height: 30)
+                                .background(matrix[row][col] ? DesignSystem.Colors.accentSuccess.opacity(0.1) : DesignSystem.Colors.backgroundTertiary)
+                                .cornerRadius(4)
+                            }
+                        }
+                    }
+                }
+                .padding(8)
+            }
+            .background(DesignSystem.Colors.backgroundPrimary)
+            .cornerRadius(6)
+            .frame(maxHeight: 300)
+        }
+    }
+}
+
+// MARK: - Bounds Editor (AABB, OBB) (TODO-1754)
+struct BoundsPropertyEditor: View {
+    let label: String
+    @Binding var center: SIMD3<Float>
+    @Binding var size: SIMD3<Float>
+    @State private var boundsType: BoundsType = .aabb
+    
+    enum BoundsType: String, CaseIterable {
+        case aabb = "AABB"
+        case obb = "OBB"
+        case sphere = "Sphere"
+        case capsule = "Capsule"
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text(label)
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                Spacer()
+                
+                Picker("", selection: $boundsType) {
+                    ForEach(BoundsType.allCases, id: \.self) { type in
+                        Text(type.rawValue).tag(type)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .font(DesignSystem.Typography.small)
+            }
+            
+            VStack(spacing: 8) {
+                // Center
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Center")
+                        .font(DesignSystem.Typography.small)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                    
+                    HStack(spacing: 4) {
+                        ForEach(0..<3, id: \.self) { index in
+                            HStack(spacing: 2) {
+                                Text(["X", "Y", "Z"][index])
+                                    .font(DesignSystem.Typography.small)
+                                    .foregroundColor([DesignSystem.Colors.xAxis, DesignSystem.Colors.yAxis, DesignSystem.Colors.zAxis][index])
+                                    .frame(width: 12)
+                                
+                                TextField("", value: $center[index], format: .number.precision(.fractionLength(2)))
+                                    .textFieldStyle(.plain)
+                                    .font(DesignSystem.Typography.mono)
+                                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                                    .frame(width: 60)
+                            }
+                            .padding(.horizontal, 4)
+                            .padding(.vertical, 2)
+                            .background(DesignSystem.Colors.backgroundTertiary)
+                            .cornerRadius(4)
+                        }
+                    }
+                }
+                
+                // Size
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Size")
+                        .font(DesignSystem.Typography.small)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                    
+                    HStack(spacing: 4) {
+                        ForEach(0..<3, id: \.self) { index in
+                            HStack(spacing: 2) {
+                                Text(["X", "Y", "Z"][index])
+                                    .font(DesignSystem.Typography.small)
+                                    .foregroundColor([DesignSystem.Colors.xAxis, DesignSystem.Colors.yAxis, DesignSystem.Colors.zAxis][index])
+                                    .frame(width: 12)
+                                
+                                TextField("", value: $size[index], format: .number.precision(.fractionLength(2)))
+                                    .textFieldStyle(.plain)
+                                    .font(DesignSystem.Typography.mono)
+                                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                                    .frame(width: 60)
+                            }
+                            .padding(.horizontal, 4)
+                            .padding(.vertical, 2)
+                            .background(DesignSystem.Colors.backgroundTertiary)
+                            .cornerRadius(4)
+                        }
+                    }
+                }
+                
+                // Bounds info
+                HStack {
+                    Text("Volume: \(String(format: "%.2f", size.x * size.y * size.z))")
+                        .font(DesignSystem.Typography.mono)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                    
+                    Spacer()
+                    
+                    Text("Surface Area: \(String(format: "%.2f", 2 * (size.x * size.y + size.x * size.z + size.y * size.z)))")
+                        .font(DesignSystem.Typography.mono)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(DesignSystem.Colors.backgroundSecondary)
+                .cornerRadius(4)
             }
         }
     }

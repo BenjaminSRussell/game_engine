@@ -9,12 +9,8 @@
 #include <string.h>
 #include <math.h>
 
-// Stub for missing ECS function
-static void ecs_remove_entity(World *world, Entity entity) {
-    // Stub implementation - would remove entity from ECS world
-    (void)world;
-    (void)entity;
-}
+// Include status effects for projectile effects
+#include <include/gameplay/combat/status_effects.h>
 
 #define MAX_PROJECTILES 2048
 #define PROJECTILE_UPDATE_BATCH_SIZE 64
@@ -133,8 +129,26 @@ static void projectile_handle_collision(ProjectileInstance *instance, const Vec3
   
   // Apply damage to hit entity
   if (hit_entity.id != 0) {
-    // This would integrate with the health/damage system
-    LOG_DEBUG("Applied %.1f damage to entity %u", proj->damage, hit_entity.id);
+    // Create damage event and emit to damage system
+    damage_event_create(proj->source, hit_entity, proj->damage, proj->damage_type);
+
+    LOG_DEBUG("Applied %.1f damage (type: %d) to entity %u",
+             proj->damage, proj->damage_type, hit_entity.id);
+
+    // Apply type-specific effects based on projectile type
+    if (proj->damage_type == DAMAGE_TYPE_FIRE) {
+      // Apply burning effect for fire projectiles
+      status_sys_apply_effect_with_source(hit_entity.id, EFFECT_BURNING, 5.0f, 1.0f, proj->source.id);
+      LOG_DEBUG("Applied BURNING effect to entity %u from fire projectile", hit_entity.id);
+    } else if (proj->damage_type == DAMAGE_TYPE_ICE) {
+      // Apply freezing effect for ice projectiles
+      status_sys_apply_effect_with_source(hit_entity.id, EFFECT_FREEZING, 3.0f, 0.5f, proj->source.id);
+      LOG_DEBUG("Applied FREEZING effect to entity %u from ice projectile", hit_entity.id);
+    } else if (proj->damage_type == DAMAGE_TYPE_POISON) {
+      // Apply poison effect for poison projectiles
+      status_sys_apply_effect_with_source(hit_entity.id, EFFECT_POISON, 10.0f, 0.5f, proj->source.id);
+      LOG_DEBUG("Applied POISON effect to entity %u from poison projectile", hit_entity.id);
+    }
   }
 }
 
@@ -248,20 +262,21 @@ void projectile_system_shutdown(void) {
 
 void projectile_system_update(World *world, f32 delta_time) {
   if (!g_projectile_system.is_initialized) return;
-  
+
   g_projectile_system.current_time += delta_time;
-  
+
   // Update all projectile instances
   for (u32 i = 0; i < g_projectile_system.instance_count; i++) {
     ProjectileInstance *instance = &g_projectile_system.instances[i];
-    
+
     if (!instance->is_active) {
-      ecs_remove_entity(world, instance->entity);
+      // Destroy the projectile entity
+      ecs_destroy_entity(world, instance->entity);
       projectile_remove_instance(i);
       i--; // Adjust index since we removed an element
       continue;
     }
-    
+
     projectile_update_physics(instance, delta_time);
   }
 }

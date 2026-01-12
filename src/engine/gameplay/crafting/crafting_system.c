@@ -534,19 +534,50 @@ bool crafting_discover_recipe(uint32_t recipe_id) {
 static bool recipe_can_be_crafted(const recipe_t* recipe, uint32_t player_id) {
     // This would check player's inventory for required ingredients
     // and verify skill level requirements
-    // Placeholder implementation
+    // For now: always return true since inventory integration would be game-specific
+    log_debug("Checking if recipe %u can be crafted by player %u", recipe->recipe_id, player_id);
     return true;
 }
 
 static void consume_ingredients(const recipe_t* recipe, uint32_t player_id) {
     // This would remove ingredients from player's inventory
-    // Placeholder implementation
+    // Log the ingredients being consumed for integration with inventory system
+    for (uint32_t i = 0; i < recipe->ingredient_count; i++) {
+        const ingredient_t* ingredient = &recipe->ingredients[i];
+        log_debug("Consuming item %u x%u from player %u inventory",
+                 ingredient->item_id, ingredient->quantity, player_id);
+        // TODO: Call inventory_remove_item(player_id, ingredient->item_id, ingredient->quantity)
+        // when inventory system is integrated
+    }
 }
 
 static void give_results(const recipe_t* recipe, uint32_t player_id) {
     // This would add results to player's inventory
     // Handle probability for random results
-    // Placeholder implementation
+    for (uint32_t i = 0; i < recipe->result_count; i++) {
+        const crafting_result_t* result = &recipe->results[i];
+
+        // Check if result should be given based on probability
+        float roll = (float)rand() / RAND_MAX;
+        if (roll < result->probability) {
+            log_debug("Giving item %u x%u to player %u from recipe %u (probability: %.1f%%)",
+                     result->item_id, result->quantity, player_id, recipe->recipe_id,
+                     result->probability * 100.0f);
+            // TODO: Call inventory_add_item(player_id, result->item_id, result->quantity)
+            // when inventory system is integrated
+        } else {
+            log_debug("Item %u skipped for player %u (failed probability check: %.1f%%)",
+                     result->item_id, player_id, result->probability * 100.0f);
+        }
+    }
+
+    // Award XP to player for crafting this recipe
+    if (recipe->skill_xp_reward > 0.0f) {
+        log_debug("Awarding %.1f crafting XP to player %u from recipe %u",
+                 recipe->skill_xp_reward, player_id, recipe->recipe_id);
+        // TODO: Call leveling_add_xp(player_id, SKILL_CRAFTING, recipe->skill_xp_reward)
+        // when leveling system is integrated
+    }
 }
 
 uint32_t get_current_time_ms(void) {

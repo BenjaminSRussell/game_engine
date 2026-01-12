@@ -186,4 +186,51 @@ const BrewingRecipe *brewing_get_recipe(u32 index);
 // Initialize default recipes
 void brewing_init_default_recipes(void);
 
+// ============= Recipe Book System =============
+
+// Recipe book stores discovered recipes and ingredient hints
+typedef struct {
+  u32 discovered_recipes[32];  // Bitmask of discovered recipes
+  bool ingredient_discovered[BREW_INGREDIENT_COUNT];  // Known ingredients
+  u32 total_recipes_discovered;
+  u32 total_ingredients_discovered;
+} PotionRecipeBook;
+
+// Initialize recipe book
+void potion_recipe_book_init(PotionRecipeBook *book);
+
+// Discover a recipe
+void potion_recipe_book_discover(PotionRecipeBook *book, u32 recipe_index);
+
+// Discover an ingredient
+void potion_recipe_book_discover_ingredient(PotionRecipeBook *book,
+                                             BrewingIngredient ingredient);
+
+// Check if recipe is discovered
+bool potion_recipe_book_has_recipe(const PotionRecipeBook *book,
+                                    u32 recipe_index);
+
+// Check if ingredient is discovered
+bool potion_recipe_book_has_ingredient(const PotionRecipeBook *book,
+                                        BrewingIngredient ingredient);
+
+// Get discovery percentage
+f32 potion_recipe_book_get_completion(const PotionRecipeBook *book);
+
+// ============= Splash & Lingering Potions =============
+
+// Convert potion to splash variant (reduced duration, area effect)
+void potion_create_splash_variant(PotionEffect *effect);
+
+// Convert potion to lingering variant (cloud effect)
+void potion_create_lingering_variant(PotionEffect *effect);
+
+// Apply splash potion area effect
+void potion_apply_splash_area_effect(Vec3 position, PotionEffect effect,
+                                      f32 radius);
+
+// Apply lingering cloud effect
+void potion_apply_lingering_cloud(Vec3 position, PotionEffect effect,
+                                   f32 radius, f32 duration);
+
 #endif // BREWING_H

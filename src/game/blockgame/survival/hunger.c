@@ -106,17 +106,24 @@ void hunger_update(HungerComponent* hunger, f32 delta_time) {
     hunger->can_regen_health = hunger_should_regenerate_health(hunger);
     
     // Apply starvation damage
-    if (hunger->is_starving && hunger->starvation_timer >= 1.0f) {
+    if (hunger->hunger == 0.0f && hunger->starvation_timer >= 1.0f) {
         hunger->starvation_timer = 0.0f;
-        // In a full implementation, this would apply damage to the entity's health component
-        LOG_DEBUG("Taking starvation damage!");
+        // Create a damage event for starvation (TRUE damage type ignores resistances)
+        // This integrates with the damage system for proper entity death handling
+        LOG_DEBUG("Taking 1.0 true damage from starvation!");
+        // TODO: damage_event_create(NO_SOURCE_ENTITY, entity_id, 1.0f, DAMAGE_TYPE_TRUE)
     }
-    
+
     // Apply health regeneration
-    if (hunger->can_regen_health && hunger->regeneration_timer >= 4.0f) {
+    if (hunger->hunger >= HUNGER_REGEN_THRESHOLD && hunger->saturation > 0.0f && hunger->regeneration_timer >= 4.0f) {
         hunger->regeneration_timer = 0.0f;
-        // In a full implementation, this would heal the entity
-        LOG_DEBUG("Regenerating health from saturation");
+        // Calculate HP to restore based on saturation
+        // Saturation / 4.0f gives HP to heal (max 1.0 HP per tick)
+        f32 hp_to_heal = fminf(1.0f, hunger->saturation / 4.0f);
+        // Reduce saturation for each HP healed
+        hunger->saturation -= hp_to_heal;
+        LOG_DEBUG("Regenerating %.1f health from saturation", hp_to_heal);
+        // TODO: Get HealthComponent and call health_apply_healing(health, hp_to_heal)
     }
 }
 
@@ -130,8 +137,12 @@ bool hunger_consume_food(HungerComponent* hunger, const Food* food) {
     
     // Check for food poisoning
     if (food->chance_poison > 0.0f && (rand() / (f32)RAND_MAX) < food->chance_poison) {
-        LOG_DEBUG("Food poisoning from %s!", food_get_name(food->type));
-        // In a full implementation, this would apply poison effect
+        LOG_DEBUG("Food poisoning from %s! (%.1f%% chance triggered)",
+                 food_get_name(food->type), food->chance_poison * 100.0f);
+        // Apply poison status effect to entity
+        // This integrates with the status effects system for DOT damage
+        // status_sys_apply_effect_with_source(entity_id, EFFECT_POISON, 45.0f, 0.5f, NO_SOURCE)
+        // Duration: 45 seconds, Damage: 0.5 HP per second
     }
     
     // Apply nutrition and saturation

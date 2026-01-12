@@ -840,3 +840,89 @@ u32 inventory_quick_stack(Inventory *inv, Inventory *target) {
 
   return stacked_items;
 }
+
+u16 inventory_simulate_add(Inventory *inv, u32 item_id, u16 count) {
+  if (!inv || count == 0 || item_id == 0)
+    return 0;
+
+  u16 remaining = count;
+  u16 max_stack = inventory_get_max_stack_size(item_id);
+
+  // First pass: simulate stacking with existing items
+  for (u32 i = 0; i < MAX_INVENTORY_SLOTS && remaining > 0; i++) {
+    if (inv->slots[i].item_id == item_id) {
+      u16 space = max_stack - inv->slots[i].count;
+      if (space > 0) {
+        u16 add = (remaining < space) ? remaining : space;
+        remaining -= add;
+      }
+    }
+  }
+
+  // Second pass: simulate filling empty slots
+  for (u32 i = 0; i < MAX_INVENTORY_SLOTS && remaining > 0; i++) {
+    if (inv->slots[i].item_id == 0) {
+      u16 add = (remaining < max_stack) ? remaining : max_stack;
+      remaining -= add;
+    }
+  }
+
+  return count - remaining; // Return amount that could be added
+}
+
+u32 inventory_search_items(const Inventory *inv, u32 item_id,
+                           InventorySearchResult *results, u32 max_results) {
+  if (!inv || !results || max_results == 0 || item_id == 0)
+    return 0;
+
+  u32 found = 0;
+  
+  for (u32 i = 0; i < MAX_INVENTORY_SLOTS && found < max_results; i++) {
+    if (inv->slots[i].item_id == item_id && inv->slots[i].count > 0) {
+      results[found].item_id = inv->slots[i].item_id;
+      results[found].count = inv->slots[i].count;
+      results[found].slot_index = i;
+      found++;
+    }
+  }
+
+  return found;
+}
+
+void inventory_optimize_stacking(Inventory *inv) {
+  if (!inv)
+    return;
+
+  // Create a map of item_id to list of slot indices
+  // For this implementation, we'll use a simple approach
+  // by scanning for each item type and consolidating
+  
+  for (u32 i = 0; i < MAX_INVENTORY_SLOTS; i++) {
+    if (inv->slots[i].item_id == 0 || inv->slots[i].count == 0)
+      continue;
+
+    u32 item_id = inv->slots[i].item_id;
+    u16 max_stack = inventory_get_max_stack_size(item_id);
+    
+    // Find all other slots with the same item
+    for (u32 j = i + 1; j < MAX_INVENTORY_SLOTS; j++) {
+      if (inv->slots[j].item_id == item_id && inv->slots[j].count > 0) {
+        // Try to merge from slot j to slot i
+        u16 space = max_stack - inv->slots[i].count;
+        if (space > 0) {
+          u16 move = (inv->slots[j].count < space) ? inv->slots[j].count : space;
+          inv->slots[i].count += move;
+          inv->slots[j].count -= move;
+          
+          if (inv->slots[j].count == 0) {
+            inv->slots[j].item_id = 0;
+            inv->slots[j].durability = 0.0f;
+          }
+        }
+      }
+    }
+  }
+
+  inventory_mark_dirty(inv);
+  LOG_DEBUG("Inventory stacking optimized");
+}
