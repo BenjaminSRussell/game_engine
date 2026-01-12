@@ -730,7 +730,6 @@ bool gpu_profiling_export_session_to_json(GPUProfilingSession* session, const ch
     fprintf(fp, "  \"counter_count\": %u,\n", session->counter_count);
     
     // Export frame data
-    fprintf(fp, "  \"frames\": [\n");
     for (u32 i = 0; i < session->frame_count; i++) {
         GPUFrameProfile* frame = &session->frames[i];
         fprintf(fp, "    {\n");
@@ -752,7 +751,6 @@ bool gpu_profiling_export_session_to_json(GPUProfilingSession* session, const ch
     fprintf(fp, "  ],\n");
     
     // Export counter data
-    fprintf(fp, "  \"counters\": [\n");
     for (u32 i = 0; i < session->counter_count; i++) {
         GPUPerformanceCounter* counter = &session->counters[i];
         fprintf(fp, "    {\n");

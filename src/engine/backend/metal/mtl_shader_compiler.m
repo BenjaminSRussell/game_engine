@@ -204,7 +204,6 @@ compile_internal(metal_shader_compiler_t *compiler, const char *source,
   result.error_count = 0;
 
   if (!compiler || !source) {
-    snprintf(result.errors[result.error_count++].message, 512,
              "Invalid arguments");
     return result;
   }
@@ -297,7 +296,6 @@ metal_shader_compile_file(metal_shader_compiler_t *compiler, const char *path,
   result.succeeded = false;
 
   if (!compiler || !path) {
-    snprintf(result.errors[result.error_count++].message, 512,
              "Invalid arguments");
     return result;
   }
@@ -305,7 +303,6 @@ metal_shader_compile_file(metal_shader_compiler_t *compiler, const char *path,
   // Read file
   FILE *file = fopen(path, "r");
   if (!file) {
-    snprintf(result.errors[result.error_count++].message, 512,
              "Failed to open file: %s", path);
     return result;
   }
@@ -317,7 +314,6 @@ metal_shader_compile_file(metal_shader_compiler_t *compiler, const char *path,
   char *source = (char *)malloc(size + 1);
   if (!source) {
     fclose(file);
-    snprintf(result.errors[result.error_count++].message, 512, "Out of memory");
     return result;
   }
 

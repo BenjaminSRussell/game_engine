@@ -179,7 +179,6 @@ u32 vk_shader_load_from_source(const char* name, const char* source, VkShaderSta
             g_shader_compiler.cache[i].use_count++;
             g_shader_compiler.cache_hits++;
             
-            printf("Shader '%s' found in cache (hits: %u)\n", name, g_shader_compiler.cache[i].use_count);
             return g_shader_compiler.cache[i].module != VK_NULL_HANDLE ? i + 1 : 0;
         }
     }

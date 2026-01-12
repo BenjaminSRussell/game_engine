@@ -547,7 +547,7 @@ bool Material_SavePBRMaterial(PBRMaterial* pbr_material, const char* output_path
     fprintf(file, "  \"metallic\": %.3f,\n", pbr_material->metallic);
     fprintf(file, "  \"roughness\": %.3f,\n", pbr_material->roughness);
     fprintf(file, "  \"specular\": %.3f,\n", pbr_material->specular);
-    fprintf(file, "  \"emissive\": [%.3f, %.3f, %.3f],\n",
+    fprintf(file, "  \"emissive\": [%.3f, %.3f, %.3f]\n", 
             pbr_material->emissive[0], pbr_material->emissive[1], pbr_material->emissive[2]);
     fprintf(file, "  \"normal_scale\": %.3f,\n", pbr_material->normal_scale);
     fprintf(file, "  \"occlusion_strength\": %.3f,\n", pbr_material->occlusion_strength);

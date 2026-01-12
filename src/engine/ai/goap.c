@@ -529,7 +529,6 @@ void goap_debug_print_plan(const GoapAction** plan, int length) {
     
     printf("GOAP Plan (%d actions):\n", length);
     for (int i = 0; i < length; i++) {
-        printf("  %d. %s (cost: %.2f)\n", i + 1, plan[i]->name, plan[i]->cost);
     }
 }
 

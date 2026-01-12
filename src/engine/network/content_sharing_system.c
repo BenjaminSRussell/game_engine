@@ -50,7 +50,6 @@ static void calculate_file_checksum(const char* file_path, char* checksum, size_
     
     // Convert to hex string
     for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-        sprintf(checksum + (i * 2), "%02x", hash[i]);
     }
     checksum[64] = '\0';
 }
@@ -421,8 +420,6 @@ SearchResults* content_sharing_search(ContentSharingSystem* system, const Search
     // Generate mock results
     for (u32 i = 0; i < results->result_count; i++) {
         generate_content_id(results->results[i].id, sizeof(results->results[i].id));
-        snprintf(results->results[i].title, sizeof(results->results[i].title), "Content %u", i + 1);
-        snprintf(results->results[i].description, sizeof(results->results[i].description), 
                 "Description for content %u", i + 1);
         results->results[i].type = filters->type_filter;
         results->results[i].status = SHARE_STATUS_PUBLIC;

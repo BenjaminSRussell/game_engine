@@ -316,7 +316,6 @@ bool skeleton_export_lod_data(const SkeletonLODSystem* lod_system, const char* f
     fprintf(file, "# Transition Distances\n");
     fprintf(file, "# lod_level, distance\n");
     for (u32 i = 0; i < lod_system->lod_count; i++) {
-        fprintf(file, "%u, %.1f\n", i, lod_system->transition_distances[i]);
     }
     
     fprintf(file, "\n# LOD Levels\n");
@@ -327,7 +326,6 @@ bool skeleton_export_lod_data(const SkeletonLODSystem* lod_system, const char* f
         
         fprintf(file, "# LOD %u bone indices: ", i);
         for (u32 j = 0; j < lod->bone_count; j++) {
-            fprintf(file, "%u", lod->bone_indices[j]);
             if (j < lod->bone_count - 1) fprintf(file, ", ");
         }
         fprintf(file, "\n");

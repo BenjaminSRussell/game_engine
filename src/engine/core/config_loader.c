@@ -177,7 +177,6 @@ bool config_document_save_as(ConfigDocument *doc, const char *filename) {
         ConfigSection *section = &doc->sections[i];
 
         // Write section header
-        fprintf(file, "[%s]\n", section->name);
 
         // Write all values
         for (u32 j = 0; j < section->value_count; j++) {

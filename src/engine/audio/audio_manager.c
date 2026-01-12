@@ -121,7 +121,6 @@ void audio_manager_init(AudioManager *manager, u32 max_channels) {
   manager->accumulated_time = 0.0f;
   manager->update_rate = AUDIO_UPDATE_RATE;
 
-  printf("[AUDIO_MANAGER] Audio manager initialized with %u channels\n",
          max_channels);
 }
 
@@ -136,7 +135,6 @@ void audio_manager_free(AudioManager *manager) {
   audio_effects_shutdown(&manager->effects_system);
 
   manager->initialized = false;
-  printf("[AUDIO_MANAGER] Audio manager freed\n");
 }
 
 void audio_manager_update(AudioManager *manager, f32 delta_time) {
@@ -555,7 +553,6 @@ void audio_manager_set_performance_mode(AudioManager *manager, bool enabled) {
     manager->audio_system.max_channels = 32;
   }
 
-  printf("[AUDIO_MANAGER] Performance mode %s\n",
          enabled ? "enabled" : "disabled");
 }
 

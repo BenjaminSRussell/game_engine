@@ -95,7 +95,6 @@ void music_system_init(MusicSystem *music, AudioSystem *audio) {
   // Create initial playlist
   music_create_playlist(music, music->current_mood, music->current_context);
 
-  printf("[MUSIC] Music system initialized with %u tracks\n",
          music->track_count);
 }
 
@@ -114,7 +113,6 @@ void music_system_free(MusicSystem *music) {
   }
 
   music->initialized = false;
-  printf("[MUSIC] Music system freed\n");
 }
 
 void music_system_update(MusicSystem *music, f32 delta_time) {
@@ -191,7 +189,6 @@ void music_set_mood(MusicSystem *music, MusicMood mood) {
       }
     }
 
-    printf("[MUSIC] Mood changed to: %s\n", music_get_mood_name(mood));
   }
 }
 
@@ -212,7 +209,6 @@ void music_set_context(MusicSystem *music, MusicContext context) {
       }
     }
 
-    printf("[MUSIC] Context changed to: %s\n", music_get_context_name(context));
   }
 }
 
@@ -259,7 +255,6 @@ void music_play_track(MusicSystem *music, u32 track_index) {
   music->total_play_time = 0.0f;
 
   MusicTrack *track = &music->tracks[track_index];
-  printf("[MUSIC] Playing track: %s - %s\n", track->title, track->artist);
 
   // This would integrate with the audio system to actually play the track
   // For now, we'll just update the state
@@ -305,7 +300,6 @@ void music_pause(MusicSystem *music) {
     return;
 
   music->is_playing = false;
-  printf("[MUSIC] Music paused\n");
 }
 
 void music_resume(MusicSystem *music) {
@@ -313,7 +307,6 @@ void music_resume(MusicSystem *music) {
     return;
 
   music->is_playing = true;
-  printf("[MUSIC] Music resumed\n");
 }
 
 void music_stop(MusicSystem *music) {
@@ -323,7 +316,6 @@ void music_stop(MusicSystem *music) {
   music->is_playing = false;
   music->current_track_index = 0xFFFFFFFF;
   music->total_play_time = 0.0f;
-  printf("[MUSIC] Music stopped\n");
 }
 
 void music_create_playlist(MusicSystem *music, MusicMood mood,
@@ -344,7 +336,6 @@ void music_create_playlist(MusicSystem *music, MusicMood mood,
     music_shuffle_playlist(music);
   }
 
-  printf("[MUSIC] Created playlist: %u tracks for mood=%s, context=%s\n",
          music->playlist_size, music_get_mood_name(mood),
          music_get_context_name(context));
 }
@@ -376,7 +367,6 @@ void music_set_shuffle(MusicSystem *music, bool enabled) {
     music_shuffle_playlist(music);
   }
 
-  printf("[MUSIC] Shuffle %s\n", enabled ? "enabled" : "disabled");
 }
 
 void music_set_repeat(MusicSystem *music, bool enabled) {
@@ -384,7 +374,6 @@ void music_set_repeat(MusicSystem *music, bool enabled) {
     return;
 
   music->repeat_enabled = enabled;
-  printf("[MUSIC] Repeat %s\n", enabled ? "enabled" : "disabled");
 }
 
 void music_set_master_volume(MusicSystem *music, f32 volume) {
@@ -454,7 +443,6 @@ u32 music_load_track(MusicSystem *music, const char *filepath, MusicMood mood,
   // Try to get actual duration from file (simplified)
   track->duration_seconds = 180.0f; // Default 3 minutes
 
-  printf("[MUSIC] Loaded track: %s (mood=%s, energy=%.2f)\n", track->title,
          music_get_mood_name(mood), energy_level);
 
   return index;
@@ -501,7 +489,6 @@ void music_fade_to_track(MusicSystem *music, u32 track_index, f32 duration) {
   music->transition_duration = duration;
   music->transition_volume = 0.0f;
 
-  printf("[MUSIC] Starting %.1fs fade to: %s\n", duration,
          music->tracks[track_index].title);
 }
 

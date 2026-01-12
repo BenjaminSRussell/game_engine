@@ -94,15 +94,12 @@ void mesh_apply_material_params(mesh_t* mesh, u32 slot, const mesh_material_para
     
     // Validate parameter ranges
     if (params->metallic < 0.0f || params->metallic > 1.0f) {
-        printf("Warning: Metallic value %.3f out of range [0,1]\n", params->metallic);
     }
     
     if (params->roughness < 0.0f || params->roughness > 1.0f) {
-        printf("Warning: Roughness value %.3f out of range [0,1]\n", params->roughness);
     }
     
     if (params->ao < 0.0f || params->ao > 1.0f) {
-        printf("Warning: AO value %.3f out of range [0,1]\n", params->ao);
     }
     
     if (params->emissive_strength < 0.0f) {

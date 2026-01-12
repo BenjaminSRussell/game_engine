@@ -26,7 +26,6 @@
 
 void font_library_init(FontLibrary *library) {
   if (!library) {
-    fprintf(stderr, "[TEXT] Invalid library pointer\n");
     return;
   }
 
@@ -36,9 +35,6 @@ void font_library_init(FontLibrary *library) {
   library->default_font_id = 0xFFFFFFFF;
   library->initialized = true;
 
-  fprintf(stderr, "[TEXT] Font library initialized\n");
-  fprintf(stderr, "[TEXT]  - Max fonts: %u\n", MAX_FONTS);
-  fprintf(stderr, "[TEXT]  - Max text meshes: %u\n", MAX_TEXT_MESHES);
 }
 
 void font_library_shutdown(FontLibrary *library) {
@@ -63,7 +59,6 @@ void font_library_shutdown(FontLibrary *library) {
   library->mesh_count = 0;
   library->initialized = false;
 
-  fprintf(stderr, "[TEXT] Font library shut down\n");
 }
 
 // ==============================================================================
@@ -77,7 +72,6 @@ u32 font_load_from_file(FontLibrary *library, const char *filepath, u32 size,
   }
 
   if (library->font_count >= MAX_FONTS) {
-    fprintf(stderr, "[TEXT] Font library full (max %u)\n", MAX_FONTS);
     return 0xFFFFFFFF;
   }
 
@@ -118,7 +112,6 @@ u32 font_load_from_file(FontLibrary *library, const char *filepath, u32 size,
     library->default_font_id = font_id;
   }
 
-  fprintf(stderr, "[TEXT] Loaded font '%s' (ID: %u, size: %u, style: %u)\n",
           filepath, font_id, size, style);
 
   return font_id;
@@ -366,7 +359,6 @@ u32 text_mesh_create(FontLibrary *library, Font *font, const char *text,
   }
 
   if (library->mesh_count >= MAX_TEXT_MESHES) {
-    fprintf(stderr, "[TEXT] Text mesh pool exhausted\n");
     return 0xFFFFFFFF;
   }
 
@@ -384,7 +376,6 @@ u32 text_mesh_create(FontLibrary *library, Font *font, const char *text,
   mesh->indices = malloc(estimated_verts * 2 * sizeof(u32));
 
   if (!mesh->vertices || !mesh->uvs || !mesh->colors || !mesh->indices) {
-    fprintf(stderr, "[TEXT] Failed to allocate text mesh\n");
     if (mesh->vertices)
       free(mesh->vertices);
     if (mesh->uvs)
@@ -514,7 +505,6 @@ void text_render(Font *font, const char *text, Vec2 position, Vec4 color) {
   }
 
   // Placeholder: would render text to screen
-  fprintf(stderr, "[TEXT] Rendering: '%s' at (%.1f, %.1f)\n", text, position.x,
           position.y);
 }
 
@@ -605,26 +595,22 @@ void text_format_set_wrap_width(FormattedText *text, u32 max_width) {
 void text_effect_outline(TextMesh *mesh, f32 outline_width,
                          Vec4 outline_color) {
   if (mesh) {
-    fprintf(stderr, "[TEXT] Applied outline effect (width: %.1f)\n",
             outline_width);
   }
 }
 
 void text_effect_glow(TextMesh *mesh, f32 glow_amount, Vec4 glow_color) {
   if (mesh) {
-    fprintf(stderr, "[TEXT] Applied glow effect (amount: %.1f)\n", glow_amount);
   }
 }
 
 void text_effect_strikethrough(TextMesh *mesh, Vec4 line_color) {
   if (mesh) {
-    fprintf(stderr, "[TEXT] Applied strikethrough effect\n");
   }
 }
 
 void text_effect_underline(TextMesh *mesh, Vec4 line_color) {
   if (mesh) {
-    fprintf(stderr, "[TEXT] Applied underline effect\n");
   }
 }
 
@@ -656,44 +642,30 @@ f32 font_get_line_gap(Font *font) {
 
 void text_debug_render_glyph_atlas(Font *font) {
   if (!font) {
-    fprintf(stderr, "[TEXT] Invalid font\n");
     return;
   }
 
-  fprintf(stderr, "[TEXT] Glyph atlas: %ux%u\n", font->atlas_width,
           font->atlas_height);
-  fprintf(stderr, "[TEXT] Glyphs cached: %u\n", font->glyph_count);
 }
 
 void text_log_font_info(Font *font) {
   if (!font) {
-    fprintf(stderr, "[TEXT] Invalid font\n");
     return;
   }
 
-  fprintf(stderr, "[TEXT] Font Info: '%s'\n", font->name);
-  fprintf(stderr, "[TEXT]   Size: %u px\n", font->size);
-  fprintf(stderr, "[TEXT]   Line height: %u px\n", font->line_height);
-  fprintf(stderr, "[TEXT]   Glyphs: %u\n", font->glyph_count);
-  fprintf(stderr, "[TEXT]   Kerning pairs: %u\n", font->kerning_count);
 }
 
 void text_library_log_stats(FontLibrary *library) {
   if (!library) {
-    fprintf(stderr, "[TEXT] Library not initialized\n");
     return;
   }
 
-  fprintf(stderr, "[TEXT] ===== Font Library Statistics =====\n");
-  fprintf(stderr, "[TEXT] Fonts: %u / %u\n", library->font_count, MAX_FONTS);
-  fprintf(stderr, "[TEXT] Text meshes: %u / %u\n", library->mesh_count,
           MAX_TEXT_MESHES);
 
   u32 total_glyphs = 0;
   for (u32 i = 0; i < library->font_count; i++) {
     total_glyphs += library->fonts[i].glyph_count;
   }
-  fprintf(stderr, "[TEXT] Total glyphs: %u\n", total_glyphs);
 }
 
 // ==============================================================================

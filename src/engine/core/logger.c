@@ -137,7 +137,6 @@ static void logger_log_internal(LogLevel level, const char *category, const char
     int line_len = 0;
     
     if (g_logger.show_timestamp) {
-        line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, "[%s] ", timestamp);
     }
     
     if (g_logger.show_level) {
@@ -145,16 +144,13 @@ static void logger_log_internal(LogLevel level, const char *category, const char
             line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, 
                                 "%s%-5s%s ", level_colors[level], level_names[level], color_reset);
         } else {
-            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, "%-5s ", level_names[level]);
         }
     }
     
     // Use category if provided, otherwise "GENERAL"
     const char *cat_str = category ? category : "GENERAL";
-    line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, "[%s] ", cat_str);
     
     if (function) {
-        line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, "[%s] ", function);
     }
     
     int written = snprintf(log_line + line_len, sizeof(log_line) - line_len, "%s\n", message);
@@ -204,7 +200,6 @@ static void logger_print_backtrace(void) {
         logger_log_internal(LOG_LEVEL_INFO, "DEBUG", NULL, "--- Stack Trace ---");
         for (int i = 1; i < size; i++) { // Skip the logger_print_backtrace call itself
             char trace_buf[512];
-            snprintf(trace_buf, sizeof(trace_buf), "  [%d] %s", i, symbols[i]);
             logger_log_internal(LOG_LEVEL_INFO, "DEBUG", NULL, trace_buf);
         }
         free(symbols);
@@ -406,7 +401,6 @@ void logger_log_with_category(LogCategory category, LogLevel level, const char *
     int line_len = 0;
     
     if (g_logger.show_timestamp) {
-        line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, "[%s] ", timestamp);
     }
     
     if (g_logger.show_level) {
@@ -414,25 +408,23 @@ void logger_log_with_category(LogCategory category, LogLevel level, const char *
             line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, 
                                 "%s%-5s%s ", level_colors[level], level_names[level], color_reset);
         } else {
-            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, "%-5s ", level_names[level]);
         }
     }
     
+    int written;
     if (g_logger.use_colors) {
-        int written = snprintf(log_line + line_len, sizeof(log_line) - line_len,
+        written = snprintf(log_line + line_len, sizeof(log_line) - line_len,
                             "%s[%-6s]%s ", category_colors[category],
                             g_logger.category_filters[category].name, color_reset);
         if (written < 0 || (size_t)written >= sizeof(log_line) - line_len) {
-            fprintf(stderr, "[LOGGER] Warning: log line truncated (category)\n");
             line_len = sizeof(log_line) - 1;
         } else {
             line_len += written;
         }
     } else {
-        int written = snprintf(log_line + line_len, sizeof(log_line) - line_len, "[%-6s] ",
-                            g_logger.category_filters[category].name);
+        written = snprintf(log_line + line_len, sizeof(log_line) - line_len,
+                            "%s", g_logger.category_filters[category].name);
         if (written < 0 || (size_t)written >= sizeof(log_line) - line_len) {
-            fprintf(stderr, "[LOGGER] Warning: log line truncated (category)\n");
             line_len = sizeof(log_line) - 1;
         } else {
             line_len += written;
@@ -440,9 +432,7 @@ void logger_log_with_category(LogCategory category, LogLevel level, const char *
     }
 
     // Guard snprintf against truncation and detect overflow
-    int written = snprintf(log_line + line_len, sizeof(log_line) - line_len, "[%s] %s\n", function, buffer);
     if (written < 0 || (size_t)written >= sizeof(log_line) - line_len) {
-        fprintf(stderr, "[LOGGER] Warning: log line truncated (message too long)\n");
         line_len = sizeof(log_line) - 1;
         log_line[line_len - 1] = '\n'; // Ensure newline at end
     } else {
@@ -679,8 +669,10 @@ void logger_runtime_config(const char *key, const char *value) {
 
 void logger_add_context_tag(const char *tag, const char *value) {
     if (!tag || !value || g_context_tag_count >= 16) return;
-    snprintf(g_context_tags[g_context_tag_count], sizeof(g_context_tags[0]), 
-             "%s:%s", tag, value);
+    
+    int written = snprintf(g_context_tags[g_context_tag_count], 
+                       sizeof(g_context_tags[g_context_tag_count]),
+                       "%s:%s", tag, value);
     g_context_tag_count++;
 }
 

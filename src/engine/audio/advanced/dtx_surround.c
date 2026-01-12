@@ -435,7 +435,6 @@ void Calibration_MeasureResponse(CalibrationData* calibration, const f32* buffer
     f32 rms = sqrtf(sum_squares / frames);
     calibration->channel_levels[channel] = 20.0f * log10f(rms + 1e-10f);  // Convert to dB
     
-    printf("Channel %d level: %.2f dB\n", channel, calibration->channel_levels[channel]);
 }
 
 void Calibration_ApplyRoomEQ(CalibrationData* calibration, f32* buffer, u32 frames) {

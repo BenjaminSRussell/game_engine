@@ -13,33 +13,11 @@
 #include "backend/metal/mtl_pipeline.h"
 #include "backend/metal/mtl_shader_library.h"
 
+#include "voxel_renderer.h"
+
 // ============================================================================
-// Voxel Renderer Types
+// Voxel Renderer Implementation
 // ============================================================================
-
-typedef struct {
-  float x, y, z;     // Position
-  float nx, ny, nz;  // Normal
-  float u, v;        // Texture coordinates
-  uint8_t ao;        // Ambient occlusion
-  uint8_t light;     // Light level
-  uint16_t block_id; // Block type
-} VoxelVertex;
-
-typedef struct {
-  metal_buffer_t *vertex_buffer;
-  metal_buffer_t *index_buffer;
-  uint32_t vertex_count;
-  uint32_t index_count;
-  bool uploaded;
-} VoxelMesh;
-
-typedef struct {
-  uint32_t draw_calls;
-  uint32_t triangles_drawn;
-  uint32_t chunks_rendered;
-  float frame_time_ms;
-} VoxelRenderStats;
 
 typedef struct VoxelRenderer {
   metal_device_t *device;
@@ -73,31 +51,33 @@ static bool voxel_renderer_init_pipeline(VoxelRenderer *renderer) {
 
   // Load shader library using the shader library manager
   // This handles both .metal source files and compiled .metallib files
-  metal_shader_library_manager_t *shader_manager = 
+  metal_shader_library_manager_t *shader_manager =
       metal_shader_library_manager_create(metal_get_device(renderer->device));
   if (!shader_manager) {
     LOG_ERROR("Failed to create shader library manager");
     return false;
   }
-  
-  MTLLibraryRef library_ref = metal_library_manager_load_file(shader_manager,
-                                "src/engine/rendering/shaders/voxel.metal");
+
+  MTLLibraryRef library_ref = metal_library_manager_load_file(
+      shader_manager, "src/engine/rendering/shaders/voxel.metal");
   if (!library_ref) {
     LOG_ERROR("Failed to load voxel shader library");
     metal_shader_library_manager_destroy(shader_manager);
     return false;
   }
-  
+
   // Create wrapper structure for consistency
-  renderer->library = (metal_shader_library_t *)calloc(1, sizeof(metal_shader_library_t));
+  renderer->library =
+      (metal_shader_library_t *)calloc(1, sizeof(metal_shader_library_t));
   if (!renderer->library) {
     LOG_ERROR("Failed to allocate shader library structure");
     metal_shader_library_manager_destroy(shader_manager);
     return false;
   }
   renderer->library->library = library_ref;
-  strncpy(renderer->library->name, "voxel.metal", sizeof(renderer->library->name) - 1);
-  
+  strncpy(renderer->library->name, "voxel.metal",
+          sizeof(renderer->library->name) - 1);
+
   metal_shader_library_manager_destroy(shader_manager);
 
   // Create vertex descriptor
@@ -413,9 +393,9 @@ void voxel_renderer_begin_frame(VoxelRenderer *renderer) {
   renderer->stats.chunks_rendered = 0;
 }
 
-void voxel_renderer_draw_mesh(VoxelRenderer *renderer, VoxelMesh *mesh,
+void voxel_renderer_draw_mesh(VoxelRenderer *renderer,
                               mtl_render_command_encoder_t encoder,
-                              float *mvp_matrix) {
+                              VoxelMesh *mesh, const float *mvp_matrix) {
   if (!renderer || !mesh || !mesh->uploaded || !encoder)
     return;
   if (mesh->vertex_count == 0)

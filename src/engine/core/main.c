@@ -189,7 +189,6 @@ static AppConfig parse_arguments(int argc, char *argv[]) {
       printf("  --fullscreen         Start in fullscreen mode\n");
       printf("  --window <w> <h>     Set window dimensions\n");
       printf("  --module <path>      Specify game module path\n");
-      printf("  --log-level <level>  Set logging level (DEBUG, INFO, WARN, "
              "ERROR)\n");
       printf("  --config <file>      Specify configuration file path\n");
       printf("  --help, -h           Show this help message\n");

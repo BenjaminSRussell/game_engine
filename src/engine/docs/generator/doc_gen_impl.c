@@ -326,7 +326,6 @@ void generate_function_markdown(FILE *f, const DocFunction *func) {
   if (func->comment.param_count > 0) {
     fprintf(f, "**Parameters:**\n\n");
     for (uint32_t i = 0; i < func->comment.param_count; i++) {
-      fprintf(f, "- `%s`: %s\n", func->comment.params[i],
               func->comment.param_desc[i]);
     }
     fprintf(f, "\n");
@@ -430,7 +429,6 @@ void doc_generator_generate_markdown(void) {
     fprintf(f, "# Documentation\n\n## Modules\n\n");
 
     for (uint32_t i = 0; i < g_doc_gen.module_count; i++) {
-      fprintf(f, "- [%s](%s.md)\n", g_doc_gen.modules[i].name,
               g_doc_gen.modules[i].name);
     }
 

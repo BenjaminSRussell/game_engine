@@ -495,7 +495,6 @@ float destruction_sys_get_debris_lifetime(void) {
 void destruction_sys_trigger_break(uint64_t entity_id, float x, float y, float z, float force) {
     if (!g_destruction_enabled) return;
     
-    printf("[Physics] Destruction triggered for entity %llu at (%.2f, %.2f, "
            "%.2f) with force %.2f\n",
            entity_id, x, y, z, force);
     
@@ -544,7 +543,6 @@ void destruction_sys_trigger_break(uint64_t entity_id, float x, float y, float z
         }
     }
     
-    printf("[Physics] Created %d fragments from destruction\n", fragment_count);
 }
 
 int destruction_sys_create_field(DestructionFieldType type, const float *position, 

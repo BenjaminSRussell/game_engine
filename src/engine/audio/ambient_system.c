@@ -87,7 +87,6 @@ void ambient_system_init(AmbientSystem *ambient, AudioSystem *audio) {
                    vec3(-1000.0f, -1000.0f, -1000.0f),
                    vec3(1000.0f, 1000.0f, 1000.0f));
 
-  printf("[AMBIENT] Ambient system initialized\n");
 }
 
 void ambient_system_free(AmbientSystem *ambient) {
@@ -103,7 +102,6 @@ void ambient_system_free(AmbientSystem *ambient) {
   }
 
   ambient->initialized = false;
-  printf("[AMBIENT] Ambient system freed\n");
 }
 
 void ambient_system_update(AmbientSystem *ambient, f32 delta_time) {
@@ -127,7 +125,6 @@ void ambient_system_update(AmbientSystem *ambient, f32 delta_time) {
       ambient->current_zone = detected_zone;
       ambient->zone_transition_time = 0.0f;
 
-      printf("[AMBIENT] Environment changed to: %s\n",
              ambient_get_zone_name(detected_zone));
     }
 
@@ -188,7 +185,6 @@ u32 ambient_add_zone(AmbientSystem *ambient, EnvironmentZone zone_type,
     break;
   }
 
-  printf("[AMBIENT] Added zone %u: %s\n", zone_index,
          ambient_get_zone_name(zone_type));
   return zone_index;
 }
@@ -207,7 +203,6 @@ void ambient_remove_zone(AmbientSystem *ambient, u32 zone_index) {
   }
 
   zone->active = false;
-  printf("[AMBIENT] Removed zone %u\n", zone_index);
 }
 
 void ambient_set_zone_volume(AmbientSystem *ambient, EnvironmentZone zone,
@@ -234,7 +229,6 @@ void ambient_play_layer(AmbientSystem *ambient, AmbientType type, f32 volume) {
       layer->base_volume = volume;
       ambient->active_ambient_count++;
 
-      printf("[AMBIENT] Started layer: %s\n", ambient_get_type_name(type));
     }
   } else {
     // Update volume if already active
@@ -256,7 +250,6 @@ void ambient_stop_layer(AmbientSystem *ambient, AmbientType type) {
     layer->target_volume = 0.0f;
     ambient->active_ambient_count--;
 
-    printf("[AMBIENT] Stopped layer: %s\n", ambient_get_type_name(type));
   }
 }
 

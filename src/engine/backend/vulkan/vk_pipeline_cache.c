@@ -130,7 +130,6 @@ VkPipeline vk_pipeline_cache_create_graphics(const VkGraphicsPipelineCreateInfo*
             
             if (was_cached) *was_cached = true;
             
-            printf("Pipeline cache hit (hash: %u, uses: %u)\n", hash, g_pipeline_cache.entries[i].use_count);
             return g_pipeline_cache.entries[i].pipeline;
         }
     }

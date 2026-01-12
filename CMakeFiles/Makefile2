@@ -402,12 +402,12 @@ CMakeFiles/test_player_food.dir/clean:
 Vendor/Catch2/src/CMakeFiles/Catch2.dir/all:
 	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2.dir/depend
 	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=1,2,3,4,5,6,7,8 "Built target Catch2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=1,2,3,4,5,6,7 "Built target Catch2"
 .PHONY : Vendor/Catch2/src/CMakeFiles/Catch2.dir/all
 
 # Build rule for subdir invocation for target.
 Vendor/Catch2/src/CMakeFiles/Catch2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" 8
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" 7
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Vendor/Catch2/src/CMakeFiles/Catch2.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" 0
 .PHONY : Vendor/Catch2/src/CMakeFiles/Catch2.dir/rule
@@ -419,7 +419,7 @@ Catch2: Vendor/Catch2/src/CMakeFiles/Catch2.dir/rule
 # codegen rule for target.
 Vendor/Catch2/src/CMakeFiles/Catch2.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=1,2,3,4,5,6,7,8 "Finished codegen for target Catch2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=1,2,3,4,5,6,7 "Finished codegen for target Catch2"
 .PHONY : Vendor/Catch2/src/CMakeFiles/Catch2.dir/codegen
 
 # clean rule for target.
@@ -434,7 +434,7 @@ Vendor/Catch2/src/CMakeFiles/Catch2.dir/clean:
 Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/all: Vendor/Catch2/src/CMakeFiles/Catch2.dir/all
 	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/depend
 	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num= "Built target Catch2WithMain"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=8 "Built target Catch2WithMain"
 .PHONY : Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/all
 
 # Build rule for subdir invocation for target.
@@ -451,7 +451,7 @@ Catch2WithMain: Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/rule
 # codegen rule for target.
 Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num= "Finished codegen for target Catch2WithMain"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/CMakeFiles" --progress-num=8 "Finished codegen for target Catch2WithMain"
 .PHONY : Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/codegen
 
 # clean rule for target.

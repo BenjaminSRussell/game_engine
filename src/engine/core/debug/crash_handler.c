@@ -184,7 +184,6 @@ static void unix_signal_handler(int sig_num, siginfo_t* info, void* context) {
     if (symbols) {
         for (int i = 0; i < frame_count; i++) {
             char line[256];
-            snprintf(line, sizeof(line), "  %s\n", symbols[i]);
             strcat(crash_info, line);
         }
         free(symbols);

@@ -10,7 +10,6 @@
 static Engine *g_engine = NULL;
 
 bool bridge_init_engine(Engine *engine, const EngineConfig *config) { 
-    printf("[Bridge] Initializing Engine...\n");
     
     // Store engine reference for bridge use
     g_engine = engine;
@@ -25,7 +24,6 @@ bool bridge_init_engine(Engine *engine, const EngineConfig *config) {
 }
 
 void bridge_shutdown_engine(Engine *engine) {
-    printf("[Bridge] Shutting down Engine...\n");
     g_engine = NULL;
 }
 
@@ -57,15 +55,12 @@ void bridge_get_render_stats(BridgeRenderStats *stats) {
 // ============================================================================
 
 void bridge_create_scene(const char *name) {
-    printf("[Bridge] Creating scene: %s\n", name ? name : "unnamed");
 }
 
 void bridge_load_scene(const char *path) {
-    printf("[Bridge] Loading scene: %s\n", path ? path : "no path");
 }
 
 void bridge_save_scene(const char *path) {
-    printf("[Bridge] Saving scene: %s\n", path ? path : "no path");
 }
 
 // ============================================================================
@@ -78,7 +73,6 @@ uint64_t bridge_create_entity(void) {
 }
 
 void bridge_destroy_entity(uint64_t entity_id) {
-    printf("[Bridge] Destroying entity: %llu\n", entity_id);
 }
 
 // ============================================================================
@@ -103,11 +97,9 @@ void bridge_get_physics(uint64_t entity_id, BridgePhysicsData *data) {
 // ============================================================================
 
 void bridge_create_material(const char *name) {
-    printf("[Bridge] Creating material: %s\n", name ? name : "unnamed");
 }
 
 void bridge_set_material_property(const char *property, float value) {
-    printf("[Bridge] Setting material property %s to %f\n", property ? property : "unknown", value);
 }
 
 // ============================================================================
@@ -115,11 +107,9 @@ void bridge_set_material_property(const char *property, float value) {
 // ============================================================================
 
 void bridge_load_asset(const char *path) {
-    printf("[Bridge] Loading asset: %s\n", path ? path : "no path");
 }
 
 void bridge_unload_asset(const char *path) {
-    printf("[Bridge] Unloading asset: %s\n", path ? path : "no path");
 }
 
 // ============================================================================
@@ -127,11 +117,9 @@ void bridge_unload_asset(const char *path) {
 // ============================================================================
 
 void bridge_enable_debug_mode(bool enabled) {
-    printf("[Bridge] Debug mode %s\n", enabled ? "enabled" : "disabled");
 }
 
 void bridge_toggle_wireframe(void) {
-    printf("[Bridge] Toggling wireframe mode\n");
 }
 
 // ============================================================================
@@ -139,11 +127,9 @@ void bridge_toggle_wireframe(void) {
 // ============================================================================
 
 void bridge_enable_hot_reload(bool enabled) {
-    printf("[Bridge] Hot reload %s\n", enabled ? "enabled" : "disabled");
 }
 
 void bridge_reload_shaders(void) {
-    printf("[Bridge] Reloading shaders\n");
 }
 
 // ============================================================================
@@ -151,7 +137,6 @@ void bridge_reload_shaders(void) {
 // ============================================================================
 
 void bridge_log(int32_t level, const char *source, const char *message) {
-    printf("[%s] %s: %s\n", source ? source : "Bridge", 
            level == 0 ? "INFO" : level == 1 ? "WARN" : "ERROR", 
            message ? message : "");
 }

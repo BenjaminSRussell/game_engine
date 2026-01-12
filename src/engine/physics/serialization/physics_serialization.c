@@ -138,9 +138,7 @@ static void write_json_bool(FILE *file, const char *key, bool value) {
 }
 
 static void write_json_float_array(FILE *file, const char *key, const float *array, int count) {
-    fprintf(file, "\"%s\":[", key);
     for (int i = 0; i < count; i++) {
-        fprintf(file, "%.6f", array[i]);
         if (i < count - 1) fprintf(file, ",");
     }
     fprintf(file, "]");

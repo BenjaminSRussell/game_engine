@@ -461,7 +461,6 @@ BlenderStatus blender_execute_script(const char *script_path, const char **args,
     strncat(command, " --", sizeof(command) - strlen(command) - 1);
     for (u32 i = 0; i < arg_count && i * 2 + 1 < arg_count; i += 2) {
       char arg_str[256];
-      snprintf(arg_str, sizeof(arg_str), " %s %s", args[i], args[i + 1]);
       strncat(command, arg_str, sizeof(command) - strlen(command) - 1);
     }
   }

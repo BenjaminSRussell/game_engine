@@ -127,6 +127,7 @@ target_include_directories(Engine PUBLIC
 set_target_properties(Engine PROPERTIES C_STANDARD 11 C_STANDARD_REQUIRED ON)
 
 if(APPLE)
+    add_definitions(-DMETAL_BUILD)
     file(GLOB ML_OBJC_SOURCES src/engine/ai/ml/*.c)
     set_source_files_properties(${ML_OBJC_SOURCES} PROPERTIES LANGUAGE OBJC)
 

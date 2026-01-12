@@ -31,7 +31,6 @@ void debug_dump_leaks() {
   printf("--- MEMORY LEAKS ---\n");
   for (int i = 0; i < g_alloc_count; i++) {
     if (g_allocs[i].ptr != NULL) {
-      printf("Leak: %p (%zu bytes) at %s:%d\n", g_allocs[i].ptr,
              g_allocs[i].size, g_allocs[i].file, g_allocs[i].line);
     }
   }

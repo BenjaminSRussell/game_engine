@@ -1557,7 +1557,6 @@ bool Atmos_SetWallMaterialProperties(AtmosRenderer *renderer, uint32_t wall_id,
                               "Ceiling", "Front", "Back"};
   g_current_room.absorption[wall_id] = fmaxf(0.0f, fminf(1.0f, absorption));
 
-  printf("Set %s wall absorption to %.3f\n", wall_names[wall_id], absorption);
 
   // Recalculate RT60 based on new absorption
   float surface_area = 2 * (g_current_room.width * g_current_room.depth +

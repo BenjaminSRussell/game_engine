@@ -73,7 +73,6 @@ AudioSystem *audio_system_create(void) {
   g_audio_system->listener_up = (Vec3){0, 1, 0};
   g_audio_system->initialized = true;
 
-  printf("[Audio] System created\n");
   return g_audio_system;
 }
 
@@ -81,7 +80,6 @@ void audio_system_destroy(AudioSystem *system) {
   if (system == g_audio_system) {
     free(g_audio_system);
     g_audio_system = NULL;
-    printf("[Audio] System destroyed\n");
   }
 }
 
@@ -123,7 +121,6 @@ void audio_play_sound(Sound *sound) {
   sound->playing = true;
   if (g_audio_system)
     g_audio_system->active_sounds++;
-  printf("[Audio] Playing sound: %s\n", sound->path);
 }
 
 void audio_play_sound_2d(const char *path, f32 volume) {
@@ -190,7 +187,6 @@ void music_play(MusicTrack *track) {
   if (!track)
     return;
   track->playing = true;
-  printf("[Audio] Playing music: %s\n", track->path);
 }
 
 void music_stop(MusicTrack *track) {
@@ -226,11 +222,9 @@ void audio_effect_set_active(AudioEffect *effect, bool active) {
 }
 
 bool audio_effects_init(void) {
-  printf("[Audio] Effects initialized\n");
   return true;
 }
 
-void audio_effects_shutdown(void) { printf("[Audio] Effects shutdown\n"); }
 
 void audio_effects_update(f32 delta_time) {
   // Stub: would process effects
@@ -268,7 +262,6 @@ static struct {
 
 bool ambient_system_init(void) {
   g_ambient_system.initialized = true;
-  printf("[Audio] Ambient system initialized\n");
   return true;
 }
 
@@ -309,11 +302,9 @@ void ambient_set_master_volume(f32 volume) { audio_set_master_volume(volume); }
 // ============================================================================
 
 void audio_enable_category(const char *category) {
-  printf("[Audio] Enabled category: %s\n", category);
 }
 
 void audio_disable_category(const char *category) {
-  printf("[Audio] Disabled category: %s\n", category);
 }
 
 // ============================================================================

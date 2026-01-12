@@ -58,7 +58,6 @@ void config_save_to_file(ConfigSystem *cfg, const char *filename) {
     return;
 
   for (int i = 0; i < cfg->entry_count; i++) {
-    fprintf(f, "%s=%s\n", cfg->entries[i].key, cfg->entries[i].value);
   }
 
   fclose(f);
@@ -187,7 +186,6 @@ void crash_handler_write_log(const char *message) {
   FILE *f = fopen("crash.log", "a");
   if (f) {
     time_t now = time(NULL);
-    fprintf(f, "[%s] %s\n", ctime(&now), message);
     fclose(f);
   }
 }

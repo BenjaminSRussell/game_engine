@@ -777,7 +777,6 @@ static void crash_reporter_log_error(const char *context, const char *error) {
 
   FILE *log_file = fopen("error_log.txt", "a");
   if (log_file) {
-    fprintf(log_file, "[%s] %s: %s\n", ctime(&now), context, error);
     fclose(log_file);
   }
 }

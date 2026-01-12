@@ -156,6 +156,10 @@ void player_finish_eating(Player *player, const ItemRegistry *item_registry) {
 
   const FoodProperties *food = &item->properties.food;
 
+  // Capture state before eating
+  f32 start_hunger = player->hunger;
+  f32 start_saturation = player->saturation;
+
   // Restore hunger
   player->hunger += food->hunger_restored * food->quality;
   if (player->hunger > 20.0f) {
@@ -170,14 +174,17 @@ void player_finish_eating(Player *player, const ItemRegistry *item_registry) {
     player->saturation = player->hunger;
   }
 
-  LOG_INFO("Player ate %s: +%.1f hunger, +%.1f saturation", item->base.name,
-           food->hunger_restored * food->quality, saturation_gained);
+  // Calculate actual amounts restored
+  f32 actual_hunger_restored = player->hunger - start_hunger;
+  f32 actual_saturation_gained = player->saturation - start_saturation;
+
+  LOG_INFO("Player ate %s: +%.1f hunger (actual), +%.1f saturation (actual)",
+           item->base.name, actual_hunger_restored, actual_saturation_gained);
 
   // Update food stats
   player->food_stats.total_items_eaten++;
-  player->food_stats.total_hunger_restored +=
-      food->hunger_restored * food->quality;
-  player->food_stats.total_saturation_gained += saturation_gained;
+  player->food_stats.total_hunger_restored += actual_hunger_restored;
+  player->food_stats.total_saturation_gained += actual_saturation_gained;
 
   // Apply status effects if applicable
   if (food->has_effects && food->effect_chance > 0.0f) {
@@ -230,4 +237,41 @@ EatingState *player_get_eating_state(Player *player) {
   if (!player)
     return NULL;
   return &player->eating_state;
+}
+
+// Update inventory spoilage (decay items)
+void player_update_inventory_spoilage(Player *player, f32 delta_time,
+                                    const ItemRegistry *item_registry) {
+  if (!player || !item_registry)
+    return;
+  
+  // Iterate through inventory slots
+  for (int i = 0; i < MAX_INVENTORY_SLOTS; i++) {
+    InventorySlot *slot = &player->inventory.slots[i];
+    
+    // Skip empty slots
+    if (slot->item_id == ITEM_AIR || slot->count == 0)
+      continue;
+    
+    // Get item definition to check if it's food
+    const ExtendedItemDefinition *item_def = item_registry_get(item_registry, slot->item_id);
+    if (!item_def || item_def->base.item_type != ITEM_TYPE_FOOD)
+      continue;
+    
+    // Get food properties
+    const FoodProperties *food_props = &item_def->properties.food;
+    if (food_props->spoil_time <= 0.0f)
+      continue; // Food doesn't spoil
+    
+    // Update spoil progress
+    slot->spoil_progress += delta_time / food_props->spoil_time;
+    
+    // Check if fully spoiled
+    if (slot->spoil_progress >= 1.0f) {
+      // Convert to spoiled food
+      slot->item_id = ITEM_SPOILED_FOOD;
+      slot->spoil_progress = 0.0f;
+      LOG_DEBUG("Item in slot %d has spoiled", i);
+    }
+  }
 }

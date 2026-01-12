@@ -71,7 +71,6 @@ void *logger_async_worker(void *arg) {
         LogEntry *entry = &logger->buffer[i];
 
         // Write to file
-        fprintf(logger->log_file, "[%ld] [%s] %s:%d - %s\n", entry->timestamp,
                 log_level_string(entry->level), entry->file, entry->line,
                 entry->message);
 

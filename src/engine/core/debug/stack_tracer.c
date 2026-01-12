@@ -307,7 +307,6 @@ void stack_trace_minimize(const StackTrace* trace, char* buffer, size_t buffer_s
     
     for (size_t i = 0; i < trace->frame_count && strlen(buffer) < buffer_size - 20; i++) {
         char addr_str[32];
-        snprintf(addr_str, sizeof(addr_str), "%p", trace->frames[i].address);
         
         if (i > 0) strcat(buffer, ",");
         strcat(buffer, addr_str);

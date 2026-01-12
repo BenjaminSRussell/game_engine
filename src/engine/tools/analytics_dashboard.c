@@ -685,7 +685,6 @@ void analytics_dashboard_print_summary(const AnalyticsDashboard* dashboard) {
     if (dashboard->chart_count > 0) {
         printf("\nCharts:\n");
         for (u32 i = 0; i < dashboard->chart_count; i++) {
-            printf("  %u: %s (%u points)\n", i, dashboard->charts[i].title, dashboard->charts[i].point_count);
         }
     }
     
@@ -717,14 +716,12 @@ void analytics_dashboard_export_to_json(const AnalyticsDashboard* dashboard, con
     fprintf(fp, "    },\n");
     
     // Write charts
-    fprintf(fp, "    \"charts\": [\n");
     for (u32 i = 0; i < dashboard->chart_count; i++) {
         const ChartData* chart = &dashboard->charts[i];
         fprintf(fp, "      {\n");
         fprintf(fp, "        \"title\": \"%s\",\n", chart->title);
         fprintf(fp, "        \"type\": %u,\n", chart->type);
         fprintf(fp, "        \"point_count\": %u,\n", chart->point_count);
-        fprintf(fp, "        \"points\": [\n");
         
         for (u32 j = 0; j < chart->point_count; j++) {
             fprintf(fp, "          {\"x\": %.2f, \"y\": %.2f, \"label\": \"%s\"}",

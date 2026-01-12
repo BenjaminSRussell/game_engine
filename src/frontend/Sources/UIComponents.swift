@@ -376,41 +376,68 @@ struct EditorPanel<Content: View>: View {
 }
 
 /// Generic button for editor actions
+enum EditorButtonStyle {
+    case normal
+    case primary
+    case destructive
+}
+
 struct EditorButton: View {
     let title: String
+    let icon: String?
+    let style: EditorButtonStyle
     let action: () -> Void
     @State private var isHovering = false
     
     init(_ title: String, icon: String? = nil, style: EditorButtonStyle = .normal, action: @escaping () -> Void) {
         self.title = title
+        self.icon = icon
+        self.style = style
         self.action = action
-        // Note: We are ignoring icon and style in internal storage for now as they weren't in the struct properties, 
-        // but we should probably add them if we want them to render. 
-        // However, to fix the build quickly, allowing the init is key.
-        // Actually, if I ignore them, they won't show.
-        // I should add proper properties? 
-        // But the struct (lines 380-381) only has title and action.
-        // I should also update the properties and body.
+    }
+    
+    private var backgroundColor: Color {
+        switch style {
+        case .normal:
+            return isHovering ? DesignSystem.Colors.backgroundSecondary : DesignSystem.Colors.backgroundTertiary
+        case .primary:
+            return isHovering ? DesignSystem.Colors.accentPrimary.opacity(0.9) : DesignSystem.Colors.accentPrimary
+        case .destructive:
+            return isHovering ? DesignSystem.Colors.accentCritical.opacity(0.9) : DesignSystem.Colors.accentCritical
+        }
+    }
+    
+    private var foregroundColor: Color {
+        switch style {
+        case .normal:
+            return DesignSystem.Colors.textPrimary
+        case .primary, .destructive:
+            return .white
+        }
     }
     
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundColor(DesignSystem.Colors.textPrimary)
-                .padding(.horizontal, DesignSystem.Spacing.md)
-                .padding(.vertical, DesignSystem.Spacing.xs)
-                .background(isHovering ? DesignSystem.Colors.backgroundSecondary : DesignSystem.Colors.backgroundTertiary)
-                .cornerRadius(6)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(DesignSystem.Colors.border, lineWidth: 1)
-                )
+            HStack(spacing: 6) {
+                if let icon = icon {
+                    Image(systemName: icon)
+                        .font(.system(size: 14, weight: .medium))
+                }
+                Text(title)
+                    .font(.system(size: 14, weight: .medium))
+            }
+            .foregroundColor(foregroundColor)
+            .padding(.horizontal, DesignSystem.Spacing.md)
+            .padding(.vertical, DesignSystem.Spacing.xs)
+            .background(backgroundColor)
+            .cornerRadius(6)
+            .overlay(
+                RoundedRectangle(cornerRadius: 6)
+                    .stroke(style == .normal ? DesignSystem.Colors.border : Color.clear, lineWidth: 1)
+            )
         }
-        .onHover { hovering in
-            isHovering = hovering
-        }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
+        .onHover { isHovering = $0 }
     }
 }
 

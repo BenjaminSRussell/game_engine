@@ -122,6 +122,16 @@ bool test_food_quality(ItemRegistry *registry) {
   // Finish eating directly
   player_finish_eating(&player, registry);
 
+  // Expected:
+  // Hunger restored = 8.0 * 1.5 = 12.0
+  // Initial hunger = 10.0
+  // Final hunger = 22.0 -> clamped to 20.0
+  // Actual hunger restored = 10.0
+
+  // Saturation gained = 8.0 * 0.5 * 1.5 = 6.0
+  // Final saturation = 6.0
+  // Actual saturation gained = 6.0
+
   if (fabs(player.hunger - 20.0f) > 0.01f) {
     printf("FAILED: Hunger expected 20.0, got %f\n", player.hunger);
     return false;
@@ -132,9 +142,62 @@ bool test_food_quality(ItemRegistry *registry) {
     return false;
   }
 
-  if (fabs(player.food_stats.total_hunger_restored - 12.0f) > 0.01f) {
-    printf("FAILED: Stat hunger restored expected 12.0, got %f\n",
+  // Verify stats (actual restored)
+  if (fabs(player.food_stats.total_hunger_restored - 10.0f) > 0.01f) {
+    printf("FAILED: Stat hunger restored expected 10.0, got %f\n",
            player.food_stats.total_hunger_restored);
+    return false;
+  }
+
+  printf("PASSED\n");
+  return true;
+}
+
+// Test 3: Verify Food Stats and Effects
+bool test_food_stats(ItemRegistry *registry) {
+  printf("Running test_food_stats...\n");
+
+  u32 food_id = 2003;
+  ExtendedItemDefinition food_def = {0};
+  strncpy(food_def.base.name, "Magic Bean", sizeof(food_def.base.name) - 1);
+  food_def.base.max_stack_size = 64;
+  food_def.base.item_type = ITEM_TYPE_FOOD;
+  food_def.properties.food.hunger_restored = 1.0f;
+  food_def.properties.food.saturation_modifier = 1.0f;
+  food_def.properties.food.quality = 1.0f;
+  food_def.properties.food.has_effects = true;
+  food_def.properties.food.effect_id = 1; // Regeneration
+  food_def.properties.food.effect_chance =
+      1.1f; // Always trigger (> 1.0 to be safe)
+  item_registry_register(registry, food_id, &food_def);
+
+  Player player;
+
+  // Let's restart to test accumulation properly
+  memset(&player, 0, sizeof(Player));
+  inventory_init(&player.inventory);
+  player.hunger = 10.0f;
+  inventory_set_slot(&player.inventory, 0, food_id, 10);
+
+  // Eat 1
+  player.eating_state.is_eating = true;
+  player.eating_state.food_item_id = food_id;
+  player_finish_eating(&player, registry);
+
+  // Eat 2
+  player.eating_state.is_eating = true;
+  player.eating_state.food_item_id = food_id;
+  player_finish_eating(&player, registry);
+
+  if (player.food_stats.total_items_eaten != 2) {
+    printf("FAILED: Accumulation: Items eaten expected 2, got %u\n",
+           player.food_stats.total_items_eaten);
+    return false;
+  }
+
+  if (player.food_stats.effects_applied != 2) {
+    printf("FAILED: Accumulation: Effects applied expected 2, got %u\n",
+           player.food_stats.effects_applied);
     return false;
   }
 
@@ -159,6 +222,7 @@ int main() {
   bool all_passed = true;
   all_passed &= test_food_spoilage(&registry);
   all_passed &= test_food_quality(&registry);
+  all_passed &= test_food_stats(&registry);
 
   if (all_passed) {
     printf("All tests passed!\n");

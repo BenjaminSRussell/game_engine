@@ -32,7 +32,6 @@ void menu_draw_filled_rect(f32 x, f32 y, f32 w, f32 h, Color color) {
 
   // Console-based rendering for testing
   // In full implementation, this would use Vulkan to draw rectangles
-  printf("[DRAW_RECT] x=%.0f y=%.0f w=%.0f h=%.0f color=(%d,%d,%d,%d)\n", x, y,
          w, h, color.r, color.g, color.b, color.a);
 }
 
@@ -41,7 +40,6 @@ void menu_draw_outlined_rect(f32 x, f32 y, f32 w, f32 h, Color color,
   if (!g_initialized)
     return;
 
-  printf("[DRAW_OUTLINE] x=%.0f y=%.0f w=%.0f h=%.0f thickness=%.1f "
          "color=(%d,%d,%d,%d)\n",
          x, y, w, h, thickness, color.r, color.g, color.b, color.a);
 }
@@ -50,7 +48,6 @@ void menu_draw_text(const char *text, f32 x, f32 y, Color color, f32 size) {
   if (!g_initialized || !text)
     return;
 
-  printf("[DRAW_TEXT] \"%s\" at (%.0f,%.0f) size=%.1f color=(%d,%d,%d,%d)\n",
          text, x, y, size, color.r, color.g, color.b, color.a);
 }
 

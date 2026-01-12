@@ -208,7 +208,6 @@ void platform_generate_minidump(const char* file_path, const CrashContext* conte
     
     fprintf(dump_file, "\n=== STACK TRACE ===\n");
     for (u32 i = 0; i < context->stack_frame_count; i++) {
-        fprintf(dump_file, "%u: %p - %s\n", i, context->stack_frames[i], context->stack_symbols[i]);
     }
     
     fclose(dump_file);
@@ -318,7 +317,6 @@ void platform_generate_minidump(const char* file_path, const CrashContext* conte
     
     fprintf(dump_file, "\n=== STACK TRACE ===\n");
     for (u32 i = 0; i < context->stack_frame_count; i++) {
-        fprintf(dump_file, "%u: %p - %s\n", i, context->stack_frames[i], context->stack_symbols[i]);
     }
     
     fclose(dump_file);
@@ -764,7 +762,6 @@ void crash_report_print_report(const CrashReport* report) {
     if (report->crash_context.stack_frame_count > 0) {
         printf("\n=== STACK TRACE ===\n");
         for (u32 i = 0; i < report->crash_context.stack_frame_count; i++) {
-            printf("%u: %p - %s\n", i, report->crash_context.stack_frames[i], 
                    report->crash_context.stack_symbols[i]);
         }
     }

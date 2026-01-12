@@ -433,7 +433,6 @@ void htn_print_plan(const HtnPlanner* planner) {
             u32 task_id = planner->best_state->task_sequence[i];
             if (task_id < planner->domain->task_count) {
                 const char* type = planner->domain->tasks[task_id].type == HTN_TASK_PRIMITIVE ? "PRIMITIVE" : "COMPOUND";
-                printf("  %u: %s (%s)\n", task_id, planner->domain->tasks[task_id].name, type);
             }
         }
     }
@@ -452,14 +451,11 @@ void htn_print_domain(const HtnDomain* domain) {
     printf("\nTasks:\n");
     for (u32 i = 0; i < domain->task_count; i++) {
         const char* type = domain->tasks[i].type == HTN_TASK_PRIMITIVE ? "PRIMITIVE" : "COMPOUND";
-        printf("  %u: %s (%s)\n", i, domain->tasks[i].name, type);
     }
     
     printf("\nMethods:\n");
     for (u32 i = 0; i < domain->method_count; i++) {
-        printf("  %u: Task %u -> [", i, domain->methods[i].task_id);
         for (u32 j = 0; j < domain->methods[i].subtask_count; j++) {
-            printf("%u", domain->methods[i].subtask_ids[j]);
             if (j < domain->methods[i].subtask_count - 1) printf(", ");
         }
         printf("]\n");
