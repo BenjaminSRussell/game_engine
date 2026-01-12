@@ -1,5 +1,7 @@
 # Build
 build/
+build_*/
+CMakeFiles/
 *.o
 *.a
 *.so
@@ -7,6 +9,19 @@ build/
 *.dll
 *.exe
 *.wasm
+CMakeCache.txt
+CMakeCache*.txt
+cmake_install.cmake
+Makefile*
+Makefile*
+
+# Test executables
+test_*
+physics_test
+simple_test
+advanced_geometry_physics_test
+*_test
+*_demo
 
 # Xcode
 *.xcodeproj/

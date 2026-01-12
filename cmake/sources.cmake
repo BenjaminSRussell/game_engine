@@ -24,8 +24,9 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Audio subdirectory - RE-ENABLED with core functionality
     # "src/engine/audio/*.c"
     "src/engine/audio/audio_system.c"
-    # "src/engine/audio/underwater_filter_stubs.c"
-    # "src/engine/audio/audio_loader.c"
+    "src/engine/audio/audio_reverb.c"
+    "src/engine/audio/underwater_filter.c"
+    "src/engine/audio/audio_loader.c"
     "src/engine/audio/audio_core.c"
     
     # Core systems
@@ -252,6 +253,8 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/physics/vehicle_physics.c"
     "src/engine/physics/simulation_impl.c"
     "src/engine/physics/simulation_loop.c"
+    "src/engine/physics/demos/physics_demo_framework.c"
+    "src/engine/physics/demos/demo_stack_collapse.c"
     
     # Platform subdirectory - DISABLED due to swift_bridge issues (except input system)
     "src/engine/platform/input/*.c"
@@ -369,12 +372,13 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/npc/.*\\.c$")
 # Math mat4.c has definition conflicts - keep header-only version
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX "^.*/src/engine/math/mat4\\.c$")
 
-# Physics subsystem has many type mismatches and signature issues - disable entirely
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/physics/.*\\.c$")
-
-# Network/Networking subsystems - Disabled due to header include issues
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network/.*\\.c$")
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/networking/.*\\.c$")
+# Only exclude problematic physics files, keep essential ones
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/physics/destruction/.*\\.c$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/physics/advanced/.*\\.c$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/physics/block_physics\\.c$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/physics/demos/.*\\.c$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/physics/integration/.*\\.c$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/physics/.*\\.h$")
 
 # Particle system has function signature mismatches - disable
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/rendering/particles/.*\\.c$")

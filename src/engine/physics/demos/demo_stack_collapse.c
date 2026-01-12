@@ -1,8 +1,8 @@
 // Physics Demo: Stack Collapse - Demonstrates stacking and stability
-#include "physics_demo_framework.c"
+#include "physics_demo_framework.h"
 #include "physics/physics.h"
 #include "platform/input/input.h"
-#include <math/math.h>
+#include "math/math.h"
 #include <stdlib.h>
 
 static RigidBody* boxes[20];
@@ -106,4 +106,4 @@ void stack_collapse_cleanup(PhysicsWorld* world) {
 }
 
 // Register the demo
-REGISTER_DEMO(Stack Collapse, stack_collapse_init, stack_collapse_update, stack_collapse_render, stack_collapse_cleanup);
+REGISTER_DEMO("Stack Collapse", stack_collapse_init, stack_collapse_update, stack_collapse_render, stack_collapse_cleanup);
