@@ -61,6 +61,10 @@ static uint32_t generate_client_id(void) {
     return ++counter;
 }
 
+// Internal packet handlers forward declarations
+static void network_server_handle_packet(const NetAddress* from, const Packet* packet);
+static void network_client_handle_packet(const NetAddress* from, const Packet* packet);
+
 // Server functions
 int network_server_start(const char* server_name, uint16_t port, uint32_t max_players, const char* password) {
     if (g_network.is_running) {
@@ -321,7 +325,7 @@ int network_update(float delta_time) {
             continue;
         }
         
-        PacketHeader header = packet_get_header(&packet);
+        // PacketHeader header = packet_get_header(&packet); // Unused variable
         
         if (g_network.is_server) {
             // Server packet handling
@@ -366,10 +370,6 @@ uint32_t network_get_local_ip(void) {
     // In a real scenario, you'd want to enumerate network interfaces
     return inet_addr("127.0.0.1");
 }
-
-// Internal packet handlers
-static void network_server_handle_packet(const NetAddress* from, const Packet* packet);
-static void network_client_handle_packet(const NetAddress* from, const Packet* packet);
 
 // Internal packet handlers
 static void network_server_handle_packet(const NetAddress* from, const Packet* packet) {

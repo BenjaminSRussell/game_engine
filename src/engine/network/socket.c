@@ -130,9 +130,10 @@ void socket_close(NetSocket *sock) {
 #endif
     
     sock->is_open = false;
+    uint16_t port = sock->port;
     free(sock);
     
-    log_info("Closed socket on port %d", sock->port);
+    log_info("Closed socket on port %d", port);
 }
 
 bool socket_send(NetSocket *sock, const NetAddress *addr, const void *data, uint32_t size) {
