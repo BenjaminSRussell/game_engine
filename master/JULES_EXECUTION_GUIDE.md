@@ -1,18 +1,36 @@
 # Jules 15 Agents - Phase-by-Phase Execution Guide
 
-**Created:** 2026-01-12  
-**Status:** ✅ READY FOR EXECUTION  
-**Total Duration:** 8+ weeks, 4 phases, 65+ tasks across 2,385 files
+**Created:** 2026-01-12
+**Updated:** 2026-01-12 (Now 15 Phases - One Per Agent)
+**Status:** ✅ READY FOR EXECUTION
+**Total Duration:** 30+ weeks, 15 phases, 65 tasks across 2,385 files
 
 ---
 
 ## 🎯 What This Is
 
-You have **everything you need** to execute the Minecraft v2 engine development across 15 specialized agents, organized in 4 phases with clear data locations for every piece of information.
+You have **everything you need** to execute the Minecraft v2 engine development across 15 specialized agents, organized in 15 dedicated phases with clear data locations for every piece of information.
+
+**NEW:** Each agent now has a dedicated phase. Phases 1-3 are sequential (critical path). Phases 4-14 can overlap after Phase 3. Phase 15 is the final editor/tools phase.
 
 ---
 
-## 📚 The 6 Core Documents
+## ⭐ NEW: 15-Phase System (One Agent Per Phase)
+
+**READ FIRST:** `master/JULES_15_PHASE_SYSTEM.md`
+
+Instead of 4 phases with multiple agents per phase, we now have:
+- **Phase 1:** Jules-Engine-Core (6 tasks)
+- **Phase 2:** Jules-Rendering (7 tasks)
+- **Phase 3:** Jules-Physics (6 tasks)
+- **Phases 4-14:** Each dedicated to one agent (4-5 tasks each, can overlap)
+- **Phase 15:** Jules-Tools (6 tasks, starts after all others complete)
+
+**Total:** 15 phases, 65 tasks, 30+ weeks
+
+---
+
+## 📚 The 7 Core Documents
 
 | Document | Location | Size | Purpose | Read Time |
 |----------|----------|------|---------|-----------|

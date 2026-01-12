@@ -32768,3 +32768,76 @@ TODO-32645,todo_md,Master TODO,master/todo.md,"High - Create a UI for displaying
 TODO-32646,todo_md,Master TODO,master/todo.md,"Medium - Implement a variety of quest objectives, such as fetching items, killing mobs, and exploring specific locations. (line 4) (assets/assets/code/todo_quests.c)",open
 TODO-32647,todo_md,Master TODO,master/todo.md,"Medium - Create a system for rewarding players for completing quests, such as giving them items, experience, or currency. (line 5) (assets/assets/code/todo_quests.c)",open
 NET-001,implementation,Networking > Protocol,Jules-Networking,Implement unified network types and fix socket layer,completed
+
+# JULES 15-PHASE DEVELOPMENT SYSTEM TASKS
+CORE-001,implementation,Engine Core Foundation,Jules-Engine-Core,Engine Initialization Pipeline,open
+CORE-002,implementation,Engine Core Foundation,Jules-Engine-Core,Memory Allocator Consolidation,open
+CORE-003,implementation,Engine Core Foundation,Jules-Engine-Core,Thread Pool Validation,open
+CORE-004,implementation,Engine Core Foundation,Jules-Engine-Core,Virtual File System,open
+CORE-005,implementation,Engine Core Foundation,Jules-Engine-Core,Logging & Debug System,open
+CORE-006,implementation,Engine Core Foundation,Jules-Engine-Core,Hot Reload Infrastructure,open
+RENDER-001,implementation,Rendering Pipeline,Jules-Rendering,Renderer Initialization,open
+RENDER-002,implementation,Rendering Pipeline,Jules-Rendering,Shader System Consolidation,open
+RENDER-003,implementation,Rendering Pipeline,Jules-Rendering,Frame Graph Execution,open
+RENDER-004,implementation,Rendering Pipeline,Jules-Rendering,GPU Memory Management,open
+RENDER-005,implementation,Rendering Pipeline,Jules-Rendering,Vulkan Backend Stability,open
+RENDER-006,implementation,Rendering Pipeline,Jules-Rendering,Metal Backend Synchronization,open
+RENDER-007,implementation,Rendering Pipeline,Jules-Rendering,Post-Processing Pipeline,open
+PHYS-001,implementation,Physics Engine,Jules-Physics,Rigid Body System,open
+PHYS-002,implementation,Physics Engine,Jules-Physics,Collision Detection Pipeline,open
+PHYS-003,implementation,Physics Engine,Jules-Physics,Constraint Solver,open
+PHYS-004,implementation,Physics Engine,Jules-Physics,XPBD Implementation,open
+PHYS-005,implementation,Physics Engine,Jules-Physics,Raycasting & Shape Casting,open
+PHYS-006,implementation,Physics Engine,Jules-Physics,Physics Debugging Visualization,open
+ANIM-001,implementation,Animation Systems,Jules-Animation,Skeletal Animation Playback,open
+ANIM-002,implementation,Animation Systems,Jules-Animation,Blend Tree System,open
+ANIM-003,implementation,Animation Systems,Jules-Animation,IK Solver Suite,open
+ANIM-004,implementation,Animation Systems,Jules-Animation,Animation State Machine,open
+ANIM-005,implementation,Animation Systems,Jules-Animation,Additive Blending,open
+AUDIO-001,implementation,Audio Systems,Jules-Audio,Audio Playback System,open
+AUDIO-002,implementation,Audio Systems,Jules-Audio,Spatial Audio,open
+AUDIO-003,implementation,Audio Systems,Jules-Audio,Music System,open
+AUDIO-004,implementation,Audio Systems,Jules-Audio,DSP Effects,open
+AI-001,implementation,AI & NPC Systems,Jules-AI,Behavior Tree System,open
+AI-002,implementation,AI & NPC Systems,Jules-AI,GOAP Planner,open
+AI-003,implementation,AI & NPC Systems,Jules-AI,Pathfinding & Navigation,open
+AI-004,implementation,AI & NPC Systems,Jules-AI,NPC Perception System,open
+ASSET-001,implementation,Asset Management,Jules-Assets,Asset Importer,open
+ASSET-002,implementation,Asset Management,Jules-Assets,Asset Streaming,open
+ASSET-003,implementation,Asset Management,Jules-Assets,Asset Bundling,open
+ASSET-004,implementation,Asset Management,Jules-Assets,Hot Reload System,open
+NET-001,implementation,Networking & Replication,Jules-Networking,Network Protocol,completed
+NET-002,implementation,Networking & Replication,Jules-Networking,Entity Replication,open
+NET-003,implementation,Networking & Replication,Jules-Networking,Client Prediction,open
+NET-004,implementation,Networking & Replication,Jules-Networking,Synchronization,open
+GAME-001,implementation,Gameplay Systems,Jules-Gameplay,Crafting System,open
+GAME-002,implementation,Gameplay Systems,Jules-Gameplay,Quest System,open
+GAME-003,implementation,Gameplay Systems,Jules-Gameplay,Combat System,open
+GAME-004,implementation,Gameplay Systems,Jules-Gameplay,Food/Health System,open
+GAME-005,implementation,Gameplay Systems,Jules-Gameplay,Inventory Management,open
+CHAR-001,implementation,Character Systems,Jules-Character,Skeletal Mesh Rendering,open
+CHAR-002,implementation,Character Systems,Jules-Character,Character Customization,open
+CHAR-003,implementation,Character Systems,Jules-Character,Character IK System,open
+CHAR-004,implementation,Character Systems,Jules-Character,Ragdoll Physics,open
+GEO-001,implementation,Geometry & Meshes,Jules-Geometry,Mesh Processing,open
+GEO-002,implementation,Geometry & Meshes,Jules-Geometry,LOD Generation,open
+GEO-003,implementation,Geometry & Meshes,Jules-Geometry,CSG Operations,open
+GEO-004,implementation,Geometry & Meshes,Jules-Geometry,Vertex Optimization,open
+MAT-001,implementation,Materials & Shaders,Jules-Materials,Material System,open
+MAT-002,implementation,Materials & Shaders,Jules-Materials,Shader Editor,open
+MAT-003,implementation,Materials & Shaders,Jules-Materials,Shader Compilation,open
+MAT-004,implementation,Materials & Shaders,Jules-Materials,Material Properties,open
+LIGHT-001,implementation,Lighting & Global Illumination,Jules-Lighting,Real-Time Lighting,open
+LIGHT-002,implementation,Lighting & Global Illumination,Jules-Lighting,Shadow Systems,open
+LIGHT-003,implementation,Lighting & Global Illumination,Jules-Lighting,Global Illumination,open
+LIGHT-004,implementation,Lighting & Global Illumination,Jules-Lighting,Light Probes,open
+FX-001,implementation,VFX & Particles,Jules-Effects,Particle System,open
+FX-002,implementation,VFX & Particles,Jules-Effects,Particle Collision,open
+FX-003,implementation,VFX & Particles,Jules-Effects,Decal System,open
+FX-004,implementation,VFX & Particles,Jules-Effects,Trail Effects,open
+TOOLS-001,implementation,Editor & Tools,Jules-Tools,Level Editor,open
+TOOLS-002,implementation,Editor & Tools,Jules-Tools,Gizmo System,open
+TOOLS-003,implementation,Editor & Tools,Jules-Tools,Property Editor,open
+TOOLS-004,implementation,Editor & Tools,Jules-Tools,Asset Browser,open
+TOOLS-005,implementation,Editor & Tools,Jules-Tools,Debug Visualization,open
+TOOLS-006,implementation,Editor & Tools,Jules-Tools,Developer Console,open

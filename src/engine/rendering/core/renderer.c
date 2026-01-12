@@ -3,6 +3,7 @@
 
 #include <core/logger.h>
 #include <core/memory.h>
+#include <core/window.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -29,6 +30,7 @@ typedef struct {
 
 typedef struct {
     metal_device_t *device;
+    Window *window;
     Framebuffer *main_framebuffer;
     Framebuffer *gbuffer;
     
@@ -43,6 +45,7 @@ typedef struct {
     // Configuration
     bool enable_debug;
     bool enable_stats;
+    bool is_initialized;
 } Renderer;
 
 static Renderer *g_renderer = NULL;
@@ -58,10 +61,21 @@ Renderer *renderer_create(uint32_t width, uint32_t height) {
         return NULL;
     }
     
+    // Create window
+    renderer->window = calloc(1, sizeof(Window));
+    if (!renderer->window || !window_init(renderer->window, width, height, "VoxelForge Engine", false)) {
+        LOG_ERROR("Failed to create window");
+        free(renderer->window);
+        free(renderer);
+        return NULL;
+    }
+    
     // Create Metal device
     renderer->device = metal_device_create_system_default();
     if (!renderer->device) {
         LOG_ERROR("Failed to create Metal device");
+        window_shutdown(renderer->window);
+        free(renderer->window);
         free(renderer);
         return NULL;
     }
@@ -71,6 +85,8 @@ Renderer *renderer_create(uint32_t width, uint32_t height) {
     if (!renderer->main_framebuffer) {
         LOG_ERROR("Failed to create main framebuffer");
         metal_device_destroy(renderer->device);
+        window_shutdown(renderer->window);
+        free(renderer->window);
         free(renderer);
         return NULL;
     }
@@ -81,6 +97,7 @@ Renderer *renderer_create(uint32_t width, uint32_t height) {
     renderer->enable_debug = false;
     renderer->enable_stats = true;
     renderer->frame_index = 0;
+    renderer->is_initialized = false;
     
     LOG_INFO("Renderer created successfully (%ux%u)", width, height);
     return renderer;
@@ -102,6 +119,11 @@ void renderer_destroy(Renderer *renderer) {
         metal_device_destroy(renderer->device);
     }
     
+    if (renderer->window) {
+        window_shutdown(renderer->window);
+        free(renderer->window);
+    }
+    
     free(renderer);
     
     if (g_renderer == renderer) {
@@ -115,14 +137,30 @@ bool renderer_initialize(Renderer *renderer) {
     if (!renderer)
         return false;
     
+    if (renderer->is_initialized) {
+        LOG_WARNING("Renderer already initialized");
+        return true;
+    }
+    
     g_renderer = renderer;
+    
+    // Initialize window vsync
+    window_set_vsync(renderer->window, renderer->vsync_enabled);
+    
+    // Set up window resize callback
+    window_set_resize_callback(renderer->window, [](Window *window, u32 width, u32 height) {
+        if (g_renderer) {
+            renderer_resize(g_renderer, width, height);
+        }
+    });
     
     // Initialize render pipeline components
     // TODO: Initialize shader systems
-    // TODO: Initialize material systems
+    // TODO: Initialize material systems  
     // TODO: Initialize geometry systems
     
-    LOG_INFO("Renderer initialized");
+    renderer->is_initialized = true;
+    LOG_INFO("Renderer initialized successfully");
     return true;
 }
 

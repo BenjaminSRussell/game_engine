@@ -25,6 +25,7 @@
 #include <ai/npc_spawning.h>
 #include <ai/npc_dialogue.h>
 #include <ai/npc_ai.h>
+#include <ai/npc_combat.h>
 #include <ecs/components/npc.h>
 #include <ecs/components/transform.h>
 #include <ecs/components/health.h>
@@ -115,11 +116,12 @@ Entity npc_create(NPCSystem *system, Vec3 position, NPCType type) {
   }
 
   // Add Transform component
+  TransformComponent transform_data = {0};
   TransformComponent *transform = (TransformComponent *)ecs_add_component(
-      system->ecs, entity, TRANSFORM_COMPONENT_ID);
+      system->ecs, entity, TRANSFORM_COMPONENT_ID, &transform_data);
   if (!transform) {
     LOG_WARN("Failed to add Transform component to entity %u", entity.id);
-    world_destroy_entity(system->ecs, entity);
+    ecs_destroy_entity(system->ecs, entity);
     return INVALID_ENTITY;
   }
   transform->position = position;
@@ -127,11 +129,12 @@ Entity npc_create(NPCSystem *system, Vec3 position, NPCType type) {
   transform->scale = vec3(1.0f, 1.0f, 1.0f);
 
   // Add NPC component
+  NPCComponent npc_data = {0};
   NPCComponent *npc = (NPCComponent *)ecs_add_component(
-      system->ecs, entity, NPC_COMPONENT_ID);
+      system->ecs, entity, NPC_COMPONENT_ID, &npc_data);
   if (!npc) {
     LOG_WARN("Failed to add NPC component to entity %u", entity.id);
-    world_destroy_entity(system->ecs, entity);
+    ecs_destroy_entity(system->ecs, entity);
     return INVALID_ENTITY;
   }
 
@@ -170,16 +173,18 @@ Entity npc_create(NPCSystem *system, Vec3 position, NPCType type) {
   NPCStats stats = npc_get_stats(type);
 
   // Add Health component
+  HealthComponent health_data = {0};
   HealthComponent *health = (HealthComponent *)ecs_add_component(
-      system->ecs, entity, HEALTH_COMPONENT_ID);
+      system->ecs, entity, HEALTH_COMPONENT_ID, &health_data);
   if (health) {
     health->health = stats.max_health;
     health->max_health = stats.max_health;
   }
 
   // Add RigidBody component
+  RigidBodyComponent rb_data = {0};
   RigidBodyComponent *rb_comp = (RigidBodyComponent *)ecs_add_component(
-      system->ecs, entity, RIGIDBODY_COMPONENT_ID);
+      system->ecs, entity, RIGIDBODY_COMPONENT_ID, &rb_data);
   if (rb_comp) {
     // Create physics body
     RigidBody *body = rigid_body_create(BODY_TYPE_DYNAMIC, position);
@@ -221,7 +226,7 @@ void npc_update(NPCSystem *system, f32 delta_time) {
 
   // Update AI system
   if (system->ai_system) {
-    npc_ai_update(system->ai_system, delta_time);
+    npc_ai_system_update(system->ai_system, delta_time);
   }
 
   // Update combat system

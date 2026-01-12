@@ -13988,6 +13988,7 @@ CMakeFiles/Engine.dir/src/engine/ai/npc.c.o: src/engine/ai/npc.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/signal.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/arm/types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/assert.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/arm/_structs.h \
@@ -14081,11 +14082,19 @@ CMakeFiles/Engine.dir/src/engine/ai/npc.c.o: src/engine/ai/npc.c \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_size_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
+  src/engine/include/core/logger.h \
+  src/engine/include/core/types.h \
+  src/engine/include/math/vec2.h \
+  src/engine/include/math/vec3.h \
+  src/engine/include/ai/behavior_tree.h \
   src/engine/include/ai/npc.h \
+  src/engine/include/ai/npc_ai.h \
+  src/engine/include/ai/npc_dialogue.h \
   src/engine/include/ai/npc_spawning.h \
   src/engine/include/ai/npc_types.h \
   src/engine/include/common.h \
@@ -14101,10 +14110,17 @@ CMakeFiles/Engine.dir/src/engine/ai/npc.c.o: src/engine/ai/npc.c \
   src/engine/include/ecs/components/transform.h \
   src/engine/include/ecs/ecs.h \
   src/engine/include/common.h \
+  src/engine/include/common.h \
   src/engine/include/core/logger.h \
   src/engine/include/core/types.h \
+  src/engine/include/core/utils.h \
+  src/engine/include/math/aabb.h \
+  src/engine/include/math/frustum.h \
   src/engine/include/math/mat4.h \
+  src/engine/include/math/math.h \
+  src/engine/include/math/plane.h \
   src/engine/include/math/quat.h \
+  src/engine/include/math/ray.h \
   src/engine/include/math/vec2.h \
   src/engine/include/math/vec3.h \
   src/engine/include/math/vec4.h \
@@ -58438,8 +58454,6 @@ src/engine/character/cloth/rendering_cloth/cloth_shading.h:
 
 src/engine/character/cloth/rendering_cloth/cloth_normals.c:
 
-src/engine/character/cloth/rendering_cloth/cloth_double_sided.c:
-
 src/engine/character/cloth/cloth_simulation.c:
 
 src/engine/character/cloth/cloth_rendering.c:
@@ -58986,10 +59000,6 @@ src/engine/assets/io/caching/processor_04.h:
 
 src/engine/assets/io/caching/manager_01.c:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSAccelerationStructureGroup.h:
-
-src/engine/assets/io/caching/cache_renderer.h:
-
 src/engine/assets/io/caching/cache_processor.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSNumberFormatter.h:
@@ -59318,6 +59328,12 @@ src/engine/include/ecs/components/rigidbody.h:
 
 src/engine/include/ecs/components/health.h:
 
+src/engine/ecs/systems/pet_system.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSImage.framework/Headers/MPSImageResampling.h:
+
+src/engine/include/ai/npc_ai.h:
+
 src/engine/include/core/asset_manager.h:
 
 src/engine/include/ai/npc.h:
@@ -59370,9 +59386,9 @@ src/engine/include/ai/nav/nav_mesh.h:
 
 src/engine/ai/nav/nav_mesh.c:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSTimeZone.h:
-
 src/engine/assets/io/caching/cache_renderer.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSTimeZone.h:
 
 src/engine/ai/navigation_advanced/obstacle_carving.c:
 
@@ -60227,10 +60243,6 @@ src/engine/assets/io/streaming/system_02.c:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSImage.framework/Headers/MPSImageStatistics.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/cssm.h:
-
-src/engine/ecs/systems/pet_system.c:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSImage.framework/Headers/MPSImageResampling.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/mig_strncpy_zerofill_support.h:
 
@@ -61220,6 +61232,10 @@ src/engine/assets/io/bundling/renderer_03.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/AE.framework/Headers/AE.h:
 
+src/engine/character/cloth/rendering_cloth/cloth_double_sided.c:
+
+src/engine/include/ai/npc_dialogue.h:
+
 src/engine/character/animation/animation_clip.h:
 
 src/engine/assets/io/formats/manager_01.c:
@@ -61985,6 +62001,10 @@ src/engine/include/ai/group/squad_tactics.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Headers/CoreServices.h:
 
 src/engine/include/ai/crowd_system.h:
+
+src/engine/assets/io/caching/cache_renderer.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSAccelerationStructureGroup.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFXMLNode.h:
 

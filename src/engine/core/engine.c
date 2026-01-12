@@ -59,11 +59,29 @@ typedef struct {
 // Subsystems
 VFS g_vfs;
 
+// Subsystem validation state
+typedef struct {
+  bool vfs_initialized;
+  bool input_initialized;
+  bool ecs_initialized;
+  bool assets_initialized;
+  bool renderer_initialized;
+  bool physics_initialized;
+  bool scene_manager_initialized;
+  bool audio_initialized;
+  bool post_processing_initialized;
+  bool perception_initialized;
+  bool memory_initialized;
+  bool planner_initialized;
+} SubsystemValidationState;
+
 // Forward declarations
 static bool engine_init_subsystems(Engine *engine);
 static void engine_shutdown_subsystems(Engine *engine);
 static void engine_update_callback(void *user_data, f32 delta_time);
 static void engine_render_callback(void *user_data, f32 interpolation);
+static bool engine_validate_subsystem_init(const char *name, bool success, SubsystemValidationState *validation);
+static void engine_log_initialization_summary(const SubsystemValidationState *validation);
 
 // -----------------------------------------------------------------------------
 // Engine Lifecycle
@@ -78,19 +96,38 @@ bool engine_init(Engine *engine, const EngineConfig *config) {
   // Clear engine struct
   memset(engine, 0, sizeof(Engine));
 
+  // Validate configuration
+  if (config->window_width <= 0 || config->window_height <= 0) {
+    LOG_ERROR("Engine init failed: Invalid window dimensions");
+    return false;
+  }
+
+  if (config->window_title == NULL) {
+    LOG_ERROR("Engine init failed: Window title cannot be NULL");
+    return false;
+  }
+
   // Initialize Profiler
-  profiler_init();
+  if (!profiler_init()) {
+    LOG_ERROR("Failed to initialize profiler");
+    return false;
+  }
 
   // Copy config
   engine->config = *config;
 
   // Allocate platform data
   engine->platform_data = calloc(1, sizeof(PlatformData));
+  if (!engine->platform_data) {
+    LOG_ERROR("Failed to allocate platform data");
+    profiler_shutdown();
+    return false;
+  }
   PlatformData *pdata = (PlatformData *)engine->platform_data;
 
   LOG_INFO("Initializing Engine Core...");
 
-  // Initialize Window
+  // Initialize Window with validation
   LOG_INFO("Creating Window '%s' (%dx%d)...", config->window_title,
            config->window_width, config->window_height);
 
@@ -98,31 +135,52 @@ bool engine_init(Engine *engine, const EngineConfig *config) {
                    config->window_title ? config->window_title : "Game Engine",
                    config->fullscreen)) {
     LOG_ERROR("Failed to create window");
+    free(engine->platform_data);
+    profiler_shutdown();
+    return false;
+  }
+
+  // Validate window creation
+  if (!pdata->window.is_valid) {
+    LOG_ERROR("Window validation failed");
+    window_shutdown(&pdata->window);
+    free(engine->platform_data);
+    profiler_shutdown();
     return false;
   }
 
   // Initialize Game Loop
-  // Use fixed timestep of 60 FPS typically
   f32 target_fps = 60.0f;
+  if (target_fps <= 0.0f) {
+    LOG_ERROR("Invalid target FPS: %f", target_fps);
+    target_fps = 60.0f; // Default fallback
+  }
+  
   game_loop_init(&pdata->loop, 1.0f / target_fps);
   game_loop_set_update_callback(&pdata->loop, engine_update_callback);
   game_loop_set_render_callback(&pdata->loop, engine_render_callback);
   game_loop_set_user_data(&pdata->loop, engine);
 
-  // Initialize Internal Subsystems (Asset Manager, ECS, etc.)
+  // Initialize Internal Subsystems with validation
   if (!engine_init_subsystems(engine)) {
     LOG_ERROR("Failed to initialize engine subsystems");
-    // window_shutdown(&pdata->window);
+    engine_shutdown_subsystems(engine);
+    window_shutdown(&pdata->window);
+    free(engine->platform_data);
+    profiler_shutdown();
     return false;
   }
 
-  // Initialize Hot Reload with default config
+  // Initialize Hot Reload with validation
   HotReloadConfig hr_config = {
       .enable_code_hot_reload = true,
       .enable_asset_hot_reload = true,
       .watch_path = "." // Current directory for now
   };
-  hot_reload_init(hr_config);
+  
+  if (!hot_reload_init(hr_config)) {
+    LOG_WARN("Hot reload initialization failed, continuing without it");
+  }
 
   engine->state.initialized = true;
   LOG_INFO("Engine initialized successfully");
@@ -164,27 +222,57 @@ void engine_tick(Engine *engine, f32 delta_time) {
 void engine_render(Engine *engine) { engine_render_callback(engine, 0.0f); }
 
 void engine_shutdown(Engine *engine) {
-  if (!engine || !engine->state.initialized)
+  if (!engine || !engine->state.initialized) {
+    LOG_WARN("Attempted to shutdown non-initialized engine");
     return;
+  }
 
   LOG_INFO("Shutting down Engine...");
 
   PlatformData *pdata = (PlatformData *)engine->platform_data;
 
-  engine_shutdown_subsystems(engine);
-
-  hot_reload_shutdown(); // Shutdown hot reload
-
-  game_loop_shutdown(&pdata->loop);
-  // window_shutdown(&pdata->window);
-
-  if (engine->platform_data) {
-    free(engine->platform_data);
+  // Validate engine state before shutdown
+  if (!pdata) {
+    LOG_ERROR("Platform data is NULL during shutdown");
+    memset(engine, 0, sizeof(Engine));
+    profiler_shutdown();
+    LOG_INFO("Engine Shutdown Complete (with errors)");
+    return;
   }
 
+  // Shutdown subsystems in reverse order with validation
+  engine_shutdown_subsystems(engine);
+
+  // Shutdown hot reload
+  if (hot_reload_is_initialized()) {
+    hot_reload_shutdown();
+  }
+
+  // Validate and shutdown game loop
+  if (pdata->loop.is_initialized) {
+    game_loop_shutdown(&pdata->loop);
+  } else {
+    LOG_WARN("Game loop was not properly initialized");
+  }
+
+  // Validate and shutdown window
+  if (pdata->window.is_valid) {
+    window_shutdown(&pdata->window);
+  } else {
+    LOG_WARN("Window was not properly initialized");
+  }
+
+  // Free platform data
+  if (engine->platform_data) {
+    free(engine->platform_data);
+    engine->platform_data = NULL;
+  }
+
+  // Clear engine state
   memset(engine, 0, sizeof(Engine));
 
-  profiler_shutdown(); // Shutdown profiler last
+  // Shutdown profiler last
+  profiler_shutdown();
 
   LOG_INFO("Engine Shutdown Complete");
 }
