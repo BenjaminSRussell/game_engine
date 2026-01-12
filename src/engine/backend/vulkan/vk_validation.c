@@ -8390,6 +8390,349 @@ bool vk_validation_validate_sampler_creation_info(const VkSamplerCreateInfo* cre
     return true;
 }
 
+// =================================================================================================
+//                           COMMAND BUFFER VALIDATION FUNCTIONS
+// =================================================================================================
+
+// Validate command buffer begin info
+bool vk_validation_validate_command_buffer_begin_info(const VkCommandBufferBeginInfo* begin_info) {
+    if (!begin_info) {
+        printf("Error: Invalid command buffer begin info\n");
+        return false;
+    }
+    
+    if (begin_info->sType != VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO) {
+        printf("Error: Invalid sType in command buffer begin info\n");
+        return false;
+    }
+    
+    // Validate flags
+    if (begin_info->flags & VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT &&
+        begin_info->flags & VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT) {
+        printf("Warning: Both simultaneous use and one-time submit flags set\n");
+    }
+    
+    if (begin_info->pInheritanceInfo && !(begin_info->flags & VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT)) {
+        printf("Warning: Inheritance info provided but render pass continue bit not set\n");
+    }
+    
+    printf("Command buffer begin info validation passed\n");
+    return true;
+}
+
+// Validate submit info
+bool vk_validation_validate_submit_info(const VkSubmitInfo* submit_info) {
+    if (!submit_info) {
+        printf("Error: Invalid submit info\n");
+        return false;
+    }
+    
+    if (submit_info->sType != VK_STRUCTURE_TYPE_SUBMIT_INFO) {
+        printf("Error: Invalid sType in submit info\n");
+        return false;
+    }
+    
+    // Validate command buffers
+    if (submit_info->commandBufferCount > 0 && !submit_info->pCommandBuffers) {
+        printf("Error: Command buffer count specified but no command buffers provided\n");
+        return false;
+    }
+    
+    for (u32 i = 0; i < submit_info->commandBufferCount; i++) {
+        if (submit_info->pCommandBuffers[i] == VK_NULL_HANDLE) {
+            printf("Error: Command buffer %u is invalid\n", i);
+            return false;
+        }
+    }
+    
+    // Validate wait semaphores
+    if (submit_info->waitSemaphoreCount > 0 && !submit_info->pWaitSemaphores) {
+        printf("Error: Wait semaphore count specified but no semaphores provided\n");
+        return false;
+    }
+    
+    if (submit_info->waitSemaphoreCount > 0 && !submit_info->pWaitDstStageMask) {
+        printf("Error: Wait semaphore count specified but no stage masks provided\n");
+        return false;
+    }
+    
+    for (u32 i = 0; i < submit_info->waitSemaphoreCount; i++) {
+        if (submit_info->pWaitSemaphores[i] == VK_NULL_HANDLE) {
+            printf("Error: Wait semaphore %u is invalid\n", i);
+            return false;
+        }
+        
+        if (submit_info->pWaitDstStageMask[i] == 0) {
+            printf("Warning: Wait semaphore %u has no stage mask\n", i);
+        }
+    }
+    
+    // Validate signal semaphores
+    if (submit_info->signalSemaphoreCount > 0 && !submit_info->pSignalSemaphores) {
+        printf("Error: Signal semaphore count specified but no semaphores provided\n");
+        return false;
+    }
+    
+    for (u32 i = 0; i < submit_info->signalSemaphoreCount; i++) {
+        if (submit_info->pSignalSemaphores[i] == VK_NULL_HANDLE) {
+            printf("Error: Signal semaphore %u is invalid\n", i);
+            return false;
+        }
+    }
+    
+    printf("Submit info validation passed\n");
+    return true;
+}
+
+// Validate present info
+bool vk_validation_validate_present_info(const VkPresentInfoKHR* present_info) {
+    if (!present_info) {
+        printf("Error: Invalid present info\n");
+        return false;
+    }
+    
+    if (present_info->sType != VK_STRUCTURE_TYPE_PRESENT_INFO_KHR) {
+        printf("Error: Invalid sType in present info\n");
+        return false;
+    }
+    
+    if (present_info->swapchainCount == 0) {
+        printf("Error: Swapchain count cannot be zero\n");
+        return false;
+    }
+    
+    if (!present_info->pSwapchains) {
+        printf("Error: No swapchains provided\n");
+        return false;
+    }
+    
+    if (!present_info->pImageIndices) {
+        printf("Error: No image indices provided\n");
+        return false;
+    }
+    
+    for (u32 i = 0; i < present_info->swapchainCount; i++) {
+        if (present_info->pSwapchains[i] == VK_NULL_HANDLE) {
+            printf("Error: Swapchain %u is invalid\n", i);
+            return false;
+        }
+    }
+    
+    // Validate wait semaphores (optional)
+    if (present_info->waitSemaphoreCount > 0 && !present_info->pWaitSemaphores) {
+        printf("Error: Wait semaphore count specified but no semaphores provided\n");
+        return false;
+    }
+    
+    for (u32 i = 0; i < present_info->waitSemaphoreCount; i++) {
+        if (present_info->pWaitSemaphores[i] == VK_NULL_HANDLE) {
+            printf("Error: Wait semaphore %u is invalid\n", i);
+            return false;
+        }
+    }
+    
+    printf("Present info validation passed\n");
+    return true;
+}
+
+// Validate buffer image copy
+bool vk_validation_validate_buffer_image_copy(const VkBufferImageCopy* region, u32 region_count) {
+    if (!region && region_count > 0) {
+        printf("Error: Region count specified but no regions provided\n");
+        return false;
+    }
+    
+    if (region && region_count == 0) {
+        printf("Warning: Regions array provided but region count is zero\n");
+    }
+    
+    for (u32 i = 0; i < region_count; i++) {
+        const VkBufferImageCopy* copy_region = &region[i];
+        
+        // Validate buffer offset
+        if (copy_region->bufferOffset >= 1024 * 1024 * 1024) { // 1GB
+            printf("Warning: Buffer offset seems large in buffer image copy %u\n", i);
+        }
+        
+        // Validate buffer row length
+        if (copy_region->bufferRowLength > 0 && copy_region->bufferRowLength < copy_region->imageExtent.width) {
+            printf("Warning: Buffer row length smaller than image width in region %u\n", i);
+        }
+        
+        // Validate buffer image height
+        if (copy_region->bufferImageHeight > 0 && copy_region->bufferImageHeight < copy_region->imageExtent.height) {
+            printf("Warning: Buffer image height smaller than image height in region %u\n", i);
+        }
+        
+        // Validate image subresource
+        if (copy_region->imageSubresource.aspectMask == 0) {
+            printf("Error: Aspect mask cannot be zero in buffer image copy %u\n", i);
+            return false;
+        }
+        
+        if (copy_region->imageSubresource.mipLevel >= 32) {
+            printf("Warning: Mip level seems large in buffer image copy %u\n", i);
+        }
+        
+        if (copy_region->imageSubresource.baseArrayLayer >= 2048) {
+            printf("Warning: Base array layer seems large in buffer image copy %u\n", i);
+        }
+        
+        if (copy_region->imageSubresource.layerCount == 0) {
+            printf("Error: Layer count cannot be zero in buffer image copy %u\n", i);
+            return false;
+        }
+        
+        // Validate image extent
+        if (copy_region->imageExtent.width == 0 || copy_region->imageExtent.height == 0) {
+            printf("Error: Image extent cannot have zero dimension in region %u\n", i);
+            return false;
+        }
+        
+        if (copy_region->imageExtent.width > 16384 || copy_region->imageExtent.height > 16384) {
+            printf("Warning: Image extent seems very large in buffer image copy %u\n", i);
+        }
+        
+        if (copy_region->imageExtent.depth > 2048) {
+            printf("Warning: Image depth seems large in buffer image copy %u\n", i);
+        }
+    }
+    
+    printf("Buffer image copy validation passed\n");
+    return true;
+}
+
+// Validate image resolve
+bool vk_validation_validate_image_resolve(const VkImageResolve* region, u32 region_count) {
+    if (!region && region_count > 0) {
+        printf("Error: Region count specified but no regions provided\n");
+        return false;
+    }
+    
+    if (region && region_count == 0) {
+        printf("Warning: Regions array provided but region count is zero\n");
+    }
+    
+    for (u32 i = 0; i < region_count; i++) {
+        const VkImageResolve* resolve_region = &region[i];
+        
+        // Validate source subresource
+        if (resolve_region->srcSubresource.aspectMask == 0) {
+            printf("Error: Source aspect mask cannot be zero in image resolve %u\n", i);
+            return false;
+        }
+        
+        if (resolve_region->srcSubresource.layerCount == 0) {
+            printf("Error: Source layer count cannot be zero in image resolve %u\n", i);
+            return false;
+        }
+        
+        // Validate destination subresource
+        if (resolve_region->dstSubresource.aspectMask == 0) {
+            printf("Error: Destination aspect mask cannot be zero in image resolve %u\n", i);
+            return false;
+        }
+        
+        if (resolve_region->dstSubresource.layerCount == 0) {
+            printf("Error: Destination layer count cannot be zero in image resolve %u\n", i);
+            return false;
+        }
+        
+        // Validate extent
+        if (resolve_region->extent.width == 0 || resolve_region->extent.height == 0) {
+            printf("Error: Resolve extent cannot have zero dimension in region %u\n", i);
+            return false;
+        }
+        
+        // Validate offset consistency
+        if (resolve_region->srcOffset.x < 0 || resolve_region->srcOffset.y < 0 || resolve_region->srcOffset.z < 0) {
+            printf("Error: Source offset cannot be negative in image resolve %u\n", i);
+            return false;
+        }
+        
+        if (resolve_region->dstOffset.x < 0 || resolve_region->dstOffset.y < 0 || resolve_region->dstOffset.z < 0) {
+            printf("Error: Destination offset cannot be negative in image resolve %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Image resolve validation passed\n");
+    return true;
+}
+
+// Validate image blit
+bool vk_validation_validate_image_blit(const VkImageBlit* region, u32 region_count) {
+    if (!region && region_count > 0) {
+        printf("Error: Region count specified but no regions provided\n");
+        return false;
+    }
+    
+    if (region && region_count == 0) {
+        printf("Warning: Regions array provided but region count is zero\n");
+    }
+    
+    for (u32 i = 0; i < region_count; i++) {
+        const VkImageBlit* blit_region = &region[i];
+        
+        // Validate source subresource
+        if (blit_region->srcSubresource.aspectMask == 0) {
+            printf("Error: Source aspect mask cannot be zero in image blit %u\n", i);
+            return false;
+        }
+        
+        if (blit_region->srcSubresource.layerCount == 0) {
+            printf("Error: Source layer count cannot be zero in image blit %u\n", i);
+            return false;
+        }
+        
+        // Validate destination subresource
+        if (blit_region->dstSubresource.aspectMask == 0) {
+            printf("Error: Destination aspect mask cannot be zero in image blit %u\n", i);
+            return false;
+        }
+        
+        if (blit_region->dstSubresource.layerCount == 0) {
+            printf("Error: Destination layer count cannot be zero in image blit %u\n", i);
+            return false;
+        }
+        
+        // Validate source offsets
+        if (blit_region->srcOffsets[0].x > blit_region->srcOffsets[1].x ||
+            blit_region->srcOffsets[0].y > blit_region->srcOffsets[1].y ||
+            blit_region->srcOffsets[0].z > blit_region->srcOffsets[1].z) {
+            printf("Error: Invalid source offset range in image blit %u\n", i);
+            return false;
+        }
+        
+        // Validate destination offsets
+        if (blit_region->dstOffsets[0].x > blit_region->dstOffsets[1].x ||
+            blit_region->dstOffsets[0].y > blit_region->dstOffsets[1].y ||
+            blit_region->dstOffsets[0].z > blit_region->dstOffsets[1].z) {
+            printf("Error: Invalid destination offset range in image blit %u\n", i);
+            return false;
+        }
+        
+        // Validate blit dimensions
+        i32 src_width = blit_region->srcOffsets[1].x - blit_region->srcOffsets[0].x;
+        i32 src_height = blit_region->srcOffsets[1].y - blit_region->srcOffsets[0].y;
+        i32 dst_width = blit_region->dstOffsets[1].x - blit_region->dstOffsets[0].x;
+        i32 dst_height = blit_region->dstOffsets[1].y - blit_region->dstOffsets[0].y;
+        
+        if (src_width == 0 || src_height == 0) {
+            printf("Error: Source blit region cannot have zero dimension in region %u\n", i);
+            return false;
+        }
+        
+        if (dst_width == 0 || dst_height == 0) {
+            printf("Error: Destination blit region cannot have zero dimension in region %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Image blit validation passed\n");
+    return true;
+}
+
 // End of Vulkan validation compilation guard
 #endif // VULKAN_BUILD || __linux__ || _WIN32 || (__APPLE__ && VULKAN_ON_MACOS)
 
