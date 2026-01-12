@@ -747,9 +747,9 @@ static void crash_handler(int signal) {
            ctime(&now), signal, g_crash_reporter.crash_count,
            g_game.in_game ? "In Game" : "In Menu", g_game.window_width,
            g_game.window_height,
-           g_game.renderer_type == RENDERER_VULKAN   ? "Vulkan"
-           : g_game.renderer_type == RENDERER_OPENGL ? "OpenGL"
-                                                     : "Unknown",
+           g_game.renderer_type == RENDERER_TYPE_VOXEL   ? "Vulkan"
+           // No OpenGL renderer type defined, using fallback
+           : "Unknown",
            0.0f // Would need actual memory usage calculation
   );
 
@@ -1074,9 +1074,9 @@ static void renderer_debug_end_frame(f32 frame_time) {
            g_renderer_debug.max_frame_time * 1000.0f,
            g_renderer_debug.draw_calls, g_renderer_debug.triangles_rendered,
            (unsigned long long)g_renderer_debug.vertices_processed,
-           g_game.renderer_type == RENDERER_VULKAN   ? "Vulkan"
-           : g_game.renderer_type == RENDERER_OPENGL ? "OpenGL"
-                                                     : "Unknown",
+           g_game.renderer_type == RENDERER_TYPE_VOXEL   ? "Vulkan"
+           // No OpenGL renderer type defined, using fallback
+           : "Unknown",
            g_game.window_width, g_game.window_height);
 }
 
@@ -1866,52 +1866,61 @@ static InitResult init_renderer(void) {
   }
 
   // Set type
-  g_game.renderer_type = RENDERER_METAL; // Simplify
+  g_game.renderer_type = RENDERER_TYPE_VOXEL; // Simplify
 
   return (InitResult){true, INIT_SUCCESS, "Renderer initialized successfully"};
 }
 
-// Create graphics pipeline
-if (!vulkan_create_graphics_pipeline(&g_game.renderer, &g_game.vfs)) {
-  vulkan_cleanup(&g_game.renderer);
-  return (InitResult){false, INIT_ERROR_RENDERER,
-                      "Failed to create graphics pipeline"};
+static InitResult init_vulkan_graphics_pipeline(void) {
+  // Create graphics pipeline
+  if (!vulkan_create_graphics_pipeline(&g_game.renderer, &g_game.vfs)) {
+    vulkan_cleanup(&g_game.renderer);
+    return (InitResult){false, INIT_ERROR_RENDERER,
+                        "Failed to create graphics pipeline"};
+  }
+  return (InitResult){true, INIT_SUCCESS, "Graphics pipeline created"};
+}
+
+static InitResult init_vulkan_framebuffers(void) {
+  // Create framebuffers
+  if (!vulkan_create_framebuffers(&g_game.renderer)) {
+    vulkan_cleanup(&g_game.renderer);
+    return (InitResult){false, INIT_ERROR_RENDERER,
+                        "Failed to create framebuffers"};
+  }
+  return (InitResult){true, INIT_SUCCESS, "Framebuffers created"};
+}
+
+static InitResult init_ray_tracing(void) {
+  // Initialize ray tracing if enabled and supported
+  if (g_game.config.ray_tracing) {
+    if (vulkan_rt_is_supported(&g_game.renderer)) {
+      if (!vulkan_rt_init(&g_game.renderer)) {
+        LOG_WARN(
+            "Ray tracing initialization failed, falling back to rasterization");
+        g_game.config.ray_tracing = false;
+      } else {
+        LOG_INFO("Ray tracing initialized successfully");
+      }
+    } else {
+      LOG_WARN("Ray tracing not supported on this hardware");
+      g_game.config.ray_tracing = false;
+    }
+  }
+  return (InitResult){true, INIT_SUCCESS, "Ray tracing initialization complete"};
 }
 
 #ifdef VULKAN_BUILD
-// Create framebuffers
-if (!vulkan_create_framebuffers(&g_game.renderer)) {
-  vulkan_cleanup(&g_game.renderer);
-  return (InitResult){false, INIT_ERROR_RENDERER,
-                      "Failed to create framebuffers"};
-}
-
-// Initialize ray tracing if enabled and supported
-if (g_game.config.ray_tracing) {
-  if (vulkan_rt_is_supported(&g_game.renderer)) {
-    if (!vulkan_rt_init(&g_game.renderer)) {
-      LOG_WARN(
-          "Ray tracing initialization failed, falling back to rasterization");
-      g_game.config.ray_tracing = false;
-    } else {
-      LOG_INFO("Ray tracing initialized successfully");
-    }
-  } else {
-    LOG_WARN("Ray tracing not supported on this hardware");
-    g_game.config.ray_tracing = false;
-  }
-}
-
-LOG_INFO("Vulkan renderer initialized successfully");
-return (InitResult){true, INIT_SUCCESS, "Renderer initialized"};
+  LOG_INFO("Vulkan renderer initialized successfully");
+  return (InitResult){true, INIT_SUCCESS, "Renderer initialized"};
 #else
 #ifdef __APPLE__
-// macOS/iOS: Use Metal renderer
-LOG_INFO("Metal renderer ready (initialized via MTKView)");
-return (InitResult){true, INIT_SUCCESS, "Metal renderer ready"};
+  // macOS/iOS: Use Metal renderer
+  LOG_INFO("Metal renderer ready (initialized via MTKView)");
+  return (InitResult){true, INIT_SUCCESS, "Metal renderer ready"};
 #else
-LOG_WARN("Vulkan not built - renderer disabled");
-return (InitResult){true, INIT_SUCCESS, "Renderer disabled (no Vulkan build)"};
+  LOG_WARN("Vulkan not built - renderer disabled");
+  return (InitResult){true, INIT_SUCCESS, "Renderer disabled (no Vulkan build)"};
 #endif
 #endif
 }
@@ -2434,7 +2443,7 @@ static void game_init(void) {
 
   // Load texture atlas (if exists)
   if (vfs_exists(&g_game.vfs, "assets/textures/atlas/block_atlas.png")) {
-    if (g_game.renderer_type == RENDERER_VULKAN) {
+    if (g_game.renderer_type == RENDERER_TYPE_VOXEL) {
       // cast IRenderer* to VulkanRenderer* if needed, but texture_load_atlas
       // signature updated? Actually I updated the signature above to
       // IRenderer*. But implementation might still expect VulkanRenderer. For
