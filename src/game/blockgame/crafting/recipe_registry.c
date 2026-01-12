@@ -94,4 +94,16 @@ void recipe_registry_add_defaults(RecipeRegistry *registry) {
   u32 table_pattern[] = {2, 2, 2, 2};
   table.pattern = table_pattern; // Temporary pointer, add() will copy
   recipe_registry_add(registry, &table);
+
+  // Example: Bread (3 Wheat horizontal)
+  Recipe bread;
+  memset(&bread, 0, sizeof(Recipe));
+  bread.type = RECIPE_TYPE_SHAPED;
+  bread.result_item = 642; // ITEM_BREAD
+  bread.result_quantity = 1;
+  bread.pattern_width = 3;
+  bread.pattern_height = 1;
+  u32 bread_pattern[] = {50, 50, 50}; // ITEM_WHEAT
+  bread.pattern = bread_pattern;
+  recipe_registry_add(registry, &bread);
 }

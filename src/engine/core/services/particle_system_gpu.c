@@ -139,7 +139,6 @@ bool gpu_particle_system_init(GPUParticleSystem *system, VkDevice device,
                               VkCommandPool command_pool, VkQueue compute_queue,
                               VkQueue graphics_queue) {
   if (!system || !device || !physical_device) {
-    fprintf(stderr, "[GPU_PARTICLES] Invalid parameters\n");
     return false;
   }
 
@@ -200,21 +199,18 @@ bool gpu_particle_system_init(GPUParticleSystem *system, VkDevice device,
 
   // Create GPU buffers (TASK_630)
   if (!gpu_particle_create_buffers(system)) {
-    fprintf(stderr, "[GPU_PARTICLES] Failed to create buffers\n");
     gpu_particle_system_shutdown(system);
     return false;
   }
 
   // Map buffers for CPU access
   if (!gpu_particle_map_buffers(system)) {
-    fprintf(stderr, "[GPU_PARTICLES] Failed to map buffers\n");
     gpu_particle_system_shutdown(system);
     return false;
   }
 
   // Initialize atomic counters (TASK_631)
   if (!gpu_particle_init_atomic_counters(system)) {
-    fprintf(stderr, "[GPU_PARTICLES] Failed to initialize atomic counters\n");
     gpu_particle_system_shutdown(system);
     return false;
   }
@@ -232,13 +228,8 @@ bool gpu_particle_system_init(GPUParticleSystem *system, VkDevice device,
 
   system->initialized = true;
 
-  fprintf(stderr, "[GPU_PARTICLES] GPU particle system initialized\n");
-  fprintf(stderr, "[GPU_PARTICLES]   Max particles: %u\n",
           system->max_particles);
-  fprintf(stderr, "[GPU_PARTICLES]   Max emitters: %u\n", system->max_emitters);
-  fprintf(stderr, "[GPU_PARTICLES]   Particle buffer: %zu MB (x2 buffers)\n",
           system->particle_buffer_size / (1024 * 1024));
-  fprintf(stderr, "[GPU_PARTICLES]   Emitter buffer: %zu KB\n",
           system->emitter_buffer_size / 1024);
 
   return true;
@@ -278,7 +269,6 @@ void gpu_particle_system_shutdown(GPUParticleSystem *system) {
 
   system->initialized = false;
 
-  fprintf(stderr, "[GPU_PARTICLES] GPU particle system shut down\n");
 }
 
 // ==================================================================================================
@@ -299,7 +289,6 @@ static VkBuffer create_buffer(VkDevice device, VkDeviceSize size,
   };
 
   if (vkCreateBuffer(device, &buffer_info, NULL, &buffer) != VK_SUCCESS) {
-    fprintf(stderr, "[GPU_PARTICLES] Failed to create buffer\n");
     return VK_NULL_HANDLE;
   }
 
@@ -315,7 +304,6 @@ static VkBuffer create_buffer(VkDevice device, VkDeviceSize size,
   };
 
   if (vkAllocateMemory(device, &alloc_info, NULL, memory) != VK_SUCCESS) {
-    fprintf(stderr, "[GPU_PARTICLES] Failed to allocate buffer memory\n");
     vkDestroyBuffer(device, buffer, NULL);
     return VK_NULL_HANDLE;
   }
@@ -438,7 +426,6 @@ bool gpu_particle_create_buffers(GPUParticleSystem *system) {
     return false;
   }
 
-  fprintf(stderr, "[GPU_PARTICLES] Created all GPU buffers\n");
   return true;
 }
 
@@ -541,7 +528,6 @@ void gpu_particle_destroy_buffers(GPUParticleSystem *system) {
     system->draw_memory = VK_NULL_HANDLE;
   }
 
-  fprintf(stderr, "[GPU_PARTICLES] Destroyed all GPU buffers\n");
 }
 
 bool gpu_particle_map_buffers(GPUParticleSystem *system) {
@@ -557,7 +543,6 @@ bool gpu_particle_map_buffers(GPUParticleSystem *system) {
                        system->emitter_buffer_size, 0,
                        (void **)&system->mapped_emitters);
   if (result != VK_SUCCESS) {
-    fprintf(stderr, "[GPU_PARTICLES] Failed to map emitter buffer\n");
     return false;
   }
 
@@ -566,7 +551,6 @@ bool gpu_particle_map_buffers(GPUParticleSystem *system) {
                        system->atomic_buffer_size, 0,
                        (void **)&system->mapped_counters);
   if (result != VK_SUCCESS) {
-    fprintf(stderr, "[GPU_PARTICLES] Failed to map atomic counter buffer\n");
     return false;
   }
 
@@ -575,7 +559,6 @@ bool gpu_particle_map_buffers(GPUParticleSystem *system) {
       vkMapMemory(device, system->dead_list_memory, 0, system->list_buffer_size,
                   0, (void **)&system->mapped_dead_list);
   if (result != VK_SUCCESS) {
-    fprintf(stderr, "[GPU_PARTICLES] Failed to map dead list buffer\n");
     return false;
   }
 
@@ -584,11 +567,9 @@ bool gpu_particle_map_buffers(GPUParticleSystem *system) {
                        system->list_buffer_size, 0,
                        (void **)&system->mapped_alive_list);
   if (result != VK_SUCCESS) {
-    fprintf(stderr, "[GPU_PARTICLES] Failed to map alive list buffer\n");
     return false;
   }
 
-  fprintf(stderr, "[GPU_PARTICLES] Mapped all CPU-accessible buffers\n");
   return true;
 }
 
@@ -619,7 +600,6 @@ void gpu_particle_unmap_buffers(GPUParticleSystem *system) {
     system->mapped_alive_list = NULL;
   }
 
-  fprintf(stderr, "[GPU_PARTICLES] Unmapped all CPU-accessible buffers\n");
 }
 
 // ==================================================================================================
@@ -641,9 +621,6 @@ bool gpu_particle_init_atomic_counters(GPUParticleSystem *system) {
   counters->max_particles = system->max_particles;
   memset(counters->padding, 0, sizeof(counters->padding));
 
-  fprintf(stderr, "[GPU_PARTICLES] Initialized atomic counters\n");
-  fprintf(stderr, "[GPU_PARTICLES]   Alive count: %u\n", counters->alive_count);
-  fprintf(stderr, "[GPU_PARTICLES]   Dead count: %u\n", counters->dead_count);
 
   return true;
 }
@@ -710,7 +687,6 @@ u32 gpu_particle_alloc_particle_slot(GPUParticleSystem *system) {
 
   // Check if we have dead particles available
   if (counters->dead_count == 0) {
-    fprintf(stderr, "[GPU_PARTICLES] No particle slots available\n");
     return UINT32_MAX;
   }
 
@@ -757,7 +733,6 @@ bool gpu_particle_init_new_particle_buffer(GPUParticleSystem *system) {
     vkUnmapMemory(system->device, system->new_particle_memory);
   }
 
-  fprintf(stderr, "[GPU_PARTICLES] Initialized new particle buffer\n");
   return true;
 }
 
@@ -775,7 +750,6 @@ void gpu_particle_add_new_particles(GPUParticleSystem *system,
     system->mapped_counters->emit_count += count;
   }
 
-  fprintf(stderr, "[GPU_PARTICLES] Added %u new particles to buffer\n", count);
 }
 
 // ==================================================================================================
@@ -898,7 +872,6 @@ u32 gpu_particle_create_emitter(GPUParticleSystem *system,
     }
   }
 
-  fprintf(stderr, "[GPU_PARTICLES] No emitter slots available\n");
   return UINT32_MAX;
 }
 
@@ -928,7 +901,6 @@ void gpu_particle_destroy_emitter(GPUParticleSystem *system, u32 emitter_id) {
 
   system->mapped_emitters[emitter_id].active = -1; // Mark as inactive
 
-  fprintf(stderr, "[GPU_PARTICLES] Destroyed emitter %u\n", emitter_id);
 }
 
 void gpu_particle_update_emitters_cpu(GPUParticleSystem *system,
@@ -990,7 +962,6 @@ void gpu_particle_update_emitters_cpu(GPUParticleSystem *system,
   }
 
   if (total_particles_to_emit > 0) {
-    fprintf(stderr, "[GPU_PARTICLES] Emitting %u particles this frame\n",
             total_particles_to_emit);
   }
 }
@@ -1381,13 +1352,9 @@ void gpu_particle_set_mesh_vertex_colors(GPUParticleSystem *system,
     // Store color variation in velocity_min.z temporarily
     emitter->velocity_min.z = colors->color_variation;
 
-    fprintf(stderr, "[GPU_PARTICLES] Set vertex colors for mesh emitter %u\n",
             emitter_id);
-    fprintf(stderr, "[GPU_PARTICLES]   Vertex colors: %u\n",
             colors->vertex_color_count);
-    fprintf(stderr, "[GPU_PARTICLES]   Use vertex colors: %s\n",
             colors->use_vertex_colors ? "enabled" : "disabled");
-    fprintf(stderr, "[GPU_PARTICLES]   Color variation: %.3f\n",
             colors->color_variation);
   }
 }
@@ -1411,7 +1378,6 @@ void gpu_particle_enable_vertex_color_sampling(GPUParticleSystem *system,
     fprintf(stderr,
             "[GPU_PARTICLES] %s vertex color sampling for mesh emitter %u\n",
             enabled ? "Enabled" : "Disabled", emitter_id);
-    fprintf(stderr, "[GPU_PARTICLES]   Color variation: %.3f\n", variation);
   }
 }
 
@@ -1427,15 +1393,9 @@ void gpu_particle_set_simulation_config(
 
   system->simulation_config = *config;
 
-  fprintf(stderr, "[GPU_PARTICLES] Updated simulation config\n");
-  fprintf(stderr, "[GPU_PARTICLES]   Gravity: (%.2f, %.2f, %.2f)\n",
           config->gravity.x, config->gravity.y, config->gravity.z);
-  fprintf(stderr, "[GPU_PARTICLES]   Air resistance: %.3f\n",
           config->air_resistance);
-  fprintf(stderr, "[GPU_PARTICLES]   Time scale: %.3f\n", config->time_scale);
-  fprintf(stderr, "[GPU_PARTICLES]   Collision: %s\n",
           config->enable_collision ? "enabled" : "disabled");
-  fprintf(stderr, "[GPU_PARTICLES]   Wind: %s\n",
           config->enable_wind ? "enabled" : "disabled");
 }
 
@@ -1513,7 +1473,6 @@ void gpu_particle_remove_force_field(GPUParticleSystem *system, u32 field_id) {
 
   system->force_field_count--;
 
-  fprintf(stderr, "[GPU_PARTICLES] Removed force field %u\n", field_id);
 }
 
 void gpu_particle_update_force_field(GPUParticleSystem *system, u32 field_id,
@@ -1524,7 +1483,6 @@ void gpu_particle_update_force_field(GPUParticleSystem *system, u32 field_id,
 
   system->force_fields[field_id] = *field;
 
-  fprintf(stderr, "[GPU_PARTICLES] Updated force field %u\n", field_id);
 }
 
 // ==================================================================================================
@@ -1539,12 +1497,8 @@ void gpu_particle_set_rendering_config(GPUParticleSystem *system,
 
   system->rendering_config = *config;
 
-  fprintf(stderr, "[GPU_PARTICLES] Updated rendering config\n");
-  fprintf(stderr, "[GPU_PARTICLES]   Depth test: %s\n",
           config->enable_depth_test ? "enabled" : "disabled");
-  fprintf(stderr, "[GPU_PARTICLES]   Depth write: %s\n",
           config->enable_depth_write ? "enabled" : "disabled");
-  fprintf(stderr, "[GPU_PARTICLES]   Blend: %d -> %d\n", config->src_blend,
           config->dst_blend);
 }
 
@@ -1589,10 +1543,7 @@ void gpu_particle_set_life_curves(GPUParticleSystem *system,
 
   system->life_curves = *curves;
 
-  fprintf(stderr, "[GPU_PARTICLES] Updated life curves\n");
-  fprintf(stderr, "[GPU_PARTICLES]   Color keys: %u\n",
           curves->color_key_count);
-  fprintf(stderr, "[GPU_PARTICLES]   Alpha keys: %u\n",
           curves->alpha_key_count);
 }
 
@@ -1609,7 +1560,6 @@ void gpu_particle_set_color_curve(GPUParticleSystem *system, const Vec4 *colors,
     system->life_curves.key_times[i] = times[i];
   }
 
-  fprintf(stderr, "[GPU_PARTICLES] Set color curve with %u keys\n", count);
 }
 
 void gpu_particle_set_alpha_curve(GPUParticleSystem *system, const f32 *alphas,
@@ -1625,7 +1575,6 @@ void gpu_particle_set_alpha_curve(GPUParticleSystem *system, const f32 *alphas,
     system->life_curves.key_times[i] = times[i];
   }
 
-  fprintf(stderr, "[GPU_PARTICLES] Set alpha curve with %u keys\n", count);
 }
 
 // ==================================================================================================
@@ -1641,7 +1590,6 @@ void gpu_particle_enable_depth_sorting(GPUParticleSystem *system,
   // Store sorting configuration temporarily
   system->rendering_config.enable_depth_test = enabled;
 
-  fprintf(stderr, "[GPU_PARTICLES] %s depth sorting\n",
           enabled ? "Enabled" : "Disabled");
 }
 
@@ -1655,7 +1603,6 @@ void gpu_particle_set_sorting_method(GPUParticleSystem *system,
   system->rendering_config.cull_mode =
       front_to_back ? VK_CULL_MODE_FRONT_BIT : VK_CULL_MODE_BACK_BIT;
 
-  fprintf(stderr, "[GPU_PARTICLES] Set sorting method to %s\n",
           front_to_back ? "front-to-back" : "back-to-front");
 }
 
@@ -1680,7 +1627,6 @@ void gpu_particle_set_texture_animation(
   emitter->velocity_min.y = animation->loop_animation ? 1.0f : 0.0f;
   emitter->velocity_min.z = animation->random_start_frame ? 1.0f : 0.0f;
 
-  fprintf(stderr, "[GPU_PARTICLES] Set texture animation for emitter %u\n",
           emitter_id);
   fprintf(stderr, "   Texture sheet: %ux%u (%u frames)\n", animation->columns,
           animation->rows, animation->total_frames);
@@ -1704,7 +1650,6 @@ void gpu_particle_set_soft_settings(GPUParticleSystem *system,
                                            : VK_BLEND_FACTOR_ONE;
   system->rendering_config.dst_blend = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
 
-  fprintf(stderr, "[GPU_PARTICLES] Set soft particle settings\n");
   fprintf(stderr, "   Softness: %.3f\n", settings->softness);
   fprintf(stderr, "   Depth fade: %s\n",
           settings->enable_depth_fade ? "enabled" : "disabled");
@@ -1765,7 +1710,6 @@ bool gpu_particle_create_descriptor_sets(GPUParticleSystem* system) {
     // I'll create one locally and LEAK it unless I store it.
     // Wait, let's assume I added it to struct in .h? I checked .h and didn't see it (only pipeline stuff).
     // I'll skip pool creation for now and assume failure or TODO.
-    fprintf(stderr, "[GPU_PARTICLES] Descriptor pool creation skipped (TODO: add to struct)\n");
     return true;
 }
 
@@ -2003,7 +1947,6 @@ void gpu_particle_render(GPUParticleSystem *system, VkCommandBuffer cmd_buffer,
 
   u32 alive_count = gpu_particle_get_alive_count(system);
   if (alive_count > 0) {
-    fprintf(stderr, "[GPU_PARTICLES] Rendering %u particles\n", alive_count);
   }
 }
 
@@ -2041,13 +1984,11 @@ bool gpu_particle_resize_buffers(GPUParticleSystem* system, u32 new_max_particle
     
     // Recreate buffers
     if (!gpu_particle_create_buffers(system)) {
-        fprintf(stderr, "[GPU_PARTICLES] Failed to resize buffers (create failed)\n");
         return false;
     }
     
     // Remap buffers
     if (!gpu_particle_map_buffers(system)) {
-        fprintf(stderr, "[GPU_PARTICLES] Failed to resize buffers (map failed)\n");
         return false;
     }
     
@@ -2061,7 +2002,6 @@ bool gpu_particle_resize_buffers(GPUParticleSystem* system, u32 new_max_particle
     // Initialize new particle buffer again
     gpu_particle_init_new_particle_buffer(system);
     
-    fprintf(stderr, "[GPU_PARTICLES] Resized particle buffers to %u particles\n", new_max_particles);
     return true;
 }
 
@@ -2098,7 +2038,6 @@ void gpu_particle_enable_burst_mode(GPUParticleSystem* system, u32 emitter_id, b
     emitter->burst_interval = interval;
     emitter->burst_timer = 0.0f;
     
-    fprintf(stderr, "[GPU_PARTICLES] Emitter %u burst mode: %s (%u particles every %.2fs)\n",
             emitter_id, enabled ? "enabled" : "disabled", count, interval);
 }
 
@@ -2122,7 +2061,6 @@ void gpu_particle_set_lifetime_range(GPUParticleSystem* system, u32 emitter_id, 
     emitter->lifetime_min = min;
     emitter->particle_lifetime = max; // particle_lifetime serves as max
     
-    fprintf(stderr, "[GPU_PARTICLES] Emitter %u lifetime range: %.2f - %.2f\n",
             emitter_id, min, max);
 }
 

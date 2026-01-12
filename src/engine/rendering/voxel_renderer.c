@@ -7,11 +7,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "backend/metal/mtl_buffer.h"
-#include "backend/metal/mtl_device.h"
-#include "backend/metal/mtl_encoder.h"
-#include "backend/metal/mtl_pipeline.h"
-#include "backend/metal/mtl_shader_library.h"
+#include <backend/metal/mtl_buffer.h>
+#include <backend/metal/mtl_device.h>
+#include <backend/metal/mtl_encoder.h>
+#include <backend/metal/mtl_pipeline.h>
+#include <backend/metal/mtl_shader_library.h>
 #include <rendering/camera.h>
 #include <rendering/renderer.h>
 

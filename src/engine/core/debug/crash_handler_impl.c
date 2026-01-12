@@ -16,7 +16,6 @@ void debug_stack_walk(void *context, char *out_buffer, int max_len) {
 
 // Crash Callback
 void debug_on_crash(int sig) {
-  printf("CRITICAL ERROR: Signal %d\n", sig);
 
   // 1. Capture Stack Trace
   char stack[4096];
