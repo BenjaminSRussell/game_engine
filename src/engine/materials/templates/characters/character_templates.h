@@ -94,10 +94,18 @@ typedef enum CustomizationCategory {
 } CustomizationCategory;
 
 typedef struct CustomizationOption {
-  char name[32];
-  char icon_path[128];
+  char name[64];
+  char icon_path[256];
+  char description[512];
   uint32_t mesh_id;
   uint32_t material_id;
+  uint32_t texture_id;
+  CustomizationCategory category;
+  float weight_factor;
+  bool is_available;
+  bool is_premium;
+  uint32_t unlock_level;
+  float price;
   float morph_weights[16];
   bool is_default;
 } CustomizationOption;

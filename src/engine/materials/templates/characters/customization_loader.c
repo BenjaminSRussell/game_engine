@@ -25,21 +25,6 @@
 #define MAX_DESCRIPTION_LENGTH 512
 
 typedef struct {
-    char name[MAX_OPTION_NAME_LENGTH];
-    char icon_path[MAX_ICON_PATH_LENGTH];
-    char description[MAX_DESCRIPTION_LENGTH];
-    u32 mesh_id;
-    u32 material_id;
-    u32 texture_id;
-    CustomizationCategory category;
-    f32 weight_factor;
-    bool is_available;
-    bool is_premium;
-    u32 unlock_level;
-    f32 price;
-} CustomizationOption;
-
-typedef struct {
     CustomizationOption options[MAX_CUSTOMIZATION_OPTIONS];
     u32 option_count;
     u32 category_counts[MAX_CUSTOMIZATION_CATEGORIES];

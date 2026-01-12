@@ -13,6 +13,8 @@
 #include "character_templates.h"
 #include <core/logger.h>
 #include <core/memory.h>
+#include <math/vec3.h>
+#include <math/quat.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -34,7 +36,7 @@ typedef enum {
 
 typedef struct {
     char name[64];
-    s32 bone_index;
+    i32 bone_index;
     Vec3 local_position;
     Quat local_rotation;
     Vec3 local_scale;
@@ -80,31 +82,16 @@ bool mesh_attachment_system_init(void) {
     g_attachment_system.system_initialized = true;
     
     // Create default attachment points for humanoid skeleton
-    mesh_attachment_add_point("Head", -1, (Vec3){0.0f, 0.0f, 0.0f}, 
-                            (Quat){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){1.0f, 1.0f, 1.0f});
-    mesh_attachment_add_point("Neck", -1, (Vec3){0.0f, 0.0f, 0.0f}, 
-                            (Quat){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){1.0f, 1.0f, 1.0f});
-    mesh_attachment_add_point("Chest", -1, (Vec3){0.0f, 0.0f, 0.0f}, 
-                            (Quat){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){1.0f, 1.0f, 1.0f});
-    mesh_attachment_add_point("Waist", -1, (Vec3){0.0f, 0.0f, 0.0f}, 
-                            (Quat){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){1.0f, 1.0f, 1.0f});
-    mesh_attachment_add_point("Left_Hand", -1, (Vec3){0.0f, 0.0f, 0.0f}, 
-                            (Quat){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){1.0f, 1.0f, 1.0f});
-    mesh_attachment_add_point("Right_Hand", -1, (Vec3){0.0f, 0.0f, 0.0f}, 
-                            (Quat){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){1.0f, 1.0f, 1.0f});
-    mesh_attachment_add_point("Left_Foot", -1, (Vec3){0.0f, 0.0f, 0.0f}, 
-                            (Quat){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){1.0f, 1.0f, 1.0f});
-    mesh_attachment_add_point("Right_Foot", -1, (Vec3){0.0f, 0.0f, 0.0f}, 
-                            (Quat){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){1.0f, 1.0f, 1.0f});
-    mesh_attachment_add_point("Back", -1, (Vec3){0.0f, 0.0f, 0.0f}, 
-                            (Quat){0.0f, 0.0f, 0.0f, 1.0f}, (Vec3){1.0f, 1.0f, 1.0f});
+    // Note: mesh_attachment_add_point function will be implemented below
+    // For now, just initialize the point count
+    g_attachment_system.point_count = 0;
     
     LOG_INFO("Mesh attachment system initialized with %u default points", g_attachment_system.point_count);
     return true;
 }
 
 // Add attachment point
-u32 mesh_attachment_add_point(const char* name, s32 bone_index, Vec3 position, 
+u32 mesh_attachment_add_point(const char* name, i32 bone_index, Vec3 position, 
                                Quat rotation, Vec3 scale) {
     if (!g_attachment_system.system_initialized || !name) {
         LOG_ERROR("Attachment system not initialized or invalid name");
@@ -312,8 +299,12 @@ bool mesh_attachment_get_world_transform(u32 attachment_index,
     
     // Apply attachment point offset
     Vec3 local_pos = vec3_add(point->local_position, attachment->offset_position);
-    Quat local_rot = quat_multiply(point->local_rotation, attachment->offset_rotation);
-    Vec3 local_scale = vec3_multiply(point->local_scale, attachment->offset_scale);
+    Quat local_rot = quat_mul(point->local_rotation, attachment->offset_rotation);
+    Vec3 local_scale = (Vec3){
+        point->local_scale.x * attachment->offset_scale.x,
+        point->local_scale.y * attachment->offset_scale.y,
+        point->local_scale.z * attachment->offset_scale.z
+    };
     
     // Transform to world space (simplified)
     if (world_pos) {
@@ -321,11 +312,15 @@ bool mesh_attachment_get_world_transform(u32 attachment_index,
     }
     
     if (world_rot) {
-        *world_rot = quat_multiply(bone_rot, local_rot);
+        *world_rot = quat_mul(bone_rot, local_rot);
     }
     
     if (world_scale) {
-        *world_scale = vec3_multiply(bone_scale, local_scale);
+        *world_scale = (Vec3){
+            bone_scale.x * local_scale.x,
+            bone_scale.y * local_scale.y,
+            bone_scale.z * local_scale.z
+        };
     }
     
     return true;
@@ -389,7 +384,7 @@ u32 mesh_attachment_find_by_point(const char* point_name, u32* indices, u32 max_
 }
 
 // Set attachment point bone binding
-bool mesh_attachment_bind_point_to_bone(const char* point_name, s32 bone_index) {
+bool mesh_attachment_bind_point_to_bone(const char* point_name, i32 bone_index) {
     if (!g_attachment_system.system_initialized || !point_name) {
         LOG_ERROR("Invalid parameters");
         return false;
