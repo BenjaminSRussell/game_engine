@@ -1,58 +1,20 @@
 #ifndef NETWORK_MANAGER_H
 #define NETWORK_MANAGER_H
 
+#include "include/network/network_types.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <arpa/inet.h>
 
 // Network constants
-#define MAX_PACKET_SIZE 4096
+// MAX_PACKET_SIZE is defined in packet.h
 #define MAX_CLIENTS 64
 #define MAX_USERNAME_LENGTH 64
 #define MAX_PASSWORD_LENGTH 64
 #define MAX_SERVER_NAME_LENGTH 128
 
-// Packet types
-typedef enum {
-    PACKET_CONNECT = 0,
-    PACKET_DISCONNECT,
-    PACKET_PING,
-    PACKET_PONG,
-    PACKET_SNAPSHOT, // Entity state snapshot
-    PACKET_INPUT,    // Player input
-    PACKET_SPAWN_ENTITY,
-    PACKET_DESTROY_ENTITY,
-    PACKET_CHAT_MESSAGE,
-    PACKET_TYPE_RPC = 99,
-    PACKET_TYPE_CONNECT = 1,
-    PACKET_TYPE_DISCONNECT = 2,
-    PACKET_TYPE_HEARTBEAT = 3,
-    PACKET_TYPE_CHAT = 4,
-    PACKET_TYPE_PLAYER_UPDATE = 5,
-    PACKET_TYPE_WORLD_UPDATE = 6,
-    PACKET_TYPE_ENTITY_SPAWN = 7,
-    PACKET_TYPE_ENTITY_DESTROY = 8,
-    PACKET_TYPE_ENTITY_UPDATE = 9,
-    PACKET_TYPE_BLOCK_CHANGE = 10,
-    PACKET_TYPE_CHUNK_DATA = 11,
-    PACKET_TYPE_SERVER_INFO = 12,
-    PACKET_TYPE_CLIENT_INFO = 13,
-    PACKET_TYPE_AUTH_REQUEST = 14,
-    PACKET_TYPE_AUTH_RESPONSE = 15
-} PacketType;
-
-// Network address structure
-typedef struct {
-    char ip[64];
-    uint16_t port;
-} NetAddress;
-
-// Alternative network address structure (for internal use)
-typedef struct {
-    uint32_t host; // IPv4 address in network byte order
-    uint16_t port; // Port in network byte order
-} NetAddressInternal;
+// Internal types used by network manager
 
 // Client info structure
 typedef struct {
