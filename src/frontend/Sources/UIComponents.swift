@@ -93,7 +93,7 @@ struct EditorIconButton: View {
     @State private var isHovering = false
     @State private var isActive = false
     
-    init(_ icon: String, tooltip: String? = nil, isActive: Bool = false, action: @escaping () -> Void) {
+    init(icon: String, tooltip: String? = nil, isActive: Bool = false, action: @escaping () -> Void) {
         self.icon = icon
         self.tooltip = tooltip
         self.isActive = isActive
@@ -376,34 +376,68 @@ struct EditorPanel<Content: View>: View {
 }
 
 /// Generic button for editor actions
+enum EditorButtonStyle {
+    case normal
+    case primary
+    case destructive
+}
+
 struct EditorButton: View {
     let title: String
+    let icon: String?
+    let style: EditorButtonStyle
     let action: () -> Void
     @State private var isHovering = false
     
-    init(_ title: String, action: @escaping () -> Void) {
+    init(_ title: String, icon: String? = nil, style: EditorButtonStyle = .normal, action: @escaping () -> Void) {
         self.title = title
+        self.icon = icon
+        self.style = style
         self.action = action
+    }
+    
+    private var backgroundColor: Color {
+        switch style {
+        case .normal:
+            return isHovering ? DesignSystem.Colors.backgroundSecondary : DesignSystem.Colors.backgroundTertiary
+        case .primary:
+            return isHovering ? DesignSystem.Colors.accentPrimary.opacity(0.9) : DesignSystem.Colors.accentPrimary
+        case .destructive:
+            return isHovering ? DesignSystem.Colors.accentCritical.opacity(0.9) : DesignSystem.Colors.accentCritical
+        }
+    }
+    
+    private var foregroundColor: Color {
+        switch style {
+        case .normal:
+            return DesignSystem.Colors.textPrimary
+        case .primary, .destructive:
+            return .white
+        }
     }
     
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundColor(DesignSystem.Colors.textPrimary)
-                .padding(.horizontal, DesignSystem.Spacing.md)
-                .padding(.vertical, DesignSystem.Spacing.xs)
-                .background(isHovering ? DesignSystem.Colors.backgroundSecondary : DesignSystem.Colors.backgroundTertiary)
-                .cornerRadius(6)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(DesignSystem.Colors.border, lineWidth: 1)
-                )
+            HStack(spacing: 6) {
+                if let icon = icon {
+                    Image(systemName: icon)
+                        .font(.system(size: 14, weight: .medium))
+                }
+                Text(title)
+                    .font(.system(size: 14, weight: .medium))
+            }
+            .foregroundColor(foregroundColor)
+            .padding(.horizontal, DesignSystem.Spacing.md)
+            .padding(.vertical, DesignSystem.Spacing.xs)
+            .background(backgroundColor)
+            .cornerRadius(6)
+            .overlay(
+                RoundedRectangle(cornerRadius: 6)
+                    .stroke(style == .normal ? DesignSystem.Colors.border : Color.clear, lineWidth: 1)
+            )
         }
-        .onHover { hovering in
-            isHovering = hovering
-        }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
+        .onHover { isHovering = $0 }
     }
 }
 
@@ -518,6 +552,31 @@ struct PremiumEditorLoadingIndicator: View {
             radius: DesignSystem.Shadows.large.radius,
             x: DesignSystem.Shadows.large.x,
             y: DesignSystem.Shadows.large.y
+        )
+    }
+}
+
+struct EditorCard<Content: View>: View {
+    let title: String
+    let content: Content
+    
+    init(title: String, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title)
+                .font(.headline)
+            content
+        }
+        .padding()
+        .background(DesignSystem.Colors.backgroundSecondary.opacity(0.5)) // Slightly darker or lighter
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(DesignSystem.Colors.border.opacity(0.5), lineWidth: 1)
         )
     }
 }

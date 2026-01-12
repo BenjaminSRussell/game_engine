@@ -352,7 +352,6 @@ void main_menu_delete_world(MainMenuSystem *menu, u32 index) {
     return;
 
   // Delete world through save system
-  printf("Deleting world: %s\n", menu->world_selection.worlds[index].name);
 
   // Refresh world list
   main_menu_refresh_worlds(menu);
@@ -369,7 +368,6 @@ void main_menu_edit_world(MainMenuSystem *menu, u32 index) {
     return;
 
   // Open world editing interface
-  printf("Editing world: %s\n", menu->world_selection.worlds[index].name);
 
   audio_play_ui_sound("menu_open");
 }

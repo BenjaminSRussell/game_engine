@@ -105,6 +105,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/Game.dir/DependInfo.cmake"
   "CMakeFiles/BlockGameApp.dir/DependInfo.cmake"
   "CMakeFiles/full_integration_test.dir/DependInfo.cmake"
+  "CMakeFiles/test_player_food.dir/DependInfo.cmake"
   "Vendor/Catch2/src/CMakeFiles/Catch2.dir/DependInfo.cmake"
   "Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/DependInfo.cmake"
   )

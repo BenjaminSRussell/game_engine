@@ -19,7 +19,6 @@ void audio_system_with_spatial_init(AudioSystemWithSpatial* sys, u32 max_channel
     sys->spatial_context = spatial_audio_create();
     sys->spatial_enabled = false;
     
-    fprintf(stderr, "[AUDIO] Spatial audio system initialized (disabled by default)\\n");
 }
 
 void audio_system_with_spatial_free(AudioSystemWithSpatial* sys) {
@@ -34,14 +33,12 @@ void audio_system_with_spatial_free(AudioSystemWithSpatial* sys) {
     // Free base system
     audio_system_free(&sys->base_system);
     
-    fprintf(stderr, "[AUDIO] Spatial audio system freed\\n");
 }
 
 void audio_enable_spatial(AudioSystemWithSpatial* sys, bool enable) {
     if (!sys) return;
     
     sys->spatial_enabled = enable;
-    fprintf(stderr, "[AUDIO] Spatial audio %s\\n", enable ? "enabled" : "disabled");
 }
 
 bool audio_is_spatial_enabled(AudioSystemWithSpatial* sys) {

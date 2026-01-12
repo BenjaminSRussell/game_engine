@@ -39,7 +39,7 @@ static void handle_query_types(char* response, size_t size) {
     const TypeDefinition** types = type_registry_get_all(&count);
     
     // Use a simpler approach to avoid buffer overflow logic complexity in this snippet
-    int offset = snprintf(response, size, "{\"status\": \"ok\", \"data\": [");
+    size_t offset = 0;
     if (offset < 0) return; 
     
     for (size_t i = 0; i < count; i++) {

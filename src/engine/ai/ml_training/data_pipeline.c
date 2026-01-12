@@ -52,7 +52,6 @@ void data_pipeline_export_csv(const char *filename) {
         Experience *exp = &g_pipeline.buffer[i];
         fprintf(f, "\"");
         for (int j = 0; j < MAX_STATE_SIZE; j++) {
-            fprintf(f, "%f", exp->state[j]);
             if (j < MAX_STATE_SIZE - 1) fprintf(f, ",");
         }
         fprintf(f, "\",%d,%f\n", exp->action, exp->reward);

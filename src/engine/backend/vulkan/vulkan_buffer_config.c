@@ -255,10 +255,6 @@ void vulkan_buffer_config_print_all() {
     
     printf("=== All Buffer Configurations ===\n");
     for (int i = 0; i < BUFFER_CONFIG_COUNT; i++) {
-        printf("%d. %s\n", i + 1, g_buffer_configs[i].name);
-        printf("   Size: %zu - %zu bytes\n", g_buffer_configs[i].min_size, g_buffer_configs[i].max_size);
-        printf("   Alignment: %zu bytes\n", g_buffer_configs[i].alignment);
-        printf("   Priority: %u\n", g_buffer_configs[i].priority);
         printf("\n");
     }
     printf("===================================\n");

@@ -75,7 +75,6 @@ Skeleton *skeleton_create(unsigned int bone_count) {
     skel->bones[i].bind_pose.position = (Vec3){0, 0, 0};
     skel->bones[i].bind_pose.rotation = quat_identity();
     skel->bones[i].bind_pose.scale = (Vec3){1, 1, 1};
-    snprintf(skel->bones[i].name, MAX_BONE_NAME, "Bone_%d", i);
   }
 
   return skel;

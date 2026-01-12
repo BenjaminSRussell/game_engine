@@ -150,7 +150,6 @@ bool Blueprint_TranspileVariables(BlueprintTranspilerContext* context) {
         // Note: This is a simplified implementation
         // In a real implementation, we would parse the actual variable data from the blueprint
         for (uint32_t i = 0; i < context->visual_graph->variable_count; i++) {
-            snprintf(context->visual_graph->variables[i].name, sizeof(context->visual_graph->variables[i].name), "Variable_%u", i);
             context->visual_graph->variables[i].data_type = VSDATA_FLOAT;
             context->visual_graph->variables[i].is_array = false;
             context->visual_graph->variables[i].is_public = true;
@@ -182,7 +181,6 @@ bool Blueprint_TranspileFunctions(BlueprintTranspilerContext* context) {
         // Note: This is a simplified implementation
         // In a real implementation, we would parse the actual function data from the blueprint
         for (uint32_t i = 0; i < context->visual_graph->function_count; i++) {
-            snprintf(context->visual_graph->functions[i].name, sizeof(context->visual_graph->functions[i].name), "Function_%u", i);
             context->visual_graph->functions[i].return_type = VSDATA_VOID;
             context->visual_graph->functions[i].is_public = true;
             context->visual_graph->functions[i].is_static = false;

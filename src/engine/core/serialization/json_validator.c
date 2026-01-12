@@ -312,7 +312,6 @@ static bool json_validate_node(const JsonValue *schema, JsonValue *value,
     if (items) {
       for (u32 i = 0; i < value->array.count; ++i) {
         char child_path[256];
-        snprintf(child_path, sizeof(child_path), "%s[%u]", path, i);
         if (!json_validate_node(items, value->array.values[i], error,
                                 child_path)) {
           return false;

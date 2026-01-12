@@ -42,7 +42,6 @@ static BlockID audio_occlusion_get_block(ChunkManager *chunks, i32 x, i32 y,
 void audio_occlusion_init(AudioOcclusionSystem* system, AudioSystem* audio,
                          ChunkManager* chunks, u32 max_sources) {
     if (!system || !audio || !chunks) {
-        fprintf(stderr, "[AUDIO_OCCL] Invalid parameters\n");
         return;
     }
 
@@ -54,7 +53,6 @@ void audio_occlusion_init(AudioOcclusionSystem* system, AudioSystem* audio,
     // Allocate occlusion tracking array
     system->source_occlusions = (f32*)calloc(max_sources, sizeof(f32));
     if (!system->source_occlusions) {
-        fprintf(stderr, "[AUDIO_OCCL] Failed to allocate occlusion array\n");
         return;
     }
 
@@ -67,7 +65,6 @@ void audio_occlusion_init(AudioOcclusionSystem* system, AudioSystem* audio,
     audio_occlusion_load_defaults(system);
 
     system->initialized = true;
-    fprintf(stderr, "[AUDIO_OCCL] Occlusion system initialized for %u sources\n",
             max_sources);
 }
 
@@ -82,7 +79,6 @@ void audio_occlusion_shutdown(AudioOcclusionSystem* system) {
     }
 
     system->initialized = false;
-    fprintf(stderr, "[AUDIO_OCCL] Occlusion system shut down\n");
 }
 
 void audio_occlusion_set_material(AudioOcclusionSystem* system, u16 block_type,
@@ -138,7 +134,6 @@ void audio_occlusion_load_defaults(AudioOcclusionSystem* system) {
     // BLOCK_COBBLESTONE - Heavy occlusion
     audio_occlusion_set_material(system, 4, 0.85f, 600.0f);
 
-    fprintf(stderr, "[AUDIO_OCCL] Loaded default material occlusion values\n");
 }
 
 f32 audio_occlusion_raycast(AudioOcclusionSystem* system, Vec3 listener_pos,

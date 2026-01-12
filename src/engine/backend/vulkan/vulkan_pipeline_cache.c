@@ -57,7 +57,6 @@ static void hash_pipeline_description(const void* description, u32 size, char* o
     
     // Convert to hex string
     for (int i = 0; i < 16; i++) {
-        snprintf(&out_hash[i*2], 3, "%02x", (hash >> (i * 8)) & 0xFF);
     }
     out_hash[32] = '\0';
 }

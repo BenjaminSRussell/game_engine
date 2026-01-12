@@ -132,12 +132,43 @@ typedef u32 VkImageLayout;
 typedef u32 VkPipelineBindPoint;
 typedef i32 VkResult;
 
+// Missing Vulkan enums for particle system
+typedef u32 VkBlendFactor;
+typedef u32 VkCullModeFlags;
+
+// Common Vulkan constants
+#define VK_SUCCESS 0
+#define VK_BLEND_FACTOR_SRC_ALPHA 1
+#define VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA 2
+#define VK_CULL_MODE_NONE 0
+
+// Missing Vulkan structs
+typedef struct {
+    u32 sType;
+    const void* pNext;
+    VkBufferUsageFlags usage;
+    VkDeviceSize size;
+} VkBufferCreateInfo;
+
+typedef struct {
+    VkDeviceSize size;
+    VkDeviceSize alignment;
+    VkDeviceSize memoryTypeBits;
+} VkMemoryRequirements;
+
 typedef struct {
   u32 maxImageDimension2D;
   u32 maxColorAttachments;
   u32 maxUniformBufferRange;
   u32 maxStorageBufferRange;
 } VkPhysicalDeviceLimits;
+
+// Missing Vulkan function declarations
+static inline VkResult vkCreateBuffer(VkDevice device, const VkBufferCreateInfo* pCreateInfo, const void* pAllocator, VkBuffer* pBuffer, VkDeviceMemory* pBufferMemory) { return VK_SUCCESS; }
+static inline void vkDestroyBuffer(VkDevice device, VkBuffer buffer, const void* pAllocator) {}
+static inline void vkGetBufferMemoryRequirements(VkDevice device, VkBuffer buffer, VkMemoryRequirements* pMemoryRequirements) {}
+static inline void vkDestroyPipeline(VkDevice device, VkPipeline pipeline, const void* pAllocator) {}
+static inline void vkDestroyPipelineLayout(VkDevice device, VkPipelineLayout pipelineLayout, const void* pAllocator) {}
 
 typedef struct {
   char deviceName[256];

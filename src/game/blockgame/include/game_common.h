@@ -175,16 +175,12 @@ typedef struct {
 
 // Logging (stub for now, can be implemented with Emscripten console)
 #ifndef LOG_INFO
-#define LOG_INFO(fmt, ...) printf("[INFO] " fmt "\n", ##__VA_ARGS__)
 #endif
 #ifndef LOG_WARN
-#define LOG_WARN(fmt, ...) printf("[WARN] " fmt "\n", ##__VA_ARGS__)
 #endif
 #ifndef LOG_ERROR
-#define LOG_ERROR(fmt, ...) printf("[ERROR] " fmt "\n", ##__VA_ARGS__)
 #endif
 #ifndef LOG_DEBUG
-#define LOG_DEBUG(fmt, ...) printf("[DEBUG] " fmt "\n", ##__VA_ARGS__)
 #endif
 
 #endif // GAME_COMMON_H

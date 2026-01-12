@@ -342,7 +342,6 @@ static void asset_browser_add_asset(BrowserAsset *asset) {
 static void asset_browser_remove_asset(const char *file_path) {
   for (u32 i = 0; i < g_browser.asset_count; i++) {
     if (strcmp(g_browser.assets[i].file_path, file_path) == 0) {
-      printf("    Removed asset: %s\n", g_browser.assets[i].name);
 
       // Shift remaining assets
       for (u32 j = i; j < g_browser.asset_count - 1; j++) {
@@ -865,7 +864,6 @@ static void asset_browser_filter_assets() {
 }
 
 static void asset_browser_draw_toolbar() {
-  printf("  [Toolbar] Search: '%s' | Filter: %d | Thumbnail: %.1fpx\n",
          g_browser.search_query, g_browser.filter_type,
          g_browser.thumbnail_size);
 
@@ -921,7 +919,6 @@ static void asset_browser_draw_toolbar() {
 }
 
 static void asset_browser_draw_grid() {
-  printf("  [Grid] %d assets in %d columns\n", g_browser.asset_count,
          g_browser.grid_columns);
 
 #ifdef ENABLE_IMGUI
@@ -1030,7 +1027,6 @@ static void asset_browser_draw_grid() {
     int column = i % g_browser.grid_columns;
     int row = i / g_browser.grid_columns;
 
-    printf("    [%d,%d] %s (%s)\n", row, column, asset->name,
            asset->thumbnail_generated ? "thumbnail" : "no thumbnail");
   }
 #endif
@@ -1051,6 +1047,5 @@ void AssetBrowser_StartDrag(const char *file_path) {
 static void asset_browser_handle_drag_drop(void) {
   if (is_dragging_asset) {
     // Draw drag visual...
-    printf("  [DragDrop] Dragging asset: %s\n", dragged_asset_path);
   }
 }

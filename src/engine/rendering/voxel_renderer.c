@@ -15,33 +15,11 @@
 #include <rendering/camera.h>
 #include <rendering/renderer.h>
 
+#include "voxel_renderer.h"
+
 // ============================================================================
-// Voxel Renderer Types
+// Voxel Renderer Implementation
 // ============================================================================
-
-typedef struct {
-  float x, y, z;     // Position
-  float nx, ny, nz;  // Normal
-  float u, v;        // Texture coordinates
-  uint8_t ao;        // Ambient occlusion
-  uint8_t light;     // Light level
-  uint16_t block_id; // Block type
-} VoxelVertex;
-
-typedef struct {
-  metal_buffer_t *vertex_buffer;
-  metal_buffer_t *index_buffer;
-  uint32_t vertex_count;
-  uint32_t index_count;
-  bool uploaded;
-} VoxelMesh;
-
-typedef struct {
-  uint32_t draw_calls;
-  uint32_t triangles_drawn;
-  uint32_t chunks_rendered;
-  float frame_time_ms;
-} VoxelRenderStats;
 
 typedef struct VoxelRenderer {
   metal_device_t *device;
@@ -417,9 +395,9 @@ void voxel_renderer_begin_frame(VoxelRenderer *renderer) {
   renderer->stats.chunks_rendered = 0;
 }
 
-void voxel_renderer_draw_mesh(VoxelRenderer *renderer, VoxelMesh *mesh,
+void voxel_renderer_draw_mesh(VoxelRenderer *renderer,
                               mtl_render_command_encoder_t encoder,
-                              float *mvp_matrix) {
+                              VoxelMesh *mesh, const float *mvp_matrix) {
   if (!renderer || !mesh || !mesh->uploaded || !encoder)
     return;
   if (mesh->vertex_count == 0)

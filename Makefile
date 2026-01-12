@@ -208,6 +208,19 @@ full_integration_test/fast:
 .PHONY : full_integration_test/fast
 
 #=============================================================================
+# Target rules for targets named test_player_food
+
+# Build rule for target.
+test_player_food: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_player_food
+.PHONY : test_player_food
+
+# fast build rule for target.
+test_player_food/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/build
+.PHONY : test_player_food/fast
+
+#=============================================================================
 # Target rules for targets named Catch2
 
 # Build rule for target.
@@ -3560,30 +3573,6 @@ src/engine/animation/skeleton_system.s: src/engine/animation/skeleton_system.c.s
 src/engine/animation/skeleton_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system.c.s
 .PHONY : src/engine/animation/skeleton_system.c.s
-
-src/engine/animation/skeleton_system_2.o: src/engine/animation/skeleton_system_2.c.o
-.PHONY : src/engine/animation/skeleton_system_2.o
-
-# target to build an object file
-src/engine/animation/skeleton_system_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system_2.c.o
-.PHONY : src/engine/animation/skeleton_system_2.c.o
-
-src/engine/animation/skeleton_system_2.i: src/engine/animation/skeleton_system_2.c.i
-.PHONY : src/engine/animation/skeleton_system_2.i
-
-# target to preprocess a source file
-src/engine/animation/skeleton_system_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system_2.c.i
-.PHONY : src/engine/animation/skeleton_system_2.c.i
-
-src/engine/animation/skeleton_system_2.s: src/engine/animation/skeleton_system_2.c.s
-.PHONY : src/engine/animation/skeleton_system_2.s
-
-# target to generate assembly for a file
-src/engine/animation/skeleton_system_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system_2.c.s
-.PHONY : src/engine/animation/skeleton_system_2.c.s
 
 src/engine/animation/state_machines/anim_state_machine.o: src/engine/animation/state_machines/anim_state_machine.c.o
 .PHONY : src/engine/animation/state_machines/anim_state_machine.o
@@ -6993,53 +6982,29 @@ src/engine/assets/textures/virtual_texturing/virtual_texture.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/assets/textures/virtual_texturing/virtual_texture.c.s
 .PHONY : src/engine/assets/textures/virtual_texturing/virtual_texture.c.s
 
-src/engine/audio/audio_loader.o: src/engine/audio/audio_loader.c.o
-.PHONY : src/engine/audio/audio_loader.o
+src/engine/audio/audio_core.o: src/engine/audio/audio_core.c.o
+.PHONY : src/engine/audio/audio_core.o
 
 # target to build an object file
-src/engine/audio/audio_loader.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/audio_loader.c.o
-.PHONY : src/engine/audio/audio_loader.c.o
+src/engine/audio/audio_core.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/audio_core.c.o
+.PHONY : src/engine/audio/audio_core.c.o
 
-src/engine/audio/audio_loader.i: src/engine/audio/audio_loader.c.i
-.PHONY : src/engine/audio/audio_loader.i
-
-# target to preprocess a source file
-src/engine/audio/audio_loader.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/audio_loader.c.i
-.PHONY : src/engine/audio/audio_loader.c.i
-
-src/engine/audio/audio_loader.s: src/engine/audio/audio_loader.c.s
-.PHONY : src/engine/audio/audio_loader.s
-
-# target to generate assembly for a file
-src/engine/audio/audio_loader.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/audio_loader.c.s
-.PHONY : src/engine/audio/audio_loader.c.s
-
-src/engine/audio/audio_reverb.o: src/engine/audio/audio_reverb.c.o
-.PHONY : src/engine/audio/audio_reverb.o
-
-# target to build an object file
-src/engine/audio/audio_reverb.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/audio_reverb.c.o
-.PHONY : src/engine/audio/audio_reverb.c.o
-
-src/engine/audio/audio_reverb.i: src/engine/audio/audio_reverb.c.i
-.PHONY : src/engine/audio/audio_reverb.i
+src/engine/audio/audio_core.i: src/engine/audio/audio_core.c.i
+.PHONY : src/engine/audio/audio_core.i
 
 # target to preprocess a source file
-src/engine/audio/audio_reverb.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/audio_reverb.c.i
-.PHONY : src/engine/audio/audio_reverb.c.i
+src/engine/audio/audio_core.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/audio_core.c.i
+.PHONY : src/engine/audio/audio_core.c.i
 
-src/engine/audio/audio_reverb.s: src/engine/audio/audio_reverb.c.s
-.PHONY : src/engine/audio/audio_reverb.s
+src/engine/audio/audio_core.s: src/engine/audio/audio_core.c.s
+.PHONY : src/engine/audio/audio_core.s
 
 # target to generate assembly for a file
-src/engine/audio/audio_reverb.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/audio_reverb.c.s
-.PHONY : src/engine/audio/audio_reverb.c.s
+src/engine/audio/audio_core.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/audio_core.c.s
+.PHONY : src/engine/audio/audio_core.c.s
 
 src/engine/audio/audio_system.o: src/engine/audio/audio_system.c.o
 .PHONY : src/engine/audio/audio_system.o
@@ -7064,30 +7029,6 @@ src/engine/audio/audio_system.s: src/engine/audio/audio_system.c.s
 src/engine/audio/audio_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/audio_system.c.s
 .PHONY : src/engine/audio/audio_system.c.s
-
-src/engine/audio/underwater_filter_stubs.o: src/engine/audio/underwater_filter_stubs.c.o
-.PHONY : src/engine/audio/underwater_filter_stubs.o
-
-# target to build an object file
-src/engine/audio/underwater_filter_stubs.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/underwater_filter_stubs.c.o
-.PHONY : src/engine/audio/underwater_filter_stubs.c.o
-
-src/engine/audio/underwater_filter_stubs.i: src/engine/audio/underwater_filter_stubs.c.i
-.PHONY : src/engine/audio/underwater_filter_stubs.i
-
-# target to preprocess a source file
-src/engine/audio/underwater_filter_stubs.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/underwater_filter_stubs.c.i
-.PHONY : src/engine/audio/underwater_filter_stubs.c.i
-
-src/engine/audio/underwater_filter_stubs.s: src/engine/audio/underwater_filter_stubs.c.s
-.PHONY : src/engine/audio/underwater_filter_stubs.s
-
-# target to generate assembly for a file
-src/engine/audio/underwater_filter_stubs.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/underwater_filter_stubs.c.s
-.PHONY : src/engine/audio/underwater_filter_stubs.c.s
 
 src/engine/backend/metal/metal_backend_demo.o: src/engine/backend/metal/metal_backend_demo.m.o
 .PHONY : src/engine/backend/metal/metal_backend_demo.o
@@ -10689,6 +10630,30 @@ src/engine/core/config.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/config.c.s
 .PHONY : src/engine/core/config.c.s
 
+src/engine/core/containers/hashmap.o: src/engine/core/containers/hashmap.c.o
+.PHONY : src/engine/core/containers/hashmap.o
+
+# target to build an object file
+src/engine/core/containers/hashmap.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o
+.PHONY : src/engine/core/containers/hashmap.c.o
+
+src/engine/core/containers/hashmap.i: src/engine/core/containers/hashmap.c.i
+.PHONY : src/engine/core/containers/hashmap.i
+
+# target to preprocess a source file
+src/engine/core/containers/hashmap.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.i
+.PHONY : src/engine/core/containers/hashmap.c.i
+
+src/engine/core/containers/hashmap.s: src/engine/core/containers/hashmap.c.s
+.PHONY : src/engine/core/containers/hashmap.s
+
+# target to generate assembly for a file
+src/engine/core/containers/hashmap.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.s
+.PHONY : src/engine/core/containers/hashmap.c.s
+
 src/engine/core/engine.o: src/engine/core/engine.c.o
 .PHONY : src/engine/core/engine.o
 
@@ -10783,6 +10748,7 @@ src/engine/core/logger.o: src/engine/core/logger.c.o
 # target to build an object file
 src/engine/core/logger.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/logger.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o
 .PHONY : src/engine/core/logger.c.o
 
 src/engine/core/logger.i: src/engine/core/logger.c.i
@@ -10791,6 +10757,7 @@ src/engine/core/logger.i: src/engine/core/logger.c.i
 # target to preprocess a source file
 src/engine/core/logger.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/logger.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/logger.c.i
 .PHONY : src/engine/core/logger.c.i
 
 src/engine/core/logger.s: src/engine/core/logger.c.s
@@ -10799,7 +10766,56 @@ src/engine/core/logger.s: src/engine/core/logger.c.s
 # target to generate assembly for a file
 src/engine/core/logger.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/logger.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/logger.c.s
 .PHONY : src/engine/core/logger.c.s
+
+src/engine/core/memory/buddy_allocator.o: src/engine/core/memory/buddy_allocator.c.o
+.PHONY : src/engine/core/memory/buddy_allocator.o
+
+# target to build an object file
+src/engine/core/memory/buddy_allocator.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o
+.PHONY : src/engine/core/memory/buddy_allocator.c.o
+
+src/engine/core/memory/buddy_allocator.i: src/engine/core/memory/buddy_allocator.c.i
+.PHONY : src/engine/core/memory/buddy_allocator.i
+
+# target to preprocess a source file
+src/engine/core/memory/buddy_allocator.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.i
+.PHONY : src/engine/core/memory/buddy_allocator.c.i
+
+src/engine/core/memory/buddy_allocator.s: src/engine/core/memory/buddy_allocator.c.s
+.PHONY : src/engine/core/memory/buddy_allocator.s
+
+# target to generate assembly for a file
+src/engine/core/memory/buddy_allocator.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.s
+.PHONY : src/engine/core/memory/buddy_allocator.c.s
+
+src/engine/core/memory/linear_allocator.o: src/engine/core/memory/linear_allocator.c.o
+.PHONY : src/engine/core/memory/linear_allocator.o
+
+# target to build an object file
+src/engine/core/memory/linear_allocator.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o
+.PHONY : src/engine/core/memory/linear_allocator.c.o
+
+src/engine/core/memory/linear_allocator.i: src/engine/core/memory/linear_allocator.c.i
+.PHONY : src/engine/core/memory/linear_allocator.i
+
+# target to preprocess a source file
+src/engine/core/memory/linear_allocator.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.i
+.PHONY : src/engine/core/memory/linear_allocator.c.i
+
+src/engine/core/memory/linear_allocator.s: src/engine/core/memory/linear_allocator.c.s
+.PHONY : src/engine/core/memory/linear_allocator.s
+
+# target to generate assembly for a file
+src/engine/core/memory/linear_allocator.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.s
+.PHONY : src/engine/core/memory/linear_allocator.c.s
 
 src/engine/core/memory/memory.o: src/engine/core/memory/memory.c.o
 .PHONY : src/engine/core/memory/memory.o
@@ -10807,6 +10823,7 @@ src/engine/core/memory/memory.o: src/engine/core/memory/memory.c.o
 # target to build an object file
 src/engine/core/memory/memory.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/memory.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o
 .PHONY : src/engine/core/memory/memory.c.o
 
 src/engine/core/memory/memory.i: src/engine/core/memory/memory.c.i
@@ -10815,6 +10832,7 @@ src/engine/core/memory/memory.i: src/engine/core/memory/memory.c.i
 # target to preprocess a source file
 src/engine/core/memory/memory.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/memory.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.i
 .PHONY : src/engine/core/memory/memory.c.i
 
 src/engine/core/memory/memory.s: src/engine/core/memory/memory.c.s
@@ -10823,6 +10841,7 @@ src/engine/core/memory/memory.s: src/engine/core/memory/memory.c.s
 # target to generate assembly for a file
 src/engine/core/memory/memory.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/memory.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.s
 .PHONY : src/engine/core/memory/memory.c.s
 
 src/engine/core/misc_stubs.o: src/engine/core/misc_stubs.c.o
@@ -10975,6 +10994,7 @@ src/engine/core/string_utils.o: src/engine/core/string_utils.c.o
 # target to build an object file
 src/engine/core/string_utils.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/string_utils.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o
 .PHONY : src/engine/core/string_utils.c.o
 
 src/engine/core/string_utils.i: src/engine/core/string_utils.c.i
@@ -10983,6 +11003,7 @@ src/engine/core/string_utils.i: src/engine/core/string_utils.c.i
 # target to preprocess a source file
 src/engine/core/string_utils.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/string_utils.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.i
 .PHONY : src/engine/core/string_utils.c.i
 
 src/engine/core/string_utils.s: src/engine/core/string_utils.c.s
@@ -10991,6 +11012,7 @@ src/engine/core/string_utils.s: src/engine/core/string_utils.c.s
 # target to generate assembly for a file
 src/engine/core/string_utils.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/string_utils.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.s
 .PHONY : src/engine/core/string_utils.c.s
 
 src/engine/core/sync/thread_pool.o: src/engine/core/sync/thread_pool.c.o
@@ -11328,6 +11350,54 @@ src/engine/effects/destruction/fracture_system.s: src/engine/effects/destruction
 src/engine/effects/destruction/fracture_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/destruction/fracture_system.c.s
 .PHONY : src/engine/effects/destruction/fracture_system.c.s
+
+src/engine/effects/particles/particle_emitter.o: src/engine/effects/particles/particle_emitter.c.o
+.PHONY : src/engine/effects/particles/particle_emitter.o
+
+# target to build an object file
+src/engine/effects/particles/particle_emitter.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_emitter.c.o
+.PHONY : src/engine/effects/particles/particle_emitter.c.o
+
+src/engine/effects/particles/particle_emitter.i: src/engine/effects/particles/particle_emitter.c.i
+.PHONY : src/engine/effects/particles/particle_emitter.i
+
+# target to preprocess a source file
+src/engine/effects/particles/particle_emitter.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_emitter.c.i
+.PHONY : src/engine/effects/particles/particle_emitter.c.i
+
+src/engine/effects/particles/particle_emitter.s: src/engine/effects/particles/particle_emitter.c.s
+.PHONY : src/engine/effects/particles/particle_emitter.s
+
+# target to generate assembly for a file
+src/engine/effects/particles/particle_emitter.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_emitter.c.s
+.PHONY : src/engine/effects/particles/particle_emitter.c.s
+
+src/engine/effects/particles/particle_simulation.o: src/engine/effects/particles/particle_simulation.c.o
+.PHONY : src/engine/effects/particles/particle_simulation.o
+
+# target to build an object file
+src/engine/effects/particles/particle_simulation.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_simulation.c.o
+.PHONY : src/engine/effects/particles/particle_simulation.c.o
+
+src/engine/effects/particles/particle_simulation.i: src/engine/effects/particles/particle_simulation.c.i
+.PHONY : src/engine/effects/particles/particle_simulation.i
+
+# target to preprocess a source file
+src/engine/effects/particles/particle_simulation.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_simulation.c.i
+.PHONY : src/engine/effects/particles/particle_simulation.c.i
+
+src/engine/effects/particles/particle_simulation.s: src/engine/effects/particles/particle_simulation.c.s
+.PHONY : src/engine/effects/particles/particle_simulation.s
+
+# target to generate assembly for a file
+src/engine/effects/particles/particle_simulation.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_simulation.c.s
+.PHONY : src/engine/effects/particles/particle_simulation.c.s
 
 src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.o: src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.c.o
 .PHONY : src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.o
@@ -14120,6 +14190,30 @@ src/engine/geometry/instancing/instance_buffer.s: src/engine/geometry/instancing
 src/engine/geometry/instancing/instance_buffer.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/geometry/instancing/instance_buffer.c.s
 .PHONY : src/engine/geometry/instancing/instance_buffer.c.s
+
+src/engine/geometry/instancing/instance_buffer_stubs.o: src/engine/geometry/instancing/instance_buffer_stubs.c.o
+.PHONY : src/engine/geometry/instancing/instance_buffer_stubs.o
+
+# target to build an object file
+src/engine/geometry/instancing/instance_buffer_stubs.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/geometry/instancing/instance_buffer_stubs.c.o
+.PHONY : src/engine/geometry/instancing/instance_buffer_stubs.c.o
+
+src/engine/geometry/instancing/instance_buffer_stubs.i: src/engine/geometry/instancing/instance_buffer_stubs.c.i
+.PHONY : src/engine/geometry/instancing/instance_buffer_stubs.i
+
+# target to preprocess a source file
+src/engine/geometry/instancing/instance_buffer_stubs.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/geometry/instancing/instance_buffer_stubs.c.i
+.PHONY : src/engine/geometry/instancing/instance_buffer_stubs.c.i
+
+src/engine/geometry/instancing/instance_buffer_stubs.s: src/engine/geometry/instancing/instance_buffer_stubs.c.s
+.PHONY : src/engine/geometry/instancing/instance_buffer_stubs.s
+
+# target to generate assembly for a file
+src/engine/geometry/instancing/instance_buffer_stubs.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/geometry/instancing/instance_buffer_stubs.c.s
+.PHONY : src/engine/geometry/instancing/instance_buffer_stubs.c.s
 
 src/engine/geometry/instancing/instance_culler.o: src/engine/geometry/instancing/instance_culler.c.o
 .PHONY : src/engine/geometry/instancing/instance_culler.o
@@ -17897,6 +17991,606 @@ src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.c.s
 .PHONY : src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.c.s
 
+src/engine/materials/customization_loader.o: src/engine/materials/customization_loader.c.o
+.PHONY : src/engine/materials/customization_loader.o
+
+# target to build an object file
+src/engine/materials/customization_loader.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/customization_loader.c.o
+.PHONY : src/engine/materials/customization_loader.c.o
+
+src/engine/materials/customization_loader.i: src/engine/materials/customization_loader.c.i
+.PHONY : src/engine/materials/customization_loader.i
+
+# target to preprocess a source file
+src/engine/materials/customization_loader.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/customization_loader.c.i
+.PHONY : src/engine/materials/customization_loader.c.i
+
+src/engine/materials/customization_loader.s: src/engine/materials/customization_loader.c.s
+.PHONY : src/engine/materials/customization_loader.s
+
+# target to generate assembly for a file
+src/engine/materials/customization_loader.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/customization_loader.c.s
+.PHONY : src/engine/materials/customization_loader.c.s
+
+src/engine/materials/gpu_material.o: src/engine/materials/gpu_material.c.o
+.PHONY : src/engine/materials/gpu_material.o
+
+# target to build an object file
+src/engine/materials/gpu_material.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/gpu_material.c.o
+.PHONY : src/engine/materials/gpu_material.c.o
+
+src/engine/materials/gpu_material.i: src/engine/materials/gpu_material.c.i
+.PHONY : src/engine/materials/gpu_material.i
+
+# target to preprocess a source file
+src/engine/materials/gpu_material.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/gpu_material.c.i
+.PHONY : src/engine/materials/gpu_material.c.i
+
+src/engine/materials/gpu_material.s: src/engine/materials/gpu_material.c.s
+.PHONY : src/engine/materials/gpu_material.s
+
+# target to generate assembly for a file
+src/engine/materials/gpu_material.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/gpu_material.c.s
+.PHONY : src/engine/materials/gpu_material.c.s
+
+src/engine/materials/layering/height_blending.o: src/engine/materials/layering/height_blending.c.o
+.PHONY : src/engine/materials/layering/height_blending.o
+
+# target to build an object file
+src/engine/materials/layering/height_blending.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/height_blending.c.o
+.PHONY : src/engine/materials/layering/height_blending.c.o
+
+src/engine/materials/layering/height_blending.i: src/engine/materials/layering/height_blending.c.i
+.PHONY : src/engine/materials/layering/height_blending.i
+
+# target to preprocess a source file
+src/engine/materials/layering/height_blending.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/height_blending.c.i
+.PHONY : src/engine/materials/layering/height_blending.c.i
+
+src/engine/materials/layering/height_blending.s: src/engine/materials/layering/height_blending.c.s
+.PHONY : src/engine/materials/layering/height_blending.s
+
+# target to generate assembly for a file
+src/engine/materials/layering/height_blending.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/height_blending.c.s
+.PHONY : src/engine/materials/layering/height_blending.c.s
+
+src/engine/materials/layering/layer_blending.o: src/engine/materials/layering/layer_blending.c.o
+.PHONY : src/engine/materials/layering/layer_blending.o
+
+# target to build an object file
+src/engine/materials/layering/layer_blending.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/layer_blending.c.o
+.PHONY : src/engine/materials/layering/layer_blending.c.o
+
+src/engine/materials/layering/layer_blending.i: src/engine/materials/layering/layer_blending.c.i
+.PHONY : src/engine/materials/layering/layer_blending.i
+
+# target to preprocess a source file
+src/engine/materials/layering/layer_blending.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/layer_blending.c.i
+.PHONY : src/engine/materials/layering/layer_blending.c.i
+
+src/engine/materials/layering/layer_blending.s: src/engine/materials/layering/layer_blending.c.s
+.PHONY : src/engine/materials/layering/layer_blending.s
+
+# target to generate assembly for a file
+src/engine/materials/layering/layer_blending.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/layer_blending.c.s
+.PHONY : src/engine/materials/layering/layer_blending.c.s
+
+src/engine/materials/layering/layer_masks.o: src/engine/materials/layering/layer_masks.c.o
+.PHONY : src/engine/materials/layering/layer_masks.o
+
+# target to build an object file
+src/engine/materials/layering/layer_masks.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/layer_masks.c.o
+.PHONY : src/engine/materials/layering/layer_masks.c.o
+
+src/engine/materials/layering/layer_masks.i: src/engine/materials/layering/layer_masks.c.i
+.PHONY : src/engine/materials/layering/layer_masks.i
+
+# target to preprocess a source file
+src/engine/materials/layering/layer_masks.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/layer_masks.c.i
+.PHONY : src/engine/materials/layering/layer_masks.c.i
+
+src/engine/materials/layering/layer_masks.s: src/engine/materials/layering/layer_masks.c.s
+.PHONY : src/engine/materials/layering/layer_masks.s
+
+# target to generate assembly for a file
+src/engine/materials/layering/layer_masks.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/layer_masks.c.s
+.PHONY : src/engine/materials/layering/layer_masks.c.s
+
+src/engine/materials/layering/layer_weights.o: src/engine/materials/layering/layer_weights.c.o
+.PHONY : src/engine/materials/layering/layer_weights.o
+
+# target to build an object file
+src/engine/materials/layering/layer_weights.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/layer_weights.c.o
+.PHONY : src/engine/materials/layering/layer_weights.c.o
+
+src/engine/materials/layering/layer_weights.i: src/engine/materials/layering/layer_weights.c.i
+.PHONY : src/engine/materials/layering/layer_weights.i
+
+# target to preprocess a source file
+src/engine/materials/layering/layer_weights.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/layer_weights.c.i
+.PHONY : src/engine/materials/layering/layer_weights.c.i
+
+src/engine/materials/layering/layer_weights.s: src/engine/materials/layering/layer_weights.c.s
+.PHONY : src/engine/materials/layering/layer_weights.s
+
+# target to generate assembly for a file
+src/engine/materials/layering/layer_weights.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/layer_weights.c.s
+.PHONY : src/engine/materials/layering/layer_weights.c.s
+
+src/engine/materials/layering/material_layers.o: src/engine/materials/layering/material_layers.c.o
+.PHONY : src/engine/materials/layering/material_layers.o
+
+# target to build an object file
+src/engine/materials/layering/material_layers.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/material_layers.c.o
+.PHONY : src/engine/materials/layering/material_layers.c.o
+
+src/engine/materials/layering/material_layers.i: src/engine/materials/layering/material_layers.c.i
+.PHONY : src/engine/materials/layering/material_layers.i
+
+# target to preprocess a source file
+src/engine/materials/layering/material_layers.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/material_layers.c.i
+.PHONY : src/engine/materials/layering/material_layers.c.i
+
+src/engine/materials/layering/material_layers.s: src/engine/materials/layering/material_layers.c.s
+.PHONY : src/engine/materials/layering/material_layers.s
+
+# target to generate assembly for a file
+src/engine/materials/layering/material_layers.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/material_layers.c.s
+.PHONY : src/engine/materials/layering/material_layers.c.s
+
+src/engine/materials/layering/triplanar_projection.o: src/engine/materials/layering/triplanar_projection.c.o
+.PHONY : src/engine/materials/layering/triplanar_projection.o
+
+# target to build an object file
+src/engine/materials/layering/triplanar_projection.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/triplanar_projection.c.o
+.PHONY : src/engine/materials/layering/triplanar_projection.c.o
+
+src/engine/materials/layering/triplanar_projection.i: src/engine/materials/layering/triplanar_projection.c.i
+.PHONY : src/engine/materials/layering/triplanar_projection.i
+
+# target to preprocess a source file
+src/engine/materials/layering/triplanar_projection.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/triplanar_projection.c.i
+.PHONY : src/engine/materials/layering/triplanar_projection.c.i
+
+src/engine/materials/layering/triplanar_projection.s: src/engine/materials/layering/triplanar_projection.c.s
+.PHONY : src/engine/materials/layering/triplanar_projection.s
+
+# target to generate assembly for a file
+src/engine/materials/layering/triplanar_projection.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/layering/triplanar_projection.c.s
+.PHONY : src/engine/materials/layering/triplanar_projection.c.s
+
+src/engine/materials/material.o: src/engine/materials/material.c.o
+.PHONY : src/engine/materials/material.o
+
+# target to build an object file
+src/engine/materials/material.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material.c.o
+.PHONY : src/engine/materials/material.c.o
+
+src/engine/materials/material.i: src/engine/materials/material.c.i
+.PHONY : src/engine/materials/material.i
+
+# target to preprocess a source file
+src/engine/materials/material.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material.c.i
+.PHONY : src/engine/materials/material.c.i
+
+src/engine/materials/material.s: src/engine/materials/material.c.s
+.PHONY : src/engine/materials/material.s
+
+# target to generate assembly for a file
+src/engine/materials/material.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material.c.s
+.PHONY : src/engine/materials/material.c.s
+
+src/engine/materials/material_complete_example.o: src/engine/materials/material_complete_example.c.o
+.PHONY : src/engine/materials/material_complete_example.o
+
+# target to build an object file
+src/engine/materials/material_complete_example.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_complete_example.c.o
+.PHONY : src/engine/materials/material_complete_example.c.o
+
+src/engine/materials/material_complete_example.i: src/engine/materials/material_complete_example.c.i
+.PHONY : src/engine/materials/material_complete_example.i
+
+# target to preprocess a source file
+src/engine/materials/material_complete_example.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_complete_example.c.i
+.PHONY : src/engine/materials/material_complete_example.c.i
+
+src/engine/materials/material_complete_example.s: src/engine/materials/material_complete_example.c.s
+.PHONY : src/engine/materials/material_complete_example.s
+
+# target to generate assembly for a file
+src/engine/materials/material_complete_example.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_complete_example.c.s
+.PHONY : src/engine/materials/material_complete_example.c.s
+
+src/engine/materials/material_defaults.o: src/engine/materials/material_defaults.c.o
+.PHONY : src/engine/materials/material_defaults.o
+
+# target to build an object file
+src/engine/materials/material_defaults.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_defaults.c.o
+.PHONY : src/engine/materials/material_defaults.c.o
+
+src/engine/materials/material_defaults.i: src/engine/materials/material_defaults.c.i
+.PHONY : src/engine/materials/material_defaults.i
+
+# target to preprocess a source file
+src/engine/materials/material_defaults.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_defaults.c.i
+.PHONY : src/engine/materials/material_defaults.c.i
+
+src/engine/materials/material_defaults.s: src/engine/materials/material_defaults.c.s
+.PHONY : src/engine/materials/material_defaults.s
+
+# target to generate assembly for a file
+src/engine/materials/material_defaults.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_defaults.c.s
+.PHONY : src/engine/materials/material_defaults.c.s
+
+src/engine/materials/material_examples.o: src/engine/materials/material_examples.c.o
+.PHONY : src/engine/materials/material_examples.o
+
+# target to build an object file
+src/engine/materials/material_examples.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_examples.c.o
+.PHONY : src/engine/materials/material_examples.c.o
+
+src/engine/materials/material_examples.i: src/engine/materials/material_examples.c.i
+.PHONY : src/engine/materials/material_examples.i
+
+# target to preprocess a source file
+src/engine/materials/material_examples.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_examples.c.i
+.PHONY : src/engine/materials/material_examples.c.i
+
+src/engine/materials/material_examples.s: src/engine/materials/material_examples.c.s
+.PHONY : src/engine/materials/material_examples.s
+
+# target to generate assembly for a file
+src/engine/materials/material_examples.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_examples.c.s
+.PHONY : src/engine/materials/material_examples.c.s
+
+src/engine/materials/material_hot_reload.o: src/engine/materials/material_hot_reload.c.o
+.PHONY : src/engine/materials/material_hot_reload.o
+
+# target to build an object file
+src/engine/materials/material_hot_reload.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_hot_reload.c.o
+.PHONY : src/engine/materials/material_hot_reload.c.o
+
+src/engine/materials/material_hot_reload.i: src/engine/materials/material_hot_reload.c.i
+.PHONY : src/engine/materials/material_hot_reload.i
+
+# target to preprocess a source file
+src/engine/materials/material_hot_reload.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_hot_reload.c.i
+.PHONY : src/engine/materials/material_hot_reload.c.i
+
+src/engine/materials/material_hot_reload.s: src/engine/materials/material_hot_reload.c.s
+.PHONY : src/engine/materials/material_hot_reload.s
+
+# target to generate assembly for a file
+src/engine/materials/material_hot_reload.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_hot_reload.c.s
+.PHONY : src/engine/materials/material_hot_reload.c.s
+
+src/engine/materials/material_instance.o: src/engine/materials/material_instance.c.o
+.PHONY : src/engine/materials/material_instance.o
+
+# target to build an object file
+src/engine/materials/material_instance.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_instance.c.o
+.PHONY : src/engine/materials/material_instance.c.o
+
+src/engine/materials/material_instance.i: src/engine/materials/material_instance.c.i
+.PHONY : src/engine/materials/material_instance.i
+
+# target to preprocess a source file
+src/engine/materials/material_instance.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_instance.c.i
+.PHONY : src/engine/materials/material_instance.c.i
+
+src/engine/materials/material_instance.s: src/engine/materials/material_instance.c.s
+.PHONY : src/engine/materials/material_instance.s
+
+# target to generate assembly for a file
+src/engine/materials/material_instance.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_instance.c.s
+.PHONY : src/engine/materials/material_instance.c.s
+
+src/engine/materials/material_serialization.o: src/engine/materials/material_serialization.c.o
+.PHONY : src/engine/materials/material_serialization.o
+
+# target to build an object file
+src/engine/materials/material_serialization.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_serialization.c.o
+.PHONY : src/engine/materials/material_serialization.c.o
+
+src/engine/materials/material_serialization.i: src/engine/materials/material_serialization.c.i
+.PHONY : src/engine/materials/material_serialization.i
+
+# target to preprocess a source file
+src/engine/materials/material_serialization.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_serialization.c.i
+.PHONY : src/engine/materials/material_serialization.c.i
+
+src/engine/materials/material_serialization.s: src/engine/materials/material_serialization.c.s
+.PHONY : src/engine/materials/material_serialization.s
+
+# target to generate assembly for a file
+src/engine/materials/material_serialization.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_serialization.c.s
+.PHONY : src/engine/materials/material_serialization.c.s
+
+src/engine/materials/material_serialization_examples.o: src/engine/materials/material_serialization_examples.c.o
+.PHONY : src/engine/materials/material_serialization_examples.o
+
+# target to build an object file
+src/engine/materials/material_serialization_examples.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_serialization_examples.c.o
+.PHONY : src/engine/materials/material_serialization_examples.c.o
+
+src/engine/materials/material_serialization_examples.i: src/engine/materials/material_serialization_examples.c.i
+.PHONY : src/engine/materials/material_serialization_examples.i
+
+# target to preprocess a source file
+src/engine/materials/material_serialization_examples.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_serialization_examples.c.i
+.PHONY : src/engine/materials/material_serialization_examples.c.i
+
+src/engine/materials/material_serialization_examples.s: src/engine/materials/material_serialization_examples.c.s
+.PHONY : src/engine/materials/material_serialization_examples.s
+
+# target to generate assembly for a file
+src/engine/materials/material_serialization_examples.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_serialization_examples.c.s
+.PHONY : src/engine/materials/material_serialization_examples.c.s
+
+src/engine/materials/material_system.o: src/engine/materials/material_system.c.o
+.PHONY : src/engine/materials/material_system.o
+
+# target to build an object file
+src/engine/materials/material_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system.c.o
+.PHONY : src/engine/materials/material_system.c.o
+
+src/engine/materials/material_system.i: src/engine/materials/material_system.c.i
+.PHONY : src/engine/materials/material_system.i
+
+# target to preprocess a source file
+src/engine/materials/material_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system.c.i
+.PHONY : src/engine/materials/material_system.c.i
+
+src/engine/materials/material_system.s: src/engine/materials/material_system.c.s
+.PHONY : src/engine/materials/material_system.s
+
+# target to generate assembly for a file
+src/engine/materials/material_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system.c.s
+.PHONY : src/engine/materials/material_system.c.s
+
+src/engine/materials/material_system/dynamic_materials.o: src/engine/materials/material_system/dynamic_materials.c.o
+.PHONY : src/engine/materials/material_system/dynamic_materials.o
+
+# target to build an object file
+src/engine/materials/material_system/dynamic_materials.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/dynamic_materials.c.o
+.PHONY : src/engine/materials/material_system/dynamic_materials.c.o
+
+src/engine/materials/material_system/dynamic_materials.i: src/engine/materials/material_system/dynamic_materials.c.i
+.PHONY : src/engine/materials/material_system/dynamic_materials.i
+
+# target to preprocess a source file
+src/engine/materials/material_system/dynamic_materials.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/dynamic_materials.c.i
+.PHONY : src/engine/materials/material_system/dynamic_materials.c.i
+
+src/engine/materials/material_system/dynamic_materials.s: src/engine/materials/material_system/dynamic_materials.c.s
+.PHONY : src/engine/materials/material_system/dynamic_materials.s
+
+# target to generate assembly for a file
+src/engine/materials/material_system/dynamic_materials.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/dynamic_materials.c.s
+.PHONY : src/engine/materials/material_system/dynamic_materials.c.s
+
+src/engine/materials/material_system/material_instance.o: src/engine/materials/material_system/material_instance.c.o
+.PHONY : src/engine/materials/material_system/material_instance.o
+
+# target to build an object file
+src/engine/materials/material_system/material_instance.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_instance.c.o
+.PHONY : src/engine/materials/material_system/material_instance.c.o
+
+src/engine/materials/material_system/material_instance.i: src/engine/materials/material_system/material_instance.c.i
+.PHONY : src/engine/materials/material_system/material_instance.i
+
+# target to preprocess a source file
+src/engine/materials/material_system/material_instance.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_instance.c.i
+.PHONY : src/engine/materials/material_system/material_instance.c.i
+
+src/engine/materials/material_system/material_instance.s: src/engine/materials/material_system/material_instance.c.s
+.PHONY : src/engine/materials/material_system/material_instance.s
+
+# target to generate assembly for a file
+src/engine/materials/material_system/material_instance.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_instance.c.s
+.PHONY : src/engine/materials/material_system/material_instance.c.s
+
+src/engine/materials/material_system/material_lod.o: src/engine/materials/material_system/material_lod.c.o
+.PHONY : src/engine/materials/material_system/material_lod.o
+
+# target to build an object file
+src/engine/materials/material_system/material_lod.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_lod.c.o
+.PHONY : src/engine/materials/material_system/material_lod.c.o
+
+src/engine/materials/material_system/material_lod.i: src/engine/materials/material_system/material_lod.c.i
+.PHONY : src/engine/materials/material_system/material_lod.i
+
+# target to preprocess a source file
+src/engine/materials/material_system/material_lod.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_lod.c.i
+.PHONY : src/engine/materials/material_system/material_lod.c.i
+
+src/engine/materials/material_system/material_lod.s: src/engine/materials/material_system/material_lod.c.s
+.PHONY : src/engine/materials/material_system/material_lod.s
+
+# target to generate assembly for a file
+src/engine/materials/material_system/material_lod.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_lod.c.s
+.PHONY : src/engine/materials/material_system/material_lod.c.s
+
+src/engine/materials/material_system/material_overrides.o: src/engine/materials/material_system/material_overrides.c.o
+.PHONY : src/engine/materials/material_system/material_overrides.o
+
+# target to build an object file
+src/engine/materials/material_system/material_overrides.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_overrides.c.o
+.PHONY : src/engine/materials/material_system/material_overrides.c.o
+
+src/engine/materials/material_system/material_overrides.i: src/engine/materials/material_system/material_overrides.c.i
+.PHONY : src/engine/materials/material_system/material_overrides.i
+
+# target to preprocess a source file
+src/engine/materials/material_system/material_overrides.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_overrides.c.i
+.PHONY : src/engine/materials/material_system/material_overrides.c.i
+
+src/engine/materials/material_system/material_overrides.s: src/engine/materials/material_system/material_overrides.c.s
+.PHONY : src/engine/materials/material_system/material_overrides.s
+
+# target to generate assembly for a file
+src/engine/materials/material_system/material_overrides.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_overrides.c.s
+.PHONY : src/engine/materials/material_system/material_overrides.c.s
+
+src/engine/materials/material_system/material_parameters.o: src/engine/materials/material_system/material_parameters.c.o
+.PHONY : src/engine/materials/material_system/material_parameters.o
+
+# target to build an object file
+src/engine/materials/material_system/material_parameters.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_parameters.c.o
+.PHONY : src/engine/materials/material_system/material_parameters.c.o
+
+src/engine/materials/material_system/material_parameters.i: src/engine/materials/material_system/material_parameters.c.i
+.PHONY : src/engine/materials/material_system/material_parameters.i
+
+# target to preprocess a source file
+src/engine/materials/material_system/material_parameters.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_parameters.c.i
+.PHONY : src/engine/materials/material_system/material_parameters.c.i
+
+src/engine/materials/material_system/material_parameters.s: src/engine/materials/material_system/material_parameters.c.s
+.PHONY : src/engine/materials/material_system/material_parameters.s
+
+# target to generate assembly for a file
+src/engine/materials/material_system/material_parameters.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_parameters.c.s
+.PHONY : src/engine/materials/material_system/material_parameters.c.s
+
+src/engine/materials/material_system/material_sorting.o: src/engine/materials/material_system/material_sorting.c.o
+.PHONY : src/engine/materials/material_system/material_sorting.o
+
+# target to build an object file
+src/engine/materials/material_system/material_sorting.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_sorting.c.o
+.PHONY : src/engine/materials/material_system/material_sorting.c.o
+
+src/engine/materials/material_system/material_sorting.i: src/engine/materials/material_system/material_sorting.c.i
+.PHONY : src/engine/materials/material_system/material_sorting.i
+
+# target to preprocess a source file
+src/engine/materials/material_system/material_sorting.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_sorting.c.i
+.PHONY : src/engine/materials/material_system/material_sorting.c.i
+
+src/engine/materials/material_system/material_sorting.s: src/engine/materials/material_system/material_sorting.c.s
+.PHONY : src/engine/materials/material_system/material_sorting.s
+
+# target to generate assembly for a file
+src/engine/materials/material_system/material_sorting.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_system/material_sorting.c.s
+.PHONY : src/engine/materials/material_system/material_sorting.c.s
+
+src/engine/materials/material_templates.o: src/engine/materials/material_templates.c.o
+.PHONY : src/engine/materials/material_templates.o
+
+# target to build an object file
+src/engine/materials/material_templates.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_templates.c.o
+.PHONY : src/engine/materials/material_templates.c.o
+
+src/engine/materials/material_templates.i: src/engine/materials/material_templates.c.i
+.PHONY : src/engine/materials/material_templates.i
+
+# target to preprocess a source file
+src/engine/materials/material_templates.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_templates.c.i
+.PHONY : src/engine/materials/material_templates.c.i
+
+src/engine/materials/material_templates.s: src/engine/materials/material_templates.c.s
+.PHONY : src/engine/materials/material_templates.s
+
+# target to generate assembly for a file
+src/engine/materials/material_templates.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/material_templates.c.s
+.PHONY : src/engine/materials/material_templates.c.s
+
+src/engine/materials/pbr/material_reflection.o: src/engine/materials/pbr/material_reflection.c.o
+.PHONY : src/engine/materials/pbr/material_reflection.o
+
+# target to build an object file
+src/engine/materials/pbr/material_reflection.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/material_reflection.c.o
+.PHONY : src/engine/materials/pbr/material_reflection.c.o
+
+src/engine/materials/pbr/material_reflection.i: src/engine/materials/pbr/material_reflection.c.i
+.PHONY : src/engine/materials/pbr/material_reflection.i
+
+# target to preprocess a source file
+src/engine/materials/pbr/material_reflection.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/material_reflection.c.i
+.PHONY : src/engine/materials/pbr/material_reflection.c.i
+
+src/engine/materials/pbr/material_reflection.s: src/engine/materials/pbr/material_reflection.c.s
+.PHONY : src/engine/materials/pbr/material_reflection.s
+
+# target to generate assembly for a file
+src/engine/materials/pbr/material_reflection.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/material_reflection.c.s
+.PHONY : src/engine/materials/pbr/material_reflection.c.s
+
 src/engine/materials/pbr/metallic_roughness.o: src/engine/materials/pbr/metallic_roughness.m.o
 .PHONY : src/engine/materials/pbr/metallic_roughness.o
 
@@ -17904,6 +18598,366 @@ src/engine/materials/pbr/metallic_roughness.o: src/engine/materials/pbr/metallic
 src/engine/materials/pbr/metallic_roughness.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o
 .PHONY : src/engine/materials/pbr/metallic_roughness.m.o
+
+src/engine/materials/pbr/pbr_conversion.o: src/engine/materials/pbr/pbr_conversion.c.o
+.PHONY : src/engine/materials/pbr/pbr_conversion.o
+
+# target to build an object file
+src/engine/materials/pbr/pbr_conversion.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_conversion.c.o
+.PHONY : src/engine/materials/pbr/pbr_conversion.c.o
+
+src/engine/materials/pbr/pbr_conversion.i: src/engine/materials/pbr/pbr_conversion.c.i
+.PHONY : src/engine/materials/pbr/pbr_conversion.i
+
+# target to preprocess a source file
+src/engine/materials/pbr/pbr_conversion.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_conversion.c.i
+.PHONY : src/engine/materials/pbr/pbr_conversion.c.i
+
+src/engine/materials/pbr/pbr_conversion.s: src/engine/materials/pbr/pbr_conversion.c.s
+.PHONY : src/engine/materials/pbr/pbr_conversion.s
+
+# target to generate assembly for a file
+src/engine/materials/pbr/pbr_conversion.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_conversion.c.s
+.PHONY : src/engine/materials/pbr/pbr_conversion.c.s
+
+src/engine/materials/pbr/pbr_parameters.o: src/engine/materials/pbr/pbr_parameters.c.o
+.PHONY : src/engine/materials/pbr/pbr_parameters.o
+
+# target to build an object file
+src/engine/materials/pbr/pbr_parameters.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_parameters.c.o
+.PHONY : src/engine/materials/pbr/pbr_parameters.c.o
+
+src/engine/materials/pbr/pbr_parameters.i: src/engine/materials/pbr/pbr_parameters.c.i
+.PHONY : src/engine/materials/pbr/pbr_parameters.i
+
+# target to preprocess a source file
+src/engine/materials/pbr/pbr_parameters.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_parameters.c.i
+.PHONY : src/engine/materials/pbr/pbr_parameters.c.i
+
+src/engine/materials/pbr/pbr_parameters.s: src/engine/materials/pbr/pbr_parameters.c.s
+.PHONY : src/engine/materials/pbr/pbr_parameters.s
+
+# target to generate assembly for a file
+src/engine/materials/pbr/pbr_parameters.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_parameters.c.s
+.PHONY : src/engine/materials/pbr/pbr_parameters.c.s
+
+src/engine/materials/pbr/pbr_presets.o: src/engine/materials/pbr/pbr_presets.c.o
+.PHONY : src/engine/materials/pbr/pbr_presets.o
+
+# target to build an object file
+src/engine/materials/pbr/pbr_presets.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_presets.c.o
+.PHONY : src/engine/materials/pbr/pbr_presets.c.o
+
+src/engine/materials/pbr/pbr_presets.i: src/engine/materials/pbr/pbr_presets.c.i
+.PHONY : src/engine/materials/pbr/pbr_presets.i
+
+# target to preprocess a source file
+src/engine/materials/pbr/pbr_presets.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_presets.c.i
+.PHONY : src/engine/materials/pbr/pbr_presets.c.i
+
+src/engine/materials/pbr/pbr_presets.s: src/engine/materials/pbr/pbr_presets.c.s
+.PHONY : src/engine/materials/pbr/pbr_presets.s
+
+# target to generate assembly for a file
+src/engine/materials/pbr/pbr_presets.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_presets.c.s
+.PHONY : src/engine/materials/pbr/pbr_presets.c.s
+
+src/engine/materials/pbr/pbr_validation.o: src/engine/materials/pbr/pbr_validation.c.o
+.PHONY : src/engine/materials/pbr/pbr_validation.o
+
+# target to build an object file
+src/engine/materials/pbr/pbr_validation.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_validation.c.o
+.PHONY : src/engine/materials/pbr/pbr_validation.c.o
+
+src/engine/materials/pbr/pbr_validation.i: src/engine/materials/pbr/pbr_validation.c.i
+.PHONY : src/engine/materials/pbr/pbr_validation.i
+
+# target to preprocess a source file
+src/engine/materials/pbr/pbr_validation.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_validation.c.i
+.PHONY : src/engine/materials/pbr/pbr_validation.c.i
+
+src/engine/materials/pbr/pbr_validation.s: src/engine/materials/pbr/pbr_validation.c.s
+.PHONY : src/engine/materials/pbr/pbr_validation.s
+
+# target to generate assembly for a file
+src/engine/materials/pbr/pbr_validation.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/pbr_validation.c.s
+.PHONY : src/engine/materials/pbr/pbr_validation.c.s
+
+src/engine/materials/pbr/specular_glossiness.o: src/engine/materials/pbr/specular_glossiness.c.o
+.PHONY : src/engine/materials/pbr/specular_glossiness.o
+
+# target to build an object file
+src/engine/materials/pbr/specular_glossiness.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/specular_glossiness.c.o
+.PHONY : src/engine/materials/pbr/specular_glossiness.c.o
+
+src/engine/materials/pbr/specular_glossiness.i: src/engine/materials/pbr/specular_glossiness.c.i
+.PHONY : src/engine/materials/pbr/specular_glossiness.i
+
+# target to preprocess a source file
+src/engine/materials/pbr/specular_glossiness.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/specular_glossiness.c.i
+.PHONY : src/engine/materials/pbr/specular_glossiness.c.i
+
+src/engine/materials/pbr/specular_glossiness.s: src/engine/materials/pbr/specular_glossiness.c.s
+.PHONY : src/engine/materials/pbr/specular_glossiness.s
+
+# target to generate assembly for a file
+src/engine/materials/pbr/specular_glossiness.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/pbr/specular_glossiness.c.s
+.PHONY : src/engine/materials/pbr/specular_glossiness.c.s
+
+src/engine/materials/shader_permutations.o: src/engine/materials/shader_permutations.c.o
+.PHONY : src/engine/materials/shader_permutations.o
+
+# target to build an object file
+src/engine/materials/shader_permutations.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shader_permutations.c.o
+.PHONY : src/engine/materials/shader_permutations.c.o
+
+src/engine/materials/shader_permutations.i: src/engine/materials/shader_permutations.c.i
+.PHONY : src/engine/materials/shader_permutations.i
+
+# target to preprocess a source file
+src/engine/materials/shader_permutations.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shader_permutations.c.i
+.PHONY : src/engine/materials/shader_permutations.c.i
+
+src/engine/materials/shader_permutations.s: src/engine/materials/shader_permutations.c.s
+.PHONY : src/engine/materials/shader_permutations.s
+
+# target to generate assembly for a file
+src/engine/materials/shader_permutations.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shader_permutations.c.s
+.PHONY : src/engine/materials/shader_permutations.c.s
+
+src/engine/materials/shaders/shader_cache.o: src/engine/materials/shaders/shader_cache.c.o
+.PHONY : src/engine/materials/shaders/shader_cache.o
+
+# target to build an object file
+src/engine/materials/shaders/shader_cache.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_cache.c.o
+.PHONY : src/engine/materials/shaders/shader_cache.c.o
+
+src/engine/materials/shaders/shader_cache.i: src/engine/materials/shaders/shader_cache.c.i
+.PHONY : src/engine/materials/shaders/shader_cache.i
+
+# target to preprocess a source file
+src/engine/materials/shaders/shader_cache.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_cache.c.i
+.PHONY : src/engine/materials/shaders/shader_cache.c.i
+
+src/engine/materials/shaders/shader_cache.s: src/engine/materials/shaders/shader_cache.c.s
+.PHONY : src/engine/materials/shaders/shader_cache.s
+
+# target to generate assembly for a file
+src/engine/materials/shaders/shader_cache.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_cache.c.s
+.PHONY : src/engine/materials/shaders/shader_cache.c.s
+
+src/engine/materials/shaders/shader_compiler.o: src/engine/materials/shaders/shader_compiler.c.o
+.PHONY : src/engine/materials/shaders/shader_compiler.o
+
+# target to build an object file
+src/engine/materials/shaders/shader_compiler.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_compiler.c.o
+.PHONY : src/engine/materials/shaders/shader_compiler.c.o
+
+src/engine/materials/shaders/shader_compiler.i: src/engine/materials/shaders/shader_compiler.c.i
+.PHONY : src/engine/materials/shaders/shader_compiler.i
+
+# target to preprocess a source file
+src/engine/materials/shaders/shader_compiler.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_compiler.c.i
+.PHONY : src/engine/materials/shaders/shader_compiler.c.i
+
+src/engine/materials/shaders/shader_compiler.s: src/engine/materials/shaders/shader_compiler.c.s
+.PHONY : src/engine/materials/shaders/shader_compiler.s
+
+# target to generate assembly for a file
+src/engine/materials/shaders/shader_compiler.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_compiler.c.s
+.PHONY : src/engine/materials/shaders/shader_compiler.c.s
+
+src/engine/materials/shaders/shader_hot_reload.o: src/engine/materials/shaders/shader_hot_reload.c.o
+.PHONY : src/engine/materials/shaders/shader_hot_reload.o
+
+# target to build an object file
+src/engine/materials/shaders/shader_hot_reload.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_hot_reload.c.o
+.PHONY : src/engine/materials/shaders/shader_hot_reload.c.o
+
+src/engine/materials/shaders/shader_hot_reload.i: src/engine/materials/shaders/shader_hot_reload.c.i
+.PHONY : src/engine/materials/shaders/shader_hot_reload.i
+
+# target to preprocess a source file
+src/engine/materials/shaders/shader_hot_reload.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_hot_reload.c.i
+.PHONY : src/engine/materials/shaders/shader_hot_reload.c.i
+
+src/engine/materials/shaders/shader_hot_reload.s: src/engine/materials/shaders/shader_hot_reload.c.s
+.PHONY : src/engine/materials/shaders/shader_hot_reload.s
+
+# target to generate assembly for a file
+src/engine/materials/shaders/shader_hot_reload.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_hot_reload.c.s
+.PHONY : src/engine/materials/shaders/shader_hot_reload.c.s
+
+src/engine/materials/shaders/shader_includes.o: src/engine/materials/shaders/shader_includes.c.o
+.PHONY : src/engine/materials/shaders/shader_includes.o
+
+# target to build an object file
+src/engine/materials/shaders/shader_includes.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_includes.c.o
+.PHONY : src/engine/materials/shaders/shader_includes.c.o
+
+src/engine/materials/shaders/shader_includes.i: src/engine/materials/shaders/shader_includes.c.i
+.PHONY : src/engine/materials/shaders/shader_includes.i
+
+# target to preprocess a source file
+src/engine/materials/shaders/shader_includes.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_includes.c.i
+.PHONY : src/engine/materials/shaders/shader_includes.c.i
+
+src/engine/materials/shaders/shader_includes.s: src/engine/materials/shaders/shader_includes.c.s
+.PHONY : src/engine/materials/shaders/shader_includes.s
+
+# target to generate assembly for a file
+src/engine/materials/shaders/shader_includes.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_includes.c.s
+.PHONY : src/engine/materials/shaders/shader_includes.c.s
+
+src/engine/materials/shaders/shader_reflection.o: src/engine/materials/shaders/shader_reflection.c.o
+.PHONY : src/engine/materials/shaders/shader_reflection.o
+
+# target to build an object file
+src/engine/materials/shaders/shader_reflection.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_reflection.c.o
+.PHONY : src/engine/materials/shaders/shader_reflection.c.o
+
+src/engine/materials/shaders/shader_reflection.i: src/engine/materials/shaders/shader_reflection.c.i
+.PHONY : src/engine/materials/shaders/shader_reflection.i
+
+# target to preprocess a source file
+src/engine/materials/shaders/shader_reflection.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_reflection.c.i
+.PHONY : src/engine/materials/shaders/shader_reflection.c.i
+
+src/engine/materials/shaders/shader_reflection.s: src/engine/materials/shaders/shader_reflection.c.s
+.PHONY : src/engine/materials/shaders/shader_reflection.s
+
+# target to generate assembly for a file
+src/engine/materials/shaders/shader_reflection.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_reflection.c.s
+.PHONY : src/engine/materials/shaders/shader_reflection.c.s
+
+src/engine/materials/shaders/shader_variants.o: src/engine/materials/shaders/shader_variants.c.o
+.PHONY : src/engine/materials/shaders/shader_variants.o
+
+# target to build an object file
+src/engine/materials/shaders/shader_variants.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_variants.c.o
+.PHONY : src/engine/materials/shaders/shader_variants.c.o
+
+src/engine/materials/shaders/shader_variants.i: src/engine/materials/shaders/shader_variants.c.i
+.PHONY : src/engine/materials/shaders/shader_variants.i
+
+# target to preprocess a source file
+src/engine/materials/shaders/shader_variants.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_variants.c.i
+.PHONY : src/engine/materials/shaders/shader_variants.c.i
+
+src/engine/materials/shaders/shader_variants.s: src/engine/materials/shaders/shader_variants.c.s
+.PHONY : src/engine/materials/shaders/shader_variants.s
+
+# target to generate assembly for a file
+src/engine/materials/shaders/shader_variants.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/shaders/shader_variants.c.s
+.PHONY : src/engine/materials/shaders/shader_variants.c.s
+
+src/engine/materials/special_materials/emissive_material.o: src/engine/materials/special_materials/emissive_material.c.o
+.PHONY : src/engine/materials/special_materials/emissive_material.o
+
+# target to build an object file
+src/engine/materials/special_materials/emissive_material.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/special_materials/emissive_material.c.o
+.PHONY : src/engine/materials/special_materials/emissive_material.c.o
+
+src/engine/materials/special_materials/emissive_material.i: src/engine/materials/special_materials/emissive_material.c.i
+.PHONY : src/engine/materials/special_materials/emissive_material.i
+
+# target to preprocess a source file
+src/engine/materials/special_materials/emissive_material.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/special_materials/emissive_material.c.i
+.PHONY : src/engine/materials/special_materials/emissive_material.c.i
+
+src/engine/materials/special_materials/emissive_material.s: src/engine/materials/special_materials/emissive_material.c.s
+.PHONY : src/engine/materials/special_materials/emissive_material.s
+
+# target to generate assembly for a file
+src/engine/materials/special_materials/emissive_material.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/special_materials/emissive_material.c.s
+.PHONY : src/engine/materials/special_materials/emissive_material.c.s
+
+src/engine/materials/special_materials/foliage_material.o: src/engine/materials/special_materials/foliage_material.c.o
+.PHONY : src/engine/materials/special_materials/foliage_material.o
+
+# target to build an object file
+src/engine/materials/special_materials/foliage_material.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/special_materials/foliage_material.c.o
+.PHONY : src/engine/materials/special_materials/foliage_material.c.o
+
+src/engine/materials/special_materials/foliage_material.i: src/engine/materials/special_materials/foliage_material.c.i
+.PHONY : src/engine/materials/special_materials/foliage_material.i
+
+# target to preprocess a source file
+src/engine/materials/special_materials/foliage_material.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/special_materials/foliage_material.c.i
+.PHONY : src/engine/materials/special_materials/foliage_material.c.i
+
+src/engine/materials/special_materials/foliage_material.s: src/engine/materials/special_materials/foliage_material.c.s
+.PHONY : src/engine/materials/special_materials/foliage_material.s
+
+# target to generate assembly for a file
+src/engine/materials/special_materials/foliage_material.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/special_materials/foliage_material.c.s
+.PHONY : src/engine/materials/special_materials/foliage_material.c.s
+
+src/engine/materials/special_materials/glass_material.o: src/engine/materials/special_materials/glass_material.c.o
+.PHONY : src/engine/materials/special_materials/glass_material.o
+
+# target to build an object file
+src/engine/materials/special_materials/glass_material.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/special_materials/glass_material.c.o
+.PHONY : src/engine/materials/special_materials/glass_material.c.o
+
+src/engine/materials/special_materials/glass_material.i: src/engine/materials/special_materials/glass_material.c.i
+.PHONY : src/engine/materials/special_materials/glass_material.i
+
+# target to preprocess a source file
+src/engine/materials/special_materials/glass_material.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/special_materials/glass_material.c.i
+.PHONY : src/engine/materials/special_materials/glass_material.c.i
+
+src/engine/materials/special_materials/glass_material.s: src/engine/materials/special_materials/glass_material.c.s
+.PHONY : src/engine/materials/special_materials/glass_material.s
+
+# target to generate assembly for a file
+src/engine/materials/special_materials/glass_material.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/special_materials/glass_material.c.s
+.PHONY : src/engine/materials/special_materials/glass_material.c.s
 
 src/engine/materials/special_materials/hair_material.o: src/engine/materials/special_materials/hair_material.c.o
 .PHONY : src/engine/materials/special_materials/hair_material.o
@@ -18193,6 +19247,894 @@ src/engine/materials/templates/characters/character_templates.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/character_templates.c.s
 .PHONY : src/engine/materials/templates/characters/character_templates.c.s
 
+src/engine/materials/templates/characters/customization_loader.o: src/engine/materials/templates/characters/customization_loader.c.o
+.PHONY : src/engine/materials/templates/characters/customization_loader.o
+
+# target to build an object file
+src/engine/materials/templates/characters/customization_loader.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/customization_loader.c.o
+.PHONY : src/engine/materials/templates/characters/customization_loader.c.o
+
+src/engine/materials/templates/characters/customization_loader.i: src/engine/materials/templates/characters/customization_loader.c.i
+.PHONY : src/engine/materials/templates/characters/customization_loader.i
+
+# target to preprocess a source file
+src/engine/materials/templates/characters/customization_loader.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/customization_loader.c.i
+.PHONY : src/engine/materials/templates/characters/customization_loader.c.i
+
+src/engine/materials/templates/characters/customization_loader.s: src/engine/materials/templates/characters/customization_loader.c.s
+.PHONY : src/engine/materials/templates/characters/customization_loader.s
+
+# target to generate assembly for a file
+src/engine/materials/templates/characters/customization_loader.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/customization_loader.c.s
+.PHONY : src/engine/materials/templates/characters/customization_loader.c.s
+
+src/engine/materials/templates/characters/mesh_attachment.o: src/engine/materials/templates/characters/mesh_attachment.c.o
+.PHONY : src/engine/materials/templates/characters/mesh_attachment.o
+
+# target to build an object file
+src/engine/materials/templates/characters/mesh_attachment.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/mesh_attachment.c.o
+.PHONY : src/engine/materials/templates/characters/mesh_attachment.c.o
+
+src/engine/materials/templates/characters/mesh_attachment.i: src/engine/materials/templates/characters/mesh_attachment.c.i
+.PHONY : src/engine/materials/templates/characters/mesh_attachment.i
+
+# target to preprocess a source file
+src/engine/materials/templates/characters/mesh_attachment.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/mesh_attachment.c.i
+.PHONY : src/engine/materials/templates/characters/mesh_attachment.c.i
+
+src/engine/materials/templates/characters/mesh_attachment.s: src/engine/materials/templates/characters/mesh_attachment.c.s
+.PHONY : src/engine/materials/templates/characters/mesh_attachment.s
+
+# target to generate assembly for a file
+src/engine/materials/templates/characters/mesh_attachment.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/mesh_attachment.c.s
+.PHONY : src/engine/materials/templates/characters/mesh_attachment.c.s
+
+src/engine/materials/templates/characters/skeleton_lod.o: src/engine/materials/templates/characters/skeleton_lod.c.o
+.PHONY : src/engine/materials/templates/characters/skeleton_lod.o
+
+# target to build an object file
+src/engine/materials/templates/characters/skeleton_lod.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/skeleton_lod.c.o
+.PHONY : src/engine/materials/templates/characters/skeleton_lod.c.o
+
+src/engine/materials/templates/characters/skeleton_lod.i: src/engine/materials/templates/characters/skeleton_lod.c.i
+.PHONY : src/engine/materials/templates/characters/skeleton_lod.i
+
+# target to preprocess a source file
+src/engine/materials/templates/characters/skeleton_lod.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/skeleton_lod.c.i
+.PHONY : src/engine/materials/templates/characters/skeleton_lod.c.i
+
+src/engine/materials/templates/characters/skeleton_lod.s: src/engine/materials/templates/characters/skeleton_lod.c.s
+.PHONY : src/engine/materials/templates/characters/skeleton_lod.s
+
+# target to generate assembly for a file
+src/engine/materials/templates/characters/skeleton_lod.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/skeleton_lod.c.s
+.PHONY : src/engine/materials/templates/characters/skeleton_lod.c.s
+
+src/engine/materials/templates/characters/skeleton_preview.o: src/engine/materials/templates/characters/skeleton_preview.c.o
+.PHONY : src/engine/materials/templates/characters/skeleton_preview.o
+
+# target to build an object file
+src/engine/materials/templates/characters/skeleton_preview.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/skeleton_preview.c.o
+.PHONY : src/engine/materials/templates/characters/skeleton_preview.c.o
+
+src/engine/materials/templates/characters/skeleton_preview.i: src/engine/materials/templates/characters/skeleton_preview.c.i
+.PHONY : src/engine/materials/templates/characters/skeleton_preview.i
+
+# target to preprocess a source file
+src/engine/materials/templates/characters/skeleton_preview.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/skeleton_preview.c.i
+.PHONY : src/engine/materials/templates/characters/skeleton_preview.c.i
+
+src/engine/materials/templates/characters/skeleton_preview.s: src/engine/materials/templates/characters/skeleton_preview.c.s
+.PHONY : src/engine/materials/templates/characters/skeleton_preview.s
+
+# target to generate assembly for a file
+src/engine/materials/templates/characters/skeleton_preview.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/characters/skeleton_preview.c.s
+.PHONY : src/engine/materials/templates/characters/skeleton_preview.c.s
+
+src/engine/materials/templates/environments/medieval_village.o: src/engine/materials/templates/environments/medieval_village.c.o
+.PHONY : src/engine/materials/templates/environments/medieval_village.o
+
+# target to build an object file
+src/engine/materials/templates/environments/medieval_village.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/environments/medieval_village.c.o
+.PHONY : src/engine/materials/templates/environments/medieval_village.c.o
+
+src/engine/materials/templates/environments/medieval_village.i: src/engine/materials/templates/environments/medieval_village.c.i
+.PHONY : src/engine/materials/templates/environments/medieval_village.i
+
+# target to preprocess a source file
+src/engine/materials/templates/environments/medieval_village.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/environments/medieval_village.c.i
+.PHONY : src/engine/materials/templates/environments/medieval_village.c.i
+
+src/engine/materials/templates/environments/medieval_village.s: src/engine/materials/templates/environments/medieval_village.c.s
+.PHONY : src/engine/materials/templates/environments/medieval_village.s
+
+# target to generate assembly for a file
+src/engine/materials/templates/environments/medieval_village.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/environments/medieval_village.c.s
+.PHONY : src/engine/materials/templates/environments/medieval_village.c.s
+
+src/engine/materials/templates/environments/scifi_station.o: src/engine/materials/templates/environments/scifi_station.c.o
+.PHONY : src/engine/materials/templates/environments/scifi_station.o
+
+# target to build an object file
+src/engine/materials/templates/environments/scifi_station.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/environments/scifi_station.c.o
+.PHONY : src/engine/materials/templates/environments/scifi_station.c.o
+
+src/engine/materials/templates/environments/scifi_station.i: src/engine/materials/templates/environments/scifi_station.c.i
+.PHONY : src/engine/materials/templates/environments/scifi_station.i
+
+# target to preprocess a source file
+src/engine/materials/templates/environments/scifi_station.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/environments/scifi_station.c.i
+.PHONY : src/engine/materials/templates/environments/scifi_station.c.i
+
+src/engine/materials/templates/environments/scifi_station.s: src/engine/materials/templates/environments/scifi_station.c.s
+.PHONY : src/engine/materials/templates/environments/scifi_station.s
+
+# target to generate assembly for a file
+src/engine/materials/templates/environments/scifi_station.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/environments/scifi_station.c.s
+.PHONY : src/engine/materials/templates/environments/scifi_station.c.s
+
+src/engine/materials/templates/npcs/npc_behavior_impl.o: src/engine/materials/templates/npcs/npc_behavior_impl.c.o
+.PHONY : src/engine/materials/templates/npcs/npc_behavior_impl.o
+
+# target to build an object file
+src/engine/materials/templates/npcs/npc_behavior_impl.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/npcs/npc_behavior_impl.c.o
+.PHONY : src/engine/materials/templates/npcs/npc_behavior_impl.c.o
+
+src/engine/materials/templates/npcs/npc_behavior_impl.i: src/engine/materials/templates/npcs/npc_behavior_impl.c.i
+.PHONY : src/engine/materials/templates/npcs/npc_behavior_impl.i
+
+# target to preprocess a source file
+src/engine/materials/templates/npcs/npc_behavior_impl.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/npcs/npc_behavior_impl.c.i
+.PHONY : src/engine/materials/templates/npcs/npc_behavior_impl.c.i
+
+src/engine/materials/templates/npcs/npc_behavior_impl.s: src/engine/materials/templates/npcs/npc_behavior_impl.c.s
+.PHONY : src/engine/materials/templates/npcs/npc_behavior_impl.s
+
+# target to generate assembly for a file
+src/engine/materials/templates/npcs/npc_behavior_impl.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/templates/npcs/npc_behavior_impl.c.s
+.PHONY : src/engine/materials/templates/npcs/npc_behavior_impl.c.s
+
+src/engine/materials/textures/detail_textures.o: src/engine/materials/textures/detail_textures.c.o
+.PHONY : src/engine/materials/textures/detail_textures.o
+
+# target to build an object file
+src/engine/materials/textures/detail_textures.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/detail_textures.c.o
+.PHONY : src/engine/materials/textures/detail_textures.c.o
+
+src/engine/materials/textures/detail_textures.i: src/engine/materials/textures/detail_textures.c.i
+.PHONY : src/engine/materials/textures/detail_textures.i
+
+# target to preprocess a source file
+src/engine/materials/textures/detail_textures.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/detail_textures.c.i
+.PHONY : src/engine/materials/textures/detail_textures.c.i
+
+src/engine/materials/textures/detail_textures.s: src/engine/materials/textures/detail_textures.c.s
+.PHONY : src/engine/materials/textures/detail_textures.s
+
+# target to generate assembly for a file
+src/engine/materials/textures/detail_textures.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/detail_textures.c.s
+.PHONY : src/engine/materials/textures/detail_textures.c.s
+
+src/engine/materials/textures/procedural_textures.o: src/engine/materials/textures/procedural_textures.c.o
+.PHONY : src/engine/materials/textures/procedural_textures.o
+
+# target to build an object file
+src/engine/materials/textures/procedural_textures.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/procedural_textures.c.o
+.PHONY : src/engine/materials/textures/procedural_textures.c.o
+
+src/engine/materials/textures/procedural_textures.i: src/engine/materials/textures/procedural_textures.c.i
+.PHONY : src/engine/materials/textures/procedural_textures.i
+
+# target to preprocess a source file
+src/engine/materials/textures/procedural_textures.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/procedural_textures.c.i
+.PHONY : src/engine/materials/textures/procedural_textures.c.i
+
+src/engine/materials/textures/procedural_textures.s: src/engine/materials/textures/procedural_textures.c.s
+.PHONY : src/engine/materials/textures/procedural_textures.s
+
+# target to generate assembly for a file
+src/engine/materials/textures/procedural_textures.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/procedural_textures.c.s
+.PHONY : src/engine/materials/textures/procedural_textures.c.s
+
+src/engine/materials/textures/texture_binding.o: src/engine/materials/textures/texture_binding.c.o
+.PHONY : src/engine/materials/textures/texture_binding.o
+
+# target to build an object file
+src/engine/materials/textures/texture_binding.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_binding.c.o
+.PHONY : src/engine/materials/textures/texture_binding.c.o
+
+src/engine/materials/textures/texture_binding.i: src/engine/materials/textures/texture_binding.c.i
+.PHONY : src/engine/materials/textures/texture_binding.i
+
+# target to preprocess a source file
+src/engine/materials/textures/texture_binding.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_binding.c.i
+.PHONY : src/engine/materials/textures/texture_binding.c.i
+
+src/engine/materials/textures/texture_binding.s: src/engine/materials/textures/texture_binding.c.s
+.PHONY : src/engine/materials/textures/texture_binding.s
+
+# target to generate assembly for a file
+src/engine/materials/textures/texture_binding.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_binding.c.s
+.PHONY : src/engine/materials/textures/texture_binding.c.s
+
+src/engine/materials/textures/texture_blending.o: src/engine/materials/textures/texture_blending.c.o
+.PHONY : src/engine/materials/textures/texture_blending.o
+
+# target to build an object file
+src/engine/materials/textures/texture_blending.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_blending.c.o
+.PHONY : src/engine/materials/textures/texture_blending.c.o
+
+src/engine/materials/textures/texture_blending.i: src/engine/materials/textures/texture_blending.c.i
+.PHONY : src/engine/materials/textures/texture_blending.i
+
+# target to preprocess a source file
+src/engine/materials/textures/texture_blending.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_blending.c.i
+.PHONY : src/engine/materials/textures/texture_blending.c.i
+
+src/engine/materials/textures/texture_blending.s: src/engine/materials/textures/texture_blending.c.s
+.PHONY : src/engine/materials/textures/texture_blending.s
+
+# target to generate assembly for a file
+src/engine/materials/textures/texture_blending.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_blending.c.s
+.PHONY : src/engine/materials/textures/texture_blending.c.s
+
+src/engine/materials/textures/texture_defaults.o: src/engine/materials/textures/texture_defaults.c.o
+.PHONY : src/engine/materials/textures/texture_defaults.o
+
+# target to build an object file
+src/engine/materials/textures/texture_defaults.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_defaults.c.o
+.PHONY : src/engine/materials/textures/texture_defaults.c.o
+
+src/engine/materials/textures/texture_defaults.i: src/engine/materials/textures/texture_defaults.c.i
+.PHONY : src/engine/materials/textures/texture_defaults.i
+
+# target to preprocess a source file
+src/engine/materials/textures/texture_defaults.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_defaults.c.i
+.PHONY : src/engine/materials/textures/texture_defaults.c.i
+
+src/engine/materials/textures/texture_defaults.s: src/engine/materials/textures/texture_defaults.c.s
+.PHONY : src/engine/materials/textures/texture_defaults.s
+
+# target to generate assembly for a file
+src/engine/materials/textures/texture_defaults.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_defaults.c.s
+.PHONY : src/engine/materials/textures/texture_defaults.c.s
+
+src/engine/materials/textures/texture_transform.o: src/engine/materials/textures/texture_transform.c.o
+.PHONY : src/engine/materials/textures/texture_transform.o
+
+# target to build an object file
+src/engine/materials/textures/texture_transform.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_transform.c.o
+.PHONY : src/engine/materials/textures/texture_transform.c.o
+
+src/engine/materials/textures/texture_transform.i: src/engine/materials/textures/texture_transform.c.i
+.PHONY : src/engine/materials/textures/texture_transform.i
+
+# target to preprocess a source file
+src/engine/materials/textures/texture_transform.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_transform.c.i
+.PHONY : src/engine/materials/textures/texture_transform.c.i
+
+src/engine/materials/textures/texture_transform.s: src/engine/materials/textures/texture_transform.c.s
+.PHONY : src/engine/materials/textures/texture_transform.s
+
+# target to generate assembly for a file
+src/engine/materials/textures/texture_transform.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/textures/texture_transform.c.s
+.PHONY : src/engine/materials/textures/texture_transform.c.s
+
+src/engine/materials/types/concrete/concrete_cracks.o: src/engine/materials/types/concrete/concrete_cracks.c.o
+.PHONY : src/engine/materials/types/concrete/concrete_cracks.o
+
+# target to build an object file
+src/engine/materials/types/concrete/concrete_cracks.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/concrete/concrete_cracks.c.o
+.PHONY : src/engine/materials/types/concrete/concrete_cracks.c.o
+
+src/engine/materials/types/concrete/concrete_cracks.i: src/engine/materials/types/concrete/concrete_cracks.c.i
+.PHONY : src/engine/materials/types/concrete/concrete_cracks.i
+
+# target to preprocess a source file
+src/engine/materials/types/concrete/concrete_cracks.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/concrete/concrete_cracks.c.i
+.PHONY : src/engine/materials/types/concrete/concrete_cracks.c.i
+
+src/engine/materials/types/concrete/concrete_cracks.s: src/engine/materials/types/concrete/concrete_cracks.c.s
+.PHONY : src/engine/materials/types/concrete/concrete_cracks.s
+
+# target to generate assembly for a file
+src/engine/materials/types/concrete/concrete_cracks.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/concrete/concrete_cracks.c.s
+.PHONY : src/engine/materials/types/concrete/concrete_cracks.c.s
+
+src/engine/materials/types/concrete/concrete_staining.o: src/engine/materials/types/concrete/concrete_staining.c.o
+.PHONY : src/engine/materials/types/concrete/concrete_staining.o
+
+# target to build an object file
+src/engine/materials/types/concrete/concrete_staining.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/concrete/concrete_staining.c.o
+.PHONY : src/engine/materials/types/concrete/concrete_staining.c.o
+
+src/engine/materials/types/concrete/concrete_staining.i: src/engine/materials/types/concrete/concrete_staining.c.i
+.PHONY : src/engine/materials/types/concrete/concrete_staining.i
+
+# target to preprocess a source file
+src/engine/materials/types/concrete/concrete_staining.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/concrete/concrete_staining.c.i
+.PHONY : src/engine/materials/types/concrete/concrete_staining.c.i
+
+src/engine/materials/types/concrete/concrete_staining.s: src/engine/materials/types/concrete/concrete_staining.c.s
+.PHONY : src/engine/materials/types/concrete/concrete_staining.s
+
+# target to generate assembly for a file
+src/engine/materials/types/concrete/concrete_staining.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/concrete/concrete_staining.c.s
+.PHONY : src/engine/materials/types/concrete/concrete_staining.c.s
+
+src/engine/materials/types/fabric/fabric_detail.o: src/engine/materials/types/fabric/fabric_detail.c.o
+.PHONY : src/engine/materials/types/fabric/fabric_detail.o
+
+# target to build an object file
+src/engine/materials/types/fabric/fabric_detail.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/fabric/fabric_detail.c.o
+.PHONY : src/engine/materials/types/fabric/fabric_detail.c.o
+
+src/engine/materials/types/fabric/fabric_detail.i: src/engine/materials/types/fabric/fabric_detail.c.i
+.PHONY : src/engine/materials/types/fabric/fabric_detail.i
+
+# target to preprocess a source file
+src/engine/materials/types/fabric/fabric_detail.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/fabric/fabric_detail.c.i
+.PHONY : src/engine/materials/types/fabric/fabric_detail.c.i
+
+src/engine/materials/types/fabric/fabric_detail.s: src/engine/materials/types/fabric/fabric_detail.c.s
+.PHONY : src/engine/materials/types/fabric/fabric_detail.s
+
+# target to generate assembly for a file
+src/engine/materials/types/fabric/fabric_detail.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/fabric/fabric_detail.c.s
+.PHONY : src/engine/materials/types/fabric/fabric_detail.c.s
+
+src/engine/materials/types/fabric/fabric_sheen.o: src/engine/materials/types/fabric/fabric_sheen.c.o
+.PHONY : src/engine/materials/types/fabric/fabric_sheen.o
+
+# target to build an object file
+src/engine/materials/types/fabric/fabric_sheen.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/fabric/fabric_sheen.c.o
+.PHONY : src/engine/materials/types/fabric/fabric_sheen.c.o
+
+src/engine/materials/types/fabric/fabric_sheen.i: src/engine/materials/types/fabric/fabric_sheen.c.i
+.PHONY : src/engine/materials/types/fabric/fabric_sheen.i
+
+# target to preprocess a source file
+src/engine/materials/types/fabric/fabric_sheen.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/fabric/fabric_sheen.c.i
+.PHONY : src/engine/materials/types/fabric/fabric_sheen.c.i
+
+src/engine/materials/types/fabric/fabric_sheen.s: src/engine/materials/types/fabric/fabric_sheen.c.s
+.PHONY : src/engine/materials/types/fabric/fabric_sheen.s
+
+# target to generate assembly for a file
+src/engine/materials/types/fabric/fabric_sheen.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/fabric/fabric_sheen.c.s
+.PHONY : src/engine/materials/types/fabric/fabric_sheen.c.s
+
+src/engine/materials/types/glass/glass_refraction.o: src/engine/materials/types/glass/glass_refraction.c.o
+.PHONY : src/engine/materials/types/glass/glass_refraction.o
+
+# target to build an object file
+src/engine/materials/types/glass/glass_refraction.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/glass/glass_refraction.c.o
+.PHONY : src/engine/materials/types/glass/glass_refraction.c.o
+
+src/engine/materials/types/glass/glass_refraction.i: src/engine/materials/types/glass/glass_refraction.c.i
+.PHONY : src/engine/materials/types/glass/glass_refraction.i
+
+# target to preprocess a source file
+src/engine/materials/types/glass/glass_refraction.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/glass/glass_refraction.c.i
+.PHONY : src/engine/materials/types/glass/glass_refraction.c.i
+
+src/engine/materials/types/glass/glass_refraction.s: src/engine/materials/types/glass/glass_refraction.c.s
+.PHONY : src/engine/materials/types/glass/glass_refraction.s
+
+# target to generate assembly for a file
+src/engine/materials/types/glass/glass_refraction.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/glass/glass_refraction.c.s
+.PHONY : src/engine/materials/types/glass/glass_refraction.c.s
+
+src/engine/materials/types/glass/glass_thickness.o: src/engine/materials/types/glass/glass_thickness.c.o
+.PHONY : src/engine/materials/types/glass/glass_thickness.o
+
+# target to build an object file
+src/engine/materials/types/glass/glass_thickness.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/glass/glass_thickness.c.o
+.PHONY : src/engine/materials/types/glass/glass_thickness.c.o
+
+src/engine/materials/types/glass/glass_thickness.i: src/engine/materials/types/glass/glass_thickness.c.i
+.PHONY : src/engine/materials/types/glass/glass_thickness.i
+
+# target to preprocess a source file
+src/engine/materials/types/glass/glass_thickness.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/glass/glass_thickness.c.i
+.PHONY : src/engine/materials/types/glass/glass_thickness.c.i
+
+src/engine/materials/types/glass/glass_thickness.s: src/engine/materials/types/glass/glass_thickness.c.s
+.PHONY : src/engine/materials/types/glass/glass_thickness.s
+
+# target to generate assembly for a file
+src/engine/materials/types/glass/glass_thickness.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/glass/glass_thickness.c.s
+.PHONY : src/engine/materials/types/glass/glass_thickness.c.s
+
+src/engine/materials/types/liquid/liquid_splashes.o: src/engine/materials/types/liquid/liquid_splashes.c.o
+.PHONY : src/engine/materials/types/liquid/liquid_splashes.o
+
+# target to build an object file
+src/engine/materials/types/liquid/liquid_splashes.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/liquid/liquid_splashes.c.o
+.PHONY : src/engine/materials/types/liquid/liquid_splashes.c.o
+
+src/engine/materials/types/liquid/liquid_splashes.i: src/engine/materials/types/liquid/liquid_splashes.c.i
+.PHONY : src/engine/materials/types/liquid/liquid_splashes.i
+
+# target to preprocess a source file
+src/engine/materials/types/liquid/liquid_splashes.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/liquid/liquid_splashes.c.i
+.PHONY : src/engine/materials/types/liquid/liquid_splashes.c.i
+
+src/engine/materials/types/liquid/liquid_splashes.s: src/engine/materials/types/liquid/liquid_splashes.c.s
+.PHONY : src/engine/materials/types/liquid/liquid_splashes.s
+
+# target to generate assembly for a file
+src/engine/materials/types/liquid/liquid_splashes.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/liquid/liquid_splashes.c.s
+.PHONY : src/engine/materials/types/liquid/liquid_splashes.c.s
+
+src/engine/materials/types/liquid/liquid_surface.o: src/engine/materials/types/liquid/liquid_surface.c.o
+.PHONY : src/engine/materials/types/liquid/liquid_surface.o
+
+# target to build an object file
+src/engine/materials/types/liquid/liquid_surface.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/liquid/liquid_surface.c.o
+.PHONY : src/engine/materials/types/liquid/liquid_surface.c.o
+
+src/engine/materials/types/liquid/liquid_surface.i: src/engine/materials/types/liquid/liquid_surface.c.i
+.PHONY : src/engine/materials/types/liquid/liquid_surface.i
+
+# target to preprocess a source file
+src/engine/materials/types/liquid/liquid_surface.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/liquid/liquid_surface.c.i
+.PHONY : src/engine/materials/types/liquid/liquid_surface.c.i
+
+src/engine/materials/types/liquid/liquid_surface.s: src/engine/materials/types/liquid/liquid_surface.c.s
+.PHONY : src/engine/materials/types/liquid/liquid_surface.s
+
+# target to generate assembly for a file
+src/engine/materials/types/liquid/liquid_surface.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/liquid/liquid_surface.c.s
+.PHONY : src/engine/materials/types/liquid/liquid_surface.c.s
+
+src/engine/materials/types/metal/metal_anisotropy.o: src/engine/materials/types/metal/metal_anisotropy.c.o
+.PHONY : src/engine/materials/types/metal/metal_anisotropy.o
+
+# target to build an object file
+src/engine/materials/types/metal/metal_anisotropy.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/metal/metal_anisotropy.c.o
+.PHONY : src/engine/materials/types/metal/metal_anisotropy.c.o
+
+src/engine/materials/types/metal/metal_anisotropy.i: src/engine/materials/types/metal/metal_anisotropy.c.i
+.PHONY : src/engine/materials/types/metal/metal_anisotropy.i
+
+# target to preprocess a source file
+src/engine/materials/types/metal/metal_anisotropy.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/metal/metal_anisotropy.c.i
+.PHONY : src/engine/materials/types/metal/metal_anisotropy.c.i
+
+src/engine/materials/types/metal/metal_anisotropy.s: src/engine/materials/types/metal/metal_anisotropy.c.s
+.PHONY : src/engine/materials/types/metal/metal_anisotropy.s
+
+# target to generate assembly for a file
+src/engine/materials/types/metal/metal_anisotropy.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/metal/metal_anisotropy.c.s
+.PHONY : src/engine/materials/types/metal/metal_anisotropy.c.s
+
+src/engine/materials/types/metal/metal_flakes.o: src/engine/materials/types/metal/metal_flakes.c.o
+.PHONY : src/engine/materials/types/metal/metal_flakes.o
+
+# target to build an object file
+src/engine/materials/types/metal/metal_flakes.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/metal/metal_flakes.c.o
+.PHONY : src/engine/materials/types/metal/metal_flakes.c.o
+
+src/engine/materials/types/metal/metal_flakes.i: src/engine/materials/types/metal/metal_flakes.c.i
+.PHONY : src/engine/materials/types/metal/metal_flakes.i
+
+# target to preprocess a source file
+src/engine/materials/types/metal/metal_flakes.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/metal/metal_flakes.c.i
+.PHONY : src/engine/materials/types/metal/metal_flakes.c.i
+
+src/engine/materials/types/metal/metal_flakes.s: src/engine/materials/types/metal/metal_flakes.c.s
+.PHONY : src/engine/materials/types/metal/metal_flakes.s
+
+# target to generate assembly for a file
+src/engine/materials/types/metal/metal_flakes.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/metal/metal_flakes.c.s
+.PHONY : src/engine/materials/types/metal/metal_flakes.c.s
+
+src/engine/materials/types/stone/stone_detail.o: src/engine/materials/types/stone/stone_detail.c.o
+.PHONY : src/engine/materials/types/stone/stone_detail.o
+
+# target to build an object file
+src/engine/materials/types/stone/stone_detail.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/stone/stone_detail.c.o
+.PHONY : src/engine/materials/types/stone/stone_detail.c.o
+
+src/engine/materials/types/stone/stone_detail.i: src/engine/materials/types/stone/stone_detail.c.i
+.PHONY : src/engine/materials/types/stone/stone_detail.i
+
+# target to preprocess a source file
+src/engine/materials/types/stone/stone_detail.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/stone/stone_detail.c.i
+.PHONY : src/engine/materials/types/stone/stone_detail.c.i
+
+src/engine/materials/types/stone/stone_detail.s: src/engine/materials/types/stone/stone_detail.c.s
+.PHONY : src/engine/materials/types/stone/stone_detail.s
+
+# target to generate assembly for a file
+src/engine/materials/types/stone/stone_detail.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/stone/stone_detail.c.s
+.PHONY : src/engine/materials/types/stone/stone_detail.c.s
+
+src/engine/materials/types/stone/stone_parallax.o: src/engine/materials/types/stone/stone_parallax.c.o
+.PHONY : src/engine/materials/types/stone/stone_parallax.o
+
+# target to build an object file
+src/engine/materials/types/stone/stone_parallax.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/stone/stone_parallax.c.o
+.PHONY : src/engine/materials/types/stone/stone_parallax.c.o
+
+src/engine/materials/types/stone/stone_parallax.i: src/engine/materials/types/stone/stone_parallax.c.i
+.PHONY : src/engine/materials/types/stone/stone_parallax.i
+
+# target to preprocess a source file
+src/engine/materials/types/stone/stone_parallax.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/stone/stone_parallax.c.i
+.PHONY : src/engine/materials/types/stone/stone_parallax.c.i
+
+src/engine/materials/types/stone/stone_parallax.s: src/engine/materials/types/stone/stone_parallax.c.s
+.PHONY : src/engine/materials/types/stone/stone_parallax.s
+
+# target to generate assembly for a file
+src/engine/materials/types/stone/stone_parallax.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/stone/stone_parallax.c.s
+.PHONY : src/engine/materials/types/stone/stone_parallax.c.s
+
+src/engine/materials/types/wood/wood_grain.o: src/engine/materials/types/wood/wood_grain.c.o
+.PHONY : src/engine/materials/types/wood/wood_grain.o
+
+# target to build an object file
+src/engine/materials/types/wood/wood_grain.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/wood/wood_grain.c.o
+.PHONY : src/engine/materials/types/wood/wood_grain.c.o
+
+src/engine/materials/types/wood/wood_grain.i: src/engine/materials/types/wood/wood_grain.c.i
+.PHONY : src/engine/materials/types/wood/wood_grain.i
+
+# target to preprocess a source file
+src/engine/materials/types/wood/wood_grain.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/wood/wood_grain.c.i
+.PHONY : src/engine/materials/types/wood/wood_grain.c.i
+
+src/engine/materials/types/wood/wood_grain.s: src/engine/materials/types/wood/wood_grain.c.s
+.PHONY : src/engine/materials/types/wood/wood_grain.s
+
+# target to generate assembly for a file
+src/engine/materials/types/wood/wood_grain.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/wood/wood_grain.c.s
+.PHONY : src/engine/materials/types/wood/wood_grain.c.s
+
+src/engine/materials/types/wood/wood_subsurface.o: src/engine/materials/types/wood/wood_subsurface.c.o
+.PHONY : src/engine/materials/types/wood/wood_subsurface.o
+
+# target to build an object file
+src/engine/materials/types/wood/wood_subsurface.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/wood/wood_subsurface.c.o
+.PHONY : src/engine/materials/types/wood/wood_subsurface.c.o
+
+src/engine/materials/types/wood/wood_subsurface.i: src/engine/materials/types/wood/wood_subsurface.c.i
+.PHONY : src/engine/materials/types/wood/wood_subsurface.i
+
+# target to preprocess a source file
+src/engine/materials/types/wood/wood_subsurface.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/wood/wood_subsurface.c.i
+.PHONY : src/engine/materials/types/wood/wood_subsurface.c.i
+
+src/engine/materials/types/wood/wood_subsurface.s: src/engine/materials/types/wood/wood_subsurface.c.s
+.PHONY : src/engine/materials/types/wood/wood_subsurface.s
+
+# target to generate assembly for a file
+src/engine/materials/types/wood/wood_subsurface.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/types/wood/wood_subsurface.c.s
+.PHONY : src/engine/materials/types/wood/wood_subsurface.c.s
+
+src/engine/materials/weathering/age/age_simulation.o: src/engine/materials/weathering/age/age_simulation.c.o
+.PHONY : src/engine/materials/weathering/age/age_simulation.o
+
+# target to build an object file
+src/engine/materials/weathering/age/age_simulation.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/age/age_simulation.c.o
+.PHONY : src/engine/materials/weathering/age/age_simulation.c.o
+
+src/engine/materials/weathering/age/age_simulation.i: src/engine/materials/weathering/age/age_simulation.c.i
+.PHONY : src/engine/materials/weathering/age/age_simulation.i
+
+# target to preprocess a source file
+src/engine/materials/weathering/age/age_simulation.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/age/age_simulation.c.i
+.PHONY : src/engine/materials/weathering/age/age_simulation.c.i
+
+src/engine/materials/weathering/age/age_simulation.s: src/engine/materials/weathering/age/age_simulation.c.s
+.PHONY : src/engine/materials/weathering/age/age_simulation.s
+
+# target to generate assembly for a file
+src/engine/materials/weathering/age/age_simulation.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/age/age_simulation.c.s
+.PHONY : src/engine/materials/weathering/age/age_simulation.c.s
+
+src/engine/materials/weathering/age/weathering_system.o: src/engine/materials/weathering/age/weathering_system.c.o
+.PHONY : src/engine/materials/weathering/age/weathering_system.o
+
+# target to build an object file
+src/engine/materials/weathering/age/weathering_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/age/weathering_system.c.o
+.PHONY : src/engine/materials/weathering/age/weathering_system.c.o
+
+src/engine/materials/weathering/age/weathering_system.i: src/engine/materials/weathering/age/weathering_system.c.i
+.PHONY : src/engine/materials/weathering/age/weathering_system.i
+
+# target to preprocess a source file
+src/engine/materials/weathering/age/weathering_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/age/weathering_system.c.i
+.PHONY : src/engine/materials/weathering/age/weathering_system.c.i
+
+src/engine/materials/weathering/age/weathering_system.s: src/engine/materials/weathering/age/weathering_system.c.s
+.PHONY : src/engine/materials/weathering/age/weathering_system.s
+
+# target to generate assembly for a file
+src/engine/materials/weathering/age/weathering_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/age/weathering_system.c.s
+.PHONY : src/engine/materials/weathering/age/weathering_system.c.s
+
+src/engine/materials/weathering/dirt/dirt_accumulation.o: src/engine/materials/weathering/dirt/dirt_accumulation.c.o
+.PHONY : src/engine/materials/weathering/dirt/dirt_accumulation.o
+
+# target to build an object file
+src/engine/materials/weathering/dirt/dirt_accumulation.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/dirt/dirt_accumulation.c.o
+.PHONY : src/engine/materials/weathering/dirt/dirt_accumulation.c.o
+
+src/engine/materials/weathering/dirt/dirt_accumulation.i: src/engine/materials/weathering/dirt/dirt_accumulation.c.i
+.PHONY : src/engine/materials/weathering/dirt/dirt_accumulation.i
+
+# target to preprocess a source file
+src/engine/materials/weathering/dirt/dirt_accumulation.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/dirt/dirt_accumulation.c.i
+.PHONY : src/engine/materials/weathering/dirt/dirt_accumulation.c.i
+
+src/engine/materials/weathering/dirt/dirt_accumulation.s: src/engine/materials/weathering/dirt/dirt_accumulation.c.s
+.PHONY : src/engine/materials/weathering/dirt/dirt_accumulation.s
+
+# target to generate assembly for a file
+src/engine/materials/weathering/dirt/dirt_accumulation.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/dirt/dirt_accumulation.c.s
+.PHONY : src/engine/materials/weathering/dirt/dirt_accumulation.c.s
+
+src/engine/materials/weathering/dirt/grunge_masks.o: src/engine/materials/weathering/dirt/grunge_masks.c.o
+.PHONY : src/engine/materials/weathering/dirt/grunge_masks.o
+
+# target to build an object file
+src/engine/materials/weathering/dirt/grunge_masks.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/dirt/grunge_masks.c.o
+.PHONY : src/engine/materials/weathering/dirt/grunge_masks.c.o
+
+src/engine/materials/weathering/dirt/grunge_masks.i: src/engine/materials/weathering/dirt/grunge_masks.c.i
+.PHONY : src/engine/materials/weathering/dirt/grunge_masks.i
+
+# target to preprocess a source file
+src/engine/materials/weathering/dirt/grunge_masks.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/dirt/grunge_masks.c.i
+.PHONY : src/engine/materials/weathering/dirt/grunge_masks.c.i
+
+src/engine/materials/weathering/dirt/grunge_masks.s: src/engine/materials/weathering/dirt/grunge_masks.c.s
+.PHONY : src/engine/materials/weathering/dirt/grunge_masks.s
+
+# target to generate assembly for a file
+src/engine/materials/weathering/dirt/grunge_masks.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/dirt/grunge_masks.c.s
+.PHONY : src/engine/materials/weathering/dirt/grunge_masks.c.s
+
+src/engine/materials/weathering/rust/rust_color.o: src/engine/materials/weathering/rust/rust_color.c.o
+.PHONY : src/engine/materials/weathering/rust/rust_color.o
+
+# target to build an object file
+src/engine/materials/weathering/rust/rust_color.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/rust/rust_color.c.o
+.PHONY : src/engine/materials/weathering/rust/rust_color.c.o
+
+src/engine/materials/weathering/rust/rust_color.i: src/engine/materials/weathering/rust/rust_color.c.i
+.PHONY : src/engine/materials/weathering/rust/rust_color.i
+
+# target to preprocess a source file
+src/engine/materials/weathering/rust/rust_color.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/rust/rust_color.c.i
+.PHONY : src/engine/materials/weathering/rust/rust_color.c.i
+
+src/engine/materials/weathering/rust/rust_color.s: src/engine/materials/weathering/rust/rust_color.c.s
+.PHONY : src/engine/materials/weathering/rust/rust_color.s
+
+# target to generate assembly for a file
+src/engine/materials/weathering/rust/rust_color.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/rust/rust_color.c.s
+.PHONY : src/engine/materials/weathering/rust/rust_color.c.s
+
+src/engine/materials/weathering/rust/rust_growth.o: src/engine/materials/weathering/rust/rust_growth.c.o
+.PHONY : src/engine/materials/weathering/rust/rust_growth.o
+
+# target to build an object file
+src/engine/materials/weathering/rust/rust_growth.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/rust/rust_growth.c.o
+.PHONY : src/engine/materials/weathering/rust/rust_growth.c.o
+
+src/engine/materials/weathering/rust/rust_growth.i: src/engine/materials/weathering/rust/rust_growth.c.i
+.PHONY : src/engine/materials/weathering/rust/rust_growth.i
+
+# target to preprocess a source file
+src/engine/materials/weathering/rust/rust_growth.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/rust/rust_growth.c.i
+.PHONY : src/engine/materials/weathering/rust/rust_growth.c.i
+
+src/engine/materials/weathering/rust/rust_growth.s: src/engine/materials/weathering/rust/rust_growth.c.s
+.PHONY : src/engine/materials/weathering/rust/rust_growth.s
+
+# target to generate assembly for a file
+src/engine/materials/weathering/rust/rust_growth.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/rust/rust_growth.c.s
+.PHONY : src/engine/materials/weathering/rust/rust_growth.c.s
+
+src/engine/materials/weathering/wear/tear_damage.o: src/engine/materials/weathering/wear/tear_damage.c.o
+.PHONY : src/engine/materials/weathering/wear/tear_damage.o
+
+# target to build an object file
+src/engine/materials/weathering/wear/tear_damage.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/wear/tear_damage.c.o
+.PHONY : src/engine/materials/weathering/wear/tear_damage.c.o
+
+src/engine/materials/weathering/wear/tear_damage.i: src/engine/materials/weathering/wear/tear_damage.c.i
+.PHONY : src/engine/materials/weathering/wear/tear_damage.i
+
+# target to preprocess a source file
+src/engine/materials/weathering/wear/tear_damage.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/wear/tear_damage.c.i
+.PHONY : src/engine/materials/weathering/wear/tear_damage.c.i
+
+src/engine/materials/weathering/wear/tear_damage.s: src/engine/materials/weathering/wear/tear_damage.c.s
+.PHONY : src/engine/materials/weathering/wear/tear_damage.s
+
+# target to generate assembly for a file
+src/engine/materials/weathering/wear/tear_damage.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/wear/tear_damage.c.s
+.PHONY : src/engine/materials/weathering/wear/tear_damage.c.s
+
+src/engine/materials/weathering/wear/wear_edges.o: src/engine/materials/weathering/wear/wear_edges.c.o
+.PHONY : src/engine/materials/weathering/wear/wear_edges.o
+
+# target to build an object file
+src/engine/materials/weathering/wear/wear_edges.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/wear/wear_edges.c.o
+.PHONY : src/engine/materials/weathering/wear/wear_edges.c.o
+
+src/engine/materials/weathering/wear/wear_edges.i: src/engine/materials/weathering/wear/wear_edges.c.i
+.PHONY : src/engine/materials/weathering/wear/wear_edges.i
+
+# target to preprocess a source file
+src/engine/materials/weathering/wear/wear_edges.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/wear/wear_edges.c.i
+.PHONY : src/engine/materials/weathering/wear/wear_edges.c.i
+
+src/engine/materials/weathering/wear/wear_edges.s: src/engine/materials/weathering/wear/wear_edges.c.s
+.PHONY : src/engine/materials/weathering/wear/wear_edges.s
+
+# target to generate assembly for a file
+src/engine/materials/weathering/wear/wear_edges.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/weathering/wear/wear_edges.c.s
+.PHONY : src/engine/materials/weathering/wear/wear_edges.c.s
+
+src/engine/materials/wetness/puddle_rendering.o: src/engine/materials/wetness/puddle_rendering.c.o
+.PHONY : src/engine/materials/wetness/puddle_rendering.o
+
+# target to build an object file
+src/engine/materials/wetness/puddle_rendering.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/wetness/puddle_rendering.c.o
+.PHONY : src/engine/materials/wetness/puddle_rendering.c.o
+
+src/engine/materials/wetness/puddle_rendering.i: src/engine/materials/wetness/puddle_rendering.c.i
+.PHONY : src/engine/materials/wetness/puddle_rendering.i
+
+# target to preprocess a source file
+src/engine/materials/wetness/puddle_rendering.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/wetness/puddle_rendering.c.i
+.PHONY : src/engine/materials/wetness/puddle_rendering.c.i
+
+src/engine/materials/wetness/puddle_rendering.s: src/engine/materials/wetness/puddle_rendering.c.s
+.PHONY : src/engine/materials/wetness/puddle_rendering.s
+
+# target to generate assembly for a file
+src/engine/materials/wetness/puddle_rendering.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/wetness/puddle_rendering.c.s
+.PHONY : src/engine/materials/wetness/puddle_rendering.c.s
+
+src/engine/materials/wetness/wetness_mask.o: src/engine/materials/wetness/wetness_mask.c.o
+.PHONY : src/engine/materials/wetness/wetness_mask.o
+
+# target to build an object file
+src/engine/materials/wetness/wetness_mask.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/wetness/wetness_mask.c.o
+.PHONY : src/engine/materials/wetness/wetness_mask.c.o
+
+src/engine/materials/wetness/wetness_mask.i: src/engine/materials/wetness/wetness_mask.c.i
+.PHONY : src/engine/materials/wetness/wetness_mask.i
+
+# target to preprocess a source file
+src/engine/materials/wetness/wetness_mask.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/wetness/wetness_mask.c.i
+.PHONY : src/engine/materials/wetness/wetness_mask.c.i
+
+src/engine/materials/wetness/wetness_mask.s: src/engine/materials/wetness/wetness_mask.c.s
+.PHONY : src/engine/materials/wetness/wetness_mask.s
+
+# target to generate assembly for a file
+src/engine/materials/wetness/wetness_mask.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/materials/wetness/wetness_mask.c.s
+.PHONY : src/engine/materials/wetness/wetness_mask.c.s
+
 src/engine/math/quat.o: src/engine/math/quat.c.o
 .PHONY : src/engine/math/quat.o
 
@@ -18217,6 +20159,78 @@ src/engine/math/quat.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/quat.c.s
 .PHONY : src/engine/math/quat.c.s
 
+src/engine/npc/npc_jobs.o: src/engine/npc/npc_jobs.c.o
+.PHONY : src/engine/npc/npc_jobs.o
+
+# target to build an object file
+src/engine/npc/npc_jobs.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/npc/npc_jobs.c.o
+.PHONY : src/engine/npc/npc_jobs.c.o
+
+src/engine/npc/npc_jobs.i: src/engine/npc/npc_jobs.c.i
+.PHONY : src/engine/npc/npc_jobs.i
+
+# target to preprocess a source file
+src/engine/npc/npc_jobs.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/npc/npc_jobs.c.i
+.PHONY : src/engine/npc/npc_jobs.c.i
+
+src/engine/npc/npc_jobs.s: src/engine/npc/npc_jobs.c.s
+.PHONY : src/engine/npc/npc_jobs.s
+
+# target to generate assembly for a file
+src/engine/npc/npc_jobs.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/npc/npc_jobs.c.s
+.PHONY : src/engine/npc/npc_jobs.c.s
+
+src/engine/npc/npc_system.o: src/engine/npc/npc_system.c.o
+.PHONY : src/engine/npc/npc_system.o
+
+# target to build an object file
+src/engine/npc/npc_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/npc/npc_system.c.o
+.PHONY : src/engine/npc/npc_system.c.o
+
+src/engine/npc/npc_system.i: src/engine/npc/npc_system.c.i
+.PHONY : src/engine/npc/npc_system.i
+
+# target to preprocess a source file
+src/engine/npc/npc_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/npc/npc_system.c.i
+.PHONY : src/engine/npc/npc_system.c.i
+
+src/engine/npc/npc_system.s: src/engine/npc/npc_system.c.s
+.PHONY : src/engine/npc/npc_system.s
+
+# target to generate assembly for a file
+src/engine/npc/npc_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/npc/npc_system.c.s
+.PHONY : src/engine/npc/npc_system.c.s
+
+src/engine/npc/npc_visuals.o: src/engine/npc/npc_visuals.c.o
+.PHONY : src/engine/npc/npc_visuals.o
+
+# target to build an object file
+src/engine/npc/npc_visuals.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/npc/npc_visuals.c.o
+.PHONY : src/engine/npc/npc_visuals.c.o
+
+src/engine/npc/npc_visuals.i: src/engine/npc/npc_visuals.c.i
+.PHONY : src/engine/npc/npc_visuals.i
+
+# target to preprocess a source file
+src/engine/npc/npc_visuals.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/npc/npc_visuals.c.i
+.PHONY : src/engine/npc/npc_visuals.c.i
+
+src/engine/npc/npc_visuals.s: src/engine/npc/npc_visuals.c.s
+.PHONY : src/engine/npc/npc_visuals.s
+
+# target to generate assembly for a file
+src/engine/npc/npc_visuals.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/npc/npc_visuals.c.s
+.PHONY : src/engine/npc/npc_visuals.c.s
+
 src/engine/physics/broadphase/aabb_tree.o: src/engine/physics/broadphase/aabb_tree.c.o
 .PHONY : src/engine/physics/broadphase/aabb_tree.o
 
@@ -18240,6 +20254,30 @@ src/engine/physics/broadphase/aabb_tree.s: src/engine/physics/broadphase/aabb_tr
 src/engine/physics/broadphase/aabb_tree.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/broadphase/aabb_tree.c.s
 .PHONY : src/engine/physics/broadphase/aabb_tree.c.s
+
+src/engine/physics/collision/collision_gjk_epa.o: src/engine/physics/collision/collision_gjk_epa.c.o
+.PHONY : src/engine/physics/collision/collision_gjk_epa.o
+
+# target to build an object file
+src/engine/physics/collision/collision_gjk_epa.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/collision/collision_gjk_epa.c.o
+.PHONY : src/engine/physics/collision/collision_gjk_epa.c.o
+
+src/engine/physics/collision/collision_gjk_epa.i: src/engine/physics/collision/collision_gjk_epa.c.i
+.PHONY : src/engine/physics/collision/collision_gjk_epa.i
+
+# target to preprocess a source file
+src/engine/physics/collision/collision_gjk_epa.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/collision/collision_gjk_epa.c.i
+.PHONY : src/engine/physics/collision/collision_gjk_epa.c.i
+
+src/engine/physics/collision/collision_gjk_epa.s: src/engine/physics/collision/collision_gjk_epa.c.s
+.PHONY : src/engine/physics/collision/collision_gjk_epa.s
+
+# target to generate assembly for a file
+src/engine/physics/collision/collision_gjk_epa.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/collision/collision_gjk_epa.c.s
+.PHONY : src/engine/physics/collision/collision_gjk_epa.c.s
 
 src/engine/physics/collision/epa_solver.o: src/engine/physics/collision/epa_solver.c.o
 .PHONY : src/engine/physics/collision/epa_solver.o
@@ -18336,30 +20374,6 @@ src/engine/physics/narrowphase/contact_manifold.s: src/engine/physics/narrowphas
 src/engine/physics/narrowphase/contact_manifold.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/narrowphase/contact_manifold.c.s
 .PHONY : src/engine/physics/narrowphase/contact_manifold.c.s
-
-src/engine/physics/physics_world_stubs.o: src/engine/physics/physics_world_stubs.c.o
-.PHONY : src/engine/physics/physics_world_stubs.o
-
-# target to build an object file
-src/engine/physics/physics_world_stubs.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_world_stubs.c.o
-.PHONY : src/engine/physics/physics_world_stubs.c.o
-
-src/engine/physics/physics_world_stubs.i: src/engine/physics/physics_world_stubs.c.i
-.PHONY : src/engine/physics/physics_world_stubs.i
-
-# target to preprocess a source file
-src/engine/physics/physics_world_stubs.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_world_stubs.c.i
-.PHONY : src/engine/physics/physics_world_stubs.c.i
-
-src/engine/physics/physics_world_stubs.s: src/engine/physics/physics_world_stubs.c.s
-.PHONY : src/engine/physics/physics_world_stubs.s
-
-# target to generate assembly for a file
-src/engine/physics/physics_world_stubs.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/physics_world_stubs.c.s
-.PHONY : src/engine/physics/physics_world_stubs.c.s
 
 src/engine/physics/queries/physics_queries.o: src/engine/physics/queries/physics_queries.c.o
 .PHONY : src/engine/physics/queries/physics_queries.o
@@ -20505,6 +22519,30 @@ src/engine/rendering/lighting/lumen_gi.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o
 .PHONY : src/engine/rendering/lighting/lumen_gi.m.o
 
+src/engine/rendering/particles/particle_system.o: src/engine/rendering/particles/particle_system.c.o
+.PHONY : src/engine/rendering/particles/particle_system.o
+
+# target to build an object file
+src/engine/rendering/particles/particle_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/particles/particle_system.c.o
+.PHONY : src/engine/rendering/particles/particle_system.c.o
+
+src/engine/rendering/particles/particle_system.i: src/engine/rendering/particles/particle_system.c.i
+.PHONY : src/engine/rendering/particles/particle_system.i
+
+# target to preprocess a source file
+src/engine/rendering/particles/particle_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/particles/particle_system.c.i
+.PHONY : src/engine/rendering/particles/particle_system.c.i
+
+src/engine/rendering/particles/particle_system.s: src/engine/rendering/particles/particle_system.c.s
+.PHONY : src/engine/rendering/particles/particle_system.s
+
+# target to generate assembly for a file
+src/engine/rendering/particles/particle_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/particles/particle_system.c.s
+.PHONY : src/engine/rendering/particles/particle_system.c.s
+
 src/engine/scene/scene_impl.o: src/engine/scene/scene_impl.c.o
 .PHONY : src/engine/scene/scene_impl.o
 
@@ -22281,30 +24319,6 @@ src/engine/shading/library/stylized/cel_shading.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.s
 .PHONY : src/engine/shading/library/stylized/cel_shading.c.s
 
-src/engine/shading/library/vfx/particle_shaders.o: src/engine/shading/library/vfx/particle_shaders.c.o
-.PHONY : src/engine/shading/library/vfx/particle_shaders.o
-
-# target to build an object file
-src/engine/shading/library/vfx/particle_shaders.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o
-.PHONY : src/engine/shading/library/vfx/particle_shaders.c.o
-
-src/engine/shading/library/vfx/particle_shaders.i: src/engine/shading/library/vfx/particle_shaders.c.i
-.PHONY : src/engine/shading/library/vfx/particle_shaders.i
-
-# target to preprocess a source file
-src/engine/shading/library/vfx/particle_shaders.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.i
-.PHONY : src/engine/shading/library/vfx/particle_shaders.c.i
-
-src/engine/shading/library/vfx/particle_shaders.s: src/engine/shading/library/vfx/particle_shaders.c.s
-.PHONY : src/engine/shading/library/vfx/particle_shaders.s
-
-# target to generate assembly for a file
-src/engine/shading/library/vfx/particle_shaders.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.s
-.PHONY : src/engine/shading/library/vfx/particle_shaders.c.s
-
 src/engine/shading/special/absorption.o: src/engine/shading/special/absorption.c.o
 .PHONY : src/engine/shading/special/absorption.o
 
@@ -22664,30 +24678,6 @@ src/engine/tools/analytics_dashboard.s: src/engine/tools/analytics_dashboard.c.s
 src/engine/tools/analytics_dashboard.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard.c.s
 .PHONY : src/engine/tools/analytics_dashboard.c.s
-
-src/engine/tools/analytics_dashboard_2.o: src/engine/tools/analytics_dashboard_2.c.o
-.PHONY : src/engine/tools/analytics_dashboard_2.o
-
-# target to build an object file
-src/engine/tools/analytics_dashboard_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.o
-.PHONY : src/engine/tools/analytics_dashboard_2.c.o
-
-src/engine/tools/analytics_dashboard_2.i: src/engine/tools/analytics_dashboard_2.c.i
-.PHONY : src/engine/tools/analytics_dashboard_2.i
-
-# target to preprocess a source file
-src/engine/tools/analytics_dashboard_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.i
-.PHONY : src/engine/tools/analytics_dashboard_2.c.i
-
-src/engine/tools/analytics_dashboard_2.s: src/engine/tools/analytics_dashboard_2.c.s
-.PHONY : src/engine/tools/analytics_dashboard_2.s
-
-# target to generate assembly for a file
-src/engine/tools/analytics_dashboard_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.s
-.PHONY : src/engine/tools/analytics_dashboard_2.c.s
 
 src/engine/tools/asset_browser/asset_view.o: src/engine/tools/asset_browser/asset_view.c.o
 .PHONY : src/engine/tools/asset_browser/asset_view.o
@@ -25491,6 +27481,7 @@ src/game/blockgame/inventory/inventory.o: src/game/blockgame/inventory/inventory
 # target to build an object file
 src/game/blockgame/inventory/inventory.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o
 .PHONY : src/game/blockgame/inventory/inventory.c.o
 
 src/game/blockgame/inventory/inventory.i: src/game/blockgame/inventory/inventory.c.i
@@ -25499,6 +27490,7 @@ src/game/blockgame/inventory/inventory.i: src/game/blockgame/inventory/inventory
 # target to preprocess a source file
 src/game/blockgame/inventory/inventory.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.i
 .PHONY : src/game/blockgame/inventory/inventory.c.i
 
 src/game/blockgame/inventory/inventory.s: src/game/blockgame/inventory/inventory.c.s
@@ -25507,6 +27499,7 @@ src/game/blockgame/inventory/inventory.s: src/game/blockgame/inventory/inventory
 # target to generate assembly for a file
 src/game/blockgame/inventory/inventory.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.s
 .PHONY : src/game/blockgame/inventory/inventory.c.s
 
 src/game/blockgame/inventory/item_registry.o: src/game/blockgame/inventory/item_registry.c.o
@@ -25515,6 +27508,7 @@ src/game/blockgame/inventory/item_registry.o: src/game/blockgame/inventory/item_
 # target to build an object file
 src/game/blockgame/inventory/item_registry.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o
 .PHONY : src/game/blockgame/inventory/item_registry.c.o
 
 src/game/blockgame/inventory/item_registry.i: src/game/blockgame/inventory/item_registry.c.i
@@ -25523,6 +27517,7 @@ src/game/blockgame/inventory/item_registry.i: src/game/blockgame/inventory/item_
 # target to preprocess a source file
 src/game/blockgame/inventory/item_registry.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.i
 .PHONY : src/game/blockgame/inventory/item_registry.c.i
 
 src/game/blockgame/inventory/item_registry.s: src/game/blockgame/inventory/item_registry.c.s
@@ -25531,6 +27526,7 @@ src/game/blockgame/inventory/item_registry.s: src/game/blockgame/inventory/item_
 # target to generate assembly for a file
 src/game/blockgame/inventory/item_registry.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.s
 .PHONY : src/game/blockgame/inventory/item_registry.c.s
 
 src/game/blockgame/modding/mod_api.o: src/game/blockgame/modding/mod_api.c.o
@@ -25803,6 +27799,7 @@ src/game/blockgame/player/player_food.o: src/game/blockgame/player/player_food.c
 # target to build an object file
 src/game/blockgame/player/player_food.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.o
 .PHONY : src/game/blockgame/player/player_food.c.o
 
 src/game/blockgame/player/player_food.i: src/game/blockgame/player/player_food.c.i
@@ -25811,6 +27808,7 @@ src/game/blockgame/player/player_food.i: src/game/blockgame/player/player_food.c
 # target to preprocess a source file
 src/game/blockgame/player/player_food.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.i
 .PHONY : src/game/blockgame/player/player_food.c.i
 
 src/game/blockgame/player/player_food.s: src/game/blockgame/player/player_food.c.s
@@ -25819,6 +27817,7 @@ src/game/blockgame/player/player_food.s: src/game/blockgame/player/player_food.c
 # target to generate assembly for a file
 src/game/blockgame/player/player_food.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.s
 .PHONY : src/game/blockgame/player/player_food.c.s
 
 src/game/blockgame/player/player_movement_physics.o: src/game/blockgame/player/player_movement_physics.c.o
@@ -26786,6 +28785,7 @@ src/game/blockgame/weather/weather_particles.o: src/game/blockgame/weather/weath
 
 # target to build an object file
 src/game/blockgame/weather/weather_particles.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/weather/weather_particles.c.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_particles.c.o
 .PHONY : src/game/blockgame/weather/weather_particles.c.o
 
@@ -26794,6 +28794,7 @@ src/game/blockgame/weather/weather_particles.i: src/game/blockgame/weather/weath
 
 # target to preprocess a source file
 src/game/blockgame/weather/weather_particles.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/weather/weather_particles.c.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_particles.c.i
 .PHONY : src/game/blockgame/weather/weather_particles.c.i
 
@@ -26802,6 +28803,7 @@ src/game/blockgame/weather/weather_particles.s: src/game/blockgame/weather/weath
 
 # target to generate assembly for a file
 src/game/blockgame/weather/weather_particles.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/weather/weather_particles.c.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_particles.c.s
 .PHONY : src/game/blockgame/weather/weather_particles.c.s
 
@@ -27333,6 +29335,30 @@ src/game/blockgame/world/water_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_system.c.s
 .PHONY : src/game/blockgame/world/water_system.c.s
 
+tests/test_player_food.o: tests/test_player_food.c.o
+.PHONY : tests/test_player_food.o
+
+# target to build an object file
+tests/test_player_food.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/tests/test_player_food.c.o
+.PHONY : tests/test_player_food.c.o
+
+tests/test_player_food.i: tests/test_player_food.c.i
+.PHONY : tests/test_player_food.i
+
+# target to preprocess a source file
+tests/test_player_food.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/tests/test_player_food.c.i
+.PHONY : tests/test_player_food.c.i
+
+tests/test_player_food.s: tests/test_player_food.c.s
+.PHONY : tests/test_player_food.s
+
+# target to generate assembly for a file
+tests/test_player_food.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/tests/test_player_food.c.s
+.PHONY : tests/test_player_food.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -27350,6 +29376,7 @@ help:
 	@echo "... Engine"
 	@echo "... Game"
 	@echo "... full_integration_test"
+	@echo "... test_player_food"
 	@echo "... src/engine/ai/advanced/extended_ai_complete.o"
 	@echo "... src/engine/ai/advanced/extended_ai_complete.i"
 	@echo "... src/engine/ai/advanced/extended_ai_complete.s"
@@ -27766,9 +29793,6 @@ help:
 	@echo "... src/engine/animation/skeleton_system.o"
 	@echo "... src/engine/animation/skeleton_system.i"
 	@echo "... src/engine/animation/skeleton_system.s"
-	@echo "... src/engine/animation/skeleton_system_2.o"
-	@echo "... src/engine/animation/skeleton_system_2.i"
-	@echo "... src/engine/animation/skeleton_system_2.s"
 	@echo "... src/engine/animation/state_machines/anim_state_machine.o"
 	@echo "... src/engine/animation/state_machines/anim_state_machine.i"
 	@echo "... src/engine/animation/state_machines/anim_state_machine.s"
@@ -28195,18 +30219,12 @@ help:
 	@echo "... src/engine/assets/textures/virtual_texturing/virtual_texture.o"
 	@echo "... src/engine/assets/textures/virtual_texturing/virtual_texture.i"
 	@echo "... src/engine/assets/textures/virtual_texturing/virtual_texture.s"
-	@echo "... src/engine/audio/audio_loader.o"
-	@echo "... src/engine/audio/audio_loader.i"
-	@echo "... src/engine/audio/audio_loader.s"
-	@echo "... src/engine/audio/audio_reverb.o"
-	@echo "... src/engine/audio/audio_reverb.i"
-	@echo "... src/engine/audio/audio_reverb.s"
+	@echo "... src/engine/audio/audio_core.o"
+	@echo "... src/engine/audio/audio_core.i"
+	@echo "... src/engine/audio/audio_core.s"
 	@echo "... src/engine/audio/audio_system.o"
 	@echo "... src/engine/audio/audio_system.i"
 	@echo "... src/engine/audio/audio_system.s"
-	@echo "... src/engine/audio/underwater_filter_stubs.o"
-	@echo "... src/engine/audio/underwater_filter_stubs.i"
-	@echo "... src/engine/audio/underwater_filter_stubs.s"
 	@echo "... src/engine/backend/metal/metal_backend_demo.o"
 	@echo "... src/engine/backend/metal/metal_pipeline_test.o"
 	@echo "... src/engine/backend/metal/metal_raytracing.o"
@@ -28657,6 +30675,9 @@ help:
 	@echo "... src/engine/core/config.o"
 	@echo "... src/engine/core/config.i"
 	@echo "... src/engine/core/config.s"
+	@echo "... src/engine/core/containers/hashmap.o"
+	@echo "... src/engine/core/containers/hashmap.i"
+	@echo "... src/engine/core/containers/hashmap.s"
 	@echo "... src/engine/core/engine.o"
 	@echo "... src/engine/core/engine.i"
 	@echo "... src/engine/core/engine.s"
@@ -28671,6 +30692,12 @@ help:
 	@echo "... src/engine/core/logger.o"
 	@echo "... src/engine/core/logger.i"
 	@echo "... src/engine/core/logger.s"
+	@echo "... src/engine/core/memory/buddy_allocator.o"
+	@echo "... src/engine/core/memory/buddy_allocator.i"
+	@echo "... src/engine/core/memory/buddy_allocator.s"
+	@echo "... src/engine/core/memory/linear_allocator.o"
+	@echo "... src/engine/core/memory/linear_allocator.i"
+	@echo "... src/engine/core/memory/linear_allocator.s"
 	@echo "... src/engine/core/memory/memory.o"
 	@echo "... src/engine/core/memory/memory.i"
 	@echo "... src/engine/core/memory/memory.s"
@@ -28737,6 +30764,12 @@ help:
 	@echo "... src/engine/effects/destruction/fracture_system.o"
 	@echo "... src/engine/effects/destruction/fracture_system.i"
 	@echo "... src/engine/effects/destruction/fracture_system.s"
+	@echo "... src/engine/effects/particles/particle_emitter.o"
+	@echo "... src/engine/effects/particles/particle_emitter.i"
+	@echo "... src/engine/effects/particles/particle_emitter.s"
+	@echo "... src/engine/effects/particles/particle_simulation.o"
+	@echo "... src/engine/effects/particles/particle_simulation.i"
+	@echo "... src/engine/effects/particles/particle_simulation.s"
 	@echo "... src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.o"
 	@echo "... src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.i"
 	@echo "... src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.s"
@@ -29086,6 +31119,9 @@ help:
 	@echo "... src/engine/geometry/instancing/instance_buffer.o"
 	@echo "... src/engine/geometry/instancing/instance_buffer.i"
 	@echo "... src/engine/geometry/instancing/instance_buffer.s"
+	@echo "... src/engine/geometry/instancing/instance_buffer_stubs.o"
+	@echo "... src/engine/geometry/instancing/instance_buffer_stubs.i"
+	@echo "... src/engine/geometry/instancing/instance_buffer_stubs.s"
 	@echo "... src/engine/geometry/instancing/instance_culler.o"
 	@echo "... src/engine/geometry/instancing/instance_culler.i"
 	@echo "... src/engine/geometry/instancing/instance_culler.s"
@@ -29558,7 +31594,127 @@ help:
 	@echo "... src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.o"
 	@echo "... src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.i"
 	@echo "... src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.s"
+	@echo "... src/engine/materials/customization_loader.o"
+	@echo "... src/engine/materials/customization_loader.i"
+	@echo "... src/engine/materials/customization_loader.s"
+	@echo "... src/engine/materials/gpu_material.o"
+	@echo "... src/engine/materials/gpu_material.i"
+	@echo "... src/engine/materials/gpu_material.s"
+	@echo "... src/engine/materials/layering/height_blending.o"
+	@echo "... src/engine/materials/layering/height_blending.i"
+	@echo "... src/engine/materials/layering/height_blending.s"
+	@echo "... src/engine/materials/layering/layer_blending.o"
+	@echo "... src/engine/materials/layering/layer_blending.i"
+	@echo "... src/engine/materials/layering/layer_blending.s"
+	@echo "... src/engine/materials/layering/layer_masks.o"
+	@echo "... src/engine/materials/layering/layer_masks.i"
+	@echo "... src/engine/materials/layering/layer_masks.s"
+	@echo "... src/engine/materials/layering/layer_weights.o"
+	@echo "... src/engine/materials/layering/layer_weights.i"
+	@echo "... src/engine/materials/layering/layer_weights.s"
+	@echo "... src/engine/materials/layering/material_layers.o"
+	@echo "... src/engine/materials/layering/material_layers.i"
+	@echo "... src/engine/materials/layering/material_layers.s"
+	@echo "... src/engine/materials/layering/triplanar_projection.o"
+	@echo "... src/engine/materials/layering/triplanar_projection.i"
+	@echo "... src/engine/materials/layering/triplanar_projection.s"
+	@echo "... src/engine/materials/material.o"
+	@echo "... src/engine/materials/material.i"
+	@echo "... src/engine/materials/material.s"
+	@echo "... src/engine/materials/material_complete_example.o"
+	@echo "... src/engine/materials/material_complete_example.i"
+	@echo "... src/engine/materials/material_complete_example.s"
+	@echo "... src/engine/materials/material_defaults.o"
+	@echo "... src/engine/materials/material_defaults.i"
+	@echo "... src/engine/materials/material_defaults.s"
+	@echo "... src/engine/materials/material_examples.o"
+	@echo "... src/engine/materials/material_examples.i"
+	@echo "... src/engine/materials/material_examples.s"
+	@echo "... src/engine/materials/material_hot_reload.o"
+	@echo "... src/engine/materials/material_hot_reload.i"
+	@echo "... src/engine/materials/material_hot_reload.s"
+	@echo "... src/engine/materials/material_instance.o"
+	@echo "... src/engine/materials/material_instance.i"
+	@echo "... src/engine/materials/material_instance.s"
+	@echo "... src/engine/materials/material_serialization.o"
+	@echo "... src/engine/materials/material_serialization.i"
+	@echo "... src/engine/materials/material_serialization.s"
+	@echo "... src/engine/materials/material_serialization_examples.o"
+	@echo "... src/engine/materials/material_serialization_examples.i"
+	@echo "... src/engine/materials/material_serialization_examples.s"
+	@echo "... src/engine/materials/material_system.o"
+	@echo "... src/engine/materials/material_system.i"
+	@echo "... src/engine/materials/material_system.s"
+	@echo "... src/engine/materials/material_system/dynamic_materials.o"
+	@echo "... src/engine/materials/material_system/dynamic_materials.i"
+	@echo "... src/engine/materials/material_system/dynamic_materials.s"
+	@echo "... src/engine/materials/material_system/material_instance.o"
+	@echo "... src/engine/materials/material_system/material_instance.i"
+	@echo "... src/engine/materials/material_system/material_instance.s"
+	@echo "... src/engine/materials/material_system/material_lod.o"
+	@echo "... src/engine/materials/material_system/material_lod.i"
+	@echo "... src/engine/materials/material_system/material_lod.s"
+	@echo "... src/engine/materials/material_system/material_overrides.o"
+	@echo "... src/engine/materials/material_system/material_overrides.i"
+	@echo "... src/engine/materials/material_system/material_overrides.s"
+	@echo "... src/engine/materials/material_system/material_parameters.o"
+	@echo "... src/engine/materials/material_system/material_parameters.i"
+	@echo "... src/engine/materials/material_system/material_parameters.s"
+	@echo "... src/engine/materials/material_system/material_sorting.o"
+	@echo "... src/engine/materials/material_system/material_sorting.i"
+	@echo "... src/engine/materials/material_system/material_sorting.s"
+	@echo "... src/engine/materials/material_templates.o"
+	@echo "... src/engine/materials/material_templates.i"
+	@echo "... src/engine/materials/material_templates.s"
+	@echo "... src/engine/materials/pbr/material_reflection.o"
+	@echo "... src/engine/materials/pbr/material_reflection.i"
+	@echo "... src/engine/materials/pbr/material_reflection.s"
 	@echo "... src/engine/materials/pbr/metallic_roughness.o"
+	@echo "... src/engine/materials/pbr/pbr_conversion.o"
+	@echo "... src/engine/materials/pbr/pbr_conversion.i"
+	@echo "... src/engine/materials/pbr/pbr_conversion.s"
+	@echo "... src/engine/materials/pbr/pbr_parameters.o"
+	@echo "... src/engine/materials/pbr/pbr_parameters.i"
+	@echo "... src/engine/materials/pbr/pbr_parameters.s"
+	@echo "... src/engine/materials/pbr/pbr_presets.o"
+	@echo "... src/engine/materials/pbr/pbr_presets.i"
+	@echo "... src/engine/materials/pbr/pbr_presets.s"
+	@echo "... src/engine/materials/pbr/pbr_validation.o"
+	@echo "... src/engine/materials/pbr/pbr_validation.i"
+	@echo "... src/engine/materials/pbr/pbr_validation.s"
+	@echo "... src/engine/materials/pbr/specular_glossiness.o"
+	@echo "... src/engine/materials/pbr/specular_glossiness.i"
+	@echo "... src/engine/materials/pbr/specular_glossiness.s"
+	@echo "... src/engine/materials/shader_permutations.o"
+	@echo "... src/engine/materials/shader_permutations.i"
+	@echo "... src/engine/materials/shader_permutations.s"
+	@echo "... src/engine/materials/shaders/shader_cache.o"
+	@echo "... src/engine/materials/shaders/shader_cache.i"
+	@echo "... src/engine/materials/shaders/shader_cache.s"
+	@echo "... src/engine/materials/shaders/shader_compiler.o"
+	@echo "... src/engine/materials/shaders/shader_compiler.i"
+	@echo "... src/engine/materials/shaders/shader_compiler.s"
+	@echo "... src/engine/materials/shaders/shader_hot_reload.o"
+	@echo "... src/engine/materials/shaders/shader_hot_reload.i"
+	@echo "... src/engine/materials/shaders/shader_hot_reload.s"
+	@echo "... src/engine/materials/shaders/shader_includes.o"
+	@echo "... src/engine/materials/shaders/shader_includes.i"
+	@echo "... src/engine/materials/shaders/shader_includes.s"
+	@echo "... src/engine/materials/shaders/shader_reflection.o"
+	@echo "... src/engine/materials/shaders/shader_reflection.i"
+	@echo "... src/engine/materials/shaders/shader_reflection.s"
+	@echo "... src/engine/materials/shaders/shader_variants.o"
+	@echo "... src/engine/materials/shaders/shader_variants.i"
+	@echo "... src/engine/materials/shaders/shader_variants.s"
+	@echo "... src/engine/materials/special_materials/emissive_material.o"
+	@echo "... src/engine/materials/special_materials/emissive_material.i"
+	@echo "... src/engine/materials/special_materials/emissive_material.s"
+	@echo "... src/engine/materials/special_materials/foliage_material.o"
+	@echo "... src/engine/materials/special_materials/foliage_material.i"
+	@echo "... src/engine/materials/special_materials/foliage_material.s"
+	@echo "... src/engine/materials/special_materials/glass_material.o"
+	@echo "... src/engine/materials/special_materials/glass_material.i"
+	@echo "... src/engine/materials/special_materials/glass_material.s"
 	@echo "... src/engine/materials/special_materials/hair_material.o"
 	@echo "... src/engine/materials/special_materials/hair_material.i"
 	@echo "... src/engine/materials/special_materials/hair_material.s"
@@ -29595,12 +31751,135 @@ help:
 	@echo "... src/engine/materials/templates/characters/character_templates.o"
 	@echo "... src/engine/materials/templates/characters/character_templates.i"
 	@echo "... src/engine/materials/templates/characters/character_templates.s"
+	@echo "... src/engine/materials/templates/characters/customization_loader.o"
+	@echo "... src/engine/materials/templates/characters/customization_loader.i"
+	@echo "... src/engine/materials/templates/characters/customization_loader.s"
+	@echo "... src/engine/materials/templates/characters/mesh_attachment.o"
+	@echo "... src/engine/materials/templates/characters/mesh_attachment.i"
+	@echo "... src/engine/materials/templates/characters/mesh_attachment.s"
+	@echo "... src/engine/materials/templates/characters/skeleton_lod.o"
+	@echo "... src/engine/materials/templates/characters/skeleton_lod.i"
+	@echo "... src/engine/materials/templates/characters/skeleton_lod.s"
+	@echo "... src/engine/materials/templates/characters/skeleton_preview.o"
+	@echo "... src/engine/materials/templates/characters/skeleton_preview.i"
+	@echo "... src/engine/materials/templates/characters/skeleton_preview.s"
+	@echo "... src/engine/materials/templates/environments/medieval_village.o"
+	@echo "... src/engine/materials/templates/environments/medieval_village.i"
+	@echo "... src/engine/materials/templates/environments/medieval_village.s"
+	@echo "... src/engine/materials/templates/environments/scifi_station.o"
+	@echo "... src/engine/materials/templates/environments/scifi_station.i"
+	@echo "... src/engine/materials/templates/environments/scifi_station.s"
+	@echo "... src/engine/materials/templates/npcs/npc_behavior_impl.o"
+	@echo "... src/engine/materials/templates/npcs/npc_behavior_impl.i"
+	@echo "... src/engine/materials/templates/npcs/npc_behavior_impl.s"
+	@echo "... src/engine/materials/textures/detail_textures.o"
+	@echo "... src/engine/materials/textures/detail_textures.i"
+	@echo "... src/engine/materials/textures/detail_textures.s"
+	@echo "... src/engine/materials/textures/procedural_textures.o"
+	@echo "... src/engine/materials/textures/procedural_textures.i"
+	@echo "... src/engine/materials/textures/procedural_textures.s"
+	@echo "... src/engine/materials/textures/texture_binding.o"
+	@echo "... src/engine/materials/textures/texture_binding.i"
+	@echo "... src/engine/materials/textures/texture_binding.s"
+	@echo "... src/engine/materials/textures/texture_blending.o"
+	@echo "... src/engine/materials/textures/texture_blending.i"
+	@echo "... src/engine/materials/textures/texture_blending.s"
+	@echo "... src/engine/materials/textures/texture_defaults.o"
+	@echo "... src/engine/materials/textures/texture_defaults.i"
+	@echo "... src/engine/materials/textures/texture_defaults.s"
+	@echo "... src/engine/materials/textures/texture_transform.o"
+	@echo "... src/engine/materials/textures/texture_transform.i"
+	@echo "... src/engine/materials/textures/texture_transform.s"
+	@echo "... src/engine/materials/types/concrete/concrete_cracks.o"
+	@echo "... src/engine/materials/types/concrete/concrete_cracks.i"
+	@echo "... src/engine/materials/types/concrete/concrete_cracks.s"
+	@echo "... src/engine/materials/types/concrete/concrete_staining.o"
+	@echo "... src/engine/materials/types/concrete/concrete_staining.i"
+	@echo "... src/engine/materials/types/concrete/concrete_staining.s"
+	@echo "... src/engine/materials/types/fabric/fabric_detail.o"
+	@echo "... src/engine/materials/types/fabric/fabric_detail.i"
+	@echo "... src/engine/materials/types/fabric/fabric_detail.s"
+	@echo "... src/engine/materials/types/fabric/fabric_sheen.o"
+	@echo "... src/engine/materials/types/fabric/fabric_sheen.i"
+	@echo "... src/engine/materials/types/fabric/fabric_sheen.s"
+	@echo "... src/engine/materials/types/glass/glass_refraction.o"
+	@echo "... src/engine/materials/types/glass/glass_refraction.i"
+	@echo "... src/engine/materials/types/glass/glass_refraction.s"
+	@echo "... src/engine/materials/types/glass/glass_thickness.o"
+	@echo "... src/engine/materials/types/glass/glass_thickness.i"
+	@echo "... src/engine/materials/types/glass/glass_thickness.s"
+	@echo "... src/engine/materials/types/liquid/liquid_splashes.o"
+	@echo "... src/engine/materials/types/liquid/liquid_splashes.i"
+	@echo "... src/engine/materials/types/liquid/liquid_splashes.s"
+	@echo "... src/engine/materials/types/liquid/liquid_surface.o"
+	@echo "... src/engine/materials/types/liquid/liquid_surface.i"
+	@echo "... src/engine/materials/types/liquid/liquid_surface.s"
+	@echo "... src/engine/materials/types/metal/metal_anisotropy.o"
+	@echo "... src/engine/materials/types/metal/metal_anisotropy.i"
+	@echo "... src/engine/materials/types/metal/metal_anisotropy.s"
+	@echo "... src/engine/materials/types/metal/metal_flakes.o"
+	@echo "... src/engine/materials/types/metal/metal_flakes.i"
+	@echo "... src/engine/materials/types/metal/metal_flakes.s"
+	@echo "... src/engine/materials/types/stone/stone_detail.o"
+	@echo "... src/engine/materials/types/stone/stone_detail.i"
+	@echo "... src/engine/materials/types/stone/stone_detail.s"
+	@echo "... src/engine/materials/types/stone/stone_parallax.o"
+	@echo "... src/engine/materials/types/stone/stone_parallax.i"
+	@echo "... src/engine/materials/types/stone/stone_parallax.s"
+	@echo "... src/engine/materials/types/wood/wood_grain.o"
+	@echo "... src/engine/materials/types/wood/wood_grain.i"
+	@echo "... src/engine/materials/types/wood/wood_grain.s"
+	@echo "... src/engine/materials/types/wood/wood_subsurface.o"
+	@echo "... src/engine/materials/types/wood/wood_subsurface.i"
+	@echo "... src/engine/materials/types/wood/wood_subsurface.s"
+	@echo "... src/engine/materials/weathering/age/age_simulation.o"
+	@echo "... src/engine/materials/weathering/age/age_simulation.i"
+	@echo "... src/engine/materials/weathering/age/age_simulation.s"
+	@echo "... src/engine/materials/weathering/age/weathering_system.o"
+	@echo "... src/engine/materials/weathering/age/weathering_system.i"
+	@echo "... src/engine/materials/weathering/age/weathering_system.s"
+	@echo "... src/engine/materials/weathering/dirt/dirt_accumulation.o"
+	@echo "... src/engine/materials/weathering/dirt/dirt_accumulation.i"
+	@echo "... src/engine/materials/weathering/dirt/dirt_accumulation.s"
+	@echo "... src/engine/materials/weathering/dirt/grunge_masks.o"
+	@echo "... src/engine/materials/weathering/dirt/grunge_masks.i"
+	@echo "... src/engine/materials/weathering/dirt/grunge_masks.s"
+	@echo "... src/engine/materials/weathering/rust/rust_color.o"
+	@echo "... src/engine/materials/weathering/rust/rust_color.i"
+	@echo "... src/engine/materials/weathering/rust/rust_color.s"
+	@echo "... src/engine/materials/weathering/rust/rust_growth.o"
+	@echo "... src/engine/materials/weathering/rust/rust_growth.i"
+	@echo "... src/engine/materials/weathering/rust/rust_growth.s"
+	@echo "... src/engine/materials/weathering/wear/tear_damage.o"
+	@echo "... src/engine/materials/weathering/wear/tear_damage.i"
+	@echo "... src/engine/materials/weathering/wear/tear_damage.s"
+	@echo "... src/engine/materials/weathering/wear/wear_edges.o"
+	@echo "... src/engine/materials/weathering/wear/wear_edges.i"
+	@echo "... src/engine/materials/weathering/wear/wear_edges.s"
+	@echo "... src/engine/materials/wetness/puddle_rendering.o"
+	@echo "... src/engine/materials/wetness/puddle_rendering.i"
+	@echo "... src/engine/materials/wetness/puddle_rendering.s"
+	@echo "... src/engine/materials/wetness/wetness_mask.o"
+	@echo "... src/engine/materials/wetness/wetness_mask.i"
+	@echo "... src/engine/materials/wetness/wetness_mask.s"
 	@echo "... src/engine/math/quat.o"
 	@echo "... src/engine/math/quat.i"
 	@echo "... src/engine/math/quat.s"
+	@echo "... src/engine/npc/npc_jobs.o"
+	@echo "... src/engine/npc/npc_jobs.i"
+	@echo "... src/engine/npc/npc_jobs.s"
+	@echo "... src/engine/npc/npc_system.o"
+	@echo "... src/engine/npc/npc_system.i"
+	@echo "... src/engine/npc/npc_system.s"
+	@echo "... src/engine/npc/npc_visuals.o"
+	@echo "... src/engine/npc/npc_visuals.i"
+	@echo "... src/engine/npc/npc_visuals.s"
 	@echo "... src/engine/physics/broadphase/aabb_tree.o"
 	@echo "... src/engine/physics/broadphase/aabb_tree.i"
 	@echo "... src/engine/physics/broadphase/aabb_tree.s"
+	@echo "... src/engine/physics/collision/collision_gjk_epa.o"
+	@echo "... src/engine/physics/collision/collision_gjk_epa.i"
+	@echo "... src/engine/physics/collision/collision_gjk_epa.s"
 	@echo "... src/engine/physics/collision/epa_solver.o"
 	@echo "... src/engine/physics/collision/epa_solver.i"
 	@echo "... src/engine/physics/collision/epa_solver.s"
@@ -29613,9 +31892,6 @@ help:
 	@echo "... src/engine/physics/narrowphase/contact_manifold.o"
 	@echo "... src/engine/physics/narrowphase/contact_manifold.i"
 	@echo "... src/engine/physics/narrowphase/contact_manifold.s"
-	@echo "... src/engine/physics/physics_world_stubs.o"
-	@echo "... src/engine/physics/physics_world_stubs.i"
-	@echo "... src/engine/physics/physics_world_stubs.s"
 	@echo "... src/engine/physics/queries/physics_queries.o"
 	@echo "... src/engine/physics/queries/physics_queries.i"
 	@echo "... src/engine/physics/queries/physics_queries.s"
@@ -29884,6 +32160,9 @@ help:
 	@echo "... src/engine/rendering/core/texture_atlas.i"
 	@echo "... src/engine/rendering/core/texture_atlas.s"
 	@echo "... src/engine/rendering/lighting/lumen_gi.o"
+	@echo "... src/engine/rendering/particles/particle_system.o"
+	@echo "... src/engine/rendering/particles/particle_system.i"
+	@echo "... src/engine/rendering/particles/particle_system.s"
 	@echo "... src/engine/scene/scene_impl.o"
 	@echo "... src/engine/scene/scene_impl.i"
 	@echo "... src/engine/scene/scene_impl.s"
@@ -30106,9 +32385,6 @@ help:
 	@echo "... src/engine/shading/library/stylized/cel_shading.o"
 	@echo "... src/engine/shading/library/stylized/cel_shading.i"
 	@echo "... src/engine/shading/library/stylized/cel_shading.s"
-	@echo "... src/engine/shading/library/vfx/particle_shaders.o"
-	@echo "... src/engine/shading/library/vfx/particle_shaders.i"
-	@echo "... src/engine/shading/library/vfx/particle_shaders.s"
 	@echo "... src/engine/shading/special/absorption.o"
 	@echo "... src/engine/shading/special/absorption.i"
 	@echo "... src/engine/shading/special/absorption.s"
@@ -30154,9 +32430,6 @@ help:
 	@echo "... src/engine/tools/analytics_dashboard.o"
 	@echo "... src/engine/tools/analytics_dashboard.i"
 	@echo "... src/engine/tools/analytics_dashboard.s"
-	@echo "... src/engine/tools/analytics_dashboard_2.o"
-	@echo "... src/engine/tools/analytics_dashboard_2.i"
-	@echo "... src/engine/tools/analytics_dashboard_2.s"
 	@echo "... src/engine/tools/asset_browser/asset_view.o"
 	@echo "... src/engine/tools/asset_browser/asset_view.i"
 	@echo "... src/engine/tools/asset_browser/asset_view.s"
@@ -30736,6 +33009,9 @@ help:
 	@echo "... src/game/blockgame/world/water_system.o"
 	@echo "... src/game/blockgame/world/water_system.i"
 	@echo "... src/game/blockgame/world/water_system.s"
+	@echo "... tests/test_player_food.o"
+	@echo "... tests/test_player_food.i"
+	@echo "... tests/test_player_food.s"
 .PHONY : help
 
 

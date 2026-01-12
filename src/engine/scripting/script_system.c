@@ -43,14 +43,12 @@ static int g_var_count = 0;
 // =============================================================================
 
 static void cmd_print(const char *args) {
-  printf("[SCRIPT] %s\n", args ? args : "");
 }
 
 static void cmd_help(const char *args) {
   (void)args;
   printf("=== Available Commands ===\n");
   for (int i = 0; i < g_command_count; i++) {
-    printf("  %s - %s\n", g_commands[i].name, g_commands[i].description);
   }
 }
 
@@ -65,7 +63,6 @@ static void cmd_set(const char *args) {
     for (int i = 0; i < g_var_count; i++) {
       if (strcmp(g_vars[i].name, name) == 0) {
         g_vars[i].value = value;
-        printf("[SCRIPT] %s = %f\n", name, value);
         return;
       }
     }
@@ -76,7 +73,6 @@ static void cmd_set(const char *args) {
       g_vars[g_var_count].min_val = -1e9f;
       g_vars[g_var_count].max_val = 1e9f;
       g_var_count++;
-      printf("[SCRIPT] Created %s = %f\n", name, value);
     }
   }
 }
@@ -87,11 +83,9 @@ static void cmd_get(const char *args) {
 
   for (int i = 0; i < g_var_count; i++) {
     if (strcmp(g_vars[i].name, args) == 0) {
-      printf("[SCRIPT] %s = %f\n", g_vars[i].name, g_vars[i].value);
       return;
     }
   }
-  printf("[SCRIPT] Variable '%s' not found\n", args);
 }
 
 static void cmd_spawn(const char *args) {
@@ -100,7 +94,6 @@ static void cmd_spawn(const char *args) {
   float x = 0, y = 0, z = 0;
   char type[64];
   if (sscanf(args, "%63s %f %f %f", type, &x, &y, &z) >= 1) {
-    printf("[SCRIPT] Spawning '%s' at (%.1f, %.1f, %.1f)\n", type, x, y, z);
     // Would trigger entity spawn in ECS
   }
 }
@@ -110,7 +103,6 @@ static void cmd_teleport(const char *args) {
     return;
   float x, y, z;
   if (sscanf(args, "%f %f %f", &x, &y, &z) == 3) {
-    printf("[SCRIPT] Teleporting player to (%.1f, %.1f, %.1f)\n", x, y, z);
     // Would set player position
   }
 }
@@ -121,7 +113,6 @@ static void cmd_give(const char *args) {
   char item[64];
   int count = 1;
   if (sscanf(args, "%63s %d", item, &count) >= 1) {
-    printf("[SCRIPT] Giving %d x %s to player\n", count, item);
     // Would add to inventory
   }
 }
@@ -131,7 +122,6 @@ static void cmd_time(const char *args) {
     return;
   int hour;
   if (sscanf(args, "%d", &hour) == 1) {
-    printf("[SCRIPT] Setting time to %d:00\n", hour);
     // Would set world time
   }
 }
@@ -139,7 +129,6 @@ static void cmd_time(const char *args) {
 static void cmd_weather(const char *args) {
   if (!args)
     return;
-  printf("[SCRIPT] Setting weather to '%s'\n", args);
   // Would set weather state
 }
 
@@ -211,7 +200,6 @@ bool ScriptSystem_Init(ScriptSystem *system) {
   system->state = NULL; // No Lua state for this implementation
   register_builtin_commands();
 
-  printf("[SCRIPT] Script system initialized with %d commands\n",
          g_command_count);
   return true;
 }
@@ -260,7 +248,6 @@ bool ScriptSystem_RunString(ScriptSystem *system, const char *script) {
     }
   }
 
-  printf("[SCRIPT] Unknown command: %s\n", cmd_name);
   return false;
 }
 

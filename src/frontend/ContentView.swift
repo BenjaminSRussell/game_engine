@@ -1,4 +1,6 @@
 import SwiftUI
+import CEngineCore
+import MetalKit
 
 // MARK: - Premium Main Content View
 
@@ -7,6 +9,12 @@ struct ContentView: View {
     @State private var selectedTab: String = "engine"
     @State private var isShowingSearch = false
     
+    var rendererBridge: UnsafeMutablePointer<RendererBridge>?
+    
+    init(rendererBridge: UnsafeMutablePointer<RendererBridge>? = nil) {
+        self.rendererBridge = rendererBridge
+    }
+    
     var body: some View {
         NavigationSplitView {
             // Premium Sidebar
@@ -14,7 +22,7 @@ struct ContentView: View {
         } detail: {
             switch selectedTab {
             case "engine":
-                EditorWorkspace()
+                EditorWorkspace(rendererBridge: rendererBridge)
             case "material":
                 MaterialEditorPanel()
             case "lighting":
@@ -434,7 +442,10 @@ struct EditorWorkspace: View {
     @State private var hierarchyWidth: CGFloat = 280
     @State private var inspectorWidth: CGFloat = 320
     @State private var contentBrowserHeight: CGFloat = 250
+    @State private var contentBrowserHeight: CGFloat = 250
     @StateObject private var selectionManager = SelectionManager()
+    
+    var rendererBridge: UnsafeMutablePointer<RendererBridge>?
     
     var body: some View {
         GeometryReader { geometry in
@@ -456,7 +467,7 @@ struct EditorWorkspace: View {
                     // Center: Viewport + Bottom Content Browser
                     VStack(spacing: 0) {
                         // Viewport
-                        ViewportPanel()
+                        ViewportPanel(rendererBridge: rendererBridge)
                             .frame(maxHeight: .infinity)
                             .environmentObject(selectionManager)
                         
@@ -554,7 +565,10 @@ struct ViewportPanel: View {
     @ObservedObject var profiler = Profiler.shared
     @State private var gizmoMode: GizmoMode = .translate
     @State private var showGrid = true
+    @State private var showGrid = true
     @State private var showStats = true
+    
+    var rendererBridge: UnsafeMutablePointer<RendererBridge>?
     
     enum GizmoMode {
         case translate, rotate, scale
@@ -571,7 +585,12 @@ struct ViewportPanel: View {
     var body: some View {
         ZStack {
             // Metal viewport placeholder
-            DesignSystem.Colors.backgroundPrimary
+            if let bridge = rendererBridge {
+                EngineViewport(rendererBridge: bridge)
+            } else {
+                DesignSystem.Colors.backgroundPrimary
+                    .overlay(Text("No Engine Connection").foregroundStyle(.white))
+            }
             
             // Viewport content
             VStack {

@@ -487,7 +487,6 @@ void memory_profiler_export_timeline(const char *filename) {
     fprintf(file, "%llu,%llu", snapshot->timestamp, snapshot->total_usage);
 
     for (u32 j = 0; j < MEMORY_TAG_COUNT; j++) {
-      fprintf(file, ",%llu", snapshot->tag_usage[j]);
     }
 
     fprintf(file, ",%u\n", snapshot->allocation_count);

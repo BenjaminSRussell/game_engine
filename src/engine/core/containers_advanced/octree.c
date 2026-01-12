@@ -505,7 +505,6 @@ static void octree_dump_node(const OctreeNode *node, FILE *out) {
     return;
   }
 
-  fprintf(out, "depth=%u items=%u bounds=[%.2f %.2f %.2f]-[%.2f %.2f %.2f]\n",
           node->depth, node->item_count, node->bounds.min[0],
           node->bounds.min[1], node->bounds.min[2], node->bounds.max[0],
           node->bounds.max[1], node->bounds.max[2]);

@@ -524,7 +524,6 @@ bool stack_capture_export_leaks_to_json(StackCaptureSystem* system, const char* 
     fprintf(fp, "  \"memory_leaks\": {\n");
     fprintf(fp, "    \"total_leaks\": 0,\n");
     fprintf(fp, "    \"leaked_bytes\": 0,\n");
-    fprintf(fp, "    \"leaks\": [\n");
     
     u32 leak_count = 0;
     u64 leaked_bytes = 0;

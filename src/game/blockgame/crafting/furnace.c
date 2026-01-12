@@ -83,8 +83,7 @@ void furnace_init(FurnaceState *furnace) {
 // Update furnace
 
 void furnace_update(FurnaceState *furnace, Inventory *inventory,
-                    f32 delta_time) {
-  const ItemRegistry *registry = NULL; // TODO: Get global registry
+                    const ItemRegistry *registry, f32 delta_time) {
 
   if (!furnace || !inventory)
 

@@ -50,4 +50,9 @@ void player_cancel_eating(struct PlayerComponent *player);
 // Get current eating state
 EatingState *player_get_eating_state(struct PlayerComponent *player);
 
+// Update inventory spoilage (decay items)
+void player_update_inventory_spoilage(struct PlayerComponent *player,
+                                      f32 delta_time,
+                                      const ItemRegistry *item_registry);
+
 #endif // PLAYER_FOOD_H

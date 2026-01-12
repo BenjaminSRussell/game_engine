@@ -185,7 +185,6 @@ bool Skeleton_SaveSkeletonData(UnrealSkeletonData* skeleton_data, const char* ou
     fprintf(file, "  \"name\": \"%s\",\n", skeleton_data->name);
     fprintf(file, "  \"bone_count\": %u,\n", skeleton_data->bone_count);
     
-    fprintf(file, "  \"bones\": [\n");
     for (uint32_t i = 0; i < skeleton_data->bone_count; i++) {
         UnrealBone* bone = &skeleton_data->bones[i];
         
@@ -196,12 +195,12 @@ bool Skeleton_SaveSkeletonData(UnrealSkeletonData* skeleton_data, const char* ou
                 bone->position[0], bone->position[1], bone->position[2]);
         
         fprintf(file, "      \"bind_pose\": {\n");
-        fprintf(file, "        \"position\": [%.6f, %.6f, %.6f],\n",
+        fprintf(file, "        \"position\": [%.6f, %.6f, %.6f],\n", 
                 bone->bind_pose.position[0], bone->bind_pose.position[1], bone->bind_pose.position[2]);
-        fprintf(file, "        \"rotation\": [%.6f, %.6f, %.6f, %.6f],\n",
+        fprintf(file, "        \"rotation\": [%.6f, %.6f, %.6f, %.6f],\n", 
                 bone->bind_pose.rotation[0], bone->bind_pose.rotation[1], 
                 bone->bind_pose.rotation[2], bone->bind_pose.rotation[3]);
-        fprintf(file, "        \"scale\": [%.6f, %.6f, %.6f]\n",
+        fprintf(file, "        \"scale\": [%.6f, %.6f, %.6f]\n", 
                 bone->bind_pose.scale[0], bone->bind_pose.scale[1], bone->bind_pose.scale[2]);
         fprintf(file, "      }\n");
         

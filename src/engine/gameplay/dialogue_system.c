@@ -451,7 +451,6 @@ bool dialogue_export_tree(u32 dialogue_index, const char *filename) {
     fprintf(file, "  Choices: %d\n", node->choice_count);
     
     for (u32 j = 0; j < node->choice_count; j++) {
-      fprintf(file, "    -> Node %d\n", node->choice_indices[j]);
     }
     
     fprintf(file, "  End Node: %s\n", node->is_end_node ? "Yes" : "No");

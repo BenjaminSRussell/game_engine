@@ -49,5 +49,4 @@ void rpc_send(const char *name, void *data, uint32_t size) {
   // In a real implementation:
   // 1. Pack RPC name, sender_id, and data into a packet
   // 2. Send packet through the transport layer (e.g. Reliable UDP)
-  printf("[Networking] RPC Sent: %s (size: %u)\n", name, size);
 }

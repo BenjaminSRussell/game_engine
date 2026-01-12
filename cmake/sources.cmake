@@ -21,12 +21,12 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Assets subdirectory (importers, loaders)
     "src/engine/assets/*.c"
     
-    # Audio subdirectory - TEMPORARILY DISABLED due to API mismatches and missing headers
+    # Audio subdirectory - RE-ENABLED with core functionality
     # "src/engine/audio/*.c"
     "src/engine/audio/audio_system.c"
-    "src/engine/audio/underwater_filter_stubs.c"
-    "src/engine/audio/audio_loader.c"
-    "src/engine/audio/audio_reverb.c"
+    # "src/engine/audio/underwater_filter_stubs.c"
+    # "src/engine/audio/audio_loader.c"
+    "src/engine/audio/audio_core.c"
     
     # Core systems
     "src/engine/core/misc_stubs.c"
@@ -60,6 +60,8 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Rendering 
     "src/engine/rendering/core/mesh.c"
     "src/engine/rendering/texture/texture.c"
+    "src/engine/rendering/voxel_renderer.c"
+    "src/engine/rendering/renderer_factory.c"
     "src/engine/rendering/camera.c"
     "src/engine/rendering/particles/particle_renderer.c"
     "src/engine/rendering/core/texture_atlas.c"
@@ -114,8 +116,9 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Editor subdirectory
     "src/engine/editor/*.c"
     
-    # Effects subdirectory - TEMPORARILY DISABLED GPU particles due to ObjC compilation issues
-    # "src/engine/effects/*.c"
+    # Effects subdirectory - CONSOLIDATED: Only essential particle implementations
+    "src/engine/effects/particles/particle_emitter.c"
+    "src/engine/effects/particles/particle_simulation.c"
     "src/engine/effects/destruction/fracture_system.c"
     
     # Environment subdirectory
@@ -125,13 +128,17 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/world/generator.c"
     "src/engine/world/world.c"
     
-    # Particles
-    "src/engine/particles/particle_renderer.c"
+    # Particles - CONSOLIDATED: Primary GPU particle system and renderers
+    "src/engine/core/services/particle_system.c"
+    "src/engine/core/services/voxel_renderer.c"
+    # "src/engine/core/services/particle_system_gpu.c"  # Disabled due to Vulkan issues
+    "src/engine/rendering/particles/particle_system.c"
+    "src/game/blockgame/weather/weather_particles.c"
     
     # Missing stubs for game systems (create minimal implementations)
-    # "src/engine/npc/npc_system.c"
-    # "src/engine/npc/npc_jobs.c" 
-    # "src/engine/npc/npc_visuals.c"
+    "src/engine/npc/npc_system.c"
+    "src/engine/npc/npc_jobs.c" 
+    "src/engine/npc/npc_visuals.c"
     # "src/engine/housing/housing_system.c"
     # "src/engine/dialogue/dialogue_manager.c"
     
@@ -168,6 +175,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/geometry/instancing/indirect_instancing.c"
     "src/engine/geometry/instancing/instance_batching.c"
     "src/engine/geometry/instancing/instance_buffer.c"
+    "src/engine/geometry/instancing/instance_buffer_stubs.c"
     "src/engine/geometry/instancing/instance_culler.c"
     "src/engine/geometry/instancing/instance_data.c"
     "src/engine/geometry/instancing/instance_lod.c"
@@ -196,8 +204,9 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Lighting subdirectory
     "src/engine/lighting/*.c"
     
-    # Materials subdirectory - TEMPORARILY DISABLED customization_loader due to struct issues
-    # "src/engine/materials/*.c"
+    # Materials subdirectory - RE-ENABLED customization system
+    "src/engine/materials/*.c"
+    # "src/engine/materials/customization_loader.c"  # Disabled due to missing includes
     "src/engine/materials/standard_material.c"
     "src/engine/materials/texture_manager.c"
     "src/engine/materials/shader_manager.c"
@@ -222,22 +231,15 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/network/*.c"
     "src/engine/networking/*.c"
     
-    # Physics subdirectory - CONSOLIDATED: Only essential files - DISABLED due to missing headers
+    # Physics subdirectory - CONSOLIDATED: Only essential files
     # Using block physics as canonical voxel physics implementation
-    # "src/engine/physics/block_physics.c"
-    # Collision detection
-    "src/engine/physics/collision/collision_gjk_epa.c"
+    # "src/engine/physics/block_physics.c"  # Disabled due to missing functions
     "src/engine/physics/collision/gjk_solver.c"
+    "src/engine/physics/collision/collision_gjk_epa.c"  # Disabled due to SIMD issues
     "src/engine/physics/collision/epa_solver.c"
-    # Broadphase
     "src/engine/physics/broadphase/aabb_tree.c"
-    # Contact generation
     "src/engine/physics/narrowphase/contact_manifold.c"
-    # Physics integration (links everything together)
     "src/engine/physics/integration/physics_integration.c"
-    # Physics world stubs (provides core physics API functions)
-    "src/engine/physics/physics_world_stubs.c"
-    # Math/queries
     "src/engine/physics/queries/physics_queries.c"
 
     # DISABLED SUBSYSTEMS (Future work):
@@ -365,7 +367,6 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/crafting/recipe\\.c$")
 
 # Exclude Vulkan-specific GPU memory manager
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/memory/gpu_memory\\.c$")
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/services/particle_system_gpu\\.c$")
 
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/optimization/optimization_systems_complete\\.c$")
 

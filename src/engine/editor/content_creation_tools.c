@@ -883,7 +883,6 @@ void content_creation_save_block_definition(BlockDefinition* block, const char* 
     fprintf(file, "  \"description\": \"%s\",\n", block->description);
     fprintf(file, "  \"texture_path\": \"%s\",\n", block->texture_path);
     fprintf(file, "  \"model_path\": \"%s\",\n", block->model_path);
-    fprintf(file, "  \"color\": [%.3f, %.3f, %.3f],\n", block->color.x, block->color.y, block->color.z);
     fprintf(file, "  \"transparent\": %s,\n", block->transparent ? "true" : "false");
     fprintf(file, "  \"solid\": %s,\n", block->solid ? "true" : "false");
     fprintf(file, "  \"hardness\": %.3f,\n", block->hardness);

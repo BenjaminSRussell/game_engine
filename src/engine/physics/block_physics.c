@@ -1,10 +1,10 @@
 // block_physics.c - Block Physics Implementation
-#include <include/physics/block_physics.h>
-#include <include/core/logger.h>
-#include <include/block/block.h>
-#include <include/chunk/chunk.h>
-#include <include/math/vec3.h>
-#include <include/physics/physics_engine_core.h>
+#include "physics/block_physics.h"
+#include "core/logger.h"
+#include "block/block.h"
+#include "chunk/chunk.h"
+#include "math/vec3.h"
+#include "physics/physics_engine_core.h"
 #include <stdlib.h>
 #include <string.h>
 

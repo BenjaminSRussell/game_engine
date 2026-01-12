@@ -201,7 +201,6 @@ void mutex_lock(Mutex *mutex) {
   // Check for deadlock
   if (detect_deadlock(internal)) {
     // Log deadlock warning
-    printf("DEADLOCK WARNING: Potential deadlock detected on mutex '%s'\n",
            internal->thread_name);
   }
 

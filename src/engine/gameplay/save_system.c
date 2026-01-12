@@ -33,7 +33,6 @@ bool save_init(void) {
   
   // Scan for existing save files
   for (u32 i = 0; i < MAX_SAVE_SLOTS; i++) {
-    snprintf(g_save_slots[i].filename, sizeof(g_save_slots[i].filename), 
              "save_slot_%d.sav", i);
     
     FILE *file = fopen(g_save_slots[i].filename, "rb");

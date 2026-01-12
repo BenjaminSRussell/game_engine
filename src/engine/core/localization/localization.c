@@ -1057,7 +1057,6 @@ const char *loc_manager_format(LocalizationManager *manager, const char *key,
     char token[48];
     char value_text[128];
 
-    snprintf(token, sizeof(token), "{%s}", args[i].name);
     format_arg_value(resolved->current_language, &args[i], value_text,
                      sizeof(value_text));
 

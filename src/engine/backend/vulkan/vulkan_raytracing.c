@@ -542,7 +542,6 @@ bool vulkan_bind_raytracing_descriptor_sets(VulkanRenderer* renderer, VkAccelera
     // 4. Bind texture and buffer descriptors
     
     printf("Vulkan: Raytracing descriptor binding structure:\n");
-    printf("  VkDescriptorSetLayoutBinding bindings[] = {\n");
     printf("    { binding: 0, descriptorType: VK_DESCRIPTOR_TYPE_ACCELERATION_STRUCTURE_KHR },\n");
     printf("    { binding: 1, descriptorType: VK_DESCRIPTOR_TYPE_STORAGE_IMAGE },\n");
     printf("    { binding: 2, descriptorType: VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER },\n");
@@ -555,7 +554,6 @@ bool vulkan_bind_raytracing_descriptor_sets(VulkanRenderer* renderer, VkAccelera
     printf("    .pAccelerationStructures = &tlas\n");
     printf("  };\n");
     printf("  \n");
-    printf("  VkWriteDescriptorSet descriptor_writes[] = {\n");
     printf("    { sType: VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, dstSet: descriptor_set, dstBinding: 0 },\n");
     printf("    { sType: VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, dstSet: descriptor_set, dstBinding: 1 },\n");
     printf("    { sType: VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, dstSet: descriptor_set, dstBinding: 2 },\n");

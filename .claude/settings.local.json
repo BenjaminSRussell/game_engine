@@ -11,9 +11,9 @@
       "Bash(xargs -I {} sh -c 'echo \"\"===== {} =====\"\"; head -1 \"\"{}\"\"')",
       "Bash(xargs -I {} sh -c 'head -1 \"\"{}\"\"')",
       "Bash(xargs -I {} sh -c 'lines=$\\(wc -l < \"\"{}\"\"\\); echo \"\"$lines lines: {}\"\"')",
-      "Bash(head:*)",
-      "Bash(xargs ls:*)",
-      "Read(//Users/benjaminrussell/Desktop/Minecraft v2/**)"
+      "Bash(while read f)",
+      "Bash(cmake:*)",
+      "Bash(for dir in /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/*/)"
     ]
   }
 }

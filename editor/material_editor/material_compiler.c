@@ -70,22 +70,16 @@ static bool generate_node_code(MaterialNode* node, char* code_buffer, size_t buf
             // Use default values if not connected
             switch (node->inputs[i].type) {
                 case CONNECTION_TYPE_FLOAT: 
-                    snprintf(input_vars[i], sizeof(input_vars[i]), "0.0"); 
                     break;
                 case CONNECTION_TYPE_VEC2: 
-                    snprintf(input_vars[i], sizeof(input_vars[i]), "vec2(0.0)"); 
                     break;
                 case CONNECTION_TYPE_VEC3: 
-                    snprintf(input_vars[i], sizeof(input_vars[i]), "vec3(0.0)"); 
                     break;
                 case CONNECTION_TYPE_VEC4: 
-                    snprintf(input_vars[i], sizeof(input_vars[i]), "vec4(0.0)"); 
                     break;
                 case CONNECTION_TYPE_TEXTURE: 
-                    snprintf(input_vars[i], sizeof(input_vars[i]), "u_default_white_texture"); 
                     break;
                 default: 
-                    snprintf(input_vars[i], sizeof(input_vars[i]), "0.0"); 
                     break;
             }
         }

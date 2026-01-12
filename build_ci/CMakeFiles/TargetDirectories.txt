@@ -5,6 +5,7 @@
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/Game.dir
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/BlockGameApp.dir
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/full_integration_test.dir
+/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/test_player_food.dir
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/edit_cache.dir
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles/rebuild_cache.dir
 /Users/benjaminrussell/Desktop/Minecraft v2/build_ci/Vendor/Catch2/CMakeFiles/edit_cache.dir

@@ -12,7 +12,6 @@
 
 void vfx_init(VFXSystem* system, ParticleSystem* particles, AudioSystem* audio) {
     if (!system || !particles || !audio) {
-        fprintf(stderr, "[VFX] Invalid parameters\n");
         return;
     }
 
@@ -37,7 +36,6 @@ void vfx_init(VFXSystem* system, ParticleSystem* particles, AudioSystem* audio) 
     }
 
     system->initialized = true;
-    fprintf(stderr, "[VFX] Visual effects system initialized\n");
 }
 
 void vfx_shutdown(VFXSystem* system) {
@@ -57,7 +55,6 @@ void vfx_shutdown(VFXSystem* system) {
     }
 
     system->initialized = false;
-    fprintf(stderr, "[VFX] Visual effects system shut down\n");
 }
 
 // Helper: Create a visual effect and return its ID
@@ -123,7 +120,6 @@ void vfx_play_block_break(VFXSystem* system, Vec3 position, u16 block_type) {
         }
     }
 
-    fprintf(stderr, "[VFX] Block break effect at (%.2f, %.2f, %.2f)\n",
             position.x, position.y, position.z);
 }
 

@@ -129,7 +129,6 @@ BlenderStatus blender_initialize(BlenderConfig *config) {
   // TASK_001: Locate Blender executable
   char *blender_path = find_blender_executable();
   if (!blender_path) {
-    printf("ERROR: Blender executable not found. Please install Blender or set "
            "BLENDER_PATH environment variable.\n");
     return BLENDER_STATUS_ERROR_NOT_FOUND;
   }
@@ -146,19 +145,16 @@ BlenderStatus blender_initialize(BlenderConfig *config) {
   BlenderStatus status =
       execute_command(version_cmd, version_output, sizeof(version_output));
   if (status != BLENDER_STATUS_SUCCESS) {
-    printf("ERROR: Failed to get Blender version.\n");
     return BLENDER_STATUS_ERROR_VERSION;
   }
 
   // Parse version (expecting "Blender 4.x.x")
   u32 major, minor;
   if (sscanf(version_output, "Blender %u.%u", &major, &minor) != 2) {
-    printf("ERROR: Failed to parse Blender version from: %s\n", version_output);
     return BLENDER_STATUS_ERROR_VERSION;
   }
 
   if (major < 4) {
-    printf("ERROR: Blender version %u.%u is not supported. Please use Blender "
            "4.0 or later.\n",
            major, minor);
     return BLENDER_STATUS_ERROR_VERSION;
@@ -178,7 +174,6 @@ BlenderStatus blender_initialize(BlenderConfig *config) {
            "%s/tools/blender_scripts", engine_root);
 
   if (!directory_exists(config->scripts_directory)) {
-    printf("ERROR: Blender scripts directory not found: %s\n",
            config->scripts_directory);
     return BLENDER_STATUS_ERROR_SCRIPTS;
   }
@@ -189,7 +184,6 @@ BlenderStatus blender_initialize(BlenderConfig *config) {
            config->scripts_directory);
 
   if (!file_exists(script_path)) {
-    printf("ERROR: Required script not found: %s\n", script_path);
     return BLENDER_STATUS_ERROR_SCRIPTS;
   }
 
@@ -227,7 +221,6 @@ BlenderStatus blender_convert_image_to_mesh(const ImageToMeshParams *params) {
   }
 
   if (!file_exists(params->input_image_path)) {
-    printf("ERROR: Input image not found: %s\n", params->input_image_path);
     return BLENDER_STATUS_ERROR_OUTPUT;
   }
 
@@ -253,13 +246,11 @@ BlenderStatus blender_convert_image_to_mesh(const ImageToMeshParams *params) {
   BlenderStatus status = execute_command(command, output, sizeof(output));
 
   if (status != BLENDER_STATUS_SUCCESS) {
-    printf("ERROR: Blender execution failed: %s\n", output);
     return BLENDER_STATUS_ERROR_EXECUTION;
   }
 
   // TASK_018: Verify output file exists
   if (!blender_verify_output_file(params->output_mesh_path)) {
-    printf("ERROR: Output mesh file not created: %s\n",
            params->output_mesh_path);
     return BLENDER_STATUS_ERROR_OUTPUT;
   }
@@ -338,7 +329,6 @@ BlenderStatus blender_auto_rig_character(const AutoRigParams *params) {
   }
 
   if (!file_exists(params->input_mesh_path)) {
-    printf("ERROR: Input mesh not found: %s\n", params->input_mesh_path);
     return BLENDER_STATUS_ERROR_OUTPUT;
   }
 
@@ -362,13 +352,11 @@ BlenderStatus blender_auto_rig_character(const AutoRigParams *params) {
   BlenderStatus status = execute_command(command, output, sizeof(output));
 
   if (status != BLENDER_STATUS_SUCCESS) {
-    printf("ERROR: Blender auto-rigging failed: %s\n", output);
     return BLENDER_STATUS_ERROR_EXECUTION;
   }
 
   // Verify output file exists
   if (!blender_verify_output_file(params->output_rigged_path)) {
-    printf("ERROR: Rigged mesh file not created: %s\n",
            params->output_rigged_path);
     return BLENDER_STATUS_ERROR_OUTPUT;
   }
@@ -385,7 +373,6 @@ BlenderStatus blender_generate_walk_cycle(const char *rigged_mesh_path,
   }
 
   if (!file_exists(rigged_mesh_path)) {
-    printf("ERROR: Rigged mesh not found: %s\n", rigged_mesh_path);
     return BLENDER_STATUS_ERROR_NOT_FOUND;
   }
 
@@ -407,13 +394,11 @@ BlenderStatus blender_generate_walk_cycle(const char *rigged_mesh_path,
   BlenderStatus status = execute_command(command, output, sizeof(output));
 
   if (status != BLENDER_STATUS_SUCCESS) {
-    printf("ERROR: Walk cycle generation failed: %s\n", output);
     return BLENDER_STATUS_ERROR_EXECUTION;
   }
 
   // Verify output file exists
   if (!blender_verify_output_file(output_animation_path)) {
-    printf("ERROR: Animation file not created: %s\n", output_animation_path);
     return BLENDER_STATUS_ERROR_OUTPUT;
   }
 
@@ -428,7 +413,6 @@ BlenderStatus blender_export_animations(const char *rigged_mesh_path,
   }
 
   if (!file_exists(rigged_mesh_path)) {
-    printf("ERROR: Rigged mesh not found: %s\n", rigged_mesh_path);
     return BLENDER_STATUS_ERROR_NOT_FOUND;
   }
 
@@ -450,7 +434,6 @@ BlenderStatus blender_export_animations(const char *rigged_mesh_path,
   BlenderStatus status = execute_command(command, output, sizeof(output));
 
   if (status != BLENDER_STATUS_SUCCESS) {
-    printf("ERROR: Animation export failed: %s\n", output);
     return BLENDER_STATUS_ERROR_EXECUTION;
   }
 
@@ -465,7 +448,6 @@ BlenderStatus blender_execute_script(const char *script_path, const char **args,
   }
 
   if (!file_exists(script_path)) {
-    printf("ERROR: Script not found: %s\n", script_path);
     return BLENDER_STATUS_ERROR_SCRIPTS;
   }
 
@@ -479,7 +461,6 @@ BlenderStatus blender_execute_script(const char *script_path, const char **args,
     strncat(command, " --", sizeof(command) - strlen(command) - 1);
     for (u32 i = 0; i < arg_count && i * 2 + 1 < arg_count; i += 2) {
       char arg_str[256];
-      snprintf(arg_str, sizeof(arg_str), " %s %s", args[i], args[i + 1]);
       strncat(command, arg_str, sizeof(command) - strlen(command) - 1);
     }
   }
@@ -488,7 +469,6 @@ BlenderStatus blender_execute_script(const char *script_path, const char **args,
   BlenderStatus status = execute_command(command, output, sizeof(output));
 
   if (status != BLENDER_STATUS_SUCCESS) {
-    printf("ERROR: Script execution failed: %s\n", output);
   }
 
   return status;

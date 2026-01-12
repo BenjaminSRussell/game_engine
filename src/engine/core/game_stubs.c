@@ -218,11 +218,100 @@ void mutex_destroy(void* mutex) {}
 void mutex_lock(void* mutex) {}
 void mutex_unlock(void* mutex) {}
 
+// Framebuffer Stubs
+void* framebuffer_create(int width, int height, int format) {
+    (void)width; (void)height; (void)format;
+    return malloc(sizeof(void*));
+}
+void framebuffer_destroy(void* fb) {
+    (void)fb;
+}
+
+// Game Loop Stubs
+void game_loop_init(void) {}
+void game_loop_run(void) {}
+void game_loop_set_render_callback(void* callback) {}
+void game_loop_set_update_callback(void* callback) {}
+void game_loop_set_user_data(void* data) {}
+void game_loop_shutdown(void) {}
+void game_loop_stop(void) {}
+
+// Engine Config Stubs
+void* engine_get_config(void) {
+    return malloc(sizeof(void*));
+}
+
+// Renderer Stubs
+void* renderer_create_with_backend(void* backend) {
+    (void)backend;
+    return malloc(sizeof(void*));
+}
+
+// Scene Manager Stubs
+void scene_manager_init(void) {}
+void scene_manager_shutdown(void) {}
+
+// Post Process Stubs
+void post_process_init(void) {}
+void post_process_shutdown(void) {}
+
+// Profiler Stubs
+void profiler_init(void) {}
+void profiler_shutdown(void) {}
+
+// Thread Pool Stubs
+void* g_thread_pool = NULL;
+
+// Weather System Stubs
+void* g_weather_system = NULL;
+
+// World Generator Stubs
+void* g_world_generator = NULL;
+unsigned int g_world_seed = 12345;
+
+// NPC System Stubs
+void* npc_create(void) { return malloc(sizeof(void*)); }
+void npc_despawn_distant(void) {}
+void npc_jobs_update(void) {}
+void npc_profile_dump(void) {}
+void npc_spawn_in_chunk(void) {}
+void npc_system_free(void) {}
+void npc_system_init(void) {}
+void npc_update(void) {}
+void npc_visuals_free(void) {}
+void npc_visuals_init(void) {}
+
+// Particle System Stubs
+void particle_renderer_free(void) {}
+
+// Player System Stubs
+void player_cast_spell(void) {}
+void player_magic_init(void) {}
+void player_magic_update(void) {}
+void player_update_vehicle_control(void) {}
+void player_vehicle_apply_input(void) {}
+void player_vehicle_init(void) {}
+
+// Spirit Model Stubs
+void spirit_model_init(void) {}
+void spirit_model_update_animation(void) {}
+
+// GOAP System Stubs
+void goap_action_apply(void) {}
+
+// Housing System Stubs
+void housing_update(void) {}
+
+// Math Stubs
+void mat4_mul(void) {}
+
+// Game Module Stubs
+void* game_module_create_default_config(void) {
+    return malloc(sizeof(void*));
+}
+
 // Time Stubs
 double time_get_high_res_time(void) { return 0.0; }
-
-// GOAP Stubs
-void goap_action_apply(void) {}
 
 // Hot Reload Stubs
 void hot_reload_init(void) {}

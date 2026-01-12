@@ -96,7 +96,6 @@ void resource_lifetime_defer_free(resource_handle_t handle, resource_destroy_fn 
         // Emergency overflow: execute immediately or warn.
         // Immediate execution is unsafe for GPU, but better than memory leak?
         // Ideally we'd have a dynamic list, but fixed array is simpler/faster.
-        printf("[ResourceLifetime] Warning: Deletion queue overflow! Immediate delete trigged (Unsafe).\n");
         if (destroy_fn) destroy_fn(ctx, handle);
         return;
     }

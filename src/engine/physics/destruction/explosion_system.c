@@ -7,7 +7,6 @@ void destruction_sys_trigger_explosion(float x, float y, float z, float radius,
   if (!destruction_sys_is_enabled())
     return;
 
-  printf("[Physics] Explosion at (%.2f, %.2f, %.2f) with radius %.2f and force "
          "%.2f\n",
          x, y, z, radius, force);
 

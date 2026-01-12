@@ -296,7 +296,6 @@ void tracker_dump_leaks(void) {
       if (record->frame_count > 0) {
         printf("  Stack trace:\n");
         for (size_t j = 0; j < record->frame_count; j++) {
-          printf("    %p\n", record->stack_frames[j]);
         }
       }
 

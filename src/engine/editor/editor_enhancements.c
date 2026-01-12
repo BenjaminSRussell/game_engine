@@ -27,7 +27,6 @@ static f64 get_current_time_ms(void) {
 // =================================================================================================
 
 void viewport_system_init(MultiViewportSystem *system) {
-  printf("  [Viewport] Initializing multi-viewport system...\n");
 
   system->layout = VIEWPORT_SINGLE;
   system->active_viewport = 0;
@@ -85,7 +84,6 @@ void viewport_system_init(MultiViewportSystem *system) {
     system->viewports[i].projection_matrix = mat4_identity();
   }
 
-  printf("  [Viewport] Multi-viewport system initialized\n");
 }
 
 void viewport_system_set_layout(MultiViewportSystem *system,
@@ -143,7 +141,6 @@ void viewport_system_set_layout(MultiViewportSystem *system,
     break;
   }
 
-  printf("  [Viewport] Layout changed to %d\n", layout);
 }
 
 // =================================================================================================
@@ -151,7 +148,6 @@ void viewport_system_set_layout(MultiViewportSystem *system,
 // =================================================================================================
 
 void undo_redo_system_init(UndoRedoSystem *system) {
-  printf("  [UndoRedo] Initializing undo/redo system...\n");
 
   memset(system->commands, 0, sizeof(system->commands));
   system->current_index = 0;
@@ -159,7 +155,6 @@ void undo_redo_system_init(UndoRedoSystem *system) {
   system->total_execution_time = 0.0;
   system->is_recording = true;
 
-  printf("  [UndoRedo] System ready (max 100 commands)\n");
 }
 
 void undo_redo_execute_command(UndoRedoSystem *system, Command *command) {
@@ -193,7 +188,6 @@ void undo_redo_execute_command(UndoRedoSystem *system, Command *command) {
 
   system->current_index = (system->current_index + 1) % MAX_UNDO_COMMANDS;
 
-  printf("  [UndoRedo] Executed: %s (%.3fms)\n", command->description,
          execution_time);
 }
 
@@ -209,7 +203,6 @@ void undo_redo_undo(UndoRedoSystem *system) {
     f64 start_time = get_current_time_ms();
     cmd->undo(cmd);
     f64 undo_time = get_current_time_ms() - start_time;
-    printf("  [UndoRedo] Undo: %s (%.3fms)\n", cmd->description, undo_time);
   }
 }
 
@@ -223,7 +216,6 @@ void undo_redo_redo(UndoRedoSystem *system) {
     f64 start_time = get_current_time_ms();
     cmd->redo(cmd);
     f64 redo_time = get_current_time_ms() - start_time;
-    printf("  [UndoRedo] Redo: %s (%.3fms)\n", cmd->description, redo_time);
   }
 
   system->current_index = (system->current_index + 1) % MAX_UNDO_COMMANDS;
@@ -275,7 +267,6 @@ Command *create_transform_command(u32 entity_id, Vec3 old_pos, Vec3 new_pos,
 // =================================================================================================
 
 void play_in_editor_init(PlayInEditorSystem *system) {
-  printf("  [PlayInEditor] Initializing play-in-editor system...\n");
 
   system->scene_snapshot = NULL;
   system->snapshot_size = 0;
@@ -289,14 +280,12 @@ void play_in_editor_init(PlayInEditorSystem *system) {
   system->steps_per_frame = 1;
   system->current_step = 0;
 
-  printf("  [PlayInEditor] System ready for hot-reload testing\n");
 }
 
 void play_in_editor_play(PlayInEditorSystem *system) {
   if (system->state == PLAY_STATE_PLAYING)
     return;
 
-  printf("  [PlayInEditor] Starting play mode...\n");
 
   // Create scene snapshot
   if (!system->scene_snapshot) {
@@ -320,14 +309,12 @@ void play_in_editor_pause(PlayInEditorSystem *system) {
 
   system->state = PLAY_STATE_PAUSED;
   system->paused_time = get_current_time_ms();
-  printf("  [PlayInEditor] Game paused\n");
 }
 
 void play_in_editor_stop(PlayInEditorSystem *system) {
   if (system->state == PLAY_STATE_STOPPED)
     return;
 
-  printf("  [PlayInEditor] Stopping play mode...\n");
 
   // Restore scene from snapshot
   if (system->scene_snapshot) {
@@ -345,7 +332,6 @@ void play_in_editor_step(PlayInEditorSystem *system) {
 
   system->state = PLAY_STATE_STEPPING;
   system->current_step = 0;
-  printf("  [PlayInEditor] Step mode enabled (1 frame)\n");
 }
 
 bool play_in_editor_is_playing(PlayInEditorSystem *system) {
@@ -357,7 +343,6 @@ bool play_in_editor_is_playing(PlayInEditorSystem *system) {
 // =================================================================================================
 
 void transform_gizmo_init(TransformGizmo *gizmo) {
-  printf("  [Gizmo] Initializing transform gizmo...\n");
 
   gizmo->mode = GIZMO_TRANSLATE;
   gizmo->space = GIZMO_SPACE_WORLD;
@@ -373,7 +358,6 @@ void transform_gizmo_init(TransformGizmo *gizmo) {
   gizmo->snap_value = DEFAULT_SNAP_VALUE;
   gizmo->is_dragging = false;
 
-  printf("  [Gizmo] Transform gizmo ready\n");
 }
 
 void transform_gizmo_update(TransformGizmo *gizmo,
@@ -428,7 +412,6 @@ bool transform_gizmo_handle_input(TransformGizmo *gizmo, const Vec2 *mouse_pos,
 // =================================================================================================
 
 void selection_outline_init(SelectionOutlineSystem *system) {
-  printf("  [Selection] Initializing selection outline system...\n");
 
   memset(system->selected_entities, 0, sizeof(system->selected_entities));
   system->selected_count = 0;
@@ -444,7 +427,6 @@ void selection_outline_init(SelectionOutlineSystem *system) {
   system->frame_buffer = 3001;    // Placeholder framebuffer ID
   system->stencil_texture = 4001; // Placeholder texture ID
 
-  printf("  [Selection] Outline system ready (<0.5ms rendering)\n");
 }
 
 void selection_outline_set_selected(SelectionOutlineSystem *system,
@@ -452,7 +434,6 @@ void selection_outline_set_selected(SelectionOutlineSystem *system,
   count = min(count, MAX_SELECTED_ENTITIES);
   memcpy(system->selected_entities, entities, count * sizeof(u32));
   system->selected_count = count;
-  printf("  [Selection] %d entities selected\n", count);
 }
 
 void selection_outline_render(SelectionOutlineSystem *system) {
@@ -479,7 +460,6 @@ void selection_outline_render(SelectionOutlineSystem *system) {
 // =================================================================================================
 
 void performance_profiler_init(PerformanceProfiler *profiler) {
-  printf("  [Profiler] Initializing performance profiler...\n");
 
   memset(profiler->frame_times, 0, sizeof(profiler->frame_times));
   profiler->frame_index = 0;
@@ -502,7 +482,6 @@ void performance_profiler_init(PerformanceProfiler *profiler) {
   performance_profiler_add_category(profiler, "Audio", (Vec4){0, 0, 1, 1});
   performance_profiler_add_category(profiler, "AI", (Vec4){1, 1, 0, 1});
 
-  printf("  [Profiler] Performance profiler ready\n");
 }
 
 void performance_profiler_begin_frame(PerformanceProfiler *profiler) {
@@ -559,7 +538,6 @@ static void editor_memory_profiler_add_module(EditorMemoryProfiler *profiler,
                                               const char *name, Vec4 color);
 
 void editor_memory_profiler_init(EditorMemoryProfiler *profiler) {
-  printf("  [MemoryProfiler] Initializing memory profiler...\n");
 
   memset(profiler->modules, 0, sizeof(profiler->modules));
   profiler->module_count = 0;
@@ -583,7 +561,6 @@ void editor_memory_profiler_init(EditorMemoryProfiler *profiler) {
   editor_memory_profiler_add_module(profiler, "Audio", (Vec4){0, 0, 1, 1});
   editor_memory_profiler_add_module(profiler, "Physics", (Vec4){1, 1, 0, 1});
 
-  printf("  [MemoryProfiler] Memory profiler ready\n");
 }
 
 static void editor_memory_profiler_add_module(EditorMemoryProfiler *profiler,
@@ -650,7 +627,6 @@ void editor_memory_profiler_record_deallocation(EditorMemoryProfiler *profiler,
 
 void editor_memory_profiler_detect_leaks(EditorMemoryProfiler *profiler) {
   if (profiler->leak_count > 0) {
-    printf("  [MemoryProfiler] Detected %d memory leaks:\n",
            profiler->leak_count);
     for (u32 i = 0; i < profiler->leak_count; i++) {
       printf("    Leak: %zu bytes at %p (%s:%d)\n",
@@ -659,7 +635,6 @@ void editor_memory_profiler_detect_leaks(EditorMemoryProfiler *profiler) {
              profiler->leak_tracking[i].file, profiler->leak_tracking[i].line);
     }
   } else {
-    printf("  [MemoryProfiler] No memory leaks detected\n");
   }
 }
 
@@ -668,7 +643,6 @@ void editor_memory_profiler_detect_leaks(EditorMemoryProfiler *profiler) {
 // =================================================================================================
 
 void layout_system_init(LayoutSystem *system) {
-  printf("  [Layout] Initializing layout system...\n");
 
   memset(system->layouts, 0, sizeof(system->layouts));
   system->layout_count = 0;
@@ -714,7 +688,6 @@ void layout_system_init(LayoutSystem *system) {
   // layout_system_create_preset(system, "Animator", "Animation-focused
   // layout");
 
-  printf("  [Layout] Layout system ready (%d layouts)\n", system->layout_count);
 }
 
 void layout_system_save_current(LayoutSystem *system, const char *name) {
@@ -740,7 +713,6 @@ void layout_system_save_current(LayoutSystem *system, const char *name) {
   layout->modified_time = layout->created_time;
 
   system->layout_count++;
-  printf("  [Layout] Saved current layout as '%s'\n", name);
 }
 
 void layout_system_load(LayoutSystem *system, const char *name) {
@@ -749,11 +721,9 @@ void layout_system_load(LayoutSystem *system, const char *name) {
       layout_system_apply(system, &system->layouts[i]);
       system->active_layout = i;
       strcpy(system->current_layout_name, name);
-      printf("  [Layout] Loaded layout: %s\n", name);
       return;
     }
   }
-  printf("  [Layout] Layout not found: %s\n", name);
 }
 
 void layout_system_apply(LayoutSystem *system, const EditorLayout *layout) {
@@ -766,7 +736,6 @@ void layout_system_apply(LayoutSystem *system, const EditorLayout *layout) {
   // Apply window states
   for (u32 i = 0; i < layout->window_count; i++) {
     // Apply window position, size, docking state
-    printf("    Applied window: %s\n", layout->windows[i].dock_node);
   }
 }
 

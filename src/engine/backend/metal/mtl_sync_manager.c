@@ -214,7 +214,6 @@ void metal_sync_manager_print_report(metal_sync_manager_t* manager) {
         metal_frame_timing_stats_t stats;
         metal_frame_pacer_get_stats(manager->frame_pacer, &stats);
         
-        printf("[Frame Pacing]\n");
         printf("  Current FPS:      %u\n", stats.current_fps);
         printf("  Avg Frame Time:   %.2f ms\n", stats.avg_frame_time_ms);
         printf("  Min Frame Time:   %.2f ms\n", stats.min_frame_time_ms);
@@ -239,7 +238,6 @@ void metal_sync_manager_print_report(metal_sync_manager_t* manager) {
         metal_vsync_stats_t stats;
         metal_vsync_manager_get_stats(manager->vsync_manager, &stats);
         
-        printf("[VSync]\n");
         printf("  Refresh Rate:     %.2f Hz\n", stats.refresh_rate_hz);
         printf("  Frame Time:       %.2f ms\n", stats.actual_frame_time_ms);
         printf("  Jitter:           %.2f ms\n", stats.jitter_ms);
