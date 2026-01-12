@@ -483,3 +483,23 @@ target_include_directories(full_integration_test PRIVATE
     ${CMAKE_SOURCE_DIR}/src/engine
 )
 message(STATUS "Verification target added: full_integration_test")
+
+# Test Player Food
+add_executable(test_player_food
+    tests/test_player_food.c
+    src/game/blockgame/player/player_food.c
+    src/game/blockgame/inventory/inventory.c
+    src/game/blockgame/inventory/item_registry.c
+    src/engine/core/logger.c
+    src/engine/core/containers/hashmap.c
+    src/engine/core/memory/memory.c
+    src/engine/core/memory/buddy_allocator.c
+    src/engine/core/memory/linear_allocator.c
+    src/engine/core/string_utils.c
+)
+target_include_directories(test_player_food PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/game/blockgame/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+)
+message(STATUS "Verification target added: test_player_food")

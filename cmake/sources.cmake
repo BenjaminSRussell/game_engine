@@ -23,10 +23,10 @@ file(GLOB_RECURSE ENGINE_SOURCES
     
     # Audio subdirectory - TEMPORARILY DISABLED due to API mismatches and missing headers
     # "src/engine/audio/*.c"
-    "src/engine/audio/audio_system.c"
-    "src/engine/audio/underwater_filter_stubs.c"
-    "src/engine/audio/audio_loader.c"
-    "src/engine/audio/audio_reverb.c"
+    # "src/engine/audio/audio_system.c"
+    # "src/engine/audio/underwater_filter_stubs.c"
+    # "src/engine/audio/audio_loader.c"
+    # "src/engine/audio/audio_reverb.c"
     
     # Core systems
     "src/engine/core/misc_stubs.c"
@@ -114,8 +114,9 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Editor subdirectory
     "src/engine/editor/*.c"
     
-    # Effects subdirectory - TEMPORARILY DISABLED GPU particles due to ObjC compilation issues
-    # "src/engine/effects/*.c"
+    # Effects subdirectory - CONSOLIDATED: Only essential particle implementations
+    "src/engine/effects/particles/particle_emitter.c"
+    "src/engine/effects/particles/particle_simulation.c"
     "src/engine/effects/destruction/fracture_system.c"
     
     # Environment subdirectory
@@ -125,8 +126,11 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/world/generator.c"
     "src/engine/world/world.c"
     
-    # Particles
-    "src/engine/particles/particle_renderer.c"
+    # Particles - CONSOLIDATED: Primary GPU particle system and renderers
+    # "src/engine/core/services/particle_system_gpu.c"
+    "src/engine/core/services/particle_renderer.c"
+    "src/engine/rendering/particles/particle_system.c"
+    "src/game/blockgame/weather/weather_particles.c"
     
     # Missing stubs for game systems (create minimal implementations)
     # "src/engine/npc/npc_system.c"
@@ -222,11 +226,9 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/network/*.c"
     "src/engine/networking/*.c"
     
-    # Physics subdirectory - CONSOLIDATED: Only essential files - DISABLED due to missing headers
-    # Using block physics as canonical voxel physics implementation
-    # "src/engine/physics/block_physics.c"
-    # Collision detection
-    "src/engine/physics/collision/collision_gjk_epa.c"
+    # Physics subdirectory
+    "src/engine/physics/*.c"
+    # "src/engine/physics/collision/collision_gjk_epa.c"
     "src/engine/physics/collision/gjk_solver.c"
     "src/engine/physics/collision/epa_solver.c"
     # Broadphase
@@ -365,7 +367,6 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/crafting/recipe\\.c$")
 
 # Exclude Vulkan-specific GPU memory manager
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/memory/gpu_memory\\.c$")
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/services/particle_system_gpu\\.c$")
 
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/optimization/optimization_systems_complete\\.c$")
 

@@ -208,6 +208,19 @@ full_integration_test/fast:
 .PHONY : full_integration_test/fast
 
 #=============================================================================
+# Target rules for targets named test_player_food
+
+# Build rule for target.
+test_player_food: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_player_food
+.PHONY : test_player_food
+
+# fast build rule for target.
+test_player_food/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/build
+.PHONY : test_player_food/fast
+
+#=============================================================================
 # Target rules for targets named Catch2
 
 # Build rule for target.
@@ -3560,30 +3573,6 @@ src/engine/animation/skeleton_system.s: src/engine/animation/skeleton_system.c.s
 src/engine/animation/skeleton_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system.c.s
 .PHONY : src/engine/animation/skeleton_system.c.s
-
-src/engine/animation/skeleton_system_2.o: src/engine/animation/skeleton_system_2.c.o
-.PHONY : src/engine/animation/skeleton_system_2.o
-
-# target to build an object file
-src/engine/animation/skeleton_system_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system_2.c.o
-.PHONY : src/engine/animation/skeleton_system_2.c.o
-
-src/engine/animation/skeleton_system_2.i: src/engine/animation/skeleton_system_2.c.i
-.PHONY : src/engine/animation/skeleton_system_2.i
-
-# target to preprocess a source file
-src/engine/animation/skeleton_system_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system_2.c.i
-.PHONY : src/engine/animation/skeleton_system_2.c.i
-
-src/engine/animation/skeleton_system_2.s: src/engine/animation/skeleton_system_2.c.s
-.PHONY : src/engine/animation/skeleton_system_2.s
-
-# target to generate assembly for a file
-src/engine/animation/skeleton_system_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/skeleton_system_2.c.s
-.PHONY : src/engine/animation/skeleton_system_2.c.s
 
 src/engine/animation/state_machines/anim_state_machine.o: src/engine/animation/state_machines/anim_state_machine.c.o
 .PHONY : src/engine/animation/state_machines/anim_state_machine.o
@@ -10689,6 +10678,30 @@ src/engine/core/config.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/config.c.s
 .PHONY : src/engine/core/config.c.s
 
+src/engine/core/containers/hashmap.o: src/engine/core/containers/hashmap.c.o
+.PHONY : src/engine/core/containers/hashmap.o
+
+# target to build an object file
+src/engine/core/containers/hashmap.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o
+.PHONY : src/engine/core/containers/hashmap.c.o
+
+src/engine/core/containers/hashmap.i: src/engine/core/containers/hashmap.c.i
+.PHONY : src/engine/core/containers/hashmap.i
+
+# target to preprocess a source file
+src/engine/core/containers/hashmap.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.i
+.PHONY : src/engine/core/containers/hashmap.c.i
+
+src/engine/core/containers/hashmap.s: src/engine/core/containers/hashmap.c.s
+.PHONY : src/engine/core/containers/hashmap.s
+
+# target to generate assembly for a file
+src/engine/core/containers/hashmap.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.s
+.PHONY : src/engine/core/containers/hashmap.c.s
+
 src/engine/core/engine.o: src/engine/core/engine.c.o
 .PHONY : src/engine/core/engine.o
 
@@ -10783,6 +10796,7 @@ src/engine/core/logger.o: src/engine/core/logger.c.o
 # target to build an object file
 src/engine/core/logger.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/logger.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o
 .PHONY : src/engine/core/logger.c.o
 
 src/engine/core/logger.i: src/engine/core/logger.c.i
@@ -10791,6 +10805,7 @@ src/engine/core/logger.i: src/engine/core/logger.c.i
 # target to preprocess a source file
 src/engine/core/logger.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/logger.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/logger.c.i
 .PHONY : src/engine/core/logger.c.i
 
 src/engine/core/logger.s: src/engine/core/logger.c.s
@@ -10799,7 +10814,56 @@ src/engine/core/logger.s: src/engine/core/logger.c.s
 # target to generate assembly for a file
 src/engine/core/logger.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/logger.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/logger.c.s
 .PHONY : src/engine/core/logger.c.s
+
+src/engine/core/memory/buddy_allocator.o: src/engine/core/memory/buddy_allocator.c.o
+.PHONY : src/engine/core/memory/buddy_allocator.o
+
+# target to build an object file
+src/engine/core/memory/buddy_allocator.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o
+.PHONY : src/engine/core/memory/buddy_allocator.c.o
+
+src/engine/core/memory/buddy_allocator.i: src/engine/core/memory/buddy_allocator.c.i
+.PHONY : src/engine/core/memory/buddy_allocator.i
+
+# target to preprocess a source file
+src/engine/core/memory/buddy_allocator.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.i
+.PHONY : src/engine/core/memory/buddy_allocator.c.i
+
+src/engine/core/memory/buddy_allocator.s: src/engine/core/memory/buddy_allocator.c.s
+.PHONY : src/engine/core/memory/buddy_allocator.s
+
+# target to generate assembly for a file
+src/engine/core/memory/buddy_allocator.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.s
+.PHONY : src/engine/core/memory/buddy_allocator.c.s
+
+src/engine/core/memory/linear_allocator.o: src/engine/core/memory/linear_allocator.c.o
+.PHONY : src/engine/core/memory/linear_allocator.o
+
+# target to build an object file
+src/engine/core/memory/linear_allocator.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o
+.PHONY : src/engine/core/memory/linear_allocator.c.o
+
+src/engine/core/memory/linear_allocator.i: src/engine/core/memory/linear_allocator.c.i
+.PHONY : src/engine/core/memory/linear_allocator.i
+
+# target to preprocess a source file
+src/engine/core/memory/linear_allocator.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.i
+.PHONY : src/engine/core/memory/linear_allocator.c.i
+
+src/engine/core/memory/linear_allocator.s: src/engine/core/memory/linear_allocator.c.s
+.PHONY : src/engine/core/memory/linear_allocator.s
+
+# target to generate assembly for a file
+src/engine/core/memory/linear_allocator.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.s
+.PHONY : src/engine/core/memory/linear_allocator.c.s
 
 src/engine/core/memory/memory.o: src/engine/core/memory/memory.c.o
 .PHONY : src/engine/core/memory/memory.o
@@ -10807,6 +10871,7 @@ src/engine/core/memory/memory.o: src/engine/core/memory/memory.c.o
 # target to build an object file
 src/engine/core/memory/memory.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/memory.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o
 .PHONY : src/engine/core/memory/memory.c.o
 
 src/engine/core/memory/memory.i: src/engine/core/memory/memory.c.i
@@ -10815,6 +10880,7 @@ src/engine/core/memory/memory.i: src/engine/core/memory/memory.c.i
 # target to preprocess a source file
 src/engine/core/memory/memory.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/memory.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.i
 .PHONY : src/engine/core/memory/memory.c.i
 
 src/engine/core/memory/memory.s: src/engine/core/memory/memory.c.s
@@ -10823,6 +10889,7 @@ src/engine/core/memory/memory.s: src/engine/core/memory/memory.c.s
 # target to generate assembly for a file
 src/engine/core/memory/memory.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/memory.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.s
 .PHONY : src/engine/core/memory/memory.c.s
 
 src/engine/core/misc_stubs.o: src/engine/core/misc_stubs.c.o
@@ -10945,6 +11012,54 @@ src/engine/core/resource/vfs_async.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/resource/vfs_async.c.s
 .PHONY : src/engine/core/resource/vfs_async.c.s
 
+src/engine/core/services/particle_renderer.o: src/engine/core/services/particle_renderer.c.o
+.PHONY : src/engine/core/services/particle_renderer.o
+
+# target to build an object file
+src/engine/core/services/particle_renderer.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/services/particle_renderer.c.o
+.PHONY : src/engine/core/services/particle_renderer.c.o
+
+src/engine/core/services/particle_renderer.i: src/engine/core/services/particle_renderer.c.i
+.PHONY : src/engine/core/services/particle_renderer.i
+
+# target to preprocess a source file
+src/engine/core/services/particle_renderer.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/services/particle_renderer.c.i
+.PHONY : src/engine/core/services/particle_renderer.c.i
+
+src/engine/core/services/particle_renderer.s: src/engine/core/services/particle_renderer.c.s
+.PHONY : src/engine/core/services/particle_renderer.s
+
+# target to generate assembly for a file
+src/engine/core/services/particle_renderer.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/services/particle_renderer.c.s
+.PHONY : src/engine/core/services/particle_renderer.c.s
+
+src/engine/core/services/particle_system_gpu.o: src/engine/core/services/particle_system_gpu.c.o
+.PHONY : src/engine/core/services/particle_system_gpu.o
+
+# target to build an object file
+src/engine/core/services/particle_system_gpu.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/services/particle_system_gpu.c.o
+.PHONY : src/engine/core/services/particle_system_gpu.c.o
+
+src/engine/core/services/particle_system_gpu.i: src/engine/core/services/particle_system_gpu.c.i
+.PHONY : src/engine/core/services/particle_system_gpu.i
+
+# target to preprocess a source file
+src/engine/core/services/particle_system_gpu.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/services/particle_system_gpu.c.i
+.PHONY : src/engine/core/services/particle_system_gpu.c.i
+
+src/engine/core/services/particle_system_gpu.s: src/engine/core/services/particle_system_gpu.c.s
+.PHONY : src/engine/core/services/particle_system_gpu.s
+
+# target to generate assembly for a file
+src/engine/core/services/particle_system_gpu.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/services/particle_system_gpu.c.s
+.PHONY : src/engine/core/services/particle_system_gpu.c.s
+
 src/engine/core/simd/simd_math_neon.o: src/engine/core/simd/simd_math_neon.c.o
 .PHONY : src/engine/core/simd/simd_math_neon.o
 
@@ -10975,6 +11090,7 @@ src/engine/core/string_utils.o: src/engine/core/string_utils.c.o
 # target to build an object file
 src/engine/core/string_utils.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/string_utils.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o
 .PHONY : src/engine/core/string_utils.c.o
 
 src/engine/core/string_utils.i: src/engine/core/string_utils.c.i
@@ -10983,6 +11099,7 @@ src/engine/core/string_utils.i: src/engine/core/string_utils.c.i
 # target to preprocess a source file
 src/engine/core/string_utils.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/string_utils.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.i
 .PHONY : src/engine/core/string_utils.c.i
 
 src/engine/core/string_utils.s: src/engine/core/string_utils.c.s
@@ -10991,6 +11108,7 @@ src/engine/core/string_utils.s: src/engine/core/string_utils.c.s
 # target to generate assembly for a file
 src/engine/core/string_utils.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/string_utils.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.s
 .PHONY : src/engine/core/string_utils.c.s
 
 src/engine/core/sync/thread_pool.o: src/engine/core/sync/thread_pool.c.o
@@ -11328,6 +11446,54 @@ src/engine/effects/destruction/fracture_system.s: src/engine/effects/destruction
 src/engine/effects/destruction/fracture_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/destruction/fracture_system.c.s
 .PHONY : src/engine/effects/destruction/fracture_system.c.s
+
+src/engine/effects/particles/particle_emitter.o: src/engine/effects/particles/particle_emitter.c.o
+.PHONY : src/engine/effects/particles/particle_emitter.o
+
+# target to build an object file
+src/engine/effects/particles/particle_emitter.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_emitter.c.o
+.PHONY : src/engine/effects/particles/particle_emitter.c.o
+
+src/engine/effects/particles/particle_emitter.i: src/engine/effects/particles/particle_emitter.c.i
+.PHONY : src/engine/effects/particles/particle_emitter.i
+
+# target to preprocess a source file
+src/engine/effects/particles/particle_emitter.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_emitter.c.i
+.PHONY : src/engine/effects/particles/particle_emitter.c.i
+
+src/engine/effects/particles/particle_emitter.s: src/engine/effects/particles/particle_emitter.c.s
+.PHONY : src/engine/effects/particles/particle_emitter.s
+
+# target to generate assembly for a file
+src/engine/effects/particles/particle_emitter.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_emitter.c.s
+.PHONY : src/engine/effects/particles/particle_emitter.c.s
+
+src/engine/effects/particles/particle_simulation.o: src/engine/effects/particles/particle_simulation.c.o
+.PHONY : src/engine/effects/particles/particle_simulation.o
+
+# target to build an object file
+src/engine/effects/particles/particle_simulation.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_simulation.c.o
+.PHONY : src/engine/effects/particles/particle_simulation.c.o
+
+src/engine/effects/particles/particle_simulation.i: src/engine/effects/particles/particle_simulation.c.i
+.PHONY : src/engine/effects/particles/particle_simulation.i
+
+# target to preprocess a source file
+src/engine/effects/particles/particle_simulation.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_simulation.c.i
+.PHONY : src/engine/effects/particles/particle_simulation.c.i
+
+src/engine/effects/particles/particle_simulation.s: src/engine/effects/particles/particle_simulation.c.s
+.PHONY : src/engine/effects/particles/particle_simulation.s
+
+# target to generate assembly for a file
+src/engine/effects/particles/particle_simulation.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_simulation.c.s
+.PHONY : src/engine/effects/particles/particle_simulation.c.s
 
 src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.o: src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.c.o
 .PHONY : src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.o
@@ -18241,6 +18407,30 @@ src/engine/physics/broadphase/aabb_tree.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/broadphase/aabb_tree.c.s
 .PHONY : src/engine/physics/broadphase/aabb_tree.c.s
 
+src/engine/physics/collision/collision_gjk_epa.o: src/engine/physics/collision/collision_gjk_epa.c.o
+.PHONY : src/engine/physics/collision/collision_gjk_epa.o
+
+# target to build an object file
+src/engine/physics/collision/collision_gjk_epa.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/collision/collision_gjk_epa.c.o
+.PHONY : src/engine/physics/collision/collision_gjk_epa.c.o
+
+src/engine/physics/collision/collision_gjk_epa.i: src/engine/physics/collision/collision_gjk_epa.c.i
+.PHONY : src/engine/physics/collision/collision_gjk_epa.i
+
+# target to preprocess a source file
+src/engine/physics/collision/collision_gjk_epa.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/collision/collision_gjk_epa.c.i
+.PHONY : src/engine/physics/collision/collision_gjk_epa.c.i
+
+src/engine/physics/collision/collision_gjk_epa.s: src/engine/physics/collision/collision_gjk_epa.c.s
+.PHONY : src/engine/physics/collision/collision_gjk_epa.s
+
+# target to generate assembly for a file
+src/engine/physics/collision/collision_gjk_epa.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/collision/collision_gjk_epa.c.s
+.PHONY : src/engine/physics/collision/collision_gjk_epa.c.s
+
 src/engine/physics/collision/epa_solver.o: src/engine/physics/collision/epa_solver.c.o
 .PHONY : src/engine/physics/collision/epa_solver.o
 
@@ -20505,6 +20695,30 @@ src/engine/rendering/lighting/lumen_gi.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o
 .PHONY : src/engine/rendering/lighting/lumen_gi.m.o
 
+src/engine/rendering/particles/particle_system.o: src/engine/rendering/particles/particle_system.c.o
+.PHONY : src/engine/rendering/particles/particle_system.o
+
+# target to build an object file
+src/engine/rendering/particles/particle_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/particles/particle_system.c.o
+.PHONY : src/engine/rendering/particles/particle_system.c.o
+
+src/engine/rendering/particles/particle_system.i: src/engine/rendering/particles/particle_system.c.i
+.PHONY : src/engine/rendering/particles/particle_system.i
+
+# target to preprocess a source file
+src/engine/rendering/particles/particle_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/particles/particle_system.c.i
+.PHONY : src/engine/rendering/particles/particle_system.c.i
+
+src/engine/rendering/particles/particle_system.s: src/engine/rendering/particles/particle_system.c.s
+.PHONY : src/engine/rendering/particles/particle_system.s
+
+# target to generate assembly for a file
+src/engine/rendering/particles/particle_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/rendering/particles/particle_system.c.s
+.PHONY : src/engine/rendering/particles/particle_system.c.s
+
 src/engine/scene/scene_impl.o: src/engine/scene/scene_impl.c.o
 .PHONY : src/engine/scene/scene_impl.o
 
@@ -22664,30 +22878,6 @@ src/engine/tools/analytics_dashboard.s: src/engine/tools/analytics_dashboard.c.s
 src/engine/tools/analytics_dashboard.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard.c.s
 .PHONY : src/engine/tools/analytics_dashboard.c.s
-
-src/engine/tools/analytics_dashboard_2.o: src/engine/tools/analytics_dashboard_2.c.o
-.PHONY : src/engine/tools/analytics_dashboard_2.o
-
-# target to build an object file
-src/engine/tools/analytics_dashboard_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.o
-.PHONY : src/engine/tools/analytics_dashboard_2.c.o
-
-src/engine/tools/analytics_dashboard_2.i: src/engine/tools/analytics_dashboard_2.c.i
-.PHONY : src/engine/tools/analytics_dashboard_2.i
-
-# target to preprocess a source file
-src/engine/tools/analytics_dashboard_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.i
-.PHONY : src/engine/tools/analytics_dashboard_2.c.i
-
-src/engine/tools/analytics_dashboard_2.s: src/engine/tools/analytics_dashboard_2.c.s
-.PHONY : src/engine/tools/analytics_dashboard_2.s
-
-# target to generate assembly for a file
-src/engine/tools/analytics_dashboard_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.s
-.PHONY : src/engine/tools/analytics_dashboard_2.c.s
 
 src/engine/tools/asset_browser/asset_view.o: src/engine/tools/asset_browser/asset_view.c.o
 .PHONY : src/engine/tools/asset_browser/asset_view.o
@@ -25491,6 +25681,7 @@ src/game/blockgame/inventory/inventory.o: src/game/blockgame/inventory/inventory
 # target to build an object file
 src/game/blockgame/inventory/inventory.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o
 .PHONY : src/game/blockgame/inventory/inventory.c.o
 
 src/game/blockgame/inventory/inventory.i: src/game/blockgame/inventory/inventory.c.i
@@ -25499,6 +25690,7 @@ src/game/blockgame/inventory/inventory.i: src/game/blockgame/inventory/inventory
 # target to preprocess a source file
 src/game/blockgame/inventory/inventory.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.i
 .PHONY : src/game/blockgame/inventory/inventory.c.i
 
 src/game/blockgame/inventory/inventory.s: src/game/blockgame/inventory/inventory.c.s
@@ -25507,6 +25699,7 @@ src/game/blockgame/inventory/inventory.s: src/game/blockgame/inventory/inventory
 # target to generate assembly for a file
 src/game/blockgame/inventory/inventory.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.s
 .PHONY : src/game/blockgame/inventory/inventory.c.s
 
 src/game/blockgame/inventory/item_registry.o: src/game/blockgame/inventory/item_registry.c.o
@@ -25515,6 +25708,7 @@ src/game/blockgame/inventory/item_registry.o: src/game/blockgame/inventory/item_
 # target to build an object file
 src/game/blockgame/inventory/item_registry.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o
 .PHONY : src/game/blockgame/inventory/item_registry.c.o
 
 src/game/blockgame/inventory/item_registry.i: src/game/blockgame/inventory/item_registry.c.i
@@ -25523,6 +25717,7 @@ src/game/blockgame/inventory/item_registry.i: src/game/blockgame/inventory/item_
 # target to preprocess a source file
 src/game/blockgame/inventory/item_registry.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.i
 .PHONY : src/game/blockgame/inventory/item_registry.c.i
 
 src/game/blockgame/inventory/item_registry.s: src/game/blockgame/inventory/item_registry.c.s
@@ -25531,6 +25726,7 @@ src/game/blockgame/inventory/item_registry.s: src/game/blockgame/inventory/item_
 # target to generate assembly for a file
 src/game/blockgame/inventory/item_registry.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.s
 .PHONY : src/game/blockgame/inventory/item_registry.c.s
 
 src/game/blockgame/modding/mod_api.o: src/game/blockgame/modding/mod_api.c.o
@@ -25803,6 +25999,7 @@ src/game/blockgame/player/player_food.o: src/game/blockgame/player/player_food.c
 # target to build an object file
 src/game/blockgame/player/player_food.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.o
 .PHONY : src/game/blockgame/player/player_food.c.o
 
 src/game/blockgame/player/player_food.i: src/game/blockgame/player/player_food.c.i
@@ -25811,6 +26008,7 @@ src/game/blockgame/player/player_food.i: src/game/blockgame/player/player_food.c
 # target to preprocess a source file
 src/game/blockgame/player/player_food.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.i
 .PHONY : src/game/blockgame/player/player_food.c.i
 
 src/game/blockgame/player/player_food.s: src/game/blockgame/player/player_food.c.s
@@ -25819,6 +26017,7 @@ src/game/blockgame/player/player_food.s: src/game/blockgame/player/player_food.c
 # target to generate assembly for a file
 src/game/blockgame/player/player_food.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.s
 .PHONY : src/game/blockgame/player/player_food.c.s
 
 src/game/blockgame/player/player_movement_physics.o: src/game/blockgame/player/player_movement_physics.c.o
@@ -26786,6 +26985,7 @@ src/game/blockgame/weather/weather_particles.o: src/game/blockgame/weather/weath
 
 # target to build an object file
 src/game/blockgame/weather/weather_particles.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/weather/weather_particles.c.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_particles.c.o
 .PHONY : src/game/blockgame/weather/weather_particles.c.o
 
@@ -26794,6 +26994,7 @@ src/game/blockgame/weather/weather_particles.i: src/game/blockgame/weather/weath
 
 # target to preprocess a source file
 src/game/blockgame/weather/weather_particles.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/weather/weather_particles.c.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_particles.c.i
 .PHONY : src/game/blockgame/weather/weather_particles.c.i
 
@@ -26802,6 +27003,7 @@ src/game/blockgame/weather/weather_particles.s: src/game/blockgame/weather/weath
 
 # target to generate assembly for a file
 src/game/blockgame/weather/weather_particles.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/weather/weather_particles.c.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_particles.c.s
 .PHONY : src/game/blockgame/weather/weather_particles.c.s
 
@@ -27333,6 +27535,30 @@ src/game/blockgame/world/water_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_system.c.s
 .PHONY : src/game/blockgame/world/water_system.c.s
 
+tests/test_player_food.o: tests/test_player_food.c.o
+.PHONY : tests/test_player_food.o
+
+# target to build an object file
+tests/test_player_food.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/tests/test_player_food.c.o
+.PHONY : tests/test_player_food.c.o
+
+tests/test_player_food.i: tests/test_player_food.c.i
+.PHONY : tests/test_player_food.i
+
+# target to preprocess a source file
+tests/test_player_food.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/tests/test_player_food.c.i
+.PHONY : tests/test_player_food.c.i
+
+tests/test_player_food.s: tests/test_player_food.c.s
+.PHONY : tests/test_player_food.s
+
+# target to generate assembly for a file
+tests/test_player_food.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/tests/test_player_food.c.s
+.PHONY : tests/test_player_food.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -27350,6 +27576,7 @@ help:
 	@echo "... Engine"
 	@echo "... Game"
 	@echo "... full_integration_test"
+	@echo "... test_player_food"
 	@echo "... src/engine/ai/advanced/extended_ai_complete.o"
 	@echo "... src/engine/ai/advanced/extended_ai_complete.i"
 	@echo "... src/engine/ai/advanced/extended_ai_complete.s"
@@ -27766,9 +27993,6 @@ help:
 	@echo "... src/engine/animation/skeleton_system.o"
 	@echo "... src/engine/animation/skeleton_system.i"
 	@echo "... src/engine/animation/skeleton_system.s"
-	@echo "... src/engine/animation/skeleton_system_2.o"
-	@echo "... src/engine/animation/skeleton_system_2.i"
-	@echo "... src/engine/animation/skeleton_system_2.s"
 	@echo "... src/engine/animation/state_machines/anim_state_machine.o"
 	@echo "... src/engine/animation/state_machines/anim_state_machine.i"
 	@echo "... src/engine/animation/state_machines/anim_state_machine.s"
@@ -28657,6 +28881,9 @@ help:
 	@echo "... src/engine/core/config.o"
 	@echo "... src/engine/core/config.i"
 	@echo "... src/engine/core/config.s"
+	@echo "... src/engine/core/containers/hashmap.o"
+	@echo "... src/engine/core/containers/hashmap.i"
+	@echo "... src/engine/core/containers/hashmap.s"
 	@echo "... src/engine/core/engine.o"
 	@echo "... src/engine/core/engine.i"
 	@echo "... src/engine/core/engine.s"
@@ -28671,6 +28898,12 @@ help:
 	@echo "... src/engine/core/logger.o"
 	@echo "... src/engine/core/logger.i"
 	@echo "... src/engine/core/logger.s"
+	@echo "... src/engine/core/memory/buddy_allocator.o"
+	@echo "... src/engine/core/memory/buddy_allocator.i"
+	@echo "... src/engine/core/memory/buddy_allocator.s"
+	@echo "... src/engine/core/memory/linear_allocator.o"
+	@echo "... src/engine/core/memory/linear_allocator.i"
+	@echo "... src/engine/core/memory/linear_allocator.s"
 	@echo "... src/engine/core/memory/memory.o"
 	@echo "... src/engine/core/memory/memory.i"
 	@echo "... src/engine/core/memory/memory.s"
@@ -28689,6 +28922,12 @@ help:
 	@echo "... src/engine/core/resource/vfs_async.o"
 	@echo "... src/engine/core/resource/vfs_async.i"
 	@echo "... src/engine/core/resource/vfs_async.s"
+	@echo "... src/engine/core/services/particle_renderer.o"
+	@echo "... src/engine/core/services/particle_renderer.i"
+	@echo "... src/engine/core/services/particle_renderer.s"
+	@echo "... src/engine/core/services/particle_system_gpu.o"
+	@echo "... src/engine/core/services/particle_system_gpu.i"
+	@echo "... src/engine/core/services/particle_system_gpu.s"
 	@echo "... src/engine/core/simd/simd_math_neon.o"
 	@echo "... src/engine/core/simd/simd_math_neon.i"
 	@echo "... src/engine/core/simd/simd_math_neon.s"
@@ -28737,6 +28976,12 @@ help:
 	@echo "... src/engine/effects/destruction/fracture_system.o"
 	@echo "... src/engine/effects/destruction/fracture_system.i"
 	@echo "... src/engine/effects/destruction/fracture_system.s"
+	@echo "... src/engine/effects/particles/particle_emitter.o"
+	@echo "... src/engine/effects/particles/particle_emitter.i"
+	@echo "... src/engine/effects/particles/particle_emitter.s"
+	@echo "... src/engine/effects/particles/particle_simulation.o"
+	@echo "... src/engine/effects/particles/particle_simulation.i"
+	@echo "... src/engine/effects/particles/particle_simulation.s"
 	@echo "... src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.o"
 	@echo "... src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.i"
 	@echo "... src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.s"
@@ -29601,6 +29846,9 @@ help:
 	@echo "... src/engine/physics/broadphase/aabb_tree.o"
 	@echo "... src/engine/physics/broadphase/aabb_tree.i"
 	@echo "... src/engine/physics/broadphase/aabb_tree.s"
+	@echo "... src/engine/physics/collision/collision_gjk_epa.o"
+	@echo "... src/engine/physics/collision/collision_gjk_epa.i"
+	@echo "... src/engine/physics/collision/collision_gjk_epa.s"
 	@echo "... src/engine/physics/collision/epa_solver.o"
 	@echo "... src/engine/physics/collision/epa_solver.i"
 	@echo "... src/engine/physics/collision/epa_solver.s"
@@ -29884,6 +30132,9 @@ help:
 	@echo "... src/engine/rendering/core/texture_atlas.i"
 	@echo "... src/engine/rendering/core/texture_atlas.s"
 	@echo "... src/engine/rendering/lighting/lumen_gi.o"
+	@echo "... src/engine/rendering/particles/particle_system.o"
+	@echo "... src/engine/rendering/particles/particle_system.i"
+	@echo "... src/engine/rendering/particles/particle_system.s"
 	@echo "... src/engine/scene/scene_impl.o"
 	@echo "... src/engine/scene/scene_impl.i"
 	@echo "... src/engine/scene/scene_impl.s"
@@ -30154,9 +30405,6 @@ help:
 	@echo "... src/engine/tools/analytics_dashboard.o"
 	@echo "... src/engine/tools/analytics_dashboard.i"
 	@echo "... src/engine/tools/analytics_dashboard.s"
-	@echo "... src/engine/tools/analytics_dashboard_2.o"
-	@echo "... src/engine/tools/analytics_dashboard_2.i"
-	@echo "... src/engine/tools/analytics_dashboard_2.s"
 	@echo "... src/engine/tools/asset_browser/asset_view.o"
 	@echo "... src/engine/tools/asset_browser/asset_view.i"
 	@echo "... src/engine/tools/asset_browser/asset_view.s"
@@ -30736,6 +30984,9 @@ help:
 	@echo "... src/game/blockgame/world/water_system.o"
 	@echo "... src/game/blockgame/world/water_system.i"
 	@echo "... src/game/blockgame/world/water_system.s"
+	@echo "... tests/test_player_food.o"
+	@echo "... tests/test_player_food.i"
+	@echo "... tests/test_player_food.s"
 .PHONY : help
 
 

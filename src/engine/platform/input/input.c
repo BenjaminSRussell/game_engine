@@ -10,50 +10,24 @@
 //  COMPLETED: Add input validation system for invalid bindings.
 //  COMPLETED: Implement input statistics tracking (key presses, usage).
 //  COMPLETED: Add input accessibility features (sticky keys, repeat rate).
-#include <platform/input/controls.h>
 #include <config/config.h>
+#include <core/logger.h>
 #include <ctype.h>
+#include <platform/input/controls.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 static const char *k_input_action_names[] = {
-    "MOVE_FORWARD",
-    "MOVE_BACKWARD",
-    "MOVE_LEFT",
-    "MOVE_RIGHT",
-    "JUMP",
-    "SPRINT",
-    "CROUCH",
-    "INTERACT",
-    "ATTACK",
-    "BLOCK",
-    "INVENTORY",
-    "CRAFT",
-    "BUILD",
-    "DESTROY",
-    "USE_ITEM",
-    "DROP_ITEM",
-    "HOTBAR_1",
-    "HOTBAR_2",
-    "HOTBAR_3",
-    "HOTBAR_4",
-    "HOTBAR_5",
-    "HOTBAR_6",
-    "HOTBAR_7",
-    "HOTBAR_8",
-    "HOTBAR_9",
-    "HOTBAR_PREV",
-    "HOTBAR_NEXT",
-    "MENU",
-    "ENTER_VEHICLE",
-    "EXIT_VEHICLE",
-    "CHAT",
-    "DEBUG",
-    "SCREENSHOT",
-    "MAP",
-    "LOOK",
-    "ZOOM",
+    "MOVE_FORWARD",  "MOVE_BACKWARD", "MOVE_LEFT",   "MOVE_RIGHT",
+    "JUMP",          "SPRINT",        "CROUCH",      "INTERACT",
+    "ATTACK",        "BLOCK",         "INVENTORY",   "CRAFT",
+    "BUILD",         "DESTROY",       "USE_ITEM",    "DROP_ITEM",
+    "HOTBAR_1",      "HOTBAR_2",      "HOTBAR_3",    "HOTBAR_4",
+    "HOTBAR_5",      "HOTBAR_6",      "HOTBAR_7",    "HOTBAR_8",
+    "HOTBAR_9",      "HOTBAR_PREV",   "HOTBAR_NEXT", "MENU",
+    "ENTER_VEHICLE", "EXIT_VEHICLE",  "CHAT",        "DEBUG",
+    "SCREENSHOT",    "MAP",           "LOOK",        "ZOOM",
     "RADIAL_MENU",
 };
 
@@ -114,8 +88,7 @@ static bool input_action_mouse_down(InputState *input, InputAction action) {
 
 static void input_apply_action(InputState *input, InputAction action,
                                bool controller_pressed) {
-  bool pressed = controller_pressed ||
-                 input_action_key_down(input, action) ||
+  bool pressed = controller_pressed || input_action_key_down(input, action) ||
                  input_action_mouse_down(input, action);
   input_set_action_state(input, action, pressed);
 }
@@ -465,7 +438,8 @@ void input_profiles_apply_active(InputState *input,
   for (u32 i = 0; i < profiles->count; i++) {
     if (strcmp(profiles->profiles[i].name, profiles->active_profile) == 0) {
       for (u32 action = 0; action < INPUT_ACTION_COUNT; action++) {
-        input->key_bindings[action] = profiles->profiles[i].key_bindings[action];
+        input->key_bindings[action] =
+            profiles->profiles[i].key_bindings[action];
         input->mouse_binding[action] =
             profiles->profiles[i].mouse_bindings[action];
       }
@@ -616,7 +590,6 @@ void controls_set_defaults(GameConfig *settings) {
 
 void controls_load(GameConfig *settings, const char *filename) {
   config_load(settings, filename);
-
 }
 
 void controls_save(GameConfig *settings, const char *filename) {

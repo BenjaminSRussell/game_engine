@@ -3,6 +3,8 @@
 #include <string.h>
 #include <math.h>
 #include <assert.h>
+#include <stddef.h>
+#include <limits.h>
 
 // Test pointer arithmetic issues
 int test_pointer_arithmetic() {
@@ -66,7 +68,6 @@ int test_floating_point_precision() {
     
     // Due to floating point precision, 0.1 + 0.2 != 0.3 exactly
     if (sum == 0.3f) {
-        printf("INFO: Floating point addition was exact (unusual)\n");
     } else {
         printf("PASS: Floating point precision issue detected\n");
     }

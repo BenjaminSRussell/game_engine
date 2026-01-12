@@ -25,6 +25,7 @@
 #include <combat/combat_animations.h>
 #include <common.h>
 #include <config/config.h>
+#include <core/logger.h>
 #include <core/memory/pool.h>
 #include <core/resource/vfs/vfs.h>
 #include <core/threading/job.h>
@@ -2213,10 +2214,10 @@ static void game_init(void) {
   block_registry_init(&g_game.block_registry, 256);
   block_registry_init_defaults(&g_game.block_registry);
 
-      // Initialize item registry
-      init_progress_update_stage("Initializing Item Registry");
-      item_registry_init(&g_item_registry);
-      g_game.item_registry = g_item_registry;
+  // Initialize item registry
+  init_progress_update_stage("Initializing Item Registry");
+  item_registry_init(&g_item_registry);
+  g_game.item_registry = g_item_registry;
   // Initialize recipe system
   init_progress_update_stage("Initializing Recipe System");
   recipe_system_init();

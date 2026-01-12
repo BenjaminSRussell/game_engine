@@ -10,7 +10,8 @@
       "Bash(for dir in src/frontend/Sources/*)",
       "Bash(xargs -I {} sh -c 'echo \"\"===== {} =====\"\"; head -1 \"\"{}\"\"')",
       "Bash(xargs -I {} sh -c 'head -1 \"\"{}\"\"')",
-      "Bash(xargs -I {} sh -c 'lines=$\\(wc -l < \"\"{}\"\"\\); echo \"\"$lines lines: {}\"\"')"
+      "Bash(xargs -I {} sh -c 'lines=$\\(wc -l < \"\"{}\"\"\\); echo \"\"$lines lines: {}\"\"')",
+      "Bash(while read f)"
     ]
   }
 }

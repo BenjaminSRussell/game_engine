@@ -227,7 +227,7 @@ void audio_system_init(AudioSystem *sys, u32 max_channels) {
 
   ma_result result = ma_engine_init(&engineConfig, &sys->engine);
   if (result != MA_SUCCESS) {
-            result);
+    printf("Failed to initialize audio engine: %s\n", ma_result_description(result));
     free(sys->sources);
     sys->sources = NULL;
     sys->initialized = false;
@@ -268,10 +268,10 @@ void audio_system_init(AudioSystem *sys, u32 max_channels) {
   if (sys->reverb_effect) {
     audio_reverb_init(sys->reverb_effect, 48000);
   } else {
+    printf("Failed to allocate memory for reverb effect\n");
   }
 
   sys->initialized = true;
-          max_channels);
 }
 
 void audio_system_free(AudioSystem *sys) {
@@ -734,7 +734,7 @@ bool audio_load_sound_buffer(AudioSystem *sys, SoundType sound,
   ImportedAudio *imported = asset_importer_load_audio(filepath);
 
   if (!imported) {
-            filepath);
+    printf("Failed to import audio: %s\n", filepath);
     return false;
   }
 
@@ -805,7 +805,8 @@ u32 audio_add_reverb_zone(AudioSystem *sys, Vec3 min_bounds, Vec3 max_bounds,
   zone->active = true;
 
   sys->reverb_zone_count++;
-          zone_index, zone->reverb_level, zone->decay_time);
+  printf("Added reverb zone %d with level %.2f and decay %.2f\n", 
+         zone_index, zone->reverb_level, zone->decay_time);
   return zone_index;
 }
 
