@@ -15,6 +15,11 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # AI subdirectory - excluding broken implementations
     # "src/engine/ai/*.c"  # Disabled: too many errors in npc.c, npc_ai.c, and visual_cortex.c
     
+    # AI pathfinding - advanced caching system
+    "src/engine/ai/pathfinding/pathfinding_complete.c"
+    "src/engine/ai/pathfinding/pathfinding_optimizer.c"
+    "src/engine/ai/pathfinding/pathfinding_cache_advanced.c"
+    
     # Animation subdirectory - excluding broken implementations
     # "src/engine/animation/*.c"  # Disabled: struct Pose definition mismatch in blend_tree_impl.c
     
@@ -33,19 +38,19 @@ file(GLOB_RECURSE ENGINE_SOURCES
     
     # Core systems
     "src/engine/core/misc_stubs.c"
-    "src/engine/core/logger.c"
-    "src/engine/core/memory/memory.c"
+    # New unified systems
+    "src/engine/core/memory/unified_allocator.c"
+    "src/engine/core/logging/unified_logger.c"
+    # Core systems
     "src/engine/core/window.c"
     "src/engine/core/utils.c"
     "src/engine/core/string_utils.c"
     "src/engine/core/thread_pool.c"
-    "src/engine/core/allocator.c"
     # Additional core systems needed for linking
     "src/engine/core/profiler.c"
+    "src/engine/core/profiling/gpu_profiler.c"
     "src/engine/core/hot_reload.c"
     "src/engine/core/data_structures/hashmap.c"
-    "src/engine/core/data_structures/linear_allocator.c"
-    "src/engine/core/data_structures/buddy_allocator.c"
     
     # Engine core systems and globals
     "src/engine/core/engine.c"
@@ -92,7 +97,26 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/rendering/core/renderer.c"
     "src/engine/scene/scene_manager.c"
     "src/engine/rendering/post_process/post_process.c"
-    
+
+    # Post-processing pipeline with compute shaders
+    "src/engine/rendering/post_processing/post_processing_pipeline.c"
+    "src/engine/rendering/post_processing/taa.c"
+    "src/engine/rendering/post_processing/bloom.c"
+    "src/engine/rendering/post_processing/taa_compute.c"
+    "src/engine/rendering/post_processing/bloom_compute.c"
+    "src/engine/rendering/post_processing/ssao_compute.c"
+    "src/engine/rendering/post_processing/ssr_compute.c"
+    "src/engine/rendering/post_processing/ssao_horizon.c"
+    "src/engine/rendering/post_processing/ssr.c"
+    "src/engine/rendering/post_processing/tonemapping.c"
+    "src/engine/rendering/post_processing/post_processing_test.c"
+
+    # Physics SIMD Optimization
+    "src/engine/physics/solver/physics_simd_integration.c"
+
+    # Pathfinding Optimization
+    "src/engine/ai/pathfinding/pathfinding_optimizer.c"
+
     # Threading and synchronization
     "src/engine/core/threading/mutex.c"
     "src/engine/core/threading/job.c"
@@ -283,6 +307,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/physics/simulation_loop.c"
     "src/engine/physics/demos/physics_demo_framework.c"
     "src/engine/physics/demos/demo_stack_collapse.c"
+    "src/engine/physics/simd/physics_simd.c"
     
     # Platform subdirectory - DISABLED due to swift_bridge issues (except input system)
     "src/engine/platform/input/*.c"

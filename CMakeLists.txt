@@ -61,6 +61,10 @@ include_directories(
     src/engine
     src
     src/frontend/Core/Bridges/include
+    # New unified systems
+    src/engine/include/core/math
+    src/engine/include/core/memory
+    src/engine/include/core/logging
 )
 
 
@@ -357,7 +361,7 @@ endif()
 # Demos temporarily disabled following engine restructuring
 # Physics Sandbox Demo
 # add_executable(demo_sandbox src/game/demo_physics_sandbox.c
-#     src/engine/core/logger.c
+#     src/engine/core/logging/unified_logger.c
 #     src/engine/core/memory.c
 #     # Engine sources are linked via the Engine library
 # )
@@ -368,7 +372,7 @@ endif()
 # endif()
 # # Simple Terrain Demo
 # add_executable(demo_terrain src/game/demo_simple_terrain.c
-#     src/engine/core/logger.c
+#     src/engine/core/logging/unified_logger.c
 #     src/engine/core/memory.c
 #     src/engine/core/window.c
 #     src/engine/core/utils.c
@@ -422,7 +426,7 @@ endif()
 
 # Helper macro to add test
 macro(add_engine_test name source)
-    add_executable(${name} ${source} ${CMAKE_SOURCE_DIR}/tests/test_framework_unified.c)
+    add_executable(${name} ${source} ${CMAKE_SOURCE_DIR}/tests/unit/test_framework_unified.c)
     target_link_libraries(${name} PRIVATE Engine)
     target_include_directories(${name} PRIVATE
         ${CMAKE_SOURCE_DIR}/src/engine/include
@@ -586,14 +590,25 @@ target_include_directories(full_integration_test PRIVATE
 )
 message(STATUS "Verification target added: full_integration_test")
 
+# Test Post-Processing Effects
+add_executable(test_post_processing
+    src/engine/rendering/post_processing/post_processing_test.c
+)
+target_link_libraries(test_post_processing PRIVATE Engine Game ZLIB::ZLIB Threads::Threads "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
+target_include_directories(test_post_processing PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+)
+message(STATUS "Verification target added: test_post_processing")
+
 # Test Player Food
 add_executable(test_player_food
-    tests/test_player_food.c
+    tests/integration/test_player_food.c
     src/game/blockgame/player/player_food.c
     src/game/blockgame/player/status_effects.c
     src/game/blockgame/inventory/inventory.c
     src/game/blockgame/inventory/item_registry.c
-    src/engine/core/logger.c
+    src/engine/core/logging/unified_logger.c
     src/engine/core/containers/hashmap.c
     src/engine/core/memory/memory.c
     src/engine/core/memory/buddy_allocator.c
@@ -610,7 +625,7 @@ add_executable(test_unreal_features
     src/engine/rendering/texturing/virtual_texture.c
     src/engine/rendering/hybrid_renderer.c
     src/engine/rendering/occlusion/hzb/hzb_temporal.c
-    src/engine/core/logger.c
+    src/engine/core/logging/unified_logger.c
     src/engine/core/memory/memory.c
     src/engine/math/vec3.c
     src/engine/math/mat4.c
@@ -624,11 +639,11 @@ message(STATUS "Verification target added: test_player_food")
 
 # Test Crafting
 add_executable(test_crafting
-    tests/test_crafting.c
+    tests/unit/test_crafting.c
     src/game/blockgame/crafting/furnace.c
     src/game/blockgame/inventory/inventory.c
     src/game/blockgame/inventory/item_registry.c
-    src/engine/core/logger.c
+    src/engine/core/logging/unified_logger.c
     src/engine/core/containers/hashmap.c
     src/engine/core/memory/memory.c
     src/engine/core/memory/buddy_allocator.c

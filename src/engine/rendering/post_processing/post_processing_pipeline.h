@@ -5,6 +5,8 @@
 #define POST_PROCESSING_PIPELINE_H
 
 #include "rendering/post_processing/taa.h"
+#include "rendering/post_processing/ssao.h"
+#include "rendering/post_processing/ssr.h"
 #include "rendering/frame_graph/frame_graph.h"
 #include "core/types.h"
 
@@ -32,6 +34,18 @@ typedef struct PostProcessingConfig {
     bool enable_color_grading;
     TextureID lut_texture;      // 3D LUT for color grading
     
+    // SSAO
+    bool enable_ssao;
+    f32 ssao_radius;           // 0.5f default
+    f32 ssao_strength;         // 1.0f default
+    u32 ssao_samples;          // 16 default
+    
+    // SSR
+    bool enable_ssr;
+    f32 ssr_max_distance;      // 50.0f default
+    u32 ssr_max_steps;         // 64 default
+    f32 ssr_thickness;         // 0.1f default
+    
 } PostProcessingConfig;
 
 // Post-processing pipeline context
@@ -40,6 +54,8 @@ typedef struct PostProcessingPipeline {
     
     // Effect contexts
     TAAContext *taa;
+    SSAOContext *ssao;
+    SSRContext *ssr;
     
     // Screen dimensions
     u32 width;
@@ -59,7 +75,8 @@ void post_processing_destroy(PostProcessingPipeline *pipeline);
 RGResourceHandle post_processing_add_to_graph(RenderGraph *rg,
                                                PostProcessingPipeline *pipeline,
                                                RGResourceHandle scene_hdr,
-                                               RGResourceHandle velocity);
+                                               RGResourceHandle depth_buffer,
+                                               RGResourceHandle normal_buffer);
 
 // Update configuration
 void post_processing_update_config(PostProcessingPipeline *pipeline, 

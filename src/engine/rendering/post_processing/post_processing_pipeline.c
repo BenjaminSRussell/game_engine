@@ -42,11 +42,39 @@ PostProcessingPipeline *post_processing_create(u32 width, u32 height) {
 
     pipeline->config.enable_color_grading = false;
 
+    // Initialize SSAO settings
+    pipeline->config.enable_ssao = true;
+    pipeline->config.ssao_radius = 0.5f;
+    pipeline->config.ssao_strength = 1.0f;
+    pipeline->config.ssao_samples = 16;
+
+    // Initialize SSR settings
+    pipeline->config.enable_ssr = true;
+    pipeline->config.ssr_max_distance = 50.0f;
+    pipeline->config.ssr_max_steps = 64;
+    pipeline->config.ssr_thickness = 0.1f;
+
     // Create TAA context if enabled
     if (pipeline->config.enable_taa) {
         pipeline->taa = taa_create(width, height);
         if (!pipeline->taa) {
             LOG_WARN("Failed to create TAA context");
+        }
+    }
+
+    // Create SSAO context if enabled
+    if (pipeline->config.enable_ssao) {
+        pipeline->ssao = ssao_create(width, height);
+        if (!pipeline->ssao) {
+            LOG_WARN("Failed to create SSAO context");
+        }
+    }
+
+    // Create SSR context if enabled
+    if (pipeline->config.enable_ssr) {
+        pipeline->ssr = ssr_create(width, height);
+        if (!pipeline->ssr) {
+            LOG_WARN("Failed to create SSR context");
         }
     }
 
@@ -65,6 +93,16 @@ void post_processing_destroy(PostProcessingPipeline *pipeline) {
         pipeline->taa = NULL;
     }
 
+    if (pipeline->ssao) {
+        ssao_destroy(pipeline->ssao);
+        pipeline->ssao = NULL;
+    }
+
+    if (pipeline->ssr) {
+        ssr_destroy(pipeline->ssr);
+        pipeline->ssr = NULL;
+    }
+
     free(pipeline);
     LOG_INFO("Post-processing pipeline destroyed");
 }
@@ -73,7 +111,8 @@ void post_processing_destroy(PostProcessingPipeline *pipeline) {
 RGResourceHandle post_processing_add_to_graph(RenderGraph *rg,
                                              PostProcessingPipeline *pipeline,
                                              RGResourceHandle scene_hdr,
-                                             RGResourceHandle velocity) {
+                                             RGResourceHandle depth_buffer,
+                                             RGResourceHandle normal_buffer) {
     if (!pipeline || !rg) {
         LOG_ERROR("Invalid post-processing pipeline or render graph");
         return RG_INVALID_RESOURCE;
@@ -83,7 +122,7 @@ RGResourceHandle post_processing_add_to_graph(RenderGraph *rg,
 
     // Apply TAA first (operates on HDR)
     if (pipeline->config.enable_taa && pipeline->taa) {
-        current = taa_add_to_graph(rg, pipeline->taa, current, velocity);
+        current = taa_add_to_graph(rg, pipeline->taa, current, depth_buffer);
         LOG_DEBUG("TAA added to post-processing graph");
     }
 
@@ -103,9 +142,25 @@ RGResourceHandle post_processing_add_to_graph(RenderGraph *rg,
         LOG_DEBUG("Tonemapping added to post-processing graph");
     }
 
-    // TODO: Color grading pass
-    // TODO: SSAO integration
-    // TODO: SSR integration
+    // Apply SSAO (Screen Space Ambient Occlusion)
+    if (pipeline->config.enable_ssao && pipeline->ssao && normal_buffer.id != 0) {
+        current = ssao_add_to_graph(rg, pipeline->ssao, depth_buffer, normal_buffer);
+        LOG_DEBUG("SSAO added to post-processing graph");
+    }
+
+    // Apply SSR (Screen Space Reflections)
+    if (pipeline->config.enable_ssr && pipeline->ssr && normal_buffer.id != 0) {
+        // Create a combined normal/roughness buffer for SSR (simplified)
+        RGResourceHandle normal_roughness = normal_buffer;
+        current = ssr_add_to_graph(rg, pipeline->ssr, current, normal_roughness, depth_buffer);
+        LOG_DEBUG("SSR added to post-processing graph");
+    }
+
+    // Apply color grading if LUT is available
+    if (pipeline->config.enable_color_grading && pipeline->config.lut_texture != 0) {
+        current = color_grade_add_to_graph(rg, current, pipeline->config.lut_texture);
+        LOG_DEBUG("Color grading added to post-processing graph");
+    }
 
     LOG_DEBUG("Post-processing stack complete: %ux%u", pipeline->width, pipeline->height);
     return current;

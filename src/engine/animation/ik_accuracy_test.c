@@ -204,6 +204,85 @@ bool test_constraint_enforcement(void) {
     return passed;
 }
 
+bool test_consolidated_fabrik(void) {
+    log_info("Testing consolidated FABRIK implementation...");
+    
+    // Initialize the consolidated FABRIK solver
+    if (animation_fabrik_solver_init() != 0) {
+        add_test_result("Consolidated FABRIK Init", false, 0.0f, "Failed to initialize");
+        return false;
+    }
+    
+    animation_fabrik_solver_handle_t handle;
+    animation_fabrik_solver_desc_t desc = {0};
+    
+    if (animation_fabrik_solver_create(&handle, &desc) != 0) {
+        add_test_result("Consolidated FABRIK Create", false, 0.0f, "Failed to create solver");
+        animation_fabrik_solver_shutdown();
+        return false;
+    }
+    
+    // Create a 3-joint chain
+    Vec3 positions[] = {
+        {0, 0, 0},
+        {2, 0, 0},
+        {4, 0, 0}
+    };
+    
+    uint32_t chain_id = animation_fabrik_solver_add_chain(handle, positions, 3);
+    if (chain_id == UINT32_MAX) {
+        add_test_result("Consolidated FABRIK Add Chain", false, 0.0f, "Failed to add chain");
+        animation_fabrik_solver_destroy(handle);
+        animation_fabrik_solver_shutdown();
+        return false;
+    }
+    
+    // Test basic reachability
+    Vec3 target = {3, 2, 0};
+    bool solved = animation_fabrik_solver_solve_chain(handle, chain_id, &target, 10);
+    
+    if (!solved) {
+        add_test_result("Consolidated FABRIK Solve", false, 0.0f, "Failed to solve");
+        animation_fabrik_solver_destroy(handle);
+        animation_fabrik_solver_shutdown();
+        return false;
+    }
+    
+    // Check accuracy
+    Vec3 end_pos = animation_fabrik_solver_get_joint_position(handle, chain_id, 2);
+    float error = vec3_distance(&end_pos, &target);
+    bool passed = error < TEST_TOLERANCE;
+    
+    add_test_result("Consolidated FABRIK Accuracy", passed, error,
+                   passed ? "Consolidated implementation working" : "Consolidated implementation failed");
+    
+    // Test constraint handling
+    animation_fabrik_solver_set_joint_constraint(handle, chain_id, 1, 0.0f, 45.0f);
+    
+    Vec3 constrained_target = {3, 3, 0}; // Would require >45 degrees without constraint
+    solved = animation_fabrik_solver_solve_chain(handle, chain_id, &constrained_target, 10);
+    
+    if (solved) {
+        Vec3 middle_pos = animation_fabrik_solver_get_joint_position(handle, chain_id, 1);
+        Vec3 start_pos = animation_fabrik_solver_get_joint_position(handle, chain_id, 0);
+        Vec3 constrained_end = animation_fabrik_solver_get_joint_position(handle, chain_id, 2);
+        
+        // Calculate angle at middle joint
+        Vec3 bone1 = vec3_normalize(vec3_sub(middle_pos, start_pos));
+        Vec3 bone2 = vec3_normalize(vec3_sub(constrained_end, middle_pos));
+        float angle = acosf(fmaxf(-1.0f, fminf(1.0f, vec3_dot(&bone1, &bone2))));
+        float angle_deg = angle * 180.0f / M_PI;
+        
+        bool constraint_passed = angle_deg <= 50.0f; // Allow tolerance
+        add_test_result("Consolidated FABRIK Constraints", constraint_passed, angle_deg,
+                       constraint_passed ? "Constraints working" : "Constraints failed");
+    }
+    
+    animation_fabrik_solver_destroy(handle);
+    animation_fabrik_solver_shutdown();
+    return passed;
+}
+
 void run_all_ik_tests(void) {
     log_info("Starting IK accuracy tests...");
     
@@ -215,6 +294,7 @@ void run_all_ik_tests(void) {
     test_two_bone_analytical();
     test_ccd_convergence();
     test_constraint_enforcement();
+    test_consolidated_fabrik();
     
     // Print results
     printf("\n=== IK Accuracy Test Results ===\n");

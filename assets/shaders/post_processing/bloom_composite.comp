@@ -1,0 +1,42 @@
+#version 450
+
+// Bloom Composite Compute Shader
+// Combines original scene with blurred bloom
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D originalScene;
+layout(binding = 1) uniform sampler2D blurredBloom;
+layout(rgba16f) uniform image2D outputImage;
+
+layout(push_constant) uniform BloomCompositeParams {
+    float intensity;
+    float dirtIntensity;
+    vec3 colorShift;
+    vec2 texelSize;
+} params;
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    ivec2 size = imageSize(outputImage);
+    
+    if (coord.x >= size.x || coord.y >= size.y) {
+        return;
+    }
+    
+    vec2 uv = (vec2(coord) + 0.5) / vec2(size);
+    
+    vec3 hdrColor = texture(originalScene, uv).rgb;
+    vec3 bloomColor = texture(blurredBloom, uv).rgb;
+    
+    // Apply color shift and intensity to bloom
+    vec3 modifiedBloom = bloomColor * params.colorShift * params.intensity;
+    
+    // Additive blend
+    vec3 result = hdrColor + modifiedBloom;
+    
+    // Optional lens dirt effect (would need dirt texture)
+    // result += modifiedBloom * params.dirtIntensity;
+    
+    imageStore(outputImage, coord, vec4(result, 1.0));
+}

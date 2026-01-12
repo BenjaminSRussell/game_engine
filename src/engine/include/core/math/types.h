@@ -500,6 +500,224 @@ typedef enum {
 #define IS_ALIGNED(size, alignment) (((size) & ((alignment) - 1)) == 0)
 
 // ============================================================================
+// ERROR AND RESULT TYPES
+// ============================================================================
+
+// Error codes - comprehensive list for all subsystems
+typedef enum {
+    // Success
+    ERROR_NONE = 0,
+
+    // General errors (1-99)
+    ERROR_INVALID_ARGUMENT = 1,
+    ERROR_INVALID_STATE = 2,
+    ERROR_OUT_OF_MEMORY = 3,
+    ERROR_NOT_FOUND = 4,
+    ERROR_ALREADY_EXISTS = 5,
+    ERROR_NOT_IMPLEMENTED = 6,
+    ERROR_TIMEOUT = 7,
+    ERROR_PERMISSION_DENIED = 8,
+    ERROR_IO_ERROR = 9,
+    ERROR_INVALID_HANDLE = 10,
+
+    // Memory errors (100-119)
+    ERROR_MEMORY_ALIGNMENT = 100,
+    ERROR_MEMORY_LEAK = 101,
+    ERROR_MEMORY_CORRUPTION = 102,
+    ERROR_MEMORY_POOL_EXHAUSTED = 103,
+    ERROR_MEMORY_FRAGMENTATION = 104,
+
+    // Physics errors (120-139)
+    ERROR_PHYSICS_INVALID_SHAPE = 120,
+    ERROR_PHYSICS_CONSTRAINT_FAILED = 121,
+    ERROR_PHYSICS_SIMULATION_ERROR = 122,
+
+    // Rendering errors (140-179)
+    ERROR_RENDER_INVALID_SHADER = 140,
+    ERROR_RENDER_INVALID_TEXTURE = 141,
+    ERROR_RENDER_INVALID_MESH = 142,
+    ERROR_RENDER_OUT_OF_VRAM = 143,
+    ERROR_RENDER_COMPILATION_FAILED = 144,
+    ERROR_RENDER_FRAMEBUFFER_INCOMPLETE = 145,
+    ERROR_RENDER_INVALID_RENDERSTATE = 146,
+    ERROR_RENDER_GPU_TIMEOUT = 147,
+
+    // Network errors (180-199)
+    ERROR_NETWORK_CONNECTION_FAILED = 180,
+    ERROR_NETWORK_TIMEOUT = 181,
+    ERROR_NETWORK_PACKET_LOSS = 182,
+    ERROR_NETWORK_INVALID_PROTOCOL = 183,
+    ERROR_NETWORK_BUFFER_OVERFLOW = 184,
+
+    // Audio errors (200-219)
+    ERROR_AUDIO_INVALID_FORMAT = 200,
+    ERROR_AUDIO_DEVICE_ERROR = 201,
+    ERROR_AUDIO_BUFFER_UNDERRUN = 202,
+
+    // File/Asset errors (220-239)
+    ERROR_FILE_NOT_FOUND = 220,
+    ERROR_FILE_ACCESS_DENIED = 221,
+    ERROR_FILE_INVALID_FORMAT = 222,
+    ERROR_FILE_CORRUPTED = 223,
+    ERROR_FILE_TOO_LARGE = 224,
+    ERROR_ASSET_LOAD_FAILED = 225,
+    ERROR_ASSET_NOT_LOADED = 226,
+
+    // Validation errors (240-259)
+    ERROR_VALIDATION_FAILED = 240,
+    ERROR_TYPE_MISMATCH = 241,
+    ERROR_VERSION_MISMATCH = 242,
+
+    // Threading errors (260-279)
+    ERROR_THREAD_CREATION_FAILED = 260,
+    ERROR_THREAD_JOIN_FAILED = 261,
+    ERROR_DEADLOCK_DETECTED = 262,
+    ERROR_SYNCHRONIZATION_FAILED = 263,
+} ErrorCode;
+
+// Result type for functions with error handling
+typedef struct {
+    ErrorCode error;
+    void* value;  // If NULL, check error
+} Result;
+
+// Macro for creating success results
+#define RESULT_OK(val) ((Result){.error = ERROR_NONE, .value = (val)})
+#define RESULT_ERROR(err) ((Result){.error = (err), .value = NULL})
+
+// ============================================================================
+// UUID AND IDENTIFICATION TYPES
+// ============================================================================
+
+// UUID/GUID type (128-bit unique identifier)
+typedef struct {
+    u8 bytes[16];
+} UUID;
+
+// Resource version for versioning and validation
+typedef struct {
+    u32 major;
+    u32 minor;
+    u32 patch;
+    u32 build;
+} Version;
+
+// ============================================================================
+// HANDLE VALIDATION TYPES
+// ============================================================================
+
+// Handle generation counter (for versioning handles)
+typedef u32 HandleGeneration;
+
+// Versioned handle with generation to detect stale references
+typedef struct {
+    u32 index;
+    HandleGeneration generation;
+} VersionedHandle;
+
+// Resource metadata
+typedef struct {
+    UUID id;
+    Version version;
+    u64 created_time;
+    u64 modified_time;
+    char name[256];
+} ResourceMetadata;
+
+// ============================================================================
+// THREAD SYNCHRONIZATION TYPES
+// ============================================================================
+
+// Spinlock state
+typedef enum {
+    SPINLOCK_UNLOCKED = 0,
+    SPINLOCK_LOCKED = 1
+} SpinLockState;
+
+// Mutex/Lock handle
+typedef void* MutexHandle;
+
+// Read-Write lock handle
+typedef void* RWLockHandle;
+
+// Semaphore handle
+typedef void* SemaphoreHandle;
+
+// Condition variable handle
+typedef void* CondVarHandle;
+
+// Thread handle
+typedef void* ThreadHandle;
+
+// ============================================================================
+// NETWORK PROTOCOL TYPES
+// ============================================================================
+
+// Network address type
+typedef enum {
+    NET_ADDR_TYPE_INVALID = 0,
+    NET_ADDR_TYPE_IPV4 = 1,
+    NET_ADDR_TYPE_IPV6 = 2,
+    NET_ADDR_TYPE_UNIX = 3
+} NetworkAddressType;
+
+// Network endpoint
+typedef struct {
+    NetworkAddressType type;
+    union {
+        struct {
+            u8 ipv4[4];
+            u16 port;
+        } ipv4;
+        struct {
+            u8 ipv6[16];
+            u16 port;
+        } ipv6;
+    } address;
+} NetworkEndpoint;
+
+// Packet header flags
+typedef enum {
+    PACKET_FLAG_COMPRESSED = (1 << 0),
+    PACKET_FLAG_ENCRYPTED = (1 << 1),
+    PACKET_FLAG_RELIABLE = (1 << 2),
+    PACKET_FLAG_ORDERED = (1 << 3),
+    PACKET_FLAG_FRAGMENTED = (1 << 4)
+} PacketFlags;
+
+// ============================================================================
+// EVENT SYSTEM TYPES
+// ============================================================================
+
+// Event type
+typedef enum {
+    EVENT_NONE = 0,
+    EVENT_WINDOW_CLOSE = 1,
+    EVENT_WINDOW_RESIZE = 2,
+    EVENT_KEY_PRESS = 3,
+    EVENT_KEY_RELEASE = 4,
+    EVENT_MOUSE_MOVE = 5,
+    EVENT_MOUSE_BUTTON_PRESS = 6,
+    EVENT_MOUSE_BUTTON_RELEASE = 7,
+    EVENT_ENTITY_CREATED = 8,
+    EVENT_ENTITY_DESTROYED = 9,
+    EVENT_COMPONENT_ADDED = 10,
+    EVENT_COMPONENT_REMOVED = 11,
+    EVENT_COLLISION_START = 12,
+    EVENT_COLLISION_END = 13,
+    EVENT_GAME_STATE_CHANGED = 14,
+    EVENT_PLAYER_SPAWNED = 15,
+    EVENT_PLAYER_DIED = 16
+} EventType;
+
+// Event structure (extensible)
+typedef struct {
+    EventType type;
+    f32 timestamp;
+    void* data;
+} Event;
+
+// ============================================================================
 // SIMD DETECTION
 // ============================================================================
 

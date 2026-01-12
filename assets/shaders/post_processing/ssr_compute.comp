@@ -1,0 +1,175 @@
+#version 450
+
+// Screen-Space Reflections (SSR) Compute Shader
+// Hierarchical ray marching with compute shaders
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D sceneColor;
+layout(binding = 1) uniform sampler2D normalRoughness;
+layout(binding = 2) uniform sampler2D depthBuffer;
+layout(rgba16f) uniform image2D outputImage;
+
+layout(push_constant) uniform SSRParams {
+    vec2 texelSize;
+    float maxDistance;     // Maximum ray distance in screen space
+    float thickness;       // Surface thickness for intersection testing
+    u32 maxSteps;          // Maximum ray march steps
+    float stride;          // Initial ray stride
+    float fadeDistance;    // Distance to start fading reflections
+    vec2 projectionParams; // x = near, y = far
+} params;
+
+// Hierarchical depth buffer (mip chain)
+layout(binding = 3) uniform sampler2D depthHierarchy;
+
+// Reconstruct world position from depth
+vec3 reconstructWorldPosition(vec2 uv, float depth) {
+    float ndc_x = uv.x * 2.0 - 1.0;
+    float ndc_y = uv.y * 2.0 - 1.0;
+    
+    // Linearize depth
+    float depthLinear = 2.0 * params.projectionParams.x * params.projectionParams.y / 
+                       (params.projectionParams.y + params.projectionParams.x - 
+                        ndc_y * (params.projectionParams.y - params.projectionParams.x));
+    
+    return vec3(ndc_x * depthLinear, depthLinear, ndc_y * depthLinear);
+}
+
+// Convert world position to screen space
+vec3 worldToScreen(vec3 worldPos) {
+    vec2 uv = vec2(worldPos.x / worldPos.y * 0.5 + 0.5,
+                  worldPos.z / worldPos.y * 0.5 + 0.5);
+    return vec3(uv, worldPos.y);
+}
+
+// Hierarchical ray marching
+bool rayMarch(vec3 start, vec3 direction, out vec3 hitPos, out vec3 hitNormal) {
+    vec3 current = start;
+    float currentStride = params.stride;
+    
+    for (int i = 0; i < params.maxSteps; i++) {
+        current += direction * currentStride;
+        
+        // Convert to screen space
+        vec3 screenPos = worldToScreen(current);
+        
+        // Check bounds
+        if (screenPos.x < 0.0 || screenPos.x > 1.0 || 
+            screenPos.y < 0.0 || screenPos.y > 1.0) {
+            return false;
+        }
+        
+        // Sample depth from appropriate mip level
+        float mipLevel = log2(currentStride * 2.0);
+        float depth = textureLod(depthHierarchy, screenPos.xy, mipLevel).r;
+        
+        // Reconstruct world position
+        vec3 worldPos = reconstructWorldPosition(screenPos.xy, depth);
+        
+        // Check intersection
+        float distance = length(current - worldPos);
+        
+        if (distance < params.thickness) {
+            // Found intersection, refine with binary search
+            vec3 refineStart = current - direction * currentStride;
+            vec3 refineEnd = current;
+            
+            for (int j = 0; j < 8; j++) {
+                vec3 mid = (refineStart + refineEnd) * 0.5;
+                vec3 midScreen = worldToScreen(mid);
+                float midDepth = texture(depthBuffer, midScreen.xy).r;
+                vec3 midWorld = reconstructWorldPosition(midScreen.xy, midDepth);
+                
+                if (length(mid - midWorld) < params.thickness) {
+                    refineEnd = mid;
+                } else {
+                    refineStart = mid;
+                }
+            }
+            
+            hitPos = (refineStart + refineEnd) * 0.5;
+            
+            // Sample normal at hit position
+            vec3 hitScreen = worldToScreen(hitPos);
+            hitNormal = texture(normalRoughness, hitScreen.xy).rgb * 2.0 - 1.0;
+            
+            return true;
+        }
+        
+        // Adaptive stride
+        currentStride = min(currentStride * 1.5, params.maxDistance);
+    }
+    
+    return false;
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    ivec2 size = imageSize(outputImage);
+    
+    if (coord.x >= size.x || coord.y >= size.y) {
+        return;
+    }
+    
+    vec2 uv = (vec2(coord) + 0.5) / vec2(size);
+    
+    // Sample current pixel data
+    vec4 color = texture(sceneColor, uv);
+    vec3 normalRoughness = texture(normalRoughness, uv).rgb;
+    vec3 normal = normalize(normalRoughness.rgb * 2.0 - 1.0);
+    float roughness = normalRoughness.a;
+    float depth = texture(depthBuffer, uv).r;
+    
+    // Skip background pixels
+    if (depth >= 0.999) {
+        imageStore(outputImage, coord, color);
+        return;
+    }
+    
+    // Skip very rough surfaces (no reflections)
+    if (roughness > 0.7) {
+        imageStore(outputImage, coord, color);
+        return;
+    }
+    
+    // Reconstruct world position
+    vec3 worldPos = reconstructWorldPosition(uv, depth);
+    
+    // Calculate view direction (simplified)
+    vec3 viewDir = normalize(-worldPos);
+    
+    // Calculate reflection direction
+    vec3 reflectDir = reflect(-viewDir, normal);
+    
+    // Ray march
+    vec3 hitPos, hitNormal;
+    bool hit = rayMarch(worldPos, reflectDir, hitPos, hitNormal);
+    
+    if (hit) {
+        // Sample reflection color
+        vec3 hitScreen = worldToScreen(hitPos);
+        vec4 reflectionColor = texture(sceneColor, hitScreen.xy);
+        
+        // Calculate fade based on distance
+        float distance = length(hitPos - worldPos);
+        float fade = 1.0 - clamp(distance / params.fadeDistance, 0.0, 1.0);
+        
+        // Fresnel effect
+        float fresnel = pow(1.0 - dot(viewDir, normal), 5.0);
+        
+        // Roughness-based attenuation
+        float roughnessFactor = 1.0 - roughness;
+        
+        // Combine factors
+        float reflectionStrength = fade * fresnel * roughnessFactor;
+        
+        // Blend with original color
+        vec3 finalColor = mix(color.rgb, reflectionColor.rgb, reflectionStrength);
+        
+        imageStore(outputImage, coord, vec4(finalColor, color.a));
+    } else {
+        // No reflection hit
+        imageStore(outputImage, coord, color);
+    }
+}

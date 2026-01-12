@@ -71,16 +71,41 @@ cmake --build .
 
 ```
 Minecraft v2/
- src/
-    engine/           # Core engine code
-       core/         # Window, logging, memory management
-       physics/      # Physics simulation
-       renderer/     # Rendering systems
-       include/      # Public API headers
-    game/             # Game-specific code + demos
- build/                # CMake build directory
- CMakeLists.txt        # Build configuration
- README.md             # This file
+├── src/
+│   └── engine/                    # Core engine code
+│       ├── core/                  # Window, logging, memory management
+│       ├── physics/               # Physics simulation
+│       ├── rendering/             # Rendering systems
+│       ├── animation/             # Animation systems
+│       ├── audio/                 # Audio systems
+│       ├── ai/                    # AI and NPC systems
+│       ├── assets/                # Asset management
+│       ├── network/               # Networking systems
+│       ├── gameplay/              # Gameplay systems
+│       ├── character/             # Character systems
+│       ├── geometry/              # Geometry and mesh processing
+│       ├── materials/             # Materials and shaders
+│       ├── lighting/              # Lighting and global illumination
+│       ├── effects/               # Visual effects and particles
+│       ├── editor/                # Editor tools
+│       ├── debug/                 # Debug systems
+│       ├── include/               # Public API headers
+│       └── backend/               # Rendering backends (Metal/Vulkan)
+│   └── game/                      # Game-specific code + demos
+├── tests/                         # Test suites
+│   ├── unit/                      # Unit tests
+│   ├── integration/               # Integration tests
+│   ├── performance/               # Performance tests
+│   └── fixtures/                  # Test fixtures and data
+├── build/                         # CMake build directory
+├── CMakeLists.txt                 # Build configuration
+├── README.md                       # This file
+├── master/                        # Master folder
+│   ├── todo.csv                   # Task tracking
+│   ├── todo.md                    # Task notes
+│   ├── master.md                  # Workflow rules
+│   └── expectations.md            # Quality standards
+└── docs/                          # Documentation
 ```
 
 ## Documentation
@@ -101,6 +126,46 @@ Minecraft v2/
 - **SPACE**: Fly up
 - **SHIFT**: Fly down
 - **ESC**: Quit
+
+## Testing
+
+### Test Organization
+Tests are organized by type in the `tests/` directory:
+
+- **`tests/unit/`** - Unit tests for individual components
+  - Physics unit tests
+  - Material system tests
+  - Crafting system tests
+  - Framework tests
+  - Particle system tests
+
+- **`tests/integration/`** - Integration tests for system interactions
+  - Physics integration tests
+  - Gameplay system tests
+  - Frame graph tests
+  - Networking tests
+  - Player/food system tests
+
+- **`tests/performance/`** - Performance and stress tests
+  - Instance data tests
+  - GBuffer resize tests
+  - Framebuffer tests
+
+- **`tests/fixtures/`** - Test data and fixtures
+
+### Running Tests
+```bash
+# Build all tests
+cmake --build build --target all
+
+# Run specific test
+./build/unit_tests
+./build/integration_tests
+./build/performance_tests
+
+# Run with coverage
+cmake --build build --target coverage
+```
 
 ## Development
 

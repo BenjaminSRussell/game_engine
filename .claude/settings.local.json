@@ -26,7 +26,8 @@
       "Bash(make:*)",
       "Bash(nm:*)",
       "Bash(xargs ls:*)",
-      "Read(//Users/benjaminrussell/Desktop/Minecraft v2/**)"
+      "Read(//Users/benjaminrussell/Desktop/Minecraft v2/**)",
+      "Bash(timeout 120 cmake --build:*)"
     ]
   }
 }

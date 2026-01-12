@@ -90,6 +90,42 @@ void taa_update_settings(TAAContext *ctx, const TAASettings *settings) {
     LOG_DEBUG("TAA settings updated");
 }
 
+// TAA pass execution callback
+typedef struct {
+    TAAContext *ctx;
+    RGResourceHandle scene_color;
+    RGResourceHandle velocity_buffer;
+    RGResourceHandle history_input;
+    RGResourceHandle output;
+} TAAPassData;
+
+static void taa_execute_pass(RGPassContext *ctx, void *user_data) {
+    TAAPassData *data = (TAAPassData *)user_data;
+    if (!data || !data->ctx) return;
+
+    // Get physical texture handles from render graph
+    TextureID scene_color_tex = rg_ctx_get_texture(ctx, data->scene_color);
+    TextureID velocity_tex = rg_ctx_get_texture(ctx, data->velocity_buffer);
+    TextureID history_tex = rg_ctx_get_texture(ctx, data->history_input);
+    TextureID output_tex = rg_ctx_get_texture(ctx, data->output);
+
+    if (scene_color_tex == INVALID_TEXTURE_ID || velocity_tex == INVALID_TEXTURE_ID ||
+        output_tex == INVALID_TEXTURE_ID) {
+        LOG_ERROR("Invalid texture resources for TAA pass");
+        return;
+    }
+
+    // TODO: Dispatch TAA compute shader with resources
+    // Shader will:
+    // 1. Reproject current frame using motion vectors from velocity buffer
+    // 2. Sample neighborhood around reprojected position for bounds clamping
+    // 3. Blend current frame with temporal history using configured blend factor
+    // 4. Apply variance clipping to prevent ghosting
+    // 5. Optional sharpening pass if enabled
+
+    LOG_DEBUG("TAA shader executed for frame %u", data->ctx->frame_index);
+}
+
 // Add TAA pass to render graph
 RGResourceHandle taa_add_to_graph(RenderGraph *rg,
                                   TAAContext *ctx,
@@ -100,17 +136,63 @@ RGResourceHandle taa_add_to_graph(RenderGraph *rg,
         return RG_INVALID_RESOURCE;
     }
 
-    // TAA shader implementation:
-    // 1. Reproject current frame using velocity buffer
-    // 2. Sample neighborhood around reprojected position
-    // 3. Blend current frame with temporal history
-    // 4. Apply anti-ghosting filter
-    // 5. Optional sharpening pass
+    // Create output texture for TAA result
+    RGTextureDesc output_desc = {
+        .width = 1920,  // TODO: Get from actual render resolution
+        .height = 1080,
+        .depth = 1,
+        .format = TEXTURE_FORMAT_RGBA16F,
+        .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
+        .name = "TAA_Output"
+    };
+    RGResourceHandle taa_output = rg_create_texture(rg, &output_desc);
 
-    // Placeholder: for now, just pass through the input
-    // Real implementation would add compute/pixel shader pass to render graph
+    // Create or reuse history buffer
+    if (ctx->history_buffer == 0) {
+        RGTextureDesc history_desc = {
+            .width = 1920,
+            .height = 1080,
+            .depth = 1,
+            .format = TEXTURE_FORMAT_RGBA16F,
+            .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
+            .name = "TAA_History"
+        };
+        ctx->history_buffer = rg_create_texture(rg, &history_desc);
+    }
+
+    // Prepare pass data
+    TAAPassData *pass_data = malloc(sizeof(TAAPassData));
+    if (!pass_data) {
+        LOG_ERROR("Failed to allocate TAA pass data");
+        return RG_INVALID_RESOURCE;
+    }
+
+    pass_data->ctx = ctx;
+    pass_data->scene_color = scene_color;
+    pass_data->velocity_buffer = velocity_buffer;
+    pass_data->history_input = ctx->history_buffer;
+    pass_data->output = taa_output;
+
+    // Add pass to render graph
+    RGPassDesc pass_desc = {
+        .name = "TAA",
+        .execute = taa_execute_pass,
+        .user_data = pass_data,
+        .queue_type = RG_QUEUE_COMPUTE_ASYNC,
+        .priority = 100
+    };
+    RGPassHandle pass = rg_add_pass(rg, &pass_desc);
+
+    // Declare resource dependencies
+    rg_pass_read(rg, pass, scene_color);
+    rg_pass_read(rg, pass, velocity_buffer);
+    rg_pass_read(rg, pass, ctx->history_buffer);
+    rg_pass_write(rg, pass, taa_output);
+
+    // Update history for next frame
+    ctx->history_buffer = taa_output;
     ctx->frame_index++;
 
     LOG_DEBUG("TAA pass added to graph (frame %u)", ctx->frame_index);
-    return scene_color; // TODO: Return actual TAA output
+    return taa_output;
 }

@@ -1,0 +1,43 @@
+#version 450
+
+// Bloom Threshold Extraction Compute Shader
+// Extracts bright pixels for bloom processing
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D hdrInput;
+layout(rgba16f) uniform image2D thresholdOutput;
+
+layout(push_constant) uniform BloomThresholdParams {
+    float threshold;
+    float softKnee;
+    float intensity;
+} params;
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    ivec2 size = imageSize(thresholdOutput);
+    
+    if (coord.x >= size.x || coord.y >= size.y) {
+        return;
+    }
+    
+    vec2 uv = (vec2(coord) + 0.5) / vec2(size);
+    vec3 color = texture(hdrInput, uv).rgb;
+    
+    // Calculate luminance
+    float brightness = max(color.r, max(color.g, color.b));
+    
+    // Soft threshold with knee curve
+    float knee = params.threshold * params.softKnee;
+    float soft = brightness - params.threshold + knee;
+    soft = clamp(soft, 0.0, 2.0 * knee);
+    soft = soft * soft / (4.0 * knee + 0.00001);
+    
+    float contribution = max(soft, brightness - params.threshold);
+    contribution /= max(brightness, 0.00001);
+    
+    vec3 bloomColor = color * contribution * params.intensity;
+    
+    imageStore(thresholdOutput, coord, vec4(bloomColor, 1.0));
+}

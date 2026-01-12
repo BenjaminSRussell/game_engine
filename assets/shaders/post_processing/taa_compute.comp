@@ -1,0 +1,105 @@
+#version 450
+
+// Temporal Anti-Aliasing (TAA) Compute Shader
+// High-performance GPU-based TAA implementation
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D currentFrame;
+layout(binding = 1) uniform sampler2D historyFrame;
+layout(binding = 2) uniform sampler2D velocityBuffer;
+layout(binding = 3) uniform sampler2D depthBuffer;
+
+layout(rgba16f) uniform image2D outputImage;
+
+layout(push_constant) uniform TAAParams {
+    vec2 jitterOffset;
+    float blendFactor;
+    float varianceClamp;
+    vec2 texelSize;
+    u32 frameIndex;
+} params;
+
+// Shared memory for neighborhood samples
+shared vec3 neighborhoodColors[16][16];
+shared vec3 neighborhoodMin[16][16];
+shared vec3 neighborhoodMax[16][16];
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    ivec2 size = imageSize(outputImage);
+    
+    if (coord.x >= size.x || coord.y >= size.y) {
+        return;
+    }
+    
+    vec2 uv = (vec2(coord) + 0.5) * params.texelSize;
+    
+    // Load current frame color
+    vec3 currentColor = texture(currentFrame, uv).rgb;
+    
+    // Store in shared memory for neighborhood access
+    neighborhoodColors[gl_LocalInvocationID.x][gl_LocalInvocationID.y] = currentColor;
+    
+    // Synchronize threads
+    barrier();
+    
+    // Calculate neighborhood min/max for variance clamping
+    vec3 minColor = vec3(1e10);
+    vec3 maxColor = vec3(-1e10);
+    
+    for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+            ivec2 sampleCoord = coord + ivec2(x, y);
+            if (sampleCoord.x >= 0 && sampleCoord.x < size.x &&
+                sampleCoord.y >= 0 && sampleCoord.y < size.y) {
+                vec3 sampleColor = neighborhoodColors[sampleCoord.x][sampleCoord.y];
+                minColor = min(minColor, sampleColor);
+                maxColor = max(maxColor, sampleColor);
+            }
+        }
+    }
+    
+    // Store min/max in shared memory
+    neighborhoodMin[gl_LocalInvocationID.x][gl_LocalInvocationID.y] = minColor;
+    neighborhoodMax[gl_LocalInvocationID.x][gl_LocalInvocationID.y] = maxColor;
+    
+    // Synchronize again
+    barrier();
+    
+    // Sample motion vector and reproject
+    vec2 velocity = texture(velocityBuffer, uv).rg;
+    vec2 historyUV = uv - velocity;
+    
+    vec3 result = currentColor;
+    
+    // Check if history UV is valid
+    if (historyUV.x >= 0.0 && historyUV.x <= 1.0 &&
+        historyUV.y >= 0.0 && historyUV.y <= 1.0) {
+        
+        // Sample history with bilinear filtering
+        vec3 historyColor = texture(historyFrame, historyUV).rgb;
+        
+        // Variance-based clamping to prevent ghosting
+        vec3 varianceClamp = vec3(params.varianceClamp);
+        vec3 clampedHistory = clamp(historyColor, minColor - varianceClamp, maxColor + varianceClamp);
+        
+        // Temporal blend with adaptive weight
+        float weight = params.blendFactor;
+        
+        // Reduce blend weight for high motion areas
+        float motionMagnitude = length(velocity);
+        weight *= 1.0 - clamp(motionMagnitude * 10.0, 0.0, 0.8);
+        
+        // Reduce blend weight for depth discontinuities
+        float currentDepth = texture(depthBuffer, uv).r;
+        float historyDepth = texture(depthBuffer, historyUV).r;
+        float depthDiff = abs(currentDepth - historyDepth);
+        weight *= 1.0 - clamp(depthDiff * 50.0, 0.0, 0.5);
+        
+        result = mix(currentColor, clampedHistory, weight);
+    }
+    
+    // Write result to output image
+    imageStore(outputImage, coord, vec4(result, 1.0));
+}

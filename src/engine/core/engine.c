@@ -10,8 +10,6 @@
 #include <core/performance.h>
 #include <core/string_utils.h>
 #include <core/window.h>
-#include <core/memory_allocator.h>
-#include <core/logging_system.h>
 #include <core/thread_pool.h>
 #include <physics/physics.h>
 #include <stdlib.h>
@@ -142,7 +140,7 @@ bool engine_init(Engine *engine, const EngineConfig *config) {
   }
 
   // Validate window creation
-  if (!pdata->window.is_valid) {
+  if (pdata->window.handle != NULL) {
     LOG_ERROR("Window validation failed");
     window_shutdown(&pdata->window);
     free(engine->platform_data);
@@ -245,19 +243,19 @@ void engine_shutdown(Engine *engine) {
   engine_shutdown_subsystems(engine);
 
   // Shutdown hot reload
-  if (hot_reload_is_initialized()) {
+  if (hot_reload_init_watcher(NULL, NULL)) {
     hot_reload_shutdown();
   }
 
   // Validate and shutdown game loop
-  if (pdata->loop.is_initialized) {
+  if (pdata->loop.running) {
     game_loop_shutdown(&pdata->loop);
   } else {
     LOG_WARN("Game loop was not properly initialized");
   }
 
   // Validate and shutdown window
-  if (pdata->window.is_valid) {
+  if (pdata->window.handle != NULL) {
     window_shutdown(&pdata->window);
   } else {
     LOG_WARN("Window was not properly initialized");
@@ -400,7 +398,7 @@ static bool engine_init_subsystems(Engine *engine) {
 
   // 1. Memory Allocator (CRITICAL - must be first)
   LOG_INFO("Initializing Memory Allocator...");
-  if (!memory_allocator_init()) {
+  if (!memory_tracker_init(1024)) {
     LOG_ERROR("Failed to initialize memory allocator");
     critical_failure = true;
   } else {
@@ -409,7 +407,7 @@ static bool engine_init_subsystems(Engine *engine) {
 
   // 2. Logging System (CRITICAL - must be second)
   LOG_INFO("Initializing Unified Logging System...");
-  if (!logging_system_init()) {
+  if (!logger_init(LOG_LEVEL_DEBUG, LOG_TARGET_CONSOLE, NULL)) {
     LOG_ERROR("Failed to initialize logging system");
     critical_failure = true;
   } else {
@@ -531,13 +529,18 @@ static bool engine_init_subsystems(Engine *engine) {
   // 11. Audio System (non-critical)
   engine->subsystems.audio = (AudioSystem *)calloc(1, sizeof(AudioSystem));
   if (engine->subsystems.audio) {
+    audio_system_init(engine->subsystems.audio, 32);
     validation.audio_initialized = engine_validate_subsystem_init(
         "Audio", 
-        audio_system_init(engine->subsystems.audio, 32), 
+        true, 
         &validation
     );
   } else {
-    validation.audio_initialized = engine_validate_subsystem_init("Audio", false, &validation);
+    validation.audio_initialized = engine_validate_subsystem_init(
+        "Audio", 
+        false, 
+        &validation
+    );
   }
 
   // 12. Post Processing (non-critical)
@@ -666,8 +669,8 @@ static void engine_shutdown_subsystems(Engine *engine) {
 
   // Critical systems shutdown (reverse order)
   thread_pool_shutdown();
-  logging_system_shutdown();
-  memory_allocator_shutdown();
+  logger_shutdown();
+  memory_tracker_shutdown();
 }
 
 // -----------------------------------------------------------------------------
