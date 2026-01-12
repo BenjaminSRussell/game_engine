@@ -26,7 +26,7 @@ struct resource_state_tracker {
     bool dirty;  // True if any state transitions are pending
 };
 
-// Create resource state tracker (IMPLEMENTED - was TODO: Initialize tracker if needed)
+// Create resource state tracker.
 static resource_state_tracker_t* state_tracker_create(void) {
     resource_state_tracker_t* tracker = (resource_state_tracker_t*)calloc(1, sizeof(resource_state_tracker_t));
     if (!tracker) return NULL;
@@ -133,7 +133,7 @@ command_buffer_t* command_buffer_allocate(command_pool_t* pool, command_buffer_l
     cmd->pool = pool;
     cmd->state = COMMAND_BUFFER_STATE_INITIAL;
     
-    // Initialize state tracker (IMPLEMENTED - was TODO)
+    // Initialize state tracker.
     cmd->state_tracker = state_tracker_create();
     // Note: state_tracker can be NULL if allocation fails, we continue gracefully
 
@@ -199,4 +199,3 @@ int command_buffer_end(command_buffer_t* cmd) {
 bool command_buffer_is_recording(command_buffer_t* cmd) {
     return cmd && cmd->state == COMMAND_BUFFER_STATE_RECORDING;
 }
-

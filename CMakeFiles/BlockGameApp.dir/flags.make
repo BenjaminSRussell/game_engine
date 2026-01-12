@@ -4,9 +4,9 @@
 # compile C with /usr/bin/cc
 C_DEFINES = -DMETAL_BUILD
 
-C_INCLUDES = -I"/Users/benjaminrussell/Desktop/Minecraft v2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include_private" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor/lua" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/Core/Bridges/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/instancing" -isystem /opt/homebrew/include -isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
+C_INCLUDES = -I"/Users/benjaminrussell/Desktop/Minecraft v2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include_private" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor/lua" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/Core/Bridges/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/instancing" -isystem /opt/homebrew/include
 
-C_FLAGSarm64 = -O3 -DNDEBUG -std=gnu11 -arch arm64
+C_FLAGSarm64 = -std=gnu11 -arch arm64
 
-C_FLAGS = -O3 -DNDEBUG -std=gnu11 -arch arm64
+C_FLAGS = -std=gnu11 -arch arm64
 

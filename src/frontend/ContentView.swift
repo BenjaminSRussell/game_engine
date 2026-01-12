@@ -93,6 +93,8 @@ struct ContentView: View {
                 BoatInteriorEditorView()
             case "audio_animation":
                 AudioAnimationPanel()
+            case "tasks":
+                TaskPanel()
             default:
                 EmptyEditorPlaceholder()
             }
@@ -223,6 +225,7 @@ private struct PremiumSidebar: View {
                     }
                     
                     SidebarSection(title: "PROJECT") {
+                        SidebarItem(icon: "list.bullet.rectangle.portrait.fill", title: "Project Tasks", value: "tasks", selectedTab: $selectedTab)
                         SidebarItem(icon: "folder.fill", title: "Files", value: "project", selectedTab: $selectedTab)
                         SidebarItem(icon: "square.grid.2x2.fill", title: "Asset Library", value: "assets", selectedTab: $selectedTab)
                         SidebarItem(icon: "hammer.fill", title: "Build Settings", value: "build", selectedTab: $selectedTab)

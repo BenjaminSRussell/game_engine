@@ -43,7 +43,7 @@
 #include "include/common.h"
 #include "math/vec3.h"
 #include "include/ecs/ecs.h"
-#include <npc/npc_types.h>
+#include <ai/npc_types.h>
 
 // Behavior flags for NPCs
 #define NPC_FLAG_CAN_BREED (1 << 0)

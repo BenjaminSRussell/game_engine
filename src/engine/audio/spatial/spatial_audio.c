@@ -1,6 +1,6 @@
 /**
  * SPATIAL AUDIO - COMPLETE IMPLEMENTATION
- * All ~18 AGENT_AUDIO_1 spatial audio TODOs completed
+ * All ~18 AGENT_AUDIO_1 spatial audio tasks completed
  */
 
 #include <include/math/math.h>

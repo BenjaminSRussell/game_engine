@@ -1,290 +1,168 @@
 /*
  * ui_rect.c
- * Rectangle rendering
- *
- * Part of the Ui Rendering subsystem
- * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement UI batching
- * TODO: Add SDF text rendering
- * TODO: Implement UI atlas
- * TODO: Add UI masking
- * TODO: Implement UI effects
- * TODO: Add 9-patch sprites
- * TODO: Implement UI gradients
- * TODO: Add UI animations
- * TODO: Implement UI clipping
- * TODO: Add UI render targets
- * TODO: Implement ui rect initialization
- * TODO: Add ui rect cleanup/shutdown
- * TODO: Implement ui rect validation
- * TODO: Add ui rect error handling
- * TODO: Implement ui rect serialization
- * TODO: Add ui rect debug output
- * TODO: Implement ui rect unit tests
- * TODO: Add ui rect performance counters
- * TODO: Implement ui rect hot-reload
- * TODO: Add ui rect thread safety
- * TODO: Implement ui rect memory pooling
- * TODO: Add ui rect caching layer
- * TODO: Implement ui rect async operations
- * TODO: Add ui rect GPU integration
- * TODO: Implement ui rect SIMD optimization
- * TODO: Add ui rect batch processing
- * TODO: Implement ui rect streaming support
- * TODO: Add ui rect LOD support
- * TODO: Implement ui rect culling integration
- * TODO: Add ui rect render graph node
+ * Rectangle rendering implementation
  */
 
 #include "editor/ui/widgets/ui_rect.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include <core/logger.h>
+#include <core/memory.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* ============================================================================
  * CONSTANTS
- * ============================================================================ */
+ * ============================================================================
+ */
 
 #define UI_RENDERING_UI_RECT_MAX_COUNT 4096
 #define UI_RENDERING_UI_RECT_DEFAULT_CAPACITY 256
-#define UI_RENDERING_UI_RECT_ALIGNMENT 16
 
 /* ============================================================================
  * TYPES
- * ============================================================================ */
+ * ============================================================================
+ */
 
 typedef struct ui_rendering_ui_rect_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
+  uint32_t id;
+  uint32_t flags;
+  Vec2 position;
+  Vec2 size;
+  Vec4 color;
+  bool initialized;
+  bool dirty;
+  uint64_t frame_updated;
 } ui_rendering_ui_rect_internal_t;
 
 typedef struct ui_rendering_ui_rect_context {
-    ui_rendering_ui_rect_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
+  ui_rendering_ui_rect_internal_t *items;
+  uint32_t count;
+  uint32_t capacity;
+  bool initialized;
 } ui_rendering_ui_rect_context_t;
 
 static ui_rendering_ui_rect_context_t g_ui_rect_ctx = {0};
 
 /* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool ui_rendering_ui_rect_validate(const ui_rendering_ui_rect_internal_t* item) {
-    // TODO: Implement UI batching
-    // TODO: Add SDF text rendering
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void ui_rendering_ui_rect_cleanup_internal(ui_rendering_ui_rect_internal_t* item) {
-    // TODO: Implement UI atlas
-    // TODO: Add UI masking
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
-}
-
-/* ============================================================================
  * PUBLIC API
- * ============================================================================ */
+ * ============================================================================
+ */
 
 int ui_rendering_ui_rect_init(void) {
-    // TODO: Implement UI effects
-    // TODO: Add 9-patch sprites
-    // TODO: Implement UI gradients
-    // TODO: Add UI animations
-
-    if (g_ui_rect_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_ui_rect_ctx.capacity = UI_RENDERING_UI_RECT_DEFAULT_CAPACITY;
-    g_ui_rect_ctx.items = calloc(g_ui_rect_ctx.capacity, sizeof(ui_rendering_ui_rect_internal_t));
-    if (!g_ui_rect_ctx.items) {
-        return -1;
-    }
-
-    g_ui_rect_ctx.count = 0;
-    g_ui_rect_ctx.initialized = true;
-
+  if (g_ui_rect_ctx.initialized) {
     return 0;
+  }
+
+  g_ui_rect_ctx.capacity = UI_RENDERING_UI_RECT_DEFAULT_CAPACITY;
+  g_ui_rect_ctx.items = (ui_rendering_ui_rect_internal_t *)calloc(
+      g_ui_rect_ctx.capacity, sizeof(ui_rendering_ui_rect_internal_t));
+  if (!g_ui_rect_ctx.items) {
+    LOG_ERROR("Failed to allocate UI Rect items");
+    return -1;
+  }
+
+  g_ui_rect_ctx.count = 0;
+  g_ui_rect_ctx.initialized = true;
+  LOG_INFO("UI Rect system initialized");
+
+  return 0;
 }
 
 void ui_rendering_ui_rect_shutdown(void) {
-    // TODO: Implement UI clipping
-    // TODO: Add UI render targets
-    // TODO: Implement ui rect initialization
-    // TODO: Add ui rect cleanup/shutdown
+  if (!g_ui_rect_ctx.initialized) {
+    return;
+  }
 
-    if (!g_ui_rect_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_ui_rect_ctx.count; i++) {
-        ui_rendering_ui_rect_cleanup_internal(&g_ui_rect_ctx.items[i]);
-    }
-
+  if (g_ui_rect_ctx.items) {
     free(g_ui_rect_ctx.items);
     g_ui_rect_ctx.items = NULL;
-    g_ui_rect_ctx.count = 0;
-    g_ui_rect_ctx.capacity = 0;
-    g_ui_rect_ctx.initialized = false;
+  }
+  g_ui_rect_ctx.count = 0;
+  g_ui_rect_ctx.capacity = 0;
+  g_ui_rect_ctx.initialized = false;
 }
 
-int ui_rendering_ui_rect_create(ui_rendering_ui_rect_handle_t* out_handle, const ui_rendering_ui_rect_desc_t* desc) {
-    // TODO: Implement ui rect validation
-    // TODO: Add ui rect error handling
-    // TODO: Implement ui rect serialization
-    // TODO: Add ui rect debug output
+int ui_rendering_ui_rect_create(ui_rendering_ui_rect_handle_t *out_handle,
+                                const ui_rendering_ui_rect_desc_t *desc) {
+  if (!out_handle || !desc) {
+    return -1;
+  }
 
-    if (!out_handle || !desc) {
-        return -1;
+  if (!g_ui_rect_ctx.initialized) {
+    return -2;
+  }
+
+  if (g_ui_rect_ctx.count >= g_ui_rect_ctx.capacity) {
+    // Expand
+    uint32_t new_capacity = g_ui_rect_ctx.capacity * 2;
+    ui_rendering_ui_rect_internal_t *new_items =
+        (ui_rendering_ui_rect_internal_t *)realloc(
+            g_ui_rect_ctx.items,
+            new_capacity * sizeof(ui_rendering_ui_rect_internal_t));
+    if (!new_items) {
+      LOG_ERROR("Failed to resize UI Rect array");
+      return -3;
     }
+    g_ui_rect_ctx.items = new_items;
+    g_ui_rect_ctx.capacity = new_capacity;
+  }
 
-    if (!g_ui_rect_ctx.initialized) {
-        return -2;
-    }
+  uint32_t index = g_ui_rect_ctx.count++;
+  ui_rendering_ui_rect_internal_t *item = &g_ui_rect_ctx.items[index];
 
-    if (g_ui_rect_ctx.count >= g_ui_rect_ctx.capacity) {
-        // TODO: Implement ui rect unit tests
-        return -3;
-    }
+  item->id = index;
+  item->flags = desc->flags;
+  item->position = (Vec2){desc->x, desc->y};
+  item->size = (Vec2){desc->width, desc->height};
+  item->color =
+      (Vec4){desc->color[0], desc->color[1], desc->color[2], desc->color[3]};
+  item->initialized = true;
+  item->dirty = true;
+  item->frame_updated = 0;
 
-    uint32_t index = g_ui_rect_ctx.count++;
-    ui_rendering_ui_rect_internal_t* item = &g_ui_rect_ctx.items[index];
-
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
+  out_handle->id = index;
+  return 0;
 }
 
 void ui_rendering_ui_rect_destroy(ui_rendering_ui_rect_handle_t handle) {
-    // TODO: Add ui rect performance counters
-    // TODO: Implement ui rect hot-reload
-
-    if (handle.id >= g_ui_rect_ctx.count) {
-        return;
-    }
-
-    ui_rendering_ui_rect_cleanup_internal(&g_ui_rect_ctx.items[handle.id]);
+  if (handle.id >= g_ui_rect_ctx.count) {
+    return;
+  }
+  // Mark as invalid/free - simplified for now, usually we swap-remove
+  g_ui_rect_ctx.items[handle.id].initialized = false;
 }
 
-int ui_rendering_ui_rect_update(ui_rendering_ui_rect_handle_t handle, const void* data, size_t size) {
-    // TODO: Add ui rect thread safety
-    // TODO: Implement ui rect memory pooling
-    // TODO: Add ui rect caching layer
-    // TODO: Implement ui rect async operations
+int ui_rendering_ui_rect_update(ui_rendering_ui_rect_handle_t handle,
+                                const ui_rendering_ui_rect_desc_t *desc) {
+  if (handle.id >= g_ui_rect_ctx.count)
+    return -1;
 
-    if (handle.id >= g_ui_rect_ctx.count) {
-        return -1;
-    }
+  ui_rendering_ui_rect_internal_t *item = &g_ui_rect_ctx.items[handle.id];
+  if (!item->initialized)
+    return -2;
 
-    ui_rendering_ui_rect_internal_t* item = &g_ui_rect_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
+  item->position = (Vec2){desc->x, desc->y};
+  item->size = (Vec2){desc->width, desc->height};
+  item->color =
+      (Vec4){desc->color[0], desc->color[1], desc->color[2], desc->color[3]};
+  item->dirty = true;
 
-    // TODO: Add ui rect GPU integration
-    // TODO: Implement ui rect SIMD optimization
-
-    item->dirty = true;
-    return 0;
+  return 0;
 }
 
-bool ui_rendering_ui_rect_is_valid(ui_rendering_ui_rect_handle_t handle) {
-    // TODO: Add ui rect batch processing
-    if (handle.id >= g_ui_rect_ctx.count) {
-        return false;
-    }
-    return g_ui_rect_ctx.items[handle.id].initialized;
+// Temporary render function to expose to Canvas
+// In a real implementation this would generate vertex data
+void ui_rendering_ui_rect_get_render_data(ui_rendering_ui_rect_handle_t handle,
+                                          Vec2 *pos, Vec2 *size, Vec4 *color) {
+  if (handle.id >= g_ui_rect_ctx.count)
+    return;
+  ui_rendering_ui_rect_internal_t *item = &g_ui_rect_ctx.items[handle.id];
+
+  if (pos)
+    *pos = item->position;
+  if (size)
+    *size = item->size;
+  if (color)
+    *color = item->color;
 }
 
-int ui_rendering_ui_rect_get_info(ui_rendering_ui_rect_handle_t handle, ui_rendering_ui_rect_info_t* out_info) {
-    // TODO: Implement ui rect streaming support
-    // TODO: Add ui rect LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_ui_rect_ctx.count) {
-        return -2;
-    }
-
-    const ui_rendering_ui_rect_internal_t* item = &g_ui_rect_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void ui_rendering_ui_rect_mark_dirty(ui_rendering_ui_rect_handle_t handle) {
-    // TODO: Implement ui rect culling integration
-    if (handle.id < g_ui_rect_ctx.count) {
-        g_ui_rect_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int ui_rendering_ui_rect_process_pending(void) {
-    // TODO: Add ui rect render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_ui_rect_ctx.count; i++) {
-        ui_rendering_ui_rect_internal_t* item = &g_ui_rect_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
-}
-
-uint32_t ui_rendering_ui_rect_get_count(void) {
-    return g_ui_rect_ctx.count;
-}
-
-size_t ui_rendering_ui_rect_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_ui_rect_ctx);
-    total += g_ui_rect_ctx.capacity * sizeof(ui_rendering_ui_rect_internal_t);
-
-    for (uint32_t i = 0; i < g_ui_rect_ctx.count; i++) {
-        total += g_ui_rect_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void ui_rendering_ui_rect_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of ui_rect.c */
+uint32_t ui_rendering_ui_rect_get_count(void) { return g_ui_rect_ctx.count; }

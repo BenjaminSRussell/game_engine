@@ -49,4 +49,7 @@ bool packet_read_bytes(Packet *packet, void *buffer, uint16_t size);
 // Header access
 PacketHeader packet_get_header(const Packet *packet);
 
+// Finalize packet for sending (updates length and data size)
+uint16_t packet_finalize(Packet *packet);
+
 #endif // PACKET_H

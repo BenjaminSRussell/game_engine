@@ -15,7 +15,7 @@
 - [ ] Consolidate physics_core.c, physics_system.c into physics_solver_system.c
 - [ ] Merge xpbd_solver.c and sequential_impulse.c into unified solver
 - [ ] Keep block_physics.c as-is for voxel physics
-- [ ] Remove all disabled physics implementations
+- [ ] Re-enable and merge all physics implementations (no disabled variants)
 - [ ] Test block physics compilation and functionality
 - [ ] Test rigid body dynamics and collision detection
 - [ ] Test character physics and movement
@@ -68,7 +68,7 @@
 **Blocks**: Clean builds
 **Estimated**: 1-2 days
 
-- [ ] Remove all .disabled file references from CMake
+- [ ] Add all previously .disabled sources to CMake (no disabled files)
 - [ ] Add assertions for missing implementations
 - [ ] Create build output analysis tool
 - [ ] Document all excluded subsystems
@@ -130,6 +130,7 @@
 **Estimated**: 3-5 days
 
 - [ ] Identify editor compilation issues
+- [ ] Fix Swift Frontend compilation errors (Profiler, EngineBridge, LightingEditor)
 - [ ] Re-enable asset browser
 - [ ] Re-enable property inspector
 - [ ] Re-enable debug visualization tools
@@ -237,7 +238,7 @@
 - [ ] Complete FABRIK IK solver (currently incomplete in 2 locations)
 - [ ] Consolidate duplicate IK implementations
 - [ ] Test IK solver accuracy and stability
-- [ ] Complete procedural animation system (currently disabled)
+- [ ] Complete and enable procedural animation system
 - [ ] Complete foot placement system
 - [ ] Test complete animation system
 
@@ -438,7 +439,7 @@
 **Blocks**: Codebase cleanliness
 **Estimated**: 2-3 days
 
-- [ ] Delete 46+ .disabled files (archive if needed)
+- [ ] Reintegrate 46+ .disabled files into the build (rename/merge as needed)
 - [ ] Delete 230+ prototype implementations
 - [ ] Delete 23 .bak4 backup files
 - [ ] Delete _alt variant implementations
@@ -578,7 +579,7 @@ Phase 1 (Stabilization)
 - [ ] CI/CD pipeline green
 - [ ] Performance targets met
 - [ ] No duplicate implementations
-- [ ] All .disabled files removed
+- [ ] All formerly .disabled files integrated and building
 - [ ] All TODO comments resolved
 - [ ] Documentation complete
 - [ ] Release ready

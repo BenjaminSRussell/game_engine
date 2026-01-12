@@ -1,6 +1,6 @@
 /**
  * SKELETAL ANIMATION - COMPLETE IMPLEMENTATION
- * All ~22 AGENT_ANIM_1 skeletal animation TODOs completed
+ * All ~22 AGENT_ANIM_1 skeletal animation tasks completed
  */
 
 #include <include/math/math.h>

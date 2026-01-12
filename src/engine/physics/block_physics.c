@@ -8,6 +8,72 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Stub implementations for missing functions
+static bool block_has_support(ChunkManager *chunks, i32 x, i32 y, i32 z, BlockID block_type) {
+  (void)chunks; (void)x; (void)y; (void)z; (void)block_type;
+  return true; // Stub
+}
+
+static bool block_registry_can_break(BlockRegistry *registry, BlockID block_type) {
+  (void)registry; (void)block_type;
+  return true; // Stub
+}
+
+static bool block_has_required_tool(ChunkManager *chunks, i32 x, i32 y, i32 z, BlockID block_type) {
+  (void)chunks; (void)x; (void)y; (void)z; (void)block_type;
+  return true; // Stub
+}
+
+static void block_physics_trigger_neighbor_updates(BlockPhysicsSystem *sys, i32 x, i32 y, i32 z) {
+  (void)sys; (void)x; (void)y; (void)z;
+  // Stub
+}
+
+static void redstone_on_block_place(PhysicsWorld *world, i32 x, i32 y, i32 z, BlockID block_type) {
+  (void)world; (void)x; (void)y; (void)z; (void)block_type;
+  // Stub
+}
+
+static void redstone_on_block_break(PhysicsWorld *world, i32 x, i32 y, i32 z, BlockID block_type) {
+  (void)world; (void)x; (void)y; (void)z; (void)block_type;
+  // Stub
+}
+
+static void block_drop_items(ChunkManager *chunks, i32 x, i32 y, i32 z, BlockID block_type) {
+  (void)chunks; (void)x; (void)y; (void)z; (void)block_type;
+  // Stub
+}
+
+static Vec3 block_registry_get_block_size(BlockID block_type) {
+  (void)block_type;
+  return (Vec3){1.0f, 1.0f, 1.0f}; // Stub
+}
+
+static void block_physics_update_falling_blocks(BlockPhysicsSystem *sys, f32 delta_time) {
+  (void)sys; (void)delta_time;
+  // Stub
+}
+
+static void block_physics_update_liquid_physics(BlockPhysicsSystem *sys, f32 delta_time) {
+  (void)sys; (void)delta_time;
+  // Stub
+}
+
+static void block_physics_update_redstone_circuits(BlockPhysicsSystem *sys, f32 delta_time) {
+  (void)sys; (void)delta_time;
+  // Stub
+}
+
+static void block_physics_update_block_destruction(BlockPhysicsSystem *sys, f32 delta_time) {
+  (void)sys; (void)delta_time;
+  // Stub
+}
+
+static bool chunk_is_position_valid(ChunkManager *chunks, i32 x, i32 y, i32 z) {
+  (void)chunks; (void)x; (void)y; (void)z;
+  return true; // Stub
+}
+
 void block_physics_init(BlockPhysicsSystem *sys, PhysicsWorld *phys,
                         ChunkManager *chunks, BlockRegistry *registry) {
   if (!sys || !phys || !chunks || !registry) {
@@ -65,7 +131,7 @@ BlockRaycast block_raycast(BlockPhysicsSystem *sys, Vec3 origin, Vec3 direction,
   }
   
   // Normalize direction
-  f32 length = vec3_length(&direction);
+  f32 length = vec3_length(direction);
   if (length < 0.001f) {
     return result;
   }

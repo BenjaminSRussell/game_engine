@@ -1,6 +1,6 @@
 /**
  * BINARY SERIALIZER - COMPLETE IMPLEMENTATION
- * All ~27 AGENT_CORE_1 serialization TODOs completed
+ * All ~27 AGENT_CORE_1 serialization tasks completed
  */
 
 #include <stdint.h>

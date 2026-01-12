@@ -41,7 +41,7 @@ bool hybrid_init(VulkanRenderer* renderer, HybridConfig config);
 
 // Render a frame using hybrid pipeline
 void hybrid_render_frame(VkCommandBuffer command_buffer, VkAccelerationStructureKHR tlas, 
-                         const mat4* view_matrix, const mat4* proj_matrix, const mat4* prev_view_matrix);
+                         const Mat4* view_matrix, const Mat4* proj_matrix, const Mat4* prev_view_matrix);
 
 // Get G-buffer views for raytracing systems
 void hybrid_get_gbuffer_views(VkImageView* albedo, VkImageView* normal, VkImageView* roughness, 

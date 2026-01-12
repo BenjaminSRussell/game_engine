@@ -1,7 +1,7 @@
+// swift-tools-version: 5.9
 # SwiftUI Editor - Xcode Project Configuration
 # Package.swift for editor dependencies
 
-// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(

@@ -1,290 +1,112 @@
 /*
  * ui_canvas.c
- * UI canvas system
- *
- * Part of the Ui Rendering subsystem
- * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement UI batching
- * TODO: Add SDF text rendering
- * TODO: Implement UI atlas
- * TODO: Add UI masking
- * TODO: Implement UI effects
- * TODO: Add 9-patch sprites
- * TODO: Implement UI gradients
- * TODO: Add UI animations
- * TODO: Implement UI clipping
- * TODO: Add UI render targets
- * TODO: Implement ui canvas initialization
- * TODO: Add ui canvas cleanup/shutdown
- * TODO: Implement ui canvas validation
- * TODO: Add ui canvas error handling
- * TODO: Implement ui canvas serialization
- * TODO: Add ui canvas debug output
- * TODO: Implement ui canvas unit tests
- * TODO: Add ui canvas performance counters
- * TODO: Implement ui canvas hot-reload
- * TODO: Add ui canvas thread safety
- * TODO: Implement ui canvas memory pooling
- * TODO: Add ui canvas caching layer
- * TODO: Implement ui canvas async operations
- * TODO: Add ui canvas GPU integration
- * TODO: Implement ui canvas SIMD optimization
- * TODO: Add ui canvas batch processing
- * TODO: Implement ui canvas streaming support
- * TODO: Add ui canvas LOD support
- * TODO: Implement ui canvas culling integration
- * TODO: Add ui canvas render graph node
+ * UI Canvas System
+ * Manages UI elements and batch rendering
  */
 
 #include "editor/ui/canvas/ui_canvas.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <string.h>
+#include "editor/ui/widgets/ui_rect.h"
+#include <core/logger.h>
 #include <stdlib.h>
 
-/* ============================================================================
- * CONSTANTS
- * ============================================================================ */
-
-#define UI_RENDERING_UI_CANVAS_MAX_COUNT 4096
-#define UI_RENDERING_UI_CANVAS_DEFAULT_CAPACITY 256
-#define UI_RENDERING_UI_CANVAS_ALIGNMENT 16
-
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-typedef struct ui_rendering_ui_canvas_internal {
-    uint32_t id;
-    uint32_t flags;
-    void* data;
-    size_t data_size;
-    bool initialized;
-    bool dirty;
-    uint64_t frame_updated;
-} ui_rendering_ui_canvas_internal_t;
-
 typedef struct ui_rendering_ui_canvas_context {
-    ui_rendering_ui_canvas_internal_t* items;
-    uint32_t count;
-    uint32_t capacity;
-    void* allocator;
-    bool initialized;
+  // List of active rects managed by this canvas
+  // In a full implementation, we'd have a hierarchical tree or graph
+  ui_rendering_ui_rect_handle_t *rect_handles;
+  uint32_t rect_capacity;
+  uint32_t rect_count;
+
+  bool initialized;
 } ui_rendering_ui_canvas_context_t;
 
-static ui_rendering_ui_canvas_context_t g_ui_canvas_ctx = {0};
-
-/* ============================================================================
- * PRIVATE FUNCTIONS
- * ============================================================================ */
-
-static bool ui_rendering_ui_canvas_validate(const ui_rendering_ui_canvas_internal_t* item) {
-    // TODO: Implement UI batching
-    // TODO: Add SDF text rendering
-    if (!item) return false;
-    if (!item->initialized) return false;
-    return true;
-}
-
-static void ui_rendering_ui_canvas_cleanup_internal(ui_rendering_ui_canvas_internal_t* item) {
-    // TODO: Implement UI atlas
-    // TODO: Add UI masking
-    if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
-    item->initialized = false;
-}
-
-/* ============================================================================
- * PUBLIC API
- * ============================================================================ */
+static ui_rendering_ui_canvas_context_t g_ui_canvas = {0};
 
 int ui_rendering_ui_canvas_init(void) {
-    // TODO: Implement UI effects
-    // TODO: Add 9-patch sprites
-    // TODO: Implement UI gradients
-    // TODO: Add UI animations
-
-    if (g_ui_canvas_ctx.initialized) {
-        return 0; // Already initialized
-    }
-
-    g_ui_canvas_ctx.capacity = UI_RENDERING_UI_CANVAS_DEFAULT_CAPACITY;
-    g_ui_canvas_ctx.items = calloc(g_ui_canvas_ctx.capacity, sizeof(ui_rendering_ui_canvas_internal_t));
-    if (!g_ui_canvas_ctx.items) {
-        return -1;
-    }
-
-    g_ui_canvas_ctx.count = 0;
-    g_ui_canvas_ctx.initialized = true;
-
+  if (g_ui_canvas.initialized)
     return 0;
+
+  if (ui_rendering_ui_rect_init() != 0) {
+    LOG_ERROR("Failed to init UI Rect system dependency");
+    return -1;
+  }
+
+  g_ui_canvas.rect_capacity = 1024;
+  g_ui_canvas.rect_handles = (ui_rendering_ui_rect_handle_t *)calloc(
+      g_ui_canvas.rect_capacity, sizeof(ui_rendering_ui_rect_handle_t));
+  g_ui_canvas.rect_count = 0;
+  g_ui_canvas.initialized = true;
+
+  LOG_INFO("UI Canvas initialized");
+  return 0;
 }
 
 void ui_rendering_ui_canvas_shutdown(void) {
-    // TODO: Implement UI clipping
-    // TODO: Add UI render targets
-    // TODO: Implement ui canvas initialization
-    // TODO: Add ui canvas cleanup/shutdown
-
-    if (!g_ui_canvas_ctx.initialized) {
-        return;
-    }
-
-    for (uint32_t i = 0; i < g_ui_canvas_ctx.count; i++) {
-        ui_rendering_ui_canvas_cleanup_internal(&g_ui_canvas_ctx.items[i]);
-    }
-
-    free(g_ui_canvas_ctx.items);
-    g_ui_canvas_ctx.items = NULL;
-    g_ui_canvas_ctx.count = 0;
-    g_ui_canvas_ctx.capacity = 0;
-    g_ui_canvas_ctx.initialized = false;
+  if (g_ui_canvas.rect_handles) {
+    free(g_ui_canvas.rect_handles);
+    g_ui_canvas.rect_handles = NULL;
+  }
+  ui_rendering_ui_rect_shutdown();
+  g_ui_canvas.initialized = false;
 }
 
-int ui_rendering_ui_canvas_create(ui_rendering_ui_canvas_handle_t* out_handle, const ui_rendering_ui_canvas_desc_t* desc) {
-    // TODO: Implement ui canvas validation
-    // TODO: Add ui canvas error handling
-    // TODO: Implement ui canvas serialization
-    // TODO: Add ui canvas debug output
+// Draw a filled rectangle
+void ui_canvas_draw_rect(float x, float y, float w, float h, float r, float g,
+                         float b, float a) {
+  if (!g_ui_canvas.initialized)
+    return;
 
-    if (!out_handle || !desc) {
-        return -1;
-    }
+  if (g_ui_canvas.rect_count >= g_ui_canvas.rect_capacity) {
+    // Simple cap for now
+    return;
+  }
 
-    if (!g_ui_canvas_ctx.initialized) {
-        return -2;
-    }
+  // Allocate a new rect from the pool for this frame (immediate mode style)
+  // For retained mode, we would track IDs. Here we just create new ones for
+  // simplicity of the prompt task But since `ui_rect` is retained, we'll try to
+  // reuse or just create persistent ones for the editor. NOTE: For a "Dragon
+  // Drop" editor, retained mode is better. Let's assume this function creates a
+  // NEW persistent rect for now and returns a handle implicitly managed. Wait,
+  // the signature I gave doesn't return a handle. This suggests immediate mode
+  // usage.
 
-    if (g_ui_canvas_ctx.count >= g_ui_canvas_ctx.capacity) {
-        // TODO: Implement ui canvas unit tests
-        return -3;
-    }
+  // We'll implement a simple immediate-mode-over-retained-layer adapter here
+  // But wait, the previous `ui_rect.c` was purely retained.
+  // Let's create a temporary rect handle, update it, and store it.
 
-    uint32_t index = g_ui_canvas_ctx.count++;
-    ui_rendering_ui_canvas_internal_t* item = &g_ui_canvas_ctx.items[index];
+  ui_rendering_ui_rect_desc_t desc = {.x = x,
+                                      .y = y,
+                                      .width = w,
+                                      .height = h,
+                                      .color = {r, g, b, a},
+                                      .flags = 0};
 
-    item->id = index;
-    item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
-    item->initialized = true;
-    item->dirty = true;
-    item->frame_updated = 0;
-
-    out_handle->id = index;
-    return 0;
+  ui_rendering_ui_rect_handle_t handle;
+  if (ui_rendering_ui_rect_create(&handle, &desc) == 0) {
+    g_ui_canvas.rect_handles[g_ui_canvas.rect_count++] = handle;
+  }
 }
 
-void ui_rendering_ui_canvas_destroy(ui_rendering_ui_canvas_handle_t handle) {
-    // TODO: Add ui canvas performance counters
-    // TODO: Implement ui canvas hot-reload
-
-    if (handle.id >= g_ui_canvas_ctx.count) {
-        return;
-    }
-
-    ui_rendering_ui_canvas_cleanup_internal(&g_ui_canvas_ctx.items[handle.id]);
+// Clear the canvas (reset for next frame)
+void ui_canvas_begin(void) {
+  // Reset counters for immediate mode style usage
+  // We destroy all previous rects to simulate immediate mode clear
+  for (uint32_t i = 0; i < g_ui_canvas.rect_count; i++) {
+    ui_rendering_ui_rect_destroy(g_ui_canvas.rect_handles[i]);
+  }
+  g_ui_canvas.rect_count = 0;
 }
 
-int ui_rendering_ui_canvas_update(ui_rendering_ui_canvas_handle_t handle, const void* data, size_t size) {
-    // TODO: Add ui canvas thread safety
-    // TODO: Implement ui canvas memory pooling
-    // TODO: Add ui canvas caching layer
-    // TODO: Implement ui canvas async operations
+void ui_canvas_end(void) {
+  // Submit draw calls to renderer
+  // This would iterate over `rect_handles`, get render data, and submit to
+  // `voxel_renderer` or similar. Since `voxel_renderer` has
+  // `voxel_renderer_render_sprite` (or similar UI quad support from my plan),
+  // we connect here.
 
-    if (handle.id >= g_ui_canvas_ctx.count) {
-        return -1;
-    }
-
-    ui_rendering_ui_canvas_internal_t* item = &g_ui_canvas_ctx.items[handle.id];
-    if (!item->initialized) {
-        return -2;
-    }
-
-    // TODO: Add ui canvas GPU integration
-    // TODO: Implement ui canvas SIMD optimization
-
-    item->dirty = true;
-    return 0;
-}
-
-bool ui_rendering_ui_canvas_is_valid(ui_rendering_ui_canvas_handle_t handle) {
-    // TODO: Add ui canvas batch processing
-    if (handle.id >= g_ui_canvas_ctx.count) {
-        return false;
-    }
-    return g_ui_canvas_ctx.items[handle.id].initialized;
-}
-
-int ui_rendering_ui_canvas_get_info(ui_rendering_ui_canvas_handle_t handle, ui_rendering_ui_canvas_info_t* out_info) {
-    // TODO: Implement ui canvas streaming support
-    // TODO: Add ui canvas LOD support
-
-    if (!out_info) {
-        return -1;
-    }
-
-    if (handle.id >= g_ui_canvas_ctx.count) {
-        return -2;
-    }
-
-    const ui_rendering_ui_canvas_internal_t* item = &g_ui_canvas_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-
-    return 0;
-}
-
-void ui_rendering_ui_canvas_mark_dirty(ui_rendering_ui_canvas_handle_t handle) {
-    // TODO: Implement ui canvas culling integration
-    if (handle.id < g_ui_canvas_ctx.count) {
-        g_ui_canvas_ctx.items[handle.id].dirty = true;
-    }
-}
-
-int ui_rendering_ui_canvas_process_pending(void) {
-    // TODO: Add ui canvas render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
-    for (uint32_t i = 0; i < g_ui_canvas_ctx.count; i++) {
-        ui_rendering_ui_canvas_internal_t* item = &g_ui_canvas_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
-        }
-    }
-
-    return processed;
+  // For now, we just leave the data in `ui_rect` system ready for a render pass
+  // to read.
 }
 
 uint32_t ui_rendering_ui_canvas_get_count(void) {
-    return g_ui_canvas_ctx.count;
+  return g_ui_canvas.rect_count;
 }
-
-size_t ui_rendering_ui_canvas_get_memory_usage(void) {
-    // TODO: Implement memory tracking
-    size_t total = sizeof(g_ui_canvas_ctx);
-    total += g_ui_canvas_ctx.capacity * sizeof(ui_rendering_ui_canvas_internal_t);
-
-    for (uint32_t i = 0; i < g_ui_canvas_ctx.count; i++) {
-        total += g_ui_canvas_ctx.items[i].data_size;
-    }
-
-    return total;
-}
-
-void ui_rendering_ui_canvas_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
-}
-
-/* End of ui_canvas.c */

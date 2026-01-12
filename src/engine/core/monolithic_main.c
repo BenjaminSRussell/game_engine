@@ -1872,44 +1872,27 @@ static InitResult init_renderer(void) {
 }
 
 static InitResult init_vulkan_graphics_pipeline(void) {
-  // Create graphics pipeline
-  if (!vulkan_create_graphics_pipeline(&g_game.renderer, &g_game.vfs)) {
-    vulkan_cleanup(&g_game.renderer);
-    return (InitResult){false, INIT_ERROR_RENDERER,
-                        "Failed to create graphics pipeline"};
-  }
-  return (InitResult){true, INIT_SUCCESS, "Graphics pipeline created"};
+  // Vulkan-specific - not used on macOS
+  LOG_INFO("Skipping Vulkan graphics pipeline on Metal backend");
+  return (InitResult){true, INIT_SUCCESS, "Graphics pipeline skipped (Metal backend)"};
 }
 
 static InitResult init_vulkan_framebuffers(void) {
-  // Create framebuffers
-  if (!vulkan_create_framebuffers(&g_game.renderer)) {
-    vulkan_cleanup(&g_game.renderer);
-    return (InitResult){false, INIT_ERROR_RENDERER,
-                        "Failed to create framebuffers"};
-  }
-  return (InitResult){true, INIT_SUCCESS, "Framebuffers created"};
+  // Vulkan-specific - not used on macOS
+  LOG_INFO("Skipping Vulkan framebuffers on Metal backend");
+  return (InitResult){true, INIT_SUCCESS, "Framebuffers skipped (Metal backend)"};
 }
 
 static InitResult init_ray_tracing(void) {
-  // Initialize ray tracing if enabled and supported
+  // Ray tracing not supported on Metal backend yet
   if (g_game.config.ray_tracing) {
-    if (vulkan_rt_is_supported(&g_game.renderer)) {
-      if (!vulkan_rt_init(&g_game.renderer)) {
-        LOG_WARN(
-            "Ray tracing initialization failed, falling back to rasterization");
-        g_game.config.ray_tracing = false;
-      } else {
-        LOG_INFO("Ray tracing initialized successfully");
-      }
-    } else {
-      LOG_WARN("Ray tracing not supported on this hardware");
-      g_game.config.ray_tracing = false;
-    }
+    LOG_WARN("Ray tracing not supported on Metal backend, disabling");
+    g_game.config.ray_tracing = false;
   }
   return (InitResult){true, INIT_SUCCESS, "Ray tracing initialization complete"};
 }
 
+static InitResult init_renderer_backend(void) {
 #ifdef VULKAN_BUILD
   LOG_INFO("Vulkan renderer initialized successfully");
   return (InitResult){true, INIT_SUCCESS, "Renderer initialized"};

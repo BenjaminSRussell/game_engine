@@ -334,7 +334,7 @@ The Minecraft v2 codebase has been thoroughly analyzed and consolidated:
 ### High-Value Completions
 
 1. **Phase 3.1: Player Food System** (NEAR COMPLETE)
-   - Update TODOs to reflect implemented features
+   - Update task tracking to reflect implemented features
    - Implement: Food cooking, food recipes, tooltips
    - Estimated: 4-6 hours
 

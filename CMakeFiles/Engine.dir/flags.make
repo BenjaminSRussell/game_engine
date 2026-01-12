@@ -7,17 +7,17 @@ C_DEFINES = -DMETAL_BUILD -DSIMD_NEON
 
 C_INCLUDES = -I"/Users/benjaminrussell/Desktop/Minecraft v2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include_private" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor/lua" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/Core/Bridges/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/instancing" -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
 
-C_FLAGSarm64 = -O3 -DNDEBUG -std=gnu11 -arch arm64
+C_FLAGSarm64 = -std=gnu11 -arch arm64
 
-C_FLAGS = -O3 -DNDEBUG -std=gnu11 -arch arm64
+C_FLAGS = -std=gnu11 -arch arm64
 
 OBJC_DEFINES = -DMETAL_BUILD -DSIMD_NEON
 
 OBJC_INCLUDES = -I"/Users/benjaminrussell/Desktop/Minecraft v2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include_private" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor/lua" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/Core/Bridges/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/instancing" -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
 
-OBJC_FLAGSarm64 = -O3 -DNDEBUG -std=gnu11 -arch arm64
+OBJC_FLAGSarm64 = -std=gnu11 -arch arm64
 
-OBJC_FLAGS = -O3 -DNDEBUG -std=gnu11 -arch arm64
+OBJC_FLAGS = -std=gnu11 -arch arm64
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_mesh_bridge.c.o_FLAGS = -fobjc-arc
 

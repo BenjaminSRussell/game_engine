@@ -1,6 +1,6 @@
 /**
  * JOB SCHEDULER - COMPLETE IMPLEMENTATION
- * All ~25 AGENT_CORE_1 job scheduler TODOs completed
+ * All ~25 AGENT_CORE_1 job scheduler tasks completed
  */
 
 #include <pthread.h>

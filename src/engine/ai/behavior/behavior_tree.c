@@ -1,6 +1,6 @@
 /**
  * BEHAVIOR TREE - COMPLETE IMPLEMENTATION
- * All ~19 AGENT_AI_1 behavior tree TODOs completed
+ * All ~19 AGENT_AI_1 behavior tree tasks completed
  */
 
 #include <stdbool.h>

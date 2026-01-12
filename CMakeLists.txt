@@ -603,6 +603,21 @@ add_executable(test_player_food
     src/engine/core/memory/linear_allocator.c
     src/engine/core/string_utils.c
 )
+
+# Test Unreal Engine Quality Features
+add_executable(test_unreal_features
+    test_unreal_features.c
+    src/engine/rendering/lighting/lumen_gi.m
+    src/engine/rendering/advanced/ray_tracing.c
+    src/engine/geometry/nanite/nanite_cluster.c
+    src/engine/rendering/texturing/virtual_texture.c
+    src/engine/rendering/hybrid_renderer.c
+    src/engine/rendering/occlusion/hzb/hzb_temporal.c
+    src/engine/core/logger.c
+    src/engine/core/memory/memory.c
+    src/engine/math/vec3.c
+    src/engine/math/mat4.c
+)
 target_include_directories(test_player_food PRIVATE
     ${CMAKE_SOURCE_DIR}/src/engine/include
     ${CMAKE_SOURCE_DIR}/src/game/blockgame/include

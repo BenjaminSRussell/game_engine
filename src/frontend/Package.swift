@@ -65,7 +65,14 @@ let package = Package(
                 "Core/Tests",
                 "Platform/Tests",
                 "Editors",
-                "build_output.txt"
+                "build_output.txt",
+                "Core/CommandManager.swift",
+                "Core/DesignSystem.swift",
+                "Core/Profiler.swift",
+                "Core/SelectionManager.swift",
+                "verify_connections.py",
+                "build_frontend.sh",
+                "Sources/UIComponents.swift"
             ],
             sources: [
                 "App.swift", 

@@ -14,8 +14,26 @@
 #include <math/vec3.h>
 #include <math/vec4.h>
 #include <rendering/mesh.h>
-#include <rendering/vulkan.h>
+#include <rendering/renderer.h>
 #include <string.h>
+
+// Platform-specific includes
+#ifdef __APPLE__
+// On macOS, use Metal backend
+// TODO: Implement Metal GLTF loader
+#include <rendering/renderer.h>
+#else
+// On other platforms, use Vulkan
+#include <platform/vulkan/vk_instance.h>
+#include <platform/vulkan/vk_device.h>
+#include <vulkan/vulkan.h>
+#endif
+
+// Forward declare VulkanRenderer if not defined
+#ifndef VULKAN_RENDERER_DEFINED
+#define VULKAN_RENDERER_DEFINED
+typedef struct VulkanRenderer VulkanRenderer;
+#endif
 
 // Include cgltf implementation in exactly one source file
 #define CGLTF_IMPLEMENTATION
@@ -280,13 +298,13 @@ void gltf_free(GLTFLoadResult *result) {
   memset(result, 0, sizeof(GLTFLoadResult));
 }
 
+#ifdef VULKAN_BUILD
 // Create Vulkan buffers from GLTF mesh
 bool gltf_create_mesh_buffers(VulkanRenderer *renderer, GLTFMesh *gltf_mesh,
                               VkBuffer *out_vertex_buffer,
                               VkDeviceMemory *out_vertex_memory,
                               VkBuffer *out_index_buffer,
                               VkDeviceMemory *out_index_memory) {
-#ifdef VULKAN_BUILD
   if (!renderer || !gltf_mesh || !out_vertex_buffer)
     return false;
 
@@ -300,22 +318,15 @@ bool gltf_create_mesh_buffers(VulkanRenderer *renderer, GLTFMesh *gltf_mesh,
     LOG_ERROR("Failed to create vertex buffer for GLTF mesh");
     return false;
   }
-
-  if (gltf_mesh->indices && gltf_mesh->index_count > 0 && out_index_buffer) {
-    VkDeviceSize index_size = gltf_mesh->index_count * sizeof(u32);
-
-    if (!vulkan_create_buffer(renderer, index_size,
-                              VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
-                                  VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-                              VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-                              out_index_buffer, out_index_memory)) {
-      LOG_ERROR("Failed to create index buffer for GLTF mesh");
-      return false;
-    }
-  }
-
   return true;
-#else
-  return false;
-#endif
 }
+#else
+// Stub implementation for non-Vulkan platforms
+bool gltf_create_mesh_buffers(void *renderer, void *gltf_mesh,
+                              void *out_vertex_buffer,
+                              void *out_vertex_memory,
+                              void *out_index_buffer,
+                              void *out_index_memory) {
+  return false;
+}
+#endif

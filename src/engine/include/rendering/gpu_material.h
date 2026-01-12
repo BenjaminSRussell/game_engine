@@ -9,7 +9,8 @@
 
 #include "include/rendering/material.h"
 #include "include/rendering/texture_system.h"
-#include "include/rendering/vulkan.h"
+#include "platform/vulkan/vk_instance.h"
+#include <vulkan/vulkan.h>
 #include <common.h>
 
 // Maximum descriptor sets per material

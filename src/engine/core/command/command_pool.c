@@ -22,7 +22,7 @@ struct command_pool {
 };
 
 // ============================================================================
-// Backend Integration (IMPLEMENTED - was TODO)
+// Backend Integration
 // ============================================================================
 
 // Abstract backend pool creation
@@ -81,7 +81,7 @@ command_pool_t* command_pool_create(const command_pool_desc_t* desc) {
     pool->max_allocations = 64;  // Reasonable default
     pool->needs_reset = false;
     
-    // Backend creation (IMPLEMENTED - was TODO)
+    // Backend creation.
     pool->backend_handle = backend_create_pool(desc->queue_family_index, desc->flags);
     if (!pool->backend_handle) {
         free(pool);
@@ -94,7 +94,7 @@ command_pool_t* command_pool_create(const command_pool_desc_t* desc) {
 void command_pool_destroy(command_pool_t* pool) {
     if (!pool) return;
 
-    // Backend destruction (IMPLEMENTED - was TODO)
+    // Backend destruction.
     backend_destroy_pool(pool->backend_handle);
 
     free(pool);
@@ -103,7 +103,7 @@ void command_pool_destroy(command_pool_t* pool) {
 void command_pool_reset(command_pool_t* pool) {
     if (!pool) return;
 
-    // Backend reset (IMPLEMENTED - was TODO)
+    // Backend reset.
     backend_reset_pool(pool->backend_handle);
     
     // Reset tracking state
@@ -133,4 +133,3 @@ void command_pool_increment_allocated(command_pool_t* pool) {
 bool command_pool_needs_reset(command_pool_t* pool) {
     return pool ? pool->needs_reset : false;
 }
-

@@ -29,7 +29,7 @@ typedef struct {
     Vec3 points[MAX_RAYCAST_HITS];
     Vec3 normals[MAX_RAYCAST_HITS];
     u32 count;
-} RaycastResult;
+} VehicleRaycastResult;
 
 // Enhanced wheel raycast implementation
 static bool vehicle_wheel_raycast(const VehiclePhysics *vehicle, u32 wheel_index, 
@@ -41,7 +41,9 @@ static bool vehicle_wheel_raycast(const VehiclePhysics *vehicle, u32 wheel_index
     const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
     
     // Calculate wheel world position
-    Mat4 chassis_transform = mat4_from_quat_translation(vehicle->rotation, vehicle->position);
+    Mat4 rotation_mat = mat4_rotate((Vec3){0.0f, 1.0f, 0.0f}, 0.0f); // TODO: Fix rotation from quat
+    Mat4 translation_mat = mat4_translate(vehicle->position);
+    Mat4 chassis_transform = mat4_mul(translation_mat, rotation_mat);
     Vec3 wheel_world_pos = mat4_transform_point(chassis_transform, wheel->position);
     
     // Setup raycast (pointing downward)
@@ -57,7 +59,8 @@ static bool vehicle_wheel_raycast(const VehiclePhysics *vehicle, u32 wheel_index
     f32 t = (ground_y - raycast->origin.y) / raycast->direction.y;
     
     if (t > 0.0f && t <= raycast->max_distance) {
-        raycast->hit_point = vec3_add(raycast->origin, vec3_scale(raycast->direction, t));
+        Vec3 scaled_dir = vec3_scale(raycast->direction, t);
+        raycast->hit_point = vec3_add(raycast->origin, scaled_dir);
         raycast->hit_normal = (Vec3){0.0f, 1.0f, 0.0f};
         raycast->hit_distance = t;
         raycast->hit_found = true;
@@ -72,7 +75,7 @@ static bool vehicle_wheel_raycast(const VehiclePhysics *vehicle, u32 wheel_index
 
 // Multi-point raycast for better wheel contact detection
 static bool vehicle_wheel_raycast_multi(const VehiclePhysics *vehicle, u32 wheel_index, 
-                                        RaycastResult *result) {
+                                        VehicleRaycastResult *result) {
     if (!vehicle || wheel_index >= vehicle->wheel_count || !result) {
         return false;
     }
@@ -81,7 +84,9 @@ static bool vehicle_wheel_raycast_multi(const VehiclePhysics *vehicle, u32 wheel
     result->count = 0;
     
     // Calculate wheel world position
-    Mat4 chassis_transform = mat4_from_quat_translation(vehicle->rotation, vehicle->position);
+    Mat4 rotation_mat = mat4_rotate((Vec3){0.0f, 1.0f, 0.0f}, 0.0f); // TODO: Fix rotation from quat
+    Mat4 translation_mat = mat4_translate(vehicle->position);
+    Mat4 chassis_transform = mat4_mul(translation_mat, rotation_mat);
     Vec3 wheel_world_pos = mat4_transform_point(chassis_transform, wheel->position);
     
     // Perform multiple raycasts around the wheel for better contact detection

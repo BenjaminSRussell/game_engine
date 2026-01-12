@@ -1,7 +1,7 @@
 #include <math.h> // For sqrtf, etc.
 #include <physics/physics.h>
 #include <physics/physics_engine_core.h>
-#include <include/physics/collision_detection.h>
+#include <physics/collision/collision_gjk_epa.h>
 #include <float.h>
 #include <stdlib.h>
 #include <string.h>

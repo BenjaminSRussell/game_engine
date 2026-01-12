@@ -123,7 +123,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/effects/svg_particles/svg_particle_system.c"
     "src/engine/effects/svg_particles/svg_particle_renderer.c"
     "src/engine/effects/svg_particles/svg_particles_example.c"
-    "src/engine/effects/particles/particle_simulation.c"
+    "src/engine/effects/particles/particle_simulation.m"
     "src/engine/effects/destruction/fracture_system.c"
     
     # Environment subdirectory
@@ -137,11 +137,32 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/core/services/particle_system.c"
     "src/engine/core/services/voxel_renderer.m"
     # GPU Particle system - Metal version for macOS
-    "src/engine/effects/gpu_particles/gpu_particle_system.m"
+    # "src/engine/effects/gpu_particles/gpu_particle_system.m"
     "src/engine/effects/gpu_particles/spawn_compute.c"
     "src/engine/effects/gpu_particles/update_compute.c"
     "src/engine/rendering/particles/particle_system.c"
     "src/game/blockgame/weather/weather_particles.c"
+    
+    # Advanced Rendering - Lumen GI and Ray Tracing (Unreal Engine quality)
+    "src/engine/rendering/lighting/lumen_gi.m"
+    "src/engine/rendering/advanced/ray_tracing.c"
+    "src/engine/rendering/ray_tracing/ray_tracing_system.c"
+    
+    # Nanite-like Geometry System (Unreal Engine quality)
+    "src/engine/geometry/nanite/nanite_cluster.c"
+    "src/engine/geometry/nanite/nanite_render.m"
+    "src/engine/geometry/nanite/cluster_builder.m"
+    
+    # Virtual Texturing and Temporal Upscaling (Unreal Engine quality)
+    "src/engine/rendering/texturing/virtual_texture.c"
+    "src/engine/rendering/terrain/runtime_virtual_texture.c"
+    "src/engine/rendering/occlusion/hzb/hzb_temporal.c"
+    "src/engine/rendering/raytracing/denoising/temporal_accumulation.c"
+    
+    # Hybrid Rendering Pipeline (Deferred + Forward + Ray Tracing)
+    "src/engine/rendering/hybrid_renderer.c"
+    "src/engine/rendering/deferred/deferred_lighting.c"
+    "src/engine/rendering/visibility/deferred_texturing.c"
     
     # Missing stubs for game systems (create minimal implementations)
     "src/engine/npc/npc_system.c"
@@ -240,8 +261,9 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/networking/*.c"
 
 # Network/Networking subsystems - Disabled due to header include issues
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network/.*\\.c$")
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network_.*\\.c$")
+# Networking system - RE-ENABLED for multiplayer functionality
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network/.*\\.c$")
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network_.*\\.c$")
     
     # Physics subdirectory - CONSOLIDATED: Only essential files
     "src/engine/physics/block_physics.c"
@@ -357,9 +379,10 @@ endif()
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/editor/.*\\.c$")
 
 # Network/Networking subsystems - Disabled due to header include issues
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network/.*\\.c$")
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/networking/.*\\.c$")
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/include/network/.*\\.h$")
+# Networking system - RE-ENABLED for multiplayer functionality  
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/network/.*\\.c$")
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/networking/.*\\.c$")
+# list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/include/network/.*\\.h$")
 
 # SVG importer has missing function definitions - disable for now
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/editor/importer/svg_importer\\.c$")
@@ -438,8 +461,8 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/npc/.*\\.c$")
 # Exclude broken player modules with undefined component APIs
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_vehicle\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_magic\\.c$")
-list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/spirit_model\\.c$")
-list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_damage\\.c$")
+# list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/spirit_model\\.c$")
+# list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_damage\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_system_update\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/experience_test\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/crafting/recipe_expansion\\.c$")
