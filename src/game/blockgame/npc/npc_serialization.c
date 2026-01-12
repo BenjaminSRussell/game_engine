@@ -223,7 +223,7 @@ bool save_npcs(struct SaveSystem *save, const char *world_name,
     return false;
 
   QueryDesc desc = {0};
-  ComponentType components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
+  ComponentTypeID components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
   desc.all_components = components;
   desc.all_count = 2;
   Query *query = ecs_query_create((World *)npc_system->ecs, &desc);

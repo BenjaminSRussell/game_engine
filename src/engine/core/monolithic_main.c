@@ -2845,9 +2845,10 @@ static void game_update(void) {
       plant_vfx_update(&g_game.plant_vfx, g_game.delta_time);
 
       // Update renderer ambient light from weather/time-of-day
-      vulkan_set_ambient_light(
-          &g_game.renderer,
-          weather_get_ambient_light_level(&g_game.weather_system));
+      // Note: This is Vulkan-specific, should be abstracted through renderer interface
+      // vulkan_set_ambient_light(
+      //     &g_game.renderer,
+      //     weather_get_ambient_light_level(&g_game.weather_system));
 
       // Update weather HUD
       WeatherType current_weather =

@@ -22,7 +22,7 @@ void npc_lod_update(NPCSystem *system, Vec3 player_pos) {
 
   g_lod_count = 0;
   QueryDesc desc = {0};
-  ComponentType components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
+  ComponentTypeID components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
   desc.all_components = components;
   desc.all_count = 2;
   Query *q = ecs_query_create((World *)system->ecs, &desc);

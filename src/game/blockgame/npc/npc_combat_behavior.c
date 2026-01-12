@@ -40,7 +40,7 @@ void npc_combat_behavior_update(NPCSystem *system, EntityID entity,
       return;
 
     QueryDesc desc = {0};
-    ComponentType components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID,
+    ComponentTypeID components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID,
                                   HEALTH_COMPONENT_ID};
     desc.all_components = components;
     desc.all_count = 3;

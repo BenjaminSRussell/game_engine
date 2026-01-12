@@ -20,7 +20,7 @@ void npc_socialize(NPCSystem *system, EntityID entity, NPCComponent *npc,
   EntityID target = 0;
   f32 best_dist = 6.0f;
   QueryDesc desc = {0};
-  ComponentType components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
+  ComponentTypeID components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
   desc.all_components = components;
   desc.all_count = 2;
   Query *q = ecs_query_create((World *)system->ecs, &desc);

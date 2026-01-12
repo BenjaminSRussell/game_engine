@@ -143,7 +143,7 @@ void npc_spawn_loot(struct NPCSystem *system, Vec3 position,
 
   // Try to give drops to nearest player within pickup radius (simple fallback)
   QueryDesc desc = {0};
-  ComponentType player_components[] = {PLAYER_COMPONENT_ID,
+  ComponentTypeID player_components[] = {PLAYER_COMPONENT_ID,
                                        TRANSFORM_COMPONENT_ID};
   desc.all_components = player_components;
   desc.all_count = 2;
@@ -207,7 +207,7 @@ void npc_spawn_experience(struct NPCSystem *system, Vec3 position, u32 amount) {
 
   // Give experience to nearest player (simple fallback)
   QueryDesc exp_desc = {0};
-  ComponentType player_components[] = {PLAYER_COMPONENT_ID,
+  ComponentTypeID player_components[] = {PLAYER_COMPONENT_ID,
                                        TRANSFORM_COMPONENT_ID};
   exp_desc.all_components = player_components;
   exp_desc.all_count = 2;

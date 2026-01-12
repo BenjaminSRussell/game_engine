@@ -22,7 +22,7 @@
 // Count NPCs in a chunk
 static u32 count_npcs_in_chunk(NPCSystem *system, ChunkPos chunk_pos) {
   QueryDesc desc = {0};
-  ComponentType components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
+  ComponentTypeID components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
   desc.all_components = components;
   desc.all_count = 2;
   Query *query = ecs_query_create((World *)system->ecs, &desc);
@@ -50,7 +50,7 @@ static u32 count_npcs_in_chunk(NPCSystem *system, ChunkPos chunk_pos) {
 static u32 count_npcs_by_behavior(NPCSystem *system, ChunkPos chunk_pos,
                                   NPCBehavior behavior) {
   QueryDesc desc = {0};
-  ComponentType components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
+  ComponentTypeID components[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
   desc.all_components = components;
   desc.all_count = 2;
   Query *query = ecs_query_create((World *)system->ecs, &desc);
@@ -279,7 +279,7 @@ void npc_despawn_distant(NPCSystem *system) {
   // Find all players
   // Find all players
   QueryDesc p_desc = {0};
-  ComponentType p_comps_ids[] = {PLAYER_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
+  ComponentTypeID p_comps_ids[] = {PLAYER_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
   p_desc.all_components = p_comps_ids;
   p_desc.all_count = 2;
   Query *player_query = ecs_query_create((World *)system->ecs, &p_desc);
@@ -304,7 +304,7 @@ void npc_despawn_distant(NPCSystem *system) {
 
   // Find all NPCs
   QueryDesc n_desc = {0};
-  ComponentType n_comps_ids[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
+  ComponentTypeID n_comps_ids[] = {NPC_COMPONENT_ID, TRANSFORM_COMPONENT_ID};
   n_desc.all_components = n_comps_ids;
   n_desc.all_count = 2;
   Query *npc_query = ecs_query_create((World *)system->ecs, &n_desc);

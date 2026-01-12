@@ -7144,6 +7144,14 @@ src/engine/backend/metal/mtl_swapchain.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.c.o
 .PHONY : src/engine/backend/metal/mtl_swapchain.c.o
 
+src/engine/backend/metal/mtl_sync_example.o: src/engine/backend/metal/mtl_sync_example.c.o
+.PHONY : src/engine/backend/metal/mtl_sync_example.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_sync_example.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_example.c.o
+.PHONY : src/engine/backend/metal/mtl_sync_example.c.o
+
 src/engine/backend/metal/mtl_sync_manager.o: src/engine/backend/metal/mtl_sync_manager.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_manager.o
 
@@ -10772,30 +10780,6 @@ src/engine/core/resource/vfs_async.s: src/engine/core/resource/vfs_async.c.s
 src/engine/core/resource/vfs_async.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/resource/vfs_async.c.s
 .PHONY : src/engine/core/resource/vfs_async.c.s
-
-src/engine/core/services/voxel_renderer.o: src/engine/core/services/voxel_renderer.c.o
-.PHONY : src/engine/core/services/voxel_renderer.o
-
-# target to build an object file
-src/engine/core/services/voxel_renderer.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/services/voxel_renderer.c.o
-.PHONY : src/engine/core/services/voxel_renderer.c.o
-
-src/engine/core/services/voxel_renderer.i: src/engine/core/services/voxel_renderer.c.i
-.PHONY : src/engine/core/services/voxel_renderer.i
-
-# target to preprocess a source file
-src/engine/core/services/voxel_renderer.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/services/voxel_renderer.c.i
-.PHONY : src/engine/core/services/voxel_renderer.c.i
-
-src/engine/core/services/voxel_renderer.s: src/engine/core/services/voxel_renderer.c.s
-.PHONY : src/engine/core/services/voxel_renderer.s
-
-# target to generate assembly for a file
-src/engine/core/services/voxel_renderer.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/services/voxel_renderer.c.s
-.PHONY : src/engine/core/services/voxel_renderer.c.s
 
 src/engine/core/simd/simd_math_neon.o: src/engine/core/simd/simd_math_neon.c.o
 .PHONY : src/engine/core/simd/simd_math_neon.o
@@ -30086,6 +30070,7 @@ help:
 	@echo "... src/engine/backend/metal/mtl_sampler.o"
 	@echo "... src/engine/backend/metal/mtl_statistics.o"
 	@echo "... src/engine/backend/metal/mtl_swapchain.o"
+	@echo "... src/engine/backend/metal/mtl_sync_example.o"
 	@echo "... src/engine/backend/metal/mtl_sync_manager.o"
 	@echo "... src/engine/backend/metal/mtl_sync_primitives.o"
 	@echo "... src/engine/backend/metal/mtl_texture.o"
@@ -30537,9 +30522,6 @@ help:
 	@echo "... src/engine/core/resource/vfs_async.o"
 	@echo "... src/engine/core/resource/vfs_async.i"
 	@echo "... src/engine/core/resource/vfs_async.s"
-	@echo "... src/engine/core/services/voxel_renderer.o"
-	@echo "... src/engine/core/services/voxel_renderer.i"
-	@echo "... src/engine/core/services/voxel_renderer.s"
 	@echo "... src/engine/core/simd/simd_math_neon.o"
 	@echo "... src/engine/core/simd/simd_math_neon.i"
 	@echo "... src/engine/core/simd/simd_math_neon.s"

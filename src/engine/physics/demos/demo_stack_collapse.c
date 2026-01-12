@@ -1,5 +1,7 @@
 // Physics Demo: Stack Collapse - Demonstrates stacking and stability
 #include "physics_demo_framework.c"
+#include "physics/physics.h"
+#include "platform/input/input.h"
 #include <math/math.h>
 #include <stdlib.h>
 
