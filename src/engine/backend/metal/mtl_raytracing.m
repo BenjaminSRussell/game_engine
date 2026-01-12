@@ -97,7 +97,7 @@ metal_rt_create_instance_accel(id<MTLDevice> device,
         dst[i * 12 + 10] = m.m13;
         dst[i * 12 + 11] = m.m23;
       }
-      instance_accel.instanceTransformBuffer = transform_buffer;
+      instance_accel.instanceBuffer = transform_buffer;
     }
 
     [instance_accel rebuild];

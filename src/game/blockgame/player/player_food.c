@@ -156,19 +156,32 @@ void player_finish_eating(Player *player, const ItemRegistry *item_registry) {
 
   const FoodProperties *food = &item->properties.food;
 
+  // Get dynamic quality from inventory slot
+  f32 slot_quality = 1.0f;
+  InventorySlot slot;
+  if (inventory_get_slot(&player->inventory, player->eating_state.slot_index,
+                         &slot)) {
+    slot_quality = slot.quality_modifier;
+  }
+
+  // Total scaling = base item quality * dynamic slot quality
+  f32 total_quality = food->quality * slot_quality;
+  if (total_quality <= 0.0f)
+    total_quality = 1.0f; // Fallback
+
   // Capture state before eating
   f32 start_hunger = player->hunger;
   f32 start_saturation = player->saturation;
 
   // Restore hunger
-  player->hunger += food->hunger_restored * food->quality;
+  player->hunger += food->hunger_restored * total_quality;
   if (player->hunger > 20.0f) {
     player->hunger = 20.0f;
   }
 
   // Restore saturation
   f32 saturation_gained =
-      food->hunger_restored * food->saturation_modifier * food->quality;
+      food->hunger_restored * food->saturation_modifier * total_quality;
   player->saturation += saturation_gained;
   if (player->saturation > player->hunger) {
     player->saturation = player->hunger;
@@ -211,9 +224,17 @@ void player_finish_eating(Player *player, const ItemRegistry *item_registry) {
                         SOUND_CATEGORY_PLAYER);
   }
 
+  u32 consumed_item_id = player->eating_state.food_item_id;
+
   // Remove item from inventory
-  inventory_remove_item(&player->inventory, player->eating_state.food_item_id,
-                        1);
+  inventory_remove_item(&player->inventory, consumed_item_id, 1);
+
+  // Special handling for Milk: Clear status effects and return empty bucket
+  if (consumed_item_id == ITEM_MILK_BUCKET) {
+    status_effects_clear(&player->status_effects);
+    inventory_add_item(&player->inventory, ITEM_BUCKET, 1);
+    LOG_INFO("Player drank Milk: All status effects cleared, bucket returned");
+  }
 
   // Clear eating state
   memset(&player->eating_state, 0, sizeof(EatingState));
@@ -241,31 +262,32 @@ EatingState *player_get_eating_state(Player *player) {
 
 // Update inventory spoilage (decay items)
 void player_update_inventory_spoilage(Player *player, f32 delta_time,
-                                    const ItemRegistry *item_registry) {
+                                      const ItemRegistry *item_registry) {
   if (!player || !item_registry)
     return;
-  
+
   // Iterate through inventory slots
   for (int i = 0; i < MAX_INVENTORY_SLOTS; i++) {
     InventorySlot *slot = &player->inventory.slots[i];
-    
+
     // Skip empty slots
     if (slot->item_id == ITEM_AIR || slot->count == 0)
       continue;
-    
+
     // Get item definition to check if it's food
-    const ExtendedItemDefinition *item_def = item_registry_get(item_registry, slot->item_id);
+    const ExtendedItemDefinition *item_def =
+        item_registry_get(item_registry, slot->item_id);
     if (!item_def || item_def->base.item_type != ITEM_TYPE_FOOD)
       continue;
-    
+
     // Get food properties
     const FoodProperties *food_props = &item_def->properties.food;
     if (food_props->spoil_time <= 0.0f)
       continue; // Food doesn't spoil
-    
+
     // Update spoil progress
     slot->spoil_progress += delta_time / food_props->spoil_time;
-    
+
     // Check if fully spoiled
     if (slot->spoil_progress >= 1.0f) {
       // Convert to spoiled food

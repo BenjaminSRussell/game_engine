@@ -129,7 +129,7 @@ BlenderStatus blender_initialize(BlenderConfig *config) {
   // TASK_001: Locate Blender executable
   char *blender_path = find_blender_executable();
   if (!blender_path) {
-           "BLENDER_PATH environment variable.\n");
+    printf("Error: Blender not found. Please set BLENDER_PATH environment variable.\n");
     return BLENDER_STATUS_ERROR_NOT_FOUND;
   }
 
@@ -155,7 +155,7 @@ BlenderStatus blender_initialize(BlenderConfig *config) {
   }
 
   if (major < 4) {
-           "4.0 or later.\n",
+    printf("Error: Blender version %d.%d is not supported. Requires 4.0 or later.\n",
            major, minor);
     return BLENDER_STATUS_ERROR_VERSION;
   }
@@ -174,7 +174,7 @@ BlenderStatus blender_initialize(BlenderConfig *config) {
            "%s/tools/blender_scripts", engine_root);
 
   if (!directory_exists(config->scripts_directory)) {
-           config->scripts_directory);
+    printf("Error: Scripts directory not found: %s\n", config->scripts_directory);
     return BLENDER_STATUS_ERROR_SCRIPTS;
   }
 
@@ -251,7 +251,7 @@ BlenderStatus blender_convert_image_to_mesh(const ImageToMeshParams *params) {
 
   // TASK_018: Verify output file exists
   if (!blender_verify_output_file(params->output_mesh_path)) {
-           params->output_mesh_path);
+    printf("Error: Output file verification failed: %s\n", params->output_mesh_path);
     return BLENDER_STATUS_ERROR_OUTPUT;
   }
 
@@ -357,7 +357,7 @@ BlenderStatus blender_auto_rig_character(const AutoRigParams *params) {
 
   // Verify output file exists
   if (!blender_verify_output_file(params->output_rigged_path)) {
-           params->output_rigged_path);
+    printf("Error: Rigged output file verification failed: %s\n", params->output_rigged_path);
     return BLENDER_STATUS_ERROR_OUTPUT;
   }
 

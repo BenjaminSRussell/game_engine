@@ -16,7 +16,13 @@
       "Bash(for dir in /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/*/)",
       "Bash(ls:*)",
       "Bash(git restore:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(cd /Users/benjaminrussell/Desktop/Minecraft\\\\ v2 && timeout 120 cmake --build build --parallel 4:*)",
+      "Bash([ -f CMakeCache.txt ])",
+      "Bash(uv tool install:*)",
+      "Bash(curl:*)",
+      "Bash(sh:*)",
+      "Bash(/Users/benjaminrussell/.local/bin/uv tool install:*)"
     ]
   }
 }

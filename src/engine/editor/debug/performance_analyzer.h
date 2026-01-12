@@ -1,7 +1,7 @@
 #ifndef PERFORMANCE_ANALYZER_H
 #define PERFORMANCE_ANALYZER_H
 
-#include <include/core/types.h>
+#include "../../include/core/types.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -51,8 +51,7 @@ typedef struct perf_metrics {
 // Optimization hint
 typedef struct optimization_hint {
   char description[256];
-  float confidence_score;     // Renamed from impact_score
-  uint32_t related_metric_id; // Added property
+  float impact_score; // 0.0 to 1.0, higher = more impactful
   bool actionable;
 } optimization_hint_t;
 

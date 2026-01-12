@@ -5,6 +5,7 @@
 #include <common.h>
 #include <math/vec2.h>
 #include <math/vec3.h>
+#include <math/vec4.h>
 #include <math/mat4.h>
 
 #define MAX_SVG_PATHS 1024
@@ -133,6 +134,10 @@ Mat4 svg_create_transform_matrix(Vec2 translation, Vec2 scale, f32 rotation);
 f32 svg_parse_length(const char *str);
 Vec4 svg_parse_color(const char *str);
 bool svg_parse_path_data(const char *data, SVGPathSegment *segments, u32 max_segments, u32 *out_count);
+bool svg_parse_svg_content(const char *content, SVGDocument *out_doc);
+bool svg_write_element_to_file(const SVGElement *element, const char *filepath);
+bool svg_convert_rect_to_mesh(const SVGElement *rect, Vec3 *out_vertices, u32 *out_vertex_count,
+                           u32 *out_indices, u32 *out_index_count);
 
 // Debug functions
 void svg_document_print_info(const SVGDocument *doc);

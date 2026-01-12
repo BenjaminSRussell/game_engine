@@ -227,7 +227,8 @@ void audio_system_init(AudioSystem *sys, u32 max_channels) {
 
   ma_result result = ma_engine_init(&engineConfig, &sys->engine);
   if (result != MA_SUCCESS) {
-    printf("Failed to initialize audio engine: %s\n", ma_result_description(result));
+    printf("Failed to initialize audio engine: %s\n",
+           ma_result_description(result));
     free(sys->sources);
     sys->sources = NULL;
     sys->initialized = false;
@@ -646,6 +647,80 @@ u32 audio_play_sound(AudioSystem *sys, SoundType sound, Vec3 position,
   return channel;
 }
 
+u32 audio_play_sound_from_file(AudioSystem *sys, const char *filepath,
+                               bool spatial, Vec3 position, f32 volume,
+                               SoundCategory category, bool loop) {
+  if (!sys || !sys->initialized || !filepath) {
+    return 0xFFFFFFFF;
+  }
+
+  // Find an available slot
+  u32 channel = 0xFFFFFFFF;
+  for (u32 i = 0; i < sys->max_channels; i++) {
+    if (!sys->sources[i].active) {
+      channel = i;
+      break;
+    }
+  }
+
+  // Voice stealing if full
+  if (channel == 0xFFFFFFFF) {
+    u32 quietest = 0;
+    f32 min_vol = 1000.0f;
+    for (u32 i = 0; i < sys->active_sources; i++) {
+      if (!sys->sources[i].looping && sys->sources[i].volume < min_vol) {
+        min_vol = sys->sources[i].volume;
+        quietest = i;
+      }
+    }
+    channel = quietest;
+    if (sys->sources[channel].active) {
+      ma_sound_uninit(&sys->sources[channel].sound);
+    }
+  }
+
+  SoundSource *source = &sys->sources[channel];
+  ma_uint32 flags = MA_SOUND_FLAG_ASYNC;
+  if (category == SOUND_CATEGORY_MUSIC) {
+    flags |= MA_SOUND_FLAG_STREAM;
+  } else {
+    flags |= MA_SOUND_FLAG_DECODE;
+  }
+
+  ma_result result = ma_sound_init_from_file(&sys->engine, filepath, flags,
+                                             NULL, NULL, &source->sound);
+  if (result != MA_SUCCESS) {
+    source->active = false;
+    return 0xFFFFFFFF;
+  }
+
+  source->active = true;
+  source->position = position;
+  source->volume = volume;
+  source->looping = loop;
+  source->category = category;
+  source->min_distance = 1.0f;
+  source->max_distance = 100.0f;
+  source->rolloff = 1.0f;
+
+  ma_sound_set_volume(&source->sound, volume * sys->master_volume *
+                                          sys->category_volumes[category]);
+  ma_sound_set_looping(&source->sound, loop);
+  if (spatial) {
+    ma_sound_set_position(&source->sound, position.x, position.y, position.z);
+    ma_sound_set_min_distance(&source->sound, source->min_distance);
+    ma_sound_set_max_distance(&source->sound, source->max_distance);
+    ma_sound_set_rolloff(&source->sound, source->rolloff);
+  }
+
+  ma_sound_start(&source->sound);
+
+  if (channel >= sys->active_sources) {
+    sys->active_sources = channel + 1;
+  }
+
+  return channel;
+}
 u32 audio_play_sound_2d(AudioSystem *sys, SoundType sound, f32 volume,
                         SoundCategory category) {
   if (!sys || !sys->initialized) {
@@ -805,8 +880,8 @@ u32 audio_add_reverb_zone(AudioSystem *sys, Vec3 min_bounds, Vec3 max_bounds,
   zone->active = true;
 
   sys->reverb_zone_count++;
-  printf("Added reverb zone %d with level %.2f and decay %.2f\n", 
-         zone_index, zone->reverb_level, zone->decay_time);
+  printf("Added reverb zone %d with level %.2f and decay %.2f\n", zone_index,
+         zone->reverb_level, zone->decay_time);
   return zone_index;
 }
 

@@ -28,7 +28,7 @@ typedef struct SceneNode {
   struct SceneNode *next_sibling;
 
   SceneNodeType type;
-  Entity entity; // If this node represents an entity
+  EntityID entity; // If this node represents an entity
 
   // Transform
   Vec3 position;
@@ -48,7 +48,7 @@ typedef struct SceneNode {
 
 // GameObject - high-level abstraction for game objects
 typedef struct {
-  Entity entity;
+  EntityID entity;
   SceneNode *node;
   const char *name;
   bool active;
@@ -103,7 +103,7 @@ void scene_update_transforms(Scene *scene);
 GameObject *scene_create_game_object(Scene *scene, const char *name);
 void scene_destroy_game_object(Scene *scene, GameObject *obj);
 GameObject *scene_find_game_object(Scene *scene, const char *name);
-GameObject *scene_get_game_object(Scene *scene, Entity entity);
+GameObject *scene_get_game_object(Scene *scene, EntityID entity);
 
 // Layer management (for 2.5D)
 void scene_set_layer_count(Scene *scene, u32 layer_count);
@@ -112,9 +112,9 @@ f32 scene_get_layer_depth(Scene *scene, u32 layer);
 u32 scene_get_layer_count(Scene *scene);
 
 // Entity integration
-Entity scene_create_entity(Scene *scene);
-void scene_destroy_entity(Scene *scene, Entity entity);
-SceneNode *scene_get_entity_node(Scene *scene, Entity entity);
+EntityID scene_create_entity(Scene *scene);
+void scene_destroy_entity(Scene *scene, EntityID entity);
+SceneNode *scene_get_entity_node(Scene *scene, EntityID entity);
 
 // Transform helpers
 void scene_node_set_position(SceneNode *node, Vec3 position);

@@ -194,6 +194,9 @@ u32 audio_play_sound(AudioSystem *sys, SoundType sound, Vec3 position,
                      f32 volume, SoundCategory category);
 u32 audio_play_sound_2d(AudioSystem *sys, SoundType sound, f32 volume,
                         SoundCategory category);
+u32 audio_play_sound_from_file(AudioSystem *sys, const char *filepath,
+                               bool spatial, Vec3 position, f32 volume,
+                               SoundCategory category, bool loop);
 
 void audio_stop_sound(AudioSystem *sys, u32 channel);
 void audio_set_volume(AudioSystem *sys, SoundCategory category, f32 volume);

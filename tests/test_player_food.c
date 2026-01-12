@@ -25,11 +25,8 @@ void audio_play_sound_2d(void *system, int sound_id, f32 volume, int category) {
 void particle_emit_burst(void *system, int type, Vec3 pos, Vec3 vel, f32 spread,
                          int count, f32 life) {}
 
-// Correct signature for status_effect_add
-bool status_effect_add(StatusEffectManager *manager, StatusEffectType type,
-                       f32 duration, f32 magnitude) {
-  return true;
-}
+// Status effect logic is now provided by
+// src/game/blockgame/player/status_effects.c
 
 // ECS mock
 void *ecs_get_component(struct World *world, Entity entity, u32 component_id) {
@@ -159,7 +156,8 @@ bool test_food_stats(ItemRegistry *registry) {
 
   u32 food_id = 2003;
   ExtendedItemDefinition food_def = {0};
-  strncpy(food_def.base.name, "Magic Bean", sizeof(food_def.base.name) - 1);
+  strncpy(food_def.base.name, "Super Magic Bean Test",
+          sizeof(food_def.base.name) - 1);
   food_def.base.max_stack_size = 64;
   food_def.base.item_type = ITEM_TYPE_FOOD;
   food_def.properties.food.hunger_restored = 1.0f;
@@ -204,6 +202,52 @@ bool test_food_stats(ItemRegistry *registry) {
   printf("PASSED\n");
   return true;
 }
+// Test 4: Verify Milk Consumption (Clears status effects and returns bucket)
+bool test_milk_consumption(ItemRegistry *registry) {
+  printf("Running test_milk_consumption...\n");
+
+  Player player;
+  memset(&player, 0, sizeof(Player));
+  inventory_init(&player.inventory);
+  status_effects_init(&player.status_effects);
+
+  // 1. Add some status effects
+  status_effect_add(&player.status_effects, STATUS_EFFECT_POISON, 30.0f, 1.0f);
+  status_effect_add(&player.status_effects, STATUS_EFFECT_SPEED, 30.0f, 1.0f);
+
+  if (player.status_effects.effect_count != 2) {
+    printf("FAILED: Pre-condition: Effect count expected 2, got %u\n",
+           player.status_effects.effect_count);
+    return false;
+  }
+
+  // 2. Setup Milk in inventory
+  inventory_set_slot(&player.inventory, 0, ITEM_MILK_BUCKET, 1);
+  player.eating_state.is_eating = true;
+  player.eating_state.food_item_id = ITEM_MILK_BUCKET;
+  player.eating_state.slot_index = 0;
+
+  // 3. Finish eating
+  player_finish_eating(&player, registry);
+
+  // 4. Verify effects are cleared
+  if (player.status_effects.effect_count != 0) {
+    printf("FAILED: Effects not cleared after Milk. Count: %u\n",
+           player.status_effects.effect_count);
+    return false;
+  }
+
+  // 5. Verify bucket is returned
+  u32 bucket_count = inventory_get_item_count(&player.inventory, ITEM_BUCKET);
+  if (bucket_count != 1) {
+    printf("FAILED: Bucket not returned. ITEM_BUCKET count: %u\n",
+           bucket_count);
+    return false;
+  }
+
+  printf("PASSED\n");
+  return true;
+}
 
 int main() {
   printf("=== Test Player Food ===\n");
@@ -217,12 +261,29 @@ int main() {
           sizeof(spoiled_def.base.name) - 1);
   spoiled_def.base.max_stack_size = 64;
   spoiled_def.base.item_type = ITEM_TYPE_FOOD;
-  item_registry_register(&registry, 663, &spoiled_def);
+  item_registry_register(&registry, ITEM_SPOILED_FOOD, &spoiled_def);
+
+  // Register Buckets
+  ExtendedItemDefinition milk_bucket_def = {0};
+  strncpy(milk_bucket_def.base.name, "Milk Bucket",
+          sizeof(milk_bucket_def.base.name) - 1);
+  milk_bucket_def.base.item_type = ITEM_TYPE_FOOD;
+  milk_bucket_def.base.max_stack_size = 1;
+  milk_bucket_def.properties.food.eat_duration = 1.0f;
+  milk_bucket_def.properties.food.quality = 1.0f;
+  item_registry_register(&registry, ITEM_MILK_BUCKET, &milk_bucket_def);
+
+  ExtendedItemDefinition bucket_def = {0};
+  strncpy(bucket_def.base.name, "Bucket", sizeof(bucket_def.base.name) - 1);
+  bucket_def.base.item_type = ITEM_TYPE_MISC;
+  bucket_def.base.max_stack_size = 16;
+  item_registry_register(&registry, ITEM_BUCKET, &bucket_def);
 
   bool all_passed = true;
   all_passed &= test_food_spoilage(&registry);
   all_passed &= test_food_quality(&registry);
   all_passed &= test_food_stats(&registry);
+  all_passed &= test_milk_consumption(&registry);
 
   if (all_passed) {
     printf("All tests passed!\n");

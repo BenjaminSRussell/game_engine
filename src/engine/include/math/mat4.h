@@ -42,7 +42,9 @@
 #define MAT4_H
 
 #include "../common.h"
+#include "vec2.h"
 #include "vec3.h"
+#include "vec4.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -108,6 +110,8 @@ Mat4 mat4_ortho(f32 left, f32 right, f32 bottom, f32 top, f32 near, f32 far);
 Mat4 mat4_inverse(Mat4 m);
 Vec3 mat4_transform_vec3(Mat4 m, Vec3 v);
 Vec3 mat4_transform_point(Mat4 m, Vec3 v);
+Vec4 mat4_mul_vec4(Mat4 m, Vec4 v);
+Vec3 mat4_mul_vec3(Mat4 m, Vec3 v, float w);
 
 // Matrix decomposition system
 Mat4Decomposition mat4_decompose(Mat4 m);

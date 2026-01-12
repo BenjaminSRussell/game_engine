@@ -58,6 +58,10 @@ INLINE Vec2 vec2_sub(Vec2 a, Vec2 b) { return vec2(a.x - b.x, a.y - b.y); }
 
 INLINE Vec2 vec2_mul(Vec2 v, f32 s) { return vec2(v.x * s, v.y * s); }
 
+INLINE Vec2 vec2_scale_componentwise(Vec2 a, Vec2 b) {
+  return vec2(a.x * b.x, a.y * b.y);
+}
+
 INLINE f32 vec2_dot(Vec2 a, Vec2 b) { return a.x * b.x + a.y * b.y; }
 
 INLINE f32 vec2_length_sq(Vec2 v) { return vec2_dot(v, v); }

@@ -17,6 +17,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/inventory/inventory.c" "CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o" "gcc" "CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/inventory/item_registry.c" "CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o" "gcc" "CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/player/player_food.c" "CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.o" "gcc" "CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.o.d"
+  "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/player/status_effects.c" "CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o" "gcc" "CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/tests/test_player_food.c" "CMakeFiles/test_player_food.dir/tests/test_player_food.c.o" "gcc" "CMakeFiles/test_player_food.dir/tests/test_player_food.c.o.d"
   )
 

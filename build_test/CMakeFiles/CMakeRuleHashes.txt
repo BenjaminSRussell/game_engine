@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+3eff8583aa287cb9bd183533e7e768c9 CMakeFiles/compile_instancing_shaders
+47ad811c13ab6b142cfca22a1f1a3c1d CMakeFiles/compile_shaders
+e4f78140c0ba801022c6cf97b15f46b1 CMakeFiles/validate_assets

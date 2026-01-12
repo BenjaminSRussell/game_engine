@@ -26,5 +26,6 @@ void asset_browser_shutdown(void);
 void asset_browser_add_asset(const char *name, const char *path, u32 asset_id);
 void asset_browser_generate_thumbnail(BrowserAsset *asset);
 void asset_browser_regenerate_thumbnail(BrowserAsset *asset);
+void Editor_DrawAssetBrowser(void);
 
 #endif // ASSET_BROWSER_H

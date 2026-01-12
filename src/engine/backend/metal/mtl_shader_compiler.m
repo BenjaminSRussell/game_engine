@@ -204,7 +204,7 @@ compile_internal(metal_shader_compiler_t *compiler, const char *source,
   result.error_count = 0;
 
   if (!compiler || !source) {
-             "Invalid arguments");
+    printf("Invalid arguments\n");
     return result;
   }
 
@@ -296,7 +296,7 @@ metal_shader_compile_file(metal_shader_compiler_t *compiler, const char *path,
   result.succeeded = false;
 
   if (!compiler || !path) {
-             "Invalid arguments");
+    printf("Invalid arguments\n");
     return result;
   }
 

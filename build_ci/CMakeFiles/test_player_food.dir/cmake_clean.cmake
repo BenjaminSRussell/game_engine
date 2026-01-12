@@ -17,6 +17,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o.d"
   "CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.o"
   "CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.o.d"
+  "CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o"
+  "CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o.d"
   "CMakeFiles/test_player_food.dir/tests/test_player_food.c.o"
   "CMakeFiles/test_player_food.dir/tests/test_player_food.c.o.d"
   "test_player_food"

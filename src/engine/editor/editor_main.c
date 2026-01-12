@@ -1,6 +1,7 @@
 #include <core/logger.h>
 #include <core/unified_engine.h>
 #include <editor/editor_main.h>
+#include <editor/asset_browser.h>
 
 static bool g_editor_active = false;
 

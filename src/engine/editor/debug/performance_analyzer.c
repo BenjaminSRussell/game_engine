@@ -1,6 +1,5 @@
-// performance_analyzer.c - Enhanced Performance Analysis Tools
 #include "performance_analyzer.h"
-#include <core/logger.h>
+#include "../../include/core/logger.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -293,7 +292,7 @@ static void add_hint(performance_analyzer_t *analyzer, const char *description,
   optimization_hint_t *hint = &analyzer->hints[analyzer->hint_count++];
   strncpy(hint->description, description, sizeof(hint->description) - 1);
   hint->description[sizeof(hint->description) - 1] = '\0';
-  hint->confidence_score = confidence;
+  hint->impact_score = confidence;
   hint->actionable = true;
 }
 

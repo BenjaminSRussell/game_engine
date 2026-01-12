@@ -1252,6 +1252,30 @@ void item_registry_init_defaults(ItemRegistry *registry) {
       .rarity = 0};
   REGISTER_ITEM(ITEM_POTATO, potato);
 
+  ExtendedItemDefinition red_mushroom = {
+      .base = {.block_id = 0,
+               .item_type = ITEM_TYPE_MATERIAL,
+               .name = "Red Mushroom",
+               .description = "A spotted red fungus",
+               .max_stack_size = 64,
+               .durability = 0,
+               .max_durability = 0},
+      .is_stackable = true,
+      .rarity = 0};
+  REGISTER_ITEM(ITEM_RED_MUSHROOM, red_mushroom);
+
+  ExtendedItemDefinition brown_mushroom = {
+      .base = {.block_id = 0,
+               .item_type = ITEM_TYPE_MATERIAL,
+               .name = "Brown Mushroom",
+               .description = "A simple brown fungus",
+               .max_stack_size = 64,
+               .durability = 0,
+               .max_durability = 0},
+      .is_stackable = true,
+      .rarity = 0};
+  REGISTER_ITEM(ITEM_BROWN_MUSHROOM, brown_mushroom);
+
   ExtendedItemDefinition baked_potato = {
       .base = {.block_id = 0,
                .item_type = ITEM_TYPE_FOOD,

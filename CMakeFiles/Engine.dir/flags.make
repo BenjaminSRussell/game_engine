@@ -19,10 +19,6 @@ OBJC_FLAGSarm64 = -O3 -DNDEBUG -std=gnu11 -arch arm64
 
 OBJC_FLAGS = -O3 -DNDEBUG -std=gnu11 -arch arm64
 
-# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_mesh_bridge.c.o_FLAGS = -fobjc-arc
-
-# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_advanced_rendering.c.o_FLAGS = -fobjc-arc
-
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.c.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.c.o_FLAGS = -fobjc-arc
@@ -53,13 +49,9 @@ OBJC_FLAGS = -O3 -DNDEBUG -std=gnu11 -arch arm64
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.c.o_FLAGS = -fobjc-arc
 
-# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.c.o_FLAGS = -fobjc-arc
-
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.c.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.c.o_FLAGS = -fobjc-arc
-
-# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_example.c.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.c.o_FLAGS = -fobjc-arc
 
@@ -70,6 +62,8 @@ OBJC_FLAGS = -O3 -DNDEBUG -std=gnu11 -arch arm64
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.c.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o_FLAGS = -fobjc-arc
+
+# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_mesh_bridge.m.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o_FLAGS = -fobjc-arc
 

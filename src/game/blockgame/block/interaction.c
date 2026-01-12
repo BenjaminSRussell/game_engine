@@ -63,23 +63,15 @@
 // animation). Interaction particles: IMPLEMENTED (particle effects). Undo/redo
 // system: IMPLEMENTED (for creative mode). Interaction history: IMPLEMENTED
 // (for debugging). Interaction logging: IMPLEMENTED (for analytics).
+#include "block/interaction.h"
+#include "game_common.h"
 #include <block/block.h>
 #include <block/lighting.h>
 #include <chunk/chunk.h>
-#include <game_common.h>
 #include <math.h>
 #include <math/vec3.h>
 #include <physics/physics.h>
-
-// Block raycast result
-typedef struct {
-  bool hit;
-  Vec3 hit_position;
-  Vec3 hit_normal;
-  BlockID block_id;
-  i32 block_x, block_y, block_z;
-  f32 distance;
-} BlockRaycastResult;
+#include <core/logger.h>
 
 // Perform raycast against blocks
 BlockRaycastResult block_raycast(ChunkManager *chunks, Vec3 origin,

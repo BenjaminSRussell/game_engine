@@ -457,13 +457,14 @@ void editor_dockspace_end(void);
 void AssetBrowser_Init(struct VFS *vfs, struct AssetManager *assets);
 void editor_main_menu_bar(void);
 void editor_viewport_window(void);
-void editor_asset_browser_window(void);
+void Editor_DrawAssetBrowser(void);
 void editor_outliner_window(void);
 void editor_inspector_window(void);
 void editor_console_window(void);
 void editor_metrics_window(void);
 void editor_style_editor_window(void);
 void editor_demo_window(void);
+void Editor_DrawAssetBrowser(void);
 
 // =================================================================================================
 //                                    MULTI-VIEWPORT API

@@ -31,6 +31,11 @@ typedef struct {
 
 static WorldPartition g_world_partition = {0};
 
+// Forward declarations
+void world_partition_process_load_queue(void);
+void world_partition_process_unload_queue(void);
+void world_partition_update_player_position(void);
+
 void world_partition_init(void) {
   if (g_world_partition.is_initialized) {
     LOG_WARN("World partition already initialized");

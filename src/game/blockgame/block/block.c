@@ -49,14 +49,16 @@
 // generation processes are preserved.) Block registry setup and default block
 // definitions. Roadmap: docs/BLOCK_DEFS_ROADMAP.md.
 // Block registry serialization/deserialization for mod support
-// Block registry validation system to detect invalid block definitions
 // Block property inheritance system for block variants
 // Block registry search/filter functionality
 // Block registry versioning for save compatibility
 // Block registry hot-reload support for development
 // Block registry compression for memory efficiency
+#include <core/logger.h>
+#include <core/types.h>
 #include <block/block.h>
 #include <block/lighting.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 

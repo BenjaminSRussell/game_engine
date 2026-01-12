@@ -64,7 +64,7 @@ int orthographic_camera_set_view(OrthographicCamera* camera, Vec3 position, Vec3
 int orthographic_camera_set_viewport(OrthographicCamera* camera, Vec2 origin, Vec2 size);
 
 // Zoom and pan controls
-int orthographic_camera_set_zoom(Orthographic* camera, float zoom_level);
+int orthographic_camera_set_zoom(OrthographicCamera* camera, float zoom_level);
 int orthographic_camera_zoom_in(OrthographicCamera* camera, float zoom_factor);
 int orthographic_camera_zoom_out(OrthographicCamera* camera, float zoom_factor);
 int orthographic_camera_pan(OrthographicCamera* camera, Vec2 delta);

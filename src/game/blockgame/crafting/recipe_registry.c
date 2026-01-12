@@ -106,4 +106,52 @@ void recipe_registry_add_defaults(RecipeRegistry *registry) {
   u32 bread_pattern[] = {50, 50, 50}; // ITEM_WHEAT
   bread.pattern = bread_pattern;
   recipe_registry_add(registry, &bread);
+
+  // Pumpkin Pie (Pumpkin + Sugar + Egg) - Shapeless
+  Recipe pumpkin_pie;
+  memset(&pumpkin_pie, 0, sizeof(Recipe));
+  pumpkin_pie.type = RECIPE_TYPE_SHAPELESS;
+  pumpkin_pie.result_item = 662; // ITEM_PUMPKIN_PIE
+  pumpkin_pie.result_quantity = 1;
+  pumpkin_pie.ingredient_count = 3;
+  pumpkin_pie.ingredients[0].item_id = 54; // ITEM_PUMPKIN
+  pumpkin_pie.ingredients[0].quantity = 1;
+  pumpkin_pie.ingredients[1].item_id = 1047; // ITEM_SUGAR
+  pumpkin_pie.ingredients[1].quantity = 1;
+  pumpkin_pie.ingredients[2].item_id = 1048; // ITEM_EGG
+  pumpkin_pie.ingredients[2].quantity = 1;
+  recipe_registry_add(registry, &pumpkin_pie);
+
+  // Mushroom Stew (Bowl + Red Mushroom + Brown Mushroom) - Shapeless
+  Recipe mushroom_stew;
+  memset(&mushroom_stew, 0, sizeof(Recipe));
+  mushroom_stew.type = RECIPE_TYPE_SHAPELESS;
+  mushroom_stew.result_item = 659; // ITEM_MUSHROOM_STEW
+  mushroom_stew.result_quantity = 1;
+  mushroom_stew.ingredient_count = 3;
+  mushroom_stew.ingredients[0].item_id = 666; // ITEM_BOWL
+  mushroom_stew.ingredients[0].quantity = 1;
+  mushroom_stew.ingredients[1].item_id = 55; // ITEM_RED_MUSHROOM
+  mushroom_stew.ingredients[1].quantity = 1;
+  mushroom_stew.ingredients[2].item_id = 56; // ITEM_BROWN_MUSHROOM
+  mushroom_stew.ingredients[2].quantity = 1;
+  recipe_registry_add(registry, &mushroom_stew);
+
+  // Cake (Milk Milk Milk, Sugar Egg Sugar, Wheat Wheat Wheat) - Shaped
+  Recipe cake;
+  memset(&cake, 0, sizeof(Recipe));
+  cake.type =
+      RECIPE_TYPE_SHAPEED; // Typo in engine? Checking RECIPE_TYPE_SHAPED
+  cake.type = RECIPE_TYPE_SHAPED;
+  cake.result_item = 665; // ITEM_CAKE
+  cake.result_quantity = 1;
+  cake.pattern_width = 3;
+  cake.pattern_height = 3;
+  u32 cake_pattern[] = {
+      1049, 1049, 1049, // Milk
+      1047, 1048, 1047, // Sugar, Egg, Sugar
+      50,   50,   50    // Wheat
+  };
+  cake.pattern = cake_pattern;
+  recipe_registry_add(registry, &cake);
 }

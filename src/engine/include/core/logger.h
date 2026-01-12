@@ -57,7 +57,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include "../common.h"
+#include "types.h"
 #include <pthread.h>
 #include <stdio.h>
 #include <time.h>

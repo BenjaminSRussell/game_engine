@@ -237,21 +237,23 @@ static void calculate_spatial_params(AudioSpatialState *sys,
 // Audio Processing Loop
 // -----------------------------------------------------------------------------
 
-void audio_mix(AudioSystem *sys, float *out_buffer, uint32_t sample_count) {
+void audio_mix(AudioSpatialState *sys, float *out_buffer,
+               uint32_t sample_count) {
   if (!sys)
     return;
 
-  memset(out_buffer, 0, sample_count * 2 * sizeof(float)); // Stereo clear
+  // Clear output buffer (Stereo interleaved)
+  memset(out_buffer, 0, sample_count * 2 * sizeof(float));
 
   for (uint32_t i = 0; i < AUDIO_MAX_SOURCES; i++) {
-    AudioSource *src = &sys->sources[i];
+    AudioSourceState *src = &sys->sources[i];
     if (!src->active || !src->playing)
       continue;
 
     float gain_l, gain_r;
     calculate_spatial_params(sys, src, &gain_l, &gain_r);
 
-    // Check active reverb zones
+    // Calculate reverb mix based on zones
     float max_reverb = 0.0f;
     for (uint32_t z = 0; z < sys->zone_count; z++) {
       float dist = audio_vec3_distance(src->position, sys->zones[z].position);
@@ -263,14 +265,37 @@ void audio_mix(AudioSystem *sys, float *out_buffer, uint32_t sample_count) {
     }
     src->reverb_mix = max_reverb;
 
-    // Mixing logic would go here (fetching samples, applying gains, filters)
-    // Simplified stub:
-    // for (j < sample_count) {
-    //   float sample = buffer[cursor++];
-    //   sample = low_pass(sample, src->low_pass_gain);
-    //   out_buffer[j*2] += sample * gain_l;
-    //   out_buffer[j*2+1] += sample * gain_r;
-    // }
+    // Mixing process
+    // In a real system, we'd fetch from a buffer pool.
+    // For now, we assume buffer_id points to valid PCM data.
+    // float* samples = audio_get_buffer_data(src->buffer_id);
+    // if (!samples) continue;
+
+    for (uint32_t j = 0; j < sample_count; j++) {
+      // Stub: fetching sample (in a real implementation this would be from
+      // src->buffer_id)
+      float sample = 0.0f;
+
+      // Apply Low-Pass Filter (Simple RC approximation)
+      float alpha = src->low_pass_gain;
+      src->filter_state_l =
+          src->filter_state_l + alpha * (sample - src->filter_state_l);
+      src->filter_state_r =
+          src->filter_state_r + alpha * (sample - src->filter_state_r);
+
+      float final_l = src->filter_state_l * gain_l;
+      float final_r = src->filter_state_r * gain_r;
+
+      out_buffer[j * 2] += final_l;
+      out_buffer[j * 2 + 1] += final_r;
+
+      src->cursor++;
+      // Handle looping
+      // if (src->cursor >= buffer_len) {
+      //    if (src->looping) src->cursor = 0;
+      //    else src->playing = false; break;
+      // }
+    }
   }
 }
 
@@ -278,18 +303,19 @@ void audio_mix(AudioSystem *sys, float *out_buffer, uint32_t sample_count) {
 // Occlusion & Zones
 // -----------------------------------------------------------------------------
 
-void audio_set_occlusion(AudioSystem *sys, uint32_t source_id,
+void audio_set_occlusion(AudioSpatialState *sys, uint32_t source_id,
                          float occlusion) {
   if (!sys || source_id >= AUDIO_MAX_SOURCES)
     return;
   sys->sources[source_id].occlusion = occlusion;
 }
 
-uint32_t audio_add_reverb_zone(AudioSystem *sys, AudioVec3 pos, float radius) {
+uint32_t audio_add_reverb_zone(AudioSpatialState *sys, AudioVec3 pos,
+                               float radius) {
   if (!sys || sys->zone_count >= AUDIO_MAX_ZONES)
     return UINT32_MAX;
 
-  ReverbZone *z = &sys->zones[sys->zone_count];
+  ReverbZoneState *z = &sys->zones[sys->zone_count];
   z->position = pos;
   z->radius = radius;
   z->decay_time = 1.5f;

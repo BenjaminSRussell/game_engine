@@ -542,6 +542,27 @@ endmacro()
 # message(STATUS "Render Graph tests configured: test_frame_graph")
 
 # ===========================================
+# Physics Demos - Visual Physics Simulations
+# ===========================================
+add_executable(physics_demos
+    src/engine/physics/demos/main.c
+    src/engine/physics/demos/physics_demo_framework.c
+    src/engine/physics/demos/demo_stack_collapse.c
+    src/engine/physics/demos/demo_newton_cradle.c
+    src/engine/physics/demos/demo_domino_chain.c
+    src/engine/physics/demos/demo_ragdoll.c
+    src/engine/physics/demos/demo_vehicle_physics.c
+    src/engine/physics/demos/demo_fluid_simulation.c
+)
+target_link_libraries(physics_demos PRIVATE Engine Game ZLIB::ZLIB Threads::Threads "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
+target_include_directories(physics_demos PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src/engine/physics/demos
+)
+message(STATUS "Physics demos configured: physics_demos")
+
+# ===========================================
 # Full Integration Verification
 # ===========================================
 add_executable(full_integration_test src/engine/core/integration/full_engine_test.c)
@@ -556,6 +577,7 @@ message(STATUS "Verification target added: full_integration_test")
 add_executable(test_player_food
     tests/test_player_food.c
     src/game/blockgame/player/player_food.c
+    src/game/blockgame/player/status_effects.c
     src/game/blockgame/inventory/inventory.c
     src/game/blockgame/inventory/item_registry.c
     src/engine/core/logger.c

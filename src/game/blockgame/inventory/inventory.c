@@ -62,8 +62,8 @@ bool inventory_add_item(Inventory *inv, u32 item_id, u16 count) {
   if (item_id == 0)
     return false; // invalid item id
 
-  // Validate item_id is within valid block range
-  if (item_id > 255) {
+  // Validate item_id is within valid range
+  if (item_id > 65535) {
     LOG_WARN("Attempted to add invalid item_id %u to inventory (out of range)",
              item_id);
     return false;

@@ -51,6 +51,8 @@ typedef struct {
 
   // DSP
   float low_pass_gain;
+  float filter_state_l;
+  float filter_state_r;
   float reverb_mix;
   float occlusion;
   DistanceModel distance_model;

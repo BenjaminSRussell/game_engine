@@ -25,6 +25,7 @@ void music_system_init(MusicSystem *music, AudioSystem *audio) {
 
   memset(music, 0, sizeof(MusicSystem));
   music->initialized = true;
+  music->audio_engine = audio;
 
   // Allocate track array
   music->tracks = (MusicTrack *)calloc(MAX_TRACKS, sizeof(MusicTrack));
@@ -71,26 +72,22 @@ void music_system_init(MusicSystem *music, AudioSystem *audio) {
                    MOOD_CALM_EXPLORATION, CONTEXT_EXPLORATION, 0.2f);
   music_load_track(music, "assets/music/overworld/calm_05_carefree.mp3",
                    MOOD_CALM_EXPLORATION, CONTEXT_EXPLORATION, 0.15f);
-  music_load_track(music,
-                   "assets/music/overworld/calm_06_floating_cities.mp3",
+  music_load_track(music, "assets/music/overworld/calm_06_floating_cities.mp3",
                    MOOD_CALM_EXPLORATION, CONTEXT_EXPLORATION, 0.25f);
-  music_load_track(
-      music, "assets/music/overworld/adventure_01_ascending_vale.mp3",
-      MOOD_ADVENTURE, CONTEXT_EXPLORATION, 0.4f);
-  music_load_track(
-      music, "assets/music/overworld/adventure_02_enchanted_journey.mp3",
-      MOOD_ADVENTURE, CONTEXT_EXPLORATION, 0.35f);
   music_load_track(music,
-                   "assets/music/combat/battle_03_volatile_reaction.mp3",
+                   "assets/music/overworld/adventure_01_ascending_vale.mp3",
+                   MOOD_ADVENTURE, CONTEXT_EXPLORATION, 0.4f);
+  music_load_track(music,
+                   "assets/music/overworld/adventure_02_enchanted_journey.mp3",
+                   MOOD_ADVENTURE, CONTEXT_EXPLORATION, 0.35f);
+  music_load_track(music, "assets/music/combat/battle_03_volatile_reaction.mp3",
                    MOOD_COMBAT, CONTEXT_COMBAT, 0.8f);
-  music_load_track(music,
-                   "assets/music/combat/battle_04_darkest_child.mp3",
+  music_load_track(music, "assets/music/combat/battle_04_darkest_child.mp3",
                    MOOD_COMBAT, CONTEXT_COMBAT, 0.9f);
-  music_load_track(music,
-                   "assets/music/combat/battle_05_teller_tales.mp3",
+  music_load_track(music, "assets/music/combat/battle_05_teller_tales.mp3",
                    MOOD_COMBAT, CONTEXT_COMBAT, 0.7f);
-  music_load_track(music, "assets/music/menu/menu_02_meditation.mp3",
-                   MOOD_MENU, CONTEXT_MAIN_MENU, 0.1f);
+  music_load_track(music, "assets/music/menu/menu_02_meditation.mp3", MOOD_MENU,
+                   CONTEXT_MAIN_MENU, 0.1f);
 
   // Create initial playlist
   music_create_playlist(music, music->current_mood, music->current_context);
@@ -188,7 +185,6 @@ void music_set_mood(MusicSystem *music, MusicMood mood) {
         music_fade_to_track(music, suitable_track, DEFAULT_TRANSITION_DURATION);
       }
     }
-
   }
 }
 
@@ -208,7 +204,6 @@ void music_set_context(MusicSystem *music, MusicContext context) {
         music_fade_to_track(music, suitable_track, DEFAULT_TRANSITION_DURATION);
       }
     }
-
   }
 }
 
@@ -250,14 +245,23 @@ void music_play_track(MusicSystem *music, u32 track_index) {
   if (!music || !music->initialized || track_index >= music->track_count)
     return;
 
+  // Stop current music if it was playing and we are not transitioning
+  if (music->music_channel != 0xFFFFFFFF && !music->is_transitioning) {
+    audio_stop_sound(music->audio_engine, music->music_channel);
+    music->music_channel = 0xFFFFFFFF;
+  }
+
   music->current_track_index = track_index;
   music->is_playing = true;
   music->total_play_time = 0.0f;
 
   MusicTrack *track = &music->tracks[track_index];
 
-  // This would integrate with the audio system to actually play the track
-  // For now, we'll just update the state
+  // Play track using the new playback by file API
+  music->music_channel = audio_play_sound_from_file(
+      music->audio_engine, track->filepath, false, vec3(0, 0, 0),
+      music->master_volume * music->mood_volumes[track->mood],
+      SOUND_CATEGORY_MUSIC, track->has_loop);
 }
 
 void music_play_next(MusicSystem *music) {
@@ -366,7 +370,6 @@ void music_set_shuffle(MusicSystem *music, bool enabled) {
   if (enabled) {
     music_shuffle_playlist(music);
   }
-
 }
 
 void music_set_repeat(MusicSystem *music, bool enabled) {
@@ -445,7 +448,7 @@ u32 music_load_track(MusicSystem *music, const char *filepath, MusicMood mood,
 
          music_get_mood_name(mood), energy_level);
 
-  return index;
+         return index;
 }
 
 MusicTrack *music_get_track(MusicSystem *music, u32 index) {
@@ -483,13 +486,25 @@ void music_fade_to_track(MusicSystem *music, u32 track_index, f32 duration) {
   if (!music || !music->initialized || track_index >= music->track_count)
     return;
 
+  if (music->is_transitioning) {
+    // If already transitioning, stop the previous "next" track
+    if (music->transition_channel != 0xFFFFFFFF) {
+      audio_stop_sound(music->audio_engine, music->transition_channel);
+    }
+  }
+
   music->next_track_index = track_index;
   music->is_transitioning = true;
   music->transition_time = 0.0f;
   music->transition_duration = duration;
   music->transition_volume = 0.0f;
 
-         music->tracks[track_index].title);
+  MusicTrack *track = &music->tracks[track_index];
+
+  // Start the next track at 0 volume for crossfading
+  music->transition_channel = audio_play_sound_from_file(
+      music->audio_engine, track->filepath, false, vec3(0, 0, 0), 0.0f,
+      SOUND_CATEGORY_MUSIC, track->has_loop);
 }
 
 void music_crossfade(MusicSystem *music, f32 duration) {
@@ -543,11 +558,44 @@ static void music_update_transition(MusicSystem *music, f32 delta_time) {
   if (progress >= 1.0f) {
     // Transition complete
     music->is_transitioning = false;
-    music_play_track(music, music->next_track_index);
+
+    // Stop and uninit old music channel
+    if (music->music_channel != 0xFFFFFFFF) {
+      audio_stop_sound(music->audio_engine, music->music_channel);
+    }
+
+    // Switch channels: transition track is now the primary track
+    music->music_channel = music->transition_channel;
+    music->transition_channel = 0xFFFFFFFF;
+    music->current_track_index = music->next_track_index;
     music->next_track_index = 0xFFFFFFFF;
     music->transition_volume = 0.0f;
+
+    // Set final volume
+    if (music->music_channel != 0xFFFFFFFF) {
+      MusicTrack *track = &music->tracks[music->current_track_index];
+      audio_set_sound_volume(music->audio_engine, music->music_channel,
+                             music->master_volume *
+                                 music->mood_volumes[track->mood]);
+    }
   } else {
-    // Update transition volume (fade in)
+    // Perform crossfade
+    f32 mood_vol = 1.0f;
+    if (music->current_track_index != 0xFFFFFFFF) {
+      mood_vol =
+          music->mood_volumes[music->tracks[music->current_track_index].mood];
+      audio_set_sound_volume(music->audio_engine, music->music_channel,
+                             music->master_volume * mood_vol *
+                                 (1.0f - progress));
+    }
+
+    if (music->next_track_index != 0xFFFFFFFF) {
+      mood_vol =
+          music->mood_volumes[music->tracks[music->next_track_index].mood];
+      audio_set_sound_volume(music->audio_engine, music->transition_channel,
+                             music->master_volume * mood_vol * progress);
+    }
+
     music->transition_volume = progress;
   }
 }

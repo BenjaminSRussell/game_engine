@@ -1,7 +1,7 @@
 CMakeFiles/Engine.dir/src/engine/editor/debug/performance_analyzer.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/performance_analyzer.c \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/performance_analyzer.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/../../include/core/types.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h \
@@ -25,9 +25,9 @@ CMakeFiles/Engine.dir/src/engine/editor/debug/performance_analyzer.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/logger.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/../common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/../core/types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/../../include/core/logger.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/../../include/core/../common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/../../include/core/../core/types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_bounds.h \

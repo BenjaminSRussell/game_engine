@@ -1,48 +1,92 @@
-// #include "inspector_panel.h"
+#include <editor/reflection.h>
+#include <stdio.h>
+#include <string.h>
 
 /**
  * =================================================================================================
- *                                   INSPECTOR & PROPERTIES - COMPLETE
+ *                                   INSPECTOR & PROPERTIES - IMPLEMENTATION
  * =================================================================================================
  */
 
-// REFLECTION & DATA
+// Global registry of reflected structs
+#define MAX_REFLECTED_STRUCTS 256
+static StructMetadata g_struct_registry[MAX_REFLECTED_STRUCTS];
+static uint32_t g_struct_count = 0;
+
+// Internal: Find metadata for a struct by name
+static StructMetadata *find_struct_metadata(const char *name) {
+  for (uint32_t i = 0; i < g_struct_count; i++) {
+    if (strcmp(g_struct_registry[i].name, name) == 0) {
+      return &g_struct_registry[i];
+    }
+  }
+  return NULL;
+}
+
 // TASK_1110: Implement Property Reflection system (metadata for C structs)
-// TASK_1111: Map Data Types -> UI Widgets (Float: Slider, Int: Field, Color:
-// Picker) TASK_1112: Support "Nested Structs" and Arrays TASK_1113: Implement
-// "Bitfield" / Enum dropdowns
+void editor_reflection_register_struct(StructMetadata meta) {
+  if (g_struct_count >= MAX_REFLECTED_STRUCTS) {
+    fprintf(stderr, "[EDITOR] Error: Struct registry full!\n");
+    return;
+  }
 
-// CORE UI WIDGETS
-// TASK_1120: Implement Numeric input with "Drag-to-change"
-// TASK_1121: Add Color Picker (Wheel / HEX / RGBA)
-// TASK_1122: Implement "Asset Picker" (Drag mesh/texture from browser)
-// TASK_1123: Add Boolean Toggles (Checkboxes/Switches)
-// TASK_1124: Implement Multi-line String / Tag fields
+  g_struct_registry[g_struct_count++] = meta;
+  printf("[EDITOR] Registered struct: %s with %u properties\n", meta.name,
+         meta.property_count);
+}
 
-// COMPONENT MANAGEMENT
-// TASK_1130: Implement "Add Component" menu
-// TASK_1131: Implement "Delete Component" button
-// TASK_1132: Support "Copy/Paste Component" values
-// TASK_1133: Implement "Reset to Default" button per property
+// TASK_1111: Map Data Types -> UI Widgets
+// Mock implementation of UI drawing based on reflection
+void editor_draw_property(void *data_ptr, PropertyMetadata *prop) {
+  void *value_ptr = (char *)data_ptr + prop->offset;
 
-// MULTI-OBJECT EDITING
-// TASK_1140: Detect "Mixed Values" in selection
-// TASK_1141: Implement "Gray-out" for dissimilar properties
-// TASK_1142: Apply property change to all selected entities
+  switch (prop->type) {
+  case PROPERTY_TYPE_FLOAT:
+    // UI_SliderFloat(prop->name, (float*)value_ptr, prop->min_val,
+    // prop->max_val);
+    printf("  [Float] %s: %f\n", prop->name, *(float *)value_ptr);
+    break;
+  case PROPERTY_TYPE_INT:
+    // UI_InputInt(prop->name, (int*)value_ptr);
+    printf("  [Int] %s: %d\n", prop->name, *(int *)value_ptr);
+    break;
+  case PROPERTY_TYPE_BOOL:
+    // UI_Checkbox(prop->name, (bool*)value_ptr);
+    printf("  [Bool] %s: %s\n", prop->name,
+           *(bool *)value_ptr ? "true" : "false");
+    break;
+  case PROPERTY_TYPE_VEC3:
+    // UI_DragFloat3(prop->name, (float*)value_ptr);
+    {
+      float *v = (float *)value_ptr;
+      printf("  [Vec3] %s: { %f, %f, %f }\n", prop->name, v[0], v[1], v[2]);
+    }
+    break;
+  case PROPERTY_TYPE_STRUCT:
+    // TASK_1112: Support "Nested Structs"
+    if (prop->struct_meta) {
+      printf("  [Struct] %s {\n", prop->name);
+      for (uint32_t i = 0; i < prop->struct_meta->property_count; i++) {
+        editor_draw_property(value_ptr, &prop->struct_meta->properties[i]);
+      }
+      printf("  }\n");
+    }
+    break;
+  default:
+    printf("  [Unknown] %s\n", prop->name);
+    break;
+  }
+}
 
-// UNDO/REDO & LOGIC
-// TASK_1150: Hook into global Undo system on every "Value Committed" event
-// TASK_1151: Implement "Live Preview" (change data immediately, undo if
-// cancelled) TASK_1152: Add Dependency Update: (e.g. changing model refreshes
-// bounds)
+void editor_draw_inspector(void *target_obj, const char *struct_name) {
+  StructMetadata *meta = find_struct_metadata(struct_name);
+  if (!meta) {
+    printf("[EDITOR] No metadata found for struct: %s\n", struct_name);
+    return;
+  }
 
-// VISUALS & LAYOUT
-// TASK_1160: Implement "Collapsible Headers" for components
-// TASK_1161: Add Search/Filter bar for properties
-// TASK_1162: Implement Custom Component Drawers (user-defined UI per struct)
-// TASK_1163: Add Tooltips for every property
-
-// SCRIPTING INTEGRATION
-// TASK_1170: Expose Visual Scripting variables to inspector
-// TASK_1171: Add "Invoke Function" button for debug methods
-// TASK_1172: Implement "Live Reload" of UI when script changes
+  printf("--- Inspector: %s ---\n", meta->name);
+  for (uint32_t i = 0; i < meta->property_count; i++) {
+    editor_draw_property(target_obj, &meta->properties[i]);
+  }
+}

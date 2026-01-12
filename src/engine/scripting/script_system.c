@@ -1,8 +1,8 @@
-// src/engine/scripting/script_system.c - FULL IMPLEMENTATION
-// Lua-compatible script system with command parsing and event binding
-
+#include "scripting/script_system.h"
+#include "core/logger.h"
+#include "core/types.h"
 #include <ctype.h>
-#include <scripting/script_system.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -42,8 +42,7 @@ static int g_var_count = 0;
 // BUILT-IN COMMANDS
 // =============================================================================
 
-static void cmd_print(const char *args) {
-}
+static void cmd_print(const char *args) {}
 
 static void cmd_help(const char *args) {
   (void)args;
@@ -200,7 +199,7 @@ bool ScriptSystem_Init(ScriptSystem *system) {
   system->state = NULL; // No Lua state for this implementation
   register_builtin_commands();
 
-         g_command_count);
+  LOG_INFO("Scripting system initialized with %d commands", g_command_count);
   return true;
 }
 

@@ -100,10 +100,24 @@ CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.s: cmake
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/player/player_food.c" -o CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.s
 
+CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o: CMakeFiles/test_player_food.dir/flags.make
+CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/player/status_effects.c
+CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o: CMakeFiles/test_player_food.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o -MF CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o.d -o CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/player/status_effects.c"
+
+CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/player/status_effects.c" > CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.i
+
+CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/player/status_effects.c" -o CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.s
+
 CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o: CMakeFiles/test_player_food.dir/flags.make
 CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/inventory/inventory.c
 CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o: CMakeFiles/test_player_food.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o -MF CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o.d -o CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/inventory/inventory.c"
 
 CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.i: cmake_force
@@ -117,7 +131,7 @@ CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.s: cmak
 CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o: CMakeFiles/test_player_food.dir/flags.make
 CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/game/blockgame/inventory/item_registry.c
 CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o: CMakeFiles/test_player_food.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o -MF CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o.d -o CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/inventory/item_registry.c"
 
 CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.i: cmake_force
@@ -131,7 +145,7 @@ CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.s: 
 CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o: CMakeFiles/test_player_food.dir/flags.make
 CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/logger.c
 CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o: CMakeFiles/test_player_food.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o -MF CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o.d -o CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/logger.c"
 
 CMakeFiles/test_player_food.dir/src/engine/core/logger.c.i: cmake_force
@@ -145,7 +159,7 @@ CMakeFiles/test_player_food.dir/src/engine/core/logger.c.s: cmake_force
 CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o: CMakeFiles/test_player_food.dir/flags.make
 CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/containers/hashmap.c
 CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o: CMakeFiles/test_player_food.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o -MF CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o.d -o CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/containers/hashmap.c"
 
 CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.i: cmake_force
@@ -159,7 +173,7 @@ CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.s: cmake_fo
 CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o: CMakeFiles/test_player_food.dir/flags.make
 CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/memory.c
 CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o: CMakeFiles/test_player_food.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o -MF CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o.d -o CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/memory/memory.c"
 
 CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.i: cmake_force
@@ -173,7 +187,7 @@ CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.s: cmake_force
 CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o: CMakeFiles/test_player_food.dir/flags.make
 CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/buddy_allocator.c
 CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o: CMakeFiles/test_player_food.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o -MF CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o.d -o CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/memory/buddy_allocator.c"
 
 CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.i: cmake_force
@@ -187,7 +201,7 @@ CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.s: cmak
 CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o: CMakeFiles/test_player_food.dir/flags.make
 CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/memory/linear_allocator.c
 CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o: CMakeFiles/test_player_food.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o -MF CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o.d -o CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/memory/linear_allocator.c"
 
 CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.i: cmake_force
@@ -201,7 +215,7 @@ CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.s: cma
 CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o: CMakeFiles/test_player_food.dir/flags.make
 CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/string_utils.c
 CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o: CMakeFiles/test_player_food.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o -MF CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o.d -o CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/string_utils.c"
 
 CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.i: cmake_force
@@ -216,6 +230,7 @@ CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.s: cmake_force
 test_player_food_OBJECTS = \
 "CMakeFiles/test_player_food.dir/tests/test_player_food.c.o" \
 "CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.o" \
+"CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o" \
 "CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o" \
 "CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o" \
 "CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o" \
@@ -230,6 +245,7 @@ test_player_food_EXTERNAL_OBJECTS =
 
 test_player_food: CMakeFiles/test_player_food.dir/tests/test_player_food.c.o
 test_player_food: CMakeFiles/test_player_food.dir/src/game/blockgame/player/player_food.c.o
+test_player_food: CMakeFiles/test_player_food.dir/src/game/blockgame/player/status_effects.c.o
 test_player_food: CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o
 test_player_food: CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o
 test_player_food: CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o
@@ -240,7 +256,7 @@ test_player_food: CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_
 test_player_food: CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o
 test_player_food: CMakeFiles/test_player_food.dir/build.make
 test_player_food: CMakeFiles/test_player_food.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_11) "Linking C executable test_player_food"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_12) "Linking C executable test_player_food"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_player_food.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
