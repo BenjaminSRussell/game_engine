@@ -303,7 +303,7 @@ metal_shader_compile_file(metal_shader_compiler_t *compiler, const char *path,
   // Read file
   FILE *file = fopen(path, "r");
   if (!file) {
-             "Failed to open file: %s", path);
+    printf("Failed to open file: %s\n", path);
     return result;
   }
 

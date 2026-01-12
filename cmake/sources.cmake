@@ -73,6 +73,9 @@ file(GLOB_RECURSE ENGINE_SOURCES
     
     # Backend subdirectory - Handled separately below to avoid Vulkan inclusion
     # "src/engine/backend/*.c"
+    
+    # Metal backend - DISABLED due to ARC compilation issues
+    list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/.*\\.(c|m)$")
     # "src/engine/backend/metal/*.c"
     
     # Platform subdirectory - DISABLED swift_bridge due to function call issues

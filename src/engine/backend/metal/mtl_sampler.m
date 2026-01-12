@@ -349,15 +349,13 @@ struct mtl_sampler* mtl_sampler_create_anisotropic(id<MTLDevice> device, f32 max
     snprintf(name, 64, "Anisotropic_%.0f", max_anisotropy);
     return mtl_sampler_create_with_desc(device, &desc, name);
 }
- * TODO: Implement mtl sampler validation
- * TODO: Add mtl sampler error handling
- * TODO: Implement mtl sampler serialization
- * TODO: Add mtl sampler debug output
- * TODO: Implement mtl sampler unit tests
- * TODO: Add mtl sampler performance counters
- * TODO: Implement mtl sampler hot-reload
- * TODO: Add mtl sampler thread safety
- * TODO: Implement mtl sampler memory pooling
+/* TODO: Add mtl sampler error handling */
+/* TODO: Implement mtl sampler serialization */
+/* TODO: Add mtl sampler debug output */
+/* TODO: Implement mtl sampler unit tests */
+/* TODO: Add mtl sampler performance counters */
+/* TODO: Implement mtl sampler hot-reload */
+/* TODO: Add mtl sampler thread safety */
  * TODO: Add mtl sampler caching layer
  * TODO: Implement mtl sampler async operations
  * TODO: Add mtl sampler GPU integration

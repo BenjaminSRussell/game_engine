@@ -4,6 +4,7 @@
 #include "mtl_advanced_rendering.h"
 #include "core/logger.h"
 #include <Foundation/Foundation.h>
+#include <mach/mach_time.h>
 
 // Global performance tracking
 static MTLPerformanceStats g_performanceStats = {0};
@@ -36,7 +37,6 @@ bool mtl_advanced_renderer_init(MTLAdvancedRenderer* renderer, id<MTLDevice> dev
     depthDescriptor.depthCompareFunction = MTLCompareFunctionLess;
     depthDescriptor.depthWriteEnabled = YES;
     renderer->depthStencilState = [device newDepthStencilStateWithDescriptor:depthDescriptor];
-    [depthDescriptor release];
     
     if (!renderer->depthStencilState) {
         LOG_ERROR("Failed to create depth stencil state");
@@ -52,32 +52,28 @@ void mtl_advanced_renderer_cleanup(MTLAdvancedRenderer* renderer) {
     if (!renderer) return;
     
     if (renderer->commandQueue) {
-        [renderer->commandQueue release];
+        // ARC managed
         renderer->commandQueue = nil;
     }
     
     if (renderer->pipelineState) {
-        [renderer->pipelineState release];
+        // ARC managed
         renderer->pipelineState = nil;
     }
     
     if (renderer->depthStencilState) {
-        [renderer->depthStencilState release];
         renderer->depthStencilState = nil;
     }
     
     if (renderer->depthTexture) {
-        [renderer->depthTexture release];
         renderer->depthTexture = nil;
     }
     
     if (renderer->colorTexture) {
-        [renderer->colorTexture release];
         renderer->colorTexture = nil;
     }
     
     if (renderer->renderPassDescriptor) {
-        [renderer->renderPassDescriptor release];
         renderer->renderPassDescriptor = nil;
     }
     
@@ -149,27 +145,27 @@ void mtl_raytracing_cleanup(MTLRayTracingContext* context) {
     if (!context) return;
     
     if (context->accelerationStructure) {
-        [context->accelerationStructure release];
+        // ARC managed
         context->accelerationStructure = nil;
     }
     
     if (context->raygenBuffer) {
-        [context->raygenBuffer release];
+        // ARC managed
         context->raygenBuffer = nil;
     }
     
     if (context->missBuffer) {
-        [context->missBuffer release];
+        // ARC managed
         context->missBuffer = nil;
     }
     
     if (context->hitGroupBuffer) {
-        [context->hitGroupBuffer release];
+        // ARC managed
         context->hitGroupBuffer = nil;
     }
     
     if (context->raytracingPipeline) {
-        [context->raytracingPipeline release];
+        // ARC managed
         context->raytracingPipeline = nil;
     }
     
@@ -209,7 +205,7 @@ void mtl_vrs_cleanup(MTLVariableRateShading* vrs) {
     if (!vrs) return;
     
     if (vrs->shadingRateTexture) {
-        [vrs->shadingRateTexture release];
+        // ARC managed
         vrs->shadingRateTexture = nil;
     }
     
