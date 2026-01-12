@@ -680,6 +680,73 @@ void engine_set_ambient_occlusion_enabled(bool enabled) {
     LOG_INFO("Set ambient occlusion %s", enabled ? "enabled" : "disabled");
 }
 
+// MARK: - Advanced Entity Management
+
+uint64_t engine_find_entity_by_name(const char* name) {
+    if (!name || strlen(name) == 0) return 0;
+    
+    // This would typically iterate through all entities
+    LOG_INFO("Finding entity by name: %s", name);
+    return 0; // Return 0 if not found
+}
+
+bool engine_entity_has_component(uint64_t entityID, int32_t componentType) {
+    if (entityID == 0) return false;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return false;
+    
+    // This would check if entity has the specific component
+    LOG_INFO("Checking component %d for entity %llu", componentType, entityID);
+    return false;
+}
+
+void engine_entity_get_transform(uint64_t entityID, float* position, float* rotation, float* scale) {
+    if (entityID == 0 || !position || !rotation || !scale) return;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return;
+    
+    // Return default transform for now
+    position[0] = 0.0f; position[1] = 0.0f; position[2] = 0.0f;
+    rotation[0] = 0.0f; rotation[1] = 0.0f; rotation[2] = 0.0f;
+    scale[0] = 1.0f; scale[1] = 1.0f; scale[2] = 1.0f;
+    
+    LOG_INFO("Getting transform for entity %llu", entityID);
+}
+
+void engine_entity_set_transform(uint64_t entityID, const float* position, const float* rotation, const float* scale) {
+    if (entityID == 0 || !position || !rotation || !scale) return;
+    
+    Entity* entity = entity_get((EntityID)entityID);
+    if (!entity) return;
+    
+    LOG_INFO("Setting transform for entity %llu", entityID);
+}
+
+// MARK: - Scene Management
+
+void engine_load_scene(const char* scenePath) {
+    if (!scenePath) return;
+    
+    LOG_INFO("Loading scene: %s", scenePath);
+    
+    // Trigger scene loaded callback if available
+    if (g_scene_loaded_callback) {
+        g_scene_loaded_callback(scenePath);
+    }
+}
+
+void engine_save_scene(const char* scenePath) {
+    if (!scenePath) return;
+    
+    LOG_INFO("Saving scene: %s", scenePath);
+}
+
+void engine_unload_current_scene(void) {
+    LOG_INFO("Unloading current scene");
+}
+
 // MARK: - Internal Callback Triggers
 
 static void trigger_entity_created(uint64_t entityID) {

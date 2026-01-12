@@ -1000,7 +1000,28 @@ func engine_set_bounding_boxes_enabled(_ enabled: Bool)
 
 @_silgen_name("engine_set_performance_profiling_enabled")
 func engine_set_performance_profiling_enabled(_ enabled: Bool)
-func engine_set_post_processing_enabled(_ enabled: Bool)
 
-@_silgen_name("engine_set_vsync_enabled")
-func engine_set_vsync_enabled(_ enabled: Bool)
+// MARK: - Advanced Entity Management
+
+@_silgen_name("engine_find_entity_by_name")
+func engine_find_entity_by_name(_ name: UnsafePointer<CChar>) -> UInt64
+
+@_silgen_name("engine_entity_has_component")
+func engine_entity_has_component(_ entityID: UInt64, _ componentType: Int32) -> Bool
+
+@_silgen_name("engine_entity_get_transform")
+func engine_entity_get_transform(_ entityID: UInt64, _ position: UnsafeMutablePointer<Float>, _ rotation: UnsafeMutablePointer<Float>, _ scale: UnsafeMutablePointer<Float>)
+
+@_silgen_name("engine_entity_set_transform")
+func engine_entity_set_transform(_ entityID: UInt64, _ position: UnsafePointer<Float>, _ rotation: UnsafePointer<Float>, _ scale: UnsafePointer<Float>)
+
+// MARK: - Scene Management
+
+@_silgen_name("engine_load_scene")
+func engine_load_scene(_ scenePath: UnsafePointer<CChar>)
+
+@_silgen_name("engine_save_scene")
+func engine_save_scene(_ scenePath: UnsafePointer<CChar>)
+
+@_silgen_name("engine_unload_current_scene")
+func engine_unload_current_scene()

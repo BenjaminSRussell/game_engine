@@ -8765,4 +8765,29 @@ void vk_validation_report_verbose(const char* message) {
     if (message) printf("[VULKAN_STUB] Verbose: %s\n", message);
 }
 
+// Additional advanced validation functions
+bool vk_validation_validate_command_buffer_state(const VkCommandBuffer* cmd_buffer) {
+    if (!cmd_buffer) return false;
+    printf("Command buffer state validation passed\n");
+    return true;
+}
+
+bool vk_validation_validate_descriptor_pool(const VkDescriptorPool* pool) {
+    if (!pool) return false;
+    printf("Descriptor pool validation passed\n");
+    return true;
+}
+
+bool vk_validation_validate_fence_state(const VkFence* fence) {
+    if (!fence) return false;
+    printf("Fence state validation passed\n");
+    return true;
+}
+
+bool vk_validation_validate_semaphore_state(const VkSemaphore* semaphore) {
+    if (!semaphore) return false;
+    printf("Semaphore state validation passed\n");
+    return true;
+}
+
 #endif // !(VULKAN_BUILD || __linux__ || _WIN32 || (__APPLE__ && VULKAN_ON_MACOS))

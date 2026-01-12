@@ -153,6 +153,17 @@ void engine_set_wireframe_overlay_enabled(bool enabled);
 void engine_set_bounding_boxes_enabled(bool enabled);
 void engine_set_performance_profiling_enabled(bool enabled);
 
+// Advanced Entity Management
+uint64_t engine_find_entity_by_name(const char* name);
+bool engine_entity_has_component(uint64_t entityID, int32_t componentType);
+void engine_entity_get_transform(uint64_t entityID, float* position, float* rotation, float* scale);
+void engine_entity_set_transform(uint64_t entityID, const float* position, const float* rotation, const float* scale);
+
+// Scene Management
+void engine_load_scene(const char* scenePath);
+void engine_save_scene(const char* scenePath);
+void engine_unload_current_scene(void);
+
 #ifdef __cplusplus
 }
 #endif
