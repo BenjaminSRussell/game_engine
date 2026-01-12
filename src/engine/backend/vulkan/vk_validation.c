@@ -1,3 +1,7 @@
+// Vulkan validation layer integration
+// Only compile if Vulkan is available or if explicitly building for Vulkan
+#if defined(VULKAN_BUILD) || defined(__linux__) || defined(_WIN32) || (defined(__APPLE__) && defined(VULKAN_ON_MACOS))
+
 #include <vulkan/vulkan.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,23 +60,23 @@ typedef struct vk_validation_manager {
     VkDebugUtilsMessengerEXT default_messenger;
     
     vk_validation_layer_t layers[VK_MAX_VALIDATION_LAYERS];
-    u32 layer_count;
-    u32 enabled_layer_count;
+    uint32_t layer_count;
+    uint32_t enabled_layer_count;
     
     vk_debug_callback_t callbacks[VK_MAX_DEBUG_CALLBACKS];
-    u32 callback_count;
+    uint32_t callback_count;
     
     // Debug message buffer
     char debug_messages[VK_MAX_DEBUG_MESSAGES][512];
-    u32 debug_message_count;
-    u32 current_message_index;
+    uint32_t debug_message_count;
+    uint32_t current_message_index;
     
     // Statistics
-    u32 total_debug_messages;
-    u32 error_count;
-    u32 warning_count;
-    u32 info_count;
-    u32 verbose_count;
+    uint32_t total_debug_messages;
+    uint32_t error_count;
+    uint32_t warning_count;
+    uint32_t info_count;
+    uint32_t verbose_count;
     
     // Thread safety
     pthread_mutex_t validation_mutex;
@@ -88,10 +92,10 @@ typedef struct vk_validation_manager {
     
     // Performance tracking
     clock_t start_time;
-    u32 callbacks_created;
-    u32 callbacks_destroyed;
-    u32 layers_enabled;
-    u32 layers_disabled;
+    uint32_t callbacks_created;
+    uint32_t callbacks_destroyed;
+    uint32_t layers_enabled;
+    uint32_t layers_disabled;
 } vk_validation_manager_t;
 
 static vk_validation_manager_t g_validation_manager = {0};
@@ -105,7 +109,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debug_callback(
     
     // Store debug message
     if (g_validation_manager.debug_message_count < VK_MAX_DEBUG_MESSAGES) {
-        u32 index = g_validation_manager.current_message_index;
+        uint32_t index = g_validation_manager.current_message_index;
         char* message = g_validation_manager.debug_messages[index];
         
         snprintf(message, 512, "[%s] %s (Object: %s)",
@@ -181,7 +185,7 @@ static void add_validation_layer(const VkLayerProperties* properties) {
 static bool is_validation_layer_supported(const char* layer_name) {
     if (!layer_name) return false;
     
-    for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+    for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
         if (strcmp(g_validation_manager.layers[i].name, layer_name) == 0) {
             return g_validation_manager.layers[i].is_available;
         }
@@ -315,7 +319,7 @@ static void unlock_validation_manager(void) {
 
 // Check if validation layers are available
 static bool check_validation_layers_available(void) {
-    u32 layer_count = 0;
+    uint32_t layer_count = 0;
     vkEnumerateInstanceLayerProperties(&layer_count, NULL);
     
     if (layer_count == 0) {
@@ -337,7 +341,7 @@ static bool check_validation_layers_available(void) {
     }
     
     printf("Available validation layers:\n");
-    for (u32 i = 0; i < layer_count; i++) {
+    for (uint32_t i = 0; i < layer_count; i++) {
         printf("  - %s (v%u.%u.%u)\n", 
                available_layers[i].layerName,
                VK_VERSION_MAJOR(available_layers[i].specVersion),
@@ -416,7 +420,7 @@ bool vk_validation_manager_init(VkInstance instance, bool enable_validation) {
         }
         
         // Enable standard validation layers
-        for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+        for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
             if (strcmp(g_validation_manager.layers[i].name, "VK_LAYER_KHRONOS_validation") == 0 ||
                 strcmp(g_validation_manager.layers[i].name, "VK_LAYER_LUNARG_standard_validation") == 0) {
                 g_validation_manager.layers[i].is_enabled = true;
@@ -471,7 +475,7 @@ void vk_validation_manager_cleanup(void) {
     }
     
     // Destroy all debug callbacks
-    for (u32 i = 0; i < g_validation_manager.callback_count; i++) {
+    for (uint32_t i = 0; i < g_validation_manager.callback_count; i++) {
         if (g_validation_manager.callbacks[i].is_active && g_validation_manager.callbacks[i].handle != VK_NULL_HANDLE) {
             vkDestroyDebugUtilsMessengerEXT(g_validation_manager.instance, g_validation_manager.callbacks[i].handle, NULL);
             g_validation_manager.callbacks_destroyed++;
@@ -511,7 +515,7 @@ void vk_validation_manager_cleanup(void) {
 }
 
 // Create debug callback
-u32 vk_validation_create_debug_callback(const VkDebugUtilsMessengerCreateInfoEXT* create_info, PFN_vkDebugUtilsMessengerCallbackEXT callback_func, void* user_data) {
+uint32_t vk_validation_create_debug_callback(const VkDebugUtilsMessengerCreateInfoEXT* create_info, PFN_vkDebugUtilsMessengerCallbackEXT callback_func, void* user_data) {
     if (!g_validation_manager.instance || !g_validation_manager.debug_utils_available) {
         printf("Error: Validation manager not initialized or debug utils unavailable\n");
         return 0;
@@ -530,7 +534,7 @@ u32 vk_validation_create_debug_callback(const VkDebugUtilsMessengerCreateInfoEXT
         return 0;
     }
     
-    u32 callback_id = g_validation_manager.callback_count + 1;
+    uint32_t callback_id = g_validation_manager.callback_count + 1;
     vk_debug_callback_t* callback = &g_validation_manager.callbacks[g_validation_manager.callback_count];
     
     VkDebugUtilsMessengerCreateInfoEXT messenger_info = {0};
@@ -570,7 +574,7 @@ u32 vk_validation_create_debug_callback(const VkDebugUtilsMessengerCreateInfoEXT
 }
 
 // Destroy debug callback
-bool vk_validation_destroy_debug_callback(u32 callback_id) {
+bool vk_validation_destroy_debug_callback(uint32_t callback_id) {
     if (!g_validation_manager.instance || callback_id == 0) {
         return false;
     }
@@ -599,13 +603,13 @@ bool vk_validation_destroy_debug_callback(u32 callback_id) {
 }
 
 // Get enabled validation layers
-bool vk_validation_get_enabled_layers(const char** layer_names, u32* layer_count) {
+bool vk_validation_get_enabled_layers(const char** layer_names, uint32_t* layer_count) {
     if (!layer_names || !layer_count) {
         return false;
     }
     
-    u32 count = 0;
-    for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
         if (g_validation_manager.layers[i].is_enabled) {
             layer_names[count++] = g_validation_manager.layers[i].name;
         }
@@ -623,7 +627,7 @@ bool vk_validation_enable_layer(const char* layer_name) {
     
     lock_validation_manager();
     
-    for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+    for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
         if (strcmp(g_validation_manager.layers[i].name, layer_name) == 0) {
             if (!g_validation_manager.layers[i].is_enabled) {
                 g_validation_manager.layers[i].is_enabled = true;
@@ -651,7 +655,7 @@ bool vk_validation_disable_layer(const char* layer_name) {
     
     lock_validation_manager();
     
-    for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+    for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
         if (strcmp(g_validation_manager.layers[i].name, layer_name) == 0) {
             if (g_validation_manager.layers[i].is_enabled) {
                 g_validation_manager.layers[i].is_enabled = false;
@@ -672,17 +676,17 @@ bool vk_validation_disable_layer(const char* layer_name) {
 }
 
 // Get debug message
-const char* vk_validation_get_debug_message(u32 message_index) {
+const char* vk_validation_get_debug_message(uint32_t message_index) {
     if (message_index >= g_validation_manager.debug_message_count) {
         return NULL;
     }
     
-    u32 index = (g_validation_manager.current_message_index - 1 - message_index + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
+    uint32_t index = (g_validation_manager.current_message_index - 1 - message_index + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
     return g_validation_manager.debug_messages[index];
 }
 
 // Get debug message count
-u32 vk_validation_get_debug_message_count(void) {
+uint32_t vk_validation_get_debug_message_count(void) {
     return g_validation_manager.debug_message_count;
 }
 
@@ -694,7 +698,7 @@ void vk_validation_clear_debug_messages(void) {
 }
 
 // Get statistics
-void vk_validation_get_stats(u32* total_debug_messages, u32* error_count, u32* warning_count, u32* info_count, u32* verbose_count) {
+void vk_validation_get_stats(uint32_t* total_debug_messages, uint32_t* error_count, uint32_t* warning_count, uint32_t* info_count, uint32_t* verbose_count) {
     if (total_debug_messages) *total_debug_messages = g_validation_manager.total_debug_messages;
     if (error_count) *error_count = g_validation_manager.error_count;
     if (warning_count) *warning_count = g_validation_manager.warning_count;
@@ -857,7 +861,7 @@ void vk_validation_reset_statistics(void) {
 }
 
 // Get performance statistics
-void vk_validation_get_performance_stats(double* runtime_seconds, u32* callbacks_created, u32* callbacks_destroyed) {
+void vk_validation_get_performance_stats(double* runtime_seconds, uint32_t* callbacks_created, uint32_t* callbacks_destroyed) {
     if (runtime_seconds) {
         clock_t current_time = clock();
         *runtime_seconds = ((double)(current_time - g_validation_manager.start_time)) / CLOCKS_PER_SEC;
@@ -881,8 +885,8 @@ bool vk_validation_dump_messages_to_file(const char* filename) {
     fprintf(file, "=== Vulkan Validation Messages Dump ===\n");
     fprintf(file, "Total messages: %u\n\n", g_validation_manager.debug_message_count);
     
-    for (u32 i = 0; i < g_validation_manager.debug_message_count; i++) {
-        u32 index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
+    for (uint32_t i = 0; i < g_validation_manager.debug_message_count; i++) {
+        uint32_t index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
         fprintf(file, "[%u] %s\n", i, g_validation_manager.debug_messages[index]);
     }
     
@@ -901,7 +905,7 @@ bool vk_validation_get_layer_properties(const char* layer_name, VkLayerPropertie
     
     lock_validation_manager();
     
-    for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+    for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
         if (strcmp(g_validation_manager.layers[i].name, layer_name) == 0) {
             *properties = g_validation_manager.layers[i].properties;
             unlock_validation_manager();
@@ -914,13 +918,13 @@ bool vk_validation_get_layer_properties(const char* layer_name, VkLayerPropertie
 }
 
 // Get all available layers
-u32 vk_validation_get_all_layers(const char** layer_names, u32 max_count) {
+uint32_t vk_validation_get_all_layers(const char** layer_names, uint32_t max_count) {
     if (!layer_names || max_count == 0) return 0;
     
     lock_validation_manager();
     
-    u32 count = 0;
-    for (u32 i = 0; i < g_validation_manager.layer_count && count < max_count; i++) {
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < g_validation_manager.layer_count && count < max_count; i++) {
         layer_names[count++] = g_validation_manager.layers[i].name;
     }
     
@@ -934,7 +938,7 @@ bool vk_validation_is_layer_enabled(const char* layer_name) {
     
     lock_validation_manager();
     
-    for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+    for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
         if (strcmp(g_validation_manager.layers[i].name, layer_name) == 0) {
             bool enabled = g_validation_manager.layers[i].is_enabled;
             unlock_validation_manager();
@@ -947,11 +951,11 @@ bool vk_validation_is_layer_enabled(const char* layer_name) {
 }
 
 // Enable all validation layers
-u32 vk_validation_enable_all_layers(void) {
+uint32_t vk_validation_enable_all_layers(void) {
     lock_validation_manager();
     
-    u32 enabled_count = 0;
-    for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+    uint32_t enabled_count = 0;
+    for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
         if (!g_validation_manager.layers[i].is_enabled) {
             g_validation_manager.layers[i].is_enabled = true;
             g_validation_manager.enabled_layer_count++;
@@ -966,11 +970,11 @@ u32 vk_validation_enable_all_layers(void) {
 }
 
 // Disable all validation layers
-u32 vk_validation_disable_all_layers(void) {
+uint32_t vk_validation_disable_all_layers(void) {
     lock_validation_manager();
     
-    u32 disabled_count = 0;
-    for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+    uint32_t disabled_count = 0;
+    for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
         if (g_validation_manager.layers[i].is_enabled) {
             g_validation_manager.layers[i].is_enabled = false;
             g_validation_manager.enabled_layer_count--;
@@ -985,7 +989,7 @@ u32 vk_validation_disable_all_layers(void) {
 }
 
 // Get callback info
-bool vk_validation_get_callback_info(u32 callback_id, VkDebugUtilsMessengerCreateInfoEXT* info) {
+bool vk_validation_get_callback_info(uint32_t callback_id, VkDebugUtilsMessengerCreateInfoEXT* info) {
     if (!info || callback_id == 0 || callback_id > g_validation_manager.callback_count) {
         return false;
     }
@@ -1005,7 +1009,7 @@ bool vk_validation_get_callback_info(u32 callback_id, VkDebugUtilsMessengerCreat
 }
 
 // Set callback user data
-bool vk_validation_set_callback_user_data(u32 callback_id, void* user_data) {
+bool vk_validation_set_callback_user_data(uint32_t callback_id, void* user_data) {
     if (callback_id == 0 || callback_id > g_validation_manager.callback_count) {
         return false;
     }
@@ -1025,7 +1029,7 @@ bool vk_validation_set_callback_user_data(u32 callback_id, void* user_data) {
 }
 
 // Get callback user data
-void* vk_validation_get_callback_user_data(u32 callback_id) {
+void* vk_validation_get_callback_user_data(uint32_t callback_id) {
     if (callback_id == 0 || callback_id > g_validation_manager.callback_count) {
         return NULL;
     }
@@ -1040,7 +1044,7 @@ void* vk_validation_get_callback_user_data(u32 callback_id) {
 }
 
 // Check if callback is active
-bool vk_validation_is_callback_active(u32 callback_id) {
+bool vk_validation_is_callback_active(uint32_t callback_id) {
     if (callback_id == 0 || callback_id > g_validation_manager.callback_count) {
         return false;
     }
@@ -1054,11 +1058,11 @@ bool vk_validation_is_callback_active(u32 callback_id) {
 }
 
 // Get active callback count
-u32 vk_validation_get_active_callback_count(void) {
+uint32_t vk_validation_get_active_callback_count(void) {
     lock_validation_manager();
     
-    u32 active_count = 0;
-    for (u32 i = 0; i < g_validation_manager.callback_count; i++) {
+    uint32_t active_count = 0;
+    for (uint32_t i = 0; i < g_validation_manager.callback_count; i++) {
         if (g_validation_manager.callbacks[i].is_active) {
             active_count++;
         }
@@ -1069,11 +1073,11 @@ u32 vk_validation_get_active_callback_count(void) {
 }
 
 // Destroy all callbacks
-u32 vk_validation_destroy_all_callbacks(void) {
+uint32_t vk_validation_destroy_all_callbacks(void) {
     lock_validation_manager();
     
-    u32 destroyed_count = 0;
-    for (u32 i = 0; i < g_validation_manager.callback_count; i++) {
+    uint32_t destroyed_count = 0;
+    for (uint32_t i = 0; i < g_validation_manager.callback_count; i++) {
         if (g_validation_manager.callbacks[i].is_active) {
             cleanup_debug_callback(&g_validation_manager.callbacks[i]);
             g_validation_manager.callbacks_destroyed++;
@@ -1091,7 +1095,7 @@ void vk_validation_print_enabled_layers(void) {
     lock_validation_manager();
     
     printf("Enabled validation layers:\n");
-    for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+    for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
         if (g_validation_manager.layers[i].is_enabled) {
             printf("  - %s\n", g_validation_manager.layers[i].name);
         }
@@ -1105,7 +1109,7 @@ void vk_validation_print_available_layers(void) {
     lock_validation_manager();
     
     printf("Available validation layers:\n");
-    for (u32 i = 0; i < g_validation_manager.layer_count; i++) {
+    for (uint32_t i = 0; i < g_validation_manager.layer_count; i++) {
         printf("  - %s (%s)\n", 
                g_validation_manager.layers[i].name,
                g_validation_manager.layers[i].is_enabled ? "ENABLED" : "DISABLED");
@@ -1183,7 +1187,7 @@ bool vk_validation_validate_instance_creation(const VkInstanceCreateInfo* create
         return true;
     }
     
-    for (u32 i = 0; i < create_info->enabledLayerCount; i++) {
+    for (uint32_t i = 0; i < create_info->enabledLayerCount; i++) {
         const char* layer_name = create_info->ppEnabledLayerNames[i];
         if (!is_validation_layer_supported(layer_name)) {
             printf("Error: Requested layer not available: %s\n", layer_name);
@@ -1195,17 +1199,17 @@ bool vk_validation_validate_instance_creation(const VkInstanceCreateInfo* create
 }
 
 // Get validation layer count
-u32 vk_validation_get_layer_count(void) {
+uint32_t vk_validation_get_layer_count(void) {
     return g_validation_manager.layer_count;
 }
 
 // Get enabled layer count
-u32 vk_validation_get_enabled_layer_count(void) {
+uint32_t vk_validation_get_enabled_layer_count(void) {
     return g_validation_manager.enabled_layer_count;
 }
 
 // Get callback count
-u32 vk_validation_get_callback_count(void) {
+uint32_t vk_validation_get_callback_count(void) {
     return g_validation_manager.callback_count;
 }
 
@@ -1244,14 +1248,14 @@ bool vk_validation_set_type_filter(VkDebugUtilsMessageTypeFlagsEXT allowed_types
 }
 
 // Get message by severity
-u32 vk_validation_get_messages_by_severity(VkDebugUtilsMessageSeverityFlagBitsEXT severity, const char** messages, u32 max_count) {
+uint32_t vk_validation_get_messages_by_severity(VkDebugUtilsMessageSeverityFlagBitsEXT severity, const char** messages, uint32_t max_count) {
     if (!messages || max_count == 0) return 0;
     
     lock_validation_manager();
     
-    u32 count = 0;
-    for (u32 i = 0; i < g_validation_manager.debug_message_count && count < max_count; i++) {
-        u32 index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < g_validation_manager.debug_message_count && count < max_count; i++) {
+        uint32_t index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
         // Note: Would need to parse severity from stored messages
         // For now, return all messages
         messages[count++] = g_validation_manager.debug_messages[index];
@@ -1262,14 +1266,14 @@ u32 vk_validation_get_messages_by_severity(VkDebugUtilsMessageSeverityFlagBitsEX
 }
 
 // Filter messages by pattern
-u32 vk_validation_filter_messages(const char* pattern, const char** filtered_messages, u32 max_count) {
+uint32_t vk_validation_filter_messages(const char* pattern, const char** filtered_messages, uint32_t max_count) {
     if (!pattern || !filtered_messages || max_count == 0) return 0;
     
     lock_validation_manager();
     
-    u32 count = 0;
-    for (u32 i = 0; i < g_validation_manager.debug_message_count && count < max_count; i++) {
-        u32 index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < g_validation_manager.debug_message_count && count < max_count; i++) {
+        uint32_t index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
         const char* message = g_validation_manager.debug_messages[index];
         
         if (strstr(message, pattern)) {
@@ -1282,17 +1286,17 @@ u32 vk_validation_filter_messages(const char* pattern, const char** filtered_mes
 }
 
 // Get error messages only
-u32 vk_validation_get_error_messages(const char** error_messages, u32 max_count) {
+uint32_t vk_validation_get_error_messages(const char** error_messages, uint32_t max_count) {
     return vk_validation_filter_messages("[ERROR]", error_messages, max_count);
 }
 
 // Get warning messages only  
-u32 vk_validation_get_warning_messages(const char** warning_messages, u32 max_count) {
+uint32_t vk_validation_get_warning_messages(const char** warning_messages, uint32_t max_count) {
     return vk_validation_filter_messages("[WARNING]", warning_messages, max_count);
 }
 
 // Create custom debug messenger with filtering
-u32 vk_validation_create_filtered_callback(const VkDebugUtilsMessengerCreateInfoEXT* create_info,
+uint32_t vk_validation_create_filtered_callback(const VkDebugUtilsMessengerCreateInfoEXT* create_info,
                                           VkDebugUtilsMessageSeverityFlagsEXT severity_filter,
                                           VkDebugUtilsMessageTypeFlagsEXT type_filter,
                                           PFN_vkDebugUtilsMessengerCallbackEXT callback_func, void* user_data) {
@@ -1309,7 +1313,7 @@ u32 vk_validation_create_filtered_callback(const VkDebugUtilsMessengerCreateInfo
         return 0;
     }
     
-    u32 callback_id = g_validation_manager.callback_count + 1;
+    uint32_t callback_id = g_validation_manager.callback_count + 1;
     vk_debug_callback_t* callback = &g_validation_manager.callbacks[g_validation_manager.callback_count];
     
     VkDebugUtilsMessengerCreateInfoEXT messenger_info = {0};
@@ -1417,7 +1421,7 @@ size_t vk_validation_get_peak_memory_usage(void) {
 // Advanced configuration
 
 // Set maximum message count
-bool vk_validation_set_max_message_count(u32 max_count) {
+bool vk_validation_set_max_message_count(uint32_t max_count) {
     if (max_count == 0 || max_count > VK_MAX_DEBUG_MESSAGES) {
         printf("Error: Invalid max message count: %u (max: %u)\n", max_count, VK_MAX_DEBUG_MESSAGES);
         return false;
@@ -1433,7 +1437,7 @@ bool vk_validation_set_max_message_count(u32 max_count) {
 }
 
 // Enable/disable automatic message clearing
-void vk_validation_set_auto_clear(bool enabled, u32 threshold) {
+void vk_validation_set_auto_clear(bool enabled, uint32_t threshold) {
     lock_validation_manager();
     
     printf("Set auto clear to %s (threshold: %u) (implementation pending)\n", enabled ? "enabled" : "disabled", threshold);
@@ -1466,7 +1470,7 @@ void vk_validation_set_colored_output(bool enabled) {
 // Validation layer extensions
 
 // Check for layer extensions
-bool vk_validation_check_layer_extensions(const char* layer_name, const char** extension_names, u32 extension_count) {
+bool vk_validation_check_layer_extensions(const char* layer_name, const char** extension_names, uint32_t extension_count) {
     if (!layer_name || !extension_names || extension_count == 0) return false;
     
     lock_validation_manager();
@@ -1478,7 +1482,7 @@ bool vk_validation_check_layer_extensions(const char* layer_name, const char** e
 }
 
 // Get layer extension properties
-u32 vk_validation_get_layer_extensions(const char* layer_name, VkExtensionProperties* extensions, u32 max_count) {
+uint32_t vk_validation_get_layer_extensions(const char* layer_name, VkExtensionProperties* extensions, uint32_t max_count) {
     if (!layer_name || !extensions || max_count == 0) return 0;
     
     lock_validation_manager();
@@ -1533,7 +1537,7 @@ bool vk_validation_insert_debug_label(VkCommandBuffer command_buffer, const char
 // Validation state queries
 
 // Get validation state summary
-void vk_validation_get_state_summary(bool* is_healthy, u32* issue_count, const char** primary_issue) {
+void vk_validation_get_state_summary(bool* is_healthy, uint32_t* issue_count, const char** primary_issue) {
     if (!is_healthy) return;
     
     lock_validation_manager();
@@ -1541,7 +1545,7 @@ void vk_validation_get_state_summary(bool* is_healthy, u32* issue_count, const c
     *is_healthy = g_validation_manager.error_count == 0;
     if (issue_count) *issue_count = g_validation_manager.error_count;
     if (primary_issue && g_validation_manager.debug_message_count > 0) {
-        u32 index = (g_validation_manager.current_message_index - 1 + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
+        uint32_t index = (g_validation_manager.current_message_index - 1 + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
         *primary_issue = g_validation_manager.debug_messages[index];
     }
     
@@ -1553,7 +1557,7 @@ bool vk_validation_has_issues_of_type(const char* issue_pattern) {
     if (!issue_pattern) return false;
     
     const char* messages[16];
-    u32 count = vk_validation_filter_messages(issue_pattern, messages, 16);
+    uint32_t count = vk_validation_filter_messages(issue_pattern, messages, 16);
     return count > 0;
 }
 
@@ -1570,8 +1574,8 @@ bool vk_validation_perform_health_check(void) {
     }
     
     // Check callback health
-    u32 active_callbacks = 0;
-    for (u32 i = 0; i < g_validation_manager.callback_count; i++) {
+    uint32_t active_callbacks = 0;
+    for (uint32_t i = 0; i < g_validation_manager.callback_count; i++) {
         if (g_validation_manager.callbacks[i].is_active) {
             active_callbacks++;
         }
@@ -1618,8 +1622,8 @@ bool vk_validation_generate_report(const char* filename, bool include_details) {
     
     if (include_details) {
         fprintf(file, "\n## Message Details\n\n");
-        for (u32 i = 0; i < g_validation_manager.debug_message_count; i++) {
-            u32 index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
+        for (uint32_t i = 0; i < g_validation_manager.debug_message_count; i++) {
+            uint32_t index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
             fprintf(file, "%u. %s\n", i + 1, g_validation_manager.debug_messages[index]);
         }
     }
@@ -1690,7 +1694,7 @@ bool vk_validation_validate_device_creation(VkPhysicalDevice physical_device, co
     }
     
     // Validate requested device extensions
-    for (u32 i = 0; i < create_info->enabledExtensionCount; i++) {
+    for (uint32_t i = 0; i < create_info->enabledExtensionCount; i++) {
         const char* extension_name = create_info->ppEnabledExtensionNames[i];
         printf("Validating device extension: %s\n", extension_name);
         // Would check against available extensions
@@ -1771,7 +1775,7 @@ bool vk_validation_validate_graphics_pipeline(const VkGraphicsPipelineCreateInfo
     bool has_vertex = false;
     bool has_fragment = false;
     
-    for (u32 i = 0; i < create_info->stageCount; i++) {
+    for (uint32_t i = 0; i < create_info->stageCount; i++) {
         if (create_info->pStages[i].stage == VK_SHADER_STAGE_VERTEX_BIT) {
             has_vertex = true;
         } else if (create_info->pStages[i].stage == VK_SHADER_STAGE_FRAGMENT_BIT) {
@@ -2064,13 +2068,13 @@ bool vk_validation_validate_command_buffer_state(VkCommandBuffer command_buffer,
 }
 
 // Validate descriptor set updates
-bool vk_validation_validate_descriptor_updates(const VkWriteDescriptorSet* descriptor_writes, u32 write_count) {
+bool vk_validation_validate_descriptor_updates(const VkWriteDescriptorSet* descriptor_writes, uint32_t write_count) {
     if (!descriptor_writes || write_count == 0) {
         printf("Error: No descriptor writes provided\n");
         return false;
     }
     
-    for (u32 i = 0; i < write_count; i++) {
+    for (uint32_t i = 0; i < write_count; i++) {
         if (descriptor_writes[i].sType != VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET) {
             printf("Error: Invalid sType in descriptor write %u\n", i);
             return false;
@@ -2087,9 +2091,9 @@ bool vk_validation_validate_descriptor_updates(const VkWriteDescriptorSet* descr
 }
 
 // Validate pipeline barriers
-bool vk_validation_validate_pipeline_barriers(const VkMemoryBarrier* memory_barriers, u32 memory_barrier_count,
-                                             const VkBufferMemoryBarrier* buffer_barriers, u32 buffer_barrier_count,
-                                             const VkImageMemoryBarrier* image_barriers, u32 image_barrier_count) {
+bool vk_validation_validate_pipeline_barriers(const VkMemoryBarrier* memory_barriers, uint32_t memory_barrier_count,
+                                             const VkBufferMemoryBarrier* buffer_barriers, uint32_t buffer_barrier_count,
+                                             const VkImageMemoryBarrier* image_barriers, uint32_t image_barrier_count) {
     // Validate memory barriers
     if (memory_barrier_count > 0 && !memory_barriers) {
         printf("Error: Memory barrier count > 0 but no barriers provided\n");
@@ -2139,7 +2143,7 @@ bool vk_validation_validate_render_pass_begin(const VkRenderPassBeginInfo* begin
 }
 
 // Validate drawing commands
-bool vk_validation_validate_draw_commands(u32 vertex_count, u32 instance_count, u32 first_vertex, u32 first_instance) {
+bool vk_validation_validate_draw_commands(uint32_t vertex_count, uint32_t instance_count, uint32_t first_vertex, uint32_t first_instance) {
     if (vertex_count == 0) {
         printf("Error: Vertex count cannot be zero\n");
         return false;
@@ -2155,7 +2159,7 @@ bool vk_validation_validate_draw_commands(u32 vertex_count, u32 instance_count, 
 }
 
 // Validate indexed drawing commands
-bool vk_validation_validate_indexed_draw_commands(u32 index_count, u32 instance_count, u32 first_index, i32 vertex_offset, u32 first_instance) {
+bool vk_validation_validate_indexed_draw_commands(uint32_t index_count, uint32_t instance_count, uint32_t first_index, i32 vertex_offset, uint32_t first_instance) {
     if (index_count == 0) {
         printf("Error: Index count cannot be zero\n");
         return false;
@@ -2225,15 +2229,15 @@ double vk_validation_analyze_overhead(void) {
 }
 
 // Get bottleneck analysis
-void vk_validation_get_bottleneck_analysis(u32* error_rate, u32* warning_rate, double* message_frequency) {
+void vk_validation_get_bottleneck_analysis(uint32_t* error_rate, uint32_t* warning_rate, double* message_frequency) {
     lock_validation_manager();
     
     clock_t current_time = clock();
     double duration = ((double)(current_time - g_validation_manager.start_time)) / CLOCKS_PER_SEC;
     
     if (duration > 0.0) {
-        if (error_rate) *error_rate = (u32)((double)g_validation_manager.error_count / duration);
-        if (warning_rate) *warning_rate = (u32)((double)g_validation_manager.warning_count / duration);
+        if (error_rate) *error_rate = (uint32_t)((double)g_validation_manager.error_count / duration);
+        if (warning_rate) *warning_rate = (uint32_t)((double)g_validation_manager.warning_count / duration);
         if (message_frequency) *message_frequency = (double)g_validation_manager.total_debug_messages / duration;
     } else {
         if (error_rate) *error_rate = 0;
@@ -2293,14 +2297,14 @@ bool vk_validation_save_preset(const char* preset_name) {
 }
 
 // Get available presets
-u32 vk_validation_get_available_presets(const char** preset_names, u32 max_count) {
+uint32_t vk_validation_get_available_presets(const char** preset_names, uint32_t max_count) {
     if (!preset_names || max_count == 0) return 0;
     
     const char* presets[] = {"debug", "release", "minimal"};
-    u32 preset_count = sizeof(presets) / sizeof(presets[0]);
+    uint32_t preset_count = sizeof(presets) / sizeof(presets[0]);
     
-    u32 count = 0;
-    for (u32 i = 0; i < preset_count && count < max_count; i++) {
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < preset_count && count < max_count; i++) {
         preset_names[count++] = presets[i];
     }
     
@@ -2347,14 +2351,14 @@ void vk_validation_send_to_debugger(const char* message, VkDebugUtilsMessageSeve
 // Advanced filtering and search
 
 // Search messages by content
-u32 vk_validation_search_messages(const char* search_term, const char** results, u32 max_results) {
+uint32_t vk_validation_search_messages(const char* search_term, const char** results, uint32_t max_results) {
     if (!search_term || !results || max_results == 0) return 0;
     
     lock_validation_manager();
     
-    u32 count = 0;
-    for (u32 i = 0; i < g_validation_manager.debug_message_count && count < max_results; i++) {
-        u32 index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < g_validation_manager.debug_message_count && count < max_results; i++) {
+        uint32_t index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
         const char* message = g_validation_manager.debug_messages[index];
         
         if (strstr(message, search_term)) {
@@ -2367,7 +2371,7 @@ u32 vk_validation_search_messages(const char* search_term, const char** results,
 }
 
 // Get messages in time range
-u32 vk_validation_get_messages_in_time_range(double start_time, double end_time, const char** results, u32 max_results) {
+uint32_t vk_validation_get_messages_in_time_range(double start_time, double end_time, const char** results, uint32_t max_results) {
     if (!results || max_results == 0) return 0;
     
     lock_validation_manager();
@@ -2394,8 +2398,8 @@ bool vk_validation_export_messages_csv(const char* filename) {
     
     fprintf(file, "Index,Timestamp,Severity,Message\n");
     
-    for (u32 i = 0; i < g_validation_manager.debug_message_count; i++) {
-        u32 index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
+    for (uint32_t i = 0; i < g_validation_manager.debug_message_count; i++) {
+        uint32_t index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
         const char* message = g_validation_manager.debug_messages[index];
         
         fprintf(file, "%u,%s,%s\n", i, "timestamp", message);
@@ -2423,8 +2427,8 @@ bool vk_validation_export_messages_xml(const char* filename) {
     fprintf(file, "<?xml version=\"1.0\"?>\n");
     fprintf(file, "<validation_messages>\n");
     
-    for (u32 i = 0; i < g_validation_manager.debug_message_count; i++) {
-        u32 index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
+    for (uint32_t i = 0; i < g_validation_manager.debug_message_count; i++) {
+        uint32_t index = (g_validation_manager.current_message_index - 1 - i + VK_MAX_DEBUG_MESSAGES) % VK_MAX_DEBUG_MESSAGES;
         const char* message = g_validation_manager.debug_messages[index];
         
         fprintf(file, "  <message index=\"%u\" timestamp=\"%s\">%s</message>\n", i, "timestamp", message);
@@ -2471,7 +2475,7 @@ bool vk_validation_self_test(void) {
     vk_validation_report_info("Self-test info message");
     
     // Test statistics
-    u32 total, errors, warnings, info, verbose;
+    uint32_t total, errors, warnings, info, verbose;
     vk_validation_get_stats(&total, &errors, &warnings, &info, &verbose);
     
     if (total == 0) {
@@ -2510,7 +2514,7 @@ bool vk_validation_validate_graphics_pipeline_full(const VkGraphicsPipelineCreat
     bool has_vertex = false;
     bool has_fragment = false;
     
-    for (u32 i = 0; i < create_info->stageCount; i++) {
+    for (uint32_t i = 0; i < create_info->stageCount; i++) {
         if (create_info->pStages[i].stage == VK_SHADER_STAGE_VERTEX_BIT) {
             has_vertex = true;
         } else if (create_info->pStages[i].stage == VK_SHADER_STAGE_FRAGMENT_BIT) {
@@ -2642,7 +2646,7 @@ bool vk_validation_validate_descriptor_set_layout_full(const VkDescriptorSetLayo
         return false;
     }
     
-    for (u32 i = 0; i < create_info->bindingCount; i++) {
+    for (uint32_t i = 0; i < create_info->bindingCount; i++) {
         const VkDescriptorSetLayoutBinding* binding = &create_info->pBindings[i];
         
         // Validate descriptor type
@@ -2713,7 +2717,7 @@ bool vk_validation_validate_descriptor_pool(const VkDescriptorPoolCreateInfo* cr
         return false;
     }
     
-    for (u32 i = 0; i < create_info->poolSizeCount; i++) {
+    for (uint32_t i = 0; i < create_info->poolSizeCount; i++) {
         if (create_info->pPoolSizes[i].descriptorCount == 0) {
             printf("Error: Descriptor count cannot be zero in pool size %u\n", i);
             return false;
@@ -2762,7 +2766,7 @@ bool vk_validation_validate_command_buffer_reset(VkCommandBuffer command_buffer)
 // Queue validation functions
 
 // Validate queue creation
-bool vk_validation_validate_queue_creation(VkDevice device, u32 queue_family_index, u32 queue_index) {
+bool vk_validation_validate_queue_creation(VkDevice device, uint32_t queue_family_index, uint32_t queue_index) {
     if (device == VK_NULL_HANDLE) {
         printf("Error: Invalid device\n");
         return false;
@@ -2773,13 +2777,13 @@ bool vk_validation_validate_queue_creation(VkDevice device, u32 queue_family_ind
 }
 
 // Validate queue submission
-bool vk_validation_validate_queue_submission(VkQueue queue, const VkSubmitInfo* submit_info, u32 submit_count) {
+bool vk_validation_validate_queue_submission(VkQueue queue, const VkSubmitInfo* submit_info, uint32_t submit_count) {
     if (!queue || !submit_info || submit_count == 0) {
         printf("Error: Invalid queue, submit info, or submit count\n");
         return false;
     }
     
-    for (u32 i = 0; i < submit_count; i++) {
+    for (uint32_t i = 0; i < submit_count; i++) {
         if (submit_info[i].sType != VK_STRUCTURE_TYPE_SUBMIT_INFO) {
             printf("Error: Invalid sType in submit info %u\n", i);
             return false;
@@ -2937,7 +2941,7 @@ bool vk_validation_validate_shader_specialization(const VkSpecializationInfo* sp
         return false;
     }
     
-    for (u32 i = 0; i < spec_info->mapEntryCount; i++) {
+    for (uint32_t i = 0; i < spec_info->mapEntryCount; i++) {
         const VkSpecializationMapEntry* entry = &spec_info->pMapEntries[i];
         
         if (entry->offset + entry->size > spec_info->dataSize) {
@@ -3132,7 +3136,7 @@ bool vk_validation_validate_pipeline_layout(const VkPipelineLayoutCreateInfo* cr
         return false;
     }
     
-    for (u32 i = 0; i < create_info->pushConstantRangeCount; i++) {
+    for (uint32_t i = 0; i < create_info->pushConstantRangeCount; i++) {
         const VkPushConstantRange* range = &create_info->pPushConstantRanges[i];
         
         if (range->size == 0) {
@@ -3288,7 +3292,7 @@ bool vk_validation_validate_physical_device_memory_properties(const VkPhysicalDe
     }
     
     // Validate memory types
-    for (u32 i = 0; i < properties->memoryTypeCount; i++) {
+    for (uint32_t i = 0; i < properties->memoryTypeCount; i++) {
         if (properties->memoryTypes[i].heapIndex >= properties->memoryHeapCount) {
             printf("Error: Memory type %u has invalid heap index\n", i);
             return false;
@@ -3300,13 +3304,13 @@ bool vk_validation_validate_physical_device_memory_properties(const VkPhysicalDe
 }
 
 // Validate physical device queue family properties
-bool vk_validation_validate_queue_family_properties(const VkQueueFamilyProperties* properties, u32 count) {
+bool vk_validation_validate_queue_family_properties(const VkQueueFamilyProperties* properties, uint32_t count) {
     if (!properties || count == 0) {
         printf("Error: Invalid queue family properties or count\n");
         return false;
     }
     
-    for (u32 i = 0; i < count; i++) {
+    for (uint32_t i = 0; i < count; i++) {
         if (properties[i].queueCount == 0) {
             printf("Warning: Queue family %u has 0 queues\n", i);
         }
@@ -3400,7 +3404,7 @@ bool vk_validation_validate_pipeline_vertex_input_state(const VkPipelineVertexIn
         return false;
     }
     
-    for (u32 i = 0; i < create_info->vertexBindingDescriptionCount; i++) {
+    for (uint32_t i = 0; i < create_info->vertexBindingDescriptionCount; i++) {
         const VkVertexInputBindingDescription* binding = &create_info->pVertexBindingDescriptions[i];
         
         if (binding->stride == 0) {
@@ -3420,7 +3424,7 @@ bool vk_validation_validate_pipeline_vertex_input_state(const VkPipelineVertexIn
         return false;
     }
     
-    for (u32 i = 0; i < create_info->vertexAttributeDescriptionCount; i++) {
+    for (uint32_t i = 0; i < create_info->vertexAttributeDescriptionCount; i++) {
         const VkVertexInputAttributeDescription* attribute = &create_info->pVertexAttributeDescriptions[i];
         
         if (attribute->format == VK_FORMAT_UNDEFINED) {
@@ -3555,7 +3559,7 @@ bool vk_validation_validate_pipeline_color_blend_state(const VkPipelineColorBlen
         return false;
     }
     
-    for (u32 i = 0; i < create_info->attachmentCount; i++) {
+    for (uint32_t i = 0; i < create_info->attachmentCount; i++) {
         const VkPipelineColorBlendAttachmentState* attachment = &create_info->pAttachments[i];
         
         if (attachment->colorWriteMask == 0) {
@@ -3589,7 +3593,7 @@ bool vk_validation_validate_pipeline_dynamic_state(const VkPipelineDynamicStateC
         return false;
     }
     
-    for (u32 i = 0; i < create_info->dynamicStateCount; i++) {
+    for (uint32_t i = 0; i < create_info->dynamicStateCount; i++) {
         if (create_info->pDynamicStates[i] == VK_DYNAMIC_STATE_MAX_ENUM) {
             printf("Error: Invalid dynamic state %u\n", i);
             return false;
@@ -3620,7 +3624,7 @@ bool vk_validation_validate_render_pass_full(const VkRenderPassCreateInfo* creat
         return false;
     }
     
-    for (u32 i = 0; i < create_info->attachmentCount; i++) {
+    for (uint32_t i = 0; i < create_info->attachmentCount; i++) {
         const VkAttachmentDescription* attachment = &create_info->pAttachments[i];
         
         if (attachment->format == VK_FORMAT_UNDEFINED) {
@@ -3643,7 +3647,7 @@ bool vk_validation_validate_render_pass_full(const VkRenderPassCreateInfo* creat
         return false;
     }
     
-    for (u32 i = 0; i < create_info->subpassCount; i++) {
+    for (uint32_t i = 0; i < create_info->subpassCount; i++) {
         const VkSubpassDescription* subpass = &create_info->pSubpasses[i];
         
         // Validate color attachments
@@ -3652,7 +3656,7 @@ bool vk_validation_validate_render_pass_full(const VkRenderPassCreateInfo* creat
             return false;
         }
         
-        for (u32 j = 0; j < subpass->colorAttachmentCount; j++) {
+        for (uint32_t j = 0; j < subpass->colorAttachmentCount; j++) {
             if (subpass->pColorAttachments[j].attachment >= create_info->attachmentCount) {
                 printf("Error: Color attachment %u in subpass %u references non-existent attachment\n", j, i);
                 return false;
@@ -3673,7 +3677,7 @@ bool vk_validation_validate_render_pass_full(const VkRenderPassCreateInfo* creat
         return false;
     }
     
-    for (u32 i = 0; i < create_info->dependencyCount; i++) {
+    for (uint32_t i = 0; i < create_info->dependencyCount; i++) {
         const VkSubpassDependency* dependency = &create_info->pDependencies[i];
         
         if (dependency->srcSubpass >= create_info->subpassCount && dependency->srcSubpass != VK_SUBPASS_EXTERNAL) {
@@ -3718,7 +3722,7 @@ bool vk_validation_validate_framebuffer_full(const VkFramebufferCreateInfo* crea
         return false;
     }
     
-    for (u32 i = 0; i < create_info->attachmentCount; i++) {
+    for (uint32_t i = 0; i < create_info->attachmentCount; i++) {
         if (create_info->pAttachments[i] == VK_NULL_HANDLE) {
             printf("Error: Framebuffer attachment %u is NULL\n", i);
             return false;
@@ -4233,7 +4237,7 @@ bool vk_validation_validate_graphics_pipeline(const VkGraphicsPipelineCreateInfo
     bool has_vertex_shader = false;
     bool has_fragment_shader = false;
     
-    for (u32 i = 0; i < create_info->stageCount; i++) {
+    for (uint32_t i = 0; i < create_info->stageCount; i++) {
         if (create_info->pStages[i].stage == VK_SHADER_STAGE_VERTEX_BIT) {
             has_vertex_shader = true;
         }
@@ -4309,7 +4313,7 @@ bool vk_validation_validate_descriptor_set_layout(const VkDescriptorSetLayoutCre
     }
     
     // Validate bindings
-    for (u32 i = 0; i < create_info->bindingCount; i++) {
+    for (uint32_t i = 0; i < create_info->bindingCount; i++) {
         const VkDescriptorSetLayoutBinding* binding = &create_info->pBindings[i];
         
         if (binding->descriptorCount == 0) {
@@ -4523,7 +4527,7 @@ bool vk_validation_validate_render_pass(const VkRenderPassCreateInfo* create_inf
     }
     
     // Validate attachments
-    for (u32 i = 0; i < create_info->attachmentCount; i++) {
+    for (uint32_t i = 0; i < create_info->attachmentCount; i++) {
         const VkAttachmentDescription* attachment = &create_info->pAttachments[i];
         
         if (attachment->format == VK_FORMAT_MAX_ENUM) {
@@ -4540,7 +4544,7 @@ bool vk_validation_validate_render_pass(const VkRenderPassCreateInfo* create_inf
     }
     
     // Validate subpasses
-    for (u32 i = 0; i < create_info->subpassCount; i++) {
+    for (uint32_t i = 0; i < create_info->subpassCount; i++) {
         const VkSubpassDescription* subpass = &create_info->pSubpasses[i];
         
         // Validate pipeline bind point
@@ -4550,7 +4554,7 @@ bool vk_validation_validate_render_pass(const VkRenderPassCreateInfo* create_inf
         }
         
         // Validate color attachments
-        for (u32 j = 0; j < subpass->colorAttachmentCount; j++) {
+        for (uint32_t j = 0; j < subpass->colorAttachmentCount; j++) {
             if (subpass->pColorAttachments[j].attachment >= create_info->attachmentCount) {
                 printf("Error: Color attachment %u in subpass %u references invalid attachment\n", j, i);
                 return false;
@@ -4566,7 +4570,7 @@ bool vk_validation_validate_render_pass(const VkRenderPassCreateInfo* create_inf
 
 // Validate framebuffer creation
 bool vk_validation_validate_framebuffer(const VkFramebufferCreateInfo* create_info, 
-                                       VkRenderPass render_pass, u32 width, u32 height) {
+                                       VkRenderPass render_pass, uint32_t width, uint32_t height) {
     if (!create_info || render_pass == VK_NULL_HANDLE) {
         printf("Error: Invalid parameters for framebuffer validation\n");
         return false;
@@ -4758,13 +4762,13 @@ bool vk_validation_validate_resource_bindings(VkCommandBuffer command_buffer) {
 
 // Validate memory barriers and synchronization
 bool vk_validation_validate_memory_barriers(const VkMemoryBarrier* memory_barriers, 
-                                          u32 barrier_count) {
+                                          uint32_t barrier_count) {
     if (!memory_barriers || barrier_count == 0) {
         printf("Error: Invalid memory barriers\n");
         return false;
     }
     
-    for (u32 i = 0; i < barrier_count; i++) {
+    for (uint32_t i = 0; i < barrier_count; i++) {
         if (memory_barriers[i].sType != VK_STRUCTURE_TYPE_MEMORY_BARRIER) {
             printf("Error: Invalid sType in memory barrier %u\n", i);
             return false;
@@ -4797,7 +4801,7 @@ bool vk_validation_validate_specialization_info(const VkSpecializationInfo* spec
     }
     
     // Validate map entries
-    for (u32 i = 0; i < spec_info->mapEntryCount; i++) {
+    for (uint32_t i = 0; i < spec_info->mapEntryCount; i++) {
         const VkSpecializationMapEntry* entry = &spec_info->pMapEntries[i];
         
         if (entry->offset + entry->size > spec_info->dataSize) {
@@ -4815,12 +4819,12 @@ bool vk_validation_validate_specialization_info(const VkSpecializationInfo* spec
 }
 
 // Validate push constant ranges
-bool vk_validation_validate_push_constant_ranges(const VkPushConstantRange* ranges, u32 range_count) {
+bool vk_validation_validate_push_constant_ranges(const VkPushConstantRange* ranges, uint32_t range_count) {
     if (!ranges || range_count == 0) {
         return true; // Push constants are optional
     }
     
-    for (u32 i = 0; i < range_count; i++) {
+    for (uint32_t i = 0; i < range_count; i++) {
         const VkPushConstantRange* range = &ranges[i];
         
         if (range->offset == 0 && range->size == 0) {
@@ -4842,12 +4846,12 @@ bool vk_validation_validate_push_constant_ranges(const VkPushConstantRange* rang
 
 // Validate vertex input attributes
 bool vk_validation_validate_vertex_input_attributes(const VkVertexInputAttributeDescription* attributes, 
-                                                   u32 attribute_count) {
+                                                   uint32_t attribute_count) {
     if (!attributes || attribute_count == 0) {
         return true; // Vertex attributes are optional
     }
     
-    for (u32 i = 0; i < attribute_count; i++) {
+    for (uint32_t i = 0; i < attribute_count; i++) {
         const VkVertexInputAttributeDescription* attr = &attributes[i];
         
         if (attr->format == VK_FORMAT_MAX_ENUM) {
@@ -4866,12 +4870,12 @@ bool vk_validation_validate_vertex_input_attributes(const VkVertexInputAttribute
 
 // Validate vertex input bindings
 bool vk_validation_validate_vertex_input_bindings(const VkVertexInputBindingDescription* bindings, 
-                                                u32 binding_count) {
+                                                uint32_t binding_count) {
     if (!bindings || binding_count == 0) {
         return true; // Vertex bindings are optional
     }
     
-    for (u32 i = 0; i < binding_count; i++) {
+    for (uint32_t i = 0; i < binding_count; i++) {
         const VkVertexInputBindingDescription* binding = &bindings[i];
         
         if (binding->stride == 0) {
@@ -4966,14 +4970,14 @@ bool vk_validation_validate_swapchain(const VkSwapchainCreateInfoKHR* create_inf
 }
 
 // Validate swapchain image views
-bool vk_validation_validate_swapchain_image_views(const VkImageView* image_views, u32 view_count,
+bool vk_validation_validate_swapchain_image_views(const VkImageView* image_views, uint32_t view_count,
                                                 VkFormat format, VkImageAspectFlags aspect_mask) {
     if (!image_views || view_count == 0) {
         printf("Error: Invalid image views for swapchain validation\n");
         return false;
     }
     
-    for (u32 i = 0; i < view_count; i++) {
+    for (uint32_t i = 0; i < view_count; i++) {
         if (image_views[i] == VK_NULL_HANDLE) {
             printf("Error: Invalid image view at index %u\n", i);
             return false;
@@ -5178,13 +5182,13 @@ bool vk_validation_validate_image_advanced(const VkImageCreateInfo* create_info,
 }
 
 // Validate image memory barrier
-bool vk_validation_validate_image_memory_barrier(const VkImageMemoryBarrier* barrier, u32 barrier_count) {
+bool vk_validation_validate_image_memory_barrier(const VkImageMemoryBarrier* barrier, uint32_t barrier_count) {
     if (!barrier || barrier_count == 0) {
         printf("Error: Invalid image memory barriers\n");
         return false;
     }
     
-    for (u32 i = 0; i < barrier_count; i++) {
+    for (uint32_t i = 0; i < barrier_count; i++) {
         const VkImageMemoryBarrier* img_barrier = &barrier[i];
         
         if (img_barrier->sType != VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER) {
@@ -5228,13 +5232,13 @@ bool vk_validation_validate_image_memory_barrier(const VkImageMemoryBarrier* bar
 
 // Validate descriptor set writes
 bool vk_validation_validate_descriptor_writes(const VkWriteDescriptorSet* descriptor_writes, 
-                                            u32 write_count) {
+                                            uint32_t write_count) {
     if (!descriptor_writes || write_count == 0) {
         printf("Error: Invalid descriptor writes\n");
         return false;
     }
     
-    for (u32 i = 0; i < write_count; i++) {
+    for (uint32_t i = 0; i < write_count; i++) {
         const VkWriteDescriptorSet* write = &descriptor_writes[i];
         
         if (write->sType != VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET) {
@@ -5300,13 +5304,13 @@ bool vk_validation_validate_descriptor_writes(const VkWriteDescriptorSet* descri
 
 // Validate descriptor set copies
 bool vk_validation_validate_descriptor_copies(const VkCopyDescriptorSet* descriptor_copies, 
-                                            u32 copy_count) {
+                                            uint32_t copy_count) {
     if (!descriptor_copies || copy_count == 0) {
         printf("Error: Invalid descriptor copies\n");
         return false;
     }
     
-    for (u32 i = 0; i < copy_count; i++) {
+    for (uint32_t i = 0; i < copy_count; i++) {
         const VkCopyDescriptorSet* copy = &descriptor_copies[i];
         
         if (copy->sType != VK_STRUCTURE_TYPE_COPY_DESCRIPTOR_SET) {
@@ -5518,8 +5522,8 @@ bool vk_validation_validate_device_features(const VkPhysicalDeviceFeatures* requ
 }
 
 // Validate device extensions
-bool vk_validation_validate_device_extensions(const char** requested_extensions, u32 extension_count,
-                                           const VkExtensionProperties* available_extensions, u32 available_count) {
+bool vk_validation_validate_device_extensions(const char** requested_extensions, uint32_t extension_count,
+                                           const VkExtensionProperties* available_extensions, uint32_t available_count) {
     if (!requested_extensions || extension_count == 0) {
         printf("Error: Invalid requested extensions\n");
         return false;
@@ -5530,11 +5534,11 @@ bool vk_validation_validate_device_extensions(const char** requested_extensions,
         return false;
     }
     
-    for (u32 i = 0; i < extension_count; i++) {
+    for (uint32_t i = 0; i < extension_count; i++) {
         const char* requested = requested_extensions[i];
         bool found = false;
         
-        for (u32 j = 0; j < available_count; j++) {
+        for (uint32_t j = 0; j < available_count; j++) {
             if (strcmp(requested, available_extensions[j].extensionName) == 0) {
                 found = true;
                 break;
@@ -5580,13 +5584,13 @@ bool vk_validation_validate_memory_requirements(const VkMemoryRequirements* requ
 
 // Validate sparse memory requirements
 bool vk_validation_validate_sparse_memory_requirements(const VkSparseImageMemoryRequirements* requirements,
-                                                     u32 requirement_count) {
+                                                     uint32_t requirement_count) {
     if (!requirements || requirement_count == 0) {
         printf("Error: Invalid sparse memory requirements\n");
         return false;
     }
     
-    for (u32 i = 0; i < requirement_count; i++) {
+    for (uint32_t i = 0; i < requirement_count; i++) {
         const VkSparseImageMemoryRequirements* req = &requirements[i];
         
         if (req->formatProperties.aspectMask == 0) {
@@ -5755,13 +5759,13 @@ bool vk_validation_validate_swapchain_creation(const VkSwapchainCreateInfoKHR* c
 
 // Validate queue creation and submission
 bool vk_validation_validate_queue_creation(VkDevice device, const VkDeviceQueueCreateInfo* queue_create_infos, 
-                                         u32 queue_count) {
+                                         uint32_t queue_count) {
     if (!device || !queue_create_infos || queue_count == 0) {
         printf("Error: Invalid device, queue create infos, or queue count\n");
         return false;
     }
     
-    for (u32 i = 0; i < queue_count; i++) {
+    for (uint32_t i = 0; i < queue_count; i++) {
         const VkDeviceQueueCreateInfo* queue_info = &queue_create_infos[i];
         
         if (queue_info->sType != VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO) {
@@ -5828,7 +5832,7 @@ bool vk_validation_validate_descriptor_pool_creation(const VkDescriptorPoolCreat
     }
     
     // Validate pool sizes
-    for (u32 i = 0; i < create_info->poolSizeCount; i++) {
+    for (uint32_t i = 0; i < create_info->poolSizeCount; i++) {
         const VkDescriptorPoolSize* pool_size = &create_info->pPoolSizes[i];
         
         if (pool_size->descriptorCount == 0) {
@@ -5868,7 +5872,7 @@ bool vk_validation_validate_pipeline_layout_creation(const VkPipelineLayoutCreat
     }
     
     // Validate push constant ranges
-    for (u32 i = 0; i < create_info->pushConstantRangeCount; i++) {
+    for (uint32_t i = 0; i < create_info->pushConstantRangeCount; i++) {
         const VkPushConstantRange* range = &create_info->pPushConstantRanges[i];
         
         if (range->size == 0) {
@@ -6193,7 +6197,7 @@ bool vk_validation_validate_color_blend_state(const VkPipelineColorBlendStateCre
     }
     
     // Validate color blend attachments
-    for (u32 i = 0; i < color_blend->attachmentCount; i++) {
+    for (uint32_t i = 0; i < color_blend->attachmentCount; i++) {
         const VkPipelineColorBlendAttachmentState* attachment = &color_blend->pAttachments[i];
         
         if (attachment->colorBlendOp == VK_BLEND_OP_MAX_ENUM) {
@@ -6252,7 +6256,7 @@ bool vk_validation_validate_viewport_state(const VkPipelineViewportStateCreateIn
     }
     
     // Validate viewports
-    for (u32 i = 0; i < viewport_state->viewportCount; i++) {
+    for (uint32_t i = 0; i < viewport_state->viewportCount; i++) {
         const VkViewport* viewport = &viewport_state->pViewports[i];
         
         if (viewport->width <= 0.0f || viewport->height <= 0.0f) {
@@ -6271,7 +6275,7 @@ bool vk_validation_validate_viewport_state(const VkPipelineViewportStateCreateIn
     }
     
     // Validate scissors
-    for (u32 i = 0; i < viewport_state->scissorCount; i++) {
+    for (uint32_t i = 0; i < viewport_state->scissorCount; i++) {
         const VkRect2D* scissor = &viewport_state->pScissors[i];
         
         if (scissor->extent.width == 0 || scissor->extent.height == 0) {
@@ -6475,7 +6479,7 @@ bool vk_validation_validate_command_buffer_submission(const VkSubmitInfo* submit
     }
     
     // Validate command buffers
-    for (u32 i = 0; i < submit_info->commandBufferCount; i++) {
+    for (uint32_t i = 0; i < submit_info->commandBufferCount; i++) {
         if (submit_info->pCommandBuffers[i] == VK_NULL_HANDLE) {
             printf("Error: Command buffer %u is VK_NULL_HANDLE\n", i);
             return false;
@@ -6483,7 +6487,7 @@ bool vk_validation_validate_command_buffer_submission(const VkSubmitInfo* submit
     }
     
     // Validate semaphores
-    for (u32 i = 0; i < submit_info->waitSemaphoreCount; i++) {
+    for (uint32_t i = 0; i < submit_info->waitSemaphoreCount; i++) {
         if (submit_info->pWaitSemaphores[i] == VK_NULL_HANDLE) {
             printf("Error: Wait semaphore %u is VK_NULL_HANDLE\n", i);
             return false;
@@ -6494,7 +6498,7 @@ bool vk_validation_validate_command_buffer_submission(const VkSubmitInfo* submit
         }
     }
     
-    for (u32 i = 0; i < submit_info->signalSemaphoreCount; i++) {
+    for (uint32_t i = 0; i < submit_info->signalSemaphoreCount; i++) {
         if (submit_info->pSignalSemaphores[i] == VK_NULL_HANDLE) {
             printf("Error: Signal semaphore %u is VK_NULL_HANDLE\n", i);
             return false;
@@ -6533,7 +6537,7 @@ bool vk_validation_validate_queue_presentation(const VkPresentInfoKHR* present_i
     }
     
     // Validate swapchains
-    for (u32 i = 0; i < present_info->swapchainCount; i++) {
+    for (uint32_t i = 0; i < present_info->swapchainCount; i++) {
         if (present_info->pSwapchains[i] == VK_NULL_HANDLE) {
             printf("Error: Swapchain %u is VK_NULL_HANDLE\n", i);
             return false;
@@ -6541,7 +6545,7 @@ bool vk_validation_validate_queue_presentation(const VkPresentInfoKHR* present_i
     }
     
     // Validate image indices
-    for (u32 i = 0; i < present_info->swapchainCount; i++) {
+    for (uint32_t i = 0; i < present_info->swapchainCount; i++) {
         if (present_info->pImageIndices[i] == UINT32_MAX) {
             printf("Error: Invalid image index %u for swapchain %u\n", 
                    present_info->pImageIndices[i], i);
@@ -6698,7 +6702,7 @@ bool vk_validation_validate_subpass_description(const VkSubpassDescription* subp
         return false;
     }
     
-    for (u32 i = 0; i < subpass->inputAttachmentCount; i++) {
+    for (uint32_t i = 0; i < subpass->inputAttachmentCount; i++) {
         if (subpass->pInputAttachments[i].layout == VK_LAYOUT_MAX_ENUM) {
             printf("Error: Invalid layout for input attachment %u\n", i);
             return false;
@@ -6711,7 +6715,7 @@ bool vk_validation_validate_subpass_description(const VkSubpassDescription* subp
         return false;
     }
     
-    for (u32 i = 0; i < subpass->colorAttachmentCount; i++) {
+    for (uint32_t i = 0; i < subpass->colorAttachmentCount; i++) {
         if (subpass->pColorAttachments[i].layout == VK_LAYOUT_MAX_ENUM) {
             printf("Error: Invalid layout for color attachment %u\n", i);
             return false;
@@ -6720,7 +6724,7 @@ bool vk_validation_validate_subpass_description(const VkSubpassDescription* subp
     
     // Validate resolve attachments
     if (subpass->pResolveAttachments && subpass->colorAttachmentCount > 0) {
-        for (u32 i = 0; i < subpass->colorAttachmentCount; i++) {
+        for (uint32_t i = 0; i < subpass->colorAttachmentCount; i++) {
             if (subpass->pResolveAttachments[i].layout == VK_LAYOUT_MAX_ENUM) {
                 printf("Error: Invalid layout for resolve attachment %u\n", i);
                 return false;
@@ -6772,7 +6776,7 @@ bool vk_validation_validate_subpass_dependency(const VkSubpassDependency* depend
 }
 
 // Validate clear values
-bool vk_validation_validate_clear_values(const VkClearValue* clear_values, u32 clear_value_count) {
+bool vk_validation_validate_clear_values(const VkClearValue* clear_values, uint32_t clear_value_count) {
     if (clear_value_count > 0 && !clear_values) {
         printf("Error: Clear value count specified but values array is NULL\n");
         return false;
@@ -6780,7 +6784,7 @@ bool vk_validation_validate_clear_values(const VkClearValue* clear_values, u32 c
     
     // Clear values don't need much validation as they're just unions
     // but we could add range checking for color values if needed
-    for (u32 i = 0; i < clear_value_count; i++) {
+    for (uint32_t i = 0; i < clear_value_count; i++) {
         // Validate color clear values are within reasonable ranges
         for (int j = 0; j < 4; j++) {
             if (clear_values[i].color.float32[j] < -1000.0f || clear_values[i].color.float32[j] > 1000.0f) {
@@ -6862,7 +6866,7 @@ bool vk_validation_validate_dynamic_state(const VkPipelineDynamicStateCreateInfo
     }
     
     // Validate dynamic states
-    for (u32 i = 0; i < dynamic_state->dynamicStateCount; i++) {
+    for (uint32_t i = 0; i < dynamic_state->dynamicStateCount; i++) {
         VkDynamicState state = dynamic_state->pDynamicStates[i];
         
         if (state == VK_DYNAMIC_STATE_MAX_ENUM) {
@@ -6871,7 +6875,7 @@ bool vk_validation_validate_dynamic_state(const VkPipelineDynamicStateCreateInfo
         }
         
         // Check for duplicate states
-        for (u32 j = i + 1; j < dynamic_state->dynamicStateCount; j++) {
+        for (uint32_t j = i + 1; j < dynamic_state->dynamicStateCount; j++) {
             if (dynamic_state->pDynamicStates[j] == state) {
                 printf("Warning: Duplicate dynamic state %u\n", state);
                 break;
@@ -7010,13 +7014,13 @@ bool vk_validation_validate_image_layout_transition(VkImageLayout old_layout, Vk
 // Advanced synchronization validation
 
 // Validate submission dependencies
-bool vk_validation_validate_submission_dependencies(const VkSubmitInfo* submit_infos, u32 submit_count) {
+bool vk_validation_validate_submission_dependencies(const VkSubmitInfo* submit_infos, uint32_t submit_count) {
     if (!submit_infos || submit_count == 0) {
         printf("Error: Invalid submit infos\n");
         return false;
     }
     
-    for (u32 i = 0; i < submit_count; i++) {
+    for (uint32_t i = 0; i < submit_count; i++) {
         const VkSubmitInfo* submit = &submit_infos[i];
         
         if (submit->sType != VK_STRUCTURE_TYPE_SUBMIT_INFO) {
@@ -7120,7 +7124,7 @@ bool vk_validation_validate_descriptor_pool(const VkDescriptorPoolCreateInfo* cr
     }
     
     // Validate pool sizes
-    for (u32 i = 0; i < create_info->poolSizeCount; i++) {
+    for (uint32_t i = 0; i < create_info->poolSizeCount; i++) {
         const VkDescriptorPoolSize* pool_size = &create_info->pPoolSizes[i];
         
         if (pool_size->type == VK_DESCRIPTOR_TYPE_MAX_ENUM) {
@@ -7140,12 +7144,12 @@ bool vk_validation_validate_descriptor_pool(const VkDescriptorPoolCreateInfo* cr
 // Advanced render pass validation
 
 // Validate render pass subpass dependencies
-bool vk_validation_validate_subpass_dependencies(const VkSubpassDependency* dependencies, u32 dependency_count) {
+bool vk_validation_validate_subpass_dependencies(const VkSubpassDependency* dependencies, uint32_t dependency_count) {
     if (!dependencies || dependency_count == 0) {
         return true; // Dependencies are optional
     }
     
-    for (u32 i = 0; i < dependency_count; i++) {
+    for (uint32_t i = 0; i < dependency_count; i++) {
         const VkSubpassDependency* dep = &dependencies[i];
         
         if (dep->srcSubpass != VK_SUBPASS_EXTERNAL && dep->srcSubpass >= 32) {
@@ -7174,13 +7178,13 @@ bool vk_validation_validate_subpass_dependencies(const VkSubpassDependency* depe
 }
 
 // Validate render pass input/output attachments
-bool vk_validation_validate_attachment_references(const VkAttachmentReference* references, u32 reference_count,
-                                                 u32 max_attachment_count) {
+bool vk_validation_validate_attachment_references(const VkAttachmentReference* references, uint32_t reference_count,
+                                                 uint32_t max_attachment_count) {
     if (!references || reference_count == 0) {
         return true; // References are optional
     }
     
-    for (u32 i = 0; i < reference_count; i++) {
+    for (uint32_t i = 0; i < reference_count; i++) {
         const VkAttachmentReference* ref = &references[i];
         
         if (ref->attachment >= max_attachment_count && ref->attachment != VK_ATTACHMENT_UNUSED) {
@@ -7202,7 +7206,7 @@ bool vk_validation_validate_attachment_references(const VkAttachmentReference* r
 
 // Validate command buffer inheritance info
 bool vk_validation_validate_inheritance_info(const VkCommandBufferInheritanceInfo* inheritance_info,
-                                           VkRenderPass render_pass, u32 subpass) {
+                                           VkRenderPass render_pass, uint32_t subpass) {
     if (!inheritance_info) {
         printf("Error: Invalid inheritance info\n");
         return false;
@@ -7233,8 +7237,8 @@ bool vk_validation_validate_inheritance_info(const VkCommandBufferInheritanceInf
 }
 
 // Validate clear values
-bool vk_validation_validate_clear_values(const VkClearValue* clear_values, u32 clear_count,
-                                        const VkAttachmentDescription* attachments, u32 attachment_count) {
+bool vk_validation_validate_clear_values(const VkClearValue* clear_values, uint32_t clear_count,
+                                        const VkAttachmentDescription* attachments, uint32_t attachment_count) {
     if (!clear_values || clear_count == 0) {
         return true; // Clear values are optional
     }
@@ -7244,7 +7248,7 @@ bool vk_validation_validate_clear_values(const VkClearValue* clear_values, u32 c
         return false;
     }
     
-    for (u32 i = 0; i < clear_count; i++) {
+    for (uint32_t i = 0; i < clear_count; i++) {
         if (i < attachment_count) {
             const VkAttachmentDescription* attachment = &attachments[i];
             
@@ -7370,13 +7374,13 @@ bool vk_validation_validate_debug_utils_label(const VkDebugUtilsLabelEXT* label_
 // Performance and statistics validation
 
 // Validate performance query results
-bool vk_validation_validate_performance_query_results(const VkPerformanceQueryResultINTEL* results, u32 result_count) {
+bool vk_validation_validate_performance_query_results(const VkPerformanceQueryResultINTEL* results, uint32_t result_count) {
     if (!results || result_count == 0) {
         printf("Error: Invalid performance query results\n");
         return false;
     }
     
-    for (u32 i = 0; i < result_count; i++) {
+    for (uint32_t i = 0; i < result_count; i++) {
         const VkPerformanceQueryResultINTEL* result = &results[i];
         
         if (result->type == VK_PERFORMANCE_QUERY_TYPE_COUNTER_DATA_INTEL) {
@@ -7394,7 +7398,7 @@ bool vk_validation_validate_performance_query_results(const VkPerformanceQueryRe
 // Validate acceleration structure build
 bool vk_validation_validate_acceleration_structure_build(const VkAccelerationStructureBuildGeometryInfoKHR* build_info,
                                                         const VkAccelerationStructureGeometryKHR* geometries,
-                                                        u32 geometry_count) {
+                                                        uint32_t geometry_count) {
     if (!build_info || !geometries || geometry_count == 0) {
         printf("Error: Invalid acceleration structure build parameters\n");
         return false;
@@ -7416,7 +7420,7 @@ bool vk_validation_validate_acceleration_structure_build(const VkAccelerationStr
     }
     
     // Validate geometries
-    for (u32 i = 0; i < geometry_count; i++) {
+    for (uint32_t i = 0; i < geometry_count; i++) {
         const VkAccelerationStructureGeometryKHR* geometry = &geometries[i];
         
         if (geometry->geometryType == VK_GEOMETRY_TYPE_MAX_ENUM_KHR) {
@@ -7452,7 +7456,7 @@ bool vk_validation_validate_ray_tracing_pipeline(const VkRayTracingPipelineCreat
         return false;
     }
     
-    for (u32 i = 0; i < create_info->groupCount; i++) {
+    for (uint32_t i = 0; i < create_info->groupCount; i++) {
         const VkRayTracingShaderGroupCreateInfoKHR* group = &create_info->pGroups[i];
         
         if (group->sType != VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR) {
@@ -7482,7 +7486,7 @@ bool vk_validation_validate_mesh_shading_pipeline(const VkGraphicsPipelineCreate
     bool has_mesh_shader = false;
     bool has_task_shader = false;
     
-    for (u32 i = 0; i < create_info->stageCount; i++) {
+    for (uint32_t i = 0; i < create_info->stageCount; i++) {
         const VkPipelineShaderStageCreateInfo* stage = &create_info->pStages[i];
         
         if (stage->stage == VK_SHADER_STAGE_MESH_BIT_EXT) {
@@ -7508,14 +7512,14 @@ bool vk_validation_validate_mesh_shading_pipeline(const VkGraphicsPipelineCreate
 // Variable rate shading validation
 bool vk_validation_validate_variable_rate_shading(const VkPhysicalDeviceFragmentShadingRatePropertiesKHR* properties,
                                                  const VkFragmentShadingRateCombinationKHR* combinations,
-                                                 u32 combination_count) {
+                                                 uint32_t combination_count) {
     if (!properties) {
         printf("Error: Invalid fragment shading rate properties\n");
         return false;
     }
     
     if (combinations && combination_count > 0) {
-        for (u32 i = 0; i < combination_count; i++) {
+        for (uint32_t i = 0; i < combination_count; i++) {
             const VkFragmentShadingRateCombinationKHR* combo = &combinations[i];
             
             // Validate shading rate
@@ -7569,14 +7573,14 @@ bool vk_validation_validate_pipeline_cache_creation(const VkPipelineCacheCreateI
 
 // Validate pipeline cache merge operation
 bool vk_validation_validate_pipeline_cache_merge(VkDevice device, VkPipelineCache target_cache,
-                                                  const VkPipelineCache* source_caches, u32 cache_count) {
+                                                  const VkPipelineCache* source_caches, uint32_t cache_count) {
     if (!device || target_cache == VK_NULL_HANDLE || !source_caches || cache_count == 0) {
         printf("Error: Invalid parameters for pipeline cache merge\n");
         return false;
     }
     
     // Validate source caches
-    for (u32 i = 0; i < cache_count; i++) {
+    for (uint32_t i = 0; i < cache_count; i++) {
         if (source_caches[i] == VK_NULL_HANDLE) {
             printf("Error: Source cache %u is invalid\n", i);
             return false;
@@ -7606,7 +7610,7 @@ bool vk_validation_validate_specialization_constants(const VkSpecializationInfo*
     }
     
     // Validate map entries
-    for (u32 i = 0; i < spec_info->mapEntryCount; i++) {
+    for (uint32_t i = 0; i < spec_info->mapEntryCount; i++) {
         const VkSpecializationMapEntry* entry = &spec_info->pMapEntries[i];
         
         if (entry->offset + entry->size > spec_info->dataSize) {
@@ -7629,12 +7633,12 @@ bool vk_validation_validate_specialization_constants(const VkSpecializationInfo*
 }
 
 // Validate push constant ranges
-bool vk_validation_validate_push_constant_ranges(const VkPushConstantRange* ranges, u32 range_count) {
+bool vk_validation_validate_push_constant_ranges(const VkPushConstantRange* ranges, uint32_t range_count) {
     if (!ranges || range_count == 0) return true; // Optional
     
-    u32 total_size = 0;
+    uint32_t total_size = 0;
     
-    for (u32 i = 0; i < range_count; i++) {
+    for (uint32_t i = 0; i < range_count; i++) {
         const VkPushConstantRange* range = &ranges[i];
         
         if (range->size == 0) {
@@ -7655,7 +7659,7 @@ bool vk_validation_validate_push_constant_ranges(const VkPushConstantRange* rang
         }
         
         // Check for overlapping ranges
-        for (u32 j = i + 1; j < range_count; j++) {
+        for (uint32_t j = i + 1; j < range_count; j++) {
             const VkPushConstantRange* other = &ranges[j];
             
             if (!(range->offset + range->size <= other->offset || 
@@ -7677,10 +7681,10 @@ bool vk_validation_validate_push_constant_ranges(const VkPushConstantRange* rang
 
 // Validate vertex input attribute descriptions
 bool vk_validation_validate_vertex_input_attributes(const VkVertexInputAttributeDescription* attributes, 
-                                                   u32 attribute_count) {
+                                                   uint32_t attribute_count) {
     if (!attributes || attribute_count == 0) return true; // Optional
     
-    for (u32 i = 0; i < attribute_count; i++) {
+    for (uint32_t i = 0; i < attribute_count; i++) {
         const VkVertexInputAttributeDescription* attr = &attributes[i];
         
         if (attr->format == VK_FORMAT_MAX_ENUM) {
@@ -7693,7 +7697,7 @@ bool vk_validation_validate_vertex_input_attributes(const VkVertexInputAttribute
         }
         
         // Check for duplicate locations
-        for (u32 j = i + 1; j < attribute_count; j++) {
+        for (uint32_t j = i + 1; j < attribute_count; j++) {
             if (attributes[j].location == attr->location) {
                 printf("Error: Duplicate vertex attribute location %u\n", attr->location);
                 return false;
@@ -7707,10 +7711,10 @@ bool vk_validation_validate_vertex_input_attributes(const VkVertexInputAttribute
 
 // Validate vertex input binding descriptions
 bool vk_validation_validate_vertex_input_bindings(const VkVertexInputBindingDescription* bindings, 
-                                                  u32 binding_count) {
+                                                  uint32_t binding_count) {
     if (!bindings || binding_count == 0) return true; // Optional
     
-    for (u32 i = 0; i < binding_count; i++) {
+    for (uint32_t i = 0; i < binding_count; i++) {
         const VkVertexInputBindingDescription* binding = &bindings[i];
         
         if (binding->stride == 0) {
@@ -7723,7 +7727,7 @@ bool vk_validation_validate_vertex_input_bindings(const VkVertexInputBindingDesc
         }
         
         // Check for duplicate bindings
-        for (u32 j = i + 1; j < binding_count; j++) {
+        for (uint32_t j = i + 1; j < binding_count; j++) {
             if (bindings[j].binding == binding->binding) {
                 printf("Error: Duplicate vertex binding %u\n", binding->binding);
                 return false;
@@ -7846,10 +7850,10 @@ bool vk_validation_validate_memory_barrier(const VkMemoryBarrier* barrier) {
 
 // Validate render pass attachment descriptions
 bool vk_validation_validate_render_pass_attachments(const VkAttachmentDescription* attachments, 
-                                                   u32 attachment_count) {
+                                                   uint32_t attachment_count) {
     if (!attachments || attachment_count == 0) return true; // Optional
     
-    for (u32 i = 0; i < attachment_count; i++) {
+    for (uint32_t i = 0; i < attachment_count; i++) {
         const VkAttachmentDescription* attachment = &attachments[i];
         
         if (attachment->format == VK_FORMAT_MAX_ENUM) {
@@ -7899,10 +7903,10 @@ bool vk_validation_validate_render_pass_attachments(const VkAttachmentDescriptio
 
 // Validate render pass subpass descriptions
 bool vk_validation_validate_render_pass_subpasses(const VkSubpassDescription* subpasses, 
-                                                  u32 subpass_count) {
+                                                  uint32_t subpass_count) {
     if (!subpasses || subpass_count == 0) return true; // Optional
     
-    for (u32 i = 0; i < subpass_count; i++) {
+    for (uint32_t i = 0; i < subpass_count; i++) {
         const VkSubpassDescription* subpass = &subpasses[i];
         
         // Validate input attachments
@@ -7920,7 +7924,7 @@ bool vk_validation_validate_render_pass_subpasses(const VkSubpassDescription* su
         // Validate resolve attachments
         if (subpass->colorAttachmentCount > 0 && subpass->pResolveAttachments && 
             subpass->pColorAttachments && subpass->colorAttachmentCount > 0) {
-            for (u32 j = 0; j < subpass->colorAttachmentCount; j++) {
+            for (uint32_t j = 0; j < subpass->colorAttachmentCount; j++) {
                 if (subpass->pResolveAttachments[j].attachment != VK_ATTACHMENT_UNUSED &&
                     subpass->pColorAttachments[j].attachment == VK_ATTACHMENT_UNUSED) {
                     printf("Warning: Resolve attachment %u in subpass %u resolves unused color attachment\n", j, i);
@@ -7946,3 +7950,476 @@ bool vk_validation_validate_render_pass_subpasses(const VkSubpassDescription* su
     printf("Render pass subpasses validation passed\n");
     return true;
 }
+
+// =================================================================================================
+//                           ADDITIONAL VALIDATION FUNCTIONS
+// =================================================================================================
+
+// Validate device queue creation
+bool vk_validation_validate_device_queue_creation(const VkDeviceQueueCreateInfo* queue_info, 
+                                                  u32 queue_count) {
+    if (!queue_info || queue_count == 0) {
+        printf("Error: Invalid queue info or queue count\n");
+        return false;
+    }
+    
+    for (u32 i = 0; i < queue_count; i++) {
+        const VkDeviceQueueCreateInfo* info = &queue_info[i];
+        
+        if (info->sType != VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO) {
+            printf("Error: Invalid sType in device queue create info %u\n", i);
+            return false;
+        }
+        
+        if (info->queueFamilyIndex >= 32) {
+            printf("Warning: Queue family index %u seems large\n", info->queueFamilyIndex);
+        }
+        
+        if (info->queueCount == 0) {
+            printf("Error: Queue count cannot be zero for queue family %u\n", info->queueFamilyIndex);
+            return false;
+        }
+        
+        if (!info->pQueuePriorities) {
+            printf("Error: Queue priorities array is NULL for queue family %u\n", info->queueFamilyIndex);
+            return false;
+        }
+        
+        // Validate queue priorities
+        for (u32 j = 0; j < info->queueCount; j++) {
+            if (info->pQueuePriorities[j] < 0.0f || info->pQueuePriorities[j] > 1.0f) {
+                printf("Error: Queue priority %u.%f is outside [0,1] range\n", info->queueFamilyIndex, info->pQueuePriorities[j]);
+                return false;
+            }
+        }
+    }
+    
+    printf("Device queue creation validation passed\n");
+    return true;
+}
+
+// Validate device layer properties
+bool vk_validation_validate_device_layers(const char* const* enabled_layers, u32 layer_count) {
+    if (!enabled_layers && layer_count > 0) {
+        printf("Error: Layer count specified but no layers array provided\n");
+        return false;
+    }
+    
+    if (enabled_layers && layer_count == 0) {
+        printf("Warning: Layers array provided but layer count is zero\n");
+    }
+    
+    for (u32 i = 0; i < layer_count; i++) {
+        if (!enabled_layers[i]) {
+            printf("Error: Layer name %u is NULL\n", i);
+            return false;
+        }
+        
+        if (strlen(enabled_layers[i]) == 0) {
+            printf("Error: Layer name %u is empty\n", i);
+            return false;
+        }
+        
+        if (strlen(enabled_layers[i]) > 256) {
+            printf("Warning: Layer name %u seems unusually long\n", i);
+        }
+    }
+    
+    printf("Device layers validation passed\n");
+    return true;
+}
+
+// Validate device extension properties
+bool vk_validation_validate_device_extensions(const char* const* enabled_extensions, u32 extension_count) {
+    if (!enabled_extensions && extension_count > 0) {
+        printf("Error: Extension count specified but no extensions array provided\n");
+        return false;
+    }
+    
+    if (enabled_extensions && extension_count == 0) {
+        printf("Warning: Extensions array provided but extension count is zero\n");
+    }
+    
+    for (u32 i = 0; i < extension_count; i++) {
+        if (!enabled_extensions[i]) {
+            printf("Error: Extension name %u is NULL\n", i);
+            return false;
+        }
+        
+        if (strlen(enabled_extensions[i]) == 0) {
+            printf("Error: Extension name %u is empty\n", i);
+            return false;
+        }
+        
+        if (strlen(enabled_extensions[i]) > 256) {
+            printf("Warning: Extension name %u seems unusually long\n", i);
+        }
+    }
+    
+    printf("Device extensions validation passed\n");
+    return true;
+}
+
+// Validate physical device properties
+bool vk_validation_validate_physical_device_properties(const VkPhysicalDeviceProperties* properties) {
+    if (!properties) {
+        printf("Error: Invalid physical device properties\n");
+        return false;
+    }
+    
+    if (properties->apiVersion < VK_VERSION_1_0) {
+        printf("Error: Invalid API version\n");
+        return false;
+    }
+    
+    if (properties->driverVersion == 0) {
+        printf("Warning: Driver version is 0\n");
+    }
+    
+    if (properties->vendorID == 0) {
+        printf("Warning: Vendor ID is 0\n");
+    }
+    
+    if (properties->deviceID == 0) {
+        printf("Warning: Device ID is 0\n");
+    }
+    
+    if (strlen(properties->deviceName) == 0) {
+        printf("Error: Device name is empty\n");
+        return false;
+    }
+    
+    if (properties->limits.maxImageDimension2D == 0) {
+        printf("Error: Maximum 2D image dimension is 0\n");
+        return false;
+    }
+    
+    if (properties->limits.maxImageDimension2D > 16384) {
+        printf("Warning: Maximum 2D image dimension seems very large\n");
+    }
+    
+    printf("Physical device properties validation passed\n");
+    return true;
+}
+
+// Validate physical device features
+bool vk_validation_validate_physical_device_features(const VkPhysicalDeviceFeatures* features) {
+    if (!features) {
+        printf("Error: Invalid physical device features\n");
+        return false;
+    }
+    
+    // Check for inconsistent feature combinations
+    if (features->geometryShader && !features->shaderStorageImageExtendedFormats) {
+        printf("Warning: Geometry shader enabled but extended storage image formats not supported\n");
+    }
+    
+    if (features->tessellationShader && !features->shaderStorageImageExtendedFormats) {
+        printf("Warning: Tessellation shader enabled but extended storage image formats not supported\n");
+    }
+    
+    if (features->multiViewport && features->maxViewportDimensions[0] == 0) {
+        printf("Error: Multi-viewport enabled but max viewport dimensions are 0\n");
+        return false;
+    }
+    
+    printf("Physical device features validation passed\n");
+    return true;
+}
+
+// Validate surface capabilities
+bool vk_validation_validate_surface_capabilities(const VkSurfaceCapabilitiesKHR* capabilities) {
+    if (!capabilities) {
+        printf("Error: Invalid surface capabilities\n");
+        return false;
+    }
+    
+    if (capabilities->minImageCount == 0) {
+        printf("Error: Minimum image count cannot be 0\n");
+        return false;
+    }
+    
+    if (capabilities->maxImageCount > 0 && capabilities->maxImageCount < capabilities->minImageCount) {
+        printf("Error: Maximum image count less than minimum\n");
+        return false;
+    }
+    
+    if (capabilities->currentExtent.width == 0xFFFFFFFF && capabilities->currentExtent.height == 0xFFFFFFFF) {
+        // This is valid - means the extent is undefined
+    } else if (capabilities->currentExtent.width == 0 || capabilities->currentExtent.height == 0) {
+        printf("Error: Current surface extent has zero dimension\n");
+        return false;
+    }
+    
+    if (capabilities->minImageExtent.width == 0 || capabilities->minImageExtent.height == 0) {
+        printf("Error: Minimum image extent has zero dimension\n");
+        return false;
+    }
+    
+    if (capabilities->maxImageExtent.width == 0 || capabilities->maxImageExtent.height == 0) {
+        printf("Error: Maximum image extent has zero dimension\n");
+        return false;
+    }
+    
+    if (capabilities->maxImageArrayLayers == 0) {
+        printf("Error: Maximum image array layers cannot be 0\n");
+        return false;
+    }
+    
+    printf("Surface capabilities validation passed\n");
+    return true;
+}
+
+// Validate surface formats
+bool vk_validation_validate_surface_formats(const VkSurfaceFormatKHR* formats, u32 format_count) {
+    if (!formats && format_count > 0) {
+        printf("Error: Format count specified but no formats array provided\n");
+        return false;
+    }
+    
+    if (formats && format_count == 0) {
+        printf("Warning: Formats array provided but format count is zero\n");
+    }
+    
+    for (u32 i = 0; i < format_count; i++) {
+        if (formats[i].format == VK_FORMAT_MAX_ENUM) {
+            printf("Error: Invalid format for surface format %u\n", i);
+            return false;
+        }
+        
+        if (formats[i].colorSpace == VK_COLOR_SPACE_MAX_ENUM_KHR) {
+            printf("Error: Invalid color space for surface format %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Surface formats validation passed\n");
+    return true;
+}
+
+// Validate present modes
+bool vk_validation_validate_present_modes(const VkPresentModeKHR* modes, u32 mode_count) {
+    if (!modes && mode_count > 0) {
+        printf("Error: Mode count specified but no modes array provided\n");
+        return false;
+    }
+    
+    if (modes && mode_count == 0) {
+        printf("Warning: Modes array provided but mode count is zero\n");
+    }
+    
+    for (u32 i = 0; i < mode_count; i++) {
+        if (modes[i] == VK_PRESENT_MODE_MAX_ENUM_KHR) {
+            printf("Error: Invalid present mode %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Present modes validation passed\n");
+    return true;
+}
+
+// Validate image view creation info
+bool vk_validation_validate_image_view_creation_info(const VkImageViewCreateInfo* create_info) {
+    if (!create_info) {
+        printf("Error: Invalid image view create info\n");
+        return false;
+    }
+    
+    if (create_info->sType != VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO) {
+        printf("Error: Invalid sType in image view create info\n");
+        return false;
+    }
+    
+    if (create_info->image == VK_NULL_HANDLE) {
+        printf("Error: Invalid image in image view create info\n");
+        return false;
+    }
+    
+    if (create_info->format == VK_FORMAT_MAX_ENUM) {
+        printf("Error: Invalid format in image view create info\n");
+        return false;
+    }
+    
+    if (create_info->viewType == VK_IMAGE_VIEW_TYPE_MAX_ENUM) {
+        printf("Error: Invalid view type in image view create info\n");
+        return false;
+    }
+    
+    // Validate component mapping
+    if (create_info->components.r >= VK_COMPONENT_SWIZZLE_MAX_ENUM ||
+        create_info->components.g >= VK_COMPONENT_SWIZZLE_MAX_ENUM ||
+        create_info->components.b >= VK_COMPONENT_SWIZZLE_MAX_ENUM ||
+        create_info->components.a >= VK_COMPONENT_SWIZZLE_MAX_ENUM) {
+        printf("Error: Invalid component swizzle in image view create info\n");
+        return false;
+    }
+    
+    // Validate subresource range
+    if (create_info->subresourceRange.aspectMask == 0) {
+        printf("Error: Aspect mask cannot be zero in image view create info\n");
+        return false;
+    }
+    
+    if (create_info->subresourceRange.baseMipLevel >= 32) {
+        printf("Warning: Base mip level seems large in image view create info\n");
+    }
+    
+    if (create_info->subresourceRange.levelCount == 0) {
+        printf("Error: Level count cannot be zero in image view create info\n");
+        return false;
+    }
+    
+    if (create_info->subresourceRange.baseArrayLayer >= 2048) {
+        printf("Warning: Base array layer seems large in image view create info\n");
+    }
+    
+    if (create_info->subresourceRange.layerCount == 0) {
+        printf("Error: Layer count cannot be zero in image view create info\n");
+        return false;
+    }
+    
+    printf("Image view creation info validation passed\n");
+    return true;
+}
+
+// Validate buffer view creation info
+bool vk_validation_validate_buffer_view_creation_info(const VkBufferViewCreateInfo* create_info) {
+    if (!create_info) {
+        printf("Error: Invalid buffer view create info\n");
+        return false;
+    }
+    
+    if (create_info->sType != VK_STRUCTURE_TYPE_BUFFER_VIEW_CREATE_INFO) {
+        printf("Error: Invalid sType in buffer view create info\n");
+        return false;
+    }
+    
+    if (create_info->buffer == VK_NULL_HANDLE) {
+        printf("Error: Invalid buffer in buffer view create info\n");
+        return false;
+    }
+    
+    if (create_info->format == VK_FORMAT_MAX_ENUM) {
+        printf("Error: Invalid format in buffer view create info\n");
+        return false;
+    }
+    
+    if (create_info->offset >= 1024 * 1024 * 1024) { // 1GB
+        printf("Warning: Buffer offset seems large in buffer view create info\n");
+    }
+    
+    if (create_info->range == VK_WHOLE_SIZE) {
+        // This is valid
+    } else if (create_info->range == 0) {
+        printf("Error: Buffer view range cannot be zero (unless VK_WHOLE_SIZE)\n");
+        return false;
+    } else if (create_info->range >= 1024 * 1024 * 1024) { // 1GB
+        printf("Warning: Buffer view range seems large\n");
+    }
+    
+    printf("Buffer view creation info validation passed\n");
+    return true;
+}
+
+// Validate sampler creation info
+bool vk_validation_validate_sampler_creation_info(const VkSamplerCreateInfo* create_info) {
+    if (!create_info) {
+        printf("Error: Invalid sampler create info\n");
+        return false;
+    }
+    
+    if (create_info->sType != VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO) {
+        printf("Error: Invalid sType in sampler create info\n");
+        return false;
+    }
+    
+    if (create_info->minFilter == VK_FILTER_MAX_ENUM) {
+        printf("Error: Invalid min filter in sampler create info\n");
+        return false;
+    }
+    
+    if (create_info->magFilter == VK_FILTER_MAX_ENUM) {
+        printf("Error: Invalid mag filter in sampler create info\n");
+        return false;
+    }
+    
+    if (create_info->addressModeU == VK_SAMPLER_ADDRESS_MODE_MAX_ENUM) {
+        printf("Error: Invalid address mode U in sampler create info\n");
+        return false;
+    }
+    
+    if (create_info->addressModeV == VK_SAMPLER_ADDRESS_MODE_MAX_ENUM) {
+        printf("Error: Invalid address mode V in sampler create info\n");
+        return false;
+    }
+    
+    if (create_info->addressModeW == VK_SAMPLER_ADDRESS_MODE_MAX_ENUM) {
+        printf("Error: Invalid address mode W in sampler create info\n");
+        return false;
+    }
+    
+    if (create_info->anisotropyEnable && create_info->maxAnisotropy <= 0.0f) {
+        printf("Error: Anisotropy enabled but max anisotropy is not positive\n");
+        return false;
+    }
+    
+    if (create_info->maxAnisotropy > 16.0f) {
+        printf("Warning: Max anisotropy > 16.0 may not be supported\n");
+    }
+    
+    if (create_info->compareEnable && create_info->compareOp == VK_COMPARE_OP_MAX_ENUM) {
+        printf("Error: Compare enabled but compare operation is invalid\n");
+        return false;
+    }
+    
+    if (create_info->mipmapMode == VK_SAMPLER_MIPMAP_MODE_MAX_ENUM) {
+        printf("Error: Invalid mipmap mode in sampler create info\n");
+        return false;
+    }
+    
+    if (create_info->mipLodBias < -1.0f || create_info->mipLodBias > 1.0f) {
+        printf("Warning: MIP LOD bias outside [-1,1] range\n");
+    }
+    
+    if (create_info->minLod < 0.0f || create_info->maxLod > 1000.0f) {
+        printf("Warning: LOD range seems unusual\n");
+    }
+    
+    printf("Sampler creation info validation passed\n");
+    return true;
+}
+
+// End of Vulkan validation compilation guard
+#endif // VULKAN_BUILD || __linux__ || _WIN32 || (__APPLE__ && VULKAN_ON_MACOS)
+
+// Stub implementations for platforms without Vulkan
+#if !(defined(VULKAN_BUILD) || defined(__linux__) || defined(_WIN32) || (defined(__APPLE__) && defined(VULKAN_ON_MACOS)))
+
+#include <stdio.h>
+#include <stdbool.h>
+
+// Stub implementations that return false/NULL for platforms without Vulkan
+bool vk_validation_manager_init(void* instance, bool enable_validation) { 
+    printf("Vulkan validation not available on this platform\n");
+    return false; 
+}
+void vk_validation_manager_cleanup(void) { 
+    printf("Vulkan validation cleanup called (no-op)\n");
+}
+bool vk_validation_is_enabled(void) { return false; }
+bool vk_validation_debug_utils_available(void) { return false; }
+void vk_validation_report_error(const char* message) { 
+    if (message) printf("[VULKAN_STUB] Error: %s\n", message);
+}
+void vk_validation_report_warning(const char* message) { 
+    if (message) printf("[VULKAN_STUB] Warning: %s\n", message);
+}
+void vk_validation_report_info(const char* message) { 
+    if (message) printf("[VULKAN_STUB] Info: %s\n", message);
+}
+void vk_validation_report_verbose(const char* message) { 
+    if (message) printf("[VULKAN_STUB] Verbose: %s\n", message);
+}
+
+#endif // !(VULKAN_BUILD || __linux__ || _WIN32 || (__APPLE__ && VULKAN_ON_MACOS))

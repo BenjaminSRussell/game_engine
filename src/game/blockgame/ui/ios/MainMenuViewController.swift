@@ -30,6 +30,13 @@ class MainMenuViewController: UIViewController {
         title = "BlockGame"
         view.backgroundColor = .systemBackground
         
+        
+        let backgroundImageView = UIImageView(frame: view.bounds)
+        backgroundImageView.image = UIImage(named: "assets/textures/ui/menu_background.png")
+        backgroundImageView.contentMode = .scaleAspectFill
+        backgroundImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.insertSubview(backgroundImageView, at: 0)
+        
         setupGameStateObservers()
         setupUI()
     }

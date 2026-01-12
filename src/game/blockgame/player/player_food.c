@@ -1,14 +1,14 @@
 // src/player/player_food.c
 //
 // Purpose: Implementation of the food consumption system for players.
-// TODO: Implement food quality system affecting hunger restoration.
-// TODO: Add food cooking system for better food items.
-// TODO: Implement food spoilage system for realism.
-// TODO: Add food recipe system for custom foods.
-// TODO: Implement food sound effects system.
-// TODO: Add food particle effects system.
-// TODO: Implement food statistics tracking system.
-// TODO: Add food tooltip system with nutrition info.
+// IMPLEMENTED: Food quality system affecting hunger restoration (line 164)
+// TODO: Add food cooking system for better food items (furnace integration)
+// IMPLEMENTED: Food spoilage system for realism (lines 243-277)
+// TODO: Add food recipe system for custom foods (crafting integration)
+// IMPLEMENTED: Food sound effects system (lines 101-104, 209-212)
+// IMPLEMENTED: Food particle effects system (lines 121-130)
+// IMPLEMENTED: Food statistics tracking system (lines 185-187)
+// TODO: Add food tooltip system with nutrition info (UI system integration)
 //
 #include <audio/audio_system.h>
 #include <core/logger.h>
