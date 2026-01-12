@@ -17,7 +17,7 @@
 #endif
 #endif
 
-// ✅ COMPLETED: Stack Tracer Implementation - AGENT_CORE_1
+//  COMPLETED: Stack Tracer Implementation - AGENT_CORE_1
 // Capture and resolve call stacks for crash reporting and profiling
 
 #define STACK_HASH_SEED 0x9E3779B9
@@ -29,7 +29,7 @@ static ModuleInfo g_modules[64];
 static size_t g_module_count = 0;
 static bool g_symbols_loaded = false;
 
-// ✅ COMPLETED: Stack hashing for deduplication
+//  COMPLETED: Stack hashing for deduplication
 static u64 hash_stack_trace(void** frames, size_t frame_count) {
     u64 hash = STACK_HASH_SEED;
     
@@ -41,7 +41,7 @@ static u64 hash_stack_trace(void** frames, size_t frame_count) {
     return hash;
 }
 
-// ✅ COMPLETED: Module enumeration
+//  COMPLETED: Module enumeration
 #ifdef _WIN32
 static void enumerate_modules(void) {
     HANDLE process = GetCurrentProcess();
@@ -93,7 +93,7 @@ static void enumerate_modules(void) {
 #endif
 #endif
 
-// ✅ COMPLETED: Symbol resolution
+//  COMPLETED: Symbol resolution
 #ifdef _WIN32
 static void resolve_symbol(void* address, StackFrame* frame) {
     HANDLE process = GetCurrentProcess();
@@ -171,7 +171,7 @@ static void resolve_symbol(void* address, StackFrame* frame) {
 }
 #endif
 
-// ✅ COMPLETED: Fast frame pointer walking
+//  COMPLETED: Fast frame pointer walking
 static size_t walk_frame_pointers(void** frames, size_t max_frames) {
     size_t count = 0;
     
@@ -231,7 +231,7 @@ static size_t walk_frame_pointers(void** frames, size_t max_frames) {
     return count;
 }
 
-// ✅ COMPLETED: Stack capture
+//  COMPLETED: Stack capture
 size_t stack_capture(void** frames, size_t max_frames, bool use_frame_pointers) {
     if (!frames || max_frames == 0) return 0;
     
@@ -254,7 +254,7 @@ size_t stack_capture(void** frames, size_t max_frames, bool use_frame_pointers) 
     return count;
 }
 
-// ✅ COMPLETED: Stack trace resolution
+//  COMPLETED: Stack trace resolution
 StackTrace* stack_trace_create(void** frames, size_t frame_count) {
     if (!frames || frame_count == 0) return NULL;
     
@@ -275,7 +275,7 @@ StackTrace* stack_trace_create(void** frames, size_t frame_count) {
     return trace;
 }
 
-// ✅ COMPLETED: Stack trace formatting
+//  COMPLETED: Stack trace formatting
 void stack_trace_format(const StackTrace* trace, char* buffer, size_t buffer_size, bool verbose) {
     if (!trace || !buffer || buffer_size == 0) return;
     
@@ -298,7 +298,7 @@ void stack_trace_format(const StackTrace* trace, char* buffer, size_t buffer_siz
     }
 }
 
-// ✅ COMPLETED: Minimized stack format for storage
+//  COMPLETED: Minimized stack format for storage
 void stack_trace_minimize(const StackTrace* trace, char* buffer, size_t buffer_size) {
     if (!trace || !buffer || buffer_size == 0) return;
     
@@ -314,7 +314,7 @@ void stack_trace_minimize(const StackTrace* trace, char* buffer, size_t buffer_s
     }
 }
 
-// ✅ COMPLETED: Stack trace comparison
+//  COMPLETED: Stack trace comparison
 bool stack_trace_equals(const StackTrace* a, const StackTrace* b) {
     if (!a || !b) return false;
     if (a->frame_count != b->frame_count) return false;
@@ -329,14 +329,14 @@ bool stack_trace_equals(const StackTrace* a, const StackTrace* b) {
     return true;
 }
 
-// ✅ COMPLETED: Stack trace destruction
+//  COMPLETED: Stack trace destruction
 void stack_trace_destroy(StackTrace* trace) {
     if (trace) {
         free(trace);
     }
 }
 
-// ✅ COMPLETED: Module information
+//  COMPLETED: Module information
 const char* stack_trace_get_module_name(void* address) {
     for (size_t i = 0; i < g_module_count; i++) {
         uintptr_t addr = (uintptr_t)address;
@@ -350,7 +350,7 @@ const char* stack_trace_get_module_name(void* address) {
     return NULL;
 }
 
-// ✅ COMPLETED: Initialization and cleanup
+//  COMPLETED: Initialization and cleanup
 bool stack_tracer_init(void) {
     enumerate_modules();
     
@@ -377,7 +377,7 @@ void stack_tracer_shutdown(void) {
     g_module_count = 0;
 }
 
-// ✅ COMPLETED: Utility functions
+//  COMPLETED: Utility functions
 size_t stack_tracer_get_module_count(void) {
     return g_module_count;
 }

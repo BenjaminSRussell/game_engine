@@ -688,7 +688,7 @@ bool gpu_profiling_check_performance_thresholds(GPUProfilingSession* session) {
         
         // Check temperature
         if (frame->temperature_celsius > g_gpu_profiling_system->temperature_warning_threshold_c) {
-            LOG_WARN("High GPU temperature: %.1f°C (threshold: %.1f°C)", 
+            LOG_WARN("High GPU temperature: %.1fC (threshold: %.1fC)", 
                     frame->temperature_celsius, g_gpu_profiling_system->temperature_warning_threshold_c);
             warning_triggered = true;
         }
@@ -845,7 +845,7 @@ void gpu_profiling_print_system_statistics(GPUProfilingSystem* system) {
     printf("Frame Time Warning Threshold: %.2f ms\n", system->frame_time_warning_threshold_ms);
     printf("Frame Time Critical Threshold: %.2f ms\n", system->frame_time_critical_threshold_ms);
     printf("Memory Warning Threshold: %.1f MB\n", system->memory_warning_threshold_mb);
-    printf("Temperature Warning Threshold: %.1f°C\n", system->temperature_warning_threshold_c);
+    printf("Temperature Warning Threshold: %.1fC\n", system->temperature_warning_threshold_c);
     printf("Utilization Warning Threshold: %.1f%%\n", system->utilization_warning_threshold_percent);
     printf("Auto Export: %s\n", system->enable_auto_export ? "Enabled" : "Disabled");
     printf("=====================================\n");

@@ -4,7 +4,7 @@ A modern, performance-focused 3D game engine built in C, designed for voxel-base
 
 ## Features
 
-### Implemented ✅
+### Implemented 
 - **Rigid Body Physics**: Collision detection and resolution (Box-Box, Sphere-Sphere, Sphere-Box)
 - **Demos**:
   - Physics Sandbox: Interactive physics simulation with falling objects
@@ -12,7 +12,7 @@ A modern, performance-focused 3D game engine built in C, designed for voxel-base
 - **CMake Build System**: Cross-platform build configuration with Debug/Release presets
 - **Modular Architecture**: Clean separation between core engine and game code
 
-### In Development 🚧
+### In Development 
 - Advanced rendering pipeline
 - Procedural terrain generation
 - Networking and multiplayer
@@ -71,16 +71,16 @@ cmake --build .
 
 ```
 Minecraft v2/
-├── src/
-│   ├── engine/           # Core engine code
-│   │   ├── core/         # Window, logging, memory management
-│   │   ├── physics/      # Physics simulation
-│   │   ├── renderer/     # Rendering systems
-│   │   └── include/      # Public API headers
-│   └── game/             # Game-specific code + demos
-├── build/                # CMake build directory
-├── CMakeLists.txt        # Build configuration
-└── README.md             # This file
+ src/
+    engine/           # Core engine code
+       core/         # Window, logging, memory management
+       physics/      # Physics simulation
+       renderer/     # Rendering systems
+       include/      # Public API headers
+    game/             # Game-specific code + demos
+ build/                # CMake build directory
+ CMakeLists.txt        # Build configuration
+ README.md             # This file
 ```
 
 ## Documentation
@@ -139,7 +139,7 @@ This is an educational project focused on learning game engine architecture. Con
 
 ## Roadmap
 
-### Phase 1: Foundation ✅
+### Phase 1: Foundation 
 - [x] Clean architecture
 - [x] Rigid body physics
 - [x] Demo applications

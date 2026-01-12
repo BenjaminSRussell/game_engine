@@ -232,7 +232,7 @@ struct GridSettingsPanel: View {
                             
                             HStack {
                                 ForEach(GridSettings.rotationPresets, id: \.self) { preset in
-                                    Button(String(format: "%.0f°", preset)) {
+                                    Button(String(format: "%.0f", preset)) {
                                         snapManager.settings.snapRotationIncrement = preset
                                         EngineBridge.shared.setRotationSnapIncrement(preset)
                                     }

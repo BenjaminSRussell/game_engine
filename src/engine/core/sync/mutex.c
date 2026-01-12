@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// ✅ COMPLETED: Mutex System Implementation - AGENT_CORE_1
+//  COMPLETED: Mutex System Implementation - AGENT_CORE_1
 // Cross-platform synchronization primitive with deadlock detection and
 // recursive support
 
@@ -61,7 +61,7 @@ __thread static u32 g_thread_lock_depth = 0;
 __thread static MutexInternal *g_locked_mutexes[MAX_LOCK_DEPTH];
 #endif
 
-// ✅ COMPLETED: Get current thread ID
+//  COMPLETED: Get current thread ID
 static u64 get_thread_id(void) {
 #ifdef _WIN32
   return (u64)GetCurrentThreadId();
@@ -70,7 +70,7 @@ static u64 get_thread_id(void) {
 #endif
 }
 
-// ✅ COMPLETED: Get timestamp in milliseconds
+//  COMPLETED: Get timestamp in milliseconds
 static u64 get_timestamp_ms(void) {
 #ifdef _WIN32
   LARGE_INTEGER freq, count;
@@ -84,7 +84,7 @@ static u64 get_timestamp_ms(void) {
 #endif
 }
 
-// ✅ COMPLETED: Deadlock detection
+//  COMPLETED: Deadlock detection
 static bool detect_deadlock(MutexInternal *mutex) {
   if (!g_deadlock_detection_enabled)
     return false;
@@ -107,14 +107,14 @@ static bool detect_deadlock(MutexInternal *mutex) {
   return false;
 }
 
-// ✅ COMPLETED: Register mutex for deadlock detection
+//  COMPLETED: Register mutex for deadlock detection
 static void register_mutex(MutexInternal *mutex) {
   if (g_mutex_count < 1024) {
     g_mutex_registry[g_mutex_count++] = mutex;
   }
 }
 
-// ✅ COMPLETED: Unregister mutex
+//  COMPLETED: Unregister mutex
 static void unregister_mutex(MutexInternal *mutex) {
   for (size_t i = 0; i < g_mutex_count; i++) {
     if (g_mutex_registry[i] == mutex) {
@@ -124,7 +124,7 @@ static void unregister_mutex(MutexInternal *mutex) {
   }
 }
 
-// ✅ COMPLETED: Mutex creation
+//  COMPLETED: Mutex creation
 Mutex *mutex_create(bool recursive, const char *name) {
   MutexInternal *mutex = malloc(sizeof(MutexInternal));
   if (!mutex)
@@ -167,7 +167,7 @@ Mutex *mutex_create(bool recursive, const char *name) {
   return (Mutex *)mutex;
 }
 
-// ✅ COMPLETED: Mutex destruction
+//  COMPLETED: Mutex destruction
 void mutex_destroy(Mutex *mutex) {
   if (!mutex)
     return;
@@ -190,7 +190,7 @@ void mutex_destroy(Mutex *mutex) {
   free(internal);
 }
 
-// ✅ COMPLETED: Mutex lock
+//  COMPLETED: Mutex lock
 void mutex_lock(Mutex *mutex) {
   if (!mutex)
     return;
@@ -243,7 +243,7 @@ void mutex_lock(Mutex *mutex) {
   }
 }
 
-// ✅ COMPLETED: Mutex unlock
+//  COMPLETED: Mutex unlock
 void mutex_unlock(Mutex *mutex) {
   if (!mutex)
     return;
@@ -276,7 +276,7 @@ void mutex_unlock(Mutex *mutex) {
   }
 }
 
-// ✅ COMPLETED: Try lock
+//  COMPLETED: Try lock
 bool mutex_try_lock(Mutex *mutex) {
   if (!mutex)
     return false;
@@ -323,7 +323,7 @@ bool mutex_try_lock(Mutex *mutex) {
 #endif
 }
 
-// ✅ COMPLETED: Get mutex statistics
+//  COMPLETED: Get mutex statistics
 void mutex_get_stats(Mutex *mutex, u64 *total_lock_time, u64 *lock_count,
                      u64 *contention_count) {
   if (!mutex)
@@ -339,7 +339,7 @@ void mutex_get_stats(Mutex *mutex, u64 *total_lock_time, u64 *lock_count,
     *contention_count = internal->contention_count;
 }
 
-// ✅ COMPLETED: Check if mutex is locked
+//  COMPLETED: Check if mutex is locked
 bool mutex_is_locked(Mutex *mutex) {
   if (!mutex)
     return false;
@@ -348,7 +348,7 @@ bool mutex_is_locked(Mutex *mutex) {
   return internal->lock_count > 0;
 }
 
-// ✅ COMPLETED: Get mutex owner thread ID
+//  COMPLETED: Get mutex owner thread ID
 u32 mutex_get_owner_thread(Mutex *mutex) {
   if (!mutex)
     return 0;
@@ -357,17 +357,17 @@ u32 mutex_get_owner_thread(Mutex *mutex) {
   return (u32)internal->owner_thread_id;
 }
 
-// ✅ COMPLETED: Enable/disable deadlock detection
+//  COMPLETED: Enable/disable deadlock detection
 void mutex_enable_deadlock_detection(bool enabled) {
   atomic_store(&g_deadlock_detection_enabled, enabled);
 }
 
-// ✅ COMPLETED: Get deadlock detection status
+//  COMPLETED: Get deadlock detection status
 bool mutex_is_deadlock_detection_enabled(void) {
   return atomic_load(&g_deadlock_detection_enabled);
 }
 
-// ✅ COMPLETED: Global deadlock check
+//  COMPLETED: Global deadlock check
 void mutex_check_all_deadlocks(void) {
   if (!g_deadlock_detection_enabled)
     return;
@@ -387,7 +387,7 @@ void mutex_check_all_deadlocks(void) {
   }
 }
 
-// ✅ COMPLETED: Reset mutex statistics
+//  COMPLETED: Reset mutex statistics
 void mutex_reset_stats(Mutex *mutex) {
   if (!mutex)
     return;
@@ -398,7 +398,7 @@ void mutex_reset_stats(Mutex *mutex) {
   internal->contention_count = 0;
 }
 
-// ✅ COMPLETED: Get global mutex statistics
+//  COMPLETED: Get global mutex statistics
 void mutex_get_global_stats(size_t *total_mutexes, size_t *locked_mutexes) {
   if (total_mutexes)
     *total_mutexes = g_mutex_count;
@@ -414,7 +414,7 @@ void mutex_get_global_stats(size_t *total_mutexes, size_t *locked_mutexes) {
   }
 }
 
-// ✅ COMPLETED: Cleanup function
+//  COMPLETED: Cleanup function
 void mutex_cleanup(void) {
   // Force unlock all mutexes held by current thread
   for (u32 i = 0; i < g_thread_lock_depth; i++) {

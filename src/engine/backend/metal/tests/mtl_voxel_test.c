@@ -27,14 +27,14 @@ static test_stats_t g_stats = {0};
     g_stats.total_tests++;                                                     \
     test_##name();                                                             \
     g_stats.passed_tests++;                                                    \
-    printf("  ✓ PASSED\n\n");                                                  \
+    printf("   PASSED\n\n");                                                  \
   }                                                                            \
   static void test_##name(void)
 
 #define ASSERT(condition, message)                                             \
   do {                                                                         \
     if (!(condition)) {                                                        \
-      printf("  ✗ FAILED: %s (line %d)\n", message, __LINE__);                 \
+      printf("   FAILED: %s (line %d)\n", message, __LINE__);                 \
       g_stats.failed_tests++;                                                  \
       return;                                                                  \
     }                                                                          \
@@ -82,14 +82,14 @@ int main(int argc, char **argv) {
   run_test_mesh_generation();
 
   printf("Total:  %d tests\n", g_stats.total_tests);
-  printf("Passed: %d tests ✓\n", g_stats.passed_tests);
-  printf("Failed: %d tests ✗\n", g_stats.failed_tests);
+  printf("Passed: %d tests \n", g_stats.passed_tests);
+  printf("Failed: %d tests \n", g_stats.failed_tests);
 
   if (g_stats.failed_tests == 0) {
-    printf("\n🎉 ALL TESTS PASSED!\n\n");
+    printf("\n ALL TESTS PASSED!\n\n");
     return 0;
   } else {
-    printf("\n❌ SOME TESTS FAILED\n\n");
+    printf("\n SOME TESTS FAILED\n\n");
     return 1;
   }
 }

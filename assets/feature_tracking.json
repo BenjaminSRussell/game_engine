@@ -352,7 +352,7 @@
           "status": "implemented",
           "implementation_status": "complete",
           "assets_needed": ["settlement_structures", "worker_ui", "building_blueprints"],
-          "target_mods": ["MineColonies", "Millénaire"],
+          "target_mods": ["MineColonies", "Millnaire"],
           "enhancement_needed": ["colony_management_ui", "automated_building"]
         },
         "dialogue_quests": {

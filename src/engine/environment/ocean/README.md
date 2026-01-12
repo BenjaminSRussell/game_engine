@@ -17,7 +17,7 @@ The Ocean FFT system generates realistic ocean waves using:
 
 ## Features
 
-### ✅ Implemented
+###  Implemented
 
 - Phillips spectrum generation with wind parameters
 - Radix-2 FFT compute shaders (Metal)
@@ -27,7 +27,7 @@ The Ocean FFT system generates realistic ocean waves using:
 - Enhanced water rendering (Fresnel, reflections, foam)
 - Multi-cascade system (3 levels)
 
-### ⏳ Pending
+###  Pending
 
 - Metal backend integration (texture/buffer creation)
 - FFT pipeline dispatch
@@ -112,7 +112,7 @@ ocean_mesh_destroy(mesh);
 ```c
 typedef struct OceanFFTConfig {
     uint32_t fft_resolution;     // 128, 256, or 512 (default: 256)
-    float gravity;                // m/s² (default: 9.81)
+    float gravity;                // m/s (default: 9.81)
     float time_scale;             // Time multiplier (default: 1.0)
     
     uint32_t cascade_count;       // 1-4 (default: 3)
@@ -158,17 +158,17 @@ typedef struct OceanMeshConfig {
 The Phillips spectrum defines the amplitude of ocean waves based on wind:
 
 ```
-P(k) = A * |k̂·ŵ|² / |k|⁴ * exp(-1/(kL)²) * exp(-k²l²)
+P(k) = A * |k| / |k| * exp(-1/(kL)) * exp(-kl)
 ```
 
 - `k`: Wave vector (direction and frequency)
 - `w`: Wind direction
-- `L = V²/g`: Largest wave size (depends on wind speed V)
+- `L = V/g`: Largest wave size (depends on wind speed V)
 - `l`: Small wave suppression factor
 
 ### FFT Pipeline
 
-1. **Spectrum Update:** Compute h(k,t) = h0(k)*exp(iωt) + h0*(-k)*exp(-iωt)
+1. **Spectrum Update:** Compute h(k,t) = h0(k)*exp(it) + h0*(-k)*exp(-it)
 2. **Horizontal FFT:** Process each row
 3. **Vertical FFT:** Process each column
 4. **Displacement Assembly:** Combine height, Dx, Dz
@@ -180,10 +180,10 @@ P(k) = A * |k̂·ŵ|² / |k|⁴ * exp(-1/(kL)²) * exp(-k²l²)
 Horizontal displacement creates realistic wave shapes:
 
 ```
-Position = (x + λ*Dx, height, z + λ*Dz)
+Position = (x + *Dx, height, z + *Dz)
 ```
 
-Where λ (choppy_factor) typically ranges from 1.0 to 2.0.
+Where  (choppy_factor) typically ranges from 1.0 to 2.0.
 
 ### Cascades
 
@@ -201,11 +201,11 @@ Multiple FFT systems with different tile sizes provide multi-scale detail:
 
 | Metric | Target | Status |
 |--------|--------|--------|
-| FFT Resolution | 256×256 | ✅ Configurable |
-| FFT Time | <2ms | ⏳ To be profiled |
-| Total Update | <3ms | ⏳ To be profiled |
-| Frame Rate | 60 FPS | ⏳ To be verified |
-| Memory | <100MB | ✅ ~20-25MB estimated |
+| FFT Resolution | 256256 |  Configurable |
+| FFT Time | <2ms |  To be profiled |
+| Total Update | <3ms |  To be profiled |
+| Frame Rate | 60 FPS |  To be verified |
+| Memory | <100MB |  ~20-25MB estimated |
 
 ### Optimization
 
@@ -243,21 +243,21 @@ Located in `assets/shaders/`:
 
 ```
 src/engine/rendering/3d_rendering/environment/ocean/
-├── ocean_fft.h              # Main ocean FFT system API
-├── ocean_fft.c              # System initialization & update
-├── phillips_spectrum.h      # Spectrum generation API
-├── phillips_spectrum.c      # Phillips equation
-├── ocean_mesh.h             # Grid mesh & LOD
-└── ocean_mesh.c             # Mesh generation
+ ocean_fft.h              # Main ocean FFT system API
+ ocean_fft.c              # System initialization & update
+ phillips_spectrum.h      # Spectrum generation API
+ phillips_spectrum.c      # Phillips equation
+ ocean_mesh.h             # Grid mesh & LOD
+ ocean_mesh.c             # Mesh generation
 
 assets/shaders/ocean/
-├── fft_utils.metal
-├── fft_horizontal.comp.metal
-├── fft_vertical.comp.metal
-├── wave_spectrum_update.comp.metal
-├── wave_displacement.comp.metal
-├── wave_normals.comp.metal
-└── wave_foam.comp.metal
+ fft_utils.metal
+ fft_horizontal.comp.metal
+ fft_vertical.comp.metal
+ wave_spectrum_update.comp.metal
+ wave_displacement.comp.metal
+ wave_normals.comp.metal
+ wave_foam.comp.metal
 ```
 
 ---
@@ -273,8 +273,8 @@ assets/shaders/ocean/
 ## Status
 
 **Implementation:** 75+ out of ~100 TODOs complete  
-**Core Algorithms:** ✅ Fully implemented  
-**Metal Integration:** ⏳ Pending (texture/buffer creation, pipeline dispatch)  
-**Rendering:** ✅ Shaders complete, integration pending
+**Core Algorithms:**  Fully implemented  
+**Metal Integration:**  Pending (texture/buffer creation, pipeline dispatch)  
+**Rendering:**  Shaders complete, integration pending
 
 See [walkthrough.md](file:///Users/benjaminrussell/.gemini/antigravity/brain/9c26c9c4-7cdf-4b1c-b30b-6085433fb605/walkthrough.md) for detailed implementation notes.

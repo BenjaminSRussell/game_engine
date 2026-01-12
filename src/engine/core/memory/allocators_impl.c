@@ -248,7 +248,7 @@ int main() {
 /*
  * IMPLEMENTATION COMPLETE: 2/500 TODOs (Linear & Pool allocators)
  * LOC: ~250
- * Performance: <10ns per allocation achieved ✅
+ * Performance: <10ns per allocation achieved 
  *
  * REMAINING TODOs:
  * - Stack allocator (100 TODOs, 2K LOC)

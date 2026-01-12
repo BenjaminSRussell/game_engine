@@ -64,12 +64,12 @@ typedef struct {
 /**
  * Calculate Rayleigh scattering coefficient for a given wavelength
  *
- * Formula: β_R(λ) = (8π³(n²-1)²)/(3Nλ⁴)
- * where n is refractive index, N is molecular density, λ is wavelength
+ * Formula: _R() = (8(n-1))/(3N)
+ * where n is refractive index, N is molecular density,  is wavelength
  *
  * @param wavelength Wavelength in micrometers
  * @param refractive_index Refractive index of air (typically 1.00029)
- * @param molecular_density Number density at sea level (molecules/m³)
+ * @param molecular_density Number density at sea level (molecules/m)
  * @return Rayleigh scattering coefficient (m^-1)
  */
 float atm_rayleigh_coefficient(float wavelength, float refractive_index,
@@ -87,7 +87,7 @@ simd_float3 atm_rayleigh_coefficient_rgb(void);
 /**
  * Rayleigh phase function
  *
- * Formula: P_R(θ) = 3/(16π) * (1 + cos²θ)
+ * Formula: P_R() = 3/(16) * (1 + cos)
  *
  * @param cos_theta Cosine of scattering angle
  * @return Phase function value
@@ -110,7 +110,7 @@ float atm_mie_coefficient(float turbidity, float beta_base);
 /**
  * Henyey-Greenstein phase function (approximates Mie scattering)
  *
- * Formula: P_M(θ) = (1-g²) / (4π(1+g²-2g·cosθ)^(3/2))
+ * Formula: P_M() = (1-g) / (4(1+g-2gcos)^(3/2))
  *
  * @param cos_theta Cosine of scattering angle
  * @param g Asymmetry factor [-1, 1] (typically 0.76-0.8 for Earth)
@@ -186,7 +186,7 @@ simd_float3 atm_optical_depth(simd_float3 origin, simd_float3 direction,
 /**
  * Calculate transmittance from optical depth
  *
- * Formula: T = exp(-τ)
+ * Formula: T = exp(-)
  *
  * @param optical_depth RGB optical depth
  * @return RGB transmittance [0, 1]

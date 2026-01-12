@@ -4,7 +4,7 @@
 #include <string.h>
 #include <include/math/math.h>
 
-// ✅ COMPLETED: GOAP (Goal Oriented Action Planning) solver [Difficulty: 9]
+//  COMPLETED: GOAP (Goal Oriented Action Planning) solver [Difficulty: 9]
 // 1. Define 'WorldState' struct using a bitmask or hash map for symbolic state
 // 2. Define 'GoapAction' struct: preconditions (WorldState), effects (WorldState), cost (float), verification_callback.
 // 3. Implement A* search over the action space to find the sequence of actions that transforms current state to goal state.

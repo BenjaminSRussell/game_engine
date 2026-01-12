@@ -34,7 +34,7 @@ struct BoatInteriorEditorView: View {
             // 3D Viewport (would integrate with Metal/Vulkan)
             Color.black
                 .overlay(
-                    Text("3D Viewport\nCamera: \(formatVector(cameraPosition))\nYaw: \(Int(cameraYaw * 180 / .pi))° Pitch: \(Int(cameraPitch * 180 / .pi))°")
+                    Text("3D Viewport\nCamera: \(formatVector(cameraPosition))\nYaw: \(Int(cameraYaw * 180 / .pi)) Pitch: \(Int(cameraPitch * 180 / .pi))")
                         .foregroundColor(.white)
                         .font(.system(.caption, design: .monospaced))
                 )

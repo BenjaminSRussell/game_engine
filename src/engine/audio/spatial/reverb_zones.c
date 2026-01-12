@@ -21,7 +21,7 @@ static ReverbZoneSystem g_reverb_system = {0};
 static bool g_reverb_initialized = false;
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Reverb zone system implementation
+//  COMPLETED: Reverb zone system implementation
 // -------------------------------------------------------------------------------------------------
 
 bool ReverbZones_Init(ReverbZoneSystem* system, u32 max_zones, u32 sample_rate, u32 buffer_size) {
@@ -109,7 +109,7 @@ void ReverbZones_Shutdown(ReverbZoneSystem* system) {
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Zone management
+//  COMPLETED: Zone management
 // -------------------------------------------------------------------------------------------------
 
 bool ReverbZones_AddZone(ReverbZoneSystem* system, const ReverbZone* zone) {
@@ -172,7 +172,7 @@ bool ReverbZones_IsPositionInZone(const ReverbZone* zone, const Vec3 position) {
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Zone blending system
+//  COMPLETED: Zone blending system
 // -------------------------------------------------------------------------------------------------
 
 void ReverbZones_CalculateBlendWeights(ReverbZoneSystem* system, const Vec3 listener_pos, 
@@ -303,7 +303,7 @@ void ReverbZones_ProcessWithBlending(ReverbZoneSystem* system, const Vec3 listen
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Convolution reverb implementation
+//  COMPLETED: Convolution reverb implementation
 // -------------------------------------------------------------------------------------------------
 
 bool ConvolutionReverb_Init(ConvolutionReverb* reverb, u32 sample_rate, u32 buffer_size) {

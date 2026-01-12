@@ -35,7 +35,7 @@ struct AtmosControlsView: View {
                     
                     HStack {
                         Slider(value: $overheadSpeakerAngle, in: 30...60)
-                        Text("\(Int(overheadSpeakerAngle))°")
+                        Text("\(Int(overheadSpeakerAngle))")
                             .frame(width: 50)
                             .monospacedDigit()
                     }
@@ -150,7 +150,7 @@ struct CustomSurroundControlsView: View {
                 
                 HStack {
                     Slider(value: $vbapSpread, in: 0...45)
-                    Text("\(Int(vbapSpread))°")
+                    Text("\(Int(vbapSpread))")
                         .frame(width: 50)
                         .monospacedDigit()
                 }

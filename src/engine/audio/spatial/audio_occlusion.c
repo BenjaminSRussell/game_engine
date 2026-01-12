@@ -21,7 +21,7 @@ static OcclusionSystem g_occlusion_system = {0};
 static bool g_occlusion_initialized = false;
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Occlusion system implementation
+//  COMPLETED: Occlusion system implementation
 // -------------------------------------------------------------------------------------------------
 
 bool Occlusion_Init(OcclusionSystem* system, u32 sample_rate, u32 buffer_size) {
@@ -96,7 +96,7 @@ void Occlusion_Shutdown(OcclusionSystem* system) {
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Low-pass filter implementation
+//  COMPLETED: Low-pass filter implementation
 // -------------------------------------------------------------------------------------------------
 
 bool LowPassFilter_Init(LowPassFilter* filter, f32 cutoff_freq, u32 sample_rate) {
@@ -172,7 +172,7 @@ void LowPassFilter_Cleanup(LowPassFilter* filter) {
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Occlusion detection and filtering
+//  COMPLETED: Occlusion detection and filtering
 // -------------------------------------------------------------------------------------------------
 
 f32 Occlusion_CalculateOcclusion(OcclusionSystem* system, const Vec3 source, const Vec3 listener) {
@@ -260,7 +260,7 @@ void Occlusion_ApplyFiltering(OcclusionSystem* system, const f32* input, f32* ou
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Ray casting for occlusion detection
+//  COMPLETED: Ray casting for occlusion detection
 // -------------------------------------------------------------------------------------------------
 
 bool Occlusion_Raycast(const Vec3 start, const Vec3 end, MaterialAbsorption* hit_material) {

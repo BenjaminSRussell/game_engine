@@ -479,7 +479,7 @@ bool streaming_pool_evict_block(StreamingMemoryPool* pool, StreamingMemoryBlock*
     
     // If block is dirty, write back to storage (simplified - just mark as clean)
     if (block->status == BLOCK_STATUS_DIRTY) {
-        // ✅ COMPLETED: Implement actual write-back to storage
+        //  COMPLETED: Implement actual write-back to storage
         LOG_DEBUG("Writing dirty block back to storage (asset: %llu)", (unsigned long long)block->asset_id);
     }
     

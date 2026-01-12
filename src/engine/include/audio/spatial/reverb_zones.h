@@ -107,20 +107,20 @@ typedef struct {
 bool ReverbZones_Init(ReverbZoneSystem* system, u32 max_zones, u32 sample_rate, u32 buffer_size);
 void ReverbZones_Shutdown(ReverbZoneSystem* system);
 
-// ✅ COMPLETED: Zone management
+//  COMPLETED: Zone management
 bool ReverbZones_AddZone(ReverbZoneSystem* system, const ReverbZone* zone);
 void ReverbZones_RemoveZone(ReverbZoneSystem* system, u32 zone_index);
 ReverbZone* ReverbZones_FindZone(ReverbZoneSystem* system, const Vec3 position);
 bool ReverbZones_IsPositionInZone(const ReverbZone* zone, const Vec3 position);
 
-// ✅ COMPLETED: Zone blending system
+//  COMPLETED: Zone blending system
 void ReverbZones_CalculateBlendWeights(ReverbZoneSystem* system, const Vec3 listener_pos, 
                                      u32* zone_indices, f32* weights, u32* count);
 void ReverbZones_ProcessWithBlending(ReverbZoneSystem* system, const Vec3 listener_pos,
                                   const f32* input_left, const f32* input_right,
                                   f32* output_left, f32* output_right, u32 frames);
 
-// ✅ COMPLETED: Convolution reverb implementation
+//  COMPLETED: Convolution reverb implementation
 bool ConvolutionReverb_Init(ConvolutionReverb* reverb, u32 sample_rate, u32 buffer_size);
 void ConvolutionReverb_Process(ConvolutionReverb* reverb, const f32* input, f32* output, u32 frames);
 void ConvolutionReverb_SetParameters(ConvolutionReverb* reverb, const ReverbParameters* params);

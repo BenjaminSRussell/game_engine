@@ -23,7 +23,7 @@
 #include <pthread.h>
 #endif
 
-// ✅ COMPLETED: Crash Handler Implementation - AGENT_CORE_1
+//  COMPLETED: Crash Handler Implementation - AGENT_CORE_1
 // Catch crashes, generate minidumps, and log fatal errors
 
 #define MAX_CRASH_INFO_SIZE 4096
@@ -43,13 +43,13 @@ typedef struct {
 
 static CrashHandler g_crash_handler = {0};
 
-// ✅ COMPLETED: Forward declarations
+//  COMPLETED: Forward declarations
 static void generate_minidump(const char* filename);
 static void capture_memory_state(char* buffer, size_t buffer_size);
 static void write_crash_log(const char* crash_info);
 static void upload_crash_report(const char* crash_info);
 
-// ✅ COMPLETED: Platform-specific crash handlers
+//  COMPLETED: Platform-specific crash handlers
 #ifdef _WIN32
 static LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* exception_info) {
     char crash_info[MAX_CRASH_INFO_SIZE];
@@ -217,7 +217,7 @@ static void unix_signal_handler(int sig_num, siginfo_t* info, void* context) {
 }
 #endif
 
-// ✅ COMPLETED: Minidump generation (Windows)
+//  COMPLETED: Minidump generation (Windows)
 #ifdef _WIN32
 static void generate_minidump(const char* filename) {
     HANDLE process = GetCurrentProcess();
@@ -260,7 +260,7 @@ static void generate_minidump(const char* filename) {
 }
 #endif
 
-// ✅ COMPLETED: Memory state capture
+//  COMPLETED: Memory state capture
 static void capture_memory_state(char* buffer, size_t buffer_size) {
     if (!buffer || buffer_size == 0) return;
     
@@ -295,7 +295,7 @@ static void capture_memory_state(char* buffer, size_t buffer_size) {
 #endif
 }
 
-// ✅ COMPLETED: Crash log writing
+//  COMPLETED: Crash log writing
 static void write_crash_log(const char* crash_info) {
     FILE* log_file = fopen(CRASH_LOG_FILENAME, "a");
     if (log_file) {
@@ -307,14 +307,14 @@ static void write_crash_log(const char* crash_info) {
     fprintf(stderr, "%s\n", crash_info);
 }
 
-// ✅ COMPLETED: Symbol upload (placeholder)
+//  COMPLETED: Symbol upload (placeholder)
 static void upload_crash_report(const char* crash_info) {
     // Placeholder for HTTP upload implementation
     // Would use HTTP client to send crash report to server
     printf("Crash report upload not implemented\n");
 }
 
-// ✅ COMPLETED: Crash handler initialization
+//  COMPLETED: Crash handler initialization
 bool crash_handler_init(const char* application_name, const char* version,
                        const char* crash_directory, bool generate_minidumps,
                        bool capture_memory_state, bool upload_symbols) {
@@ -373,12 +373,12 @@ bool crash_handler_init(const char* application_name, const char* version,
     return true;
 }
 
-// ✅ COMPLETED: Custom callback registration
+//  COMPLETED: Custom callback registration
 void crash_handler_set_callback(void (*callback)(const char* crash_info)) {
     g_crash_handler.custom_callback = callback;
 }
 
-// ✅ COMPLETED: Crash simulation (for testing)
+//  COMPLETED: Crash simulation (for testing)
 void crash_handler_simulate_crash(int crash_type) {
     switch (crash_type) {
         case 1: // Null pointer dereference
@@ -410,7 +410,7 @@ void crash_handler_simulate_crash(int crash_type) {
     }
 }
 
-// ✅ COMPLETED: Utility functions
+//  COMPLETED: Utility functions
 bool crash_handler_is_initialized(void) {
     return g_crash_handler.initialized;
 }
@@ -423,7 +423,7 @@ const char* crash_handler_get_version(void) {
     return g_crash_handler.version;
 }
 
-// ✅ COMPLETED: Shutdown
+//  COMPLETED: Shutdown
 void crash_handler_shutdown(void) {
     if (!g_crash_handler.initialized) return;
     

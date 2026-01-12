@@ -1,14 +1,14 @@
 // Camera input controls for movement and look.
-// ✅ COMPLETED: Implement camera control sensitivity curves.
-// ✅ COMPLETED: Add camera control acceleration system.
-// ✅ COMPLETED: Implement camera control dead zone configuration.
-// ✅ COMPLETED: Add camera control mouse smoothing system.
-// ✅ COMPLETED: Implement camera control inversion options.
-// ✅ COMPLETED: Add camera control accessibility features.
-// ✅ COMPLETED: Implement camera control preset system.
-// ✅ COMPLETED: Add camera control statistics tracking.
-// ✅ COMPLETED: Implement camera control validation system.
-// ✅ COMPLETED: Add camera control documentation system.
+//  COMPLETED: Implement camera control sensitivity curves.
+//  COMPLETED: Add camera control acceleration system.
+//  COMPLETED: Implement camera control dead zone configuration.
+//  COMPLETED: Add camera control mouse smoothing system.
+//  COMPLETED: Implement camera control inversion options.
+//  COMPLETED: Add camera control accessibility features.
+//  COMPLETED: Implement camera control preset system.
+//  COMPLETED: Add camera control statistics tracking.
+//  COMPLETED: Implement camera control validation system.
+//  COMPLETED: Add camera control documentation system.
 #include <rendering/camera.h>
 #include <include/platform/input/controls.h>
 #include <include/math/math.h>

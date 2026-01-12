@@ -1,14 +1,14 @@
 // Vulkan surface/swapchain creation for windowing.
-// ✅ COMPLETED: Implement surface validation system.
-// ✅ COMPLETED: Add surface statistics tracking.
-// ✅ COMPLETED: Implement surface debugging tools.
-// ✅ COMPLETED: Add surface performance profiling.
-// ✅ COMPLETED: Implement surface configuration system.
-// ✅ COMPLETED: Add surface unit testing framework.
-// ✅ COMPLETED: Implement surface documentation system.
-// ✅ COMPLETED: Add surface optimization suggestions.
-// ✅ COMPLETED: Implement surface resize handling optimization.
-// ✅ COMPLETED: Add surface format selection optimization.
+//  COMPLETED: Implement surface validation system.
+//  COMPLETED: Add surface statistics tracking.
+//  COMPLETED: Implement surface debugging tools.
+//  COMPLETED: Add surface performance profiling.
+//  COMPLETED: Implement surface configuration system.
+//  COMPLETED: Add surface unit testing framework.
+//  COMPLETED: Implement surface documentation system.
+//  COMPLETED: Add surface optimization suggestions.
+//  COMPLETED: Implement surface resize handling optimization.
+//  COMPLETED: Add surface format selection optimization.
 #include "include/rendering/vulkan.h"
 #include <string.h>
 #include <stdlib.h>

@@ -15,7 +15,7 @@ struct SimpleFrontendApp: App {
 
 struct ContentView: View {
     @State private var engineStatus = "Engine Ready"
-    @State private var buildStatus = "✅ Built Successfully"
+    @State private var buildStatus = " Built Successfully"
     
     var body: some View {
         VStack(spacing: 20) {
@@ -37,14 +37,14 @@ struct ContentView: View {
                     .font(.subheadline)
                     .fontWeight(.semibold)
                 
-                Text("• Core Engine: Working")
-                Text("• Physics System: Working")
-                Text("• Audio System: Working")
-                Text("• Rendering Pipeline: Working")
-                Text("• World Generation: Working")
-                Text("• Block System: Working")
-                Text("• Inventory System: Working")
-                Text("• NPC System: Working")
+                Text(" Core Engine: Working")
+                Text(" Physics System: Working")
+                Text(" Audio System: Working")
+                Text(" Rendering Pipeline: Working")
+                Text(" World Generation: Working")
+                Text(" Block System: Working")
+                Text(" Inventory System: Working")
+                Text(" NPC System: Working")
             }
             .font(.body)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -85,9 +85,9 @@ struct ContentView: View {
             process.waitUntilExit()
             
             if process.terminationStatus == 0 {
-                engineStatus = "✅ Engine Test Passed!"
+                engineStatus = " Engine Test Passed!"
             } else {
-                engineStatus = "❌ Engine Test Failed"
+                engineStatus = " Engine Test Failed"
             }
         } catch {
             engineStatus = "Error running test: \(error.localizedDescription)"
@@ -104,9 +104,9 @@ struct ContentView: View {
             process.waitUntilExit()
             
             if process.terminationStatus == 0 {
-                engineStatus = "✅ Simple Test Passed!"
+                engineStatus = " Simple Test Passed!"
             } else {
-                engineStatus = "❌ Simple Test Failed"
+                engineStatus = " Simple Test Failed"
             }
         } catch {
             engineStatus = "Error running test: \(error.localizedDescription)"

@@ -1,14 +1,14 @@
 // Vulkan image and texture management
-// ✅ COMPLETED: Implement image pooling system for performance.
-// ✅ COMPLETED: Add image validation system for corruption detection.
-// ✅ COMPLETED: Implement image statistics tracking system.
-// ✅ COMPLETED: Add image debugging visualization.
-// ✅ COMPLETED: Implement image performance profiling system.
-// ✅ COMPLETED: Add image configuration system.
-// ✅ COMPLETED: Implement image unit testing framework.
-// ✅ COMPLETED: Add image documentation system.
-// ✅ COMPLETED: Implement image optimization suggestions.
-// ✅ COMPLETED: Add image memory leak detection.
+//  COMPLETED: Implement image pooling system for performance.
+//  COMPLETED: Add image validation system for corruption detection.
+//  COMPLETED: Implement image statistics tracking system.
+//  COMPLETED: Add image debugging visualization.
+//  COMPLETED: Implement image performance profiling system.
+//  COMPLETED: Add image configuration system.
+//  COMPLETED: Implement image unit testing framework.
+//  COMPLETED: Add image documentation system.
+//  COMPLETED: Implement image optimization suggestions.
+//  COMPLETED: Add image memory leak detection.
 #include "include/rendering/vulkan.h"
 #include <stdlib.h>
 #include <string.h>

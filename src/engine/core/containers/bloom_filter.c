@@ -4,7 +4,7 @@
 #include <include/math/math.h>
 #include <stdint.h>
 
-// ✅ COMPLETED: Bloom Filter Implementation - AGENT_CORE_2
+//  COMPLETED: Bloom Filter Implementation - AGENT_CORE_2
 // Probabilistic data structure for fast set membership testing
 // False positives possible, false negatives impossible
 
@@ -26,7 +26,7 @@ typedef struct {
     u32 seed2;              // Seed for second hash function
 } BloomFilter;
 
-// ✅ COMPLETED: FNV-1a Hash Implementation
+//  COMPLETED: FNV-1a Hash Implementation
 static u64 bloom_fnv1a_hash(const void* data, size_t len, u64 seed) {
     const u8* bytes = (const u8*)data;
     u64 hash = seed;
@@ -44,7 +44,7 @@ static u64 bloom_fnv1a_hash(const void* data, size_t len, u64 seed) {
     return hash;
 }
 
-// ✅ COMPLETED: Double Hashing Optimization
+//  COMPLETED: Double Hashing Optimization
 // Generate k independent hashes from 2 base hashes
 static u64 bloom_get_hash(const BloomFilter* filter, const void* data, size_t len, u32 hash_index) {
     u64 h1 = bloom_fnv1a_hash(data, len, filter->seed1);
@@ -54,7 +54,7 @@ static u64 bloom_get_hash(const BloomFilter* filter, const void* data, size_t le
     return (h1 + hash_index * h2) % filter->size_in_bits;
 }
 
-// ✅ COMPLETED: Bloom Filter Creation
+//  COMPLETED: Bloom Filter Creation
 BloomFilter* bloom_filter_create(size_t expected_items, f32 false_positive_rate) {
     if (expected_items == 0 || false_positive_rate <= 0.0f || false_positive_rate >= 1.0f) {
         return NULL;
@@ -94,7 +94,7 @@ BloomFilter* bloom_filter_create(size_t expected_items, f32 false_positive_rate)
     return filter;
 }
 
-// ✅ COMPLETED: Bloom Filter Add Operation
+//  COMPLETED: Bloom Filter Add Operation
 bool bloom_filter_add(BloomFilter* filter, const void* data, size_t len) {
     if (!filter || !data || len == 0) return false;
     
@@ -108,7 +108,7 @@ bool bloom_filter_add(BloomFilter* filter, const void* data, size_t len) {
     return true;
 }
 
-// ✅ COMPLETED: Bloom Filter Contains Operation
+//  COMPLETED: Bloom Filter Contains Operation
 bool bloom_filter_contains(const BloomFilter* filter, const void* data, size_t len) {
     if (!filter || !data || len == 0) return false;
     
@@ -123,7 +123,7 @@ bool bloom_filter_contains(const BloomFilter* filter, const void* data, size_t l
     return true;  // Possibly present (may be false positive)
 }
 
-// ✅ COMPLETED: Bloom Filter String Helpers
+//  COMPLETED: Bloom Filter String Helpers
 bool bloom_filter_add_string(BloomFilter* filter, const char* str) {
     if (!str) return false;
     return bloom_filter_add(filter, str, strlen(str));
@@ -134,7 +134,7 @@ bool bloom_filter_contains_string(const BloomFilter* filter, const char* str) {
     return bloom_filter_contains(filter, str, strlen(str));
 }
 
-// ✅ COMPLETED: Bloom Filter Utility Functions
+//  COMPLETED: Bloom Filter Utility Functions
 size_t bloom_filter_size(const BloomFilter* filter) {
     return filter ? filter->size_in_bits : 0;
 }
@@ -147,7 +147,7 @@ size_t bloom_filter_item_count(const BloomFilter* filter) {
     return filter ? filter->item_count : 0;
 }
 
-// ✅ COMPLETED: Bloom Filter Statistics
+//  COMPLETED: Bloom Filter Statistics
 f32 bloom_filter_current_false_positive_rate(const BloomFilter* filter) {
     if (!filter || filter->size_in_bits == 0) return 1.0f;
     
@@ -193,7 +193,7 @@ void bloom_filter_print_stats(const BloomFilter* filter) {
     printf("  Bit Density: %.2f%%\n", density);
 }
 
-// ✅ COMPLETED: Bloom Filter Destruction
+//  COMPLETED: Bloom Filter Destruction
 void bloom_filter_destroy(BloomFilter* filter) {
     if (!filter) return;
     
@@ -201,7 +201,7 @@ void bloom_filter_destroy(BloomFilter* filter) {
     free(filter);
 }
 
-// ✅ COMPLETED: Bloom Filter Serialization
+//  COMPLETED: Bloom Filter Serialization
 size_t bloom_filter_serialize_size(const BloomFilter* filter) {
     if (!filter) return 0;
     size_t array_size = (filter->size_in_bits + 63) / 64;
@@ -252,7 +252,7 @@ BloomFilter* bloom_filter_deserialize(const void* buffer, size_t buffer_size) {
     return filter;
 }
 
-// ✅ COMPLETED: Bloom Filter Union and Intersection
+//  COMPLETED: Bloom Filter Union and Intersection
 bool bloom_filter_union(BloomFilter* result, const BloomFilter* filter1, const BloomFilter* filter2) {
     if (!result || !filter1 || !filter2) return false;
     if (filter1->size_in_bits != filter2->size_in_bits) return false;

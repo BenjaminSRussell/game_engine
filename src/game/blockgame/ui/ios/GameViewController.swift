@@ -218,16 +218,16 @@ class GameViewController: UIViewController {
     private func initializeHUDData() {
         // Sample hotbar items
         let sampleItems = [
-            HotbarItem(name: "Sword", icon: "⚔️", durability: 85),
-            HotbarItem(name: "Pickaxe", icon: "⛏️", durability: 60),
+            HotbarItem(name: "Sword", icon: "", durability: 85),
+            HotbarItem(name: "Pickaxe", icon: "", durability: 60),
             HotbarItem(name: "Wood", count: 64),
             HotbarItem(name: "Stone", count: 32),
             HotbarItem(name: "Torch", count: 16),
             HotbarItem(name: "Apple", count: 5),
-            HotbarItem(name: "Bow", icon: "🏹", durability: 100),
+            HotbarItem(name: "Bow", icon: "", durability: 100),
             HotbarItem(name: "Arrow", count: 24),
             HotbarItem(name: "Dirt", count: 64),
-            HotbarItem(name: "Water Bucket", icon: "🪣")
+            HotbarItem(name: "Water Bucket", icon: "")
         ]
         
         gameHUD.hotbarItems = sampleItems

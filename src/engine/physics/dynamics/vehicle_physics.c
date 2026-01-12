@@ -552,7 +552,7 @@ static Vec3 vehicle_get_wheel_velocity(const VehiclePhysics *vehicle, u32 wheel_
     Mat4 chassis_transform = mat4_from_quat_translation(vehicle->rotation, vehicle->position);
     Vec3 wheel_world_pos = mat4_transform_point(chassis_transform, vehicle->wheels[wheel_index].position);
     
-    // v = ω × r (cross product of angular velocity and position)
+    // v =   r (cross product of angular velocity and position)
     Vec3 r = vec3_sub(wheel_world_pos, vehicle->position);
     Vec3 angular_velocity_contribution = vec3_cross(vehicle->angular_velocity, r);
     
@@ -579,7 +579,7 @@ static f32 vehicle_calculate_slip_ratio(const VehiclePhysics *vehicle, u32 wheel
     // Calculate wheel angular velocity (rotation speed)
     f32 wheel_angular_velocity = 0.0f;
     if (wheel->radius > 0.0f) {
-        // v = ω * r, so ω = v / r
+        // v =  * r, so  = v / r
         Vec3 wheel_direction = vec3_normalize(vec3_cross(wheel->contact_normal, 
                                                      vec3_cross(vehicle->rotation, wheel->position)));
         f32 forward_velocity = vec3_dot(wheel_velocity, wheel_direction);
@@ -659,7 +659,7 @@ static void vehicle_calculate_friction_coefficients(const VehiclePhysics *vehicl
     *longitudinal_friction = base_friction * slip_factor;
     *lateral_friction = base_friction * angle_factor * 0.8f; // Lateral typically lower
     
-    LOG_TRACE("Wheel %u friction: slip_ratio=%.3f, slip_angle=%.3f°, long=%.3f, lat=%.3f",
+    LOG_TRACE("Wheel %u friction: slip_ratio=%.3f, slip_angle=%.3f, long=%.3f, lat=%.3f",
              wheel_index, slip_ratio, slip_angle * 180.0f / PI, 
              *longitudinal_friction, *lateral_friction);
 }
@@ -704,7 +704,7 @@ static WheelFriction vehicle_calculate_wheel_friction(const VehiclePhysics *vehi
     f32 forward_velocity = vec3_dot(wheel_velocity, forward);
     f32 lateral_velocity = vec3_dot(wheel_velocity, lateral);
     
-    // Coulomb friction model: F = μ * N
+    // Coulomb friction model: F =  * N
     friction.longitudinal_force = vec3_scale(forward, -forward_velocity * friction.friction_coefficient * normal_force);
     friction.lateral_force = vec3_scale(lateral, -lateral_velocity * friction.friction_coefficient * normal_force);
     
@@ -868,7 +868,7 @@ static void pacejka_combined_forces(const PacejkaCoefficients *coeff, f32 slip_r
     *longitudinal = fx_pure * reduction_factor;
     *lateral = fy_pure * reduction_factor;
     
-    LOG_TRACE("Pacejka: slip_ratio=%.3f, slip_angle=%.3f°, Fx=%.1fN, Fy=%.1fN, reduction=%.3f",
+    LOG_TRACE("Pacejka: slip_ratio=%.3f, slip_angle=%.3f, Fx=%.1fN, Fy=%.1fN, reduction=%.3f",
              slip_ratio, slip_angle * 180.0f / PI, *longitudinal, *lateral, reduction_factor);
 }
 
@@ -932,7 +932,7 @@ static WheelFriction vehicle_calculate_pacejka_friction(const VehiclePhysics *ve
     f32 aligning_moment = pacejka_aligning_moment(&k_default_pacejka, friction.slip_angle, 
                                                    normal_force, 0.0f);
     
-    LOG_TRACE("Pacejka wheel %u: Fx=%.1fN, Fy=%.1fN, Mz=%.1fNm, slip_ratio=%.3f, slip_angle=%.3f°",
+    LOG_TRACE("Pacejka wheel %u: Fx=%.1fN, Fy=%.1fN, Mz=%.1fNm, slip_ratio=%.3f, slip_angle=%.3f",
              wheel_index, longitudinal_force, lateral_force, aligning_moment,
              friction.slip_ratio, friction.slip_angle * 180.0f / PI);
     
@@ -1044,7 +1044,7 @@ static void vehicle_update_wheel_rotation(VehiclePhysics *vehicle, u32 wheel_ind
     // Update rotation angle
     visual->rotation_angle += visual->angular_velocity * delta_time;
     
-    // Keep angle in reasonable range (0 to 2π)
+    // Keep angle in reasonable range (0 to 2)
     while (visual->rotation_angle > 2.0f * PI) {
         visual->rotation_angle -= 2.0f * PI;
     }
@@ -1068,7 +1068,7 @@ static void vehicle_update_wheel_rotation(VehiclePhysics *vehicle, u32 wheel_ind
     // Update wheel physics rotation for consistency
     wheel->wheel_rotation = visual->rotation_angle;
     
-    LOG_TRACE("Wheel %u visual: angle=%.3f°, angular_vel=%.3f rad/s, steering=%.3f°, rotating=%s",
+    LOG_TRACE("Wheel %u visual: angle=%.3f, angular_vel=%.3f rad/s, steering=%.3f, rotating=%s",
              wheel_index, visual->rotation_angle * 180.0f / PI, visual->angular_velocity,
              visual->steering_angle * 180.0f / PI, visual->is_rotating ? "YES" : "NO");
 }

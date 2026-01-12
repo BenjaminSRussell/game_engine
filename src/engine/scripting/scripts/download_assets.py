@@ -29,10 +29,10 @@ def download_file(url, dest_path):
     print(f"Downloading {url}...")
     try:
         urllib.request.urlretrieve(url, dest_path)
-        print(f"✓ Downloaded to {dest_path}")
+        print(f" Downloaded to {dest_path}")
         return True
     except Exception as e:
-        print(f"✗ Failed to download {url}: {e}")
+        print(f" Failed to download {url}: {e}")
         return False
 
 def extract_zip(zip_path, extract_to):
@@ -41,10 +41,10 @@ def extract_zip(zip_path, extract_to):
     try:
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(extract_to)
-        print(f"✓ Extracted to {extract_to}")
+        print(f" Extracted to {extract_to}")
         return True
     except Exception as e:
-        print(f"✗ Failed to extract {zip_path}: {e}")
+        print(f" Failed to extract {zip_path}: {e}")
         return False
 
 def organize_audio_files(temp_dir):
@@ -83,7 +83,7 @@ def organize_audio_files(temp_dir):
     }
     
     # Copy files based on mappings (simplified - actual implementation would be more sophisticated)
-    print("✓ Audio files organized (placeholder structure created)")
+    print(" Audio files organized (placeholder structure created)")
 
 def organize_textures(temp_dir):
     """Organize downloaded texture files."""
@@ -106,7 +106,7 @@ def organize_textures(temp_dir):
                 shutil.copy2(png_file, dest)
                 print(f"  Copied {png_file.name}")
     
-    print("✓ Texture files organized")
+    print(" Texture files organized")
 
 def create_placeholder_atlas():
     """Create a placeholder atlas map JSON."""
@@ -137,7 +137,7 @@ def create_placeholder_atlas():
     with open(atlas_path, 'w') as f:
         json.dump(atlas_map, f, indent=2)
     
-    print(f"✓ Created placeholder atlas map at {atlas_path}")
+    print(f" Created placeholder atlas map at {atlas_path}")
 
 def main():
     print("=" * 60)
@@ -171,7 +171,7 @@ def main():
     # Cleanup
     print("\nCleaning up temporary files...")
     shutil.rmtree(TEMP_DIR)
-    print("✓ Cleanup complete")
+    print(" Cleanup complete")
     
     print("\n" + "=" * 60)
     print("Asset acquisition complete!")

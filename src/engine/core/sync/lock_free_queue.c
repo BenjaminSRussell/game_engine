@@ -3,19 +3,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-// ✅ COMPLETED: Lock-Free Queue Implementation - AGENT_CORE_1
+//  COMPLETED: Lock-Free Queue Implementation - AGENT_CORE_1
 // Thread-safe queue without mutexes for high-contention scenarios
 
 #define CACHE_LINE_SIZE 64
 #define MAX_RETRIES 1000
 
-// ✅ COMPLETED: Tagged pointer for ABA prevention
+//  COMPLETED: Tagged pointer for ABA prevention
 typedef struct {
   void *ptr;
   u64 tag;
 } TaggedPointer;
 
-// ✅ COMPLETED: Queue node
+//  COMPLETED: Queue node
 typedef struct QueueNode {
   void *data;
   _Atomic(TaggedPointer) next;
@@ -23,13 +23,13 @@ typedef struct QueueNode {
                sizeof(_Atomic(TaggedPointer))];
 } QueueNode;
 
-// ✅ COMPLETED: Hazard pointer
+//  COMPLETED: Hazard pointer
 typedef struct {
   _Atomic(void *) pointer;
   char padding[CACHE_LINE_SIZE - sizeof(void *)];
 } HazardPointer;
 
-// ✅ COMPLETED: Lock-free queue - full definition
+//  COMPLETED: Lock-free queue - full definition
 struct LockFreeQueue {
   QueueNode *nodes;
   size_t capacity;
@@ -58,7 +58,7 @@ static void retire_node(LockFreeQueue *queue, QueueNode *node,
                         size_t thread_id);
 static void reclaim_nodes(LockFreeQueue *queue, size_t thread_id);
 
-// ✅ COMPLETED: Atomic operations for tagged pointers
+//  COMPLETED: Atomic operations for tagged pointers
 static TaggedPointer make_tagged_pointer(void *ptr, u64 tag) {
   TaggedPointer tp = {ptr, tag};
   return tp;
@@ -74,7 +74,7 @@ static bool compare_exchange_tagged_pointer(_Atomic(TaggedPointer) *tp,
   return atomic_compare_exchange_weak(tp, expected, desired);
 }
 
-// ✅ COMPLETED: Queue creation
+//  COMPLETED: Queue creation
 LockFreeQueue *lock_free_queue_create(size_t capacity, size_t max_threads,
                                       bool mpmc) {
   if (capacity == 0)
@@ -137,7 +137,7 @@ LockFreeQueue *lock_free_queue_create(size_t capacity, size_t max_threads,
   return queue;
 }
 
-// ✅ COMPLETED: SPSC enqueue
+//  COMPLETED: SPSC enqueue
 bool lock_free_spsc_enqueue(LockFreeQueue *queue, void *data) {
   if (!queue || !data)
     return false;
@@ -159,7 +159,7 @@ bool lock_free_spsc_enqueue(LockFreeQueue *queue, void *data) {
   return true;
 }
 
-// ✅ COMPLETED: SPSC dequeue
+//  COMPLETED: SPSC dequeue
 void *lock_free_spsc_dequeue(LockFreeQueue *queue) {
   if (!queue)
     return NULL;
@@ -180,7 +180,7 @@ void *lock_free_spsc_dequeue(LockFreeQueue *queue) {
   return data;
 }
 
-// ✅ COMPLETED: MPMC enqueue
+//  COMPLETED: MPMC enqueue
 bool lock_free_mpmc_enqueue(LockFreeQueue *queue, void *data,
                             size_t thread_id) {
   if (!queue || !data || thread_id >= queue->max_threads)
@@ -255,7 +255,7 @@ bool lock_free_mpmc_enqueue(LockFreeQueue *queue, void *data,
   return true;
 }
 
-// ✅ COMPLETED: MPMC dequeue
+//  COMPLETED: MPMC dequeue
 void *lock_free_mpmc_dequeue(LockFreeQueue *queue, size_t thread_id) {
   if (!queue || thread_id >= queue->max_threads)
     return NULL;
@@ -300,7 +300,7 @@ void *lock_free_mpmc_dequeue(LockFreeQueue *queue, size_t thread_id) {
   return NULL;
 }
 
-// ✅ COMPLETED: Hazard pointer management
+//  COMPLETED: Hazard pointer management
 static void retire_node(LockFreeQueue *queue, QueueNode *node,
                         size_t thread_id) {
   // Add to retired list
@@ -348,7 +348,7 @@ static void reclaim_nodes(LockFreeQueue *queue, size_t thread_id) {
   }
 }
 
-// ✅ COMPLETED: Queue destruction
+//  COMPLETED: Queue destruction
 void lock_free_queue_destroy(LockFreeQueue *queue) {
   if (!queue)
     return;
@@ -383,7 +383,7 @@ void lock_free_queue_destroy(LockFreeQueue *queue) {
   free(queue);
 }
 
-// ✅ COMPLETED: Utility functions
+//  COMPLETED: Utility functions
 size_t lock_free_queue_size(LockFreeQueue *queue) {
   if (!queue)
     return 0;

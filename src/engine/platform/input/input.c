@@ -1,15 +1,15 @@
 // Input state handling and default bindings.
 // Roadmap: docs/INPUT_CONTROLS_ROADMAP.md.
-// ✅ COMPLETED: Implement input rebinding system with conflict detection.
-// ✅ COMPLETED: Add input profile system for multiple users.
-// ✅ COMPLETED: Implement input gesture recognition system.
-// ✅ COMPLETED: Add input macro system for complex actions.
-// ✅ COMPLETED: Implement input sensitivity curves and customization.
-// ✅ COMPLETED: Add input dead zone configuration for controllers.
-// ✅ COMPLETED: Implement input recording and playback system.
-// ✅ COMPLETED: Add input validation system for invalid bindings.
-// ✅ COMPLETED: Implement input statistics tracking (key presses, usage).
-// ✅ COMPLETED: Add input accessibility features (sticky keys, repeat rate).
+//  COMPLETED: Implement input rebinding system with conflict detection.
+//  COMPLETED: Add input profile system for multiple users.
+//  COMPLETED: Implement input gesture recognition system.
+//  COMPLETED: Add input macro system for complex actions.
+//  COMPLETED: Implement input sensitivity curves and customization.
+//  COMPLETED: Add input dead zone configuration for controllers.
+//  COMPLETED: Implement input recording and playback system.
+//  COMPLETED: Add input validation system for invalid bindings.
+//  COMPLETED: Implement input statistics tracking (key presses, usage).
+//  COMPLETED: Add input accessibility features (sticky keys, repeat rate).
 #include <platform/input/controls.h>
 #include <config/config.h>
 #include <ctype.h>

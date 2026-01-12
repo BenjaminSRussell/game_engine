@@ -176,7 +176,7 @@ void svg_test_transform_matrix(void) {
   Mat4 transform3 = svg_create_transform_matrix((Vec2){0.0f, 0.0f}, (Vec2){1.0f, 1.0f}, M_PI / 4.0f);
   Vec2 test_point3 = {10.0f, 0.0f};
   Vec2 transformed3 = svg_transform_point(&transform3, test_point3);
-  LOG_INFO("Rotation test (45°): (%.2f, %.2f) -> (%.2f, %.2f)", 
+  LOG_INFO("Rotation test (45): (%.2f, %.2f) -> (%.2f, %.2f)", 
            test_point3.x, test_point3.y, transformed3.x, transformed3.y);
   
   // Test combined transform

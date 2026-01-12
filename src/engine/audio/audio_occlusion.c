@@ -2,16 +2,16 @@
 //
 // Implementation of audio occlusion system for realistic 3D sound.
 //
-// ✅ COMPLETED: Implement occlusion quality configuration.
-// ✅ COMPLETED: Add occlusion statistics tracking.
-// ✅ COMPLETED: Implement occlusion debugging tools.
-// ✅ COMPLETED: Add occlusion performance profiling.
-// ✅ COMPLETED: Implement occlusion optimization suggestions.
-// ✅ COMPLETED: Add occlusion unit testing framework.
-// ✅ COMPLETED: Implement occlusion documentation system.
-// ✅ COMPLETED: Add occlusion caching system.
-// ✅ COMPLETED: Implement occlusion validation system.
-// ✅ COMPLETED: Add occlusion raycast optimization.
+//  COMPLETED: Implement occlusion quality configuration.
+//  COMPLETED: Add occlusion statistics tracking.
+//  COMPLETED: Implement occlusion debugging tools.
+//  COMPLETED: Add occlusion performance profiling.
+//  COMPLETED: Implement occlusion optimization suggestions.
+//  COMPLETED: Add occlusion unit testing framework.
+//  COMPLETED: Implement occlusion documentation system.
+//  COMPLETED: Add occlusion caching system.
+//  COMPLETED: Implement occlusion validation system.
+//  COMPLETED: Add occlusion raycast optimization.
 #include <audio/audio_occlusion.h>
 #include <core/logger.h>
 #include <block/block.h>

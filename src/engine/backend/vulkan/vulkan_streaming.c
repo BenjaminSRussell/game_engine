@@ -60,7 +60,7 @@ static bool vulkan_pool_alloc(MeshPool *pool, VkDeviceSize size,
   while (block) {
     if (block->free && block->size >= size) {
       // Found a suitable block
-      // Split if generous (✅ COMPLETED: Add alignment if needed)
+      // Split if generous ( COMPLETED: Add alignment if needed)
       if (block->size > size) {
         MeshPoolBlock *new_block =
             (MeshPoolBlock *)malloc(sizeof(MeshPoolBlock));

@@ -3,7 +3,7 @@
 
 This directory contains the render graph system implementation.
 
-## Week 1 Status: ✅ Core API Complete
+## Week 1 Status:  Core API Complete
 
 ### Implemented Files:
 - `frame_graph.h` - Public API
@@ -12,20 +12,20 @@ This directory contains the render graph system implementation.
 - `compile_execute.c` - Compilation and execution (stubs for advanced features)
 
 ### Current Capabilities:
-- ✅ Create/destroy render graphs
-- ✅ Declare transient and imported resources (textures, buffers)
-- ✅ Add passes with read/write dependencies
-- ✅ Compile graph (basic, uses declaration order)
-- ✅ Execute passes in order
-- ✅ Export to DOT format for visualization
-- ✅ Statistics tracking
+-  Create/destroy render graphs
+-  Declare transient and imported resources (textures, buffers)
+-  Add passes with read/write dependencies
+-  Compile graph (basic, uses declaration order)
+-  Execute passes in order
+-  Export to DOT format for visualization
+-  Statistics tracking
 
 ### Not Yet Implemented (Week 2+):
-- ⏳ Dependency graph analysis (topological sort)
-- ⏳ Dead pass culling
-- ⏳ Automatic barrier insertion
-- ⏳ Transient resource pooling with aliasing
-- ⏳ GPU profiling with timestamps
+-  Dependency graph analysis (topological sort)
+-  Dead pass culling
+-  Automatic barrier insertion
+-  Transient resource pooling with aliasing
+-  GPU profiling with timestamps
 
 ## Example Usage:
 

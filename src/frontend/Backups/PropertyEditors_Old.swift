@@ -1,8 +1,8 @@
 import SwiftUI
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// 
 // MARK: - CATEGORY 3: INSPECTOR & PROPERTY SYSTEM (TODO-1461 to TODO-1800)
-// ═══════════════════════════════════════════════════════════════════════════════
+// 
 
 // MARK: - Property Editor Protocol (TODO-1461 to TODO-1500)
 protocol PropertyEditor: View {

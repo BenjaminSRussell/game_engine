@@ -13,8 +13,8 @@
 // - Debug visualization and monitoring
 //
 // Performance Targets:
-// - <1μs lookup time for cached entries
-// - <10μs insertion time for new entries
+// - <1s lookup time for cached entries
+// - <10s insertion time for new entries
 // - <100KB memory overhead per AI agent
 // - Support for 1000+ concurrent entries
 //

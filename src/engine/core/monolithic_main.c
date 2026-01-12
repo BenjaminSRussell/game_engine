@@ -3279,7 +3279,7 @@ static void game_render(void) {
           chunk->mesh.vertex_count > 0 && chunk->mesh.index_count > 0) {
 
         // Frustum cull
-        // Using radius approx 27.0f (sqrt(16^2 + 16^2 + 16^2) ≈ 27.7)
+        // Using radius approx 27.0f (sqrt(16^2 + 16^2 + 16^2)  27.7)
         if (!frustum_test_sphere(&frustum, chunk_positions[i], 28.0f)) {
           continue;
         }

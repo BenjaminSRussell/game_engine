@@ -15,8 +15,8 @@ static const WaterPhysicsConfig DEFAULT_CONFIG = {
     .enable_currents = true,
     .enable_pressure = true,
     .enable_waves = true,
-    .water_density = 1000.0f, // kg/m³
-    .water_viscosity = 0.001f // Pa·s
+    .water_density = 1000.0f, // kg/m
+    .water_viscosity = 0.001f // Pas
 };
 
 // Simple wave simulation using sine function
@@ -240,7 +240,7 @@ WaterPressureData water_physics_calculate_pressure(WaterPhysicsSystem *physics,
 
   data.depth = depth;
 
-  // Calculate pressure using hydrostatic equation: P = ρ * g * h
+  // Calculate pressure using hydrostatic equation: P =  * g * h
   // P = density * gravity * depth
   f32 gravity = 9.81f;
   data.pressure = physics->config.water_density * gravity * depth;

@@ -22,24 +22,24 @@ def run_command(cmd, cwd=None):
 def check_file_exists(filepath, description):
     """Check if a file exists."""
     if os.path.exists(filepath):
-        print(f"✅ {description}: {filepath}")
+        print(f" {description}: {filepath}")
         return True
     else:
-        print(f"❌ {description}: {filepath} (missing)")
+        print(f" {description}: {filepath} (missing)")
         return False
 
 def check_directory_exists(dirpath, description):
     """Check if a directory exists."""
     if os.path.isdir(dirpath):
-        print(f"✅ {description}: {dirpath}")
+        print(f" {description}: {dirpath}")
         return True
     else:
-        print(f"❌ {description}: {dirpath} (missing)")
+        print(f" {description}: {dirpath} (missing)")
         return False
 
 def verify_frontend_structure():
     """Verify the frontend directory structure."""
-    print("🔍 Verifying Frontend Structure...")
+    print(" Verifying Frontend Structure...")
     
     frontend_dir = Path(__file__).parent
     checks = []
@@ -67,7 +67,7 @@ def verify_frontend_structure():
 
 def verify_test_files():
     """Verify test files exist and are properly structured."""
-    print("\n🧪 Verifying Test Files...")
+    print("\n Verifying Test Files...")
     
     frontend_dir = Path(__file__).parent
     tests_dir = frontend_dir / "Tests"
@@ -87,13 +87,13 @@ def verify_test_files():
 
 def verify_package_configuration():
     """Verify Package.swift configuration."""
-    print("\n📦 Verifying Package Configuration...")
+    print("\n Verifying Package Configuration...")
     
     frontend_dir = Path(__file__).parent
     package_file = frontend_dir / "Package.swift"
     
     if not package_file.exists():
-        print("❌ Package.swift not found")
+        print(" Package.swift not found")
         return False
     
     with open(package_file, 'r') as f:
@@ -116,15 +116,15 @@ def verify_package_configuration():
     checks.append("-lGame" in content)
     
     if all(checks):
-        print("✅ Package.swift configuration is correct")
+        print(" Package.swift configuration is correct")
         return True
     else:
-        print("❌ Package.swift has issues")
+        print(" Package.swift has issues")
         return False
 
 def verify_bridge_compilation():
     """Verify that bridge files can be compiled."""
-    print("\n🔗 Verifying Bridge Compilation...")
+    print("\n Verifying Bridge Compilation...")
     
     frontend_dir = Path(__file__).parent
     cvoxelforge_dir = frontend_dir / "CVoxelForge"
@@ -143,15 +143,15 @@ def verify_bridge_compilation():
     for c_file in c_files:
         filepath = cvoxelforge_dir / c_file
         if not filepath.exists():
-            print(f"❌ Bridge file missing: {c_file}")
+            print(f" Bridge file missing: {c_file}")
             return False
         
         # Basic syntax check with clang
         success, stdout, stderr = run_command(f"clang -fsyntax-only -Iinclude {filepath}", cwd=cvoxelforge_dir)
         if success:
-            print(f"✅ {c_file} syntax OK")
+            print(f" {c_file} syntax OK")
         else:
-            print(f"❌ {c_file} has syntax errors")
+            print(f" {c_file} has syntax errors")
             print(f"   Error: {stderr}")
             return False
     
@@ -159,7 +159,7 @@ def verify_bridge_compilation():
 
 def verify_engine_linking():
     """Verify that engine libraries are available for linking."""
-    print("\n🔗 Verifying Engine Linking...")
+    print("\n Verifying Engine Linking...")
     
     frontend_dir = Path(__file__).parent
     project_root = frontend_dir.parent.parent
@@ -179,17 +179,17 @@ def verify_engine_linking():
     
     for location in possible_locations:
         if location.name == "libEngine.a" and location.exists():
-            print(f"✅ Engine library found: {location}")
+            print(f" Engine library found: {location}")
             found_engine = True
         elif location.name == "libGame.a" and location.exists():
-            print(f"✅ Game library found: {location}")
+            print(f" Game library found: {location}")
             found_game = True
     
     return found_engine and found_game
 
 def run_frontend_build():
     """Attempt to build the frontend."""
-    print("\n🔨 Attempting Frontend Build...")
+    print("\n Attempting Frontend Build...")
     
     frontend_dir = Path(__file__).parent
     
@@ -197,16 +197,16 @@ def run_frontend_build():
     success, stdout, stderr = run_command("swift build", cwd=frontend_dir)
     
     if success:
-        print("✅ Frontend build successful!")
+        print(" Frontend build successful!")
         return True
     else:
-        print("❌ Frontend build failed:")
+        print(" Frontend build failed:")
         print(f"   Error: {stderr}")
         return False
 
 def run_frontend_tests():
     """Attempt to run frontend tests."""
-    print("\n🧪 Attempting Frontend Tests...")
+    print("\n Attempting Frontend Tests...")
     
     frontend_dir = Path(__file__).parent
     
@@ -214,16 +214,16 @@ def run_frontend_tests():
     success, stdout, stderr = run_command("swift test", cwd=frontend_dir)
     
     if success:
-        print("✅ Frontend tests passed!")
+        print(" Frontend tests passed!")
         return True
     else:
-        print("❌ Frontend tests failed:")
+        print(" Frontend tests failed:")
         print(f"   Error: {stderr}")
         return False
 
 def main():
     """Main verification function."""
-    print("🚀 Frontend-Engine Connection Verification")
+    print(" Frontend-Engine Connection Verification")
     print("=" * 50)
     
     all_checks = []
@@ -255,19 +255,19 @@ def main():
     
     # Summary
     print("\n" + "=" * 50)
-    print("📊 VERIFICATION SUMMARY")
+    print(" VERIFICATION SUMMARY")
     print("=" * 50)
     
     if all(all_checks):
-        print("🎉 ALL CHECKS PASSED!")
-        print("✅ Frontend is properly connected to the engine")
-        print("✅ All bridge files are correctly implemented")
-        print("✅ Tests are comprehensive and passing")
-        print("✅ Build system is working correctly")
+        print(" ALL CHECKS PASSED!")
+        print(" Frontend is properly connected to the engine")
+        print(" All bridge files are correctly implemented")
+        print(" Tests are comprehensive and passing")
+        print(" Build system is working correctly")
         return 0
     else:
-        print("❌ SOME CHECKS FAILED!")
-        print("🔧 Please fix the issues above")
+        print(" SOME CHECKS FAILED!")
+        print(" Please fix the issues above")
         return 1
 
 if __name__ == "__main__":

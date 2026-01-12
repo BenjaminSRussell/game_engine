@@ -28,7 +28,7 @@ static Quat quat_from_vectors_local(Vec3 u, Vec3 v) {
     return quat(s * 0.5f, c.x * invs, c.y * invs, c.z * invs);
 }
 
-// ✅ COMPLETED: Define Foot IK Struct [Difficulty: 1] [Atomic Steps: 5]
+//  COMPLETED: Define Foot IK Struct [Difficulty: 1] [Atomic Steps: 5]
 // 1. 'int hip_bone', 'int knee_bone', 'int ankle_bone'.
 // 2. 'float foot_length', 'float foot_width'.
 // 3. 'float trace_offset_up', 'float trace_distance_down'.
@@ -62,7 +62,7 @@ typedef struct {
     f32 knee_angle_max;
 } FootIK;
 
-// ✅ COMPLETED: Implement Ground Trace [Difficulty: 3] [Atomic Steps: 5]
+//  COMPLETED: Implement Ground Trace [Difficulty: 3] [Atomic Steps: 5]
 // 1. Raycast from `(AnklePos + Up * Offset)` downwards.
 // 2. Store Hit Position and Hit Normal.
 // 3. Store Hit Distance.
@@ -189,7 +189,7 @@ static void foot_ik_solve_two_bone(FootIK* ik, Skeleton* skeleton, Vec3 target_p
         mat4_mul(skeleton->global_transforms[ik->ankle_bone_index], ankle_matrix);
 }
 
-// ✅ COMPLETED: Implement Placement Logic [Difficulty: 3] [Atomic Steps: 6]
+//  COMPLETED: Implement Placement Logic [Difficulty: 3] [Atomic Steps: 6]
 // 1. Target Foot Pos = Hit Pos + FootHeight.
 // 2. Target Foot Rot = Align to Hit Normal.
 // 3. Calculate Hip drop (if leg needs to reach lower ground).
@@ -237,7 +237,7 @@ static void foot_ik_update_placement(FootIK* ik, Skeleton* skeleton) {
     ik->current_blend_weight = minf(1.0f, ik->current_blend_weight + ik->blend_speed * 0.016f); // Assuming 60 FPS
 }
 
-// ✅ COMPLETED: Implement Foot Locking [Difficulty: 2] [Atomic Steps: 4]
+//  COMPLETED: Implement Foot Locking [Difficulty: 2] [Atomic Steps: 4]
 // 1. If foot is planted (during Stance phase):
 // 2. Lock position in World Space.
 // 3. Even if hips move, foot stays put until Step phase.

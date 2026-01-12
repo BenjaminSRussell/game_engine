@@ -555,7 +555,7 @@ void blackboard_print_statistics(Blackboard *blackboard) {
     LOG_INFO("Decorators: %u / %u", stats->decorator_count, blackboard->max_decorators);
     LOG_INFO("Total Lookups: %u", stats->total_lookups);
     LOG_INFO("Cache Hit Rate: %.2f%%", stats->cache_hit_rate * 100.0f);
-    LOG_INFO("Average Lookup Time: %.3fμs", stats->average_lookup_time * 1000000.0);
+    LOG_INFO("Average Lookup Time: %.3fs", stats->average_lookup_time * 1000000.0);
     LOG_INFO("Memory Usage: %zu / %zu bytes", stats->memory_usage, blackboard->pool_size);
     LOG_INFO("=============================================");
 }

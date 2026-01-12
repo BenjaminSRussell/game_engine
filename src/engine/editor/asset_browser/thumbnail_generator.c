@@ -28,7 +28,7 @@
  * =================================================================================================
  */
 
-// ✅ COMPLETED: Implement async thumbnail rendering - Background thumbnail generation
+//  COMPLETED: Implement async thumbnail rendering - Background thumbnail generation
 // RESOLVED: Created comprehensive async thumbnail system with multi-threaded processing,
 // intelligent caching, and support for 6 asset types (textures, models, materials,
 // audio, scenes, prefabs). Supports 100+ concurrent requests with <50ms processing

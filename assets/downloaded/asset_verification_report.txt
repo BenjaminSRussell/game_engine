@@ -31,4 +31,4 @@ Passed: 5
 Failed: 16
 Success Rate: 25%
 
-Status: SOME TESTS FAILED ❌
+Status: SOME TESTS FAILED 

@@ -8,7 +8,7 @@
 static bool htn_recursive_decompose(HtnPlanner* planner, AIEntityID entity_id);
 static void htn_apply_method_decomposition(HtnPlanner* planner, u32 compound_task_index, const HtnMethod* method);
 
-// ✅ COMPLETED: HTN (Hierarchical Task Network) planner [Difficulty: 10]
+//  COMPLETED: HTN (Hierarchical Task Network) planner [Difficulty: 10]
 // 1. Define 'HtnTask' struct: can be Primitive (action) or Compound (method).
 // 2. Define 'HtnMethod' struct: a set of sub-tasks and preconditions to decompose a compound task.
 // 3. Implement the planning algorithm: decompose compound tasks into primitive tasks recursively matching preconditions.

@@ -2201,7 +2201,7 @@ static void game_update(void) {
       camera_set_position(&g_game.camera, spawn_point);
       if (g_game.player_system.player) {
         // player_set_position(&g_game.player_system.player, spawn_point);
-        // ✅ COMPLETED: Implement player_set_position or use alternative API
+        //  COMPLETED: Implement player_set_position or use alternative API
         g_game.camera.position = spawn_point;
       }
       // Generate initial chunks around spawn
@@ -2303,7 +2303,7 @@ static void game_update(void) {
       while (g_game.physics_accumulator >= dt) {
         // Record/replay and state hashing are now wrapped around
         // physics_system_update (PHY-014)
-        // ✅ COMPLETED: Implement physics_system_update function
+        //  COMPLETED: Implement physics_system_update function
         // physics_system_update(g_game.physics_world, &g_game.ecs_world, dt);
         g_game.physics_accumulator -= dt;
       }
@@ -2319,7 +2319,7 @@ static void game_update(void) {
                            &g_game.block_registry);
 
       // Update damage systems (particles, immunity, etc.)
-      // ✅ COMPLETED: Implement player_update_damage_systems function
+      //  COMPLETED: Implement player_update_damage_systems function
       // player_update_damage_systems(g_game.delta_time);
 
       // Update block states (water flow, etc.)
@@ -2828,7 +2828,7 @@ static void game_render(void) {
           chunk->mesh.vertex_count > 0 && chunk->mesh.index_count > 0) {
 
         // Frustum cull
-        // Using radius approx 27.0f (sqrt(16^2 + 16^2 + 16^2) ≈ 27.7)
+        // Using radius approx 27.0f (sqrt(16^2 + 16^2 + 16^2)  27.7)
         if (!frustum_test_sphere(&frustum, chunk_positions[i], 28.0f)) {
           continue;
         }

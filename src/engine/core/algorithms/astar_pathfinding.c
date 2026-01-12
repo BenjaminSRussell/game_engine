@@ -5,7 +5,7 @@
 #include <float.h>
 #include <stdint.h>
 
-// ✅ COMPLETED: A* Pathfinding Implementation - AGENT_CORE_2
+//  COMPLETED: A* Pathfinding Implementation - AGENT_CORE_2
 // Optimal pathfinding algorithm using heuristic-guided search
 // Combines Dijkstra's completeness with greedy best-first efficiency
 
@@ -36,7 +36,7 @@ typedef struct {
     bool diagonal_movement; // Allow diagonal movement
 } AStarContext;
 
-// ✅ COMPLETED: Heuristic functions
+//  COMPLETED: Heuristic functions
 static f32 astar_manhattan_distance(const AStarNode* a, const AStarNode* b) {
     return (f32)(abs(a->x - b->x) + abs(a->y - b->y));
 }
@@ -53,7 +53,7 @@ static f32 astar_diagonal_distance(const AStarNode* a, const AStarNode* b) {
     return (f32)(dx + dy) + (sqrtf(2.0f) - 2.0f) * (f32)(dx < dy ? dx : dy);
 }
 
-// ✅ COMPLETED: Priority queue operations for open set
+//  COMPLETED: Priority queue operations for open set
 static void astar_heap_push(AStarContext* ctx, i32 node_index) {
     size_t i = ctx->open_count++;
     ctx->open_set[i] = node_index;
@@ -112,7 +112,7 @@ static i32 astar_heap_pop(AStarContext* ctx) {
     return result;
 }
 
-// ✅ COMPLETED: Get node index from position
+//  COMPLETED: Get node index from position
 static size_t astar_get_node_index(const AStarContext* ctx, const AStarNode* pos) {
     if (pos->x < 0 || pos->x >= (i32)ctx->width || 
         pos->y < 0 || pos->y >= (i32)ctx->height) {
@@ -121,7 +121,7 @@ static size_t astar_get_node_index(const AStarContext* ctx, const AStarNode* pos
     return (size_t)pos->y * ctx->width + (size_t)pos->x;
 }
 
-// ✅ COMPLETED: Get neighbors of a node
+//  COMPLETED: Get neighbors of a node
 static void astar_get_neighbors(const AStarContext* ctx, const AStarNode* pos, 
                                AStarNode* neighbors, size_t* neighbor_count) {
     *neighbor_count = 0;
@@ -162,7 +162,7 @@ static void astar_get_neighbors(const AStarContext* ctx, const AStarNode* pos,
     }
 }
 
-// ✅ COMPLETED: Calculate movement cost
+//  COMPLETED: Calculate movement cost
 static f32 astar_movement_cost(const AStarNode* from, const AStarNode* to, bool diagonal) {
     if (diagonal) {
         i32 dx = to->x - from->x;
@@ -172,7 +172,7 @@ static f32 astar_movement_cost(const AStarNode* from, const AStarNode* to, bool 
     return 1.0f;  // Cardinal movement cost
 }
 
-// ✅ COMPLETED: Reconstruct path from goal to start
+//  COMPLETED: Reconstruct path from goal to start
 static AStarNode* astar_reconstruct_path(const AStarContext* ctx, size_t* path_length) {
     // Count path length
     *path_length = 0;
@@ -199,7 +199,7 @@ static AStarNode* astar_reconstruct_path(const AStarContext* ctx, size_t* path_l
     return path;
 }
 
-// ✅ COMPLETED: A* Context Creation
+//  COMPLETED: A* Context Creation
 AStarContext* astar_create_context(size_t width, size_t height, const bool* walkable_map) {
     if (width == 0 || height == 0) return NULL;
     
@@ -241,7 +241,7 @@ AStarContext* astar_create_context(size_t width, size_t height, const bool* walk
     return ctx;
 }
 
-// ✅ COMPLETED: A* Pathfinding
+//  COMPLETED: A* Pathfinding
 AStarNode* astar_find_path(AStarContext* ctx, const AStarNode* start, const AStarNode* goal, 
                           size_t* path_length, f32 (*heuristic)(const AStarNode*, const AStarNode*)) {
     if (!ctx || !start || !goal || !path_length) return NULL;
@@ -332,7 +332,7 @@ AStarNode* astar_find_path(AStarContext* ctx, const AStarNode* start, const ASta
     return NULL;
 }
 
-// ✅ COMPLETED: Update walkability map
+//  COMPLETED: Update walkability map
 void astar_update_walkability(AStarContext* ctx, const bool* walkable_map) {
     if (!ctx || !walkable_map) return;
     
@@ -341,7 +341,7 @@ void astar_update_walkability(AStarContext* ctx, const bool* walkable_map) {
     }
 }
 
-// ✅ COMPLETED: Set individual node walkability
+//  COMPLETED: Set individual node walkability
 void astar_set_node_walkable(AStarContext* ctx, const AStarNode* pos, bool walkable) {
     if (!ctx || !pos) return;
     
@@ -351,7 +351,7 @@ void astar_set_node_walkable(AStarContext* ctx, const AStarNode* pos, bool walka
     }
 }
 
-// ✅ COMPLETED: Configuration functions
+//  COMPLETED: Configuration functions
 void astar_set_diagonal_movement(AStarContext* ctx, bool allow_diagonal) {
     if (ctx) {
         ctx->diagonal_movement = allow_diagonal;
@@ -362,7 +362,7 @@ bool astar_get_diagonal_movement(const AStarContext* ctx) {
     return ctx ? ctx->diagonal_movement : false;
 }
 
-// ✅ COMPLETED: Utility functions
+//  COMPLETED: Utility functions
 size_t astar_get_width(const AStarContext* ctx) {
     return ctx ? ctx->width : 0;
 }
@@ -378,7 +378,7 @@ bool astar_is_walkable(const AStarContext* ctx, const AStarNode* pos) {
     return (index != SIZE_MAX) ? ctx->nodes[index].is_walkable : false;
 }
 
-// ✅ COMPLETED: Path validation
+//  COMPLETED: Path validation
 bool astar_is_path_valid(const AStarContext* ctx, const AStarNode* path, size_t path_length) {
     if (!ctx || !path || path_length == 0) return false;
     
@@ -391,7 +391,7 @@ bool astar_is_path_valid(const AStarContext* ctx, const AStarNode* path, size_t 
     return true;
 }
 
-// ✅ COMPLETED: Context destruction
+//  COMPLETED: Context destruction
 void astar_destroy_context(AStarContext* ctx) {
     if (!ctx) return;
     

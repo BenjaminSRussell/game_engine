@@ -29,7 +29,7 @@ typedef struct {
     f32 sss_strength;  // Subsurface scattering
     
     // Placement rules
-    f32 density;       // Instances per m²
+    f32 density;       // Instances per m
     f32 min_slope;
     f32 max_slope;
     f32 min_height;

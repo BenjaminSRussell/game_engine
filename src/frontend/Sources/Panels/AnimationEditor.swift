@@ -1,8 +1,8 @@
 import SwiftUI
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// 
 // MARK: - CATEGORY 5: ANIMATION SYSTEM (TODO-2601 to TODO-3100)
-// ═══════════════════════════════════════════════════════════════════════════════
+// 
 
 // MARK: - Animation Timeline TODOs (TODO-2601 to TODO-2650)
 // TODO-2601: Timeline horizontal scrolling with mouse wheel

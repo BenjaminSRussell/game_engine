@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 
-// ✅ COMPLETED: LSD Radix Sort Implementation - AGENT_CORE_2
+//  COMPLETED: LSD Radix Sort Implementation - AGENT_CORE_2
 // Linear time sorting for fixed-size integers and floats
 // Uses counting sort as stable subroutine for each digit
 
@@ -11,7 +11,7 @@
 #define RADIX_SIZE (1 << RADIX_BITS)
 #define RADIX_MASK (RADIX_SIZE - 1)
 
-// ✅ COMPLETED: Counting sort helper for radix sort
+//  COMPLETED: Counting sort helper for radix sort
 static void counting_sort_radix(u32* array, size_t size, u32 shift) {
     if (size <= 1) return;
     
@@ -41,7 +41,7 @@ static void counting_sort_radix(u32* array, size_t size, u32 shift) {
     free(output);
 }
 
-// ✅ COMPLETED: LSD Radix Sort for u32
+//  COMPLETED: LSD Radix Sort for u32
 void radix_sort_u32(u32* array, size_t size) {
     if (!array || size <= 1) return;
     
@@ -51,7 +51,7 @@ void radix_sort_u32(u32* array, size_t size) {
     }
 }
 
-// ✅ COMPLETED: Radix sort for signed integers
+//  COMPLETED: Radix sort for signed integers
 void radix_sort_i32(i32* array, size_t size) {
     if (!array || size <= 1) return;
     
@@ -70,7 +70,7 @@ void radix_sort_i32(i32* array, size_t size) {
     }
 }
 
-// ✅ COMPLETED: Radix sort for 64-bit integers
+//  COMPLETED: Radix sort for 64-bit integers
 void radix_sort_u64(u64* array, size_t size) {
     if (!array || size <= 1) return;
     
@@ -105,7 +105,7 @@ void radix_sort_u64(u64* array, size_t size) {
     free(output);
 }
 
-// ✅ COMPLETED: Radix sort for floats (IEEE 754)
+//  COMPLETED: Radix sort for floats (IEEE 754)
 void radix_sort_f32(f32* array, size_t size) {
     if (!array || size <= 1) return;
     

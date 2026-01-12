@@ -52,7 +52,7 @@ typedef struct RigidBodySoA {
     
     // Angular dynamics
     v4f *angular_velocities;    // Angular velocities (rad/s)
-    v4f *torques;               // Accumulated torques (N⋅m)
+    v4f *torques;               // Accumulated torques (Nm)
     
     // Inertia tensors (3x3 matrices stored as 3 v4f)
     v4f *inv_inertia_0;         // Inverse inertia column 0

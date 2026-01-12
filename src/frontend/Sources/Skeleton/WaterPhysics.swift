@@ -9,10 +9,10 @@ class WaterPhysicsSystem: ObservableObject {
     
     // MARK: - Physical Constants
     
-    static let waterDensity: Float = 1000.0  // kg/m³ (saltwater: 1025)
-    static let gravity: Float = 9.81  // m/s²
-    static let airDensity: Float = 1.225  // kg/m³
-    static let kinematicViscosity: Float = 0.000001  // m²/s (water viscosity)
+    static let waterDensity: Float = 1000.0  // kg/m (saltwater: 1025)
+    static let gravity: Float = 9.81  // m/s
+    static let airDensity: Float = 1.225  // kg/m
+    static let kinematicViscosity: Float = 0.000001  // m/s (water viscosity)
     
     // MARK: - Wave System (FFT-based Gerstner Waves)
     
@@ -38,7 +38,7 @@ class WaterPhysicsSystem: ObservableObject {
         var tidalRange: Float = 2.0  // meters (vertical difference between high and low tide)
         var tidalPeriod: Float = 12.4 * 3600  // seconds (12.4 hours for semi-diurnal tide)
         var currentTideLevel: Float = 0.0  // Current offset from mean sea level
-        var tidalPhase: Float = 0.0  // 0 to 2π
+        var tidalPhase: Float = 0.0  // 0 to 2
         
         // Tidal currents
         var enableTidalCurrents: Bool = true
@@ -76,7 +76,7 @@ class WaterPhysicsSystem: ObservableObject {
         var boatVelocity: SIMD3<Float>
         var wakeAge: Float  // seconds
         var waveHeight: Float
-        var divergence: Float  // Wake angle (typically 19.47° - Kelvin wake)
+        var divergence: Float  // Wake angle (typically 19.47 - Kelvin wake)
     }
     
     @Published var activeWakes: [HullWake] = []
@@ -96,7 +96,7 @@ class WaterPhysicsSystem: ObservableObject {
             // Wave number
             let k = 2 * Float.pi / wavelength
             
-            // Angular frequency (deep water dispersion relation: ω² = gk)
+            // Angular frequency (deep water dispersion relation:  = gk)
             let omega = sqrt(WaterPhysicsSystem.gravity * k)
             
             // Wave direction (add some variation per octave)
@@ -214,7 +214,7 @@ class WaterPhysicsSystem: ObservableObject {
                 // Volume element (simplified as uniform distribution)
                 let volumeElement = boat.displacementVolume / Float(samplePoints.count)
                 
-                // Buoyant force (Archimedes: F = ρ × V × g)
+                // Buoyant force (Archimedes: F =   V  g)
                 let buoyancy = WaterPhysicsSystem.waterDensity * volumeElement * WaterPhysicsSystem.gravity * submersionDepth
                 let buoyantForce = SIMD3<Float>(0, buoyancy, 0)
                 
@@ -270,7 +270,7 @@ class WaterPhysicsSystem: ObservableObject {
         
         guard speed > 0.01 else { return .zero }
         
-        // Drag force: F_drag = 0.5 × ρ × v² × C_d × A
+        // Drag force: F_drag = 0.5    v  C_d  A
         let frontalArea = boat.hullWidth * boat.hullDepth
         let dragMagnitude = 0.5 * WaterPhysicsSystem.waterDensity * pow(speed, 2) * boat.hullDragCoefficient * frontalArea
         
@@ -302,7 +302,7 @@ class WaterPhysicsSystem: ObservableObject {
         let speed = length(velocity)
         guard speed > 0.5 else { return }  // Only generate wake at significant speed
         
-        // Kelvin wake angle (19.47° half-angle)
+        // Kelvin wake angle (19.47 half-angle)
         let kelvinAngle: Float = 19.47 * Float.pi / 180.0
         
         // Bow wave height increases with speed (Froude number)

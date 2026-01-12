@@ -330,7 +330,7 @@ kernel void compute_multiscattering(
         }
     }
     
-    // Normalize by total solid angle (4π)
+    // Normalize by total solid angle (4)
     multi_scatter *= (PI / float(num_zenith_samples)) * (2.0 * PI / float(num_azimuth_samples));
     
     // Second-order approximation: multiply by albedo factor

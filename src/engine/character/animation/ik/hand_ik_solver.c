@@ -42,7 +42,7 @@ static Quat quat_from_vectors(Vec3 u, Vec3 v) {
   return quat(s * 0.5f, c.x * invs, c.y * invs, c.z * invs);
 }
 
-// ✅ COMPLETED: Define Hand IK Struct [Difficulty: 1] [Atomic Steps: 4]
+//  COMPLETED: Define Hand IK Struct [Difficulty: 1] [Atomic Steps: 4]
 // 1. 'int shoulder', 'int elbow', 'int wrist'.
 // 2. 'Vec3 target_position', 'Quaternion target_rotation'.
 // 3. 'float blend_weight'.
@@ -174,7 +174,7 @@ static void hand_ik_solve_two_bone(HandIK *ik, Skeleton *skeleton,
       mat4_mul(skeleton->global_transforms[ik->wrist_bone_index], wrist_matrix);
 }
 
-// ✅ COMPLETED: Implement Reach Logic [Difficulty: 2] [Atomic Steps: 5]
+//  COMPLETED: Implement Reach Logic [Difficulty: 2] [Atomic Steps: 5]
 // 1. Used for interacting with buttons, doors, picking up items.
 // 2. Determine target based on Interactable Object anchor.
 // 3. Solve Two-Bone IK.
@@ -195,7 +195,7 @@ static void hand_ik_update_reach(HandIK *ik, Skeleton *skeleton) {
   hand_ik_solve_two_bone(ik, skeleton, reach_target);
 }
 
-// ✅ COMPLETED: Implement Finger Posing [Difficulty: 3] [Atomic Steps: 5]
+//  COMPLETED: Implement Finger Posing [Difficulty: 3] [Atomic Steps: 5]
 // 1. After wrist is placed.
 // 2. Procedural curl based on object size (sphere trace?).
 // 3. Or blending "Fist", "Point", "Open" poses.
@@ -248,7 +248,7 @@ static void hand_ik_update_finger_posing(HandIK *ik, Skeleton *skeleton) {
   }
 }
 
-// ✅ COMPLETED: Implement Two-Handed Grip [Difficulty: 2] [Atomic Steps: 4]
+//  COMPLETED: Implement Two-Handed Grip [Difficulty: 2] [Atomic Steps: 4]
 // 1. For Rifles / Greatswords.
 // 2. Master Hand (Right) drives weapon.
 // 3. Slave Hand (Left) IK targets the foregrip slot on the weapon.

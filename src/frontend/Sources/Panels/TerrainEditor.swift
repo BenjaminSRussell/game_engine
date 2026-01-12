@@ -1,8 +1,8 @@
 import SwiftUI
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// 
 // MARK: - CATEGORY 7: TERRAIN SYSTEM (TODO-3701 to TODO-4000)
-// ═══════════════════════════════════════════════════════════════════════════════
+// 
 
 // MARK: - Terrain Sculpting TODOs (TODO-3701 to TODO-3750)
 // TODO-3701: Height sculpting with pressure sensitivity

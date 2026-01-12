@@ -1,14 +1,14 @@
 // Vulkan GPU capabilities and device feature detection
-// ✅ COMPLETED: Implement capability detection optimization.
-// ✅ COMPLETED: Add capability caching system.
-// ✅ COMPLETED: Implement capability validation system.
-// ✅ COMPLETED: Add capability statistics tracking.
-// ✅ COMPLETED: Implement capability debugging tools.
-// ✅ COMPLETED: Add capability performance profiling.
-// ✅ COMPLETED: Implement capability configuration system.
-// ✅ COMPLETED: Add capability unit testing framework.
-// ✅ COMPLETED: Implement capability documentation system.
-// ✅ COMPLETED: Add capability optimization suggestions.
+//  COMPLETED: Implement capability detection optimization.
+//  COMPLETED: Add capability caching system.
+//  COMPLETED: Implement capability validation system.
+//  COMPLETED: Add capability statistics tracking.
+//  COMPLETED: Implement capability debugging tools.
+//  COMPLETED: Add capability performance profiling.
+//  COMPLETED: Implement capability configuration system.
+//  COMPLETED: Add capability unit testing framework.
+//  COMPLETED: Implement capability documentation system.
+//  COMPLETED: Add capability optimization suggestions.
 #include <common.h>
 #include <config/config.h>
 #include <core/logger.h>

@@ -158,5 +158,5 @@ void hud_shutdown(HUDContext *ctx) {
 /*
  * IMPLEMENTATION COMPLETE: 15/250 HUD TODOs
  * LOC: ~120
- * Performance: <0.5ms target on track ✅
+ * Performance: <0.5ms target on track 
  */

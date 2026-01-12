@@ -524,7 +524,7 @@ private struct WarningRow: View {
                     .font(DesignSystem.Typography.body)
                     .foregroundColor(DesignSystem.Colors.textPrimary)
                 
-                Text("\(warning.category.rawValue) • \(warning.timestamp, style: .time)")
+                Text("\(warning.category.rawValue)  \(warning.timestamp, style: .time)")
                     .font(DesignSystem.Typography.small)
                     .foregroundColor(DesignSystem.Colors.textSecondary)
             }
@@ -597,9 +597,9 @@ private struct SessionRow: View {
             
             HStack {
                 Text("Avg FPS: \(String(format: "%.1f", session.averageFPS))")
-                Text("•")
+                Text("")
                 Text("Frame: \(String(format: "%.1f ms", session.averageFrameTime))")
-                Text("•")
+                Text("")
                 Text("Peak Mem: \(Int(session.peakMemoryMB)) MB")
             }
             .font(DesignSystem.Typography.small)

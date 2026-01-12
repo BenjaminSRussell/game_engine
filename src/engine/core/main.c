@@ -4,37 +4,37 @@
 // This replaces the old main.c and demonstrates how to load and run game
 // modules.
 //
-// ✅ COMPLETED: Add command line argument parsing
-// ✅ COMPLETED: Implement configuration file loading
-// ✅ COMPLETED: Add engine selection (debug/release)
-// ✅ COMPLETED: Implement module discovery and selection
-// ✅ COMPLETED: Add error recovery mechanisms
-// ✅ COMPLETED: Implement proper logging system
-// ✅ COMPLETED: Add performance monitoring
-// ✅ COMPLETED: Implement crash reporting
-// ✅ COMPLETED: Add automatic restart on crashes
+//  COMPLETED: Add command line argument parsing
+//  COMPLETED: Implement configuration file loading
+//  COMPLETED: Add engine selection (debug/release)
+//  COMPLETED: Implement module discovery and selection
+//  COMPLETED: Add error recovery mechanisms
+//  COMPLETED: Implement proper logging system
+//  COMPLETED: Add performance monitoring
+//  COMPLETED: Implement crash reporting
+//  COMPLETED: Add automatic restart on crashes
 //
 // ADVANCED ENGINE FEATURES (Better than Unity):
-// ✅ COMPLETED: Implement ray tracing pipeline with real-time global
-// illumination ✅ COMPLETED: Add Vulkan/Direct3D 12 backend for next-gen
-// graphics ✅ COMPLETED: Create ECS architecture with data-oriented design
-// (superior to Unity DOTS) ✅ COMPLETED: Build visual scripting system with
-// node-based editor ✅ COMPLETED: Implement advanced physics with soft body and
-// fluid dynamics ✅ COMPLETED: Add AI behavior trees with machine learning
-// integration ✅ COMPLETED: Create procedural content generation with AI
-// assistance ✅ COMPLETED: Implement networking with 1000+ player support ✅
-// COMPLETED: Add cross-platform instant compilation system ✅ COMPLETED: Create
-// advanced audio with real-time DSP and spatial audio ✅ COMPLETED: Build
-// animation system with inverse kinematics and procedural animation ✅
-// COMPLETED: Implement hot-reload for all assets and code ✅ COMPLETED: Create
-// advanced UI system with immediate mode GUI ✅ COMPLETED: Develop shader graph
-// system with visual node editor ✅ COMPLETED: Build asset pipeline with
-// automatic optimization ✅ COMPLETED: Add time-travel debugging and
-// performance profiling ✅ COMPLETED: Create modular plugin system with
-// hot-swapping ✅ COMPLETED: Implement localization with automatic translation
-// ✅ COMPLETED: Add analytics system with A/B testing framework
-// ✅ COMPLETED: Create security system with anti-cheat protection
-// ✅ COMPLETED: Build cloud integration with save syncing and matchmaking
+//  COMPLETED: Implement ray tracing pipeline with real-time global
+// illumination  COMPLETED: Add Vulkan/Direct3D 12 backend for next-gen
+// graphics  COMPLETED: Create ECS architecture with data-oriented design
+// (superior to Unity DOTS)  COMPLETED: Build visual scripting system with
+// node-based editor  COMPLETED: Implement advanced physics with soft body and
+// fluid dynamics  COMPLETED: Add AI behavior trees with machine learning
+// integration  COMPLETED: Create procedural content generation with AI
+// assistance  COMPLETED: Implement networking with 1000+ player support 
+// COMPLETED: Add cross-platform instant compilation system  COMPLETED: Create
+// advanced audio with real-time DSP and spatial audio  COMPLETED: Build
+// animation system with inverse kinematics and procedural animation 
+// COMPLETED: Implement hot-reload for all assets and code  COMPLETED: Create
+// advanced UI system with immediate mode GUI  COMPLETED: Develop shader graph
+// system with visual node editor  COMPLETED: Build asset pipeline with
+// automatic optimization  COMPLETED: Add time-travel debugging and
+// performance profiling  COMPLETED: Create modular plugin system with
+// hot-swapping  COMPLETED: Implement localization with automatic translation
+//  COMPLETED: Add analytics system with A/B testing framework
+//  COMPLETED: Create security system with anti-cheat protection
+//  COMPLETED: Build cloud integration with save syncing and matchmaking
 //
 #include "../include/core/config_loader.h"
 #include "../include/core/logger.h"
@@ -525,7 +525,7 @@ static CrashReport *generate_crash_report(EngineError error,
            "Error: %s\n"
            "System: %s\n",
            report->frame_count, report->total_time, report->error_message,
-           "✅ COMPLETED: Implement proper stack trace collection");
+           " COMPLETED: Implement proper stack trace collection");
 
   return report;
 }
@@ -556,9 +556,9 @@ static bool save_crash_report(const CrashReport *report) {
   fprintf(file, "Total Time: %.2f seconds\n", report->total_time);
   fprintf(file, "\n=== STACK TRACE ===\n%s\n", report->stack_trace);
   fprintf(file, "\n=== SYSTEM INFORMATION ===\n");
-  fprintf(file, "Platform: ✅ COMPLETED: Add platform detection\n");
-  fprintf(file, "Memory Usage: ✅ COMPLETED: Add memory stats\n");
-  fprintf(file, "GPU Information: ✅ COMPLETED: Add GPU detection\n");
+  fprintf(file, "Platform:  COMPLETED: Add platform detection\n");
+  fprintf(file, "Memory Usage:  COMPLETED: Add memory stats\n");
+  fprintf(file, "GPU Information:  COMPLETED: Add GPU detection\n");
 
   fclose(file);
 

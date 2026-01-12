@@ -86,7 +86,7 @@ def main():
     
     for dir_rel, (sys_name, mgr_name) in sorted(RENAME_MAP.items()):
         success, msg = rename_directory(dir_rel, sys_name, mgr_name)
-        status = "✓" if success else "✗"
+        status = "" if success else ""
         
         print(f"{status} {dir_rel:50s} -> {sys_name}, {mgr_name}")
         
@@ -97,8 +97,8 @@ def main():
             print(f"   Error: {msg}")
     
     print("\n" + "=" * 70)
-    print(f"✓ Success: {len(results['success'])} directories ({len(results['success']) * 2} file pairs)")
-    print(f"✗ Failed:  {len(results['failed'])} directories")
+    print(f" Success: {len(results['success'])} directories ({len(results['success']) * 2} file pairs)")
+    print(f" Failed:  {len(results['failed'])} directories")
     print("=" * 70)
     
     if results['failed']:

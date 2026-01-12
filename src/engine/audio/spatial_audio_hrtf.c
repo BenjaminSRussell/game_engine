@@ -199,7 +199,7 @@ HRTFMeasurement* HRTF_FindMeasurement(const HRTFDatabase* database, f32 azimuth,
     return closest;
 }
 
-// ✅ COMPLETED: HRTF interpolation implementation
+//  COMPLETED: HRTF interpolation implementation
 void HRTF_InterpolateMeasurements(const HRTFDatabase* database, f32 azimuth, f32 elevation, 
                                   HRTFMeasurement* result) {
     if (!database->loaded || !result) {
@@ -298,7 +298,7 @@ void HRTF_InterpolateMeasurements(const HRTFDatabase* database, f32 azimuth, f32
     }
 }
 
-// ✅ COMPLETED: Barycentric interpolation for triangular HRTF mesh
+//  COMPLETED: Barycentric interpolation for triangular HRTF mesh
 void HRTF_BarycentricInterpolation(const HRTFMeasurement* v1, const HRTFMeasurement* v2, const HRTFMeasurement* v3,
                                   f32 w1, f32 w2, f32 w3, HRTFMeasurement* result) {
     if (!v1 || !v2 || !v3 || !result) {

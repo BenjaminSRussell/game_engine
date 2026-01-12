@@ -4,7 +4,7 @@
 #include <stdatomic.h>
 #include <string.h>
 
-// ✅ COMPLETED: Lock-Free Ring Queue Implementation - AGENT_CORE_2
+//  COMPLETED: Lock-Free Ring Queue Implementation - AGENT_CORE_2
 // Single Producer Single Consumer (SPSC) lock-free ring buffer
 // Uses atomic operations for thread-safe communication
 
@@ -26,12 +26,12 @@ struct MPSCRingQueue {
     atomic_size_t sequence[0];  // Flexible array for sequence numbers
 };
 
-// ✅ COMPLETED: Helper function to check if value is power of 2
+//  COMPLETED: Helper function to check if value is power of 2
 static bool is_power_of_two_size(size_t x) {
     return x != 0 && (x & (x - 1)) == 0;
 }
 
-// ✅ COMPLETED: Lock-Free Ring Queue Creation
+//  COMPLETED: Lock-Free Ring Queue Creation
 LockFreeRingQueue* ring_queue_create(size_t capacity, bool allow_overwrite) {
     if (capacity == 0) return NULL;
     
@@ -61,7 +61,7 @@ LockFreeRingQueue* ring_queue_create(size_t capacity, bool allow_overwrite) {
     return queue;
 }
 
-// ✅ COMPLETED: Lock-Free Enqueue (Producer)
+//  COMPLETED: Lock-Free Enqueue (Producer)
 bool ring_queue_enqueue(LockFreeRingQueue* queue, void* data) {
     if (!queue) return false;
     
@@ -91,7 +91,7 @@ bool ring_queue_enqueue(LockFreeRingQueue* queue, void* data) {
     return true;
 }
 
-// ✅ COMPLETED: Lock-Free Dequeue (Consumer)
+//  COMPLETED: Lock-Free Dequeue (Consumer)
 void* ring_queue_dequeue(LockFreeRingQueue* queue) {
     if (!queue) return NULL;
     
@@ -115,7 +115,7 @@ void* ring_queue_dequeue(LockFreeRingQueue* queue) {
     return data;
 }
 
-// ✅ COMPLETED: Try to dequeue without blocking
+//  COMPLETED: Try to dequeue without blocking
 bool ring_queue_try_dequeue(LockFreeRingQueue* queue, void** data) {
     if (!queue || !data) return false;
     
@@ -123,7 +123,7 @@ bool ring_queue_try_dequeue(LockFreeRingQueue* queue, void** data) {
     return *data != NULL;
 }
 
-// ✅ COMPLETED: Peek at next item without removing
+//  COMPLETED: Peek at next item without removing
 void* ring_queue_peek(const LockFreeRingQueue* queue) {
     if (!queue) return NULL;
     
@@ -138,7 +138,7 @@ void* ring_queue_peek(const LockFreeRingQueue* queue) {
     return queue->buffer[current_tail];
 }
 
-// ✅ COMPLETED: Check if queue is empty
+//  COMPLETED: Check if queue is empty
 bool ring_queue_is_empty(const LockFreeRingQueue* queue) {
     if (!queue) return true;
     
@@ -148,7 +148,7 @@ bool ring_queue_is_empty(const LockFreeRingQueue* queue) {
     return current_tail == current_head;
 }
 
-// ✅ COMPLETED: Check if queue is full
+//  COMPLETED: Check if queue is full
 bool ring_queue_is_full(const LockFreeRingQueue* queue) {
     if (!queue) return true;
     
@@ -159,7 +159,7 @@ bool ring_queue_is_full(const LockFreeRingQueue* queue) {
     return next_head == current_tail;
 }
 
-// ✅ COMPLETED: Get current size
+//  COMPLETED: Get current size
 size_t ring_queue_size(const LockFreeRingQueue* queue) {
     if (!queue) return 0;
     
@@ -173,12 +173,12 @@ size_t ring_queue_size(const LockFreeRingQueue* queue) {
     }
 }
 
-// ✅ COMPLETED: Get queue capacity
+//  COMPLETED: Get queue capacity
 size_t ring_queue_capacity(const LockFreeRingQueue* queue) {
     return queue ? queue->capacity : 0;
 }
 
-// ✅ COMPLETED: Clear queue (consumer-side only)
+//  COMPLETED: Clear queue (consumer-side only)
 void ring_queue_clear(LockFreeRingQueue* queue) {
     if (!queue) return;
     
@@ -273,7 +273,7 @@ void mpsc_ring_queue_destroy(MPSCRingQueue* queue) {
     free(queue);
 }
 
-// ✅ COMPLETED: Lock-Free Ring Queue Destruction
+//  COMPLETED: Lock-Free Ring Queue Destruction
 void ring_queue_destroy(LockFreeRingQueue* queue) {
     if (!queue) return;
     
@@ -291,7 +291,7 @@ void ring_queue_get_stats(const LockFreeRingQueue* queue, RingQueueStats* stats)
     memset(stats, 0, sizeof(RingQueueStats));
 }
 
-// ✅ COMPLETED: Batch Operations
+//  COMPLETED: Batch Operations
 size_t ring_queue_enqueue_batch(LockFreeRingQueue* queue, void** data, size_t count) {
     if (!queue || !data || count == 0) return 0;
     

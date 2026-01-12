@@ -20,10 +20,10 @@ static int g_tests_failed = 0;
         g_tests_run++; \
         if (condition) { \
             g_tests_passed++; \
-            printf("✓ PASS: %s\n", message); \
+            printf(" PASS: %s\n", message); \
         } else { \
             g_tests_failed++; \
-            printf("✗ FAIL: %s\n", message); \
+            printf(" FAIL: %s\n", message); \
         } \
     } while(0)
 
@@ -376,10 +376,10 @@ int main() {
     printf("Success rate: %.1f%%\n", (float)g_tests_passed / g_tests_run * 100.0f);
     
     if (g_tests_failed == 0) {
-        printf("\n🎉 All advanced tests passed! Mesh system is robust.\n");
+        printf("\n All advanced tests passed! Mesh system is robust.\n");
         return 0;
     } else {
-        printf("\n❌ Some advanced tests failed. Please review the mesh system.\n");
+        printf("\n Some advanced tests failed. Please review the mesh system.\n");
         return 1;
     }
 }

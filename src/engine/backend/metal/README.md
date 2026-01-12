@@ -6,7 +6,7 @@ This directory contains a complete Metal pipeline state object (PSO) system with
 
 ## Features Implemented (100/100 TODOs)
 
-### ✅ Render Pipeline Creation
+###  Render Pipeline Creation
 - Render pipeline descriptor creation
 - Vertex/fragment shader function attachment
 - Color, depth, stencil attachment configuration
@@ -18,7 +18,7 @@ This directory contains a complete Metal pipeline state object (PSO) system with
 - Pipeline compilation and error handling
 - **Pipeline statistics** (NEW)
 
-### ✅ Compute Pipeline Creation
+###  Compute Pipeline Creation
 - Compute pipeline descriptor
 - Compute shader function attachment
 - Threadgroup size configuration (X, Y, Z)
@@ -28,7 +28,7 @@ This directory contains a complete Metal pipeline state object (PSO) system with
 - **Hardware capability queries** (NEW)
 - **Pipeline statistics** (NEW)
 
-### ✅ Depth/Stencil State
+###  Depth/Stencil State
 - Depth/stencil descriptor creation
 - Depth compare functions
 - Depth write enable/disable
@@ -36,7 +36,7 @@ This directory contains a complete Metal pipeline state object (PSO) system with
 - Stencil reference values and masks
 - State object creation
 
-### ✅ Shader Library Management
+###  Shader Library Management
 - Load .metallib files from disk
 - Load from binary data
 - Extract shader functions by name
@@ -47,7 +47,7 @@ This directory contains a complete Metal pipeline state object (PSO) system with
 - **Specialization constants** (NEW)
 - Library statistics
 
-### ✅ Shader Compiler
+###  Shader Compiler
 - Runtime Metal shader compilation
 - Source file and string compilation
 - Compilation options (optimization, fast math, debug info)
@@ -56,7 +56,7 @@ This directory contains a complete Metal pipeline state object (PSO) system with
 - Shader caching with hash-based lookup
 - Detailed error reporting
 
-### ✅ Pipeline Caching
+###  Pipeline Caching
 - Hash-based pipeline lookup
 - LRU eviction policy
 - Memory limits and tracking
@@ -69,17 +69,17 @@ This directory contains a complete Metal pipeline state object (PSO) system with
 
 ```
 metal/
-├── mtl_pipeline.h                      # Main pipeline API
-├── mtl_pipeline.m                      # Core pipeline implementation
-├── mtl_pipeline_extensions.m           # NEW: Statistics, validation, invalidation
-├── mtl_shader_library.h                # Shader library API
-├── mtl_shader_library.m                # Shader library implementation  
-├── mtl_shader_library_extensions.m     # NEW: Fixed reflection, specialization
-├── mtl_shader_compiler.h               # Shader compiler API
-├── mtl_shader_compiler.m               # Shader compiler implementation
-├── test_mtl_pipeline.m                 # NEW: Comprehensive test suite
-├── build_and_test_pipeline.sh          # NEW: Build and test script
-└── README.md                           # This file
+ mtl_pipeline.h                      # Main pipeline API
+ mtl_pipeline.m                      # Core pipeline implementation
+ mtl_pipeline_extensions.m           # NEW: Statistics, validation, invalidation
+ mtl_shader_library.h                # Shader library API
+ mtl_shader_library.m                # Shader library implementation  
+ mtl_shader_library_extensions.m     # NEW: Fixed reflection, specialization
+ mtl_shader_compiler.h               # Shader compiler API
+ mtl_shader_compiler.m               # Shader compiler implementation
+ test_mtl_pipeline.m                 # NEW: Comprehensive test suite
+ build_and_test_pipeline.sh          # NEW: Build and test script
+ README.md                           # This file
 ```
 
 ## Quick Start
@@ -285,13 +285,13 @@ MTLFunctionRef specialized = metal_function_create_specialized_ex(
 ## Testing
 
 The test suite includes:
-- ✅ Vertex descriptor configuration
-- ✅ Pipeline hashing and uniqueness
-- ✅ Depth/stencil state creation
-- ✅ Cache operations and statistics
-- ✅ Cache invalidation
-- ✅ Compute pipeline validation
-- ✅ Shader library manager lifecycle
+-  Vertex descriptor configuration
+-  Pipeline hashing and uniqueness
+-  Depth/stencil state creation
+-  Cache operations and statistics
+-  Cache invalidation
+-  Compute pipeline validation
+-  Shader library manager lifecycle
 
 Run with: `./build_and_test_pipeline.sh`
 

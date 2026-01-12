@@ -30,14 +30,14 @@ public class VoxelRendererBridge {
         let bufferSize = MetalRenderer.recommendedBufferSize(for: maxVoxels)
         
         guard let buffer = metalRenderer.createSharedBuffer(size: bufferSize, label: "VoxelData") else {
-            print("❌ Failed to create voxel buffer")
+            print(" Failed to create voxel buffer")
             return false
         }
         
         self.voxelBuffer = buffer
         self.voxelCount = maxVoxels
         
-        print("✓ Voxel buffer created: \(bufferSize) bytes for \(maxVoxels) voxels")
+        print(" Voxel buffer created: \(bufferSize) bytes for \(maxVoxels) voxels")
         return true
     }
     

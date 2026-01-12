@@ -117,7 +117,7 @@ static inline bool ray_intersects_plane(Ray r, Plane p, f32 *t) {
     return false;
 }
 
-// Ray-Triangle intersection (Möller-Trumbore)
+// Ray-Triangle intersection (Mller-Trumbore)
 static inline bool ray_intersects_triangle(Ray r, Vec3 v0, Vec3 v1, Vec3 v2, f32 *t) {
     Vec3 v0v1 = vec3_sub(v1, v0);
     Vec3 v0v2 = vec3_sub(v2, v0);

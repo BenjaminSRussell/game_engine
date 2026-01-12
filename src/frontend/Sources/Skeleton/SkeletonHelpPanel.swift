@@ -51,7 +51,7 @@ struct SkeletonHelpPanel: View {
                     ToolHelp(
                         icon: "cursorarrow",
                         name: "Select Tool",
-                        desc: "Click bones to select. Hold ⇧ (Shift) and click for multi-select. Use in hierarchy or viewport.",
+                        desc: "Click bones to select. Hold  (Shift) and click for multi-select. Use in hierarchy or viewport.",
                         color: DesignSystem.Colors.accentPrimary
                     )
                     
@@ -174,9 +174,9 @@ struct SkeletonHelpPanel: View {
                     ShortcutRow(key: "S", desc: "Scale bone length")
                     ShortcutRow(key: "E", desc: "Extrude (create child bone)")
                     ShortcutRow(key: "X", desc: "Delete selected bones")
-                    ShortcutRow(key: "⌘Z", desc: "Undo last action")
-                    ShortcutRow(key: "⌘⇧Z", desc: "Redo")
-                    ShortcutRow(key: "⌘D", desc: "Duplicate selected bones")
+                    ShortcutRow(key: "Z", desc: "Undo last action")
+                    ShortcutRow(key: "Z", desc: "Redo")
+                    ShortcutRow(key: "D", desc: "Duplicate selected bones")
                     ShortcutRow(key: "Tab", desc: "Switch between tools")
                 }
                 

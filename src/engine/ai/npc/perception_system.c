@@ -10,7 +10,7 @@
 #include <math/vec3.h>
 #include <physics/physics.h>
 
-// ✅ COMPLETED: Implement Perception System with Visual, Auditory,
+//  COMPLETED: Implement Perception System with Visual, Auditory,
 // Olfactory, Tactile stimuli
 
 // Internal structures

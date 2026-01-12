@@ -11,7 +11,7 @@ using namespace metal;
 kernel void wave_spectrum_update(
     texture2d<float, access::read> h0_texture [[texture(0)]],       // h0(k)
     texture2d<float, access::read> h0_conj_texture [[texture(1)]],  // h0*(-k)
-    texture2d<float, access::read> omega_texture [[texture(2)]],    // ω(k)
+    texture2d<float, access::read> omega_texture [[texture(2)]],    // (k)
     texture2d<float, access::write> ht_height [[texture(3)]],       // Output: height spectrum
     texture2d<float, access::write> ht_disp_x [[texture(4)]],       // Output: Dx spectrum
     texture2d<float, access::write> ht_disp_z [[texture(5)]],       // Output: Dz spectrum
@@ -31,10 +31,10 @@ kernel void wave_spectrum_update(
     Complex h0 = complex_from_float2(h0_k);
     Complex h0_conj = complex_from_float2(h0_conj_k);
     
-    // Read dispersion ω(k)
+    // Read dispersion (k)
     float omega = omega_texture.read(gid).r;
     
-    // Compute h(k,t) = h0(k)*exp(iωt) + h0*(-k)*exp(-iωt)
+    // Compute h(k,t) = h0(k)*exp(it) + h0*(-k)*exp(-it)
     Complex ht = compute_ht(h0, h0_conj, omega, params.time);
     
     // Write height spectrum

@@ -21,7 +21,7 @@ static DistanceAttenuationSystem g_attenuation_system = {0};
 static bool g_attenuation_initialized = false;
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Distance attenuation system implementation
+//  COMPLETED: Distance attenuation system implementation
 // -------------------------------------------------------------------------------------------------
 
 bool DistanceAttenuation_Init(DistanceAttenuationSystem* system, u32 sample_rate) {
@@ -96,7 +96,7 @@ void DistanceAttenuation_Shutdown(DistanceAttenuationSystem* system) {
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Standard attenuation curves
+//  COMPLETED: Standard attenuation curves
 // -------------------------------------------------------------------------------------------------
 
 f32 DistanceAttenuation_CalculateInverse(DistanceAttenuationSystem* system, f32 distance) {
@@ -175,7 +175,7 @@ f32 DistanceAttenuation_CalculateLogarithmic(DistanceAttenuationSystem* system, 
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Custom curve interpolation
+//  COMPLETED: Custom curve interpolation
 // -------------------------------------------------------------------------------------------------
 
 bool DistanceAttenuation_AddCustomPoint(DistanceAttenuationSystem* system, f32 distance, f32 gain) {
@@ -243,7 +243,7 @@ f32 DistanceAttenuation_CalculateCustom(DistanceAttenuationSystem* system, f32 d
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Air absorption modeling
+//  COMPLETED: Air absorption modeling
 // -------------------------------------------------------------------------------------------------
 
 f32 DistanceAttenuation_CalculateAirAbsorption(DistanceAttenuationSystem* system, f32 distance, f32 frequency) {
@@ -276,7 +276,7 @@ void DistanceAttenuation_ApplyAirAbsorption(DistanceAttenuationSystem* system, c
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Main attenuation processing
+//  COMPLETED: Main attenuation processing
 // -------------------------------------------------------------------------------------------------
 
 f32 DistanceAttenuation_CalculateGain(DistanceAttenuationSystem* system, f32 distance) {
@@ -342,7 +342,7 @@ void DistanceAttenuation_ProcessAudio(DistanceAttenuationSystem* system, const f
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Curve management
+//  COMPLETED: Curve management
 // -------------------------------------------------------------------------------------------------
 
 void DistanceAttenuation_SetCurveType(DistanceAttenuationSystem* system, AttenuationType type) {

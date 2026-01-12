@@ -3,14 +3,14 @@
 // Purpose: Abstract audio system interface that decouples games from specific
 // audio implementations (OpenAL, XAudio2, etc.).
 //
-// ✅ COMPLETED: 3D spatial audio with HRTF and VBAP support
-// ✅ COMPLETED: Audio streaming for large files with dynamic loading
-// ✅ COMPLETED: Audio effects and filters (biquad, reverb, dynamics)
-// ✅ COMPLETED: Audio middleware integration (Dolby Atmos, DTX)
-// ✅ COMPLETED: Real-time audio analysis and processing
-// ✅ COMPLETED: Audio compression with multiple codec support
-// ✅ COMPLETED: Voice chat support with spatial positioning
-// ✅ COMPLETED: Procedural audio generation with modular synthesis
+//  COMPLETED: 3D spatial audio with HRTF and VBAP support
+//  COMPLETED: Audio streaming for large files with dynamic loading
+//  COMPLETED: Audio effects and filters (biquad, reverb, dynamics)
+//  COMPLETED: Audio middleware integration (Dolby Atmos, DTX)
+//  COMPLETED: Real-time audio analysis and processing
+//  COMPLETED: Audio compression with multiple codec support
+//  COMPLETED: Voice chat support with spatial positioning
+//  COMPLETED: Procedural audio generation with modular synthesis
 //
 #ifndef ENGINE_AUDIO_H
 #define ENGINE_AUDIO_H

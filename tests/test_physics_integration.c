@@ -623,9 +623,9 @@ bool physics_run_all_integration_tests(bool verbose) {
     
     printf("\n=== Overall Results ===\n");
     if (all_passed) {
-        printf("✓ All physics integration tests PASSED!\n");
+        printf(" All physics integration tests PASSED!\n");
     } else {
-        printf("✗ Some physics integration tests FAILED!\n");
+        printf(" Some physics integration tests FAILED!\n");
     }
     
     return all_passed;

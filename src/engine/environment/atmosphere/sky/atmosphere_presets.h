@@ -147,8 +147,8 @@ static inline simd_float3 atm_sun_direction_from_time(float time_of_day, float l
     // Simplified solar position calculation
     // For production use, implement proper astronomical calculations
     
-    // Hour angle: 360° / 24h = 15° per hour
-    // 12:00 = 0° (sun at zenith), 18:00 = 90° (sunset)
+    // Hour angle: 360 / 24h = 15 per hour
+    // 12:00 = 0 (sun at zenith), 18:00 = 90 (sunset)
     float hour_angle_deg = (time_of_day - 12.0f) * 15.0f;
     float hour_angle_rad = hour_angle_deg * (ATM_PI / 180.0f);
     

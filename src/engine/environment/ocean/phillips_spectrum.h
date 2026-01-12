@@ -15,7 +15,7 @@ extern "C" {
 
 /**
  * Initialize Phillips spectrum for a cascade
- * Generates h0(k), h0*(-k), and ω(k) textures
+ * Generates h0(k), h0*(-k), and (k) textures
  * 
  * @param ocean Ocean system
  * @param cascade Cascade to initialize
@@ -69,7 +69,7 @@ float phillips_spectrum_value(
 );
 
 /**
- * Compute dispersion relation ω(k) = sqrt(g|k|)
+ * Compute dispersion relation (k) = sqrt(g|k|)
  * 
  * @param kx Wave vector X component
  * @param kz Wave vector Z component

@@ -149,11 +149,11 @@ struct SkeletonToolbar: View {
             Help & Guide
             
             Opens comprehensive documentation including:
-            • Step-by-step building instructions
-            • Tool reference with usage examples
-            • Boat skeleton component details
-            • Keyboard shortcuts
-            • Best practices and tips
+             Step-by-step building instructions
+             Tool reference with usage examples
+             Boat skeleton component details
+             Keyboard shortcuts
+             Best practices and tips
             """)
             
             EditorDivider()
@@ -246,10 +246,10 @@ struct SkeletonToolbar: View {
             Create New Skeleton
             
             Choose from presets:
-            • Humanoid Character (19 bones)
-            • Sailboat (6 bones) - Hull, Mast, Boom, Sails, Rudder
-            • Motorboat (4 bones) - Hull, Propeller, Rudder, Motor
-            • Empty Skeleton (build from scratch)
+             Humanoid Character (19 bones)
+             Sailboat (6 bones) - Hull, Mast, Boom, Sails, Rudder
+             Motorboat (4 bones) - Hull, Propeller, Rudder, Motor
+             Empty Skeleton (build from scratch)
             """)
             
             // Actions
@@ -721,7 +721,7 @@ struct BonePropertiesPanel: View {
                                             skeleton.bones[bone.id] = updated
                                         }
                                     ), in: -Double.pi...Double.pi)
-                                    Text(String(format: "%.1f°", bone.roll * 180 / Float.pi))
+                                    Text(String(format: "%.1f", bone.roll * 180 / Float.pi))
                                         .font(DesignSystem.Typography.caption)
                                         .frame(width: 50)
                                 }

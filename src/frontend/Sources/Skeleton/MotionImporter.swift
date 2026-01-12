@@ -391,7 +391,7 @@ struct MotionImportPanel: View {
                         VStack(alignment: .leading) {
                             Text(clip.name)
                                 .font(DesignSystem.Typography.body)
-                            Text("\(String(format: "%.1f", clip.duration))s • \(Int(clip.frameRate)) fps")
+                            Text("\(String(format: "%.1f", clip.duration))s  \(Int(clip.frameRate)) fps")
                                 .font(DesignSystem.Typography.caption)
                                 .foregroundColor(DesignSystem.Colors.textSecondary)
                         }

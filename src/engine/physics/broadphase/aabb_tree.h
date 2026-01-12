@@ -2,7 +2,7 @@
  * Dynamic AABB Tree for Broadphase Collision Detection
  * 
  * Self-balancing binary tree using Axis-Aligned Bounding Boxes (AABBs).
- * Provides O(N log N) broadphase vs O(N²) naive sweep.
+ * Provides O(N log N) broadphase vs O(N) naive sweep.
  * 
  * Key features:
  * - Surface Area Heuristic (SAH) for optimal tree construction

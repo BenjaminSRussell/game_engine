@@ -150,7 +150,7 @@ typedef struct ProceduralRecoil {
   Skeleton *target_skeleton;
 } ProceduralRecoil;
 
-// ✅ COMPLETED: Define Recoil Data [Difficulty: 1] [Atomic Steps: 5]
+//  COMPLETED: Define Recoil Data [Difficulty: 1] [Atomic Steps: 5]
 ProceduralRecoil *procedural_recoil_create(i32 bone_index,
                                            Skeleton *target_skeleton) {
   if (!target_skeleton || bone_index < 0 ||
@@ -223,7 +223,7 @@ void procedural_recoil_set_parameters(ProceduralRecoil *recoil,
   recoil->data.randomization = randomization;
 }
 
-// ✅ COMPLETED: Implement Spring Mass System [Difficulty: 3] [Atomic Steps: 6]
+//  COMPLETED: Implement Spring Mass System [Difficulty: 3] [Atomic Steps: 6]
 static void update_spring_mass(SpringMassSystem *spring, f32 dt) {
   if (!spring->is_active)
     return;
@@ -315,7 +315,7 @@ void procedural_recoil_fire(ProceduralRecoil *recoil) {
   recoil->last_fire_time = 0.0f;
 }
 
-// ✅ COMPLETED: Implement Procedural Patterns [Difficulty: 2] [Atomic Steps: 4]
+//  COMPLETED: Implement Procedural Patterns [Difficulty: 2] [Atomic Steps: 4]
 void procedural_recoil_start_burst(ProceduralRecoil *recoil) {
   if (!recoil)
     return;

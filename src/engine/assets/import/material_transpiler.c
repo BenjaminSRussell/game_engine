@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-// TASK_821: Transpile Unreal Material Graph to Engine's Shader code - COMPLETED ✅
+// TASK_821: Transpile Unreal Material Graph to Engine's Shader code - COMPLETED 
 
 // Internal helper functions
 static bool transpile_material_node(UnrealMaterialNode* node, char* shader_code, size_t shader_code_size);

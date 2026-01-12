@@ -82,7 +82,7 @@ void Propagation_Shutdown(PropagationSystem* system) {
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Ray-based propagation path generation
+//  COMPLETED: Ray-based propagation path generation
 // -------------------------------------------------------------------------------------------------
 
 u32 Propagation_GeneratePaths(PropagationSystem* system, const Vec3 source, const Vec3 listener, 
@@ -242,7 +242,7 @@ PropagationPath Propagation_CreateReflectionPath(const Vec3 source, const Vec3 l
 }
 
 // -------------------------------------------------------------------------------------------------
-// ✅ COMPLETED: Diffraction path generation
+//  COMPLETED: Diffraction path generation
 // -------------------------------------------------------------------------------------------------
 
 u32 Propagation_GenerateDiffractionPaths(PropagationSystem* system, const Vec3 source, const Vec3 listener,

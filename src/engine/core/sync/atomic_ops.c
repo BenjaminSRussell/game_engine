@@ -30,7 +30,7 @@
  * =================================================================================================
  */
 
-// ✅ COMPLETED: Basic Atomic Operations
+//  COMPLETED: Basic Atomic Operations
 bool atomic_compare_exchange_32(_Atomic uint32_t* target, uint32_t expected, uint32_t desired) {
     return atomic_compare_exchange_strong_explicit(target, &expected, desired, 
                                                  memory_order_acq_rel, memory_order_acquire);
@@ -81,7 +81,7 @@ void atomic_store_64(_Atomic uint64_t* target, uint64_t value) {
     atomic_store_explicit(target, value, memory_order_release);
 }
 
-// ✅ COMPLETED: Tagged Pointer for ABA Problem Prevention
+//  COMPLETED: Tagged Pointer for ABA Problem Prevention
 typedef struct TaggedPointer {
     _Atomic uint64_t value;
 } TaggedPointer;
@@ -128,7 +128,7 @@ bool tagged_pointer_compare_exchange(TaggedPointer* tp, void* expected_ptr,
                                                  memory_order_acq_rel, memory_order_acquire);
 }
 
-// ✅ COMPLETED: Lock-Free Stack Implementation
+//  COMPLETED: Lock-Free Stack Implementation
 typedef struct LFStackNode {
     _Atomic(struct LFStackNode*) next;
     void* data;
@@ -201,7 +201,7 @@ bool lfstack_is_empty(LFStack* stack) {
     return stack ? atomic_load(&stack->head) == NULL : true;
 }
 
-// ✅ COMPLETED: Lock-Free Queue Implementation (Michael-Scott Algorithm)
+//  COMPLETED: Lock-Free Queue Implementation (Michael-Scott Algorithm)
 typedef struct LFQueueNode {
     _Atomic(struct LFQueueNode*) next;
     void* data;
@@ -322,7 +322,7 @@ bool lfqueue_is_empty(LFQueue* queue) {
     return head == tail && next == NULL;
 }
 
-// ✅ COMPLETED: Hazard Pointer System for Memory Reclamation
+//  COMPLETED: Hazard Pointer System for Memory Reclamation
 typedef struct HazardPointer {
     _Atomic(void*) pointer;
     uint32_t thread_id;
@@ -392,7 +392,7 @@ bool hazard_pointer_is_protected(void* pointer) {
     return false;
 }
 
-// ✅ COMPLETED: Read-Copy-Update (RCU) Primitives
+//  COMPLETED: Read-Copy-Update (RCU) Primitives
 typedef struct RCUReadSection {
     _Atomic uint32_t generation;
 } RCUReadSection;

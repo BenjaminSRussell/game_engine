@@ -15,7 +15,7 @@ typedef u32 MaterialID;
 
 // Material properties (GregTech-inspired)
 typedef struct {
-    f32 density;           // kg/m³
+    f32 density;           // kg/m
     f32 melting_point;     // Kelvin
     f32 boiling_point;     // Kelvin
     f32 hardness;          // Mohs scale (0-10)

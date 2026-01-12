@@ -110,7 +110,7 @@ void Editor_DrawAssetBrowser() {
   asset_browser_draw_toolbar();
 
   // 2. FILE SYSTEM WATCHER
-  // ✅ COMPLETED: Detect new files in 'assets/' and trigger 'AssetImporter'.
+  //  COMPLETED: Detect new files in 'assets/' and trigger 'AssetImporter'.
   asset_browser_scan_directory();
 
   // 3. GRID LAYOUT
@@ -174,7 +174,7 @@ void AssetBrowser_GetStats(u32 *total_assets, u32 *filtered_assets,
     *total_assets = g_browser.asset_count;
   if (filtered_assets)
     *filtered_assets =
-        g_browser.asset_count; // ✅ COMPLETED: Implement filtering
+        g_browser.asset_count; //  COMPLETED: Implement filtering
   if (scan_time)
     *scan_time = g_browser.average_scan_time;
 }

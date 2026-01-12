@@ -7,7 +7,7 @@
 #include <time.h>
 #include <include/math/math.h>
 
-// ✅ COMPLETED: STT Bridge with Whisper integration, microphone capture, VAD, and recognition thread
+//  COMPLETED: STT Bridge with Whisper integration, microphone capture, VAD, and recognition thread
 
 // Internal structures
 struct MicrophoneBuffer {

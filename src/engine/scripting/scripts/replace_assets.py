@@ -55,7 +55,7 @@ def download_file(url, dest, desc=""):
         urllib.request.urlretrieve(url, dest)
         return True
     except Exception as e:
-        print(f"    ✗ Failed: {e}")
+        print(f"     Failed: {e}")
         return False
 
 def download_faithful_textures():
@@ -109,17 +109,17 @@ def download_faithful_textures():
                         
                         shutil.copy2(src, dest)
                         textures_copied += 1
-                        print(f"    ✓ Copied {file} -> {dest.name}")
+                        print(f"     Copied {file} -> {dest.name}")
             
             if textures_copied > 0:
-                print(f"  ✓ Copied {textures_copied} textures")
+                print(f"   Copied {textures_copied} textures")
                 return True
             else:
-                print("  ⚠️  No matching textures found")
+                print("    No matching textures found")
                 return False
                 
     except Exception as e:
-        print(f"  ✗ Failed to extract: {e}")
+        print(f"   Failed to extract: {e}")
         return False
 
 def download_sound_effects():
@@ -143,10 +143,10 @@ def download_sound_effects():
             downloaded += 1
     
     if downloaded > 0:
-        print(f"  ✓ Downloaded {downloaded} sound effects")
+        print(f"   Downloaded {downloaded} sound effects")
         return True
     else:
-        print("  ⚠️  No sounds downloaded")
+        print("    No sounds downloaded")
         return False
 
 def create_improved_placeholders():
@@ -175,14 +175,14 @@ def main():
     sounds_ok = download_sound_effects()
     
     if not textures_ok and not sounds_ok:
-        print("\n⚠️  Could not download external assets")
+        print("\n  Could not download external assets")
         print("  Keeping existing placeholder assets")
     else:
-        print("\n✓ Asset replacement complete!")
+        print("\n Asset replacement complete!")
         if textures_ok:
-            print("  ✓ Textures updated with Faithful pack")
+            print("   Textures updated with Faithful pack")
         if sounds_ok:
-            print("  ✓ Sound effects updated")
+            print("   Sound effects updated")
     
     # Cleanup
     if TEMP_DIR.exists():

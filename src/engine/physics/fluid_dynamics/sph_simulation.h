@@ -161,7 +161,7 @@ typedef enum KernelType {
 
 typedef struct SPHConfig {
     // Fluid properties
-    float rest_density;         // Rest density (kg/m³)
+    float rest_density;         // Rest density (kg/m)
     float gas_constant;         // Gas stiffness constant
     float viscosity;            // Dynamic viscosity
     float surface_tension;      // Surface tension coefficient

@@ -11,7 +11,7 @@
 #define clampf(val, min_val, max_val) fmaxf(min_val, fminf(val, max_val))
 #endif
 
-// ✅ COMPLETED: Define LookAt Struct [Difficulty: 1] [Atomic Steps: 5]
+//  COMPLETED: Define LookAt Struct [Difficulty: 1] [Atomic Steps: 5]
 // 1. 'int head_bone_index'.
 // 2. 'int neck_bone_index'.
 // 3. 'Vec3 target_position'.
@@ -40,7 +40,7 @@ typedef struct {
   f32 convergence_distance;
 } LookAtIK;
 
-// ✅ COMPLETED: Implement Target Tracking [Difficulty: 2] [Atomic Steps: 5]
+//  COMPLETED: Implement Target Tracking [Difficulty: 2] [Atomic Steps: 5]
 // 1. Convert Target to Local Space of parent bone.
 // 2. Calculate desired Look Vector.
 // 3. Calculate Rotation to align Forward to Look Vector.
@@ -119,7 +119,7 @@ static Quat look_at_clamp_angles(Quat rotation, Vec2 yaw_clamp,
                   quat_from_axis_angle(vec3(1.0f, 0.0f, 0.0f), pitch));
 }
 
-// ✅ COMPLETED: Implement Smoothing [Difficulty: 2] [Atomic Steps: 4]
+//  COMPLETED: Implement Smoothing [Difficulty: 2] [Atomic Steps: 4]
 // 1. `current_look_pos = Lerp(current_look_pos, target_pos, dt * speed)`.
 // 2. Avoid snapping when target moves behind player.
 // 3. Use 'dead zone' to prevent jitter.
@@ -152,7 +152,7 @@ static Vec3 look_at_smooth_target(LookAtIK *ik, Vec3 target_pos, f32 dt) {
   return smoothed_pos;
 }
 
-// ✅ COMPLETED: Implement Spine Distribution [Difficulty: 3] [Atomic Steps: 4]
+//  COMPLETED: Implement Spine Distribution [Difficulty: 3] [Atomic Steps: 4]
 // 1. Don't rotate just head.
 // 2. Distribute rotation: Head (50%), Neck (30%), Chest (20%).
 // 3. Apply partial rotations to respective bones.
@@ -204,7 +204,7 @@ static void look_at_apply_spine_distribution(Skeleton *skeleton, LookAtIK *ik,
   }
 }
 
-// ✅ COMPLETED: Implement Eye Bones [Difficulty: 2] [Atomic Steps: 3]
+//  COMPLETED: Implement Eye Bones [Difficulty: 2] [Atomic Steps: 3]
 // 1. Procedural eye movement (Saccades).
 // 2. Offset from Head rotation.
 // 3. Converge on close targets (Cross-eyed prevention).
@@ -271,8 +271,8 @@ LookAtIK *look_at_create(i32 head_bone, i32 neck_bone, i32 chest_bone) {
   ik->chest_bone_index = chest_bone;
   ik->target_position = vec3_zero();
   ik->weight = 1.0f;
-  ik->clamp_yaw = vec2(-PI * 0.75f, PI * 0.75f); // ±135 degrees
-  ik->clamp_pitch = vec2(-PI * 0.5f, PI * 0.5f); // ±90 degrees
+  ik->clamp_yaw = vec2(-PI * 0.75f, PI * 0.75f); // 135 degrees
+  ik->clamp_pitch = vec2(-PI * 0.5f, PI * 0.5f); // 90 degrees
   ik->current_look_pos = vec3_zero();
   ik->smooth_speed = 5.0f;
   ik->dead_zone = 0.1f;

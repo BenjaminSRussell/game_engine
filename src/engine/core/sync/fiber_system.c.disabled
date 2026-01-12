@@ -24,7 +24,7 @@
  * =================================================================================================
  */
 
-// ✅ COMPLETED: Fiber structure
+//  COMPLETED: Fiber structure
 typedef struct Fiber {
   ucontext_t context;              // Fiber context
   void *stack;                     // Fiber stack
@@ -39,7 +39,7 @@ typedef struct Fiber {
   bool storage_used[16];           // Storage usage flags
 } Fiber;
 
-// ✅ COMPLETED: Fiber scheduler
+//  COMPLETED: Fiber scheduler
 typedef struct FiberScheduler {
   Fiber *ready_queue;              // Ready queue head
   Fiber *ready_queue_tail;         // Ready queue tail
@@ -54,7 +54,7 @@ typedef struct FiberScheduler {
   _Atomic(uint64_t) total_stack_size); // Total stack memory used
 } FiberScheduler;
 
-// ✅ COMPLETED: Waiting primitives
+//  COMPLETED: Waiting primitives
 typedef struct FiberWaitQueue {
   Fiber *waiting_fibers;          // Waiting fibers list
   pthread_mutex_t mutex;          // Queue protection
@@ -62,11 +62,11 @@ typedef struct FiberWaitQueue {
   _Atomic(uint32_t) waiters;      // Number of waiting fibers
 } FiberWaitQueue;
 
-// ✅ COMPLETED: Global scheduler
+//  COMPLETED: Global scheduler
 static FiberScheduler g_scheduler = {0};
 static _Atomic(bool) g_scheduler_initialized = false;
 
-// ✅ COMPLETED: Fiber entry point
+//  COMPLETED: Fiber entry point
 static void fiber_entry_point() {
   Fiber *fiber = g_scheduler.current_fiber;
   if (!fiber) return;
@@ -81,7 +81,7 @@ static void fiber_entry_point() {
   fiber_yield();
 }
 
-// ✅ COMPLETED: Fiber creation
+//  COMPLETED: Fiber creation
 Fiber* fiber_create(void (*function)(void*), void *data, size_t stack_size) {
   if (!function) return NULL;
   
@@ -131,7 +131,7 @@ Fiber* fiber_create(void (*function)(void*), void *data, size_t stack_size) {
   return fiber;
 }
 
-// ✅ COMPLETED: Fiber destruction
+//  COMPLETED: Fiber destruction
 void fiber_destroy(Fiber *fiber) {
   if (!fiber) return;
   
@@ -160,7 +160,7 @@ void fiber_destroy(Fiber *fiber) {
   free(fiber);
 }
 
-// ✅ COMPLETED: Context switching
+//  COMPLETED: Context switching
 void fiber_switch(Fiber *from, Fiber *to) {
   if (!from || !to || from == to) return;
   
@@ -174,7 +174,7 @@ void fiber_switch(Fiber *from, Fiber *to) {
   }
 }
 
-// ✅ COMPLETED: Fiber yielding
+//  COMPLETED: Fiber yielding
 void fiber_yield() {
   if (!g_scheduler.current_fiber || 
       g_scheduler.current_fiber == g_scheduler.main_fiber) {
@@ -208,7 +208,7 @@ void fiber_yield() {
   }
 }
 
-// ✅ COMPLETED: Fiber scheduler initialization
+//  COMPLETED: Fiber scheduler initialization
 void fiber_scheduler_init() {
   if (atomic_load(&g_scheduler_initialized)) return;
   
@@ -239,7 +239,7 @@ void fiber_scheduler_init() {
   atomic_store(&g_scheduler_initialized, true);
 }
 
-// ✅ COMPLETED: Add fiber to ready queue
+//  COMPLETED: Add fiber to ready queue
 void fiber_scheduler_ready(Fiber *fiber) {
   if (!fiber) return;
   
@@ -256,7 +256,7 @@ void fiber_scheduler_ready(Fiber *fiber) {
   pthread_mutex_unlock(&g_scheduler.queue_mutex);
 }
 
-// ✅ COMPLETED: Get next ready fiber
+//  COMPLETED: Get next ready fiber
 Fiber* fiber_scheduler_next_ready() {
   pthread_mutex_lock(&g_scheduler.queue_mutex);
   
@@ -274,7 +274,7 @@ Fiber* fiber_scheduler_next_ready() {
   return fiber;
 }
 
-// ✅ COMPLETED: Fiber-local storage
+//  COMPLETED: Fiber-local storage
 void fiber_set_local(uint32_t slot, void *value) {
   if (!g_scheduler.current_fiber || slot >= 16) return;
   
@@ -291,7 +291,7 @@ void* fiber_get_local(uint32_t slot) {
   return g_scheduler.current_fiber->local_storage[slot];
 }
 
-// ✅ COMPLETED: Waiting primitives
+//  COMPLETED: Waiting primitives
 FiberWaitQueue* fiber_wait_queue_create() {
   FiberWaitQueue *queue = malloc(sizeof(FiberWaitQueue));
   if (!queue) return NULL;
@@ -366,7 +366,7 @@ void fiber_broadcast(FiberWaitQueue *queue) {
   pthread_mutex_unlock(&queue->mutex);
 }
 
-// ✅ COMPLETED: Stack overflow protection
+//  COMPLETED: Stack overflow protection
 bool fiber_check_stack_overflow(Fiber *fiber) {
   if (!fiber || !fiber->stack) return false;
   
@@ -385,14 +385,14 @@ bool fiber_check_stack_overflow(Fiber *fiber) {
   return offset < 1024; // Less than 1KB remaining
 }
 
-// ✅ COMPLETED: Main thread fiber conversion
+//  COMPLETED: Main thread fiber conversion
 void fiber_convert_main_thread() {
   if (atomic_load(&g_scheduler_initialized)) return;
   
   fiber_scheduler_init();
 }
 
-// ✅ COMPLETED: Statistics
+//  COMPLETED: Statistics
 void fiber_get_stats(uint64_t *context_switches, uint64_t *yield_count,
                    uint32_t *fiber_count, uint64_t *total_stack_size) {
   if (!atomic_load(&g_scheduler_initialized)) return;
@@ -403,7 +403,7 @@ void fiber_get_stats(uint64_t *context_switches, uint64_t *yield_count,
   if (total_stack_size) *total_stack_size = atomic_load(&g_scheduler.total_stack_size);
 }
 
-// ✅ COMPLETED: Cleanup
+//  COMPLETED: Cleanup
 void fiber_scheduler_cleanup() {
   if (!atomic_load(&g_scheduler_initialized)) return;
   
@@ -428,7 +428,7 @@ void fiber_scheduler_cleanup() {
 }
 
 /**
- * ✅ COMPLETED: All fiber system TODOs implemented with performance targets met:
+ *  COMPLETED: All fiber system TODOs implemented with performance targets met:
  * - Fiber creation and destruction with stack management
  * - Fast context switching using ucontext (<50ns target)
  * - Fiber yielding and scheduling
@@ -441,7 +441,7 @@ void fiber_scheduler_cleanup() {
  *
  * Performance characteristics:
  * - Context switch: <50ns (ucontext-based)
- * - Fiber creation: <1μs (including stack allocation)
+ * - Fiber creation: <1s (including stack allocation)
  * - Yield operation: <100ns (queue operations)
  * - Local storage access: <10ns (direct array access)
  * - Memory usage: 64KB default stack per fiber

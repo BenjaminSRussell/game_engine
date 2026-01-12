@@ -884,20 +884,27 @@ CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/matrix.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/matrix_types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/simd/quaternion.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/lighting/shadows/shadow_atlas.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/deferred_lighting.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/cpu_gpu_timing.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/debug_renderer.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/gpu_profiler.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/performance_analyzer.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/effects/gpu_particles/gpu_particle_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/atmosphere/sky/atmosphere_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/atmosphere/sky/atmosphere_common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/lighting/shadows/shadow_atlas.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/anti_aliasing/taa_resolve.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/bloom/bloom_types.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/debug_renderer.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/gpu_profiler.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/cpu_gpu_timing.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/editor/debug/performance_analyzer.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/deferred/deferred_lighting.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/voxel_renderer.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_buffer.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_device.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_device_caps.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_memory_heap.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_encoder.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_command_buffer.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/scene.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/ecs.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ecs/../core/performance.h \

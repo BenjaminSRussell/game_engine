@@ -91,7 +91,7 @@ typedef struct BoneMap {
   bool is_initialized;
 } BoneMap;
 
-// ✅ COMPLETED: Define Bone Map [Difficulty: 1] [Atomic Steps: 4]
+//  COMPLETED: Define Bone Map [Difficulty: 1] [Atomic Steps: 4]
 BoneMap *bone_map_create(Skeleton *source, Skeleton *target) {
   if (!source || !target)
     return NULL;
@@ -113,7 +113,7 @@ void bone_map_destroy(BoneMap *map) {
     free(map);
 }
 
-// ✅ COMPLETED: Implement Auto-Mapper [Difficulty: 3] [Atomic Steps: 6]
+//  COMPLETED: Implement Auto-Mapper [Difficulty: 3] [Atomic Steps: 6]
 static f32 calculate_name_similarity(const char *name1, const char *name2) {
   // Simple fuzzy matching based on common patterns
   if (!name1 || !name2)
@@ -245,7 +245,7 @@ void bone_map_auto_match(BoneMap *map) {
   map->is_initialized = true;
 }
 
-// ✅ COMPLETED: Implement Runtime Retarget [Difficulty: 3] [Atomic Steps: 5]
+//  COMPLETED: Implement Runtime Retarget [Difficulty: 3] [Atomic Steps: 5]
 void bone_map_retarget_animation(BoneMap *map, AnimationClip *source_clip,
                                  AnimationClip *target_clip) {
   if (!map || !map->is_initialized || !source_clip || !target_clip)

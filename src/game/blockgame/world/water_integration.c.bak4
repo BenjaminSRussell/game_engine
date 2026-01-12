@@ -130,8 +130,8 @@ void water_integration_apply_buoyancy(WaterIntegration *integration,
   if (!interaction)
     return;
 
-  // Buoyancy = ρ * V * g
-  // where ρ = fluid density, V = displaced volume, g = gravity
+  // Buoyancy =  * V * g
+  // where  = fluid density, V = displaced volume, g = gravity
   f32 gravity = 9.81f;
   f32 water_density = 1000.0f;
 

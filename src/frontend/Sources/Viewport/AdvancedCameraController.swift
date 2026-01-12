@@ -289,7 +289,7 @@ struct CameraControlsPanel: View {
                     
                     Slider(value: $controller.fieldOfView, in: 30...120)
                     
-                    Text("\(Int(controller.fieldOfView))°")
+                    Text("\(Int(controller.fieldOfView))")
                         .font(DesignSystem.Typography.small)
                         .foregroundColor(DesignSystem.Colors.textPrimary)
                         .frame(width: 40, alignment: .trailing)

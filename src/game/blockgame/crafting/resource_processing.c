@@ -167,7 +167,7 @@ void processing_machine_update(ProcessingMachine *machine, Inventory *inventory,
                           : STACK_SIZE_DEFAULT;
       u32 add = MIN(to_add, available);
       if (add == 0) {
-        // No space — shouldn't happen due to earlier check, but guard anyway
+        // No space  shouldn't happen due to earlier check, but guard anyway
       } else {
         if (output_item->item_id == 0) {
           output_item->item_id = recipe->output_item;

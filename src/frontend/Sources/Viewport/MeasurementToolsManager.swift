@@ -154,7 +154,7 @@ class MeasurementToolsManager: ObservableObject {
             label: "Angle"
         )
         measurements.append(measurement)
-        print("[Measurements] Angle: \(String(format: "%.2f°", angle))")
+        print("[Measurements] Angle: \(String(format: "%.2f", angle))")
         return measurement
     }
     
@@ -172,7 +172,7 @@ class MeasurementToolsManager: ObservableObject {
             label: "Area"
         )
         measurements.append(measurement)
-        print("[Measurements] Area: \(measurement.formattedValue)²")
+        print("[Measurements] Area: \(measurement.formattedValue)")
         return measurement
     }
     
@@ -190,7 +190,7 @@ class MeasurementToolsManager: ObservableObject {
             label: "Volume"
         )
         measurements.append(measurement)
-        print("[Measurements] Volume: \(measurement.formattedValue)³")
+        print("[Measurements] Volume: \(measurement.formattedValue)")
         return measurement
     }
     

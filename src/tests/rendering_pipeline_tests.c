@@ -40,7 +40,7 @@ static TestResult g_test_result = {0, 0, 0};
 
 void test_assert(int condition, const char* message) {
     if (!condition) {
-        printf("  ❌ FAIL: %s\n", message);
+        printf("   FAIL: %s\n", message);
         g_test_result.failed++;
     } else {
         g_test_result.passed++;
@@ -48,32 +48,32 @@ void test_assert(int condition, const char* message) {
 }
 
 void run_test(const char* name, int (*test_fn)(void)) {
-    printf("\n📋 %s\n", name);
+    printf("\n %s\n", name);
     g_test_result.total++;
 
     if (test_fn()) {
-        printf("  ✅ PASS\n");
+        printf("   PASS\n");
         g_test_result.passed++;
     } else {
-        printf("  ❌ FAIL\n");
+        printf("   FAIL\n");
         g_test_result.failed++;
     }
 }
 
 void print_test_results(void) {
     printf("\n\n");
-    printf("═══════════════════════════════════════════════════════════\n");
+    printf("\n");
     printf("TEST RESULTS\n");
-    printf("═══════════════════════════════════════════════════════════\n");
+    printf("\n");
     printf("Total:  %d tests\n", g_test_result.total);
-    printf("Passed: %d tests ✅\n", g_test_result.passed);
-    printf("Failed: %d tests ❌\n", g_test_result.failed);
-    printf("═══════════════════════════════════════════════════════════\n");
+    printf("Passed: %d tests \n", g_test_result.passed);
+    printf("Failed: %d tests \n", g_test_result.failed);
+    printf("\n");
 
     if (g_test_result.failed == 0) {
-        printf("\n🎉 ALL TESTS PASSED! 🎉\n\n");
+        printf("\n ALL TESTS PASSED! \n\n");
     } else {
-        printf("\n⚠️ %d TEST(S) FAILED\n\n", g_test_result.failed);
+        printf("\n %d TEST(S) FAILED\n\n", g_test_result.failed);
     }
 }
 
@@ -729,14 +729,14 @@ int test_material_and_lighting_pipeline(void) {
  * ============================================================================ */
 
 int main(void) {
-    printf("╔═══════════════════════════════════════════════════════════╗\n");
-    printf("║  3D RENDERING PIPELINE - UNIT TESTS                      ║\n");
-    printf("║  Testing core rendering subsystems                       ║\n");
-    printf("╚═══════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("  3D RENDERING PIPELINE - UNIT TESTS                      \n");
+    printf("  Testing core rendering subsystems                       \n");
+    printf("\n");
 
     /* GPU-Driven Rendering Tests */
-    printf("\n\n📊 GPU-DRIVEN RENDERING TESTS\n");
-    printf("─────────────────────────────────────────────────────────────\n");
+    printf("\n\n GPU-DRIVEN RENDERING TESTS\n");
+    printf("\n");
     run_test("GPU scene creation", test_gpu_scene_creation);
     run_test("GPU scene instance updates", test_gpu_scene_instance_update);
     run_test("GPU culling", test_gpu_culling);
@@ -744,54 +744,54 @@ int main(void) {
     run_test("GPU persistent mapping", test_gpu_persistent_mapping);
 
     /* Forward Rendering Tests */
-    printf("\n\n📊 FORWARD RENDERING TESTS\n");
-    printf("─────────────────────────────────────────────────────────────\n");
+    printf("\n\n FORWARD RENDERING TESTS\n");
+    printf("\n");
     run_test("Forward depth prepass", test_forward_depth_prepass);
     run_test("Forward lighting", test_forward_lighting);
     run_test("Forward transparency", test_forward_transparency);
     run_test("Forward+ clustering", test_forward_clustering);
 
     /* Deferred Rendering Tests */
-    printf("\n\n📊 DEFERRED RENDERING TESTS\n");
-    printf("─────────────────────────────────────────────────────────────\n");
+    printf("\n\n DEFERRED RENDERING TESTS\n");
+    printf("\n");
     run_test("Deferred G-buffer layout", test_deferred_gbuffer_layout);
     run_test("Deferred G-buffer write", test_deferred_gbuffer_write);
     run_test("Deferred lighting pass", test_deferred_lighting_pass);
     run_test("Deferred decals", test_deferred_decals);
 
     /* Render Graph Tests */
-    printf("\n\n📊 RENDER GRAPH TESTS\n");
-    printf("─────────────────────────────────────────────────────────────\n");
+    printf("\n\n RENDER GRAPH TESTS\n");
+    printf("\n");
     run_test("Render graph node creation", test_render_graph_node_creation);
     run_test("Render graph dependencies", test_render_graph_dependencies);
     run_test("Render graph resource aliasing", test_render_graph_resource_aliasing);
     run_test("Render graph execution order", test_render_graph_execution_order);
 
     /* Shadow System Tests */
-    printf("\n\n📊 SHADOW SYSTEM TESTS\n");
-    printf("─────────────────────────────────────────────────────────────\n");
+    printf("\n\n SHADOW SYSTEM TESTS\n");
+    printf("\n");
     run_test("Shadow system CSM", test_shadow_system_csm);
     run_test("Shadow filtering (PCF/PCSS)", test_shadow_system_filtering);
     run_test("Ray-traced shadows", test_shadow_system_rt);
 
     /* GI System Tests */
-    printf("\n\n📊 GI SYSTEM TESTS\n");
-    printf("─────────────────────────────────────────────────────────────\n");
+    printf("\n\n GI SYSTEM TESTS\n");
+    printf("\n");
     run_test("DDGI probe system", test_gi_ddgi_probes);
     run_test("DDGI probe updates", test_gi_ddgi_update);
     run_test("ReSTIR GI", test_gi_restir);
 
     /* Material System Tests */
-    printf("\n\n📊 MATERIAL SYSTEM TESTS\n");
-    printf("─────────────────────────────────────────────────────────────\n");
+    printf("\n\n MATERIAL SYSTEM TESTS\n");
+    printf("\n");
     run_test("Material creation", test_material_creation);
     run_test("PBR parameters", test_material_pbr_parameters);
     run_test("Material GPU upload", test_material_gpu_upload);
     run_test("Material texture binding", test_material_texture_binding);
 
     /* Integration Tests */
-    printf("\n\n📊 INTEGRATION TESTS\n");
-    printf("─────────────────────────────────────────────────────────────\n");
+    printf("\n\n INTEGRATION TESTS\n");
+    printf("\n");
     run_test("Full frame pipeline", test_full_frame_pipeline);
     run_test("Multi-light rendering", test_multi_light_rendering);
     run_test("Shadow and GI integration", test_shadow_and_gi_integration);

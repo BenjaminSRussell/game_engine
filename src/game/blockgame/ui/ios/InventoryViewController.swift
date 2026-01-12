@@ -51,7 +51,7 @@ class InventoryViewController: UIViewController {
         view.addSubview(containerView)
         
         // Close button
-        closeButton.setTitle("✕", for: .normal)
+        closeButton.setTitle("", for: .normal)
         closeButton.setTitleColor(.white, for: .normal)
         closeButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
         closeButton.backgroundColor = UIColor.red.withAlphaComponent(0.7)
@@ -253,39 +253,39 @@ class InventoryViewController: UIViewController {
     
     private func createSampleInventory() -> [InventoryItem] {
         return [
-            InventoryItem(name: "Diamond Sword", count: 1, icon: "⚔️", durability: 850),
-            InventoryItem(name: "Diamond Pickaxe", count: 1, icon: "⛏️", durability: 1200),
-            InventoryItem(name: "Wood", count: 64, icon: "🪵"),
-            InventoryItem(name: "Stone", count: 32, icon: "🪨"),
-            InventoryItem(name: "Iron Ingot", count: 16, icon: "🔩"),
-            InventoryItem(name: "Gold Ingot", count: 8, icon: "🪙"),
-            InventoryItem(name: "Diamond", count: 4, icon: "💎"),
-            InventoryItem(name: "Apple", count: 12, icon: "🍎"),
-            InventoryItem(name: "Bread", count: 8, icon: "🍞"),
-            InventoryItem(name: "Torch", count: 24, icon: "🔦"),
-            InventoryItem(name: "Bow", count: 1, icon: "🏹", durability: 300),
-            InventoryItem(name: "Arrow", count: 64, icon: "➹"),
-            InventoryItem(name: "Coal", count: 32, icon: "⚫"),
-            InventoryItem(name: "Redstone", count: 16, icon: "🔴"),
-            InventoryItem(name: "Emerald", count: 3, icon: "💚"),
-            InventoryItem(name: "Leather", count: 8, icon: "🟫"),
-            InventoryItem(name: "Feather", count: 12, icon: "🪶"),
-            InventoryItem(name: "String", count: 16, icon: "🧵"),
-            InventoryItem(name: "Paper", count: 24, icon: "📄"),
-            InventoryItem(name: "Book", count: 3, icon: "📖"),
-            InventoryItem(name: "Compass", count: 1, icon: "🧭"),
-            InventoryItem(name: "Clock", count: 1, icon: "🕐"),
-            InventoryItem(name: "Fishing Rod", count: 1, icon: "🎣", durability: 64),
-            InventoryItem(name: "Flint and Steel", count: 1, icon: "🔥", durability: 64),
-            InventoryItem(name: "Bucket", count: 3, icon: "🪣"),
-            InventoryItem(name: "Water Bucket", count: 1, icon: "💧"),
-            InventoryItem(name: "Lava Bucket", count: 1, icon: "🌋"),
-            InventoryItem(name: "Saddle", count: 1, icon: "🐎"),
-            InventoryItem(name: "Name Tag", count: 3, icon: "🏷️"),
-            InventoryItem(name: "Ender Pearl", count: 8, icon: "🔮"),
-            InventoryItem(name: "Blaze Rod", count: 4, icon: "🔥"),
-            InventoryItem(name: "Ghast Tear", count: 2, icon: "💧"),
-            InventoryItem(name: "Nether Star", count: 1, icon: "⭐")
+            InventoryItem(name: "Diamond Sword", count: 1, icon: "", durability: 850),
+            InventoryItem(name: "Diamond Pickaxe", count: 1, icon: "", durability: 1200),
+            InventoryItem(name: "Wood", count: 64, icon: ""),
+            InventoryItem(name: "Stone", count: 32, icon: ""),
+            InventoryItem(name: "Iron Ingot", count: 16, icon: ""),
+            InventoryItem(name: "Gold Ingot", count: 8, icon: ""),
+            InventoryItem(name: "Diamond", count: 4, icon: ""),
+            InventoryItem(name: "Apple", count: 12, icon: ""),
+            InventoryItem(name: "Bread", count: 8, icon: ""),
+            InventoryItem(name: "Torch", count: 24, icon: ""),
+            InventoryItem(name: "Bow", count: 1, icon: "", durability: 300),
+            InventoryItem(name: "Arrow", count: 64, icon: ""),
+            InventoryItem(name: "Coal", count: 32, icon: ""),
+            InventoryItem(name: "Redstone", count: 16, icon: ""),
+            InventoryItem(name: "Emerald", count: 3, icon: ""),
+            InventoryItem(name: "Leather", count: 8, icon: ""),
+            InventoryItem(name: "Feather", count: 12, icon: ""),
+            InventoryItem(name: "String", count: 16, icon: ""),
+            InventoryItem(name: "Paper", count: 24, icon: ""),
+            InventoryItem(name: "Book", count: 3, icon: ""),
+            InventoryItem(name: "Compass", count: 1, icon: ""),
+            InventoryItem(name: "Clock", count: 1, icon: ""),
+            InventoryItem(name: "Fishing Rod", count: 1, icon: "", durability: 64),
+            InventoryItem(name: "Flint and Steel", count: 1, icon: "", durability: 64),
+            InventoryItem(name: "Bucket", count: 3, icon: ""),
+            InventoryItem(name: "Water Bucket", count: 1, icon: ""),
+            InventoryItem(name: "Lava Bucket", count: 1, icon: ""),
+            InventoryItem(name: "Saddle", count: 1, icon: ""),
+            InventoryItem(name: "Name Tag", count: 3, icon: ""),
+            InventoryItem(name: "Ender Pearl", count: 8, icon: ""),
+            InventoryItem(name: "Blaze Rod", count: 4, icon: ""),
+            InventoryItem(name: "Ghast Tear", count: 2, icon: ""),
+            InventoryItem(name: "Nether Star", count: 1, icon: "")
         ]
     }
     

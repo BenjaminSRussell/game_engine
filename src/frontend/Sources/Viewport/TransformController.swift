@@ -300,10 +300,10 @@ class TransformController: ObservableObject {
             return ""
         case .translating(let constraint):
             let constraintText = constraint?.displayName ?? "Free"
-            return "Translating [\(constraintText)] Δ: (\(String(format: "%.2f", transformDelta.x)), \(String(format: "%.2f", transformDelta.y)), \(String(format: "%.2f", transformDelta.z)))"
+            return "Translating [\(constraintText)] : (\(String(format: "%.2f", transformDelta.x)), \(String(format: "%.2f", transformDelta.y)), \(String(format: "%.2f", transformDelta.z)))"
         case .rotating(let constraint):
             let constraintText = constraint?.displayName ?? "Free"
-            return "Rotating [\(constraintText)] Δ: (\(String(format: "%.1f", transformDelta.x))°, \(String(format: "%.1f", transformDelta.y))°, \(String(format: "%.1f", transformDelta.z))°)"
+            return "Rotating [\(constraintText)] : (\(String(format: "%.1f", transformDelta.x)), \(String(format: "%.1f", transformDelta.y)), \(String(format: "%.1f", transformDelta.z)))"
         case .scaling(let constraint):
             let constraintText = constraint?.displayName ?? "Uniform"
             return "Scaling [\(constraintText)] Factor: (\(String(format: "%.2f", transformDelta.x)), \(String(format: "%.2f", transformDelta.y)), \(String(format: "%.2f", transformDelta.z)))"

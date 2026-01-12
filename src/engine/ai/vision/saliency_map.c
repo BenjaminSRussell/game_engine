@@ -1,7 +1,7 @@
 #include "ai/ai_types.h"
 #include "core/core.h"
 
-// ✅ COMPLETED: Define Saliency [Difficulty: 1] [Atomic Steps: 4]
+//  COMPLETED: Define Saliency [Difficulty: 1] [Atomic Steps: 4]
 // 1. Measure of "interestingness" of a point.
 // 2. Inputs: Motion, Color Constant, Loudness (Audio-visual).
 // 3. Map of the environment.
@@ -96,7 +96,7 @@ void saliency_map_grid_to_world(const SaliencyMap* map, u32 grid_x, u32 grid_y,
 bool saliency_map_is_valid_coord(const SaliencyMap* map, u32 grid_x, u32 grid_y);
 SaliencyCell* saliency_map_get_cell(SaliencyMap* map, u32 grid_x, u32 grid_y);
 
-// ✅ COMPLETED: Implement Update [Difficulty: 3] [Atomic Steps: 5]
+//  COMPLETED: Implement Update [Difficulty: 3] [Atomic Steps: 5]
 // 1. Decay old saliency values over time.
 // 2. Add new stimuli events (Explosion, Muzzle Flash).
 // 3. AI 'LookAt' target driven by max saliency.
@@ -149,7 +149,7 @@ void saliency_map_get_top_n_targets(const SaliencyMap* map, const f32* viewer_po
 bool saliency_map_is_position_salient(const SaliencyMap* map, const f32* position,
                                   f32 threshold);
 
-// ✅ COMPLETED: Implement Inhibition of Return [Difficulty: 2] [Atomic Steps: 3]
+//  COMPLETED: Implement Inhibition of Return [Difficulty: 2] [Atomic Steps: 3]
 // 1. Once AI looks at Saliency peak.
 // 2. Temporarily suppress that region.
 // 3. Force eyes to scan to next highest peak.

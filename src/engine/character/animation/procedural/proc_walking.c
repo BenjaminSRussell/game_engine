@@ -45,7 +45,7 @@ typedef struct ProceduralWalk {
   Skeleton *target_skeleton;
 } ProceduralWalk;
 
-// ✅ COMPLETED: Define Procedural Walk [Difficulty: 1] [Atomic Steps: 5]
+//  COMPLETED: Define Procedural Walk [Difficulty: 1] [Atomic Steps: 5]
 ProceduralWalk *procedural_walk_create(i32 num_legs,
                                        Skeleton *target_skeleton) {
   if (num_legs <= 0 || num_legs > MAX_LEGS || !target_skeleton)
@@ -82,7 +82,7 @@ void procedural_walk_destroy(ProceduralWalk *walk) {
     free(walk);
 }
 
-// ✅ COMPLETED: Implement Gait Cycle [Difficulty: 3] [Atomic Steps: 6]
+//  COMPLETED: Implement Gait Cycle [Difficulty: 3] [Atomic Steps: 6]
 static void update_gait_phases(ProceduralWalk *walk) {
   switch (walk->gait_type) {
   case GAIT_TRIPOD:
@@ -168,7 +168,7 @@ void procedural_walk_update(ProceduralWalk *walk, f32 dt, Vec3 velocity) {
   }
 }
 
-// ✅ COMPLETED: Implement Terrain Adaptation [Difficulty: 2] [Atomic Steps: 4]
+//  COMPLETED: Implement Terrain Adaptation [Difficulty: 2] [Atomic Steps: 4]
 static Vec3 raycast_terrain(Vec3 origin, Vec3 direction, f32 max_distance) {
   f32 t = -origin.y / direction.y;
   if (t > 0.0f && t < max_distance) {

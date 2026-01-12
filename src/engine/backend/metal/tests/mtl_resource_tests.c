@@ -37,14 +37,14 @@ static test_stats_t g_stats = {0};
         g_stats.total_tests++; \
         test_##name(); \
         g_stats.passed_tests++; \
-        printf("  ✓ PASSED\n\n"); \
+        printf("   PASSED\n\n"); \
     } \
     static void test_##name(void)
 
 #define ASSERT(condition, message) \
     do { \
         if (!(condition)) { \
-            printf("  ✗ FAILED: %s (line %d)\n", message, __LINE__); \
+            printf("   FAILED: %s (line %d)\n", message, __LINE__); \
             g_stats.failed_tests++; \
             return; \
         } \
@@ -378,9 +378,9 @@ void benchmark_sampler_caching(void) {
 
 int main(int argc, char** argv) {
     printf("\n");
-    printf("╔══════════════════════════════════════════════════════════╗\n");
-    printf("║      Metal Resource Management - Test Suite             ║\n");
-    printf("╚══════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("      Metal Resource Management - Test Suite             \n");
+    printf("\n");
     printf("\n");
     
     // Run unit tests
@@ -403,19 +403,19 @@ int main(int argc, char** argv) {
     benchmark_sampler_caching();
     
     // Summary
-    printf("╔══════════════════════════════════════════════════════════╗\n");
-    printf("║                    Test Summary                          ║\n");
-    printf("╚══════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("                    Test Summary                          \n");
+    printf("\n");
     printf("Total:  %d tests\n", g_stats.total_tests);
-    printf("Passed: %d tests ✓\n", g_stats.passed_tests);
-    printf("Failed: %d tests ✗\n", g_stats.failed_tests);
+    printf("Passed: %d tests \n", g_stats.passed_tests);
+    printf("Failed: %d tests \n", g_stats.failed_tests);
     printf("\n");
     
     if (g_stats.failed_tests == 0) {
-        printf("🎉 ALL TESTS PASSED!\n\n");
+        printf(" ALL TESTS PASSED!\n\n");
         return 0;
     } else {
-        printf("❌ SOME TESTS FAILED\n\n");
+        printf(" SOME TESTS FAILED\n\n");
         return 1;
     }
 }

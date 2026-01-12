@@ -6,10 +6,10 @@
 #include <stdlib.h>
 #include <math.h>
 
-// ✅ COMPLETED: Define Episode structure with timestamp, type, location, description, importance
-// ✅ COMPLETED: Implement Short Term Memory buffer (30 seconds) with high detail storage
-// ✅ COMPLETED: Implement Long Term Memory with compression and serialization
-// ✅ COMPLETED: Implement Episode Retrieval with similarity search and context-based queries
+//  COMPLETED: Define Episode structure with timestamp, type, location, description, importance
+//  COMPLETED: Implement Short Term Memory buffer (30 seconds) with high detail storage
+//  COMPLETED: Implement Long Term Memory with compression and serialization
+//  COMPLETED: Implement Episode Retrieval with similarity search and context-based queries
 
 // Forward declarations
 static bool episodic_memory_episode_matches_query(const Episode* episode, const MemoryQuery* query);

@@ -1710,7 +1710,7 @@ bool Atmos_ModelDiffuseReflections(AtmosRenderer *renderer) {
 }
 
 bool Atmos_SimulateRoomModes(AtmosRenderer *renderer, float room_volume) {
-  printf("Simulating room modes for volume %.1f m³\n", room_volume);
+  printf("Simulating room modes for volume %.1f m\n", room_volume);
 
   // Calculate room mode frequencies based on room dimensions
   float room_width = g_current_room.width;

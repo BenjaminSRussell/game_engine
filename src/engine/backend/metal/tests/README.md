@@ -11,13 +11,13 @@ This directory contains comprehensive tests and benchmarks for the Metal GPU res
 **File:** `mtl_resource_tests.c`
 
 **Coverage:**
-- ✅ Buffer creation and lifecycle
-- ✅ Ring buffer allocation and statistics
-- ✅ Buffer sub-allocator (pooling)
-- ✅ Texture creation (2D, MSAA)
-- ✅ Sampler creation and caching
-- ✅ Resource pool acquire/return/cleanup
-- ✅ Transfer manager initialization
+-  Buffer creation and lifecycle
+-  Ring buffer allocation and statistics
+-  Buffer sub-allocator (pooling)
+-  Texture creation (2D, MSAA)
+-  Sampler creation and caching
+-  Resource pool acquire/return/cleanup
+-  Transfer manager initialization
 
 ### Performance Benchmarks
 
@@ -51,17 +51,17 @@ clang -framework Metal -framework Foundation \
 ## Expected Output
 
 ```
-╔══════════════════════════════════════════════════════════╗
-║      Metal Resource Management - Test Suite             ║
-╚══════════════════════════════════════════════════════════╝
+
+      Metal Resource Management - Test Suite             
+
 
 Running Unit Tests...
 
 Running: buffer_creation
-  ✓ PASSED
+   PASSED
 
 Running: ring_buffer_allocation
-  ✓ PASSED
+   PASSED
 
 ...
 
@@ -77,14 +77,14 @@ Created 1000 samplers in 12.34 ms
 Cache hits: 999 (99.9%)
 Cache misses: 1
 
-╔══════════════════════════════════════════════════════════╗
-║                    Test Summary                          ║
-╚══════════════════════════════════════════════════════════╝
-Total:  10 tests
-Passed: 10 tests ✓
-Failed: 0 tests ✗
 
-🎉 ALL TESTS PASSED!
+                    Test Summary                          
+
+Total:  10 tests
+Passed: 10 tests 
+Failed: 0 tests 
+
+ ALL TESTS PASSED!
 ```
 
 ## Profiling with Instruments
@@ -152,7 +152,7 @@ int main() {
         pthread_join(threads[i], NULL);
     }
     
-    printf("✅ Thread stress test passed\n");
+    printf(" Thread stress test passed\n");
     return 0;
 }
 ```
@@ -196,8 +196,8 @@ void render_frame() {
 ### Metal Validation Layer
 
 Enable in Xcode:
-1. Product → Scheme → Edit Scheme
-2. Run → Diagnostics → Metal
+1. Product  Scheme  Edit Scheme
+2. Run  Diagnostics  Metal
 3. Check "API Validation"
 4. Check "Shader Validation"
 

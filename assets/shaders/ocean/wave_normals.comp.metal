@@ -42,8 +42,8 @@ kernel void wave_normals_generate(
     float dx = tile_size / float(N);
     
     // Compute gradients using central differences
-    // dh/dx ≈ (h(x+1) - h(x-1)) / (2*dx)
-    // dh/dz ≈ (h(z+1) - h(z-1)) / (2*dz)
+    // dh/dx  (h(x+1) - h(x-1)) / (2*dx)
+    // dh/dz  (h(z+1) - h(z-1)) / (2*dz)
     
     float dh_dx = (h_right - h_left) / (2.0f * dx);
     float dh_dz = (h_up - h_down) / (2.0f * dx);
@@ -51,7 +51,7 @@ kernel void wave_normals_generate(
     // Normal is cross product of tangent vectors:
     // tangent_x = (1, dh/dx, 0)
     // tangent_z = (0, dh/dz, 1)
-    // normal = tangent_x × tangent_z = (-dh/dx, 1, -dh/dz)
+    // normal = tangent_x  tangent_z = (-dh/dx, 1, -dh/dz)
     
     float3 normal = float3(-dh_dx, 1.0f, -dh_dz);
     

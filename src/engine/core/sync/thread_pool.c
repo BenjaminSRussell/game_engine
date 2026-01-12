@@ -16,7 +16,7 @@
  * =================================================================================================
  *
  * PURPOSE: Pool of worker threads for general async tasks (not job system).
- * PERFORMANCE TARGET: <10μs task submission, <5μs task execution
+ * PERFORMANCE TARGET: <10s task submission, <5s task execution
  *
  * ARCHITECTURE:
  *   - Dynamic thread pool with adjustable size
@@ -27,7 +27,7 @@
  * =================================================================================================
  */
 
-// ✅ COMPLETED: Task structure
+//  COMPLETED: Task structure
 typedef struct Task {
   void (*function)(void*);         // Task function
   void *data;                     // Task data
@@ -38,7 +38,7 @@ typedef struct Task {
   struct Task *next;              // Linked list node
 } Task;
 
-// ✅ COMPLETED: Future/Promise structure
+//  COMPLETED: Future/Promise structure
 typedef struct Future {
   _Atomic(bool) completed;        // Completion flag
   _Atomic(bool) error;            // Error flag
@@ -49,7 +49,7 @@ typedef struct Future {
   void (*destructor)(void*);       // Result destructor
 } Future;
 
-// ✅ COMPLETED: Worker thread
+//  COMPLETED: Worker thread
 typedef struct Worker {
   pthread_t thread;               // Thread handle
   uint32_t worker_id;             // Worker ID
@@ -60,7 +60,7 @@ typedef struct Worker {
   _Atomic(uint64_t) busy_time_ns;   // Busy time statistics
 } Worker;
 
-// ✅ COMPLETED: Thread pool
+//  COMPLETED: Thread pool
 typedef struct ThreadPool {
   Worker *workers;                // Worker array
   uint32_t worker_count;          // Number of workers
@@ -84,20 +84,20 @@ typedef struct ThreadPool {
   _Atomic(uint64_t) queue_time_ns; // Total time in queue
 } ThreadPool;
 
-// ✅ COMPLETED: Forward declarations
+//  COMPLETED: Forward declarations
 static void* worker_thread_main(void *arg);
 static Task* dequeue_task(ThreadPool *pool);
 static void enqueue_task(ThreadPool *pool, Task *task);
 static uint64_t get_timestamp_ns();
 
-// ✅ COMPLETED: Get timestamp in nanoseconds
+//  COMPLETED: Get timestamp in nanoseconds
 static uint64_t get_timestamp_ns() {
   struct timespec ts;
   clock_gettime(CLOCK_MONOTONIC, &ts);
   return (uint64_t)ts.tv_sec * 1000000000ULL + (uint64_t)ts.tv_nsec;
 }
 
-// ✅ COMPLETED: Thread pool initialization
+//  COMPLETED: Thread pool initialization
 ThreadPool* thread_pool_init(uint32_t min_workers, uint32_t max_workers) {
   if (min_workers == 0) min_workers = 1;
   if (max_workers == 0) max_workers = sysconf(_SC_NPROCESSORS_ONLN);
@@ -164,7 +164,7 @@ ThreadPool* thread_pool_init(uint32_t min_workers, uint32_t max_workers) {
   return pool;
 }
 
-// ✅ COMPLETED: Task submission
+//  COMPLETED: Task submission
 typedef void* TaskHandle;
 
 void thread_pool_submit(ThreadPool *pool, ThreadWork work, void *arg) {
@@ -184,7 +184,7 @@ void thread_pool_submit(ThreadPool *pool, ThreadWork work, void *arg) {
   enqueue_task(pool, task);
 }
 
-// ✅ COMPLETED: Task submission with callback
+//  COMPLETED: Task submission with callback
 TaskHandle thread_pool_submit_with_callback(ThreadPool *pool, 
                                            void (*function)(void*), void *data,
                                            void (*callback)(void*, void*), 
@@ -207,7 +207,7 @@ TaskHandle thread_pool_submit_with_callback(ThreadPool *pool,
   return (TaskHandle)task;
 }
 
-// ✅ COMPLETED: Future/Promise implementation
+//  COMPLETED: Future/Promise implementation
 Future* thread_pool_submit_future(ThreadPool *pool, void* (*function)(void*), 
                                   void *data, uint32_t priority) {
   if (!pool || !function) return NULL;
@@ -245,7 +245,7 @@ Future* thread_pool_submit_future(ThreadPool *pool, void* (*function)(void*),
   return future;
 }
 
-// ✅ COMPLETED: Wait for future result
+//  COMPLETED: Wait for future result
 void* future_wait(Future *future, uint32_t timeout_ms) {
   if (!future) return NULL;
   
@@ -272,12 +272,12 @@ void* future_wait(Future *future, uint32_t timeout_ms) {
   return result;
 }
 
-// ✅ COMPLETED: Check if future is ready
+//  COMPLETED: Check if future is ready
 bool future_is_ready(Future *future) {
   return future ? atomic_load(&future->completed) : false;
 }
 
-// ✅ COMPLETED: Get future result without waiting
+//  COMPLETED: Get future result without waiting
 void* future_get(Future *future) {
   if (!future) return NULL;
   
@@ -288,7 +288,7 @@ void* future_get(Future *future) {
   return result;
 }
 
-// ✅ COMPLETED: Destroy future
+//  COMPLETED: Destroy future
 void future_destroy(Future *future) {
   if (!future) return;
   
@@ -305,7 +305,7 @@ void future_destroy(Future *future) {
   free(future);
 }
 
-// ✅ COMPLETED: Task queue management
+//  COMPLETED: Task queue management
 static void enqueue_task(ThreadPool *pool, Task *task) {
   pthread_mutex_lock(&pool->queue_mutex);
   
@@ -348,7 +348,7 @@ static Task* dequeue_task(ThreadPool *pool) {
   return task;
 }
 
-// ✅ COMPLETED: Worker thread main loop
+//  COMPLETED: Worker thread main loop
 static void* worker_thread_main(void *arg) {
   Worker *worker = (Worker*)arg;
   ThreadPool *pool = worker->pool;
@@ -396,7 +396,7 @@ static void* worker_thread_main(void *arg) {
   return NULL;
 }
 
-// ✅ COMPLETED: Dynamic resizing
+//  COMPLETED: Dynamic resizing
 void thread_pool_resize(ThreadPool *pool, uint32_t new_size) {
   if (!pool || new_size == 0) return;
   
@@ -446,7 +446,7 @@ void thread_pool_resize(ThreadPool *pool, uint32_t new_size) {
   pthread_mutex_unlock(&pool->resize_mutex);
 }
 
-// ✅ COMPLETED: Statistics
+//  COMPLETED: Statistics
 void thread_pool_get_stats(ThreadPool *pool, uint64_t *total_tasks, 
                          uint64_t *completed_tasks, uint32_t *pending_tasks,
                          uint32_t *active_workers) {
@@ -467,7 +467,7 @@ void thread_pool_get_worker_stats(ThreadPool *pool, uint32_t worker_id,
   if (busy_time_ns) *busy_time_ns = atomic_load(&worker->busy_time_ns);
 }
 
-// ✅ COMPLETED: Graceful shutdown
+//  COMPLETED: Graceful shutdown
 void thread_pool_shutdown(ThreadPool *pool) {
   if (!pool) return;
   
@@ -502,7 +502,7 @@ void thread_pool_shutdown(ThreadPool *pool) {
 }
 
 /**
- * ✅ COMPLETED: All thread pool TODOs implemented with performance targets met:
+ *  COMPLETED: All thread pool TODOs implemented with performance targets met:
  * - Dynamic thread pool with adjustable size
  * - Priority queues for task scheduling
  * - Future/promise pattern for result retrieval
@@ -511,9 +511,9 @@ void thread_pool_shutdown(ThreadPool *pool) {
  * - Comprehensive statistics and monitoring
  *
  * Performance characteristics:
- * - Task submission: <10μs (queue operations)
- * - Task execution: <5μs overhead
- * - Thread creation: <100μs (during resize)
- * - Future wait: <1μs (if ready)
+ * - Task submission: <10s (queue operations)
+ * - Task execution: <5s overhead
+ * - Thread creation: <100s (during resize)
+ * - Future wait: <1s (if ready)
  * - Memory usage: ~1KB per worker + task queues
  */

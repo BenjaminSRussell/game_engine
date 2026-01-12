@@ -17,7 +17,7 @@ struct BoatPhysicsComponent: Component {
     
     // Buoyancy System (Archimedes Principle)
     var buoyancyPoints: [SIMD3<Float>] = []  // Sample points on hull for buoyancy calculation
-    var displacementVolume: Float = 2.5  // m³ - Volume of water displaced
+    var displacementVolume: Float = 2.5  // m - Volume of water displaced
     var buoyancyDamping: Float = 0.3  // Damping for buoyancy oscillation
     
     // Hull Shape (for wave interaction)
@@ -79,7 +79,7 @@ struct PropellerComponent: Component {
     var bladeCount: Int {
         type.bladeCount
     }
-    var bladeArea: Float = 0.05  // m² per blade
+    var bladeArea: Float = 0.05  // m per blade
     
     // Performance (from type)
     var efficiency: Float {
@@ -92,14 +92,14 @@ struct PropellerComponent: Component {
     // State (updated by physics system)
     var rpm: Float = 0.0  // Current rotation speed
     var thrust: Float = 0.0  // Newtons
-    var torque: Float = 0.0  // N⋅m
+    var torque: Float = 0.0  // Nm
     var powerOutput: Float = 0.0  // Watts
     
     // Animation
     var rotationAngle: Float = 0.0  // Current rotation for rendering
     
     /// Calculate thrust using blade element momentum theory with propeller type characteristics
-    /// F_thrust = η × ρ × n² × D⁴ × K_t
+    /// F_thrust =     n  D  K_t
     func calculateThrust(waterDensity: Float = 1000.0, advanceRatio: Float) -> Float {
         let rps = rpm / 60.0  // Revolutions per second
         
@@ -153,24 +153,24 @@ struct RudderComponent: Component {
     var boneName: String = "Rudder"
     
     // Geometry
-    var area: Float = 0.15  // m² - Rudder surface area
+    var area: Float = 0.15  // m - Rudder surface area
     var chordLength: Float = 0.4  // meters
     var span: Float = 0.6  // meters
     var aspectRatio: Float { span / chordLength }
     
     // Control
     var angle: Float = 0.0  // radians, current rudder angle
-    var maxAngle: Float = .pi / 4  // ±45 degrees
+    var maxAngle: Float = .pi / 4  // 45 degrees
     var turnRate: Float = .pi / 2  // rad/s - How fast rudder can turn
     var targetAngle: Float = 0.0  // Desired angle (for smooth control)
     
     // Hydrodynamics
     var liftCoefficient: Float = 1.2  // Varies with angle of attack
     var dragCoefficient: Float = 0.05  // Parasitic drag
-    var stallAngle: Float = 0.35  // radians (~20°)
+    var stallAngle: Float = 0.35  // radians (~20)
     
     /// Calculate lateral force from rudder deflection
-    /// F = 0.5 × ρ × v² × A × C_l × sin(α)
+    /// F = 0.5    v  A  C_l  sin()
     func calculateLateralForce(velocity: Float, waterDensity: Float = 1000.0, propwashBoost: Float = 1.0) -> Float {
         // Effective velocity includes propeller wash
         let effectiveVelocity = velocity * propwashBoost
@@ -241,7 +241,7 @@ struct SailComponent: Component {
     var boneName: String = "MainSail"
     
     // Geometry
-    var area: Float = 8.0  // m² - Sail surface area
+    var area: Float = 8.0  // m - Sail surface area
     var aspectRatio: Float = 2.5  // Height / Width
     var camber: Float = 0.1  // Sail curvature (0-1)
     
@@ -279,7 +279,7 @@ struct SailComponent: Component {
         let windAngle = atan2(windDirection.x, windDirection.z)
         var angleOfAttack = windAngle - sailAngle
         
-        // Normalize to -π to π
+        // Normalize to - to 
         while angleOfAttack > .pi { angleOfAttack -= 2 * .pi }
         while angleOfAttack < -.pi { angleOfAttack += 2 * .pi }
         
@@ -308,7 +308,7 @@ struct SailComponent: Component {
         let dragMagnitude = dynamicPressure * effectiveArea * effectiveDrag
         
         // Combine into total force
-        let perpendicular = SIMD3<Float>(-windDirection.z, 0, windDirection.x)  // 90° to wind
+        let perpendicular = SIMD3<Float>(-windDirection.z, 0, windDirection.x)  // 90 to wind
         let totalForce = windDirection * dragMagnitude + perpendicular * liftMagnitude
         
         return totalForce
@@ -316,7 +316,7 @@ struct SailComponent: Component {
     
     /// Calculate heeling moment (boat tipping from sail force)
     func calculateHeelingMoment(force: SIMD3<Float>) -> Float {
-        // Torque = force × distance (center of effort height)
+        // Torque = force  distance (center of effort height)
         return length(force) * centerOfEffort.y
     }
     

@@ -152,5 +152,5 @@ unsigned short frustum_cull_aabb_avx512(const float *aabb_mins,
 /*
  * IMPLEMENTATION COMPLETE: 20/200 SIMD TODOs
  * LOC: ~150
- * Performance: 4-16x speedup achieved ✅
+ * Performance: 4-16x speedup achieved 
  */

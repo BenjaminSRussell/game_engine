@@ -131,7 +131,7 @@ def main():
     print("\n[3/3] Verifying atlas configuration...")
     atlas_path = ASSETS_DIR / "textures" / "atlas" / "block_atlas_map.json"
     if atlas_path.exists():
-        print(f"  ✓ Atlas map exists at {atlas_path}")
+        print(f"   Atlas map exists at {atlas_path}")
     else:
         print(f"  Creating atlas map...")
         atlas_map = {
@@ -143,7 +143,7 @@ def main():
         atlas_path.parent.mkdir(parents=True, exist_ok=True)
         with open(atlas_path, 'w') as f:
             json.dump(atlas_map, f, indent=2)
-        print(f"  ✓ Created atlas map")
+        print(f"   Created atlas map")
     
     print("\n" + "=" * 60)
     print("Placeholder assets created successfully!")

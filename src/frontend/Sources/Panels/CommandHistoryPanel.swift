@@ -23,7 +23,7 @@ struct CommandHistoryPanel: View {
                         }
                         .buttonStyle(.plain)
                         .disabled(!viewModel.canUndo)
-                        .help("Undo (⌘Z)")
+                        .help("Undo (Z)")
                         
                         // Redo button
                         Button(action: { viewModel.redo() }) {
@@ -35,7 +35,7 @@ struct CommandHistoryPanel: View {
                         }
                         .buttonStyle(.plain)
                         .disabled(!viewModel.canRedo)
-                        .help("Redo (⌘⇧Z)")
+                        .help("Redo (Z)")
                         
                         Spacer()
                         
@@ -55,7 +55,7 @@ struct CommandHistoryPanel: View {
                             .font(DesignSystem.Typography.caption)
                             .foregroundColor(DesignSystem.Colors.textSecondary)
                         
-                        Text("•")
+                        Text("")
                             .foregroundColor(DesignSystem.Colors.textDisabled)
                         
                         Text("\(viewModel.redoCount) redo")

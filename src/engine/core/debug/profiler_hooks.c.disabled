@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <float.h>
 
-// ✅ COMPLETED: Profiler Hooks Implementation - AGENT_CORE_1
+//  COMPLETED: Profiler Hooks Implementation - AGENT_CORE_1
 // Macro hooks for measuring scope duration
 
 #define MAX_THREADS 64
@@ -35,7 +35,7 @@ static bool g_profiler_enabled = false;
 static f64 g_overhead_calibration = 0.0;
 static u64 g_global_frame_counter = 0;
 
-// ✅ COMPLETED: High-resolution time
+//  COMPLETED: High-resolution time
 static f64 internal_get_time(void) {
 #ifdef _WIN32
     LARGE_INTEGER freq, count;
@@ -49,7 +49,7 @@ static f64 internal_get_time(void) {
 #endif
 }
 
-// ✅ COMPLETED: Visual color hashing
+//  COMPLETED: Visual color hashing
 static u32 hash_color(const char* name) {
     u32 hash = 0;
     
@@ -77,7 +77,7 @@ static u32 hash_color(const char* name) {
     return ((u32)(r * 255) << 16) | ((u32)(g * 255) << 8) | ((u32)(b * 255));
 }
 
-// ✅ COMPLETED: Thread registration
+//  COMPLETED: Thread registration
 int profiler_register_thread(const char* thread_name) {
     if (!thread_name) thread_name = "Unknown";
     
@@ -104,7 +104,7 @@ int profiler_register_thread(const char* thread_name) {
     return g_thread_id;
 }
 
-// ✅ COMPLETED: Automatic calibration
+//  COMPLETED: Automatic calibration
 static void calibrate_overhead(void) {
     f64 total_overhead = 0.0;
     
@@ -124,7 +124,7 @@ static void calibrate_overhead(void) {
     g_overhead_calibration = total_overhead / CALIBRATION_SAMPLES;
 }
 
-// ✅ COMPLETED: Scope enter
+//  COMPLETED: Scope enter
 int profiler_scope_enter(const char* name) {
     if (!g_profiler_enabled || g_thread_id < 0) return -1;
     
@@ -159,7 +159,7 @@ int profiler_scope_enter(const char* name) {
     return scope_index;
 }
 
-// ✅ COMPLETED: Scope exit
+//  COMPLETED: Scope exit
 void profiler_scope_exit(int scope_id) {
     if (!g_profiler_enabled || g_thread_id < 0 || scope_id < 0) return;
     
@@ -183,7 +183,7 @@ void profiler_scope_exit(int scope_id) {
     if (data->current_depth > 0) data->current_depth--;
 }
 
-// ✅ COMPLETED: Frame marker injection
+//  COMPLETED: Frame marker injection
 void profiler_frame_marker(void) {
     if (!g_profiler_enabled) return;
     
@@ -204,7 +204,7 @@ void profiler_frame_marker(void) {
     }
 }
 
-// ✅ COMPLETED: Profiler control
+//  COMPLETED: Profiler control
 void profiler_enable(bool enabled) {
     if (enabled && !g_profiler_enabled) {
         calibrate_overhead();
@@ -217,7 +217,7 @@ bool profiler_is_enabled(void) {
     return g_profiler_enabled;
 }
 
-// ✅ COMPLETED: Statistics retrieval
+//  COMPLETED: Statistics retrieval
 void profiler_get_thread_stats(int thread_id, ProfileScope* scopes, size_t* scope_count) {
     if (thread_id < 0 || thread_id >= (int)g_thread_count || !scopes || !scope_count) {
         if (scope_count) *scope_count = 0;
@@ -271,7 +271,7 @@ void profiler_get_global_stats(ProfileScope* scopes, size_t* scope_count, size_t
     *scope_count = total_scopes;
 }
 
-// ✅ COMPLETED: Thread information
+//  COMPLETED: Thread information
 const char* profiler_get_thread_name(int thread_id) {
     if (thread_id < 0 || thread_id >= (int)g_thread_count) return NULL;
     return g_thread_data[thread_id].thread_name;
@@ -286,7 +286,7 @@ size_t profiler_get_thread_count(void) {
     return g_thread_count;
 }
 
-// ✅ COMPLETED: Overhead testing
+//  COMPLETED: Overhead testing
 f64 profiler_measure_overhead(int iterations) {
     if (iterations <= 0) iterations = 10000;
     
@@ -303,7 +303,7 @@ f64 profiler_measure_overhead(int iterations) {
     return total_time / (f64)iterations;
 }
 
-// ✅ COMPLETED: Reset statistics
+//  COMPLETED: Reset statistics
 void profiler_reset_stats(void) {
     for (size_t i = 0; i < g_thread_count; i++) {
         ThreadProfileData* data = &g_thread_data[i];
@@ -324,7 +324,7 @@ void profiler_reset_stats(void) {
     g_global_frame_counter = 0;
 }
 
-// ✅ COMPLETED: Initialization and cleanup
+//  COMPLETED: Initialization and cleanup
 void profiler_init(void) {
     memset(g_thread_data, 0, sizeof(g_thread_data));
     g_thread_count = 0;
@@ -339,7 +339,7 @@ void profiler_shutdown(void) {
     g_thread_count = 0;
 }
 
-// ✅ COMPLETED: Utility functions
+//  COMPLETED: Utility functions
 f64 profiler_get_overhead_calibration(void) {
     return g_overhead_calibration;
 }

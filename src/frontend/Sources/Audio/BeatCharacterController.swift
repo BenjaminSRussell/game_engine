@@ -52,7 +52,7 @@ class BeatCharacterController: ObservableObject {
         currentAction = action
         targetAnimationWeight = 1.0
         
-        print("🎵 Triggered: \(action.rawValue)")
+        print(" Triggered: \(action.rawValue)")
     }
     
     /// Get ideal foot plant position based on beat

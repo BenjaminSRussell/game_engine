@@ -1,14 +1,14 @@
 // Mesh container utilities for block geometry.
-// ✅ COMPLETED: Implement mesh compression system for memory efficiency.
-// ✅ COMPLETED: Add mesh validation system for corrupted meshes.
-// ✅ COMPLETED: Implement mesh optimization system (vertex cache, overdraw).
-// ✅ COMPLETED: Add mesh serialization for save/load.
-// ✅ COMPLETED: Implement mesh LOD system for different quality levels.
-// ✅ COMPLETED: Add mesh statistics tracking (vertex count, triangle count).
-// ✅ COMPLETED: Implement mesh batching system for rendering.
-// ✅ COMPLETED: Add mesh debugging visualization tools.
-// ✅ COMPLETED: Implement mesh unit testing framework.
-// ✅ COMPLETED: Add mesh format conversion system.
+//  COMPLETED: Implement mesh compression system for memory efficiency.
+//  COMPLETED: Add mesh validation system for corrupted meshes.
+//  COMPLETED: Implement mesh optimization system (vertex cache, overdraw).
+//  COMPLETED: Add mesh serialization for save/load.
+//  COMPLETED: Implement mesh LOD system for different quality levels.
+//  COMPLETED: Add mesh statistics tracking (vertex count, triangle count).
+//  COMPLETED: Implement mesh batching system for rendering.
+//  COMPLETED: Add mesh debugging visualization tools.
+//  COMPLETED: Implement mesh unit testing framework.
+//  COMPLETED: Add mesh format conversion system.
 #include <block/block.h>
 #include <chunk/chunk.h>
 #include <math/vec2.h>

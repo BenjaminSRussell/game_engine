@@ -33,7 +33,7 @@ struct GizmoToolbar: View {
                 .cornerRadius(DesignSystem.CornerRadius.small)
             }
             .buttonStyle(.plain)
-            .help("Toggle World/Local Space (⌥Space)")
+            .help("Toggle World/Local Space (Space)")
             
             // Snap toggle
             Button(action: {
@@ -44,7 +44,7 @@ struct GizmoToolbar: View {
                     .foregroundColor(settings.snapEnabled ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.textSecondary)
             }
             .buttonStyle(.plain)
-            .help("Toggle Snapping (⌘⇧S)")
+            .help("Toggle Snapping (S)")
             .popover(isPresented: $showSnapSettings) {
                 SnapSettingsPopover(settings: settings)
             }

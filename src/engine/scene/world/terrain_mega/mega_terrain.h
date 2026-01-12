@@ -4,7 +4,7 @@
  *                                    Agent: AGENT_WORLD_1
  * =================================================================================================
  *
- * Large-scale terrain system supporting 100km² worlds with dynamic streaming,
+ * Large-scale terrain system supporting 100km worlds with dynamic streaming,
  * biome blending, and procedural generation.
  *
  * =================================================================================================

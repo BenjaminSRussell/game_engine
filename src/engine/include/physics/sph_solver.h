@@ -30,17 +30,17 @@ typedef struct {
 // SPH Solver configuration
 typedef struct {
   // Physical parameters (SI units)
-  float rest_density;     // ρ₀ (kg/m³) - 1000 for water
+  float rest_density;     //  (kg/m) - 1000 for water
   float particle_mass;    // m (kg)
   float smoothing_length; // h (m) - kernel radius
-  float viscosity;        // μ (Pa·s) - 0.001 for water
-  float surface_tension;  // σ (N/m) - 0.0728 for water
+  float viscosity;        //  (Pas) - 0.001 for water
+  float surface_tension;  //  (N/m) - 0.0728 for water
   float gas_constant;     // k (stiffness parameter)
 
   // Simulation parameters
-  float time_step; // Δt (s)
+  float time_step; // t (s)
   float damping;   // Velocity damping
-  Vec3 gravity;    // g (m/s²)
+  Vec3 gravity;    // g (m/s)
 
   // Boundary
   Vec3 bounds_min;

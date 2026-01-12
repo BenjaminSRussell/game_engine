@@ -64,7 +64,7 @@ inline float2 complex_to_float2(Complex c) {
 // FFT Utilities
 // =============================================================================
 
-// Compute twiddle factor W_N^k = exp(-2πik/N)
+// Compute twiddle factor W_N^k = exp(-2ik/N)
 inline Complex twiddle_factor(int k, int N) {
     float angle = -2.0f * M_PI_F * float(k) / float(N);
     return Complex(cos(angle), sin(angle));
@@ -143,7 +143,7 @@ struct SpectrumParams {
 // Helper Functions for Spectrum Update
 // =============================================================================
 
-// Compute h(k,t) = h0(k) * exp(iωt) + h0*(-k) * exp(-iωt)
+// Compute h(k,t) = h0(k) * exp(it) + h0*(-k) * exp(-it)
 inline Complex compute_ht(
     Complex h0_k,
     Complex h0_conj_k,
@@ -152,13 +152,13 @@ inline Complex compute_ht(
 ) {
     float omega_t = omega * time;
     
-    // exp(iωt) = cos(ωt) + i*sin(ωt)
+    // exp(it) = cos(t) + i*sin(t)
     Complex exp_plus = Complex(cos(omega_t), sin(omega_t));
     
-    // exp(-iωt) = cos(ωt) - i*sin(ωt)
+    // exp(-it) = cos(t) - i*sin(t)
     Complex exp_minus = Complex(cos(omega_t), -sin(omega_t));
     
-    // h(k,t) = h0(k) * exp(iωt) + h0*(-k) * exp(-iωt)
+    // h(k,t) = h0(k) * exp(it) + h0*(-k) * exp(-it)
     Complex term1 = complex_mul(h0_k, exp_plus);
     Complex term2 = complex_mul(h0_conj_k, exp_minus);
     

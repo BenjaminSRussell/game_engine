@@ -3,14 +3,14 @@
 // Purpose: Abstract input system interface that decouples games from specific
 // input implementations (GLFW, SDL, etc.).
 //
-// ✅ COMPLETED: Add support for game controllers
-// ✅ COMPLETED: Implement input mapping system
-// ✅ COMPLETED: Add gesture recognition
-// ✅ COMPLETED: Implement force feedback
-// ✅ COMPLETED: Add accessibility features
-// ✅ COMPLETED: Implement input recording/playback
-// ✅ COMPLETED: Add VR input support
-// ✅ COMPLETED: Implement touch input for mobile
+//  COMPLETED: Add support for game controllers
+//  COMPLETED: Implement input mapping system
+//  COMPLETED: Add gesture recognition
+//  COMPLETED: Implement force feedback
+//  COMPLETED: Add accessibility features
+//  COMPLETED: Implement input recording/playback
+//  COMPLETED: Add VR input support
+//  COMPLETED: Implement touch input for mobile
 //
 #ifndef ENGINE_INPUT_H
 #define ENGINE_INPUT_H

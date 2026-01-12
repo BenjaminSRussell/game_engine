@@ -79,7 +79,7 @@ class CraftingViewController: UIViewController {
         view.addSubview(containerView)
         
         // Close button
-        closeButton.setTitle("✕", for: .normal)
+        closeButton.setTitle("", for: .normal)
         closeButton.setTitleColor(.white, for: .normal)
         closeButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
         closeButton.backgroundColor = UIColor.red.withAlphaComponent(0.7)
@@ -218,52 +218,52 @@ class CraftingViewController: UIViewController {
         return [
             // Basic recipes
             CraftingRecipe(
-                result: InventoryItem(name: "Wood Planks", count: 4, icon: "🪵"),
-                ingredients: [InventoryItem(name: "Wood", count: 1, icon: "🌲")]
+                result: InventoryItem(name: "Wood Planks", count: 4, icon: ""),
+                ingredients: [InventoryItem(name: "Wood", count: 1, icon: "")]
             ),
             CraftingRecipe(
-                result: InventoryItem(name: "Sticks", count: 4, icon: "🏏"),
-                ingredients: [InventoryItem(name: "Wood Planks", count: 2, icon: "🪵")]
+                result: InventoryItem(name: "Sticks", count: 4, icon: ""),
+                ingredients: [InventoryItem(name: "Wood Planks", count: 2, icon: "")]
             ),
             CraftingRecipe(
-                result: InventoryItem(name: "Torch", count: 4, icon: "🔦"),
+                result: InventoryItem(name: "Torch", count: 4, icon: ""),
                 ingredients: [
-                    InventoryItem(name: "Coal", count: 1, icon: "⚫"),
-                    InventoryItem(name: "Sticks", count: 1, icon: "🏏")
+                    InventoryItem(name: "Coal", count: 1, icon: ""),
+                    InventoryItem(name: "Sticks", count: 1, icon: "")
                 ]
             ),
             
             // Tools
             CraftingRecipe(
-                result: InventoryItem(name: "Wooden Pickaxe", count: 1, icon: "⛏️", durability: 60),
+                result: InventoryItem(name: "Wooden Pickaxe", count: 1, icon: "", durability: 60),
                 ingredients: [
-                    InventoryItem(name: "Wood Planks", count: 3, icon: "🪵"),
-                    InventoryItem(name: "Sticks", count: 2, icon: "🏏")
+                    InventoryItem(name: "Wood Planks", count: 3, icon: ""),
+                    InventoryItem(name: "Sticks", count: 2, icon: "")
                 ],
                 category: .tools
             ),
             CraftingRecipe(
-                result: InventoryItem(name: "Stone Pickaxe", count: 1, icon: "⛏️", durability: 132),
+                result: InventoryItem(name: "Stone Pickaxe", count: 1, icon: "", durability: 132),
                 ingredients: [
-                    InventoryItem(name: "Cobblestone", count: 3, icon: "🪨"),
-                    InventoryItem(name: "Sticks", count: 2, icon: "🏏")
+                    InventoryItem(name: "Cobblestone", count: 3, icon: ""),
+                    InventoryItem(name: "Sticks", count: 2, icon: "")
                 ],
                 category: .tools
             ),
             CraftingRecipe(
-                result: InventoryItem(name: "Iron Pickaxe", count: 1, icon: "⛏️", durability: 251),
+                result: InventoryItem(name: "Iron Pickaxe", count: 1, icon: "", durability: 251),
                 ingredients: [
-                    InventoryItem(name: "Iron Ingot", count: 3, icon: "🔩"),
-                    InventoryItem(name: "Sticks", count: 2, icon: "🏏")
+                    InventoryItem(name: "Iron Ingot", count: 3, icon: ""),
+                    InventoryItem(name: "Sticks", count: 2, icon: "")
                 ],
                 category: .tools,
                 unlockLevel: 2
             ),
             CraftingRecipe(
-                result: InventoryItem(name: "Diamond Pickaxe", count: 1, icon: "⛏️", durability: 1561),
+                result: InventoryItem(name: "Diamond Pickaxe", count: 1, icon: "", durability: 1561),
                 ingredients: [
-                    InventoryItem(name: "Diamond", count: 3, icon: "💎"),
-                    InventoryItem(name: "Sticks", count: 2, icon: "🏏")
+                    InventoryItem(name: "Diamond", count: 3, icon: ""),
+                    InventoryItem(name: "Sticks", count: 2, icon: "")
                 ],
                 category: .tools,
                 unlockLevel: 3
@@ -271,50 +271,50 @@ class CraftingViewController: UIViewController {
             
             // Weapons
             CraftingRecipe(
-                result: InventoryItem(name: "Wooden Sword", count: 1, icon: "⚔️", durability: 60),
+                result: InventoryItem(name: "Wooden Sword", count: 1, icon: "", durability: 60),
                 ingredients: [
-                    InventoryItem(name: "Wood Planks", count: 2, icon: "🪵"),
-                    InventoryItem(name: "Sticks", count: 1, icon: "🏏")
+                    InventoryItem(name: "Wood Planks", count: 2, icon: ""),
+                    InventoryItem(name: "Sticks", count: 1, icon: "")
                 ],
                 category: .weapons
             ),
             CraftingRecipe(
-                result: InventoryItem(name: "Bow", count: 1, icon: "🏹", durability: 384),
+                result: InventoryItem(name: "Bow", count: 1, icon: "", durability: 384),
                 ingredients: [
-                    InventoryItem(name: "Sticks", count: 3, icon: "🏏"),
-                    InventoryItem(name: "String", count: 3, icon: "🧵")
+                    InventoryItem(name: "Sticks", count: 3, icon: ""),
+                    InventoryItem(name: "String", count: 3, icon: "")
                 ],
                 category: .weapons
             ),
             
             // Building
             CraftingRecipe(
-                result: InventoryItem(name: "Crafting Table", count: 1, icon: "🔨"),
-                ingredients: [InventoryItem(name: "Wood Planks", count: 4, icon: "🪵")],
+                result: InventoryItem(name: "Crafting Table", count: 1, icon: ""),
+                ingredients: [InventoryItem(name: "Wood Planks", count: 4, icon: "")],
                 category: .building
             ),
             CraftingRecipe(
-                result: InventoryItem(name: "Furnace", count: 1, icon: "🔥"),
+                result: InventoryItem(name: "Furnace", count: 1, icon: ""),
                 ingredients: [
-                    InventoryItem(name: "Cobblestone", count: 8, icon: "🪨")
+                    InventoryItem(name: "Cobblestone", count: 8, icon: "")
                 ],
                 category: .building
             ),
             
             // Food
             CraftingRecipe(
-                result: InventoryItem(name: "Bread", count: 1, icon: "🍞"),
+                result: InventoryItem(name: "Bread", count: 1, icon: ""),
                 ingredients: [
-                    InventoryItem(name: "Wheat", count: 3, icon: "🌾")
+                    InventoryItem(name: "Wheat", count: 3, icon: "")
                 ],
                 category: .food
             ),
             
             // Armor
             CraftingRecipe(
-                result: InventoryItem(name: "Iron Helmet", count: 1, icon: "⛑️", durability: 165),
+                result: InventoryItem(name: "Iron Helmet", count: 1, icon: "", durability: 165),
                 ingredients: [
-                    InventoryItem(name: "Iron Ingot", count: 5, icon: "🔩")
+                    InventoryItem(name: "Iron Ingot", count: 5, icon: "")
                 ],
                 category: .armor,
                 unlockLevel: 2
@@ -539,7 +539,7 @@ class RecipeCell: UICollectionViewCell {
         contentView.addSubview(lockOverlay)
         
         let lockLabel = UILabel()
-        lockLabel.text = "🔒"
+        lockLabel.text = ""
         lockLabel.font = .systemFont(ofSize: 16)
         lockLabel.textAlignment = .center
         lockLabel.translatesAutoresizingMaskIntoConstraints = false

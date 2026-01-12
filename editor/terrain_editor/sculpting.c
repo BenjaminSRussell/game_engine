@@ -20,12 +20,12 @@
  * =================================================================================================
  */
 
-// ⚠️ PARTIAL IMPLEMENTATION: Terrain Sculpting Backend [Difficulty: 6]
+//  PARTIAL IMPLEMENTATION: Terrain Sculpting Backend [Difficulty: 6]
 // STATUS: Core sculpting algorithms implemented (raise, lower, smooth, flatten)
 // with brush falloff curves and basic heightmap operations.
-// ✅ Undo/Redo system is NOW FULLY IMPLEMENTED with history capture and restoration
+//  Undo/Redo system is NOW FULLY IMPLEMENTED with history capture and restoration
 // 
-// ❌ MISSING CRITICAL FEATURES:
+//  MISSING CRITICAL FEATURES:
 //    - No UI integration (no brush selector, property panels, etc.)
 //    - No viewport rendering (cannot visualize terrain or brush cursor)
 //    - No integration with main rendering engine
@@ -436,7 +436,7 @@ bool terrain_sculpting_can_redo(TerrainSculptingSystem* system) {
     return system && system->current_history_index < (i32)system->history_size - 1;
 }
 
-// ✅ IMPLEMENTED: Full undo/redo system
+//  IMPLEMENTED: Full undo/redo system
 void terrain_sculpting_push_history(TerrainSculptingSystem* system) {
     if (!system || !system->heightmap) return;
     

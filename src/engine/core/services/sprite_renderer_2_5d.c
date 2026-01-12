@@ -270,7 +270,7 @@ void sprite_renderer_2_5d_world_to_isometric(Vec3 world_pos, Vec2 *iso_pos) {
   if (!iso_pos)
     return;
 
-  // Isometric projection: x' = (x - z) * cos(30°), y' = (x + z) * sin(30°) - y
+  // Isometric projection: x' = (x - z) * cos(30), y' = (x + z) * sin(30) - y
   f32 cos30 = 0.8660254f;
   f32 sin30 = 0.5f;
 

@@ -8,16 +8,16 @@
 // functions for manipulating array contents, including adding, removing, accessing,
 // searching, and sorting elements, making it a versatile container for various
 // data management needs within the game engine.
-// ✅ COMPLETED: Implement array capacity shrinking to reduce memory usage.
-// ✅ COMPLETED: Add array reserve function to pre-allocate capacity.
-// ✅ COMPLETED: Implement array iterator system for safe iteration.
-// ✅ COMPLETED: Add array batch operations for multiple insertions.
-// ✅ COMPLETED: Implement array memory pool integration for performance.
-// ✅ COMPLETED: Add array bounds checking in debug builds.
-// ✅ COMPLETED: Implement array element move semantics for efficiency.
-// ✅ COMPLETED: Add array statistics tracking (allocations, resizes).
-// ✅ COMPLETED: Implement array serialization for save/load.
-// ✅ COMPLETED: Add array validation system for corruption detection.
+//  COMPLETED: Implement array capacity shrinking to reduce memory usage.
+//  COMPLETED: Add array reserve function to pre-allocate capacity.
+//  COMPLETED: Implement array iterator system for safe iteration.
+//  COMPLETED: Add array batch operations for multiple insertions.
+//  COMPLETED: Implement array memory pool integration for performance.
+//  COMPLETED: Add array bounds checking in debug builds.
+//  COMPLETED: Implement array element move semantics for efficiency.
+//  COMPLETED: Add array statistics tracking (allocations, resizes).
+//  COMPLETED: Implement array serialization for save/load.
+//  COMPLETED: Add array validation system for corruption detection.
 //
 // Key Flows:
 // 1. **Creation (`dynamic_array_create`):** Allocates memory for the `DynamicArray`

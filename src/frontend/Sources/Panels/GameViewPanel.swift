@@ -9,10 +9,10 @@ struct GameViewPanel: View {
     @State private var showStats = true
     
     enum Resolution: String, CaseIterable {
-        case resolution1920x1080 = "1920×1080 (Full HD)"
-        case resolution1280x720 = "1280×720 (HD)"
-        case resolution2560x1440 = "2560×1440 (2K)"
-        case resolution3840x2160 = "3840×2160 (4K)"
+        case resolution1920x1080 = "19201080 (Full HD)"
+        case resolution1280x720 = "1280720 (HD)"
+        case resolution2560x1440 = "25601440 (2K)"
+        case resolution3840x2160 = "38402160 (4K)"
         case resolution16x9 = "16:9 (Custom)"
         case resolution4x3 = "4:3 (Classic)"
         

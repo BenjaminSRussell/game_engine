@@ -1,7 +1,7 @@
 #include "ai/ai_types.h"
 #include "core/core.h"
 
-// ✅ COMPLETED: Define Recognition Context [Difficulty: 1] [Atomic Steps: 4]
+//  COMPLETED: Define Recognition Context [Difficulty: 1] [Atomic Steps: 4]
 // 1. 'GPUReadbackBuffer frame_data'.
 // 2. 'List<VisibleEntity> detected_entities'.
 // 3. 'float confidence_threshold'.
@@ -82,7 +82,7 @@ bool gpu_readback_request_data(GPUReadbackBuffer* buffer);
 bool gpu_readback_is_ready(GPUReadbackBuffer* buffer);
 bool gpu_readback_get_data(GPUReadbackBuffer* buffer);
 
-// ✅ COMPLETED: Implement GPU Query (Cheat) [Difficulty: 3] [Atomic Steps: 5]
+//  COMPLETED: Implement GPU Query (Cheat) [Difficulty: 3] [Atomic Steps: 5]
 // 1. Render object IDs to low-res buffer (Occlusion Query).
 // 2. Read back histogram of IDs.
 // 3. If pixel count > threshold -> Object is visible.
@@ -149,7 +149,7 @@ void occlusion_query_render_entity_bounds(OcclusionQuerySystem* system,
 void occlusion_query_setup_render_state(void);
 void occlusion_query_restore_render_state(void);
 
-// ✅ COMPLETED: Implement Classification [Difficulty: 2] [Atomic Steps: 4]
+//  COMPLETED: Implement Classification [Difficulty: 2] [Atomic Steps: 4]
 // 1. Once visible.
 // 2. Check Distance, Lighting, Camouflage.
 // 3. Identify Friend/Foe.

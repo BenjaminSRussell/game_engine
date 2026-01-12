@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <include/math/math.h>
 
-// ✅ COMPLETED: TTS Bridge with ElevenLabs/Azure/Coqui integration and async streaming
-// ✅ COMPLETED: Implement Lip Sync with phoneme extraction and blend shape mapping
-// ✅ COMPLETED: Implement Spatial Audio for TTS with HRTF and occlusion
+//  COMPLETED: TTS Bridge with ElevenLabs/Azure/Coqui integration and async streaming
+//  COMPLETED: Implement Lip Sync with phoneme extraction and blend shape mapping
+//  COMPLETED: Implement Spatial Audio for TTS with HRTF and occlusion
 
 // Internal structures
 static bool tts_process_request(TTSNeuralSystem* tts, const TTSRequest* request);

@@ -298,10 +298,10 @@ private struct NetworkDebuggerView: View {
                     Text("Bandwidth")
                         .font(DesignSystem.Typography.small)
                         .foregroundColor(DesignSystem.Colors.textSecondary)
-                    Text("↓ \(String(format: "%.1f", debugger.currentBandwidthDown)) KB/s")
+                    Text(" \(String(format: "%.1f", debugger.currentBandwidthDown)) KB/s")
                         .font(DesignSystem.Typography.body)
                         .foregroundColor(.green)
-                    Text("↑ \(String(format: "%.1f", debugger.currentBandwidthUp)) KB/s")
+                    Text(" \(String(format: "%.1f", debugger.currentBandwidthUp)) KB/s")
                         .font(DesignSystem.Typography.body)
                         .foregroundColor(.blue)
                 }

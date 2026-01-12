@@ -24,7 +24,7 @@ typedef struct {
     
     // Gear parameters
     GearType type;
-    float gear_ratio;      // Ratio of angular velocities (ω_b = gear_ratio * ω_a)
+    float gear_ratio;      // Ratio of angular velocities (_b = gear_ratio * _a)
     float reference_angle_a;
     float reference_angle_b;
     

@@ -38,7 +38,7 @@ struct AudioAnimationPanel: View {
             // Right: Mappings List
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Text("Audio → Bone Mappings")
+                    Text("Audio  Bone Mappings")
                         .font(DesignSystem.Typography.headline)
                     Spacer()
                     

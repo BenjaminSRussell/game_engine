@@ -138,7 +138,7 @@ bool HRTF_LoadCustomDataset(HRTFDatabase* database, const char* file_path);
 void HRTF_UnloadDatabase(HRTFDatabase* database);
 HRTFMeasurement* HRTF_FindMeasurement(const HRTFDatabase* database, f32 azimuth, f32 elevation);
 
-// ✅ COMPLETED: HRTF Interpolation Functions
+//  COMPLETED: HRTF Interpolation Functions
 void HRTF_InterpolateMeasurements(const HRTFDatabase* database, f32 azimuth, f32 elevation, HRTFMeasurement* result);
 void HRTF_BarycentricInterpolation(const HRTFMeasurement* v1, const HRTFMeasurement* v2, const HRTFMeasurement* v3,
                                   f32 w1, f32 w2, f32 w3, HRTFMeasurement* result);

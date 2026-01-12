@@ -28,7 +28,7 @@ typedef struct OceanFFTConfig {
     uint32_t fft_resolution;
     
     // Physics parameters
-    float gravity;              // Default: 9.81 m/s²
+    float gravity;              // Default: 9.81 m/s
     float time_scale;           // Time multiplier for wave speed
     
     // Cascade configuration
@@ -67,7 +67,7 @@ typedef struct OceanFFTCascade {
     // Spectrum textures (complex, RG32F)
     MTLTextureRef h0_texture;           // Initial spectrum h0(k)
     MTLTextureRef h0_conj_texture;      // Conjugate h0*(-k)
-    MTLTextureRef omega_texture;        // Dispersion ω(k)
+    MTLTextureRef omega_texture;        // Dispersion (k)
     
     // Time-varying spectrum (complex, RG32F)
     MTLTextureRef ht_height;            // h(k,t) for height

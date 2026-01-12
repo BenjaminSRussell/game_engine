@@ -296,7 +296,7 @@ struct TransformHUD: View {
                 .foregroundColor(DesignSystem.Colors.accentPrimary)
             }
             
-            Text("Enter to confirm · Esc to cancel")
+            Text("Enter to confirm  Esc to cancel")
                 .font(DesignSystem.Typography.caption)
                 .foregroundColor(DesignSystem.Colors.textSecondary)
         }

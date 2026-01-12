@@ -40,7 +40,7 @@ typedef struct PoolAllocator {
   size_t actual_block_size; // Block size including padding
 } PoolAllocator;
 
-// ✅ COMPLETED: Internal helper functions
+//  COMPLETED: Internal helper functions
 static inline size_t pool_align_up(size_t size, size_t alignment) {
   return (size + alignment - 1) & ~(alignment - 1);
 }
@@ -68,7 +68,7 @@ static inline void *pool_get_block(PoolAllocator *allocator, uint32_t index) {
   return (char *)allocator->buffer + index * allocator->actual_block_size;
 }
 
-// ✅ COMPLETED: Mutex operations for thread safety
+//  COMPLETED: Mutex operations for thread safety
 #ifdef _WIN32
 #include <windows.h>
 static void *pool_create_mutex() {
@@ -123,7 +123,7 @@ static inline void pool_unlock(PoolAllocator *allocator) {
   }
 }
 
-// ✅ COMPLETED: Create Pool Allocator
+//  COMPLETED: Create Pool Allocator
 PoolAllocator *pool_allocator_create(size_t block_size, size_t block_count,
                                      size_t alignment) {
   PoolAllocator *allocator = malloc(sizeof(PoolAllocator));
@@ -182,7 +182,7 @@ PoolAllocator *pool_allocator_create(size_t block_size, size_t block_count,
   return allocator;
 }
 
-// ✅ COMPLETED: Allocate from Pool
+//  COMPLETED: Allocate from Pool
 void *pool_allocator_alloc(PoolAllocator *allocator) {
   if (!allocator || allocator->signature != POOL_SIGNATURE) {
     return NULL;
@@ -242,7 +242,7 @@ void *pool_allocator_alloc(PoolAllocator *allocator) {
 #endif
 }
 
-// ✅ COMPLETED: Free to Pool
+//  COMPLETED: Free to Pool
 void pool_allocator_free(PoolAllocator *allocator, void *ptr) {
   if (!ptr || !allocator || allocator->signature != POOL_SIGNATURE) {
     return;
@@ -338,7 +338,7 @@ void pool_allocator_free(PoolAllocator *allocator, void *ptr) {
   pool_unlock(allocator);
 }
 
-// ✅ COMPLETED: Destroy Pool Allocator
+//  COMPLETED: Destroy Pool Allocator
 void pool_allocator_destroy(PoolAllocator *allocator) {
   if (!allocator || allocator->signature != POOL_SIGNATURE) {
     return;
@@ -384,7 +384,7 @@ void pool_allocator_destroy(PoolAllocator *allocator) {
   free(allocator);
 }
 
-// ✅ COMPLETED: Reset Pool Allocator
+//  COMPLETED: Reset Pool Allocator
 void pool_allocator_reset(PoolAllocator *allocator) {
   if (!allocator || allocator->signature != POOL_SIGNATURE) {
     return;
@@ -410,7 +410,7 @@ void pool_allocator_reset(PoolAllocator *allocator) {
   pool_unlock(allocator);
 }
 
-// ✅ COMPLETED: Enable Thread Safety
+//  COMPLETED: Enable Thread Safety
 void pool_allocator_set_thread_safe(PoolAllocator *allocator,
                                     bool thread_safe) {
   if (!allocator || allocator->signature != POOL_SIGNATURE) {
@@ -430,7 +430,7 @@ void pool_allocator_set_thread_safe(PoolAllocator *allocator,
   allocator->thread_safe = thread_safe;
 }
 
-// ✅ COMPLETED: Get Statistics
+//  COMPLETED: Get Statistics
 void pool_allocator_get_stats(PoolAllocator *allocator, uint32_t *free_count,
                               uint32_t *peak_usage, uint32_t *allocated_count) {
   if (!allocator || allocator->signature != POOL_SIGNATURE) {
@@ -447,14 +447,14 @@ void pool_allocator_get_stats(PoolAllocator *allocator, uint32_t *free_count,
     *allocated_count = allocator->block_count - free_cnt;
 }
 
-// ✅ COMPLETED: Enable Debug Mode
+//  COMPLETED: Enable Debug Mode
 void pool_allocator_set_debug_mode(PoolAllocator *allocator, bool enabled) {
   if (allocator && allocator->signature == POOL_SIGNATURE) {
     allocator->debug_mode = enabled;
   }
 }
 
-// ✅ COMPLETED: Validate Pool Integrity
+//  COMPLETED: Validate Pool Integrity
 bool pool_allocator_validate(PoolAllocator *allocator) {
   if (!allocator || allocator->signature != POOL_SIGNATURE) {
     return false;
@@ -502,7 +502,7 @@ bool pool_allocator_validate(PoolAllocator *allocator) {
   return (free_count + allocated_count == allocator->block_count);
 }
 
-// ✅ COMPLETED: Debug Dump
+//  COMPLETED: Debug Dump
 void pool_allocator_debug_dump(PoolAllocator *allocator) {
   if (!allocator || allocator->signature != POOL_SIGNATURE) {
     printf("Pool Allocator: Invalid\n");
@@ -530,7 +530,7 @@ void pool_allocator_debug_dump(PoolAllocator *allocator) {
   printf("================================\n");
 }
 
-// ✅ COMPLETED: Convenience Macros
+//  COMPLETED: Convenience Macros
 #define POOL_ALLOC(allocator) pool_allocator_alloc(allocator)
 #define POOL_FREE(allocator, ptr) pool_allocator_free(allocator, ptr)
 #define POOL_RESET(allocator) pool_allocator_reset(allocator)

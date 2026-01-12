@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-// TASK_832: Implement BP-to-Visual-Script converter (Experimental) - COMPLETED ✅
+// TASK_832: Implement BP-to-Visual-Script converter (Experimental) - COMPLETED 
 
 // Internal helper functions
 static bool transpile_blueprint_nodes(BlueprintTranspilerContext* context);

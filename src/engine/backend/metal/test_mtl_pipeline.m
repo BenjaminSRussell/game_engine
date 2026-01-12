@@ -19,7 +19,7 @@ static int tests_failed = 0;
 #define TEST_ASSERT(condition, message)                                        \
   do {                                                                         \
     if (!(condition)) {                                                        \
-      printf("❌ FAIL: %s\n", message);                                        \
+      printf(" FAIL: %s\n", message);                                        \
       tests_failed++;                                                          \
       return false;                                                            \
     }                                                                          \
@@ -28,11 +28,11 @@ static int tests_failed = 0;
 
 #define RUN_TEST(test_func)                                                    \
   do {                                                                         \
-    printf("\n🧪 Running: %s\n", #test_func);                                  \
+    printf("\n Running: %s\n", #test_func);                                  \
     if (test_func()) {                                                         \
-      printf("✅ PASS: %s\n", #test_func);                                     \
+      printf(" PASS: %s\n", #test_func);                                     \
     } else {                                                                   \
-      printf("❌ FAIL: %s\n", #test_func);                                     \
+      printf(" FAIL: %s\n", #test_func);                                     \
     }                                                                          \
   } while (0)
 
@@ -46,7 +46,7 @@ bool test_render_pipeline_stats(void) {
 
   // This test requires actual shader functions, which need compilation
   // TODO: Would need to load actual shaders for full test
-  printf("  ⚠️  Skipped: Requires shader compilation\n");
+  printf("    Skipped: Requires shader compilation\n");
 
   return true;
 }
@@ -62,7 +62,7 @@ bool test_compute_pipeline_validation(void) {
   // Get default Metal device
   id<MTLDevice> device = MTLCreateSystemDefaultDevice();
   if (!device) {
-    printf("  ⚠️  No Metal device available\n");
+    printf("    No Metal device available\n");
     return true; // Skip on non-Metal systems
   }
 
@@ -173,7 +173,7 @@ bool test_shader_library_manager(void) {
 
   id<MTLDevice> device = MTLCreateSystemDefaultDevice();
   if (!device) {
-    printf("  ⚠️  No Metal device available\n");
+    printf("    No Metal device available\n");
     return true;
   }
 
@@ -208,7 +208,7 @@ bool test_function_metadata(void) {
   printf("  Testing function metadata extraction...\n");
 
   // This test requires actual shader functions
-  printf("  ⚠️  Skipped: Requires compiled shader functions\n");
+  printf("    Skipped: Requires compiled shader functions\n");
 
   return true;
 }
@@ -222,7 +222,7 @@ bool test_function_bindings(void) {
   printf("  Testing function binding reflection...\n");
 
   // This test requires actual shader functions with bindings
-  printf("  ⚠️  Skipped: Requires compiled shader functions\n");
+  printf("    Skipped: Requires compiled shader functions\n");
 
   return true;
 }
@@ -272,7 +272,7 @@ bool test_depth_stencil_state(void) {
 
   id<MTLDevice> device = MTLCreateSystemDefaultDevice();
   if (!device) {
-    printf("  ⚠️  No Metal device available\n");
+    printf("    No Metal device available\n");
     return true;
   }
 
@@ -341,13 +341,13 @@ bool test_pipeline_hashing(void) {
 int main(int argc, char *argv[]) {
   @autoreleasepool {
     printf("\n");
-    printf("╔════════════════════════════════════════════════════════╗\n");
-    printf("║   Metal Pipeline System Test Suite                    ║\n");
-    printf("╚════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("   Metal Pipeline System Test Suite                    \n");
+    printf("\n");
 
     // Initialize pipeline system
     if (metal_pipeline_init() != 0) {
-      printf("❌ Failed to initialize pipeline system\n");
+      printf(" Failed to initialize pipeline system\n");
       return 1;
     }
 
@@ -368,14 +368,14 @@ int main(int argc, char *argv[]) {
 
     // Print summary
     printf("\n");
-    printf("╔════════════════════════════════════════════════════════╗\n");
-    printf("║   Test Summary                                         ║\n");
-    printf("╠════════════════════════════════════════════════════════╣\n");
-    printf("║   Passed: %3d                                          ║\n",
+    printf("\n");
+    printf("   Test Summary                                         \n");
+    printf("\n");
+    printf("   Passed: %3d                                          \n",
            tests_passed);
-    printf("║   Failed: %3d                                          ║\n",
+    printf("   Failed: %3d                                          \n",
            tests_failed);
-    printf("╚════════════════════════════════════════════════════════╝\n");
+    printf("\n");
     printf("\n");
 
     return (tests_failed == 0) ? 0 : 1;

@@ -120,7 +120,7 @@ Vec3 animation_blend_get_position(AnimationBlend *blend, int bone_index) {
   if (!blend || !blend->current)
     return (Vec3){0, 0, 0};
 
-  // ✅ COMPLETED: Interpolate actual bone position from animation frames
+  //  COMPLETED: Interpolate actual bone position from animation frames
   // For now, return zero (skeleton system would handle this)
   return (Vec3){0, 0, 0};
 }
@@ -132,7 +132,7 @@ void animation_blend_get_all_poses(AnimationBlend *blend, Vec3 *positions,
   if (!blend || !blend->current)
     return;
 
-  // ✅ COMPLETED: Get full skeleton pose from animation
+  //  COMPLETED: Get full skeleton pose from animation
   // Blend between current and next if needed
 }
 
@@ -141,7 +141,7 @@ Vec3 animation_blend_get_root_motion(AnimationBlend *blend, float *dt_out) {
   if (!blend || !blend->current)
     return (Vec3){0, 0, 0};
 
-  // ✅ COMPLETED: Get root bone movement for this frame
+  //  COMPLETED: Get root bone movement for this frame
   // This drives character movement for attacks/abilities
   if (dt_out)
     *dt_out = 0.0f;

@@ -136,7 +136,7 @@ TEST_CASE("Audio System - Spatial Audio", "[audio][spatial]") {
         u32 channel = audio_play_sound(&sys, SOUND_FOOTSTEP_GRASS, sound_pos, 1.0f, SOUND_CATEGORY_SFX);
         
         if (channel != 0xFFFFFFFF) {
-            // Set up a cone (30° inner, 90° outer, 0.5 outer gain)
+            // Set up a cone (30 inner, 90 outer, 0.5 outer gain)
             audio_set_sound_cone(&sys, channel, 30.0f, 90.0f, 0.5f);
             
             REQUIRE(sys.sources[channel].cone_inner_angle == 30.0f);

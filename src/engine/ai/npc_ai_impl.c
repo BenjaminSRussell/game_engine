@@ -207,5 +207,5 @@ void perception_update(PerceptionSystem *perception, float npc_pos[3],
 /*
  * IMPLEMENTATION: 80/450 NPC AI TODOs
  * LOC: ~260
- * Features: Behavior trees, utility AI, perception ✅
+ * Features: Behavior trees, utility AI, perception 
  */

@@ -203,7 +203,7 @@ struct ShaderList: View {
                     VStack(alignment: .leading) {
                         Text("Shader_Default_\(i)")
                             .font(DesignSystem.Typography.body)
-                        Text("Compiled • 12ms")
+                        Text("Compiled  12ms")
                             .font(DesignSystem.Typography.small)
                             .foregroundColor(DesignSystem.Colors.textSecondary)
                     }

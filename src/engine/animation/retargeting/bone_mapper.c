@@ -40,7 +40,7 @@ static INLINE Quat mat4_get_rotation(Mat4 m) {
     return quat_from_euler(decomp.rotation.x, decomp.rotation.y, decomp.rotation.z);
 }
 
-// ✅ COMPLETED: Initialize Bone Mapper [Difficulty: 2] [Atomic Steps: 4]
+//  COMPLETED: Initialize Bone Mapper [Difficulty: 2] [Atomic Steps: 4]
 RetargetingMap* bone_mapper_create(Skeleton* source, Skeleton* target) {
     if (!source || !target) return NULL;
     
@@ -67,7 +67,7 @@ void bone_mapper_destroy(RetargetingMap* map) {
     }
 }
 
-// ✅ COMPLETED: Auto-Map Bones [Difficulty: 3] [Atomic Steps: 5]
+//  COMPLETED: Auto-Map Bones [Difficulty: 3] [Atomic Steps: 5]
 void bone_mapper_automap(RetargetingMap* map) {
     if (!map || !map->source_skeleton || !map->target_skeleton) return;
     
@@ -117,7 +117,7 @@ void bone_mapper_automap(RetargetingMap* map) {
     map->map_count = mapped_count;
 }
 
-// ✅ COMPLETED: Retarget Animation Frame [Difficulty: 4] [Atomic Steps: 6]
+//  COMPLETED: Retarget Animation Frame [Difficulty: 4] [Atomic Steps: 6]
 void bone_mapper_apply_pose(RetargetingMap* map, AnimationClip* source_clip, f32 time, Pose* out_pose) {
     if (!map || !source_clip || !out_pose) return;
     

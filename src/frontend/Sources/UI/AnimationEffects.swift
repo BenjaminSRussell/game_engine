@@ -368,22 +368,22 @@ class KeyboardShortcutsManager: ObservableObject {
     
     @Published var shortcuts: [Shortcut] = [
         // File
-        Shortcut(name: "New Scene", keys: ["⌘", "N"], category: "File"),
-        Shortcut(name: "Open Project", keys: ["⌘", "O"], category: "File"),
-        Shortcut(name: "Save", keys: ["⌘", "S"], category: "File"),
-        Shortcut(name: "Save As...", keys: ["⌘", "⇧", "S"], category: "File"),
-        Shortcut(name: "Build Project", keys: ["⌘", "B"], category: "File"),
-        Shortcut(name: "Build and Run", keys: ["⌘", "R"], category: "File"),
+        Shortcut(name: "New Scene", keys: ["", "N"], category: "File"),
+        Shortcut(name: "Open Project", keys: ["", "O"], category: "File"),
+        Shortcut(name: "Save", keys: ["", "S"], category: "File"),
+        Shortcut(name: "Save As...", keys: ["", "", "S"], category: "File"),
+        Shortcut(name: "Build Project", keys: ["", "B"], category: "File"),
+        Shortcut(name: "Build and Run", keys: ["", "R"], category: "File"),
         
         // Edit
-        Shortcut(name: "Undo", keys: ["⌘", "Z"], category: "Edit"),
-        Shortcut(name: "Redo", keys: ["⌘", "⇧", "Z"], category: "Edit"),
-        Shortcut(name: "Cut", keys: ["⌘", "X"], category: "Edit"),
-        Shortcut(name: "Copy", keys: ["⌘", "C"], category: "Edit"),
-        Shortcut(name: "Paste", keys: ["⌘", "V"], category: "Edit"),
-        Shortcut(name: "Duplicate", keys: ["⌘", "D"], category: "Edit"),
-        Shortcut(name: "Delete", keys: ["⌫"], category: "Edit"),
-        Shortcut(name: "Select All", keys: ["⌘", "A"], category: "Edit"),
+        Shortcut(name: "Undo", keys: ["", "Z"], category: "Edit"),
+        Shortcut(name: "Redo", keys: ["", "", "Z"], category: "Edit"),
+        Shortcut(name: "Cut", keys: ["", "X"], category: "Edit"),
+        Shortcut(name: "Copy", keys: ["", "C"], category: "Edit"),
+        Shortcut(name: "Paste", keys: ["", "V"], category: "Edit"),
+        Shortcut(name: "Duplicate", keys: ["", "D"], category: "Edit"),
+        Shortcut(name: "Delete", keys: [""], category: "Edit"),
+        Shortcut(name: "Select All", keys: ["", "A"], category: "Edit"),
         
         // View
         Shortcut(name: "Toggle Wireframe", keys: ["Z"], category: "View"),
@@ -400,25 +400,25 @@ class KeyboardShortcutsManager: ObservableObject {
         Shortcut(name: "Rotate", keys: ["E"], category: "Transform"),
         Shortcut(name: "Scale", keys: ["R"], category: "Transform"),
         Shortcut(name: "Toggle Local/World", keys: ["X"], category: "Transform"),
-        Shortcut(name: "Toggle Snap", keys: ["⇧"], category: "Transform"),
+        Shortcut(name: "Toggle Snap", keys: [""], category: "Transform"),
         
         // Object
-        Shortcut(name: "Create Empty", keys: ["⌘", "⇧", "N"], category: "Object"),
-        Shortcut(name: "Group Selection", keys: ["⌘", "G"], category: "Object"),
-        Shortcut(name: "Ungroup", keys: ["⌘", "⇧", "G"], category: "Object"),
-        Shortcut(name: "Make Prefab", keys: ["⌘", "P"], category: "Object"),
+        Shortcut(name: "Create Empty", keys: ["", "", "N"], category: "Object"),
+        Shortcut(name: "Group Selection", keys: ["", "G"], category: "Object"),
+        Shortcut(name: "Ungroup", keys: ["", "", "G"], category: "Object"),
+        Shortcut(name: "Make Prefab", keys: ["", "P"], category: "Object"),
         
         // Panels
-        Shortcut(name: "Toggle Inspector", keys: ["⌘", "I"], category: "Panels"),
-        Shortcut(name: "Toggle Hierarchy", keys: ["⌘", "H"], category: "Panels"),
-        Shortcut(name: "Toggle Console", keys: ["⌘", "`"], category: "Panels"),
-        Shortcut(name: "Command Palette", keys: ["⌘", "⇧", "P"], category: "Panels"),
-        Shortcut(name: "Quick Search", keys: ["⌘", "K"], category: "Panels"),
+        Shortcut(name: "Toggle Inspector", keys: ["", "I"], category: "Panels"),
+        Shortcut(name: "Toggle Hierarchy", keys: ["", "H"], category: "Panels"),
+        Shortcut(name: "Toggle Console", keys: ["", "`"], category: "Panels"),
+        Shortcut(name: "Command Palette", keys: ["", "", "P"], category: "Panels"),
+        Shortcut(name: "Quick Search", keys: ["", "K"], category: "Panels"),
         
         // Playback
-        Shortcut(name: "Play/Pause", keys: ["⌘", "↵"], category: "Playback"),
-        Shortcut(name: "Stop", keys: ["⌘", "."], category: "Playback"),
-        Shortcut(name: "Step Frame", keys: ["⌘", "'"], category: "Playback"),
+        Shortcut(name: "Play/Pause", keys: ["", ""], category: "Playback"),
+        Shortcut(name: "Stop", keys: ["", "."], category: "Playback"),
+        Shortcut(name: "Step Frame", keys: ["", "'"], category: "Playback"),
     ]
     
     var categories: [String] {
@@ -457,7 +457,7 @@ struct KeyboardShortcutsPanel: View {
                 
                 Spacer()
                 
-                EditorKeyboardShortcut(keys: ["⌘", "?"])
+                EditorKeyboardShortcut(keys: ["", "?"])
             }
             .padding(DesignSystem.Spacing.md)
             .background(DesignSystem.Colors.backgroundSecondary)

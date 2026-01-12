@@ -10,7 +10,7 @@
 
 typedef enum {
     ATTENUATION_INVERSE,        // Inverse distance law (1/d)
-    ATTENUATION_INVERSE_SQUARE,  // Inverse square law (1/d²) - most realistic
+    ATTENUATION_INVERSE_SQUARE,  // Inverse square law (1/d) - most realistic
     ATTENUATION_LINEAR,          // Linear falloff
     ATTENUATION_EXPONENTIAL,     // Exponential decay
     ATTENUATION_LOGARITHMIC,     // Logarithmic falloff (in dB)
@@ -83,28 +83,28 @@ typedef struct {
 bool DistanceAttenuation_Init(DistanceAttenuationSystem* system, u32 sample_rate);
 void DistanceAttenuation_Shutdown(DistanceAttenuationSystem* system);
 
-// ✅ COMPLETED: Standard attenuation curves
+//  COMPLETED: Standard attenuation curves
 f32 DistanceAttenuation_CalculateInverse(DistanceAttenuationSystem* system, f32 distance);
 f32 DistanceAttenuation_CalculateInverseSquare(DistanceAttenuationSystem* system, f32 distance);
 f32 DistanceAttenuation_CalculateLinear(DistanceAttenuationSystem* system, f32 distance);
 f32 DistanceAttenuation_CalculateExponential(DistanceAttenuationSystem* system, f32 distance);
 f32 DistanceAttenuation_CalculateLogarithmic(DistanceAttenuationSystem* system, f32 distance);
 
-// ✅ COMPLETED: Custom curve interpolation
+//  COMPLETED: Custom curve interpolation
 bool DistanceAttenuation_AddCustomPoint(DistanceAttenuationSystem* system, f32 distance, f32 gain);
 f32 DistanceAttenuation_CalculateCustom(DistanceAttenuationSystem* system, f32 distance);
 
-// ✅ COMPLETED: Air absorption modeling
+//  COMPLETED: Air absorption modeling
 f32 DistanceAttenuation_CalculateAirAbsorption(DistanceAttenuationSystem* system, f32 distance, f32 frequency);
 void DistanceAttenuation_ApplyAirAbsorption(DistanceAttenuationSystem* system, const f32* input, f32* output, 
                                         u32 frames, f32 distance, f32 frequency);
 
-// ✅ COMPLETED: Main attenuation processing
+//  COMPLETED: Main attenuation processing
 f32 DistanceAttenuation_CalculateGain(DistanceAttenuationSystem* system, f32 distance);
 void DistanceAttenuation_ProcessAudio(DistanceAttenuationSystem* system, const f32* input, f32* output, 
                                 u32 frames, f32 distance, f32 frequency);
 
-// ✅ COMPLETED: Curve management
+//  COMPLETED: Curve management
 void DistanceAttenuation_SetCurveType(DistanceAttenuationSystem* system, AttenuationType type);
 void DistanceAttenuation_SetMasterVolume(DistanceAttenuationSystem* system, f32 volume);
 void DistanceAttenuation_SetDistanceScale(DistanceAttenuationSystem* system, f32 scale);

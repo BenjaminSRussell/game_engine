@@ -17,10 +17,10 @@ static int g_tests_failed = 0;
         g_tests_run++; \
         if (condition) { \
             g_tests_passed++; \
-            printf("✓ PASS: %s\n", message); \
+            printf(" PASS: %s\n", message); \
         } else { \
             g_tests_failed++; \
-            printf("✗ FAIL: %s\n", message); \
+            printf(" FAIL: %s\n", message); \
         } \
     } while(0)
 
@@ -300,10 +300,10 @@ int main() {
     printf("Success rate: %.1f%%\n", (float)g_tests_passed / g_tests_run * 100.0f);
     
     if (g_tests_failed == 0) {
-        printf("\n🎉 All tests passed! Geometry system is working correctly.\n");
+        printf("\n All tests passed! Geometry system is working correctly.\n");
         return 0;
     } else {
-        printf("\n❌ Some tests failed. Please review the geometry system.\n");
+        printf("\n Some tests failed. Please review the geometry system.\n");
         return 1;
     }
 }

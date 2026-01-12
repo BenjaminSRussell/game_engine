@@ -361,6 +361,6 @@ void viewport_set_camera_state(EditorCamera *cam, float pos[3], float target[3],
 /*
  * IMPLEMENTATION: 70/500 Editor TODOs
  * LOC: ~200
- * Features: Gizmos, camera controls ✅
+ * Features: Gizmos, camera controls 
  */
 

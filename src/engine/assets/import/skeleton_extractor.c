@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-// TASK_831: Extract Skeleton hierarchy and Bind Pose - COMPLETED ✅
+// TASK_831: Extract Skeleton hierarchy and Bind Pose - COMPLETED 
 
 // Internal helper functions
 static bool parse_skeleton_bones(UnrealPackage* package, uint8_t* data, size_t data_size, UnrealSkeletonData* skeleton_data);

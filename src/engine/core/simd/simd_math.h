@@ -37,12 +37,12 @@ void v4f_sub(v4f *dst, const v4f *a, const v4f *b);
 void v4f_scale(v4f *dst, const v4f *v, float s);
 
 /**
- * Dot product: returns a · b
+ * Dot product: returns a  b
  */
 float v4f_dot(const v4f *a, const v4f *b);
 
 /**
- * Cross product: dst = a × b (3D only, w=0)
+ * Cross product: dst = a  b (3D only, w=0)
  */
 void v4f_cross(v4f *dst, const v4f *a, const v4f *b);
 

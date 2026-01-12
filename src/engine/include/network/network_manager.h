@@ -14,7 +14,7 @@ typedef struct {
 
   // Server specific
   // For now simple single connection handling or small array
-  // ✅ COMPLETED: Dynamic client list
+  //  COMPLETED: Dynamic client list
 
   // Client specific
   NetAddress server_addr;

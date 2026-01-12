@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// ✅ COMPLETED: Memory Tracker Implementation - AGENT_CORE_1
+//  COMPLETED: Memory Tracker Implementation - AGENT_CORE_1
 // Track every allocation with callstack and size
 
 #define MAX_ALLOCATIONS 100000
@@ -42,7 +42,7 @@ typedef struct {
 static InternalMemoryTracker g_tracker = {0};
 static const u64 CANARY_VALUE = 0xDEADBEEFCAFEBABE;
 
-// ✅ COMPLETED: Thread-safe hash map (simplified)
+//  COMPLETED: Thread-safe hash map (simplified)
 static size_t hash_pointer(void *ptr) {
   uintptr_t addr = (uintptr_t)ptr;
   return (size_t)(addr ^ (addr >> 16));
@@ -94,7 +94,7 @@ static bool add_record(AllocationRecord *record) {
   return false;
 }
 
-// ✅ COMPLETED: Canary guards
+//  COMPLETED: Canary guards
 static void set_canaries(void *ptr, AllocationRecord *record) {
   if (!g_tracker.canary_enabled)
     return;
@@ -131,7 +131,7 @@ static bool check_canaries(AllocationRecord *record) {
   return true;
 }
 
-// ✅ COMPLETED: Stack capture (simplified)
+//  COMPLETED: Stack capture (simplified)
 static size_t capture_stack_trace(void **frames, size_t max_frames) {
   if (!g_tracker.stack_capture_enabled)
     return 0;
@@ -149,7 +149,7 @@ static size_t capture_stack_trace(void **frames, size_t max_frames) {
   return count;
 }
 
-// ✅ COMPLETED: Memory tracker initialization
+//  COMPLETED: Memory tracker initialization
 bool tracker_init(size_t capacity, bool enable_canaries,
                   bool enable_stack_capture) {
   if (capacity == 0)
@@ -170,7 +170,7 @@ bool tracker_init(size_t capacity, bool enable_canaries,
   return true;
 }
 
-// ✅ COMPLETED: Allocation hook
+//  COMPLETED: Allocation hook
 void *tracked_malloc(size_t size, const char *system_tag) {
   if (!g_tracker.tracking_enabled) {
     return malloc(size);
@@ -271,7 +271,7 @@ void tracked_free(void *ptr) {
   free(actual_ptr);
 }
 
-// ✅ COMPLETED: Leak dump reporting
+//  COMPLETED: Leak dump reporting
 void tracker_dump_leaks(void) {
   if (!g_tracker.tracking_enabled)
     return;
@@ -310,7 +310,7 @@ void tracker_dump_leaks(void) {
   printf("=== END LEAK REPORT ===\n\n");
 }
 
-// ✅ COMPLETED: Heap corruption validation
+//  COMPLETED: Heap corruption validation
 bool tracker_validate_heap(void) {
   if (!g_tracker.tracking_enabled)
     return true;
@@ -331,7 +331,7 @@ bool tracker_validate_heap(void) {
   return valid;
 }
 
-// ✅ COMPLETED: Statistics
+//  COMPLETED: Statistics
 void tracker_get_stats(u64 *total_allocated, u64 *peak_allocated,
                        u64 *total_allocations, u64 *total_frees,
                        size_t *active_count) {
@@ -347,7 +347,7 @@ void tracker_get_stats(u64 *total_allocated, u64 *peak_allocated,
     *active_count = g_tracker.count;
 }
 
-// ✅ COMPLETED: Control functions
+//  COMPLETED: Control functions
 void tracker_enable(bool enabled) { g_tracker.tracking_enabled = enabled; }
 
 bool tracker_is_enabled(void) { return g_tracker.tracking_enabled; }

@@ -15,7 +15,7 @@ typedef struct Vec3 Vec3;
 // Water surface definition
 typedef struct {
     float height;
-    float density;      // kg/m³ (water = 1000)
+    float density;      // kg/m (water = 1000)
     float viscosity;    // Drag coefficient
     float surface_tension;
     

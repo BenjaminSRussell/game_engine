@@ -19,11 +19,11 @@ class TouchControlsView: UIView {
     
     // Action buttons
     private let jumpButton = VirtualButton(title: "Jump", color: .systemGreen)
-    private let attackButton = VirtualButton(title: "⚔️", color: .systemRed)
-    private let interactButton = VirtualButton(title: "👆", color: .systemBlue)
-    private let sprintButton = VirtualButton(title: "🏃", color: .systemOrange)
-    private let sneakButton = VirtualButton(title: "👣", color: .systemGray)
-    private let inventoryButton = VirtualButton(title: "🎒", color: .systemPurple)
+    private let attackButton = VirtualButton(title: "", color: .systemRed)
+    private let interactButton = VirtualButton(title: "", color: .systemBlue)
+    private let sprintButton = VirtualButton(title: "", color: .systemOrange)
+    private let sneakButton = VirtualButton(title: "", color: .systemGray)
+    private let inventoryButton = VirtualButton(title: "", color: .systemPurple)
     
     // Control visibility
     private var isControlsVisible: Bool = true

@@ -34,7 +34,7 @@ typedef struct {
 
   // Wave parameters
   float amplitude;     // Wave height scale (A parameter)
-  float choppiness;    // Wave sharpness (λ parameter, 0-4)
+  float choppiness;    // Wave sharpness ( parameter, 0-4)
   float smallest_wave; // Cutoff for small waves (meters)
 
   // Time
@@ -50,9 +50,9 @@ typedef struct {
   OceanConfig config;
 
   // Wave spectrum (frequency domain)
-  Complex *h0;         // Initial spectrum h₀(k)
-  Complex *h0_conj;    // Conjugate h₀*(-k)
-  Complex *h_tilde;    // Time-evolved h̃(k,t)
+  Complex *h0;         // Initial spectrum h(k)
+  Complex *h0_conj;    // Conjugate h*(-k)
+  Complex *h_tilde;    // Time-evolved h(k,t)
   Complex *h_tilde_dx; // Displacement x
   Complex *h_tilde_dz; // Displacement z
 
@@ -116,7 +116,7 @@ float ocean_phillips_spectrum(Vec2 k, Vec2 wind_dir, float wind_speed,
 float ocean_jonswap_spectrum(Vec2 k, Vec2 wind_dir, float wind_speed,
                              float fetch);
 
-// Dispersion relation: ω(k) = √(g|k|)
+// Dispersion relation: (k) = (g|k|)
 float ocean_dispersion(float k_length);
 
 // ============================================================================

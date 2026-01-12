@@ -89,7 +89,7 @@ typedef struct {
 bool Propagation_Init(PropagationSystem* system, u32 max_paths, u32 max_reflections);
 void Propagation_Shutdown(PropagationSystem* system);
 
-// ✅ COMPLETED: Ray-based propagation path generation
+//  COMPLETED: Ray-based propagation path generation
 u32 Propagation_GeneratePaths(PropagationSystem* system, const Vec3 source, const Vec3 listener, 
                              PropagationPath* paths, u32 max_paths);
 PropagationPath Propagation_CreateDirectPath(const Vec3 source, const Vec3 listener);
@@ -98,7 +98,7 @@ u32 Propagation_GenerateReflectionPaths(PropagationSystem* system, const Vec3 so
 PropagationPath Propagation_CreateReflectionPath(const Vec3 source, const Vec3 listener, 
                                               const Vec3 reflection_point, u32 order);
 
-// ✅ COMPLETED: Diffraction path generation
+//  COMPLETED: Diffraction path generation
 u32 Propagation_GenerateDiffractionPaths(PropagationSystem* system, const Vec3 source, const Vec3 listener,
                                        PropagationPath* paths, u32 max_paths);
 PropagationPath Propagation_CreateDiffractionPath(const Vec3 source, const Vec3 listener, const Vec3 edge_point);

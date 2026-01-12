@@ -49,22 +49,22 @@ kernel void wave_foam_generate(
     float dx = tile_size / float(N);
     
     // Compute Jacobian matrix of displacement field
-    // J = ∂(x + Dx, z + Dz) / ∂(x, z)
-    //   = | 1 + ∂Dx/∂x,    ∂Dx/∂z |
-    //     | ∂Dz/∂x,    1 + ∂Dz/∂z |
+    // J = (x + Dx, z + Dz) / (x, z)
+    //   = | 1 + Dx/x,    Dx/z |
+    //     | Dz/x,    1 + Dz/z |
     
     float dDx_dx = (Dx_right - Dx_left) / (2.0f * dx);
     float dDz_dz = (Dz_up - Dz_down) / (2.0f * dx);
     
-    // For simplicity, assume cross terms are small (∂Dx/∂z ≈ 0, ∂Dz/∂x ≈ 0)
+    // For simplicity, assume cross terms are small (Dx/z  0, Dz/x  0)
     // This is valid for deep water waves
     float J_00 = 1.0f + dDx_dx;
     float J_11 = 1.0f + dDz_dz;
     
-    // Determinant: Det(J) ≈ J_00 * J_11
+    // Determinant: Det(J)  J_00 * J_11
     float det_J = J_00 * J_11;
     
-    // If Det(J) < 0, wave is breaking (folding) → generate foam
+    // If Det(J) < 0, wave is breaking (folding)  generate foam
     // Map negative determinant to foam intensity
     float foam_generation = 0.0f;
     

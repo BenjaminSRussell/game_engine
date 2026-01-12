@@ -2,7 +2,7 @@
  * Dynamic AABB Tree for Broadphase Collision Detection
  * 
  * Implementation of self-balancing binary tree using Axis-Aligned Bounding Boxes (AABBs).
- * Provides O(N log N) broadphase vs O(N²) naive sweep.
+ * Provides O(N log N) broadphase vs O(N) naive sweep.
  */
 
 #include "aabb_tree.h"
@@ -449,7 +449,7 @@ void aabb_tree_find_pairs(const AABBTree *tree, AABBQueryCallback callback, void
         }
     }
     
-    // Generate pairs (O(N²) for simplicity - could be optimized)
+    // Generate pairs (O(N) for simplicity - could be optimized)
     for (uint32_t i = 0; i < result_count; i++) {
         for (uint32_t j = i + 1; j < result_count; j++) {
             AABBTreeNode *node1 = &tree->nodes[results[i].proxy_id];

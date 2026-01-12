@@ -67,7 +67,7 @@ static Quat quat_from_mat4(Mat4 m) {
   }
 }
 
-// ✅ COMPLETED: Define Aim Context [Difficulty: 1] [Atomic Steps: 4]
+//  COMPLETED: Define Aim Context [Difficulty: 1] [Atomic Steps: 4]
 // 1. 'Vec3 aim_target_world'.
 // 2. 'Vec3 weapon_muzzle_local_offset'.
 // 3. 'float aim_weight' (Hip vs ADS).
@@ -97,7 +97,7 @@ typedef struct {
   f32 alignment_speed;
 } AimIK;
 
-// ✅ COMPLETED: Implement Aim Offset (Additive) [Difficulty: 3] [Atomic Steps:
+//  COMPLETED: Implement Aim Offset (Additive) [Difficulty: 3] [Atomic Steps:
 // 6]
 // 1. Load Additive Animation Grid (Aim Center, Up, Down, Left, Right).
 // 2. Calculate Pitch/Yaw to target.
@@ -168,7 +168,7 @@ static void aim_ik_apply_additive_pose(AimIK *ik, Skeleton *skeleton) {
   }
 }
 
-// ✅ COMPLETED: Implement Procedural Correction [Difficulty: 3] [Atomic Steps:
+//  COMPLETED: Implement Procedural Correction [Difficulty: 3] [Atomic Steps:
 // 5]
 // 1. After Aim Offset.
 // 2. Calculate actual muzzle vector.
@@ -259,7 +259,7 @@ static void aim_ik_update_procedural_correction(AimIK *ik, Skeleton *skeleton,
   }
 }
 
-// ✅ COMPLETED: Implement Scope Align [Difficulty: 2] [Atomic Steps: 4]
+//  COMPLETED: Implement Scope Align [Difficulty: 2] [Atomic Steps: 4]
 // 1. When ADS (Aim Down Sights).
 // 2. Move Camera to Scope? Or Move Gun to Camera?
 // 3. Usually easier to overlay Camera on Gun Bone or use relative offset

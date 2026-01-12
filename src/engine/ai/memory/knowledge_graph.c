@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-// ✅ COMPLETED: Define Knowledge Node structure with EntityID, RelationType, and certainty
-// ✅ COMPLETED: Implement Knowledge Graph Inference for query processing and fact propagation
-// ✅ COMPLETED: Implement Forgotten Facts with decay and event invalidation
+//  COMPLETED: Define Knowledge Node structure with EntityID, RelationType, and certainty
+//  COMPLETED: Implement Knowledge Graph Inference for query processing and fact propagation
+//  COMPLETED: Implement Forgotten Facts with decay and event invalidation
 
 // Internal structures
 struct KnowledgeGraph {

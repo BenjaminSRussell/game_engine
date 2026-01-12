@@ -131,7 +131,7 @@ def main():
                 print(f"  Failed to extract: {e}")
     
     if success_count == 0:
-        print("\n⚠️  Could not download from Kenney.nl")
+        print("\n  Could not download from Kenney.nl")
         print("  Falling back to placeholder generator...")
         
         # Run the placeholder generator
@@ -142,12 +142,12 @@ def main():
         )
         
         if result.returncode == 0:
-            print("\n✓ Placeholder assets created successfully")
+            print("\n Placeholder assets created successfully")
         else:
-            print("\n✗ Failed to create placeholder assets")
+            print("\n Failed to create placeholder assets")
             return 1
     else:
-        print(f"\n✓ Downloaded {success_count} asset packs")
+        print(f"\n Downloaded {success_count} asset packs")
         
         # Organize the downloaded assets
         print("\n[2/3] Organizing assets...")
@@ -163,7 +163,7 @@ def main():
         shutil.rmtree(TEMP_DIR)
     
     print("\n" + "=" * 70)
-    print("✓ Asset download complete!")
+    print(" Asset download complete!")
     print("=" * 70)
     print(f"\nAssets location: {ASSETS_DIR}")
     

@@ -1,15 +1,15 @@
 // Swapchain framebuffer management and image acquisition.
 // Roadmap: docs/VULKAN_FRAMEBUFFER_ROADMAP.md.
-// ✅ COMPLETED: Implement framebuffer pooling system.
-// ✅ COMPLETED: Add framebuffer validation system.
-// ✅ COMPLETED: Implement framebuffer statistics tracking.
-// ✅ COMPLETED: Add framebuffer debugging visualization.
-// ✅ COMPLETED: Implement framebuffer performance profiling.
-// ✅ COMPLETED: Add framebuffer configuration system.
-// ✅ COMPLETED: Implement framebuffer unit testing framework.
-// ✅ COMPLETED: Add framebuffer documentation system.
-// ✅ COMPLETED: Implement framebuffer optimization suggestions.
-// ✅ COMPLETED: Add framebuffer memory leak detection.
+//  COMPLETED: Implement framebuffer pooling system.
+//  COMPLETED: Add framebuffer validation system.
+//  COMPLETED: Implement framebuffer statistics tracking.
+//  COMPLETED: Add framebuffer debugging visualization.
+//  COMPLETED: Implement framebuffer performance profiling.
+//  COMPLETED: Add framebuffer configuration system.
+//  COMPLETED: Implement framebuffer unit testing framework.
+//  COMPLETED: Add framebuffer documentation system.
+//  COMPLETED: Implement framebuffer optimization suggestions.
+//  COMPLETED: Add framebuffer memory leak detection.
 #include "include/rendering/vulkan.h"
 #include <limits.h>
 #include <stdlib.h>

@@ -8,7 +8,7 @@
 #define clampf(v, min, max) fmaxf(min, fminf(max, v))
 #define minf(a, b) fminf(a, b)
 
-// ✅ COMPLETED: Define Aim Context [Difficulty: 1] [Atomic Steps: 4]
+//  COMPLETED: Define Aim Context [Difficulty: 1] [Atomic Steps: 4]
 // 1. 'Vec3 aim_target_world'.
 // 2. 'Vec3 weapon_muzzle_local_offset'.
 // 3. 'float aim_weight' (Hip vs ADS).
@@ -97,7 +97,7 @@ static Quat quat_from_mat4_local(Mat4 m) {
     }
 }
 
-// ✅ COMPLETED: Implement Aim Offset (Additive) [Difficulty: 3] [Atomic Steps: 6]
+//  COMPLETED: Implement Aim Offset (Additive) [Difficulty: 3] [Atomic Steps: 6]
 // 1. Load Additive Animation Grid (Aim Center, Up, Down, Left, Right).
 // 2. Calculate Pitch/Yaw to target.
 // 3. Bilinear blend within the Aim Grid.
@@ -164,7 +164,7 @@ static void aim_ik_apply_additive_pose(AimIK* ik, Skeleton* skeleton) {
     }
 }
 
-// ✅ COMPLETED: Implement Procedural Correction [Difficulty: 3] [Atomic Steps: 5]
+//  COMPLETED: Implement Procedural Correction [Difficulty: 3] [Atomic Steps: 5]
 // 1. After Aim Offset.
 // 2. Calculate actual muzzle vector.
 // 3. Compare with desired vector to target.
@@ -242,7 +242,7 @@ static void aim_ik_update_procedural_correction(AimIK* ik, Skeleton* skeleton, i
     }
 }
 
-// ✅ COMPLETED: Implement Scope Align [Difficulty: 2] [Atomic Steps: 4]
+//  COMPLETED: Implement Scope Align [Difficulty: 2] [Atomic Steps: 4]
 // 1. When ADS (Aim Down Sights).
 // 2. Move Camera to Scope? Or Move Gun to Camera?
 // 3. Usually easier to overlay Camera on Gun Bone or use relative offset

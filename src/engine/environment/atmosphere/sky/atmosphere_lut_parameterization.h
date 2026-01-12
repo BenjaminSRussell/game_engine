@@ -30,7 +30,7 @@
  * @param view_zenith_cos Cosine of view zenith angle
  * @param planet_radius Planet radius (km)
  * @param atmo_height Atmosphere height (km)
- * @return UV coordinates in transmittance LUT [0,1]²
+ * @return UV coordinates in transmittance LUT [0,1]
  */
 simd_float2 atm_transmittance_lut_encode(float height, float view_zenith_cos,
                                          float planet_radius,
@@ -41,7 +41,7 @@ simd_float2 atm_transmittance_lut_encode(float height, float view_zenith_cos,
  *
  * Inverse of atm_transmittance_lut_encode
  *
- * @param uv UV coordinates in transmittance LUT [0,1]²
+ * @param uv UV coordinates in transmittance LUT [0,1]
  * @param planet_radius Planet radius (km)
  * @param atmo_height Atmosphere height (km)
  * @param out_height Output: distance from planet center
@@ -62,7 +62,7 @@ void atm_transmittance_lut_decode(simd_float2 uv, float planet_radius,
  * @param sun_zenith_cos Cosine of sun zenith angle
  * @param planet_radius Planet radius (km)
  * @param atmo_height Atmosphere height (km)
- * @return UV coordinates in multi-scattering LUT [0,1]²
+ * @return UV coordinates in multi-scattering LUT [0,1]
  */
 simd_float2 atm_multiscatter_lut_encode(float height, float sun_zenith_cos,
                                         float planet_radius, float atmo_height);
@@ -70,7 +70,7 @@ simd_float2 atm_multiscatter_lut_encode(float height, float sun_zenith_cos,
 /**
  * Map multi-scattering LUT UV to (height, sun_zenith_cos)
  *
- * @param uv UV coordinates [0,1]²
+ * @param uv UV coordinates [0,1]
  * @param planet_radius Planet radius (km)
  * @param atmo_height Atmosphere height (km)
  * @param out_height Output: distance from planet center
@@ -94,7 +94,7 @@ void atm_multiscatter_lut_decode(simd_float2 uv, float planet_radius,
  * @param view_height Camera height from planet center (km)
  * @param planet_radius Planet radius (km)
  * @param atmo_height Atmosphere height (km)
- * @return UV coordinates in sky view LUT [0,1]²
+ * @return UV coordinates in sky view LUT [0,1]
  */
 simd_float2 atm_skyview_lut_encode(simd_float3 view_dir, float view_height,
                                    float planet_radius, float atmo_height);
@@ -102,7 +102,7 @@ simd_float2 atm_skyview_lut_encode(simd_float3 view_dir, float view_height,
 /**
  * Map sky view LUT UV to view direction
  *
- * @param uv UV coordinates [0,1]²
+ * @param uv UV coordinates [0,1]
  * @param view_height Camera height from planet center (km)
  * @param planet_radius Planet radius (km)
  * @param atmo_height Atmosphere height (km)
@@ -128,7 +128,7 @@ simd_float3 atm_skyview_lut_decode(simd_float2 uv, float view_height,
  * @param near_plane Near plane distance
  * @param far_plane Far plane distance
  * @param froxel_depth_distribution Depth distribution (0=linear, 1=exponential)
- * @return UVW coordinates in camera volume [0,1]³
+ * @return UVW coordinates in camera volume [0,1]
  */
 simd_float3 atm_camera_volume_encode(simd_float3 world_pos,
                                      simd_float3 camera_pos,

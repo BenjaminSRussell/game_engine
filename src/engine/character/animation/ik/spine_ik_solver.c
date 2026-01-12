@@ -40,7 +40,7 @@ static Quat quat_from_mat4(Mat4 m) {
   }
 }
 
-// ✅ COMPLETED: Define Spine Chain [Difficulty: 1] [Atomic Steps: 4]
+//  COMPLETED: Define Spine Chain [Difficulty: 1] [Atomic Steps: 4]
 // 1. Array of bone indices (Pelvis -> ... -> Neck).
 // 2. 'Vec3 target_forward'.
 // 3. 'float stiffness'.
@@ -69,7 +69,7 @@ typedef struct {
   Quat original_rotations[MAX_SPINE_BONES];
 } SpineIK;
 
-// ✅ COMPLETED: Implement FABRIK / CCD [Difficulty: 4] [Atomic Steps: 6]
+//  COMPLETED: Implement FABRIK / CCD [Difficulty: 4] [Atomic Steps: 6]
 // 1. Forward And Backward Reaching Inverse Kinematics.
 // 2. Iterative solver for N > 2 bones.
 // 3. Forward pass: Drag chain to target.
@@ -148,7 +148,7 @@ static void spine_ik_solve_fabrik(SpineIK *ik, Skeleton *skeleton,
   }
 }
 
-// ✅ COMPLETED: Implement Leaning [Difficulty: 2] [Atomic Steps: 4]
+//  COMPLETED: Implement Leaning [Difficulty: 2] [Atomic Steps: 4]
 // 1. Procedural lean based on velocity/acceleration.
 // 2. 'LeanAmount = clamp(velocity.x * scale, -max, max)'.
 // 3. Rotate spine bones KeyFrame + LeanOffsets.
@@ -192,7 +192,7 @@ static void spine_ik_update_leaning(SpineIK *ik, Skeleton *skeleton, f32 dt) {
   }
 }
 
-// ✅ COMPLETED: Implement Breathing [Difficulty: 2] [Atomic Steps: 3]
+//  COMPLETED: Implement Breathing [Difficulty: 2] [Atomic Steps: 3]
 // 1. Add sine wave offset to Chest/Rib bones.
 // 2. Scale by exertion level (Stamina).
 // 3. Mix with current animation.

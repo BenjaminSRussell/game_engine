@@ -35,7 +35,7 @@ typedef enum {
 } MaterialType;
 
 typedef struct {
-    float density;           // kg/m³
+    float density;           // kg/m
     float youngs_modulus;    // Stiffness (Pa)
     float damping;           // Energy loss per second
     float hardness;          // Surface hardness (affects contact time)
@@ -80,7 +80,7 @@ typedef struct {
     MaterialType material_b;
     
     float impact_velocity;  // m/s
-    float contact_area;     // m²
+    float contact_area;     // m
     float mass_a, mass_b;   // kg
     
     ModalObject resonator;
@@ -130,7 +130,7 @@ static void generate_modes_for_material(ModalObject* obj, MaterialType material,
     MaterialProperties* props = &g_materials[material];
     
     // Calculate fundamental frequency based on size and material
-    // f = (v / 2L) where v = sqrt(E/ρ), E = Young's modulus, ρ = density
+    // f = (v / 2L) where v = sqrt(E/), E = Young's modulus,  = density
     float wave_speed = sqrtf(props->youngs_modulus / props->density);
     float fundamental = wave_speed / (2.0f * object_size);
     

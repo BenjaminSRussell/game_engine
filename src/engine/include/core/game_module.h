@@ -4,14 +4,14 @@
 // independently of the engine implementation. This enables the engine
 // to run multiple different games without recompilation.
 //
-// ✅ COMPLETED: Add hot-reloading support for game modules
-// ✅ COMPLETED: Implement game module versioning
-// ✅ COMPLETED: Add game module dependency system
-// ✅ COMPLETED: Implement game module sandboxing
-// ✅ COMPLETED: Add game module configuration files
-// ✅ COMPLETED: Implement game module debugging tools
-// ✅ COMPLETED: Add game module performance profiling
-// ✅ COMPLETED: Implement game module state serialization
+//  COMPLETED: Add hot-reloading support for game modules
+//  COMPLETED: Implement game module versioning
+//  COMPLETED: Add game module dependency system
+//  COMPLETED: Implement game module sandboxing
+//  COMPLETED: Add game module configuration files
+//  COMPLETED: Implement game module debugging tools
+//  COMPLETED: Add game module performance profiling
+//  COMPLETED: Implement game module state serialization
 //
 #ifndef ENGINE_GAME_MODULE_H
 #define ENGINE_GAME_MODULE_H

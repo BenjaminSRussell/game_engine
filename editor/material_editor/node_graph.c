@@ -10,13 +10,13 @@
  *
  * STATUS: Core graph management implemented, UI and shader generation still needed
  *
- * ✅ IMPLEMENTED:
+ *  IMPLEMENTED:
  *    - Graph creation/destruction
  *    - Node add/remove
  *    - Node connection management
  *    - Basic validation
  *
- * ❌ STILL MISSING:
+ *  STILL MISSING:
  *    - UI rendering with bezier connections
  *    - Shader code generation/compilation
  *    - Preview sphere rendering

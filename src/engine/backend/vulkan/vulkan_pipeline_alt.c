@@ -1,14 +1,14 @@
 // Vulkan graphics pipeline and shader loading.
-// ✅ COMPLETED: Implement pipeline caching system for performance.
-// ✅ COMPLETED: Add pipeline validation system.
-// ✅ COMPLETED: Implement pipeline statistics tracking.
-// ✅ COMPLETED: Add pipeline debugging visualization.
-// ✅ COMPLETED: Implement pipeline performance profiling.
-// ✅ COMPLETED: Add pipeline configuration system.
-// ✅ COMPLETED: Implement pipeline unit testing framework.
-// ✅ COMPLETED: Add pipeline documentation system.
-// ✅ COMPLETED: Implement pipeline optimization suggestions.
-// ✅ COMPLETED: Add pipeline hot-reload system.
+//  COMPLETED: Implement pipeline caching system for performance.
+//  COMPLETED: Add pipeline validation system.
+//  COMPLETED: Implement pipeline statistics tracking.
+//  COMPLETED: Add pipeline debugging visualization.
+//  COMPLETED: Implement pipeline performance profiling.
+//  COMPLETED: Add pipeline configuration system.
+//  COMPLETED: Implement pipeline unit testing framework.
+//  COMPLETED: Add pipeline documentation system.
+//  COMPLETED: Implement pipeline optimization suggestions.
+//  COMPLETED: Add pipeline hot-reload system.
 #include <common.h>
 #include <core/logger.h>
 #include <math/mat4.h>

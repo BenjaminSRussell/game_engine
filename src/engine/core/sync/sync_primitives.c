@@ -35,7 +35,7 @@
  * =================================================================================================
  */
 
-// ✅ COMPLETED: Counting Semaphore Implementation
+//  COMPLETED: Counting Semaphore Implementation
 typedef struct CountingSemaphore {
     _Atomic uint32_t count;
     _Atomic uint32_t waiters;
@@ -122,7 +122,7 @@ uint32_t counting_semaphore_get_count(CountingSemaphore* semaphore) {
     return semaphore ? atomic_load(&semaphore->count) : 0;
 }
 
-// ✅ COMPLETED: Barrier Implementation with Sense Reversal
+//  COMPLETED: Barrier Implementation with Sense Reversal
 typedef struct Barrier {
     _Atomic uint32_t count;
     _Atomic uint32_t waiting;
@@ -198,7 +198,7 @@ bool barrier_wait(Barrier* barrier, uint32_t timeout_ms) {
     return true;
 }
 
-// ✅ COMPLETED: Read-Write Lock Implementation
+//  COMPLETED: Read-Write Lock Implementation
 typedef struct RWLock {
     _Atomic uint32_t state;  // High bit = write lock, low bits = read count
     pthread_mutex_t mutex;
@@ -282,7 +282,7 @@ void rwlock_release_write(RWLock* lock) {
     pthread_mutex_unlock(&lock->mutex);
 }
 
-// ✅ COMPLETED: Spin Lock with Exponential Backoff
+//  COMPLETED: Spin Lock with Exponential Backoff
 typedef struct SpinLock {
     _Atomic bool locked;
     uint32_t spin_count;
@@ -339,7 +339,7 @@ bool spinlock_try_acquire(SpinLock* lock) {
     return atomic_compare_exchange_strong(&lock->locked, &expected, true);
 }
 
-// ✅ COMPLETED: Event Flag Implementation
+//  COMPLETED: Event Flag Implementation
 typedef struct EventFlag {
     _Atomic bool signaled;
     pthread_mutex_t mutex;
@@ -426,7 +426,7 @@ void eventflag_reset(EventFlag* flag) {
 }
 
 /**
- * ✅ COMPLETED: All synchronization primitives implemented with performance targets met:
+ *  COMPLETED: All synchronization primitives implemented with performance targets met:
  * - Counting semaphores with futex-based blocking
  * - Barriers with sense reversal and exponential backoff
  * - Read-write locks with priority handling

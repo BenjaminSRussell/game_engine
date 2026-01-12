@@ -127,7 +127,7 @@ void rigid_body_apply_force_at_point(RigidBody *body, const Vec3 *force, const V
   RigidBodyData *data = (RigidBodyData*)body;
   data->force_accumulator = vec3_add(data->force_accumulator, *force);
   
-  // Calculate torque: r × F
+  // Calculate torque: r  F
   Vec3 r = vec3_sub(*point, data->position);
   Vec3 torque = vec3_cross(r, *force);
   data->torque_accumulator = vec3_add(data->torque_accumulator, torque);

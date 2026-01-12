@@ -326,7 +326,7 @@ struct EditorPanel<Content: View>: View {
 
 // MARK: - Search Bar
 
-struct EditorSearchBar: View {
+struct PremiumEditorSearchBar: View {
     @Binding var text: String
     let placeholder: String
     
@@ -377,7 +377,7 @@ struct EditorSearchBar: View {
 
 // MARK: - Loading Indicator
 
-struct EditorLoadingIndicator: View {
+struct PremiumEditorLoadingIndicator: View {
     let message: String?
     
     init(message: String? = nil) {

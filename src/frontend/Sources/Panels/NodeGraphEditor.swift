@@ -1,8 +1,8 @@
 import SwiftUI
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// 
 // MARK: - CATEGORY 6: VISUAL SCRIPTING SYSTEM (TODO-3101 to TODO-3700)
-// ═══════════════════════════════════════════════════════════════════════════════
+// 
 
 // MARK: - Node Graph Canvas TODOs (TODO-3101 to TODO-3150)
 // TODO-3101: Canvas infinite scrolling

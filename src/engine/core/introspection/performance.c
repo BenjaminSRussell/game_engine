@@ -186,7 +186,7 @@ void profiler_reset(void) {
 void profiler_report(void) {
     LOG_INFO("=== Profiler Report ===");
     LOG_INFO("%-40s %10s %12s %12s %12s", "Name", "Calls", "Total (ms)", "Avg (ms)", "Max (ms)");
-    LOG_INFO("%s", "─────────────────────────────────────────────────────────────────────────────────");
+    LOG_INFO("%s", "");
     
     for (u32 i = 0; i < g_profiler.entry_count; i++) {
         ProfilerEntry *entry = &g_profiler.entries[i];

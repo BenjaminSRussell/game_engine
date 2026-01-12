@@ -11,8 +11,8 @@ float atm_rayleigh_coefficient(float wavelength, float refractive_index,
   if (wavelength <= 0.0f)
     return 0.0f;
 
-  // Formula: β_R(λ) = (8π³(n²-1)²)/(3Nλ⁴)
-  // Note: The formula usually includes a (6+3δ)/(6-7δ) term for anisotropy,
+  // Formula: _R() = (8(n-1))/(3N)
+  // Note: The formula usually includes a (6+3)/(6-7) term for anisotropy,
   // but we omit it for standard rendering approximations or assume it's
   // included in N.
 
@@ -65,7 +65,7 @@ simd_float3 atm_rayleigh_coefficient_rgb(void) {
 }
 
 float atm_rayleigh_phase(float cos_theta) {
-  // P_R(θ) = 3/(16π) * (1 + cos²θ)
+  // P_R() = 3/(16) * (1 + cos)
   return (3.0f / (16.0f * ATM_PI)) * (1.0f + cos_theta * cos_theta);
 }
 
@@ -79,7 +79,7 @@ float atm_mie_coefficient(float turbidity, float beta_base) {
 }
 
 float atm_mie_phase_hg(float cos_theta, float g) {
-  // P_M(θ) = (1-g²) / (4π(1+g²-2g·cosθ)^(3/2))
+  // P_M() = (1-g) / (4(1+g-2gcos)^(3/2))
   float g2 = g * g;
   float num = 1.0f - g2;
   float den_term = 1.0f + g2 - 2.0f * g * cos_theta;

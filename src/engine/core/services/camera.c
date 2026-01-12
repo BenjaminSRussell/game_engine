@@ -1,15 +1,15 @@
 // Camera state and view/projection matrix helpers.
 // Roadmap: docs/CAMERA_ROADMAP.md.
-// ✅ COMPLETED: Implement camera interpolation system for smooth movement.
-// ✅ COMPLETED: Add camera shake system for impact effects.
-// ✅ COMPLETED: Implement camera smoothing configuration system.
-// ✅ COMPLETED: Add camera collision detection with world geometry.
-// ✅ COMPLETED: Implement camera FOV effects system (zoom, sprint).
-// ✅ COMPLETED: Add camera view bobbing system for walking.
-// ✅ COMPLETED: Implement camera roll system for vehicle movement.
-// ✅ COMPLETED: Add camera cinematic mode with predefined paths.
-// ✅ COMPLETED: Implement camera screenshot system with high-res capture.
-// ✅ COMPLETED: Add camera statistics tracking system.
+//  COMPLETED: Implement camera interpolation system for smooth movement.
+//  COMPLETED: Add camera shake system for impact effects.
+//  COMPLETED: Implement camera smoothing configuration system.
+//  COMPLETED: Add camera collision detection with world geometry.
+//  COMPLETED: Implement camera FOV effects system (zoom, sprint).
+//  COMPLETED: Add camera view bobbing system for walking.
+//  COMPLETED: Implement camera roll system for vehicle movement.
+//  COMPLETED: Add camera cinematic mode with predefined paths.
+//  COMPLETED: Implement camera screenshot system with high-res capture.
+//  COMPLETED: Add camera statistics tracking system.
 #include <include/math/math.h>
 #include <rendering/vulkan.h>
 

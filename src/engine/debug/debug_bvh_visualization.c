@@ -464,7 +464,7 @@ bool bvh_intersect_ray_triangle(const Ray* ray, const Triangle* triangle, RayTri
         return false;
     }
     
-    // Möller-Trumbore ray-triangle intersection algorithm
+    // Mller-Trumbore ray-triangle intersection algorithm
     Vec3 edge1 = vec3_sub(triangle->vertices[1], triangle->vertices[0]);
     Vec3 edge2 = vec3_sub(triangle->vertices[2], triangle->vertices[0]);
     Vec3 h = vec3_cross(ray->direction, edge2);

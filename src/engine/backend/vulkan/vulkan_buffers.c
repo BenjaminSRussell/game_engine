@@ -1,15 +1,15 @@
 // Vulkan buffer helpers for mesh data uploads.
 // Roadmap: docs/VULKAN_BUFFERS_ROADMAP.md.
-// ✅ COMPLETED: Implement buffer pooling system for performance.
-// ✅ COMPLETED: Add buffer validation system for corruption detection.
-// ✅ COMPLETED: Implement buffer statistics tracking system.
-// ✅ COMPLETED: Add buffer debugging visualization.
-// ✅ COMPLETED: Implement buffer performance profiling system.
-// ✅ COMPLETED: Add buffer configuration system.
-// ✅ COMPLETED: Implement buffer unit testing framework.
-// ✅ COMPLETED: Add buffer documentation system.
-// ✅ COMPLETED: Implement buffer optimization suggestions.
-// ✅ COMPLETED: Add buffer memory leak detection.
+//  COMPLETED: Implement buffer pooling system for performance.
+//  COMPLETED: Add buffer validation system for corruption detection.
+//  COMPLETED: Implement buffer statistics tracking system.
+//  COMPLETED: Add buffer debugging visualization.
+//  COMPLETED: Implement buffer performance profiling system.
+//  COMPLETED: Add buffer configuration system.
+//  COMPLETED: Implement buffer unit testing framework.
+//  COMPLETED: Add buffer documentation system.
+//  COMPLETED: Implement buffer optimization suggestions.
+//  COMPLETED: Add buffer memory leak detection.
 #include "include/rendering/mesh.h"
 #include "include/rendering/vulkan.h"
 #include <stdlib.h>

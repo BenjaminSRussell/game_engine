@@ -96,6 +96,9 @@ full_integration_test_EXTERNAL_OBJECTS =
 full_integration_test: CMakeFiles/full_integration_test.dir/src/engine/core/integration/full_engine_test.c.o
 full_integration_test: CMakeFiles/full_integration_test.dir/build.make
 full_integration_test: libEngine.a
+full_integration_test: libGame.a
+full_integration_test: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/libz.tbd
+full_integration_test: libEngine.a
 full_integration_test: /opt/homebrew/lib/libglfw.3.4.dylib
 full_integration_test: CMakeFiles/full_integration_test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable full_integration_test"
