@@ -12,6 +12,7 @@
 struct VFS;
 struct Engine;
 struct AssetManager;
+typedef struct IRenderer IRenderer;
 
 // =================================================================================================
 //                                    EDITOR SYSTEM ARCHITECTURE
@@ -523,7 +524,7 @@ bool play_in_editor_is_playing(PlayInEditorSystem *system);
 void transform_gizmo_init(TransformGizmo *gizmo);
 void transform_gizmo_shutdown(TransformGizmo *gizmo);
 void transform_gizmo_update(TransformGizmo *gizmo, const Vec3 *target_position);
-void transform_gizmo_render(TransformGizmo *gizmo);
+void transform_gizmo_render(TransformGizmo *gizmo, IRenderer *renderer);
 bool transform_gizmo_handle_input(TransformGizmo *gizmo, const Vec2 *mouse_pos,
                                   bool mouse_down);
 void transform_gizmo_set_mode(TransformGizmo *gizmo, GizmoMode mode);
@@ -536,7 +537,7 @@ void transform_gizmo_set_space(TransformGizmo *gizmo, GizmoSpace space);
 void selection_outline_init(SelectionOutlineSystem *system);
 void selection_outline_shutdown(SelectionOutlineSystem *system);
 void selection_outline_update(SelectionOutlineSystem *system);
-void selection_outline_render(SelectionOutlineSystem *system);
+void selection_outline_render(SelectionOutlineSystem *system, IRenderer *renderer);
 void selection_outline_set_selected(SelectionOutlineSystem *system,
                                     u32 *entities, u32 count);
 void selection_outline_add_selected(SelectionOutlineSystem *system, u32 entity);
