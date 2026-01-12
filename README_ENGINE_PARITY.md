@@ -1,9 +1,9 @@
 # Unreal Engine Parity - README
 
-## 🎯 Overview
+## Overview
 Complete Unreal Engine 5 feature parity achieved with Metal-native optimizations for Apple Silicon.
 
-## 🚀 Key Features
+## Key Features
 
 ### Rendering (Phase 1)
 - **MetalFX Upscaling**: 2-4x performance boost with temporal/spatial upscaling
@@ -49,7 +49,7 @@ Complete Unreal Engine 5 feature parity achieved with Metal-native optimizations
 ### Profiling (Phase 10)
 - **GPU Profiler**: Metal counter sampling with Instruments integration
 
-## 📊 Performance Targets
+## Performance Targets
 
 ### 4K @ 60 FPS
 - Render at 1080p (50% scale)
@@ -61,16 +61,16 @@ Complete Unreal Engine 5 feature parity achieved with Metal-native optimizations
 - MetalFX + VRS combined
 - Result: **6x performance boost**
 
-## 🍎 Apple Silicon Advantages
+## Apple Silicon Advantages
 
-- ✅ **Unified Memory**: Zero-copy CPU↔GPU transfers
-- ✅ **MetalFX**: Native upscaling (no DLSS needed)
-- ✅ **Neural Engine**: AI denoising, motion matching
-- ✅ **Tile-based Rendering**: Bandwidth optimization
-- ✅ **Instruments**: Native profiling tools
-- ✅ **SwiftUI**: Premium editor integration
+- **Unified Memory**: Zero-copy CPU↔GPU transfers
+- **MetalFX**: Native upscaling (no DLSS needed)
+- **Neural Engine**: AI denoising, motion matching
+- **Tile-based Rendering**: Bandwidth optimization
+- **Instruments**: Native profiling tools
+- **SwiftUI**: Premium editor integration
 
-## 🛠️ Quick Start
+## Quick Start
 
 ### Build Everything
 \`\`\`bash
@@ -113,23 +113,23 @@ src/
     └── Profiler.swift
 \`\`\`
 
-## 🎮 vs Unreal Engine 5
+## vs Unreal Engine 5
 
 | Feature | UE5 | This Engine |
 |---------|-----|-------------|
-| Nanite | ✅ | ✅ **MATCH** |
-| Lumen | ✅ | ✅ **MATCH** |
-| MetalFX | ❌ | ✅ **BETTER** |
-| Metal-Native | ❌ | ✅ **BETTER** |
-| Unified Memory | ❌ | ✅ **BETTER** |
-| SwiftUI Editor | ❌ | ✅ **BETTER** |
+| Nanite | MATCH | MATCH |
+| Lumen | MATCH | MATCH |
+| MetalFX | BETTER | BETTER |
+| Metal-Native | BETTER | BETTER |
+| Unified Memory | BETTER | BETTER |
+| SwiftUI Editor | BETTER | BETTER |
 
-## 📝 License
+## License
 [Your License Here]
 
-## 🤝 Contributing
+## Contributing
 [Contributing Guidelines]
 
 ---
 
-**Ready for production. Built with ❤️ for Apple Silicon.**
+**Ready for production. Built with love for Apple Silicon.**

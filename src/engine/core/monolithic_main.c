@@ -290,6 +290,7 @@ typedef struct {
   void *window;
   u32 window_width;
   u32 window_height;
+  HUDSystem hud;
 } GameState;
 
 static GameState g_game = {0};

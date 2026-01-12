@@ -5,7 +5,7 @@
 #include <player/spirit_model.h>
 #include <core/logger.h>
 #include <core/memory.h>
-#include <assets/asset_loader.h>
+#include <engine/assets/system/asset_system/loading/asset_loader.h>
 #include <rendering/renderer.h>
 #include <string.h>
 #include <stdlib.h>
@@ -210,8 +210,8 @@ void spirit_model_init(SpiritModelComponent *spirit) {
   // Scale: Mixamo models are typically large, scale down to 0.01
   // See: docs/QUICK_START_ASSETS.md for detailed instructions
 
-  spirit->model_path = "assets/models/characters/spirit.gltf";
-  spirit->texture_path = "assets/textures/characters/spirit.png";
+  strcpy(spirit->model_path, "assets/models/characters/spirit.gltf");
+  strcpy(spirit->texture_path, "assets/textures/characters/spirit.png");
   spirit->scale = vec3(0.01f, 0.01f, 0.01f); // Scale down Mixamo models
   spirit->visible = true;
   spirit->current_anim = SPIRIT_ANIM_IDLE;

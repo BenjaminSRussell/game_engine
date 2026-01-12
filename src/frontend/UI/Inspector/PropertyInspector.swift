@@ -38,8 +38,8 @@ public struct PropertyInspector: View {
                     VStack(alignment: .leading, spacing: 16) {
                         // Entity info
                         Section {
-                            PropertyRow(label: "Entity ID", value: "\(entity.id)")
-                            PropertyRow(label: "Generation", value: "\(entity.generation)")
+                            InspectorPropertyRow(label: "Entity ID", value: "\(entity.id)")
+                            InspectorPropertyRow(label: "Generation", value: "\(entity.generation)")
                         }
                         
                         Divider()
@@ -142,9 +142,9 @@ public struct PropertyInspector: View {
     }
 }
 
-// MARK: - Property Row
+// MARK: - Inspector Property Row
 
-struct PropertyRow: View {
+struct InspectorPropertyRow: View {
     let label: String
     let value: String
     

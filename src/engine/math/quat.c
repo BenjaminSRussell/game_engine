@@ -18,10 +18,10 @@ Quat quat_from_euler(f32 pitch, f32 yaw, f32 roll) {
 }
 
 Vec3 quat_rotate_vec3(Quat q, Vec3 v) {
-    // Extract the vector part of the quaternion
+    // Extract vector part of quaternion
     Vec3 u = {q.x, q.y, q.z};
 
-    // Extract the scalar part of the quaternion
+    // Extract scalar part of quaternion
     f32 s = q.w;
 
     // Do the math

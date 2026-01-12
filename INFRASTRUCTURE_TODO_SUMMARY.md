@@ -163,44 +163,44 @@ This document outlines ALL real infrastructure work needed for the Minecraft v2 
 
 | System | Status | Issues | Priority |
 |--------|--------|--------|----------|
-| ECS | ✅ Working | None | - |
-| Physics | ⚠️ Broken | 6 implementations, build disabled | CRITICAL |
-| Rendering | ⚠️ Partial | 365 files, overlapping, Vulkan broken | CRITICAL |
-| Audio | ❌ Disabled | Header mismatches, DSP excluded | CRITICAL |
-| Animation | ⚠️ Partial | IK incomplete, duplicates, disabled variants | HIGH |
-| AI | ⚠️ Partial | 83 files, 6+ competing systems | HIGH |
-| Networking | ❌ Disabled | 44 files excluded, multiplayer broken | HIGH |
+| ECS | Working | None | - |
+| Physics | Broken | 6 implementations, build disabled | CRITICAL |
+| Rendering | Partial | 365 files, overlapping, Vulkan broken | CRITICAL |
+| Audio | Disabled | Header mismatches, DSP excluded | CRITICAL |
+| Animation | Partial | IK incomplete, duplicates, disabled variants | HIGH |
+| AI | Partial | 83 files, 6+ competing systems | HIGH |
+| Networking | Disabled | 44 files excluded, multiplayer broken | HIGH |
 
 ### Gameplay Systems
 
 | System | Status | Issues | Priority |
 |--------|--------|--------|----------|
-| Blocks | ✅ Working | None | - |
-| Items | ✅ Working | None | - |
-| Inventory | ✅ Working | UI needs polish | MEDIUM |
-| Crafting | ✅ Partial | Tech crafting needs completion | MEDIUM |
-| NPCs | ❌ Disabled | 23 files excluded, refactoring failed | CRITICAL |
-| Mobs | ❌ Disabled | AI excluded | HIGH |
-| Combat | ⚠️ Partial | Player attacks stub, NPC combat disabled | HIGH |
-| Food | ⚠️ Partial | 8 TODOs incomplete | MEDIUM |
-| Vehicles | ❌ Disabled | Excluded, 10 TODOs | MEDIUM |
-| Magic | ⚠️ Partial | 6 TODOs incomplete | MEDIUM |
-| Weather | ✅ Working | None | - |
-| World Gen | ✅ Working | None | - |
-| Quests | ⚠️ Partial | Framework exists, needs completion | MEDIUM |
-| Achievements | ⚠️ Partial | Framework exists, needs completion | MEDIUM |
-| Save/Load | ✅ Working | None | - |
+| Blocks | Working | None | - |
+| Items | Working | None | - |
+| Inventory | Working | UI needs polish | MEDIUM |
+| Crafting | Partial | Tech crafting needs completion | MEDIUM |
+| NPCs | Disabled | 23 files excluded, refactoring failed | CRITICAL |
+| Mobs | Disabled | AI excluded | HIGH |
+| Combat | Partial | Player attacks stub, NPC combat disabled | HIGH |
+| Food | Partial | 8 TODOs incomplete | MEDIUM |
+| Vehicles | Disabled | Excluded, 10 TODOs | MEDIUM |
+| Magic | Partial | 6 TODOs incomplete | MEDIUM |
+| Weather | Working | None | - |
+| World Gen | Working | None | - |
+| Quests | Partial | Framework exists, needs completion | MEDIUM |
+| Achievements | Partial | Framework exists, needs completion | MEDIUM |
+| Save/Load | Working | None | - |
 
 ### Tools & Infrastructure
 
 | System | Status | Issues | Priority |
 |--------|--------|--------|----------|
-| Editor | ❌ Disabled | All excluded | HIGH |
-| Console | ✅ Working | None | - |
-| Profiler | ✅ Working | None | - |
-| Asset Management | ✅ Partial | Hot reload works, compilation needs completion | MEDIUM |
-| Modding | ✅ Working | API needs documentation | LOW |
-| Cinematics | ❌ Disabled | Excluded, broken | MEDIUM |
+| Editor | Disabled | All excluded | HIGH |
+| Console | Working | None | - |
+| Profiler | Working | None | - |
+| Asset Management | Partial | Hot reload works, compilation needs completion | MEDIUM |
+| Modding | Working | API needs documentation | LOW |
+| Cinematics | Disabled | Excluded, broken | MEDIUM |
 
 ## COMPREHENSIVE TODO LIST (by Phase)
 
@@ -270,16 +270,16 @@ This document outlines ALL real infrastructure work needed for the Minecraft v2 
 
 ## SUCCESS CRITERIA
 
-1. ✅ All systems compile without warnings
-2. ✅ Physics system has single canonical API
-3. ✅ Particle system has unified interface
-4. ✅ NPC system re-enabled and working
-5. ✅ Networking basic multiplayer working
-6. ✅ Player systems complete (combat, magic, food, vehicles)
-7. ✅ All gameplay systems tested end-to-end
-8. ✅ No duplicate implementations
-9. ✅ All .disabled and prototype files deleted
-10. ✅ CI/CD pipeline prevents regressions
+1. All systems compile without warnings
+2. Physics system has single canonical API
+3. Particle system has unified interface
+4. NPC system re-enabled and working
+5. Networking basic multiplayer working
+6. Player systems complete (combat, magic, food, vehicles)
+7. All gameplay systems tested end-to-end
+8. No duplicate implementations
+9. All .disabled and prototype files deleted
+10. CI/CD pipeline prevents regressions
 
 ## NEXT IMMEDIATE ACTIONS
 

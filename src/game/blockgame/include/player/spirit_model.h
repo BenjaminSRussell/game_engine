@@ -62,9 +62,9 @@ typedef enum {
 // Spirit model component (placeholder for future 3D model rendering)
 typedef struct {
   // Asset pipeline placeholder
-  const char *model_path;   // Path to .gltf file (base character model)
-  const char *texture_path; // Path to albedo/diffuse texture (included in GLTF)
-  const char *material_path; // Path to material definition (future)
+  char model_path[256];   // Path to .gltf file (base character model)
+  char texture_path[256]; // Path to albedo/diffuse texture (included in GLTF)
+  char material_path[256]; // Path to material definition (future)
 
   // Rendering hook placeholder
   u32 mesh_id;    // Mesh ID in renderer (when implemented)
@@ -88,6 +88,15 @@ typedef struct {
   f32 lod_near_distance;
   f32 lod_far_distance;
   u32 lod_level; // 0 = full, 1 = medium, 2 = far
+  
+  // Extended state fields for enhanced loading system
+  bool is_loaded;        // Whether model has been loaded
+  bool is_valid;         // Whether model data is valid
+  bool is_optimized;     // Whether model has been optimized
+  bool texture_loaded;   // Whether texture has been loaded
+  u32 load_count;        // Number of times model was loaded
+  f32 total_render_time; // Total time spent rendering this model
+  f32 last_used_time;    // Last time this model was used
 } SpiritModelComponent;
 
 // Initialize spirit model component (stub)

@@ -365,15 +365,15 @@ struct EditorSearchBar: View {
     }
 }
 
-// MARK: - Divider
+// MARK: - Editor Divider (Duplicate - Removed)
 
-struct EditorDivider: View {
-    var body: some View {
-        Rectangle()
-            .fill(DesignSystem.Colors.border)
-            .frame(height: 1)
-    }
-}
+// struct EditorDivider: View {
+//     var body: some View {
+//         Rectangle()
+//             .fill(DesignSystem.Colors.border)
+//             .frame(height: 1)
+//     }
+// }
 
 // MARK: - Loading Indicator
 

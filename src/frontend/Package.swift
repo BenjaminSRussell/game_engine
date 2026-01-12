@@ -30,7 +30,7 @@ let package = Package(
             name: "CVoxelForge",
             path: "CVoxelForge",
             sources: [
-                "swift_bridge.c",
+                "swift_bridge_clean.c",
                 "occlusion_vfx_stubs.c",
                 "world_editor_stubs.c",
                 "graphics_debug_stubs.c",
@@ -39,7 +39,16 @@ let package = Package(
             ],
             publicHeadersPath: "include",
             cSettings: [
-                .headerSearchPath("include")
+                .headerSearchPath("include"),
+                .unsafeFlags([
+                    "-I", "../../src/engine/include",
+                    "-I", "../../src/engine",
+                    "-I", "../../src/game/blockgame/include",
+                    "-I", "../../src/engine/core",
+                    "-I", "../../src/engine/renderer/core",
+                    "-I", "../../src/engine/ecs",
+                    "-I", "../../src/engine/ai"
+                ])
             ]
         ),
         // Main Studio Executable
@@ -50,15 +59,13 @@ let package = Package(
             exclude: [
                 "Tests", 
                 ".build", 
-                "Resources", 
-                "Editors", 
-                "build_output.txt", 
+                "Backups",
                 "CVoxelForge", 
                 "Core/Bridges", 
                 "Core/Tests",
                 "Platform/Tests",
-                "engine", // exclude the old engine folder if it remains
-                "editor"  // exclude the old editor folder if it remains
+                "Editors",
+                "build_output.txt"
             ],
             sources: [
                 "App.swift", 
@@ -68,12 +75,15 @@ let package = Package(
                 "Sources/",
                 "Core/", 
                 "UI/", 
-                "Platform/", 
-                "Audio/"
+                "Platform/"
             ],
             swiftSettings: [
                 .interoperabilityMode(.Cxx),
-                .unsafeFlags(["-I", "../../src/engine/include"])
+                .unsafeFlags([
+                    "-I", "../../src/engine/include",
+                    "-I", "../../src/engine",
+                    "-I", "../../src/game/blockgame/include"
+                ])
             ],
             linkerSettings: [
                 .unsafeFlags([
@@ -103,7 +113,12 @@ let package = Package(
             name: "VoxelForgeStudioTests", 
             dependencies: ["VoxelForgeStudio"], 
             path: "Tests", 
-            sources: ["CoreSystemsTests.swift"]
+            sources: [
+                "CoreSystemsTests.swift",
+                "EngineBridgeTests.swift",
+                "FrontendIntegrationTests.swift",
+                "EngineConnectionTests.swift"
+            ]
         )
     ]
 )

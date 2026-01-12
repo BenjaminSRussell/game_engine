@@ -33,8 +33,6 @@
 //
 // Invariants:
 // - Matrices are assumed to be 4x4 floating-point matrices.
-// - Column-major storage order must be respected when interacting with graphics
-// APIs.
 // - Input vectors for transformations are assumed to be `Vec3` types (from
 // `vec3.h`).
 // - Rotation angles are expected in radians.
@@ -75,7 +73,7 @@ typedef struct {
 } Mat4Decomposition;
 
 // Column-major 4x4 matrix (OpenGL style)
-typedef union {
+typedef union Mat4 {
   f32 m[16];
   f32 data[4][4];
   struct {

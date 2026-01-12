@@ -131,7 +131,7 @@ static bool validate_player_inventory(PlayerComponent *player) {
     if (!player) return false;
     
     // Basic inventory validation
-    if (!player->inventory.slots || player->inventory.slot_count == 0) {
+    if (!player->inventory.slots || MAX_INVENTORY_SLOTS == 0) {
         LOG_ERROR("Player inventory not properly initialized");
         return false;
     }

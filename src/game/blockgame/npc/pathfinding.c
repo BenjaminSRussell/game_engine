@@ -5,11 +5,10 @@
 #include <ecs/ecs.h>
 #include <math.h>
 #include <math/vec3.h>
-#include <math/vec3_extra.h>
 #include <npc/pathfinding.h>
 #include <stdlib.h>
 #include <string.h>
-#include <world/world.h>
+#include <world/world_data.h>
 
 // Priority queue node for A*
 typedef struct {

@@ -63,7 +63,7 @@ public struct AssetBrowserView: View {
                     GridItem(.adaptive(minimum: 120, maximum: 150), spacing: 16)
                 ], spacing: 16) {
                     ForEach(filteredAssets) { asset in
-                        AssetCard(asset: asset, isSelected: selectedAsset?.id == asset.id)
+                        BrowserAssetCard(asset: asset, isSelected: selectedAsset?.id == asset.id)
                             .onTapGesture {
                                 selectedAsset = asset
                                 onAssetSelected(asset)
@@ -88,9 +88,9 @@ public struct AssetBrowserView: View {
     }
 }
 
-// MARK: - Asset Card
+// MARK: - Browser Asset Card
 
-struct AssetCard: View {
+struct BrowserAssetCard: View {
     let asset: BrowserAssetItem
     let isSelected: Bool
     

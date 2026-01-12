@@ -42,6 +42,7 @@
 
 // Forward declarations
 struct ECSWorld;
+struct World;
 
 // Pathfinding functions
 bool npc_find_path(struct World *ecs, EntityID entity,

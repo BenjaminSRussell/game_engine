@@ -2,7 +2,8 @@ import SwiftUI
 import CEngineCore
 
 /// Main entry point for VoxelForge Editor
-@main
+// @main - Commented out to avoid conflict with App.swift
+@available(macOS 14.0, *)
 struct VoxelForgeEditorApp: App {
     @State private var deltaTime: Double = 0.016
     @State private var rendererBridge: UnsafeMutablePointer<RendererBridge>?

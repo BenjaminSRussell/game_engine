@@ -489,15 +489,6 @@ Catch2_IS_TOP_LEVEL:STATIC=OFF
 //Value Computed by CMake
 Catch2_SOURCE_DIR:STATIC=/Users/benjaminrussell/Desktop/Minecraft v2/Vendor/Catch2
 
-//Value Computed by CMake
-Minecraft_BINARY_DIR:STATIC=/Users/benjaminrussell/Desktop/Minecraft v2
-
-//Value Computed by CMake
-Minecraft_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-Minecraft_SOURCE_DIR:STATIC=/Users/benjaminrussell/Desktop/Minecraft v2
-
 //Path to a file.
 ZLIB_INCLUDE_DIR:PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
 

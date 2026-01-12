@@ -12,6 +12,10 @@
 #include <player/spell_combination.h>
 #include <string.h>
 #include <core/logger.h>
+#include <effects/vfx/particle_system.h>
+
+// Forward declaration for global particle system
+extern ParticleSystem *g_particle_system;
 
 // Enhanced spell cooldown system
 #define MAX_COOLDOWN_SPELLS 16

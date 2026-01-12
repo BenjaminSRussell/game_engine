@@ -74,6 +74,7 @@ static u32 g_falling_block_count = 0;
 
 // Enhanced falling block creation with better physics
 static Entity create_falling_block_entity(World *world, PhysicsWorld *physics_world, 
+                                          BlockRegistry *block_registry,
                                           BlockID block_type, Vec3 position) {
     if (!world || !physics_world)
         return INVALID_ENTITY;
@@ -188,7 +189,7 @@ void block_update_falling(ChunkManager *chunk_manager,
     // 2. Create enhanced falling block entity
     if (world && physics_world) {
       Vec3 position = vec3((f32)x + 0.5f, (f32)y + 0.5f, (f32)z + 0.5f);
-      create_falling_block_entity(world, physics_world, block, position);
+      create_falling_block_entity(world, physics_world, block_registry, block, position);
     }
   }
 }

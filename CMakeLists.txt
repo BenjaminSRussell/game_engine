@@ -477,7 +477,7 @@ endmacro()
 # Full Integration Verification
 # ===========================================
 add_executable(full_integration_test src/engine/core/integration/full_engine_test.c)
-target_link_libraries(full_integration_test PRIVATE Engine "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
+target_link_libraries(full_integration_test PRIVATE Engine Game ZLIB::ZLIB Threads::Threads "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
 target_include_directories(full_integration_test PRIVATE
     ${CMAKE_SOURCE_DIR}/src/engine/include
     ${CMAKE_SOURCE_DIR}/src/engine
