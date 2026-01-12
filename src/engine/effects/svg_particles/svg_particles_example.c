@@ -7,7 +7,7 @@
 
 #include "svg_particle_system.h"
 #include "svg_particle_renderer.h"
-#include "../../../editor/importer/svg_importer.h"
+#include "editor/importer/svg_importer.h"
 
 /* ============================================================================
    Example 1: Basic SVG Circle Particles

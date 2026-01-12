@@ -1,5 +1,5 @@
 #include "svg_particle_system.h"
-#include "../../core/memory/memory.h"
+#include "core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

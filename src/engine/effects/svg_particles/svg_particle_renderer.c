@@ -1,5 +1,5 @@
 #include "svg_particle_renderer.h"
-#include "../../core/logger.h"
+#include "core/logger.h"
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -220,7 +220,6 @@ void svg_particle_renderer_render_system(
 
     for (uint32_t i = 0; i < system->emitter_count; i++) {
         SVGParticleEmitter *emitter = (SVGParticleEmitter *)&system->emitters[i];
-        SVGParticleRenderState render_state = emitter->render_state;
-        svg_particle_renderer_render(emitter, &render_state);
+        svg_particle_renderer_render(emitter, NULL);
     }
 }
