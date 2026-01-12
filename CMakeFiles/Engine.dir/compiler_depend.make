@@ -23795,7 +23795,22 @@ CMakeFiles/Engine.dir/src/engine/assets/importer/gltf_material_bridge.c.o: src/e
   src/engine/include/rendering/material.h \
   src/engine/include/rendering/mesh.h \
   src/engine/include/rendering/texture_system.h \
-  src/engine/platform/vulkan/vk_instance.h
+  src/engine/platform/vulkan/vk_instance.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_av1std.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_av1std_decode.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_av1std_encode.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_h264std.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_h264std_decode.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_h264std_encode.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_h265std.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_h265std_decode.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_h265std_encode.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_vp9std.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codec_vp9std_decode.h \
+  /opt/homebrew/include/vk_video/vulkan_video_codecs_common.h \
+  /opt/homebrew/include/vulkan/vk_platform.h \
+  /opt/homebrew/include/vulkan/vulkan.h \
+  /opt/homebrew/include/vulkan/vulkan_core.h
 
 CMakeFiles/Engine.dir/src/engine/assets/io/async/async_io_manager.c.o: src/engine/assets/io/async/async_io_manager.c \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
@@ -58789,15 +58804,17 @@ src/engine/assets/io/export/manager_01.c:
 
 src/engine/assets/io/export/asset_export_renderer.c:
 
+src/engine/assets/io/export/asset_export_processor.c:
+
 src/engine/assets/io/export/asset_export_manager.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/MacMemory.h:
+src/engine/assets/io/export/asset_export_manager.c:
 
-src/engine/assets/io/compression/renderer_03.c:
+src/engine/assets/io/compression/system_02.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLLibrary.h:
+src/engine/assets/io/compression/processor_04.h:
 
-src/engine/assets/io/compression/processor_04.c:
+src/engine/assets/io/compression/manager_01.c:
 
 src/engine/assets/io/scene/scene_renderer.h:
 
@@ -58875,6 +58892,28 @@ src/engine/assets/io/async/async_io_renderer.h:
 
 src/engine/assets/io/async/async_io_manager.c:
 
+src/engine/ai/ml/ml_system.c:
+
+/opt/homebrew/include/vulkan/vulkan.h:
+
+/opt/homebrew/include/vulkan/vk_platform.h:
+
+/opt/homebrew/include/vk_video/vulkan_video_codec_vp9std.h:
+
+/opt/homebrew/include/vk_video/vulkan_video_codec_h265std_decode.h:
+
+src/engine/character/skin/skin_detail.c:
+
+src/engine/assets/io/serialization/serialization_renderer.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLCPUComputeDevice.h:
+
+/opt/homebrew/include/vk_video/vulkan_video_codec_h264std_decode.h:
+
+/opt/homebrew/include/vk_video/vulkan_video_codec_h264std.h:
+
+/opt/homebrew/include/vk_video/vulkan_video_codec_av1std.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/time.h:
 
 src/engine/platform/vulkan/vk_instance.h:
@@ -58884,10 +58923,6 @@ src/engine/include/rendering/gpu_material.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/CMSEncoder.h:
 
 src/engine/include/assets/gltf_loader.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/AXWebConstants.h:
-
-src/engine/assets/io/compression/renderer_03.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSImage.framework/Headers/MPSImageKernel.h:
 
@@ -59016,6 +59051,8 @@ src/engine/animation/control_rig.c:
 src/engine/animation/compression/keyframe_reducer.c:
 
 src/engine/include/animation/blending/inertialization.h:
+
+/opt/homebrew/include/vulkan/vulkan_core.h:
 
 src/engine/ai/planning/htn_planner.c:
 
@@ -59197,8 +59234,6 @@ src/engine/character/animation/skeletal/bone_transforms.h:
 
 src/engine/include/ai/procedural_advanced/city_grid.h:
 
-src/engine/ai/ml/ml_system.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/PEFBinaryFormat.h:
 
 src/engine/include/ai/ml/ml_inference.h:
@@ -59280,6 +59315,8 @@ src/engine/ecs/mass_ecb.h:
 src/engine/include/ai/ml/dlaa.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_short.h:
+
+/opt/homebrew/include/vk_video/vulkan_video_codec_av1std_decode.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_u_int.h:
 
@@ -59645,10 +59682,6 @@ src/engine/include/ai/ml_navigation.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/cups/versioning.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_strings.h:
-
-src/engine/assets/io/compression/system_02.c:
-
 src/engine/include/ai/npc_advanced/investigation.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/cups/http.h:
@@ -59706,6 +59739,8 @@ src/engine/assets/io/streaming/renderer_03.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSNNGridSample.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/x509defs.h:
+
+/opt/homebrew/include/vk_video/vulkan_video_codec_h265std.h:
 
 src/engine/include/rendering/texture_system.h:
 
@@ -59915,8 +59950,6 @@ src/engine/animation/blend_tree_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSInstanceAccelerationStructure.h:
 
-src/engine/assets/io/compression/processor_04.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/Headers/MPSAccelerationStructure.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFNumberFormatter.h:
@@ -59980,10 +60013,6 @@ src/engine/assets/io/formats/format_renderer.c:
 src/engine/character/animation/ik_advanced/look_at_ik.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNConvolution.h:
-
-src/engine/animation/layering/anim_layering_impl.c:
-
-src/engine/assets/io/export/asset_export_processor.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNBatchNormalization.h:
 
@@ -60193,6 +60222,10 @@ src/engine/character/animation/skeletal/bone_transforms.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLParallelRenderCommandEncoder.h:
 
+src/engine/assets/io/compression/processor_04.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLLibrary.h:
+
 src/engine/ai/voice/text_to_speech_neural.c:
 
 src/engine/include/audio/audio_system.h:
@@ -60374,8 +60407,6 @@ src/engine/ai/vision/saliency_map.c:
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrauth.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTL4CommandBuffer.h:
-
-src/engine/assets/io/export/asset_export_processor.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AUAudioUnitImplementation.h:
 
@@ -60614,6 +60645,8 @@ src/engine/include/ai/npc_advanced/cover_system.h:
 src/engine/ai/vision/visual_cortex_recognition.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSIndexPath.h:
+
+/opt/homebrew/include/vk_video/vulkan_video_codec_h265std_encode.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSHFSFileTypes.h:
 
@@ -60938,6 +60971,10 @@ src/engine/assets/io/streaming/manager_01.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Multiprocessing.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/machine/types.h:
+
+src/engine/assets/io/compression/renderer_03.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/MacMemory.h:
 
 src/engine/character/animation/ik_impl.c:
 
@@ -61295,6 +61332,10 @@ src/engine/core/threading/job.c:
 
 src/engine/include/core/utils.h:
 
+src/engine/ai/asset_gen/neural_impl.c:
+
+/opt/homebrew/include/vk_video/vulkan_video_codec_vp9std_decode.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGLayer.h:
 
 src/engine/ai/logic/fuzzy_logic.c:
@@ -61342,6 +61383,8 @@ src/engine/assets/resources/resource_management/resource_lifetime.c:
 src/engine/assets/system/asset_system/import/fbx_importer.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGConvertColorDataWithFormat.h:
+
+/opt/homebrew/include/vk_video/vulkan_video_codecs_common.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSURLCredentialStorage.h:
 
@@ -61509,6 +61552,8 @@ src/engine/character/animation/state_machines/state_editor.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_time.h:
 
+/opt/homebrew/include/vk_video/vulkan_video_codec_av1std_encode.h:
+
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_arg.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFTree.h:
@@ -61599,8 +61644,6 @@ src/engine/assets/io/serialization/serialization_manager.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/FoundationErrors.h:
 
-src/engine/assets/io/compression/manager_01.c:
-
 src/engine/ai/npc_advanced/behavior_tree_utility.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/AXNotificationConstants.h:
@@ -61648,8 +61691,6 @@ src/engine/character/eyes/eye_rendering/eye_refraction.c:
 src/engine/assets/textures/streaming/streaming_budget.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGFont.h:
-
-src/engine/assets/io/export/asset_export_manager.c:
 
 src/engine/animation/procedural/proc_breathing.c:
 
@@ -61819,8 +61860,6 @@ src/engine/animation/synthesis/motion_matching.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFFileSecurity.h:
 
-src/engine/ai/asset_gen/neural_impl.c:
-
 src/engine/include/core/string_utils.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSNull.h:
@@ -61864,6 +61903,10 @@ src/engine/include/rendering/mesh.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_ctermid.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h:
+
+src/engine/assets/io/compression/renderer_03.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/AXWebConstants.h:
 
 src/engine/include/ai/ai_pipeline.h:
 
@@ -62097,6 +62140,8 @@ src/engine/include/core/engine.h:
 
 src/engine/assets/system/asset_system/compression_assets/asset_bundling.c:
 
+/opt/homebrew/include/vk_video/vulkan_video_codec_h264std_encode.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/device/device_types.h:
 
 src/engine/assets/textures/compression/compression_quality.h:
@@ -62255,8 +62300,6 @@ src/engine/include/ai/voice/speech_to_text.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGPDFScanner.h:
 
-src/engine/assets/io/compression/system_02.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSDateFormatter.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h:
@@ -62266,6 +62309,10 @@ src/engine/assets/io/compression/system_02.h:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_ct_rune_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFSocketStream.h:
+
+src/engine/assets/io/export/asset_export_processor.h:
+
+src/engine/animation/layering/anim_layering_impl.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach_debug/vm_info.h:
 
@@ -62331,15 +62378,13 @@ src/engine/include/animation/compression/acl_wrapper.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/OSServices.framework/Headers/CSIdentityAuthority.h:
 
+src/engine/assets/io/compression/system_02.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_strings.h:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLMultiArrayConstraint.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Metal.framework/Headers/MTLIndirectCommandBuffer.h:
-
-src/engine/character/skin/skin_detail.c:
-
-src/engine/assets/io/serialization/serialization_renderer.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreML.framework/Headers/MLCPUComputeDevice.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSCore.framework/Headers/MPSState.h:
 

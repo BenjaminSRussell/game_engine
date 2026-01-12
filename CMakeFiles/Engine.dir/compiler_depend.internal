@@ -23951,6 +23951,21 @@ CMakeFiles/Engine.dir/src/engine/assets/importer/gltf_material_bridge.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/mesh.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/rendering/texture_system.h
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/platform/vulkan/vk_instance.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_av1std.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_av1std_decode.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_av1std_encode.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_h264std.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_h264std_decode.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_h264std_encode.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_h265std.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_h265std_decode.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_h265std_encode.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_vp9std.h
+ /opt/homebrew/include/vk_video/vulkan_video_codec_vp9std_decode.h
+ /opt/homebrew/include/vk_video/vulkan_video_codecs_common.h
+ /opt/homebrew/include/vulkan/vk_platform.h
+ /opt/homebrew/include/vulkan/vulkan.h
+ /opt/homebrew/include/vulkan/vulkan_core.h
 
 CMakeFiles/Engine.dir/src/engine/assets/io/async/async_io_manager.c.o
  /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/assets/io/async/async_io_manager.c
