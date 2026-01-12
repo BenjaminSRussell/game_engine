@@ -393,11 +393,28 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/old/.*")
 # list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/audio/core/.*\\.c$")
 # list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/audio/dsp/.*\\.c$")
 
-# Vulkan backend (not needed for macOS/Metal build and has compilation errors)
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/vulkan/.*\\.c$")
+# Vulkan backend - conditional compilation based on platform
+if(NOT APPLE)
+    # On Linux/Windows, include Vulkan backend
+    file(GLOB_RECURSE BACKEND_VULKAN_SOURCES "src/engine/backend/vulkan/*.c")
+    list(APPEND ENGINE_SOURCES ${BACKEND_VULKAN_SOURCES})
+    message(STATUS "Vulkan backend enabled for non-Apple platform")
+else()
+    # On macOS, exclude Vulkan (use Metal instead)
+    list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/vulkan/.*\\.c$")
+    message(STATUS "Vulkan backend disabled on macOS, using Metal backend")
+endif()
 
-# Metal backend .c files (mostly broken synchronization examples/stubs)
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/.*\\.c$")
+# Metal backend C files - re-enabled for proper Metal support
+if(APPLE)
+    # On macOS, include Metal backend C files
+    file(GLOB_RECURSE BACKEND_METAL_C_SOURCES "src/engine/backend/metal/*.c")
+    list(APPEND ENGINE_SOURCES ${BACKEND_METAL_C_SOURCES})
+    message(STATUS "Metal backend C files enabled on macOS")
+else()
+    # On Linux/Windows, exclude Metal (Objective-C specific)
+    list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/.*\\.c$")
+endif()
 
 # Editor subsystem - RE-ENABLED for testing
 # list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/editor/.*\\.c$")

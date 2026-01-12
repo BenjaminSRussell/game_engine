@@ -189,11 +189,15 @@ static void voxel_renderer_render_dynamic_mesh(IRenderer *self, Mesh *mesh,
 static void voxel_renderer_render_sprite(IRenderer *self, Vec3 position,
                                          Vec2 size, u32 texture_id,
                                          f32 rotation) {
-  (void)self;
-  (void)position;
-  (void)size;
-  (void)texture_id;
-  (void)rotation;
+  VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
+  if (!data) return;
+
+  // Sprite rendering via Vulkan backend
+  // TODO: Implement 3D sprite batching and rendering
+  LOG_TRACE("Sprite render: pos=[%.2f,%.2f,%.2f], size=[%.2f,%.2f], "
+            "tex=%u, rot=%.2f",
+            position.x, position.y, position.z, size.x, size.y, texture_id,
+            rotation);
 }
 static void voxel_renderer_render_entity_sprite(IRenderer *self, Entity entity,
                                                 Vec3 position, Vec2 size,
@@ -206,18 +210,23 @@ static void voxel_renderer_render_entity_sprite(IRenderer *self, Entity entity,
 }
 static void voxel_renderer_render_ui_quad(IRenderer *self, Vec2 pos, Vec2 size,
                                           u32 texture_id) {
-  (void)self;
-  (void)pos;
-  (void)size;
-  (void)texture_id;
+  VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
+  if (!data) return;
+
+  // UI quad rendering via Vulkan backend
+  // TODO: Implement UI quad batching and rendering
+  LOG_TRACE("UI quad render: pos=[%.2f,%.2f], size=[%.2f,%.2f], tex=%u",
+            pos.x, pos.y, size.x, size.y, texture_id);
 }
 static void voxel_renderer_render_text(IRenderer *self, const char *text,
                                        Vec2 pos, f32 scale, Vec3 color) {
-  (void)self;
-  (void)text;
-  (void)pos;
-  (void)scale;
-  (void)color;
+  VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
+  if (!data || !text || text[0] == '\0') return;
+
+  // Text rendering via Vulkan backend
+  // TODO: Implement text rendering pipeline (font atlas + glyph rendering)
+  LOG_TRACE("Text render: '%s' at [%.2f,%.2f], scale=%.2f, color=[%.2f,%.2f,%.2f]",
+            text, pos.x, pos.y, scale, color.x, color.y, color.z);
 }
 
 static void

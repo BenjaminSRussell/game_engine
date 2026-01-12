@@ -3,7 +3,7 @@
 # TODO: Medium - Add support for other platforms (Linux, Windows) by abstracting platform-specific code.
 
 cmake_minimum_required(VERSION 3.20)
-project(BlockGame C CXX OBJC Swift)
+project(BlockGame C CXX OBJC)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -201,64 +201,64 @@ if(APPLE)
         src/engine/core/swift_bridge_wrapper.c
     )
     
-    # Add Swift frontend target
-    find_program(SWIFT_EXECUTABLE swift)
-    if(SWIFT_EXECUTABLE)
-        message(STATUS "Swift compiler found, adding Swift frontend")
-        
-        # Create Swift package executable
-        add_executable(VoxelForgeStudio
-            src/frontend/App.swift
-            src/frontend/ContentView.swift
-            src/frontend/Sources/EngineBridge.swift
-            src/frontend/Core/CommandManager.swift
-            src/frontend/Core/DesignSystem.swift
-            src/frontend/Core/Profiler.swift
-            src/frontend/Core/SelectionManager.swift
-            src/frontend/Views/Panels/SceneHierarchyPanel.swift
-            src/frontend/Views/Panels/InspectorPanel.swift
-            src/frontend/Views/Panels/ViewportPanel.swift
-            src/frontend/Views/Panels/ContentBrowserPanel.swift
-        )
-        
-        # Explicitly set the language for Swift
-        set_source_files_properties(src/frontend/App.swift PROPERTIES LANGUAGE Swift)
-        set_source_files_properties(src/frontend/ContentView.swift PROPERTIES LANGUAGE Swift)
-        set_source_files_properties(src/frontend/Sources/EngineBridge.swift PROPERTIES LANGUAGE Swift)
-        set_source_files_properties(src/frontend/Core/CommandManager.swift PROPERTIES LANGUAGE Swift)
-        set_source_files_properties(src/frontend/Core/DesignSystem.swift PROPERTIES LANGUAGE Swift)
-        set_source_files_properties(src/frontend/Core/Profiler.swift PROPERTIES LANGUAGE Swift)
-        set_source_files_properties(src/frontend/Core/SelectionManager.swift PROPERTIES LANGUAGE Swift)
-        set_source_files_properties(src/frontend/Views/Panels/SceneHierarchyPanel.swift PROPERTIES LANGUAGE Swift)
-        set_source_files_properties(src/frontend/Views/Panels/InspectorPanel.swift PROPERTIES LANGUAGE Swift)
-        set_source_files_properties(src/frontend/Views/Panels/ViewportPanel.swift PROPERTIES LANGUAGE Swift)
-        set_source_files_properties(src/frontend/Views/Panels/ContentBrowserPanel.swift PROPERTIES LANGUAGE Swift)
-        
-        set_target_properties(VoxelForgeStudio PROPERTIES
-            SWIFT_MODULE_NAME VoxelForgeStudio
-            SWIFT_MODULE_INSTALL YES
-        )
-        
-        target_link_libraries(VoxelForgeStudio PRIVATE 
-            Engine 
-            "-framework Foundation" 
-            "-framework SwiftUI" 
-            "-framework Metal" 
-            "-framework MetalKit" 
-            "-framework Cocoa" 
-            "-framework CoreGraphics"
-        )
-        
-        target_include_directories(VoxelForgeStudio PRIVATE
-            ${CMAKE_SOURCE_DIR}/include
-            ${CMAKE_SOURCE_DIR}/include/platform
-        )
-        
-        # Add Swift bridge compilation
-        target_compile_definitions(VoxelForgeStudio PRIVATE SWIFT_BUILD)
-    else()
-        message(WARNING "Swift compiler not found, Swift frontend will not be built")
-    endif()
+    # Add Swift frontend target - DISABLED FOR NOW
+    # find_program(SWIFT_EXECUTABLE swift)
+    # if(SWIFT_EXECUTABLE)
+    #     message(STATUS "Swift compiler found, adding Swift frontend")
+    #     
+    #     # Create Swift package executable
+    #     add_executable(VoxelForgeStudio
+    #         src/frontend/App.swift
+    #         src/frontend/ContentView.swift
+    #         src/frontend/Sources/EngineBridge.swift
+    #         src/frontend/Core/CommandManager.swift
+    #         src/frontend/Core/DesignSystem.swift
+    #         src/frontend/Core/Profiler.swift
+    #         src/frontend/Core/SelectionManager.swift
+    #         src/frontend/Views/Panels/SceneHierarchyPanel.swift
+    #         src/frontend/Views/Panels/InspectorPanel.swift
+    #         src/frontend/Views/Panels/ViewportPanel.swift
+    #         src/frontend/Views/Panels/ContentBrowserPanel.swift
+    #     )
+    #     
+    #     # Explicitly set the language for Swift
+    #     set_source_files_properties(src/frontend/App.swift PROPERTIES LANGUAGE Swift)
+    #     set_source_files_properties(src/frontend/ContentView.swift PROPERTIES LANGUAGE Swift)
+    #     set_source_files_properties(src/frontend/Sources/EngineBridge.swift PROPERTIES LANGUAGE Swift)
+    #     set_source_files_properties(src/frontend/Core/CommandManager.swift PROPERTIES LANGUAGE Swift)
+    #     set_source_files_properties(src/frontend/Core/DesignSystem.swift PROPERTIES LANGUAGE Swift)
+    #     set_source_files_properties(src/frontend/Core/Profiler.swift PROPERTIES LANGUAGE Swift)
+    #     set_source_files_properties(src/frontend/Core/SelectionManager.swift PROPERTIES LANGUAGE Swift)
+    #     set_source_files_properties(src/frontend/Views/Panels/SceneHierarchyPanel.swift PROPERTIES LANGUAGE Swift)
+    #     set_source_files_properties(src/frontend/Views/Panels/InspectorPanel.swift PROPERTIES LANGUAGE Swift)
+    #     set_source_files_properties(src/frontend/Views/Panels/ViewportPanel.swift PROPERTIES LANGUAGE Swift)
+    #     set_source_files_properties(src/frontend/Views/Panels/ContentBrowserPanel.swift PROPERTIES LANGUAGE Swift)
+    #     
+    #     set_target_properties(VoxelForgeStudio PROPERTIES
+    #         SWIFT_MODULE_NAME VoxelForgeStudio
+    #         SWIFT_MODULE_INSTALL YES
+    #     )
+    #     
+    #     target_link_libraries(VoxelForgeStudio PRIVATE 
+    #         Engine 
+    #         "-framework Foundation" 
+    #         "-framework SwiftUI" 
+    #         "-framework Metal" 
+    #         "-framework MetalKit" 
+    #         "-framework Cocoa" 
+    #         "-framework CoreGraphics"
+    #     )
+    #     
+    #     target_include_directories(VoxelForgeStudio PRIVATE
+    #         ${CMAKE_SOURCE_DIR}/include
+    #         ${CMAKE_SOURCE_DIR}/include/platform
+    #     )
+    #     
+    #     # Add Swift bridge compilation
+    #     target_compile_definitions(VoxelForgeStudio PRIVATE SWIFT_BUILD)
+    # else()
+    #     message(WARNING "Swift compiler not found, Swift frontend will not be built")
+    # endif()
 endif()
 
 # Link GLFW if found

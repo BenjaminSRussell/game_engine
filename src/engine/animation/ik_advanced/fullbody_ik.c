@@ -2,7 +2,7 @@
 
 void fullbody_ik_init() {}
 
-void fullbody_ik_solve(void *skeleton, void *targets, int target_count) {
+void fullbody_ik_solve(void *skeleton, float *target_positions, int target_count) {
     // Full-body IK solving multiple end effectors
 }
 
