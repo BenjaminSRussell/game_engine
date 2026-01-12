@@ -8,11 +8,16 @@ struct TimelineEditorPanel: View {
     @State private var scrollOffset: CGFloat = 0
     @State private var selectedKeyframes: Set<UUID> = []
     @State private var recordingMode: Bool = false
+    @State private var isShiftPressed = false
+    
+    private let frameWidth: CGFloat = 8
+    private let minZoomLevel: CGFloat = 0.1
+    private let maxZoomLevel: CGFloat = 5.0
     
     var body: some View {
         VStack(spacing: 0) {
             // Transport Controls
-            TimelineTransportBar(timeline: timeline, recordingMode: $recordingMode)
+            TimelineTransportBar(timeline: timeline, recordingMode: $recordingMode, zoomLevel: $zoomLevel, scrollOffset: $scrollOffset)
             
             EditorDivider()
             
@@ -53,6 +58,49 @@ struct TimelineEditorPanel: View {
                             }
                             .offset(x: scrollOffset)
                         }
+                        .onScrollWheel { event in
+                            // Handle different scroll modes based on modifier keys
+                            if event.modifierFlags.contains(.shift) {
+                                // Vertical scrolling when Shift is pressed
+                                let scrollDelta = event.scrollingDeltaY
+                                let scrollSpeed: CGFloat = 2.0
+                                
+                                withAnimation(.easeOut(duration: 0.1)) {
+                                    // Note: ScrollView handles vertical scrolling automatically
+                                    // This is for any custom vertical behavior if needed
+                                }
+                            } else if event.modifierFlags.contains(.command) || event.modifierFlags.contains(.control) {
+                                // Zoom with Cmd/Ctrl + scroll
+                                let scrollDelta = event.scrollingDeltaY
+                                let zoomSpeed: CGFloat = 0.001
+                                
+                                withAnimation(.easeOut(duration: 0.1)) {
+                                    let newZoom = zoomLevel + scrollDelta * zoomSpeed
+                                    zoomLevel = max(minZoomLevel, min(maxZoomLevel, newZoom))
+                                }
+                            } else {
+                                // Horizontal scrolling with mouse wheel
+                                let scrollDelta = event.scrollingDeltaX != 0 ? event.scrollingDeltaX : event.scrollingDeltaY
+                                let scrollSpeed: CGFloat = 2.0
+                                
+                                withAnimation(.easeOut(duration: 0.1)) {
+                                    scrollOffset += scrollDelta * scrollSpeed
+                                    
+                                    // Clamp scroll offset to reasonable bounds
+                                    let maxScrollOffset: CGFloat = 0
+                                    let minScrollOffset: CGFloat = -CGFloat(timeline.totalFrames) * frameWidth * zoomLevel + proxy.size.width - 200 // Account for track names
+                                    scrollOffset = max(minScrollOffset, min(maxScrollOffset, scrollOffset))
+                                }
+                            }
+                        }
+                        .onKeyPress(.shift) { key in
+                            isShiftPressed = true
+                            return .ignored
+                        }
+                        .onKeyUp(.shift) { key in
+                            isShiftPressed = false
+                            return .ignored
+                        }
                         
                         // Playhead
                         PlayheadView(
@@ -74,6 +122,11 @@ struct TimelineEditorPanel: View {
 struct TimelineTransportBar: View {
     @ObservedObject var timeline: AnimationTimeline
     @Binding var recordingMode: Bool
+    @Binding var zoomLevel: CGFloat
+    @Binding var scrollOffset: CGFloat
+    
+    private let minZoomLevel: CGFloat = 0.1
+    private let maxZoomLevel: CGFloat = 5.0
     
     var body: some View {
         HStack(spacing: 12) {
@@ -153,6 +206,50 @@ struct TimelineTransportBar: View {
                 .cornerRadius(4)
             }
             .menuStyle(.borderlessButton)
+            
+            EditorDivider()
+                .frame(height: 30)
+            
+            // Zoom Controls
+            HStack(spacing: 4) {
+                Button(action: {
+                    withAnimation(.easeOut(duration: 0.1)) {
+                        zoomLevel = max(minZoomLevel, zoomLevel * 0.8)
+                    }
+                }) {
+                    Image(systemName: "minus.magnifyingglass")
+                        .font(.system(size: 14))
+                }
+                .buttonStyle(.plain)
+                .help("Zoom Out (Cmd/Ctrl + Scroll)")
+                
+                Text("\(Int(zoomLevel * 100))%")
+                    .font(DesignSystem.Typography.smallMono)
+                    .frame(width: 40)
+                
+                Button(action: {
+                    withAnimation(.easeOut(duration: 0.1)) {
+                        zoomLevel = min(maxZoomLevel, zoomLevel * 1.25)
+                    }
+                }) {
+                    Image(systemName: "plus.magnifyingglass")
+                        .font(.system(size: 14))
+                }
+                .buttonStyle(.plain)
+                .help("Zoom In (Cmd/Ctrl + Scroll)")
+                
+                Button(action: {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        zoomLevel = 1.0
+                        scrollOffset = 0
+                    }
+                }) {
+                    Image(systemName: "1.magnifyingglass")
+                        .font(.system(size: 14))
+                }
+                .buttonStyle(.plain)
+                .help("Reset Zoom")
+            }
             
             EditorDivider()
                 .frame(height: 30)

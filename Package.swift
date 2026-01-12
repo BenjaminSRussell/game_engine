@@ -1,6 +1,4 @@
 // swift-tools-version: 5.9
-# SwiftUI Editor - Xcode Project Configuration
-# Package.swift for editor dependencies
 
 import PackageDescription
 

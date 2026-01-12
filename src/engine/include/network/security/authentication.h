@@ -228,4 +228,30 @@ bool auth_is_valid_password(const char* password);
 bool auth_is_valid_email(const char* email);
 UserRole auth_role_from_string(const char* role_string);
 
+// =================================================================================================
+//                              ANTI-CHEAT SYSTEM
+// =================================================================================================
+
+// Anti-cheat initialization and management
+bool anticheat_init(uint32_t max_players);
+void anticheat_shutdown(void);
+
+// Validation functions
+bool anticheat_validate_movement(uint64_t player_id, const char* username, 
+                                 Vec3 new_position, Vec3 new_velocity, uint64_t timestamp);
+bool anticheat_validate_combat(uint64_t player_id, const char* username, 
+                              uint64_t timestamp, bool hit_registered);
+bool anticheat_validate_client(uint64_t player_id, const char* username, uint32_t client_hash);
+
+// Enforcement actions
+void anticheat_ban_player(uint64_t player_id, const char* reason);
+void anticheat_kick_player(uint64_t player_id, const char* reason);
+bool anticheat_is_player_banned(uint64_t player_id);
+
+// Statistics and configuration
+void anticheat_get_statistics(uint32_t* total_bans, uint32_t* total_kicks, 
+                             uint32_t* speed_hacks, uint32_t* fly_hacks, uint32_t* combat_hacks);
+void anticheat_update_settings(float max_speed, float max_vertical_speed, 
+                              uint32_t max_attacks_per_second, uint32_t violation_threshold);
+
 #endif // AUTHENTICATION_H

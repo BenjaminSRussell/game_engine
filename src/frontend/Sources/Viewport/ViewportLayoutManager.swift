@@ -22,7 +22,7 @@ class ViewportLayoutManager: ObservableObject {
     ]
     
     // MARK: - Viewport Layout
-    enum ViewportLayout: String, CaseIterable, Identifiable {
+    enum ViewportLayout: String, CaseIterable, Identifiable, Codable {
         // TODO: Implement single viewport
         case single = "Single"
         // TODO: Implement horizontal split (2 viewports)
@@ -68,7 +68,7 @@ class ViewportLayoutManager: ObservableObject {
     }
     
     // MARK: - Viewport Configuration
-    struct ViewportConfiguration: Identifiable {
+    struct ViewportConfiguration: Identifiable, Codable {
         let id = UUID()
         var name: String
         var cameraPreset: CameraPreset
@@ -89,13 +89,27 @@ class ViewportLayoutManager: ObservableObject {
                 showStats: false
             )
         }
+    }
+    
+    // MARK: - Viewport Layout Data
+    struct ViewportLayoutData: Codable {
+        let name: String
+        let layoutType: ViewportLayout
+        let viewports: [ViewportConfiguration]
+        let syncedCameras: Bool
+        let activeViewportIndex: Int
         
-        // TODO: Save viewport configuration to file
-        // TODO: Load viewport configuration from file
+        init(name: String, layoutType: ViewportLayout, viewports: [ViewportConfiguration], syncedCameras: Bool, activeViewportIndex: Int) {
+            self.name = name
+            self.layoutType = layoutType
+            self.viewports = viewports
+            self.syncedCameras = syncedCameras
+            self.activeViewportIndex = activeViewportIndex
+        }
     }
     
     // MARK: - Camera Presets
-    enum CameraPreset: String, CaseIterable {
+    enum CameraPreset: String, CaseIterable, Codable {
         case perspective = "Perspective"
         case top = "Top"
         case bottom = "Bottom"
@@ -141,6 +155,106 @@ class ViewportLayoutManager: ObservableObject {
         }
     }
     
+    // MARK: - Viewport Layout Implementation
+    
+    /// Get the frame rectangles for each viewport in the current layout
+    func getViewportRects(in containerRect: CGRect) -> [CGRect] {
+        switch currentLayout {
+        case .single:
+            return [containerRect]
+        case .horizontalSplit:
+            return getHorizontalSplitRects(in: containerRect)
+        case .verticalSplit:
+            return getVerticalSplitRects(in: containerRect)
+        case .quad:
+            return getQuadRects(in: containerRect)
+        case .threeVertical:
+            return getThreeVerticalRects(in: containerRect)
+        case .threeHorizontal:
+            return getThreeHorizontalRects(in: containerRect)
+        case .pip:
+            return getPictureInPictureRects(in: containerRect)
+        case .custom:
+            return getCustomLayoutRects(in: containerRect)
+        }
+    }
+    
+    // MARK: - Layout Rectangle Calculations
+    
+    /// Horizontal split layout (2 viewports side by side)
+    private func getHorizontalSplitRects(in containerRect: CGRect) -> [CGRect] {
+        let halfWidth = containerRect.width / 2
+        let leftRect = CGRect(x: containerRect.minX, y: containerRect.minY, width: halfWidth, height: containerRect.height)
+        let rightRect = CGRect(x: containerRect.minX + halfWidth, y: containerRect.minY, width: halfWidth, height: containerRect.height)
+        return [leftRect, rightRect]
+    }
+    
+    /// Vertical split layout (2 viewports stacked)
+    private func getVerticalSplitRects(in containerRect: CGRect) -> [CGRect] {
+        let halfHeight = containerRect.height / 2
+        let topRect = CGRect(x: containerRect.minX, y: containerRect.minY, width: containerRect.width, height: halfHeight)
+        let bottomRect = CGRect(x: containerRect.minX, y: containerRect.minY + halfHeight, width: containerRect.width, height: halfHeight)
+        return [topRect, bottomRect]
+    }
+    
+    /// Quad layout (2x2 grid, 4 viewports)
+    private func getQuadRects(in containerRect: CGRect) -> [CGRect] {
+        let halfWidth = containerRect.width / 2
+        let halfHeight = containerRect.height / 2
+        
+        let topLeft = CGRect(x: containerRect.minX, y: containerRect.minY, width: halfWidth, height: halfHeight)
+        let topRight = CGRect(x: containerRect.minX + halfWidth, y: containerRect.minY, width: halfWidth, height: halfHeight)
+        let bottomLeft = CGRect(x: containerRect.minX, y: containerRect.minY + halfHeight, width: halfWidth, height: halfHeight)
+        let bottomRight = CGRect(x: containerRect.minX + halfWidth, y: containerRect.minY + halfHeight, width: halfWidth, height: halfHeight)
+        
+        return [topLeft, topRight, bottomLeft, bottomRight]
+    }
+    
+    /// Three vertical layout (3 viewports side by side)
+    private func getThreeVerticalRects(in containerRect: CGRect) -> [CGRect] {
+        let thirdWidth = containerRect.width / 3
+        let leftRect = CGRect(x: containerRect.minX, y: containerRect.minY, width: thirdWidth, height: containerRect.height)
+        let middleRect = CGRect(x: containerRect.minX + thirdWidth, y: containerRect.minY, width: thirdWidth, height: containerRect.height)
+        let rightRect = CGRect(x: containerRect.minX + (thirdWidth * 2), y: containerRect.minY, width: thirdWidth, height: containerRect.height)
+        return [leftRect, middleRect, rightRect]
+    }
+    
+    /// Three horizontal layout (3 viewports stacked)
+    private func getThreeHorizontalRects(in containerRect: CGRect) -> [CGRect] {
+        let thirdHeight = containerRect.height / 3
+        let topRect = CGRect(x: containerRect.minX, y: containerRect.minY, width: containerRect.width, height: thirdHeight)
+        let middleRect = CGRect(x: containerRect.minX, y: containerRect.minY + thirdHeight, width: containerRect.width, height: thirdHeight)
+        let bottomRect = CGRect(x: containerRect.minX, y: containerRect.minY + (thirdHeight * 2), width: containerRect.width, height: thirdHeight)
+        return [topRect, middleRect, bottomRect]
+    }
+    
+    /// Picture-in-picture layout (main viewport with small overlay)
+    private func getPictureInPictureRects(in containerRect: CGRect) -> [CGRect] {
+        // Main viewport takes full container
+        let mainRect = containerRect
+        
+        // Picture-in-picture viewport is smaller, positioned in corner
+        let pipWidth: CGFloat = 320
+        let pipHeight: CGFloat = 240
+        let pipMargin: CGFloat = 20
+        
+        let pipRect = CGRect(
+            x: containerRect.maxX - pipWidth - pipMargin,
+            y: containerRect.minY + pipMargin,
+            width: pipWidth,
+            height: pipHeight
+        )
+        
+        return [mainRect, pipRect]
+    }
+    
+    /// Custom layout (user-defined arrangement)
+    private func getCustomLayoutRects(in containerRect: CGRect) -> [CGRect] {
+        // For now, default to single viewport
+        // In a full implementation, this would load user-defined layout data
+        return [containerRect]
+    }
+    
     // MARK: - Functions
     
     func setLayout(_ layout: ViewportLayout) {
@@ -149,27 +263,42 @@ class ViewportLayoutManager: ObservableObject {
         print("[ViewportLayout] Set layout to: \(layout.rawValue)")
     }
     
-    // TODO: Regenerate viewports based on layout
+    /// Regenerate viewports based on layout with proper configuration
     private func regenerateViewports() {
         let count = currentLayout.viewportCount
         
         // Keep existing viewports if possible, create new ones as needed
         if viewports.count < count {
             while viewports.count < count {
-                viewports.append(ViewportConfiguration.default)
+                let newViewport = ViewportConfiguration.default
+                viewports.append(newViewport)
             }
         } else if viewports.count > count {
             viewports = Array(viewports.prefix(count))
         }
         
         // Configure default presets for standard layouts
+        configureDefaultPresetsForLayout()
+        
+        print("[ViewportLayout] Regenerated \(count) viewports for \(currentLayout.rawValue) layout")
+    }
+    
+    /// Configure default camera presets for different layout types
+    private func configureDefaultPresetsForLayout() {
         switch currentLayout {
         case .single:
-            break // Keep existing
-        case .horizontalSplit, .verticalSplit:
+            if !viewports.isEmpty {
+                viewports[0].cameraPreset = .perspective
+            }
+        case .horizontalSplit:
             if viewports.count >= 2 {
                 viewports[0].cameraPreset = .perspective
                 viewports[1].cameraPreset = .top
+            }
+        case .verticalSplit:
+            if viewports.count >= 2 {
+                viewports[0].cameraPreset = .perspective
+                viewports[1].cameraPreset = .front
             }
         case .quad:
             if viewports.count >= 4 {
@@ -178,7 +307,13 @@ class ViewportLayoutManager: ObservableObject {
                 viewports[2].cameraPreset = .front
                 viewports[3].cameraPreset = .right
             }
-        case .threeVertical, .threeHorizontal:
+        case .threeVertical:
+            if viewports.count >= 3 {
+                viewports[0].cameraPreset = .perspective
+                viewports[1].cameraPreset = .top
+                viewports[2].cameraPreset = .front
+            }
+        case .threeHorizontal:
             if viewports.count >= 3 {
                 viewports[0].cameraPreset = .perspective
                 viewports[1].cameraPreset = .top
@@ -186,37 +321,115 @@ class ViewportLayoutManager: ObservableObject {
             }
         case .pip:
             if viewports.count >= 2 {
-                viewports[0].cameraPreset = .perspective
-                viewports[1].cameraPreset = .top
+                viewports[0].cameraPreset = .perspective  // Main viewport
+                viewports[1].cameraPreset = .top          // PIP viewport
             }
         case .custom:
+            // Keep existing configuration for custom layouts
             break
         }
     }
     
-    // TODO: Implement synchronized camera movement across viewports
+    /// Implement synchronized camera movement across viewports
     func setSyncedCameras(_ synced: Bool) {
         syncedCameras = synced
+        
+        if synced {
+            // When enabling sync, copy active viewport camera to all others
+            guard activeViewportIndex < viewports.count else { return }
+            let activeCamera = viewports[activeViewportIndex].cameraPreset
+            
+            for i in 0..<viewports.count {
+                if i != activeViewportIndex {
+                    viewports[i].cameraPreset = activeCamera
+                }
+            }
+        }
+        
         print("[ViewportLayout] Camera sync: \(synced ? "enabled" : "disabled")")
     }
     
-    // TODO: Implement viewport cloning
-    func cloneViewport(_ index: Int) {
-        guard index < viewports.count else { return }
-        let clone = viewports[index]
-        viewports.append(clone)
-        print("[ViewportLayout] Cloned viewport \(index)")
+    /// Synchronize camera movement from active viewport to others
+    func synchronizeCameraMovement(from sourceIndex: Int) {
+        guard syncedCameras && sourceIndex < viewports.count else { return }
+        
+        let sourceViewport = viewports[sourceIndex]
+        
+        for i in 0..<viewports.count {
+            if i != sourceIndex {
+                viewports[i].cameraPreset = sourceViewport.cameraPreset
+                // In a full implementation, this would also sync position, rotation, zoom
+            }
+        }
     }
     
-    // TODO: Implement viewport layout saving/loading
+    /// Implement viewport cloning
+    func cloneViewport(_ index: Int) {
+        guard index < viewports.count else { 
+            print("[ViewportLayout] Error: Cannot clone viewport \(index), index out of range")
+            return 
+        }
+        
+        let originalViewport = viewports[index]
+        let clonedViewport = ViewportConfiguration(
+            name: "\(originalViewport.name) (Clone)",
+            cameraPreset: originalViewport.cameraPreset,
+            renderingMode: originalViewport.renderingMode,
+            overlays: originalViewport.overlays,
+            showGrid: originalViewport.showGrid,
+            showGizmos: originalViewport.showGizmos,
+            showStats: originalViewport.showStats
+        )
+        
+        viewports.append(clonedViewport)
+        print("[ViewportLayout] Cloned viewport \(index) as \(clonedViewport.name)")
+    }
+    
+    /// Implement viewport layout saving/loading
     func saveLayout(name: String) {
-        print("[ViewportLayout] Saved layout: \(name)")
-        // TODO: Persist to UserDefaults or file
+        let layoutData = ViewportLayoutData(
+            name: name,
+            layoutType: currentLayout,
+            viewports: viewports,
+            syncedCameras: syncedCameras,
+            activeViewportIndex: activeViewportIndex
+        )
+        
+        // Save to UserDefaults
+        if let encoded = try? JSONEncoder().encode(layoutData) {
+            UserDefaults.standard.set(encoded, forKey: "ViewportLayout_\(name)")
+            print("[ViewportLayout] Saved layout: \(name)")
+        } else {
+            print("[ViewportLayout] Error: Failed to encode layout data for \(name)")
+        }
     }
     
     func loadLayout(name: String) {
+        guard let data = UserDefaults.standard.data(forKey: "ViewportLayout_\(name)"),
+              let layoutData = try? JSONDecoder().decode(ViewportLayoutData.self, from: data) else {
+            print("[ViewportLayout] Error: Failed to load layout \(name)")
+            return
+        }
+        
+        currentLayout = layoutData.layoutType
+        viewports = layoutData.viewports
+        syncedCameras = layoutData.syncedCameras
+        activeViewportIndex = layoutData.activeViewportIndex
+        
         print("[ViewportLayout] Loaded layout: \(name)")
-        // TODO: Load from UserDefaults or file
+    }
+    
+    /// Get list of saved layout names
+    func getSavedLayoutNames() -> [String] {
+        let keys = UserDefaults.standard.dictionaryRepresentation().keys
+        return keys.filter { $0.hasPrefix("ViewportLayout_") }
+            .map { $0.replacingOccurrences(of: "ViewportLayout_", with: "") }
+    }
+    
+    /// Delete a saved layout
+    func deleteSavedLayout(name: String) {
+        UserDefaults.standard.removeObject(forKey: "ViewportLayout_\(name)")
+        print("[ViewportLayout] Deleted saved layout: \(name)")
     }
     
     func setActiveViewport(_ index: Int) {

@@ -82,32 +82,32 @@ typedef union __attribute__((aligned(16))) {
 typedef Vec3 vec3_t;
 
 // Vector operations (all inline for performance)
-INLINE Vec3 vec3(f32 x, f32 y, f32 z) {
+INLINE Vec3 vec3_create(f32 x, f32 y, f32 z) {
   Vec3 v = {x, y, z};
   return v;
 }
 
-INLINE Vec3 vec3_zero(void) { return vec3(0.0f, 0.0f, 0.0f); }
+INLINE Vec3 vec3_zero(void) { return vec3_create(0.0f, 0.0f, 0.0f); }
 
-INLINE Vec3 vec3_one(void) { return vec3(1.0f, 1.0f, 1.0f); }
+INLINE Vec3 vec3_one(void) { return vec3_create(1.0f, 1.0f, 1.0f); }
 
 INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
-  return vec3(a.x + b.x, a.y + b.y, a.z + b.z);
+  return vec3_create(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
 INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
-  return vec3(a.x - b.x, a.y - b.y, a.z - b.z);
+  return vec3_create(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 
-INLINE Vec3 vec3_mul(Vec3 v, f32 s) { return vec3(v.x * s, v.y * s, v.z * s); }
+INLINE Vec3 vec3_mul(Vec3 v, f32 s) { return vec3_create(v.x * s, v.y * s, v.z * s); }
 
 INLINE Vec3 vec3_div(Vec3 v, f32 s) {
   f32 inv = 1.0f / s;
-  return vec3(v.x * inv, v.y * inv, v.z * inv);
+  return vec3_create(v.x * inv, v.y * inv, v.z * inv);
 }
 
 INLINE Vec3 vec3_scale(Vec3 a, Vec3 b) {
-  return vec3(a.x * b.x, a.y * b.y, a.z * b.z);
+  return vec3_create(a.x * b.x, a.y * b.y, a.z * b.z);
 }
 
 INLINE f32 vec3_dot(Vec3 a, Vec3 b) {
@@ -115,7 +115,7 @@ INLINE f32 vec3_dot(Vec3 a, Vec3 b) {
 }
 
 INLINE Vec3 vec3_cross(Vec3 a, Vec3 b) {
-  return vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z,
+  return vec3_create(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z,
               a.x * b.y - a.y * b.x);
 }
 
@@ -141,16 +141,16 @@ INLINE Vec3 vec3_lerp(Vec3 a, Vec3 b, f32 t) {
 }
 
 INLINE Vec3 vec3_min(Vec3 a, Vec3 b) {
-  return vec3(MIN(a.x, b.x), MIN(a.y, b.y), MIN(a.z, b.z));
+  return vec3_create(MIN(a.x, b.x), MIN(a.y, b.y), MIN(a.z, b.z));
 }
 
 INLINE Vec3 vec3_max(Vec3 a, Vec3 b) {
-  return vec3(MAX(a.x, b.x), MAX(a.y, b.y), MAX(a.z, b.z));
+  return vec3_create(MAX(a.x, b.x), MAX(a.y, b.y), MAX(a.z, b.z));
 }
 
 // Block position helpers
 INLINE Vec3 vec3_from_block_pos(i32 x, i32 y, i32 z) {
-  return vec3((f32)x, (f32)y, (f32)z);
+  return vec3_create((f32)x, (f32)y, (f32)z);
 }
 
 INLINE void vec3_to_block_pos(Vec3 v, i32 *x, i32 *y, i32 *z) {
@@ -164,12 +164,12 @@ INLINE Vec3 vec3_subtract(Vec3 a, Vec3 b) { return vec3_sub(a, b); }
 INLINE f32 vec3_length_squared(Vec3 v) { return vec3_length_sq(v); }
 
 // Direction helpers
-INLINE Vec3 vec3_up(void) { return vec3(0.0f, 1.0f, 0.0f); }
-INLINE Vec3 vec3_down(void) { return vec3(0.0f, -1.0f, 0.0f); }
-INLINE Vec3 vec3_left(void) { return vec3(-1.0f, 0.0f, 0.0f); }
-INLINE Vec3 vec3_right(void) { return vec3(1.0f, 0.0f, 0.0f); }
-INLINE Vec3 vec3_forward(void) { return vec3(0.0f, 0.0f, 1.0f); }
-INLINE Vec3 vec3_back(void) { return vec3(0.0f, 0.0f, -1.0f); }
+INLINE Vec3 vec3_up(void) { return vec3_create(0.0f, 1.0f, 0.0f); }
+INLINE Vec3 vec3_down(void) { return vec3_create(0.0f, -1.0f, 0.0f); }
+INLINE Vec3 vec3_left(void) { return vec3_create(-1.0f, 0.0f, 0.0f); }
+INLINE Vec3 vec3_right(void) { return vec3_create(1.0f, 0.0f, 0.0f); }
+INLINE Vec3 vec3_forward(void) { return vec3_create(0.0f, 0.0f, 1.0f); }
+INLINE Vec3 vec3_back(void) { return vec3_create(0.0f, 0.0f, -1.0f); }
 
 // Additional utility functions
 f32 vec3_angle_between(Vec3 a, Vec3 b);

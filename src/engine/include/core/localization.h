@@ -296,6 +296,19 @@ bool loc_manager_export_template(const LocalizationManager *manager,
                                  const char *path);
 
 /* =================================================================================================
+ *                                    RTL TEXT PROCESSING
+ * =================================================================================================
+ */
+
+bool loc_manager_is_rtl_language(LanguageCode language);
+bool loc_manager_is_rtl_text(const char *text);
+bool loc_manager_process_rtl_text(LanguageCode language, const char *input, 
+                                  char *output, size_t output_size);
+bool loc_manager_reverse_text_for_rtl(const char *input, char *output, size_t output_size);
+void loc_manager_get_text_direction(LanguageCode language, bool *is_rtl, 
+                                   const char **direction_marker);
+
+/* =================================================================================================
  *                                    CONVENIENT MACROS
  * =================================================================================================
  */

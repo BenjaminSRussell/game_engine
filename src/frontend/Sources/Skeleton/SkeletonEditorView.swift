@@ -461,11 +461,113 @@ struct SkeletonBoneRenderer: View {
             }
         }
         .gesture(
-            TapGesture()
-                .onEnded { _ in
-                    // TODO: Implement bone picking
+            TapGesture(count: 1)
+                .onEnded { value in
+                    pickBone(at: value)
                 }
         )
+    }
+    
+    /// Implements bone picking by finding the closest bone to the click position
+    private func pickBone(at location: CGPoint) {
+        guard let skeleton = skeleton as? Skeleton else { return }
+        
+        let center = CGPoint(x: size.width / 2, y: size.height / 2)
+        let scale: CGFloat = 100  // Pixels per unit
+        
+        var closestBoneID: UUID?
+        var minDistance: CGFloat = CGFloat.greatestFiniteMagnitude
+        let selectionThreshold: CGFloat = 10.0  // 10 pixel threshold
+        
+        // Check all bones for proximity to click
+        for boneID in skeleton.allBoneIDsDepthFirst() {
+            guard let bone = skeleton.bones[boneID] else { continue }
+            
+            // Get bone positions in screen space
+            let headPos = skeleton.boneWorldPosition(boneID)
+            let tailPos = skeleton.boneTailWorldPosition(boneID)
+            
+            let headScreen = CGPoint(
+                x: center.x + CGFloat(headPos.x) * scale,
+                y: center.y - CGFloat(headPos.y) * scale
+            )
+            let tailScreen = CGPoint(
+                x: center.x + CGFloat(tailPos.x) * scale,
+                y: center.y - CGFloat(tailPos.y) * scale
+            )
+            
+            // Calculate distance from click to bone line segment
+            let distance = pointToLineSegmentDistance(point: location, lineStart: headScreen, lineEnd: tailScreen)
+            
+            // Also check distance to joints (head and tail)
+            let headDistance = simd_distance(SIMD2<Float>(Float(location.x), Float(location.y)), 
+                                       SIMD2<Float>(Float(headScreen.x), Float(headScreen.y)))
+            let tailDistance = simd_distance(SIMD2<Float>(Float(location.x), Float(location.y)), 
+                                       SIMD2<Float>(Float(tailScreen.x), Float(tailScreen.y)))
+            
+            let closestDistance = min(CGFloat(distance), CGFloat(headDistance), CGFloat(tailDistance))
+            
+            if closestDistance < minDistance && closestDistance <= selectionThreshold {
+                minDistance = closestDistance
+                closestBoneID = boneID
+            }
+        }
+        
+        // Update selection
+        if let boneID = closestBoneID {
+            if skeleton.selectedBoneIDs.contains(boneID) {
+                // Deselect if already selected
+                skeleton.selectedBoneIDs.removeAll { $0 == boneID }
+                print("[Skeleton] Deselected bone: \(skeleton.bones[boneID]?.name ?? "Unknown")")
+            } else {
+                // Select bone
+                skeleton.selectedBoneIDs = [boneID]
+                if let bone = skeleton.bones[boneID] {
+                    print("[Skeleton] Selected bone: \(bone.name)")
+                }
+            }
+        } else {
+            // Clicked on empty space - deselect all
+            skeleton.selectedBoneIDs.removeAll()
+            print("[Skeleton] Deselected all bones")
+        }
+    }
+    
+    /// Calculates distance from a point to a line segment
+    private func pointToLineSegmentDistance(point: CGPoint, lineStart: CGPoint, lineEnd: CGPoint) -> Float {
+        let A = point.x - lineStart.x
+        let B = point.y - lineStart.y
+        let C = lineEnd.x - lineStart.x
+        let D = lineEnd.y - lineStart.y
+        
+        let dot = A * C + B * D
+        let lenSq = C * C + D * D
+        
+        guard lenSq != 0 else {
+            // Line start and end are the same point
+            return Float(sqrt(A * A + B * B))
+        }
+        
+        let param = dot / lenSq
+        
+        var xx: CGFloat
+        var yy: CGFloat
+        
+        if param < 0 {
+            xx = lineStart.x
+            yy = lineStart.y
+        } else if param > 1 {
+            xx = lineEnd.x
+            yy = lineEnd.y
+        } else {
+            xx = lineStart.x + param * C
+            yy = lineStart.y + param * D
+        }
+        
+        let dx = point.x - xx
+        let dy = point.y - yy
+        
+        return Float(sqrt(dx * dx + dy * dy))
     }
     
     private func drawBoneShape(context: GraphicsContext, from: CGPoint, to: CGPoint, color: Color, isSelected: Bool) {

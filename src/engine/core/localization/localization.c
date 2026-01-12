@@ -1182,3 +1182,251 @@ bool loc_manager_export_template(const LocalizationManager *manager,
   fclose(file);
   return true;
 }
+
+// =================================================================================================
+//                                    RTL TEXT PROCESSING
+// =================================================================================================
+
+static bool is_arabic_char(uint32_t c) {
+  return (c >= 0x0600 && c <= 0x06FF) || 
+         (c >= 0x0750 && c <= 0x077F) ||
+         (c >= 0x08A0 && c <= 0x08FF) ||
+         (c >= 0xFB50 && c <= 0xFDFF) ||
+         (c >= 0xFE70 && c <= 0xFEFF);
+}
+
+static bool is_hebrew_char(uint32_t c) {
+  return (c >= 0x0590 && c <= 0x05FF) ||
+         (c >= 0xFB1D && c <= 0xFB4F);
+}
+
+static bool is_rtl_char(uint32_t c) {
+  return is_arabic_char(c) || is_hebrew_char(c) ||
+         (c >= 0x202A && c <= 0x202E) || // RTL markers
+         (c >= 0x2066 && c <= 0x2069);   // isolate markers
+}
+
+static bool is_weak_char(uint32_t c) {
+  return (c >= '0' && c <= '9') || 
+         (c >= 0x0030 && c <= 0x0039) || // European digits
+         (c >= 0x0660 && c <= 0x0669) || // Arabic-Indic digits
+         (c >= 0x06F0 && c <= 0x06F9);   // Extended Arabic-Indic digits
+}
+
+static uint32_t get_arabic_numeral_shape(uint32_t digit) {
+  static const uint32_t arabic_numerals[] = {
+    0x0660, 0x0661, 0x0662, 0x0663, 0x0664,  // 0-4
+    0x0665, 0x0666, 0x0667, 0x0668, 0x0669   // 5-9
+  };
+  
+  if (digit >= '0' && digit <= '9') {
+    return arabic_numerals[digit - '0'];
+  }
+  return digit;
+}
+
+static void utf8_encode(uint32_t codepoint, char *out, size_t *out_len) {
+  if (codepoint <= 0x7F) {
+    out[0] = (char)codepoint;
+    *out_len = 1;
+  } else if (codepoint <= 0x7FF) {
+    out[0] = 0xC0 | (codepoint >> 6);
+    out[1] = 0x80 | (codepoint & 0x3F);
+    *out_len = 2;
+  } else if (codepoint <= 0xFFFF) {
+    out[0] = 0xE0 | (codepoint >> 12);
+    out[1] = 0x80 | ((codepoint >> 6) & 0x3F);
+    out[2] = 0x80 | (codepoint & 0x3F);
+    *out_len = 3;
+  } else {
+    out[0] = 0xF0 | (codepoint >> 18);
+    out[1] = 0x80 | ((codepoint >> 12) & 0x3F);
+    out[2] = 0x80 | ((codepoint >> 6) & 0x3F);
+    out[3] = 0x80 | (codepoint & 0x3F);
+    *out_len = 4;
+  }
+}
+
+static uint32_t utf8_decode(const char *str, size_t *bytes_read) {
+  uint32_t codepoint = 0;
+  size_t len = 0;
+  
+  if (!str) {
+    *bytes_read = 0;
+    return 0;
+  }
+  
+  uint8_t first = (uint8_t)str[0];
+  
+  if (first < 0x80) {
+    codepoint = first;
+    len = 1;
+  } else if ((first & 0xE0) == 0xC0) {
+    codepoint = first & 0x1F;
+    len = 2;
+  } else if ((first & 0xF0) == 0xE0) {
+    codepoint = first & 0x0F;
+    len = 3;
+  } else if ((first & 0xF8) == 0xF0) {
+    codepoint = first & 0x07;
+    len = 4;
+  } else {
+    *bytes_read = 1;
+    return 0xFFFD; // Replacement character
+  }
+  
+  for (size_t i = 1; i < len && str[i]; i++) {
+    codepoint = (codepoint << 6) | (str[i] & 0x3F);
+  }
+  
+  *bytes_read = len;
+  return codepoint;
+}
+
+bool loc_manager_is_rtl_language(LanguageCode language) {
+  switch (language) {
+  case LANG_AR_SA:
+    return true;
+  case LANG_HE_IL: // If added later
+    return true;
+  default:
+    return false;
+  }
+}
+
+bool loc_manager_is_rtl_text(const char *text) {
+  if (!text) {
+    return false;
+  }
+  
+  size_t i = 0;
+  size_t bytes_read;
+  uint32_t rtl_chars = 0;
+  uint32_t total_chars = 0;
+  
+  while (text[i] != '\0') {
+    uint32_t codepoint = utf8_decode(&text[i], &bytes_read);
+    if (bytes_read == 0) break;
+    
+    total_chars++;
+    if (is_rtl_char(codepoint)) {
+      rtl_chars++;
+    }
+    
+    i += bytes_read;
+  }
+  
+  // Consider text RTL if >30% of characters are RTL
+  return total_chars > 0 && (rtl_chars * 100 / total_chars) > 30;
+}
+
+bool loc_manager_process_rtl_text(LanguageCode language, const char *input, 
+                                  char *output, size_t output_size) {
+  if (!input || !output || output_size == 0) {
+    return false;
+  }
+  
+  bool is_rtl_lang = loc_manager_is_rtl_language(language);
+  bool has_rtl_chars = loc_manager_is_rtl_text(input);
+  
+  if (!is_rtl_lang && !has_rtl_chars) {
+    strncpy(output, input, output_size - 1);
+    output[output_size - 1] = '\0';
+    return true;
+  }
+  
+  // Process text for proper RTL display
+  size_t input_len = strlen(input);
+  if (input_len >= output_size) {
+    return false;
+  }
+  
+  // Add RTL mark for proper rendering
+  size_t out_pos = 0;
+  if (is_rtl_lang) {
+    if (out_pos + 3 < output_size) {
+      output[out_pos++] = 0xE2;
+      output[out_pos++] = 0x80;
+      output[out_pos++] = 0xAB; // Right-to-Left Mark
+    }
+  }
+  
+  // Process each character
+  size_t i = 0;
+  while (input[i] != '\0' && out_pos < output_size - 1) {
+    size_t bytes_read;
+    uint32_t codepoint = utf8_decode(&input[i], &bytes_read);
+    
+    if (bytes_read == 0) break;
+    
+    // Shape Arabic numerals if in RTL context
+    if (is_rtl_lang && is_weak_char(codepoint) && codepoint >= '0' && codepoint <= '9') {
+      uint32_t shaped = get_arabic_numeral_shape(codepoint);
+      char encoded[4];
+      size_t encoded_len;
+      utf8_encode(shaped, encoded, &encoded_len);
+      
+      if (out_pos + encoded_len < output_size) {
+        memcpy(&output[out_pos], encoded, encoded_len);
+        out_pos += encoded_len;
+      }
+    } else {
+      // Copy original bytes
+      size_t copy_len = bytes_read;
+      if (out_pos + copy_len >= output_size) {
+        copy_len = output_size - out_pos - 1;
+      }
+      memcpy(&output[out_pos], &input[i], copy_len);
+      out_pos += copy_len;
+    }
+    
+    i += bytes_read;
+  }
+  
+  output[out_pos] = '\0';
+  return true;
+}
+
+bool loc_manager_reverse_text_for_rtl(const char *input, char *output, size_t output_size) {
+  if (!input || !output || output_size == 0) {
+    return false;
+  }
+  
+  size_t input_len = strlen(input);
+  if (input_len >= output_size) {
+    return false;
+  }
+  
+  // Simple character-level reversal (for basic RTL support)
+  size_t out_pos = 0;
+  for (size_t i = input_len; i > 0; i--) {
+    if (out_pos >= output_size - 1) break;
+    
+    // Handle UTF-8 characters properly
+    size_t char_start = i - 1;
+    while (char_start > 0 && (input[char_start] & 0xC0) == 0x80) {
+      char_start--;
+    }
+    
+    size_t char_len = i - char_start;
+    if (out_pos + char_len < output_size) {
+      memcpy(&output[out_pos], &input[char_start], char_len);
+      out_pos += char_len;
+    }
+    
+    i = char_start;
+  }
+  
+  output[out_pos] = '\0';
+  return true;
+}
+
+void loc_manager_get_text_direction(LanguageCode language, bool *is_rtl, 
+                                   const char **direction_marker) {
+  if (!is_rtl || !direction_marker) {
+    return;
+  }
+  
+  *is_rtl = loc_manager_is_rtl_language(language);
+  *direction_marker = *is_rtl ? "\u202B" : "\u202A"; // RTL/LTR markers
+}

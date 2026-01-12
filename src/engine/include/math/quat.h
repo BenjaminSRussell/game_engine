@@ -72,12 +72,12 @@ typedef union {
   f32 data[4];
 } K_ALIGN(16) Quat;
 
-INLINE Quat quat(f32 w, f32 x, f32 y, f32 z) {
+INLINE Quat quat_create(f32 w, f32 x, f32 y, f32 z) {
   Quat q = {w, x, y, z};
   return q;
 }
 
-INLINE Quat quat_identity(void) { return quat(1.0f, 0.0f, 0.0f, 0.0f); }
+INLINE Quat quat_identity(void) { return quat_create(1.0f, 0.0f, 0.0f, 0.0f); }
 
 Quat quat_from_axis_angle(Vec3 axis, f32 angle);
 Quat quat_look_rotation(Vec3 direction, Vec3 up);

@@ -45,21 +45,21 @@ typedef union {
 
 typedef Vec2 vec2_t;
 
-INLINE Vec2 vec2(f32 x, f32 y) {
+INLINE Vec2 vec2_create(f32 x, f32 y) {
   Vec2 v = {x, y};
   return v;
 }
 
-INLINE Vec2 vec2_zero(void) { return vec2(0.0f, 0.0f); }
+INLINE Vec2 vec2_zero(void) { return vec2_create(0.0f, 0.0f); }
 
-INLINE Vec2 vec2_add(Vec2 a, Vec2 b) { return vec2(a.x + b.x, a.y + b.y); }
+INLINE Vec2 vec2_add(Vec2 a, Vec2 b) { return vec2_create(a.x + b.x, a.y + b.y); }
 
-INLINE Vec2 vec2_sub(Vec2 a, Vec2 b) { return vec2(a.x - b.x, a.y - b.y); }
+INLINE Vec2 vec2_sub(Vec2 a, Vec2 b) { return vec2_create(a.x - b.x, a.y - b.y); }
 
-INLINE Vec2 vec2_mul(Vec2 v, f32 s) { return vec2(v.x * s, v.y * s); }
+INLINE Vec2 vec2_mul(Vec2 v, f32 s) { return vec2_create(v.x * s, v.y * s); }
 
 INLINE Vec2 vec2_scale_componentwise(Vec2 a, Vec2 b) {
-  return vec2(a.x * b.x, a.y * b.y);
+  return vec2_create(a.x * b.x, a.y * b.y);
 }
 
 INLINE f32 vec2_dot(Vec2 a, Vec2 b) { return a.x * b.x + a.y * b.y; }

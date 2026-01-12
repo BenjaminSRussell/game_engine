@@ -58,7 +58,12 @@ set(RECOVERED_FRONTEND_SOURCES
     "src/frontend/verify_connections.py"
 )
 
-message(STATUS "Recovered ${CMAKE_LIST_LENGTH RECOVERED_SCRIPTING_SOURCES} scripting files")
-message(STATUS "Recovered ${CMAKE_LIST_LENGTH RECOVERED_BLENDER_SOURCES} Blender integration files")
-message(STATUS "Recovered ${CMAKE_LIST_LENGTH RECOVERED_EXPERIMENTAL_PHYSICS} experimental physics files")
-message(STATUS "Recovered ${CMAKE_LIST_LENGTH RECOVERED_FRONTEND_SOURCES} frontend tools")
+list(LENGTH RECOVERED_SCRIPTING_SOURCES SCRIPTING_COUNT)
+list(LENGTH RECOVERED_BLENDER_SOURCES BLENDER_COUNT)
+list(LENGTH RECOVERED_EXPERIMENTAL_PHYSICS PHYSICS_COUNT)
+list(LENGTH RECOVERED_FRONTEND_SOURCES FRONTEND_COUNT)
+
+message(STATUS "Recovered ${SCRIPTING_COUNT} scripting files")
+message(STATUS "Recovered ${BLENDER_COUNT} Blender integration files")
+message(STATUS "Recovered ${PHYSICS_COUNT} experimental physics files")
+message(STATUS "Recovered ${FRONTEND_COUNT} frontend tools")

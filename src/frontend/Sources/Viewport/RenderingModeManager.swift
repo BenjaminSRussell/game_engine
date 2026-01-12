@@ -169,33 +169,245 @@ class RenderingModeManager: ObservableObject {
     // MARK: - Functions
     func setRenderingMode(_ mode: RenderingMode) {
         currentMode = mode
-        // TODO: Send rendering mode to C engine via bridge
+        
+        // Send rendering mode to C engine via bridge
+        switch mode {
+        case .vertexNormals:
+            enableVertexNormalVisualization()
+        case .faceNormals:
+            enableFaceNormalVisualization()
+        case .tangentSpace:
+            enableTangentSpaceVisualization()
+        case .uvCoordinates:
+            enableUVCoordinateVisualization()
+        case .vertexColors:
+            enableVertexColorVisualization()
+        case .albedoOnly:
+            enableAlbedoOnlyView()
+        case .normalMap:
+            enableNormalMapView()
+        case .roughness:
+            enableRoughnessView()
+        case .metallic:
+            enableMetallicView()
+        case .ambientOcclusion:
+            enableAmbientOcclusionView()
+        case .emissive:
+            enableEmissiveView()
+        case .specular:
+            enableSpecularView()
+        case .depthBuffer:
+            enableDepthBufferVisualization()
+        case .stencilBuffer:
+            enableStencilBufferVisualization()
+        case .mipmapLevels:
+            enableMipmapLevelVisualization()
+        case .textureCoordHeatMap:
+            enableTextureCoordHeatMap()
+        case .polygonDensity:
+            enablePolygonDensityHeatMap()
+        case .overdraw:
+            enableOverdrawVisualization()
+        default:
+            // Standard modes
+            setStandardRenderingMode(mode)
+        }
+        
         print("[RenderingModeManager] Switched to mode: \(mode.rawValue)")
     }
     
     func toggleOverlay(_ overlay: RenderingOverlay) {
         if overlays.contains(overlay) {
             overlays.remove(overlay)
+            // Disable overlay in C engine
+            EngineBridge.shared.setOverlayEnabled(overlay, enabled: false)
         } else {
             overlays.insert(overlay)
+            // Enable overlay in C engine
+            EngineBridge.shared.setOverlayEnabled(overlay, enabled: true)
         }
-        // TODO: Send overlay changes to C engine via bridge
         print("[RenderingModeManager] Toggled overlay: \(overlay.rawValue)")
     }
     
     func setDebugVisualization(_ debug: DebugVisualization?) {
         debugVisualization = debug
-        // TODO: Send debug visualization mode to C engine
+        // Send debug visualization mode to C engine
         if let debug = debug {
+            EngineBridge.shared.setDebugVisualization(debug)
             print("[RenderingModeManager] Enabled debug: \(debug.rawValue)")
         } else {
+            EngineBridge.shared.setDebugVisualization(nil)
             print("[RenderingModeManager] Disabled debug visualization")
         }
     }
     
     func clearAllOverlays() {
         overlays.removeAll()
-        // TODO: Clear all overlays in C engine
+        EngineBridge.shared.clearAllOverlays()
+    }
+    
+    // MARK: - Rendering Mode Implementations
+    
+    private func setStandardRenderingMode(_ mode: RenderingMode) {
+        let engineMode = convertToEngineRenderMode(mode)
+        EngineBridge.shared.setRenderMode(engineMode)
+    }
+    
+    // MARK: - Geometry Visualization Modes
+    
+    private func enableVertexNormalVisualization() {
+        EngineBridge.shared.setRenderMode(.normals)
+        EngineBridge.setNormalVisualizationMode(.vertex)
+        EngineBridge.setNormalLength(1.0)
+        EngineBridge.setNormalColor(SIMD4<Float>(1.0, 1.0, 0.0, 1.0)) // Yellow
+    }
+    
+    private func enableFaceNormalVisualization() {
+        EngineBridge.shared.setRenderMode(.normals)
+        EngineBridge.setNormalVisualizationMode(.face)
+        EngineBridge.setNormalLength(0.5)
+        EngineBridge.setNormalColor(SIMD4<Float>(0.0, 1.0, 1.0, 1.0)) // Cyan
+    }
+    
+    private func enableTangentSpaceVisualization() {
+        EngineBridge.shared.setRenderMode(.normals)
+        EngineBridge.setNormalVisualizationMode(.tangentSpace)
+        EngineBridge.setTangentColor(SIMD4<Float>(1.0, 0.0, 0.0, 1.0)) // Red - Tangent
+        EngineBridge.setBitangentColor(SIMD4<Float>(0.0, 1.0, 0.0, 1.0)) // Green - Bitangent
+        EngineBridge.setNormalSpaceColor(SIMD4<Float>(0.0, 0.0, 1.0, 1.0)) // Blue - Normal
+    }
+    
+    private func enableUVCoordinateVisualization() {
+        EngineBridge.shared.setRenderMode(.albedo)
+        EngineBridge.setUVVisualizationEnabled(true)
+        EngineBridge.setUVScale(1.0)
+        EngineBridge.setUVOffset(SIMD2<Float>(0.0, 0.0))
+        EngineBridge.setUVChannel(0) // UV channel 0
+    }
+    
+    private func enableVertexColorVisualization() {
+        EngineBridge.shared.setRenderMode(.albedo)
+        EngineBridge.setVertexColorEnabled(true)
+        EngineBridge.setVertexColorAlpha(1.0)
+    }
+    
+    // MARK: - PBR Component Views
+    
+    private func enableAlbedoOnlyView() {
+        EngineBridge.shared.setRenderMode(.albedo)
+        EngineBridge.setComponentExposure(1.0)
+        EngineBridge.setComponentGamma(2.2)
+    }
+    
+    private func enableNormalMapView() {
+        EngineBridge.shared.setRenderMode(.normals)
+        EngineBridge.setNormalMapScale(1.0)
+        EngineBridge.setNormalMapBias(0.0)
+    }
+    
+    private func enableRoughnessView() {
+        EngineBridge.shared.setRenderMode(.smoothness)
+        EngineBridge.setRoughnessRange(0.0, 1.0)
+        EngineBridge.setRoughnessGamma(1.0)
+    }
+    
+    private func enableMetallicView() {
+        EngineBridge.shared.setRenderMode(.metallic)
+        EngineBridge.setMetallicRange(0.0, 1.0)
+        EngineBridge.setMetallicContrast(1.0)
+    }
+    
+    private func enableAmbientOcclusionView() {
+        EngineBridge.shared.setRenderMode(.ambientOcclusion)
+        EngineBridge.setAOPower(1.0)
+        EngineBridge.setAOBias(0.0)
+    }
+    
+    private func enableEmissiveView() {
+        EngineBridge.shared.setRenderMode(.shaded)
+        EngineBridge.setEmissiveMode(true)
+        EngineBridge.setEmissiveExposure(1.0)
+        EngineBridge.setEmissiveTint(SIMD3<Float>(1.0, 1.0, 1.0))
+    }
+    
+    private func enableSpecularView() {
+        EngineBridge.shared.setRenderMode(.shaded)
+        EngineBridge.setSpecularMode(true)
+        EngineBridge.setSpecularPower(1.0)
+        EngineBridge.setSpecularThreshold(0.01)
+    }
+    
+    // MARK: - Technical Visualization Modes
+    
+    private func enableDepthBufferVisualization() {
+        EngineBridge.shared.setRenderMode(.wireframe)
+        EngineBridge.setDepthVisualizationEnabled(true)
+        EngineBridge.setDepthRange(0.1, 1000.0)
+        EngineBridge.setDepthColorMode(.grayscale) // 0 = Grayscale, 1 = Rainbow
+    }
+    
+    private func enableStencilBufferVisualization() {
+        EngineBridge.shared.setRenderMode(.wireframe)
+        EngineBridge.setStencilVisualizationEnabled(true)
+        EngineBridge.setStencilRange(0, 255)
+        EngineBridge.setStencilColorMode(.grayscale) // 0 = Grayscale, 1 = Hue
+    }
+    
+    private func enableMipmapLevelVisualization() {
+        EngineBridge.shared.setRenderMode(.shaded)
+        EngineBridge.setMipmapVisualizationEnabled(true)
+        EngineBridge.setMipmapColorMode(.levelColors) // 0 = Level colors, 1 = Heat map
+        EngineBridge.setMipmapShowLevels(true)
+    }
+    
+    private func enableTextureCoordHeatMap() {
+        EngineBridge.shared.setRenderMode(.albedo)
+        EngineBridge.setTextureHeatmapEnabled(true)
+        EngineBridge.setHeatmapMode(.uvDistortion) // 0 = UV distortion, 1 = Texture density
+        EngineBridge.setHeatmapColorScale(1.0)
+    }
+    
+    private func enablePolygonDensityHeatMap() {
+        EngineBridge.shared.setRenderMode(.overdraw)
+        EngineBridge.setPolygonDensityHeatmapEnabled(true)
+        EngineBridge.setDensityRange(0, 100)
+        EngineBridge.setDensityColorMode(.blueToRed) // 0 = Blue-Red, 1 = Green-Yellow
+    }
+    
+    private func enableOverdrawVisualization() {
+        EngineBridge.shared.setRenderMode(.overdraw)
+        EngineBridge.setOverdrawMode(.additive) // 0 = Additive, 1 = Weighted
+        EngineBridge.setOverdrawMaxCount(16)
+    }
+    
+    // MARK: - Helper Functions
+    
+    private func convertToEngineRenderMode(_ mode: RenderingMode) -> EngineBridge.RenderMode {
+        switch mode {
+        case .lit: return .shaded
+        case .unlit: return .unlit
+        case .wireframe: return .wireframe
+        case .shadedWireframe: return .shadedWireframe
+        case .vertexNormals: return .normals
+        case .faceNormals: return .normals
+        case .tangentSpace: return .normals
+        case .uvCoordinates: return .albedo // Use albedo as base for UV visualization
+        case .vertexColors: return .albedo
+        case .albedoOnly: return .albedo
+        case .normalMap: return .normals
+        case .roughness: return .smoothness
+        case .metallic: return .metallic
+        case .ambientOcclusion: return .ambientOcclusion
+        case .emissive: return .shaded
+        case .specular: return .shaded
+        case .depthBuffer: return .wireframe
+        case .stencilBuffer: return .wireframe
+        case .mipmapLevels: return .shaded
+        case .textureCoordHeatMap: return .albedo
+        case .polygonDensity: return .overdraw
+        case .overdraw: return .overdraw
+        case .lightComplexity: return .overdraw
+        }
     }
 }
 
@@ -204,6 +416,7 @@ struct RenderingModeSelectorPanel: View {
     @ObservedObject var manager: RenderingModeManager
     @State private var showingModeGrid = false
     @State private var showingOverlays = false
+    @State private var showingDebug = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -276,6 +489,69 @@ struct RenderingModeSelectorPanel: View {
                         .padding(.horizontal, 8)
                     }
                     .frame(maxHeight: 200)
+                }
+            }
+            .padding(.vertical, 8)
+            
+            EditorDivider()
+            
+            // Debug visualization section
+            VStack(alignment: .leading, spacing: 8) {
+                Button(action: {
+                    showingDebug.toggle()
+                }) {
+                    HStack {
+                        Text("Debug Visualization")
+                            .font(DesignSystem.Typography.bodyBold)
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
+                        
+                        Spacer()
+                        
+                        if let debug = manager.debugVisualization {
+                            Text(debug.rawValue)
+                                .font(DesignSystem.Typography.small)
+                                .foregroundColor(DesignSystem.Colors.textTertiary)
+                        } else {
+                            Text("None")
+                                .font(DesignSystem.Typography.small)
+                                .foregroundColor(DesignSystem.Colors.textTertiary)
+                        }
+                        
+                        Image(systemName: showingDebug ? "chevron.up" : "chevron.down")
+                            .font(.system(size: 10))
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
+                    }
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 8)
+                
+                if showingDebug {
+                    ScrollView {
+                        VStack(spacing: 4) {
+                            // None option
+                            DebugVisualizationRow(
+                                debug: nil,
+                                name: "None",
+                                isSelected: manager.debugVisualization == nil,
+                                action: {
+                                    manager.setDebugVisualization(nil)
+                                }
+                            )
+                            
+                            ForEach(RenderingModeManager.DebugVisualization.allCases) { debug in
+                                DebugVisualizationRow(
+                                    debug: debug,
+                                    name: debug.rawValue,
+                                    isSelected: manager.debugVisualization == debug,
+                                    action: {
+                                        manager.setDebugVisualization(debug)
+                                    }
+                                )
+                            }
+                        }
+                        .padding(.horizontal, 8)
+                    }
+                    .frame(maxHeight: 150)
                 }
             }
             .padding(.vertical, 8)
@@ -384,6 +660,35 @@ private struct OverlayToggleRow: View {
             .padding(.vertical, 4)
             .padding(.horizontal, 8)
             .background(isEnabled ? DesignSystem.Colors.selection.opacity(0.3) : Color.clear)
+            .cornerRadius(4)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Debug Visualization Row
+private struct DebugVisualizationRow: View {
+    let debug: RenderingModeManager.DebugVisualization?
+    let name: String
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .foregroundColor(isSelected ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.textDisabled)
+                    .font(.system(size: 14))
+                
+                Text(name)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Spacer()
+            }
+            .padding(.vertical, 4)
+            .padding(.horizontal, 8)
+            .background(isSelected ? DesignSystem.Colors.selection.opacity(0.3) : Color.clear)
             .cornerRadius(4)
         }
         .buttonStyle(.plain)

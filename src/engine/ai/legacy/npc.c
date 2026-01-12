@@ -95,13 +95,13 @@ void npc_system_init(NPCSystem *system, struct World *ecs,
   system->last_spawn_time = 0.0f;
   system->is_initialized = true;
   
-  LOG_INFO("NPC system initialized with AI and dialogue support");
+  LOG_AI_INFO("NPC system initialized with AI and dialogue support");
 }
 
 // Free NPC system
 void npc_system_free(NPCSystem *system) { 
   (void)system; 
-  LOG_INFO("NPC system freed");
+  LOG_AI_INFO("NPC system freed");
 }
 
 // Create NPC entity
@@ -111,7 +111,7 @@ Entity npc_create(NPCSystem *system, Vec3 position, NPCType type) {
 
   Entity entity = ecs_create_entity(system->ecs);
   if (entity.id == 0) {
-    LOG_WARN("Failed to create NPC entity");
+    LOG_AI_WARN("Failed to create NPC entity");
     return INVALID_ENTITY;
   }
 
@@ -120,20 +120,20 @@ Entity npc_create(NPCSystem *system, Vec3 position, NPCType type) {
   TransformComponent *transform = (TransformComponent *)ecs_add_component(
       system->ecs, entity, TRANSFORM_COMPONENT_ID, &transform_data);
   if (!transform) {
-    LOG_WARN("Failed to add Transform component to entity %u", entity.id);
+    LOG_AI_WARN("Failed to add Transform component to entity %u", entity.id);
     ecs_destroy_entity(system->ecs, entity);
     return INVALID_ENTITY;
   }
   transform->position = position;
   transform->rotation = quat_identity();
-  transform->scale = vec3(1.0f, 1.0f, 1.0f);
+  transform->scale = vec3_create(1.0f, 1.0f, 1.0f);
 
   // Add NPC component
   NPCComponent npc_data = {0};
   NPCComponent *npc = (NPCComponent *)ecs_add_component(
       system->ecs, entity, NPC_COMPONENT_ID, &npc_data);
   if (!npc) {
-    LOG_WARN("Failed to add NPC component to entity %u", entity.id);
+    LOG_AI_WARN("Failed to add NPC component to entity %u", entity.id);
     ecs_destroy_entity(system->ecs, entity);
     return INVALID_ENTITY;
   }
@@ -193,7 +193,7 @@ Entity npc_create(NPCSystem *system, Vec3 position, NPCType type) {
     rigid_body_set_restitution(body, 0.0f);
 
     // Use a box for the NPC collider (0.6x1.8x0.6)
-    Collider *collider = collider_create_box(vec3(0.3f, 0.9f, 0.3f));
+    Collider *collider = collider_create_box(vec3_create(0.3f, 0.9f, 0.3f));
     rigid_body_attach_collider(body, collider);
 
     rb_comp->body = body;
@@ -213,7 +213,7 @@ Entity npc_create(NPCSystem *system, Vec3 position, NPCType type) {
   system->active_npc_count++;
   system->total_npc_spawned++;
   
-  LOG_DEBUG("Created NPC type %d at position (%.1f, %.1f, %.1f)", 
+  LOG_AI_DEBUG("Created NPC type %d at position (%.1f, %.1f, %.1f)", 
             type, position.x, position.y, position.z);
   
   return entity;
@@ -235,7 +235,7 @@ void npc_update(NPCSystem *system, f32 delta_time) {
   }
 
   // Get player position for LOD/culling
-  Vec3 player_pos = vec3(0.0f, 0.0f, 0.0f);
+  Vec3 player_pos = vec3_create(0.0f, 0.0f, 0.0f);
   
   // Query for all NPCs
   Query query;

@@ -401,8 +401,8 @@ private struct MaterialPreviewView: View {
                     
                     EditorIconButton(icon: "arrow.clockwise", tooltip: "Refresh Preview") {
                         // Refresh material preview
-                        // TODO: Material compilation needs to be wired up to view model
-                        print("[Swift] Material preview refresh requested")
+                        viewModel.compileMaterial()
+                        print("[Swift] Material compilation started")
                     }
                 }
                 .padding(DesignSystem.Spacing.sm)

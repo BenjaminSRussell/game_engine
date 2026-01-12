@@ -34,8 +34,8 @@ static inline AABB aabb_create(Vec3 min, Vec3 max) {
 
 static inline AABB aabb_create_empty(void) {
     return aabb_create(
-        vec3(FLT_MAX, FLT_MAX, FLT_MAX),
-        vec3(-FLT_MAX, -FLT_MAX, -FLT_MAX)
+        vec3_create(FLT_MAX, FLT_MAX, FLT_MAX),
+        vec3_create(-FLT_MAX, -FLT_MAX, -FLT_MAX)
     );
 }
 

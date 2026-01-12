@@ -2,6 +2,47 @@ import Foundation
 import SwiftUI
 import simd
 
+// MARK: - Transform Command for Undo/Redo
+struct TransformCommand: Command {
+    let initialSnapshots: [TransformSnapshot]
+    let finalSnapshots: [TransformSnapshot]
+    let timestamp = Date()
+
+    var description: String {
+        let count = initialSnapshots.count
+        return "Transform \(count) object\(count == 1 ? "" : "s")"
+    }
+
+    func execute() {
+        // Apply final transforms
+        for snapshot in finalSnapshots {
+            EngineBridge.shared.setTransform(
+                snapshot.entityID,
+                position: snapshot.position,
+                rotation: snapshot.rotation,
+                scale: snapshot.scale
+            )
+        }
+    }
+
+    func undo() {
+        // Restore initial transforms
+        for snapshot in initialSnapshots {
+            EngineBridge.shared.setTransform(
+                snapshot.entityID,
+                position: snapshot.position,
+                rotation: snapshot.rotation,
+                scale: snapshot.scale
+            )
+        }
+    }
+
+    func canExecute() -> Bool {
+        return !initialSnapshots.isEmpty && !finalSnapshots.isEmpty &&
+               initialSnapshots.count == finalSnapshots.count
+    }
+}
+
 class TransformController: ObservableObject {
     @Published var mode: TransformMode = .idle
     @Published var pivotPoint: PivotPoint = .median
@@ -15,7 +56,11 @@ class TransformController: ObservableObject {
     private var startMousePosition: CGPoint = .zero
     private var currentMousePosition: CGPoint = .zero
     private var transformDelta: SIMD3<Float> = .zero
-    
+    private var newTransformSnapshots: [TransformSnapshot] = []
+
+    // 3D cursor
+    @Published var cursor3D: SIMD3<Float> = .zero
+
     // Selection reference
     weak var selectionManager: SelectionManager?
     
@@ -81,12 +126,40 @@ class TransformController: ObservableObject {
     
     func commitTransform() {
         guard mode.isActive else { return }
-        
-        // TODO: Add to undo stack
-        print("[Transform] Committed transform")
-        
+
+        // Capture current transforms for undo/redo
+        newTransformSnapshots.removeAll()
+        guard let selection = selectionManager?.selectedEntities else {
+            mode = .idle
+            initialSnapshots.removeAll()
+            transformDelta = .zero
+            return
+        }
+
+        for entityID in selection {
+            let transform = EngineBridge.shared.getTransform(entityID)
+            newTransformSnapshots.append(TransformSnapshot(
+                entityID: entityID,
+                position: transform.position,
+                rotation: transform.rotation,
+                scale: transform.scale
+            ))
+        }
+
+        // Create undo command
+        let command = TransformCommand(
+            initialSnapshots: initialSnapshots,
+            finalSnapshots: newTransformSnapshots
+        )
+
+        // Execute command (adds to undo stack)
+        CommandManager.shared.execute(command)
+
+        print("[Transform] Committed transform with undo support")
+
         mode = .idle
         initialSnapshots.removeAll()
+        newTransformSnapshots.removeAll()
         transformDelta = .zero
     }
     
@@ -168,12 +241,12 @@ class TransformController: ObservableObject {
             Float(mouseDelta.x) * sensitivity,
             0
         )
-        
+
         // Apply axis constraint
         if let constraint = constraint {
             delta = applyAxisConstraint(delta, constraint: constraint)
         }
-        
+
         // Apply snapping (angle increments)
         if snapMode == .increment {
             delta = SIMD3<Float>(
@@ -182,20 +255,52 @@ class TransformController: ObservableObject {
                 snapToIncrement(delta.z, increment: snapIncrement)
             )
         }
-        
+
         transformDelta = delta
-        
-        // Apply to all selected entities
+
+        // Calculate pivot point
         let pivot = calculatePivotPoint()
+
+        // Apply to all selected entities, rotating around pivot
         for snapshot in initialSnapshots {
             let newRotation = snapshot.rotation + delta
+
+            // Rotate position around pivot
+            let offsetFromPivot = snapshot.position - pivot
+            let newPosition = pivot + rotateVector(offsetFromPivot, by: delta)
+
             EngineBridge.shared.setTransform(
                 snapshot.entityID,
-                position: snapshot.position,  // TODO: Rotate around pivot
+                position: newPosition,
                 rotation: newRotation,
                 scale: snapshot.scale
             )
         }
+    }
+
+    private func rotateVector(_ vector: SIMD3<Float>, by rotation: SIMD3<Float>) -> SIMD3<Float> {
+        // Apply rotation using Euler angles (X, Y, Z order)
+        var result = vector
+        let pitchRad = rotation.x * .pi / 180.0
+        let yawRad = rotation.y * .pi / 180.0
+        let rollRad = rotation.z * .pi / 180.0
+
+        // Rotate around X axis (pitch)
+        var temp = result
+        result.y = temp.y * cos(pitchRad) - temp.z * sin(pitchRad)
+        result.z = temp.y * sin(pitchRad) + temp.z * cos(pitchRad)
+
+        // Rotate around Y axis (yaw)
+        temp = result
+        result.x = temp.x * cos(yawRad) + temp.z * sin(yawRad)
+        result.z = -temp.x * sin(yawRad) + temp.z * cos(yawRad)
+
+        // Rotate around Z axis (roll)
+        temp = result
+        result.x = temp.x * cos(rollRad) - temp.y * sin(rollRad)
+        result.y = temp.x * sin(rollRad) + temp.y * cos(rollRad)
+
+        return result
     }
     
     private func updateScaling(mouseDelta: CGPoint, constraint: AxisConstraint?) {
@@ -270,7 +375,7 @@ class TransformController: ObservableObject {
     
     private func calculatePivotPoint() -> SIMD3<Float> {
         guard !initialSnapshots.isEmpty else { return .zero }
-        
+
         switch pivotPoint {
         case .median, .boundingBoxCenter:
             var sum = SIMD3<Float>.zero
@@ -278,18 +383,34 @@ class TransformController: ObservableObject {
                 sum += snapshot.position
             }
             return sum / Float(initialSnapshots.count)
-            
+
         case .activeElement:
             return initialSnapshots.first?.position ?? .zero
-            
+
         case .individualOrigins:
             // Each object uses its own origin
             return .zero
-            
+
         case .cursor3D:
-            // TODO: Implement 3D cursor
-            return .zero
+            // Return the 3D cursor position
+            return cursor3D
         }
+    }
+
+    // MARK: - 3D Cursor Management
+    func setCursor3D(position: SIMD3<Float>) {
+        cursor3D = position
+        print("[Transform] Set 3D cursor position: \(position)")
+    }
+
+    func moveCursor3D(delta: SIMD3<Float>) {
+        cursor3D = cursor3D + delta
+        print("[Transform] Moved 3D cursor by: \(delta), new position: \(cursor3D)")
+    }
+
+    func resetCursor3D() {
+        cursor3D = .zero
+        print("[Transform] Reset 3D cursor to origin")
     }
     
     // MARK: - Display Info

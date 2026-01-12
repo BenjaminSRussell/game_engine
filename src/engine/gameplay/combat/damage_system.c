@@ -69,16 +69,49 @@ void damage_system_process_events(World *world, f64 delta_time) {
   for (u32 i = 0; i < g_event_count; i++) {
     DamageEvent *event = &g_damage_queue[i];
 
-    // In a full implementation, we would:
-    // 1. Get health component for target
-    // 2. Get resistance component for target
-    // 3. Calculate final damage
-    // 4. Apply damage to health
-    // 5. Trigger death if health <= 0
+    // 1. Get health component for target entity
+    HealthComponent *health = (HealthComponent *)ecs_get_component(
+        world, event->target, HEALTH_COMPONENT_ID);
 
-    LOG_DEBUG("Processed damage: entity %u -> %u, amount %.2f, type %d",
-              event->source.id, event->target.id, event->final_amount,
-              event->type);
+    if (!health) {
+      LOG_WARN("Target entity %u has no health component", event->target.id);
+      continue;
+    }
+
+    // 2. Get resistance component (optional) for damage reduction
+    ResistanceComponent *resistance = (ResistanceComponent *)ecs_get_component(
+        world, event->target, RESISTANCE_COMPONENT_ID);
+
+    // 3. Calculate final damage using resistance
+    f32 blocked_amount = 0.0f;
+    f32 final_damage = damage_calculate_final(event, resistance, &blocked_amount);
+
+    // 4. Apply damage to health
+    health->health -= final_damage;
+    health->last_damage_time = (f32)delta_time;
+
+    LOG_DEBUG("Applied damage: entity %u -> %u, base=%.2f final=%.2f blocked=%.2f, type %d",
+              event->source.id, event->target.id, event->base_amount,
+              final_damage, blocked_amount, event->type);
+
+    // 5. Check for death if health <= 0
+    if (health->health <= 0.0f) {
+      health->health = 0.0f;
+      health->is_alive = false;
+
+      // Get transform for death position/logging
+      TransformComponent *transform = (TransformComponent *)ecs_get_component(
+          world, event->target, TRANSFORM_COMPONENT_ID);
+
+      Vec3 death_pos = transform ? transform->position : vec3(0, 0, 0);
+
+      LOG_INFO("Entity %u died at (%.1f, %.1f, %.1f) from damage type %d by entity %u",
+               event->target.id, death_pos.x, death_pos.y, death_pos.z,
+               event->type, event->source.id);
+
+      // Destroy the entity from the world
+      ecs_destroy_entity(world, event->target);
+    }
   }
 
   damage_system_clear_events();

@@ -163,4 +163,30 @@ size_t crypto_get_iv_size(CryptoAlgorithm algorithm);
 size_t crypto_get_tag_size(CryptoAlgorithm algorithm);
 size_t crypto_get_hash_size(HashAlgorithm algorithm);
 
+// =================================================================================================
+//                              SECURE DATA STORAGE
+// =================================================================================================
+
+// Secure storage initialization and management
+bool encryption_init(uint64_t key_rotation_interval_ms);
+void encryption_shutdown(void);
+
+// Player data encryption/decryption
+bool encryption_encrypt_player_data(uint64_t player_id, const char* data, char* encrypted_output, size_t output_size);
+bool encryption_decrypt_player_data(uint64_t player_id, const char* encrypted_data, char* decrypted_output, size_t output_size);
+
+// Password security
+bool encryption_hash_password(const char* password, const char* salt, char* hash_output, size_t output_size);
+bool encryption_verify_password(const char* password, const char* stored_hash, const char* salt);
+bool encryption_generate_salt(char* salt_output, size_t output_size);
+
+// Key management
+bool encryption_rotate_player_key(uint64_t player_id);
+bool encryption_rotate_master_key(void);
+bool encryption_should_rotate_keys(void);
+void encryption_update_key_rotation_interval(uint64_t interval_ms);
+
+// Statistics
+void encryption_get_statistics(uint32_t* encryptions, uint32_t* decryptions, uint32_t* key_rotations);
+
 #endif // ENCRYPTION_H

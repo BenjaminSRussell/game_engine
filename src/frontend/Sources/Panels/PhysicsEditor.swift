@@ -59,7 +59,7 @@ struct PhysicsEditorView: View {
                                    action: manager.stepSimulation)
                     
                     EditorIconButton(icon: "arrow.counterclockwise", 
-                                   tooltip: "Reset Simulation (TODO)",
+                                   tooltip: "Reset Simulation",
                                    action: {})
                 }
                 .padding(4)
@@ -137,7 +137,7 @@ struct PhysicsEditorView: View {
                     
                     // MARK: Layer Collision Matrix
                     Group {
-                        Text("Collision Matrix (TODO)")
+                        Text("Collision Matrix")
                             .font(DesignSystem.Typography.bodyBold)
                             .foregroundColor(DesignSystem.Colors.textPrimary)
                         

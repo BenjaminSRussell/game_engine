@@ -38,12 +38,71 @@ static void render_line_chart(const ChartData* chart) {
         return;
     }
     
-    // TODO: Implement actual rendering with graphics API
     LOG_DEBUG("Rendering line chart: %s (%u points)", chart->title, chart->point_count);
     
-    // For now, just log the data points
+    // Calculate chart bounds
+    float min_x = chart->points[0].x, max_x = chart->points[0].x;
+    float min_y = chart->points[0].y, max_y = chart->points[0].y;
+    
+    for (u32 i = 1; i < chart->point_count; i++) {
+        if (chart->points[i].x < min_x) min_x = chart->points[i].x;
+        if (chart->points[i].x > max_x) max_x = chart->points[i].x;
+        if (chart->points[i].y < min_y) min_y = chart->points[i].y;
+        if (chart->points[i].y > max_y) max_y = chart->points[i].y;
+    }
+    
+    float x_range = max_x - min_x;
+    float y_range = max_y - min_y;
+    if (x_range == 0) x_range = 1.0f;
+    if (y_range == 0) y_range = 1.0f;
+    
+    // Render background
+    // TODO: Use actual graphics API - for now, log the rendering process
+    LOG_DEBUG("Chart bounds: X[%.2f, %.2f] Y[%.2f, %.2f]", min_x, max_x, min_y, max_y);
+    
+    // Render grid if enabled
+    if (chart->show_grid) {
+        LOG_DEBUG("Rendering grid lines");
+        // TODO: Draw horizontal and vertical grid lines
+    }
+    
+    // Render axes if enabled
+    if (chart->show_axes) {
+        LOG_DEBUG("Rendering axes: %s vs %s", chart->x_label, chart->y_label);
+        // TODO: Draw X and Y axes with labels
+    }
+    
+    // Render line segments
+    LOG_DEBUG("Rendering %u line segments", chart->point_count - 1);
+    for (u32 i = 0; i < chart->point_count - 1; i++) {
+        const DataPoint* p1 = &chart->points[i];
+        const DataPoint* p2 = &chart->points[i + 1];
+        
+        // Transform to screen coordinates
+        float screen_x1 = ((p1->x - min_x) / x_range) * 400.0f + 50.0f;
+        float screen_y1 = 250.0f - ((p1->y - min_y) / y_range) * 200.0f;
+        float screen_x2 = ((p2->x - min_x) / x_range) * 400.0f + 50.0f;
+        float screen_y2 = 250.0f - ((p2->y - min_y) / y_range) * 200.0f;
+        
+        LOG_DEBUG("Line %u: (%.2f,%.2f) -> (%.2f,%.2f)", i, screen_x1, screen_y1, screen_x2, screen_y2);
+        // TODO: Draw actual line using graphics API
+    }
+    
+    // Render data points
+    LOG_DEBUG("Rendering %u data points", chart->point_count);
     for (u32 i = 0; i < chart->point_count; i++) {
-        LOG_DEBUG("Point %u: (%.2f, %.2f) - %s", i, chart->points[i].x, chart->points[i].y, chart->points[i].label);
+        const DataPoint* point = &chart->points[i];
+        float screen_x = ((point->x - min_x) / x_range) * 400.0f + 50.0f;
+        float screen_y = 250.0f - ((point->y - min_y) / y_range) * 200.0f;
+        
+        LOG_DEBUG("Point %u: (%.2f, %.2f) - %s", i, screen_x, screen_y, point->label);
+        // TODO: Draw point circle with point->color
+    }
+    
+    // Render legend if enabled
+    if (chart->show_legend) {
+        LOG_DEBUG("Rendering legend for: %s", chart->title);
+        // TODO: Draw legend box with chart title and color indicator
     }
 }
 
@@ -52,11 +111,66 @@ static void render_bar_chart(const ChartData* chart) {
         return;
     }
     
-    // TODO: Implement actual rendering with graphics API
     LOG_DEBUG("Rendering bar chart: %s (%u bars)", chart->title, chart->point_count);
     
+    // Calculate chart bounds
+    float max_y = chart->points[0].y;
+    for (u32 i = 1; i < chart->point_count; i++) {
+        if (chart->points[i].y > max_y) max_y = chart->points[i].y;
+    }
+    if (max_y == 0) max_y = 1.0f;
+    
+    // Chart area: 50px margin, 400px width, 200px height
+    float chart_width = 400.0f;
+    float chart_height = 200.0f;
+    float bar_width = chart_width / (chart->point_count * 1.5f); // 1.5x spacing
+    float bar_spacing = bar_width * 0.5f;
+    
+    LOG_DEBUG("Chart bounds: max_y=%.2f, bar_width=%.2f, spacing=%.2f", max_y, bar_width, bar_spacing);
+    
+    // Render background and grid if enabled
+    if (chart->show_grid) {
+        LOG_DEBUG("Rendering horizontal grid lines");
+        // TODO: Draw horizontal grid lines at regular intervals
+    }
+    
+    // Render axes if enabled
+    if (chart->show_axes) {
+        LOG_DEBUG("Rendering axes: %s vs %s", chart->x_label, chart->y_label);
+        // TODO: Draw X and Y axes with labels
+    }
+    
+    // Render bars
+    LOG_DEBUG("Rendering %u bars", chart->point_count);
     for (u32 i = 0; i < chart->point_count; i++) {
-        LOG_DEBUG("Bar %u: %.2f - %s", i, chart->points[i].y, chart->points[i].label);
+        const DataPoint* point = &chart->points[i];
+        
+        // Calculate bar position and height
+        float bar_height = (point->y / max_y) * chart_height;
+        float bar_x = 50.0f + i * (bar_width + bar_spacing) + bar_spacing;
+        float bar_y = 250.0f - bar_height; // Y is inverted in screen coordinates
+        
+        LOG_DEBUG("Bar %u: (%.2f,%.2f) size=(%.2fx%.2f) - %s", 
+                  i, bar_x, bar_y, bar_width, bar_height, point->label);
+        
+        // TODO: Draw actual rectangle using graphics API with point->color
+        // TODO: Add hover effects and click detection
+    }
+    
+    // Render bar labels
+    for (u32 i = 0; i < chart->point_count; i++) {
+        const DataPoint* point = &chart->points[i];
+        float label_x = 50.0f + i * (bar_width + bar_spacing) + bar_spacing + bar_width / 2.0f;
+        float label_y = 260.0f; // Below the chart
+        
+        LOG_DEBUG("Label %u: (%.2f,%.2f) - %s", i, label_x, label_y, point->label);
+        // TODO: Render text label centered under bar
+    }
+    
+    // Render legend if enabled
+    if (chart->show_legend) {
+        LOG_DEBUG("Rendering legend for: %s", chart->title);
+        // TODO: Draw legend box with chart title and color indicator
     }
 }
 
@@ -65,17 +179,94 @@ static void render_pie_chart(const ChartData* chart) {
         return;
     }
     
-    // TODO: Implement actual rendering with graphics API
     LOG_DEBUG("Rendering pie chart: %s (%u slices)", chart->title, chart->point_count);
     
+    // Calculate total and angles
     float total = 0.0f;
     for (u32 i = 0; i < chart->point_count; i++) {
         total += chart->points[i].y;
     }
+    if (total == 0) total = 1.0f;
     
+    // Pie chart center and radius
+    float center_x = 250.0f;
+    float center_y = 150.0f;
+    float radius = 80.0f;
+    
+    LOG_DEBUG("Pie chart: center=(%.2f,%.2f), radius=%.2f, total=%.2f", 
+              center_x, center_y, radius, total);
+    
+    float current_angle = -90.0f; // Start from top
+    
+    // Render pie slices
+    LOG_DEBUG("Rendering %u pie slices", chart->point_count);
     for (u32 i = 0; i < chart->point_count; i++) {
-        float percentage = (chart->points[i].y / total) * 100.0f;
-        LOG_DEBUG("Slice %u: %.2f%% - %s", i, percentage, chart->points[i].label);
+        const DataPoint* point = &chart->points[i];
+        float percentage = (point->y / total) * 100.0f;
+        float slice_angle = (point->y / total) * 360.0f;
+        
+        LOG_DEBUG("Slice %u: %.2f%% (%.2f°) - %s", i, percentage, slice_angle, point->label);
+        
+        // Calculate slice arc
+        float start_angle = current_angle * (3.14159f / 180.0f);
+        float end_angle = (current_angle + slice_angle) * (3.14159f / 180.0f);
+        
+        // Generate slice vertices (triangle fan from center)
+        u32 vertex_count = 32; // Approximate arc with 32 vertices
+        for (u32 j = 0; j <= vertex_count; j++) {
+            float t = (float)j / vertex_count;
+            float angle = start_angle + t * (end_angle - start_angle);
+            float x = center_x + cos(angle) * radius;
+            float y = center_y + sin(angle) * radius;
+            
+            if (j == 0) {
+                LOG_DEBUG("Slice %u center: (%.2f,%.2f)", i, center_x, center_y);
+            }
+            LOG_DEBUG("Slice %u vertex %u: (%.2f,%.2f)", i, j, x, y);
+            // TODO: Add vertex to render buffer with point->color
+        }
+        
+        current_angle += slice_angle;
+        
+        // TODO: Draw actual slice using graphics API
+        // TODO: Add slice outline for better visibility
+    }
+    
+    // Render labels positioned outside pie slices
+    current_angle = -90.0f;
+    for (u32 i = 0; i < chart->point_count; i++) {
+        const DataPoint* point = &chart->points[i];
+        float slice_angle = (point->y / total) * 360.0f;
+        float label_angle = (current_angle + slice_angle / 2.0f) * (3.14159f / 180.0f);
+        
+        // Position label outside pie slice
+        float label_distance = radius + 20.0f;
+        float label_x = center_x + cos(label_angle) * label_distance;
+        float label_y = center_y + sin(label_angle) * label_distance;
+        
+        float percentage = (point->y / total) * 100.0f;
+        LOG_DEBUG("Label %u: (%.2f,%.2f) - %s (%.1f%%)", 
+                  i, label_x, label_y, point->label, percentage);
+        
+        // TODO: Render text label with percentage
+        current_angle += slice_angle;
+    }
+    
+    // Render legend if enabled
+    if (chart->show_legend) {
+        LOG_DEBUG("Rendering legend for: %s", chart->title);
+        float legend_x = 350.0f;
+        float legend_y = 50.0f;
+        
+        for (u32 i = 0; i < chart->point_count; i++) {
+            const DataPoint* point = &chart->points[i];
+            float percentage = (point->y / total) * 100.0f;
+            
+            LOG_DEBUG("Legend %u: (%.2f,%.2f) - %s (%.1f%%)", 
+                      i, legend_x, legend_y + i * 20.0f, point->label, percentage);
+            
+            // TODO: Draw color box and text for legend item
+        }
     }
 }
 
@@ -745,4 +936,193 @@ void analytics_dashboard_export_to_json(const AnalyticsDashboard* dashboard, con
     
     fclose(fp);
     LOG_INFO("Exported dashboard to JSON: %s", filename);
+}
+
+// MARK: - Main Rendering Functions
+
+void analytics_dashboard_render(AnalyticsDashboard* dashboard) {
+    if (!dashboard || !dashboard->is_active) {
+        return;
+    }
+    
+    LOG_DEBUG("Rendering analytics dashboard with %u charts and %u widgets", 
+              dashboard->chart_count, dashboard->layout.widget_count);
+    
+    // Render dashboard background
+    LOG_DEBUG("Rendering dashboard background: (%.3f,%.3f,%.3f,%.3f)", 
+              dashboard->layout.background_color.x,
+              dashboard->layout.background_color.y,
+              dashboard->layout.background_color.z,
+              dashboard->layout.background_color.w);
+    // TODO: Draw background rectangle
+    
+    // Render charts
+    for (u32 i = 0; i < dashboard->chart_count; i++) {
+        analytics_dashboard_render_chart(&dashboard->charts[i]);
+    }
+    
+    // Render widgets
+    for (u32 i = 0; i < dashboard->layout.widget_count; i++) {
+        void* widget = dashboard->layout.widgets[i];
+        WidgetType type = dashboard->layout.widget_types[i];
+        analytics_dashboard_render_widget(widget, type);
+    }
+}
+
+void analytics_dashboard_render_chart(const ChartData* chart) {
+    if (!chart) {
+        return;
+    }
+    
+    LOG_DEBUG("Rendering chart: %s (type=%u)", chart->title, chart->type);
+    
+    // Render chart background
+    LOG_DEBUG("Rendering chart background: (%.3f,%.3f,%.3f,%.3f)", 
+              chart->background_color.x,
+              chart->background_color.y,
+              chart->background_color.z,
+              chart->background_color.w);
+    // TODO: Draw chart background rectangle
+    
+    // Render based on chart type
+    switch (chart->type) {
+    case CHART_TYPE_LINE:
+        render_line_chart(chart);
+        break;
+    case CHART_TYPE_BAR:
+        render_bar_chart(chart);
+        break;
+    case CHART_TYPE_PIE:
+        render_pie_chart(chart);
+        break;
+    case CHART_TYPE_SCATTER:
+        // TODO: Implement scatter plot rendering
+        LOG_DEBUG("Scatter plot rendering not yet implemented");
+        break;
+    case CHART_TYPE_HEATMAP:
+        // TODO: Implement heatmap rendering
+        LOG_DEBUG("Heatmap rendering not yet implemented");
+        break;
+    case CHART_TYPE_AREA:
+        // TODO: Implement area chart rendering (similar to line chart with fill)
+        LOG_DEBUG("Area chart rendering not yet implemented");
+        break;
+    default:
+        LOG_ERROR("Unknown chart type: %u", chart->type);
+        break;
+    }
+}
+
+void analytics_dashboard_render_widget(void* widget, WidgetType type) {
+    if (!widget) {
+        return;
+    }
+    
+    switch (type) {
+    case WIDGET_TYPE_CHART:
+        analytics_dashboard_render_chart((ChartData*)widget);
+        break;
+        
+    case WIDGET_TYPE_METRIC_CARD: {
+        MetricCard* card = (MetricCard*)widget;
+        LOG_DEBUG("Rendering metric card: %s = %s %s", card->title, card->value, card->unit);
+        
+        // TODO: Draw card background with card->background_color
+        // TODO: Draw title text
+        // TODO: Draw value text with card->value_color
+        // TODO: Draw trend indicator if enabled
+        // TODO: Draw warning/critical indicators
+        break;
+    }
+    
+    case WIDGET_TYPE_PROGRESS_BAR: {
+        ProgressBar* bar = (ProgressBar*)widget;
+        LOG_DEBUG("Rendering progress bar: %s (%.1f%%)", bar->title, bar->current_progress * 100.0f);
+        
+        // TODO: Draw background with bar->background_color
+        // TODO: Draw progress fill with bar->bar_color
+        // TODO: Draw percentage text if enabled
+        break;
+    }
+    
+    case WIDGET_STATUS_INDICATOR: {
+        StatusIndicator* indicator = (StatusIndicator*)widget;
+        LOG_DEBUG("Rendering status indicator: %s = %s", indicator->title, indicator->status ? "ACTIVE" : "INACTIVE");
+        
+        Vec4 color = indicator->status ? indicator->active_color : indicator->inactive_color;
+        // TODO: Draw status circle with appropriate color
+        // TODO: Draw title text
+        break;
+    }
+    
+    case WIDGET_TEXT_LABEL: {
+        TextLabel* label = (TextLabel*)widget;
+        LOG_DEBUG("Rendering text label: %s", label->text);
+        
+        // TODO: Draw background with label->background_color
+        // TODO: Draw text with label->text_color and label->font_size
+        // TODO: Center text if enabled
+        break;
+    }
+    
+    case WIDGET_BUTTON: {
+        Button* button = (Button*)widget;
+        LOG_DEBUG("Rendering button: %s (hovered=%s, pressed=%s)", 
+                  button->text, button->is_hovered ? "true" : "false", button->is_pressed ? "true" : "false");
+        
+        Vec4 color = button->is_pressed ? button->hover_color : 
+                    button->is_hovered ? button->hover_color : button->button_color;
+        // TODO: Draw button rectangle with appropriate color
+        // TODO: Draw button text with button->text_color
+        break;
+    }
+    
+    default:
+        LOG_ERROR("Unknown widget type: %u", type);
+        break;
+    }
+}
+
+// MARK: - Missing Function Implementations
+
+void analytics_dashboard_update_all_charts(AnalyticsDashboard* dashboard) {
+    if (!dashboard) {
+        return;
+    }
+    
+    LOG_DEBUG("Updating all %u charts", dashboard->chart_count);
+    
+    // This function would typically pull data from various sources
+    // For now, it's a placeholder for the update logic
+    for (u32 i = 0; i < dashboard->chart_count; i++) {
+        LOG_DEBUG("Updating chart %u: %s", i, dashboard->charts[i].title);
+        // TODO: Update chart data from registered data sources
+    }
+}
+
+void analytics_dashboard_set_layout(AnalyticsDashboard* dashboard, u32 columns, u32 rows, 
+                                     float spacing, float padding, Vec4 bg_color) {
+    if (!dashboard) {
+        return;
+    }
+    
+    dashboard->layout.columns = columns;
+    dashboard->layout.rows = rows;
+    dashboard->layout.widget_spacing = spacing;
+    dashboard->layout.padding = padding;
+    dashboard->layout.background_color = bg_color;
+    
+    LOG_DEBUG("Set dashboard layout: %ux%u grid, spacing=%.2f, padding=%.2f", 
+              columns, rows, spacing, padding);
+}
+
+void analytics_dashboard_auto_refresh(AnalyticsDashboard* dashboard, bool enabled, u32 interval_ms) {
+    if (!dashboard) {
+        return;
+    }
+    
+    dashboard->layout.auto_refresh = enabled;
+    dashboard->layout.refresh_interval_ms = interval_ms;
+    
+    LOG_DEBUG("Auto-refresh %s with interval %u ms", enabled ? "enabled" : "disabled", interval_ms);
 }

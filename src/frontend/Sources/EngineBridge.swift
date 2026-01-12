@@ -697,6 +697,76 @@ class EngineBridge: ObservableObject {
     func setAmbientOcclusionEnabled(_ enabled: Bool) {
         engine_set_ambient_occlusion_enabled(enabled)
     }
+    
+    // MARK: - Overlay Management
+    
+    func setOverlayEnabled(_ overlay: RenderingModeManager.RenderingOverlay, enabled: Bool) {
+        switch overlay {
+        case .boundingBoxes:
+            engine_set_bounding_boxes_enabled(enabled)
+        case .boundingSpheres:
+            engine_set_bounding_spheres_enabled(enabled)
+        case .collisionShapes:
+            engine_set_collision_shapes_enabled(enabled)
+        case .navMesh:
+            engine_set_navmesh_enabled(enabled)
+        case .aiPaths:
+            engine_set_ai_paths_enabled(enabled)
+        case .reflectionProbes:
+            engine_set_reflection_probes_enabled(enabled)
+        case .lightProbes:
+            engine_set_light_probes_enabled(enabled)
+        case .volumes:
+            engine_set_volumes_enabled(enabled)
+        case .particleBounds:
+            engine_set_particle_bounds_enabled(enabled)
+        case .audioSources:
+            engine_set_audio_sources_enabled(enabled)
+        case .decalProjections:
+            engine_set_decal_projections_enabled(enabled)
+        case .lodLevels:
+            engine_set_lod_levels_enabled(enabled)
+        case .shadowCascades:
+            engine_set_shadow_cascades_enabled(enabled)
+        case .occlusionCulling:
+            engine_set_occlusion_culling_enabled(enabled)
+        case .frustumCulling:
+            engine_set_frustum_culling_enabled(enabled)
+        }
+    }
+    
+    // MARK: - Debug Visualization
+    
+    func setDebugVisualization(_ debug: RenderingModeManager.DebugVisualization?) {
+        // Clear all debug visualizations first
+        engine_set_physics_velocity_enabled(false)
+        engine_set_angular_velocity_enabled(false)
+        engine_set_center_of_mass_enabled(false)
+        engine_set_contact_points_enabled(false)
+        engine_set_contact_normals_enabled(false)
+        engine_set_joint_constraints_enabled(false)
+        engine_set_spring_forces_enabled(false)
+        
+        // Enable the requested debug visualization
+        if let debug = debug {
+            switch debug {
+            case .physicsVelocity:
+                engine_set_physics_velocity_enabled(true)
+            case .angularVelocity:
+                engine_set_angular_velocity_enabled(true)
+            case .centerOfMass:
+                engine_set_center_of_mass_enabled(true)
+            case .contactPoints:
+                engine_set_contact_points_enabled(true)
+            case .contactNormals:
+                engine_set_contact_normals_enabled(true)
+            case .jointConstraints:
+                engine_set_joint_constraints_enabled(true)
+            case .springForces:
+                engine_set_spring_forces_enabled(true)
+            }
+        }
+    }
 }
 
 // MARK: - Data Types
@@ -1000,6 +1070,73 @@ func engine_set_bounding_boxes_enabled(_ enabled: Bool)
 
 @_silgen_name("engine_set_performance_profiling_enabled")
 func engine_set_performance_profiling_enabled(_ enabled: Bool)
+
+// MARK: - Overlay C Functions
+
+@_silgen_name("engine_set_bounding_spheres_enabled")
+func engine_set_bounding_spheres_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_collision_shapes_enabled")
+func engine_set_collision_shapes_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_navmesh_enabled")
+func engine_set_navmesh_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_ai_paths_enabled")
+func engine_set_ai_paths_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_reflection_probes_enabled")
+func engine_set_reflection_probes_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_light_probes_enabled")
+func engine_set_light_probes_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_volumes_enabled")
+func engine_set_volumes_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_particle_bounds_enabled")
+func engine_set_particle_bounds_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_audio_sources_enabled")
+func engine_set_audio_sources_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_decal_projections_enabled")
+func engine_set_decal_projections_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_lod_levels_enabled")
+func engine_set_lod_levels_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_shadow_cascades_enabled")
+func engine_set_shadow_cascades_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_occlusion_culling_enabled")
+func engine_set_occlusion_culling_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_frustum_culling_enabled")
+func engine_set_frustum_culling_enabled(_ enabled: Bool)
+
+// MARK: - Debug Visualization C Functions
+
+@_silgen_name("engine_set_physics_velocity_enabled")
+func engine_set_physics_velocity_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_angular_velocity_enabled")
+func engine_set_angular_velocity_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_center_of_mass_enabled")
+func engine_set_center_of_mass_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_contact_points_enabled")
+func engine_set_contact_points_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_contact_normals_enabled")
+func engine_set_contact_normals_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_joint_constraints_enabled")
+func engine_set_joint_constraints_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_spring_forces_enabled")
+func engine_set_spring_forces_enabled(_ enabled: Bool)
 
 // MARK: - Advanced Entity Management
 

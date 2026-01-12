@@ -55,10 +55,79 @@ struct TransformGizmo: View {
     }
     
     private func updateGizmoPosition(in size: CGSize) {
-        // TODO: Project 3D pivot point to screen space
-        // For now, center of viewport
-        gizmoPosition = CGPoint(x: size.width / 2, y: size.height / 2)
-        gizmoScale = 1.0
+        // Project 3D pivot point to screen space
+        guard !selectionManager.selectedEntities.isEmpty else {
+            // No selection, center of viewport
+            gizmoPosition = CGPoint(x: size.width / 2, y: size.height / 2)
+            gizmoScale = 1.0
+            return
+        }
+        
+        // Get the pivot point of the first selected entity
+        let firstEntityID = selectionManager.selectedEntities.first!
+        let pivotPoint = EngineBridge.shared.getEntityPivotPoint(firstEntityID)
+        
+        // Get camera matrices for projection
+        let viewMatrix = EngineBridge.shared.getCameraViewMatrix()
+        let projectionMatrix = EngineBridge.shared.getCameraProjectionMatrix()
+        let viewportSize = SIMD2<Float>(Float(size.width), Float(size.height))
+        
+        // Project 3D world position to 2D screen space
+        let screenPosition = projectWorldToScreen(
+            worldPosition: pivotPoint,
+            viewMatrix: viewMatrix,
+            projectionMatrix: projectionMatrix,
+            viewportSize: viewportSize
+        )
+        
+        // Check if the point is in front of the camera
+        if screenPosition.z > 0 && screenPosition.z < 1.0 {
+            gizmoPosition = CGPoint(x: CGFloat(screenPosition.x), y: CGFloat(screenPosition.y))
+            
+            // Calculate scale based on distance from camera
+            let distance = screenPosition.z
+            let baseScale: Float = 80.0 // Base gizmo size in pixels
+            let scaleFactor = baseScale / (distance * 0.5 + 1.0) // Perspective scaling
+            gizmoScale = CGFloat(scaleFactor)
+        } else {
+            // Behind camera, hide gizmo or show at edge
+            gizmoPosition = CGPoint(x: -1000, y: -1000) // Off screen
+            gizmoScale = 1.0
+        }
+    }
+    
+    // Helper function to project 3D world coordinates to 2D screen space
+    private func projectWorldToScreen(
+        worldPosition: SIMD3<Float>,
+        viewMatrix: simd_float4x4,
+        projectionMatrix: simd_float4x4,
+        viewportSize: SIMD2<Float>
+    ) -> SIMD3<Float> {
+        // Transform world position to view space
+        let viewPosition = viewMatrix * SIMD4<Float>(worldPosition.x, worldPosition.y, worldPosition.z, 1.0)
+        
+        // Transform view position to clip space
+        let clipPosition = projectionMatrix * viewPosition
+        
+        // Perspective divide to get normalized device coordinates
+        guard clipPosition.w != 0 else {
+            return SIMD3<Float>(0, 0, -1) // Behind camera
+        }
+        
+        let ndc = SIMD3<Float>(
+            clipPosition.x / clipPosition.w,
+            clipPosition.y / clipPosition.w,
+            clipPosition.z / clipPosition.w
+        )
+        
+        // Convert NDC to screen coordinates
+        let screenPosition = SIMD3<Float>(
+            (ndc.x + 1.0) * 0.5 * viewportSize.x,
+            (1.0 - ndc.y) * 0.5 * viewportSize.y, // Flip Y axis
+            ndc.z // Depth value for distance checking
+        )
+        
+        return screenPosition
     }
 }
 

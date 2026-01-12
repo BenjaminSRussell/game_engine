@@ -208,8 +208,7 @@ typedef struct {
 // Entity handle
 typedef u32 EntityID;
 
-// Component handle
-typedef u32 ComponentID;
+// Component handle - use ComponentID enum from ecs/component_ids.h
 
 // System handle
 typedef u32 SystemID;
@@ -242,22 +241,7 @@ typedef u32 AudioID;
 // MEMORY AND PERFORMANCE TYPES
 // ============================================================================
 
-// Memory tag for allocation tracking
-typedef enum {
-    MEMORY_TAG_DEFAULT = 0,
-    MEMORY_TAG_TEMP,
-    MEMORY_TAG_PERSISTENT,
-    MEMORY_TAG_ASSET,
-    MEMORY_TAG_RENDERER,
-    MEMORY_TAG_AUDIO,
-    MEMORY_TAG_PHYSICS,
-    MEMORY_TAG_AI,
-    MEMORY_TAG_NETWORK,
-    MEMORY_TAG_UI,
-    MEMORY_TAG_GAMEPLAY,
-    MEMORY_TAG_GEOMETRY,
-    MEMORY_TAG_COUNT
-} MemoryTag;
+// Memory tags - use MemoryTag enum from core/memory.h
 
 // Time types
 typedef f32 Time; // Time in seconds
@@ -503,87 +487,7 @@ typedef enum {
 // ERROR AND RESULT TYPES
 // ============================================================================
 
-// Error codes - comprehensive list for all subsystems
-typedef enum {
-    // Success
-    ERROR_NONE = 0,
-
-    // General errors (1-99)
-    ERROR_INVALID_ARGUMENT = 1,
-    ERROR_INVALID_STATE = 2,
-    ERROR_OUT_OF_MEMORY = 3,
-    ERROR_NOT_FOUND = 4,
-    ERROR_ALREADY_EXISTS = 5,
-    ERROR_NOT_IMPLEMENTED = 6,
-    ERROR_TIMEOUT = 7,
-    ERROR_PERMISSION_DENIED = 8,
-    ERROR_IO_ERROR = 9,
-    ERROR_INVALID_HANDLE = 10,
-
-    // Memory errors (100-119)
-    ERROR_MEMORY_ALIGNMENT = 100,
-    ERROR_MEMORY_LEAK = 101,
-    ERROR_MEMORY_CORRUPTION = 102,
-    ERROR_MEMORY_POOL_EXHAUSTED = 103,
-    ERROR_MEMORY_FRAGMENTATION = 104,
-
-    // Physics errors (120-139)
-    ERROR_PHYSICS_INVALID_SHAPE = 120,
-    ERROR_PHYSICS_CONSTRAINT_FAILED = 121,
-    ERROR_PHYSICS_SIMULATION_ERROR = 122,
-
-    // Rendering errors (140-179)
-    ERROR_RENDER_INVALID_SHADER = 140,
-    ERROR_RENDER_INVALID_TEXTURE = 141,
-    ERROR_RENDER_INVALID_MESH = 142,
-    ERROR_RENDER_OUT_OF_VRAM = 143,
-    ERROR_RENDER_COMPILATION_FAILED = 144,
-    ERROR_RENDER_FRAMEBUFFER_INCOMPLETE = 145,
-    ERROR_RENDER_INVALID_RENDERSTATE = 146,
-    ERROR_RENDER_GPU_TIMEOUT = 147,
-
-    // Network errors (180-199)
-    ERROR_NETWORK_CONNECTION_FAILED = 180,
-    ERROR_NETWORK_TIMEOUT = 181,
-    ERROR_NETWORK_PACKET_LOSS = 182,
-    ERROR_NETWORK_INVALID_PROTOCOL = 183,
-    ERROR_NETWORK_BUFFER_OVERFLOW = 184,
-
-    // Audio errors (200-219)
-    ERROR_AUDIO_INVALID_FORMAT = 200,
-    ERROR_AUDIO_DEVICE_ERROR = 201,
-    ERROR_AUDIO_BUFFER_UNDERRUN = 202,
-
-    // File/Asset errors (220-239)
-    ERROR_FILE_NOT_FOUND = 220,
-    ERROR_FILE_ACCESS_DENIED = 221,
-    ERROR_FILE_INVALID_FORMAT = 222,
-    ERROR_FILE_CORRUPTED = 223,
-    ERROR_FILE_TOO_LARGE = 224,
-    ERROR_ASSET_LOAD_FAILED = 225,
-    ERROR_ASSET_NOT_LOADED = 226,
-
-    // Validation errors (240-259)
-    ERROR_VALIDATION_FAILED = 240,
-    ERROR_TYPE_MISMATCH = 241,
-    ERROR_VERSION_MISMATCH = 242,
-
-    // Threading errors (260-279)
-    ERROR_THREAD_CREATION_FAILED = 260,
-    ERROR_THREAD_JOIN_FAILED = 261,
-    ERROR_DEADLOCK_DETECTED = 262,
-    ERROR_SYNCHRONIZATION_FAILED = 263,
-} ErrorCode;
-
-// Result type for functions with error handling
-typedef struct {
-    ErrorCode error;
-    void* value;  // If NULL, check error
-} Result;
-
-// Macro for creating success results
-#define RESULT_OK(val) ((Result){.error = ERROR_NONE, .value = (val)})
-#define RESULT_ERROR(err) ((Result){.error = (err), .value = NULL})
+// Error codes and Result type - use definitions from core/utils.h
 
 // ============================================================================
 // UUID AND IDENTIFICATION TYPES
@@ -729,11 +633,11 @@ typedef enum {
     SIMD_SSE4_2 = 8,
     SIMD_AVX = 16,
     SIMD_AVX2 = 32,
-    SIMD_NEON = 64
+    SIMD_NEON_FEATURE = 64
 } SimdFeature;
 
 // Get available SIMD features at runtime
 SimdFeature simd_get_available_features(void);
 bool simd_is_feature_supported(SimdFeature feature);
 
-#endif // TYPES_H
+// End of types.h

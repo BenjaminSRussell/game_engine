@@ -396,9 +396,9 @@ typedef struct {
   ComponentType event_type;
   void *event_data;
   Entity target_entity;
-} Event;
+} ECSEvent;
 
-void ecs_world_emit_event(World *world, const Event *event);
+void ecs_world_emit_event(World *world, const ECSEvent *event);
 void ecs_world_add_event_system(World *world, ComponentType event_type,
                                 SystemFunc handler);
 

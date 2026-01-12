@@ -103,9 +103,12 @@ typedef u32 ComponentTypeID;
 // Math constants
 #ifndef PI
 #define PI 3.14159265358979323846f
-#endif
 #define PI_2 (PI * 2.0f)
 #define PI_HALF (PI * 0.5f)
+#else
+#define PI_2 (3.14159265358979323846f * 2.0f)
+#define PI_HALF (3.14159265358979323846f * 0.5f)
+#endif
 #ifndef DEG_TO_RAD
 #define DEG_TO_RAD (PI / 180.0f)
 #endif

@@ -188,6 +188,1485 @@ protocol PropertyEditor: View {
 // TODO-1779: Duration editor
 // TODO-1780: Localized string editor
 
+// MARK: - Supporting Data Models
+
+// Color Space Types
+enum ColorSpace: String, CaseIterable {
+    case sRGB = "sRGB"
+    case linear = "Linear"
+    case hsv = "HSV"
+    
+    var description: String {
+        switch self {
+        case .sRGB: return "Standard RGB"
+        case .linear: return "Linear RGB"
+        case .hsv: return "Hue, Saturation, Value"
+        }
+    }
+}
+
+// Color Blindness Types
+enum ColorBlindnessType: String, CaseIterable {
+    case none = "Normal"
+    case protanopia = "Protanopia (Red-Blind)"
+    case deuteranopia = "Deuteranopia (Green-Blind)"
+    case tritanopia = "Tritanopia (Blue-Blind)"
+    case achromatopsia = "Achromatopsia (Monochrome)"
+}
+
+// Color Harmony Types
+enum ColorHarmony: String, CaseIterable {
+    case complementary = "Complementary"
+    case analogous = "Analogous"
+    case triadic = "Triadic"
+    case tetradic = "Tetradic"
+    case splitComplementary = "Split-Complementary"
+    case monochromatic = "Monochromatic"
+}
+
+// Color History Entry
+struct ColorHistoryEntry: Identifiable {
+    let id = UUID()
+    let color: Color
+    let timestamp: Date
+    let name: String?
+    
+    init(color: Color, name: String? = nil) {
+        self.color = color
+        self.timestamp = Date()
+        self.name = name
+    }
+}
+
+// Color Swatch
+struct ColorSwatch: Identifiable {
+    let id = UUID()
+    let name: String
+    let color: Color
+    let category: String
+    
+    static let defaultSwatches: [ColorSwatch] = [
+        .init(name: "Red", color: .red, category: "Primary"),
+        .init(name: "Green", color: .green, category: "Primary"),
+        .init(name: "Blue", color: .blue, category: "Primary"),
+        .init(name: "Yellow", color: .yellow, category: "Primary"),
+        .init(name: "Orange", color: .orange, category: "Secondary"),
+        .init(name: "Purple", color: .purple, category: "Secondary"),
+        .init(name: "Pink", color: .pink, category: "Secondary"),
+        .init(name: "Cyan", color: .cyan, category: "Secondary"),
+        .init(name: "White", color: .white, category: "Neutral"),
+        .init(name: "Black", color: .black, category: "Neutral"),
+        .init(name: "Gray", color: .gray, category: "Neutral"),
+        .init(name: "Brown", color: .brown, category: "Earth")
+    ]
+}
+
+// Object Reference Types
+enum ObjectType: String, CaseIterable {
+    case gameObject = "Game Object"
+    case component = "Component"
+    case material = "Material"
+    case texture = "Texture"
+    case mesh = "Mesh"
+    case audio = "Audio"
+    case animation = "Animation"
+    case prefab = "Prefab"
+    case script = "Script"
+    
+    var icon: String {
+        switch self {
+        case .gameObject: return "cube"
+        case .component: return "puzzlepiece"
+        case .material: return "paintpalette"
+        case .texture: return "photo"
+        case .mesh: return "cube.transparent"
+        case .audio: return "speaker.wave.2"
+        case .animation: return "figure.walk"
+        case .prefab: return "cube.box"
+        case .script: return "doc.text"
+        }
+    }
+}
+
+// Scene Hierarchy Node
+struct SceneHierarchyNode: Identifiable {
+    let id = UUID()
+    let name: String
+    let type: ObjectType
+    let children: [SceneHierarchyNode]
+    let isActive: Bool
+    let isPrefab: Bool
+    let reference: String?
+    
+    static func mockHierarchy() -> [SceneHierarchyNode] {
+        return [
+            SceneHierarchyNode(name: "Root", type: .gameObject, children: [
+                SceneHierarchyNode(name: "Player", type: .gameObject, children: [
+                    SceneHierarchyNode(name: "Mesh Renderer", type: .component, children: [], isActive: true, isPrefab: false, reference: "player_mesh"),
+                    SceneHierarchyNode(name: "Player Controller", type: .component, children: [], isActive: true, isPrefab: false, reference: "player_controller")
+                ], isActive: true, isPrefab: true, reference: "player_prefab"),
+                SceneHierarchyNode(name: "Camera", type: .gameObject, children: [
+                    SceneHierarchyNode(name: "Camera Component", type: .component, children: [], isActive: true, isPrefab: false, reference: "main_camera")
+                ], isActive: true, isPrefab: false, reference: nil)
+            ], isActive: true, isPrefab: false, reference: nil)
+        ]
+    }
+}
+
+// MARK: - Color Property Editor (TODO-1561 to TODO-1575)
+struct EnhancedColorPropertyEditor: View {
+    let label: String
+    @Binding var value: Color
+    @State private var showAdvancedEditor = false
+    @State private var selectedColorSpace: ColorSpace = .sRGB
+    @State private var hexInput = ""
+    @State private var showEyedropper = false
+    @State private var alphaEnabled = true
+    @State private var exposure: Float = 0.0
+    @State private var temperature: Float = 6500
+    @State private var tint: Float = 0
+    @State private var selectedHarmony: ColorHarmony = .complementary
+    @State private var colorHistory: [ColorHistoryEntry] = []
+    @State private var customSwatches: [ColorSwatch] = ColorSwatch.defaultSwatches
+    @State private var showBatchOperations = false
+    @State private var selectedBlindnessType: ColorBlindnessType = .none
+    @State private var hdrEnabled = false
+    @State private var gradientMode = false
+    @State private var gradientEndColor: Color = .blue
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Header
+            HStack {
+                Text(label)
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                Spacer()
+                
+                // HDR Badge
+                if hdrEnabled {
+                    HStack(spacing: 2) {
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 8))
+                        Text("HDR")
+                            .font(DesignSystem.Typography.small)
+                    }
+                    .foregroundColor(DesignSystem.Colors.accentWarning)
+                }
+                
+                // Advanced Editor Button
+                EditorIconButton(icon: "slider.horizontal.3", tooltip: "Advanced Color Editor") {
+                    showAdvancedEditor.toggle()
+                }
+            }
+            
+            // Main Color Display
+            HStack(spacing: 12) {
+                // Color Preview
+                ZStack {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(value)
+                        .frame(width: 60, height: 40)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(DesignSystem.Colors.border, lineWidth: 1)
+                        )
+                    
+                    // Alpha Checkerboard
+                    if alphaEnabled {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color.white, Color.gray],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 60, height: 40)
+                            .opacity(0.3)
+                    }
+                }
+                
+                // Quick Actions
+                VStack(spacing: 4) {
+                    HStack(spacing: 4) {
+                        EditorIconButton(icon: "eyedropper", tooltip: "Eyedropper Tool") {
+                            showEyedropper.toggle()
+                        }
+                        
+                        EditorIconButton(icon: "paintpalette", tooltip: "Color Swatches") {
+                            // Show swatches
+                        }
+                        
+                        EditorIconButton(icon: "clock", tooltip: "Color History") {
+                            // Show history
+                        }
+                    }
+                    
+                    // Hex Input
+                    TextField("#RRGGBB", text: $hexInput)
+                        .textFieldStyle(.roundedBorder)
+                        .font(DesignSystem.Typography.monoSmall)
+                        .frame(width: 100)
+                }
+                
+                Spacer()
+                
+                // Color Picker
+                ColorPicker("", selection: $value)
+                    .labelsHidden()
+                    .scaleEffect(0.8)
+            }
+            
+            // Gradient Mode Toggle
+            if gradientMode {
+                HStack {
+                    Text("Gradient End:")
+                        .font(DesignSystem.Typography.small)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                    
+                    ColorPicker("", selection: $gradientEndColor)
+                        .labelsHidden()
+                        .scaleEffect(0.7)
+                }
+            }
+        }
+        .sheet(isPresented: $showAdvancedEditor) {
+            AdvancedColorEditor(
+                color: $value,
+                colorSpace: $selectedColorSpace,
+                alphaEnabled: $alphaEnabled,
+                exposure: $exposure,
+                temperature: $temperature,
+                tint: $tint,
+                harmony: $selectedHarmony,
+                blindnessType: $selectedBlindnessType,
+                hdrEnabled: $hdrEnabled,
+                gradientMode: $gradientMode,
+                gradientEndColor: $gradientEndColor,
+                colorHistory: $colorHistory,
+                customSwatches: $customSwatches
+            )
+        }
+        .onAppear {
+            updateHexInput()
+        }
+        .onChange(of: value) { _ in
+            updateHexInput()
+            addToHistory()
+        }
+        .onChange(of: hexInput) { newValue in
+            updateColorFromHex()
+        }
+    }
+    
+    private func updateHexInput() {
+        // Convert SwiftUI Color to hex
+        let uiColor = UIColor(value)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        if alphaEnabled {
+            hexInput = String(format: "#%02lX%02lX%02lX%02lX",
+                             lroundf(Float(red * 255)),
+                             lroundf(Float(green * 255)),
+                             lroundf(Float(blue * 255)),
+                             lroundf(Float(alpha * 255)))
+        } else {
+            hexInput = String(format: "#%02lX%02lX%02lX",
+                             lroundf(Float(red * 255)),
+                             lroundf(Float(green * 255)),
+                             lroundf(Float(blue * 255)))
+        }
+    }
+    
+    private func updateColorFromHex() {
+        guard hexInput.hasPrefix("#") else { return }
+        
+        let hexString = String(hexInput.dropFirst())
+        guard hexString.count == 6 || hexString.count == 8 else { return }
+        
+        var rgb: UInt64 = 0
+        Scanner(string: hexString).scanHexInt64(&rgb)
+        
+        if hexString.count == 8 {
+            let red = CGFloat((rgb & 0xFF000000) >> 24) / 255
+            let green = CGFloat((rgb & 0x00FF0000) >> 16) / 255
+            let blue = CGFloat((rgb & 0x0000FF00) >> 8) / 255
+            let alpha = CGFloat(rgb & 0x000000FF) / 255
+            value = Color(.sRGB, red: red, green: green, blue: blue, opacity: alpha)
+        } else {
+            let red = CGFloat((rgb & 0xFF0000) >> 16) / 255
+            let green = CGFloat((rgb & 0x00FF00) >> 8) / 255
+            let blue = CGFloat(rgb & 0x0000FF) / 255
+            value = Color(.sRGB, red: red, green: green, blue: blue, opacity: 1.0)
+        }
+    }
+    
+    private func addToHistory() {
+        let entry = ColorHistoryEntry(color: value, name: generateColorName())
+        colorHistory.insert(entry, at: 0)
+        if colorHistory.count > 20 {
+            colorHistory.removeLast()
+        }
+    }
+    
+    private func generateColorName() -> String {
+        // Simple color naming based on hue
+        let uiColor = UIColor(value)
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        
+        uiColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: nil)
+        
+        let hueDegrees = hue * 360
+        
+        switch hueDegrees {
+        case 0..<15, 345..<360: return "Red"
+        case 15..<45: return "Orange"
+        case 45..<75: return "Yellow"
+        case 75..<150: return "Green"
+        case 150..<210: return "Cyan"
+        case 210..<270: return "Blue"
+        case 270..<330: return "Purple"
+        default: return "Magenta"
+        }
+    }
+}
+
+// MARK: - Advanced Color Editor
+struct AdvancedColorEditor: View {
+    @Binding var color: Color
+    @Binding var colorSpace: ColorSpace
+    @Binding var alphaEnabled: Bool
+    @Binding var exposure: Float
+    @Binding var temperature: Float
+    @Binding var tint: Float
+    @Binding var harmony: ColorHarmony
+    @Binding var blindnessType: ColorBlindnessType
+    @Binding var hdrEnabled: Bool
+    @Binding var gradientMode: Bool
+    @Binding var gradientEndColor: Color
+    @Binding var colorHistory: [ColorHistoryEntry]
+    @Binding var customSwatches: [ColorSwatch]
+    
+    @Environment(\.dismiss) private var dismiss
+    @State private var selectedTab = 0
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 0) {
+                // Tab Bar
+                Picker("Editor Tab", selection: $selectedTab) {
+                    Text("Basic").tag(0)
+                    Text("Advanced").tag(1)
+                    Text("Swatches").tag(2)
+                    Text("Harmony").tag(3)
+                    Text("Accessibility").tag(4)
+                }
+                .pickerStyle(.segmented)
+                .padding()
+                
+                // Tab Content
+                TabView(selection: $selectedTab) {
+                    BasicColorTab(color: $color, alphaEnabled: $alphaEnabled, colorSpace: $colorSpace)
+                        .tag(0)
+                    
+                    AdvancedColorTab(
+                        color: $color,
+                        exposure: $exposure,
+                        temperature: $temperature,
+                        tint: $tint,
+                        hdrEnabled: $hdrEnabled,
+                        gradientMode: $gradientMode,
+                        gradientEndColor: $gradientEndColor
+                    )
+                    .tag(1)
+                    
+                    SwatchesTab(
+                        color: $color,
+                        customSwatches: $customSwatches,
+                        colorHistory: $colorHistory
+                    )
+                    .tag(2)
+                    
+                    HarmonyTab(color: $color, harmony: $harmony)
+                        .tag(3)
+                    
+                    AccessibilityTab(
+                        color: $color,
+                        blindnessType: $blindnessType
+                    )
+                    .tag(4)
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+            }
+            .navigationTitle("Advanced Color Editor")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .frame(width: 600, height: 500)
+    }
+}
+
+// MARK: - Basic Color Tab
+struct BasicColorTab: View {
+    @Binding var color: Color
+    @Binding var alphaEnabled: Bool
+    @Binding var colorSpace: ColorSpace
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            // Color Space Selection
+            HStack {
+                Text("Color Space:")
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Picker("Color Space", selection: $colorSpace) {
+                    ForEach(ColorSpace.allCases, id: \.self) { space in
+                        Text(space.description).tag(space)
+                    }
+                }
+                .pickerStyle(.menu)
+                .frame(width: 150)
+                
+                Spacer()
+            }
+            
+            // Alpha Toggle
+            Toggle("Enable Alpha Channel", isOn: $alphaEnabled)
+                .font(DesignSystem.Typography.body)
+            
+            // Color Picker
+            VStack {
+                Text("Color:")
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                ColorPicker("Select Color", selection: $color)
+                    .labelsHidden()
+                    .frame(height: 100)
+            }
+            
+            Spacer()
+        }
+        .padding()
+    }
+}
+
+// MARK: - Advanced Color Tab
+struct AdvancedColorTab: View {
+    @Binding var color: Color
+    @Binding var exposure: Float
+    @Binding var temperature: Float
+    @Binding var tint: Float
+    @Binding var hdrEnabled: Bool
+    @Binding var gradientMode: Bool
+    @Binding var gradientEndColor: Color
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                // HDR Toggle
+                Toggle("Enable HDR", isOn: $hdrEnabled)
+                    .font(DesignSystem.Typography.body)
+                
+                // Gradient Mode
+                Toggle("Gradient Mode", isOn: $gradientMode)
+                    .font(DesignSystem.Typography.body)
+                
+                if gradientMode {
+                    HStack {
+                        Text("End Color:")
+                            .font(DesignSystem.Typography.body)
+                        ColorPicker("", selection: $gradientEndColor)
+                            .labelsHidden()
+                    }
+                }
+                
+                // Exposure
+                VStack(alignment: .leading) {
+                    Text("Exposure: \(String(format: "%.2f", exposure))")
+                        .font(DesignSystem.Typography.body)
+                    Slider(value: $exposure, in: -2...2)
+                }
+                
+                // Temperature
+                VStack(alignment: .leading) {
+                    Text("Temperature: \(Int(temperature))K")
+                        .font(DesignSystem.Typography.body)
+                    Slider(value: $temperature, in: 1000...40000)
+                }
+                
+                // Tint
+                VStack(alignment: .leading) {
+                    Text("Tint: \(String(format: "%.0f", tint))")
+                        .font(DesignSystem.Typography.body)
+                    Slider(value: $tint, in: -100...100)
+                }
+            }
+            .padding()
+        }
+    }
+}
+
+// MARK: - Swatches Tab
+struct SwatchesTab: View {
+    @Binding var color: Color
+    @Binding var customSwatches: [ColorSwatch]
+    @Binding var colorHistory: [ColorHistoryEntry]
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                // Color History
+                VStack(alignment: .leading) {
+                    Text("Recent Colors")
+                        .font(DesignSystem.Typography.headline)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 8), spacing: 8) {
+                        ForEach(colorHistory.prefix(16)) { entry in
+                            Button(action: { color = entry.color }) {
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(entry.color)
+                                    .frame(width: 30, height: 30)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .stroke(DesignSystem.Colors.border, lineWidth: 1)
+                                    )
+                            }
+                            .buttonStyle(.plain)
+                            .help(entry.name ?? "Unnamed Color")
+                        }
+                    }
+                }
+                
+                // Custom Swatches
+                VStack(alignment: .leading) {
+                    Text("Color Swatches")
+                        .font(DesignSystem.Typography.headline)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    ForEach(groupSwatchesByCategory(), id: \.category) { category in
+                        VStack(alignment: .leading) {
+                            Text(category.category)
+                                .font(DesignSystem.Typography.subheadline)
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                            
+                            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 8), spacing: 8) {
+                                ForEach(category.swatches) { swatch in
+                                    Button(action: { color = swatch.color }) {
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .fill(swatch.color)
+                                            .frame(width: 30, height: 30)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 4)
+                                                    .stroke(DesignSystem.Colors.border, lineWidth: 1)
+                                            )
+                                    }
+                                    .buttonStyle(.plain)
+                                    .help(swatch.name)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .padding()
+        }
+    }
+    
+    private func groupSwatchesByCategory() -> [(category: String, swatches: [ColorSwatch])] {
+        let grouped = Dictionary(grouping: customSwatches) { $0.category }
+        return grouped.map { (category: $0.key, swatches: $0.value) }
+            .sorted { $0.category < $1.category }
+    }
+}
+
+// MARK: - Harmony Tab
+struct HarmonyTab: View {
+    @Binding var color: Color
+    @Binding var harmony: ColorHarmony
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            // Harmony Type Selection
+            Picker("Color Harmony", selection: $harmony) {
+                ForEach(ColorHarmony.allCases, id: \.self) { type in
+                    Text(type.rawValue).tag(type)
+                }
+            }
+            .pickerStyle(.menu)
+            
+            // Harmony Preview
+            VStack(alignment: .leading) {
+                Text("Harmony Colors")
+                    .font(DesignSystem.Typography.headline)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                HStack(spacing: 12) {
+                    ForEach(generateHarmonyColors(), id: \.self) { harmonyColor in
+                        VStack(spacing: 4) {
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(harmonyColor)
+                                .frame(width: 50, height: 50)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 6)
+                                        .stroke(DesignSystem.Colors.border, lineWidth: 1)
+                                )
+                            
+                            Text(colorToHex(harmonyColor))
+                                .font(DesignSystem.Typography.monoSmall)
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                        }
+                        .onTapGesture {
+                            color = harmonyColor
+                        }
+                    }
+                }
+            }
+            
+            Spacer()
+        }
+        .padding()
+    }
+    
+    private func generateHarmonyColors() -> [Color] {
+        // Simplified harmony generation
+        let baseColor = color
+        
+        switch harmony {
+        case .complementary:
+            return [baseColor, complementColor(baseColor)]
+        case .analogous:
+            return [baseColor, shiftHue(baseColor, -30), shiftHue(baseColor, 30)]
+        case .triadic:
+            return [baseColor, shiftHue(baseColor, 120), shiftHue(baseColor, 240)]
+        case .tetradic:
+            return [baseColor, shiftHue(baseColor, 90), shiftHue(baseColor, 180), shiftHue(baseColor, 270)]
+        case .splitComplementary:
+            return [baseColor, shiftHue(baseColor, 150), shiftHue(baseColor, 210)]
+        case .monochromatic:
+            return [baseColor, adjustBrightness(baseColor, 0.3), adjustBrightness(baseColor, 0.7)]
+        }
+    }
+    
+    private func complementColor(_ color: Color) -> Color {
+        return shiftHue(color, 180)
+    }
+    
+    private func shiftHue(_ color: Color, _ degrees: Float) -> Color {
+        let uiColor = UIColor(color)
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        uiColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        
+        let newHue = (hue + CGFloat(degrees / 360)).truncatingRemainder(dividingBy: 1)
+        
+        return Color(.sRGB, hue: newHue, saturation: saturation, brightness: brightness, opacity: alpha)
+    }
+    
+    private func adjustBrightness(_ color: Color, _ factor: Float) -> Color {
+        let uiColor = UIColor(color)
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        uiColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        
+        let newBrightness = max(0, min(1, brightness * CGFloat(factor)))
+        
+        return Color(.sRGB, hue: hue, saturation: saturation, brightness: newBrightness, opacity: alpha)
+    }
+    
+    private func colorToHex(_ color: Color) -> String {
+        let uiColor = UIColor(color)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: nil)
+        
+        return String(format: "#%02lX%02lX%02lX",
+                     lroundf(Float(red * 255)),
+                     lroundf(Float(green * 255)),
+                     lroundf(Float(blue * 255)))
+    }
+}
+
+// MARK: - Accessibility Tab
+struct AccessibilityTab: View {
+    @Binding var color: Color
+    @Binding var blindnessType: ColorBlindnessType
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            // Color Blindness Simulation
+            VStack(alignment: .leading) {
+                Text("Color Blindness Simulation")
+                    .font(DesignSystem.Typography.headline)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Picker("Type", selection: $blindnessType) {
+                    ForEach(ColorBlindnessType.allCases, id: \.self) { type in
+                        Text(type.rawValue).tag(type)
+                    }
+                }
+                .pickerStyle(.menu)
+                
+                HStack(spacing: 20) {
+                    VStack {
+                        Text("Normal")
+                            .font(DesignSystem.Typography.small)
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(color)
+                            .frame(width: 80, height: 60)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(DesignSystem.Colors.border, lineWidth: 1)
+                            )
+                    }
+                    
+                    VStack {
+                        Text(blindnessType.rawValue)
+                            .font(DesignSystem.Typography.small)
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(simulateColorBlindness(color, type: blindnessType))
+                            .frame(width: 80, height: 60)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(DesignSystem.Colors.border, lineWidth: 1)
+                            )
+                    }
+                }
+            }
+            
+            // Contrast Checker
+            VStack(alignment: .leading) {
+                Text("Contrast Checker")
+                    .font(DesignSystem.Typography.headline)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                HStack(spacing: 20) {
+                    VStack {
+                        Text("Text Color")
+                            .font(DesignSystem.Typography.small)
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(color)
+                            .frame(width: 80, height: 60)
+                    }
+                    
+                    VStack {
+                        Text("Background")
+                            .font(DesignSystem.Typography.small)
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.white)
+                            .frame(width: 80, height: 60)
+                    }
+                }
+                
+                let contrast = calculateContrast(color, Color.white)
+                Text("Contrast Ratio: \(String(format: "%.2f", contrast))")
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(contrast >= 4.5 ? .green : .orange)
+                
+                Text(contrast >= 4.5 ? "WCAG AA Compliant" : "Not WCAG Compliant")
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(contrast >= 4.5 ? .green : .orange)
+            }
+            
+            Spacer()
+        }
+        .padding()
+    }
+    
+    private func simulateColorBlindness(_ color: Color, type: ColorBlindnessType) -> Color {
+        // Simplified color blindness simulation
+        let uiColor = UIColor(color)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        switch type {
+        case .none:
+            return color
+        case .protanopia:
+            // Red-blind: reduce red component
+            return Color(.sRGB, red: green * 0.5, green: green, blue: blue, opacity: alpha)
+        case .deuteranopia:
+            // Green-blind: reduce green component
+            return Color(.sRGB, red: red, green: red * 0.5, blue: blue, opacity: alpha)
+        case .tritanopia:
+            // Blue-blind: reduce blue component
+            return Color(.sRGB, red: red, green: green, blue: red * 0.5, opacity: alpha)
+        case .achromatopsia:
+            // Monochrome: convert to grayscale
+            let gray = (red + green + blue) / 3
+            return Color(.sRGB, red: gray, green: gray, blue: gray, opacity: alpha)
+        }
+    }
+    
+    private func calculateContrast(_ color1: Color, _ color2: Color) -> Float {
+        let uiColor1 = UIColor(color1)
+        let uiColor2 = UIColor(color2)
+        
+        var r1: CGFloat = 0, g1: CGFloat = 0, b1: CGFloat = 0
+        var r2: CGFloat = 0, g2: CGFloat = 0, b2: CGFloat = 0
+        
+        uiColor1.getRed(&r1, green: &g1, blue: &b1, alpha: nil)
+        uiColor2.getRed(&r2, green: &g2, blue: &b2, alpha: nil)
+        
+        let l1 = (0.299 * r1 + 0.587 * g1 + 0.114 * b1)
+        let l2 = (0.299 * r2 + 0.587 * g2 + 0.114 * b2)
+        
+        let lighter = max(l1, l2)
+        let darker = min(l1, l2)
+        
+        return Float((lighter + 0.05) / (darker + 0.05))
+    }
+}
+
+// MARK: - Object Reference Editor (TODO-1601 to TODO-1608)
+struct ObjectReferenceEditor: View {
+    let label: String
+    @Binding var reference: String?
+    let allowedTypes: [ObjectType]
+    let currentObjectId: String?
+    
+    @State private var showPicker = false
+    @State private var searchText = ""
+    @State private var selectedType: ObjectType = .gameObject
+    @State private var sceneHierarchy: [SceneHierarchyNode] = []
+    @State private var filteredHierarchy: [SceneHierarchyNode] = []
+    @State private var showHierarchyBrowser = false
+    @State private var isDragging = false
+    @State private var dragOver = false
+    @State private var circularReferenceWarning = false
+    @State private var missingReferenceWarning = false
+    @State private var nullReferenceWarning = false
+    
+    init(label: String, reference: Binding<String?>, allowedTypes: [ObjectType] = ObjectType.allCases, currentObjectId: String? = nil) {
+        self.label = label
+        self._reference = reference
+        self.allowedTypes = allowedTypes
+        self.currentObjectId = currentObjectId
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Header
+            HStack {
+                Text(label)
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                Spacer()
+                
+                // Type Filter
+                if allowedTypes.count > 1 {
+                    Picker("Type", selection: $selectedType) {
+                        ForEach(allowedTypes, id: \.self) { type in
+                            Text(type.rawValue).tag(type)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .frame(width: 120)
+                }
+            }
+            
+            // Reference Display
+            HStack(spacing: 8) {
+                // Object Info
+                VStack(alignment: .leading, spacing: 2) {
+                    if let ref = reference, !ref.isEmpty {
+                        HStack(spacing: 4) {
+                            Image(systemName: getObjectTypeIcon(ref))
+                                .foregroundColor(DesignSystem.Colors.accentPrimary)
+                                .font(.system(size: 12))
+                            
+                            Text(URL(fileURLWithPath: ref).lastPathComponent)
+                                .font(DesignSystem.Typography.body)
+                                .foregroundColor(DesignSystem.Colors.textPrimary)
+                            
+                            // Prefab Badge
+                            if isPrefabInstance(ref) {
+                                HStack(spacing: 2) {
+                                    Image(systemName: "cube.box.fill")
+                                        .font(.system(size: 8))
+                                    Text("Prefab")
+                                        .font(DesignSystem.Typography.small)
+                                }
+                                .foregroundColor(DesignSystem.Colors.accentWarning)
+                                .padding(.horizontal, 4)
+                                .padding(.vertical, 1)
+                                .background(DesignSystem.Colors.accentWarning.opacity(0.2))
+                                .cornerRadius(3)
+                            }
+                        }
+                        
+                        Text(ref)
+                            .font(DesignSystem.Typography.monoSmall)
+                            .foregroundColor(DesignSystem.Colors.textTertiary)
+                    } else {
+                        HStack(spacing: 4) {
+                            Image(systemName: "questionmark.circle")
+                                .foregroundColor(DesignSystem.Colors.textDisabled)
+                            Text("None")
+                                .font(DesignSystem.Typography.body)
+                                .foregroundColor(DesignSystem.Colors.textDisabled)
+                        }
+                    }
+                }
+                
+                Spacer()
+                
+                // Action Buttons
+                HStack(spacing: 4) {
+                    EditorIconButton(icon: "magnifyingglass", tooltip: "Browse Objects") {
+                        showPicker.toggle()
+                    }
+                    
+                    EditorIconButton(icon: "list.bullet", tooltip: "Scene Hierarchy") {
+                        showHierarchyBrowser.toggle()
+                    }
+                    
+                    if reference != nil && !reference!.isEmpty {
+                        EditorIconButton(icon: "xmark.circle.fill", tooltip: "Clear Reference") {
+                            reference = nil
+                        }
+                    }
+                }
+            }
+            .padding(8)
+            .background(
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(dragOver ? DesignSystem.Colors.hover : DesignSystem.Colors.backgroundPrimary)
+                    .stroke(
+                        getReferenceBorderColor(),
+                        lineWidth: getReferenceBorderWidth()
+                    )
+            )
+            .onDrop(of: [.text], isTargeted: $dragOver) { providers in
+                handleDrop(providers: providers)
+            }
+            
+            // Warnings
+            VStack(alignment: .leading, spacing: 4) {
+                if circularReferenceWarning {
+                    HStack(spacing: 4) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundColor(DesignSystem.Colors.accentError)
+                        Text("Circular reference detected")
+                            .font(DesignSystem.Typography.small)
+                            .foregroundColor(DesignSystem.Colors.accentError)
+                    }
+                }
+                
+                if missingReferenceWarning {
+                    HStack(spacing: 4) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundColor(DesignSystem.Colors.accentWarning)
+                        Text("Referenced object not found")
+                            .font(DesignSystem.Typography.small)
+                            .foregroundColor(DesignSystem.Colors.accentWarning)
+                    }
+                }
+                
+                if nullReferenceWarning {
+                    HStack(spacing: 4) {
+                        Image(systemName: "info.circle.fill")
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
+                        Text("Reference is null")
+                            .font(DesignSystem.Typography.small)
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showPicker) {
+            ObjectPickerSheet(
+                reference: $reference,
+                allowedTypes: allowedTypes,
+                currentObjectId: currentObjectId,
+                searchText: $searchText,
+                selectedType: $selectedType
+            )
+        }
+        .sheet(isPresented: $showHierarchyBrowser) {
+            SceneHierarchyBrowserSheet(
+                reference: $reference,
+                allowedTypes: allowedTypes,
+                currentObjectId: currentObjectId,
+                hierarchy: sceneHierarchy
+            )
+        }
+        .onAppear {
+            loadSceneHierarchy()
+            validateReference()
+        }
+        .onChange(of: reference) { _ in
+            validateReference()
+        }
+    }
+    
+    private func getObjectTypeIcon(_ ref: String) -> String {
+        // Simple heuristic based on path
+        if ref.contains("component") { return "puzzlepiece" }
+        if ref.contains("material") { return "paintpalette" }
+        if ref.contains("texture") { return "photo" }
+        if ref.contains("mesh") { return "cube.transparent" }
+        if ref.contains("audio") { return "speaker.wave.2" }
+        if ref.contains("animation") { return "figure.walk" }
+        if ref.contains("prefab") { return "cube.box" }
+        if ref.contains("script") { return "doc.text" }
+        return "cube"
+    }
+    
+    private func isPrefabInstance(_ ref: String) -> Bool {
+        return ref.contains("prefab")
+    }
+    
+    private func getReferenceBorderColor() -> Color {
+        if circularReferenceWarning { return DesignSystem.Colors.accentError }
+        if missingReferenceWarning { return DesignSystem.Colors.accentWarning }
+        if nullReferenceWarning { return DesignSystem.Colors.textSecondary }
+        return DesignSystem.Colors.border
+    }
+    
+    private func getReferenceBorderWidth() -> CGFloat {
+        if circularReferenceWarning || missingReferenceWarning { return 2 }
+        return 1
+    }
+    
+    private func handleDrop(providers: [NSItemProvider]) -> Bool {
+        guard let provider = providers.first else { return false }
+        
+        provider.loadObject(ofClass: NSString.self) { string, error in
+            if let droppedString = string as String {
+                DispatchQueue.main.async {
+                    // Validate dropped reference
+                    if isValidReference(droppedString) {
+                        reference = droppedString
+                    }
+                }
+            }
+        }
+        return true
+    }
+    
+    private func isValidReference(_ ref: String) -> Bool {
+        // Check if reference is valid and not circular
+        guard !ref.isEmpty else { return false }
+        guard let currentId = currentObjectId else { return true }
+        return ref != currentId
+    }
+    
+    private func loadSceneHierarchy() {
+        sceneHierarchy = SceneHierarchyNode.mockHierarchy()
+        filteredHierarchy = sceneHierarchy
+    }
+    
+    private func validateReference() {
+        guard let ref = reference, !ref.isEmpty else {
+            nullReferenceWarning = true
+            missingReferenceWarning = false
+            circularReferenceWarning = false
+            return
+        }
+        
+        nullReferenceWarning = false
+        
+        // Check for missing reference (simplified)
+        missingReferenceWarning = !objectExists(ref)
+        
+        // Check for circular reference
+        if let currentId = currentObjectId {
+            circularReferenceWarning = wouldCreateCircularReference(ref, currentId)
+        }
+    }
+    
+    private func objectExists(_ ref: String) -> Bool {
+        // Simplified existence check
+        return sceneHierarchy.contains { node in
+            node.reference == ref || node.children.contains { $0.reference == ref }
+        }
+    }
+    
+    private func wouldCreateCircularReference(_ newRef: String, _ currentId: String) -> Bool {
+        // Simplified circular reference check
+        return newRef == currentId
+    }
+}
+
+// MARK: - Object Picker Sheet
+struct ObjectPickerSheet: View {
+    @Binding var reference: String?
+    let allowedTypes: [ObjectType]
+    let currentObjectId: String?
+    @Binding var searchText: String
+    @Binding var selectedType: ObjectType
+    
+    @Environment(\.dismiss) private var dismiss
+    @State private var availableObjects: [String] = []
+    @State private var filteredObjects: [String] = []
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 0) {
+                // Search Bar
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                    
+                    TextField("Search objects...", text: $searchText)
+                        .textFieldStyle(.plain)
+                        .font(DesignSystem.Typography.body)
+                    
+                    if !searchText.isEmpty {
+                        Button(action: { searchText = "" }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(8)
+                .background(DesignSystem.Colors.backgroundSecondary)
+                .cornerRadius(6)
+                .padding()
+                
+                // Object List
+                List(filteredObjects, id: \.self) { object in
+                    HStack {
+                        Image(systemName: getObjectTypeIcon(object))
+                            .foregroundColor(DesignSystem.Colors.accentPrimary)
+                            .frame(width: 20)
+                        
+                        VStack(alignment: .leading) {
+                            Text(URL(fileURLWithPath: object).lastPathComponent)
+                                .font(DesignSystem.Typography.body)
+                                .foregroundColor(DesignSystem.Colors.textPrimary)
+                            
+                            Text(object)
+                                .font(DesignSystem.Typography.monoSmall)
+                                .foregroundColor(DesignSystem.Colors.textTertiary)
+                        }
+                        
+                        Spacer()
+                        
+                        if reference == object {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(DesignSystem.Colors.accentSuccess)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        reference = object
+                        dismiss()
+                    }
+                }
+                .listStyle(.plain)
+            }
+            .navigationTitle("Select Object")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Clear") {
+                        reference = nil
+                        dismiss()
+                    }
+                    .disabled(reference == nil)
+                }
+            }
+        }
+        .frame(width: 500, height: 600)
+        .onAppear {
+            loadAvailableObjects()
+        }
+        .onChange(of: searchText) { _ in
+            filterObjects()
+        }
+        .onChange(of: selectedType) { _ in
+            filterObjects()
+        }
+    }
+    
+    private func getObjectTypeIcon(_ object: String) -> String {
+        if object.contains("component") { return "puzzlepiece" }
+        if object.contains("material") { return "paintpalette" }
+        if object.contains("texture") { return "photo" }
+        if object.contains("mesh") { return "cube.transparent" }
+        if object.contains("audio") { return "speaker.wave.2" }
+        if object.contains("animation") { return "figure.walk" }
+        if object.contains("prefab") { return "cube.box" }
+        if object.contains("script") { return "doc.text" }
+        return "cube"
+    }
+    
+    private func loadAvailableObjects() {
+        // Mock data for available objects
+        availableObjects = [
+            "game_objects/player/player_prefab",
+            "game_objects/camera/main_camera",
+            "game_objects/lighting/directional_light",
+            "components/mesh_renderer/player_mesh",
+            "components/physics/player_collider",
+            "materials/player/player_material",
+            "materials/environment/ground_material",
+            "textures/player/player_diffuse",
+            "textures/environment/ground_diffuse",
+            "meshes/characters/player_model",
+            "meshes/environment/ground_mesh",
+            "audio/sfx/player_footsteps",
+            "audio/music/background_music",
+            "animations/player/idle_animation",
+            "animations/player/walk_animation",
+            "scripts/player/player_controller",
+            "scripts/game/game_manager"
+        ]
+        
+        filterObjects()
+    }
+    
+    private func filterObjects() {
+        filteredObjects = availableObjects.filter { object in
+            // Type filter
+            let matchesType = allowedTypes.contains { type in
+                object.contains(type.rawValue.lowercased())
+            }
+            
+            // Search filter
+            let matchesSearch = searchText.isEmpty || 
+                object.localizedCaseInsensitiveContains(searchText)
+            
+            return matchesType && matchesSearch
+        }
+    }
+}
+
+// MARK: - Scene Hierarchy Browser Sheet
+struct SceneHierarchyBrowserSheet: View {
+    @Binding var reference: String?
+    let allowedTypes: [ObjectType]
+    let currentObjectId: String?
+    let hierarchy: [SceneHierarchyNode]
+    
+    @Environment(\.dismiss) private var dismiss
+    @State private var expandedNodes: Set<String> = []
+    @State private var searchText = ""
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 0) {
+                // Search Bar
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                    
+                    TextField("Search hierarchy...", text: $searchText)
+                        .textFieldStyle(.plain)
+                        .font(DesignSystem.Typography.body)
+                    
+                    if !searchText.isEmpty {
+                        Button(action: { searchText = "" }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(8)
+                .background(DesignSystem.Colors.backgroundSecondary)
+                .cornerRadius(6)
+                .padding()
+                
+                // Hierarchy Tree
+                List {
+                    ForEach(filteredHierarchy) { node in
+                        HierarchyNodeRow(
+                            node: node,
+                            reference: $reference,
+                            allowedTypes: allowedTypes,
+                            expandedNodes: $expandedNodes,
+                            searchText: searchText
+                        )
+                    }
+                }
+                .listStyle(.plain)
+            }
+            .navigationTitle("Scene Hierarchy")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Clear") {
+                        reference = nil
+                        dismiss()
+                    }
+                    .disabled(reference == nil)
+                }
+            }
+        }
+        .frame(width: 600, height: 700)
+    }
+    
+    private var filteredHierarchy: [SceneHierarchyNode] {
+        guard !searchText.isEmpty else { return hierarchy }
+        
+        return hierarchy.filter { node in
+            nodeMatchesSearch(node)
+        }
+    }
+    
+    private func nodeMatchesSearch(_ node: SceneHierarchyNode) -> Bool {
+        if node.name.localizedCaseInsensitiveContains(searchText) {
+            return true
+        }
+        
+        return node.children.contains { child in
+            child.name.localizedCaseInsensitiveContains(searchText)
+        }
+    }
+}
+
+// MARK: - Hierarchy Node Row
+struct HierarchyNodeRow: View {
+    let node: SceneHierarchyNode
+    @Binding var reference: String?
+    let allowedTypes: [ObjectType]
+    @Binding var expandedNodes: Set<String>
+    let searchText: String
+    
+    private var isExpanded: Bool {
+        expandedNodes.contains(node.id.uuidString)
+    }
+    
+    private var isAllowedType: Bool {
+        allowedTypes.contains(node.type)
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Node Row
+            HStack(spacing: 8) {
+                // Expand/Collapse Button
+                if !node.children.isEmpty {
+                    Button(action: {
+                        if isExpanded {
+                            expandedNodes.remove(node.id.uuidString)
+                        } else {
+                            expandedNodes.insert(node.id.uuidString)
+                        }
+                    }) {
+                        Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
+                    }
+                    .buttonStyle(.plain)
+                    .frame(width: 16)
+                } else {
+                    Spacer()
+                        .frame(width: 16)
+                }
+                
+                // Node Icon
+                Image(systemName: node.type.icon)
+                    .foregroundColor(isAllowedType ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.textDisabled)
+                    .frame(width: 16)
+                
+                // Node Name
+                Text(node.name)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(isAllowedType ? DesignSystem.Colors.textPrimary : DesignSystem.Colors.textDisabled)
+                
+                // Status Indicators
+                HStack(spacing: 4) {
+                    if !node.isActive {
+                        Image(systemName: "eye.slash")
+                            .font(.system(size: 10))
+                            .foregroundColor(DesignSystem.Colors.textDisabled)
+                    }
+                    
+                    if node.isPrefab {
+                        HStack(spacing: 2) {
+                            Image(systemName: "cube.box.fill")
+                                .font(.system(size: 8))
+                            Text("Prefab")
+                                .font(DesignSystem.Typography.small)
+                        }
+                        .foregroundColor(DesignSystem.Colors.accentWarning)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 1)
+                        .background(DesignSystem.Colors.accentWarning.opacity(0.2))
+                        .cornerRadius(3)
+                    }
+                }
+                
+                Spacer()
+                
+                // Selection Indicator
+                if reference == node.reference {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(DesignSystem.Colors.accentSuccess)
+                }
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                if isAllowedType {
+                    reference = node.reference
+                }
+            }
+            .padding(.vertical, 2)
+            
+            // Children
+            if isExpanded && !node.children.isEmpty {
+                ForEach(node.children) { child in
+                    HierarchyNodeRow(
+                        node: child,
+                        reference: $reference,
+                        allowedTypes: allowedTypes,
+                        expandedNodes: $expandedNodes,
+                        searchText: searchText
+                    )
+                    .padding(.leading, 24)
+                }
+            }
+        }
+    }
+}
+
 // MARK: - Float Editor (TODO-1461)
 struct FloatPropertyEditor: View {
     let label: String
