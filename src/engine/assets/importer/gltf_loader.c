@@ -18,12 +18,7 @@
 #include <string.h>
 
 // Platform-specific includes
-#ifdef __APPLE__
-// On macOS, use Metal backend
-// TODO: Implement Metal GLTF loader
-#include <rendering/renderer.h>
-#else
-// On other platforms, use Vulkan
+#ifdef VULKAN_BUILD
 #include <platform/vulkan/vk_instance.h>
 #include <platform/vulkan/vk_device.h>
 #include <vulkan/vulkan.h>
@@ -35,52 +30,8 @@
 typedef struct VulkanRenderer VulkanRenderer;
 #endif
 
-// Include cgltf implementation in exactly one source file
-#define CGLTF_IMPLEMENTATION
 #include "include/vendor/cgltf.h"
-
-// Forward declarations
-typedef struct GLTFLoadResult GLTFLoadResult;
-typedef struct GLTFMesh GLTFMesh;
-typedef struct GLTFMaterial GLTFMaterial;
-
-// Loaded mesh data
-typedef struct GLTFMesh {
-  char name[256];
-  Vertex *vertices;
-  u32 vertex_count;
-  u32 *indices;
-  u32 index_count;
-  u32 material_index;
-  bool has_normals;
-  bool has_uvs;
-} GLTFMesh;
-
-// Loaded PBR material
-typedef struct GLTFMaterial {
-  char name[256];
-  Vec4 base_color_factor;
-  float metallic_factor;
-  float roughness_factor;
-  char albedo_texture[512];
-  char normal_texture[512];
-  char metallic_roughness_texture[512];
-  char ao_texture[512];
-  bool has_albedo;
-  bool has_normal;
-  bool has_pbr;
-  bool has_ao;
-} GLTFMaterial;
-
-// Complete load result
-typedef struct GLTFLoadResult {
-  GLTFMesh *meshes;
-  u32 mesh_count;
-  GLTFMaterial *materials;
-  u32 material_count;
-  bool success;
-  char error[256];
-} GLTFLoadResult;
+#include "gltf_loader.h"
 
 // Extract vertex data from cgltf accessor
 static void extract_vec3(const cgltf_accessor *accessor, u32 index, Vec3 *out) {
@@ -322,7 +273,7 @@ bool gltf_create_mesh_buffers(VulkanRenderer *renderer, GLTFMesh *gltf_mesh,
 }
 #else
 // Stub implementation for non-Vulkan platforms
-bool gltf_create_mesh_buffers(void *renderer, void *gltf_mesh,
+bool gltf_create_mesh_buffers(void *renderer, GLTFMesh *gltf_mesh,
                               void *out_vertex_buffer,
                               void *out_vertex_memory,
                               void *out_index_buffer,

@@ -13,6 +13,10 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+// Forward declare mesh_t (defined in geometry/geometry_types.h as struct mesh_t)
+struct mesh_t;
+typedef struct mesh_t mesh_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -54,6 +58,12 @@ bool asset_system_fbx_importer_is_valid(asset_system_fbx_importer_handle_t handl
 int asset_system_fbx_importer_get_info(asset_system_fbx_importer_handle_t handle, asset_system_fbx_importer_info_t* out_info);
 void asset_system_fbx_importer_mark_dirty(asset_system_fbx_importer_handle_t handle);
 int asset_system_fbx_importer_process_pending(void);
+
+/*
+ * Direct loader that returns a mesh_t pointer.
+ * This is a simplified interface for integration with asset_importer.c
+ */
+mesh_t* asset_system_fbx_load_mesh_direct(const char* path);
 
 /* Statistics */
 uint32_t asset_system_fbx_importer_get_count(void);
