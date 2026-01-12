@@ -1,14 +1,16 @@
 /*
  * particle_types.h
  * Core particle data structures
- * Uses engine's Vec3 type for consistency
+ * Uses engine's Vec3 type from include/math/vec3.h
  */
 
 #ifndef PARTICLE_TYPES_H
 #define PARTICLE_TYPES_H
 
 #include <stdint.h>
-#include "math/vec3.h"  // Use engine's Vec3 type
+#include "core/types.h"
+// Use the public math header
+#include "math/vec3.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,8 +40,10 @@ typedef struct particle {
     color_t color;
     
     // Size, rotation, mass, flags
+    // Uses union to allow access to flags as both float (for GPU layout) and u32 (for bitwise ops)
     union {
-        struct { float size, rotation, mass, flags; };
+        struct { float size, rotation, mass, f_flags; };
+        struct { float _pad1, _pad2, _pad3; u32 flags; };
     };
     
     // Acceleration and rotation speed
@@ -63,15 +67,15 @@ typedef struct emitter_params {
     float lifetime;
     float emission_rate;
     float mass;
-    uint32_t flags;
+    u32 flags;
 } emitter_params_t;
 
 // Particle system statistics
 typedef struct particle_stats {
-    uint32_t active_particles;
-    uint32_t max_particles;
-    uint32_t particles_spawned;
-    uint32_t particles_killed;
+    u32 active_particles;
+    u32 max_particles;
+    u32 particles_spawned;
+    u32 particles_killed;
     float gpu_simulation_time_ms;
     float cpu_simulation_time_ms;
     bool using_gpu;

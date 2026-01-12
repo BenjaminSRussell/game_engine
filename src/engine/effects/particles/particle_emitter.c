@@ -91,13 +91,13 @@ void particle_emitter_update(ParticleEmitter* emitter, float delta_time) {
         }
         
         // Update physics
-        particle->x += particle->vx * delta_time;
-        particle->y += particle->vy * delta_time;
-        particle->z += particle->vz * delta_time;
+        particle->position.x += particle->velocity.x * delta_time;
+        particle->position.y += particle->velocity.y * delta_time;
+        particle->position.z += particle->velocity.z * delta_time;
         
-        particle->vx += particle->ax * delta_time;
-        particle->vy += particle->ay * delta_time;
-        particle->vz += particle->az * delta_time;
+        particle->velocity.x += particle->acceleration.x * delta_time;
+        particle->velocity.y += particle->acceleration.y * delta_time;
+        particle->velocity.z += particle->acceleration.z * delta_time;
         
         // Update rotation
         particle->rotation += particle->rotation_speed * delta_time;
@@ -134,17 +134,9 @@ void particle_emitter_emit(ParticleEmitter* emitter, u32 count) {
         }
         
         // Initialize particle
-        particle->x = emitter->params.position.x;
-        particle->y = emitter->params.position.y;
-        particle->z = emitter->params.position.z;
-        
-        particle->vx = emitter->params.velocity.x;
-        particle->vy = emitter->params.velocity.y;
-        particle->vz = emitter->params.velocity.z;
-        
-        particle->ax = emitter->params.acceleration.x;
-        particle->ay = emitter->params.acceleration.y;
-        particle->az = emitter->params.acceleration.z;
+        particle->position = emitter->params.position;
+        particle->velocity = emitter->params.velocity;
+        particle->acceleration = emitter->params.acceleration;
         
         particle->size = emitter->params.size_start;
         particle->rotation = emitter->params.rotation_start;
