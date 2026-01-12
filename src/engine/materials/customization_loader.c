@@ -301,32 +301,58 @@ int material_load_from_file(const char* filename) {
             continue;
         }
         
-        // Simple material creation (stub implementation)
+        // Parse material properties (full implementation)
         if (strstr(line, "material_")) {
             Material* mat = &g_materials[g_material_count];
+            memset(mat, 0, sizeof(Material));
             mat->id = g_next_material_id++;
             mat->loaded = 1;
             
-            // Extract name (simplified)
+            // Extract name
             char* name_start = strstr(line, "material_") + 9;
             char* name_end = strchr(name_start, ' ');
             if (name_end) {
                 int name_len = name_end - name_start;
                 strncpy(mat->name, name_start, name_len);
                 mat->name[name_len] = '\0';
+            } else {
+                strcpy(mat->name, name_start);
             }
             
-            // Set default properties
-            mat->albedo = (SimpleVec3){0.5f, 0.5f, 0.5f};
-            mat->normal = (SimpleVec3){0.5f, 0.5f, 1.0f};
-            mat->metallic = (SimpleVec3){0.0f, 0.0f, 0.0f};
-            mat->roughness = (SimpleVec3){0.5f, 0.5f, 0.5f};
-            mat->emissive = (SimpleVec3){0.0f, 0.0f, 0.0f};
-            mat->transparency = 1.0f;
-            mat->texture_id = 0;
-            mat->shader_id = 0;
+            // Parse material properties
+            char* props_start = name_end ? name_end + 1 : "";
+            char* token = strtok(props_start, " \t");
+            
+            while (token) {
+                if (strncmp(token, "albedo=", 7) == 0) {
+                    sscanf(token + 7, "%f,%f,%f", 
+                           &mat->albedo.x, &mat->albedo.y, &mat->albedo.z);
+                } else if (strncmp(token, "normal=", 7) == 0) {
+                    sscanf(token + 7, "%f,%f,%f", 
+                           &mat->normal.x, &mat->normal.y, &mat->normal.z);
+                } else if (strncmp(token, "metallic=", 9) == 0) {
+                    sscanf(token + 9, "%f,%f,%f", 
+                           &mat->metallic.x, &mat->metallic.y, &mat->metallic.z);
+                } else if (strncmp(token, "roughness=", 10) == 0) {
+                    sscanf(token + 10, "%f,%f,%f", 
+                           &mat->roughness.x, &mat->roughness.y, &mat->roughness.z);
+                } else if (strncmp(token, "emissive=", 9) == 0) {
+                    sscanf(token + 9, "%f,%f,%f", 
+                           &mat->emissive.x, &mat->emissive.y, &mat->emissive.z);
+                } else if (strncmp(token, "transparency=", 12) == 0) {
+                    mat->transparency = atof(token + 12);
+                } else if (strncmp(token, "texture=", 8) == 0) {
+                    mat->texture_id = atoi(token + 8);
+                } else if (strncmp(token, "shader=", 7) == 0) {
+                    mat->shader_id = atoi(token + 7);
+                }
+                
+                token = strtok(NULL, " \t");
+            }
             
             g_material_count++;
+            LOG_DEBUG("Loaded material: %s (ID: %d)", mat->name, mat->id);
+        }
             loaded_count++;
         }
     }
