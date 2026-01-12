@@ -634,6 +634,52 @@ void engine_set_hover_highlight_enabled(bool enabled) {
     LOG_INFO("Set hover highlight %s", enabled ? "enabled" : "disabled");
 }
 
+// MARK: - Render Mode Functions
+
+void engine_set_render_mode(int32_t mode) {
+    LOG_INFO("Set render mode: %d", mode);
+}
+
+void engine_set_lighting_enabled(bool enabled) {
+    LOG_INFO("Set lighting %s", enabled ? "enabled" : "disabled");
+}
+
+void engine_set_shadows_enabled(bool enabled) {
+    LOG_INFO("Set shadows %s", enabled ? "enabled" : "disabled");
+}
+
+void engine_set_performance_profiling_enabled(bool enabled) {
+    LOG_INFO("Set performance profiling %s", enabled ? "enabled" : "disabled");
+}
+
+void engine_set_debug_rendering_enabled(bool enabled) {
+    LOG_INFO("Set debug rendering %s", enabled ? "enabled" : "disabled");
+}
+
+void engine_set_wireframe_overlay_enabled(bool enabled) {
+    LOG_INFO("Set wireframe overlay %s", enabled ? "enabled" : "disabled");
+}
+
+void engine_set_bounding_boxes_enabled(bool enabled) {
+    LOG_INFO("Set bounding boxes %s", enabled ? "enabled" : "disabled");
+}
+
+void engine_set_post_processing_enabled(bool enabled) {
+    LOG_INFO("Set post processing %s", enabled ? "enabled" : "disabled");
+}
+
+void engine_set_vsync_enabled(bool enabled) {
+    LOG_INFO("Set vsync %s", enabled ? "enabled" : "disabled");
+}
+
+void engine_set_fps_limit(uint32_t limit) {
+    LOG_INFO("Set FPS limit: %u", limit);
+}
+
+void engine_set_ambient_occlusion_enabled(bool enabled) {
+    LOG_INFO("Set ambient occlusion %s", enabled ? "enabled" : "disabled");
+}
+
 // MARK: - Internal Callback Triggers
 
 static void trigger_entity_created(uint64_t entityID) {

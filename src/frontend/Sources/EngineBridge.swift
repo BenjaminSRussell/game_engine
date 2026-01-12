@@ -975,27 +975,32 @@ func engine_set_material_override(_ entityID: UInt64, _ materialID: UInt64)
 @_silgen_name("engine_clear_material_override")
 func engine_clear_material_override(_ entityID: UInt64)
 
-@_silgen_name("vf_engine_set_selection_outline_color")
+@_silgen_name("engine_set_selection_outline_color")
 func engine_set_selection_outline_color(_ r: Float, _ g: Float, _ b: Float)
 
-@_silgen_name("vf_engine_set_selection_outline_width")
+@_silgen_name("engine_set_selection_outline_width")
 func engine_set_selection_outline_width(_ width: Float)
 
-@_silgen_name("vf_engine_set_hover_highlight_enabled")
+@_silgen_name("engine_set_hover_highlight_enabled")
 func engine_set_hover_highlight_enabled(_ enabled: Bool)
 
 // MARK: - Render Mode C Functions
 
-@_silgen_name("vf_engine_set_render_mode")
-func engine_set_render_mode(_ mode: Int32)
-
-@_silgen_name("vf_engine_set_lighting_enabled")
-func engine_set_lighting_enabled(_ enabled: Bool)
-
-@_silgen_name("vf_engine_set_shadows_enabled")
-func engine_set_shadows_enabled(_ enabled: Bool)
-
-@_silgen_name("vf_engine_set_ambient_occlusion_enabled")
+@_silgen_name("engine_set_ambient_occlusion_enabled")
 func engine_set_ambient_occlusion_enabled(_ enabled: Bool)
 
+@_silgen_name("engine_set_debug_rendering_enabled")
+func engine_set_debug_rendering_enabled(_ enabled: Bool)
 
+@_silgen_name("engine_set_wireframe_overlay_enabled")
+func engine_set_wireframe_overlay_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_bounding_boxes_enabled")
+func engine_set_bounding_boxes_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_performance_profiling_enabled")
+func engine_set_performance_profiling_enabled(_ enabled: Bool)
+func engine_set_post_processing_enabled(_ enabled: Bool)
+
+@_silgen_name("engine_set_vsync_enabled")
+func engine_set_vsync_enabled(_ enabled: Bool)

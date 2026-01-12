@@ -128,6 +128,30 @@ void engine_create_entity_with_id(uint64_t entityID, const char* name);
 // Mesh Visualization
 void engine_set_mesh_overlay_color(uint64_t entityID, float r, float g, float b, float a);
 void engine_set_mesh_wireframe_enabled(uint64_t entityID, bool enabled);
+void engine_set_mesh_vertex_colors_enabled(uint64_t entityID, bool enabled);
+void engine_set_mesh_uv_visualization(uint64_t entityID, int32_t mode);
+void engine_set_mesh_normals_visualization(uint64_t entityID, bool enabled);
+void engine_set_mesh_bounds_visualization(uint64_t entityID, bool enabled);
+void engine_set_material_override(uint64_t entityID, uint64_t materialID);
+void engine_clear_material_override(uint64_t entityID);
+
+// Selection and Highlighting
+void engine_set_selection_outline_color(float r, float g, float b);
+void engine_set_selection_outline_width(float width);
+void engine_set_hover_highlight_enabled(bool enabled);
+
+// Render Mode Functions
+void engine_set_render_mode(int32_t mode);
+void engine_set_lighting_enabled(bool enabled);
+void engine_set_shadows_enabled(bool enabled);
+void engine_set_post_processing_enabled(bool enabled);
+void engine_set_vsync_enabled(bool enabled);
+void engine_set_fps_limit(uint32_t limit);
+void engine_set_ambient_occlusion_enabled(bool enabled);
+void engine_set_debug_rendering_enabled(bool enabled);
+void engine_set_wireframe_overlay_enabled(bool enabled);
+void engine_set_bounding_boxes_enabled(bool enabled);
+void engine_set_performance_profiling_enabled(bool enabled);
 
 #ifdef __cplusplus
 }
