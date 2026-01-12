@@ -9,7 +9,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <math/mat4.h>
+#ifdef __OBJC__
 #include "backend/metal/mtl_texture.h"
+#else
+typedef void* mtl_texture_t;
+#endif
 
 #ifdef __cplusplus
 extern "C" {

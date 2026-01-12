@@ -1,9 +1,15 @@
 #ifndef VOXEL_RENDERER_H
 #define VOXEL_RENDERER_H
 
+#ifdef __OBJC__
 #include "backend/metal/mtl_buffer.h"
 #include "backend/metal/mtl_device.h"
 #include "backend/metal/mtl_encoder.h"
+#else
+typedef void* mtl_buffer_t;
+typedef void* mtl_device_t;
+typedef void* mtl_command_encoder_t;
+#endif
 #include <stdbool.h>
 #include <stdint.h>
 

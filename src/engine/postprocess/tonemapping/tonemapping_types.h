@@ -1,7 +1,13 @@
 #ifndef TONEMAPPING_TYPES_H
 #define TONEMAPPING_TYPES_H
 
+#ifdef __OBJC__
 #include <Metal/Metal.h>
+#else
+typedef void* id;
+typedef struct {} MTLComputePipelineState;
+typedef struct {} MTLBuffer;
+#endif
 
 typedef struct tonemapper {
     id<MTLComputePipelineState> histogram_pipeline;

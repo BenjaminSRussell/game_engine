@@ -182,5 +182,4 @@ CMakeFiles/Engine.dir/src/engine/core/services/voxel_renderer.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_memory_heap.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_encoder.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_swapchain.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/voxel_renderer.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_buffer.h
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/voxel_renderer.h

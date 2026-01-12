@@ -1,7 +1,12 @@
 #ifndef HAIR_COMMON_H
 #define HAIR_COMMON_H
 
+#ifdef __OBJC__
 #include <Metal/Metal.h>
+#else
+typedef void* id;
+typedef struct {} MTLBuffer;
+#endif
 #include <simd/simd.h>
 
 #define HAIR_SEGMENTS_PER_STRAND 16

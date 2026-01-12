@@ -51,6 +51,8 @@ OBJC_FLAGS = -O3 -DNDEBUG -std=gnu11 -arch arm64
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.c.o_FLAGS = -fobjc-arc
 
+# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.c.o_FLAGS = -fobjc-arc
+
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.c.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.c.o_FLAGS = -fobjc-arc

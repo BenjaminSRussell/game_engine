@@ -1,6 +1,7 @@
 #include <math.h> // For sqrtf, etc.
 #include <physics/physics.h>
 #include <physics/physics_engine_core.h>
+#include <include/physics/collision_detection.h>
 #include <float.h>
 #include <stdlib.h>
 #include <string.h>
@@ -118,15 +119,62 @@ static void integrate_body(RigidBody *body, f32 dt, const Vec3 gravity) {
   body->position[1] += body->velocity[1] * dt;
   body->position[2] += body->velocity[2] * dt;
 
-  // Simple Ground Plane Collision (y = 0)
-  // TODO: Replace with proper broadphase/narrowphase later
+  // Use proper collision detection system instead of simple ground plane
+  // Initialize collision system if not already done
+  static bool collision_initialized = false;
+  if (!collision_initialized) {
+    collision_system_init();
+    collision_initialized = true;
+  }
+  
+  // Update collision system with this body
+  AABB body_bounds = {
+    .min = {body->position[0] - body->radius, body->position[1] - body->radius, body->position[2] - body->radius},
+    .max = {body->position[0] + body->radius, body->position[1] + body->radius, body->position[2] + body->radius}
+  };
+  
+  // Add body to collision system for broadphase/narrowphase processing
+  collision_system_add_body(body->id, &body_bounds, body->position);
+  
+  // Process collisions - this will handle ground plane and other collisions properly
+  collision_system_update(dt);
+  
+  // Get collision results for this body
+  ContactPoint contacts[16];
+  u32 contact_count = collision_system_get_contacts_for_body(body->id, contacts, 16);
+  
+  // Apply collision response
+  for (u32 i = 0; i < contact_count; i++) {
+    ContactPoint *contact = &contacts[i];
+    
+    // Simple collision response - bounce with restitution
+    float velocity_dot_normal = body->velocity[0] * contact->normal.x + 
+                               body->velocity[1] * contact->normal.y + 
+                               body->velocity[2] * contact->normal.z;
+    
+    if (velocity_dot_normal < 0.0f) {
+      // Moving toward collision - apply restitution
+      body->velocity[0] -= (1.0f + body->restitution) * velocity_dot_normal * contact->normal.x;
+      body->velocity[1] -= (1.0f + body->restitution) * velocity_dot_normal * contact->normal.y;
+      body->velocity[2] -= (1.0f + body->restitution) * velocity_dot_normal * contact->normal.z;
+      
+      // Apply friction
+      float friction = body->friction;
+      body->velocity[0] *= (1.0f - friction);
+      body->velocity[2] *= (1.0f - friction);
+      
+      // Resolve penetration
+      body->position[0] += contact->normal.x * contact->penetration_depth * 0.5f;
+      body->position[1] += contact->normal.y * contact->penetration_depth * 0.5f;
+      body->position[2] += contact->normal.z * contact->penetration_depth * 0.5f;
+    }
+  }
+  
+  // Fallback ground plane for basic testing (remove this in final implementation)
   if (body->position[1] < 0.0f) {
     body->position[1] = 0.0f;
     if (body->velocity[1] < 0.0f) {
-      // Bounce with restitution
       body->velocity[1] = -body->velocity[1] * body->restitution;
-
-      // Apply friction
       body->velocity[0] *= (1.0f - body->friction);
       body->velocity[2] *= (1.0f - body->friction);
     }

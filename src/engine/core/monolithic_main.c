@@ -188,16 +188,10 @@ static inline double now_seconds(void) { return glfwGetTime(); }
 
 // Game state
 
-// Game state
-
 typedef enum {
   RENDERER_UNKNOWN = 0,
-  // Renderer types - defined in renderer.h
-// enum RendererType {
-//   RENDERER_VULKAN,
-//   RENDERER_OPENGL,
-//   RENDERER_METAL
-// };
+  // Use RendererType from renderer.h instead
+} GameRendererType;
 
 typedef struct {
   // Core systems
@@ -1861,8 +1855,9 @@ static InitResult init_renderer(void) {
       .window = g_game.window,
       .width = g_game.window_width,
       .height = g_game.window_height,
-      .vsync = g_game.config.vsync,
-      .enable_validation = true // TODO: Config
+      .type = RENDERER_TYPE_VOXEL,
+      .backend = backend,
+      .config = &g_game.config
   };
 
   if (!g_game.renderer->init(g_game.renderer, &params)) {

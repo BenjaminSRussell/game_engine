@@ -1,7 +1,12 @@
 #ifndef CLOTH_COMMON_H
 #define CLOTH_COMMON_H
 
+#ifdef __OBJC__
 #include <Metal/Metal.h>
+#else
+typedef void* id;
+typedef struct {} MTLBuffer;
+#endif
 #include <simd/simd.h>
 
 // Shared Setup

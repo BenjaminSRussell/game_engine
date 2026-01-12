@@ -135,7 +135,10 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Particles - CONSOLIDATED: Primary GPU particle system and renderers
     "src/engine/core/services/particle_system.c"
     "src/engine/core/services/voxel_renderer.c"
-    # "src/engine/core/services/particle_system_gpu.c"  # Disabled due to Vulkan issues
+    # GPU Particle system - Metal version for macOS
+    "src/engine/effects/gpu_particles/gpu_particle_system.m"
+    "src/engine/effects/gpu_particles/spawn_compute.c"
+    "src/engine/effects/gpu_particles/update_compute.c"
     "src/engine/rendering/particles/particle_system.c"
     "src/game/blockgame/weather/weather_particles.c"
     

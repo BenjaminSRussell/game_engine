@@ -7120,6 +7120,14 @@ src/engine/backend/metal/mtl_resource_pool.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.c.o
 .PHONY : src/engine/backend/metal/mtl_resource_pool.c.o
 
+src/engine/backend/metal/mtl_sampler.o: src/engine/backend/metal/mtl_sampler.c.o
+.PHONY : src/engine/backend/metal/mtl_sampler.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_sampler.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.c.o
+.PHONY : src/engine/backend/metal/mtl_sampler.c.o
+
 src/engine/backend/metal/mtl_statistics.o: src/engine/backend/metal/mtl_statistics.c.o
 .PHONY : src/engine/backend/metal/mtl_statistics.o
 
@@ -11226,6 +11234,62 @@ src/engine/effects/destruction/fracture_system.s: src/engine/effects/destruction
 src/engine/effects/destruction/fracture_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/destruction/fracture_system.c.s
 .PHONY : src/engine/effects/destruction/fracture_system.c.s
+
+src/engine/effects/gpu_particles/gpu_particle_system.o: src/engine/effects/gpu_particles/gpu_particle_system.m.o
+.PHONY : src/engine/effects/gpu_particles/gpu_particle_system.o
+
+# target to build an object file
+src/engine/effects/gpu_particles/gpu_particle_system.m.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/gpu_particle_system.m.o
+.PHONY : src/engine/effects/gpu_particles/gpu_particle_system.m.o
+
+src/engine/effects/gpu_particles/spawn_compute.o: src/engine/effects/gpu_particles/spawn_compute.c.o
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.o
+
+# target to build an object file
+src/engine/effects/gpu_particles/spawn_compute.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/spawn_compute.c.o
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.c.o
+
+src/engine/effects/gpu_particles/spawn_compute.i: src/engine/effects/gpu_particles/spawn_compute.c.i
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.i
+
+# target to preprocess a source file
+src/engine/effects/gpu_particles/spawn_compute.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/spawn_compute.c.i
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.c.i
+
+src/engine/effects/gpu_particles/spawn_compute.s: src/engine/effects/gpu_particles/spawn_compute.c.s
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.s
+
+# target to generate assembly for a file
+src/engine/effects/gpu_particles/spawn_compute.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/spawn_compute.c.s
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.c.s
+
+src/engine/effects/gpu_particles/update_compute.o: src/engine/effects/gpu_particles/update_compute.c.o
+.PHONY : src/engine/effects/gpu_particles/update_compute.o
+
+# target to build an object file
+src/engine/effects/gpu_particles/update_compute.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/update_compute.c.o
+.PHONY : src/engine/effects/gpu_particles/update_compute.c.o
+
+src/engine/effects/gpu_particles/update_compute.i: src/engine/effects/gpu_particles/update_compute.c.i
+.PHONY : src/engine/effects/gpu_particles/update_compute.i
+
+# target to preprocess a source file
+src/engine/effects/gpu_particles/update_compute.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/update_compute.c.i
+.PHONY : src/engine/effects/gpu_particles/update_compute.c.i
+
+src/engine/effects/gpu_particles/update_compute.s: src/engine/effects/gpu_particles/update_compute.c.s
+.PHONY : src/engine/effects/gpu_particles/update_compute.s
+
+# target to generate assembly for a file
+src/engine/effects/gpu_particles/update_compute.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/update_compute.c.s
+.PHONY : src/engine/effects/gpu_particles/update_compute.c.s
 
 src/engine/effects/particles/particle_emitter.o: src/engine/effects/particles/particle_emitter.c.o
 .PHONY : src/engine/effects/particles/particle_emitter.o
@@ -30019,6 +30083,7 @@ help:
 	@echo "... src/engine/backend/metal/mtl_parallel_encoder.o"
 	@echo "... src/engine/backend/metal/mtl_render_pass.o"
 	@echo "... src/engine/backend/metal/mtl_resource_pool.o"
+	@echo "... src/engine/backend/metal/mtl_sampler.o"
 	@echo "... src/engine/backend/metal/mtl_statistics.o"
 	@echo "... src/engine/backend/metal/mtl_swapchain.o"
 	@echo "... src/engine/backend/metal/mtl_sync_manager.o"
@@ -30529,6 +30594,13 @@ help:
 	@echo "... src/engine/effects/destruction/fracture_system.o"
 	@echo "... src/engine/effects/destruction/fracture_system.i"
 	@echo "... src/engine/effects/destruction/fracture_system.s"
+	@echo "... src/engine/effects/gpu_particles/gpu_particle_system.o"
+	@echo "... src/engine/effects/gpu_particles/spawn_compute.o"
+	@echo "... src/engine/effects/gpu_particles/spawn_compute.i"
+	@echo "... src/engine/effects/gpu_particles/spawn_compute.s"
+	@echo "... src/engine/effects/gpu_particles/update_compute.o"
+	@echo "... src/engine/effects/gpu_particles/update_compute.i"
+	@echo "... src/engine/effects/gpu_particles/update_compute.s"
 	@echo "... src/engine/effects/particles/particle_emitter.o"
 	@echo "... src/engine/effects/particles/particle_emitter.i"
 	@echo "... src/engine/effects/particles/particle_emitter.s"
