@@ -7,7 +7,7 @@
 #define EDITOR_VIEWPORT_CAMERA_CONTROLS_H
 
 #include "include/common.h"
-#include "include/math/math.h"
+#include "math/math.h"
 #include "include/platform/input/input.h"
 
 // Forward declarations

@@ -56,8 +56,11 @@ typedef struct {
 
     if (!vertexFunction || !fragmentFunction) {
         NSLog(@"Failed to load shaders from default library");
-        [self createDefaultShaders];
-        library = [device newDefaultLibrary];
+        library = [self createDefaultShaders];
+        if (!library) {
+            NSLog(@"Failed to create default shaders");
+            return;
+        }
         vertexFunction = [library newFunctionWithName:@"vertex_main"];
         fragmentFunction = [library newFunctionWithName:@"fragment_main"];
     }
@@ -112,7 +115,7 @@ typedef struct {
     [self setupMatrices];
 }
 
-- (void)createDefaultShaders {
+- (id<MTLLibrary>)createDefaultShaders {
     id<MTLDevice> device = self.device;
 
     NSString *shaderSource = @"#include <metal_stdlib>\n"
@@ -172,7 +175,9 @@ typedef struct {
     id<MTLLibrary> library = [device newLibraryWithSource:shaderSource options:nil error:&error];
     if (!library) {
         NSLog(@"Shader compilation error: %@", error);
+        return nil;
     }
+    return library;
 }
 
 - (void)createGeometryFromMesh {

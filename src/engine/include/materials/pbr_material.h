@@ -4,8 +4,8 @@
 #define PBR_MATERIAL_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
-#include "include/math/vec4.h"
+#include "math/vec3.h"
+#include "math/vec4.h"
 #import <Metal/Metal.h>
 
 #define MAX_TEXTURE_SLOTS 16

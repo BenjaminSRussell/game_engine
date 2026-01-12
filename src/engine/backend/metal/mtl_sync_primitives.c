@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_sync_primitives.h"
+#include "mtl_sync_primitives.h"
 
 #if defined(__OBJC__)
 #import <Metal/Metal.h>

@@ -4,8 +4,8 @@
 #define HEIGHTMAP_TERRAIN_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
-#include "include/math/vec2.h"
+#include "math/vec3.h"
+#include "math/vec2.h"
 #include <Metal/Metal.h>
 
 #define TERRAIN_PATCH_SIZE 64      // Vertices per patch side

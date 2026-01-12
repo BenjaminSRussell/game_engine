@@ -15,7 +15,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <include/math/math.h>
+#include <math/math.h>
 
 /* =================================================================================================
  *                                    CONSTANTS

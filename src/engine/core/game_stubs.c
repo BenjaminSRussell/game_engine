@@ -125,27 +125,44 @@ void* g_thread_pool = NULL;
 void* g_particle_system = NULL;
 
 // Memory Allocator Stubs
-void* buddy_allocator_create(size_t size) {
+BuddyAllocator* buddy_allocator_create(u32 min_block_size, u32 max_block_size) {
+    (void)min_block_size; (void)max_block_size;
+    return NULL;
+}
+void* buddy_allocator_alloc(BuddyAllocator* alloc, u32 size) {
+    (void)alloc; (void)size;
+    return malloc(size);
+}
+void buddy_allocator_free(BuddyAllocator* alloc, void* ptr) {
+    (void)alloc;
+    free(ptr);
+}
+void buddy_allocator_destroy(BuddyAllocator* alloc) {
+    (void)alloc;
+}
+void buddy_allocator_print_stats(BuddyAllocator* alloc) {
+    (void)alloc;
+}
+
+LinearAllocator* linear_allocator_create(u64 size) {
     (void)size;
     return NULL;
 }
-void* buddy_allocator_alloc(void* allocator, size_t size) {
-    (void)allocator; (void)size;
+void linear_allocator_destroy(LinearAllocator* alloc) {
+    (void)alloc;
+}
+void* linear_allocator_alloc(LinearAllocator* alloc, u64 size, u64 alignment) {
+    (void)alloc; (void)size; (void)alignment;
     return malloc(size);
 }
-void buddy_allocator_free(void* allocator, void* ptr) {
-    (void)allocator;
-    free(ptr);
+void linear_allocator_reset(LinearAllocator* alloc) {
+    (void)alloc;
 }
-void buddy_allocator_destroy(void* allocator) {
-    (void)allocator;
+u64 linear_allocator_get_usage(LinearAllocator* alloc) {
+    (void)alloc;
+    return 0;
 }
-
-void* linear_allocator_alloc(void* allocator, size_t size) {
-    (void)allocator; (void)size;
-    return malloc(size);
-}
-void linear_allocator_reset(void* allocator) {
+void linear_allocator_reset_impl(void* allocator) {
     (void)allocator;
 }
 

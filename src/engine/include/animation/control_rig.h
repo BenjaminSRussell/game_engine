@@ -3,8 +3,8 @@
 #define CONTROL_RIG_H
 
 #include "include/common.h"
-#include "include/math/quat.h"
-#include "include/math/vec3.h"
+#include "math/quat.h"
+#include "math/vec3.h"
 
 #define MAX_RIG_CONTROLS 128
 

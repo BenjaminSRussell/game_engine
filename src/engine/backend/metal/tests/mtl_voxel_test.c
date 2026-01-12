@@ -31,7 +31,7 @@ static test_stats_t g_stats = {0};
   }                                                                            \
   static void test_##name(void)
 
-#define ASSERT(condition, message)                                             \
+#define TEST_ASSERT(condition, message)                                             \
   do {                                                                         \
     if (!(condition)) {                                                        \
       printf("   FAILED: %s (line %d)\n", message, __LINE__);                 \
@@ -40,7 +40,7 @@ static test_stats_t g_stats = {0};
     }                                                                          \
   } while (0)
 
-#define ASSERT_NOT_NULL(ptr, message) ASSERT((ptr) != NULL, message)
+#define ASSERT_NOT_NULL(ptr, message) TEST_ASSERT((ptr) != NULL, message)
 
 /* ============================================================================
  * VOXEL RENDERER TESTS
@@ -66,11 +66,11 @@ TEST(mesh_generation) {
   VoxelMesh *mesh = voxel_mesh_generate(renderer, blocks, 2, 2, 2);
 
   ASSERT_NOT_NULL(mesh, "Mesh generation failed");
-  ASSERT(mesh->vertex_count > 0, "Vertex count should be > 0");
-  ASSERT(mesh->index_count > 0, "Index count should be > 0");
+  TEST_ASSERT(mesh->vertex_count > 0, "Vertex count should be > 0");
+  TEST_ASSERT(mesh->index_count > 0, "Index count should be > 0");
   ASSERT_NOT_NULL(mesh->vertex_buffer, "Vertex buffer missing");
   ASSERT_NOT_NULL(mesh->index_buffer, "Index buffer missing");
-  ASSERT(mesh->uploaded, "Mesh should be marked as uploaded");
+  TEST_ASSERT(mesh->uploaded, "Mesh should be marked as uploaded");
 
   voxel_renderer_destroy(renderer);
 }

@@ -2,8 +2,8 @@
 #define LUMEN_GI_H
 
 #include "include/common.h"
-#include "include/math/mat4.h"
-#include "include/math/vec3.h"
+#include "math/mat4.h"
+#include "math/vec3.h"
 
 // Voxel Clipmap Settings
 #define LUMEN_CLIPMAP_LEVELS 4

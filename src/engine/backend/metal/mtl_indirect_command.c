@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_indirect_command.h"
+#include "mtl_indirect_command.h"
 
 #if defined(__OBJC__)
 #import <Metal/Metal.h>

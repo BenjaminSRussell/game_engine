@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_sync_manager.h"
+#include "mtl_sync_manager.h"
 #include <stdlib.h>
 #include <string.h>
 

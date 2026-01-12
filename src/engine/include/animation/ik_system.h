@@ -3,9 +3,9 @@
 #define IK_SYSTEM_H
 
 #include "include/common.h"
-#include "include/math/mat4.h"
-#include "include/math/quat.h"
-#include "include/math/vec3.h"
+#include "math/mat4.h"
+#include "math/quat.h"
+#include "math/vec3.h"
 
 #define MAX_IK_CHAIN_LENGTH 32
 #define MAX_IK_CHAINS 128

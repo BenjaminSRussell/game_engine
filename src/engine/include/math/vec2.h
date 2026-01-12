@@ -1,4 +1,4 @@
-// include/math/vec2.h
+// math/vec2.h
 //
 // Purpose: Defines the `Vec2` structure for 2D vectors and provides a concise
 // API for fundamental 2D linear algebra operations. This header is essential

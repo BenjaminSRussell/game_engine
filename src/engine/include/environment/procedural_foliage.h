@@ -3,7 +3,7 @@
 #define PROCEDURAL_FOLIAGE_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 
 #define MAX_FOLIAGE_TYPES 32
 

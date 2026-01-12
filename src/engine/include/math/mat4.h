@@ -1,4 +1,4 @@
-// include/math/mat4.h
+// math/mat4.h
 //
 // Purpose: Defines the `Mat4` structure for 4x4 matrices and provides a
 // comprehensive API for common 3D linear algebra operations. This header is

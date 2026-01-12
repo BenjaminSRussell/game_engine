@@ -6,8 +6,8 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_hazard_tracking.h"
-#include "backend/metal/mtl_sync.h"
+#include "mtl_hazard_tracking.h"
+#include "mtl_sync.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

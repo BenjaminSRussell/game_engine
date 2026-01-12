@@ -3,7 +3,7 @@
 #ifndef METAL_MESH_SHADERS_H
 #define METAL_MESH_SHADERS_H
 
-#include "include/common.h"
+#include "common.h"
 #include <Metal/Metal.h>
 
 typedef struct MetalMeshPipeline MetalMeshPipeline;

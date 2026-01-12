@@ -11,7 +11,7 @@
 #include "core/window.h"
 #include "core/config_loader.h"
 #include "core/gpu_acceleration.h" // Added for GPUBackend
-#include "include/math/math.h"
+#include "math/math.h"
 
 // Forward declarations for engine subsystems
 typedef struct Engine Engine;

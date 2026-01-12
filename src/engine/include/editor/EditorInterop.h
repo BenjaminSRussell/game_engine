@@ -3,7 +3,7 @@
 #ifndef EDITOR_INTEROP_H
 #define EDITOR_INTEROP_H
 
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 

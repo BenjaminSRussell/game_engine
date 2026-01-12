@@ -4,9 +4,9 @@
 #define DECAL_SYSTEM_H
 
 #include "include/common.h"
-#include "include/math/mat4.h"
-#include "include/math/vec3.h"
-#include "include/math/vec4.h"
+#include "math/mat4.h"
+#include "math/vec3.h"
+#include "math/vec4.h"
 
 #ifdef __OBJC__
 #import <Metal/Metal.h>

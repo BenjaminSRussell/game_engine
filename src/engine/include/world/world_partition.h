@@ -3,8 +3,8 @@
 #define WORLD_PARTITION_H
 
 #include "include/common.h"
-#include "include/math/bounds.h"
-#include "include/math/vec3.h"
+#include "math/bounds.h"
+#include "math/vec3.h"
 
 #define MAX_WORLD_CELLS 4096
 #define WORLD_CELL_SIZE 512.0f // 512 meters per cell

@@ -7,7 +7,7 @@
  */
 
 #import <Metal/Metal.h>
-#include "backend/metal/mtl_texture.h"
+#include "mtl_texture.h"
 #include <stdlib.h>
 #include <string.h>
 #include <include/math/math.h>

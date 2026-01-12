@@ -1,4 +1,4 @@
-// backend/metal/mtl_integration.m
+// mtl_integration.m
 // Complete Metal integration layer tying all systems together
 #include "../../include/core/logger.h"
 #include "../../include/rendering/metal_integration.h"

@@ -3,7 +3,7 @@
 #define FLUID_SIM_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 #import <Metal/Metal.h>
 
 // Grid-based fluid (Successive Over-Relaxation)

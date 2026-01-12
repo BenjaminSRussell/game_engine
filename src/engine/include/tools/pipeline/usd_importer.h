@@ -4,7 +4,7 @@
 #define USD_IMPORTER_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 #include <Metal/Metal.h>
 
 // USD stage (entire scene graph)

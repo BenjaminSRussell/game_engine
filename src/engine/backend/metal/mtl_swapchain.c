@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_swapchain.h"
+#include "mtl_swapchain.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <mach/mach_time.h>

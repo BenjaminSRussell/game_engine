@@ -5,7 +5,7 @@
 #define AI_TYPES_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 
 // AI Entity ID
 typedef u32 AIEntityID;

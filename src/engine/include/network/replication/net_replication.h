@@ -4,7 +4,7 @@
 #define NET_REPLICATION_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 
 #define NET_MAX_REPLICATED_OBJECTS 10000
 #define NET_MAX_PROPERTIES_PER_OBJECT 64

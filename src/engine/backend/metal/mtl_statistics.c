@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_statistics.h"
+#include "mtl_statistics.h"
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>

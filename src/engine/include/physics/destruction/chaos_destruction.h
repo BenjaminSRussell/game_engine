@@ -4,7 +4,7 @@
 #define CHAOS_DESTRUCTION_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 #include <Metal/Metal.h>
 
 #define CHAOS_MAX_FRAGMENTS 10000

@@ -1,4 +1,4 @@
-// include/math/quat.h
+// math/quat.h
 //
 // Purpose: Defines the `Quat` (Quaternion) structure and provides a
 // comprehensive API for common quaternion operations. Quaternions are used to

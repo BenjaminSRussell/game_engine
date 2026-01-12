@@ -3,11 +3,11 @@
 #ifndef NANITE_CLUSTER_H
 #define NANITE_CLUSTER_H
 
-#include "include/common.h"
-#include "include/math/bounds.h"
-#include "include/math/mat4.h"
-#include "include/math/vec2.h"
-#include "include/math/vec3.h"
+#include "common.h"
+#include "math/bounds.h"
+#include "math/mat4.h"
+#include "math/vec2.h"
+#include "math/vec3.h"
 
 #define NANITE_CLUSTER_SIZE 128 // Triangles per cluster
 #define NANITE_MAX_LOD_LEVELS 16

@@ -1,4 +1,4 @@
-// include/math/vec3.h
+// math/vec3.h
 //
 // Purpose: Defines the `Vec3` structure for 3D vectors and provides a
 // comprehensive API for common 3D linear algebra operations. This header is

@@ -2,7 +2,7 @@
 #define CROWD_SYSTEM_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 
 #define MAX_CROWD_AGENTS 1024
 

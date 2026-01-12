@@ -1,4 +1,4 @@
-// backend/metal/mtl_mesh_shaders.m
+// mtl_mesh_shaders.m
 // Metal mesh shader support implementation
 #include "../../include/core/logger.h"
 #include "../../include/rendering/metal_mesh_shaders.h"

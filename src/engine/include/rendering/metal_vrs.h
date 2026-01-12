@@ -3,8 +3,8 @@
 #ifndef METAL_VRS_H
 #define METAL_VRS_H
 
-#include "include/common.h"
-#include "include/math/vec2.h"
+#include "common.h"
+#include "math/vec2.h"
 #include <Metal/Metal.h>
 
 typedef enum {

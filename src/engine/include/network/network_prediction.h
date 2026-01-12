@@ -3,7 +3,7 @@
 #define NETWORK_PREDICTION_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 
 #define MAX_PREDICTION_HISTORY 64
 

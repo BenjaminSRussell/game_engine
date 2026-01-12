@@ -22,7 +22,7 @@
 
 #include "include/common.h"
 #include "include/ecs/ecs.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 #include "include/gameplay/combat/damage.h"
 #include "include/gameplay/combat/hitbox.h"
 

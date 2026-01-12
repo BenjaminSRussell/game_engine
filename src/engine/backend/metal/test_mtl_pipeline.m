@@ -5,9 +5,9 @@
  * Tests for pipeline creation, caching, shader library, and validation
  */
 
-#include "backend/metal/mtl_device.h"
-#include "backend/metal/mtl_pipeline.h"
-#include "backend/metal/mtl_shader_library.h"
+#include "mtl_device.h"
+#include "mtl_pipeline.h"
+#include "mtl_shader_library.h"
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 #include <assert.h>

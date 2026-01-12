@@ -3,7 +3,7 @@
 #define CLOTH_SIMULATION_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 #import <Metal/Metal.h>
 
 #define MAX_CLOTH_PARTICLES 65536

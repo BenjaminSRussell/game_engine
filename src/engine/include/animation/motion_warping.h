@@ -2,8 +2,8 @@
 #define MOTION_WARPING_H
 
 #include "include/common.h"
-#include "include/math/quat.h"
-#include "include/math/vec3.h"
+#include "math/quat.h"
+#include "math/vec3.h"
 
 #define MAX_WARP_TARGETS 8
 #define MAX_WARP_WINDOWS 4

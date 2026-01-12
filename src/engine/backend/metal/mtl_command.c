@@ -1,5 +1,5 @@
 #import <Metal/Metal.h>
-#include "backend/metal/mtl_command.h"
+#include "mtl_command.h"
 
 /* ============================================================================
  * INTERNAL TYPES

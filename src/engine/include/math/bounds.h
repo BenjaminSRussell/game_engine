@@ -3,7 +3,7 @@
 #ifndef BOUNDS_H
 #define BOUNDS_H
 
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 
 typedef struct {
   Vec3 min;

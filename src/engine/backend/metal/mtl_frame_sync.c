@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_frame_sync.h"
+#include "mtl_frame_sync.h"
 #include <stdlib.h>
 #include <string.h>
 #include <mach/mach_time.h>

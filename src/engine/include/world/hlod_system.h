@@ -3,8 +3,8 @@
 #define HLOD_SYSTEM_H
 
 #include "include/common.h"
-#include "include/math/bounds.h"
-#include "include/math/vec3.h"
+#include "math/bounds.h"
+#include "math/vec3.h"
 #import <Metal/Metal.h>
 
 #define HLOD_MAX_LEVELS 4

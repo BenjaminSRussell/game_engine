@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_command_graph.h"
+#include "mtl_command_graph.h"
 #include <stdlib.h>
 #include <string.h>
 

@@ -2,7 +2,7 @@
 #define AUDIO_DSP_EQUALIZER_H
 
 #include "include/common.h"
-#include <include/math/math.h>
+#include <math/math.h>
 
 #define MAX_EQ_BANDS 10
 #define MAX_EQ_PRESETS 8

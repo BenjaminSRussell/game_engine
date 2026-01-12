@@ -371,7 +371,7 @@ struct mtl_sampler* mtl_sampler_create_anisotropic(id<MTLDevice> device, f32 max
  * TODO: Add mtl sampler render graph node
  */
 
-#include "backend/metal/mtl_sampler.h"
+#include "mtl_sampler.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

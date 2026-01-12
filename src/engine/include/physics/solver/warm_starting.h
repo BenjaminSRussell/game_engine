@@ -1,7 +1,7 @@
 #pragma once
 
 #include "include/core/types.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus

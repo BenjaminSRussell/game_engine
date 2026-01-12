@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_pipeline.h"
+#include "mtl_pipeline.h"
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 #include <stdio.h>

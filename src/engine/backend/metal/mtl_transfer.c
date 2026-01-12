@@ -7,7 +7,7 @@
  */
 
 #import <Metal/Metal.h>
-#include "backend/metal/mtl_transfer.h"
+#include "mtl_transfer.h"
 #include <stdlib.h>
 #include <string.h>
 

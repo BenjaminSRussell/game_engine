@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_shader_compiler.h"
+#include "mtl_shader_compiler.h"
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 #include <stdio.h>

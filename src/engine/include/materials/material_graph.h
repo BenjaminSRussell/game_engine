@@ -5,7 +5,7 @@
 
 #include "include/common.h"
 #include "include/materials/pbr_material.h"
-#include "include/math/vec4.h"
+#include "math/vec4.h"
 
 #define MAX_GRAPH_NODES 256
 #define MAX_NODE_INPUTS 8

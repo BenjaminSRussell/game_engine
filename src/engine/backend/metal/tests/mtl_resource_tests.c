@@ -11,12 +11,12 @@
 #include <assert.h>
 #include <time.h>
 
-#include "backend/metal/mtl_device.h"
-#include "backend/metal/mtl_buffer.h"
-#include "backend/metal/mtl_texture.h"
-#include "backend/metal/mtl_transfer.h"
-#include "backend/metal/mtl_resource_pool.h"
-#include "backend/metal/mtl_sampler.h"
+#include "mtl_device.h"
+#include "mtl_buffer.h"
+#include "mtl_texture.h"
+#include "mtl_transfer.h"
+#include "mtl_resource_pool.h"
+#include "mtl_sampler.h"
 
 /* ============================================================================
  * TEST FRAMEWORK

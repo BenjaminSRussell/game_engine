@@ -6,7 +6,7 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "backend/metal/mtl_memory_heap.h"
+#include "mtl_memory_heap.h"
 #include <string.h>
 
 #ifdef __OBJC__

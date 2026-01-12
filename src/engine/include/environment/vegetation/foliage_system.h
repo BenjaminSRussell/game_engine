@@ -4,7 +4,7 @@
 #define FOLIAGE_SYSTEM_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 #include <Metal/Metal.h>
 
 #define FOLIAGE_MAX_TYPES 32

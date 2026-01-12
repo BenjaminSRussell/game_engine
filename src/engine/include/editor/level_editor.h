@@ -3,7 +3,7 @@
 #define LEVEL_EDITOR_H
 
 #include "include/common.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 
 typedef struct {
   void *selected_actor;

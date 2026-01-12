@@ -7,7 +7,7 @@
 #define EDITOR_VIEWPORT_GRID_RENDERING_H
 
 #include "include/common.h"
-#include "include/math/math.h"
+#include "math/math.h"
 
 // Forward declarations
 typedef struct Camera Camera;

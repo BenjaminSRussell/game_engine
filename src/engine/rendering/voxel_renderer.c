@@ -11,6 +11,7 @@
 #include "backend/metal/mtl_device.h"
 #include "backend/metal/mtl_encoder.h"
 #include "backend/metal/mtl_pipeline.h"
+#include "backend/metal/mtl_shader_library.h"
 
 // ============================================================================
 // Voxel Renderer Types
@@ -70,18 +71,34 @@ static bool voxel_renderer_init_pipeline(VoxelRenderer *renderer) {
   if (!renderer || !renderer->device)
     return false;
 
-  // Load shader library
-  // In a real app, this path would be absolute or resolved via resource manager
-  renderer->library =
-      metal_load_shader_library(metal_get_device(renderer->device),
-                                "src/engine/rendering/shaders/voxel.metal");
-  if (!renderer->library) {
-    // Fallback: load default library if specific file fails
-    // renderer->library = metal_load_shader_library(renderer->device->device,
-    // NULL);
-    LOG_ERROR("Failed to load voxel shader library");
+  // Load shader library using the shader library manager
+  // This handles both .metal source files and compiled .metallib files
+  metal_shader_library_manager_t *shader_manager = 
+      metal_shader_library_manager_create(metal_get_device(renderer->device));
+  if (!shader_manager) {
+    LOG_ERROR("Failed to create shader library manager");
     return false;
   }
+  
+  MTLLibraryRef library_ref = metal_library_manager_load_file(shader_manager,
+                                "src/engine/rendering/shaders/voxel.metal");
+  if (!library_ref) {
+    LOG_ERROR("Failed to load voxel shader library");
+    metal_shader_library_manager_destroy(shader_manager);
+    return false;
+  }
+  
+  // Create wrapper structure for consistency
+  renderer->library = (metal_shader_library_t *)calloc(1, sizeof(metal_shader_library_t));
+  if (!renderer->library) {
+    LOG_ERROR("Failed to allocate shader library structure");
+    metal_shader_library_manager_destroy(shader_manager);
+    return false;
+  }
+  renderer->library->library = library_ref;
+  strncpy(renderer->library->name, "voxel.metal", sizeof(renderer->library->name) - 1);
+  
+  metal_shader_library_manager_destroy(shader_manager);
 
   // Create vertex descriptor
   metal_vertex_descriptor_t v_desc;

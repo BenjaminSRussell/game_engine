@@ -9,7 +9,7 @@
 
 #include "include/common.h"
 #include "include/ai/ml/ml_core.h"
-#include "include/math/vec3.h"
+#include "math/vec3.h"
 #include <stdbool.h>
 
 typedef enum {

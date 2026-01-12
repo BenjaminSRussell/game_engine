@@ -13,7 +13,7 @@
 #ifndef POST_PROCESSING_H
 #define POST_PROCESSING_H
 
-#include "include/math/math.h"
+#include "math/math.h"
 #include "include/rendering/vulkan.h"
 
 #ifdef __cplusplus
