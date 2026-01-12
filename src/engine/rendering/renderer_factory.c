@@ -11,16 +11,14 @@ IRenderer *renderer_create(RendererType type) {
   case RENDERER_TYPE_VOXEL:
     return voxel_renderer_create();
   case RENDERER_TYPE_SPRITE_3D:
-    // return sprite_3d_renderer_create();
-    LOG_ERROR("Sprite 3D renderer not yet implemented");
-    return NULL;
+    return sprite_3d_renderer_create();
   default:
     LOG_ERROR("Unknown renderer type: %d", type);
     return NULL;
   }
 }
 
-IRenderer *renderer_create_with_backend(RendererType type, GPUBackend backend) {
+IRenderer *renderer_create_with_backend(RendererType type, GPUBackend backend, void *platform_window) {
   if (type == RENDERER_TYPE_VOXEL) {
     // The voxel_renderer_create function in services will handle backend
     // dispatch via #ifdefs or we can pass the backend if we refactor it. For

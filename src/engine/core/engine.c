@@ -140,7 +140,7 @@ bool engine_init(Engine *engine, const EngineConfig *config) {
   }
 
   // Validate window creation
-  if (pdata->window.handle != NULL) {
+  if (pdata->window.handle == NULL) {
     LOG_ERROR("Window validation failed");
     window_shutdown(&pdata->window);
     free(engine->platform_data);

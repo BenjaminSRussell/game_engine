@@ -8,7 +8,7 @@ IRenderer *voxel_renderer_service_create(void);
 // IRenderer *forward_renderer_create(void);
 // IRenderer *deferred_renderer_create(void);
 
-IRenderer *renderer_create_with_backend(RendererType type, GPUBackend backend) {
+IRenderer *renderer_create_with_backend(RendererType type, GPUBackend backend, void *platform_window) {
   IRenderer *renderer = NULL;
 
   switch (type) {

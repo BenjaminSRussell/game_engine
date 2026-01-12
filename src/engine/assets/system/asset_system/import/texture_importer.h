@@ -46,6 +46,7 @@ void asset_system_texture_importer_shutdown(void);
 
 /* Lifecycle */
 int asset_system_texture_importer_create(asset_system_texture_importer_handle_t* out_handle, const asset_system_texture_importer_desc_t* desc);
+int asset_system_texture_importer_load_from_file(asset_system_texture_importer_handle_t handle, const char* file_path);
 void asset_system_texture_importer_destroy(asset_system_texture_importer_handle_t handle);
 
 /* Operations */
@@ -59,6 +60,12 @@ int asset_system_texture_importer_process_pending(void);
 uint32_t asset_system_texture_importer_get_count(void);
 size_t asset_system_texture_importer_get_memory_usage(void);
 void asset_system_texture_importer_debug_print(void);
+
+/* Texture Data Access */
+int asset_system_texture_importer_get_dimensions(asset_system_texture_importer_handle_t handle, int* out_width, int* out_height);
+int asset_system_texture_importer_get_channels(asset_system_texture_importer_handle_t handle, int* out_channels);
+const uint8_t* asset_system_texture_importer_get_pixels(asset_system_texture_importer_handle_t handle);
+size_t asset_system_texture_importer_get_size(asset_system_texture_importer_handle_t handle);
 
 #ifdef __cplusplus
 }

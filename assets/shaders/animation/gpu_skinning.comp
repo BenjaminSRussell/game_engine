@@ -1,0 +1,176 @@
+#version 450
+
+// GPU Skinning Compute Shader
+// Performs vertex skinning on GPU using bone transforms
+
+layout(local_size_x = 64) in;
+
+// Input vertex data
+layout(binding = 0) readonly buffer VertexBuffer {
+    vec3 positions[];
+    vec3 normals[];
+    vec4 tangents[];
+    vec2 texcoords[];
+    uvec4 bone_indices[];     // 4 bone indices per vertex
+    vec4 bone_weights[];      // 4 bone weights per vertex
+} vertex_buffer;
+
+// Bone transform data
+layout(binding = 1) readonly buffer BoneBuffer {
+    mat4 bone_transforms[];
+} bone_buffer;
+
+// Output vertex data
+layout(binding = 0, rgba32f) uniform image2D output_vertices;
+
+// Global bone texture for all skeletons
+layout(binding = 2) uniform sampler2D global_bone_texture;
+
+// Uniform parameters
+layout(push_constant) uniform SkinningParams {
+    uint vertex_count;
+    uint bone_count;
+    uint bone_offset;
+    float animation_time;
+    vec3 padding;
+} params;
+
+// ============================================================================
+// BONE TRANSFORM FUNCTIONS
+// ============================================================================
+
+mat4 get_bone_transform(uint bone_index) {
+    // Read from bone buffer
+    return bone_buffer.bone_transforms[bone_index];
+}
+
+mat3x4 get_skinning_matrix(uint bone_index) {
+    // Extract 3x4 matrix from 4x4 transform
+    mat4 transform = get_bone_transform(bone_index);
+    return mat3x4(
+        vec4(transform[0].x, transform[0].y, transform[0].z, transform[0].w),
+        vec4(transform[1].x, transform[1].y, transform[1].z, transform[1].w),
+        vec4(transform[2].x, transform[2].y, transform[2].z, transform[2].w)
+    );
+}
+
+// ============================================================================
+// VERTEX SKINNING
+// ============================================================================
+
+vec3 skin_position(vec3 position, uvec4 bone_indices, vec4 bone_weights) {
+    vec3 skinned_position = vec3(0.0);
+    
+    for (int i = 0; i < 4; i++) {
+        if (bone_weights[i] > 0.001) {
+            uint bone_idx = bone_indices[i] + params.bone_offset;
+            mat3x4 skinning_matrix = get_skinning_matrix(bone_idx);
+            
+            // Apply skinning: position' = position * skinning_matrix
+            vec4 pos4 = vec4(position, 1.0);
+            vec3 transformed = vec3(
+                dot(pos4, skinning_matrix[0]),
+                dot(pos4, skinning_matrix[1]),
+                dot(pos4, skinning_matrix[2])
+            );
+            
+            skinned_position += transformed * bone_weights[i];
+        }
+    }
+    
+    return skinned_position;
+}
+
+vec3 skin_normal(vec3 normal, uvec4 bone_indices, vec4 bone_weights) {
+    vec3 skinned_normal = vec3(0.0);
+    
+    for (int i = 0; i < 4; i++) {
+        if (bone_weights[i] > 0.001) {
+            uint bone_idx = bone_indices[i] + params.bone_offset;
+            mat3x4 skinning_matrix = get_skinning_matrix(bone_idx);
+            
+            // For normals, use inverse transpose of the upper-left 3x3
+            // Simplified: just apply the rotation part
+            vec3 transformed = vec3(
+                dot(normal, vec3(skinning_matrix[0].x, skinning_matrix[1].x, skinning_matrix[2].x)),
+                dot(normal, vec3(skinning_matrix[0].y, skinning_matrix[1].y, skinning_matrix[2].y)),
+                dot(normal, vec3(skinning_matrix[0].z, skinning_matrix[1].z, skinning_matrix[2].z))
+            );
+            
+            skinned_normal += normalize(transformed) * bone_weights[i];
+        }
+    }
+    
+    return normalize(skinned_normal);
+}
+
+vec4 skin_tangent(vec4 tangent, uvec4 bone_indices, vec4 bone_weights) {
+    vec4 skinned_tangent = vec4(0.0);
+    
+    for (int i = 0; i < 4; i++) {
+        if (bone_weights[i] > 0.001) {
+            uint bone_idx = bone_indices[i] + params.bone_offset;
+            mat3x4 skinning_matrix = get_skinning_matrix(bone_idx);
+            
+            // Apply skinning to tangent (xyz part only, w is handedness)
+            vec3 transformed = vec3(
+                dot(tangent.xyz, vec3(skinning_matrix[0].x, skinning_matrix[1].x, skinning_matrix[2].x)),
+                dot(tangent.xyz, vec3(skinning_matrix[0].y, skinning_matrix[1].y, skinning_matrix[2].y)),
+                dot(tangent.xyz, vec3(skinning_matrix[0].z, skinning_matrix[1].z, skinning_matrix[2].z))
+            );
+            
+            skinned_tangent.xyz += transformed * bone_weights[i];
+            skinned_tangent.w = tangent.w;  // Preserve handedness
+        }
+    }
+    
+    skinned_tangent.xyz = normalize(skinned_tangent.xyz);
+    return skinned_tangent;
+}
+
+// ============================================================================
+// MAIN COMPUTE FUNCTION
+// ============================================================================
+
+void main() {
+    uint vertex_id = gl_GlobalInvocationID.x;
+    
+    if (vertex_id >= params.vertex_count) {
+        return;
+    }
+    
+    // Get vertex data
+    vec3 position = vertex_buffer.positions[vertex_id];
+    vec3 normal = vertex_buffer.normals[vertex_id];
+    vec4 tangent = vertex_buffer.tangents[vertex_id];
+    vec2 texcoord = vertex_buffer.texcoords[vertex_id];
+    uvec4 bone_indices = vertex_buffer.bone_indices[vertex_id];
+    vec4 bone_weights = vertex_buffer.bone_weights[vertex_id];
+    
+    // Normalize bone weights (in case they weren't normalized)
+    float weight_sum = bone_weights.x + bone_weights.y + bone_weights.z + bone_weights.w;
+    if (weight_sum > 0.001) {
+        bone_weights /= weight_sum;
+    }
+    
+    // Apply skinning
+    vec3 skinned_position = skin_position(position, bone_indices, bone_weights);
+    vec3 skinned_normal = skin_normal(normal, bone_indices, bone_weights);
+    vec4 skinned_tangent = skin_tangent(tangent, bone_indices, bone_weights);
+    
+    // Store skinned vertex data
+    // Pack into image: position.xyz, normal.x in first pixel
+    // normal.yz, tangent.xyz in second pixel, etc.
+    ivec2 image_coord = ivec2(vertex_id * 2, 0);
+    
+    // First pixel: position.xyz, normal.x
+    imageStore(output_vertices, image_coord, vec4(skinned_position, skinned_normal.x));
+    
+    // Second pixel: normal.yz, tangent.xyz
+    imageStore(output_vertices, image_coord + ivec2(1, 0), 
+              vec4(skinned_normal.yz, skinned_tangent.xyz));
+    
+    // Third pixel: tangent.w, texcoord.xy, animation_time
+    imageStore(output_vertices, image_coord + ivec2(2, 0), 
+              vec4(skinned_tangent.w, texcoord, params.animation_time));
+}

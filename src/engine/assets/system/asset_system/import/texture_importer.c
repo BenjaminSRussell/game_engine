@@ -5,37 +5,7 @@
  * Part of the Asset System subsystem
  * Advanced 3D Rendering Engine
  *
- * Implementation TODOs:
- * TODO: Implement Vulkan backend
- * TODO: Implement Metal backend
- * TODO: Implement D3D12 backend
- * TODO: Add thread-safe access patterns
- * TODO: Implement proper error handling with error codes
- * TODO: Add memory tracking and leak detection
- * TODO: Implement hot-reload support
- * TODO: Add validation layer integration
- * TODO: Implement resource state tracking
- * TODO: Add GPU debugging markers
- * TODO: Implement texture importer initialization
- * TODO: Add texture importer cleanup/shutdown
- * TODO: Implement texture importer validation
- * TODO: Add texture importer error handling
- * TODO: Implement texture importer serialization
- * TODO: Add texture importer debug output
- * TODO: Implement texture importer unit tests
- * TODO: Add texture importer performance counters
- * TODO: Implement texture importer hot-reload
- * TODO: Add texture importer thread safety
- * TODO: Implement texture importer memory pooling
- * TODO: Add texture importer caching layer
- * TODO: Implement texture importer async operations
- * TODO: Add texture importer GPU integration
- * TODO: Implement texture importer SIMD optimization
- * TODO: Add texture importer batch processing
- * TODO: Implement texture importer streaming support
- * TODO: Add texture importer LOD support
- * TODO: Implement texture importer culling integration
- * TODO: Add texture importer render graph node
+ * Supports PNG, JPEG, TGA, BMP, PSD, GIF, HDR, PIC formats via stb_image
  */
 
 #include "assets/system/asset_system/import/texture_importer.h"
@@ -44,6 +14,11 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+
+// stb_image implementation for texture loading
+#define STB_IMAGE_IMPLEMENTATION
+#include "include/vendor/stb_image.h"
 
 /* ============================================================================
  * CONSTANTS
@@ -54,14 +29,39 @@
 #define ASSET_SYSTEM_TEXTURE_IMPORTER_ALIGNMENT 16
 
 /* ============================================================================
+ * TEXTURE TYPES
+ * ============================================================================ */
+
+typedef enum {
+    TEXTURE_FORMAT_UNKNOWN = 0,
+    TEXTURE_FORMAT_R8,
+    TEXTURE_FORMAT_RG8,
+    TEXTURE_FORMAT_RGB8,
+    TEXTURE_FORMAT_RGBA8,
+    TEXTURE_FORMAT_R16F,
+    TEXTURE_FORMAT_RG16F,
+    TEXTURE_FORMAT_RGB16F,
+    TEXTURE_FORMAT_RGBA16F
+} texture_format_t;
+
+typedef struct texture_data {
+    int width;
+    int height;
+    int channels;
+    texture_format_t format;
+    uint8_t* pixels;
+    size_t size_bytes;
+    char file_path[512];
+} texture_data_t;
+
+/* ============================================================================
  * TYPES
  * ============================================================================ */
 
 typedef struct asset_system_texture_importer_internal {
     uint32_t id;
     uint32_t flags;
-    void* data;
-    size_t data_size;
+    texture_data_t texture;
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
@@ -81,22 +81,66 @@ static asset_system_texture_importer_context_t g_texture_importer_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
+static texture_format_t get_texture_format_from_channels(int channels) {
+    switch (channels) {
+        case 1: return TEXTURE_FORMAT_R8;
+        case 2: return TEXTURE_FORMAT_RG8;
+        case 3: return TEXTURE_FORMAT_RGB8;
+        case 4: return TEXTURE_FORMAT_RGBA8;
+        default: return TEXTURE_FORMAT_UNKNOWN;
+    }
+}
+
+static bool load_texture_from_file(const char* file_path, texture_data_t* out_texture) {
+    if (!file_path || !out_texture) {
+        return false;
+    }
+    
+    // Use stb_image to load the texture
+    int width, height, channels;
+    uint8_t* pixels = stbi_load(file_path, &width, &height, &channels, 0);
+    
+    if (!pixels) {
+        printf("Failed to load texture: %s\n", stbi_failure_reason());
+        return false;
+    }
+    
+    // Fill texture data
+    out_texture->width = width;
+    out_texture->height = height;
+    out_texture->channels = channels;
+    out_texture->format = get_texture_format_from_channels(channels);
+    out_texture->pixels = pixels;
+    out_texture->size_bytes = width * height * channels;
+    strncpy(out_texture->file_path, file_path, sizeof(out_texture->file_path) - 1);
+    
+    printf("Loaded texture: %s (%dx%d, %d channels)\n", file_path, width, height, channels);
+    return true;
+}
+
+static void cleanup_texture_data(texture_data_t* texture) {
+    if (!texture) return;
+    
+    if (texture->pixels) {
+        stbi_image_free(texture->pixels);
+        texture->pixels = NULL;
+    }
+    
+    memset(texture, 0, sizeof(texture_data_t));
+}
+
 static bool asset_system_texture_importer_validate(const asset_system_texture_importer_internal_t* item) {
-    // TODO: Implement Vulkan backend
-    // TODO: Implement Metal backend
     if (!item) return false;
     if (!item->initialized) return false;
+    if (!item->texture.pixels) return false;
+    if (item->texture.width <= 0 || item->texture.height <= 0) return false;
     return true;
 }
 
 static void asset_system_texture_importer_cleanup_internal(asset_system_texture_importer_internal_t* item) {
-    // TODO: Implement D3D12 backend
-    // TODO: Add thread-safe access patterns
     if (!item) return;
-    if (item->data) {
-        free(item->data);
-        item->data = NULL;
-    }
+    
+    cleanup_texture_data(&item->texture);
     item->initialized = false;
 }
 
@@ -171,13 +215,38 @@ int asset_system_texture_importer_create(asset_system_texture_importer_handle_t*
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    memset(&item->texture, 0, sizeof(texture_data_t));
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
 
     out_handle->id = index;
+    return 0;
+}
+
+int asset_system_texture_importer_load_from_file(asset_system_texture_importer_handle_t handle, const char* file_path) {
+    if (!file_path) {
+        return -1;
+    }
+
+    if (handle.id >= g_texture_importer_ctx.count) {
+        return -2;
+    }
+
+    asset_system_texture_importer_internal_t* item = &g_texture_importer_ctx.items[handle.id];
+    if (!item->initialized) {
+        return -3;
+    }
+
+    // Clean up any existing texture data
+    cleanup_texture_data(&item->texture);
+
+    // Load new texture
+    if (!load_texture_from_file(file_path, &item->texture)) {
+        return -4;
+    }
+
+    item->dirty = true;
     return 0;
 }
 
@@ -271,20 +340,85 @@ uint32_t asset_system_texture_importer_get_count(void) {
 }
 
 size_t asset_system_texture_importer_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_texture_importer_ctx);
     total += g_texture_importer_ctx.capacity * sizeof(asset_system_texture_importer_internal_t);
 
     for (uint32_t i = 0; i < g_texture_importer_ctx.count; i++) {
-        total += g_texture_importer_ctx.items[i].data_size;
+        total += g_texture_importer_ctx.items[i].texture.size_bytes;
     }
 
     return total;
 }
 
 void asset_system_texture_importer_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    printf("Texture Importer Debug Info:\n");
+    printf("  Count: %u/%u\n", g_texture_importer_ctx.count, g_texture_importer_ctx.capacity);
+    printf("  Initialized: %s\n", g_texture_importer_ctx.initialized ? "Yes" : "No");
+    
+    for (uint32_t i = 0; i < g_texture_importer_ctx.count; i++) {
+        const asset_system_texture_importer_internal_t* item = &g_texture_importer_ctx.items[i];
+        if (item->initialized && item->texture.pixels) {
+            printf("  Texture %u: %s (%dx%d, %d channels, %zu bytes)\n",
+                   i, item->texture.file_path, item->texture.width, 
+                   item->texture.height, item->texture.channels, item->texture.size_bytes);
+        }
+    }
+}
+
+/* Texture Data Access API */
+int asset_system_texture_importer_get_dimensions(asset_system_texture_importer_handle_t handle, int* out_width, int* out_height) {
+    if (handle.id >= g_texture_importer_ctx.count || !out_width || !out_height) {
+        return -1;
+    }
+    
+    const asset_system_texture_importer_internal_t* item = &g_texture_importer_ctx.items[handle.id];
+    if (!item->initialized || !item->texture.pixels) {
+        return -2;
+    }
+    
+    *out_width = item->texture.width;
+    *out_height = item->texture.height;
+    return 0;
+}
+
+int asset_system_texture_importer_get_channels(asset_system_texture_importer_handle_t handle, int* out_channels) {
+    if (handle.id >= g_texture_importer_ctx.count || !out_channels) {
+        return -1;
+    }
+    
+    const asset_system_texture_importer_internal_t* item = &g_texture_importer_ctx.items[handle.id];
+    if (!item->initialized || !item->texture.pixels) {
+        return -2;
+    }
+    
+    *out_channels = item->texture.channels;
+    return 0;
+}
+
+const uint8_t* asset_system_texture_importer_get_pixels(asset_system_texture_importer_handle_t handle) {
+    if (handle.id >= g_texture_importer_ctx.count) {
+        return NULL;
+    }
+    
+    const asset_system_texture_importer_internal_t* item = &g_texture_importer_ctx.items[handle.id];
+    if (!item->initialized || !item->texture.pixels) {
+        return NULL;
+    }
+    
+    return item->texture.pixels;
+}
+
+size_t asset_system_texture_importer_get_size(asset_system_texture_importer_handle_t handle) {
+    if (handle.id >= g_texture_importer_ctx.count) {
+        return 0;
+    }
+    
+    const asset_system_texture_importer_internal_t* item = &g_texture_importer_ctx.items[handle.id];
+    if (!item->initialized || !item->texture.pixels) {
+        return 0;
+    }
+    
+    return item->texture.size_bytes;
 }
 
 /* End of texture_importer.c */

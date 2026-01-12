@@ -12,7 +12,8 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # "src/game/blockgame/block/lighting.c"
     "src/game/blockgame/block/interaction.c"
     
-    # AI subdirectory - excluding broken implementations
+    # AI subdirectory - including legacy implementations
+    "src/engine/ai/legacy/npc.c"
     # "src/engine/ai/*.c"  # Disabled: too many errors in npc.c, npc_ai.c, and visual_cortex.c
     
     # AI pathfinding - advanced caching system
@@ -23,11 +24,16 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Animation subdirectory - excluding broken implementations
     # "src/engine/animation/*.c"  # Disabled: struct Pose definition mismatch in blend_tree_impl.c
     
+    # GPU skinning for animation
+    "src/engine/rendering/animation/gpu_skinning.c"
+    
     # Assets subdirectory (importers, loaders) - excluding Linux-specific inotify code
     # "src/engine/assets/*.c"  # Disabled: inotify.h not available on macOS
     # Re-enable specific asset files that work
     "src/engine/assets/asset_loader.c"
     
+    # Audio subdirectory - including legacy implementations
+    "src/engine/audio/legacy/audio_core.c"
     # Audio subdirectory - disabled due to struct definition mismatches
     # "src/engine/audio/*.c"
     # "src/engine/audio/audio_system.c"
@@ -38,6 +44,10 @@ file(GLOB_RECURSE ENGINE_SOURCES
     
     # Core systems
     "src/engine/core/misc_stubs.c"
+    # Legacy core systems
+    "src/engine/core/legacy/memory_allocator.c"
+    "src/engine/core/legacy/logger.c"
+    "src/engine/core/legacy/hot_reload.c"
     # New unified systems
     "src/engine/core/memory/unified_allocator.c"
     "src/engine/core/logging/unified_logger.c"
@@ -285,6 +295,11 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # Network subdirectory
     "src/engine/network/*.c"
     "src/engine/networking/*.c"
+    
+    # Physics subdirectory - including experimental and legacy systems
+    "src/engine/physics/*.c"
+    "src/engine/physics/legacy/physics_integration.c"
+    "src/engine/physics/experimental/*.c"
 
 # Network/Networking subsystems - Disabled due to header include issues
 # Networking system - RE-ENABLED for multiplayer functionality
@@ -510,5 +525,27 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/ui/hud_impl\\.c$")
 # Modding system - DISABLED due to missing key definitions
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/mods/.*\\.c$")
 
+# ===========================================
+# LEGACY TEST SOURCES (Recovered)
+# ===========================================
+set(LEGACY_TEST_SOURCES
+    "tests/legacy/test_physics_integration.c"
+    "tests/legacy/test_physics_integration 2.c"
+    "tests/legacy/test_crafting.c"
+    "tests/legacy/test_frame_graph.c"
+    "tests/legacy/test_framebuffer.c"
+    "tests/legacy/test_gbuffer_resize.c"
+    "tests/legacy/test_instance_data.c"
+    "tests/legacy/test_material_system.c"
+    "tests/legacy/test_networking.c"
+    "tests/legacy/test_normal_encoding.c"
+    "tests/legacy/test_player_food.c"
+    "tests/legacy/test_procedural_city.c"
+)
+
+# Include recovered sources
+include(cmake/recovered_sources.cmake)
+
 message(STATUS "ENGINE_SOURCES count: ${ENGINE_SOURCES}")
 message(STATUS "GAME_SOURCES count: ${GAME_SOURCES}")
+message(STATUS "LEGACY_TEST_SOURCES count: ${LEGACY_TEST_SOURCES}")
