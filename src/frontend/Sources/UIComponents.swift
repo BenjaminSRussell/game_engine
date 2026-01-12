@@ -20,26 +20,32 @@ struct EditorPrimaryButton: View {
             HStack(spacing: DesignSystem.Spacing.sm) {
                 if let icon = icon {
                     Image(systemName: icon)
+                        .font(.system(size: 14, weight: .medium))
                 }
                 Text(title)
+                    .font(.system(size: 14, weight: .semibold))
             }
-            .font(DesignSystem.Typography.body)
             .foregroundColor(.white)
-            .padding(.horizontal, DesignSystem.Spacing.lg)
+            .padding(.horizontal, DesignSystem.Spacing.md)
             .padding(.vertical, DesignSystem.Spacing.sm)
-            .background(isHovering ? DesignSystem.Colors.accentSecondary : DesignSystem.Colors.accentPrimary)
-            .cornerRadius(4)
+            .background(
+                LinearGradient(
+                    colors: isHovering ? [Color.blue.opacity(0.8), Color.purple.opacity(0.8)] : [Color.blue, Color.purple],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .cornerRadius(8)
+            .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
         }
-        .buttonStyle(.plain)
         .onHover { hovering in
-            withAnimation(DesignSystem.Animation.easeInOut) {
-                isHovering = hovering
-            }
+            isHovering = hovering
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
-/// Secondary button with border style
+/// Secondary action button
 struct EditorSecondaryButton: View {
     let title: String
     let icon: String?
@@ -57,25 +63,25 @@ struct EditorSecondaryButton: View {
             HStack(spacing: DesignSystem.Spacing.sm) {
                 if let icon = icon {
                     Image(systemName: icon)
+                        .font(.system(size: 14, weight: .medium))
                 }
                 Text(title)
+                    .font(.system(size: 14, weight: .medium))
             }
-            .font(DesignSystem.Typography.body)
             .foregroundColor(DesignSystem.Colors.textPrimary)
-            .padding(.horizontal, DesignSystem.Spacing.lg)
+            .padding(.horizontal, DesignSystem.Spacing.md)
             .padding(.vertical, DesignSystem.Spacing.sm)
-            .background(isHovering ? DesignSystem.Colors.hover : Color.clear)
+            .background(DesignSystem.Colors.backgroundSecondary)
+            .cornerRadius(6)
             .overlay(
-                RoundedRectangle(cornerRadius: 4)
+                RoundedRectangle(cornerRadius: 6)
                     .stroke(DesignSystem.Colors.border, lineWidth: 1)
             )
         }
-        .buttonStyle(.plain)
         .onHover { hovering in
-            withAnimation(DesignSystem.Animation.easeInOut) {
-                isHovering = hovering
-            }
+            isHovering = hovering
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -85,28 +91,31 @@ struct EditorIconButton: View {
     let tooltip: String?
     let action: () -> Void
     @State private var isHovering = false
+    @State private var isActive = false
     
-    init(icon: String, tooltip: String? = nil, action: @escaping () -> Void) {
+    init(_ icon: String, tooltip: String? = nil, isActive: Bool = false, action: @escaping () -> Void) {
         self.icon = icon
         self.tooltip = tooltip
+        self.isActive = isActive
         self.action = action
     }
     
     var body: some View {
         Button(action: action) {
             Image(systemName: icon)
-                .font(.system(size: 16))
-                .foregroundColor(DesignSystem.Colors.textPrimary)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(isActive ? .white : DesignSystem.Colors.textSecondary)
                 .frame(width: 32, height: 32)
-                .background(isHovering ? DesignSystem.Colors.hover : DesignSystem.Colors.backgroundTertiary)
-                .cornerRadius(4)
+                .background(
+                    isActive ? DesignSystem.Colors.accent :
+                    (isHovering ? DesignSystem.Colors.backgroundSecondary : Color.clear)
+                )
+                .cornerRadius(6)
         }
-        .buttonStyle(.plain)
         .onHover { hovering in
-            withAnimation(DesignSystem.Animation.easeInOut) {
-                isHovering = hovering
-            }
+            isHovering = hovering
         }
+        .buttonStyle(PlainButtonStyle())
         .help(tooltip ?? "")
     }
 }
@@ -117,19 +126,40 @@ struct EditorIconButton: View {
 struct EditorTextField: View {
     @Binding var text: String
     let placeholder: String
+    let icon: String?
+    @State private var isFocused = false
+    
+    init(_ placeholder: String, text: Binding<String>, icon: String? = nil) {
+        self._text = text
+        self.placeholder = placeholder
+        self.icon = icon
+    }
     
     var body: some View {
-        TextField(placeholder, text: $text)
-            .textFieldStyle(.plain)
-            .font(DesignSystem.Typography.body)
-            .foregroundColor(DesignSystem.Colors.textPrimary)
-            .padding(DesignSystem.Spacing.sm)
-            .background(DesignSystem.Colors.backgroundPrimary)
-            .cornerRadius(4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(DesignSystem.Colors.border, lineWidth: 1)
-            )
+        HStack(spacing: DesignSystem.Spacing.sm) {
+            if let icon = icon {
+                Image(systemName: icon)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+            }
+            
+            TextField(placeholder, text: $text)
+                .textFieldStyle(PlainTextFieldStyle())
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+                .padding(.horizontal, DesignSystem.Spacing.sm)
+                .padding(.vertical, DesignSystem.Spacing.xs)
+        }
+        .padding(.horizontal, DesignSystem.Spacing.sm)
+        .padding(.vertical, DesignSystem.Spacing.xs)
+        .background(DesignSystem.Colors.backgroundSecondary)
+        .cornerRadius(6)
+        .overlay(
+            RoundedRectangle(cornerRadius: 6)
+                .stroke(isFocused ? DesignSystem.Colors.accent : DesignSystem.Colors.border, lineWidth: 1)
+        )
+        .onFocusChange { focused in
+            isFocused = focused
+        }
     }
 }
 
@@ -137,54 +167,51 @@ struct EditorTextField: View {
 struct EditorNumericField: View {
     @Binding var value: Float
     let label: String
-    let range: ClosedRange<Float>
-    let step: Float
+    let range: ClosedRange<Float>?
     @State private var isDragging = false
-    @State private var dragStartValue: Float = 0
-    @State private var dragStartLocation: CGPoint = .zero
     
-    init(label: String, value: Binding<Float>, range: ClosedRange<Float> = -1000...1000, step: Float = 0.1) {
-        self.label = label
+    init(_ label: String, value: Binding<Float>, range: ClosedRange<Float>? = nil) {
         self._value = value
+        self.label = label
         self.range = range
-        self.step = step
     }
     
     var body: some View {
         HStack(spacing: DesignSystem.Spacing.sm) {
             Text(label)
-                .font(DesignSystem.Typography.small)
+                .font(.system(size: 12, weight: .medium))
                 .foregroundColor(DesignSystem.Colors.textSecondary)
                 .frame(width: 60, alignment: .leading)
             
-            TextField("", value: $value, format: .number)
-                .textFieldStyle(.plain)
-                .font(DesignSystem.Typography.mono)
-                .multilineTextAlignment(.trailing)
-                .frame(width: 80)
-                .padding(DesignSystem.Spacing.xs)
-                .background(isDragging ? DesignSystem.Colors.selection : DesignSystem.Colors.backgroundPrimary)
+            TextField("", value: $value, format: "%.2f")
+                .textFieldStyle(PlainTextFieldStyle())
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+                .padding(.horizontal, DesignSystem.Spacing.sm)
+                .padding(.vertical, DesignSystem.Spacing.xs)
+                .background(DesignSystem.Colors.backgroundSecondary)
                 .cornerRadius(4)
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
                         .stroke(DesignSystem.Colors.border, lineWidth: 1)
                 )
                 .gesture(
-                    DragGesture(minimumDistance: 2)
-                        .onChanged { gesture in
-                            if !isDragging {
-                                isDragging = true
-                                dragStartValue = value
-                                dragStartLocation = gesture.startLocation
-                            }
-                            let delta = Float(gesture.translation.width) * step
-                            value = min(max(dragStartValue + delta, range.lowerBound), range.upperBound)
+                    DragGesture()
+                        .onChanged { value in
+                            isDragging = true
+                            let delta = Float(value.translation.x) * 0.1
+                            self.value = max(range?.lowerBound ?? -Float.greatestFiniteMagnitude,
+                                           min(range?.upperBound ?? Float.greatestFiniteMagnitude,
+                                               self.value + delta))
                         }
                         .onEnded { _ in
                             isDragging = false
                         }
                 )
         }
+        .padding(.horizontal, DesignSystem.Spacing.sm)
+        .padding(.vertical, DesignSystem.Spacing.xs)
+        .background(isDragging ? DesignSystem.Colors.backgroundSecondary : Color.clear)
+        .cornerRadius(4)
     }
 }
 
@@ -195,54 +222,73 @@ struct EditorVector3Field: View {
     @Binding var z: Float
     let label: String
     
+    init(_ label: String, x: Binding<Float>, y: Binding<Float>, z: Binding<Float>) {
+        self._x = x
+        self._y = y
+        self._z = z
+        self.label = label
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
             Text(label)
-                .font(DesignSystem.Typography.small)
+                .font(.system(size: 12, weight: .medium))
                 .foregroundColor(DesignSystem.Colors.textSecondary)
             
-            HStack(spacing: DesignSystem.Spacing.xs) {
-                VectorComponent(label: "X", value: $x, color: DesignSystem.Colors.accentError)
-                VectorComponent(label: "Y", value: $y, color: DesignSystem.Colors.accentSuccess)
-                VectorComponent(label: "Z", value: $z, color: DesignSystem.Colors.accentPrimary)
+            HStack(spacing: DesignSystem.Spacing.sm) {
+                EditorNumericField("X", value: $x)
+                EditorNumericField("Y", value: $y)
+                EditorNumericField("Z", value: $z)
             }
         }
+        .padding(DesignSystem.Spacing.sm)
+        .background(DesignSystem.Colors.backgroundTertiary)
+        .cornerRadius(6)
     }
 }
 
-private struct VectorComponent: View {
+/// Toggle switch with editor styling
+struct EditorToggle: View {
     let label: String
-    @Binding var value: Float
-    let color: Color
+    @Binding var isOn: Bool
+    
+    init(_ label: String, isOn: Binding<Bool>) {
+        self.label = label
+        self._isOn = isOn
+    }
     
     var body: some View {
-        HStack(spacing: 2) {
+        HStack {
             Text(label)
-                .font(DesignSystem.Typography.small)
-                .foregroundColor(color)
-                .frame(width: 12)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(DesignSystem.Colors.textPrimary)
             
-            TextField("", value: $value, format: .number)
-                .textFieldStyle(.plain)
-                .font(DesignSystem.Typography.mono)
-                .multilineTextAlignment(.trailing)
-                .padding(DesignSystem.Spacing.xs)
-                .background(DesignSystem.Colors.backgroundPrimary)
-                .cornerRadius(4)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 4)
-                        .stroke(DesignSystem.Colors.border, lineWidth: 1)
-                )
+            Spacer()
+            
+            Toggle("", isOn: $isOn)
+                .toggleStyle(SwitchToggleStyle(tint: DesignSystem.Colors.accent))
         }
+        .padding(.horizontal, DesignSystem.Spacing.sm)
+        .padding(.vertical, DesignSystem.Spacing.xs)
     }
 }
 
-// MARK: - Panels
+/// Visual separator
+struct EditorDivider: View {
+    var body: some View {
+        Rectangle()
+            .fill(DesignSystem.Colors.border)
+            .frame(height: 1)
+            .padding(.horizontal, DesignSystem.Spacing.md)
+    }
+}
+
+// MARK: - Layout Components
 
 /// Collapsible section for grouping properties
 struct EditorCollapsibleSection<Content: View>: View {
     let title: String
-    @State private var isExpanded: Bool
+    @State private var isExpanded: Bool = true
     let content: () -> Content
     
     init(_ title: String, isExpanded: Bool = true, @ViewBuilder content: @escaping () -> Content) {
@@ -254,34 +300,41 @@ struct EditorCollapsibleSection<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button(action: {
-                withAnimation(DesignSystem.Animation.spring) {
+                withAnimation(.easeInOut(duration: 0.2)) {
                     isExpanded.toggle()
                 }
             }) {
-                HStack(spacing: DesignSystem.Spacing.sm) {
-                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
-                        .font(.system(size: 12))
-                        .foregroundColor(DesignSystem.Colors.textSecondary)
-                    
+                HStack {
                     Text(title)
-                        .font(DesignSystem.Typography.bodyBold)
+                        .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(DesignSystem.Colors.textPrimary)
                     
                     Spacer()
+                    
+                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                        .rotationEffect(.degrees(isExpanded ? 0 : -90))
+                        .animation(.easeInOut(duration: 0.2), value: isExpanded)
                 }
-                .padding(DesignSystem.Spacing.sm)
-                .background(DesignSystem.Colors.backgroundTertiary)
+                .padding(.horizontal, DesignSystem.Spacing.md)
+                .padding(.vertical, DesignSystem.Spacing.sm)
+                .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
+            .buttonStyle(PlainButtonStyle())
             
             if isExpanded {
                 content()
-                    .padding(DesignSystem.Spacing.sm)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    .padding(DesignSystem.Spacing.md)
+                    .background(DesignSystem.Colors.backgroundTertiary)
             }
         }
         .background(DesignSystem.Colors.backgroundSecondary)
-        .cornerRadius(4)
+        .cornerRadius(8)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(DesignSystem.Colors.border, lineWidth: 1)
+        )
     }
 }
 
@@ -296,30 +349,91 @@ struct EditorPanel<Content: View>: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             // Title bar
             HStack {
                 Text(title)
-                    .font(DesignSystem.Typography.bodyBold)
+                    .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(DesignSystem.Colors.textPrimary)
+                
                 Spacer()
             }
-            .padding(DesignSystem.Spacing.sm)
+            .padding(.horizontal, DesignSystem.Spacing.md)
+            .padding(.vertical, DesignSystem.Spacing.sm)
             .background(DesignSystem.Colors.backgroundTertiary)
-            
-            Divider()
-                .background(DesignSystem.Colors.border)
             
             // Content
             content()
+                .padding(DesignSystem.Spacing.md)
         }
         .background(DesignSystem.Colors.backgroundSecondary)
         .cornerRadius(8)
-        .shadow(
-            color: DesignSystem.Shadows.medium.color,
-            radius: DesignSystem.Shadows.medium.radius,
-            x: DesignSystem.Shadows.medium.x,
-            y: DesignSystem.Shadows.medium.y
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(DesignSystem.Colors.border, lineWidth: 1)
+        )
+    }
+}
+
+/// Generic button for editor actions
+struct EditorButton: View {
+    let title: String
+    let action: () -> Void
+    @State private var isHovering = false
+    
+    init(_ title: String, action: @escaping () -> Void) {
+        self.title = title
+        self.action = action
+    }
+    
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+                .padding(.horizontal, DesignSystem.Spacing.md)
+                .padding(.vertical, DesignSystem.Spacing.xs)
+                .background(isHovering ? DesignSystem.Colors.backgroundSecondary : DesignSystem.Colors.backgroundTertiary)
+                .cornerRadius(6)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(DesignSystem.Colors.border, lineWidth: 1)
+                )
+        }
+        .onHover { hovering in
+            isHovering = hovering
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
+/// Search bar component
+struct EditorSearchBar: View {
+    @Binding var text: String
+    let placeholder: String
+    
+    init(text: Binding<String>, placeholder: String) {
+        self._text = text
+        self.placeholder = placeholder
+    }
+    
+    var body: some View {
+        HStack(spacing: DesignSystem.Spacing.sm) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            TextField(placeholder, text: $text)
+                .textFieldStyle(PlainTextFieldStyle())
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+        }
+        .padding(.horizontal, DesignSystem.Spacing.sm)
+        .padding(.vertical, DesignSystem.Spacing.xs)
+        .background(DesignSystem.Colors.backgroundSecondary)
+        .cornerRadius(6)
+        .overlay(
+            RoundedRectangle(cornerRadius: 6)
+                .stroke(DesignSystem.Colors.border, lineWidth: 1)
         )
     }
 }

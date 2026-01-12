@@ -39928,6 +39928,10 @@ CMakeFiles/Engine.dir/src/engine/audio/underwater_filter_stubs.c.o: /Users/benja
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/types.h
 
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_backend_demo.m
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_pipeline_test.m
+
 CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_raytracing.m \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFFTPStream.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFHTTPAuthentication.h \
@@ -40825,6 +40829,8 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o: /Users/benj
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/metal_raytracing.h
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_test.m
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_argument_buffer.m \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFFTPStream.h \
@@ -72668,6 +72674,12 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o: /Users/benjaminrus
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_vsync.h
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/simple_metal_backend_test.m
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/test_metal_device.m
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/test_metal_shader.m
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/test_mtl_pipeline.m \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CFNetwork.framework/Headers/CFFTPStream.h \
@@ -104786,15 +104798,9 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ui/text/font_atlas_gen.c:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/DiskArbitration.framework/Headers/DASession.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ui/core/ui_layout_engine.c:
-
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ui/core/ui_event_dispatcher.c:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/stylized/voxel_builder.c:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ui/accessibility/accessibility.c:
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/tools/world/vegetation_painter.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/tools/world/road_river_tool.c:
 
@@ -105372,6 +105378,10 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/postprocess/screen_space/ssr_trace.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ui/accessibility/accessibility.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/stylized/voxel_builder.c:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/environment/stylized/hand_drawn_effect.c:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/group/flocking_system.c:
@@ -105909,6 +105919,10 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSFilePromiseProvider.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/vertex_format.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/exception_types.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/test_metal_device.m:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_vsync.h:
 
@@ -106884,6 +106898,10 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_argument_buffer.m:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_pipeline_test.m:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_backend_demo.m:
+
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/eqs_system.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/underwater_filter.h:
@@ -107313,6 +107331,8 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/scene/scene_renderer.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/scene/scene_renderer.c:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/test_metal_shader.m:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/io/scene/scene_processor.c:
 
@@ -108152,6 +108172,8 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/animation/morph_targets/facial_morphs.c:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_test.m:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/errno.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/scene/scene_system.h:
@@ -108370,10 +108392,6 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/libkern/OSByteOrder.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFUtilities.h:
-
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/tools/world/biome_designer.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/npc_ai_impl.c:
@@ -108515,6 +108533,10 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/DriverServices.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFTree.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/tools/world/biome_designer.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFUtilities.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSProtocolChecker.h:
 
@@ -109868,8 +109890,6 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/OSServices.framework/Headers/KeychainCore.h:
 
-/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/tools/world/vegetation_painter.c:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSCachedImageRep.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/strings.h:
@@ -110247,6 +110267,10 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ai/content/content_manager.c:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSScriptObjectSpecifiers.h:
+
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/ui/core/ui_layout_engine.c:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/DiskArbitration.framework/Headers/DASession.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/OSServices.framework/Headers/CSIdentityBase.h:
 
@@ -110688,6 +110712,8 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSTextFieldCell.h:
 
+/Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/simple_metal_backend_test.m:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGFont.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFBundle.h:
@@ -111067,8 +111093,6 @@ CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o: /Users/benjaminr
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSNeuralNetwork.framework/Headers/MPSCNNLoss.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/mach/exception_types.h:
 
 /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/lighting/lumen/final_gather/diffuse_indirect.c:
 

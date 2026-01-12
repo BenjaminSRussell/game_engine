@@ -7,19 +7,25 @@ C_DEFINES = -DSIMD_NEON
 
 C_INCLUDES = -I"/Users/benjaminrussell/Desktop/Minecraft v2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include_private" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor/lua" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/Core/Bridges/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/instancing" -isystem /opt/homebrew/include
 
-C_FLAGSarm64 = -g -std=gnu11 -arch arm64
+C_FLAGSarm64 = -std=gnu11 -arch arm64
 
-C_FLAGS = -g -std=gnu11 -arch arm64
+C_FLAGS = -std=gnu11 -arch arm64
 
 OBJC_DEFINES = -DSIMD_NEON
 
 OBJC_INCLUDES = -I"/Users/benjaminrussell/Desktop/Minecraft v2/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include_private" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor" -I"/Users/benjaminrussell/Desktop/Minecraft v2/include/vendor/lua" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/frontend/Core/Bridges/include" -I"/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/instancing" -isystem /opt/homebrew/include
 
-OBJC_FLAGSarm64 = -g -std=gnu11 -arch arm64
+OBJC_FLAGSarm64 = -std=gnu11 -arch arm64
 
-OBJC_FLAGS = -g -std=gnu11 -arch arm64
+OBJC_FLAGS = -std=gnu11 -arch arm64
+
+# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o_FLAGS = -fobjc-arc
+
+# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o_FLAGS = -fobjc-arc
+
+# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o_FLAGS = -fobjc-arc
 
@@ -92,6 +98,12 @@ OBJC_FLAGS = -g -std=gnu11 -arch arm64
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o_FLAGS = -fobjc-arc
+
+# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o_FLAGS = -fobjc-arc
+
+# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o_FLAGS = -fobjc-arc
+
+# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o_FLAGS = -fobjc-arc
 

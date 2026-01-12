@@ -14184,10 +14184,38 @@ CMakeFiles/Engine.dir/src/engine/backend/vertex_format_reflect.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/Engine.dir/src/engine/backend/vertex_format_reflect.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/vertex_format_reflect.c" -o CMakeFiles/Engine.dir/src/engine/backend/vertex_format_reflect.c.s
 
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_backend_demo.m
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1009) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_backend_demo.m"
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing OBJC source to CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.i"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_backend_demo.m" > CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.i
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.s"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_backend_demo.m" -o CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.s
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_pipeline_test.m
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1010) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_pipeline_test.m"
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing OBJC source to CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.i"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_pipeline_test.m" > CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.i
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.s"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_pipeline_test.m" -o CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.s
+
 CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_raytracing.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1009) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1011) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_raytracing.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.i: cmake_force
@@ -14198,10 +14226,24 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.s"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_raytracing.m" -o CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.s
 
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/metal_test.m
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1012) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_test.m"
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing OBJC source to CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.i"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_test.m" > CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.i
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.s"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_test.m" -o CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.s
+
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_argument_buffer.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1010) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1013) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_argument_buffer.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.i: cmake_force
@@ -14215,7 +14257,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_buffer.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1011) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1014) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_buffer.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.i: cmake_force
@@ -14229,7 +14271,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_command.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1012) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1015) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_command.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.i: cmake_force
@@ -14243,7 +14285,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_command_buffer.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1013) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1016) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_command_buffer.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.m.i: cmake_force
@@ -14257,7 +14299,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.m.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_command_graph.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1014) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1017) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_command_graph.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.m.i: cmake_force
@@ -14271,7 +14313,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.m.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_device.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1015) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1018) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_device.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.m.i: cmake_force
@@ -14285,7 +14327,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_device_caps.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1016) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1019) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_device_caps.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.m.i: cmake_force
@@ -14299,7 +14341,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_display.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_display.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_display.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_display.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1017) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_display.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1020) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_display.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_display.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_display.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_display.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_display.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_display.m.i: cmake_force
@@ -14313,7 +14355,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_display.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_encoder.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1018) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1021) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_encoder.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.m.i: cmake_force
@@ -14327,7 +14369,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_frame_sync.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1019) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1022) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_frame_sync.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.m.i: cmake_force
@@ -14341,7 +14383,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_hazard_tracking.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1020) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1023) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_hazard_tracking.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.m.i: cmake_force
@@ -14355,7 +14397,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.m.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hdr.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hdr.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_hdr.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hdr.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1021) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hdr.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1024) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hdr.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hdr.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hdr.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hdr.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_hdr.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hdr.m.i: cmake_force
@@ -14369,7 +14411,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hdr.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_indirect_command.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1022) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1025) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_indirect_command.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.m.i: cmake_force
@@ -14383,7 +14425,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.m.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_integration.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_integration.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_integration.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_integration.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1023) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_integration.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1026) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_integration.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_integration.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_integration.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_integration.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_integration.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_integration.m.i: cmake_force
@@ -14397,7 +14439,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_integration.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_memory_heap.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1024) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1027) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_memory_heap.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.m.i: cmake_force
@@ -14411,7 +14453,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_mesh_shaders.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_mesh_shaders.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_mesh_shaders.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_mesh_shaders.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1025) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_mesh_shaders.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1028) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_mesh_shaders.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_mesh_shaders.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_mesh_shaders.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_mesh_shaders.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_mesh_shaders.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_mesh_shaders.m.i: cmake_force
@@ -14425,7 +14467,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_mesh_shaders.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_metalfx.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_metalfx.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_metalfx.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_metalfx.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1026) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_metalfx.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1029) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_metalfx.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_metalfx.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_metalfx.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_metalfx.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_metalfx.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_metalfx.m.i: cmake_force
@@ -14439,7 +14481,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_metalfx.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_parallel_encoder.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1027) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1030) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_parallel_encoder.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.m.i: cmake_force
@@ -14453,7 +14495,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.m.s: cmake_f
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_pipeline.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1028) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1031) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_pipeline.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline.m.i: cmake_force
@@ -14467,7 +14509,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline_extensions.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline_extensions.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_pipeline_extensions.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline_extensions.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1029) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline_extensions.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1032) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline_extensions.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline_extensions.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline_extensions.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline_extensions.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_pipeline_extensions.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline_extensions.m.i: cmake_force
@@ -14481,7 +14523,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_pipeline_extensions.m.s: cmak
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_render_pass.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1030) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1033) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_render_pass.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.m.i: cmake_force
@@ -14495,7 +14537,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_resource_pool.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1031) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1034) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_resource_pool.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.m.i: cmake_force
@@ -14509,7 +14551,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.m.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resources.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resources.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_resources.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resources.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1032) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resources.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1035) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resources.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resources.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resources.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resources.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_resources.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resources.m.i: cmake_force
@@ -14523,7 +14565,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resources.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_sampler.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1033) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1036) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_sampler.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.m.i: cmake_force
@@ -14537,7 +14579,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sampler.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_compiler.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_compiler.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_shader_compiler.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_compiler.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1034) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_compiler.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1037) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_compiler.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_compiler.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_compiler.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_compiler.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_shader_compiler.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_compiler.m.i: cmake_force
@@ -14551,7 +14593,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_compiler.m.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_shader_library.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1035) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1038) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_shader_library.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library.m.i: cmake_force
@@ -14565,7 +14607,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library.m.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library_extensions.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library_extensions.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_shader_library_extensions.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library_extensions.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1036) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library_extensions.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1039) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library_extensions.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library_extensions.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library_extensions.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library_extensions.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_shader_library_extensions.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library_extensions.m.i: cmake_force
@@ -14579,7 +14621,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_shader_library_extensions.m.s
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_statistics.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1037) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1040) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_statistics.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.m.i: cmake_force
@@ -14593,7 +14635,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_swapchain.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1038) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1041) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_swapchain.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.m.i: cmake_force
@@ -14607,7 +14649,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_sync.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1039) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1042) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_sync.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.i: cmake_force
@@ -14621,7 +14663,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_sync_manager.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1040) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1043) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_sync_manager.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.i: cmake_force
@@ -14635,7 +14677,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_sync_primitives.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1041) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1044) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_sync_primitives.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.i: cmake_force
@@ -14649,7 +14691,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.m.s: cmake_fo
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_texture.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1042) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1045) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_texture.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.i: cmake_force
@@ -14663,7 +14705,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_timestamp.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1043) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1046) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_timestamp.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.i: cmake_force
@@ -14677,7 +14719,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_transfer.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1044) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1047) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_transfer.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.i: cmake_force
@@ -14691,7 +14733,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/mtl_vsync.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1045) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1048) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_vsync.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.i: cmake_force
@@ -14702,10 +14744,52 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.s"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_vsync.m" -o CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.s
 
+CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/simple_metal_backend_test.m
+CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1049) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/simple_metal_backend_test.m"
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing OBJC source to CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.i"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/simple_metal_backend_test.m" > CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.i
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.s"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/simple_metal_backend_test.m" -o CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.s
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/test_metal_device.m
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1050) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/test_metal_device.m"
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing OBJC source to CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.i"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/test_metal_device.m" > CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.i
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.s"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/test_metal_device.m" -o CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.s
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o: CMakeFiles/Engine.dir/flags.make
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/test_metal_shader.m
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1051) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/test_metal_shader.m"
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing OBJC source to CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.i"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -E "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/test_metal_shader.m" > CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.i
+
+CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling OBJC source to assembly CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.s"
+	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) $(OBJC_FLAGS) -fobjc-arc -S "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/test_metal_shader.m" -o CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.s
+
 CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/test_mtl_pipeline.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1046) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1052) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/test_mtl_pipeline.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.i: cmake_force
@@ -14719,7 +14803,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/backend/metal/tests/mtl_resource_tests.m
 CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1047) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1053) "Building OBJC object CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.o -MF CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.o.d -o CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/tests/mtl_resource_tests.m"
 
 CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.i: cmake_force
@@ -14733,7 +14817,7 @@ CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.s: cma
 CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/integration/render_world.m
 CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1048) "Building OBJC object CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1054) "Building OBJC object CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o -MF CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o.d -o CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/integration/render_world.m"
 
 CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.i: cmake_force
@@ -14747,7 +14831,7 @@ CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/integration/scene_renderer.m
 CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1049) "Building OBJC object CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1055) "Building OBJC object CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -fobjc-arc -MD -MT CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o -MF CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o.d -o CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/integration/scene_renderer.m"
 
 CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.i: cmake_force
@@ -14761,7 +14845,7 @@ CMakeFiles/Engine.dir/src/engine/core/integration/scene_renderer.m.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/bvh/bvh_metal_culling.m
 CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1050) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1056) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.o -MF CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.o.d -o CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/bvh/bvh_metal_culling.m"
 
 CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.i: cmake_force
@@ -14775,7 +14859,7 @@ CMakeFiles/Engine.dir/src/engine/geometry/bvh/bvh_metal_culling.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/nanite/cluster_builder.m
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1051) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1057) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o -MF CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o.d -o CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/cluster_builder.m"
 
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.i: cmake_force
@@ -14789,7 +14873,7 @@ CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder.m.s: cmake_forc
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/nanite/cluster_builder_alt.m
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1052) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1058) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o -MF CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o.d -o CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/cluster_builder_alt.m"
 
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.i: cmake_force
@@ -14803,7 +14887,7 @@ CMakeFiles/Engine.dir/src/engine/geometry/nanite/cluster_builder_alt.m.s: cmake_
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/nanite/nanite_render.m
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1053) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1059) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o -MF CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o.d -o CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/nanite/nanite_render.m"
 
 CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.i: cmake_force
@@ -14817,7 +14901,7 @@ CMakeFiles/Engine.dir/src/engine/geometry/nanite/nanite_render.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/geometry/vertex/vertex_format_metal.m
 CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1054) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1060) "Building OBJC object CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.o -MF CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.o.d -o CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/geometry/vertex/vertex_format_metal.m"
 
 CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.i: cmake_force
@@ -14831,7 +14915,7 @@ CMakeFiles/Engine.dir/src/engine/geometry/vertex/vertex_format_metal.m.s: cmake_
 CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/materials/pbr/metallic_roughness.m
 CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1055) "Building OBJC object CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1061) "Building OBJC object CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o -MF CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o.d -o CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/materials/pbr/metallic_roughness.m"
 
 CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.i: cmake_force
@@ -14845,7 +14929,7 @@ CMakeFiles/Engine.dir/src/engine/materials/pbr/metallic_roughness.m.s: cmake_for
 CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/rendering/lighting/lumen_gi.m
 CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1056) "Building OBJC object CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1062) "Building OBJC object CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o"
 	/usr/bin/cc $(OBJC_DEFINES) $(OBJC_INCLUDES) -x objective-c $(OBJC_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o -MF CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o.d -o CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/lighting/lumen_gi.m"
 
 CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.i: cmake_force
@@ -14859,7 +14943,7 @@ CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.s: cmake_force
 CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_neon.c.o: CMakeFiles/Engine.dir/flags.make
 CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_neon.c.o: /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/core/simd/simd_math_neon.c
 CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_neon.c.o: CMakeFiles/Engine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1057) "Building C object CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_neon.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1063) "Building C object CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_neon.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_neon.c.o -MF CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_neon.c.o.d -o CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_neon.c.o -c "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/simd/simd_math_neon.c"
 
 CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_neon.c.i: cmake_force
@@ -15880,7 +15964,10 @@ Engine_OBJECTS = \
 "CMakeFiles/Engine.dir/src/engine/backend/vertex_format_cache.c.o" \
 "CMakeFiles/Engine.dir/src/engine/backend/vertex_format_compressed.c.o" \
 "CMakeFiles/Engine.dir/src/engine/backend/vertex_format_reflect.c.o" \
+"CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o" \
+"CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o" \
 "CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o" \
+"CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o" \
 "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o" \
 "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.o" \
 "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.o" \
@@ -15917,6 +16004,9 @@ Engine_OBJECTS = \
 "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.o" \
 "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o" \
 "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o" \
+"CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o" \
+"CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o" \
+"CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o" \
 "CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o" \
 "CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.o" \
 "CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o" \
@@ -16941,7 +17031,10 @@ libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/vertex_format.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/vertex_format_cache.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/vertex_format_compressed.c.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/vertex_format_reflect.c.o
+libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o
+libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o
+libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.m.o
@@ -16978,6 +17071,9 @@ libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_timestamp.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o
+libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o
+libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o
+libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/test_mtl_pipeline.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/core/integration/render_world.m.o
@@ -16992,7 +17088,7 @@ libEngine.a: CMakeFiles/Engine.dir/src/engine/rendering/lighting/lumen_gi.m.o
 libEngine.a: CMakeFiles/Engine.dir/src/engine/core/simd/simd_math_neon.c.o
 libEngine.a: CMakeFiles/Engine.dir/build.make
 libEngine.a: CMakeFiles/Engine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1058) "Linking C static library libEngine.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/benjaminrussell/Desktop/Minecraft v2/build_ci/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1064) "Linking C static library libEngine.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/Engine.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Engine.dir/link.txt --verbose=$(VERBOSE)
 

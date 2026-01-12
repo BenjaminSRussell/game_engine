@@ -7065,6 +7065,22 @@ src/engine/audio/underwater_filter_stubs.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/audio/underwater_filter_stubs.c.s
 .PHONY : src/engine/audio/underwater_filter_stubs.c.s
 
+src/engine/backend/metal/metal_backend_demo.o: src/engine/backend/metal/metal_backend_demo.m.o
+.PHONY : src/engine/backend/metal/metal_backend_demo.o
+
+# target to build an object file
+src/engine/backend/metal/metal_backend_demo.m.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/metal_backend_demo.m.o
+.PHONY : src/engine/backend/metal/metal_backend_demo.m.o
+
+src/engine/backend/metal/metal_pipeline_test.o: src/engine/backend/metal/metal_pipeline_test.m.o
+.PHONY : src/engine/backend/metal/metal_pipeline_test.o
+
+# target to build an object file
+src/engine/backend/metal/metal_pipeline_test.m.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o
+.PHONY : src/engine/backend/metal/metal_pipeline_test.m.o
+
 src/engine/backend/metal/metal_raytracing.o: src/engine/backend/metal/metal_raytracing.m.o
 .PHONY : src/engine/backend/metal/metal_raytracing.o
 
@@ -7072,6 +7088,14 @@ src/engine/backend/metal/metal_raytracing.o: src/engine/backend/metal/metal_rayt
 src/engine/backend/metal/metal_raytracing.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o
 .PHONY : src/engine/backend/metal/metal_raytracing.m.o
+
+src/engine/backend/metal/metal_test.o: src/engine/backend/metal/metal_test.m.o
+.PHONY : src/engine/backend/metal/metal_test.o
+
+# target to build an object file
+src/engine/backend/metal/metal_test.m.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o
+.PHONY : src/engine/backend/metal/metal_test.m.o
 
 src/engine/backend/metal/mtl_argument_buffer.o: src/engine/backend/metal/mtl_argument_buffer.m.o
 .PHONY : src/engine/backend/metal/mtl_argument_buffer.o
@@ -7360,6 +7384,30 @@ src/engine/backend/metal/mtl_vsync.o: src/engine/backend/metal/mtl_vsync.m.o
 src/engine/backend/metal/mtl_vsync.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_vsync.m.o
 .PHONY : src/engine/backend/metal/mtl_vsync.m.o
+
+src/engine/backend/metal/simple_metal_backend_test.o: src/engine/backend/metal/simple_metal_backend_test.m.o
+.PHONY : src/engine/backend/metal/simple_metal_backend_test.o
+
+# target to build an object file
+src/engine/backend/metal/simple_metal_backend_test.m.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_backend_test.m.o
+.PHONY : src/engine/backend/metal/simple_metal_backend_test.m.o
+
+src/engine/backend/metal/test_metal_device.o: src/engine/backend/metal/test_metal_device.m.o
+.PHONY : src/engine/backend/metal/test_metal_device.o
+
+# target to build an object file
+src/engine/backend/metal/test_metal_device.m.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_device.m.o
+.PHONY : src/engine/backend/metal/test_metal_device.m.o
+
+src/engine/backend/metal/test_metal_shader.o: src/engine/backend/metal/test_metal_shader.m.o
+.PHONY : src/engine/backend/metal/test_metal_shader.o
+
+# target to build an object file
+src/engine/backend/metal/test_metal_shader.m.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/test_metal_shader.m.o
+.PHONY : src/engine/backend/metal/test_metal_shader.m.o
 
 src/engine/backend/metal/test_mtl_pipeline.o: src/engine/backend/metal/test_mtl_pipeline.m.o
 .PHONY : src/engine/backend/metal/test_mtl_pipeline.o
@@ -28108,7 +28156,10 @@ help:
 	@echo "... src/engine/audio/underwater_filter_stubs.o"
 	@echo "... src/engine/audio/underwater_filter_stubs.i"
 	@echo "... src/engine/audio/underwater_filter_stubs.s"
+	@echo "... src/engine/backend/metal/metal_backend_demo.o"
+	@echo "... src/engine/backend/metal/metal_pipeline_test.o"
 	@echo "... src/engine/backend/metal/metal_raytracing.o"
+	@echo "... src/engine/backend/metal/metal_test.o"
 	@echo "... src/engine/backend/metal/mtl_argument_buffer.o"
 	@echo "... src/engine/backend/metal/mtl_buffer.o"
 	@echo "... src/engine/backend/metal/mtl_command.o"
@@ -28145,6 +28196,9 @@ help:
 	@echo "... src/engine/backend/metal/mtl_timestamp.o"
 	@echo "... src/engine/backend/metal/mtl_transfer.o"
 	@echo "... src/engine/backend/metal/mtl_vsync.o"
+	@echo "... src/engine/backend/metal/simple_metal_backend_test.o"
+	@echo "... src/engine/backend/metal/test_metal_device.o"
+	@echo "... src/engine/backend/metal/test_metal_shader.o"
 	@echo "... src/engine/backend/metal/test_mtl_pipeline.o"
 	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.o"
 	@echo "... src/engine/backend/vertex_compression.o"
