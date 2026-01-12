@@ -442,7 +442,6 @@ struct EditorWorkspace: View {
     @State private var hierarchyWidth: CGFloat = 280
     @State private var inspectorWidth: CGFloat = 320
     @State private var contentBrowserHeight: CGFloat = 250
-    @State private var contentBrowserHeight: CGFloat = 250
     @StateObject private var selectionManager = SelectionManager()
     
     var rendererBridge: UnsafeMutablePointer<RendererBridge>?
@@ -564,7 +563,6 @@ struct EditorMainToolbar: View {
 struct ViewportPanel: View {
     @ObservedObject var profiler = Profiler.shared
     @State private var gizmoMode: GizmoMode = .translate
-    @State private var showGrid = true
     @State private var showGrid = true
     @State private var showStats = true
     

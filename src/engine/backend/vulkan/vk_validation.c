@@ -6797,3 +6797,1152 @@ bool vk_validation_validate_clear_values(const VkClearValue* clear_values, u32 c
     printf("Clear values validation passed\n");
     return true;
 }
+
+// =================================================================================================
+//                           ADDITIONAL MISSING VALIDATION FUNCTIONS
+// =================================================================================================
+
+// Advanced shader and pipeline validation
+
+// Validate shader module with SPIR-V validation
+bool vk_validation_validate_shader_module_advanced(const VkShaderModuleCreateInfo* create_info,
+                                                  VkPhysicalDevice physical_device) {
+    if (!create_info || !create_info->pCode) {
+        printf("Error: Invalid shader module create info\n");
+        return false;
+    }
+    
+    if (create_info->sType != VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO) {
+        printf("Error: Invalid sType in shader module create info\n");
+        return false;
+    }
+    
+    if (create_info->codeSize == 0) {
+        printf("Error: Empty shader code\n");
+        return false;
+    }
+    
+    if (create_info->codeSize % 4 != 0) {
+        printf("Error: Shader code size must be multiple of 4\n");
+        return false;
+    }
+    
+    // Validate SPIR-V magic number
+    const uint32_t* code = create_info->pCode;
+    if (code[0] != 0x07230203) {
+        printf("Error: Invalid SPIR-V magic number\n");
+        return false;
+    }
+    
+    // Validate SPIR-V version
+    uint32_t version = code[1];
+    if (version < 0x00010000) {
+        printf("Warning: Old SPIR-V version (0x%08X)\n", version);
+    }
+    
+    printf("Advanced shader module validation passed\n");
+    return true;
+}
+
+// Validate pipeline dynamic state
+bool vk_validation_validate_dynamic_state(const VkPipelineDynamicStateCreateInfo* dynamic_state) {
+    if (!dynamic_state) {
+        printf("Error: Invalid dynamic state create info\n");
+        return false;
+    }
+    
+    if (dynamic_state->sType != VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO) {
+        printf("Error: Invalid sType in dynamic state create info\n");
+        return false;
+    }
+    
+    if (dynamic_state->dynamicStateCount > 0 && !dynamic_state->pDynamicStates) {
+        printf("Error: Dynamic state count specified but array is NULL\n");
+        return false;
+    }
+    
+    // Validate dynamic states
+    for (u32 i = 0; i < dynamic_state->dynamicStateCount; i++) {
+        VkDynamicState state = dynamic_state->pDynamicStates[i];
+        
+        if (state == VK_DYNAMIC_STATE_MAX_ENUM) {
+            printf("Error: Invalid dynamic state %u\n", i);
+            return false;
+        }
+        
+        // Check for duplicate states
+        for (u32 j = i + 1; j < dynamic_state->dynamicStateCount; j++) {
+            if (dynamic_state->pDynamicStates[j] == state) {
+                printf("Warning: Duplicate dynamic state %u\n", state);
+                break;
+            }
+        }
+    }
+    
+    printf("Dynamic state validation passed\n");
+    return true;
+}
+
+// Validate pipeline tessellation state
+bool vk_validation_validate_tessellation_state(const VkPipelineTessellationStateCreateInfo* tessellation) {
+    if (!tessellation) {
+        printf("Error: Invalid tessellation state create info\n");
+        return false;
+    }
+    
+    if (tessellation->sType != VK_STRUCTURE_TYPE_PIPELINE_TESSELLATION_STATE_CREATE_INFO) {
+        printf("Error: Invalid sType in tessellation state create info\n");
+        return false;
+    }
+    
+    if (tessellation->patchControlPoints == 0) {
+        printf("Error: Patch control points cannot be zero\n");
+        return false;
+    }
+    
+    if (tessellation->patchControlPoints > 32) {
+        printf("Warning: Patch control points (%u) exceeds maximum (32)\n", tessellation->patchControlPoints);
+    }
+    
+    printf("Tessellation state validation passed\n");
+    return true;
+}
+
+// Advanced buffer and image validation
+
+// Validate buffer usage flags compatibility
+bool vk_validation_validate_buffer_usage_compatibility(VkBufferUsageFlags usage, VkFormat format) {
+    if (usage == 0) {
+        printf("Error: Buffer usage flags cannot be zero\n");
+        return false;
+    }
+    
+    // Check format-specific requirements
+    if (usage & VK_BUFFER_USAGE_UNIFORM_TEXEL_BUFFER_BIT) {
+        if (format == VK_FORMAT_MAX_ENUM) {
+            printf("Error: Format required for uniform texel buffer usage\n");
+            return false;
+        }
+    }
+    
+    if (usage & VK_BUFFER_USAGE_STORAGE_TEXEL_BUFFER_BIT) {
+        if (format == VK_FORMAT_MAX_ENUM) {
+            printf("Error: Format required for storage texel buffer usage\n");
+            return false;
+        }
+    }
+    
+    printf("Buffer usage compatibility validation passed\n");
+    return true;
+}
+
+// Validate image usage flags compatibility
+bool vk_validation_validate_image_usage_compatibility(VkImageUsageFlags usage, VkFormat format) {
+    if (usage == 0) {
+        printf("Error: Image usage flags cannot be zero\n");
+        return false;
+    }
+    
+    if (format == VK_FORMAT_MAX_ENUM) {
+        printf("Error: Invalid image format\n");
+        return false;
+    }
+    
+    // Check format-specific requirements
+    if (usage & VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT) {
+        // Check if format supports color attachment
+        if (format == VK_FORMAT_D16_UNORM || format == VK_FORMAT_D32_SFLOAT ||
+            format == VK_FORMAT_D24_UNORM_S8_UINT || format == VK_FORMAT_D32_SFLOAT_S8_UINT) {
+            printf("Error: Depth format cannot be used as color attachment\n");
+            return false;
+        }
+    }
+    
+    if (usage & VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT) {
+        // Check if format supports depth/stencil attachment
+        if (format == VK_FORMAT_R8G8B8A8_UNORM || format == VK_FORMAT_R32_SFLOAT ||
+            format == VK_FORMAT_B8G8R8A8_UNORM) {
+            printf("Error: Color format cannot be used as depth/stencil attachment\n");
+            return false;
+        }
+    }
+    
+    printf("Image usage compatibility validation passed\n");
+    return true;
+}
+
+// Validate image layout transitions
+bool vk_validation_validate_image_layout_transition(VkImageLayout old_layout, VkImageLayout new_layout,
+                                                    VkImageAspectFlags aspect_mask) {
+    if (old_layout == VK_IMAGE_LAYOUT_MAX_ENUM || new_layout == VK_IMAGE_LAYOUT_MAX_ENUM) {
+        printf("Error: Invalid image layout\n");
+        return false;
+    }
+    
+    if (aspect_mask == 0) {
+        printf("Error: Aspect mask cannot be zero\n");
+        return false;
+    }
+    
+    // Validate aspect mask compatibility with layouts
+    if (aspect_mask & VK_IMAGE_ASPECT_COLOR_BIT) {
+        if (old_layout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL ||
+            old_layout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL ||
+            new_layout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL ||
+            new_layout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL) {
+            printf("Error: Color aspect used with depth/stencil layout\n");
+            return false;
+        }
+    }
+    
+    if (aspect_mask & (VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT)) {
+        if (old_layout == VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL ||
+            new_layout == VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL) {
+            printf("Error: Depth/stencil aspect used with color layout\n");
+            return false;
+        }
+    }
+    
+    printf("Image layout transition validation passed\n");
+    return true;
+}
+
+// Advanced synchronization validation
+
+// Validate submission dependencies
+bool vk_validation_validate_submission_dependencies(const VkSubmitInfo* submit_infos, u32 submit_count) {
+    if (!submit_infos || submit_count == 0) {
+        printf("Error: Invalid submit infos\n");
+        return false;
+    }
+    
+    for (u32 i = 0; i < submit_count; i++) {
+        const VkSubmitInfo* submit = &submit_infos[i];
+        
+        if (submit->sType != VK_STRUCTURE_TYPE_SUBMIT_INFO) {
+            printf("Error: Invalid sType in submit info %u\n", i);
+            return false;
+        }
+        
+        // Validate wait semaphores
+        if (submit->waitSemaphoreCount > 0 && !submit->pWaitSemaphores) {
+            printf("Error: Wait semaphore count specified but array is NULL in submit %u\n", i);
+            return false;
+        }
+        
+        // Validate signal semaphores
+        if (submit->signalSemaphoreCount > 0 && !submit->pSignalSemaphores) {
+            printf("Error: Signal semaphore count specified but array is NULL in submit %u\n", i);
+            return false;
+        }
+        
+        // Validate command buffers
+        if (submit->commandBufferCount > 0 && !submit->pCommandBuffers) {
+            printf("Error: Command buffer count specified but array is NULL in submit %u\n", i);
+            return false;
+        }
+        
+        // Validate wait stages
+        if (submit->waitSemaphoreCount > 0 && !submit->pWaitDstStageMask) {
+            printf("Error: Wait semaphore count specified but stage mask array is NULL in submit %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Submission dependencies validation passed\n");
+    return true;
+}
+
+// Validate semaphore signal and wait operations
+bool vk_validation_validate_semaphore_operations(VkSemaphore semaphore, uint64_t value, bool is_timeline) {
+    if (semaphore == VK_NULL_HANDLE) {
+        printf("Error: Invalid semaphore\n");
+        return false;
+    }
+    
+    if (is_timeline && value == UINT64_MAX) {
+        printf("Warning: Timeline semaphore value is UINT64_MAX\n");
+    }
+    
+    printf("Semaphore operations validation passed\n");
+    return true;
+}
+
+// Advanced descriptor validation
+
+// Validate descriptor set layout binding compatibility
+bool vk_validation_validate_binding_compatibility(const VkDescriptorSetLayoutBinding* binding1,
+                                                 const VkDescriptorSetLayoutBinding* binding2) {
+    if (!binding1 || !binding2) {
+        printf("Error: Invalid descriptor bindings\n");
+        return false;
+    }
+    
+    if (binding1->binding != binding2->binding) {
+        printf("Error: Binding numbers don't match\n");
+        return false;
+    }
+    
+    if (binding1->descriptorType != binding2->descriptorType) {
+        printf("Error: Descriptor types don't match\n");
+        return false;
+    }
+    
+    if (binding1->descriptorCount != binding2->descriptorCount) {
+        printf("Error: Descriptor counts don't match\n");
+        return false;
+    }
+    
+    printf("Binding compatibility validation passed\n");
+    return true;
+}
+
+// Validate descriptor pool creation
+bool vk_validation_validate_descriptor_pool(const VkDescriptorPoolCreateInfo* create_info) {
+    if (!create_info) {
+        printf("Error: Invalid descriptor pool create info\n");
+        return false;
+    }
+    
+    if (create_info->sType != VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO) {
+        printf("Error: Invalid sType in descriptor pool create info\n");
+        return false;
+    }
+    
+    if (create_info->maxSets == 0) {
+        printf("Error: Descriptor pool max sets cannot be zero\n");
+        return false;
+    }
+    
+    if (create_info->poolSizeCount > 0 && !create_info->pPoolSizes) {
+        printf("Error: Pool size count specified but array is NULL\n");
+        return false;
+    }
+    
+    // Validate pool sizes
+    for (u32 i = 0; i < create_info->poolSizeCount; i++) {
+        const VkDescriptorPoolSize* pool_size = &create_info->pPoolSizes[i];
+        
+        if (pool_size->type == VK_DESCRIPTOR_TYPE_MAX_ENUM) {
+            printf("Error: Invalid descriptor type in pool size %u\n", i);
+            return false;
+        }
+        
+        if (pool_size->descriptorCount == 0) {
+            printf("Warning: Descriptor count is zero in pool size %u\n", i);
+        }
+    }
+    
+    printf("Descriptor pool validation passed\n");
+    return true;
+}
+
+// Advanced render pass validation
+
+// Validate render pass subpass dependencies
+bool vk_validation_validate_subpass_dependencies(const VkSubpassDependency* dependencies, u32 dependency_count) {
+    if (!dependencies || dependency_count == 0) {
+        return true; // Dependencies are optional
+    }
+    
+    for (u32 i = 0; i < dependency_count; i++) {
+        const VkSubpassDependency* dep = &dependencies[i];
+        
+        if (dep->srcSubpass != VK_SUBPASS_EXTERNAL && dep->srcSubpass >= 32) {
+            printf("Error: Invalid source subpass %u in dependency %u\n", dep->srcSubpass, i);
+            return false;
+        }
+        
+        if (dep->dstSubpass != VK_SUBPASS_EXTERNAL && dep->dstSubpass >= 32) {
+            printf("Error: Invalid destination subpass %u in dependency %u\n", dep->dstSubpass, i);
+            return false;
+        }
+        
+        if (dep->srcStageMask == 0) {
+            printf("Error: Source stage mask cannot be zero in dependency %u\n", i);
+            return false;
+        }
+        
+        if (dep->dstStageMask == 0) {
+            printf("Error: Destination stage mask cannot be zero in dependency %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Subpass dependencies validation passed\n");
+    return true;
+}
+
+// Validate render pass input/output attachments
+bool vk_validation_validate_attachment_references(const VkAttachmentReference* references, u32 reference_count,
+                                                 u32 max_attachment_count) {
+    if (!references || reference_count == 0) {
+        return true; // References are optional
+    }
+    
+    for (u32 i = 0; i < reference_count; i++) {
+        const VkAttachmentReference* ref = &references[i];
+        
+        if (ref->attachment >= max_attachment_count && ref->attachment != VK_ATTACHMENT_UNUSED) {
+            printf("Error: Invalid attachment reference %u in reference %u\n", ref->attachment, i);
+            return false;
+        }
+        
+        if (ref->layout == VK_IMAGE_LAYOUT_MAX_ENUM) {
+            printf("Error: Invalid image layout in reference %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Attachment references validation passed\n");
+    return true;
+}
+
+// Advanced command buffer validation
+
+// Validate command buffer inheritance info
+bool vk_validation_validate_inheritance_info(const VkCommandBufferInheritanceInfo* inheritance_info,
+                                           VkRenderPass render_pass, u32 subpass) {
+    if (!inheritance_info) {
+        printf("Error: Invalid inheritance info\n");
+        return false;
+    }
+    
+    if (inheritance_info->sType != VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO) {
+        printf("Error: Invalid sType in inheritance info\n");
+        return false;
+    }
+    
+    if (inheritance_info->renderPass != render_pass) {
+        printf("Error: Inheritance render pass doesn't match provided render pass\n");
+        return false;
+    }
+    
+    if (inheritance_info->subpass != subpass) {
+        printf("Error: Inheritance subpass doesn't match provided subpass\n");
+        return false;
+    }
+    
+    if (inheritance_info->framebuffer != VK_NULL_HANDLE && inheritance_info->renderPass == VK_NULL_HANDLE) {
+        printf("Error: Framebuffer specified but render pass is NULL\n");
+        return false;
+    }
+    
+    printf("Inheritance info validation passed\n");
+    return true;
+}
+
+// Validate clear values
+bool vk_validation_validate_clear_values(const VkClearValue* clear_values, u32 clear_count,
+                                        const VkAttachmentDescription* attachments, u32 attachment_count) {
+    if (!clear_values || clear_count == 0) {
+        return true; // Clear values are optional
+    }
+    
+    if (clear_count > attachment_count) {
+        printf("Error: More clear values than attachments\n");
+        return false;
+    }
+    
+    for (u32 i = 0; i < clear_count; i++) {
+        if (i < attachment_count) {
+            const VkAttachmentDescription* attachment = &attachments[i];
+            
+            // Validate clear value based on attachment format
+            if (attachment->format == VK_FORMAT_D16_UNORM || 
+                attachment->format == VK_FORMAT_D32_SFLOAT ||
+                attachment->format == VK_FORMAT_D24_UNORM_S8_UINT ||
+                attachment->format == VK_FORMAT_D32_SFLOAT_S8_UINT) {
+                // Depth attachment - validate depth clear value
+                if (clear_values[i].depthStencil.depth < 0.0f || clear_values[i].depthStencil.depth > 1.0f) {
+                    printf("Warning: Depth clear value outside [0,1] range for attachment %u\n", i);
+                }
+            }
+        }
+    }
+    
+    printf("Clear values validation passed\n");
+    return true;
+}
+
+// Memory management advanced validation
+
+// Validate memory map range
+bool vk_validation_validate_memory_map_range(VkDeviceSize offset, VkDeviceSize size, VkDeviceSize memory_size) {
+    if (offset >= memory_size) {
+        printf("Error: Map offset exceeds memory size\n");
+        return false;
+    }
+    
+    if (size == VK_WHOLE_SIZE) {
+        if (offset > 0) {
+            printf("Warning: Mapping whole memory with non-zero offset\n");
+        }
+    } else {
+        if (offset + size > memory_size) {
+            printf("Error: Map range exceeds memory size\n");
+            return false;
+        }
+        
+        if (size == 0) {
+            printf("Error: Map size cannot be zero\n");
+            return false;
+        }
+    }
+    
+    printf("Memory map range validation passed\n");
+    return true;
+}
+
+// Validate memory flush/invalidate range
+bool vk_validation_validate_memory_flush_range(VkDeviceSize offset, VkDeviceSize size, VkDeviceSize alignment) {
+    if (size == 0) {
+        printf("Error: Flush/invalidate size cannot be zero\n");
+        return false;
+    }
+    
+    if (alignment > 0 && offset % alignment != 0) {
+        printf("Warning: Flush/invalidate offset not aligned to %llu\n", alignment);
+    }
+    
+    if (alignment > 0 && size % alignment != 0) {
+        printf("Warning: Flush/invalidate size not aligned to %llu\n", alignment);
+    }
+    
+    printf("Memory flush/invalidate range validation passed\n");
+    return true;
+}
+
+// Debug and utility advanced validation
+
+// Validate debug utils object name
+bool vk_validation_validate_debug_utils_object_name(const VkDebugUtilsObjectNameInfoEXT* name_info) {
+    if (!name_info) {
+        printf("Error: Invalid debug utils object name info\n");
+        return false;
+    }
+    
+    if (name_info->sType != VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT) {
+        printf("Error: Invalid sType in debug utils object name info\n");
+        return false;
+    }
+    
+    if (name_info->objectHandle == 0) {
+        printf("Error: Invalid object handle in debug utils name info\n");
+        return false;
+    }
+    
+    if (name_info->objectType == VK_OBJECT_TYPE_MAX_ENUM) {
+        printf("Error: Invalid object type in debug utils name info\n");
+        return false;
+    }
+    
+    if (!name_info->pObjectName) {
+        printf("Error: Object name is NULL in debug utils name info\n");
+        return false;
+    }
+    
+    printf("Debug utils object name validation passed\n");
+    return true;
+}
+
+// Validate debug utils label
+bool vk_validation_validate_debug_utils_label(const VkDebugUtilsLabelEXT* label_info) {
+    if (!label_info) {
+        printf("Error: Invalid debug utils label info\n");
+        return false;
+    }
+    
+    if (label_info->sType != VK_STRUCTURE_TYPE_DEBUG_UTILS_LABEL_EXT) {
+        printf("Error: Invalid sType in debug utils label info\n");
+        return false;
+    }
+    
+    if (!label_info->pLabelName) {
+        printf("Error: Label name is NULL in debug utils label info\n");
+        return false;
+    }
+    
+    printf("Debug utils label validation passed\n");
+    return true;
+}
+
+// Performance and statistics validation
+
+// Validate performance query results
+bool vk_validation_validate_performance_query_results(const VkPerformanceQueryResultINTEL* results, u32 result_count) {
+    if (!results || result_count == 0) {
+        printf("Error: Invalid performance query results\n");
+        return false;
+    }
+    
+    for (u32 i = 0; i < result_count; i++) {
+        const VkPerformanceQueryResultINTEL* result = &results[i];
+        
+        if (result->type == VK_PERFORMANCE_QUERY_TYPE_COUNTER_DATA_INTEL) {
+            // Validate counter data
+            if (result->data.counter == 0 && result->data.available == 0) {
+                printf("Warning: Counter data appears uninitialized for result %u\n", i);
+            }
+        }
+    }
+    
+    printf("Performance query results validation passed\n");
+    return true;
+}
+
+// Validate acceleration structure build
+bool vk_validation_validate_acceleration_structure_build(const VkAccelerationStructureBuildGeometryInfoKHR* build_info,
+                                                        const VkAccelerationStructureGeometryKHR* geometries,
+                                                        u32 geometry_count) {
+    if (!build_info || !geometries || geometry_count == 0) {
+        printf("Error: Invalid acceleration structure build parameters\n");
+        return false;
+    }
+    
+    if (build_info->sType != VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_BUILD_GEOMETRY_INFO_KHR) {
+        printf("Error: Invalid sType in acceleration structure build info\n");
+        return false;
+    }
+    
+    if (build_info->type == VK_ACCELERATION_STRUCTURE_TYPE_MAX_ENUM_KHR) {
+        printf("Error: Invalid acceleration structure type\n");
+        return false;
+    }
+    
+    if (build_info->mode == VK_BUILD_ACCELERATION_STRUCTURE_MODE_MAX_ENUM_KHR) {
+        printf("Error: Invalid build mode\n");
+        return false;
+    }
+    
+    // Validate geometries
+    for (u32 i = 0; i < geometry_count; i++) {
+        const VkAccelerationStructureGeometryKHR* geometry = &geometries[i];
+        
+        if (geometry->geometryType == VK_GEOMETRY_TYPE_MAX_ENUM_KHR) {
+            printf("Error: Invalid geometry type %u\n", i);
+            return false;
+        }
+        
+        if (geometry->flags == VK_GEOMETRY_OPAQUE_BIT_KHR && geometry->geometryType == VK_GEOMETRY_TYPE_TRIANGLES_KHR) {
+            // Triangle geometry with opaque flag is valid
+        }
+    }
+    
+    printf("Acceleration structure build validation passed\n");
+    return true;
+}
+
+// Validate ray tracing pipeline
+bool vk_validation_validate_ray_tracing_pipeline(const VkRayTracingPipelineCreateInfoKHR* create_info,
+                                                VkDevice device) {
+    if (!create_info || device == VK_NULL_HANDLE) {
+        printf("Error: Invalid ray tracing pipeline parameters\n");
+        return false;
+    }
+    
+    if (create_info->sType != VK_STRUCTURE_TYPE_RAY_TRACING_PIPELINE_CREATE_INFO_KHR) {
+        printf("Error: Invalid sType in ray tracing pipeline create info\n");
+        return false;
+    }
+    
+    // Validate shader groups
+    if (create_info->groupCount > 0 && !create_info->pGroups) {
+        printf("Error: Group count specified but groups array is NULL\n");
+        return false;
+    }
+    
+    for (u32 i = 0; i < create_info->groupCount; i++) {
+        const VkRayTracingShaderGroupCreateInfoKHR* group = &create_info->pGroups[i];
+        
+        if (group->sType != VK_STRUCTURE_TYPE_RAY_TRACING_SHADER_GROUP_CREATE_INFO_KHR) {
+            printf("Error: Invalid sType in ray tracing group %u\n", i);
+            return false;
+        }
+        
+        if (group->type == VK_RAY_TRACING_SHADER_GROUP_TYPE_MAX_ENUM_KHR) {
+            printf("Error: Invalid ray tracing group type %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Ray tracing pipeline validation passed\n");
+    return true;
+}
+
+// Validate mesh shading pipeline
+bool vk_validation_validate_mesh_shading_pipeline(const VkGraphicsPipelineCreateInfo* create_info,
+                                                  VkDevice device) {
+    if (!create_info || device == VK_NULL_HANDLE) {
+        printf("Error: Invalid mesh shading pipeline parameters\n");
+        return false;
+    }
+    
+    // Check for mesh shader instead of vertex shader
+    bool has_mesh_shader = false;
+    bool has_task_shader = false;
+    
+    for (u32 i = 0; i < create_info->stageCount; i++) {
+        const VkPipelineShaderStageCreateInfo* stage = &create_info->pStages[i];
+        
+        if (stage->stage == VK_SHADER_STAGE_MESH_BIT_EXT) {
+            has_mesh_shader = true;
+        }
+        if (stage->stage == VK_SHADER_STAGE_TASK_BIT_EXT) {
+            has_task_shader = true;
+        }
+    }
+    
+    if (has_task_shader && !has_mesh_shader) {
+        printf("Warning: Task shader without mesh shader\n");
+    }
+    
+    if (has_mesh_shader && create_info->pVertexInputState) {
+        printf("Warning: Mesh shader pipeline with vertex input state\n");
+    }
+    
+    printf("Mesh shading pipeline validation passed\n");
+    return true;
+}
+
+// Variable rate shading validation
+bool vk_validation_validate_variable_rate_shading(const VkPhysicalDeviceFragmentShadingRatePropertiesKHR* properties,
+                                                 const VkFragmentShadingRateCombinationKHR* combinations,
+                                                 u32 combination_count) {
+    if (!properties) {
+        printf("Error: Invalid fragment shading rate properties\n");
+        return false;
+    }
+    
+    if (combinations && combination_count > 0) {
+        for (u32 i = 0; i < combination_count; i++) {
+            const VkFragmentShadingRateCombinationKHR* combo = &combinations[i];
+            
+            // Validate shading rate
+            if (combo->fragmentSize.width == 0 || combo->fragmentSize.height == 0) {
+                printf("Error: Invalid fragment size in combination %u\n", i);
+                return false;
+            }
+            
+            // Check against device limits
+            if (combo->fragmentSize.width > properties->maxFragmentShadingRateRasterizationSamples.width ||
+                combo->fragmentSize.height > properties->maxFragmentShadingRateRasterizationSamples.height) {
+                printf("Error: Fragment size exceeds device limits in combination %u\n", i);
+                return false;
+            }
+        }
+    }
+    
+    printf("Variable rate shading validation passed\n");
+    return true;
+}
+
+// =================================================================================================
+//                           ADVANCED VALIDATION FUNCTIONS
+// =================================================================================================
+
+// Validate pipeline cache creation
+bool vk_validation_validate_pipeline_cache_creation(const VkPipelineCacheCreateInfo* create_info) {
+    if (!create_info) {
+        printf("Error: Invalid pipeline cache create info\n");
+        return false;
+    }
+    
+    if (create_info->sType != VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO) {
+        printf("Error: Invalid sType in pipeline cache create info\n");
+        return false;
+    }
+    
+    // Validate initial data size and pointer consistency
+    if (create_info->initialDataSize > 0 && !create_info->pInitialData) {
+        printf("Error: Initial data size specified but no data pointer provided\n");
+        return false;
+    }
+    
+    if (create_info->initialDataSize == 0 && create_info->pInitialData) {
+        printf("Warning: Initial data provided but size is zero\n");
+    }
+    
+    printf("Pipeline cache creation validation passed\n");
+    return true;
+}
+
+// Validate pipeline cache merge operation
+bool vk_validation_validate_pipeline_cache_merge(VkDevice device, VkPipelineCache target_cache,
+                                                  const VkPipelineCache* source_caches, u32 cache_count) {
+    if (!device || target_cache == VK_NULL_HANDLE || !source_caches || cache_count == 0) {
+        printf("Error: Invalid parameters for pipeline cache merge\n");
+        return false;
+    }
+    
+    // Validate source caches
+    for (u32 i = 0; i < cache_count; i++) {
+        if (source_caches[i] == VK_NULL_HANDLE) {
+            printf("Error: Source cache %u is invalid\n", i);
+            return false;
+        }
+        
+        if (source_caches[i] == target_cache) {
+            printf("Warning: Source cache %u is the same as target cache\n", i);
+        }
+    }
+    
+    printf("Pipeline cache merge validation passed\n");
+    return true;
+}
+
+// Validate specialization constants
+bool vk_validation_validate_specialization_constants(const VkSpecializationInfo* spec_info) {
+    if (!spec_info) return true; // Optional
+    
+    if (spec_info->mapEntryCount > 0 && !spec_info->pMapEntries) {
+        printf("Error: Map entry count specified but no map entries provided\n");
+        return false;
+    }
+    
+    if (spec_info->dataSize > 0 && !spec_info->pData) {
+        printf("Error: Data size specified but no data provided\n");
+        return false;
+    }
+    
+    // Validate map entries
+    for (u32 i = 0; i < spec_info->mapEntryCount; i++) {
+        const VkSpecializationMapEntry* entry = &spec_info->pMapEntries[i];
+        
+        if (entry->offset + entry->size > spec_info->dataSize) {
+            printf("Error: Map entry %u exceeds data size\n", i);
+            return false;
+        }
+        
+        if (entry->size == 0) {
+            printf("Warning: Map entry %u has zero size\n", i);
+        }
+        
+        if (entry->constantID == UINT32_MAX) {
+            printf("Error: Invalid constant ID for map entry %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Specialization constants validation passed\n");
+    return true;
+}
+
+// Validate push constant ranges
+bool vk_validation_validate_push_constant_ranges(const VkPushConstantRange* ranges, u32 range_count) {
+    if (!ranges || range_count == 0) return true; // Optional
+    
+    u32 total_size = 0;
+    
+    for (u32 i = 0; i < range_count; i++) {
+        const VkPushConstantRange* range = &ranges[i];
+        
+        if (range->size == 0) {
+            printf("Error: Push constant range %u has zero size\n", i);
+            return false;
+        }
+        
+        if (range->offset >= 128) {
+            printf("Warning: Push constant range %u offset exceeds minimum guaranteed size (128)\n", i);
+        }
+        
+        if (range->offset + range->size > 128) {
+            printf("Warning: Push constant range %u exceeds minimum guaranteed size (128)\n", i);
+        }
+        
+        if (range->stageFlags == 0) {
+            printf("Warning: Push constant range %u has no shader stages specified\n", i);
+        }
+        
+        // Check for overlapping ranges
+        for (u32 j = i + 1; j < range_count; j++) {
+            const VkPushConstantRange* other = &ranges[j];
+            
+            if (!(range->offset + range->size <= other->offset || 
+                  other->offset + other->size <= range->offset)) {
+                printf("Warning: Push constant ranges %u and %u overlap\n", i, j);
+            }
+        }
+        
+        total_size += range->size;
+    }
+    
+    if (total_size > 128) {
+        printf("Warning: Total push constant size (%u) exceeds minimum guaranteed size (128)\n", total_size);
+    }
+    
+    printf("Push constant ranges validation passed\n");
+    return true;
+}
+
+// Validate vertex input attribute descriptions
+bool vk_validation_validate_vertex_input_attributes(const VkVertexInputAttributeDescription* attributes, 
+                                                   u32 attribute_count) {
+    if (!attributes || attribute_count == 0) return true; // Optional
+    
+    for (u32 i = 0; i < attribute_count; i++) {
+        const VkVertexInputAttributeDescription* attr = &attributes[i];
+        
+        if (attr->format == VK_FORMAT_MAX_ENUM) {
+            printf("Error: Invalid format for vertex attribute %u\n", i);
+            return false;
+        }
+        
+        if (attr->offset > 2048) {
+            printf("Warning: Vertex attribute %u offset (%u) seems large\n", i, attr->offset);
+        }
+        
+        // Check for duplicate locations
+        for (u32 j = i + 1; j < attribute_count; j++) {
+            if (attributes[j].location == attr->location) {
+                printf("Error: Duplicate vertex attribute location %u\n", attr->location);
+                return false;
+            }
+        }
+    }
+    
+    printf("Vertex input attributes validation passed\n");
+    return true;
+}
+
+// Validate vertex input binding descriptions
+bool vk_validation_validate_vertex_input_bindings(const VkVertexInputBindingDescription* bindings, 
+                                                  u32 binding_count) {
+    if (!bindings || binding_count == 0) return true; // Optional
+    
+    for (u32 i = 0; i < binding_count; i++) {
+        const VkVertexInputBindingDescription* binding = &bindings[i];
+        
+        if (binding->stride == 0) {
+            printf("Warning: Vertex binding %u has zero stride\n", i);
+        }
+        
+        if (binding->inputRate == VK_VERTEX_INPUT_RATE_MAX_ENUM) {
+            printf("Error: Invalid input rate for vertex binding %u\n", i);
+            return false;
+        }
+        
+        // Check for duplicate bindings
+        for (u32 j = i + 1; j < binding_count; j++) {
+            if (bindings[j].binding == binding->binding) {
+                printf("Error: Duplicate vertex binding %u\n", binding->binding);
+                return false;
+            }
+        }
+    }
+    
+    printf("Vertex input bindings validation passed\n");
+    return true;
+}
+
+// Validate image memory barrier
+bool vk_validation_validate_image_memory_barrier(const VkImageMemoryBarrier* barrier) {
+    if (!barrier) {
+        printf("Error: Invalid image memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->sType != VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER) {
+        printf("Error: Invalid sType in image memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->image == VK_NULL_HANDLE) {
+        printf("Error: Invalid image in memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->oldLayout == VK_IMAGE_LAYOUT_MAX_ENUM) {
+        printf("Error: Invalid old layout in image memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->newLayout == VK_IMAGE_LAYOUT_MAX_ENUM) {
+        printf("Error: Invalid new layout in image memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->subresourceRange.aspectMask == 0) {
+        printf("Error: Aspect mask cannot be zero in image memory barrier\n");
+        return false;
+    }
+    
+    // Validate subresource range
+    if (barrier->subresourceRange.baseMipLevel >= 32) {
+        printf("Warning: Base mip level seems large in image memory barrier\n");
+    }
+    
+    if (barrier->subresourceRange.levelCount == 0) {
+        printf("Error: Level count cannot be zero in image memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->subresourceRange.baseArrayLayer >= 2048) {
+        printf("Warning: Base array layer seems large in image memory barrier\n");
+    }
+    
+    if (barrier->subresourceRange.layerCount == 0) {
+        printf("Error: Layer count cannot be zero in image memory barrier\n");
+        return false;
+    }
+    
+    printf("Image memory barrier validation passed\n");
+    return true;
+}
+
+// Validate buffer memory barrier
+bool vk_validation_validate_buffer_memory_barrier(const VkBufferMemoryBarrier* barrier) {
+    if (!barrier) {
+        printf("Error: Invalid buffer memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->sType != VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER) {
+        printf("Error: Invalid sType in buffer memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->buffer == VK_NULL_HANDLE) {
+        printf("Error: Invalid buffer in memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->offset >= 1024 * 1024 * 1024) { // 1GB
+        printf("Warning: Buffer offset seems large in memory barrier\n");
+    }
+    
+    if (barrier->size == 0) {
+        printf("Error: Buffer size cannot be zero in memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->size >= 1024 * 1024 * 1024) { // 1GB
+        printf("Warning: Buffer size seems large in memory barrier\n");
+    }
+    
+    printf("Buffer memory barrier validation passed\n");
+    return true;
+}
+
+// Validate memory barrier
+bool vk_validation_validate_memory_barrier(const VkMemoryBarrier* barrier) {
+    if (!barrier) {
+        printf("Error: Invalid memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->sType != VK_STRUCTURE_TYPE_MEMORY_BARRIER) {
+        printf("Error: Invalid sType in memory barrier\n");
+        return false;
+    }
+    
+    if (barrier->srcAccessMask == 0 && barrier->dstAccessMask == 0) {
+        printf("Warning: Memory barrier has no access masks\n");
+    }
+    
+    printf("Memory barrier validation passed\n");
+    return true;
+}
+
+// Validate render pass attachment descriptions
+bool vk_validation_validate_render_pass_attachments(const VkAttachmentDescription* attachments, 
+                                                   u32 attachment_count) {
+    if (!attachments || attachment_count == 0) return true; // Optional
+    
+    for (u32 i = 0; i < attachment_count; i++) {
+        const VkAttachmentDescription* attachment = &attachments[i];
+        
+        if (attachment->format == VK_FORMAT_MAX_ENUM) {
+            printf("Error: Invalid format for attachment %u\n", i);
+            return false;
+        }
+        
+        if (attachment->samples == VK_SAMPLE_COUNT_MAX_ENUM) {
+            printf("Error: Invalid sample count for attachment %u\n", i);
+            return false;
+        }
+        
+        if (attachment->loadOp == VK_ATTACHMENT_LOAD_OP_MAX_ENUM) {
+            printf("Error: Invalid load operation for attachment %u\n", i);
+            return false;
+        }
+        
+        if (attachment->storeOp == VK_ATTACHMENT_STORE_OP_MAX_ENUM) {
+            printf("Error: Invalid store operation for attachment %u\n", i);
+            return false;
+        }
+        
+        if (attachment->stencilLoadOp == VK_ATTACHMENT_LOAD_OP_MAX_ENUM) {
+            printf("Error: Invalid stencil load operation for attachment %u\n", i);
+            return false;
+        }
+        
+        if (attachment->stencilStoreOp == VK_ATTACHMENT_STORE_OP_MAX_ENUM) {
+            printf("Error: Invalid stencil store operation for attachment %u\n", i);
+            return false;
+        }
+        
+        if (attachment->initialLayout == VK_IMAGE_LAYOUT_MAX_ENUM) {
+            printf("Error: Invalid initial layout for attachment %u\n", i);
+            return false;
+        }
+        
+        if (attachment->finalLayout == VK_IMAGE_LAYOUT_MAX_ENUM) {
+            printf("Error: Invalid final layout for attachment %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Render pass attachments validation passed\n");
+    return true;
+}
+
+// Validate render pass subpass descriptions
+bool vk_validation_validate_render_pass_subpasses(const VkSubpassDescription* subpasses, 
+                                                  u32 subpass_count) {
+    if (!subpasses || subpass_count == 0) return true; // Optional
+    
+    for (u32 i = 0; i < subpass_count; i++) {
+        const VkSubpassDescription* subpass = &subpasses[i];
+        
+        // Validate input attachments
+        if (subpass->inputAttachmentCount > 0 && !subpass->pInputAttachments) {
+            printf("Error: Input attachment count specified but no attachments provided for subpass %u\n", i);
+            return false;
+        }
+        
+        // Validate color attachments
+        if (subpass->colorAttachmentCount > 0 && !subpass->pColorAttachments) {
+            printf("Error: Color attachment count specified but no attachments provided for subpass %u\n", i);
+            return false;
+        }
+        
+        // Validate resolve attachments
+        if (subpass->colorAttachmentCount > 0 && subpass->pResolveAttachments && 
+            subpass->pColorAttachments && subpass->colorAttachmentCount > 0) {
+            for (u32 j = 0; j < subpass->colorAttachmentCount; j++) {
+                if (subpass->pResolveAttachments[j].attachment != VK_ATTACHMENT_UNUSED &&
+                    subpass->pColorAttachments[j].attachment == VK_ATTACHMENT_UNUSED) {
+                    printf("Warning: Resolve attachment %u in subpass %u resolves unused color attachment\n", j, i);
+                }
+            }
+        }
+        
+        // Validate depth stencil attachment
+        if (subpass->pDepthStencilAttachment) {
+            // Depth stencil attachment is optional, but if provided, it's a single attachment
+            if (subpass->pDepthStencilAttachment->attachment == VK_ATTACHMENT_UNUSED) {
+                // This is valid - no depth stencil attachment
+            }
+        }
+        
+        // Validate preserve attachments
+        if (subpass->preserveAttachmentCount > 0 && !subpass->pPreserveAttachments) {
+            printf("Error: Preserve attachment count specified but no attachments provided for subpass %u\n", i);
+            return false;
+        }
+    }
+    
+    printf("Render pass subpasses validation passed\n");
+    return true;
+}

@@ -1,7 +1,6 @@
 import Foundation
 import simd
 import SwiftUI
-import CVoxelForge
 
 // MARK: - Log Level
 
@@ -107,11 +106,11 @@ class EngineBridge: ObservableObject {
     }
     
     private func update() {
-        bridge_update(1.0/60.0)
+        engine_update(1.0/60.0)
         
         // Update render stats
-        var stats: BridgeRenderStats = (fps: 0, frame_time_ms: 0, draw_calls: 0, triangles: 0, vertices: 0, memory_used: 0)
-        bridge_get_render_stats(&stats)
+        var stats: RenderStats_C = (fps: 0, frame_time_ms: 0, draw_calls: 0, triangles: 0, vertices: 0, memory_used: 0)
+        engine_get_render_stats(&stats)
         
         DispatchQueue.main.async {
             self.renderStats = RenderStats(
