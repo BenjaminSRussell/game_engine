@@ -10,6 +10,9 @@
 #include <core/performance.h>
 #include <core/string_utils.h>
 #include <core/window.h>
+#include <core/memory_allocator.h>
+#include <core/logging_system.h>
+#include <core/thread_pool.h>
 #include <physics/physics.h>
 #include <stdlib.h>
 #include <string.h>
@@ -392,268 +395,213 @@ void engine_update(Engine *engine, f32 delta_time) {
 
 static bool engine_init_subsystems(Engine *engine) {
   PlatformData *pdata = (PlatformData *)engine->platform_data;
+  
+  // Initialize validation state
+  SubsystemValidationState validation = {0};
+  bool critical_failure = false;
 
-  // 1. VFS
-  vfs_init(&g_vfs);
-  vfs_mount(&g_vfs, "assets", "assets");
-  LOG_INFO("VFS initialized and 'assets' mounted");
+  // 1. Memory Allocator (CRITICAL - must be first)
+  LOG_INFO("Initializing Memory Allocator...");
+  if (!memory_allocator_init()) {
+    LOG_ERROR("Failed to initialize memory allocator");
+    critical_failure = true;
+  } else {
+    LOG_INFO("✓ Memory Allocator initialized successfully");
+  }
 
-  // 2. Input
+  // 2. Logging System (CRITICAL - must be second)
+  LOG_INFO("Initializing Unified Logging System...");
+  if (!logging_system_init()) {
+    LOG_ERROR("Failed to initialize logging system");
+    critical_failure = true;
+  } else {
+    LOG_INFO("✓ Logging System initialized successfully");
+  }
+
+  // 3. Thread Pool (CRITICAL - must be third)
+  LOG_INFO("Initializing Thread Pool...");
+  if (!thread_pool_init(engine->config.max_threads > 0 ? engine->config.max_threads : 4)) {
+    LOG_ERROR("Failed to initialize thread pool");
+    critical_failure = true;
+  } else {
+    LOG_INFO("✓ Thread Pool initialized successfully");
+  }
+
+  // 4. VFS
+  if (vfs_init(&g_vfs)) {
+    if (vfs_mount(&g_vfs, "assets", "assets")) {
+      validation.vfs_initialized = engine_validate_subsystem_init("VFS", true, &validation);
+    } else {
+      validation.vfs_initialized = engine_validate_subsystem_init("VFS", false, &validation);
+      critical_failure = true;
+    }
+  } else {
+    validation.vfs_initialized = engine_validate_subsystem_init("VFS", false, &validation);
+    critical_failure = true;
+  }
+
+  // 5. Input
   if (pdata->window.is_hosted) {
     engine->subsystems.input = create_host_input_system();
   } else {
     engine->subsystems.input = create_glfw_input_system();
   }
 
-  if (!engine->subsystems.input) {
-    LOG_ERROR("Failed to create input system");
-    return false;
+  if (engine->subsystems.input) {
+    InputConfig input_config = input_create_default_config();
+    validation.input_initialized = engine_validate_subsystem_init(
+        "Input", 
+        engine->subsystems.input->init(engine->subsystems.input, &input_config), 
+        &validation
+    );
+    if (!validation.input_initialized) {
+      critical_failure = true;
+    }
+  } else {
+    validation.input_initialized = engine_validate_subsystem_init("Input", false, &validation);
+    critical_failure = true;
   }
-  InputConfig input_config = input_create_default_config();
-  if (!engine->subsystems.input->init(engine->subsystems.input,
-                                      &input_config)) {
-    LOG_ERROR("Input initialization failed");
-    return false;
-  }
-  LOG_INFO("Input System initialized");
 
-  // 3. ECS
+  // 6. ECS
   WorldConfig world_config = ecs_world_create_default_config();
-  engine->subsystems.entities =
-      (EntityManager *)ecs_world_create(&world_config);
-  if (!engine->subsystems.entities) {
-    LOG_ERROR("ECS initialization failed");
-    return false;
+  engine->subsystems.entities = (EntityManager *)ecs_world_create(&world_config);
+  validation.ecs_initialized = engine_validate_subsystem_init("ECS", engine->subsystems.entities != NULL, &validation);
+  if (!validation.ecs_initialized) {
+    critical_failure = true;
   }
-  LOG_INFO("ECS initialized");
 
-  // 2. Asset Manager (requires ECS)
-  engine->subsystems.assets =
-      asset_manager_create(512, (World *)engine->subsystems.entities, &g_vfs);
-  if (!engine->subsystems.assets) {
-    LOG_ERROR("Asset Manager initialization failed");
-    return false;
+  // 7. Asset Manager (requires ECS)
+  if (validation.ecs_initialized) {
+    engine->subsystems.assets = asset_manager_create(512, (World *)engine->subsystems.entities, &g_vfs);
+    if (engine->subsystems.assets) {
+      engine->subsystems.assets->vfs = &g_vfs;
+      validation.assets_initialized = engine_validate_subsystem_init("Asset Manager", true, &validation);
+    } else {
+      validation.assets_initialized = engine_validate_subsystem_init("Asset Manager", false, &validation);
+      critical_failure = true;
+    }
+  } else {
+    validation.assets_initialized = false;
+    LOG_ERROR("Cannot initialize Asset Manager: ECS not initialized");
+    critical_failure = true;
   }
-  engine->subsystems.assets->vfs = &g_vfs;
-  LOG_INFO("Asset Manager initialized");
 
-  // 4. Renderer
+  // 8. Renderer
   engine->subsystems.renderer = renderer_create_with_backend(
       RENDERER_TYPE_VOXEL, engine->config.renderer_backend, &pdata->window);
-  if (!engine->subsystems.renderer) {
-    LOG_ERROR("Failed to create renderer");
-    return false;
+  
+  if (engine->subsystems.renderer) {
+    RendererInitParams render_params = {
+      .window = &pdata->window,
+      .width = engine->config.window_width,
+      .height = engine->config.window_height,
+      .type = RENDERER_TYPE_VOXEL,
+      .backend = engine->config.renderer_backend,
+      .config = NULL
+    };
+    validation.renderer_initialized = engine_validate_subsystem_init(
+        "Renderer", 
+        engine->subsystems.renderer->init(engine->subsystems.renderer, &render_params), 
+        &validation
+    );
+    if (!validation.renderer_initialized) {
+      critical_failure = true;
+    }
+  } else {
+    validation.renderer_initialized = engine_validate_subsystem_init("Renderer", false, &validation);
+    critical_failure = true;
   }
 
-  RendererInitParams render_params = {.window = &pdata->window,
-                                      .width = engine->config.window_width,
-                                      .height = engine->config.window_height,
-                                      .type = RENDERER_TYPE_VOXEL,
-                                      .backend =
-                                          engine->config.renderer_backend,
-                                      .config = NULL};
-  if (!engine->subsystems.renderer->init(engine->subsystems.renderer,
-                                         &render_params)) {
-    LOG_ERROR("Failed to init renderer");
-    return false;
-  }
-
-  // 5. Physics
-  PhysicsConfig phys_config = {.gravity = {0.0f, -9.81f, 0.0f},
-                               .fixed_timestep = 1.0f / 60.0f,
-                               .velocity_iterations = 8,
-                               .position_iterations = 3};
+  // 9. Physics (non-critical)
+  PhysicsConfig phys_config = {
+    .gravity = {0.0f, -9.81f, 0.0f},
+    .fixed_timestep = 1.0f / 60.0f,
+    .velocity_iterations = 8,
+    .position_iterations = 3
+  };
   engine->subsystems.physics = physics_world_create(phys_config);
-  if (!engine->subsystems.physics) {
-    LOG_ERROR("Failed to initialize physics subsystem");
-    // continue anyway, maybe fallback?
+  validation.physics_initialized = engine_validate_subsystem_init("Physics", engine->subsystems.physics != NULL, &validation);
+
+  // 10. Scene Manager (non-critical)
+  engine->subsystems.scene_manager = (SceneManager *)calloc(1, sizeof(SceneManager));
+  if (engine->subsystems.scene_manager) {
+    validation.scene_manager_initialized = engine_validate_subsystem_init(
+        "Scene Manager", 
+        scene_manager_init(engine->subsystems.scene_manager), 
+        &validation
+    );
   } else {
-    LOG_INFO("Physics System initialized");
+    validation.scene_manager_initialized = engine_validate_subsystem_init("Scene Manager", false, &validation);
   }
 
-  // 6. Scene Manager
-  engine->subsystems.scene_manager =
-      (SceneManager *)calloc(1, sizeof(SceneManager));
-  if (scene_manager_init(engine->subsystems.scene_manager)) {
-    LOG_INFO("Scene Manager initialized");
-  } else {
-    LOG_ERROR("Scene Manager initialization failed");
-  }
-
-  // 10. Audio System
+  // 11. Audio System (non-critical)
   engine->subsystems.audio = (AudioSystem *)calloc(1, sizeof(AudioSystem));
   if (engine->subsystems.audio) {
-    audio_system_init(engine->subsystems.audio, 32); // 32 channels
-    LOG_INFO("Audio System initialized");
+    validation.audio_initialized = engine_validate_subsystem_init(
+        "Audio", 
+        audio_system_init(engine->subsystems.audio, 32), 
+        &validation
+    );
+  } else {
+    validation.audio_initialized = engine_validate_subsystem_init("Audio", false, &validation);
   }
 
-  // 11. Scripting System
-  /*
-  engine->subsystems.scripting =
-      (ScriptSystem *)calloc(1, sizeof(ScriptSystem));
-  if (engine->subsystems.scripting) {
-    if (ScriptSystem_Init(engine->subsystems.scripting)) {
-      LOG_INFO("Scripting System initialized");
-    } else {
-      LOG_ERROR("Scripting System initialization failed");
-    }
-  }
-  */
-
-  // 12. Network System (Stub for now, but structures exist)
-  // engine->subsystems.network = ...
-
-  // 7. Post Processing
-  engine->subsystems.post_processing =
-      (PostProcessingPipeline *)calloc(1, sizeof(PostProcessingPipeline));
-  PostProcessingConfig pp_config = {0};
-  pp_config.enabledEffects = 0; // Default off
-
-  // Note: post_process_init requires VulkanRenderer*, but we have IRenderer*.
-  // Post-processing is currently Vulkan-only. If using Metal, skip it or use
-  // Metal-native path.
-  bool use_metal_pp = false;
+  // 12. Post Processing (non-critical)
+  engine->subsystems.post_processing = (PostProcessingPipeline *)calloc(1, sizeof(PostProcessingPipeline));
+  if (engine->subsystems.post_processing) {
+    PostProcessingConfig pp_config = {0};
+    pp_config.enabledEffects = 0;
+    
+    bool use_metal_pp = false;
 #ifdef GPU_BACKEND_METAL
-  use_metal_pp = true;
+    use_metal_pp = true;
 #endif
 
-  if (use_metal_pp) {
-    LOG_INFO("Post Processing: Metal path detected, using Metal-native pp");
-    if (post_process_init(engine->subsystems.post_processing,
-                          NULL, // No Vulkan instance needed
-                          &pp_config)) {
-      LOG_INFO("Post Processing initialized (Metal)");
-    } else {
-      LOG_INFO("Post Processing initialization skipped or failed (Metal)");
-    }
+    validation.post_processing_initialized = engine_validate_subsystem_init(
+        "Post Processing", 
+        post_process_init(engine->subsystems.post_processing, NULL, &pp_config), 
+        &validation
+    );
   } else {
-    if (post_process_init(engine->subsystems.post_processing,
-                          NULL, // Pass Vulkan context if available
-                          &pp_config)) {
-      LOG_INFO("Post Processing initialized (Vulkan)");
-    } else {
-      LOG_INFO("Post Processing skipped (Vulkan renderer not available)");
-    }
+    validation.post_processing_initialized = engine_validate_subsystem_init("Post Processing", false, &validation);
   }
 
-  // 8. Gameplay Systems Integration
-  /*
-  World *world = (World *)engine->subsystems.entities;
-  if (world) {
-    // Combat System
-    if (combat_system_init(world)) {
-      LOG_INFO("Combat System initialized");
-    } else {
-      LOG_ERROR("Combat System initialization failed");
-    }
-
-    // Inventory System
-    if (item_database_init(1000)) {
-      item_database_register_defaults();
-      LOG_INFO("Inventory/Item Database initialized");
-    } else {
-      LOG_ERROR("Inventory System initialization failed");
-    }
-
-    // Crafting System
-    if (crafting_system_init(1000)) {
-
-      crafting_register_default_recipes();
-      LOG_INFO("Crafting System initialized");
-    } else {
-      LOG_ERROR("Crafting System initialization failed");
-    }
-  }
-  */
-
-  // 9. AI Systems
-  // Perception System
-  PerceptionSystemConfig perception_config = {.max_agents = 100,
-                                              .max_stimuli_per_frame = 50,
-                                              .max_perceived_entities = 20,
-                                              .spatial_grid_size = 10.0f,
-                                              .enable_occlusion = true,
-                                              .memory_decay_time = 30.0,
-                                              .debug_mode =
-                                                  engine->config.debug_mode};
+  // 13. AI Systems (non-critical)
+  PerceptionSystemConfig perception_config = {
+    .max_agents = 100,
+    .max_stimuli_per_frame = 50,
+    .max_perceived_entities = 20,
+    .spatial_grid_size = 10.0f,
+    .enable_occlusion = true,
+    .memory_decay_time = 30.0,
+    .debug_mode = engine->config.debug_mode
+  };
   engine->subsystems.perception = perception_system_create(&perception_config);
   if (engine->subsystems.perception) {
-    perception_system_initialize(engine->subsystems.perception);
-    LOG_INFO("Perception System initialized");
+    validation.perception_initialized = engine_validate_subsystem_init(
+        "Perception System", 
+        perception_system_initialize(engine->subsystems.perception), 
+        &validation
+    );
   } else {
-    LOG_ERROR("Perception System initialization failed");
+    validation.perception_initialized = engine_validate_subsystem_init("Perception System", false, &validation);
   }
 
-  // Memory System
   engine->subsystems.memory = memory_system_create(100);
-  if (engine->subsystems.memory) {
-    LOG_INFO("Memory System initialized");
-  } else {
-    LOG_ERROR("Memory System initialization failed");
-  }
+  validation.memory_initialized = engine_validate_subsystem_init("Memory System", engine->subsystems.memory != NULL, &validation);
 
-  // GOAP Planner
   engine->subsystems.planner = goap_planner_create_state(256);
-  if (engine->subsystems.planner) {
-    LOG_INFO("GOAP Planner initialized");
-  } else {
-    LOG_ERROR("GOAP Planner initialization failed");
-  }
+  validation.planner_initialized = engine_validate_subsystem_init("GOAP Planner", engine->subsystems.planner != NULL, &validation);
 
-  return true;
+  // Log initialization summary
+  engine_log_initialization_summary(&validation);
+
+  return !critical_failure;
 }
 
 static void engine_shutdown_subsystems(Engine *engine) {
-  if (engine->subsystems.entities) {
-    ecs_world_destroy((World *)engine->subsystems.entities);
-    engine->subsystems.entities = NULL;
-  }
-
-  if (engine->subsystems.assets) {
-    asset_manager_destroy(engine->subsystems.assets);
-  }
-
-  if (engine->subsystems.input) {
-    engine->subsystems.input->shutdown(engine->subsystems.input);
-    free(engine->subsystems.input);
-  }
-
-  if (engine->subsystems.renderer) {
-    renderer_destroy(engine->subsystems.renderer);
-    engine->subsystems.renderer = NULL;
-  }
-
-  if (engine->subsystems.physics) {
-    // physics_world_destroy(engine->subsystems.physics);
-    // Note: physics_world_destroy not fully linked or implemented in stub?
-    // If implemented, uncomment.
-  }
-
-  if (engine->subsystems.audio) {
-    audio_system_free(engine->subsystems.audio);
-    free(engine->subsystems.audio);
-    engine->subsystems.audio = NULL;
-  }
-
-  /*
-  if (engine->subsystems.scripting) {
-    ScriptSystem_Shutdown(engine->subsystems.scripting);
-    free(engine->subsystems.scripting);
-    engine->subsystems.scripting = NULL;
-  }
-  */
-
-  if (engine->subsystems.post_processing) {
-    post_process_shutdown(engine->subsystems.post_processing,
-                          (struct VulkanRenderer *)engine->subsystems.renderer);
-    free(engine->subsystems.post_processing);
-  }
-
-  if (engine->subsystems.scene_manager) {
-    scene_manager_shutdown(engine->subsystems.scene_manager);
-    free(engine->subsystems.scene_manager);
-  }
-
+  // Shutdown in reverse order of initialization
+  
   // AI Systems Shutdown
   if (engine->subsystems.perception) {
     perception_system_shutdown(engine->subsystems.perception);
@@ -678,7 +626,54 @@ static void engine_shutdown_subsystems(Engine *engine) {
   combat_system_shutdown();
   */
 
+  if (engine->subsystems.post_processing) {
+    post_process_shutdown(engine->subsystems.post_processing,
+                          (struct VulkanRenderer *)engine->subsystems.renderer);
+    free(engine->subsystems.post_processing);
+  }
+
+  if (engine->subsystems.scene_manager) {
+    scene_manager_shutdown(engine->subsystems.scene_manager);
+    free(engine->subsystems.scene_manager);
+  }
+
+  if (engine->subsystems.audio) {
+    audio_system_free(engine->subsystems.audio);
+    free(engine->subsystems.audio);
+    engine->subsystems.audio = NULL;
+  }
+
+  if (engine->subsystems.physics) {
+    // physics_world_destroy(engine->subsystems.physics);
+    // Note: physics_world_destroy not fully linked or implemented in stub?
+    // If implemented, uncomment.
+  }
+
+  if (engine->subsystems.renderer) {
+    renderer_destroy(engine->subsystems.renderer);
+    engine->subsystems.renderer = NULL;
+  }
+
+  if (engine->subsystems.assets) {
+    asset_manager_destroy(engine->subsystems.assets);
+  }
+
+  if (engine->subsystems.input) {
+    engine->subsystems.input->shutdown(engine->subsystems.input);
+    free(engine->subsystems.input);
+  }
+
+  if (engine->subsystems.entities) {
+    ecs_world_destroy((World *)engine->subsystems.entities);
+    engine->subsystems.entities = NULL;
+  }
+
   vfs_free(&g_vfs);
+
+  // Critical systems shutdown (reverse order)
+  thread_pool_shutdown();
+  logging_system_shutdown();
+  memory_allocator_shutdown();
 }
 
 // -----------------------------------------------------------------------------
@@ -804,4 +799,53 @@ const char *engine_get_error_string(EngineError error) {
   default:
     return "Unknown error";
   }
+}
+
+// -----------------------------------------------------------------------------
+// Validation Helper Functions
+// -----------------------------------------------------------------------------
+
+static bool engine_validate_subsystem_init(const char *name, bool success, SubsystemValidationState *validation) {
+  if (success) {
+    LOG_INFO("✓ %s initialized successfully", name);
+    return true;
+  } else {
+    LOG_ERROR("✗ %s initialization failed", name);
+    return false;
+  }
+}
+
+static void engine_log_initialization_summary(const SubsystemValidationState *validation) {
+  LOG_INFO("=== Engine Initialization Summary ===");
+  
+  // Critical systems
+  LOG_INFO("Critical Systems:");
+  LOG_INFO("  VFS: %s", validation->vfs_initialized ? "✓" : "✗");
+  LOG_INFO("  Input: %s", validation->input_initialized ? "✓" : "✗");
+  LOG_INFO("  ECS: %s", validation->ecs_initialized ? "✓" : "✗");
+  LOG_INFO("  Asset Manager: %s", validation->assets_initialized ? "✓" : "✗");
+  LOG_INFO("  Renderer: %s", validation->renderer_initialized ? "✓" : "✗");
+  
+  // Non-critical systems
+  LOG_INFO("Non-Critical Systems:");
+  LOG_INFO("  Physics: %s", validation->physics_initialized ? "✓" : "✗");
+  LOG_INFO("  Scene Manager: %s", validation->scene_manager_initialized ? "✓" : "✗");
+  LOG_INFO("  Audio: %s", validation->audio_initialized ? "✓" : "✗");
+  LOG_INFO("  Post Processing: %s", validation->post_processing_initialized ? "✓" : "✗");
+  LOG_INFO("  Perception System: %s", validation->perception_initialized ? "✓" : "✗");
+  LOG_INFO("  Memory System: %s", validation->memory_initialized ? "✓" : "✗");
+  LOG_INFO("  GOAP Planner: %s", validation->planner_initialized ? "✓" : "✗");
+  
+  // Count successful initializations
+  int critical_count = validation->vfs_initialized + validation->input_initialized + 
+                      validation->ecs_initialized + validation->assets_initialized + 
+                      validation->renderer_initialized;
+  int non_critical_count = validation->physics_initialized + validation->scene_manager_initialized +
+                          validation->audio_initialized + validation->post_processing_initialized +
+                          validation->perception_initialized + validation->memory_initialized +
+                          validation->planner_initialized;
+  
+  LOG_INFO("Critical Systems: %d/5 initialized", critical_count);
+  LOG_INFO("Non-Critical Systems: %d/7 initialized", non_critical_count);
+  LOG_INFO("=====================================");
 }

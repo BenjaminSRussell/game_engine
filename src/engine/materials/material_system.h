@@ -33,6 +33,22 @@ void material_system_destroy_instance(MaterialInstance *instance);
 // Get Default PBR Master (convenience)
 MaterialMaster *material_system_get_default_pbr(void);
 
+// ============================================================================
+// UTILITY AND DEBUG FUNCTIONS
+// ============================================================================
+
+// Print system statistics
+void material_system_print_statistics(void);
+
+// List all registered masters
+void material_system_list_masters(void);
+
+// List all registered instances
+void material_system_list_instances(void);
+
+// Validate instance parameters
+bool material_system_validate_instance(MaterialInstance *instance);
+
 #ifdef __cplusplus
 }
 #endif

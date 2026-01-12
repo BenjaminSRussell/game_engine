@@ -132,6 +132,16 @@ void material_instance_bind(MaterialInstance *instance);
 // Upload parameters to GPU
 void material_instance_upload_params(MaterialInstance *instance);
 
+// ============================================================================
+// UTILITY AND DEBUG FUNCTIONS
+// ============================================================================
+
+// Print master material information
+void material_master_print_info(const MaterialMaster *master);
+
+// Print material instance information
+void material_instance_print_info(const MaterialInstance *instance);
+
 #ifdef __cplusplus
 }
 #endif

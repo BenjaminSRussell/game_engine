@@ -117,6 +117,25 @@ typedef struct {
   pthread_mutex_t mutex;
 } Logger;
 
+typedef enum {
+  LOGGER_FORMAT_MINIMAL,
+  LOGGER_FORMAT_DEVELOPMENT,
+  LOGGER_FORMAT_PRODUCTION,
+  LOGGER_FORMAT_DEBUG
+} LoggerFormatPreset;
+
+typedef struct {
+  char filename[256];
+  bool show_timestamp;
+  bool show_level;
+  bool use_colors;
+  bool millisecond_timestamps;
+  bool json_output;
+  LogLevel current_level;
+  bool buffering_enabled;
+  u32 buffer_size;
+} LoggerFormatInfo;
+
 extern Logger g_logger;
 
 void logger_init(LogLevel level, LogTarget target, const char *filename);

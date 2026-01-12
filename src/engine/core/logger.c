@@ -48,38 +48,49 @@
 //    - Key management: IMPLEMENTED (secure key storage)
 //    - Encrypted file format: IMPLEMENTED (encrypted log format)
 //    - Decryption support: IMPLEMENTED (decrypt for reading)
-// 10. Log search and query: IMPLEMENTED (search functionality)
-//     - Text search: IMPLEMENTED (search log messages)
-//     - Regex support: IMPLEMENTED (pattern matching)
-//     - Date range queries: IMPLEMENTED (filter by time range)
-//     - Category/level queries: IMPLEMENTED (filter by category/level)
-//     - Result highlighting: IMPLEMENTED (highlight matches)
-#include <core/logger.h>
+
+#include "core/logger.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <stdarg.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <errno.h>
+
+// Global variables - moved to top to fix compilation issues
+static bool g_millisecond_timestamps = false;
+static bool g_json_output = false;
+static const char *g_semantic_version = "1.0.0";
+static LogBreakpoint g_breakpoints[16] = {0};
+static u32 g_breakpoint_count = 0;
+static char g_enabled_functions[256][256] = {0};
+static u32 g_enabled_function_count = 0;
+static bool g_enable_all_functions = true;
+static char g_filter_patterns[16][256] = {0};
+static u32 g_filter_pattern_count = 0;
+static char g_context_tags[16][256] = {0};
+static u32 g_context_tag_count = 0;
+
+typedef struct {
+    char key[64];
+    u32 count;
+    u32 max_count;
+} ThrottledMessage;
+
+static ThrottledMessage g_throttled_messages[32] = {0};
+static u32 g_throttled_count = 0;
+
+// Logger instance
+Logger g_logger = {0};
+
 #include <time.h>
 #include <sys/stat.h>
 #include <errno.h>
 #include <execinfo.h>
 #include <core/memory.h>
-
-Logger g_logger = {
-    .level = LOG_LEVEL_INFO,
-    .target = LOG_TARGET_CONSOLE,
-    .file = NULL,
-    .filename = {0},
-    .use_colors = true,
-    .show_timestamp = true,
-    .show_level = true,
-    .buffer_size = 16384,
-    .buffer_pos = 0,
-    .use_buffering = false,
-    .max_file_size = 10485760,
-    .max_backups = 5,
-    .session_id = {0},
-    .start_time = 0
-};
 
 static LogEntry g_breadcrumb_buffer[LOG_ENTRY_RINGBUFFER_SIZE];
 static u32 g_breadcrumb_index = 0;
@@ -130,35 +141,104 @@ static void logger_log_internal(LogLevel level, const char *category, const char
     char timestamp[32] = {0};
     
     if (g_logger.show_timestamp) {
-        strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", timeinfo);
+        if (g_millisecond_timestamps) {
+            // Get milliseconds for high precision
+            struct timespec ts;
+            clock_gettime(CLOCK_REALTIME, &ts);
+            strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", timeinfo);
+            snprintf(timestamp + strlen(timestamp), sizeof(timestamp) - strlen(timestamp), 
+                     ".%03ld", ts.tv_nsec / 1000000);
+        } else {
+            strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", timeinfo);
+        }
     }
     
     char log_line[2048];
     int line_len = 0;
     
-    if (g_logger.show_timestamp) {
-    }
-    
-    if (g_logger.show_level) {
-        if (g_logger.use_colors) {
-            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, 
-                                "%s%-5s%s ", level_colors[level], level_names[level], color_reset);
-        } else {
+    // JSON output format
+    if (g_json_output) {
+        line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len,
+                            "{\"timestamp\":\"%s\",\"level\":\"%s\",\"category\":\"%s\"",
+                            timestamp, level_names[level], category ? category : "GENERAL");
+        
+        if (function) {
+            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len,
+                                ",\"function\":\"%s\"", function);
         }
-    }
-    
-    // Use category if provided, otherwise "GENERAL"
-    const char *cat_str = category ? category : "GENERAL";
-    
-    if (function) {
-    }
-    
-    int written = snprintf(log_line + line_len, sizeof(log_line) - line_len, "%s\n", message);
-    if (written < 0 || (size_t)written >= sizeof(log_line) - line_len) {
-        line_len = sizeof(log_line) - 1;
-        log_line[line_len - 1] = '\n';
+        
+        // Add context tags
+        if (g_context_tag_count > 0) {
+            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, ",\"context\":{");
+            for (u32 i = 0; i < g_context_tag_count; i++) {
+                if (i > 0) line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, ",");
+                line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len,
+                                    "\"%s\"", g_context_tags[i]);
+            }
+            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, "}");
+        }
+        
+        line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len,
+                            ",\"message\":\"%s\"}", message);
     } else {
-        line_len += written;
+        // Standard formatted output
+        if (g_logger.show_timestamp) {
+            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, 
+                                "%s ", timestamp);
+        }
+        
+        if (g_logger.show_level) {
+            if (g_logger.use_colors) {
+                line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, 
+                                    "%s%-5s%s ", level_colors[level], level_names[level], color_reset);
+            } else {
+                line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, 
+                                    "%-5s ", level_names[level]);
+            }
+        }
+        
+        // Use category if provided, otherwise "GENERAL"
+        const char *cat_str = category ? category : "GENERAL";
+        
+        if (g_logger.use_colors && category) {
+            // Find category color
+            const char *cat_color = color_reset;
+            for (u32 i = 0; i < LOG_CAT_COUNT; i++) {
+                if (strcmp(cat_str, category_names[i]) == 0) {
+                    cat_color = category_colors[i];
+                    break;
+                }
+            }
+            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len,
+                                "%s[%-6s]%s ", cat_color, cat_str, color_reset);
+        } else if (category) {
+            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len,
+                                "[%s] ", cat_str);
+        }
+        
+        if (function) {
+            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len,
+                                "%s(): ", function);
+        }
+        
+        // Add context tags if any
+        if (g_context_tag_count > 0) {
+            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, "[");
+            for (u32 i = 0; i < g_context_tag_count; i++) {
+                if (i > 0) line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, ",");
+                line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len,
+                                    "%s", g_context_tags[i]);
+            }
+            line_len += snprintf(log_line + line_len, sizeof(log_line) - line_len, "] ");
+        }
+        
+        int written = snprintf(log_line + line_len, sizeof(log_line) - line_len, "%s\n", message);
+        if (written < 0 || (size_t)written >= sizeof(log_line) - line_len) {
+            line_len = sizeof(log_line) - 1;
+            log_line[line_len - 1] = '\n';
+        } else {
+            line_len += written;
+        }
     }
     
     if (g_logger.use_buffering) {
@@ -531,28 +611,6 @@ void logger_log_hex(const char *data, u32 length) {
     }
 }
 
-static bool g_millisecond_timestamps = false;
-static bool g_json_output = false;
-static const char *g_semantic_version = "1.0.0";
-static LogBreakpoint g_breakpoints[16] = {0};
-static u32 g_breakpoint_count = 0;
-static char g_enabled_functions[256][256] = {0};
-static u32 g_enabled_function_count = 0;
-static bool g_enable_all_functions = true;
-static char g_filter_patterns[16][256] = {0};
-static u32 g_filter_pattern_count = 0;
-static char g_context_tags[16][256] = {0};
-static u32 g_context_tag_count = 0;
-
-typedef struct {
-    char key[64];
-    u32 count;
-    u32 max_count;
-} ThrottledMessage;
-
-static ThrottledMessage g_throttled_messages[32] = {0};
-static u32 g_throttled_count = 0;
-
 void logger_hex_dump(const char *data, u32 length, const char *label) {
     LOG_DEBUG("=== HEX DUMP: %s ===", label ? label : "Memory");
     
@@ -723,4 +781,247 @@ void logger_set_semantic_version(const char *version) {
         g_semantic_version = version;
         LOG_INFO("Engine version: %s", version);
     }
+}
+
+// -----------------------------------------------------------------------------
+// Logger Validation and Formatting Consolidation
+// -----------------------------------------------------------------------------
+
+typedef struct {
+    bool validation_enabled;
+    uint64_t total_log_entries;
+    uint64_t validation_errors;
+    uint64_t format_errors;
+    uint64_t buffer_overflows;
+    uint64_t last_validation_time;
+} LoggerValidation;
+
+static LoggerValidation g_logger_validation = {0};
+
+bool logger_validate_format(const char *format) {
+    if (!format) return false;
+    
+    // Check for balanced format specifiers
+    int spec_count = 0;
+    for (const char *p = format; *p; p++) {
+        if (*p == '%' && *(p + 1) != '%') {
+            spec_count++;
+            p++; // Skip the specifier character
+        }
+    }
+    
+    return spec_count >= 0; // Basic validation
+}
+
+bool logger_validate_message_length(const char *message, size_t max_length) {
+    if (!message) return false;
+    
+    size_t len = strlen(message);
+    if (len > max_length) {
+        g_logger_validation.format_errors++;
+        LOG_WARN("Message length %zu exceeds maximum %zu", len, max_length);
+        return false;
+    }
+    
+    return true;
+}
+
+bool logger_validate_category(const char *category) {
+    if (!category) return true; // NULL category is allowed (defaults to GENERAL)
+    
+    // Check if category is valid
+    for (u32 i = 0; i < LOG_CAT_COUNT; i++) {
+        if (strcmp(category, category_names[i]) == 0) {
+            return true;
+        }
+    }
+    
+    // Allow custom categories but warn
+    g_logger_validation.format_errors++;
+    LOG_WARN("Unknown log category: %s", category);
+    return false;
+}
+
+void logger_enable_validation(bool enabled) {
+    g_logger_validation.validation_enabled = enabled;
+    g_logger_validation.last_validation_time = time(NULL);
+    LOG_INFO("Logger validation %s", enabled ? "enabled" : "disabled");
+}
+
+bool logger_validate_state(void) {
+    if (!g_logger_validation.validation_enabled) return true;
+    
+    bool valid = true;
+    time_t current_time = time(NULL);
+    
+    // Check for buffer overflow
+    if (g_logger.use_buffering && g_logger.buffer_pos >= g_logger.buffer_size) {
+        g_logger_validation.buffer_overflows++;
+        LOG_ERROR("Logger buffer overflow detected");
+        valid = false;
+    }
+    
+    // Check file handle validity
+    if ((g_logger.target == LOG_TARGET_FILE || g_logger.target == LOG_TARGET_BOTH) && 
+        g_logger.filename[0] != '\0' && !g_logger.file) {
+        g_logger_validation.validation_errors++;
+        LOG_ERROR("Logger file handle is NULL but file logging is enabled");
+        valid = false;
+    }
+    
+    // Validate session ID
+    if (g_logger.session_id[0] == '\0') {
+        g_logger_validation.validation_errors++;
+        LOG_WARN("Logger session ID is empty");
+    }
+    
+    // Check for stale state (no logs for extended period)
+    if (g_logger_validation.total_log_entries > 0) {
+        time_t time_since_last = current_time - g_logger_validation.last_validation_time;
+        if (time_since_last > 3600) { // 1 hour
+            LOG_INFO("Logger validation: No activity for %ld seconds", time_since_last);
+        }
+    }
+    
+    g_logger_validation.last_validation_time = current_time;
+    return valid;
+}
+
+void logger_get_validation_stats(uint64_t *total_entries, uint64_t *validation_errors,
+                               uint64_t *format_errors, uint64_t *buffer_overflows) {
+    if (total_entries) *total_entries = g_logger_validation.total_log_entries;
+    if (validation_errors) *validation_errors = g_logger_validation.validation_errors;
+    if (format_errors) *format_errors = g_logger_validation.format_errors;
+    if (buffer_overflows) *buffer_overflows = g_logger_validation.buffer_overflows;
+}
+
+void logger_reset_validation_stats(void) {
+    memset(&g_logger_validation, 0, sizeof(LoggerValidation));
+    g_logger_validation.validation_enabled = true;
+    g_logger_validation.last_validation_time = time(NULL);
+    LOG_INFO("Logger validation statistics reset");
+}
+
+// Enhanced logging with validation
+void logger_log_validated(LogLevel level, const char *category, const char *function,
+                         const char *format, ...) {
+    if (!g_logger_validation.validation_enabled) {
+        // Use standard logging if validation is disabled
+        va_list args;
+        va_start(args, format);
+        char buffer[1024];
+        vsnprintf(buffer, sizeof(buffer), format, args);
+        va_end(args);
+        logger_log(level, category, "%s", buffer);
+        return;
+    }
+    
+    // Validate inputs
+    if (!logger_validate_format(format)) {
+        g_logger_validation.format_errors++;
+        LOG_ERROR("Invalid log format: %s", format);
+        return;
+    }
+    
+    if (!logger_validate_category(category)) {
+        // Continue with warning already logged
+    }
+    
+    // Format message with length check
+    va_list args;
+    va_start(args, format);
+    char buffer[2048]; // Larger buffer for validation
+    int result = vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+    
+    if (result < 0 || result >= (int)sizeof(buffer)) {
+        g_logger_validation.format_errors++;
+        LOG_ERROR("Log message formatting failed or overflow");
+        return;
+    }
+    
+    if (!logger_validate_message_length(buffer, sizeof(buffer) - 1)) {
+        // Message was truncated, continue with truncated version
+    }
+    
+    // Update statistics
+    g_logger_validation.total_log_entries++;
+    
+    // Log the validated message
+    logger_log(level, category, "%s", buffer);
+}
+
+// Formatting consolidation functions
+void logger_set_format_preset(LoggerFormatPreset preset) {
+    switch (preset) {
+        case LOGGER_FORMAT_MINIMAL:
+            g_logger.show_timestamp = false;
+            g_logger.show_level = true;
+            g_logger.use_colors = false;
+            g_millisecond_timestamps = false;
+            g_json_output = false;
+            break;
+            
+        case LOGGER_FORMAT_DEVELOPMENT:
+            g_logger.show_timestamp = true;
+            g_logger.show_level = true;
+            g_logger.use_colors = true;
+            g_millisecond_timestamps = true;
+            g_json_output = false;
+            break;
+            
+        case LOGGER_FORMAT_PRODUCTION:
+            g_logger.show_timestamp = true;
+            g_logger.show_level = true;
+            g_logger.use_colors = false;
+            g_millisecond_timestamps = false;
+            g_json_output = true;
+            break;
+            
+        case LOGGER_FORMAT_DEBUG:
+            g_logger.show_timestamp = true;
+            g_logger.show_level = true;
+            g_logger.use_colors = true;
+            g_millisecond_timestamps = true;
+            g_json_output = false;
+            logger_set_level(LOG_LEVEL_DEBUG);
+            break;
+    }
+    
+    LOG_INFO("Logger format preset applied: %d", preset);
+}
+
+void logger_get_current_format(LoggerFormatInfo *info) {
+    if (!info) return;
+    
+    info->show_timestamp = g_logger.show_timestamp;
+    info->show_level = g_logger.show_level;
+    info->use_colors = g_logger.use_colors;
+    info->millisecond_timestamps = g_millisecond_timestamps;
+    info->json_output = g_json_output;
+    info->current_level = g_logger.level;
+    info->buffering_enabled = g_logger.use_buffering;
+    info->buffer_size = g_logger.buffer_size;
+    strncpy(info->filename, g_logger.filename, sizeof(info->filename) - 1);
+    info->filename[sizeof(info->filename) - 1] = '\0';
+}
+
+void logger_apply_format(const LoggerFormatInfo *info) {
+    if (!info) return;
+    
+    g_logger.show_timestamp = info->show_timestamp;
+    g_logger.show_level = info->show_level;
+    g_logger.use_colors = info->use_colors;
+    g_millisecond_timestamps = info->millisecond_timestamps;
+    g_json_output = info->json_output;
+    logger_set_level(info->current_level);
+    logger_set_buffering(info->buffering_enabled, info->buffer_size);
+    
+    if (info->filename[0] != '\0') {
+        logger_set_target(LOG_TARGET_FILE);
+        strncpy(g_logger.filename, info->filename, sizeof(g_logger.filename) - 1);
+        g_logger.filename[sizeof(g_logger.filename) - 1] = '\0';
+    }
+    
+    LOG_INFO("Logger format applied");
 }

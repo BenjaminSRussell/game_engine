@@ -82,6 +82,11 @@ typedef struct ThreadPool {
   _Atomic(uint64_t) total_tasks;  // Total tasks submitted
   _Atomic(uint64_t) completed_tasks; // Total tasks completed
   _Atomic(uint64_t) queue_time_ns; // Total time in queue
+  
+  // Validation state
+  bool validation_enabled;        // Enable validation checks
+  _Atomic(uint64_t) validation_errors; // Number of validation errors
+  _Atomic(uint64_t) last_validation_time; // Last validation timestamp
 } ThreadPool;
 
 //  COMPLETED: Forward declarations
@@ -89,6 +94,10 @@ static void* worker_thread_main(void *arg);
 static Task* dequeue_task(ThreadPool *pool);
 static void enqueue_task(ThreadPool *pool, Task *task);
 static uint64_t get_timestamp_ns();
+static bool thread_pool_validate_state(ThreadPool *pool);
+static void thread_pool_log_validation_error(ThreadPool *pool, const char* error);
+static bool thread_pool_validate_worker(Worker* worker);
+static bool thread_pool_validate_task_queues(ThreadPool *pool);
 
 //  COMPLETED: Get timestamp in nanoseconds
 static uint64_t get_timestamp_ns() {
@@ -99,24 +108,57 @@ static uint64_t get_timestamp_ns() {
 
 //  COMPLETED: Thread pool initialization
 ThreadPool* thread_pool_init(uint32_t min_workers, uint32_t max_workers) {
-  if (min_workers == 0) min_workers = 1;
-  if (max_workers == 0) max_workers = sysconf(_SC_NPROCESSORS_ONLN);
-  if (min_workers > max_workers) min_workers = max_workers;
+  // Validate input parameters
+  if (min_workers == 0) {
+    LOG_ERROR("ThreadPool: min_workers cannot be 0");
+    return NULL;
+  }
+  if (max_workers == 0) {
+    max_workers = sysconf(_SC_NPROCESSORS_ONLN);
+    LOG_INFO("ThreadPool: Using default max_workers: %u", max_workers);
+  }
+  if (min_workers > max_workers) {
+    LOG_ERROR("ThreadPool: min_workers (%u) > max_workers (%u)", min_workers, max_workers);
+    return NULL;
+  }
   
   ThreadPool *pool = malloc(sizeof(ThreadPool));
-  if (!pool) return NULL;
+  if (!pool) {
+    LOG_ERROR("ThreadPool: Failed to allocate pool structure");
+    return NULL;
+  }
   
   memset(pool, 0, sizeof(ThreadPool));
   
   pool->min_workers = min_workers;
   pool->max_workers = max_workers;
   pool->worker_count = min_workers;
+  pool->validation_enabled = true; // Enable validation by default
   atomic_init(&pool->active_workers, min_workers);
+  atomic_init(&pool->validation_errors, 0);
+  atomic_init(&pool->last_validation_time, get_timestamp_ns());
   
   // Initialize synchronization
-  pthread_mutex_init(&pool->queue_mutex, NULL);
-  pthread_cond_init(&pool->work_available, NULL);
-  pthread_mutex_init(&pool->resize_mutex, NULL);
+  if (pthread_mutex_init(&pool->queue_mutex, NULL) != 0) {
+    LOG_ERROR("ThreadPool: Failed to initialize queue mutex");
+    free(pool);
+    return NULL;
+  }
+  
+  if (pthread_cond_init(&pool->work_available, NULL) != 0) {
+    LOG_ERROR("ThreadPool: Failed to initialize work condition");
+    pthread_mutex_destroy(&pool->queue_mutex);
+    free(pool);
+    return NULL;
+  }
+  
+  if (pthread_mutex_init(&pool->resize_mutex, NULL) != 0) {
+    LOG_ERROR("ThreadPool: Failed to initialize resize mutex");
+    pthread_mutex_destroy(&pool->queue_mutex);
+    pthread_cond_destroy(&pool->work_available);
+    free(pool);
+    return NULL;
+  }
   
   atomic_init(&pool->shutdown, false);
   atomic_init(&pool->total_tasks, 0);
@@ -127,6 +169,10 @@ ThreadPool* thread_pool_init(uint32_t min_workers, uint32_t max_workers) {
   // Create workers
   pool->workers = malloc(min_workers * sizeof(Worker));
   if (!pool->workers) {
+    LOG_ERROR("ThreadPool: Failed to allocate workers array");
+    pthread_mutex_destroy(&pool->queue_mutex);
+    pthread_cond_destroy(&pool->work_available);
+    pthread_mutex_destroy(&pool->resize_mutex);
     free(pool);
     return NULL;
   }
@@ -141,12 +187,16 @@ ThreadPool* thread_pool_init(uint32_t min_workers, uint32_t max_workers) {
     
     if (pthread_create(&pool->workers[i].thread, NULL, 
                        worker_thread_main, &pool->workers[i]) != 0) {
+      LOG_ERROR("ThreadPool: Failed to create worker thread %u", i);
       // Cleanup on failure
       for (uint32_t j = 0; j < i; j++) {
         atomic_store(&pool->workers[j].running, false);
         pthread_join(pool->workers[j].thread, NULL);
       }
       free(pool->workers);
+      pthread_mutex_destroy(&pool->queue_mutex);
+      pthread_cond_destroy(&pool->work_available);
+      pthread_mutex_destroy(&pool->resize_mutex);
       free(pool);
       return NULL;
     }
@@ -157,10 +207,20 @@ ThreadPool* thread_pool_init(uint32_t min_workers, uint32_t max_workers) {
     cpu_set_t cpuset;
     CPU_ZERO(&cpuset);
     CPU_SET(pool->workers[i].cpu_affinity, &cpuset);
-    pthread_setaffinity_np(pool->workers[i].thread, sizeof(cpu_set_t), &cpuset);
+    if (pthread_setaffinity_np(pool->workers[i].thread, sizeof(cpu_set_t), &cpuset) != 0) {
+      LOG_WARN("ThreadPool: Failed to set CPU affinity for worker %u", i);
+    }
 #endif
   }
   
+  // Validate initial state
+  if (!thread_pool_validate_state(pool)) {
+    LOG_ERROR("ThreadPool: Initial state validation failed");
+    thread_pool_shutdown(pool);
+    return NULL;
+  }
+  
+  LOG_INFO("ThreadPool: Initialized with %u-%u workers", min_workers, max_workers);
   return pool;
 }
 
@@ -509,6 +569,7 @@ void thread_pool_shutdown(ThreadPool *pool) {
  * - Thread affinity and priority control
  * - Graceful shutdown and cleanup
  * - Comprehensive statistics and monitoring
+ * - Enhanced validation and error checking
  *
  * Performance characteristics:
  * - Task submission: <10s (queue operations)
@@ -517,3 +578,156 @@ void thread_pool_shutdown(ThreadPool *pool) {
  * - Future wait: <1s (if ready)
  * - Memory usage: ~1KB per worker + task queues
  */
+
+// -----------------------------------------------------------------------------
+// Validation Implementation
+// -----------------------------------------------------------------------------
+
+static bool thread_pool_validate_state(ThreadPool *pool) {
+  if (!pool) return false;
+  
+  bool valid = true;
+  uint64_t current_time = get_timestamp_ns();
+  
+  // Check basic invariants
+  if (pool->min_workers == 0 || pool->max_workers == 0) {
+    thread_pool_log_validation_error(pool, "Invalid worker count configuration");
+    valid = false;
+  }
+  
+  if (pool->min_workers > pool->max_workers) {
+    thread_pool_log_validation_error(pool, "min_workers > max_workers");
+    valid = false;
+  }
+  
+  uint32_t active_workers = atomic_load(&pool->active_workers);
+  if (active_workers < pool->min_workers || active_workers > pool->max_workers) {
+    thread_pool_log_validation_error(pool, "active_workers out of bounds");
+    valid = false;
+  }
+  
+  // Validate worker threads
+  for (uint32_t i = 0; i < active_workers; i++) {
+    if (!thread_pool_validate_worker(&pool->workers[i])) {
+      thread_pool_log_validation_error(pool, "Worker validation failed");
+      valid = false;
+    }
+  }
+  
+  // Validate task queues
+  if (!thread_pool_validate_task_queues(pool)) {
+    thread_pool_log_validation_error(pool, "Task queue validation failed");
+    valid = false;
+  }
+  
+  // Check for deadlock conditions
+  uint64_t time_since_last_validation = current_time - atomic_load(&pool->last_validation_time);
+  if (time_since_last_validation > 5000000000ULL) { // 5 seconds
+    uint64_t pending_tasks = atomic_load(&pool->pending_tasks);
+    uint64_t completed_tasks = atomic_load(&pool->completed_tasks);
+    uint64_t total_tasks = atomic_load(&pool->total_tasks);
+    
+    if (pending_tasks > 0 && completed_tasks == 0 && total_tasks > 10) {
+      thread_pool_log_validation_error(pool, "Potential deadlock detected");
+      valid = false;
+    }
+  }
+  
+  atomic_store(&pool->last_validation_time, current_time);
+  return valid;
+}
+
+static void thread_pool_log_validation_error(ThreadPool *pool, const char* error) {
+  if (!pool || !error) return;
+  
+  atomic_fetch_add(&pool->validation_errors, 1);
+  LOG_ERROR("ThreadPool Validation Error [%lu]: %s", 
+            atomic_load(&pool->validation_errors), error);
+}
+
+static bool thread_pool_validate_worker(Worker* worker) {
+  if (!worker) return false;
+  
+  // Check if worker has valid pool reference
+  if (!worker->pool) return false;
+  
+  // Check thread validity (basic check)
+  if (worker->thread == 0) return false;
+  
+  // Check worker ID bounds
+  if (worker->worker_id >= worker->pool->max_workers) return false;
+  
+  // Check CPU affinity bounds
+  int cpu_count = sysconf(_SC_NPROCESSORS_ONLN);
+  if (worker->cpu_affinity >= (uint32_t)cpu_count) return false;
+  
+  return true;
+}
+
+static bool thread_pool_validate_task_queues(ThreadPool *pool) {
+  if (!pool) return false;
+  
+  uint32_t total_pending = 0;
+  
+  // Count tasks in all priority queues
+  for (int i = 0; i < 4; i++) {
+    Task *task = pool->priority_queues[i];
+    uint32_t queue_count = 0;
+    
+    while (task) {
+      queue_count++;
+      total_pending++;
+      
+      // Check for cycles in linked list
+      if (task->next == task) {
+        return false;
+      }
+      
+      // Validate task structure
+      if (!task->function) {
+        return false;
+      }
+      
+      task = task->next;
+      
+      // Prevent infinite loop
+      if (queue_count > 10000) {
+        LOG_ERROR("ThreadPool: Task queue appears to have cycles");
+        return false;
+      }
+    }
+  }
+  
+  // Check if pending count matches actual queue count
+  uint32_t atomic_pending = atomic_load(&pool->pending_tasks);
+  if (total_pending != atomic_pending) {
+    LOG_WARN("ThreadPool: Pending task count mismatch: actual=%u, atomic=%u", 
+             total_pending, atomic_pending);
+    // Don't fail validation for this, just warn
+  }
+  
+  return true;
+}
+
+// Public validation API
+bool thread_pool_validate(ThreadPool *pool) {
+  return thread_pool_validate_state(pool);
+}
+
+void thread_pool_enable_validation(ThreadPool *pool, bool enable) {
+  if (pool) {
+    pool->validation_enabled = enable;
+    LOG_INFO("ThreadPool validation %s", enable ? "enabled" : "disabled");
+  }
+}
+
+uint64_t thread_pool_get_validation_errors(ThreadPool *pool) {
+  return pool ? atomic_load(&pool->validation_errors) : 0;
+}
+
+void thread_pool_reset_validation_errors(ThreadPool *pool) {
+  if (pool) {
+    atomic_store(&pool->validation_errors, 0);
+    LOG_INFO("ThreadPool validation errors reset");
+  }
+}

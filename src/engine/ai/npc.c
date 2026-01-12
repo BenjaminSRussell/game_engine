@@ -412,15 +412,16 @@ static void npc_update_passive(NPCSystem *system, Entity entity,
   Entity nearest_player = INVALID_ENTITY;
   f32 nearest_distance = 999999.0f;
 
-  if (g_player_system && g_player_system->player) {
-    TransformComponent *player_t = (TransformComponent *)world_get_component(
-        system->ecs, g_player_system->player->entity, TRANSFORM_COMPONENT_ID);
-    if (player_t) {
-      player_pos = player_t->position;
-      nearest_distance = vec3_length(vec3_sub(player_pos, npc_transform->position));
-      nearest_player = g_player_system->player->entity;
-    }
-  }
+  // TODO: Re-enable when PlayerSystem is fully defined
+  // if (g_player_system && g_player_system->player) {
+  //   TransformComponent *player_t = (TransformComponent *)world_get_component(
+  //       system->ecs, g_player_system->player->entity, TRANSFORM_COMPONENT_ID);
+  //   if (player_t) {
+  //     player_pos = player_t->position;
+  //     nearest_distance = vec3_length(vec3_sub(player_pos, npc_transform->position));
+  //     nearest_player = g_player_system->player->entity;
+  //   }
+  // }
 
   // Check health to see if damaged (triggers flee)
   HealthComponent *health = (HealthComponent *)world_get_component(

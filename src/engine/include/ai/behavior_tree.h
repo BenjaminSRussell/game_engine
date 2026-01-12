@@ -18,6 +18,7 @@ typedef struct BehaviorTree BehaviorTree;
 typedef struct BTNode BTNode;
 typedef struct BTBlackboard BTBlackboard;
 typedef struct BTContext BTContext;
+typedef struct ParallelData ParallelData;
 
 // Node types
 typedef enum {
@@ -79,8 +80,13 @@ typedef struct BTAdvancedDecoratorData {
   int max_retries;
   float timeout_duration;
   float start_time;
+  float cooldown_time;
+  float current_cooldown;
+  float elapsed_time;
   bool until_success;
   bool until_failure;
+  bool invert_condition;
+  int current_retry;
   char blackboard_key[64];
   BTValueType expected_type;
   union {
@@ -120,6 +126,15 @@ typedef struct BTExecutionHistory {
   int count;
 } BTExecutionHistory;
 
+// Parallel node data
+typedef struct ParallelData {
+    uint32_t success_threshold;
+    uint32_t failure_threshold;
+    uint32_t success_count;
+    uint32_t failure_count;
+    bool completed;
+} ParallelData;
+
 // Enhanced node-specific data
 struct BTNode {
   char name[64];
@@ -137,12 +152,14 @@ struct BTNode {
     BTAdvancedDecoratorData *decorator_data;
     BTPerceptionConfig *perception_data;
     void *action_data;
+    ParallelData *parallel_data;
   } data;
 
   // Callbacks
   BTNodeState (*on_enter)(BTNode *node, BTContext *context);
   BTNodeState (*on_execute)(BTNode *node, BTContext *context);
   BTNodeState (*on_exit)(BTNode *node, BTContext *context);
+  BTNodeState (*on_check)(BTNode *node, BTContext *context);
 
   // Timing
   float execution_time;
@@ -165,6 +182,9 @@ struct BTNode {
   Vec2 size;
   bool is_selected;
   bool is_highlighted;
+  
+  // Utility AI integration
+  void *utility_agent;
 };
 
 // Enhanced Behavior Tree context

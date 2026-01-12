@@ -65,6 +65,16 @@ CMAKE_BINARY_DIR = "/Users/benjaminrussell/Desktop/Minecraft v2"
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running tests..."
+	/opt/homebrew/bin/ctest $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
@@ -193,6 +203,32 @@ BlockGameApp: cmake_check_build_system
 BlockGameApp/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/BlockGameApp.dir/build.make CMakeFiles/BlockGameApp.dir/build
 .PHONY : BlockGameApp/fast
+
+#=============================================================================
+# Target rules for targets named test_physics_ids
+
+# Build rule for target.
+test_physics_ids: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_physics_ids
+.PHONY : test_physics_ids
+
+# fast build rule for target.
+test_physics_ids/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_physics_ids.dir/build.make CMakeFiles/test_physics_ids.dir/build
+.PHONY : test_physics_ids/fast
+
+#=============================================================================
+# Target rules for targets named test_network_stability
+
+# Build rule for target.
+test_network_stability: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_network_stability
+.PHONY : test_network_stability
+
+# fast build rule for target.
+test_network_stability/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_network_stability.dir/build.make CMakeFiles/test_network_stability.dir/build
+.PHONY : test_network_stability/fast
 
 #=============================================================================
 # Target rules for targets named physics_demos
@@ -1725,6 +1761,30 @@ src/engine/ai/npc_advanced/utility_ai.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_advanced/utility_ai.c.s
 .PHONY : src/engine/ai/npc_advanced/utility_ai.c.s
 
+src/engine/ai/npc_ai.o: src/engine/ai/npc_ai.c.o
+.PHONY : src/engine/ai/npc_ai.o
+
+# target to build an object file
+src/engine/ai/npc_ai.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_ai.c.o
+.PHONY : src/engine/ai/npc_ai.c.o
+
+src/engine/ai/npc_ai.i: src/engine/ai/npc_ai.c.i
+.PHONY : src/engine/ai/npc_ai.i
+
+# target to preprocess a source file
+src/engine/ai/npc_ai.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_ai.c.i
+.PHONY : src/engine/ai/npc_ai.c.i
+
+src/engine/ai/npc_ai.s: src/engine/ai/npc_ai.c.s
+.PHONY : src/engine/ai/npc_ai.s
+
+# target to generate assembly for a file
+src/engine/ai/npc_ai.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_ai.c.s
+.PHONY : src/engine/ai/npc_ai.c.s
+
 src/engine/ai/npc_ai_impl.o: src/engine/ai/npc_ai_impl.c.o
 .PHONY : src/engine/ai/npc_ai_impl.o
 
@@ -1749,6 +1809,30 @@ src/engine/ai/npc_ai_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_ai_impl.c.s
 .PHONY : src/engine/ai/npc_ai_impl.c.s
 
+src/engine/ai/npc_combat.o: src/engine/ai/npc_combat.c.o
+.PHONY : src/engine/ai/npc_combat.o
+
+# target to build an object file
+src/engine/ai/npc_combat.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_combat.c.o
+.PHONY : src/engine/ai/npc_combat.c.o
+
+src/engine/ai/npc_combat.i: src/engine/ai/npc_combat.c.i
+.PHONY : src/engine/ai/npc_combat.i
+
+# target to preprocess a source file
+src/engine/ai/npc_combat.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_combat.c.i
+.PHONY : src/engine/ai/npc_combat.c.i
+
+src/engine/ai/npc_combat.s: src/engine/ai/npc_combat.c.s
+.PHONY : src/engine/ai/npc_combat.s
+
+# target to generate assembly for a file
+src/engine/ai/npc_combat.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_combat.c.s
+.PHONY : src/engine/ai/npc_combat.c.s
+
 src/engine/ai/npc_dialogue.o: src/engine/ai/npc_dialogue.c.o
 .PHONY : src/engine/ai/npc_dialogue.o
 
@@ -1772,6 +1856,30 @@ src/engine/ai/npc_dialogue.s: src/engine/ai/npc_dialogue.c.s
 src/engine/ai/npc_dialogue.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_dialogue.c.s
 .PHONY : src/engine/ai/npc_dialogue.c.s
+
+src/engine/ai/npc_schedule.o: src/engine/ai/npc_schedule.c.o
+.PHONY : src/engine/ai/npc_schedule.o
+
+# target to build an object file
+src/engine/ai/npc_schedule.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_schedule.c.o
+.PHONY : src/engine/ai/npc_schedule.c.o
+
+src/engine/ai/npc_schedule.i: src/engine/ai/npc_schedule.c.i
+.PHONY : src/engine/ai/npc_schedule.i
+
+# target to preprocess a source file
+src/engine/ai/npc_schedule.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_schedule.c.i
+.PHONY : src/engine/ai/npc_schedule.c.i
+
+src/engine/ai/npc_schedule.s: src/engine/ai/npc_schedule.c.s
+.PHONY : src/engine/ai/npc_schedule.s
+
+# target to generate assembly for a file
+src/engine/ai/npc_schedule.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_schedule.c.s
+.PHONY : src/engine/ai/npc_schedule.c.s
 
 src/engine/ai/npc_spawning.o: src/engine/ai/npc_spawning.c.o
 .PHONY : src/engine/ai/npc_spawning.o
@@ -2589,6 +2697,30 @@ src/engine/animation/blending.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/blending.c.s
 .PHONY : src/engine/animation/blending.c.s
 
+src/engine/animation/blending/additive_blend.o: src/engine/animation/blending/additive_blend.c.o
+.PHONY : src/engine/animation/blending/additive_blend.o
+
+# target to build an object file
+src/engine/animation/blending/additive_blend.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/blending/additive_blend.c.o
+.PHONY : src/engine/animation/blending/additive_blend.c.o
+
+src/engine/animation/blending/additive_blend.i: src/engine/animation/blending/additive_blend.c.i
+.PHONY : src/engine/animation/blending/additive_blend.i
+
+# target to preprocess a source file
+src/engine/animation/blending/additive_blend.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/blending/additive_blend.c.i
+.PHONY : src/engine/animation/blending/additive_blend.c.i
+
+src/engine/animation/blending/additive_blend.s: src/engine/animation/blending/additive_blend.c.s
+.PHONY : src/engine/animation/blending/additive_blend.s
+
+# target to generate assembly for a file
+src/engine/animation/blending/additive_blend.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/blending/additive_blend.c.s
+.PHONY : src/engine/animation/blending/additive_blend.c.s
+
 src/engine/animation/blending/inertialization.o: src/engine/animation/blending/inertialization.c.o
 .PHONY : src/engine/animation/blending/inertialization.o
 
@@ -2925,6 +3057,30 @@ src/engine/animation/ik/spine_ik_solver.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/ik/spine_ik_solver.c.s
 .PHONY : src/engine/animation/ik/spine_ik_solver.c.s
 
+src/engine/animation/ik_advanced/ccd_ik.o: src/engine/animation/ik_advanced/ccd_ik.c.o
+.PHONY : src/engine/animation/ik_advanced/ccd_ik.o
+
+# target to build an object file
+src/engine/animation/ik_advanced/ccd_ik.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/ik_advanced/ccd_ik.c.o
+.PHONY : src/engine/animation/ik_advanced/ccd_ik.c.o
+
+src/engine/animation/ik_advanced/ccd_ik.i: src/engine/animation/ik_advanced/ccd_ik.c.i
+.PHONY : src/engine/animation/ik_advanced/ccd_ik.i
+
+# target to preprocess a source file
+src/engine/animation/ik_advanced/ccd_ik.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/ik_advanced/ccd_ik.c.i
+.PHONY : src/engine/animation/ik_advanced/ccd_ik.c.i
+
+src/engine/animation/ik_advanced/ccd_ik.s: src/engine/animation/ik_advanced/ccd_ik.c.s
+.PHONY : src/engine/animation/ik_advanced/ccd_ik.s
+
+# target to generate assembly for a file
+src/engine/animation/ik_advanced/ccd_ik.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/ik_advanced/ccd_ik.c.s
+.PHONY : src/engine/animation/ik_advanced/ccd_ik.c.s
+
 src/engine/animation/ik_advanced/fabrik_impl.o: src/engine/animation/ik_advanced/fabrik_impl.c.o
 .PHONY : src/engine/animation/ik_advanced/fabrik_impl.o
 
@@ -3116,6 +3272,30 @@ src/engine/animation/ik_solver.s: src/engine/animation/ik_solver.c.s
 src/engine/animation/ik_solver.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/ik_solver.c.s
 .PHONY : src/engine/animation/ik_solver.c.s
+
+src/engine/animation/ik_system.o: src/engine/animation/ik_system.c.o
+.PHONY : src/engine/animation/ik_system.o
+
+# target to build an object file
+src/engine/animation/ik_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/ik_system.c.o
+.PHONY : src/engine/animation/ik_system.c.o
+
+src/engine/animation/ik_system.i: src/engine/animation/ik_system.c.i
+.PHONY : src/engine/animation/ik_system.i
+
+# target to preprocess a source file
+src/engine/animation/ik_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/ik_system.c.i
+.PHONY : src/engine/animation/ik_system.c.i
+
+src/engine/animation/ik_system.s: src/engine/animation/ik_system.c.s
+.PHONY : src/engine/animation/ik_system.s
+
+# target to generate assembly for a file
+src/engine/animation/ik_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/animation/ik_system.c.s
+.PHONY : src/engine/animation/ik_system.c.s
 
 src/engine/animation/layering/anim_layering_impl.o: src/engine/animation/layering/anim_layering_impl.c.o
 .PHONY : src/engine/animation/layering/anim_layering_impl.o
@@ -7333,14 +7513,6 @@ src/engine/backend/metal/mtl_sync_example.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_example.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_example.c.o
 
-src/engine/backend/metal/mtl_sync_fixes.o: src/engine/backend/metal/mtl_sync_fixes.c.o
-.PHONY : src/engine/backend/metal/mtl_sync_fixes.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_sync_fixes.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_fixes.c.o
-.PHONY : src/engine/backend/metal/mtl_sync_fixes.c.o
-
 src/engine/backend/metal/mtl_sync_manager.o: src/engine/backend/metal/mtl_sync_manager.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_manager.o
 
@@ -8164,6 +8336,30 @@ src/engine/character/animation/ik/ccd_solver.s: src/engine/character/animation/i
 src/engine/character/animation/ik/ccd_solver.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/animation/ik/ccd_solver.c.s
 .PHONY : src/engine/character/animation/ik/ccd_solver.c.s
+
+src/engine/character/animation/ik/character_ik_manager.o: src/engine/character/animation/ik/character_ik_manager.c.o
+.PHONY : src/engine/character/animation/ik/character_ik_manager.o
+
+# target to build an object file
+src/engine/character/animation/ik/character_ik_manager.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/animation/ik/character_ik_manager.c.o
+.PHONY : src/engine/character/animation/ik/character_ik_manager.c.o
+
+src/engine/character/animation/ik/character_ik_manager.i: src/engine/character/animation/ik/character_ik_manager.c.i
+.PHONY : src/engine/character/animation/ik/character_ik_manager.i
+
+# target to preprocess a source file
+src/engine/character/animation/ik/character_ik_manager.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/animation/ik/character_ik_manager.c.i
+.PHONY : src/engine/character/animation/ik/character_ik_manager.c.i
+
+src/engine/character/animation/ik/character_ik_manager.s: src/engine/character/animation/ik/character_ik_manager.c.s
+.PHONY : src/engine/character/animation/ik/character_ik_manager.s
+
+# target to generate assembly for a file
+src/engine/character/animation/ik/character_ik_manager.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/animation/ik/character_ik_manager.c.s
+.PHONY : src/engine/character/animation/ik/character_ik_manager.c.s
 
 src/engine/character/animation/ik/fabrik_solver.o: src/engine/character/animation/ik/fabrik_solver.c.o
 .PHONY : src/engine/character/animation/ik/fabrik_solver.o
@@ -9965,6 +10161,30 @@ src/engine/character/cloth/simulation_cloth/cloth_wind.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/cloth/simulation_cloth/cloth_wind.c.s
 .PHONY : src/engine/character/cloth/simulation_cloth/cloth_wind.c.s
 
+src/engine/character/customization/character_customization.o: src/engine/character/customization/character_customization.c.o
+.PHONY : src/engine/character/customization/character_customization.o
+
+# target to build an object file
+src/engine/character/customization/character_customization.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/customization/character_customization.c.o
+.PHONY : src/engine/character/customization/character_customization.c.o
+
+src/engine/character/customization/character_customization.i: src/engine/character/customization/character_customization.c.i
+.PHONY : src/engine/character/customization/character_customization.i
+
+# target to preprocess a source file
+src/engine/character/customization/character_customization.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/customization/character_customization.c.i
+.PHONY : src/engine/character/customization/character_customization.c.i
+
+src/engine/character/customization/character_customization.s: src/engine/character/customization/character_customization.c.s
+.PHONY : src/engine/character/customization/character_customization.s
+
+# target to generate assembly for a file
+src/engine/character/customization/character_customization.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/character/customization/character_customization.c.s
+.PHONY : src/engine/character/customization/character_customization.c.s
+
 src/engine/character/eyes/eye_rendering/eye_caustics.o: src/engine/character/eyes/eye_rendering/eye_caustics.c.o
 .PHONY : src/engine/character/eyes/eye_rendering/eye_caustics.o
 
@@ -11077,6 +11297,30 @@ src/engine/core/sync/thread_pool.s: src/engine/core/sync/thread_pool.c.s
 src/engine/core/sync/thread_pool.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/sync/thread_pool.c.s
 .PHONY : src/engine/core/sync/thread_pool.c.s
+
+src/engine/core/thread_pool.o: src/engine/core/thread_pool.c.o
+.PHONY : src/engine/core/thread_pool.o
+
+# target to build an object file
+src/engine/core/thread_pool.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/thread_pool.c.o
+.PHONY : src/engine/core/thread_pool.c.o
+
+src/engine/core/thread_pool.i: src/engine/core/thread_pool.c.i
+.PHONY : src/engine/core/thread_pool.i
+
+# target to preprocess a source file
+src/engine/core/thread_pool.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/thread_pool.c.i
+.PHONY : src/engine/core/thread_pool.c.i
+
+src/engine/core/thread_pool.s: src/engine/core/thread_pool.c.s
+.PHONY : src/engine/core/thread_pool.s
+
+# target to generate assembly for a file
+src/engine/core/thread_pool.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/thread_pool.c.s
+.PHONY : src/engine/core/thread_pool.c.s
 
 src/engine/core/threading/job.o: src/engine/core/threading/job.c.o
 .PHONY : src/engine/core/threading/job.o
@@ -15681,6 +15925,30 @@ src/engine/lighting/light_manager.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/lighting/light_manager.c.s
 .PHONY : src/engine/lighting/light_manager.c.s
 
+src/engine/lighting/light_system.o: src/engine/lighting/light_system.c.o
+.PHONY : src/engine/lighting/light_system.o
+
+# target to build an object file
+src/engine/lighting/light_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/lighting/light_system.c.o
+.PHONY : src/engine/lighting/light_system.c.o
+
+src/engine/lighting/light_system.i: src/engine/lighting/light_system.c.i
+.PHONY : src/engine/lighting/light_system.i
+
+# target to preprocess a source file
+src/engine/lighting/light_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/lighting/light_system.c.i
+.PHONY : src/engine/lighting/light_system.c.i
+
+src/engine/lighting/light_system.s: src/engine/lighting/light_system.c.s
+.PHONY : src/engine/lighting/light_system.s
+
+# target to generate assembly for a file
+src/engine/lighting/light_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/lighting/light_system.c.s
+.PHONY : src/engine/lighting/light_system.c.s
+
 src/engine/lighting/lightmaps/directional_lightmaps.o: src/engine/lighting/lightmaps/directional_lightmaps.c.o
 .PHONY : src/engine/lighting/lightmaps/directional_lightmaps.o
 
@@ -18540,30 +18808,6 @@ src/engine/network/multiplayer/core_batch_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/multiplayer/core_batch_impl.c.s
 .PHONY : src/engine/network/multiplayer/core_batch_impl.c.s
 
-src/engine/network/multiplayer/network_impl.o: src/engine/network/multiplayer/network_impl.c.o
-.PHONY : src/engine/network/multiplayer/network_impl.o
-
-# target to build an object file
-src/engine/network/multiplayer/network_impl.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/multiplayer/network_impl.c.o
-.PHONY : src/engine/network/multiplayer/network_impl.c.o
-
-src/engine/network/multiplayer/network_impl.i: src/engine/network/multiplayer/network_impl.c.i
-.PHONY : src/engine/network/multiplayer/network_impl.i
-
-# target to preprocess a source file
-src/engine/network/multiplayer/network_impl.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/multiplayer/network_impl.c.i
-.PHONY : src/engine/network/multiplayer/network_impl.c.i
-
-src/engine/network/multiplayer/network_impl.s: src/engine/network/multiplayer/network_impl.c.s
-.PHONY : src/engine/network/multiplayer/network_impl.s
-
-# target to generate assembly for a file
-src/engine/network/multiplayer/network_impl.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/multiplayer/network_impl.c.s
-.PHONY : src/engine/network/multiplayer/network_impl.c.s
-
 src/engine/network/multiplayer_impl.o: src/engine/network/multiplayer_impl.c.o
 .PHONY : src/engine/network/multiplayer_impl.o
 
@@ -18755,6 +18999,30 @@ src/engine/network/prediction/net_prediction_impl.s: src/engine/network/predicti
 src/engine/network/prediction/net_prediction_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/prediction/net_prediction_impl.c.s
 .PHONY : src/engine/network/prediction/net_prediction_impl.c.s
+
+src/engine/network/protocol/network_protocol.o: src/engine/network/protocol/network_protocol.c.o
+.PHONY : src/engine/network/protocol/network_protocol.o
+
+# target to build an object file
+src/engine/network/protocol/network_protocol.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/protocol/network_protocol.c.o
+.PHONY : src/engine/network/protocol/network_protocol.c.o
+
+src/engine/network/protocol/network_protocol.i: src/engine/network/protocol/network_protocol.c.i
+.PHONY : src/engine/network/protocol/network_protocol.i
+
+# target to preprocess a source file
+src/engine/network/protocol/network_protocol.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/protocol/network_protocol.c.i
+.PHONY : src/engine/network/protocol/network_protocol.c.i
+
+src/engine/network/protocol/network_protocol.s: src/engine/network/protocol/network_protocol.c.s
+.PHONY : src/engine/network/protocol/network_protocol.s
+
+# target to generate assembly for a file
+src/engine/network/protocol/network_protocol.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/protocol/network_protocol.c.s
+.PHONY : src/engine/network/protocol/network_protocol.c.s
 
 src/engine/network/reliable_udp.o: src/engine/network/reliable_udp.c.o
 .PHONY : src/engine/network/reliable_udp.o
@@ -19187,6 +19455,54 @@ src/engine/network/state/snapshot_interpolation.s: src/engine/network/state/snap
 src/engine/network/state/snapshot_interpolation.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/state/snapshot_interpolation.c.s
 .PHONY : src/engine/network/state/snapshot_interpolation.c.s
+
+src/engine/network/state/state_synchronization.o: src/engine/network/state/state_synchronization.c.o
+.PHONY : src/engine/network/state/state_synchronization.o
+
+# target to build an object file
+src/engine/network/state/state_synchronization.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/state/state_synchronization.c.o
+.PHONY : src/engine/network/state/state_synchronization.c.o
+
+src/engine/network/state/state_synchronization.i: src/engine/network/state/state_synchronization.c.i
+.PHONY : src/engine/network/state/state_synchronization.i
+
+# target to preprocess a source file
+src/engine/network/state/state_synchronization.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/state/state_synchronization.c.i
+.PHONY : src/engine/network/state/state_synchronization.c.i
+
+src/engine/network/state/state_synchronization.s: src/engine/network/state/state_synchronization.c.s
+.PHONY : src/engine/network/state/state_synchronization.s
+
+# target to generate assembly for a file
+src/engine/network/state/state_synchronization.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/state/state_synchronization.c.s
+.PHONY : src/engine/network/state/state_synchronization.c.s
+
+src/engine/network/tests/network_stability_tests.o: src/engine/network/tests/network_stability_tests.c.o
+.PHONY : src/engine/network/tests/network_stability_tests.o
+
+# target to build an object file
+src/engine/network/tests/network_stability_tests.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_network_stability.dir/build.make CMakeFiles/test_network_stability.dir/src/engine/network/tests/network_stability_tests.c.o
+.PHONY : src/engine/network/tests/network_stability_tests.c.o
+
+src/engine/network/tests/network_stability_tests.i: src/engine/network/tests/network_stability_tests.c.i
+.PHONY : src/engine/network/tests/network_stability_tests.i
+
+# target to preprocess a source file
+src/engine/network/tests/network_stability_tests.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_network_stability.dir/build.make CMakeFiles/test_network_stability.dir/src/engine/network/tests/network_stability_tests.c.i
+.PHONY : src/engine/network/tests/network_stability_tests.c.i
+
+src/engine/network/tests/network_stability_tests.s: src/engine/network/tests/network_stability_tests.c.s
+.PHONY : src/engine/network/tests/network_stability_tests.s
+
+# target to generate assembly for a file
+src/engine/network/tests/network_stability_tests.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_network_stability.dir/build.make CMakeFiles/test_network_stability.dir/src/engine/network/tests/network_stability_tests.c.s
+.PHONY : src/engine/network/tests/network_stability_tests.c.s
 
 src/engine/network/transport/reliable_channel.o: src/engine/network/transport/reliable_channel.c.o
 .PHONY : src/engine/network/transport/reliable_channel.o
@@ -20003,6 +20319,30 @@ src/engine/physics/demos/physics_demo_framework.s: src/engine/physics/demos/phys
 src/engine/physics/demos/physics_demo_framework.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/physics_demo_framework.c.s
 .PHONY : src/engine/physics/demos/physics_demo_framework.c.s
+
+src/engine/physics/tests/test_physics_ids.o: src/engine/physics/tests/test_physics_ids.c.o
+.PHONY : src/engine/physics/tests/test_physics_ids.o
+
+# target to build an object file
+src/engine/physics/tests/test_physics_ids.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_physics_ids.dir/build.make CMakeFiles/test_physics_ids.dir/src/engine/physics/tests/test_physics_ids.c.o
+.PHONY : src/engine/physics/tests/test_physics_ids.c.o
+
+src/engine/physics/tests/test_physics_ids.i: src/engine/physics/tests/test_physics_ids.c.i
+.PHONY : src/engine/physics/tests/test_physics_ids.i
+
+# target to preprocess a source file
+src/engine/physics/tests/test_physics_ids.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_physics_ids.dir/build.make CMakeFiles/test_physics_ids.dir/src/engine/physics/tests/test_physics_ids.c.i
+.PHONY : src/engine/physics/tests/test_physics_ids.c.i
+
+src/engine/physics/tests/test_physics_ids.s: src/engine/physics/tests/test_physics_ids.c.s
+.PHONY : src/engine/physics/tests/test_physics_ids.s
+
+# target to generate assembly for a file
+src/engine/physics/tests/test_physics_ids.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_physics_ids.dir/build.make CMakeFiles/test_physics_ids.dir/src/engine/physics/tests/test_physics_ids.c.s
+.PHONY : src/engine/physics/tests/test_physics_ids.c.s
 
 src/engine/platform/input/action_mapper_impl.o: src/engine/platform/input/action_mapper_impl.c.o
 .PHONY : src/engine/platform/input/action_mapper_impl.o
@@ -25497,6 +25837,54 @@ src/engine/ui/core/ui_layout_engine.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.s
 .PHONY : src/engine/ui/core/ui_layout_engine.c.s
 
+src/engine/ui/layout/flexbox_layout.o: src/engine/ui/layout/flexbox_layout.c.o
+.PHONY : src/engine/ui/layout/flexbox_layout.o
+
+# target to build an object file
+src/engine/ui/layout/flexbox_layout.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/flexbox_layout.c.o
+.PHONY : src/engine/ui/layout/flexbox_layout.c.o
+
+src/engine/ui/layout/flexbox_layout.i: src/engine/ui/layout/flexbox_layout.c.i
+.PHONY : src/engine/ui/layout/flexbox_layout.i
+
+# target to preprocess a source file
+src/engine/ui/layout/flexbox_layout.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/flexbox_layout.c.i
+.PHONY : src/engine/ui/layout/flexbox_layout.c.i
+
+src/engine/ui/layout/flexbox_layout.s: src/engine/ui/layout/flexbox_layout.c.s
+.PHONY : src/engine/ui/layout/flexbox_layout.s
+
+# target to generate assembly for a file
+src/engine/ui/layout/flexbox_layout.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/flexbox_layout.c.s
+.PHONY : src/engine/ui/layout/flexbox_layout.c.s
+
+src/engine/ui/layout/grid_layout.o: src/engine/ui/layout/grid_layout.c.o
+.PHONY : src/engine/ui/layout/grid_layout.o
+
+# target to build an object file
+src/engine/ui/layout/grid_layout.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/grid_layout.c.o
+.PHONY : src/engine/ui/layout/grid_layout.c.o
+
+src/engine/ui/layout/grid_layout.i: src/engine/ui/layout/grid_layout.c.i
+.PHONY : src/engine/ui/layout/grid_layout.i
+
+# target to preprocess a source file
+src/engine/ui/layout/grid_layout.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/grid_layout.c.i
+.PHONY : src/engine/ui/layout/grid_layout.c.i
+
+src/engine/ui/layout/grid_layout.s: src/engine/ui/layout/grid_layout.c.s
+.PHONY : src/engine/ui/layout/grid_layout.s
+
+# target to generate assembly for a file
+src/engine/ui/layout/grid_layout.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/grid_layout.c.s
+.PHONY : src/engine/ui/layout/grid_layout.c.s
+
 src/engine/ui/layout/layout_solver.o: src/engine/ui/layout/layout_solver.c.o
 .PHONY : src/engine/ui/layout/layout_solver.o
 
@@ -25712,6 +26100,30 @@ src/engine/ui/ui_widgets.s: src/engine/ui/ui_widgets.c.s
 src/engine/ui/ui_widgets.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.s
 .PHONY : src/engine/ui/ui_widgets.c.s
+
+src/engine/ui/widgets/widget.o: src/engine/ui/widgets/widget.c.o
+.PHONY : src/engine/ui/widgets/widget.o
+
+# target to build an object file
+src/engine/ui/widgets/widget.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/widget.c.o
+.PHONY : src/engine/ui/widgets/widget.c.o
+
+src/engine/ui/widgets/widget.i: src/engine/ui/widgets/widget.c.i
+.PHONY : src/engine/ui/widgets/widget.i
+
+# target to preprocess a source file
+src/engine/ui/widgets/widget.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/widget.c.i
+.PHONY : src/engine/ui/widgets/widget.c.i
+
+src/engine/ui/widgets/widget.s: src/engine/ui/widgets/widget.c.s
+.PHONY : src/engine/ui/widgets/widget.s
+
+# target to generate assembly for a file
+src/engine/ui/widgets/widget.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/widget.c.s
+.PHONY : src/engine/ui/widgets/widget.c.s
 
 src/engine/vendor/lua/lapi.o: src/engine/vendor/lua/lapi.c.o
 .PHONY : src/engine/vendor/lua/lapi.o
@@ -29157,6 +29569,33 @@ tests/test_crafting.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/tests/test_crafting.c.s
 .PHONY : tests/test_crafting.c.s
 
+tests/test_framework_unified.o: tests/test_framework_unified.c.o
+.PHONY : tests/test_framework_unified.o
+
+# target to build an object file
+tests/test_framework_unified.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_physics_ids.dir/build.make CMakeFiles/test_physics_ids.dir/tests/test_framework_unified.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_network_stability.dir/build.make CMakeFiles/test_network_stability.dir/tests/test_framework_unified.c.o
+.PHONY : tests/test_framework_unified.c.o
+
+tests/test_framework_unified.i: tests/test_framework_unified.c.i
+.PHONY : tests/test_framework_unified.i
+
+# target to preprocess a source file
+tests/test_framework_unified.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_physics_ids.dir/build.make CMakeFiles/test_physics_ids.dir/tests/test_framework_unified.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_network_stability.dir/build.make CMakeFiles/test_network_stability.dir/tests/test_framework_unified.c.i
+.PHONY : tests/test_framework_unified.c.i
+
+tests/test_framework_unified.s: tests/test_framework_unified.c.s
+.PHONY : tests/test_framework_unified.s
+
+# target to generate assembly for a file
+tests/test_framework_unified.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_physics_ids.dir/build.make CMakeFiles/test_physics_ids.dir/tests/test_framework_unified.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_network_stability.dir/build.make CMakeFiles/test_network_stability.dir/tests/test_framework_unified.c.s
+.PHONY : tests/test_framework_unified.c.s
+
 tests/test_player_food.o: tests/test_player_food.c.o
 .PHONY : tests/test_player_food.o
 
@@ -29189,6 +29628,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... test"
 	@echo "... compile_instancing_shaders"
 	@echo "... compile_shaders"
 	@echo "... validate_assets"
@@ -29200,6 +29640,8 @@ help:
 	@echo "... full_integration_test"
 	@echo "... physics_demos"
 	@echo "... test_crafting"
+	@echo "... test_network_stability"
+	@echo "... test_physics_ids"
 	@echo "... test_player_food"
 	@echo "... test_unreal_features"
 	@echo "... src/engine/ai/advanced/extended_ai_complete.o"
@@ -29382,12 +29824,21 @@ help:
 	@echo "... src/engine/ai/npc_advanced/utility_ai.o"
 	@echo "... src/engine/ai/npc_advanced/utility_ai.i"
 	@echo "... src/engine/ai/npc_advanced/utility_ai.s"
+	@echo "... src/engine/ai/npc_ai.o"
+	@echo "... src/engine/ai/npc_ai.i"
+	@echo "... src/engine/ai/npc_ai.s"
 	@echo "... src/engine/ai/npc_ai_impl.o"
 	@echo "... src/engine/ai/npc_ai_impl.i"
 	@echo "... src/engine/ai/npc_ai_impl.s"
+	@echo "... src/engine/ai/npc_combat.o"
+	@echo "... src/engine/ai/npc_combat.i"
+	@echo "... src/engine/ai/npc_combat.s"
 	@echo "... src/engine/ai/npc_dialogue.o"
 	@echo "... src/engine/ai/npc_dialogue.i"
 	@echo "... src/engine/ai/npc_dialogue.s"
+	@echo "... src/engine/ai/npc_schedule.o"
+	@echo "... src/engine/ai/npc_schedule.i"
+	@echo "... src/engine/ai/npc_schedule.s"
 	@echo "... src/engine/ai/npc_spawning.o"
 	@echo "... src/engine/ai/npc_spawning.i"
 	@echo "... src/engine/ai/npc_spawning.s"
@@ -29490,6 +29941,9 @@ help:
 	@echo "... src/engine/animation/blending.o"
 	@echo "... src/engine/animation/blending.i"
 	@echo "... src/engine/animation/blending.s"
+	@echo "... src/engine/animation/blending/additive_blend.o"
+	@echo "... src/engine/animation/blending/additive_blend.i"
+	@echo "... src/engine/animation/blending/additive_blend.s"
 	@echo "... src/engine/animation/blending/inertialization.o"
 	@echo "... src/engine/animation/blending/inertialization.i"
 	@echo "... src/engine/animation/blending/inertialization.s"
@@ -29532,6 +29986,9 @@ help:
 	@echo "... src/engine/animation/ik/spine_ik_solver.o"
 	@echo "... src/engine/animation/ik/spine_ik_solver.i"
 	@echo "... src/engine/animation/ik/spine_ik_solver.s"
+	@echo "... src/engine/animation/ik_advanced/ccd_ik.o"
+	@echo "... src/engine/animation/ik_advanced/ccd_ik.i"
+	@echo "... src/engine/animation/ik_advanced/ccd_ik.s"
 	@echo "... src/engine/animation/ik_advanced/fabrik_impl.o"
 	@echo "... src/engine/animation/ik_advanced/fabrik_impl.i"
 	@echo "... src/engine/animation/ik_advanced/fabrik_impl.s"
@@ -29556,6 +30013,9 @@ help:
 	@echo "... src/engine/animation/ik_solver.o"
 	@echo "... src/engine/animation/ik_solver.i"
 	@echo "... src/engine/animation/ik_solver.s"
+	@echo "... src/engine/animation/ik_system.o"
+	@echo "... src/engine/animation/ik_system.i"
+	@echo "... src/engine/animation/ik_system.s"
 	@echo "... src/engine/animation/layering/anim_layering_impl.o"
 	@echo "... src/engine/animation/layering/anim_layering_impl.i"
 	@echo "... src/engine/animation/layering/anim_layering_impl.s"
@@ -30083,7 +30543,6 @@ help:
 	@echo "... src/engine/backend/metal/mtl_statistics.o"
 	@echo "... src/engine/backend/metal/mtl_swapchain.o"
 	@echo "... src/engine/backend/metal/mtl_sync_example.o"
-	@echo "... src/engine/backend/metal/mtl_sync_fixes.o"
 	@echo "... src/engine/backend/metal/mtl_sync_manager.o"
 	@echo "... src/engine/backend/metal/mtl_sync_primitives.o"
 	@echo "... src/engine/backend/metal/mtl_texture.o"
@@ -30187,6 +30646,9 @@ help:
 	@echo "... src/engine/character/animation/ik/ccd_solver.o"
 	@echo "... src/engine/character/animation/ik/ccd_solver.i"
 	@echo "... src/engine/character/animation/ik/ccd_solver.s"
+	@echo "... src/engine/character/animation/ik/character_ik_manager.o"
+	@echo "... src/engine/character/animation/ik/character_ik_manager.i"
+	@echo "... src/engine/character/animation/ik/character_ik_manager.s"
 	@echo "... src/engine/character/animation/ik/fabrik_solver.o"
 	@echo "... src/engine/character/animation/ik/fabrik_solver.i"
 	@echo "... src/engine/character/animation/ik/fabrik_solver.s"
@@ -30412,6 +30874,9 @@ help:
 	@echo "... src/engine/character/cloth/simulation_cloth/cloth_wind.o"
 	@echo "... src/engine/character/cloth/simulation_cloth/cloth_wind.i"
 	@echo "... src/engine/character/cloth/simulation_cloth/cloth_wind.s"
+	@echo "... src/engine/character/customization/character_customization.o"
+	@echo "... src/engine/character/customization/character_customization.i"
+	@echo "... src/engine/character/customization/character_customization.s"
 	@echo "... src/engine/character/eyes/eye_rendering/eye_caustics.o"
 	@echo "... src/engine/character/eyes/eye_rendering/eye_caustics.i"
 	@echo "... src/engine/character/eyes/eye_rendering/eye_caustics.s"
@@ -30547,6 +31012,9 @@ help:
 	@echo "... src/engine/core/sync/thread_pool.o"
 	@echo "... src/engine/core/sync/thread_pool.i"
 	@echo "... src/engine/core/sync/thread_pool.s"
+	@echo "... src/engine/core/thread_pool.o"
+	@echo "... src/engine/core/thread_pool.i"
+	@echo "... src/engine/core/thread_pool.s"
 	@echo "... src/engine/core/threading/job.o"
 	@echo "... src/engine/core/threading/job.i"
 	@echo "... src/engine/core/threading/job.s"
@@ -31122,6 +31590,9 @@ help:
 	@echo "... src/engine/lighting/light_manager.o"
 	@echo "... src/engine/lighting/light_manager.i"
 	@echo "... src/engine/lighting/light_manager.s"
+	@echo "... src/engine/lighting/light_system.o"
+	@echo "... src/engine/lighting/light_system.i"
+	@echo "... src/engine/lighting/light_system.s"
 	@echo "... src/engine/lighting/lightmaps/directional_lightmaps.o"
 	@echo "... src/engine/lighting/lightmaps/directional_lightmaps.i"
 	@echo "... src/engine/lighting/lightmaps/directional_lightmaps.s"
@@ -31479,9 +31950,6 @@ help:
 	@echo "... src/engine/network/multiplayer/core_batch_impl.o"
 	@echo "... src/engine/network/multiplayer/core_batch_impl.i"
 	@echo "... src/engine/network/multiplayer/core_batch_impl.s"
-	@echo "... src/engine/network/multiplayer/network_impl.o"
-	@echo "... src/engine/network/multiplayer/network_impl.i"
-	@echo "... src/engine/network/multiplayer/network_impl.s"
 	@echo "... src/engine/network/multiplayer_impl.o"
 	@echo "... src/engine/network/multiplayer_impl.i"
 	@echo "... src/engine/network/multiplayer_impl.s"
@@ -31506,6 +31974,9 @@ help:
 	@echo "... src/engine/network/prediction/net_prediction_impl.o"
 	@echo "... src/engine/network/prediction/net_prediction_impl.i"
 	@echo "... src/engine/network/prediction/net_prediction_impl.s"
+	@echo "... src/engine/network/protocol/network_protocol.o"
+	@echo "... src/engine/network/protocol/network_protocol.i"
+	@echo "... src/engine/network/protocol/network_protocol.s"
 	@echo "... src/engine/network/reliable_udp.o"
 	@echo "... src/engine/network/reliable_udp.i"
 	@echo "... src/engine/network/reliable_udp.s"
@@ -31560,6 +32031,12 @@ help:
 	@echo "... src/engine/network/state/snapshot_interpolation.o"
 	@echo "... src/engine/network/state/snapshot_interpolation.i"
 	@echo "... src/engine/network/state/snapshot_interpolation.s"
+	@echo "... src/engine/network/state/state_synchronization.o"
+	@echo "... src/engine/network/state/state_synchronization.i"
+	@echo "... src/engine/network/state/state_synchronization.s"
+	@echo "... src/engine/network/tests/network_stability_tests.o"
+	@echo "... src/engine/network/tests/network_stability_tests.i"
+	@echo "... src/engine/network/tests/network_stability_tests.s"
 	@echo "... src/engine/network/transport/reliable_channel.o"
 	@echo "... src/engine/network/transport/reliable_channel.i"
 	@echo "... src/engine/network/transport/reliable_channel.s"
@@ -31662,6 +32139,9 @@ help:
 	@echo "... src/engine/physics/demos/physics_demo_framework.o"
 	@echo "... src/engine/physics/demos/physics_demo_framework.i"
 	@echo "... src/engine/physics/demos/physics_demo_framework.s"
+	@echo "... src/engine/physics/tests/test_physics_ids.o"
+	@echo "... src/engine/physics/tests/test_physics_ids.i"
+	@echo "... src/engine/physics/tests/test_physics_ids.s"
 	@echo "... src/engine/platform/input/action_mapper_impl.o"
 	@echo "... src/engine/platform/input/action_mapper_impl.i"
 	@echo "... src/engine/platform/input/action_mapper_impl.s"
@@ -32347,6 +32827,12 @@ help:
 	@echo "... src/engine/ui/core/ui_layout_engine.o"
 	@echo "... src/engine/ui/core/ui_layout_engine.i"
 	@echo "... src/engine/ui/core/ui_layout_engine.s"
+	@echo "... src/engine/ui/layout/flexbox_layout.o"
+	@echo "... src/engine/ui/layout/flexbox_layout.i"
+	@echo "... src/engine/ui/layout/flexbox_layout.s"
+	@echo "... src/engine/ui/layout/grid_layout.o"
+	@echo "... src/engine/ui/layout/grid_layout.i"
+	@echo "... src/engine/ui/layout/grid_layout.s"
 	@echo "... src/engine/ui/layout/layout_solver.o"
 	@echo "... src/engine/ui/layout/layout_solver.i"
 	@echo "... src/engine/ui/layout/layout_solver.s"
@@ -32374,6 +32860,9 @@ help:
 	@echo "... src/engine/ui/ui_widgets.o"
 	@echo "... src/engine/ui/ui_widgets.i"
 	@echo "... src/engine/ui/ui_widgets.s"
+	@echo "... src/engine/ui/widgets/widget.o"
+	@echo "... src/engine/ui/widgets/widget.i"
+	@echo "... src/engine/ui/widgets/widget.s"
 	@echo "... src/engine/vendor/lua/lapi.o"
 	@echo "... src/engine/vendor/lua/lapi.i"
 	@echo "... src/engine/vendor/lua/lapi.s"
@@ -32800,6 +33289,9 @@ help:
 	@echo "... tests/test_crafting.o"
 	@echo "... tests/test_crafting.i"
 	@echo "... tests/test_crafting.s"
+	@echo "... tests/test_framework_unified.o"
+	@echo "... tests/test_framework_unified.i"
+	@echo "... tests/test_framework_unified.s"
 	@echo "... tests/test_player_food.o"
 	@echo "... tests/test_player_food.i"
 	@echo "... tests/test_player_food.s"

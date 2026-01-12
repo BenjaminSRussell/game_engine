@@ -5,8 +5,10 @@
 #include <include/math/quat.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #define MAX_RIGID_BODIES 1024
+#define VALIDATION_EPSILON 1e-6f
 
 typedef struct {
   EntityID entity_id;
@@ -402,4 +404,218 @@ void rigid_body_set_box_inertia(RigidBody *body, const Vec3 *dimensions) {
   };
   
   rigid_body_set_inertia_tensor(body, &box_inertia);
+}
+
+// ============================================================================
+// Validation Functions
+// ============================================================================
+
+static bool is_finite_vec3(const Vec3* v) {
+    return isfinite(v->x) && isfinite(v->y) && isfinite(v->z);
+}
+
+static bool is_valid_quat(const Quat* q) {
+    return isfinite(q->w) && isfinite(q->x) && isfinite(q->y) && isfinite(q->z) &&
+           fabsf(quat_length(q) - 1.0f) < VALIDATION_EPSILON;
+}
+
+static bool is_valid_mass(f32 mass) {
+    return isfinite(mass) && mass >= 0.0f;
+}
+
+bool rigid_body_validate(const RigidBody* body) {
+    if (!body) {
+        LOG_ERROR("Rigid body validation failed: NULL pointer");
+        return false;
+    }
+    
+    const RigidBodyData* data = (const RigidBodyData*)body;
+    bool valid = true;
+    
+    // Validate entity ID
+    if (data->entity_id == 0) {
+        LOG_ERROR("Rigid body validation failed: Invalid entity ID (0)");
+        valid = false;
+    }
+    
+    // Validate position
+    if (!is_finite_vec3(&data->position)) {
+        LOG_ERROR("Rigid body validation failed: Invalid position (%.3f, %.3f, %.3f)",
+                 data->position.x, data->position.y, data->position.z);
+        valid = false;
+    }
+    
+    // Validate rotation
+    if (!is_valid_quat(&data->rotation)) {
+        LOG_ERROR("Rigid body validation failed: Invalid rotation (%.3f, %.3f, %.3f, %.3f)",
+                 data->rotation.w, data->rotation.x, data->rotation.y, data->rotation.z);
+        valid = false;
+    }
+    
+    // Validate velocities
+    if (!is_finite_vec3(&data->linear_velocity)) {
+        LOG_ERROR("Rigid body validation failed: Invalid linear velocity");
+        valid = false;
+    }
+    
+    if (!is_finite_vec3(&data->angular_velocity)) {
+        LOG_ERROR("Rigid body validation failed: Invalid angular velocity");
+        valid = false;
+    }
+    
+    // Validate forces and torques
+    if (!is_finite_vec3(&data->force_accumulator)) {
+        LOG_ERROR("Rigid body validation failed: Invalid force accumulator");
+        valid = false;
+    }
+    
+    if (!is_finite_vec3(&data->torque_accumulator)) {
+        LOG_ERROR("Rigid body validation failed: Invalid torque accumulator");
+        valid = false;
+    }
+    
+    // Validate mass
+    if (!is_valid_mass(data->mass)) {
+        LOG_ERROR("Rigid body validation failed: Invalid mass (%.3f)", data->mass);
+        valid = false;
+    }
+    
+    // Validate inverse mass consistency
+    f32 expected_inverse_mass = (data->mass > 0.0f) ? 1.0f / data->mass : 0.0f;
+    if (fabsf(data->inverse_mass - expected_inverse_mass) > VALIDATION_EPSILON) {
+        LOG_ERROR("Rigid body validation failed: Inverse mass inconsistency");
+        valid = false;
+    }
+    
+    // Validate material properties
+    if (!isfinite(data->restitution) || data->restitution < 0.0f || data->restitution > 1.0f) {
+        LOG_ERROR("Rigid body validation failed: Invalid restitution (%.3f)", data->restitution);
+        valid = false;
+    }
+    
+    if (!isfinite(data->friction) || data->friction < 0.0f || data->friction > 1.0f) {
+        LOG_ERROR("Rigid body validation failed: Invalid friction (%.3f)", data->friction);
+        valid = false;
+    }
+    
+    // Validate body type consistency
+    if (data->is_static && data->type != BODY_TYPE_STATIC) {
+        LOG_ERROR("Rigid body validation failed: Static flag inconsistency");
+        valid = false;
+    }
+    
+    if (!data->is_static && data->type == BODY_TYPE_STATIC) {
+        LOG_ERROR("Rigid body validation failed: Type inconsistency for dynamic body");
+        valid = false;
+    }
+    
+    // Validate static body properties
+    if (data->is_static) {
+        if (vec3_length_squared(&data->linear_velocity) > VALIDATION_EPSILON) {
+            LOG_ERROR("Rigid body validation failed: Static body has non-zero linear velocity");
+            valid = false;
+        }
+        
+        if (vec3_length_squared(&data->angular_velocity) > VALIDATION_EPSILON) {
+            LOG_ERROR("Rigid body validation failed: Static body has non-zero angular velocity");
+            valid = false;
+        }
+    }
+    
+    return valid;
+}
+
+bool rigid_body_validate_all(void) {
+    bool all_valid = true;
+    u32 invalid_count = 0;
+    
+    for (u32 i = 0; i < g_rigid_body_count; i++) {
+        if (!rigid_body_validate((RigidBody*)&g_rigid_bodies[i])) {
+            invalid_count++;
+            all_valid = false;
+        }
+    }
+    
+    if (!all_valid) {
+        LOG_ERROR("Rigid body validation failed: %u/%u bodies are invalid", 
+                 invalid_count, g_rigid_body_count);
+    } else {
+        LOG_DEBUG("All %u rigid bodies passed validation", g_rigid_body_count);
+    }
+    
+    return all_valid;
+}
+
+void rigid_body_debug_info(const RigidBody* body) {
+    if (!body) {
+        LOG_ERROR("Cannot debug NULL rigid body");
+        return;
+    }
+    
+    const RigidBodyData* data = (const RigidBodyData*)body;
+    
+    LOG_INFO("=== Rigid Body Debug Info ===");
+    LOG_INFO("Entity ID: %u", data->entity_id);
+    LOG_INFO("Type: %s", data->is_static ? "Static" : "Dynamic");
+    LOG_INFO("Mass: %.3f", data->mass);
+    LOG_INFO("Position: (%.3f, %.3f, %.3f)", data->position.x, data->position.y, data->position.z);
+    LOG_INFO("Rotation: (%.3f, %.3f, %.3f, %.3f)", 
+             data->rotation.w, data->rotation.x, data->rotation.y, data->rotation.z);
+    LOG_INFO("Linear Velocity: (%.3f, %.3f, %.3f)", 
+             data->linear_velocity.x, data->linear_velocity.y, data->linear_velocity.z);
+    LOG_INFO("Angular Velocity: (%.3f, %.3f, %.3f)", 
+             data->angular_velocity.x, data->angular_velocity.y, data->angular_velocity.z);
+    LOG_INFO("Restitution: %.3f", data->restitution);
+    LOG_INFO("Friction: %.3f", data->friction);
+    LOG_INFO("Is Awake: %s", data->is_awake ? "Yes" : "No");
+    LOG_INFO("Collision Layer: %u", data->collision_layer);
+    LOG_INFO("Collision Mask: %u", data->collision_mask);
+    LOG_INFO("Validation: %s", rigid_body_validate(body) ? "PASSED" : "FAILED");
+    LOG_INFO("==============================");
+}
+
+void rigid_body_system_debug_stats(void) {
+    LOG_INFO("=== Rigid Body System Statistics ===");
+    LOG_INFO("Total Bodies: %u/%u", g_rigid_body_count, MAX_RIGID_BODIES);
+    
+    u32 dynamic_count = 0;
+    u32 static_count = 0;
+    u32 awake_count = 0;
+    u32 sleeping_count = 0;
+    
+    for (u32 i = 0; i < g_rigid_body_count; i++) {
+        const RigidBodyData* data = &g_rigid_bodies[i];
+        
+        if (data->is_static) {
+            static_count++;
+        } else {
+            dynamic_count++;
+        }
+        
+        if (data->is_awake) {
+            awake_count++;
+        } else {
+            sleeping_count++;
+        }
+    }
+    
+    LOG_INFO("Dynamic Bodies: %u", dynamic_count);
+    LOG_INFO("Static Bodies: %u", static_count);
+    LOG_INFO("Awake Bodies: %u", awake_count);
+    LOG_INFO("Sleeping Bodies: %u", sleeping_count);
+    
+    // Calculate system-wide energy
+    f32 total_kinetic_energy = 0.0f;
+    for (u32 i = 0; i < g_rigid_body_count; i++) {
+        const RigidBodyData* data = &g_rigid_bodies[i];
+        if (!data->is_static && data->is_awake) {
+            f32 linear_ke = 0.5f * data->mass * vec3_length_squared(&data->linear_velocity);
+            // Angular kinetic energy would require inertia tensor, simplified here
+            total_kinetic_energy += linear_ke;
+        }
+    }
+    
+    LOG_INFO("Total Kinetic Energy: %.3f J", total_kinetic_energy);
+    LOG_INFO("System Validation: %s", rigid_body_validate_all() ? "PASSED" : "FAILED");
+    LOG_INFO("===================================");
 }

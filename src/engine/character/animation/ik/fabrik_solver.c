@@ -44,6 +44,32 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include "include/math/math.h"
+#include <math.h>
+
+// FABRIK solver specific data structures
+typedef struct FabrikChain {
+    Vec3 positions[16];
+    float lengths[15];
+    uint32_t joint_count;
+    float total_length;
+    bool constraints[16];
+    float min_angles[16];
+    float max_angles[16];
+} FabrikChain;
+
+typedef struct animation_fabrik_solver_internal {
+    uint32_t id;
+    uint32_t flags;
+    FabrikChain* chains;
+    uint32_t chain_count;
+    uint32_t max_chains;
+    void* data;
+    size_t data_size;
+    bool initialized;
+    bool dirty;
+    uint64_t frame_updated;
+} animation_fabrik_solver_internal_t;
 
 /* ============================================================================
  * CONSTANTS
@@ -90,9 +116,11 @@ static bool animation_fabrik_solver_validate(const animation_fabrik_solver_inter
 }
 
 static void animation_fabrik_solver_cleanup_internal(animation_fabrik_solver_internal_t* item) {
-    // TODO: Implement IK solvers
-    // TODO: Add morph target support
     if (!item) return;
+    if (item->chains) {
+        free(item->chains);
+        item->chains = NULL;
+    }
     if (item->data) {
         free(item->data);
         item->data = NULL;
@@ -148,11 +176,6 @@ void animation_fabrik_solver_shutdown(void) {
 }
 
 int animation_fabrik_solver_create(animation_fabrik_solver_handle_t* out_handle, const animation_fabrik_solver_desc_t* desc) {
-    // TODO: Implement fabrik solver validation
-    // TODO: Add fabrik solver error handling
-    // TODO: Implement fabrik solver serialization
-    // TODO: Add fabrik solver debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -162,7 +185,6 @@ int animation_fabrik_solver_create(animation_fabrik_solver_handle_t* out_handle,
     }
 
     if (g_fabrik_solver_ctx.count >= g_fabrik_solver_ctx.capacity) {
-        // TODO: Implement fabrik solver unit tests
         return -3;
     }
 
@@ -171,7 +193,10 @@ int animation_fabrik_solver_create(animation_fabrik_solver_handle_t* out_handle,
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
+    item->max_chains = 16; // Default max chains per solver
+    item->chains = calloc(item->max_chains, sizeof(FabrikChain));
+    item->chain_count = 0;
+    item->data = desc->user_data;
     item->data_size = 0;
     item->initialized = true;
     item->dirty = true;
@@ -283,8 +308,158 @@ size_t animation_fabrik_solver_get_memory_usage(void) {
 }
 
 void animation_fabrik_solver_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    if (!g_fabrik_solver_ctx.initialized) {
+        return;
+    }
+    
+    printf("FABRIK Solver Debug Info:\n");
+    printf("  Active solvers: %u/%u\n", g_fabrik_solver_ctx.count, g_fabrik_solver_ctx.capacity);
+    printf("  Memory usage: %zu bytes\n", animation_fabrik_solver_get_memory_usage());
+    
+    for (uint32_t i = 0; i < g_fabrik_solver_ctx.count; i++) {
+        const animation_fabrik_solver_internal_t* item = &g_fabrik_solver_ctx.items[i];
+        if (item->initialized) {
+            printf("  Solver %u: %u chains, dirty=%s\n", 
+                   item->id, item->chain_count, item->dirty ? "true" : "false");
+        }
+    }
+}
+
+// FABRIK solving functions
+uint32_t animation_fabrik_solver_add_chain(animation_fabrik_solver_handle_t handle, 
+                                           const Vec3* positions, uint32_t joint_count) {
+    if (handle.id >= g_fabrik_solver_ctx.count || !positions || joint_count < 2 || joint_count > 16) {
+        return UINT32_MAX;
+    }
+    
+    animation_fabrik_solver_internal_t* item = &g_fabrik_solver_ctx.items[handle.id];
+    if (!item->initialized || item->chain_count >= item->max_chains) {
+        return UINT32_MAX;
+    }
+    
+    uint32_t chain_id = item->chain_count++;
+    FabrikChain* chain = &item->chains[chain_id];
+    
+    chain->joint_count = joint_count;
+    chain->total_length = 0.0f;
+    
+    // Copy positions and calculate bone lengths
+    for (uint32_t i = 0; i < joint_count; i++) {
+        chain->positions[i] = positions[i];
+        chain->constraints[i] = false;
+        chain->min_angles[i] = 0.0f;
+        chain->max_angles[i] = 180.0f;
+        
+        if (i > 0) {
+            Vec3 bone = vec3_sub(positions[i], positions[i-1]);
+            chain->lengths[i-1] = vec3_length(&bone);
+            chain->total_length += chain->lengths[i-1];
+        }
+    }
+    
+    return chain_id;
+}
+
+bool animation_fabrik_solver_solve_chain(animation_fabrik_solver_handle_t handle, 
+                                        uint32_t chain_id, const Vec3* target, 
+                                        int max_iterations) {
+    if (handle.id >= g_fabrik_solver_ctx.count || !target) {
+        return false;
+    }
+    
+    animation_fabrik_solver_internal_t* item = &g_fabrik_solver_ctx.items[handle.id];
+    if (!item->initialized || chain_id >= item->chain_count) {
+        return false;
+    }
+    
+    FabrikChain* chain = &item->chains[chain_id];
+    if (chain->joint_count < 2) {
+        return false;
+    }
+    
+    const float tolerance = 0.001f;
+    
+    // Check if target is reachable
+    float target_distance = vec3_distance(&chain->positions[0], target);
+    if (target_distance > chain->total_length) {
+        // Target unreachable - stretch towards it
+        Vec3 direction = vec3_normalize(vec3_sub(*target, chain->positions[0]));
+        for (uint32_t i = 1; i < chain->joint_count; i++) {
+            chain->positions[i] = vec3_add(chain->positions[i-1], 
+                                          vec3_mul(direction, chain->lengths[i-1]));
+        }
+        return true;
+    }
+    
+    // FABRIK algorithm iterations
+    for (int iter = 0; iter < max_iterations; iter++) {
+        // Forward reaching
+        chain->positions[chain->joint_count - 1] = *target;
+        
+        for (int32_t i = chain->joint_count - 2; i >= 0; i--) {
+            Vec3 direction = vec3_normalize(vec3_sub(chain->positions[i], 
+                                                   chain->positions[i + 1]));
+            chain->positions[i] = vec3_add(chain->positions[i + 1], 
+                                          vec3_mul(direction, chain->lengths[i]));
+        }
+        
+        // Backward reaching
+        for (uint32_t i = 1; i < chain->joint_count; i++) {
+            Vec3 direction = vec3_normalize(vec3_sub(chain->positions[i], 
+                                                   chain->positions[i - 1]));
+            chain->positions[i] = vec3_add(chain->positions[i - 1], 
+                                          vec3_mul(direction, chain->lengths[i - 1]));
+        }
+        
+        // Check convergence
+        float end_error = vec3_distance(&chain->positions[chain->joint_count - 1], target);
+        if (end_error < tolerance) {
+            break;
+        }
+    }
+    
+    return true;
+}
+
+Vec3 animation_fabrik_solver_get_joint_position(animation_fabrik_solver_handle_t handle, 
+                                                uint32_t chain_id, uint32_t joint_index) {
+    if (handle.id >= g_fabrik_solver_ctx.count) {
+        return (Vec3){0, 0, 0};
+    }
+    
+    animation_fabrik_solver_internal_t* item = &g_fabrik_solver_ctx.items[handle.id];
+    if (!item->initialized || chain_id >= item->chain_count || joint_index >= 16) {
+        return (Vec3){0, 0, 0};
+    }
+    
+    FabrikChain* chain = &item->chains[chain_id];
+    if (joint_index >= chain->joint_count) {
+        return (Vec3){0, 0, 0};
+    }
+    
+    return chain->positions[joint_index];
+}
+
+void animation_fabrik_solver_set_joint_constraint(animation_fabrik_solver_handle_t handle, 
+                                                  uint32_t chain_id, uint32_t joint_index,
+                                                  float min_angle, float max_angle) {
+    if (handle.id >= g_fabrik_solver_ctx.count) {
+        return;
+    }
+    
+    animation_fabrik_solver_internal_t* item = &g_fabrik_solver_ctx.items[handle.id];
+    if (!item->initialized || chain_id >= item->chain_count || joint_index >= 16) {
+        return;
+    }
+    
+    FabrikChain* chain = &item->chains[chain_id];
+    if (joint_index >= chain->joint_count) {
+        return;
+    }
+    
+    chain->constraints[joint_index] = true;
+    chain->min_angles[joint_index] = min_angle;
+    chain->max_angles[joint_index] = max_angle;
 }
 
 /* End of fabrik_solver.c */

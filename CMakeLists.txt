@@ -401,7 +401,7 @@ endif()
 # ===========================================
 # Unit Tests (Temporarily disabled due to missing files)
 # ===========================================
-# enable_testing()
+enable_testing()
 
 # PHASE 1: Integrate Catch2 testing framework
 if(EXISTS "${CMAKE_SOURCE_DIR}/Vendor/Catch2/CMakeLists.txt")
@@ -422,25 +422,22 @@ endif()
 
 # Helper macro to add test
 macro(add_engine_test name source)
-    # add_executable(${name} ${source} ${CMAKE_SOURCE_DIR}/tests/test_framework_unified.c)
-    # target_link_libraries(${name} PRIVATE Engine)
-    # target_include_directories(${name} PRIVATE
-    #     ${CMAKE_SOURCE_DIR}/src/engine/include
-    #     ${CMAKE_SOURCE_DIR}/src/engine
-    #     ${CMAKE_SOURCE_DIR}/test
-    #     ${CMAKE_SOURCE_DIR}/tests
-    # )
-    # add_test(NAME ${name} COMMAND ${name})
+    add_executable(${name} ${source} ${CMAKE_SOURCE_DIR}/tests/test_framework_unified.c)
+    target_link_libraries(${name} PRIVATE Engine)
+    target_include_directories(${name} PRIVATE
+        ${CMAKE_SOURCE_DIR}/src/engine/include
+        ${CMAKE_SOURCE_DIR}/src/engine
+        ${CMAKE_SOURCE_DIR}/test
+        ${CMAKE_SOURCE_DIR}/tests
+    )
+    add_test(NAME ${name} COMMAND ${name})
 endmacro()
 
-# Render Graph Tests
-# add_engine_test(test_render_graph test/test_render_graph.c)
+# Physics Unit Tests
+add_engine_test(test_physics_ids src/engine/physics/tests/test_physics_ids.c)
 
-# SIMD Math Tests (Physics DOD Foundation - Phase 1)
-# add_engine_test(test_simd_math tests/test_simd_math.c)
-
-# SoA Container Tests (Physics DOD - Phase 2)
-# add_engine_test(test_soa_container tests/test_soa_container.c)
+# Network Unit Tests  
+add_engine_test(test_network_stability src/engine/network/tests/network_stability_tests.c)
 
 # Physics Integration Tests & Benchmark (Physics DOD - Phase 2)
 # add_engine_test(test_physics_integration tests/test_physics_integration.c)

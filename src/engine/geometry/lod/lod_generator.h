@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "geometry/mesh/mesh_data.h"
+#include "geometry/geometry_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -55,11 +55,11 @@ typedef struct lod_stats {
 
 // LOD chain structure
 typedef struct lod_chain {
-    mesh_gpu_data_t* lods[8];          // GPU mesh data for each LOD
-    float switch_distances[8];          // Screen coverage thresholds
-    float geometric_errors[8];          // Geometric error for each LOD
-    uint32_t lod_count;                 // Number of LODs in chain
-    lod_generation_config_t config;     // Config used to generate
+    mesh_t* lods[8];                  // Mesh data for each LOD
+    float switch_distances[8];        // Screen coverage thresholds
+    float geometric_errors[8];        // Geometric error for each LOD
+    uint32_t lod_count;               // Number of LODs in chain
+    lod_generation_config_t config;   // Config used to generate
 } lod_chain_t;
 
 /* ============================================================================
@@ -68,10 +68,10 @@ typedef struct lod_chain {
 
 /* LOD Generation */
 // Generate LOD chain from source mesh with default config
-lod_chain_t* lod_generate_chain(const mesh_data_t* source, const float* ratios, uint32_t count);
+lod_chain_t* lod_generate_chain(const mesh_t* source, const float* ratios, uint32_t count);
 
 // Generate LOD chain with advanced configuration
-lod_chain_t* lod_generate_chain_advanced(const mesh_data_t* source, 
+lod_chain_t* lod_generate_chain_advanced(const mesh_t* source, 
                                         const lod_generation_config_t* config);
 
 // Get default configuration
@@ -82,10 +82,10 @@ void lod_chain_destroy(lod_chain_t* chain);
 
 /* Mesh Simplification */
 // Simplify mesh using Quadric Error Metrics
-mesh_data_t* qem_simplify(const mesh_data_t* source, float target_ratio);
+mesh_t* qem_simplify(const mesh_t* source, float target_ratio);
 
 // Simplify with advanced options
-mesh_data_t* qem_simplify_advanced(const mesh_data_t* source, 
+mesh_t* qem_simplify_advanced(const mesh_t* source, 
                                   float target_ratio,
                                   const lod_generation_config_t* config,
                                   float* out_error);

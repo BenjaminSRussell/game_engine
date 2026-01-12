@@ -20,6 +20,16 @@
 #include <pthread.h>
 #endif
 
+// Async operation validation state
+typedef struct {
+  bool validation_enabled;
+  uint64_t total_async_ops;
+  uint64_t completed_async_ops;
+  uint64_t failed_async_ops;
+  uint64_t validation_errors;
+  uint64_t last_validation_time;
+} VFSAsyncValidation;
+
 // Internal structs
 typedef struct {
   char path[256];
@@ -42,6 +52,24 @@ typedef struct {
   u64 pos;
   VFSArchive *archive;
 } VFSFileHandle;
+
+// Async operation structure
+typedef struct {
+  enum {
+    VFS_ASYNC_READ,
+    VFS_ASYNC_WRITE
+  } type;
+  VFSFile *file;
+  void *buffer;
+  u64 size;
+  u64 offset;
+  bool completed;
+  bool error;
+  uint64_t submit_time;
+  uint64_t completion_time;
+  void (*callback)(struct VFSAsyncOp *op);
+  void *user_data;
+} VFSAsyncOp;
 
 static bool g_vfs_checksum_verification_enabled = false;
 
@@ -70,6 +98,12 @@ static u32 vfs_crc32(const void *data, u64 size) {
   return ~crc;
 }
 
+// Forward declarations for validation functions
+static bool vfs_validate_async_operation(VFSAsyncOp *op);
+static void vfs_log_validation_error(VFS *vfs, const char *error);
+static uint64_t vfs_get_timestamp(void);
+static bool vfs_validate_file_handle(VFSFileHandle *handle);
+
 void vfs_set_checksum_verification_enabled(bool enabled) {
   g_vfs_checksum_verification_enabled = enabled;
 }
@@ -87,9 +121,23 @@ void vfs_init(VFS *vfs) {
   vfs->completed_ops = NULL;
   vfs->completed_count = 0;
   vfs->completed_capacity = 0;
+  
+  // Initialize validation state
+  vfs->async_validation = malloc(sizeof(VFSAsyncValidation));
+  if (vfs->async_validation) {
+    vfs->async_validation->validation_enabled = true;
+    vfs->async_validation->total_async_ops = 0;
+    vfs->async_validation->completed_async_ops = 0;
+    vfs->async_validation->failed_async_ops = 0;
+    vfs->async_validation->validation_errors = 0;
+    vfs->async_validation->last_validation_time = vfs_get_timestamp();
+  }
+  
 #ifndef PLATFORM_WEB
   pthread_mutex_init(&vfs->async_lock, NULL);
 #endif
+  
+  LOG_INFO("VFS: Initialized with async validation enabled");
 }
 
 void vfs_free(VFS *vfs) {
@@ -122,6 +170,25 @@ void vfs_free(VFS *vfs) {
   vfs->completed_ops = NULL;
   vfs->completed_count = 0;
   vfs->completed_capacity = 0;
+  
+  // Report validation statistics before cleanup
+  if (vfs->async_validation) {
+    LOG_INFO("VFS Async Statistics:");
+    LOG_INFO("  Total operations: %lu", vfs->async_validation->total_async_ops);
+    LOG_INFO("  Completed operations: %lu", vfs->async_validation->completed_async_ops);
+    LOG_INFO("  Failed operations: %lu", vfs->async_validation->failed_async_ops);
+    LOG_INFO("  Validation errors: %lu", vfs->async_validation->validation_errors);
+    
+    if (vfs->async_validation->total_async_ops > 0) {
+      double success_rate = (double)vfs->async_validation->completed_async_ops / 
+                           vfs->async_validation->total_async_ops * 100.0;
+      LOG_INFO("  Success rate: %.2f%%", success_rate);
+    }
+    
+    free(vfs->async_validation);
+    vfs->async_validation = NULL;
+  }
+  
 #ifndef PLATFORM_WEB
   pthread_mutex_destroy(&vfs->async_lock);
 #endif
@@ -580,4 +647,301 @@ bool vfs_extract_archive(const char *archive_path, const char *dest_dir) {
   (void)archive_path;
   (void)dest_dir;
   return false;
+}
+
+// -----------------------------------------------------------------------------
+// Async I/O Operations with Validation
+// -----------------------------------------------------------------------------
+
+VFSAsyncOp* vfs_async_read(VFS *vfs, VFSFile *file, void *buffer, u64 size, u64 offset,
+                          void (*callback)(VFSAsyncOp *op), void *user_data) {
+  if (!vfs || !file || !buffer || !vfs->async_validation) {
+    vfs_log_validation_error(vfs, "Invalid parameters for async read");
+    return NULL;
+  }
+  
+  // Validate file handle
+  VFSFileHandle *handle = (VFSFileHandle *)file;
+  if (!vfs_validate_file_handle(handle)) {
+    vfs_log_validation_error(vfs, "Invalid file handle for async read");
+    return NULL;
+  }
+  
+  // Validate read parameters
+  u64 file_size = vfs_size(file);
+  if (offset >= file_size) {
+    vfs_log_validation_error(vfs, "Read offset beyond file size");
+    return NULL;
+  }
+  
+  if (offset + size > file_size) {
+    size = file_size - offset; // Adjust size to fit file
+  }
+  
+  VFSAsyncOp *op = malloc(sizeof(VFSAsyncOp));
+  if (!op) {
+    vfs_log_validation_error(vfs, "Failed to allocate async operation");
+    return NULL;
+  }
+  
+  op->type = VFS_ASYNC_READ;
+  op->file = file;
+  op->buffer = buffer;
+  op->size = size;
+  op->offset = offset;
+  op->completed = false;
+  op->error = false;
+  op->submit_time = vfs_get_timestamp();
+  op->completion_time = 0;
+  op->callback = callback;
+  op->user_data = user_data;
+  
+  // Validate operation
+  if (!vfs_validate_async_operation(op)) {
+    free(op);
+    return NULL;
+  }
+  
+  // Perform synchronous read for now (can be enhanced with actual async)
+  u64 original_pos = vfs_tell(file);
+  vfs_seek(file, offset, SEEK_SET);
+  u64 bytes_read = vfs_read(file, buffer, size);
+  vfs_seek(file, original_pos, SEEK_SET);
+  
+  op->completed = true;
+  op->completion_time = vfs_get_timestamp();
+  op->error = (bytes_read != size);
+  
+  // Update statistics
+  vfs->async_validation->total_async_ops++;
+  if (op->error) {
+    vfs->async_validation->failed_async_ops++;
+  } else {
+    vfs->async_validation->completed_async_ops++;
+  }
+  
+  // Call callback if provided
+  if (op->callback) {
+    op->callback(op);
+  }
+  
+  return op;
+}
+
+VFSAsyncOp* vfs_async_write(VFS *vfs, VFSFile *file, const void *buffer, u64 size, u64 offset,
+                           void (*callback)(VFSAsyncOp *op), void *user_data) {
+  if (!vfs || !file || !buffer || !vfs->async_validation) {
+    vfs_log_validation_error(vfs, "Invalid parameters for async write");
+    return NULL;
+  }
+  
+  // Validate file handle
+  VFSFileHandle *handle = (VFSFileHandle *)file;
+  if (!vfs_validate_file_handle(handle)) {
+    vfs_log_validation_error(vfs, "Invalid file handle for async write");
+    return NULL;
+  }
+  
+  // Check if file is writable
+  if (handle->is_archive) {
+    vfs_log_validation_error(vfs, "Cannot write to archive file");
+    return NULL;
+  }
+  
+  VFSAsyncOp *op = malloc(sizeof(VFSAsyncOp));
+  if (!op) {
+    vfs_log_validation_error(vfs, "Failed to allocate async operation");
+    return NULL;
+  }
+  
+  op->type = VFS_ASYNC_WRITE;
+  op->file = file;
+  op->buffer = (void*)buffer; // Remove const for callback compatibility
+  op->size = size;
+  op->offset = offset;
+  op->completed = false;
+  op->error = false;
+  op->submit_time = vfs_get_timestamp();
+  op->completion_time = 0;
+  op->callback = callback;
+  op->user_data = user_data;
+  
+  // Validate operation
+  if (!vfs_validate_async_operation(op)) {
+    free(op);
+    return NULL;
+  }
+  
+  // Perform synchronous write for now (can be enhanced with actual async)
+  u64 original_pos = vfs_tell(file);
+  vfs_seek(file, offset, SEEK_SET);
+  u64 bytes_written = vfs_write(file, buffer, size);
+  vfs_seek(file, original_pos, SEEK_SET);
+  
+  op->completed = true;
+  op->completion_time = vfs_get_timestamp();
+  op->error = (bytes_written != size);
+  
+  // Update statistics
+  vfs->async_validation->total_async_ops++;
+  if (op->error) {
+    vfs->async_validation->failed_async_ops++;
+  } else {
+    vfs->async_validation->completed_async_ops++;
+  }
+  
+  // Call callback if provided
+  if (op->callback) {
+    op->callback(op);
+  }
+  
+  return op;
+}
+
+bool vfs_async_op_is_completed(VFSAsyncOp *op) {
+  return op ? op->completed : false;
+}
+
+bool vfs_async_op_has_error(VFSAsyncOp *op) {
+  return op ? op->error : true;
+}
+
+u64 vfs_async_op_get_bytes_transferred(VFSAsyncOp *op) {
+  if (!op || op->error) return 0;
+  return op->size;
+}
+
+void vfs_async_op_wait(VFSAsyncOp *op) {
+  if (!op) return;
+  
+  // Simple busy wait for now (can be enhanced with condition variables)
+  while (!op->completed) {
+    // In a real implementation, this would use condition variables
+    // or other synchronization primitives
+  }
+}
+
+void vfs_async_op_free(VFSAsyncOp *op) {
+  if (op) {
+    free(op);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Validation Implementation
+// -----------------------------------------------------------------------------
+
+static bool vfs_validate_async_operation(VFSAsyncOp *op) {
+  if (!op) return false;
+  
+  // Validate operation type
+  if (op->type != VFS_ASYNC_READ && op->type != VFS_ASYNC_WRITE) {
+    return false;
+  }
+  
+  // Validate file handle
+  if (!vfs_validate_file_handle((VFSFileHandle *)op->file)) {
+    return false;
+  }
+  
+  // Validate buffer
+  if (!op->buffer) {
+    return false;
+  }
+  
+  // Validate size
+  if (op->size == 0) {
+    return false;
+  }
+  
+  // Validate timestamp
+  if (op->submit_time == 0) {
+    return false;
+  }
+  
+  return true;
+}
+
+static void vfs_log_validation_error(VFS *vfs, const char *error) {
+  if (!vfs || !error || !vfs->async_validation) return;
+  
+  vfs->async_validation->validation_errors++;
+  LOG_ERROR("VFS Validation Error [%lu]: %s", 
+            vfs->async_validation->validation_errors, error);
+}
+
+static uint64_t vfs_get_timestamp(void) {
+  struct timespec ts;
+  clock_gettime(CLOCK_MONOTONIC, &ts);
+  return (uint64_t)ts.tv_sec * 1000000000ULL + (uint64_t)ts.tv_nsec;
+}
+
+static bool vfs_validate_file_handle(VFSFileHandle *handle) {
+  if (!handle) return false;
+  
+  // Check file pointer for non-archive files
+  if (!handle->is_archive && !handle->file) {
+    return false;
+  }
+  
+  // Check archive handle for archive files
+  if (handle->is_archive && !handle->archive) {
+    return false;
+  }
+  
+  // Validate position
+  if (handle->is_archive) {
+    if (handle->pos > handle->entry.compressed_size) {
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+// Public validation API
+bool vfs_validate_async_state(VFS *vfs) {
+  if (!vfs || !vfs->async_validation) return false;
+  
+  bool valid = true;
+  uint64_t current_time = vfs_get_timestamp();
+  
+  // Check for stale operations (operations that have been running too long)
+  uint64_t time_since_last_validation = current_time - vfs->async_validation->last_validation_time;
+  if (time_since_last_validation > 10000000000ULL) { // 10 seconds
+    if (vfs->async_validation->total_async_ops > 0) {
+      uint64_t pending_ops = vfs->async_validation->total_async_ops - 
+                           vfs->async_validation->completed_async_ops - 
+                           vfs->async_validation->failed_async_ops;
+      
+      if (pending_ops > 100) { // Too many pending operations
+        vfs_log_validation_error(vfs, "Too many pending async operations");
+        valid = false;
+      }
+    }
+  }
+  
+  vfs->async_validation->last_validation_time = current_time;
+  return valid;
+}
+
+void vfs_enable_async_validation(VFS *vfs, bool enable) {
+  if (vfs && vfs->async_validation) {
+    vfs->async_validation->validation_enabled = enable;
+    LOG_INFO("VFS async validation %s", enable ? "enabled" : "disabled");
+  }
+}
+
+uint64_t vfs_get_async_validation_errors(VFS *vfs) {
+  return (vfs && vfs->async_validation) ? vfs->async_validation->validation_errors : 0;
+}
+
+void vfs_get_async_statistics(VFS *vfs, uint64_t *total_ops, uint64_t *completed_ops,
+                             uint64_t *failed_ops, uint64_t *validation_errors) {
+  if (!vfs || !vfs->async_validation) return;
+  
+  if (total_ops) *total_ops = vfs->async_validation->total_async_ops;
+  if (completed_ops) *completed_ops = vfs->async_validation->completed_async_ops;
+  if (failed_ops) *failed_ops = vfs->async_validation->failed_async_ops;
+  if (validation_errors) *validation_errors = vfs->async_validation->validation_errors;
 }

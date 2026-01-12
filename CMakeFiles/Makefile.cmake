@@ -104,6 +104,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/Engine.dir/DependInfo.cmake"
   "CMakeFiles/Game.dir/DependInfo.cmake"
   "CMakeFiles/BlockGameApp.dir/DependInfo.cmake"
+  "CMakeFiles/test_physics_ids.dir/DependInfo.cmake"
+  "CMakeFiles/test_network_stability.dir/DependInfo.cmake"
   "CMakeFiles/physics_demos.dir/DependInfo.cmake"
   "CMakeFiles/full_integration_test.dir/DependInfo.cmake"
   "CMakeFiles/test_player_food.dir/DependInfo.cmake"
