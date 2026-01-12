@@ -1,0 +1,3269 @@
+# Duplicate Content Analysis
+
+This report analyzes 100% duplicate content groups from `master/duplicate_content_report.txt`.
+Each group includes a suggested canonical file, likely reason for duplication, and action.
+
+## Group 1 (size 29)
+- Suggested canonical: `particle_consolidation_test.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `particle_consolidation_test.c`
+  - `test_validation_stubs.c`
+  - `simple_physics_game.c`
+  - `advanced_physics_enhancements.c`
+  - `test_validation.c`
+  - `minimal_game.c`
+  - `src/engine/core/engine_main.c`
+  - `src/engine/core/swift_bridge_simple.c`
+  - `src/engine/effects/destruction/fracture_system.c`
+  - `src/engine/physics/collision/collision_gjk_epa.c`
+  - `src/engine/ai/navigation/navmesh_complete.c`
+  - `src/engine/backend/metal/metal_mesh_bridge.c`
+  - `src/engine/backend/metal/metal_backend_demo.m`
+  - `src/engine/backend/metal/test_metal_device.m`
+  - `src/engine/backend/metal/test_metal_shader.m`
+  - `src/engine/backend/metal/mtl_sampler.c`
+  - `src/engine/backend/metal/metal_test.m`
+  - `src/engine/backend/metal/metal_pipeline_test.m`
+  - `src/engine/include/core/math/simd_neon.h`
+  - `src/engine/include/core/integration/vscode/language_server.h`
+  - `src/engine/core/debug/crash_prevention.c`
+  - `src/game/blockgame/npc/npc_abilities.c`
+  - `src/frontend/CVoxelForge/swift_bridge_new.c`
+  - `assets/assets/code/todo_environment.c`
+  - `assets/assets/code/todo_content_creation.c`
+  - `assets/assets/code/todo_npcs.c`
+  - `assets/assets/code/todo_localization.c`
+  - `assets/assets/code/todo_ai.c`
+  - `assets/assets/code/todo_persistence.c`
+
+## Group 2 (size 2)
+- Suggested canonical: `tools/physics_benchmarking_tools.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `tools/physics_benchmarking_tools.h`
+  - `tools/physics_benchmarking_tools 2.h`
+
+## Group 3 (size 2)
+- Suggested canonical: `tests/physics_unit_tests.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `tests/physics_unit_tests.h`
+  - `tests/physics_unit_tests 2.h`
+
+## Group 4 (size 2)
+- Suggested canonical: `tests/physics_integration_tests.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `tests/physics_integration_tests.h`
+  - `tests/physics_integration_tests 2.h`
+
+## Group 5 (size 2)
+- Suggested canonical: `src/editor/Core/Bridges/include/engine_bridge.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/editor/Core/Bridges/include/engine_bridge.h`
+  - `src/frontend/Core/Bridges/include/engine_bridge.h`
+
+## Group 6 (size 2)
+- Suggested canonical: `src/engine/cinematic/lipsync_impl.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/cinematics/lipsync_impl.c`
+  - `src/engine/cinematic/lipsync_impl.c`
+
+## Group 7 (size 1550)
+- Suggested canonical: `src/engine/materials/material_system/dynamic_materials.c`
+- Likely reason(s): backup copy, trash/archived copy, tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/ui/ui_widgets.c`
+  - `src/engine/ui/ui_accessibility.c`
+  - `src/engine/ui/ui_renderer.c`
+  - `src/engine/ui/ui_layout.c`
+  - `src/engine/ui/ui_animation.c`
+  - `src/engine/ui/ui_layout_system.c`
+  - `src/engine/tools/build_pipeline.c`
+  - `src/engine/tools/editor_tools_complete.c`
+  - `src/engine/tools/profiler_impl.c`
+  - `src/engine/tools/external_tools_impl.c`
+  - `src/engine/tools/utilities_complete.c`
+  - `src/engine/tools/profiler.c`
+  - `src/engine/tools/hot_reload.c`
+  - `src/engine/tools/asset_hotreload.c`
+  - `src/engine/tools/console.c`
+  - `src/engine/tools/asset_packer.c`
+  - `src/engine/materials/material_defaults.c`
+  - `src/engine/materials/material_instance.c`
+  - `src/engine/materials/material_serialization.c`
+  - `src/engine/materials/material_templates.c`
+  - `src/engine/materials/material_examples.c`
+  - `src/engine/materials/material_serialization_examples.c`
+  - `src/engine/materials/shader_permutations.c`
+  - `src/engine/materials/material_system.c`
+  - `src/engine/materials/material_complete_example.c`
+  - `src/engine/materials/gpu_material.c`
+  - `src/engine/materials/material.c`
+  - `src/engine/materials/material_hot_reload.c`
+  - `src/engine/scripting/c_bindings.c`
+  - `src/engine/scripting/vm.c`
+  - `src/engine/scripting/visual_scripting_impl.c`
+  - `src/engine/scripting/script_interface_impl.c`
+  - `src/engine/scripting/lua_bindings.c`
+  - `src/engine/scripting/script_bridge_impl.c`
+  - `src/engine/scripting/scripting_lua.c`
+  - `src/engine/scripting/lua_jit_bridge.c`
+  - `src/engine/scripting/script_impl.c`
+  - `src/engine/networking/network_replication.c`
+  - `src/engine/platform/thumbnail_generator_api_bridge.c`
+  - `src/engine/platform/chunk_api_bridge.c`
+  - `src/engine/platform/prefab_api_bridge.c`
+  - `src/engine/platform/camera_bookmarks_api_bridge.c`
+  - `src/engine/platform/occlusion_api_bridge.c`
+  - `src/engine/platform/post_processing_api_bridge.c`
+  - `src/engine/platform/vertex_color_display_api_bridge.c`
+  - `src/engine/platform/destruction_api_bridge.c`
+  - `src/engine/platform/swift_bridge_stub_full.c`
+  - `src/engine/platform/decal_api_bridge.c`
+  - `src/engine/platform/weather_vfx_api_bridge.c`
+  - `src/engine/platform/outline_rendering_api_bridge.c`
+  - `src/engine/platform/bounds_visualization_api_bridge.c`
+  - `src/engine/platform/terrain_api_bridge.c`
+  - `src/engine/platform/swift_bridge_stub.c`
+  - `src/engine/platform/selection_api_bridge.c`
+  - `src/engine/platform/gi_api_bridge.c`
+  - `src/engine/platform/grid_rendering_api_bridge.c`
+  - `src/engine/platform/mesh_optimizer_api_bridge.c`
+  - `src/engine/platform/profiler_api_bridge.c`
+  - `src/engine/platform/swift_bridge_stub_additions.c`
+  - `src/engine/platform/world_editor_stubs.c`
+  - `src/engine/platform/hot_reload_api_bridge.c`
+  - `src/engine/platform/ray_tracing_api_bridge.c`
+  - `src/engine/platform/biome_api_bridge.c`
+  - `src/engine/platform/final_wave_complete.c`
+  - `src/engine/platform/tonemapping_api_bridge.c`
+  - `src/engine/platform/console_api_bridge.c`
+  - `src/engine/platform/graphics_debug_stubs.c`
+  - `src/engine/platform/lod_api_bridge.c`
+  - `src/engine/platform/engine_bridge.c`
+  - `src/engine/platform/vegetation_api_bridge.c`
+  - `src/engine/platform/vfx_optimization_api_bridge.c`
+  - `src/engine/platform/material_override_api_bridge.c`
+  - `src/engine/platform/graphics_api_bridge.c`
+  - `src/engine/platform/occlusion_vfx_stubs.c`
+  - `src/engine/platform/fluid_vfx_api_bridge.c`
+  - `src/engine/platform/gizmo_api_bridge.c`
+  - `src/engine/platform/bridge.c`
+  - `src/engine/platform/swift_bridge_real.c`
+  - `src/engine/platform/uv_visualization_api_bridge.c`
+  - `src/engine/platform/water_api_bridge.c`
+  - `src/engine/platform/status_effect_api_bridge.c`
+  - `src/engine/platform/camera_director_api_bridge.c`
+  - `src/engine/platform/sky_api_bridge.c`
+  - `src/engine/platform/physics_debug_api_bridge.c`
+  - `src/engine/platform/input_systems_complete.c`
+  - `src/engine/platform/undo_redo_api_bridge.c`
+  - `src/engine/platform/rendering_tools_stubs.c`
+  - `src/engine/platform/shadow_api_bridge.c`
+  - `src/engine/platform/shader_hot_reload_api_bridge.c`
+  - `src/engine/platform/swift_bridge_old.c`
+  - `src/engine/network/lag_compensation_impl.c`
+  - `src/engine/network/multiplayer_impl.c`
+  - `src/engine/network/extended_networking_complete.c`
+  - `src/engine/network/replication_impl.c`
+  - `src/engine/network/reliable_udp.c`
+  - `src/engine/network/server_mesh_impl.c`
+  - `src/engine/network/replication_matchmaking_complete.c`
+  - `src/engine/testing/render_tests.c`
+  - `src/engine/testing/visual_tests.c`
+  - `src/engine/testing/phase2_test.c`
+  - `src/engine/testing/benchmark_suite.c`
+  - `src/engine/testing/test_forward_renderer.c`
+  - `src/engine/testing/test_shader_variants.c`
+  - `src/engine/testing/test_light_probes.c`
+  - `src/engine/testing/phase3_test.c`
+  - `src/engine/testing/test_transparency.c`
+  - `src/engine/testing/phase5_integration_test.c`
+  - `src/engine/testing/phase1_test.m`
+  - `src/engine/rendering/ui_renderer.c`
+  - `src/engine/rendering/normal_mapping.c`
+  - `src/engine/rendering/shader_compiler.c`
+  - `src/engine/rendering/block_highlight.c`
+  - `src/engine/rendering/render_impl.c`
+  - `src/engine/rendering/gpu_memory.c`
+  - `src/engine/rendering/hybrid_renderer.c`
+  - `src/engine/rendering/gpu_texture.c`
+  - `src/engine/rendering/gpu_shader_reload.c`
+  - `src/engine/rendering/raytracing_global_illumination.c`
+  - `src/engine/rendering/text_renderer.c`
+  - `src/engine/rendering/gpu_renderpass.c`
+  - `src/engine/rendering/renderer_complete.c`
+  - `src/engine/rendering/shader_nodes.c`
+  - `src/engine/rendering/render_graph_impl.c`
+  - `src/engine/rendering/post_processing.c`
+  - `src/engine/rendering/raytracing_denoiser.c`
+  - `src/engine/rendering/scene.c`
+  - `src/engine/rendering/grid_renderer.c`
+  - `src/engine/rendering/fixed_angle_camera_controller.c`
+  - `src/engine/rendering/ray_tracing.c`
+  - `src/engine/rendering/gpu_postprocess.c`
+  - `src/engine/rendering/gpu_text.c`
+  - `src/engine/rendering/free_camera_controller.c`
+  - `src/engine/rendering/material_system.c`
+  - `src/engine/rendering/raytracing_impl.c`
+  - `src/engine/rendering/culling.c`
+  - `src/engine/rendering/texture_system.c`
+  - `src/engine/rendering/model_loader.c`
+  - `src/engine/rendering/shader_graph.c`
+  - `src/engine/rendering/raytracing_reflections.c`
+  - `src/engine/rendering/render_pipeline_impl.c`
+  - `src/engine/rendering/camera_system.c`
+  - `src/engine/rendering/camera_controls.c`
+  - `src/engine/rendering/raytracing_acceleration_structures.c`
+  - `src/engine/rendering/materials_impl.c`
+  - `src/engine/rendering/hdr_tonemap.c`
+  - `src/engine/rendering/raytracing_pipeline.c`
+  - `src/engine/rendering/texture_atlas.c`
+  - `src/engine/lighting/light_manager.c`
+  - `src/engine/postprocess/taa.c`
+  - `src/engine/postprocess/color_grading.c`
+  - `src/engine/postprocess/lens_flares.c`
+  - `src/engine/postprocess/tonemapping.c`
+  - `src/engine/postprocess/motion_blur.c`
+  - `src/engine/postprocess/fxaa.c`
+  - `src/engine/postprocess/bloom_pipeline.c`
+  - `src/engine/postprocess/postprocess_graph.c`
+  - `src/engine/postprocess/auto_exposure.c`
+  - `src/engine/postprocess/dof_bokeh.c`
+  - `src/engine/postprocess/vignette.c`
+  - `src/engine/postprocess/procedural_lens_flare.c`
+  - `src/engine/postprocess/ssao_horizon.c`
+  - `src/engine/postprocess/chromatic_aberration.c`
+  - `src/engine/postprocess/bloom_convolution.c`
+  - `src/engine/postprocess/post_processing_pipeline.c`
+  - `src/engine/postprocess/tonemapping_pipeline.c`
+  - `src/engine/postprocess/screen_space_reflections.c`
+  - `src/engine/postprocess/post_processing_examples.c`
+  - `src/engine/scene/scene_impl.c`
+  - `src/engine/editor/scene_tools/level_streaming.c`
+  - `src/engine/editor/scene_tools/scene_hierarchy.c`
+  - `src/engine/editor/scene_tools/scene_validation.c`
+  - `src/engine/editor/scene_tools/search_replace.c`
+  - `src/engine/editor/scene_tools/scene_bookmarks.c`
+  - `src/engine/editor/scene_tools/multi_edit.c`
+  - `src/engine/editor/scene_tools/scene_layers.c`
+  - `src/engine/editor/viewport/grid_rendering.c`
+  - `src/engine/editor/viewport/editor_selection.c`
+  - `src/engine/editor/viewport/editor_camera.c`
+  - `src/engine/editor/viewport/gizmos.c`
+  - `src/engine/editor/viewport/selection.c`
+  - `src/engine/editor/viewport/editor_grid.c`
+  - `src/engine/editor/viewport/outline_rendering.c`
+  - `src/engine/editor/viewport/camera_controls.c`
+  - `src/engine/editor/viewport/editor_gizmos.c`
+  - `src/engine/editor/viewport/editor_icons.c`
+  - `src/engine/editor/viewport/editor_picking.c`
+  - `src/engine/editor/sequence_editor/timeline.c`
+  - `src/engine/editor/sequence_editor/camera_sequencer.c`
+  - `src/engine/editor/visual_script/blueprint_nodes.c`
+  - `src/engine/editor/material_editor/node_graph.c`
+  - `src/engine/editor/npc_editor/npc_behavior_picker.c`
+  - `src/engine/editor/npc_editor/npc_appearance_editor.c`
+  - `src/engine/editor/npc_editor/npc_dialogue_editor.c`
+  - `src/engine/editor/npc_editor/npc_template_browser.c`
+  - `src/engine/editor/npc_editor/npc_inventory_editor.c`
+  - `src/engine/editor/npc_editor/npc_stat_editor.c`
+  - `src/engine/editor/npc_editor/npc_preview.c`
+  - `src/engine/editor/prefab_system/prefab_editor.c`
+  - `src/engine/editor/prefab/prefab_system.c`
+  - `src/engine/editor/dev/ai_hooks.c`
+  - `src/engine/editor/dev/ml_optimizer.c`
+  - `src/engine/editor/profiling/statistics/stats_tracker.c`
+  - `src/engine/editor/profiling/visualization/perf_overlay.c`
+  - `src/engine/editor/profiling/visualization/heat_map.c`
+  - `src/engine/editor/profiling/visualization/resource_viewer.c`
+  - `src/engine/editor/profiling/visualization/histogram_viz.c`
+  - `src/engine/editor/profiling/visualization/timeline_view.c`
+  - `src/engine/editor/profiling/visualization/frame_graph_viz.c`
+  - `src/engine/editor/profiling/gpu/pipeline_stats.c`
+  - `src/engine/editor/profiling/gpu/gpu_markers.c`
+  - `src/engine/editor/profiling/gpu/gpu_timer.c`
+  - `src/engine/editor/profiling/gpu/bandwidth_counter.c`
+  - `src/engine/editor/profiling/gpu/occupancy.c`
+  - `src/engine/editor/profiling/gpu/gpu_stats.c`
+  - `src/engine/editor/profiling/cpu/task_profiler.c`
+  - `src/engine/editor/profiling/cpu/frame_timer.c`
+  - `src/engine/editor/profiling/cpu/allocation_tracker.c`
+  - `src/engine/editor/profiling/cpu/memory_profiler.c`
+  - `src/engine/editor/profiling/cpu/thread_profiler.c`
+  - `src/engine/editor/profiling/cpu/cache_profiler.c`
+  - `src/engine/editor/docs/examples/physics_example.c`
+  - `src/engine/editor/docs/examples/instancing_example.c`
+  - `src/engine/editor/docs/examples/prototype/main.c`
+  - `src/engine/editor/viewports/temporal/processor_04.c`
+  - `src/engine/editor/viewports/temporal/temporal_aa_system.c`
+  - `src/engine/editor/viewports/temporal/system_02.c`
+  - `src/engine/editor/viewports/temporal/manager_01.c`
+  - `src/engine/editor/viewports/temporal/renderer_03.c`
+  - `src/engine/editor/viewports/temporal/temporal_manager.c`
+  - `src/engine/editor/viewports/temporal/temporal_renderer.c`
+  - `src/engine/editor/viewports/temporal/temporal_processor.c`
+  - `src/engine/editor/viewports/vr/processor_04.c`
+  - `src/engine/editor/viewports/vr/system_02.c`
+  - `src/engine/editor/viewports/vr/vr_renderer.c`
+  - `src/engine/editor/viewports/vr/manager_01.c`
+  - `src/engine/editor/viewports/vr/renderer_03.c`
+  - `src/engine/editor/viewports/vr/vr_viewport_manager.c`
+  - `src/engine/editor/viewports/vr/vr_processor.c`
+  - `src/engine/editor/viewports/vr/vr_viewport_system.c`
+  - `src/engine/editor/viewports/camera/viewport_camera_system.c`
+  - `src/engine/editor/viewports/camera/camera_processor.c`
+  - `src/engine/editor/viewports/camera/processor_04.c`
+  - `src/engine/editor/viewports/camera/system_02.c`
+  - `src/engine/editor/viewports/camera/manager_01.c`
+  - `src/engine/editor/viewports/camera/renderer_03.c`
+  - `src/engine/editor/viewports/camera/camera_renderer.c`
+  - `src/engine/editor/viewports/camera/camera_manager.c`
+  - `src/engine/editor/viewports/frustum/frustum_processor.c`
+  - `src/engine/editor/viewports/frustum/frustum_manager.c`
+  - `src/engine/editor/viewports/frustum/processor_04.c`
+  - `src/engine/editor/viewports/frustum/system_02.c`
+  - `src/engine/editor/viewports/frustum/manager_01.c`
+  - `src/engine/editor/viewports/frustum/renderer_03.c`
+  - `src/engine/editor/viewports/frustum/frustum_culling_system.c`
+  - `src/engine/editor/viewports/frustum/frustum_renderer.c`
+  - `src/engine/editor/viewports/split_screen/splitscreen_processor.c`
+  - `src/engine/editor/viewports/split_screen/processor_04.c`
+  - `src/engine/editor/viewports/split_screen/system_02.c`
+  - `src/engine/editor/viewports/split_screen/splitscreen_renderer.c`
+  - `src/engine/editor/viewports/split_screen/splitscreen_system.c`
+  - `src/engine/editor/viewports/split_screen/manager_01.c`
+  - `src/engine/editor/viewports/split_screen/renderer_03.c`
+  - `src/engine/editor/viewports/split_screen/splitscreen_manager.c`
+  - `src/engine/editor/viewports/cinematic/processor_04.c`
+  - `src/engine/editor/viewports/cinematic/system_02.c`
+  - `src/engine/editor/viewports/cinematic/cinematic_renderer.c`
+  - `src/engine/editor/viewports/cinematic/cinematic_camera_system.c`
+  - `src/engine/editor/viewports/cinematic/manager_01.c`
+  - `src/engine/editor/viewports/cinematic/renderer_03.c`
+  - `src/engine/editor/viewports/cinematic/cinematic_manager.c`
+  - `src/engine/editor/viewports/cinematic/cinematic_processor.c`
+  - `src/engine/editor/viewports/jitter/processor_04.c`
+  - `src/engine/editor/viewports/jitter/system_02.c`
+  - `src/engine/editor/viewports/jitter/jitter_manager.c`
+  - `src/engine/editor/viewports/jitter/jitter_renderer.c`
+  - `src/engine/editor/viewports/jitter/manager_01.c`
+  - `src/engine/editor/viewports/jitter/camera_jitter_system.c`
+  - `src/engine/editor/viewports/jitter/renderer_03.c`
+  - `src/engine/editor/viewports/jitter/jitter_processor.c`
+  - `src/engine/editor/viewports/controllers/camera_controller_system.c`
+  - `src/engine/editor/viewports/controllers/processor_04.c`
+  - `src/engine/editor/viewports/controllers/system_02.c`
+  - `src/engine/editor/viewports/controllers/controller_processor.c`
+  - `src/engine/editor/viewports/controllers/manager_01.c`
+  - `src/engine/editor/viewports/controllers/renderer_03.c`
+  - `src/engine/editor/viewports/controllers/controller_manager.c`
+  - `src/engine/editor/viewports/controllers/controller_renderer.c`
+  - `src/engine/editor/viewports/multiview/processor_04.c`
+  - `src/engine/editor/viewports/multiview/system_02.c`
+  - `src/engine/editor/viewports/multiview/multiview_renderer.c`
+  - `src/engine/editor/viewports/multiview/multiview_manager.c`
+  - `src/engine/editor/viewports/multiview/manager_01.c`
+  - `src/engine/editor/viewports/multiview/renderer_03.c`
+  - `src/engine/editor/viewports/multiview/multiview_processor.c`
+  - `src/engine/editor/viewports/multiview/multiview_system.c`
+  - `src/engine/editor/viewports/projection/projection_processor.c`
+  - `src/engine/editor/viewports/projection/projection_renderer.c`
+  - `src/engine/editor/viewports/projection/processor_04.c`
+  - `src/engine/editor/viewports/projection/system_02.c`
+  - `src/engine/editor/viewports/projection/projection_system.c`
+  - `src/engine/editor/viewports/projection/projection_manager.c`
+  - `src/engine/editor/viewports/projection/manager_01.c`
+  - `src/engine/editor/viewports/projection/renderer_03.c`
+  - `src/engine/editor/tools/tools/pipeline/processor_04.c`
+  - `src/engine/editor/tools/tools/pipeline/system_02.c`
+  - `src/engine/editor/tools/tools/pipeline/pipeline_manager.c`
+  - `src/engine/editor/tools/tools/pipeline/asset_pipeline_system.c`
+  - `src/engine/editor/tools/tools/pipeline/manager_01.c`
+  - `src/engine/editor/tools/tools/pipeline/renderer_03.c`
+  - `src/engine/editor/tools/tools/pipeline/pipeline_processor.c`
+  - `src/engine/editor/tools/tools/pipeline/pipeline_renderer.c`
+  - `src/engine/editor/tools/tools/analysis/analysis_tool_manager.c`
+  - `src/engine/editor/tools/tools/analysis/processor_04.c`
+  - `src/engine/editor/tools/tools/analysis/system_02.c`
+  - `src/engine/editor/tools/tools/analysis/analysis_renderer.c`
+  - `src/engine/editor/tools/tools/analysis/manager_01.c`
+  - `src/engine/editor/tools/tools/analysis/renderer_03.c`
+  - `src/engine/editor/tools/tools/analysis/tool_analysis_system.c`
+  - `src/engine/editor/tools/tools/analysis/analysis_processor.c`
+  - `src/engine/editor/tools/tools/optimization/processor_04.c`
+  - `src/engine/editor/tools/tools/optimization/system_02.c`
+  - `src/engine/editor/tools/tools/optimization/optimization_manager.c`
+  - `src/engine/editor/tools/tools/optimization/tool_optimize_system.c`
+  - `src/engine/editor/tools/tools/optimization/manager_01.c`
+  - `src/engine/editor/tools/tools/optimization/optimize_processor.c`
+  - `src/engine/editor/tools/tools/optimization/renderer_03.c`
+  - `src/engine/editor/tools/tools/optimization/optimize_renderer.c`
+  - `src/engine/editor/tools/tools/baking/processor_04.c`
+  - `src/engine/editor/tools/tools/baking/system_02.c`
+  - `src/engine/editor/tools/tools/baking/manager_01.c`
+  - `src/engine/editor/tools/tools/baking/renderer_03.c`
+  - `src/engine/editor/tools/tools/baking/bake_processor.c`
+  - `src/engine/editor/tools/tools/baking/bake_renderer.c`
+  - `src/engine/editor/tools/tools/baking/lightmap_bake_system.c`
+  - `src/engine/editor/tools/tools/baking/baking_manager.c`
+  - `src/engine/editor/tools/tools/compression/processor_04.c`
+  - `src/engine/editor/tools/tools/compression/system_02.c`
+  - `src/engine/editor/tools/tools/compression/tool_compress_renderer.c`
+  - `src/engine/editor/tools/tools/compression/manager_01.c`
+  - `src/engine/editor/tools/tools/compression/tool_compress_system.c`
+  - `src/engine/editor/tools/tools/compression/renderer_03.c`
+  - `src/engine/editor/tools/tools/compression/compression_tool_manager.c`
+  - `src/engine/editor/tools/tools/compression/tool_compress_processor.c`
+  - `src/engine/editor/tools/tools/shader_tools/processor_04.c`
+  - `src/engine/editor/tools/tools/shader_tools/system_02.c`
+  - `src/engine/editor/tools/tools/shader_tools/shader_processor.c`
+  - `src/engine/editor/tools/tools/shader_tools/manager_01.c`
+  - `src/engine/editor/tools/tools/shader_tools/shader_renderer.c`
+  - `src/engine/editor/tools/tools/shader_tools/shader_tool_manager.c`
+  - `src/engine/editor/tools/tools/shader_tools/renderer_03.c`
+  - `src/engine/editor/tools/tools/shader_tools/shader_tool_system.c`
+  - `src/engine/editor/tools/tools/conversion/processor_04.c`
+  - `src/engine/editor/tools/tools/conversion/system_02.c`
+  - `src/engine/editor/tools/tools/conversion/asset_convert_system.c`
+  - `src/engine/editor/tools/tools/conversion/manager_01.c`
+  - `src/engine/editor/tools/tools/conversion/renderer_03.c`
+  - `src/engine/editor/tools/tools/conversion/conversion_manager.c`
+  - `src/engine/editor/tools/tools/conversion/conversion_processor.c`
+  - `src/engine/editor/tools/tools/conversion/conversion_renderer.c`
+  - `src/engine/editor/tools/tools/automation/processor_04.c`
+  - `src/engine/editor/tools/tools/automation/system_02.c`
+  - `src/engine/editor/tools/tools/automation/tool_automation_system.c`
+  - `src/engine/editor/tools/tools/automation/manager_01.c`
+  - `src/engine/editor/tools/tools/automation/renderer_03.c`
+  - `src/engine/editor/tools/tools/automation/automation_manager.c`
+  - `src/engine/editor/tools/tools/automation/automation_renderer.c`
+  - `src/engine/editor/tools/tools/automation/automation_processor.c`
+  - `src/engine/editor/tools/tools/validation/processor_04.c`
+  - `src/engine/editor/tools/tools/validation/system_02.c`
+  - `src/engine/editor/tools/tools/validation/asset_validation_manager.c`
+  - `src/engine/editor/tools/tools/validation/manager_01.c`
+  - `src/engine/editor/tools/tools/validation/renderer_03.c`
+  - `src/engine/editor/tools/tools/validation/asset_validation_system.c`
+  - `src/engine/editor/tools/tools/validation/asset_val_renderer.c`
+  - `src/engine/editor/tools/tools/validation/asset_val_processor.c`
+  - `src/engine/editor/tools/tools/generation/processor_04.c`
+  - `src/engine/editor/tools/tools/generation/system_02.c`
+  - `src/engine/editor/tools/tools/generation/manager_01.c`
+  - `src/engine/editor/tools/tools/generation/renderer_03.c`
+  - `src/engine/editor/tools/tools/generation/generation_renderer.c`
+  - `src/engine/editor/tools/tools/generation/generation_manager.c`
+  - `src/engine/editor/tools/tools/generation/generation_processor.c`
+  - `src/engine/editor/tools/tools/generation/content_gen_system.c`
+  - `src/engine/effects/smoke/smoke_lighting.c`
+  - `src/engine/effects/smoke/smoke_density.c`
+  - `src/engine/effects/smoke/smoke_rendering.c`
+  - `src/engine/effects/trails/trail_tessellation.c`
+  - `src/engine/effects/trails/trail_points.c`
+  - `src/engine/effects/trails/trail_uvs.c`
+  - `src/engine/effects/trails/trail_renderer.c`
+  - `src/engine/effects/trails/trail_width.c`
+  - `src/engine/effects/trails/trail_fading.c`
+  - `src/engine/effects/vfx_graph/vfx_events.c`
+  - `src/engine/effects/vfx_graph/vfx_nodes.c`
+  - `src/engine/effects/vfx_graph/vfx_context.c`
+  - `src/engine/effects/vfx_graph/vfx_properties.c`
+  - `src/engine/effects/vfx_graph/vfx_compiler.c`
+  - `src/engine/effects/vfx_graph/vfx_execution.c`
+  - `src/engine/effects/footprints/footprint_system.c`
+  - `src/engine/effects/fire/fire_simulation.c`
+  - `src/engine/effects/fire/fire_shading.c`
+  - `src/engine/effects/fire/fire_distortion.c`
+  - `src/engine/effects/puddles/puddle_rendering.c`
+  - `src/engine/effects/weather/precipitation_occlusion.c`
+  - `src/engine/effects/weather/rain_system.c`
+  - `src/engine/effects/weather/puddles.c`
+  - `src/engine/effects/weather/weather_volumes.c`
+  - `src/engine/effects/weather/wetness_mask.c`
+  - `src/engine/effects/weather/snow_system.c`
+  - `src/engine/effects/decals/decal_sorting.c`
+  - `src/engine/effects/decals/decal_clustering.c`
+  - `src/engine/effects/decals/decal_rendering.c`
+  - `src/engine/effects/decals/decal_blending.c`
+  - `src/engine/effects/decals/decal_projector.c`
+  - `src/engine/effects/decals/decals/decal_projection.c`
+  - `src/engine/effects/decals/decals/decal_system.c`
+  - `src/engine/effects/destruction/rendering_destruction/dust_effects.c`
+  - `src/engine/effects/destruction/rendering_destruction/destruction_mesh.c`
+  - `src/engine/effects/destruction/rendering_destruction/debris_rendering.c`
+  - `src/engine/effects/destruction/rendering_destruction/destruction_lod.c`
+  - `src/engine/effects/destruction/rendering_destruction/damage_decals.c`
+  - `src/engine/effects/destruction/rendering_destruction/crack_rendering.c`
+  - `src/engine/effects/destruction/fracture/debris_system.c`
+  - `src/engine/effects/destruction/fracture/fracture_mesh.c`
+  - `src/engine/effects/destruction/fracture/fracture_physics.c`
+  - `src/engine/effects/destruction/fracture/voronoi_fracture.c`
+  - `src/engine/effects/destruction/fracture/runtime_fracture.c`
+  - `src/engine/effects/destruction/fracture/fracture_pattern.c`
+  - `src/engine/effects/explosions/explosion_effects/explosion_debris.c`
+  - `src/engine/effects/explosions/explosion_effects/explosion_shockwave.c`
+  - `src/engine/effects/water/ocean/ocean_foam.c`
+  - `src/engine/effects/water/ocean/ocean_renderer.c`
+  - `src/engine/effects/water/ocean/fft_waves.c`
+  - `src/engine/effects/water/ocean/gerstner_waves.c`
+  - `src/engine/effects/water/ocean/ocean_lod.c`
+  - `src/engine/effects/water/ocean/ocean_displacement.c`
+  - `src/engine/effects/water/rendering_water/water_reflection.c`
+  - `src/engine/effects/water/rendering_water/water_depth.c`
+  - `src/engine/effects/water/rendering_water/water_caustics.c`
+  - `src/engine/effects/water/rendering_water/water_refraction.c`
+  - `src/engine/effects/water/rendering_water/water_normals.c`
+  - `src/engine/effects/water/rendering_water/underwater_fog.c`
+  - `src/engine/effects/water/simulation/wave_propagation.c`
+  - `src/engine/effects/water/simulation/wake_simulation.c`
+  - `src/engine/effects/water/simulation/buoyancy.c`
+  - `src/engine/effects/water/simulation/splash_effects.c`
+  - `src/engine/effects/water/simulation/wave_simulation.c`
+  - `src/engine/effects/water/simulation/wave_spectrum.c`
+  - `src/engine/effects/water/rivers/river_rendering.c`
+  - `src/engine/effects/water/rivers/river_foam.c`
+  - `src/engine/effects/water/rivers/river_interaction.c`
+  - `src/engine/effects/water/rivers/river_flow.c`
+  - `src/engine/effects/water/rivers/waterfall.c`
+  - `src/engine/effects/water/rivers/river_spline.c`
+  - `src/engine/scene/world/world_batch_impl.c`
+  - `src/engine/scene/world/procedural_impl.c`
+  - `src/engine/scene/world/tools_impl.c`
+  - `src/engine/scene/world_building/ecosystem/ecosystem.c`
+  - `src/engine/scene/world_building/weather/weather_system.c`
+  - `src/engine/scene/world_building/weather/weather_impl.c`
+  - `src/engine/scene/world/ecosystem/ecosystem_impl.c`
+  - `src/engine/scene/world/city/fractal_city_impl.c`
+  - `src/engine/scene/world/chunk/chunk_system.c`
+  - `src/engine/scene/world/voxel/marching_cubes_impl.c`
+  - `src/engine/scene/world/streaming/world_streaming_impl.c`
+  - `src/engine/scene/world/biome/biome_system.c`
+  - `src/engine/scene/world/biome/biome_blending_impl.c`
+  - `src/engine/scene/world/vegetation/l_system_impl.c`
+  - `src/engine/scene/world/terrain/mega_terrain_impl.c`
+  - `src/engine/scene/world/environment/environment_systems_complete.c`
+  - `src/engine/scene/world/procedural_city/city_generator.c`
+  - `src/engine/scene/world/weather/dynamic_weather_impl.c`
+  - `src/engine/scene/world/generation/universe_gen_impl.c`
+  - `src/engine/scene/world/terrain_tools/terrain_tools_impl.c`
+  - `src/engine/scene/world/procedural/procedural_generation_complete.c`
+  - `src/engine/physics/advanced/complete_physics_batch.c`
+  - `src/engine/physics/advanced/fluid_simulation.c`
+  - `src/engine/physics/advanced/final_systems_batch.c`
+  - `src/engine/physics/advanced/advanced_physics_complete.c`
+  - `src/engine/physics/advanced/cloth_system.c`
+  - `src/engine/physics/advanced/soft_body_solver.c`
+  - `src/engine/physics/advanced/physics_final_batch.c`
+  - `src/engine/physics/advanced/vehicle_controller.c`
+  - `src/engine/physics/dynamics/physics_softbody.c`
+  - `src/engine/physics/dynamics/character_controller_impl.c`
+  - `src/engine/physics/dynamics/rigid_body.c`
+  - `src/engine/physics/dynamics/physics_destruction.c`
+  - `src/engine/physics/dynamics/physics_solver.c`
+  - `src/engine/physics/dynamics/softbody_simulation.c`
+  - `src/engine/physics/dynamics/physics_ragdoll.c`
+  - `src/engine/physics/core/physics_shapes.c`
+  - `src/engine/physics/core/physics_core.c`
+  - `src/engine/physics/core/physics_rigid_body_helpers.c`
+  - `src/engine/physics/core/physics_rigid_body_api.c`
+  - `src/engine/physics/core/physics_broadphase.c`
+  - `src/engine/physics/ballistics/trajectory_sim.c`
+  - `src/engine/physics/constraints/constraint_tests.c`
+  - `src/engine/physics/constraints/slider_joint.c`
+  - `src/engine/physics/constraints/processor_04.c`
+  - `src/engine/physics/constraints/system_02.c`
+  - `src/engine/physics/constraints/advanced_constraints.c`
+  - `src/engine/physics/constraints/physics_constraint_system.c`
+  - `src/engine/physics/constraints/constraint_renderer.c`
+  - `src/engine/physics/constraints/gear_joint.c`
+  - `src/engine/physics/constraints/spring_joint.c`
+  - `src/engine/physics/constraints/ball_socket.c`
+  - `src/engine/physics/constraints/manager_01.c`
+  - `src/engine/physics/constraints/builder_05.c`
+  - `src/engine/physics/constraints/constraint_processor.c`
+  - `src/engine/physics/constraints/renderer_03.c`
+  - `src/engine/physics/constraints/hinge_joint.c`
+  - `src/engine/physics/constraints/constraint_manager.c`
+  - `src/engine/physics/vehicle/tire_model.c`
+  - `src/engine/physics/vehicle/vehicle_physics_impl.c`
+  - `src/engine/physics/vehicle/advanced_vehicle_impl.c`
+  - `src/engine/physics/character/climbing_system.c`
+  - `src/engine/physics/ragdoll/ragdoll_controller.c`
+  - `src/engine/physics/ragdoll/pose_matching.c`
+  - `src/engine/physics/ragdoll/skeleton_matching.c`
+  - `src/engine/physics/ragdoll/ragdoll_impl.c`
+  - `src/engine/physics/rigid/processor_04.c`
+  - `src/engine/physics/rigid/system_02.c`
+  - `src/engine/physics/rigid/manager_01.c`
+  - `src/engine/physics/rigid/builder_05.c`
+  - `src/engine/physics/rigid/renderer_03.c`
+  - `src/engine/physics/rigid/rigidbody_system.c`
+  - `src/engine/physics/rigid/rigidbody_processor.c`
+  - `src/engine/physics/rigid/rigidbody_renderer.c`
+  - `src/engine/physics/rigid/rigidbody_manager.c`
+  - `src/engine/physics/queries/physics_queries.c`
+  - `src/engine/physics/pbd/pbd_solver.c`
+  - `src/engine/physics/solver/joint_motors.c`
+  - `src/engine/physics/solver/solver_constraints_simd.c`
+  - `src/engine/physics/solver/processor_04.c`
+  - `src/engine/physics/solver/solver_island.c`
+  - `src/engine/physics/solver/system_02.c`
+  - `src/engine/physics/solver/solver_processor.c`
+  - `src/engine/physics/solver/contact_cache.c`
+  - `src/engine/physics/solver/solver_renderer.c`
+  - `src/engine/physics/solver/debug_visualization.c`
+  - `src/engine/physics/solver/island_solver.c`
+  - `src/engine/physics/solver/manager_01.c`
+  - `src/engine/physics/solver/builder_05.c`
+  - `src/engine/physics/solver/time_step.c`
+  - `src/engine/physics/solver/warm_starting.c`
+  - `src/engine/physics/solver/renderer_03.c`
+  - `src/engine/physics/solver/spatial_hash.c`
+  - `src/engine/physics/solver/constraint_solver_impl.c`
+  - `src/engine/physics/solver/sleep_system.c`
+  - `src/engine/physics/solver/contact_manifold.c`
+  - `src/engine/physics/solver/physics_solver_manager.c`
+  - `src/engine/physics/solver/soft_body.c`
+  - `src/engine/physics/broadphase/processor_04.c`
+  - `src/engine/physics/broadphase/system_02.c`
+  - `src/engine/physics/broadphase/broadphase_processor.c`
+  - `src/engine/physics/broadphase/gpu_broadphase.c`
+  - `src/engine/physics/broadphase/broadphase_manager.c`
+  - `src/engine/physics/broadphase/manager_01.c`
+  - `src/engine/physics/broadphase/builder_05.c`
+  - `src/engine/physics/broadphase/renderer_03.c`
+  - `src/engine/physics/broadphase/sap_algorithm.c`
+  - `src/engine/physics/broadphase/broadphase_system.c`
+  - `src/engine/physics/broadphase/broadphase_renderer.c`
+  - `src/engine/physics/fluid/processor_04.c`
+  - `src/engine/physics/fluid/system_02.c`
+  - `src/engine/physics/fluid/fluid_processor.c`
+  - `src/engine/physics/fluid/fluid_physics_system.c`
+  - `src/engine/physics/fluid/manager_01.c`
+  - `src/engine/physics/fluid/builder_05.c`
+  - `src/engine/physics/fluid/renderer_03.c`
+  - `src/engine/physics/fluid/fluid_physics_manager.c`
+  - `src/engine/physics/fluid/fluid_renderer.c`
+  - `src/engine/physics/aerodynamics/wind_field.c`
+  - `src/engine/physics/aerodynamics/lift_drag.c`
+  - `src/engine/physics/system/physics_system.c`
+  - `src/engine/physics/softbody/cloth_simulation_advanced.c`
+  - `src/engine/physics/softbody/fem_deformable.c`
+  - `src/engine/physics/softbody/softbody_constraints.c`
+  - `src/engine/physics/softbody/cloth_simulation.c`
+  - `src/engine/physics/softbody/rope_simulation.c`
+  - `src/engine/physics/softbody/skinning_constraints.c`
+  - `src/engine/physics/softbody/cloth_self_collision.c`
+  - `src/engine/physics/soft/processor_04.c`
+  - `src/engine/physics/soft/system_02.c`
+  - `src/engine/physics/soft/softbody_processor.c`
+  - `src/engine/physics/soft/softbody_renderer.c`
+  - `src/engine/physics/soft/manager_01.c`
+  - `src/engine/physics/soft/builder_05.c`
+  - `src/engine/physics/soft/softbody_manager.c`
+  - `src/engine/physics/soft/renderer_03.c`
+  - `src/engine/physics/soft/softbody_system.c`
+  - `src/engine/physics/vehicles/vehicle_dynamics.c`
+  - `src/engine/physics/vehicles/engine_model.c`
+  - `src/engine/physics/vehicles/suspension_bridge.c`
+  - `src/engine/physics/vehicles/tire_model.c`
+  - `src/engine/physics/vehicles/suspension.c`
+  - `src/engine/physics/cloth/processor_04.c`
+  - `src/engine/physics/cloth/system_02.c`
+  - `src/engine/physics/cloth/cloth_renderer.c`
+  - `src/engine/physics/cloth/manager_01.c`
+  - `src/engine/physics/cloth/builder_05.c`
+  - `src/engine/physics/cloth/renderer_03.c`
+  - `src/engine/physics/cloth/cloth_physics_manager.c`
+  - `src/engine/physics/cloth/cloth_processor.c`
+  - `src/engine/physics/cloth/cloth_physics_system.c`
+  - `src/engine/physics/fluids/flip_solver.c`
+  - `src/engine/physics/fluids/sph_solver.c`
+  - `src/engine/physics/fluids/viscosity_solver.c`
+  - `src/engine/physics/fluids/fluid_system.c`
+  - `src/engine/physics/fluids/navier_stokes.c`
+  - `src/engine/physics/fluids/sph_solver_impl.c`
+  - `src/engine/physics/fluids/buoyancy_solver.c`
+  - `src/engine/physics/fluids/fluid_baker.c`
+  - `src/engine/physics/fluids/ocean_simulator.c`
+  - `src/engine/physics/fluids/shallow_water.c`
+  - `src/engine/physics/spatial/octree.c`
+  - `src/engine/physics/narrowphase/processor_04.c`
+  - `src/engine/physics/narrowphase/system_02.c`
+  - `src/engine/physics/narrowphase/narrowphase_processor.c`
+  - `src/engine/physics/narrowphase/manager_01.c`
+  - `src/engine/physics/narrowphase/builder_05.c`
+  - `src/engine/physics/narrowphase/renderer_03.c`
+  - `src/engine/physics/narrowphase/narrowphase_renderer.c`
+  - `src/engine/physics/narrowphase/contact_manifold.c`
+  - `src/engine/physics/narrowphase/narrowphase_manager.c`
+  - `src/engine/physics/narrowphase/narrowphase_system.c`
+  - `src/engine/physics/collision/collision_processor.c`
+  - `src/engine/physics/collision/processor_04.c`
+  - `src/engine/physics/collision/heightfield_collider.c`
+  - `src/engine/physics/collision/system_02.c`
+  - `src/engine/physics/collision/collision_primitive.c`
+  - `src/engine/physics/collision/collision_renderer.c`
+  - `src/engine/physics/collision/gjk_solver.c`
+  - `src/engine/physics/collision/manager_01.c`
+  - `src/engine/physics/collision/builder_05.c`
+  - `src/engine/physics/collision/renderer_03.c`
+  - `src/engine/physics/collision/continuous_collision.c`
+  - `src/engine/physics/collision/broadphase.c`
+  - `src/engine/physics/collision/epa_solver.c`
+  - `src/engine/physics/collision/narrowphase.c`
+  - `src/engine/physics/collision/collision_system.c`
+  - `src/engine/physics/collision/collision_manager.c`
+  - `src/engine/physics/fracture/voronoi_shatter.c`
+  - `src/engine/physics/rigid_body/rigid_body_impl.c`
+  - `src/engine/physics/character/cloth/cloth_simulation.c`
+  - `src/engine/physics/character/cloth/cloth_collision.c`
+  - `src/engine/physics/character/cloth/cloth_constraints.c`
+  - `src/engine/physics/character/hair/hair_strand.c`
+  - `src/engine/physics/character/hair/hair_simulation.c`
+  - `src/engine/physics/character/hair/hair_rendering.c`
+  - `src/engine/physics/_trash/advanced/complete_physics_batch.c`
+  - `src/engine/physics/_trash/advanced/fluid_simulation.c`
+  - `src/engine/physics/_trash/advanced/final_systems_batch.c`
+  - `src/engine/physics/_trash/advanced/advanced_physics_complete.c`
+  - `src/engine/physics/_trash/advanced/cloth_system.c`
+  - `src/engine/physics/_trash/advanced/soft_body_solver.c`
+  - `src/engine/physics/_trash/advanced/physics_final_batch.c`
+  - `src/engine/physics/_trash/advanced/vehicle_controller.c`
+  - `src/engine/physics/_trash/aerodynamics/wind_field.c`
+  - `src/engine/physics/_trash/aerodynamics/lift_drag.c`
+  - `src/engine/geometry/mesh/mesh_sorting.c`
+  - `src/engine/geometry/mesh/meshlets.c`
+  - `src/engine/geometry/mesh/submesh_manager.c`
+  - `src/engine/geometry/mesh/mesh_builder.c`
+  - `src/engine/geometry/mesh/mesh_loader.c`
+  - `src/engine/geometry/mesh/mesh_bounds.c`
+  - `src/engine/geometry/mesh/mesh_data.c`
+  - `src/engine/geometry/mesh/mesh_optimizer.c`
+  - `src/engine/geometry/mesh/mesh_gpu_data.m`
+  - `src/engine/geometry/mesh/static_mesh_draw.c`
+  - `src/engine/geometry/mesh/mesh.c`
+  - `src/engine/geometry/mesh/chunk_mesh_generator.c`
+  - `src/engine/geometry/nanite/software_rasterizer.c`
+  - `src/engine/geometry/nanite/cluster_streaming.c`
+  - `src/engine/geometry/cluster/cluster_hierarchy.c`
+  - `src/engine/geometry/cluster/cluster_lod.c`
+  - `src/engine/geometry/cluster/visibility_buffer.c`
+  - `src/engine/geometry/lod/lod_screen_size.c`
+  - `src/engine/geometry/lod/lod_system.c`
+  - `src/engine/geometry/lod/lod_memory.c`
+  - `src/engine/geometry/lod/lod_generator.c`
+  - `src/engine/geometry/lod/distance_lod.c`
+  - `src/engine/geometry/lod/continuous_lod.c`
+  - `src/engine/geometry/lod/lod_forcing.c`
+  - `src/engine/geometry/lod/lod_hysteresis.c`
+  - `src/engine/geometry/lod/lod_error_metric.c`
+  - `src/engine/geometry/lod/test_lod_system.c`
+  - `src/engine/geometry/lod/lod_gpu_selection.c`
+  - `src/engine/geometry/lod/screen_size_lod.c`
+  - `src/engine/geometry/lod/lod_streaming_priority.c`
+  - `src/engine/geometry/lod/lod_streaming.c`
+  - `src/engine/geometry/lod/lod_bias.c`
+  - `src/engine/geometry/lod/lod_distance.c`
+  - `src/engine/geometry/lod/lod_crossfade.c`
+  - `src/engine/geometry/lod/lod_dithering.c`
+  - `src/engine/geometry/lod/lod_selector.c`
+  - `src/engine/geometry/instancing/instance_batching.c`
+  - `src/engine/geometry/instancing/performance_profiling.c`
+  - `src/engine/geometry/instancing/instance_data.c`
+  - `src/engine/geometry/instancing/debug_visualization.c`
+  - `src/engine/geometry/instancing/indirect_instancing.c`
+  - `src/engine/geometry/instancing/instance_culler.c`
+  - `src/engine/geometry/instancing/instance_buffer.c`
+  - `src/engine/geometry/instancing/gpu_instance_data.c`
+  - `src/engine/geometry/instancing/instance_lod.c`
+  - `src/engine/geometry/instancing/instancing.c`
+  - `src/engine/geometry/instancing/gpu_culling.c`
+  - `src/engine/geometry/bvh/sah_builder.c`
+  - `src/engine/geometry/bvh/bvh_metal_culling.m`
+  - `src/engine/geometry/bvh/bvh_builder.c`
+  - `src/engine/geometry/bvh/bvh_simd.c`
+  - `src/engine/geometry/bvh/portal_culling.c`
+  - `src/engine/geometry/bvh/bvh_traversal.c`
+  - `src/engine/geometry/bvh/grid_culling.c`
+  - `src/engine/geometry/bvh/bvh_compaction.c`
+  - `src/engine/geometry/bvh/bvh_scene_cull.c`
+  - `src/engine/geometry/bvh/lbvh_builder.c`
+  - `src/engine/geometry/bvh/pvs_lookup.c`
+  - `src/engine/geometry/bvh/bvh_update.c`
+  - `src/engine/geometry/bvh/octree_culling.c`
+  - `src/engine/geometry/bvh/sector_culling.c`
+  - `src/engine/geometry/streaming/stream_cache.c`
+  - `src/engine/geometry/streaming/prefetch_system.c`
+  - `src/engine/geometry/streaming/stream_priority.c`
+  - `src/engine/geometry/streaming/mesh_streamer.c`
+  - `src/engine/geometry/streaming/unload_policy.c`
+  - `src/engine/geometry/streaming/resident_set.c`
+  - `src/engine/geometry/meshlets/meshlet_culling.c`
+  - `src/engine/geometry/meshlets/cluster_dag.c`
+  - `src/engine/geometry/meshlets/meshlet_bounds.c`
+  - `src/engine/geometry/meshlets/meshlet_renderer.c`
+  - `src/engine/geometry/meshlets/meshlet_builder.c`
+  - `src/engine/geometry/meshlets/meshlet_lod.c`
+  - `src/engine/geometry/vertex/vertex_stream.c`
+  - `src/engine/geometry/vertex/vertex_buffer_pool.c`
+  - `src/engine/geometry/vertex/vertex_compression.c`
+  - `src/engine/geometry/vertex/vertex_skinning_data.c`
+  - `src/engine/geometry/vertex/index_buffer_pool.c`
+  - `src/engine/geometry/vertex/vertex_format_metal.m`
+  - `src/engine/geometry/vertex/vertex_format.c`
+  - `src/engine/geometry/procedural_mesh/procedural_mesh_generation.c`
+  - `src/engine/geometry/procedural_mesh/procedural_mesh_streaming.c`
+  - `src/engine/geometry/culling/frustum/frustum_planes.c`
+  - `src/engine/geometry/culling/frustum/simd_frustum_cull.c`
+  - `src/engine/geometry/culling/frustum/frustum_debug.c`
+  - `src/engine/geometry/culling/occlusion/occlusion_queries.c`
+  - `src/engine/geometry/culling/occlusion/occlusion_feedback.c`
+  - `src/engine/geometry/culling/occlusion/temporal_occlusion.c`
+  - `src/engine/geometry/culling/occlusion/software_rasterizer.c`
+  - `src/engine/geometry/culling/occlusion/hzb_builder.m`
+  - `src/engine/geometry/culling/occlusion/hzb_builder.c`
+  - `src/engine/geometry/culling/gpu_culling/gpu_cull_compute.c`
+  - `src/engine/geometry/culling/gpu_culling/cull_output_buffer.c`
+  - `src/engine/geometry/culling/gpu_culling/meshlet_cull_gpu.c`
+  - `src/engine/geometry/culling/gpu_culling/cull_statistics.c`
+  - `src/engine/geometry/culling/gpu_culling/draw_indirect_gen.c`
+  - `src/engine/geometry/culling/gpu_culling/two_phase_occlusion.c`
+  - `src/engine/geometry/nanite/nanite/cluster/cluster_builder.c`
+  - `src/engine/geometry/nanite/nanite/cluster/cluster_split.c`
+  - `src/engine/geometry/nanite/nanite/cluster/cluster_bounds.c`
+  - `src/engine/geometry/nanite/nanite/cluster/cluster_dag.c`
+  - `src/engine/geometry/nanite/nanite/cluster/cluster_merge.c`
+  - `src/engine/geometry/nanite/nanite/cluster/cluster_lod.c`
+  - `src/engine/geometry/nanite/nanite/culling_nanite/persistent_cull.c`
+  - `src/engine/geometry/nanite/nanite/culling_nanite/visibility_buffer_nanite.c`
+  - `src/engine/geometry/nanite/nanite/culling_nanite/triangle_cull.c`
+  - `src/engine/geometry/nanite/nanite/culling_nanite/two_pass_cull.c`
+  - `src/engine/geometry/nanite/nanite/culling_nanite/cluster_cull_gpu.c`
+  - `src/engine/geometry/nanite/nanite/culling_nanite/cull_feedback.c`
+  - `src/engine/geometry/nanite/nanite/streaming/page_cache.c`
+  - `src/engine/geometry/nanite/nanite/streaming/nanite_streamer.c`
+  - `src/engine/geometry/nanite/nanite/streaming/eviction.c`
+  - `src/engine/geometry/nanite/nanite/streaming/stream_priority.c`
+  - `src/engine/geometry/nanite/nanite/streaming/prefetch.c`
+  - `src/engine/geometry/nanite/nanite/streaming/residency_manager.c`
+  - `src/engine/geometry/nanite/nanite/rendering_nanite/depth_only.c`
+  - `src/engine/geometry/nanite/nanite/rendering_nanite/material_eval.c`
+  - `src/engine/geometry/nanite/nanite/rendering_nanite/software_raster.c`
+  - `src/engine/geometry/nanite/nanite/rendering_nanite/hardware_raster.c`
+  - `src/engine/geometry/nanite/nanite/rendering_nanite/feedback_analysis.c`
+  - `src/engine/geometry/nanite/nanite/rendering_nanite/shadow_pass.c`
+  - `src/engine/geometry/mesh/mesh_advanced/meshlet_culling.c`
+  - `src/engine/geometry/mesh/mesh_advanced/stripification.c`
+  - `src/engine/geometry/mesh/mesh_advanced/nanite_geometry.c`
+  - `src/engine/geometry/mesh/mesh_advanced/lod_generator.c`
+  - `src/engine/geometry/mesh/mesh_advanced/impostor_baker.c`
+  - `src/engine/postprocess/lens_flare/lens_flare.c`
+  - `src/engine/postprocess/temporal_upscaling/tsr_core.c`
+  - `src/engine/postprocess/temporal_upscaling/tsr_history.c`
+  - `src/engine/postprocess/temporal_upscaling/dlss_wrapper.c`
+  - `src/engine/postprocess/anti_aliasing/taa_resolve.c`
+  - `src/engine/postprocess/anti_aliasing/taa_history.c`
+  - `src/engine/postprocess/anti_aliasing/fxaa_pass.c`
+  - `src/engine/postprocess/anti_aliasing/taa_sharpening.c`
+  - `src/engine/postprocess/anti_aliasing/smaa_pass.c`
+  - `src/engine/postprocess/anti_aliasing/taa_velocity.c`
+  - `src/engine/postprocess/color_grading/lut_system.c`
+  - `src/engine/postprocess/tonemapping/reinhard_tonemapper.c`
+  - `src/engine/postprocess/tonemapping/color_transform.c`
+  - `src/engine/postprocess/tonemapping/hdr_encoding.c`
+  - `src/engine/postprocess/tonemapping/histogram_compute.c`
+  - `src/engine/postprocess/tonemapping/aces_tonemapper.c`
+  - `src/engine/postprocess/tonemapping/exposure_adaptation.c`
+  - `src/engine/postprocess/motion_blur/velocity_buffer.c`
+  - `src/engine/postprocess/motion_blur/camera_motion_blur.c`
+  - `src/engine/postprocess/motion_blur/motion_blur_gather.c`
+  - `src/engine/postprocess/motion_blur/motion_blur_tile.c`
+  - `src/engine/postprocess/motion_blur/object_motion_blur.c`
+  - `src/engine/postprocess/motion_blur/motion_blur_quality.c`
+  - `src/engine/postprocess/screen_space/ss_gi.c`
+  - `src/engine/postprocess/screen_space/ssr_resolve.c`
+  - `src/engine/postprocess/screen_space/ssr_fallback.c`
+  - `src/engine/postprocess/screen_space/ss_shadows.c`
+  - `src/engine/postprocess/screen_space/ss_refraction.c`
+  - `src/engine/postprocess/screen_space/ssr_trace.c`
+  - `src/engine/postprocess/depth_of_field/dof_gather.c`
+  - `src/engine/postprocess/depth_of_field/dof_combine.c`
+  - `src/engine/postprocess/depth_of_field/dof_bokeh.c`
+  - `src/engine/postprocess/depth_of_field/dof_coc.c`
+  - `src/engine/postprocess/depth_of_field/dof_parameters.c`
+  - `src/engine/postprocess/depth_of_field/tiled_dof.c`
+  - `src/engine/postprocess/bloom/bloom_flares.c`
+  - `src/engine/postprocess/bloom/bloom_downsample.c`
+  - `src/engine/postprocess/bloom/bloom_threshold.c`
+  - `src/engine/postprocess/bloom/bloom_anamorphic.c`
+  - `src/engine/postprocess/bloom/bloom_lens_dirt.c`
+  - `src/engine/postprocess/bloom/bloom_upsample.c`
+  - `src/engine/postprocess/ambient_occlusion/bent_normals.c`
+  - `src/engine/postprocess/ambient_occlusion/ao_blur.c`
+  - `src/engine/postprocess/ambient_occlusion/ao_temporal.c`
+  - `src/engine/postprocess/ambient_occlusion/gtao_pass.c`
+  - `src/engine/postprocess/ambient_occlusion/hbao_pass.c`
+  - `src/engine/postprocess/ambient_occlusion/ssao_pass.c`
+  - `src/engine/postprocess/ssr/ssr_resolve.m`
+  - `src/engine/postprocess/ssr/ssr_fallback.m`
+  - `src/engine/postprocess/ssr/ssr_trace.m`
+  - `src/engine/lighting/culling/light_culling.c`
+  - `src/engine/lighting/probes/probe_placement.c`
+  - `src/engine/lighting/probes/probe_parallax.c`
+  - `src/engine/lighting/probes/irradiance_probe.c`
+  - `src/engine/lighting/probes/probe_blending.c`
+  - `src/engine/lighting/probes/probe_streaming.c`
+  - `src/engine/lighting/probes/reflection_probe.c`
+  - `src/engine/lighting/shadows/shadow_atlas.c`
+  - `src/engine/lighting/shadows/shadow_system.c`
+  - `src/engine/lighting/shadows/shadow_caster.c`
+  - `src/engine/lighting/shadows/evsm_shadows.c`
+  - `src/engine/lighting/shadows/vsm_shadows.c`
+  - `src/engine/lighting/shadows/shadow_cache.c`
+  - `src/engine/lighting/shadows/cascade_splits.c`
+  - `src/engine/lighting/shadows/csm_test.c`
+  - `src/engine/lighting/shadows/contact_shadows.c`
+  - `src/engine/lighting/shadows/shadow_manager.c`
+  - `src/engine/lighting/shadows/pcf_filter.c`
+  - `src/engine/lighting/shadows/pcss_filter.c`
+  - `src/engine/lighting/shadows/csm_manager.c`
+  - `src/engine/lighting/shadows/cascaded_pcss.c`
+  - `src/engine/lighting/shadows/csm.c`
+  - `src/engine/lighting/shadows/shadow_pass.c`
+  - `src/engine/lighting/gi/light_probes.c`
+  - `src/engine/lighting/gi/ambient_occlusion.c`
+  - `src/engine/lighting/gi/screen_space_gi.c`
+  - `src/engine/lighting/gi/global_illumination.c`
+  - `src/engine/lighting/gi/surfel_gi_impl.c`
+  - `src/engine/lighting/gi/vxgi_impl.c`
+  - `src/engine/lighting/gi/reflection_probes.c`
+  - `src/engine/lighting/gi/voxel_cone_tracing.c`
+  - `src/engine/lighting/direct/volumetric_fog.c`
+  - `src/engine/lighting/direct/light_system.c`
+  - `src/engine/lighting/direct/gpu_lighting.c`
+  - `src/engine/lighting/direct/clustered_forward.c`
+  - `src/engine/lighting/direct/lighting.c`
+  - `src/engine/lighting/direct/light_baker.c`
+  - `src/engine/lighting/global_illumination/gi_debug_viz.c`
+  - `src/engine/lighting/global_illumination/gi_probe_grid.c`
+  - `src/engine/lighting/global_illumination/diffuse_gi.c`
+  - `src/engine/lighting/global_illumination/gi_update_system.c`
+  - `src/engine/lighting/global_illumination/indirect_lighting.c`
+  - `src/engine/lighting/global_illumination/specular_gi.c`
+  - `src/engine/lighting/cascades/csm_optimization.c`
+  - `src/engine/lighting/cascades/cascade_splits.c`
+  - `src/engine/lighting/cascades/cascade_blending.c`
+  - `src/engine/lighting/cascades/cascade_culling.c`
+  - `src/engine/lighting/cascades/cascade_selection.c`
+  - `src/engine/lighting/cascades/cascade_stabilization.c`
+  - `src/engine/lighting/sources/sphere_light.c`
+  - `src/engine/lighting/sources/light_culling.c`
+  - `src/engine/lighting/sources/directional_light.c`
+  - `src/engine/lighting/sources/spot_light.c`
+  - `src/engine/lighting/sources/spherical_light.c`
+  - `src/engine/lighting/sources/rect_light.c`
+  - `src/engine/lighting/sources/point_light.c`
+  - `src/engine/lighting/lightmaps/lightmap_baker.c`
+  - `src/engine/lighting/lightmaps/lightmap_streaming.c`
+  - `src/engine/lighting/lightmaps/lightmap_uvs.c`
+  - `src/engine/lighting/lightmaps/lightmap_sampling.c`
+  - `src/engine/lighting/lightmaps/directional_lightmaps.c`
+  - `src/engine/lighting/lightmaps/lightmap_packer.c`
+  - `src/engine/lighting/volumetric/volumetric_fog.c`
+  - `src/engine/lighting/volumetric/volumetric_shadows.c`
+  - `src/engine/lighting/volumetric/participating_media.c`
+  - `src/engine/lighting/volumetric/froxel_grid.c`
+  - `src/engine/lighting/volumetric/temporal_reprojection.c`
+  - `src/engine/lighting/volumetric/fog_volume.c`
+  - `src/engine/lighting/volumetric/volumetric_lighting.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/page_management/vsm_page_pool.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/page_management/vsm_invalidation.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/page_management/vsm_compression.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/page_management/vsm_page_table.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/page_management/vsm_allocation.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/page_management/vsm_caching.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_clipmap.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_sampling.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_rasterization.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_filtering.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_projection.c`
+  - `src/engine/lighting/vsm/virtual_shadow_maps/rendering_vsm/vsm_culling.c`
+  - `src/engine/lighting/lumen/final_gather/final_gather_rays.c`
+  - `src/engine/lighting/lumen/final_gather/temporal_blend.c`
+  - `src/engine/lighting/lumen/final_gather/history_rejection.c`
+  - `src/engine/lighting/lumen/final_gather/diffuse_indirect.c`
+  - `src/engine/lighting/lumen/final_gather/gather_integration.c`
+  - `src/engine/lighting/lumen/final_gather/denoise_lumen.c`
+  - `src/engine/lighting/lumen/surface_cache/surface_lod.c`
+  - `src/engine/lighting/lumen/surface_cache/surface_update.c`
+  - `src/engine/lighting/lumen/surface_cache/surface_capture.c`
+  - `src/engine/lighting/lumen/radiance_cache/probe_placement.c`
+  - `src/engine/lighting/lumen/radiance_cache/probe_octahedron.c`
+  - `src/engine/lighting/lumen/radiance_cache/radiance_inject.c`
+  - `src/engine/lighting/lumen/radiance_cache/radiance_update.c`
+  - `src/engine/lighting/lumen/radiance_cache/cascade_radiance.c`
+  - `src/engine/lighting/lumen/radiance_cache/probe_interpolation.c`
+  - `src/engine/lighting/lumen/tracing_lumen/hit_lighting.c`
+  - `src/engine/lighting/lumen/tracing_lumen/hybrid_trace.c`
+  - `src/engine/lighting/lumen/tracing_lumen/trace_cache.c`
+  - `src/engine/lighting/lumen/tracing_lumen/trace_dispatch.c`
+  - `src/engine/lighting/lumen/tracing_lumen/software_trace.c`
+  - `src/engine/lighting/lumen/tracing_lumen/screen_trace.c`
+  - `src/engine/lighting/shadows/advanced/sdsm.c`
+  - `src/engine/lighting/shadows/advanced/moment_shadows.c`
+  - `src/engine/lighting/shadows/analytical/capsule_shadows.c`
+  - `src/engine/lighting/shadows/analytical/sdf_shadows.c`
+  - `src/engine/lighting/shadows/raytraced/rt_area_shadow.c`
+  - `src/engine/lighting/shadows/raytraced/rt_penumbra.c`
+  - `src/engine/lighting/shadows/raytraced/rt_shadow_denoise.c`
+  - `src/engine/lighting/shadows/raytraced/rt_shadow_cache.c`
+  - `src/engine/lighting/shadows/raytraced/hybrid_shadows.c`
+  - `src/engine/lighting/shadows/raytraced/contact_shadows_adv.c`
+  - `src/engine/lighting/shadows/raytraced/rt_shadow_lod.c`
+  - `src/engine/lighting/shadows/raytraced/rt_shadow_ray.c`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/capsule_shadows.c`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/sdsm.c`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/moment_shadow.c`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/hybrid_shadows.c`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/contact_shadows_adv.c`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/sdf_shadows.c`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_area_shadow.c`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_penumbra.c`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_denoise.c`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_cache.c`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_lod.c`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_ray.c`
+  - `src/engine/rendering/mesh/mesh_processing_impl.c`
+  - `src/engine/rendering/advanced/normal_mapping.c`
+  - `src/engine/rendering/advanced/ambient_occlusion.c`
+  - `src/engine/rendering/advanced/rendering_final_batch.c`
+  - `src/engine/rendering/advanced/extended_rendering_complete.c`
+  - `src/engine/rendering/advanced/ray_tracing.c`
+  - `src/engine/rendering/advanced/global_illumination.c`
+  - `src/engine/rendering/advanced/rendering_complete.c`
+  - `src/engine/rendering/advanced/material_reflection.c`
+  - `src/engine/rendering/advanced/hdr_tonemap.c`
+  - `src/engine/rendering/post_processing/color_grading.c`
+  - `src/engine/rendering/post_processing/lens_flares.c`
+  - `src/engine/rendering/post_processing/motion_blur.c`
+  - `src/engine/rendering/post_processing/fxaa.c`
+  - `src/engine/rendering/post_processing/auto_exposure.c`
+  - `src/engine/rendering/post_processing/dof_bokeh.c`
+  - `src/engine/rendering/post_processing/vignette.c`
+  - `src/engine/rendering/post_processing/procedural_lens_flare.c`
+  - `src/engine/rendering/post_processing/chromatic_aberration.c`
+  - `src/engine/rendering/post_processing/post_processing_examples.c`
+  - `src/engine/rendering/culling/mesh_culling.c`
+  - `src/engine/rendering/culling/culling.c`
+  - `src/engine/rendering/culling/occlusion_culling.c`
+  - `src/engine/rendering/materials/material_defaults.c`
+  - `src/engine/rendering/materials/material_instance.c`
+  - `src/engine/rendering/materials/material_serialization.c`
+  - `src/engine/rendering/materials/material_templates.c`
+  - `src/engine/rendering/materials/material_examples.c`
+  - `src/engine/rendering/materials/material_serialization_examples.c`
+  - `src/engine/rendering/materials/shader_permutations.c`
+  - `src/engine/rendering/materials/material_system.c`
+  - `src/engine/rendering/materials/material_complete_example.c`
+  - `src/engine/rendering/materials/material_hot_reload.c`
+  - `src/engine/rendering/gpu/gpu_memory.c`
+  - `src/engine/rendering/gpu/gpu_lighting.c`
+  - `src/engine/rendering/gpu/gpu_texture.c`
+  - `src/engine/rendering/gpu/gpu_shader_reload.c`
+  - `src/engine/rendering/gpu/gpu_renderpass.c`
+  - `src/engine/rendering/gpu/gpu_postprocess.c`
+  - `src/engine/rendering/gpu/gpu_text.c`
+  - `src/engine/rendering/gpu/gpu_material.c`
+  - `src/engine/rendering/sky/atmosphere_scattering_impl.c`
+  - `src/engine/rendering/sky/atmosphere_scattering.c`
+  - `src/engine/rendering/sky/volumetric_clouds.c`
+  - `src/engine/rendering/core/shader_compiler.c`
+  - `src/engine/rendering/core/block_highlight.c`
+  - `src/engine/rendering/core/meshlet_system.c`
+  - `src/engine/rendering/core/light_culling.c`
+  - `src/engine/rendering/core/lod_system.c`
+  - `src/engine/rendering/core/mesh_advanced.c`
+  - `src/engine/rendering/core/scene.c`
+  - `src/engine/rendering/core/lighting.c`
+  - `src/engine/rendering/core/metal_compute.c`
+  - `src/engine/rendering/core/metal_backend.c`
+  - `src/engine/rendering/core/material_system.c`
+  - `src/engine/rendering/core/graph_renderer.c`
+  - `src/engine/rendering/core/texture_system.c`
+  - `src/engine/rendering/core/shader_transpiler.c`
+  - `src/engine/rendering/core/shader.c`
+  - `src/engine/rendering/core/gpu_data_transfer.c`
+  - `src/engine/rendering/core/texture_loader_impl.c`
+  - `src/engine/rendering/core/gpu_scene.c`
+  - `src/engine/rendering/core/chunk_mesh_generator.c`
+  - `src/engine/rendering/core/raytracing_pipeline.c`
+  - `src/engine/rendering/core/instancing.c`
+  - `src/engine/rendering/water/fft_ocean.c`
+  - `src/engine/rendering/visibility/visibility_resolve.c`
+  - `src/engine/rendering/visibility/deferred_texturing.c`
+  - `src/engine/rendering/visibility/material_classify.c`
+  - `src/engine/rendering/visibility/visibility_debug.c`
+  - `src/engine/rendering/visibility/primitive_id_buffer.c`
+  - `src/engine/rendering/visibility/visibility_buffer.c`
+  - `src/engine/rendering/texturing/virtual_texture.c`
+  - `src/engine/rendering/texturing/texture_compression.c`
+  - `src/engine/rendering/texturing/bindless_resources.c`
+  - `src/engine/rendering/deferred/gbuffer_resolve.c`
+  - `src/engine/rendering/deferred/light_culling.c`
+  - `src/engine/rendering/deferred/thin_gbuffer.c`
+  - `src/engine/rendering/deferred/deferred_lighting.c`
+  - `src/engine/rendering/deferred/clustered_culling.c`
+  - `src/engine/rendering/deferred/gbuffer_layout.c`
+  - `src/engine/rendering/deferred/deferred_decals.c`
+  - `src/engine/rendering/optimization/occlusion_system.c`
+  - `src/engine/rendering/optimization/mesh_optimizer.c`
+  - `src/engine/rendering/optimization/dynamic_resolution.c`
+  - `src/engine/rendering/backends/metal_backend.c`
+  - `src/engine/rendering/backends/raytracing_pipeline.c`
+  - `src/engine/rendering/graph/render_graph_impl.c`
+  - `src/engine/rendering/passes/shadow_pass_example.c`
+  - `src/engine/rendering/output/present.c`
+  - `src/engine/rendering/output/resolution_scaling.c`
+  - `src/engine/rendering/output/vsync_modes.c`
+  - `src/engine/rendering/output/hdr_output.c`
+  - `src/engine/rendering/output/swapchain.c`
+  - `src/engine/rendering/output/frame_pacing.c`
+  - `src/engine/rendering/gbuffer/gbuffer_stats.c`
+  - `src/engine/rendering/gbuffer/gbuffer_pass.c`
+  - `src/engine/rendering/gbuffer/gbuffer.c`
+  - `src/engine/rendering/bindless/bindless_manager.c`
+  - `src/engine/rendering/gpu_driven/buffer_pool.c`
+  - `src/engine/rendering/gpu_driven/persistent_mapping.c`
+  - `src/engine/rendering/gpu_driven/material_data_gpu.c`
+  - `src/engine/rendering/gpu_driven/compute_dispatch.c`
+  - `src/engine/rendering/gpu_driven/render_graph_integration.c`
+  - `src/engine/rendering/gpu_driven/instance_data_gpu.c`
+  - `src/engine/rendering/gpu_driven/multi_draw_indirect.c`
+  - `src/engine/rendering/gpu_driven/gpu_scene.c`
+  - `src/engine/rendering/streaming/asset_streamer.c`
+  - `src/engine/rendering/streaming/lod_selector.c`
+  - `src/engine/rendering/vfx/environment_vfx_impl.c`
+  - `src/engine/rendering/vfx/hair_rendering_impl.c`
+  - `src/engine/rendering/raytracing_advanced/rt_reflections.c`
+  - `src/engine/rendering/raytracing_advanced/denoising.c`
+  - `src/engine/rendering/raytracing_advanced/acceleration_structure.c`
+  - `src/engine/rendering/raytracing_advanced/shader_binding_table.c`
+  - `src/engine/rendering/raytracing_advanced/denoising_svgf.c`
+  - `src/engine/rendering/raytracing_advanced/path_tracer.c`
+  - `src/engine/rendering/raytracing_advanced/dxr_integration_v2.c`
+  - `src/engine/rendering/raytracing_advanced/dxr_integration.c`
+  - `src/engine/rendering/cinematic/camera_director.c`
+  - `src/engine/rendering/compute/gpu_compute.c`
+  - `src/engine/rendering/render_graph/render_graph_example.c`
+  - `src/engine/rendering/render_graph/barrier_insertion.c`
+  - `src/engine/rendering/render_graph/render_pass_node.c`
+  - `src/engine/rendering/render_graph/graph_executor.c`
+  - `src/engine/rendering/render_graph/resource_node.c`
+  - `src/engine/rendering/render_graph/resource_aliasing.c`
+  - `src/engine/rendering/render_graph/graph_compiler.c`
+  - `src/engine/rendering/terrain/terrain_quadtree.c`
+  - `src/engine/rendering/terrain/terrain_lod.c`
+  - `src/engine/rendering/terrain/proc_planet.c`
+  - `src/engine/rendering/shaders/foliage_wind_shader.c`
+  - `src/engine/rendering/shaders/ocean_water.c`
+  - `src/engine/rendering/environment/ocean_rendering.c`
+  - `src/engine/rendering/environment/ibl.c`
+  - `src/engine/rendering/environment/environment_manager.c`
+  - `src/engine/rendering/environment/skybox.c`
+  - `src/engine/rendering/texture/texture_system.c`
+  - `src/engine/rendering/texture/texture_atlas.c`
+  - `src/engine/rendering/gpu_scene/gpu_scene_culling.c`
+  - `src/engine/rendering/gpu_scene/gpu_scene_rendering.c`
+  - `src/engine/rendering/gpu_scene/gpu_scene_update.c`
+  - `src/engine/rendering/shader/pbr_stylized_impl.c`
+  - `src/engine/rendering/shader/graph_backend_impl.c`
+  - `src/engine/rendering/shader/sss_impl.c`
+  - `src/engine/rendering/shader/compiler_impl.c`
+  - `src/engine/rendering/frame_graph/validation.c`
+  - `src/engine/rendering/frame_graph/compile_execute.c`
+  - `src/engine/rendering/frame_graph/barrier_merge.c`
+  - `src/engine/rendering/frame_graph/frame_graph.c`
+  - `src/engine/rendering/frame_graph/resource_pool.c`
+  - `src/engine/rendering/postprocess/taa_impl.c`
+  - `src/engine/rendering/postprocess/uber_posttrace_impl.c`
+  - `src/engine/rendering/controllers/fixed_angle_camera_controller.c`
+  - `src/engine/rendering/controllers/free_camera_controller.c`
+  - `src/engine/rendering/pbr/pbr_brdf.c`
+  - `src/engine/rendering/materials_advanced/anisotropy.c`
+  - `src/engine/rendering/materials_advanced/hair_shader.c`
+  - `src/engine/rendering/materials_advanced/clear_coat.c`
+  - `src/engine/rendering/materials_advanced/microfacet_distribution.c`
+  - `src/engine/rendering/materials_advanced/cloth_shader.c`
+  - `src/engine/rendering/materials_advanced/layered_materials.c`
+  - `src/engine/rendering/materials_advanced/subsurface_scattering.c`
+  - `src/engine/rendering/materials_advanced/glitter_shader.c`
+  - `src/engine/rendering/materials_advanced/water_shader.c`
+  - `src/engine/rendering/materials_advanced/sheen_shader.c`
+  - `src/engine/rendering/raytracing/hybrid_rt_impl.c`
+  - `src/engine/rendering/raytracing/raytracing_global_illumination.c`
+  - `src/engine/rendering/raytracing/bvh_builder.c`
+  - `src/engine/rendering/raytracing/raytracing_denoiser.c`
+  - `src/engine/rendering/raytracing/raytracing_impl.c`
+  - `src/engine/rendering/raytracing/rt_pipeline.c`
+  - `src/engine/rendering/raytracing/raytracing_reflections.c`
+  - `src/engine/rendering/raytracing/raytracing_acceleration_structures.c`
+  - `src/engine/rendering/raytracing/raytracing_pipeline.c`
+  - `src/engine/rendering/forward/forward_pass.c`
+  - `src/engine/rendering/forward/forward_plus.c`
+  - `src/engine/rendering/forward/oit_wboit.c`
+  - `src/engine/rendering/forward/forward_batching.c`
+  - `src/engine/rendering/forward/forward_lighting.c`
+  - `src/engine/rendering/forward/forward_shadows.c`
+  - `src/engine/rendering/forward/refraction.c`
+  - `src/engine/rendering/forward/shader_variants.c`
+  - `src/engine/rendering/forward/depth_prepass.c`
+  - `src/engine/rendering/forward/forward_clustering.c`
+  - `src/engine/rendering/forward/forward_renderer.c`
+  - `src/engine/rendering/forward/transparency.c`
+  - `src/engine/rendering/forward/forward_transparency.c`
+  - `src/engine/rendering/debug/render_graph_viz.c`
+  - `src/engine/rendering/decals/decal_projection.c`
+  - `src/engine/rendering/decals/decal_system.c`
+  - `src/engine/rendering/raytracing/acceleration/as_update.c`
+  - `src/engine/rendering/raytracing/acceleration/instance_buffer_rt.c`
+  - `src/engine/rendering/raytracing/acceleration/tlas_builder.c`
+  - `src/engine/rendering/raytracing/acceleration/as_compaction.c`
+  - `src/engine/rendering/raytracing/acceleration/blas_builder.c`
+  - `src/engine/rendering/raytracing/acceleration/as_manager.c`
+  - `src/engine/rendering/raytracing/denoising/edge_stopping.c`
+  - `src/engine/rendering/raytracing/denoising/nrd_integration.c`
+  - `src/engine/rendering/raytracing/denoising/variance_estimation.c`
+  - `src/engine/rendering/raytracing/denoising/temporal_accumulation.c`
+  - `src/engine/rendering/raytracing/denoising/relax_denoiser.c`
+  - `src/engine/rendering/raytracing/denoising/svgf_denoiser.c`
+  - `src/engine/rendering/raytracing/shadows_rt/rt_contact_shadows.c`
+  - `src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c`
+  - `src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c`
+  - `src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c`
+  - `src/engine/rendering/raytracing/shadows_rt/rt_soft_shadows.c`
+  - `src/engine/rendering/raytracing/shadows_rt/rt_shadow_rays.c`
+  - `src/engine/rendering/raytracing/path_tracing/russian_roulette.c`
+  - `src/engine/rendering/raytracing/path_tracing/progressive_render.c`
+  - `src/engine/rendering/raytracing/path_tracing/path_sampler.c`
+  - `src/engine/rendering/raytracing/path_tracing/path_integrator.c`
+  - `src/engine/rendering/raytracing/path_tracing/mis_weights.c`
+  - `src/engine/rendering/raytracing/path_tracing/reference_renderer.c`
+  - `src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c`
+  - `src/engine/rendering/raytracing/raytracing_advanced/denoising.c`
+  - `src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c`
+  - `src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c`
+  - `src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c`
+  - `src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c`
+  - `src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c`
+  - `src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c`
+  - `src/engine/rendering/raytracing/gi_rt/rt_ao.c`
+  - `src/engine/rendering/raytracing/gi_rt/restir_gi.c`
+  - `src/engine/rendering/raytracing/gi_rt/ddgi_sampling.c`
+  - `src/engine/rendering/raytracing/gi_rt/gi_denoiser.c`
+  - `src/engine/rendering/raytracing/gi_rt/ddgi_probes.c`
+  - `src/engine/rendering/raytracing/gi_rt/rt_diffuse_gi.c`
+  - `src/engine/rendering/raytracing/gi_rt/ddgi_update.c`
+  - `src/engine/rendering/raytracing/reflections_rt/rt_reflection_fallback.c`
+  - `src/engine/rendering/raytracing/reflections_rt/rt_glossy_reflections.c`
+  - `src/engine/rendering/raytracing/reflections_rt/rt_reflection_rays.c`
+  - `src/engine/rendering/raytracing/reflections_rt/rt_reflection_denoise.c`
+  - `src/engine/rendering/raytracing/reflections_rt/rt_multi_bounce.c`
+  - `src/engine/rendering/raytracing/reflections_rt/rt_reflection_lod.c`
+  - `src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c`
+  - `src/engine/rendering/raytracing/raytracing/bvh_builder.c`
+  - `src/engine/rendering/raytracing/raytracing/rt_pipeline.c`
+  - `src/engine/rendering/texture/texture/virtual_streaming_impl.c`
+  - `src/engine/rendering/vrs/vrs_rendering/vrs_quality.c`
+  - `src/engine/rendering/vrs/vrs_rendering/per_draw_vrs.c`
+  - `src/engine/rendering/vrs/vrs_rendering/vrs_image.c`
+  - `src/engine/rendering/vrs/vrs_rendering/per_primitive_vrs.c`
+  - `src/engine/rendering/vrs/vrs_rendering/vrs_integration.c`
+  - `src/engine/rendering/vrs/vrs_rendering/vrs_combiner.c`
+  - `src/engine/rendering/vrs/vrs_analysis/depth_vrs.c`
+  - `src/engine/rendering/vrs/vrs_analysis/edge_vrs.c`
+  - `src/engine/rendering/vrs/vrs_analysis/motion_vrs.c`
+  - `src/engine/rendering/vrs/vrs_analysis/luminance_vrs.c`
+  - `src/engine/rendering/vrs/vrs_analysis/content_adaptive.c`
+  - `src/engine/rendering/vrs/vrs_analysis/vrs_debug.c`
+  - `src/engine/rendering/occlusion/hzb/hzb_temporal.c`
+  - `src/engine/rendering/occlusion/hzb/hzb_downsample.c`
+  - `src/engine/rendering/occlusion/hzb/hzb_first_person.c`
+  - `src/engine/rendering/occlusion/hzb/hzb_build.c`
+  - `src/engine/rendering/occlusion/hzb/hzb_debug.c`
+  - `src/engine/rendering/occlusion/software_occlusion/sw_binning.c`
+  - `src/engine/rendering/occlusion/software_occlusion/occlusion_query.c`
+  - `src/engine/rendering/occlusion/software_occlusion/sw_rasterizer.c`
+  - `src/engine/rendering/occlusion/software_occlusion/sw_depth_buffer.c`
+  - `src/engine/rendering/occlusion/software_occlusion/masked_occlusion.c`
+  - `src/engine/rendering/occlusion/software_occlusion/sw_triangle.c`
+  - `src/engine/rendering/culling/culling/mesh_culling.c`
+  - `src/engine/rendering/culling/culling/occlusion_culling.c`
+  - `src/engine/environment/ocean/ocean_fft.c`
+  - `src/engine/environment/ocean/ocean_mesh.c`
+  - `src/engine/environment/ocean/phillips_spectrum.c`
+  - `src/engine/environment/vegetation/vegetation_interaction.c`
+  - `src/engine/environment/terrain/terrain_streaming.c`
+  - `src/engine/environment/terrain/terrain_clipmap.c`
+  - `src/engine/environment/weather/weather_stub.c`
+  - `src/engine/environment/stylized/stylized_water.c`
+  - `src/engine/environment/stylized/voxel_builder.c`
+  - `src/engine/environment/stylized/color_palette_system.c`
+  - `src/engine/environment/stylized/low_poly_generator.c`
+  - `src/engine/environment/stylized/pixel_art_renderer.c`
+  - `src/engine/environment/stylized/outline_renderer.c`
+  - `src/engine/environment/stylized/cel_shading_material.c`
+  - `src/engine/environment/stylized/hand_drawn_effect.c`
+  - `src/engine/environment/builder/weather_zone_editor.c`
+  - `src/engine/environment/builder/atmosphere_editor.c`
+  - `src/engine/environment/builder/rock_scatter.c`
+  - `src/engine/environment/builder/lighting_scenario.c`
+  - `src/engine/environment/builder/road_spline_tool.c`
+  - `src/engine/environment/builder/building_placer.c`
+  - `src/engine/environment/builder/biome_painter.c`
+  - `src/engine/environment/builder/vegetation_placement.c`
+  - `src/engine/environment/builder/water_body_editor.c`
+  - `src/engine/environment/procedural/style_transfer.c`
+  - `src/engine/environment/procedural/terrain_utils.c`
+  - `src/engine/environment/procedural/procedural_content.c`
+  - `src/engine/environment/procedural/quality_validator.c`
+  - `src/engine/environment/procedural/world_generator.c`
+  - `src/engine/environment/procedural/grammar_generator.c`
+  - `src/engine/environment/procedural/generation_impl.c`
+  - `src/engine/environment/procedural/dungeon/room_generator.c`
+  - `src/engine/environment/procedural/terrain/erosion.c`
+  - `src/engine/environment/landscape/terrain/landscape/splatmaps/splat_blending.c`
+  - `src/engine/environment/landscape/terrain/landscape/splatmaps/virtual_splatmap.c`
+  - `src/engine/environment/landscape/terrain/landscape/splatmaps/splat_renderer.c`
+  - `src/engine/environment/landscape/terrain/landscape/splatmaps/splat_painting.c`
+  - `src/engine/environment/landscape/terrain/landscape/splatmaps/splat_streaming.c`
+  - `src/engine/environment/landscape/terrain/landscape/splatmaps/splat_materials.c`
+  - `src/engine/environment/landscape/terrain/landscape/vegetation/tree_renderer.c`
+  - `src/engine/environment/landscape/terrain/landscape/vegetation/foliage_interaction.c`
+  - `src/engine/environment/landscape/terrain/landscape/vegetation/foliage_wind.c`
+  - `src/engine/environment/landscape/terrain/landscape/vegetation/foliage_system.c`
+  - `src/engine/environment/landscape/terrain/landscape/vegetation/foliage_culling.c`
+  - `src/engine/environment/landscape/terrain/landscape/terrain/terrain_normals.c`
+  - `src/engine/environment/landscape/terrain/landscape/terrain/terrain_culling.c`
+  - `src/engine/environment/landscape/terrain/landscape/terrain/terrain_tessellation.c`
+  - `src/engine/environment/landscape/terrain/landscape/terrain/terrain_renderer.c`
+  - `src/engine/environment/landscape/terrain/landscape/terrain/terrain_lod.c`
+  - `src/engine/environment/landscape/terrain/landscape/terrain/terrain_holes.c`
+  - `src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_blending.c`
+  - `src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_loader.c`
+  - `src/engine/environment/landscape/terrain/landscape/heightmaps/virtual_heightmap.c`
+  - `src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_compression.c`
+  - `src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_modification.c`
+  - `src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_streaming.c`
+  - `src/engine/environment/landscape/terrain/landscape/procedural/biome_generation.c`
+  - `src/engine/environment/landscape/terrain/landscape/procedural/road_generation.c`
+  - `src/engine/environment/landscape/terrain/landscape/procedural/river_generation.c`
+  - `src/engine/environment/landscape/terrain/landscape/procedural/erosion_simulation.c`
+  - `src/engine/environment/landscape/terrain/landscape/procedural/vegetation_placement.c`
+  - `src/engine/environment/landscape/grass/landscape_grass/grass_lod.c`
+  - `src/engine/environment/terrain/core/voxel_mesher.c`
+  - `src/engine/environment/terrain/core/terrain_lod_manager.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/sky/sky_lut.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/sky/sun_disk.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/sky/atmospheric_scattering.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/sky/rayleigh_mie.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/sky/sky_renderer.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/sky/aerial_perspective.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/time_of_day/twilight.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/time_of_day/color_grading_tod.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/time_of_day/moon_phases.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/time_of_day/lighting_gradient.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/time_of_day/sun_moon_position.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/time_of_day/star_field.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_noise.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_density.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_animation.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_lod.c`
+  - `src/engine/environment/atmosphere/core/atmosphere/clouds/cloud_lighting.c`
+  - `src/engine/environment/clouds/volumetric_clouds/volumetric_cloud_rendering.c`
+  - `src/engine/environment/clouds/volumetric_clouds/volumetric_cloud_shadows.c`
+  - `src/engine/gameplay/economy/economy_system.c`
+  - `src/engine/gameplay/achievements/achievement_system.c`
+  - `src/engine/gameplay/quest/quest_system.c`
+  - `src/engine/gameplay/inventory/item_db.c`
+  - `src/engine/gameplay/crafting/crafting_system.c`
+  - `src/engine/gameplay/interaction/interaction_system.c`
+  - `src/engine/shading/subsurface/sss_shadow_maps.c`
+  - `src/engine/shading/subsurface/sss_blur.c`
+  - `src/engine/shading/subsurface/skin_shading.c`
+  - `src/engine/shading/subsurface/sss_transmission.c`
+  - `src/engine/shading/subsurface/pre_integrated_sss.c`
+  - `src/engine/shading/subsurface/sss_profile.c`
+  - `src/engine/shading/brdf/energy_conservation.c`
+  - `src/engine/shading/brdf/ggx_brdf.c`
+  - `src/engine/shading/brdf/diffuse_brdf.c`
+  - `src/engine/shading/brdf/visibility_term.c`
+  - `src/engine/shading/brdf/multiscatter_ggx.c`
+  - `src/engine/shading/brdf/fresnel.c`
+  - `src/engine/shading/library/shader_utils_impl.c`
+  - `src/engine/shading/library/shader_advanced_impl.c`
+  - `src/engine/shading/library/shader_library_core_impl.c`
+  - `src/engine/shading/clearcoat/coat_thickness.c`
+  - `src/engine/shading/clearcoat/car_paint.c`
+  - `src/engine/shading/clearcoat/coat_fresnel.c`
+  - `src/engine/shading/clearcoat/clearcoat_normal.c`
+  - `src/engine/shading/clearcoat/clearcoat_layer.c`
+  - `src/engine/shading/clearcoat/multi_layer_material.c`
+  - `src/engine/shading/special/anisotropy.c`
+  - `src/engine/shading/special/absorption.c`
+  - `src/engine/shading/special/transmission.c`
+  - `src/engine/shading/special/eye_shading.c`
+  - `src/engine/shading/special/gemstone.c`
+  - `src/engine/shading/special/iridescence.c`
+  - `src/engine/shading/cloth/fuzz_lighting.c`
+  - `src/engine/shading/cloth/sheen_layer.c`
+  - `src/engine/shading/cloth/cloth_ao.c`
+  - `src/engine/shading/cloth/anisotropic_cloth.c`
+  - `src/engine/shading/cloth/fabric_patterns.c`
+  - `src/engine/shading/cloth/cloth_brdf.c`
+  - `src/engine/shading/hair/hair_strand_shading.c`
+  - `src/engine/shading/hair/marschner_model.c`
+  - `src/engine/shading/hair/hair_ao.c`
+  - `src/engine/shading/hair/hair_shadows.c`
+  - `src/engine/shading/hair/hair_antialiasing.c`
+  - `src/engine/shading/hair/hair_scattering.c`
+  - `src/engine/shading/library/environment/water_ocean.c`
+  - `src/engine/shading/library/environment/foliage_wind.c`
+  - `src/engine/shading/library/pbr_variants/pbr_impl.c`
+  - `src/engine/shading/library/pbr_variants/standard_pbr.c`
+  - `src/engine/shading/library/stylized/cel_shading.c`
+  - `src/engine/network/bandwidth/bandwidth_throttler.c`
+  - `src/engine/network/core/replication_manager.c`
+  - `src/engine/network/core/client_prediction.c`
+  - `src/engine/network/core/lag_compensation.c`
+  - `src/engine/network/core/packet_transport.c`
+  - `src/engine/network/security/authentication.c`
+  - `src/engine/network/security/encryption.c`
+  - `src/engine/network/optimization/interest_management.c`
+  - `src/engine/network/prediction/client_predict.c`
+  - `src/engine/network/latency/clock_sync.c`
+  - `src/engine/network/latency/jitter_buffer.c`
+  - `src/engine/network/state/snapshot_interpolation.c`
+  - `src/engine/network/state/delta_compression.c`
+  - `src/engine/network/lag_compensation/hit_validation.c`
+  - `src/engine/network/lag_compensation/rewind_system.c`
+  - `src/engine/network/matchmaking/skill_matchmaking.c`
+  - `src/engine/network/p2p/nat_punchthrough.c`
+  - `src/engine/network/replication/priority_accumulator.c`
+  - `src/engine/network/replication/event_replication.c`
+  - `src/engine/network/multiplayer/core_batch_impl.c`
+  - `src/engine/platform/vr/vr_system_impl.c`
+  - `src/engine/platform/vr/vr_system.c`
+  - `src/engine/platform/input/input_impl.c`
+  - `src/engine/platform/input/gamepad.c`
+  - `src/engine/platform/input/controls.c`
+  - `src/engine/platform/mobile/thermal_manager.c`
+  - `src/engine/platform/vulkan/vk_device.c`
+  - `src/engine/platform/vulkan/vk_sync.c`
+  - `src/engine/platform/vulkan/vk_swapchain.c`
+  - `src/engine/platform/vulkan/vk_memory.c`
+  - `src/engine/platform/vulkan/vk_instance.c`
+  - `src/engine/platform/vulkan/vk_pipeline.c`
+  - `src/engine/platform/vulkan/vk_descriptor.c`
+  - `src/engine/platform/vulkan/vk_command.c`
+  - `src/engine/platform/d3d12/dx_device.c`
+  - `src/engine/platform/d3d12/dx_pipeline.c`
+  - `src/engine/platform/d3d12/dx_root_signature.c`
+  - `src/engine/platform/d3d12/dx_heap.c`
+  - `src/engine/platform/d3d12/dx_descriptor.c`
+  - `src/engine/platform/d3d12/dx_command_list.c`
+  - `src/engine/platform/console/direct_storage_impl.c`
+  - `src/engine/platform/console/async_compute_impl.c`
+  - `src/engine/networking/bandwidth/bandwidth_throttler.c`
+  - `src/engine/networking/transport/udp_socket.c`
+  - `src/engine/networking/transport/reliable_channel.c`
+  - `src/engine/networking/core/replication_manager.c`
+  - `src/engine/networking/core/client_prediction.c`
+  - `src/engine/networking/core/lag_compensation.c`
+  - `src/engine/networking/core/packet_transport.c`
+  - `src/engine/networking/security/authentication.c`
+  - `src/engine/networking/security/encryption.c`
+  - `src/engine/networking/optimization/interest_management.c`
+  - `src/engine/networking/latency/clock_sync.c`
+  - `src/engine/networking/latency/jitter_buffer.c`
+  - `src/engine/networking/state/snapshot_interpolation.c`
+  - `src/engine/networking/state/delta_compression.c`
+  - `src/engine/networking/lag_compensation/hit_validation.c`
+  - `src/engine/networking/lag_compensation/rewind_system.c`
+  - `src/engine/networking/matchmaking/skill_matchmaking.c`
+  - `src/engine/networking/p2p/nat_punchthrough.c`
+  - `src/engine/networking/replication/priority_accumulator.c`
+  - `src/engine/networking/replication/rpc_system.c`
+  - `src/engine/networking/replication/event_replication.c`
+  - `src/engine/networking/replication/entity_replication.c`
+  - `src/engine/networking/replication/delta_compression.c`
+  - `src/engine/scripting/core/script_binding_auto.c`
+  - `src/engine/scripting/core/visual_script_graph.c`
+  - `src/engine/scripting/visual_scripting/nodes.c`
+  - `src/engine/scripting/visual_scripting/debugger.c`
+  - `src/engine/scripting/visual_scripting/visual_scripting_core.c`
+  - `src/engine/scripting/visual_scripting/node_compiler.c`
+  - `src/engine/scripting/lua/lua_script_system.c`
+  - `src/engine/scripting/lua/lua_binder_generator.c`
+  - `src/engine/materials/wetness/puddle_rendering.c`
+  - `src/engine/materials/wetness/wetness_mask.c`
+  - `src/engine/materials/textures/texture_transform.c`
+  - `src/engine/materials/textures/texture_blending.c`
+  - `src/engine/materials/textures/texture_binding.c`
+  - `src/engine/materials/textures/texture_defaults.c`
+  - `src/engine/materials/textures/procedural_textures.c`
+  - `src/engine/materials/textures/detail_textures.c`
+  - `src/engine/materials/special_materials/foliage_material.c`
+  - `src/engine/materials/special_materials/glass_material.c`
+  - `src/engine/materials/special_materials/water_material.c`
+  - `src/engine/materials/special_materials/hair_material.c`
+  - `src/engine/materials/special_materials/skin_material.c`
+  - `src/engine/materials/special_materials/emissive_material.c`
+  - `src/engine/materials/layering/layer_weights.c`
+  - `src/engine/materials/layering/height_blending.c`
+  - `src/engine/materials/layering/layer_masks.c`
+  - `src/engine/materials/layering/material_layers.c`
+  - `src/engine/materials/layering/triplanar_projection.c`
+  - `src/engine/materials/layering/layer_blending.c`
+  - `src/engine/materials/shaders/shader_compiler.c`
+  - `src/engine/materials/shaders/shader_cache.c`
+  - `src/engine/materials/shaders/shader_variants.c`
+  - `src/engine/materials/shaders/shader_includes.c`
+  - `src/engine/materials/shaders/shader_reflection.c`
+  - `src/engine/materials/shaders/shader_hot_reload.c`
+  - `src/engine/materials/templates/asset_templates_batch.c`
+  - `src/engine/materials/pbr/specular_glossiness.c`
+  - `src/engine/materials/pbr/pbr_parameters.c`
+  - `src/engine/materials/pbr/pbr_validation.c`
+  - `src/engine/materials/pbr/pbr_presets.c`
+  - `src/engine/materials/pbr/pbr_conversion.c`
+  - `src/engine/materials/pbr/metallic_roughness.m`
+  - `src/engine/materials/pbr/material_reflection.c`
+  - `src/engine/materials/material_system/dynamic_materials.c`
+  - `src/engine/materials/material_system/material_instance.c`
+  - `src/engine/materials/material_system/material_overrides.c`
+  - `src/engine/materials/material_system/material_parameters.c`
+  - `src/engine/materials/material_system/material_sorting.c`
+  - `src/engine/materials/material_system/material_lod.c`
+  - `src/engine/materials/templates/npcs/npc_behavior_impl.c`
+  - `src/engine/materials/templates/environments/scifi_station.c`
+  - `src/engine/materials/templates/environments/medieval_village.c`
+  - `src/engine/materials/templates/animation/animation_impl.c`
+  - `src/engine/materials/templates/animation/animation_state_machine_impl.c`
+  - `src/engine/materials/templates/ai/ai_advanced_impl.c`
+  - `src/engine/materials/templates/ai/behavior_tree_impl.c`
+  - `src/engine/materials/templates/ai/ai_utils_impl.c`
+  - `src/engine/materials/templates/ai/ai_impl.c`
+  - `src/engine/materials/weathering/rust/rust_growth.c`
+  - `src/engine/materials/weathering/rust/rust_color.c`
+  - `src/engine/materials/weathering/age/age_simulation.c`
+  - `src/engine/materials/weathering/age/weathering_system.c`
+  - `src/engine/materials/weathering/dirt/grunge_masks.c`
+  - `src/engine/materials/weathering/dirt/dirt_accumulation.c`
+  - `src/engine/materials/weathering/wear/tear_damage.c`
+  - `src/engine/materials/weathering/wear/wear_edges.c`
+  - `src/engine/materials/types/wood/wood_subsurface.c`
+  - `src/engine/materials/types/wood/wood_grain.c`
+  - `src/engine/materials/types/metal/metal_flakes.c`
+  - `src/engine/materials/types/metal/metal_anisotropy.c`
+  - `src/engine/materials/types/concrete/concrete_cracks.c`
+  - `src/engine/materials/types/concrete/concrete_staining.c`
+  - `src/engine/materials/types/liquid/liquid_surface.c`
+  - `src/engine/materials/types/liquid/liquid_splashes.c`
+  - `src/engine/materials/types/glass/glass_refraction.c`
+  - `src/engine/materials/types/glass/glass_thickness.c`
+  - `src/engine/materials/types/stone/stone_parallax.c`
+  - `src/engine/materials/types/stone/stone_detail.c`
+  - `src/engine/materials/types/fabric/fabric_sheen.c`
+  - `src/engine/materials/types/fabric/fabric_detail.c`
+  - `src/engine/tools/pipeline/asset_pipeline_impl.c`
+  - `src/engine/tools/pipeline/distributed_build.c`
+  - `src/engine/tools/pipeline/build_system_impl.c`
+  - `src/engine/tools/pipeline/pipeline_impl.c`
+  - `src/engine/tools/hot_reload/hot_reload_impl.c`
+  - `src/engine/tools/world/biome_designer.c`
+  - `src/engine/tools/world/road_river_tool.c`
+  - `src/engine/tools/world/vegetation_painter.c`
+  - `src/engine/tools/asset_editor/asset_editor.c`
+  - `src/engine/tools/modeling/mesh_editor.c`
+  - `src/engine/tools/modeling/mesh_editor_impl.c`
+  - `src/engine/tools/asset_compiler/texture_compressor.c`
+  - `src/engine/tools/asset_compiler/mesh_optimizer.c`
+  - `src/engine/tools/painting/texture_painter.c`
+  - `src/engine/tools/painting/texture_painter_impl.c`
+  - `src/engine/tools/profiler_advanced/memory_visualizer.c`
+  - `src/engine/tools/profiler_advanced/overlay_ui.c`
+  - `src/engine/tools/profiler_advanced/flame_graph.c`
+  - `src/engine/tools/profiler/gpu_profiler_impl.c`
+  - `src/engine/tools/profiler/comprehensive_profiler_impl.c`
+  - `src/engine/tools/asset_browser/asset_view.c`
+  - `src/engine/tools/localization/translation_tool.c`
+  - `src/engine/tools/localization/loc_tool.c`
+  - `src/engine/tools/analytics/telemetry.c`
+  - `src/engine/tools/debug/crash_reporter.c`
+  - `src/engine/tools/debug/bug_reporter.c`
+  - `src/engine/tools/console/command_processor.c`
+  - `src/engine/tools/editor/core/asset_editor/asset_editor.c`
+  - `src/engine/tools/editor/core/asset_editor/3d/model_editor.c`
+  - `src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c`
+  - `src/engine/tools/asset_editor/3d/model_editor.c`
+  - `src/engine/tools/asset_editor/management/import_export.c`
+  - `src/engine/tools/asset_editor/2d/sprite_editor.c`
+  - `src/engine/tools/pipeline/converters/asset_converters.c`
+  - `src/engine/ui/core/ui_layout_engine.c`
+  - `src/engine/ui/core/ui_event_dispatcher.c`
+  - `src/engine/ui/layout/layout_solver.c`
+  - `src/engine/ui/text/font_atlas_gen.c`
+  - `src/engine/ui/text/rich_text_parser.c`
+  - `src/engine/ui/accessibility/accessibility.c`
+  - `src/game/blockgame/combat/combat_animations.c`
+  - `src/game/blockgame/combat/damage_calc.c`
+  - `src/game/blockgame/combat/projectile.c`
+  - `src/game/blockgame/combat/shield.c`
+  - `src/game/blockgame/combat/damage_system.c`
+  - `src/game/blockgame/combat/equipment.c`
+
+## Group 8 (size 2)
+- Suggested canonical: `src/engine/rendering/materials/shader_permutations.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/materials/shader_permutations.h`
+  - `src/engine/rendering/materials/shader_permutations.h`
+
+## Group 9 (size 2)
+- Suggested canonical: `src/engine/network/server_performance_tracker.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/network/server_performance_tracker 2.c`
+  - `src/engine/network/server_performance_tracker.c`
+
+## Group 10 (size 2)
+- Suggested canonical: `src/engine/animation/authoring_impl.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/animation/authoring_impl.c`
+  - `src/engine/character/animation/authoring_impl.c`
+
+## Group 11 (size 2)
+- Suggested canonical: `src/engine/animation/skeleton_system_backup.c`
+- Likely reason(s): backup copy
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/animation/skeleton_system_backup.c`
+  - `src/engine/animation/skeleton_system.c`
+
+## Group 12 (size 2)
+- Suggested canonical: `src/engine/rendering/render_pipeline_integration.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/render_pipeline_integration.c`
+  - `src/engine/rendering/render_pipeline_integration 2.c`
+
+## Group 13 (size 2)
+- Suggested canonical: `src/engine/postprocess/color_grading.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/postprocess/color_grading.h`
+  - `src/engine/rendering/post_processing/color_grading.h`
+
+## Group 14 (size 2)
+- Suggested canonical: `src/engine/postprocess/taa.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/postprocess/taa.h`
+  - `src/engine/rendering/post_processing/taa.h`
+
+## Group 15 (size 2)
+- Suggested canonical: `src/engine/physics/integration/physics_integration.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/physics_integration.c`
+  - `src/engine/physics/integration/physics_integration.c`
+
+## Group 16 (size 2)
+- Suggested canonical: `src/engine/vendor/cgltf.h`
+- Likely reason(s): vendored copy
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/vendor/cgltf.h`
+  - `src/engine/include/vendor/cgltf.h`
+
+## Group 17 (size 2)
+- Suggested canonical: `src/engine/vendor/lua/luaconf.h`
+- Likely reason(s): vendored copy
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/vendor/lua/luaconf.h`
+  - `src/engine/include/vendor/lua/luaconf.h`
+
+## Group 18 (size 2)
+- Suggested canonical: `src/engine/vendor/lua/lopnames.h`
+- Likely reason(s): vendored copy
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/vendor/lua/lopnames.h`
+  - `src/engine/include/vendor/lua/lopnames.h`
+
+## Group 19 (size 2)
+- Suggested canonical: `src/engine/vendor/lua/ljumptab.h`
+- Likely reason(s): vendored copy
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/vendor/lua/ljumptab.h`
+  - `src/engine/include/vendor/lua/ljumptab.h`
+
+## Group 20 (size 2)
+- Suggested canonical: `src/engine/vendor/lua/lprefix.h`
+- Likely reason(s): vendored copy
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/vendor/lua/lprefix.h`
+  - `src/engine/include/vendor/lua/lprefix.h`
+
+## Group 21 (size 2)
+- Suggested canonical: `src/engine/editor/scene_tools/multi_edit.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/scene_tools/multi_edit.h`
+  - `src/engine/include/editor/scene_tools/multi_edit.h`
+
+## Group 22 (size 2)
+- Suggested canonical: `src/engine/editor/scene_tools/scene_bookmarks.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/scene_tools/scene_bookmarks.h`
+  - `src/engine/include/editor/scene_tools/scene_bookmarks.h`
+
+## Group 23 (size 2)
+- Suggested canonical: `src/engine/editor/scene_tools/scene_layers.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/scene_tools/scene_layers.h`
+  - `src/engine/include/editor/scene_tools/scene_layers.h`
+
+## Group 24 (size 2)
+- Suggested canonical: `src/engine/editor/scene_tools/scene_hierarchy.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/scene_tools/scene_hierarchy.h`
+  - `src/engine/include/editor/scene_tools/scene_hierarchy.h`
+
+## Group 25 (size 2)
+- Suggested canonical: `src/engine/editor/scene_tools/scene_validation.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/scene_tools/scene_validation.h`
+  - `src/engine/include/editor/scene_tools/scene_validation.h`
+
+## Group 26 (size 2)
+- Suggested canonical: `src/engine/editor/scene_tools/search_replace.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/scene_tools/search_replace.h`
+  - `src/engine/include/editor/scene_tools/search_replace.h`
+
+## Group 27 (size 2)
+- Suggested canonical: `src/engine/editor/importer/blender_bridge.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/importer/blender_bridge.h`
+  - `src/engine/include/editor/importer/blender_bridge.h`
+
+## Group 28 (size 2)
+- Suggested canonical: `src/engine/editor/sequence_editor/camera_sequencer.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/sequence_editor/camera_sequencer.h`
+  - `src/engine/include/editor/sequence_editor/camera_sequencer.h`
+
+## Group 29 (size 2)
+- Suggested canonical: `src/engine/editor/sequence_editor/timeline.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/sequence_editor/timeline.h`
+  - `src/engine/include/editor/sequence_editor/timeline.h`
+
+## Group 30 (size 5)
+- Suggested canonical: `src/engine/editor/debug_viz/debug_physics.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/debug_viz/debug_text.c`
+  - `src/engine/editor/debug_viz/debug_lines.c`
+  - `src/engine/editor/debug_viz/debug_bounds.c`
+  - `src/engine/editor/debug_viz/debug_skeleton.c`
+  - `src/engine/editor/debug_viz/debug_physics.c`
+
+## Group 31 (size 2)
+- Suggested canonical: `src/engine/editor/viewport_tools/gizmos.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewport_tools/gizmos.h`
+  - `src/engine/include/editor/viewport_tools/gizmos.h`
+
+## Group 32 (size 2)
+- Suggested canonical: `src/engine/editor/console/console_system.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/console/console_system.h`
+  - `src/engine/include/editor/console/console_system.h`
+
+## Group 33 (size 2)
+- Suggested canonical: `src/engine/editor/asset_creation/transform_gizmo_advanced.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/asset_creation/transform_gizmo_advanced.h`
+  - `src/engine/include/editor/asset_creation/transform_gizmo_advanced.h`
+
+## Group 34 (size 2)
+- Suggested canonical: `src/engine/editor/asset_creation/asset_preview_3d.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/asset_creation/asset_preview_3d.h`
+  - `src/engine/include/editor/asset_creation/asset_preview_3d.h`
+
+## Group 35 (size 2)
+- Suggested canonical: `src/engine/editor/asset_creation/property_inspector.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/asset_creation/property_inspector.h`
+  - `src/engine/include/editor/asset_creation/property_inspector.h`
+
+## Group 36 (size 2)
+- Suggested canonical: `src/engine/editor/asset_creation/undo_redo_advanced.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/asset_creation/undo_redo_advanced.h`
+  - `src/engine/include/editor/asset_creation/undo_redo_advanced.h`
+
+## Group 37 (size 2)
+- Suggested canonical: `src/engine/editor/asset_creation/grid_snapping.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/asset_creation/grid_snapping.h`
+  - `src/engine/include/editor/asset_creation/grid_snapping.h`
+
+## Group 38 (size 2)
+- Suggested canonical: `src/engine/editor/asset_creation/context_menu_system.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/asset_creation/context_menu_system.h`
+  - `src/engine/include/editor/asset_creation/context_menu_system.h`
+
+## Group 39 (size 2)
+- Suggested canonical: `src/engine/editor/asset_creation/selection_marquee.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/asset_creation/selection_marquee.h`
+  - `src/engine/include/editor/asset_creation/selection_marquee.h`
+
+## Group 40 (size 2)
+- Suggested canonical: `src/engine/editor/asset_creation/duplication_randomization.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/asset_creation/duplication_randomization.h`
+  - `src/engine/include/editor/asset_creation/duplication_randomization.h`
+
+## Group 41 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/temporal/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/temporal/temporal_renderer.h`
+  - `src/engine/editor/viewports/temporal/renderer_03.h`
+
+## Group 42 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/temporal/processor_04.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/temporal/temporal_processor.h`
+  - `src/engine/editor/viewports/temporal/processor_04.h`
+
+## Group 43 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/vr/processor_04.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/vr/vr_processor.h`
+  - `src/engine/editor/viewports/vr/processor_04.h`
+
+## Group 44 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/vr/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/vr/vr_renderer.h`
+  - `src/engine/editor/viewports/vr/renderer_03.h`
+
+## Group 45 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/camera/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/camera/camera_renderer.h`
+  - `src/engine/editor/viewports/camera/renderer_03.h`
+
+## Group 46 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/camera/camera_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/camera/processor_04.h`
+  - `src/engine/editor/viewports/camera/camera_processor.h`
+
+## Group 47 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/frustum/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/frustum/frustum_renderer.h`
+  - `src/engine/editor/viewports/frustum/renderer_03.h`
+
+## Group 48 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/frustum/frustum_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/frustum/processor_04.h`
+  - `src/engine/editor/viewports/frustum/frustum_processor.h`
+
+## Group 49 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/split_screen/splitscreen_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/split_screen/processor_04.h`
+  - `src/engine/editor/viewports/split_screen/splitscreen_processor.h`
+
+## Group 50 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/split_screen/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/split_screen/splitscreen_renderer.h`
+  - `src/engine/editor/viewports/split_screen/renderer_03.h`
+
+## Group 51 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/cinematic/processor_04.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/cinematic/cinematic_processor.h`
+  - `src/engine/editor/viewports/cinematic/processor_04.h`
+
+## Group 52 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/cinematic/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/cinematic/cinematic_renderer.h`
+  - `src/engine/editor/viewports/cinematic/renderer_03.h`
+
+## Group 53 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/jitter/processor_04.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/jitter/jitter_processor.h`
+  - `src/engine/editor/viewports/jitter/processor_04.h`
+
+## Group 54 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/jitter/jitter_renderer.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/jitter/renderer_03.h`
+  - `src/engine/editor/viewports/jitter/jitter_renderer.h`
+
+## Group 55 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/controllers/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/controllers/controller_renderer.h`
+  - `src/engine/editor/viewports/controllers/renderer_03.h`
+
+## Group 56 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/controllers/controller_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/controllers/processor_04.h`
+  - `src/engine/editor/viewports/controllers/controller_processor.h`
+
+## Group 57 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/multiview/processor_04.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/multiview/multiview_processor.h`
+  - `src/engine/editor/viewports/multiview/processor_04.h`
+
+## Group 58 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/multiview/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/multiview/multiview_renderer.h`
+  - `src/engine/editor/viewports/multiview/renderer_03.h`
+
+## Group 59 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/projection/projection_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/projection/processor_04.h`
+  - `src/engine/editor/viewports/projection/projection_processor.h`
+
+## Group 60 (size 2)
+- Suggested canonical: `src/engine/editor/viewports/projection/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/viewports/projection/projection_renderer.h`
+  - `src/engine/editor/viewports/projection/renderer_03.h`
+
+## Group 61 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/pipeline/processor_04.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/pipeline/pipeline_processor.h`
+  - `src/engine/editor/tools/tools/pipeline/processor_04.h`
+
+## Group 62 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/pipeline/renderer_03.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/pipeline/pipeline_renderer.h`
+  - `src/engine/editor/tools/tools/pipeline/renderer_03.h`
+
+## Group 63 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/analysis/processor_04.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/analysis/analysis_processor.h`
+  - `src/engine/editor/tools/tools/analysis/processor_04.h`
+
+## Group 64 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/analysis/renderer_03.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/analysis/analysis_renderer.h`
+  - `src/engine/editor/tools/tools/analysis/renderer_03.h`
+
+## Group 65 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/optimization/renderer_03.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/optimization/optimize_renderer.h`
+  - `src/engine/editor/tools/tools/optimization/renderer_03.h`
+
+## Group 66 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/optimization/optimize_processor.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/optimization/processor_04.h`
+  - `src/engine/editor/tools/tools/optimization/optimize_processor.h`
+
+## Group 67 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/baking/processor_04.h`
+- Likely reason(s): backup copy, tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/baking/bake_processor.h`
+  - `src/engine/editor/tools/tools/baking/processor_04.h`
+
+## Group 68 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/baking/renderer_03.h`
+- Likely reason(s): backup copy, tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/baking/bake_renderer.h`
+  - `src/engine/editor/tools/tools/baking/renderer_03.h`
+
+## Group 69 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/compression/processor_04.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/compression/tool_compress_processor.h`
+  - `src/engine/editor/tools/tools/compression/processor_04.h`
+
+## Group 70 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/compression/renderer_03.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/compression/tool_compress_renderer.h`
+  - `src/engine/editor/tools/tools/compression/renderer_03.h`
+
+## Group 71 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/shader_tools/shader_processor.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/shader_tools/processor_04.h`
+  - `src/engine/editor/tools/tools/shader_tools/shader_processor.h`
+
+## Group 72 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/shader_tools/shader_renderer.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/shader_tools/renderer_03.h`
+  - `src/engine/editor/tools/tools/shader_tools/shader_renderer.h`
+
+## Group 73 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/conversion/renderer_03.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/conversion/conversion_renderer.h`
+  - `src/engine/editor/tools/tools/conversion/renderer_03.h`
+
+## Group 74 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/conversion/processor_04.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/conversion/conversion_processor.h`
+  - `src/engine/editor/tools/tools/conversion/processor_04.h`
+
+## Group 75 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/automation/renderer_03.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/automation/automation_renderer.h`
+  - `src/engine/editor/tools/tools/automation/renderer_03.h`
+
+## Group 76 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/automation/processor_04.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/automation/automation_processor.h`
+  - `src/engine/editor/tools/tools/automation/processor_04.h`
+
+## Group 77 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/validation/renderer_03.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/validation/asset_val_renderer.h`
+  - `src/engine/editor/tools/tools/validation/renderer_03.h`
+
+## Group 78 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/validation/processor_04.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/validation/asset_val_processor.h`
+  - `src/engine/editor/tools/tools/validation/processor_04.h`
+
+## Group 79 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/generation/renderer_03.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/generation/generation_renderer.h`
+  - `src/engine/editor/tools/tools/generation/renderer_03.h`
+
+## Group 80 (size 2)
+- Suggested canonical: `src/engine/editor/tools/tools/generation/processor_04.h`
+- Likely reason(s): tools vs engine duplicate
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/editor/tools/tools/generation/generation_processor.h`
+  - `src/engine/editor/tools/tools/generation/processor_04.h`
+
+## Group 81 (size 2)
+- Suggested canonical: `src/engine/assets/io/formats/format_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/formats/processor_04.h`
+  - `src/engine/assets/io/formats/format_processor.h`
+
+## Group 82 (size 2)
+- Suggested canonical: `src/engine/assets/io/formats/asset_format_system.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/formats/system_02.h`
+  - `src/engine/assets/io/formats/asset_format_system.h`
+
+## Group 83 (size 2)
+- Suggested canonical: `src/engine/assets/io/formats/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/formats/format_renderer.h`
+  - `src/engine/assets/io/formats/renderer_03.h`
+
+## Group 84 (size 2)
+- Suggested canonical: `src/engine/assets/io/serialization/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/serialization/serialization_renderer.h`
+  - `src/engine/assets/io/serialization/renderer_03.h`
+
+## Group 85 (size 2)
+- Suggested canonical: `src/engine/assets/io/serialization/serialization_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/serialization/processor_04.h`
+  - `src/engine/assets/io/serialization/serialization_processor.h`
+
+## Group 86 (size 2)
+- Suggested canonical: `src/engine/assets/io/async/async_io_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/async/processor_04.h`
+  - `src/engine/assets/io/async/async_io_processor.h`
+
+## Group 87 (size 2)
+- Suggested canonical: `src/engine/assets/io/async/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/async/async_io_renderer.h`
+  - `src/engine/assets/io/async/renderer_03.h`
+
+## Group 88 (size 2)
+- Suggested canonical: `src/engine/assets/io/streaming/processor_04.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/streaming/stream_processor.h`
+  - `src/engine/assets/io/streaming/processor_04.h`
+
+## Group 89 (size 2)
+- Suggested canonical: `src/engine/assets/io/streaming/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/streaming/stream_renderer.h`
+  - `src/engine/assets/io/streaming/renderer_03.h`
+
+## Group 90 (size 2)
+- Suggested canonical: `src/engine/assets/io/compression/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/compression/compression_renderer.h`
+  - `src/engine/assets/io/compression/renderer_03.h`
+
+## Group 91 (size 2)
+- Suggested canonical: `src/engine/assets/io/compression/compression_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/compression/processor_04.h`
+  - `src/engine/assets/io/compression/compression_processor.h`
+
+## Group 92 (size 2)
+- Suggested canonical: `src/engine/assets/io/bundling/bundle_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/bundling/processor_04.h`
+  - `src/engine/assets/io/bundling/bundle_processor.h`
+
+## Group 93 (size 2)
+- Suggested canonical: `src/engine/assets/io/bundling/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/bundling/bundle_renderer.h`
+  - `src/engine/assets/io/bundling/renderer_03.h`
+
+## Group 94 (size 2)
+- Suggested canonical: `src/engine/assets/io/export/processor_04.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/export/asset_export_processor.h`
+  - `src/engine/assets/io/export/processor_04.h`
+
+## Group 95 (size 2)
+- Suggested canonical: `src/engine/assets/io/export/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/export/asset_export_renderer.h`
+  - `src/engine/assets/io/export/renderer_03.h`
+
+## Group 96 (size 2)
+- Suggested canonical: `src/engine/assets/io/scene/scene_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/scene/processor_04.h`
+  - `src/engine/assets/io/scene/scene_processor.h`
+
+## Group 97 (size 2)
+- Suggested canonical: `src/engine/assets/io/scene/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/scene/scene_renderer.h`
+  - `src/engine/assets/io/scene/renderer_03.h`
+
+## Group 98 (size 2)
+- Suggested canonical: `src/engine/assets/io/caching/cache_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/caching/processor_04.h`
+  - `src/engine/assets/io/caching/cache_processor.h`
+
+## Group 99 (size 2)
+- Suggested canonical: `src/engine/assets/io/caching/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/caching/cache_renderer.h`
+  - `src/engine/assets/io/caching/renderer_03.h`
+
+## Group 100 (size 2)
+- Suggested canonical: `src/engine/assets/io/import/asset_import_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/import/processor_04.h`
+  - `src/engine/assets/io/import/asset_import_processor.h`
+
+## Group 101 (size 2)
+- Suggested canonical: `src/engine/assets/io/import/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/assets/io/import/asset_import_renderer.h`
+  - `src/engine/assets/io/import/renderer_03.h`
+
+## Group 102 (size 2)
+- Suggested canonical: `src/engine/physics/constraints/constraint_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/constraints/processor_04.h`
+  - `src/engine/physics/constraints/constraint_processor.h`
+
+## Group 103 (size 2)
+- Suggested canonical: `src/engine/physics/constraints/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/constraints/constraint_renderer.h`
+  - `src/engine/physics/constraints/renderer_03.h`
+
+## Group 104 (size 2)
+- Suggested canonical: `src/engine/physics/optimizer/physics_pipeline_optimizer.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/optimizer/physics_pipeline_optimizer.c`
+  - `src/engine/physics/optimizer/physics_pipeline_optimizer 2.c`
+
+## Group 105 (size 2)
+- Suggested canonical: `src/engine/physics/optimizer/physics_pipeline_optimizer.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/optimizer/physics_pipeline_optimizer 2.h`
+  - `src/engine/physics/optimizer/physics_pipeline_optimizer.h`
+
+## Group 106 (size 2)
+- Suggested canonical: `src/engine/physics/config/physics_configuration.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/config/physics_configuration 2.h`
+  - `src/engine/physics/config/physics_configuration.h`
+
+## Group 107 (size 2)
+- Suggested canonical: `src/engine/physics/serialization/physics_serialization.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/serialization/physics_serialization 2.h`
+  - `src/engine/physics/serialization/physics_serialization.h`
+
+## Group 108 (size 2)
+- Suggested canonical: `src/engine/physics/rigid/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/rigid/rigidbody_renderer.h`
+  - `src/engine/physics/rigid/renderer_03.h`
+
+## Group 109 (size 2)
+- Suggested canonical: `src/engine/physics/rigid/processor_04.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/rigid/rigidbody_processor.h`
+  - `src/engine/physics/rigid/processor_04.h`
+
+## Group 110 (size 2)
+- Suggested canonical: `src/engine/physics/world/physics_world_manager.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/world/physics_world_manager.c`
+  - `src/engine/physics/world/physics_world_manager 2.c`
+
+## Group 111 (size 2)
+- Suggested canonical: `src/engine/physics/world/physics_world_manager.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/world/physics_world_manager 2.h`
+  - `src/engine/physics/world/physics_world_manager.h`
+
+## Group 112 (size 2)
+- Suggested canonical: `src/engine/physics/solver/sequential_impulse.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/solver/sequential_impulse.h`
+  - `src/engine/physics/solver/sequential_impulse 2.h`
+
+## Group 113 (size 2)
+- Suggested canonical: `src/engine/physics/solver/xpbd_solver.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/solver/xpbd_solver.h`
+  - `src/engine/physics/solver/xpbd_solver 2.h`
+
+## Group 114 (size 2)
+- Suggested canonical: `src/engine/physics/solver/solver_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/solver/processor_04.h`
+  - `src/engine/physics/solver/solver_processor.h`
+
+## Group 115 (size 2)
+- Suggested canonical: `src/engine/physics/solver/performance_profiler.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/solver/performance_profiler.h`
+  - `src/engine/physics/solver/performance_profiler 2.h`
+
+## Group 116 (size 2)
+- Suggested canonical: `src/engine/physics/solver/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/solver/solver_renderer.h`
+  - `src/engine/physics/solver/renderer_03.h`
+
+## Group 117 (size 2)
+- Suggested canonical: `src/engine/physics/broadphase/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/broadphase/broadphase_renderer.h`
+  - `src/engine/physics/broadphase/renderer_03.h`
+
+## Group 118 (size 2)
+- Suggested canonical: `src/engine/physics/broadphase/broadphase_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/broadphase/processor_04.h`
+  - `src/engine/physics/broadphase/broadphase_processor.h`
+
+## Group 119 (size 2)
+- Suggested canonical: `src/engine/physics/fluid/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/fluid/fluid_renderer.h`
+  - `src/engine/physics/fluid/renderer_03.h`
+
+## Group 120 (size 2)
+- Suggested canonical: `src/engine/physics/fluid/fluid_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/fluid/processor_04.h`
+  - `src/engine/physics/fluid/fluid_processor.h`
+
+## Group 121 (size 2)
+- Suggested canonical: `src/engine/physics/soft/softbody_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/soft/processor_04.h`
+  - `src/engine/physics/soft/softbody_processor.h`
+
+## Group 122 (size 2)
+- Suggested canonical: `src/engine/physics/soft/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/soft/softbody_renderer.h`
+  - `src/engine/physics/soft/renderer_03.h`
+
+## Group 123 (size 2)
+- Suggested canonical: `src/engine/physics/destruction/connectivity_graph.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/destruction/connectivity_graph 2.h`
+  - `src/engine/physics/destruction/connectivity_graph.h`
+
+## Group 124 (size 2)
+- Suggested canonical: `src/engine/physics/destruction/connectivity_graph.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/destruction/connectivity_graph 2.c`
+  - `src/engine/physics/destruction/connectivity_graph.c`
+
+## Group 125 (size 2)
+- Suggested canonical: `src/engine/physics/cloth/processor_04.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/cloth/cloth_processor.h`
+  - `src/engine/physics/cloth/processor_04.h`
+
+## Group 126 (size 2)
+- Suggested canonical: `src/engine/physics/cloth/cloth_renderer.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/cloth/renderer_03.h`
+  - `src/engine/physics/cloth/cloth_renderer.h`
+
+## Group 127 (size 2)
+- Suggested canonical: `src/engine/physics/assets/physics_asset_loading.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/assets/physics_asset_loading 2.h`
+  - `src/engine/physics/assets/physics_asset_loading.h`
+
+## Group 128 (size 2)
+- Suggested canonical: `src/engine/physics/narrowphase/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/narrowphase/narrowphase_renderer.h`
+  - `src/engine/physics/narrowphase/renderer_03.h`
+
+## Group 129 (size 2)
+- Suggested canonical: `src/engine/physics/collision/collision_gjk_epa.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/narrowphase/collision_gjk_epa.h`
+  - `src/engine/physics/collision/collision_gjk_epa.h`
+
+## Group 130 (size 2)
+- Suggested canonical: `src/engine/physics/narrowphase/narrowphase_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/narrowphase/processor_04.h`
+  - `src/engine/physics/narrowphase/narrowphase_processor.h`
+
+## Group 131 (size 2)
+- Suggested canonical: `src/engine/physics/collision/collision_processor.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/collision/processor_04.h`
+  - `src/engine/physics/collision/collision_processor.h`
+
+## Group 132 (size 2)
+- Suggested canonical: `src/engine/physics/collision/renderer_03.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/collision/collision_renderer.h`
+  - `src/engine/physics/collision/renderer_03.h`
+
+## Group 133 (size 2)
+- Suggested canonical: `src/engine/physics/debug/physics_debug_visualization.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/physics/debug/physics_debug_visualization.h`
+  - `src/engine/physics/debug/physics_debug_visualization 2.h`
+
+## Group 134 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/advanced/sdsm.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/advanced/sdsm.h`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/sdsm.h`
+
+## Group 135 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/advanced/moment_shadows.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/advanced/moment_shadows.h`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/moment_shadow.h`
+
+## Group 136 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/analytical/sdf_shadows.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/analytical/sdf_shadows.h`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/sdf_shadows.h`
+
+## Group 137 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/analytical/capsule_shadows.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/analytical/capsule_shadows.h`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/capsule_shadows.h`
+
+## Group 138 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/raytraced/hybrid_shadows.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/raytraced/hybrid_shadows.h`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/hybrid_shadows.h`
+
+## Group 139 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/raytraced/contact_shadows_adv.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/raytraced/contact_shadows_adv.h`
+  - `src/engine/lighting/shadows_advanced/shadow_techniques/contact_shadows_adv.h`
+
+## Group 140 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/raytraced/rt_shadow_cache.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/raytraced/rt_shadow_cache.h`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_cache.h`
+
+## Group 141 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/raytraced/rt_shadow_lod.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/raytraced/rt_shadow_lod.h`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_lod.h`
+
+## Group 142 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/raytraced/rt_shadow_ray.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/raytraced/rt_shadow_ray.h`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_ray.h`
+
+## Group 143 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/raytraced/rt_area_shadow.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/raytraced/rt_area_shadow.h`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_area_shadow.h`
+
+## Group 144 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/raytraced/rt_penumbra.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/raytraced/rt_penumbra.h`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_penumbra.h`
+
+## Group 145 (size 2)
+- Suggested canonical: `src/engine/lighting/shadows/raytraced/rt_shadow_denoise.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/lighting/shadows/raytraced/rt_shadow_denoise.h`
+  - `src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_denoise.h`
+
+## Group 146 (size 2)
+- Suggested canonical: `src/engine/rendering/sky/sky_rendering.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/sky/sky_rendering.c`
+  - `src/engine/rendering/sky/sky_rendering 2.c`
+
+## Group 147 (size 2)
+- Suggested canonical: `src/engine/rendering/shadows/shadow_mapping.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/shadows/shadow_mapping.c`
+  - `src/engine/rendering/shadows/shadow_mapping 2.c`
+
+## Group 148 (size 2)
+- Suggested canonical: `src/engine/rendering/virtual_texturing/virtual_texturing.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/virtual_texturing/virtual_texturing 2.c`
+  - `src/engine/rendering/virtual_texturing/virtual_texturing.c`
+
+## Group 149 (size 2)
+- Suggested canonical: `src/engine/rendering/water/water_rendering.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/water/water_rendering.c`
+  - `src/engine/rendering/water/water_rendering 2.c`
+
+## Group 150 (size 2)
+- Suggested canonical: `src/engine/rendering/lod/lod_system.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/lod/lod_system.c`
+  - `src/engine/rendering/lod/lod_system 2.c`
+
+## Group 151 (size 2)
+- Suggested canonical: `src/engine/rendering/global_illumination/global_illumination.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/global_illumination/global_illumination 2.c`
+  - `src/engine/rendering/global_illumination/global_illumination.c`
+
+## Group 152 (size 2)
+- Suggested canonical: `src/engine/rendering/animation/advanced_animation.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/animation/advanced_animation 2.c`
+  - `src/engine/rendering/animation/advanced_animation.c`
+
+## Group 153 (size 2)
+- Suggested canonical: `src/engine/rendering/compression/mesh_compression.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/compression/mesh_compression 2.c`
+  - `src/engine/rendering/compression/mesh_compression.c`
+
+## Group 154 (size 2)
+- Suggested canonical: `src/engine/rendering/vr_ar/vr_ar_support.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/vr_ar/vr_ar_support 2.c`
+  - `src/engine/rendering/vr_ar/vr_ar_support.c`
+
+## Group 155 (size 2)
+- Suggested canonical: `src/engine/rendering/lighting/lighting_system.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/lighting/lighting_system 2.c`
+  - `src/engine/rendering/lighting/lighting_system.c`
+
+## Group 156 (size 2)
+- Suggested canonical: `src/engine/rendering/frame_graph/frame_graph.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/frame_graph/frame_graph.h`
+  - `src/engine/include/rendering/frame_graph/frame_graph.h`
+
+## Group 157 (size 2)
+- Suggested canonical: `src/engine/rendering/physics/physics_integration.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/physics/physics_integration 2.c`
+  - `src/engine/rendering/physics/physics_integration.c`
+
+## Group 158 (size 2)
+- Suggested canonical: `src/engine/rendering/audio_visual/audio_visual_sync.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/audio_visual/audio_visual_sync.c`
+  - `src/engine/rendering/audio_visual/audio_visual_sync 2.c`
+
+## Group 159 (size 2)
+- Suggested canonical: `src/engine/rendering/raytracing/raytracing/rt_pipeline.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/raytracing/rt_pipeline.h`
+  - `src/engine/rendering/raytracing/raytracing/rt_pipeline.h`
+
+## Group 160 (size 2)
+- Suggested canonical: `src/engine/rendering/procedural/procedural_generation.c`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/rendering/procedural/procedural_generation 2.c`
+  - `src/engine/rendering/procedural/procedural_generation.c`
+
+## Group 161 (size 2)
+- Suggested canonical: `src/engine/docs/localization/localization.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/docs/localization/localization.h`
+  - `src/engine/docs/localization/localization 2.h`
+
+## Group 162 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_device.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_device.m`
+  - `src/engine/backend/metal/mtl_device.c`
+
+## Group 163 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_sync_manager.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_sync_manager.m`
+  - `src/engine/backend/metal/mtl_sync_manager.c`
+
+## Group 164 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_frame_sync.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_frame_sync.m`
+  - `src/engine/backend/metal/mtl_frame_sync.c`
+
+## Group 165 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_render_pass.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_render_pass.m`
+  - `src/engine/backend/metal/mtl_render_pass.c`
+
+## Group 166 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_sync_primitives.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_sync_primitives.c`
+  - `src/engine/backend/metal/mtl_sync_primitives.m`
+
+## Group 167 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_memory_heap.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_memory_heap.m`
+  - `src/engine/backend/metal/mtl_memory_heap.c`
+
+## Group 168 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_command_graph.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_command_graph.c`
+  - `src/engine/backend/metal/mtl_command_graph.m`
+
+## Group 169 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_resource_pool.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_resource_pool.c`
+  - `src/engine/backend/metal/mtl_resource_pool.m`
+
+## Group 170 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_swapchain.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_swapchain.m`
+  - `src/engine/backend/metal/mtl_swapchain.c`
+
+## Group 171 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_texture.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_texture.c`
+  - `src/engine/backend/metal/mtl_texture.m`
+
+## Group 172 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_argument_buffer.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_argument_buffer.m`
+  - `src/engine/backend/metal/mtl_argument_buffer.c`
+
+## Group 173 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_command.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_command.c`
+  - `src/engine/backend/metal/mtl_command.m`
+
+## Group 174 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_statistics.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_statistics.c`
+  - `src/engine/backend/metal/mtl_statistics.m`
+
+## Group 175 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_buffer.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_buffer.m`
+  - `src/engine/backend/metal/mtl_buffer.c`
+
+## Group 176 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_transfer.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_transfer.m`
+  - `src/engine/backend/metal/mtl_transfer.c`
+
+## Group 177 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_parallel_encoder.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_parallel_encoder.c`
+  - `src/engine/backend/metal/mtl_parallel_encoder.m`
+
+## Group 178 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_indirect_command.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_indirect_command.c`
+  - `src/engine/backend/metal/mtl_indirect_command.m`
+
+## Group 179 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_device_caps.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_device_caps.m`
+  - `src/engine/backend/metal/mtl_device_caps.c`
+
+## Group 180 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_command_buffer.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_command_buffer.m`
+  - `src/engine/backend/metal/mtl_command_buffer.c`
+
+## Group 181 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_encoder.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_encoder.c`
+  - `src/engine/backend/metal/mtl_encoder.m`
+
+## Group 182 (size 2)
+- Suggested canonical: `src/engine/backend/metal/mtl_hazard_tracking.m`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/backend/metal/mtl_hazard_tracking.m`
+  - `src/engine/backend/metal/mtl_hazard_tracking.c`
+
+## Group 183 (size 2)
+- Suggested canonical: `src/engine/animation/blend_trees/blend_1d.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/animation/blend_trees/blend_1d.c`
+  - `src/engine/character/animation/blend_trees/blend_1d.c`
+
+## Group 184 (size 2)
+- Suggested canonical: `src/engine/animation/blend_trees/blend_2d.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/animation/blend_trees/blend_2d.c`
+  - `src/engine/character/animation/blend_trees/blend_2d.c`
+
+## Group 185 (size 2)
+- Suggested canonical: `src/engine/animation/blend_trees/additive_blend.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/animation/blend_trees/additive_blend.c`
+  - `src/engine/character/animation/blend_trees/additive_blend.c`
+
+## Group 186 (size 2)
+- Suggested canonical: `src/engine/animation/facial/phoneme_mapping.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/animation/facial/phoneme_mapping.c`
+  - `src/engine/character/animation/facial/phoneme_mapping.c`
+
+## Group 187 (size 2)
+- Suggested canonical: `src/engine/animation/compression/acl_wrapper.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/animation/compression/acl_wrapper.c`
+  - `src/engine/character/animation/compression/acl_wrapper.c`
+
+## Group 188 (size 2)
+- Suggested canonical: `src/engine/animation/blending/inertialization.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/animation/blending/inertialization.c`
+  - `src/engine/character/animation/blending/inertialization.c`
+
+## Group 189 (size 2)
+- Suggested canonical: `src/engine/include/network/content_sharing_system.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/network/content_sharing_system.h`
+  - `src/engine/include/network/content_sharing_system 2.h`
+
+## Group 190 (size 2)
+- Suggested canonical: `src/engine/include/network/server_performance_tracker.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/network/server_performance_tracker.h`
+  - `src/engine/include/network/server_performance_tracker 2.h`
+
+## Group 191 (size 2)
+- Suggested canonical: `src/engine/include/ai/ml_emergent_ai.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/ai/ml_emergent_ai.h`
+  - `src/engine/include/ai/ml_emergent_ai 2.h`
+
+## Group 192 (size 2)
+- Suggested canonical: `src/engine/include/profiling/gpu_profiling_metal.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/profiling/gpu_profiling_metal.h`
+  - `src/engine/include/profiling/gpu_profiling_metal 2.h`
+
+## Group 193 (size 2)
+- Suggested canonical: `src/engine/include/debug/crash_report_system.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/debug/crash_report_system 2.h`
+  - `src/engine/include/debug/crash_report_system.h`
+
+## Group 194 (size 2)
+- Suggested canonical: `src/engine/include/debug/debug_3d_text_renderer.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/debug/debug_3d_text_renderer 2.h`
+  - `src/engine/include/debug/debug_3d_text_renderer.h`
+
+## Group 195 (size 2)
+- Suggested canonical: `src/engine/include/debug/stack_capture_macos.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/debug/stack_capture_macos.h`
+  - `src/engine/include/debug/stack_capture_macos 2.h`
+
+## Group 196 (size 2)
+- Suggested canonical: `src/engine/include/debug/debug_bvh_visualization.h`
+- Likely reason(s): copy with numeric suffix (" 2")
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/debug/debug_bvh_visualization.h`
+  - `src/engine/include/debug/debug_bvh_visualization 2.h`
+
+## Group 197 (size 2)
+- Suggested canonical: `src/engine/include/core/memory/heap_manager.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/core/memory/heap_manager.h`
+  - `src/engine/core/memory/heap_manager.h`
+
+## Group 198 (size 2)
+- Suggested canonical: `src/engine/include/core/memory/staging_buffer.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/core/memory/staging_buffer.h`
+  - `src/engine/core/memory/staging_buffer.h`
+
+## Group 199 (size 2)
+- Suggested canonical: `src/engine/include/core/memory/memory_pool.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/core/memory/memory_pool.h`
+  - `src/engine/core/memory/memory_pool.h`
+
+## Group 200 (size 2)
+- Suggested canonical: `src/engine/include/core/memory/aligned_allocator.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/core/memory/aligned_allocator.h`
+  - `src/engine/core/memory/aligned_allocator.h`
+
+## Group 201 (size 2)
+- Suggested canonical: `src/engine/include/core/memory/allocator.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/core/memory/allocator.h`
+  - `src/engine/core/memory/allocator.h`
+
+## Group 202 (size 2)
+- Suggested canonical: `src/engine/include/core/memory/budget_tracker.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/core/memory/budget_tracker.h`
+  - `src/engine/core/memory/budget_tracker.h`
+
+## Group 203 (size 2)
+- Suggested canonical: `src/engine/include/core/memory/defragmenter.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/core/memory/defragmenter.h`
+  - `src/engine/core/memory/defragmenter.h`
+
+## Group 204 (size 2)
+- Suggested canonical: `src/engine/include/core/memory/gpu_allocator.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/core/memory/gpu_allocator.h`
+  - `src/engine/core/memory/gpu_allocator.h`
+
+## Group 205 (size 2)
+- Suggested canonical: `src/engine/include/core/string/string_pool.h`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/include/core/string/string_pool.h`
+  - `src/engine/core/string/string_pool.h`
+
+## Group 206 (size 15)
+- Suggested canonical: `src/engine/character/hair/rendering/hair_rendering/hair_transparency.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/engine/character/hair/rendering/hair_rendering/hair_shadows_render.c`
+  - `src/engine/character/hair/rendering/hair_rendering/hair_strand_rendering.c`
+  - `src/engine/character/hair/rendering/hair_rendering/hair_grooming.c`
+  - `src/engine/character/hair/rendering/hair_rendering/hair_transparency.c`
+  - `src/engine/character/hair/system/hair_system/hair_rendering_sys.c`
+  - `src/engine/character/hair/system/hair_system/simulation/hair_physics.c`
+  - `src/engine/character/hair/system/hair_system/simulation/hair_lod_sim.c`
+  - `src/engine/character/hair/system/hair_system/simulation/hair_constraints.c`
+  - `src/engine/character/hair/system/hair_system/simulation/hair_forces.c`
+  - `src/engine/character/hair/system/hair_system/simulation/hair_collision.c`
+  - `src/engine/character/hair/system/hair_system/rendering_hair/hair_shadows_render.c`
+  - `src/engine/character/hair/system/hair_system/rendering_hair/hair_tessellation.c`
+  - `src/engine/character/hair/system/hair_system/rendering_hair/hair_ordering.c`
+  - `src/engine/character/hair/system/hair_system/rendering_hair/hair_visibility.c`
+  - `src/engine/character/hair/system/hair_system/rendering_hair/hair_antialiasing_render.c`
+
+## Group 207 (size 3)
+- Suggested canonical: `src/frontend/CVoxelForge/include/voxelforge_bridge_clean.h`
+- Likely reason(s): backup copy
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `src/frontend/CVoxelForge/include/voxelforge_bridge.h`
+  - `src/frontend/CVoxelForge/include/voxelforge_bridge_clean.h`
+  - `src/frontend/CVoxelForge/include_backup/voxelforge_bridge_clean.h`
+
+## Group 208 (size 2)
+- Suggested canonical: `assets/assets/code/todo_security.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `assets/code/todo_security.c`
+  - `assets/assets/code/todo_security.c`
+
+## Group 209 (size 2)
+- Suggested canonical: `assets/assets/code/todo_analytics.c`
+- Likely reason(s): duplicate content without obvious variant marker
+- Action: keep canonical, delete or replace others with wrappers after verifying references.
+- Files:
+  - `assets/code/todo_analytics.c`
+  - `assets/assets/code/todo_analytics.c`
+

@@ -67,6 +67,12 @@ static inline void vec3_normalize(float *result, const float *v) {
     }
 }
 
+static inline void vec3_cross(float *result, const float *a, const float *b) {
+    result[0] = a[1] * b[2] - a[2] * b[1];
+    result[1] = a[2] * b[0] - a[0] * b[2];
+    result[2] = a[0] * b[1] - a[1] * b[0];
+}
+
 static inline void vec3_copy(float *dest, const float *src) {
     dest[0] = src[0];
     dest[1] = src[1];
@@ -323,7 +329,9 @@ static void solve_volume_constraint(XPBDParticle *particles, XPBDVolumeConstrain
     vec3_sub(v2, p2->position, p0->position);
     vec3_sub(v3, p3->position, p0->position);
     
-    float current_volume = fabsf(vec3_dot(v1, vec3_cross(v2, v3))) / 6.0f;
+    float cross_result[3];
+    vec3_cross(cross_result, v2, v3);
+    float current_volume = fabsf(vec3_dot(v1, cross_result)) / 6.0f;
     
     // Calculate constraint function
     float C = current_volume - constraint->rest_volume;
@@ -618,7 +626,8 @@ void xpbd_update(XPBDSolver *solver, float dt) {
             if (particle->inv_mass > 0.0f) {
                 float acceleration[3];
                 vec3_mul(acceleration, particle->force, particle->inv_mass);
-                vec3_add(particle->velocity, particle->velocity, acceleration, substep_dt);
+                vec3_mul(acceleration, acceleration, substep_dt);
+                vec3_add(particle->velocity, particle->velocity, acceleration);
             }
         }
         
@@ -627,7 +636,9 @@ void xpbd_update(XPBDSolver *solver, float dt) {
             XPBDParticle *particle = &solver->particles[i];
             if (!particle->active || particle->pinned) continue;
             
-            vec3_add(particle->position, particle->position, particle->velocity, substep_dt);
+            float velocity_step[3];
+            vec3_mul(velocity_step, particle->velocity, substep_dt);
+            vec3_add(particle->position, particle->position, velocity_step);
         }
         
         // Solve constraints
@@ -717,4 +728,41 @@ void xpbd_get_stats(const XPBDSolver *solver, int *particle_count, int *constrai
     if (constraint_count) *constraint_count = solver->constraint_count;
     if (substep_count) *substep_count = solver->substep_count;
     if (solve_time) *solve_time = solver->solve_time_ms;
+}
+
+void xpbd_reset(XPBDSolver *solver) {
+    if (!solver) return;
+    
+    solver->particle_count = 0;
+    solver->constraint_count = 0;
+    solver->current_time = 0.0f;
+    solver->accumulated_time = 0.0f;
+    solver->substep_count = 0;
+    solver->substep_dt = solver->config.min_substep_time;
+    
+    solver->solve_time_ms = 0.0f;
+    solver->particles_updated = 0;
+    solver->constraints_solved = 0;
+}
+
+void xpbd_set_gravity(XPBDSolver *solver, const float *gravity) {
+    if (!solver || !gravity) return;
+    
+    solver->config.gravity[0] = gravity[0];
+    solver->config.gravity[1] = gravity[1];
+    solver->config.gravity[2] = gravity[2];
+}
+
+bool xpbd_validate(const XPBDSolver *solver) {
+    if (!solver) return false;
+    
+    if (solver->particle_count < 0 || solver->particle_count > MAX_PARTICLES) {
+        return false;
+    }
+    
+    if (solver->constraint_count < 0 || solver->constraint_count > MAX_CONSTRAINTS) {
+        return false;
+    }
+    
+    return true;
 }

@@ -59,6 +59,8 @@ OBJC_FLAGS = -g -std=gnu11 -arch arm64
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_example.c.o_FLAGS = -fobjc-arc
 
+# Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_fixes.c.o_FLAGS = -fobjc-arc
+
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.c.o_FLAGS = -fobjc-arc
 
 # Custom flags: CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_primitives.c.o_FLAGS = -fobjc-arc

@@ -180,8 +180,6 @@ CMakeFiles/Engine.dir/src/engine/core/engine.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/audio/audio_reverb.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/hot_reload.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/post_processing.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/vulkan.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/camera.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/scene/scene_system.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/tools/profiler.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/ai/npc/perception_system.h \

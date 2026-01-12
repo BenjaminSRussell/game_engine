@@ -1,0 +1,12 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/editor/debug/debug_visualization.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/editor/debug/gpu_profiler.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/editor/debug/grid_renderer.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/editor/debug/object_picker.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/editor/debug/perf_overlay.c.o
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/editor/debug/perf_overlay.c:2:10: fatal error: 'editor/debugging/perf_overlay.h' file not found
+    2 | #include "editor/debugging/perf_overlay.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/editor/debug/perf_overlay.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

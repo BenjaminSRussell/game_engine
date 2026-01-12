@@ -1,4 +1,9 @@
 // packet.c - Reliable packet serialization system
+// TODO: MVP PATH - Implement packet fragmentation for large payloads
+// TODO: MVP PATH - Add packet compression (LZ4, Zstd) for bandwidth optimization
+// TODO: MVP PATH - Implement packet prioritization (critical vs non-critical data)
+// TODO: MVP PATH - Add packet encryption and authentication (AES-GCM, HMAC)
+// TODO: MVP PATH - Implement adaptive MTU discovery for optimal packet sizes
 #include "include/network/packet.h"
 #include "include/core/logger.h"
 #include <string.h>
@@ -301,3 +306,8 @@ uint16_t packet_finalize(Packet *packet) {
     packet->length = packet->write_pos;
     return packet->length;
 }
+
+// TODO: MVP PATH - Add packet validation and checksum verification
+// TODO: MVP PATH - Implement packet versioning for backward compatibility
+// TODO: MVP PATH - Add packet pooling for memory efficiency
+// TODO: MVP PATH - Implement packet batching for multiple small messages

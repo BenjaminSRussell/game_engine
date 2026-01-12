@@ -1437,6 +1437,30 @@ src/engine/ai/nlp_behavior.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/nlp_behavior.c.s
 .PHONY : src/engine/ai/nlp_behavior.c.s
 
+src/engine/ai/npc.o: src/engine/ai/npc.c.o
+.PHONY : src/engine/ai/npc.o
+
+# target to build an object file
+src/engine/ai/npc.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc.c.o
+.PHONY : src/engine/ai/npc.c.o
+
+src/engine/ai/npc.i: src/engine/ai/npc.c.i
+.PHONY : src/engine/ai/npc.i
+
+# target to preprocess a source file
+src/engine/ai/npc.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc.c.i
+.PHONY : src/engine/ai/npc.c.i
+
+src/engine/ai/npc.s: src/engine/ai/npc.c.s
+.PHONY : src/engine/ai/npc.s
+
+# target to generate assembly for a file
+src/engine/ai/npc.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc.c.s
+.PHONY : src/engine/ai/npc.c.s
+
 src/engine/ai/npc_advanced/behavior_tree.o: src/engine/ai/npc_advanced/behavior_tree.c.o
 .PHONY : src/engine/ai/npc_advanced/behavior_tree.o
 
@@ -1724,6 +1748,54 @@ src/engine/ai/npc_ai_impl.s: src/engine/ai/npc_ai_impl.c.s
 src/engine/ai/npc_ai_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_ai_impl.c.s
 .PHONY : src/engine/ai/npc_ai_impl.c.s
+
+src/engine/ai/npc_dialogue.o: src/engine/ai/npc_dialogue.c.o
+.PHONY : src/engine/ai/npc_dialogue.o
+
+# target to build an object file
+src/engine/ai/npc_dialogue.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_dialogue.c.o
+.PHONY : src/engine/ai/npc_dialogue.c.o
+
+src/engine/ai/npc_dialogue.i: src/engine/ai/npc_dialogue.c.i
+.PHONY : src/engine/ai/npc_dialogue.i
+
+# target to preprocess a source file
+src/engine/ai/npc_dialogue.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_dialogue.c.i
+.PHONY : src/engine/ai/npc_dialogue.c.i
+
+src/engine/ai/npc_dialogue.s: src/engine/ai/npc_dialogue.c.s
+.PHONY : src/engine/ai/npc_dialogue.s
+
+# target to generate assembly for a file
+src/engine/ai/npc_dialogue.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_dialogue.c.s
+.PHONY : src/engine/ai/npc_dialogue.c.s
+
+src/engine/ai/npc_spawning.o: src/engine/ai/npc_spawning.c.o
+.PHONY : src/engine/ai/npc_spawning.o
+
+# target to build an object file
+src/engine/ai/npc_spawning.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_spawning.c.o
+.PHONY : src/engine/ai/npc_spawning.c.o
+
+src/engine/ai/npc_spawning.i: src/engine/ai/npc_spawning.c.i
+.PHONY : src/engine/ai/npc_spawning.i
+
+# target to preprocess a source file
+src/engine/ai/npc_spawning.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_spawning.c.i
+.PHONY : src/engine/ai/npc_spawning.c.i
+
+src/engine/ai/npc_spawning.s: src/engine/ai/npc_spawning.c.s
+.PHONY : src/engine/ai/npc_spawning.s
+
+# target to generate assembly for a file
+src/engine/ai/npc_spawning.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/npc_spawning.c.s
+.PHONY : src/engine/ai/npc_spawning.c.s
 
 src/engine/ai/pathfinding/astar_pathfinder.o: src/engine/ai/pathfinding/astar_pathfinder.c.o
 .PHONY : src/engine/ai/pathfinding/astar_pathfinder.o
@@ -7261,6 +7333,14 @@ src/engine/backend/metal/mtl_sync_example.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_example.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_example.c.o
 
+src/engine/backend/metal/mtl_sync_fixes.o: src/engine/backend/metal/mtl_sync_fixes.c.o
+.PHONY : src/engine/backend/metal/mtl_sync_fixes.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_sync_fixes.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_fixes.c.o
+.PHONY : src/engine/backend/metal/mtl_sync_fixes.c.o
+
 src/engine/backend/metal/mtl_sync_manager.o: src/engine/backend/metal/mtl_sync_manager.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_manager.o
 
@@ -11333,38 +11413,6 @@ src/engine/effects/destruction/fracture_system.s: src/engine/effects/destruction
 src/engine/effects/destruction/fracture_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/destruction/fracture_system.c.s
 .PHONY : src/engine/effects/destruction/fracture_system.c.s
-
-src/engine/effects/particles/particle_emitter.o: src/engine/effects/particles/particle_emitter.c.o
-.PHONY : src/engine/effects/particles/particle_emitter.o
-
-# target to build an object file
-src/engine/effects/particles/particle_emitter.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_emitter.c.o
-.PHONY : src/engine/effects/particles/particle_emitter.c.o
-
-src/engine/effects/particles/particle_emitter.i: src/engine/effects/particles/particle_emitter.c.i
-.PHONY : src/engine/effects/particles/particle_emitter.i
-
-# target to preprocess a source file
-src/engine/effects/particles/particle_emitter.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_emitter.c.i
-.PHONY : src/engine/effects/particles/particle_emitter.c.i
-
-src/engine/effects/particles/particle_emitter.s: src/engine/effects/particles/particle_emitter.c.s
-.PHONY : src/engine/effects/particles/particle_emitter.s
-
-# target to generate assembly for a file
-src/engine/effects/particles/particle_emitter.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_emitter.c.s
-.PHONY : src/engine/effects/particles/particle_emitter.c.s
-
-src/engine/effects/particles/particle_simulation.o: src/engine/effects/particles/particle_simulation.m.o
-.PHONY : src/engine/effects/particles/particle_simulation.o
-
-# target to build an object file
-src/engine/effects/particles/particle_simulation.m.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/particles/particle_simulation.m.o
-.PHONY : src/engine/effects/particles/particle_simulation.m.o
 
 src/engine/effects/svg_particles/svg_particle_renderer.o: src/engine/effects/svg_particles/svg_particle_renderer.c.o
 .PHONY : src/engine/effects/svg_particles/svg_particle_renderer.o
@@ -24033,30 +24081,6 @@ src/engine/shading/library/stylized/cel_shading.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.s
 .PHONY : src/engine/shading/library/stylized/cel_shading.c.s
 
-src/engine/shading/library/vfx/particle_shaders.o: src/engine/shading/library/vfx/particle_shaders.c.o
-.PHONY : src/engine/shading/library/vfx/particle_shaders.o
-
-# target to build an object file
-src/engine/shading/library/vfx/particle_shaders.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o
-.PHONY : src/engine/shading/library/vfx/particle_shaders.c.o
-
-src/engine/shading/library/vfx/particle_shaders.i: src/engine/shading/library/vfx/particle_shaders.c.i
-.PHONY : src/engine/shading/library/vfx/particle_shaders.i
-
-# target to preprocess a source file
-src/engine/shading/library/vfx/particle_shaders.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.i
-.PHONY : src/engine/shading/library/vfx/particle_shaders.c.i
-
-src/engine/shading/library/vfx/particle_shaders.s: src/engine/shading/library/vfx/particle_shaders.c.s
-.PHONY : src/engine/shading/library/vfx/particle_shaders.s
-
-# target to generate assembly for a file
-src/engine/shading/library/vfx/particle_shaders.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.s
-.PHONY : src/engine/shading/library/vfx/particle_shaders.c.s
-
 src/engine/shading/special/absorption.o: src/engine/shading/special/absorption.c.o
 .PHONY : src/engine/shading/special/absorption.o
 
@@ -29322,6 +29346,9 @@ help:
 	@echo "... src/engine/ai/nlp_behavior.o"
 	@echo "... src/engine/ai/nlp_behavior.i"
 	@echo "... src/engine/ai/nlp_behavior.s"
+	@echo "... src/engine/ai/npc.o"
+	@echo "... src/engine/ai/npc.i"
+	@echo "... src/engine/ai/npc.s"
 	@echo "... src/engine/ai/npc_advanced/behavior_tree.o"
 	@echo "... src/engine/ai/npc_advanced/behavior_tree.i"
 	@echo "... src/engine/ai/npc_advanced/behavior_tree.s"
@@ -29358,6 +29385,12 @@ help:
 	@echo "... src/engine/ai/npc_ai_impl.o"
 	@echo "... src/engine/ai/npc_ai_impl.i"
 	@echo "... src/engine/ai/npc_ai_impl.s"
+	@echo "... src/engine/ai/npc_dialogue.o"
+	@echo "... src/engine/ai/npc_dialogue.i"
+	@echo "... src/engine/ai/npc_dialogue.s"
+	@echo "... src/engine/ai/npc_spawning.o"
+	@echo "... src/engine/ai/npc_spawning.i"
+	@echo "... src/engine/ai/npc_spawning.s"
 	@echo "... src/engine/ai/pathfinding/astar_pathfinder.o"
 	@echo "... src/engine/ai/pathfinding/astar_pathfinder.i"
 	@echo "... src/engine/ai/pathfinding/astar_pathfinder.s"
@@ -30050,6 +30083,7 @@ help:
 	@echo "... src/engine/backend/metal/mtl_statistics.o"
 	@echo "... src/engine/backend/metal/mtl_swapchain.o"
 	@echo "... src/engine/backend/metal/mtl_sync_example.o"
+	@echo "... src/engine/backend/metal/mtl_sync_fixes.o"
 	@echo "... src/engine/backend/metal/mtl_sync_manager.o"
 	@echo "... src/engine/backend/metal/mtl_sync_primitives.o"
 	@echo "... src/engine/backend/metal/mtl_texture.o"
@@ -30555,10 +30589,6 @@ help:
 	@echo "... src/engine/effects/destruction/fracture_system.o"
 	@echo "... src/engine/effects/destruction/fracture_system.i"
 	@echo "... src/engine/effects/destruction/fracture_system.s"
-	@echo "... src/engine/effects/particles/particle_emitter.o"
-	@echo "... src/engine/effects/particles/particle_emitter.i"
-	@echo "... src/engine/effects/particles/particle_emitter.s"
-	@echo "... src/engine/effects/particles/particle_simulation.o"
 	@echo "... src/engine/effects/svg_particles/svg_particle_renderer.o"
 	@echo "... src/engine/effects/svg_particles/svg_particle_renderer.i"
 	@echo "... src/engine/effects/svg_particles/svg_particle_renderer.s"
@@ -32140,9 +32170,6 @@ help:
 	@echo "... src/engine/shading/library/stylized/cel_shading.o"
 	@echo "... src/engine/shading/library/stylized/cel_shading.i"
 	@echo "... src/engine/shading/library/stylized/cel_shading.s"
-	@echo "... src/engine/shading/library/vfx/particle_shaders.o"
-	@echo "... src/engine/shading/library/vfx/particle_shaders.i"
-	@echo "... src/engine/shading/library/vfx/particle_shaders.s"
 	@echo "... src/engine/shading/special/absorption.o"
 	@echo "... src/engine/shading/special/absorption.i"
 	@echo "... src/engine/shading/special/absorption.s"

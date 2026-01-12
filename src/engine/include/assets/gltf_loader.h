@@ -63,10 +63,18 @@ GLTFLoadResult gltf_load(const char *filepath);
 void gltf_free(GLTFLoadResult *result);
 
 // Create Vulkan buffers from loaded mesh
+#ifdef VULKAN_BUILD
 bool gltf_create_mesh_buffers(VulkanRenderer *renderer, GLTFMesh *gltf_mesh,
                               VkBuffer *out_vertex_buffer,
                               VkDeviceMemory *out_vertex_memory,
                               VkBuffer *out_index_buffer,
                               VkDeviceMemory *out_index_memory);
+#else
+bool gltf_create_mesh_buffers(void *renderer, void *gltf_mesh,
+                              void *out_vertex_buffer,
+                              void *out_vertex_memory,
+                              void *out_index_buffer,
+                              void *out_index_memory);
+#endif
 
 #endif // GLTF_LOADER_H

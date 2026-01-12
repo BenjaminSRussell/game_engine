@@ -1,0 +1,1890 @@
+aabb.h
+  - src/engine/math/aabb.h
+  - src/engine/include/math/aabb.h
+acceleration_structure.c
+  - src/engine/rendering/raytracing_advanced/acceleration_structure.c
+  - src/engine/rendering/raytracing/raytracing_advanced/acceleration_structure.c
+acl_wrapper.c
+  - src/engine/animation/compression/acl_wrapper.c
+  - src/engine/character/animation/compression/acl_wrapper.c
+active_ragdoll.c
+  - src/engine/animation/ragdoll/active_ragdoll.c
+  - src/engine/character/animation/ragdoll/active_ragdoll.c
+additive_blend.c
+  - src/engine/animation/blend_trees/additive_blend.c
+  - src/engine/character/animation/blend_trees/additive_blend.c
+advanced_physics.h
+  - src/engine/physics/advanced_physics.h
+  - src/engine/include/physics/advanced_physics.h
+advanced_physics_complete.c
+  - src/engine/physics/advanced/advanced_physics_complete.c
+  - src/engine/physics/_trash/advanced/advanced_physics_complete.c
+aim_ik_solver.c
+  - src/engine/animation/ik/aim_ik_solver.c
+  - src/engine/character/animation/ik/aim_ik_solver.c
+aligned_allocator.h
+  - src/engine/include/core/memory/aligned_allocator.h
+  - src/engine/core/memory/aligned_allocator.h
+allocator.h
+  - src/engine/include/core/memory/allocator.h
+  - src/engine/core/memory/allocator.h
+ambient_occlusion.c
+  - src/engine/lighting/gi/ambient_occlusion.c
+  - src/engine/rendering/advanced/ambient_occlusion.c
+anim_layering_impl.c
+  - src/engine/animation/layering/anim_layering_impl.c
+  - src/engine/character/animation/layering/anim_layering_impl.c
+anim_state_machine.c
+  - src/engine/animation/state_machines/anim_state_machine.c
+  - src/engine/character/animation/state_machines/anim_state_machine.c
+animation_clip.c
+  - src/engine/character/animation/animation_clip.c
+  - src/engine/character/animation/skeletal/animation_clip.c
+animation_clip.h
+  - src/engine/character/animation/animation_clip.h
+  - src/engine/character/animation/skeletal/animation_clip.h
+animation_state_machine.c
+  - src/engine/animation/core/animation_state_machine.c
+  - src/engine/character/animation/animation_state_machine.c
+  - src/engine/character/animation/core/animation_state_machine.c
+animation_state_machine.h
+  - src/engine/include/animation/core/animation_state_machine.h
+  - src/engine/character/animation/animation_state_machine.h
+  - src/engine/materials/templates/animation/animation_state_machine.h
+animation_synthesis.c
+  - src/engine/animation/animation_synthesis.c
+  - src/engine/character/animation/animation_synthesis.c
+animation_synthesis.h
+  - src/engine/animation/animation_synthesis.h
+  - src/engine/character/animation/animation_synthesis.h
+animation_system.c
+  - src/engine/animation/animation_system.c
+  - src/engine/character/animation/animation_system.c
+  - src/engine/core/services/animation_system.c
+animation_system.h
+  - src/engine/include/animation/animation_system.h
+  - src/engine/include/rendering/animation_system.h
+  - src/engine/include/character/animation/animation_system.h
+anisotropy.c
+  - src/engine/rendering/materials_advanced/anisotropy.c
+  - src/engine/shading/special/anisotropy.c
+asset_browser.c
+  - src/engine/editor/asset_browser.c
+  - src/engine/editor/ui/asset_browser.c
+asset_editor.c
+  - src/engine/tools/asset_editor/asset_editor.c
+  - src/engine/tools/editor/core/asset_editor/asset_editor.c
+asset_hot_reload.c
+  - src/engine/core/asset_hot_reload.c
+  - src/engine/assets/system/asset_system/loading/asset_hot_reload.c
+asset_manager.c
+  - src/engine/assets/asset_manager.c
+  - src/engine/core/resource/asset_manager.c
+asset_placement.h
+  - src/engine/editor/asset_creation/asset_placement.h
+  - src/engine/include/editor/asset_creation/asset_placement.h
+asset_preview_3d.h
+  - src/engine/editor/asset_creation/asset_preview_3d.h
+  - src/engine/include/editor/asset_creation/asset_preview_3d.h
+asset_streaming.c
+  - src/engine/assets/system/asset_system/compression_assets/asset_streaming.c
+  - src/engine/core/streaming/asset_streaming.c
+atmosphere_scattering.c
+  - src/engine/rendering/sky/atmosphere_scattering.c
+  - src/engine/environment/atmosphere/sky/atmosphere_scattering.c
+audio_occlusion.c
+  - src/engine/audio/audio_occlusion.c
+  - src/engine/audio/spatial/audio_occlusion.c
+audio_occlusion.h
+  - src/engine/include/audio/audio_occlusion.h
+  - src/engine/include/audio/spatial/audio_occlusion.h
+audio_system.h
+  - src/engine/include/audio/audio_system.h
+  - src/engine/cinematics/audio/audio_system.h
+audio_system_impl.c
+  - src/engine/audio/audio_system_impl.c
+  - src/engine/cinematics/audio/audio_system_impl.c
+authentication.c
+  - src/engine/network/security/authentication.c
+  - src/engine/networking/security/authentication.c
+authoring_impl.c
+  - src/engine/animation/authoring_impl.c
+  - src/engine/character/animation/authoring_impl.c
+auto_exposure.c
+  - src/engine/postprocess/auto_exposure.c
+  - src/engine/rendering/post_processing/auto_exposure.c
+bandwidth_throttler.c
+  - src/engine/network/bandwidth/bandwidth_throttler.c
+  - src/engine/networking/bandwidth/bandwidth_throttler.c
+behavior_tree.c
+  - src/engine/ai/behavior_tree.c
+  - src/engine/ai/behavior/behavior_tree.c
+  - src/engine/ai/npc_advanced/behavior_tree.c
+behavior_tree.h
+  - src/engine/ai/behavior_tree.h
+  - src/engine/include/ai/behavior_tree.h
+  - src/engine/materials/templates/ai/behavior_tree.h
+behavior_tree_impl.c
+  - src/engine/ai/behavior/behavior_tree_impl.c
+  - src/engine/materials/templates/ai/behavior_tree_impl.c
+binary_serializer.c
+  - src/engine/core/optimization/binary_serializer.c
+  - src/engine/core/serialization/binary_serializer.c
+biome_system.c
+  - src/engine/scene/world/biome/biome_system.c
+  - src/game/blockgame/world/biome_system.c
+blend_1d.c
+  - src/engine/animation/blend_trees/blend_1d.c
+  - src/engine/character/animation/blend_trees/blend_1d.c
+blend_2d.c
+  - src/engine/animation/blend_trees/blend_2d.c
+  - src/engine/character/animation/blend_trees/blend_2d.c
+blend_space_2d.c
+  - src/engine/animation/core/blend_space_2d.c
+  - src/engine/character/animation/core/blend_space_2d.c
+  - src/engine/character/animation/blending/blend_space_2d.c
+blend_space_2d.h
+  - src/engine/include/animation/core/blend_space_2d.h
+  - src/engine/character/animation/blending/blend_space_2d.h
+blend_tree_impl.c
+  - src/engine/animation/blend_tree_impl.c
+  - src/engine/character/animation/blend_tree_impl.c
+blender_bridge.h
+  - src/engine/editor/importer/blender_bridge.h
+  - src/engine/include/editor/importer/blender_bridge.h
+blending.c
+  - src/engine/animation/blending.c
+  - src/engine/character/animation/blending.c
+block_highlight.c
+  - src/engine/rendering/block_highlight.c
+  - src/engine/rendering/core/block_highlight.c
+bloom_convolution.c
+  - src/engine/postprocess/bloom_convolution.c
+  - src/engine/rendering/post_processing/bloom_convolution.c
+bloom_filter.c
+  - src/engine/core/containers_advanced/bloom_filter.c
+  - src/engine/core/containers/bloom_filter.c
+bloom_filter.h
+  - src/engine/include/core/containers_advanced/bloom_filter.h
+  - src/engine/include/core/containers/bloom_filter.h
+bone_mapper.c
+  - src/engine/animation/retargeting/bone_mapper.c
+  - src/engine/character/animation/retargeting/bone_mapper.c
+buddy_allocator.c
+  - src/engine/memory/buddy_allocator.c
+  - src/engine/core/memory/buddy_allocator.c
+budget_tracker.h
+  - src/engine/include/core/memory/budget_tracker.h
+  - src/engine/core/memory/budget_tracker.h
+builder_05.c
+  - src/engine/physics/constraints/builder_05.c
+  - src/engine/physics/rigid/builder_05.c
+  - src/engine/physics/solver/builder_05.c
+  - src/engine/physics/broadphase/builder_05.c
+  - src/engine/physics/fluid/builder_05.c
+  - src/engine/physics/soft/builder_05.c
+  - src/engine/physics/cloth/builder_05.c
+  - src/engine/physics/narrowphase/builder_05.c
+  - src/engine/physics/collision/builder_05.c
+builder_05.h
+  - src/engine/physics/constraints/builder_05.h
+  - src/engine/physics/rigid/builder_05.h
+  - src/engine/physics/solver/builder_05.h
+  - src/engine/physics/broadphase/builder_05.h
+  - src/engine/physics/fluid/builder_05.h
+  - src/engine/physics/soft/builder_05.h
+  - src/engine/physics/cloth/builder_05.h
+  - src/engine/physics/narrowphase/builder_05.h
+  - src/engine/physics/collision/builder_05.h
+bvh_builder.c
+  - src/engine/geometry/bvh/bvh_builder.c
+  - src/engine/rendering/raytracing/bvh_builder.c
+  - src/engine/rendering/raytracing/raytracing/bvh_builder.c
+camera.c
+  - src/engine/rendering/core/camera.c
+  - src/engine/core/services/camera.c
+camera_controls.c
+  - src/engine/rendering/camera_controls.c
+  - src/engine/editor/viewport/camera_controls.c
+  - src/engine/core/services/camera_controls.c
+camera_sequencer.h
+  - src/engine/editor/sequence_editor/camera_sequencer.h
+  - src/engine/include/editor/sequence_editor/camera_sequencer.h
+capsule_shadows.c
+  - src/engine/lighting/shadows/analytical/capsule_shadows.c
+  - src/engine/lighting/shadows_advanced/shadow_techniques/capsule_shadows.c
+capsule_shadows.h
+  - src/engine/lighting/shadows/analytical/capsule_shadows.h
+  - src/engine/lighting/shadows_advanced/shadow_techniques/capsule_shadows.h
+cascade_splits.c
+  - src/engine/lighting/shadows/cascade_splits.c
+  - src/engine/lighting/cascades/cascade_splits.c
+cascade_splits.h
+  - src/engine/lighting/shadows/cascade_splits.h
+  - src/engine/lighting/cascades/cascade_splits.h
+cgltf.h
+  - src/engine/vendor/cgltf.h
+  - src/engine/include/vendor/cgltf.h
+chromatic_aberration.c
+  - src/engine/postprocess/chromatic_aberration.c
+  - src/engine/rendering/post_processing/chromatic_aberration.c
+chunk_mesh_generator.c
+  - src/engine/geometry/mesh/chunk_mesh_generator.c
+  - src/engine/rendering/core/chunk_mesh_generator.c
+cinema_camera_impl.c
+  - src/engine/cinematic/camera/cinema_camera_impl.c
+  - src/engine/cinematics/camera/cinema_camera_impl.c
+cinematic_systems_complete.c
+  - src/engine/cinematics/cinematic_systems_complete.c
+  - src/engine/cinematic/cinematic_systems_complete.c
+client_prediction.c
+  - src/engine/network/core/client_prediction.c
+  - src/engine/networking/core/client_prediction.c
+clock_sync.c
+  - src/engine/network/latency/clock_sync.c
+  - src/engine/networking/latency/clock_sync.c
+cloth_collision.c
+  - src/engine/physics/character/cloth/cloth_collision.c
+  - src/engine/character/cloth/simulation_cloth/cloth_collision.c
+cloth_collision.h
+  - src/engine/physics/cloth_simulation/cloth_collision.h
+  - src/engine/character/cloth/simulation_cloth/cloth_collision.h
+cloth_constraints.c
+  - src/engine/physics/character/cloth/cloth_constraints.c
+  - src/engine/character/cloth/simulation_cloth/cloth_constraints.c
+cloth_simulation.c
+  - src/engine/physics/softbody/cloth_simulation.c
+  - src/engine/physics/character/cloth/cloth_simulation.c
+  - src/engine/character/cloth/cloth_simulation.c
+cloth_simulation.h
+  - src/engine/include/physics/cloth_simulation.h
+  - src/engine/character/cloth/cloth_simulation.h
+cloth_system.c
+  - src/engine/physics/advanced/cloth_system.c
+  - src/engine/physics/_trash/advanced/cloth_system.c
+cluster_builder.h
+  - src/engine/geometry/nanite/cluster_builder.h
+  - src/engine/geometry/nanite/nanite/cluster/cluster_builder.h
+cluster_dag.c
+  - src/engine/geometry/meshlets/cluster_dag.c
+  - src/engine/geometry/nanite/nanite/cluster/cluster_dag.c
+cluster_dag.h
+  - src/engine/geometry/meshlets/cluster_dag.h
+  - src/engine/geometry/nanite/nanite/cluster/cluster_dag.h
+cluster_lod.c
+  - src/engine/geometry/cluster/cluster_lod.c
+  - src/engine/geometry/nanite/nanite/cluster/cluster_lod.c
+collision_gjk_epa.c
+  - src/engine/physics/narrowphase/collision_gjk_epa.c
+  - src/engine/physics/collision/collision_gjk_epa.c
+collision_gjk_epa.h
+  - src/engine/physics/narrowphase/collision_gjk_epa.h
+  - src/engine/physics/collision/collision_gjk_epa.h
+color_grading.c
+  - src/engine/postprocess/color_grading.c
+  - src/engine/rendering/post_processing/color_grading.c
+color_grading.h
+  - src/engine/postprocess/color_grading.h
+  - src/engine/rendering/post_processing/color_grading.h
+command_buffer.h
+  - src/engine/rendering/core/command_buffer.h
+  - src/engine/core/command/command_buffer.h
+command_history.c
+  - src/engine/editor/command_history.c
+  - src/engine/editor/undo/command_history.c
+complete_physics_batch.c
+  - src/engine/physics/advanced/complete_physics_batch.c
+  - src/engine/physics/_trash/advanced/complete_physics_batch.c
+console_system.c
+  - src/engine/editor/tools/console_system.c
+  - src/engine/editor/console/console_system.c
+console_system.h
+  - src/engine/editor/console/console_system.h
+  - src/engine/include/editor/console/console_system.h
+constraint_solver.h
+  - src/engine/physics/solver/constraint_solver.h
+  - src/engine/include/physics/constraint_solver.h
+contact_manifold.c
+  - src/engine/physics/solver/contact_manifold.c
+  - src/engine/physics/narrowphase/contact_manifold.c
+contact_manifold.h
+  - src/engine/physics/narrowphase/contact_manifold.h
+  - src/engine/include/physics/solver/contact_manifold.h
+contact_shadows_adv.c
+  - src/engine/lighting/shadows/raytraced/contact_shadows_adv.c
+  - src/engine/lighting/shadows_advanced/shadow_techniques/contact_shadows_adv.c
+contact_shadows_adv.h
+  - src/engine/lighting/shadows/raytraced/contact_shadows_adv.h
+  - src/engine/lighting/shadows_advanced/shadow_techniques/contact_shadows_adv.h
+containers.h
+  - src/engine/include/core/containers.h
+  - src/engine/include/core/containers/containers.h
+context_menu_system.h
+  - src/engine/editor/asset_creation/context_menu_system.h
+  - src/engine/include/editor/asset_creation/context_menu_system.h
+continuous_collision.c
+  - src/engine/physics/continuous_collision.c
+  - src/engine/physics/collision/continuous_collision.c
+crafting.h
+  - src/engine/include/gameplay/crafting/crafting.h
+  - src/game/blockgame/include/tech/crafting.h
+culling.c
+  - src/engine/rendering/culling.c
+  - src/engine/rendering/culling/culling.c
+  - src/engine/rendering/core/culling.c
+customization_loader.c
+  - src/engine/materials/customization_loader.c
+  - src/engine/materials/templates/characters/customization_loader.c
+damage_system.c
+  - src/engine/gameplay/combat/damage_system.c
+  - src/game/blockgame/combat/damage_system.c
+debug_shapes.c
+  - src/engine/editor/debug_viz/debug_shapes.c
+  - src/engine/editor/debug/debug_shapes.c
+debug_shapes.h
+  - src/engine/editor/debug_viz/debug_shapes.h
+  - src/engine/editor/debug/debug_shapes.h
+debug_visualization.c
+  - src/engine/editor/debug/debug_visualization.c
+  - src/engine/physics/solver/debug_visualization.c
+  - src/engine/geometry/instancing/debug_visualization.c
+debug_visualization.h
+  - src/engine/editor/debug/debug_visualization.h
+  - src/engine/geometry/instancing/debug_visualization.h
+  - src/engine/include/physics/debug_visualization.h
+decal_projection.c
+  - src/engine/effects/decals/decals/decal_projection.c
+  - src/engine/rendering/decals/decal_projection.c
+decal_system.c
+  - src/engine/effects/decals/decals/decal_system.c
+  - src/engine/rendering/decals/decal_system.c
+decal_system.h
+  - src/engine/rendering/decals/decal_system.h
+  - src/engine/include/materials/decal_system.h
+defragmenter.h
+  - src/engine/include/core/memory/defragmenter.h
+  - src/engine/core/memory/defragmenter.h
+delta_compression.c
+  - src/engine/network/state/delta_compression.c
+  - src/engine/network/replication/delta_compression.c
+  - src/engine/networking/state/delta_compression.c
+  - src/engine/networking/replication/delta_compression.c
+delta_compression.h
+  - src/engine/include/network/state/delta_compression.h
+  - src/engine/include/network/replication/delta_compression.h
+denoising.c
+  - src/engine/rendering/raytracing_advanced/denoising.c
+  - src/engine/rendering/raytracing/raytracing_advanced/denoising.c
+denoising_svgf.c
+  - src/engine/rendering/raytracing_advanced/denoising_svgf.c
+  - src/engine/rendering/raytracing/raytracing_advanced/denoising_svgf.c
+device_memory.h
+  - src/engine/include/core/device/device_memory.h
+  - src/engine/core/device/device_memory.h
+dialogue_system.h
+  - src/engine/include/gameplay/dialogue_system.h
+  - src/engine/cinematics/dialogue/dialogue_system.h
+dof_bokeh.c
+  - src/engine/postprocess/dof_bokeh.c
+  - src/engine/postprocess/depth_of_field/dof_bokeh.c
+  - src/engine/rendering/post_processing/dof_bokeh.c
+drag_drop_system.h
+  - src/engine/editor/asset_creation/drag_drop_system.h
+  - src/engine/include/editor/asset_creation/drag_drop_system.h
+duplication_randomization.h
+  - src/engine/editor/asset_creation/duplication_randomization.h
+  - src/engine/include/editor/asset_creation/duplication_randomization.h
+dxr_integration.c
+  - src/engine/rendering/raytracing_advanced/dxr_integration.c
+  - src/engine/rendering/raytracing/raytracing_advanced/dxr_integration.c
+dxr_integration_v2.c
+  - src/engine/rendering/raytracing_advanced/dxr_integration_v2.c
+  - src/engine/rendering/raytracing/raytracing_advanced/dxr_integration_v2.c
+dynamic_array.h
+  - src/engine/include/core/containers/dynamic_array.h
+  - src/game/blockgame/include/containers/dynamic_array.h
+ecs.c
+  - src/engine/ecs/ecs.c
+  - src/game/blockgame/ecs/ecs.c
+ecs_impl.c
+  - src/engine/ecs/ecs_impl.c
+  - src/engine/core/ecs/ecs_impl.c
+encryption.c
+  - src/engine/network/security/encryption.c
+  - src/engine/networking/security/encryption.c
+engine_bridge.c
+  - src/editor/Core/Bridges/engine_bridge.c
+  - src/engine/platform/engine_bridge.c
+  - src/frontend/Core/Bridges/engine_bridge.c
+engine_bridge.h
+  - src/editor/Core/Bridges/include/engine_bridge.h
+  - src/engine/platform/engine_bridge.h
+  - src/frontend/Core/Bridges/include/engine_bridge.h
+entity_replication.c
+  - src/engine/network/replication/entity_replication.c
+  - src/engine/networking/replication/entity_replication.c
+event_replication.c
+  - src/engine/network/replication/event_replication.c
+  - src/engine/networking/replication/event_replication.c
+fabrik_impl.c
+  - src/engine/animation/ik_advanced/fabrik_impl.c
+  - src/engine/character/animation/ik_advanced/fabrik_impl.c
+fabrik_solver.c
+  - src/engine/animation/ik_advanced/fabrik_solver.c
+  - src/engine/character/animation/ik/fabrik_solver.c
+  - src/engine/character/animation/ik_advanced/fabrik_solver.c
+feedback_analysis.c
+  - src/engine/assets/textures/virtual_texturing/feedback_analysis.c
+  - src/engine/geometry/nanite/nanite/rendering_nanite/feedback_analysis.c
+feedback_analysis.h
+  - src/engine/assets/textures/virtual_texturing/feedback_analysis.h
+  - src/engine/geometry/nanite/nanite/rendering_nanite/feedback_analysis.h
+fiber_context.h
+  - src/engine/include/core/threading/fiber_context.h
+  - src/engine/core/sync/fiber_context.h
+file_watcher.c
+  - src/engine/platform/filesystem/file_watcher.c
+  - src/engine/core/io/file_watcher.c
+final_systems_batch.c
+  - src/engine/physics/advanced/final_systems_batch.c
+  - src/engine/physics/_trash/advanced/final_systems_batch.c
+fixed_angle_camera_controller.c
+  - src/engine/rendering/fixed_angle_camera_controller.c
+  - src/engine/rendering/controllers/fixed_angle_camera_controller.c
+fluid_simulation.c
+  - src/engine/physics/advanced/fluid_simulation.c
+  - src/engine/physics/_trash/advanced/fluid_simulation.c
+foliage_system.h
+  - src/engine/environment/landscape/terrain/landscape/vegetation/foliage_system.h
+  - src/engine/include/environment/vegetation/foliage_system.h
+foliage_wind.c
+  - src/engine/environment/landscape/terrain/landscape/vegetation/foliage_wind.c
+  - src/engine/shading/library/environment/foliage_wind.c
+foot_ik_solver.c
+  - src/engine/animation/ik/foot_ik_solver.c
+  - src/engine/character/animation/ik/foot_ik_solver.c
+foot_placement.c
+  - src/engine/animation/ik_advanced/foot_placement.c
+  - src/engine/character/animation/ik_advanced/foot_placement.c
+footstep_synthesis.c
+  - src/engine/audio/procedural_audio/footstep_synthesis.c
+  - src/engine/audio/procedural/footstep_synthesis.c
+frame_graph.h
+  - src/engine/rendering/frame_graph/frame_graph.h
+  - src/engine/include/rendering/frame_graph/frame_graph.h
+free_camera_controller.c
+  - src/engine/rendering/free_camera_controller.c
+  - src/engine/rendering/controllers/free_camera_controller.c
+frustum.h
+  - src/engine/math/frustum.h
+  - src/engine/include/math/frustum.h
+fullbody_ik.c
+  - src/engine/animation/ik_advanced/fullbody_ik.c
+  - src/engine/character/animation/ik_advanced/fullbody_ik.c
+fxaa.c
+  - src/engine/postprocess/fxaa.c
+  - src/engine/rendering/post_processing/fxaa.c
+gbuffer_pass.h
+  - src/engine/rendering/deferred/gbuffer_pass.h
+  - src/engine/rendering/gbuffer/gbuffer_pass.h
+gi_denoiser.c
+  - src/engine/rendering/raytracing/gi_rt/gi_denoiser.c
+  - src/engine/ai/ml/gi_denoiser.c
+gi_denoiser.h
+  - src/engine/rendering/raytracing/gi_rt/gi_denoiser.h
+  - src/engine/include/ai/ml/gi_denoiser.h
+gizmo_system.c
+  - src/engine/editor/gizmo_system.c
+  - src/engine/editor/tools/gizmo_system.c
+gizmos.c
+  - src/engine/editor/viewport/gizmos.c
+  - src/engine/editor/viewport_tools/gizmos.c
+gizmos.h
+  - src/engine/editor/viewport_tools/gizmos.h
+  - src/engine/include/editor/viewport/gizmos.h
+  - src/engine/include/editor/viewport_tools/gizmos.h
+global_illumination.c
+  - src/engine/lighting/gi/global_illumination.c
+  - src/engine/rendering/advanced/global_illumination.c
+  - src/engine/rendering/global_illumination/global_illumination.c
+gltf_importer.c
+  - src/engine/assets/system/asset_system/import/gltf_importer.c
+  - assets/importers/gltf_importer.c
+goap_planner.c
+  - src/engine/ai/npc_advanced/goap_planner.c
+  - src/engine/ai/planning/goap_planner.c
+gpu_allocator.h
+  - src/engine/include/core/memory/gpu_allocator.h
+  - src/engine/core/memory/gpu_allocator.h
+gpu_lighting.c
+  - src/engine/lighting/direct/gpu_lighting.c
+  - src/engine/rendering/gpu/gpu_lighting.c
+gpu_material.c
+  - src/engine/materials/gpu_material.c
+  - src/engine/rendering/gpu/gpu_material.c
+gpu_memory.c
+  - src/engine/rendering/gpu_memory.c
+  - src/engine/rendering/gpu/gpu_memory.c
+  - src/engine/core/memory/gpu_memory.c
+gpu_postprocess.c
+  - src/engine/rendering/gpu_postprocess.c
+  - src/engine/rendering/gpu/gpu_postprocess.c
+gpu_profiler.h
+  - src/engine/editor/debug/gpu_profiler.h
+  - src/engine/include/tools/profiler/gpu_profiler.h
+gpu_renderpass.c
+  - src/engine/rendering/gpu_renderpass.c
+  - src/engine/rendering/gpu/gpu_renderpass.c
+gpu_scene.c
+  - src/engine/rendering/core/gpu_scene.c
+  - src/engine/rendering/gpu_driven/gpu_scene.c
+gpu_scene.h
+  - src/engine/rendering/core/gpu_scene.h
+  - src/engine/rendering/gpu_driven/gpu_scene.h
+gpu_shader_reload.c
+  - src/engine/rendering/gpu_shader_reload.c
+  - src/engine/rendering/gpu/gpu_shader_reload.c
+gpu_skinning.c
+  - src/engine/character/animation/gpu_skinning.c
+  - src/engine/character/animation/skeletal/gpu_skinning.c
+gpu_skinning.h
+  - src/engine/character/animation/gpu_skinning.h
+  - src/engine/character/animation/skeletal/gpu_skinning.h
+gpu_text.c
+  - src/engine/rendering/gpu_text.c
+  - src/engine/rendering/gpu/gpu_text.c
+gpu_texture.c
+  - src/engine/rendering/gpu_texture.c
+  - src/engine/rendering/gpu/gpu_texture.c
+graphics_debug_stubs.c
+  - src/engine/platform/graphics_debug_stubs.c
+  - src/frontend/CVoxelForge/graphics_debug_stubs.c
+grid_renderer.c
+  - src/engine/rendering/grid_renderer.c
+  - src/engine/editor/debug/grid_renderer.c
+grid_settings.h
+  - src/engine/rendering/grid_settings.h
+  - include/renderer/grid_settings.h
+grid_snapping.h
+  - src/engine/editor/asset_creation/grid_snapping.h
+  - src/engine/include/editor/asset_creation/grid_snapping.h
+hair_shadows_render.c
+  - src/engine/character/hair/rendering/hair_rendering/hair_shadows_render.c
+  - src/engine/character/hair/system/hair_system/rendering_hair/hair_shadows_render.c
+hair_simulation.c
+  - src/engine/physics/character/hair/hair_simulation.c
+  - src/engine/character/hair/rendering/hair_rendering/hair_simulation.c
+hair_strand.c
+  - src/engine/physics/character/hair/hair_strand.c
+  - src/engine/character/hair/system/hair_system/simulation/hair_strand.c
+hand_ik_solver.c
+  - src/engine/animation/ik/hand_ik_solver.c
+  - src/engine/character/animation/ik/hand_ik_solver.c
+hashmap.h
+  - src/engine/include/core/hashmap.h
+  - src/engine/include/core/containers/hashmap.h
+  - src/game/blockgame/include/containers/hashmap.h
+hdr_tonemap.c
+  - src/engine/rendering/hdr_tonemap.c
+  - src/engine/rendering/advanced/hdr_tonemap.c
+heap_manager.h
+  - src/engine/include/core/memory/heap_manager.h
+  - src/engine/core/memory/heap_manager.h
+hit_validation.c
+  - src/engine/network/lag_compensation/hit_validation.c
+  - src/engine/networking/lag_compensation/hit_validation.c
+hot_reload.c
+  - src/engine/tools/hot_reload.c
+  - src/engine/core/hot_reload.c
+hot_reload.h
+  - src/engine/include/tools/hot_reload.h
+  - src/engine/include/core/hot_reload.h
+hybrid_rt_impl.c
+  - src/engine/rendering/raytracing/hybrid_rt_impl.c
+  - src/engine/rendering/raytracing/raytracing/hybrid_rt_impl.c
+hybrid_shadows.c
+  - src/engine/lighting/shadows/raytraced/hybrid_shadows.c
+  - src/engine/lighting/shadows_advanced/shadow_techniques/hybrid_shadows.c
+hybrid_shadows.h
+  - src/engine/lighting/shadows/raytraced/hybrid_shadows.h
+  - src/engine/lighting/shadows_advanced/shadow_techniques/hybrid_shadows.h
+ik_impl.c
+  - src/engine/animation/ik_impl.c
+  - src/engine/character/animation/ik_impl.c
+ik_solver.c
+  - src/engine/animation/ik_solver.c
+  - src/engine/character/animation/ik_solver.c
+inertialization.c
+  - src/engine/animation/blending/inertialization.c
+  - src/engine/character/animation/blending/inertialization.c
+instancing.c
+  - src/engine/geometry/instancing/instancing.c
+  - src/engine/rendering/core/instancing.c
+interest_management.c
+  - src/engine/network/optimization/interest_management.c
+  - src/engine/networking/optimization/interest_management.c
+inventory.c
+  - src/engine/gameplay/inventory/inventory.c
+  - src/game/blockgame/inventory/inventory.c
+inventory.h
+  - src/engine/include/gameplay/inventory/inventory.h
+  - src/game/blockgame/include/inventory/inventory.h
+inverse_kinematics_solver.c
+  - src/engine/animation/core/inverse_kinematics_solver.c
+  - src/engine/character/animation/core/inverse_kinematics_solver.c
+jitter_buffer.c
+  - src/engine/network/latency/jitter_buffer.c
+  - src/engine/networking/latency/jitter_buffer.c
+job_scheduler.c
+  - src/engine/core/optimization/job_scheduler.c
+  - src/engine/core/sync/job_scheduler.c
+keyframe_reducer.c
+  - src/engine/animation/compression/keyframe_reducer.c
+  - src/engine/character/animation/compression/keyframe_reducer.c
+lag_compensation.c
+  - src/engine/network/core/lag_compensation.c
+  - src/engine/networking/core/lag_compensation.c
+lapi.h
+  - src/engine/vendor/lua/lapi.h
+  - src/engine/include/vendor/lua/lapi.h
+lauxlib.h
+  - src/engine/vendor/lua/lauxlib.h
+  - src/engine/include/vendor/lua/lauxlib.h
+lcode.h
+  - src/engine/vendor/lua/lcode.h
+  - src/engine/include/vendor/lua/lcode.h
+lctype.h
+  - src/engine/vendor/lua/lctype.h
+  - src/engine/include/vendor/lua/lctype.h
+ldebug.h
+  - src/engine/vendor/lua/ldebug.h
+  - src/engine/include/vendor/lua/ldebug.h
+ldo.h
+  - src/engine/vendor/lua/ldo.h
+  - src/engine/include/vendor/lua/ldo.h
+lens_flares.c
+  - src/engine/postprocess/lens_flares.c
+  - src/engine/rendering/post_processing/lens_flares.c
+lfunc.h
+  - src/engine/vendor/lua/lfunc.h
+  - src/engine/include/vendor/lua/lfunc.h
+lgc.h
+  - src/engine/vendor/lua/lgc.h
+  - src/engine/include/vendor/lua/lgc.h
+lift_drag.c
+  - src/engine/physics/aerodynamics/lift_drag.c
+  - src/engine/physics/_trash/aerodynamics/lift_drag.c
+light_culling.c
+  - src/engine/lighting/culling/light_culling.c
+  - src/engine/lighting/sources/light_culling.c
+  - src/engine/rendering/core/light_culling.c
+  - src/engine/rendering/deferred/light_culling.c
+light_culling.h
+  - src/engine/lighting/culling/light_culling.h
+  - src/engine/lighting/sources/light_culling.h
+  - src/engine/rendering/core/light_culling.h
+  - src/engine/rendering/deferred/light_culling.h
+lighting.c
+  - src/engine/rendering/lighting.c
+  - src/engine/lighting/direct/lighting.c
+  - src/engine/rendering/core/lighting.c
+  - src/game/blockgame/block/lighting.c
+lighting.h
+  - src/engine/include/rendering/lighting.h
+  - src/game/blockgame/include/block/lighting.h
+lightmap_baker.h
+  - src/engine/editor/tools/tools/bake_tools/lightmap_baker.h
+  - src/engine/lighting/lightmaps/lightmap_baker.h
+lipsync_impl.c
+  - src/engine/cinematics/lipsync_impl.c
+  - src/engine/cinematic/lipsync_impl.c
+ljumptab.h
+  - src/engine/vendor/lua/ljumptab.h
+  - src/engine/include/vendor/lua/ljumptab.h
+llex.h
+  - src/engine/vendor/lua/llex.h
+  - src/engine/include/vendor/lua/llex.h
+llimits.h
+  - src/engine/vendor/lua/llimits.h
+  - src/engine/include/vendor/lua/llimits.h
+lmem.h
+  - src/engine/vendor/lua/lmem.h
+  - src/engine/include/vendor/lua/lmem.h
+lobject.h
+  - src/engine/vendor/lua/lobject.h
+  - src/engine/include/vendor/lua/lobject.h
+localization.c
+  - src/engine/core/localization/localization.c
+  - src/frontend/CVoxelForge/src/engine/documentation/localization/localization.c
+localization.h
+  - src/engine/docs/localization/localization.h
+  - src/engine/include/core/localization.h
+lod_generator.c
+  - src/engine/core/lod_generator.c
+  - src/engine/geometry/lod/lod_generator.c
+  - src/engine/geometry/mesh/mesh_advanced/lod_generator.c
+lod_generator.h
+  - src/engine/geometry/lod/lod_generator.h
+  - src/engine/include/core/lod_generator.h
+  - src/engine/include/rendering/lod_generator.h
+lod_selector.c
+  - src/engine/geometry/lod/lod_selector.c
+  - src/engine/rendering/streaming/lod_selector.c
+lod_system.c
+  - src/engine/geometry/lod/lod_system.c
+  - src/engine/rendering/core/lod_system.c
+  - src/engine/rendering/lod/lod_system.c
+look_at_ik.c
+  - src/engine/animation/ik_advanced/look_at_ik.c
+  - src/engine/character/animation/ik/look_at_ik.c
+  - src/engine/character/animation/ik_advanced/look_at_ik.c
+look_at_solver.c
+  - src/engine/animation/ik/look_at_solver.c
+  - src/engine/character/animation/ik/look_at_solver.c
+lopcodes.h
+  - src/engine/vendor/lua/lopcodes.h
+  - src/engine/include/vendor/lua/lopcodes.h
+lopnames.h
+  - src/engine/vendor/lua/lopnames.h
+  - src/engine/include/vendor/lua/lopnames.h
+lparser.h
+  - src/engine/vendor/lua/lparser.h
+  - src/engine/include/vendor/lua/lparser.h
+lprefix.h
+  - src/engine/vendor/lua/lprefix.h
+  - src/engine/include/vendor/lua/lprefix.h
+lstate.h
+  - src/engine/vendor/lua/lstate.h
+  - src/engine/include/vendor/lua/lstate.h
+lstring.h
+  - src/engine/vendor/lua/lstring.h
+  - src/engine/include/vendor/lua/lstring.h
+ltable.h
+  - src/engine/vendor/lua/ltable.h
+  - src/engine/include/vendor/lua/ltable.h
+ltm.h
+  - src/engine/vendor/lua/ltm.h
+  - src/engine/include/vendor/lua/ltm.h
+lua.h
+  - src/engine/vendor/lua/lua.h
+  - src/engine/include/vendor/lua/lua.h
+luaconf.h
+  - src/engine/vendor/lua/luaconf.h
+  - src/engine/include/vendor/lua/luaconf.h
+lualib.h
+  - src/engine/vendor/lua/lualib.h
+  - src/engine/include/vendor/lua/lualib.h
+lumen_gi.h
+  - src/engine/include/rendering/lumen_gi.h
+  - src/engine/include/lighting/lumen/lumen_gi.h
+lumen_gi.m
+  - src/engine/lighting/lumen/lumen_gi.m
+  - src/engine/rendering/lighting/lumen_gi.m
+lundump.h
+  - src/engine/vendor/lua/lundump.h
+  - src/engine/include/vendor/lua/lundump.h
+lvm.h
+  - src/engine/vendor/lua/lvm.h
+  - src/engine/include/vendor/lua/lvm.h
+lzio.h
+  - src/engine/vendor/lua/lzio.h
+  - src/engine/include/vendor/lua/lzio.h
+main.c
+  - src/engine/core/main.c
+  - src/engine/editor/docs/examples/prototype/main.c
+  - src/engine/physics/demos/main.c
+manager_01.c
+  - src/engine/editor/viewports/temporal/manager_01.c
+  - src/engine/editor/viewports/vr/manager_01.c
+  - src/engine/editor/viewports/camera/manager_01.c
+  - src/engine/editor/viewports/frustum/manager_01.c
+  - src/engine/editor/viewports/split_screen/manager_01.c
+  - src/engine/editor/viewports/cinematic/manager_01.c
+  - src/engine/editor/viewports/jitter/manager_01.c
+  - src/engine/editor/viewports/controllers/manager_01.c
+  - src/engine/editor/viewports/multiview/manager_01.c
+  - src/engine/editor/viewports/projection/manager_01.c
+  - src/engine/editor/tools/tools/pipeline/manager_01.c
+  - src/engine/editor/tools/tools/analysis/manager_01.c
+  - src/engine/editor/tools/tools/optimization/manager_01.c
+  - src/engine/editor/tools/tools/baking/manager_01.c
+  - src/engine/editor/tools/tools/compression/manager_01.c
+  - src/engine/editor/tools/tools/shader_tools/manager_01.c
+  - src/engine/editor/tools/tools/conversion/manager_01.c
+  - src/engine/editor/tools/tools/automation/manager_01.c
+  - src/engine/editor/tools/tools/validation/manager_01.c
+  - src/engine/editor/tools/tools/generation/manager_01.c
+  - src/engine/assets/io/formats/manager_01.c
+  - src/engine/assets/io/serialization/manager_01.c
+  - src/engine/assets/io/async/manager_01.c
+  - src/engine/assets/io/streaming/manager_01.c
+  - src/engine/assets/io/compression/manager_01.c
+  - src/engine/assets/io/bundling/manager_01.c
+  - src/engine/assets/io/export/manager_01.c
+  - src/engine/assets/io/scene/manager_01.c
+  - src/engine/assets/io/caching/manager_01.c
+  - src/engine/assets/io/import/manager_01.c
+  - src/engine/physics/constraints/manager_01.c
+  - src/engine/physics/rigid/manager_01.c
+  - src/engine/physics/solver/manager_01.c
+  - src/engine/physics/broadphase/manager_01.c
+  - src/engine/physics/fluid/manager_01.c
+  - src/engine/physics/soft/manager_01.c
+  - src/engine/physics/cloth/manager_01.c
+  - src/engine/physics/narrowphase/manager_01.c
+  - src/engine/physics/collision/manager_01.c
+manager_01.h
+  - src/engine/editor/viewports/temporal/manager_01.h
+  - src/engine/editor/viewports/vr/manager_01.h
+  - src/engine/editor/viewports/camera/manager_01.h
+  - src/engine/editor/viewports/frustum/manager_01.h
+  - src/engine/editor/viewports/split_screen/manager_01.h
+  - src/engine/editor/viewports/cinematic/manager_01.h
+  - src/engine/editor/viewports/jitter/manager_01.h
+  - src/engine/editor/viewports/controllers/manager_01.h
+  - src/engine/editor/viewports/multiview/manager_01.h
+  - src/engine/editor/viewports/projection/manager_01.h
+  - src/engine/editor/tools/tools/pipeline/manager_01.h
+  - src/engine/editor/tools/tools/analysis/manager_01.h
+  - src/engine/editor/tools/tools/optimization/manager_01.h
+  - src/engine/editor/tools/tools/baking/manager_01.h
+  - src/engine/editor/tools/tools/compression/manager_01.h
+  - src/engine/editor/tools/tools/shader_tools/manager_01.h
+  - src/engine/editor/tools/tools/conversion/manager_01.h
+  - src/engine/editor/tools/tools/automation/manager_01.h
+  - src/engine/editor/tools/tools/validation/manager_01.h
+  - src/engine/editor/tools/tools/generation/manager_01.h
+  - src/engine/assets/io/formats/manager_01.h
+  - src/engine/assets/io/serialization/manager_01.h
+  - src/engine/assets/io/async/manager_01.h
+  - src/engine/assets/io/streaming/manager_01.h
+  - src/engine/assets/io/compression/manager_01.h
+  - src/engine/assets/io/bundling/manager_01.h
+  - src/engine/assets/io/export/manager_01.h
+  - src/engine/assets/io/scene/manager_01.h
+  - src/engine/assets/io/caching/manager_01.h
+  - src/engine/assets/io/import/manager_01.h
+  - src/engine/physics/constraints/manager_01.h
+  - src/engine/physics/rigid/manager_01.h
+  - src/engine/physics/solver/manager_01.h
+  - src/engine/physics/broadphase/manager_01.h
+  - src/engine/physics/fluid/manager_01.h
+  - src/engine/physics/soft/manager_01.h
+  - src/engine/physics/cloth/manager_01.h
+  - src/engine/physics/narrowphase/manager_01.h
+  - src/engine/physics/collision/manager_01.h
+mat4.h
+  - src/engine/math/mat4.h
+  - src/engine/include/math/mat4.h
+matchmaker_client.h
+  - src/engine/network/matchmaking/matchmaker_client.h
+  - src/engine/networking/matchmaking/matchmaker_client.h
+material.c
+  - src/engine/materials/material.c
+  - src/engine/rendering/core/material.c
+material_complete_example.c
+  - src/engine/materials/material_complete_example.c
+  - src/engine/rendering/materials/material_complete_example.c
+material_defaults.c
+  - src/engine/materials/material_defaults.c
+  - src/engine/rendering/materials/material_defaults.c
+material_defaults.h
+  - src/engine/materials/material_defaults.h
+  - src/engine/rendering/materials/material_defaults.h
+material_examples.c
+  - src/engine/materials/material_examples.c
+  - src/engine/rendering/materials/material_examples.c
+material_hot_reload.c
+  - src/engine/materials/material_hot_reload.c
+  - src/engine/rendering/materials/material_hot_reload.c
+material_hot_reload.h
+  - src/engine/materials/material_hot_reload.h
+  - src/engine/rendering/materials/material_hot_reload.h
+material_instance.c
+  - src/engine/materials/material_instance.c
+  - src/engine/rendering/materials/material_instance.c
+  - src/engine/materials/material_system/material_instance.c
+material_instance.h
+  - src/engine/materials/material_instance.h
+  - src/engine/rendering/materials/material_instance.h
+  - src/engine/materials/material_system/material_instance.h
+material_reflection.c
+  - src/engine/rendering/advanced/material_reflection.c
+  - src/engine/materials/pbr/material_reflection.c
+material_serialization.c
+  - src/engine/materials/material_serialization.c
+  - src/engine/rendering/materials/material_serialization.c
+  - editor/material_editor/material_serialization.c
+material_serialization.h
+  - src/engine/materials/material_serialization.h
+  - src/engine/rendering/materials/material_serialization.h
+material_serialization_examples.c
+  - src/engine/materials/material_serialization_examples.c
+  - src/engine/rendering/materials/material_serialization_examples.c
+material_system.c
+  - src/engine/materials/material_system.c
+  - src/engine/rendering/material_system.c
+  - src/engine/rendering/materials/material_system.c
+  - src/engine/rendering/core/material_system.c
+material_system.h
+  - src/engine/materials/material_system.h
+  - src/engine/rendering/materials/material_system.h
+  - src/engine/include/core/material_system.h
+material_templates.c
+  - src/engine/materials/material_templates.c
+  - src/engine/rendering/materials/material_templates.c
+material_templates.h
+  - src/engine/materials/material_templates.h
+  - src/engine/rendering/materials/material_templates.h
+memory_pool.h
+  - src/engine/include/core/memory/memory_pool.h
+  - src/engine/core/memory/memory_pool.h
+mesh.c
+  - src/engine/geometry/mesh.c
+  - src/engine/geometry/mesh/mesh.c
+  - src/engine/rendering/core/mesh.c
+  - src/engine/core/services/mesh.c
+mesh.h
+  - src/engine/geometry/mesh.h
+  - src/engine/include/rendering/mesh.h
+  - src/game/blockgame/include/mesh/mesh.h
+mesh_compression.c
+  - src/engine/assets/system/asset_system/compression_assets/mesh_compression.c
+  - src/engine/rendering/compression/mesh_compression.c
+mesh_culling.c
+  - src/engine/rendering/culling/mesh_culling.c
+  - src/engine/rendering/culling/culling/mesh_culling.c
+mesh_optimizer.c
+  - src/engine/geometry/mesh/mesh_optimizer.c
+  - src/engine/rendering/optimization/mesh_optimizer.c
+  - src/engine/core/services/mesh_optimizer.c
+  - src/engine/tools/asset_compiler/mesh_optimizer.c
+mesh_optimizer.h
+  - src/engine/geometry/mesh/mesh_optimizer.h
+  - src/engine/include/rendering/mesh_optimizer.h
+  - src/engine/include/tools/asset_compiler/mesh_optimizer.h
+meshlet_culling.c
+  - src/engine/geometry/meshlets/meshlet_culling.c
+  - src/engine/geometry/mesh/mesh_advanced/meshlet_culling.c
+metal_backend.c
+  - src/engine/rendering/core/metal_backend.c
+  - src/engine/rendering/backends/metal_backend.c
+mod_loader.c
+  - src/engine/core/modding/mod_loader.c
+  - src/game/blockgame/modding/mod_loader.c
+mod_loader.h
+  - src/engine/include/core/modding/mod_loader.h
+  - src/game/blockgame/include/modding/mod_loader.h
+model_editor.c
+  - src/engine/tools/editor/core/asset_editor/3d/model_editor.c
+  - src/engine/tools/asset_editor/3d/model_editor.c
+model_importer.h
+  - src/engine/assets/io/importer/model_importer.h
+  - src/engine/include/editor/importer/model_importer.h
+motion_blur.c
+  - src/engine/postprocess/motion_blur.c
+  - src/engine/rendering/post_processing/motion_blur.c
+motion_database.c
+  - src/engine/animation/motion_matching/motion_database.c
+  - src/engine/character/animation/motion_matching/motion_database.c
+motion_matching.c
+  - src/engine/animation/motion_matching.c
+  - src/engine/animation/synthesis/motion_matching.c
+  - src/engine/character/animation/motion_matching.c
+  - src/engine/character/animation/synthesis/motion_matching.c
+motion_matching_impl.c
+  - src/engine/animation/motion_matching_impl.c
+  - src/engine/character/animation/motion_matching_impl.c
+mtl_device_caps.c
+  - src/engine/rendering/3d_rendering/backend/metal/metal/mtl_device_caps.c
+  - src/engine/backend/metal/mtl_device_caps.c
+mtl_device_caps.h
+  - src/engine/rendering/3d_rendering/backend/metal/metal/mtl_device_caps.h
+  - src/engine/backend/metal/mtl_device_caps.h
+multi_edit.h
+  - src/engine/editor/scene_tools/multi_edit.h
+  - src/engine/include/editor/scene_tools/multi_edit.h
+nat_punchthrough.c
+  - src/engine/network/p2p/nat_punchthrough.c
+  - src/engine/networking/p2p/nat_punchthrough.c
+network_replication.c
+  - src/engine/networking/network_replication.c
+  - src/engine/network/network_replication.c
+node_graph.c
+  - src/engine/editor/material_editor/node_graph.c
+  - editor/material_editor/node_graph.c
+normal_mapping.c
+  - src/engine/rendering/normal_mapping.c
+  - src/engine/rendering/advanced/normal_mapping.c
+npc.h
+  - src/engine/include/ai/npc.h
+  - src/engine/include/ecs/components/npc.h
+  - src/game/blockgame/include/npc/npc.h
+npc_ai.c
+  - src/engine/ai/npc_ai.c
+  - src/game/blockgame/npc/npc_ai.c
+npc_ai.h
+  - src/engine/include/ai/npc_ai.h
+  - src/game/blockgame/include/npc/npc_ai.h
+npc_jobs.c
+  - src/engine/npc/npc_jobs.c
+  - src/game/blockgame/npc/npc_jobs.c
+npc_jobs.h
+  - src/engine/npc/npc_jobs.h
+  - src/game/blockgame/include/npc/npc_jobs.h
+npc_spawning.c
+  - src/engine/ai/npc_spawning.c
+  - src/game/blockgame/npc/npc_spawning.c
+npc_system.c
+  - src/engine/npc/npc_system.c
+  - src/game/blockgame/npc/npc_system.c
+npc_types.h
+  - src/engine/include/ai/npc_types.h
+  - src/game/blockgame/include/npc/npc_types.h
+npc_visuals.c
+  - src/engine/npc/npc_visuals.c
+  - src/game/blockgame/npc/npc_visuals.c
+npc_visuals.h
+  - src/engine/npc/npc_visuals.h
+  - src/game/blockgame/include/npc/npc_visuals.h
+obj_importer.c
+  - src/engine/assets/system/asset_system/import/obj_importer.c
+  - assets/importers/obj_importer.c
+occlusion_culling.c
+  - src/engine/rendering/culling/occlusion_culling.c
+  - src/engine/rendering/culling/culling/occlusion_culling.c
+occlusion_vfx_stubs.c
+  - src/engine/platform/occlusion_vfx_stubs.c
+  - src/frontend/CVoxelForge/occlusion_vfx_stubs.c
+octree.c
+  - src/engine/physics/spatial/octree.c
+  - src/engine/core/containers_advanced/octree.c
+octree.h
+  - src/engine/include/geometry/spatial/octree.h
+  - src/engine/include/core/containers_advanced/octree.h
+packet_transport.c
+  - src/engine/network/core/packet_transport.c
+  - src/engine/networking/core/packet_transport.c
+page_cache.c
+  - src/engine/assets/textures/virtual_texturing/page_cache.c
+  - src/engine/geometry/nanite/nanite/streaming/page_cache.c
+page_cache.h
+  - src/engine/assets/textures/virtual_texturing/page_cache.h
+  - src/engine/geometry/nanite/nanite/streaming/page_cache.h
+path_tracer.c
+  - src/engine/rendering/raytracing_advanced/path_tracer.c
+  - src/engine/rendering/raytracing/raytracing_advanced/path_tracer.c
+perf_overlay.c
+  - src/engine/editor/debug/perf_overlay.c
+  - src/engine/editor/profiling/visualization/perf_overlay.c
+perf_overlay.h
+  - src/engine/editor/debug/perf_overlay.h
+  - src/engine/editor/profiling/visualization/perf_overlay.h
+performance_profiler.h
+  - src/engine/physics/solver/performance_profiler.h
+  - src/engine/include/physics/performance_profiler.h
+performance_profiling.c
+  - src/engine/geometry/instancing/performance_profiling.c
+  - src/engine/rendering/profiling/performance_profiling.c
+phoneme_mapping.c
+  - src/engine/animation/facial/phoneme_mapping.c
+  - src/engine/character/animation/facial/phoneme_mapping.c
+physics_final_batch.c
+  - src/engine/physics/advanced/physics_final_batch.c
+  - src/engine/physics/_trash/advanced/physics_final_batch.c
+physics_integration.c
+  - src/engine/physics/physics_integration.c
+  - src/engine/physics/integration/physics_integration.c
+  - src/engine/rendering/physics/physics_integration.c
+pose_corrector.c
+  - src/engine/animation/retargeting/pose_corrector.c
+  - src/engine/character/animation/retargeting/pose_corrector.c
+pose_matching.c
+  - src/engine/physics/ragdoll/pose_matching.c
+  - src/engine/character/animation/blending/pose_matching.c
+post_processing.c
+  - src/engine/rendering/post_processing.c
+  - src/engine/core/services/post_processing.c
+  - src/game/blockgame/vfx/post_processing.c
+post_processing.h
+  - src/engine/shading/library/post_process/post_processing.h
+  - src/engine/include/rendering/post_processing.h
+post_processing_examples.c
+  - src/engine/postprocess/post_processing_examples.c
+  - src/engine/rendering/post_processing/post_processing_examples.c
+post_processing_pipeline.c
+  - src/engine/postprocess/post_processing_pipeline.c
+  - src/engine/rendering/post_processing/post_processing_pipeline.c
+post_processing_pipeline.h
+  - src/engine/postprocess/post_processing_pipeline.h
+  - src/engine/rendering/post_processing/post_processing_pipeline.h
+priority_accumulator.c
+  - src/engine/network/replication/priority_accumulator.c
+  - src/engine/networking/replication/priority_accumulator.c
+probe_placement.c
+  - src/engine/lighting/probes/probe_placement.c
+  - src/engine/lighting/lumen/radiance_cache/probe_placement.c
+probe_placement.h
+  - src/engine/lighting/probes/probe_placement.h
+  - src/engine/lighting/lumen/radiance_cache/probe_placement.h
+proc_breathing.c
+  - src/engine/animation/procedural/proc_breathing.c
+  - src/engine/character/animation/procedural/proc_breathing.c
+proc_recoil.c
+  - src/engine/animation/procedural/proc_recoil.c
+  - src/engine/character/animation/procedural/proc_recoil.c
+proc_turn_in_place.c
+  - src/engine/animation/procedural/proc_turn_in_place.c
+  - src/engine/character/animation/procedural/proc_turn_in_place.c
+proc_walking.c
+  - src/engine/animation/procedural/proc_walking.c
+  - src/engine/character/animation/procedural/proc_walking.c
+proc_walking_impl.c
+  - src/engine/animation/procedural/proc_walking_impl.c
+  - src/engine/character/animation/procedural/proc_walking_impl.c
+procedural_lens_flare.c
+  - src/engine/postprocess/procedural_lens_flare.c
+  - src/engine/rendering/post_processing/procedural_lens_flare.c
+processor_04.c
+  - src/engine/editor/viewports/temporal/processor_04.c
+  - src/engine/editor/viewports/vr/processor_04.c
+  - src/engine/editor/viewports/camera/processor_04.c
+  - src/engine/editor/viewports/frustum/processor_04.c
+  - src/engine/editor/viewports/split_screen/processor_04.c
+  - src/engine/editor/viewports/cinematic/processor_04.c
+  - src/engine/editor/viewports/jitter/processor_04.c
+  - src/engine/editor/viewports/controllers/processor_04.c
+  - src/engine/editor/viewports/multiview/processor_04.c
+  - src/engine/editor/viewports/projection/processor_04.c
+  - src/engine/editor/tools/tools/pipeline/processor_04.c
+  - src/engine/editor/tools/tools/analysis/processor_04.c
+  - src/engine/editor/tools/tools/optimization/processor_04.c
+  - src/engine/editor/tools/tools/baking/processor_04.c
+  - src/engine/editor/tools/tools/compression/processor_04.c
+  - src/engine/editor/tools/tools/shader_tools/processor_04.c
+  - src/engine/editor/tools/tools/conversion/processor_04.c
+  - src/engine/editor/tools/tools/automation/processor_04.c
+  - src/engine/editor/tools/tools/validation/processor_04.c
+  - src/engine/editor/tools/tools/generation/processor_04.c
+  - src/engine/assets/io/formats/processor_04.c
+  - src/engine/assets/io/serialization/processor_04.c
+  - src/engine/assets/io/async/processor_04.c
+  - src/engine/assets/io/streaming/processor_04.c
+  - src/engine/assets/io/compression/processor_04.c
+  - src/engine/assets/io/bundling/processor_04.c
+  - src/engine/assets/io/export/processor_04.c
+  - src/engine/assets/io/scene/processor_04.c
+  - src/engine/assets/io/caching/processor_04.c
+  - src/engine/assets/io/import/processor_04.c
+  - src/engine/physics/constraints/processor_04.c
+  - src/engine/physics/rigid/processor_04.c
+  - src/engine/physics/solver/processor_04.c
+  - src/engine/physics/broadphase/processor_04.c
+  - src/engine/physics/fluid/processor_04.c
+  - src/engine/physics/soft/processor_04.c
+  - src/engine/physics/cloth/processor_04.c
+  - src/engine/physics/narrowphase/processor_04.c
+  - src/engine/physics/collision/processor_04.c
+processor_04.h
+  - src/engine/editor/viewports/temporal/processor_04.h
+  - src/engine/editor/viewports/vr/processor_04.h
+  - src/engine/editor/viewports/camera/processor_04.h
+  - src/engine/editor/viewports/frustum/processor_04.h
+  - src/engine/editor/viewports/split_screen/processor_04.h
+  - src/engine/editor/viewports/cinematic/processor_04.h
+  - src/engine/editor/viewports/jitter/processor_04.h
+  - src/engine/editor/viewports/controllers/processor_04.h
+  - src/engine/editor/viewports/multiview/processor_04.h
+  - src/engine/editor/viewports/projection/processor_04.h
+  - src/engine/editor/tools/tools/pipeline/processor_04.h
+  - src/engine/editor/tools/tools/analysis/processor_04.h
+  - src/engine/editor/tools/tools/optimization/processor_04.h
+  - src/engine/editor/tools/tools/baking/processor_04.h
+  - src/engine/editor/tools/tools/compression/processor_04.h
+  - src/engine/editor/tools/tools/shader_tools/processor_04.h
+  - src/engine/editor/tools/tools/conversion/processor_04.h
+  - src/engine/editor/tools/tools/automation/processor_04.h
+  - src/engine/editor/tools/tools/validation/processor_04.h
+  - src/engine/editor/tools/tools/generation/processor_04.h
+  - src/engine/assets/io/formats/processor_04.h
+  - src/engine/assets/io/serialization/processor_04.h
+  - src/engine/assets/io/async/processor_04.h
+  - src/engine/assets/io/streaming/processor_04.h
+  - src/engine/assets/io/compression/processor_04.h
+  - src/engine/assets/io/bundling/processor_04.h
+  - src/engine/assets/io/export/processor_04.h
+  - src/engine/assets/io/scene/processor_04.h
+  - src/engine/assets/io/caching/processor_04.h
+  - src/engine/assets/io/import/processor_04.h
+  - src/engine/physics/constraints/processor_04.h
+  - src/engine/physics/rigid/processor_04.h
+  - src/engine/physics/solver/processor_04.h
+  - src/engine/physics/broadphase/processor_04.h
+  - src/engine/physics/fluid/processor_04.h
+  - src/engine/physics/soft/processor_04.h
+  - src/engine/physics/cloth/processor_04.h
+  - src/engine/physics/narrowphase/processor_04.h
+  - src/engine/physics/collision/processor_04.h
+profiler.c
+  - src/engine/tools/profiler.c
+  - src/engine/core/profiling/profiler.c
+projectile.c
+  - src/engine/gameplay/combat/projectile.c
+  - src/game/blockgame/combat/projectile.c
+projectile.h
+  - src/engine/include/gameplay/combat/projectile.h
+  - src/game/blockgame/include/combat/projectile.h
+property_inspector.h
+  - src/engine/editor/asset_creation/property_inspector.h
+  - src/engine/include/editor/asset_creation/property_inspector.h
+puddle_rendering.c
+  - src/engine/effects/puddles/puddle_rendering.c
+  - src/engine/materials/wetness/puddle_rendering.c
+puddle_rendering.h
+  - src/engine/effects/puddles/puddle_rendering.h
+  - src/engine/materials/wetness/puddle_rendering.h
+quat.h
+  - src/engine/math/quat.h
+  - src/engine/include/math/quat.h
+quest_system.c
+  - src/engine/gameplay/quest_system.c
+  - src/engine/gameplay/quest/quest_system.c
+ray_tracing.c
+  - src/engine/rendering/ray_tracing.c
+  - src/engine/rendering/advanced/ray_tracing.c
+raytracing_acceleration_structures.c
+  - src/engine/rendering/raytracing_acceleration_structures.c
+  - src/engine/rendering/raytracing/raytracing_acceleration_structures.c
+raytracing_denoiser.c
+  - src/engine/rendering/raytracing_denoiser.c
+  - src/engine/rendering/raytracing/raytracing_denoiser.c
+raytracing_global_illumination.c
+  - src/engine/rendering/raytracing_global_illumination.c
+  - src/engine/rendering/raytracing/raytracing_global_illumination.c
+raytracing_impl.c
+  - src/engine/rendering/raytracing_impl.c
+  - src/engine/rendering/raytracing/raytracing_impl.c
+raytracing_pipeline.c
+  - src/engine/rendering/raytracing_pipeline.c
+  - src/engine/rendering/core/raytracing_pipeline.c
+  - src/engine/rendering/backends/raytracing_pipeline.c
+  - src/engine/rendering/raytracing/raytracing_pipeline.c
+raytracing_reflections.c
+  - src/engine/rendering/raytracing_reflections.c
+  - src/engine/rendering/raytracing/raytracing_reflections.c
+reliable_channel.c
+  - src/engine/network/transport/reliable_channel.c
+  - src/engine/networking/transport/reliable_channel.c
+render_config.h
+  - src/engine/core/integration/render_config.h
+  - src/engine/tools/scripting/configuration/render_config.h
+render_graph_impl.c
+  - src/engine/rendering/render_graph_impl.c
+  - src/engine/rendering/graph/render_graph_impl.c
+renderer_03.c
+  - src/engine/editor/viewports/temporal/renderer_03.c
+  - src/engine/editor/viewports/vr/renderer_03.c
+  - src/engine/editor/viewports/camera/renderer_03.c
+  - src/engine/editor/viewports/frustum/renderer_03.c
+  - src/engine/editor/viewports/split_screen/renderer_03.c
+  - src/engine/editor/viewports/cinematic/renderer_03.c
+  - src/engine/editor/viewports/jitter/renderer_03.c
+  - src/engine/editor/viewports/controllers/renderer_03.c
+  - src/engine/editor/viewports/multiview/renderer_03.c
+  - src/engine/editor/viewports/projection/renderer_03.c
+  - src/engine/editor/tools/tools/pipeline/renderer_03.c
+  - src/engine/editor/tools/tools/analysis/renderer_03.c
+  - src/engine/editor/tools/tools/optimization/renderer_03.c
+  - src/engine/editor/tools/tools/baking/renderer_03.c
+  - src/engine/editor/tools/tools/compression/renderer_03.c
+  - src/engine/editor/tools/tools/shader_tools/renderer_03.c
+  - src/engine/editor/tools/tools/conversion/renderer_03.c
+  - src/engine/editor/tools/tools/automation/renderer_03.c
+  - src/engine/editor/tools/tools/validation/renderer_03.c
+  - src/engine/editor/tools/tools/generation/renderer_03.c
+  - src/engine/assets/io/formats/renderer_03.c
+  - src/engine/assets/io/serialization/renderer_03.c
+  - src/engine/assets/io/async/renderer_03.c
+  - src/engine/assets/io/streaming/renderer_03.c
+  - src/engine/assets/io/compression/renderer_03.c
+  - src/engine/assets/io/bundling/renderer_03.c
+  - src/engine/assets/io/export/renderer_03.c
+  - src/engine/assets/io/scene/renderer_03.c
+  - src/engine/assets/io/caching/renderer_03.c
+  - src/engine/assets/io/import/renderer_03.c
+  - src/engine/physics/constraints/renderer_03.c
+  - src/engine/physics/rigid/renderer_03.c
+  - src/engine/physics/solver/renderer_03.c
+  - src/engine/physics/broadphase/renderer_03.c
+  - src/engine/physics/fluid/renderer_03.c
+  - src/engine/physics/soft/renderer_03.c
+  - src/engine/physics/cloth/renderer_03.c
+  - src/engine/physics/narrowphase/renderer_03.c
+  - src/engine/physics/collision/renderer_03.c
+renderer_03.h
+  - src/engine/editor/viewports/temporal/renderer_03.h
+  - src/engine/editor/viewports/vr/renderer_03.h
+  - src/engine/editor/viewports/camera/renderer_03.h
+  - src/engine/editor/viewports/frustum/renderer_03.h
+  - src/engine/editor/viewports/split_screen/renderer_03.h
+  - src/engine/editor/viewports/cinematic/renderer_03.h
+  - src/engine/editor/viewports/jitter/renderer_03.h
+  - src/engine/editor/viewports/controllers/renderer_03.h
+  - src/engine/editor/viewports/multiview/renderer_03.h
+  - src/engine/editor/viewports/projection/renderer_03.h
+  - src/engine/editor/tools/tools/pipeline/renderer_03.h
+  - src/engine/editor/tools/tools/analysis/renderer_03.h
+  - src/engine/editor/tools/tools/optimization/renderer_03.h
+  - src/engine/editor/tools/tools/baking/renderer_03.h
+  - src/engine/editor/tools/tools/compression/renderer_03.h
+  - src/engine/editor/tools/tools/shader_tools/renderer_03.h
+  - src/engine/editor/tools/tools/conversion/renderer_03.h
+  - src/engine/editor/tools/tools/automation/renderer_03.h
+  - src/engine/editor/tools/tools/validation/renderer_03.h
+  - src/engine/editor/tools/tools/generation/renderer_03.h
+  - src/engine/assets/io/formats/renderer_03.h
+  - src/engine/assets/io/serialization/renderer_03.h
+  - src/engine/assets/io/async/renderer_03.h
+  - src/engine/assets/io/streaming/renderer_03.h
+  - src/engine/assets/io/compression/renderer_03.h
+  - src/engine/assets/io/bundling/renderer_03.h
+  - src/engine/assets/io/export/renderer_03.h
+  - src/engine/assets/io/scene/renderer_03.h
+  - src/engine/assets/io/caching/renderer_03.h
+  - src/engine/assets/io/import/renderer_03.h
+  - src/engine/physics/constraints/renderer_03.h
+  - src/engine/physics/rigid/renderer_03.h
+  - src/engine/physics/solver/renderer_03.h
+  - src/engine/physics/broadphase/renderer_03.h
+  - src/engine/physics/fluid/renderer_03.h
+  - src/engine/physics/soft/renderer_03.h
+  - src/engine/physics/cloth/renderer_03.h
+  - src/engine/physics/narrowphase/renderer_03.h
+  - src/engine/physics/collision/renderer_03.h
+renderer_factory.c
+  - src/engine/rendering/renderer_factory.c
+  - src/engine/core/services/renderer_factory.c
+rendering_tools_stubs.c
+  - src/engine/platform/rendering_tools_stubs.c
+  - src/frontend/CVoxelForge/rendering_tools_stubs.c
+replication_manager.c
+  - src/engine/network/core/replication_manager.c
+  - src/engine/networking/core/replication_manager.c
+resource_handle.h
+  - src/engine/include/assets/resources/resource_management/resource_handle.h
+  - src/engine/include/core/resource/resource_handle.h
+resource_pool.c
+  - src/engine/assets/resources/resource_management/resource_pool.c
+  - src/engine/rendering/frame_graph/resource_pool.c
+retargeting.c
+  - src/engine/animation/tools/retargeting.c
+  - src/engine/character/animation/tools/retargeting.c
+rewind_system.c
+  - src/engine/network/lag_compensation/rewind_system.c
+  - src/engine/networking/lag_compensation/rewind_system.c
+rpc_system.c
+  - src/engine/network/rpc_system.c
+  - src/engine/network/replication/rpc_system.c
+  - src/engine/networking/replication/rpc_system.c
+rpc_system.h
+  - src/engine/include/network/rpc_system.h
+  - src/engine/include/network/replication/rpc_system.h
+rt_area_shadow.c
+  - src/engine/lighting/shadows/raytraced/rt_area_shadow.c
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_area_shadow.c
+rt_area_shadow.h
+  - src/engine/lighting/shadows/raytraced/rt_area_shadow.h
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_area_shadow.h
+rt_penumbra.c
+  - src/engine/lighting/shadows/raytraced/rt_penumbra.c
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_penumbra.c
+rt_penumbra.h
+  - src/engine/lighting/shadows/raytraced/rt_penumbra.h
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_penumbra.h
+rt_pipeline.c
+  - src/engine/rendering/raytracing/rt_pipeline.c
+  - src/engine/rendering/raytracing/raytracing/rt_pipeline.c
+rt_pipeline.h
+  - src/engine/rendering/raytracing/rt_pipeline.h
+  - src/engine/rendering/raytracing/raytracing/rt_pipeline.h
+rt_reflections.c
+  - src/engine/rendering/raytracing_advanced/rt_reflections.c
+  - src/engine/rendering/raytracing/raytracing_advanced/rt_reflections.c
+rt_shadow_cache.c
+  - src/engine/lighting/shadows/raytraced/rt_shadow_cache.c
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_cache.c
+  - src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.c
+rt_shadow_cache.h
+  - src/engine/lighting/shadows/raytraced/rt_shadow_cache.h
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_cache.h
+  - src/engine/rendering/raytracing/shadows_rt/rt_shadow_cache.h
+rt_shadow_denoise.c
+  - src/engine/lighting/shadows/raytraced/rt_shadow_denoise.c
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_denoise.c
+  - src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.c
+rt_shadow_denoise.h
+  - src/engine/lighting/shadows/raytraced/rt_shadow_denoise.h
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_denoise.h
+  - src/engine/rendering/raytracing/shadows_rt/rt_shadow_denoise.h
+rt_shadow_lod.c
+  - src/engine/lighting/shadows/raytraced/rt_shadow_lod.c
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_lod.c
+  - src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.c
+rt_shadow_lod.h
+  - src/engine/lighting/shadows/raytraced/rt_shadow_lod.h
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_lod.h
+  - src/engine/rendering/raytracing/shadows_rt/rt_shadow_lod.h
+rt_shadow_ray.c
+  - src/engine/lighting/shadows/raytraced/rt_shadow_ray.c
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_ray.c
+rt_shadow_ray.h
+  - src/engine/lighting/shadows/raytraced/rt_shadow_ray.h
+  - src/engine/lighting/shadows_advanced/ray_traced_shadows/rt_shadow_ray.h
+scene.c
+  - src/engine/rendering/scene.c
+  - src/engine/rendering/core/scene.c
+scene_bookmarks.h
+  - src/engine/editor/scene_tools/scene_bookmarks.h
+  - src/engine/include/editor/scene_tools/scene_bookmarks.h
+scene_hierarchy.h
+  - src/engine/editor/scene_tools/scene_hierarchy.h
+  - src/engine/include/editor/scene_tools/scene_hierarchy.h
+scene_layers.h
+  - src/engine/editor/scene_tools/scene_layers.h
+  - src/engine/include/editor/scene_tools/scene_layers.h
+scene_validation.h
+  - src/engine/editor/scene_tools/scene_validation.h
+  - src/engine/include/editor/scene_tools/scene_validation.h
+screen_space_reflections.c
+  - src/engine/postprocess/screen_space_reflections.c
+  - src/engine/rendering/post_processing/screen_space_reflections.c
+sdf_shadows.c
+  - src/engine/lighting/shadows/analytical/sdf_shadows.c
+  - src/engine/lighting/shadows_advanced/shadow_techniques/sdf_shadows.c
+sdf_shadows.h
+  - src/engine/lighting/shadows/analytical/sdf_shadows.h
+  - src/engine/lighting/shadows_advanced/shadow_techniques/sdf_shadows.h
+sdsm.c
+  - src/engine/lighting/shadows/advanced/sdsm.c
+  - src/engine/lighting/shadows_advanced/shadow_techniques/sdsm.c
+sdsm.h
+  - src/engine/lighting/shadows/advanced/sdsm.h
+  - src/engine/lighting/shadows_advanced/shadow_techniques/sdsm.h
+search_replace.h
+  - src/engine/editor/scene_tools/search_replace.h
+  - src/engine/include/editor/scene_tools/search_replace.h
+selection_marquee.h
+  - src/engine/editor/asset_creation/selection_marquee.h
+  - src/engine/include/editor/asset_creation/selection_marquee.h
+sequencer_impl.c
+  - src/engine/cinematics/sequencer_impl.c
+  - src/engine/cinematic/sequencer_impl.c
+shader_binding_table.c
+  - src/engine/rendering/raytracing_advanced/shader_binding_table.c
+  - src/engine/rendering/raytracing/raytracing_advanced/shader_binding_table.c
+shader_compiler.c
+  - src/engine/rendering/shader_compiler.c
+  - src/engine/rendering/core/shader_compiler.c
+  - src/engine/materials/shaders/shader_compiler.c
+shader_compiler.h
+  - src/engine/include/rendering/shader_compiler.h
+  - src/engine/materials/shaders/shader_compiler.h
+shader_hot_reload.c
+  - src/engine/rendering/shader/shader_hot_reload.c
+  - src/engine/materials/shaders/shader_hot_reload.c
+shader_permutations.c
+  - src/engine/materials/shader_permutations.c
+  - src/engine/rendering/materials/shader_permutations.c
+shader_permutations.h
+  - src/engine/materials/shader_permutations.h
+  - src/engine/rendering/materials/shader_permutations.h
+shader_variants.c
+  - src/engine/rendering/forward/shader_variants.c
+  - src/engine/materials/shaders/shader_variants.c
+shader_variants.h
+  - src/engine/rendering/forward/shader_variants.h
+  - src/engine/materials/shaders/shader_variants.h
+shadow_pass.c
+  - src/engine/geometry/nanite/nanite/rendering_nanite/shadow_pass.c
+  - src/engine/lighting/shadows/shadow_pass.c
+shadow_pass.h
+  - src/engine/geometry/nanite/nanite/rendering_nanite/shadow_pass.h
+  - src/engine/lighting/shadows/shadow_pass.h
+simd_neon.c
+  - src/engine/core/simd_neon.c
+  - src/engine/core/math/simd_neon.c
+simd_neon.h
+  - src/engine/include/math/simd_neon.h
+  - src/engine/include/core/math/simd_neon.h
+skeletal_animation.c
+  - src/engine/animation/skeletal/skeletal_animation.c
+  - src/engine/character/animation/skeletal/skeletal_animation.c
+skeletal_impl.c
+  - src/engine/animation/skeletal_impl.c
+  - src/engine/character/animation/skeletal_impl.c
+skeleton.c
+  - src/engine/animation/skeleton.c
+  - src/engine/character/animation/skeleton.c
+skeleton_data.c
+  - src/engine/character/skeleton/skeleton_data.c
+  - src/engine/character/animation/skeletal/skeleton_data.c
+skeleton_data.h
+  - src/engine/character/skeleton/skeleton_data.h
+  - src/engine/character/animation/skeletal/skeleton_data.h
+skeleton_manager.c
+  - src/engine/animation/core/skeleton_manager.c
+  - src/engine/character/animation/core/skeleton_manager.c
+skill_matchmaking.c
+  - src/engine/network/matchmaking/skill_matchmaking.c
+  - src/engine/networking/matchmaking/skill_matchmaking.c
+skinning.c
+  - src/engine/animation/skeletal/skinning.c
+  - src/engine/character/animation/skeletal/skinning.c
+snapshot_interpolation.c
+  - src/engine/network/state/snapshot_interpolation.c
+  - src/engine/networking/state/snapshot_interpolation.c
+soft_body_solver.c
+  - src/engine/physics/advanced/soft_body_solver.c
+  - src/engine/physics/_trash/advanced/soft_body_solver.c
+software_rasterizer.c
+  - src/engine/geometry/nanite/software_rasterizer.c
+  - src/engine/geometry/culling/occlusion/software_rasterizer.c
+spatial_audio.c
+  - src/engine/audio/spatial_audio.c
+  - src/engine/audio/spatial/spatial_audio.c
+sph_solver.h
+  - src/engine/physics/fluids/sph_solver.h
+  - src/engine/include/physics/sph_solver.h
+spine_ik_solver.c
+  - src/engine/animation/ik/spine_ik_solver.c
+  - src/engine/character/animation/ik/spine_ik_solver.c
+sprite_editor.c
+  - src/engine/tools/editor/core/asset_editor/2d/sprite_editor.c
+  - src/engine/tools/asset_editor/2d/sprite_editor.c
+ssao_horizon.c
+  - src/engine/postprocess/ssao_horizon.c
+  - src/engine/rendering/post_processing/ssao_horizon.c
+ssr_fallback.h
+  - src/engine/postprocess/screen_space/ssr_fallback.h
+  - src/engine/postprocess/ssr/ssr_fallback.h
+ssr_resolve.h
+  - src/engine/postprocess/screen_space/ssr_resolve.h
+  - src/engine/postprocess/ssr/ssr_resolve.h
+ssr_trace.h
+  - src/engine/postprocess/screen_space/ssr_trace.h
+  - src/engine/postprocess/ssr/ssr_trace.h
+staging_buffer.h
+  - src/engine/include/core/memory/staging_buffer.h
+  - src/engine/core/memory/staging_buffer.h
+state_editor.c
+  - src/engine/animation/state_machines/state_editor.c
+  - src/engine/character/animation/state_machines/state_editor.c
+status_effects.c
+  - src/engine/gameplay/combat/status_effects.c
+  - src/game/blockgame/player/status_effects.c
+status_effects.h
+  - src/engine/gameplay/combat/status_effects.h
+  - src/game/blockgame/include/player/status_effects.h
+stream_priority.c
+  - src/engine/assets/textures/streaming/stream_priority.c
+  - src/engine/geometry/streaming/stream_priority.c
+  - src/engine/geometry/nanite/nanite/streaming/stream_priority.c
+stream_priority.h
+  - src/engine/assets/textures/streaming/stream_priority.h
+  - src/engine/geometry/streaming/stream_priority.h
+  - src/engine/geometry/nanite/nanite/streaming/stream_priority.h
+string_pool.h
+  - src/engine/include/core/string/string_pool.h
+  - src/engine/core/string/string_pool.h
+swift_bridge.c
+  - src/engine/platform/swift_bridge.c
+  - src/frontend/CVoxelForge/swift_bridge.c
+swift_bridge.h
+  - src/engine/platform/swift_bridge.h
+  - include/platform/swift_bridge.h
+swift_bridge_old.c
+  - src/engine/platform/swift_bridge_old.c
+  - src/frontend/CVoxelForge/swift_bridge_old.c
+system_02.c
+  - src/engine/editor/viewports/temporal/system_02.c
+  - src/engine/editor/viewports/vr/system_02.c
+  - src/engine/editor/viewports/camera/system_02.c
+  - src/engine/editor/viewports/frustum/system_02.c
+  - src/engine/editor/viewports/split_screen/system_02.c
+  - src/engine/editor/viewports/cinematic/system_02.c
+  - src/engine/editor/viewports/jitter/system_02.c
+  - src/engine/editor/viewports/controllers/system_02.c
+  - src/engine/editor/viewports/multiview/system_02.c
+  - src/engine/editor/viewports/projection/system_02.c
+  - src/engine/editor/tools/tools/pipeline/system_02.c
+  - src/engine/editor/tools/tools/analysis/system_02.c
+  - src/engine/editor/tools/tools/optimization/system_02.c
+  - src/engine/editor/tools/tools/baking/system_02.c
+  - src/engine/editor/tools/tools/compression/system_02.c
+  - src/engine/editor/tools/tools/shader_tools/system_02.c
+  - src/engine/editor/tools/tools/conversion/system_02.c
+  - src/engine/editor/tools/tools/automation/system_02.c
+  - src/engine/editor/tools/tools/validation/system_02.c
+  - src/engine/editor/tools/tools/generation/system_02.c
+  - src/engine/assets/io/formats/system_02.c
+  - src/engine/assets/io/serialization/system_02.c
+  - src/engine/assets/io/async/system_02.c
+  - src/engine/assets/io/streaming/system_02.c
+  - src/engine/assets/io/compression/system_02.c
+  - src/engine/assets/io/bundling/system_02.c
+  - src/engine/assets/io/export/system_02.c
+  - src/engine/assets/io/scene/system_02.c
+  - src/engine/assets/io/caching/system_02.c
+  - src/engine/assets/io/import/system_02.c
+  - src/engine/physics/constraints/system_02.c
+  - src/engine/physics/rigid/system_02.c
+  - src/engine/physics/solver/system_02.c
+  - src/engine/physics/broadphase/system_02.c
+  - src/engine/physics/fluid/system_02.c
+  - src/engine/physics/soft/system_02.c
+  - src/engine/physics/cloth/system_02.c
+  - src/engine/physics/narrowphase/system_02.c
+  - src/engine/physics/collision/system_02.c
+system_02.h
+  - src/engine/editor/viewports/temporal/system_02.h
+  - src/engine/editor/viewports/vr/system_02.h
+  - src/engine/editor/viewports/camera/system_02.h
+  - src/engine/editor/viewports/frustum/system_02.h
+  - src/engine/editor/viewports/split_screen/system_02.h
+  - src/engine/editor/viewports/cinematic/system_02.h
+  - src/engine/editor/viewports/jitter/system_02.h
+  - src/engine/editor/viewports/controllers/system_02.h
+  - src/engine/editor/viewports/multiview/system_02.h
+  - src/engine/editor/viewports/projection/system_02.h
+  - src/engine/editor/tools/tools/pipeline/system_02.h
+  - src/engine/editor/tools/tools/analysis/system_02.h
+  - src/engine/editor/tools/tools/optimization/system_02.h
+  - src/engine/editor/tools/tools/baking/system_02.h
+  - src/engine/editor/tools/tools/compression/system_02.h
+  - src/engine/editor/tools/tools/shader_tools/system_02.h
+  - src/engine/editor/tools/tools/conversion/system_02.h
+  - src/engine/editor/tools/tools/automation/system_02.h
+  - src/engine/editor/tools/tools/validation/system_02.h
+  - src/engine/editor/tools/tools/generation/system_02.h
+  - src/engine/assets/io/formats/system_02.h
+  - src/engine/assets/io/serialization/system_02.h
+  - src/engine/assets/io/async/system_02.h
+  - src/engine/assets/io/streaming/system_02.h
+  - src/engine/assets/io/compression/system_02.h
+  - src/engine/assets/io/bundling/system_02.h
+  - src/engine/assets/io/export/system_02.h
+  - src/engine/assets/io/scene/system_02.h
+  - src/engine/assets/io/caching/system_02.h
+  - src/engine/assets/io/import/system_02.h
+  - src/engine/physics/constraints/system_02.h
+  - src/engine/physics/rigid/system_02.h
+  - src/engine/physics/solver/system_02.h
+  - src/engine/physics/broadphase/system_02.h
+  - src/engine/physics/fluid/system_02.h
+  - src/engine/physics/soft/system_02.h
+  - src/engine/physics/cloth/system_02.h
+  - src/engine/physics/narrowphase/system_02.h
+  - src/engine/physics/collision/system_02.h
+taa.c
+  - src/engine/postprocess/taa.c
+  - src/engine/rendering/post_processing/taa.c
+taa.h
+  - src/engine/postprocess/taa.h
+  - src/engine/rendering/post_processing/taa.h
+terrain_lod.c
+  - src/engine/rendering/terrain/terrain_lod.c
+  - src/engine/environment/landscape/terrain/landscape/terrain/terrain_lod.c
+text_renderer.c
+  - src/engine/rendering/text_renderer.c
+  - src/engine/core/services/text_renderer.c
+texture_atlas.c
+  - src/engine/rendering/texture_atlas.c
+  - src/engine/rendering/core/texture_atlas.c
+  - src/engine/rendering/texture/texture_atlas.c
+texture_importer.c
+  - src/engine/assets/system/asset_system/import/texture_importer.c
+  - assets/importers/texture_importer.c
+texture_importer.h
+  - src/engine/assets/system/asset_system/import/texture_importer.h
+  - src/engine/assets/io/importer/texture_importer.h
+texture_system.c
+  - src/engine/rendering/texture_system.c
+  - src/engine/rendering/core/texture_system.c
+  - src/engine/rendering/texture/texture_system.c
+thumbnail_generator.c
+  - src/engine/editor/asset_library/thumbnail_generator.c
+  - src/engine/editor/asset_browser/thumbnail_generator.c
+thumbnail_generator.h
+  - src/engine/include/editor/asset_library/thumbnail_generator.h
+  - src/engine/include/editor/asset_browser/thumbnail_generator.h
+timeline.h
+  - src/engine/editor/sequence_editor/timeline.h
+  - src/engine/include/editor/sequence_editor/timeline.h
+tire_model.c
+  - src/engine/physics/vehicle/tire_model.c
+  - src/engine/physics/vehicles/tire_model.c
+todo_ai.c
+  - assets/code/todo_ai.c
+  - assets/assets/code/todo_ai.c
+todo_analytics.c
+  - assets/code/todo_analytics.c
+  - assets/assets/code/todo_analytics.c
+todo_content_creation.c
+  - assets/code/todo_content_creation.c
+  - assets/assets/code/todo_content_creation.c
+todo_economy.c
+  - assets/code/todo_economy.c
+  - assets/assets/code/todo_economy.c
+todo_environment.c
+  - assets/code/todo_environment.c
+  - assets/assets/code/todo_environment.c
+todo_localization.c
+  - assets/code/todo_localization.c
+  - assets/assets/code/todo_localization.c
+todo_npcs.c
+  - assets/code/todo_npcs.c
+  - assets/assets/code/todo_npcs.c
+todo_persistence.c
+  - assets/code/todo_persistence.c
+  - assets/assets/code/todo_persistence.c
+todo_quests.c
+  - assets/code/todo_quests.c
+  - assets/assets/code/todo_quests.c
+todo_security.c
+  - assets/code/todo_security.c
+  - assets/assets/code/todo_security.c
+tonemapping.c
+  - src/engine/postprocess/tonemapping.c
+  - src/engine/rendering/post_processing/tonemapping.c
+transform_gizmo_advanced.h
+  - src/engine/editor/asset_creation/transform_gizmo_advanced.h
+  - src/engine/include/editor/asset_creation/transform_gizmo_advanced.h
+two_bone_ik.c
+  - src/engine/animation/ik_advanced/two_bone_ik.c
+  - src/engine/character/animation/ik/two_bone_ik.c
+  - src/engine/character/animation/ik_advanced/two_bone_ik.c
+udp_socket.c
+  - src/engine/network/transport/udp_socket.c
+  - src/engine/networking/transport/udp_socket.c
+ui_renderer.c
+  - src/engine/ui/ui_renderer.c
+  - src/engine/rendering/ui_renderer.c
+  - src/engine/core/services/ui_renderer.c
+undo_redo_advanced.h
+  - src/engine/editor/asset_creation/undo_redo_advanced.h
+  - src/engine/include/editor/asset_creation/undo_redo_advanced.h
+utils.c
+  - src/engine/core/utils.c
+  - src/game/blockgame/utils.c
+utils.h
+  - src/engine/include/core/utils.h
+  - src/game/blockgame/include/game/utils.h
+vec2.h
+  - src/engine/math/vec2.h
+  - src/engine/include/math/vec2.h
+vec3.h
+  - src/engine/math/vec3.h
+  - src/engine/include/math/vec3.h
+vec4.h
+  - src/engine/math/vec4.h
+  - src/engine/include/math/vec4.h
+vegetation_placement.c
+  - src/engine/environment/builder/vegetation_placement.c
+  - src/engine/environment/landscape/terrain/landscape/procedural/vegetation_placement.c
+vehicle_controller.c
+  - src/engine/physics/advanced/vehicle_controller.c
+  - src/engine/physics/_trash/advanced/vehicle_controller.c
+vehicle_physics.c
+  - src/engine/physics/vehicle_physics.c
+  - src/engine/physics/dynamics/vehicle_physics.c
+vehicle_physics.h
+  - src/engine/include/physics/vehicle_physics.h
+  - src/engine/materials/templates/vehicles/vehicle_physics.h
+vertex_compression.c
+  - src/engine/backend/vertex_compression.c
+  - src/engine/geometry/vertex/vertex_compression.c
+vertex_compression.h
+  - src/engine/backend/vertex_compression.h
+  - src/engine/geometry/vertex/vertex_compression.h
+vertex_format.c
+  - src/engine/backend/vertex_format.c
+  - src/engine/geometry/vertex/vertex_format.c
+vertex_format.h
+  - src/engine/backend/vertex_format.h
+  - src/engine/geometry/vertex/vertex_format.h
+vignette.c
+  - src/engine/postprocess/vignette.c
+  - src/engine/rendering/post_processing/vignette.c
+virtual_streaming_impl.c
+  - src/engine/rendering/texture/virtual_streaming_impl.c
+  - src/engine/rendering/texture/texture/virtual_streaming_impl.c
+virtual_texture.c
+  - src/engine/assets/textures/virtual_texturing/virtual_texture.c
+  - src/engine/rendering/texturing/virtual_texture.c
+virtual_texture.h
+  - src/engine/assets/textures/virtual_texturing/virtual_texture.h
+  - src/engine/include/rendering/texture/virtual_texture.h
+visibility_buffer.c
+  - src/engine/geometry/cluster/visibility_buffer.c
+  - src/engine/rendering/visibility/visibility_buffer.c
+visibility_buffer.h
+  - src/engine/geometry/cluster/visibility_buffer.h
+  - src/engine/rendering/visibility/visibility_buffer.h
+visual_scripting.h
+  - src/engine/include/scripting/visual_scripting.h
+  - src/engine/include/scripting/visual_scripting/visual_scripting.h
+vk_mem_alloc.h
+  - src/engine/include/vk_mem_alloc.h
+  - include/vendor/vk_mem_alloc.h
+volumetric_clouds.c
+  - src/engine/rendering/sky/volumetric_clouds.c
+  - src/engine/environment/atmosphere/core/atmosphere/clouds/volumetric_clouds.c
+volumetric_fog.c
+  - src/engine/lighting/direct/volumetric_fog.c
+  - src/engine/lighting/volumetric/volumetric_fog.c
+voxelforge_bridge.h
+  - include/voxelforge_bridge.h
+  - src/frontend/CVoxelForge/include/voxelforge_bridge.h
+voxelforge_bridge_clean.h
+  - src/frontend/CVoxelForge/include/voxelforge_bridge_clean.h
+  - src/frontend/CVoxelForge/include_backup/voxelforge_bridge_clean.h
+water_physics.c
+  - src/game/blockgame/world/water_physics.c
+  - src/game/blockgame/block/water_physics.c
+water_physics.h
+  - src/game/blockgame/include/world/water_physics.h
+  - src/game/blockgame/include/block/water_physics.h
+water_system.h
+  - src/engine/include/environment/water_system.h
+  - src/game/blockgame/include/world/water_system.h
+weather_system.c
+  - src/engine/scene/world_building/weather/weather_system.c
+  - src/engine/core/services/weather_system.c
+weather_system.h
+  - src/engine/scene/world_building/weather/weather_system.h
+  - src/engine/include/environment/weather_system.h
+  - src/engine/core/services/weather_system.h
+wetness_mask.c
+  - src/engine/effects/weather/wetness_mask.c
+  - src/engine/materials/wetness/wetness_mask.c
+wetness_mask.h
+  - src/engine/effects/weather/wetness_mask.h
+  - src/engine/materials/wetness/wetness_mask.h
+wfc_3d.c
+  - src/engine/ai/procedural_advanced/wfc_3d.c
+  - src/engine/ai/procedural/wfc_3d.c
+wind_field.c
+  - src/engine/physics/aerodynamics/wind_field.c
+  - src/engine/physics/_trash/aerodynamics/wind_field.c
+world_editor_stubs.c
+  - src/engine/platform/world_editor_stubs.c
+  - src/frontend/CVoxelForge/world_editor_stubs.c
+world_partition.c
+  - src/engine/world/world_partition.c
+  - src/engine/editor/scene_tools/world_partition.c
+world_partition.h
+  - src/engine/include/world/world_partition.h
+  - src/engine/include/editor/scene_tools/world_partition.h
+xpbd_solver.h
+  - src/engine/physics/solver/xpbd_solver.h
+  - src/engine/include/physics/solver/xpbd_solver.h

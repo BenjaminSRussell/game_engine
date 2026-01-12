@@ -14,7 +14,10 @@
 #define POST_PROCESSING_H
 
 #include "math/math.h"
+#ifdef VULKAN_BUILD
 #include "include/rendering/vulkan.h"
+#include <vulkan/vulkan.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -221,6 +224,7 @@ typedef struct PostProcessingPipeline {
 } PostProcessingPipeline;
 
 // Core post-processing functions
+#ifdef VULKAN_BUILD
 bool post_process_init(PostProcessingPipeline *pipeline,
                        VulkanRenderer *renderer,
                        const PostProcessingConfig *config);
@@ -237,7 +241,8 @@ bool post_process_frame(PostProcessingPipeline *pipeline,
 // Effect-specific functions
 bool post_process_tone_map(PostProcessingPipeline *pipeline,
                            VulkanRenderer *renderer,
-                           VkCommandBuffer commandBuffer);
+                           VkCommandBuffer commandBuffer,
+                           VkImage inputImage, VkImage outputImage);
 bool post_process_bloom(PostProcessingPipeline *pipeline,
                         VulkanRenderer *renderer,
                         VkCommandBuffer commandBuffer);
@@ -247,6 +252,34 @@ bool post_process_depth_of_field(PostProcessingPipeline *pipeline,
 bool post_process_motion_blur(PostProcessingPipeline *pipeline,
                               VulkanRenderer *renderer,
                               VkCommandBuffer commandBuffer);
+#else
+bool post_process_init(PostProcessingPipeline *pipeline,
+                       void *renderer,
+                       const PostProcessingConfig *config);
+void post_process_shutdown(PostProcessingPipeline *pipeline,
+                           void *renderer);
+bool post_process_is_initialized(const PostProcessingPipeline *pipeline);
+
+bool post_process_frame(PostProcessingPipeline *pipeline,
+                        void *renderer, void *commandBuffer,
+                        void *inputImage, void *outputImage, u32 width,
+                        u32 height);
+
+bool post_process_tone_map(PostProcessingPipeline *pipeline,
+                           void *renderer,
+                           void *commandBuffer,
+                           void *inputImage, void *outputImage);
+bool post_process_bloom(PostProcessingPipeline *pipeline,
+                        void *renderer,
+                        void *commandBuffer);
+bool post_process_depth_of_field(PostProcessingPipeline *pipeline,
+                                 void *renderer,
+                                 void *commandBuffer);
+bool post_process_motion_blur(PostProcessingPipeline *pipeline,
+                              void *renderer,
+                              void *commandBuffer);
+#endif
+#ifdef VULKAN_BUILD
 bool post_process_ssr(PostProcessingPipeline *pipeline,
                       VulkanRenderer *renderer, VkCommandBuffer commandBuffer);
 bool post_process_ssao(PostProcessingPipeline *pipeline,
@@ -266,7 +299,29 @@ void post_process_disable_effects(PostProcessingPipeline *pipeline,
                                   u32 effectFlags);
 bool post_process_is_effect_enabled(const PostProcessingPipeline *pipeline,
                                     u32 effectFlag);
+#else
+bool post_process_ssr(PostProcessingPipeline *pipeline,
+                      void *renderer, void *commandBuffer);
+bool post_process_ssao(PostProcessingPipeline *pipeline,
+                       void *renderer, void *commandBuffer);
+bool post_process_anti_aliasing(PostProcessingPipeline *pipeline,
+                                void *renderer,
+                                void *commandBuffer);
 
+// Configuration management
+void post_process_set_config(PostProcessingPipeline *pipeline,
+                             const PostProcessingConfig *config);
+void post_process_get_config(const PostProcessingPipeline *pipeline,
+                             PostProcessingConfig *outConfig);
+void post_process_enable_effects(PostProcessingPipeline *pipeline,
+                                 u32 effectFlags);
+void post_process_disable_effects(PostProcessingPipeline *pipeline,
+                                  u32 effectFlags);
+bool post_process_is_effect_enabled(const PostProcessingPipeline *pipeline,
+                                    u32 effectFlag);
+#endif
+
+#ifdef VULKAN_BUILD
 // LUT management
 bool post_process_load_lut(PostProcessingPipeline *pipeline,
                            VulkanRenderer *renderer, const char *lutPath);
@@ -276,6 +331,18 @@ bool post_process_generate_lut(PostProcessingPipeline *pipeline,
 // Performance optimization
 void post_process_set_render_scale(PostProcessingPipeline *pipeline,
                                    u32 renderScale);
+#else
+// LUT management
+bool post_process_load_lut(PostProcessingPipeline *pipeline,
+                           void *renderer, const char *lutPath);
+bool post_process_generate_lut(PostProcessingPipeline *pipeline,
+                               void *renderer, u32 size);
+
+// Performance optimization
+void post_process_set_render_scale(PostProcessingPipeline *pipeline,
+                                   u32 renderScale);
+#endif
+#ifdef VULKAN_BUILD
 void post_process_enable_async_compute(PostProcessingPipeline *pipeline,
                                        bool enable);
 void post_process_optimize_for_gpu(PostProcessingPipeline *pipeline);
@@ -286,13 +353,34 @@ void post_process_get_stats(const PostProcessingPipeline *pipeline,
 void post_process_reset_stats(PostProcessingPipeline *pipeline);
 void post_process_debug_print_stats(const PostProcessingPipeline *pipeline);
 bool post_process_validate_pipeline(const PostProcessingPipeline *pipeline);
+#else
+void post_process_enable_async_compute(PostProcessingPipeline *pipeline,
+                                       bool enable);
+void post_process_optimize_for_gpu(PostProcessingPipeline *pipeline);
 
+// Statistics and debugging
+void post_process_get_stats(const PostProcessingPipeline *pipeline,
+                            PostProcessingStats *outStats);
+void post_process_reset_stats(PostProcessingPipeline *pipeline);
+void post_process_debug_print_stats(const PostProcessingPipeline *pipeline);
+bool post_process_validate_pipeline(const PostProcessingPipeline *pipeline);
+#endif
+
+#ifdef VULKAN_BUILD
 // Utility functions
 u64 post_process_estimate_memory_usage(const PostProcessingConfig *config,
                                        u32 width, u32 height);
 bool post_process_check_gpu_support(VulkanRenderer *renderer);
 const char *post_process_get_effect_name(u32 effectFlag);
 const char *post_process_get_tone_map_operator_name(ToneMapOperator op);
+#else
+// Utility functions
+u64 post_process_estimate_memory_usage(const PostProcessingConfig *config,
+                                       u32 width, u32 height);
+bool post_process_check_gpu_support(void *renderer);
+const char *post_process_get_effect_name(u32 effectFlag);
+const char *post_process_get_tone_map_operator_name(ToneMapOperator op);
+#endif
 
 #ifdef __cplusplus
 }

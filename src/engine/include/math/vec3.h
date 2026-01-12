@@ -176,6 +176,7 @@ f32 vec3_angle_between(Vec3 a, Vec3 b);
 f32 vec3_angle_between_normalized(Vec3 a, Vec3 b);
 Vec3 vec3_reflect(Vec3 v, Vec3 normal);
 Vec3 vec3_project(Vec3 v, Vec3 onto);
+Vec3 vec3_project_plane(Vec3 v, Vec3 normal);
 Vec3 vec3_orthogonal(Vec3 v, Vec3 reference);
 bool vec3_is_equal(Vec3 a, Vec3 b, f32 tolerance);
 bool vec3_is_zero(Vec3 v, f32 tolerance);

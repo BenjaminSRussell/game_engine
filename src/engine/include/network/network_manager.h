@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <arpa/inet.h>
 
 // Network constants
 #define MAX_PACKET_SIZE 4096
@@ -14,6 +15,16 @@
 
 // Packet types
 typedef enum {
+    PACKET_CONNECT = 0,
+    PACKET_DISCONNECT,
+    PACKET_PING,
+    PACKET_PONG,
+    PACKET_SNAPSHOT, // Entity state snapshot
+    PACKET_INPUT,    // Player input
+    PACKET_SPAWN_ENTITY,
+    PACKET_DESTROY_ENTITY,
+    PACKET_CHAT_MESSAGE,
+    PACKET_TYPE_RPC = 99,
     PACKET_TYPE_CONNECT = 1,
     PACKET_TYPE_DISCONNECT = 2,
     PACKET_TYPE_HEARTBEAT = 3,
@@ -36,6 +47,12 @@ typedef struct {
     char ip[64];
     uint16_t port;
 } NetAddress;
+
+// Alternative network address structure (for internal use)
+typedef struct {
+    uint32_t host; // IPv4 address in network byte order
+    uint16_t port; // Port in network byte order
+} NetAddressInternal;
 
 // Client info structure
 typedef struct {
@@ -107,6 +124,18 @@ typedef struct {
     bool password_required;
     char motd[256];
 } ServerInfo;
+
+// Network statistics
+typedef struct {
+    uint64_t packets_sent;
+    uint64_t packets_received;
+    uint64_t bytes_sent;
+    uint64_t bytes_received;
+    uint32_t packets_lost;
+    float latency_ms;
+    float jitter_ms;
+    float packet_loss_rate;
+} NetworkStats;
 
 // Server functions
 int network_server_start(const char* server_name, uint16_t port, uint32_t max_players, const char* password);

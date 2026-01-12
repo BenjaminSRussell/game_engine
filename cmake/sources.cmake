@@ -117,7 +117,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/editor/*.c"
     
     # Effects subdirectory - CONSOLIDATED: Only essential particle implementations
-    "src/engine/effects/particles/particle_emitter.c"
+    # "src/engine/effects/particles/particle_emitter.c"
     
     # SVG Particles - Minimum viable implementation with physics and rendering
     "src/engine/effects/svg_particles/svg_particle_system.c"

@@ -64,6 +64,17 @@ static inline void vec3_copy(float *dest, const float *src) {
     dest[2] = src[2];
 }
 
+static inline void vec3_normalize(float *result, const float *v) {
+    float len = sqrtf(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+    if (len > 0.0001f) {
+        result[0] = v[0] / len;
+        result[1] = v[1] / len;
+        result[2] = v[2] / len;
+    } else {
+        result[0] = result[1] = result[2] = 0.0f;
+    }
+}
+
 // ========================================
 // Contact Point Structure
 // ========================================
@@ -489,4 +500,18 @@ SequentialImpulseConfig sequential_impulse_get_default_config(void) {
         .min_penetration_threshold = MIN_PENETRATION_THRESHOLD
     };
     return config;
+}
+
+bool sequential_impulse_validate(const SequentialImpulseSolver *solver) {
+    if (!solver) return false;
+    
+    if (solver->contact_count < 0 || solver->contact_count > MAX_CONTACTS) {
+        return false;
+    }
+    
+    if (solver->iteration_count < 0) {
+        return false;
+    }
+    
+    return true;
 }

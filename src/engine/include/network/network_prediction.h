@@ -30,10 +30,18 @@ extern "C" {
 #endif
 
 ClientPrediction *prediction_create(void);
-void prediction_add_frame(ClientPrediction *pred, u32 frame, Vec3 pos,
-                          Vec3 vel);
-void prediction_reconcile(ClientPrediction *pred, u32 server_frame,
-                          Vec3 server_pos);
+void prediction_destroy(ClientPrediction *pred);
+void prediction_add_frame(ClientPrediction *pred, u32 frame, Vec3 pos, Vec3 vel);
+void prediction_add_frame_with_input(ClientPrediction *pred, u32 frame, Vec3 pos, 
+                                   Vec3 vel, void *input_state, u32 input_size);
+void prediction_reconcile(ClientPrediction *pred, u32 server_frame, Vec3 server_pos);
+bool prediction_get_frame(ClientPrediction *pred, u32 frame, PredictionFrame *out_frame);
+Vec3 prediction_get_current_position(ClientPrediction *pred);
+Vec3 prediction_get_current_velocity(ClientPrediction *pred);
+bool prediction_was_mispredicted(ClientPrediction *pred);
+u32 prediction_get_last_acknowledged_frame(ClientPrediction *pred);
+void prediction_clear_old_frames(ClientPrediction *pred, u32 before_frame);
+u32 prediction_get_frames_to_resimulate(ClientPrediction *pred, PredictionFrame *frames, u32 max_frames);
 
 #ifdef __cplusplus
 }

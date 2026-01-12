@@ -1,4 +1,9 @@
 // network_replication.c - Network Replication System Implementation
+// TODO: REPLICATION - Implement delta compression for entity state updates
+// TODO: REPLICATION - Add entity prioritization based on relevance and distance
+// TODO: REPLICATION - Implement adaptive replication rate based on bandwidth
+// TODO: REPLICATION - Add replication for complex data types (arrays, structs)
+// TODO: REPLICATION - Implement replication conflict resolution
 #include <include/network/network_types.h>
 #include <include/network/network_manager.h>
 #include <include/core/logger.h>
@@ -495,3 +500,8 @@ void network_replication_get_statistics(uint32_t *out_server_entities, uint32_t 
   if (out_last_sequence) *out_last_sequence = g_replication.last_sequence_number;
   if (out_compression_enabled) *out_compression_enabled = g_replication.compression_enabled;
 }
+
+// TODO: REPLICATION - Add replication bandwidth monitoring and throttling
+// TODO: REPLICATION - Implement replication debugging and visualization tools
+// TODO: REPLICATION - Add replication for entity creation/destruction events
+// TODO: REPLICATION - Implement replication rollback and state synchronization

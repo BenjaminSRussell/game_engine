@@ -24,7 +24,9 @@
       "Bash(sh:*)",
       "Bash(/Users/benjaminrussell/.local/bin/uv tool install:*)",
       "Bash(make:*)",
-      "Bash(nm:*)"
+      "Bash(nm:*)",
+      "Bash(xargs ls:*)",
+      "Read(//Users/benjaminrussell/Desktop/Minecraft v2/**)"
     ]
   }
 }

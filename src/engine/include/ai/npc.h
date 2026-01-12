@@ -44,14 +44,32 @@
 #include <physics/physics.h>
 #include <ai/npc_types.h>
 #include <ecs/ecs.h>
+#include <ecs/components/npc.h>
 
 // Forward declarations
 struct WorldGenerator;
+struct NPCAISystem;
+struct DialogueSystem;
 
-// NPC system using modern ECS
+// Main NPC system structure
 typedef struct NPCSystem {
   struct World *ecs;
   struct PhysicsWorld *physics;
+  struct NPCAISystem *ai_system; // AI behavior system
+  struct DialogueSystem *dialogue_system; // Dialogue management
+  struct NPCCombatSystem *combat_system; // Combat management
+  
+  // Performance tracking
+  u32 active_npc_count;
+  u32 total_npc_spawned;
+  f32 last_spawn_time;
+  
+  // Configuration
+  f32 max_spawn_distance;
+  f32 despawn_distance;
+  u32 max_npcs_per_chunk;
+  
+  bool is_initialized;
 } NPCSystem;
 
 // Initialize/free NPC system

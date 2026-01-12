@@ -1,4 +1,9 @@
 // rpc_system.c - Remote Procedure Call system for network communication
+// TODO: MVP PATH - Implement RPC timeout and retry mechanisms
+// TODO: MVP PATH - Add RPC authentication and authorization
+// TODO: MVP PATH - Implement RPC rate limiting and throttling
+// TODO: MVP PATH - Add RPC response handling (async callbacks)
+// TODO: MVP PATH - Implement RPC versioning and compatibility checking
 #include "include/network/rpc_system.h"
 #include "include/core/logger.h"
 #include "include/network/packet.h"
@@ -214,3 +219,8 @@ void rpc_shutdown(void) {
     rpc_count = 0;
     log_info("RPC system shutdown");
 }
+
+// TODO: MVP PATH - Add RPC statistics and monitoring
+// TODO: MVP PATH - Implement RPC debugging and logging tools
+// TODO: MVP PATH - Add RPC dependency injection for testing
+// TODO: MVP PATH - Implement RPC middleware for cross-cutting concerns

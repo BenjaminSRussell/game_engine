@@ -1,4 +1,9 @@
 // socket.c - Cross-platform UDP socket implementation
+// TODO: MVP PATH - Add IPv6 support for modern networking
+// TODO: MVP PATH - Implement connection quality monitoring (latency, packet loss, jitter)
+// TODO: MVP PATH - Add socket options for buffer sizes and timeout configuration
+// TODO: MVP PATH - Implement NAT traversal helpers (UPnP, NAT-PMP)
+// TODO: MVP PATH - Add bandwidth throttling and QoS support
 #include "include/network/socket.h"
 #include "include/core/logger.h"
 #include <stdlib.h>
@@ -196,3 +201,8 @@ const char *socket_get_error(void) {
     return strerror(errno);
 #endif
 }
+
+// TODO: MVP PATH - Add socket statistics tracking (bytes sent/received, packet counts)
+// TODO: MVP PATH - Implement socket-level congestion control
+// TODO: MVP PATH - Add support for multicast sockets
+// TODO: MVP PATH - Implement socket security (TLS/DTLS support)
