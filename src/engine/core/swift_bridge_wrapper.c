@@ -1,5 +1,5 @@
-// Swift Bridge Wrapper Implementation
-// Implements the C functions declared in swift_bridge.h
+// Simplified Swift Bridge Wrapper Implementation
+// Implements basic C functions declared in swift_bridge.h
 
 #include "platform/swift_bridge.h"
 #include <stdio.h>
