@@ -65,7 +65,7 @@ static f64 internal_get_time(void) {
     return ts.tv_sec + ts.tv_nsec / 1e9;
 }
 
-Timer *timer_create(const char *name) {
+Timer *engine_timer_create(const char *name) {
     Timer *timer = (Timer *)malloc(sizeof(Timer));
     if (!timer) return NULL;
     

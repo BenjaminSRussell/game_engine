@@ -13,93 +13,93 @@
 const char *audio_get_sound_path(SoundType type) {
   switch (type) {
   case SOUND_FOOTSTEP_GRASS:
-    return "assets/sounds/footstep_grass.wav";
+    return "assets/sounds/player/footsteps/grass_01.wav";
   case SOUND_FOOTSTEP_STONE:
-    return "assets/sounds/footstep_stone.wav";
+    return "assets/sounds/player/footsteps/stone_01.wav";
   case SOUND_FOOTSTEP_WOOD:
-    return "assets/sounds/footstep_wood.wav";
+    return "assets/sounds/player/footsteps/wood_01.wav";
   case SOUND_FOOTSTEP_SAND:
-    return "assets/sounds/footstep_sand.wav";
+    return "assets/sounds/player/footsteps/sand_01.wav";
   case SOUND_FOOTSTEP_GRAVEL:
-    return "assets/sounds/footstep_gravel.wav";
+    return "assets/sounds/player/footsteps/stone_02.wav";
   case SOUND_FOOTSTEP_SNOW:
-    return "assets/sounds/footstep_snow.wav";
+    return "assets/sounds/player/footsteps/sand_02.wav";
   case SOUND_BLOCK_BREAK:
-    return "assets/sounds/block_break.wav";
+    return "assets/sounds/blocks/stone_break.wav";
   case SOUND_BLOCK_PLACE:
-    return "assets/sounds/block_place.wav";
+    return "assets/sounds/blocks/stone_place.wav";
   case SOUND_SWORD_SWING:
-    return "assets/sounds/sword_swing.wav";
+    return "assets/sounds/player/combat/sword_swing.wav";
   case SOUND_SWORD_HIT:
-    return "assets/sounds/sword_hit.wav";
+    return "assets/sounds/player/combat/sword_hit.wav";
   case SOUND_BOW_DRAW:
-    return "assets/sounds/bow_draw.wav";
+    return "assets/sounds/player/combat/arrow_shoot.wav"; // Placeholder
   case SOUND_BOW_FIRE:
-    return "assets/sounds/bow_fire.wav";
+    return "assets/sounds/player/combat/arrow_shoot.wav";
   case SOUND_ITEM_PICKUP:
-    return "assets/sounds/item_pickup.wav";
+    return "assets/sounds/kenney_ui/Audio/click_001.ogg"; // Use UI click as placeholder
   case SOUND_ITEM_DROP:
-    return "assets/sounds/item_drop.wav";
+    return "assets/sounds/kenney_ui/Audio/drop_001.ogg";
   case SOUND_MOB_ZOMBIE_GROAN:
-    return "assets/sounds/zombie_groan.wav";
+    return "assets/sounds/mobs/zombie_groan_01.mp3";
   case SOUND_MOB_SKELETON_RATTLE:
-    return "assets/sounds/skeleton_rattle.wav";
+    return "assets/sounds/mobs/skeleton_rattle_01.mp3";
   case SOUND_MOB_CREEPER_HISS:
-    return "assets/sounds/creeper_hiss.wav";
+    return "assets/sounds/mobs/creeper_hiss.mp3";
   case SOUND_MOB_SPIDER_SKITTER:
-    return "assets/sounds/spider_skitter.wav";
+    return "assets/sounds/mobs/spider_skitter.mp3";
   case SOUND_MOB_COW_MOO:
-    return "assets/sounds/cow_moo.wav";
+    return "assets/sounds/mobs/cow_moo.mp3";
   case SOUND_MOB_PIG_OINK:
-    return "assets/sounds/pig_oink.wav";
+    return "assets/sounds/mobs/pig_oink.mp3";
   case SOUND_WATER_SPLASH:
-    return "assets/sounds/water_splash.wav";
+    return "assets/sounds/blocks/water_splash.wav";
   case SOUND_FIRE_BURN:
-    return "assets/sounds/fire_burn.wav";
+    return "assets/sounds/placeholder.wav"; // No fire sound found
   case SOUND_AMBIENT_WIND:
-    return "assets/sounds/ambient_wind.wav";
+    return "assets/sounds/ambient/wind_light.wav";
   case SOUND_AMBIENT_CAVE:
-    return "assets/sounds/ambient_cave.wav";
+    return "assets/sounds/ambient/cave_01.wav";
   case SOUND_MUSIC_CALM:
-    return "assets/sounds/music_calm.wav";
+    return "assets/sounds/kenney_rpg/Audio/bookFlip1.ogg"; // Placeholder
   case SOUND_MUSIC_ACTION:
-    return "assets/sounds/music_action.wav";
+    return "assets/sounds/kenney_rpg/Audio/bookFlip2.ogg"; // Placeholder
   case SOUND_RAIN_LIGHT:
-    return "assets/sounds/rain_light.wav";
+    return "assets/sounds/ambient/rain_light.wav";
   case SOUND_RAIN_MODERATE:
-    return "assets/sounds/rain_moderate.wav";
+    return "assets/sounds/ambient/rain_moderate.mp3";
   case SOUND_RAIN_HEAVY:
-    return "assets/sounds/rain_heavy.wav";
+    return "assets/sounds/ambient/rain_heavy.wav";
   case SOUND_WIND_LIGHT:
-    return "assets/sounds/wind_light.wav";
+    return "assets/sounds/ambient/wind_light.wav";
   case SOUND_WIND_MODERATE:
-    return "assets/sounds/wind_moderate.wav";
+    return "assets/sounds/ambient/wind_moderate.mp3";
   case SOUND_WIND_HEAVY:
-    return "assets/sounds/wind_heavy.wav";
+    return "assets/sounds/ambient/wind_heavy.wav";
   case SOUND_THUNDER_01:
-    return "assets/sounds/thunder_01.wav";
+    return "assets/sounds/ambient/thunder_01.wav";
   case SOUND_THUNDER_02:
-    return "assets/sounds/thunder_02.wav";
+    return "assets/sounds/ambient/thunder_02.wav";
   case SOUND_SNOW_LIGHT:
-    return "assets/sounds/snow_light.wav";
+    return "assets/sounds/ambient/wind_light.wav"; // Placeholder
   case SOUND_SNOW_MODERATE:
-    return "assets/sounds/snow_moderate.wav";
+    return "assets/sounds/ambient/wind_light.wav"; // Placeholder
   case SOUND_SNOW_HEAVY:
-    return "assets/sounds/snow_heavy.wav";
+    return "assets/sounds/ambient/wind_heavy.wav"; // Placeholder
   case SOUND_FOG_LIGHT:
-    return "assets/sounds/fog_light.wav";
+    return "assets/sounds/ambient/wind_light.wav"; // Placeholder
   case SOUND_FOG_MODERATE:
-    return "assets/sounds/fog_moderate.wav";
+    return "assets/sounds/ambient/wind_light.wav"; // Placeholder
   case SOUND_FOG_HEAVY:
-    return "assets/sounds/fog_heavy.wav";
+    return "assets/sounds/ambient/wind_heavy.wav"; // Placeholder
   case SOUND_PLAYER_HURT:
-    return "assets/sounds/player_hurt.wav";
+    return "assets/sounds/player/combat/hurt_01.wav";
   case SOUND_PLAYER_HEAL:
-    return "assets/sounds/player_heal.wav";
+    return "assets/sounds/kenney_ui/Audio/maximize_001.ogg";
   case SOUND_EXPLOSION:
-    return "assets/sounds/explosion.wav";
+    return "assets/sounds/placeholder.wav"; // No explosion sound found
   case SOUND_CRAFTING_SUCCESS:
-    return "assets/sounds/crafting_success.wav";
+    return "assets/sounds/kenney_ui/Audio/confirmation_001.ogg";
   default:
     return "assets/sounds/placeholder.wav";
   }
