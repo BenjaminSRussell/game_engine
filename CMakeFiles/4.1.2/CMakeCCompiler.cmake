@@ -19,7 +19,7 @@ set(CMAKE_C_SIMULATE_ID "")
 set(CMAKE_C_COMPILER_FRONTEND_VARIANT "GNU")
 set(CMAKE_C_COMPILER_APPLE_SYSROOT "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
 set(CMAKE_C_SIMULATE_VERSION "")
-set(CMAKE_C_COMPILER_ARCHITECTURE_ID "arm64")
+set(CMAKE_C_COMPILER_ARCHITECTURE_ID "")
 
 
 
@@ -30,16 +30,16 @@ set(CMAKE_C_COMPILER_RANLIB "")
 set(CMAKE_LINKER "/usr/bin/ld")
 set(CMAKE_LINKER_LINK "")
 set(CMAKE_LINKER_LLD "")
-set(CMAKE_C_COMPILER_LINKER "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld")
-set(CMAKE_C_COMPILER_LINKER_ID "AppleClang")
-set(CMAKE_C_COMPILER_LINKER_VERSION 1230.1)
-set(CMAKE_C_COMPILER_LINKER_FRONTEND_VARIANT GNU)
+set(CMAKE_C_COMPILER_LINKER "")
+set(CMAKE_C_COMPILER_LINKER_ID "")
+set(CMAKE_C_COMPILER_LINKER_VERSION )
+set(CMAKE_C_COMPILER_LINKER_FRONTEND_VARIANT )
 set(CMAKE_MT "")
 set(CMAKE_TAPI "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/tapi")
 set(CMAKE_COMPILER_IS_GNUCC )
 set(CMAKE_C_COMPILER_LOADED 1)
 set(CMAKE_C_COMPILER_WORKS TRUE)
-set(CMAKE_C_ABI_COMPILED TRUE)
+set(CMAKE_C_ABI_COMPILED FALSE)
 
 set(CMAKE_C_COMPILER_ENV_VAR "CC")
 
@@ -52,9 +52,9 @@ set(CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED )
 set(CMAKE_C_LINKER_PUSHPOP_STATE_SUPPORTED )
 
 # Save compiler ABI information.
-set(CMAKE_C_SIZEOF_DATA_PTR "8")
+set(CMAKE_C_SIZEOF_DATA_PTR "")
 set(CMAKE_C_COMPILER_ABI "")
-set(CMAKE_C_BYTE_ORDER "LITTLE_ENDIAN")
+set(CMAKE_C_BYTE_ORDER "")
 set(CMAKE_C_LIBRARY_ARCHITECTURE "")
 
 if(CMAKE_C_SIZEOF_DATA_PTR)
@@ -78,7 +78,7 @@ endif()
 
 
 
-set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "/usr/local/include;/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include;/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include;/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include")
+set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "")
 set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "")
-set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib;/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/swift")
-set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks")
+set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "")
+set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")

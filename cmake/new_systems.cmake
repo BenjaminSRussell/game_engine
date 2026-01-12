@@ -17,11 +17,15 @@ set(RENDERING_VRS_SOURCES
     src/engine/include/rendering/metal_vrs.h
 )
 
+# Mesh shaders
 set(RENDERING_MESH_SHADERS_SOURCES
+    src/engine/backend/metal/mtl_mesh_shaders.m
     src/engine/include/rendering/metal_mesh_shaders.h
 )
 
+# Metal integration
 set(RENDERING_INTEGRATION_SOURCES
+    src/engine/backend/metal/mtl_integration.m
     src/engine/include/rendering/metal_integration.h
 )
 

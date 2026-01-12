@@ -1,0 +1,21 @@
+{
+  "material": {
+    "name": "M_Test_Blue",
+    "parent": "M_PBR_Standard",
+    "parameters": {
+      "BaseColor": [0.2, 0.2, 1.0],
+      "Roughness": 0.1,
+      "Metallic": 0.8,
+      "AO": 1.0
+    },
+    "textures": {
+      "NormalMap": null,
+      "RoughnessMap": null,
+      "MetallicMap": null,
+      "AOMap": null,
+      "EmissiveMap": null
+    },
+    "features": ["METALLIC"],
+    "quality": "HIGH"
+  }
+}

@@ -140,8 +140,6 @@ void recipe_registry_add_defaults(RecipeRegistry *registry) {
   // Cake (Milk Milk Milk, Sugar Egg Sugar, Wheat Wheat Wheat) - Shaped
   Recipe cake;
   memset(&cake, 0, sizeof(Recipe));
-  cake.type =
-      RECIPE_TYPE_SHAPEED; // Typo in engine? Checking RECIPE_TYPE_SHAPED
   cake.type = RECIPE_TYPE_SHAPED;
   cake.result_item = 665; // ITEM_CAKE
   cake.result_quantity = 1;

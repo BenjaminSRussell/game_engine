@@ -138,6 +138,9 @@ if(APPLE)
     # Metal backend .c files also use Objective-C syntax (#import, @available, etc.)
     file(GLOB METAL_C_SOURCES src/engine/backend/metal/*.c)
     set_source_files_properties(${METAL_C_SOURCES} PROPERTIES LANGUAGE OBJC COMPILE_FLAGS "-fobjc-arc")
+    
+    # Add Metal sources to engine sources
+    list(APPEND ENGINE_SOURCES ${METAL_OBJC_SOURCES} ${METAL_C_SOURCES})
 
     # Core integration files using Metal/ObjC
     set(CORE_OBJC_SOURCES 
@@ -146,6 +149,19 @@ if(APPLE)
         src/engine/platform/macos/macos_optimizations.m
     )
     set_source_files_properties(${CORE_OBJC_SOURCES} PROPERTIES LANGUAGE OBJC COMPILE_FLAGS "-fobjc-arc")
+    
+    # Link Metal frameworks on macOS
+    find_library(METAL_FRAMEWORK Metal)
+    find_library(QUARTZCORE_FRAMEWORK QuartzCore)
+    find_library(COREVIDEO_FRAMEWORK CoreVideo)
+    find_library(IOKIT_FRAMEWORK IOKit)
+    
+    if(METAL_FRAMEWORK AND QUARTZCORE_FRAMEWORK)
+        target_link_libraries(Engine PRIVATE ${METAL_FRAMEWORK} ${QUARTZCORE_FRAMEWORK} ${COREVIDEO_FRAMEWORK} ${IOKIT_FRAMEWORK})
+        message(STATUS "Metal frameworks linked successfully")
+    else()
+        message(WARNING "Metal frameworks not found - Metal rendering may not work")
+    endif()
 endif()
 
 # SIMD Math Library Platform-Specific Sources

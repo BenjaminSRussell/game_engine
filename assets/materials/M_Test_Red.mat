@@ -1,0 +1,21 @@
+{
+  "material": {
+    "name": "M_Test_Red",
+    "parent": "M_PBR_Standard",
+    "parameters": {
+      "BaseColor": [1.0, 0.2, 0.2],
+      "Roughness": 0.5,
+      "Metallic": 0.0,
+      "AO": 1.0
+    },
+    "textures": {
+      "NormalMap": null,
+      "RoughnessMap": null,
+      "MetallicMap": null,
+      "AOMap": null,
+      "EmissiveMap": null
+    },
+    "features": [],
+    "quality": "HIGH"
+  }
+}

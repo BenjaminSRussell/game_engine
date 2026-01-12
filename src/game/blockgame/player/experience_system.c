@@ -1082,6 +1082,7 @@ bool experience_save_data(const ExperienceSystem *system,
           system->stats.largest_orb_collected);
   fprintf(file, "players %u\n", g_player_entry_count);
   for (u32 i = 0; i < g_player_entry_count; i++) {
+    fprintf(file, "%u %u %u\n", 
             g_player_entries[i].experience, g_player_entries[i].level,
             g_player_entries[i].skill_points);
   }

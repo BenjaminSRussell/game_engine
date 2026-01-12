@@ -7,10 +7,7 @@
 
 #ifdef VULKAN_BUILD
 #include <rendering/vulkan.h>
-
-#ifdef VULKAN_BUILD
 #include <include/rendering/vulkan.h>
-#endif
 #endif
 
 // Struct matching PushConstants in shader

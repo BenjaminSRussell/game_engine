@@ -194,7 +194,7 @@ bool mtl_vrs_init(MTLVariableRateShading* vrs, id<MTLDevice> device) {
         return false;
     }
     
-    vrs->shadingRate = MTLShadingRate1x1; // Default to full resolution
+    vrs->shadingRate = 1; // Default to full resolution
     vrs->isVREnabled = true;
     
     LOG_INFO("Metal Variable Rate Shading initialized successfully");
@@ -213,7 +213,7 @@ void mtl_vrs_cleanup(MTLVariableRateShading* vrs) {
     LOG_INFO("Metal Variable Rate Shading cleaned up");
 }
 
-void mtl_vrs_set_shading_rate(MTLVariableRateShading* vrs, MTLShadingRate rate) {
+void mtl_vrs_set_shading_rate(MTLVariableRateShading* vrs, uint32_t rate) {
     if (!vrs || !vrs->isVREnabled) return;
     
     vrs->shadingRate = rate;

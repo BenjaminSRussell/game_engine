@@ -192,10 +192,12 @@ static inline double now_seconds(void) { return glfwGetTime(); }
 
 typedef enum {
   RENDERER_UNKNOWN = 0,
-  RENDERER_VULKAN,
-  RENDERER_OPENGL,
-  RENDERER_METAL
-} RendererType;
+  // Renderer types - defined in renderer.h
+// enum RendererType {
+//   RENDERER_VULKAN,
+//   RENDERER_OPENGL,
+//   RENDERER_METAL
+// };
 
 typedef struct {
   // Core systems
@@ -1881,6 +1883,7 @@ if (!vulkan_create_graphics_pipeline(&g_game.renderer, &g_game.vfs)) {
                       "Failed to create graphics pipeline"};
 }
 
+#ifdef VULKAN_BUILD
 // Create framebuffers
 if (!vulkan_create_framebuffers(&g_game.renderer)) {
   vulkan_cleanup(&g_game.renderer);
@@ -2890,6 +2893,7 @@ static void game_update(void) {
       if (g_game.player_system.player) {
         furnace_update(&g_game.furnace_state,
                        &g_game.player_system.player->inventory,
+                       &g_game.item_registry,
                        g_game.delta_time);
       }
 

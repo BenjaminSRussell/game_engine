@@ -1,5 +1,5 @@
-#include "../include/modding/mod_api.h>
-#include "../include/core/logger.h>
+#include "modding/mod_api.h"
+#include "core/logger.h"
 
 static ModInfo mod_info = {
     .name = "ExampleMod",

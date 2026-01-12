@@ -22,7 +22,8 @@
       "Bash(uv tool install:*)",
       "Bash(curl:*)",
       "Bash(sh:*)",
-      "Bash(/Users/benjaminrussell/.local/bin/uv tool install:*)"
+      "Bash(/Users/benjaminrussell/.local/bin/uv tool install:*)",
+      "Bash(make:*)"
     ]
   }
 }

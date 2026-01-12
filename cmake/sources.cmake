@@ -73,13 +73,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     
     # Backend subdirectory - Handled separately below to avoid Vulkan inclusion
     # "src/engine/backend/*.c"
-    
-    # Metal backend - COMPLETELY DISABLED due to ARC compilation issues
-    list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/.*")
-    list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/.*\\.c$")
-    list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/.*\\.m$")
-    list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/metal_mesh_bridge\\.c$")
-    
+
     # Platform subdirectory - DISABLED swift_bridge due to function call issues
     # "src/engine/platform/swift_bridge.c"
     
@@ -304,19 +298,12 @@ file(GLOB BACKEND_ROOT_SOURCES "src/engine/backend/*.c")
 # file(GLOB_RECURSE BACKEND_METAL_SOURCES "src/engine/backend/metal/*.c")
 # list(APPEND ENGINE_SOURCES ${BACKEND_ROOT_SOURCES} ${BACKEND_METAL_SOURCES})
 
-# Objective-C / Metal sources - DISABLED due to ARC compilation issues
+# Metal sources are now handled by CMakeLists.txt with proper ARC flags
+list(APPEND ENGINE_SOURCES ${BACKEND_ROOT_SOURCES})
+
+# Objective-C / Metal sources - Metal backend is now handled by CMakeLists.txt with proper ARC flags
 if(APPLE)
-    # file(GLOB_RECURSE ENGINE_OBJC_SOURCES
-    #     "src/engine/backend/metal/*.m"
-    #     "src/engine/core/integration/*.m"
-    #     "src/engine/platform/macos*.m"
-    #     "src/engine/geometry/bvh/*_metal*.m"
-    #     "src/engine/rendering/metal_*.m"
-    #     "src/engine/geometry/nanite/*.m"
-    #     "src/engine/rendering/lighting/*.m"
-    # )
-    # list(APPEND ENGINE_SOURCES ${ENGINE_OBJC_SOURCES})
-    message(STATUS "Metal Objective-C files DISABLED due to ARC issues")
+    message(STATUS "Metal Objective-C files ENABLED for compilation with -fobjc-arc")
 endif()
 
 # Exclude test files, main.c (added separately), and SIMD platform-specific (added via CMakeLists.txt)
@@ -344,15 +331,16 @@ else()
     message(STATUS "Vulkan backend disabled on macOS, using Metal backend")
 endif()
 
-# Metal backend C files - DISABLED due to ARC compilation issues
+# Metal backend C files - RE-ENABLED with proper ARC compilation
 if(APPLE)
-    # On macOS, Metal backend disabled due to ARC issues
-    # file(GLOB_RECURSE BACKEND_METAL_C_SOURCES "src/engine/backend/metal/*.c")
-    # list(APPEND ENGINE_SOURCES ${BACKEND_METAL_C_SOURCES})
-    message(STATUS "Metal backend C files DISABLED on macOS due to ARC issues")
+    # On macOS, Metal backend RE-ENABLED with proper ARC flags
+    file(GLOB_RECURSE BACKEND_METAL_C_SOURCES "src/engine/backend/metal/*.c")
+    list(APPEND ENGINE_SOURCES ${BACKEND_METAL_C_SOURCES})
+    message(STATUS "Metal backend C files ENABLED on macOS with -fobjc-arc")
 else()
     # On Linux/Windows, exclude Metal (Objective-C specific)
     list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/.*\\.c$")
+    message(STATUS "Metal backend excluded on non-Apple platforms")
 endif()
 
 # Editor subsystem - DISABLED (causes many build errors)
@@ -402,8 +390,8 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/cinematics/.*\\.c$")
 # macOS platform optimizations (broken SDK calls)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/platform/macos/macos_optimizations\\..*$")
 
-# Metal advanced rendering (ARC compatibility issues)
-list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/backend/metal/mtl_advanced_rendering\\.m$")
+# Metal advanced rendering - RE-ENABLED with proper ARC support
+# (Was disabled due to ARC issues, now properly configured)
 
 # Character subsystem (depends on excluded animation system and has broken includes)
 # list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/character/.*\\.c$")

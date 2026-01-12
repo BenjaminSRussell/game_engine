@@ -22,7 +22,7 @@ void example_complete_frame_rendering(void) {
         return;
     }
     
-    id<MTLDevice> mtl_device = (__bridge id<MTLDevice>)metal_device_get_native_device(device);
+    id<MTLDevice> mtl_device = (__bridge id<MTLDevice>)metal_get_device(device);
     
     // Configure synchronization manager
     metal_sync_manager_config_t sync_config = {
@@ -113,7 +113,7 @@ void example_complete_frame_rendering(void) {
  */
 void example_manual_synchronization(void) {
     metal_device_t* device = metal_device_create_system_default();
-    id<MTLDevice> mtl_device = (__bridge id<MTLDevice>)metal_device_get_native_device(device);
+    id<MTLDevice> mtl_device = (__bridge id<MTLDevice>)metal_get_device(device);
     
     // Create individual sync components
     metal_frame_sync_t* frame_sync = metal_frame_sync_create(mtl_device, 3);
@@ -160,7 +160,7 @@ void example_manual_synchronization(void) {
  */
 void example_hazard_tracking(void) {
     metal_device_t* device = metal_device_create_system_default();
-    id<MTLDevice> mtl_device = (__bridge id<MTLDevice>)metal_device_get_native_device(device);
+    id<MTLDevice> mtl_device = (__bridge id<MTLDevice>)metal_get_device(device);
     
     // Create barrier manager
     metal_barrier_manager_t* barriers = metal_barrier_manager_create(

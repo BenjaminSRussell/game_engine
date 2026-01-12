@@ -1,7 +1,10 @@
-#include "../include/modding/mod_api.h>
-#include "../include/core/logger.h>
-#include "../include/player/player.h>
-#include "../include/math/vec3.h>
+#include "modding/mod_api.h"
+#include "core/logger.h"
+#include "player/player.h"
+#include "math/vec3.h"
+#include "platform/input/input.h"
+#include "ecs/components/transform.h"
+#include "ecs/ecs.h"
 #include <string.h>
 
 static ModInfo mod_info = {
@@ -81,17 +84,30 @@ bool mod_on_update(Mod *mod, f32 delta_time) {
                     }
                     
                     if (moved) {
-                        p->position = vec3_add(p->position, movement);
+                        // Get transform component and update position
+                        TransformComponent *transform = (TransformComponent *)world_get_component(
+                            sys->ecs_world, p->entity_id, COMPONENT_TYPE_TRANSFORM);
+                        if (transform) {
+                            transform->position = vec3_add(transform->position, movement);
+                        }
                     }
                 }
                 
                 if (p->is_jumping) {
-                    p->position = vec3_add(p->position, vec3_mul(up, speed));
+                    TransformComponent *transform = (TransformComponent *)world_get_component(
+                        sys->ecs_world, p->entity_id, COMPONENT_TYPE_TRANSFORM);
+                    if (transform) {
+                        transform->position = vec3_add(transform->position, vec3_mul(up, speed));
+                    }
                     p->is_jumping = false;
                 }
                 
                 if (p->is_crouching) {
-                    p->position = vec3_sub(p->position, vec3_mul(up, speed));
+                    TransformComponent *transform = (TransformComponent *)world_get_component(
+                        sys->ecs_world, p->entity_id, COMPONENT_TYPE_TRANSFORM);
+                    if (transform) {
+                        transform->position = vec3_sub(transform->position, vec3_mul(up, speed));
+                    }
                     p->is_crouching = false;
                 }
             }

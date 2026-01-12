@@ -37,7 +37,7 @@ typedef struct {
 // Variable Rate Shading
 typedef struct {
     id<MTLTexture> shadingRateTexture;
-    MTLShadingRate shadingRate;
+    uint32_t shadingRate;
     bool isVREnabled;
 } MTLVariableRateShading;
 
@@ -56,7 +56,7 @@ void mtl_raytracing_trace_rays(MTLRayTracingContext* context, id<MTLCommandBuffe
 // Variable Rate Shading functions
 bool mtl_vrs_init(MTLVariableRateShading* vrs, id<MTLDevice> device);
 void mtl_vrs_cleanup(MTLVariableRateShading* vrs);
-void mtl_vrs_set_shading_rate(MTLVariableRateShading* vrs, MTLShadingRate rate);
+void mtl_vrs_set_shading_rate(MTLVariableRateShading* vrs, uint32_t rate);
 
 // Performance monitoring
 typedef struct {

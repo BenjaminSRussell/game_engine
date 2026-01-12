@@ -1,0 +1,22 @@
+{
+  "material": {
+    "name": "M_Test_Glass",
+    "parent": "M_PBR_Transparent",
+    "parameters": {
+      "BaseColor": [0.8, 0.9, 1.0],
+      "Roughness": 0.0,
+      "Metallic": 0.0,
+      "AO": 1.0,
+      "Opacity": 0.3
+    },
+    "textures": {
+      "NormalMap": null,
+      "RoughnessMap": null,
+      "MetallicMap": null,
+      "AOMap": null,
+      "EmissiveMap": null
+    },
+    "features": ["TRANSPARENT"],
+    "quality": "HIGH"
+  }
+}

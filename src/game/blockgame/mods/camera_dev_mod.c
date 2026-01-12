@@ -1,8 +1,9 @@
-#include "../include/modding/mod_api.h>
-#include "../include/core/logger.h>
-#include "../include/player/player.h>
-#include "../include/render/camera.h>
-#include "../include/math/vec3.h>
+#include "modding/mod_api.h"
+#include "core/logger.h"
+#include "player/player.h"
+#include "rendering/camera.h"
+#include "math/vec3.h"
+#include "platform/input/input.h"
 #include <string.h>
 
 static ModInfo mod_info = {
