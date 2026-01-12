@@ -11,7 +11,6 @@
 
 void audio_streaming_init(AudioStreamingSystem* system, ma_engine* engine) {
     if (!system || !engine) {
-        fprintf(stderr, "[AUDIO_STREAM] Invalid parameters\n");
         return;
     }
 
@@ -26,7 +25,6 @@ void audio_streaming_init(AudioStreamingSystem* system, ma_engine* engine) {
         system->streams[i].state = STREAM_STATE_STOPPED;
     }
 
-    fprintf(stderr, "[AUDIO_STREAM] Streaming system initialized with %d max streams\n",
             MAX_AUDIO_STREAMS);
 }
 
@@ -45,7 +43,6 @@ void audio_streaming_shutdown(AudioStreamingSystem* system) {
 
     system->initialized = false;
     system->active_stream_count = 0;
-    fprintf(stderr, "[AUDIO_STREAM] Streaming system shut down\n");
 }
 
 u32 audio_stream_create(AudioStreamingSystem* system, const char* filepath,
@@ -64,7 +61,6 @@ u32 audio_stream_create(AudioStreamingSystem* system, const char* filepath,
     }
 
     if (stream_id == 0xFFFFFFFF) {
-        fprintf(stderr, "[AUDIO_STREAM] No free stream slots available\n");
         return 0xFFFFFFFF;
     }
 
@@ -76,7 +72,6 @@ u32 audio_stream_create(AudioStreamingSystem* system, const char* filepath,
     ma_result result = ma_decoder_init_file(filepath, &config, &stream->decoder);
 
     if (result != MA_SUCCESS) {
-        fprintf(stderr, "[AUDIO_STREAM] Failed to initialize decoder for %s: %d\n",
                 filepath, result);
         return 0xFFFFFFFF;
     }
@@ -105,7 +100,6 @@ u32 audio_stream_create(AudioStreamingSystem* system, const char* filepath,
     stream->crossfade_duration = 0.0f;
 
     system->active_stream_count++;
-    fprintf(stderr, "[AUDIO_STREAM] Created stream %u for %s (duration: %.2fs)\n",
             stream_id, filepath, stream->duration_seconds);
 
     return stream_id;
@@ -127,7 +121,6 @@ void audio_stream_destroy(AudioStreamingSystem* system, u32 stream_id) {
     stream->state = STREAM_STATE_STOPPED;
 
     system->active_stream_count--;
-    fprintf(stderr, "[AUDIO_STREAM] Destroyed stream %u\n", stream_id);
 }
 
 void audio_stream_play(AudioStreamingSystem* system, u32 stream_id) {
@@ -141,7 +134,6 @@ void audio_stream_play(AudioStreamingSystem* system, u32 stream_id) {
     }
 
     stream->state = STREAM_STATE_PLAYING;
-    fprintf(stderr, "[AUDIO_STREAM] Playing stream %u\n", stream_id);
 }
 
 void audio_stream_pause(AudioStreamingSystem* system, u32 stream_id) {
@@ -155,7 +147,6 @@ void audio_stream_pause(AudioStreamingSystem* system, u32 stream_id) {
     }
 
     stream->state = STREAM_STATE_PAUSED;
-    fprintf(stderr, "[AUDIO_STREAM] Paused stream %u\n", stream_id);
 }
 
 void audio_stream_stop(AudioStreamingSystem* system, u32 stream_id) {
@@ -174,7 +165,6 @@ void audio_stream_stop(AudioStreamingSystem* system, u32 stream_id) {
     // Seek back to beginning
     ma_decoder_seek_to_pcm_frame(&stream->decoder, 0);
 
-    fprintf(stderr, "[AUDIO_STREAM] Stopped stream %u\n", stream_id);
 }
 
 void audio_stream_set_volume(AudioStreamingSystem* system, u32 stream_id, f32 volume) {
@@ -231,7 +221,6 @@ void audio_stream_crossfade(AudioStreamingSystem* system, u32 from_stream,
     to->crossfade_time = 0.0f;
     to->target_volume = 1.0f;
 
-    fprintf(stderr, "[AUDIO_STREAM] Crossfading from stream %u to stream %u (%.2fs)\n",
             from_stream, to_stream, duration);
 }
 

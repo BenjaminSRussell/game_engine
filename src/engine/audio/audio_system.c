@@ -208,7 +208,6 @@ void audio_system_init(AudioSystem *sys, u32 max_channels) {
   sys->sources = (SoundSource *)calloc(max_channels, sizeof(SoundSource));
 
   if (!sys->sources) {
-    fprintf(stderr, "[AUDIO] Failed to allocate sound sources\n");
     sys->initialized = false;
     return;
   }
@@ -228,7 +227,6 @@ void audio_system_init(AudioSystem *sys, u32 max_channels) {
 
   ma_result result = ma_engine_init(&engineConfig, &sys->engine);
   if (result != MA_SUCCESS) {
-    fprintf(stderr, "[AUDIO] Failed to initialize miniaudio engine: %d\n",
             result);
     free(sys->sources);
     sys->sources = NULL;
@@ -269,13 +267,10 @@ void audio_system_init(AudioSystem *sys, u32 max_channels) {
   sys->reverb_effect = (AudioReverb *)malloc(sizeof(AudioReverb));
   if (sys->reverb_effect) {
     audio_reverb_init(sys->reverb_effect, 48000);
-    fprintf(stderr, "[AUDIO] Reverb effect initialized\n");
   } else {
-    fprintf(stderr, "[AUDIO] Warning: Failed to allocate reverb effect\n");
   }
 
   sys->initialized = true;
-  fprintf(stderr, "[AUDIO] Audio system initialized with %u channels\n",
           max_channels);
 }
 
@@ -316,7 +311,6 @@ void audio_system_free(AudioSystem *sys) {
 
   sys->initialized = false;
   sys->active_sources = 0;
-  fprintf(stderr, "[AUDIO] Audio system freed\n");
 }
 
 void audio_update_listener(AudioSystem *sys, Vec3 position, Vec3 forward,
@@ -740,7 +734,6 @@ bool audio_load_sound_buffer(AudioSystem *sys, SoundType sound,
   ImportedAudio *imported = asset_importer_load_audio(filepath);
 
   if (!imported) {
-    fprintf(stderr, "[AUDIO] Failed to load sound via importer: %s\n",
             filepath);
     return false;
   }
@@ -812,7 +805,6 @@ u32 audio_add_reverb_zone(AudioSystem *sys, Vec3 min_bounds, Vec3 max_bounds,
   zone->active = true;
 
   sys->reverb_zone_count++;
-  fprintf(stderr, "[AUDIO] Added reverb zone %u (level=%.2f, decay=%.2fs)\n",
           zone_index, zone->reverb_level, zone->decay_time);
   return zone_index;
 }
@@ -822,7 +814,6 @@ void audio_remove_reverb_zone(AudioSystem *sys, u32 zone_index) {
     return;
 
   sys->reverb_zones[zone_index].active = false;
-  fprintf(stderr, "[AUDIO] Removed reverb zone %u\n", zone_index);
 }
 
 // Helper: Check if point is inside an AABB
