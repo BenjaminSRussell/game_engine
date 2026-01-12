@@ -134,7 +134,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     
     # Particles - CONSOLIDATED: Primary GPU particle system and renderers
     "src/engine/core/services/particle_system.c"
-    "src/engine/core/services/voxel_renderer.c"
+    "src/engine/core/services/voxel_renderer.m"
     # GPU Particle system - Metal version for macOS
     "src/engine/effects/gpu_particles/gpu_particle_system.m"
     "src/engine/effects/gpu_particles/spawn_compute.c"
