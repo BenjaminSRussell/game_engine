@@ -127,8 +127,8 @@ CMakeFiles/Engine.dir/src/engine/assets/importer/asset_importer.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../common.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/quat.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/rendering/renderer_api.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/math.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/types.h \

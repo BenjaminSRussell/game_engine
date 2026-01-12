@@ -13,7 +13,10 @@
       "Bash(xargs -I {} sh -c 'lines=$\\(wc -l < \"\"{}\"\"\\); echo \"\"$lines lines: {}\"\"')",
       "Bash(while read f)",
       "Bash(cmake:*)",
-      "Bash(for dir in /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/*/)"
+      "Bash(for dir in /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/rendering/*/)",
+      "Bash(ls:*)",
+      "Bash(git restore:*)",
+      "Bash(git checkout:*)"
     ]
   }
 }

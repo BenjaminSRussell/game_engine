@@ -2,7 +2,7 @@
 // Implements comprehensive artificial intelligence capabilities
 
 #include "advanced_ai.h"
-#include "src/engine/core/logger.h"
+#include "core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -19,6 +19,10 @@ AIVector3 ai_vector3_add(const AIVector3* a, const AIVector3* b) {
 
 AIVector3 ai_vector3_subtract(const AIVector3* a, const AIVector3* b) {
     return ai_vector3_make(a->x - b->x, a->y - b->y, a->z - b->z);
+}
+
+AIVector3 ai_vector3_multiply_value(const AIVector3* v, float scalar) {
+    return ai_vector3_make(v->x * scalar, v->y * scalar, v->z * scalar);
 }
 
 AIVector3 ai_vector3_multiply(const AIVector3* v, float scalar) {
@@ -414,25 +418,30 @@ bool ai_behavior_patrol(AIAgent* agent, float deltaTime) {
     
     // Move towards target
     AIVector3 toTarget = ai_vector3_subtract(&agent->targetPosition, &agent->position);
-    AIVector3 desired = ai_vector3_multiply(ai_vector3_normalize(&toTarget), agent->maxSpeed);
+    AIVector3 normalized = ai_vector3_normalize(&toTarget);
+    AIVector3 desired = ai_vector3_multiply_value(&normalized, agent->maxSpeed);
     AIVector3 steer = ai_vector3_subtract(&desired, &agent->velocity);
     
     // Limit steering force
     float steerLength = ai_vector3_length(&steer);
     if (steerLength > agent->maxForce) {
-        steer = ai_vector3_multiply(ai_vector3_normalize(&steer), agent->maxForce);
+        AIVector3 normalizedSteer = ai_vector3_normalize(&steer);
+        steer = ai_vector3_multiply_value(&normalizedSteer, agent->maxForce);
     }
     
     agent->acceleration = steer;
-    agent->velocity = ai_vector3_add(&agent->velocity, ai_vector3_multiply(&agent->acceleration, deltaTime));
+    AIVector3 accelScaled = ai_vector3_multiply_value(&agent->acceleration, deltaTime);
+    agent->velocity = ai_vector3_add(&agent->velocity, &accelScaled);
     
     // Limit velocity
     float velocityLength = ai_vector3_length(&agent->velocity);
     if (velocityLength > agent->maxSpeed) {
-        agent->velocity = ai_vector3_multiply(ai_vector3_normalize(&agent->velocity), agent->maxSpeed);
+        AIVector3 normalized = ai_vector3_normalize(&agent->velocity);
+        agent->velocity = ai_vector3_multiply_value(&normalized, agent->maxSpeed);
     }
     
-    agent->position = ai_vector3_add(&agent->position, ai_vector3_multiply(&agent->velocity, deltaTime));
+    AIVector3 velScaled = ai_vector3_multiply_value(&agent->velocity, deltaTime);
+    agent->position = ai_vector3_add(&agent->position, &velScaled);
     
     return true;
 }
@@ -442,19 +451,23 @@ bool ai_behavior_chase(AIAgent* agent, float deltaTime) {
     
     // Move towards target at maximum speed
     AIVector3 toTarget = ai_vector3_subtract(&agent->targetPosition, &agent->position);
-    AIVector3 desired = ai_vector3_multiply(ai_vector3_normalize(&toTarget), agent->maxSpeed);
+    AIVector3 tempNorm = ai_vector3_normalize(&toTarget);
+    AIVector3 desired = ai_vector3_multiply_value(&tempNorm, agent->maxSpeed);
     AIVector3 steer = ai_vector3_subtract(&desired, &agent->velocity);
     
     agent->acceleration = steer;
-    agent->velocity = ai_vector3_add(&agent->velocity, ai_vector3_multiply(&agent->acceleration, deltaTime));
+    AIVector3 accelScaled = ai_vector3_multiply_value(&agent->acceleration, deltaTime);
+    agent->velocity = ai_vector3_add(&agent->velocity, &accelScaled);
     
     // Limit velocity
     float velocityLength = ai_vector3_length(&agent->velocity);
     if (velocityLength > agent->maxSpeed) {
-        agent->velocity = ai_vector3_multiply(ai_vector3_normalize(&agent->velocity), agent->maxSpeed);
+        AIVector3 normalized = ai_vector3_normalize(&agent->velocity);
+        agent->velocity = ai_vector3_multiply_value(&normalized, agent->maxSpeed);
     }
     
-    agent->position = ai_vector3_add(&agent->position, ai_vector3_multiply(&agent->velocity, deltaTime));
+    AIVector3 velScaled = ai_vector3_multiply_value(&agent->velocity, deltaTime);
+    agent->position = ai_vector3_add(&agent->position, &velScaled);
     
     return true;
 }
@@ -464,19 +477,23 @@ bool ai_behavior_flee(AIAgent* agent, float deltaTime) {
     
     // Move away from target at maximum speed
     AIVector3 fromTarget = ai_vector3_subtract(&agent->position, &agent->targetPosition);
-    AIVector3 desired = ai_vector3_multiply(ai_vector3_normalize(&fromTarget), agent->maxSpeed);
+    AIVector3 normalized = ai_vector3_normalize(&fromTarget);
+    AIVector3 desired = ai_vector3_multiply_value(&normalized, agent->maxSpeed);
     AIVector3 steer = ai_vector3_subtract(&desired, &agent->velocity);
     
     agent->acceleration = steer;
-    agent->velocity = ai_vector3_add(&agent->velocity, ai_vector3_multiply(&agent->acceleration, deltaTime));
+    AIVector3 accelScaled = ai_vector3_multiply_value(&agent->acceleration, deltaTime);
+    agent->velocity = ai_vector3_add(&agent->velocity, &accelScaled);
     
     // Limit velocity
     float velocityLength = ai_vector3_length(&agent->velocity);
     if (velocityLength > agent->maxSpeed) {
-        agent->velocity = ai_vector3_multiply(ai_vector3_normalize(&agent->velocity), agent->maxSpeed);
+        AIVector3 normalized = ai_vector3_normalize(&agent->velocity);
+        agent->velocity = ai_vector3_multiply_value(&normalized, agent->maxSpeed);
     }
     
-    agent->position = ai_vector3_add(&agent->position, ai_vector3_multiply(&agent->velocity, deltaTime));
+    AIVector3 velScaled = ai_vector3_multiply_value(&agent->velocity, deltaTime);
+    agent->position = ai_vector3_add(&agent->position, &velScaled);
     
     return true;
 }
@@ -696,4 +713,38 @@ void ai_navmesh_destroy(AINavigationMesh* navMesh) {
     
     free(navMesh);
     LOG_DEBUG("Destroyed navigation mesh");
+}
+
+void ai_agent_follow_path(AIAgent* agent, float deltaTime) {
+    if (!agent || !agent->hasPath || !agent->currentPath) return;
+    
+    // Simple path following - move towards next waypoint
+    if (agent->currentPathIndex < agent->pathLength) {
+        PathNode* targetNode = &agent->currentPath[agent->currentPathIndex];
+        agent->targetPosition = targetNode->position;
+        
+        // Check if reached waypoint
+        float distance = ai_vector3_distance(&agent->position, &targetNode->position);
+        if (distance < 1.0f) {
+            agent->currentPathIndex++;
+            if (agent->currentPathIndex >= agent->pathLength) {
+                ai_agent_clear_path(agent);
+            }
+        }
+    }
+}
+
+void ai_agent_clear_path(AIAgent* agent) {
+    if (!agent) return;
+    
+    if (agent->currentPath) {
+        free(agent->currentPath);
+        agent->currentPath = NULL;
+    }
+    
+    agent->pathLength = 0;
+    agent->currentPathIndex = 0;
+    agent->hasPath = false;
+    
+    LOG_DEBUG("Cleared path for agent %lu", agent->id);
 }

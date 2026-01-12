@@ -221,6 +221,19 @@ test_player_food/fast:
 .PHONY : test_player_food/fast
 
 #=============================================================================
+# Target rules for targets named test_crafting
+
+# Build rule for target.
+test_crafting: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_crafting
+.PHONY : test_crafting
+
+# fast build rule for target.
+test_crafting/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/build
+.PHONY : test_crafting/fast
+
+#=============================================================================
 # Target rules for targets named Catch2
 
 # Build rule for target.
@@ -269,6 +282,30 @@ src/engine/ai/advanced/extended_ai_complete.s: src/engine/ai/advanced/extended_a
 src/engine/ai/advanced/extended_ai_complete.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/advanced/extended_ai_complete.c.s
 .PHONY : src/engine/ai/advanced/extended_ai_complete.c.s
+
+src/engine/ai/advanced_ai.o: src/engine/ai/advanced_ai.c.o
+.PHONY : src/engine/ai/advanced_ai.o
+
+# target to build an object file
+src/engine/ai/advanced_ai.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/advanced_ai.c.o
+.PHONY : src/engine/ai/advanced_ai.c.o
+
+src/engine/ai/advanced_ai.i: src/engine/ai/advanced_ai.c.i
+.PHONY : src/engine/ai/advanced_ai.i
+
+# target to preprocess a source file
+src/engine/ai/advanced_ai.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/advanced_ai.c.i
+.PHONY : src/engine/ai/advanced_ai.c.i
+
+src/engine/ai/advanced_ai.s: src/engine/ai/advanced_ai.c.s
+.PHONY : src/engine/ai/advanced_ai.s
+
+# target to generate assembly for a file
+src/engine/ai/advanced_ai.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/advanced_ai.c.s
+.PHONY : src/engine/ai/advanced_ai.c.s
 
 src/engine/ai/ai_pipeline.o: src/engine/ai/ai_pipeline.c.o
 .PHONY : src/engine/ai/ai_pipeline.o
@@ -7246,6 +7283,14 @@ src/engine/backend/metal/metal_test.m.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o
 .PHONY : src/engine/backend/metal/metal_test.m.o
 
+src/engine/backend/metal/mtl_advanced_rendering.o: src/engine/backend/metal/mtl_advanced_rendering.c.o
+.PHONY : src/engine/backend/metal/mtl_advanced_rendering.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_advanced_rendering.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_advanced_rendering.c.o
+.PHONY : src/engine/backend/metal/mtl_advanced_rendering.c.o
+
 src/engine/backend/metal/mtl_argument_buffer.o: src/engine/backend/metal/mtl_argument_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_argument_buffer.o
 
@@ -11140,6 +11185,7 @@ src/engine/core/containers/hashmap.o: src/engine/core/containers/hashmap.c.o
 # target to build an object file
 src/engine/core/containers/hashmap.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/containers/hashmap.c.o
 .PHONY : src/engine/core/containers/hashmap.c.o
 
 src/engine/core/containers/hashmap.i: src/engine/core/containers/hashmap.c.i
@@ -11148,6 +11194,7 @@ src/engine/core/containers/hashmap.i: src/engine/core/containers/hashmap.c.i
 # target to preprocess a source file
 src/engine/core/containers/hashmap.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/containers/hashmap.c.i
 .PHONY : src/engine/core/containers/hashmap.c.i
 
 src/engine/core/containers/hashmap.s: src/engine/core/containers/hashmap.c.s
@@ -11156,6 +11203,7 @@ src/engine/core/containers/hashmap.s: src/engine/core/containers/hashmap.c.s
 # target to generate assembly for a file
 src/engine/core/containers/hashmap.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/containers/hashmap.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/containers/hashmap.c.s
 .PHONY : src/engine/core/containers/hashmap.c.s
 
 src/engine/core/engine.o: src/engine/core/engine.c.o
@@ -11253,6 +11301,7 @@ src/engine/core/logger.o: src/engine/core/logger.c.o
 src/engine/core/logger.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/logger.c.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/logger.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/logger.c.o
 .PHONY : src/engine/core/logger.c.o
 
 src/engine/core/logger.i: src/engine/core/logger.c.i
@@ -11262,6 +11311,7 @@ src/engine/core/logger.i: src/engine/core/logger.c.i
 src/engine/core/logger.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/logger.c.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/logger.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/logger.c.i
 .PHONY : src/engine/core/logger.c.i
 
 src/engine/core/logger.s: src/engine/core/logger.c.s
@@ -11271,6 +11321,7 @@ src/engine/core/logger.s: src/engine/core/logger.c.s
 src/engine/core/logger.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/logger.c.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/logger.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/logger.c.s
 .PHONY : src/engine/core/logger.c.s
 
 src/engine/core/memory/buddy_allocator.o: src/engine/core/memory/buddy_allocator.c.o
@@ -11279,6 +11330,7 @@ src/engine/core/memory/buddy_allocator.o: src/engine/core/memory/buddy_allocator
 # target to build an object file
 src/engine/core/memory/buddy_allocator.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/memory/buddy_allocator.c.o
 .PHONY : src/engine/core/memory/buddy_allocator.c.o
 
 src/engine/core/memory/buddy_allocator.i: src/engine/core/memory/buddy_allocator.c.i
@@ -11287,6 +11339,7 @@ src/engine/core/memory/buddy_allocator.i: src/engine/core/memory/buddy_allocator
 # target to preprocess a source file
 src/engine/core/memory/buddy_allocator.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/memory/buddy_allocator.c.i
 .PHONY : src/engine/core/memory/buddy_allocator.c.i
 
 src/engine/core/memory/buddy_allocator.s: src/engine/core/memory/buddy_allocator.c.s
@@ -11295,6 +11348,7 @@ src/engine/core/memory/buddy_allocator.s: src/engine/core/memory/buddy_allocator
 # target to generate assembly for a file
 src/engine/core/memory/buddy_allocator.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/buddy_allocator.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/memory/buddy_allocator.c.s
 .PHONY : src/engine/core/memory/buddy_allocator.c.s
 
 src/engine/core/memory/linear_allocator.o: src/engine/core/memory/linear_allocator.c.o
@@ -11303,6 +11357,7 @@ src/engine/core/memory/linear_allocator.o: src/engine/core/memory/linear_allocat
 # target to build an object file
 src/engine/core/memory/linear_allocator.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/memory/linear_allocator.c.o
 .PHONY : src/engine/core/memory/linear_allocator.c.o
 
 src/engine/core/memory/linear_allocator.i: src/engine/core/memory/linear_allocator.c.i
@@ -11311,6 +11366,7 @@ src/engine/core/memory/linear_allocator.i: src/engine/core/memory/linear_allocat
 # target to preprocess a source file
 src/engine/core/memory/linear_allocator.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/memory/linear_allocator.c.i
 .PHONY : src/engine/core/memory/linear_allocator.c.i
 
 src/engine/core/memory/linear_allocator.s: src/engine/core/memory/linear_allocator.c.s
@@ -11319,6 +11375,7 @@ src/engine/core/memory/linear_allocator.s: src/engine/core/memory/linear_allocat
 # target to generate assembly for a file
 src/engine/core/memory/linear_allocator.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/linear_allocator.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/memory/linear_allocator.c.s
 .PHONY : src/engine/core/memory/linear_allocator.c.s
 
 src/engine/core/memory/memory.o: src/engine/core/memory/memory.c.o
@@ -11328,6 +11385,7 @@ src/engine/core/memory/memory.o: src/engine/core/memory/memory.c.o
 src/engine/core/memory/memory.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/memory.c.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/memory/memory.c.o
 .PHONY : src/engine/core/memory/memory.c.o
 
 src/engine/core/memory/memory.i: src/engine/core/memory/memory.c.i
@@ -11337,6 +11395,7 @@ src/engine/core/memory/memory.i: src/engine/core/memory/memory.c.i
 src/engine/core/memory/memory.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/memory.c.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/memory/memory.c.i
 .PHONY : src/engine/core/memory/memory.c.i
 
 src/engine/core/memory/memory.s: src/engine/core/memory/memory.c.s
@@ -11346,6 +11405,7 @@ src/engine/core/memory/memory.s: src/engine/core/memory/memory.c.s
 src/engine/core/memory/memory.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/memory.c.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/memory/memory.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/memory/memory.c.s
 .PHONY : src/engine/core/memory/memory.c.s
 
 src/engine/core/misc_stubs.o: src/engine/core/misc_stubs.c.o
@@ -11523,6 +11583,7 @@ src/engine/core/string_utils.o: src/engine/core/string_utils.c.o
 src/engine/core/string_utils.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/string_utils.c.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/string_utils.c.o
 .PHONY : src/engine/core/string_utils.c.o
 
 src/engine/core/string_utils.i: src/engine/core/string_utils.c.i
@@ -11532,6 +11593,7 @@ src/engine/core/string_utils.i: src/engine/core/string_utils.c.i
 src/engine/core/string_utils.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/string_utils.c.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/string_utils.c.i
 .PHONY : src/engine/core/string_utils.c.i
 
 src/engine/core/string_utils.s: src/engine/core/string_utils.c.s
@@ -11541,6 +11603,7 @@ src/engine/core/string_utils.s: src/engine/core/string_utils.c.s
 src/engine/core/string_utils.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/string_utils.c.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/engine/core/string_utils.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/engine/core/string_utils.c.s
 .PHONY : src/engine/core/string_utils.c.s
 
 src/engine/core/swift_bridge_wrapper.o: src/engine/core/swift_bridge_wrapper.c.o
@@ -31367,30 +31430,6 @@ src/engine/physics/dynamics/softbody_simulation.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/dynamics/softbody_simulation.c.s
 .PHONY : src/engine/physics/dynamics/softbody_simulation.c.s
 
-src/engine/physics/dynamics/vehicle_physics.o: src/engine/physics/dynamics/vehicle_physics.c.o
-.PHONY : src/engine/physics/dynamics/vehicle_physics.o
-
-# target to build an object file
-src/engine/physics/dynamics/vehicle_physics.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/dynamics/vehicle_physics.c.o
-.PHONY : src/engine/physics/dynamics/vehicle_physics.c.o
-
-src/engine/physics/dynamics/vehicle_physics.i: src/engine/physics/dynamics/vehicle_physics.c.i
-.PHONY : src/engine/physics/dynamics/vehicle_physics.i
-
-# target to preprocess a source file
-src/engine/physics/dynamics/vehicle_physics.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/dynamics/vehicle_physics.c.i
-.PHONY : src/engine/physics/dynamics/vehicle_physics.c.i
-
-src/engine/physics/dynamics/vehicle_physics.s: src/engine/physics/dynamics/vehicle_physics.c.s
-.PHONY : src/engine/physics/dynamics/vehicle_physics.s
-
-# target to generate assembly for a file
-src/engine/physics/dynamics/vehicle_physics.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/physics/dynamics/vehicle_physics.c.s
-.PHONY : src/engine/physics/dynamics/vehicle_physics.c.s
-
 src/engine/physics/fluid/builder_05.o: src/engine/physics/fluid/builder_05.c.o
 .PHONY : src/engine/physics/fluid/builder_05.o
 
@@ -40993,6 +41032,7 @@ src/game/blockgame/crafting/furnace.o: src/game/blockgame/crafting/furnace.c.o
 # target to build an object file
 src/game/blockgame/crafting/furnace.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/furnace.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/game/blockgame/crafting/furnace.c.o
 .PHONY : src/game/blockgame/crafting/furnace.c.o
 
 src/game/blockgame/crafting/furnace.i: src/game/blockgame/crafting/furnace.c.i
@@ -41001,6 +41041,7 @@ src/game/blockgame/crafting/furnace.i: src/game/blockgame/crafting/furnace.c.i
 # target to preprocess a source file
 src/game/blockgame/crafting/furnace.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/furnace.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/game/blockgame/crafting/furnace.c.i
 .PHONY : src/game/blockgame/crafting/furnace.c.i
 
 src/game/blockgame/crafting/furnace.s: src/game/blockgame/crafting/furnace.c.s
@@ -41009,6 +41050,7 @@ src/game/blockgame/crafting/furnace.s: src/game/blockgame/crafting/furnace.c.s
 # target to generate assembly for a file
 src/game/blockgame/crafting/furnace.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/furnace.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/game/blockgame/crafting/furnace.c.s
 .PHONY : src/game/blockgame/crafting/furnace.c.s
 
 src/game/blockgame/crafting/recipe_manager.o: src/game/blockgame/crafting/recipe_manager.c.o
@@ -41162,6 +41204,7 @@ src/game/blockgame/inventory/inventory.o: src/game/blockgame/inventory/inventory
 src/game/blockgame/inventory/inventory.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/game/blockgame/inventory/inventory.c.o
 .PHONY : src/game/blockgame/inventory/inventory.c.o
 
 src/game/blockgame/inventory/inventory.i: src/game/blockgame/inventory/inventory.c.i
@@ -41171,6 +41214,7 @@ src/game/blockgame/inventory/inventory.i: src/game/blockgame/inventory/inventory
 src/game/blockgame/inventory/inventory.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/game/blockgame/inventory/inventory.c.i
 .PHONY : src/game/blockgame/inventory/inventory.c.i
 
 src/game/blockgame/inventory/inventory.s: src/game/blockgame/inventory/inventory.c.s
@@ -41180,6 +41224,7 @@ src/game/blockgame/inventory/inventory.s: src/game/blockgame/inventory/inventory
 src/game/blockgame/inventory/inventory.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/inventory.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/game/blockgame/inventory/inventory.c.s
 .PHONY : src/game/blockgame/inventory/inventory.c.s
 
 src/game/blockgame/inventory/item_registry.o: src/game/blockgame/inventory/item_registry.c.o
@@ -41189,6 +41234,7 @@ src/game/blockgame/inventory/item_registry.o: src/game/blockgame/inventory/item_
 src/game/blockgame/inventory/item_registry.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/game/blockgame/inventory/item_registry.c.o
 .PHONY : src/game/blockgame/inventory/item_registry.c.o
 
 src/game/blockgame/inventory/item_registry.i: src/game/blockgame/inventory/item_registry.c.i
@@ -41198,6 +41244,7 @@ src/game/blockgame/inventory/item_registry.i: src/game/blockgame/inventory/item_
 src/game/blockgame/inventory/item_registry.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/game/blockgame/inventory/item_registry.c.i
 .PHONY : src/game/blockgame/inventory/item_registry.c.i
 
 src/game/blockgame/inventory/item_registry.s: src/game/blockgame/inventory/item_registry.c.s
@@ -41207,6 +41254,7 @@ src/game/blockgame/inventory/item_registry.s: src/game/blockgame/inventory/item_
 src/game/blockgame/inventory/item_registry.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_player_food.dir/build.make CMakeFiles/test_player_food.dir/src/game/blockgame/inventory/item_registry.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/src/game/blockgame/inventory/item_registry.c.s
 .PHONY : src/game/blockgame/inventory/item_registry.c.s
 
 src/game/blockgame/modding/mod_api.o: src/game/blockgame/modding/mod_api.c.o
@@ -43015,6 +43063,30 @@ src/game/blockgame/world/water_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_system.c.s
 .PHONY : src/game/blockgame/world/water_system.c.s
 
+tests/test_crafting.o: tests/test_crafting.c.o
+.PHONY : tests/test_crafting.o
+
+# target to build an object file
+tests/test_crafting.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/tests/test_crafting.c.o
+.PHONY : tests/test_crafting.c.o
+
+tests/test_crafting.i: tests/test_crafting.c.i
+.PHONY : tests/test_crafting.i
+
+# target to preprocess a source file
+tests/test_crafting.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/tests/test_crafting.c.i
+.PHONY : tests/test_crafting.c.i
+
+tests/test_crafting.s: tests/test_crafting.c.s
+.PHONY : tests/test_crafting.s
+
+# target to generate assembly for a file
+tests/test_crafting.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_crafting.dir/build.make CMakeFiles/test_crafting.dir/tests/test_crafting.c.s
+.PHONY : tests/test_crafting.c.s
+
 tests/test_player_food.o: tests/test_player_food.c.o
 .PHONY : tests/test_player_food.o
 
@@ -43056,10 +43128,14 @@ help:
 	@echo "... Engine"
 	@echo "... Game"
 	@echo "... full_integration_test"
+	@echo "... test_crafting"
 	@echo "... test_player_food"
 	@echo "... src/engine/ai/advanced/extended_ai_complete.o"
 	@echo "... src/engine/ai/advanced/extended_ai_complete.i"
 	@echo "... src/engine/ai/advanced/extended_ai_complete.s"
+	@echo "... src/engine/ai/advanced_ai.o"
+	@echo "... src/engine/ai/advanced_ai.i"
+	@echo "... src/engine/ai/advanced_ai.s"
 	@echo "... src/engine/ai/ai_pipeline.o"
 	@echo "... src/engine/ai/ai_pipeline.i"
 	@echo "... src/engine/ai/ai_pipeline.s"
@@ -43932,6 +44008,7 @@ help:
 	@echo "... src/engine/backend/metal/metal_pipeline_test.o"
 	@echo "... src/engine/backend/metal/metal_raytracing.o"
 	@echo "... src/engine/backend/metal/metal_test.o"
+	@echo "... src/engine/backend/metal/mtl_advanced_rendering.o"
 	@echo "... src/engine/backend/metal/mtl_argument_buffer.o"
 	@echo "... src/engine/backend/metal/mtl_argument_buffer.o"
 	@echo "... src/engine/backend/metal/mtl_buffer.o"
@@ -46946,9 +47023,6 @@ help:
 	@echo "... src/engine/physics/dynamics/softbody_simulation.o"
 	@echo "... src/engine/physics/dynamics/softbody_simulation.i"
 	@echo "... src/engine/physics/dynamics/softbody_simulation.s"
-	@echo "... src/engine/physics/dynamics/vehicle_physics.o"
-	@echo "... src/engine/physics/dynamics/vehicle_physics.i"
-	@echo "... src/engine/physics/dynamics/vehicle_physics.s"
 	@echo "... src/engine/physics/fluid/builder_05.o"
 	@echo "... src/engine/physics/fluid/builder_05.i"
 	@echo "... src/engine/physics/fluid/builder_05.s"
@@ -48399,6 +48473,9 @@ help:
 	@echo "... src/game/blockgame/world/water_system.o"
 	@echo "... src/game/blockgame/world/water_system.i"
 	@echo "... src/game/blockgame/world/water_system.s"
+	@echo "... tests/test_crafting.o"
+	@echo "... tests/test_crafting.i"
+	@echo "... tests/test_crafting.s"
 	@echo "... tests/test_player_food.o"
 	@echo "... tests/test_player_food.i"
 	@echo "... tests/test_player_food.s"

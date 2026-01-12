@@ -87,6 +87,9 @@ typedef struct mtl_dispatch_threadgroups_args {
 mtl_render_command_encoder_t
 metal_render_command_encoder_create(mtl_command_buffer_t buffer,
                                     void *pass_descriptor);
+mtl_render_command_encoder_t
+metal_render_encoder_create_with_texture(mtl_command_buffer_t buffer,
+                                         void *texture); // id<MTLTexture>
 void metal_render_encoder_end_encoding(mtl_render_command_encoder_t encoder);
 
 /* State Setup */

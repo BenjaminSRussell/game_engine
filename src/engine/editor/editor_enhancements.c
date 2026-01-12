@@ -83,7 +83,6 @@ void viewport_system_init(MultiViewportSystem *system) {
     system->viewports[i].view_matrix = mat4_identity();
     system->viewports[i].projection_matrix = mat4_identity();
   }
-
 }
 
 void viewport_system_set_layout(MultiViewportSystem *system,
@@ -140,7 +139,6 @@ void viewport_system_set_layout(MultiViewportSystem *system,
   case VIEWPORT_COUNT:
     break;
   }
-
 }
 
 // =================================================================================================
@@ -154,7 +152,6 @@ void undo_redo_system_init(UndoRedoSystem *system) {
   system->command_count = 0;
   system->total_execution_time = 0.0;
   system->is_recording = true;
-
 }
 
 void undo_redo_execute_command(UndoRedoSystem *system, Command *command) {
@@ -187,8 +184,6 @@ void undo_redo_execute_command(UndoRedoSystem *system, Command *command) {
   system->commands[system->current_index].timestamp = start_time;
 
   system->current_index = (system->current_index + 1) % MAX_UNDO_COMMANDS;
-
-         execution_time);
 }
 
 void undo_redo_undo(UndoRedoSystem *system) {
@@ -279,13 +274,11 @@ void play_in_editor_init(PlayInEditorSystem *system) {
   system->step_mode = false;
   system->steps_per_frame = 1;
   system->current_step = 0;
-
 }
 
 void play_in_editor_play(PlayInEditorSystem *system) {
   if (system->state == PLAY_STATE_PLAYING)
     return;
-
 
   // Create scene snapshot
   if (!system->scene_snapshot) {
@@ -314,7 +307,6 @@ void play_in_editor_pause(PlayInEditorSystem *system) {
 void play_in_editor_stop(PlayInEditorSystem *system) {
   if (system->state == PLAY_STATE_STOPPED)
     return;
-
 
   // Restore scene from snapshot
   if (system->scene_snapshot) {
@@ -357,7 +349,6 @@ void transform_gizmo_init(TransformGizmo *gizmo) {
   gizmo->snap_to_grid = false;
   gizmo->snap_value = DEFAULT_SNAP_VALUE;
   gizmo->is_dragging = false;
-
 }
 
 void transform_gizmo_update(TransformGizmo *gizmo,
@@ -426,7 +417,6 @@ void selection_outline_init(SelectionOutlineSystem *system) {
   system->outline_shader = 2002;  // Placeholder shader ID
   system->frame_buffer = 3001;    // Placeholder framebuffer ID
   system->stencil_texture = 4001; // Placeholder texture ID
-
 }
 
 void selection_outline_set_selected(SelectionOutlineSystem *system,
@@ -481,7 +471,6 @@ void performance_profiler_init(PerformanceProfiler *profiler) {
   performance_profiler_add_category(profiler, "Physics", (Vec4){0, 1, 0, 1});
   performance_profiler_add_category(profiler, "Audio", (Vec4){0, 0, 1, 1});
   performance_profiler_add_category(profiler, "AI", (Vec4){1, 1, 0, 1});
-
 }
 
 void performance_profiler_begin_frame(PerformanceProfiler *profiler) {
@@ -560,7 +549,6 @@ void editor_memory_profiler_init(EditorMemoryProfiler *profiler) {
   editor_memory_profiler_add_module(profiler, "Renderer", (Vec4){0, 1, 0, 1});
   editor_memory_profiler_add_module(profiler, "Audio", (Vec4){0, 0, 1, 1});
   editor_memory_profiler_add_module(profiler, "Physics", (Vec4){1, 1, 0, 1});
-
 }
 
 static void editor_memory_profiler_add_module(EditorMemoryProfiler *profiler,
@@ -627,7 +615,7 @@ void editor_memory_profiler_record_deallocation(EditorMemoryProfiler *profiler,
 
 void editor_memory_profiler_detect_leaks(EditorMemoryProfiler *profiler) {
   if (profiler->leak_count > 0) {
-           profiler->leak_count);
+    printf("    Memory leaks detected: %u\n", profiler->leak_count);
     for (u32 i = 0; i < profiler->leak_count; i++) {
       printf("    Leak: %zu bytes at %p (%s:%d)\n",
              profiler->leak_tracking[i].size,
@@ -687,7 +675,6 @@ void layout_system_init(LayoutSystem *system) {
   // Create preset layouts (would be implemented similarly)
   // layout_system_create_preset(system, "Animator", "Animation-focused
   // layout");
-
 }
 
 void layout_system_save_current(LayoutSystem *system, const char *name) {
@@ -738,5 +725,3 @@ void layout_system_apply(LayoutSystem *system, const EditorLayout *layout) {
     // Apply window position, size, docking state
   }
 }
-
-// Deleted duplicate Editor_Init, assuming it is defined in editor_main.c

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "assets/resources/resource_management/resource_handle.h"
+#include <core/resource/resource_handle.h>
 #include <stddef.h>
 
 /**

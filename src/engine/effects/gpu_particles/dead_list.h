@@ -9,7 +9,7 @@
 #ifndef EFFECTS_DEAD_LIST_H
 #define EFFECTS_DEAD_LIST_H
 
-#include "assets/resources/resource_management/resource_handle.h"
+#include <core/resource/resource_handle.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>

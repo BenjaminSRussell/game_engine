@@ -2,7 +2,7 @@
 // Implements advanced Metal rendering features
 
 #include "mtl_advanced_rendering.h"
-#include "src/engine/core/logger.h"
+#include "core/logger.h"
 #include <Foundation/Foundation.h>
 
 // Global performance tracking

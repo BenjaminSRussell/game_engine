@@ -5,14 +5,14 @@
 extern "C" {
 #endif
 
-#include "assets/resources/resource_management/resource_handle.h"
+#include <core/resource/resource_handle.h>
 #include <stdint.h>
 #include <stdbool.h>
 
 /**
  * @brief Function pointer type for destroying a specific resource type
  */
-typedef void (*resource_destroy_fn)(void* ctx, resource_handle_t handle);
+typedef void (*resource_destroy_fn)(void* ctx, ResourceHandle handle);
 
 /**
  * @brief Initialize the resource lifetime system
@@ -37,7 +37,7 @@ void resource_lifetime_next_frame(void);
  * @param destroy_fn Function to call to actually free the resource
  * @param ctx Context pointer to pass to destroy_fn (e.g., the pool or manager)
  */
-void resource_lifetime_defer_free(resource_handle_t handle, resource_destroy_fn destroy_fn, void* ctx);
+void resource_lifetime_defer_free(ResourceHandle handle, resource_destroy_fn destroy_fn, void* ctx);
 
 #ifdef __cplusplus
 }

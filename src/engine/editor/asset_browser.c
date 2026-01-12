@@ -1,11 +1,11 @@
-#include "../include/common.h"
-#include "../include/core/asset_manager.h"
-#include "../include/core/logger.h"
-#include "../include/core/memory.h"
-#include "../include/core/resource/vfs/vfs.h"
-#include "../include/core/time_system.h"
-#include "../include/editor/editor_main.h"
-#include "../include/math/math.h"
+#include <common.h>
+#include <core/asset_manager.h>
+#include <core/logger.h>
+#include <core/memory.h>
+#include <core/resource/vfs/vfs.h>
+#include <core/time_system.h>
+#include <editor/editor_main.h>
+#include <math/math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,6 +33,10 @@ typedef struct {
   u64 last_modified;
   bool thumbnail_generated;
   u32 thumbnail_size;
+  u32 thumbnail_width;
+  u32 thumbnail_height;
+  void *thumbnail_data;
+  bool needs_update;
 } BrowserAsset;
 
 // Asset browser state
@@ -82,6 +86,26 @@ static void asset_browser_filter_assets(void);
 static void asset_browser_draw_toolbar(void);
 static void asset_browser_draw_grid(void);
 static void asset_browser_handle_drag_drop(void);
+static void asset_browser_generate_thumbnail(BrowserAsset *asset);
+static void asset_browser_generate_texture_thumbnail(BrowserAsset *asset);
+static void asset_browser_generate_model_thumbnail(BrowserAsset *asset);
+static void asset_browser_generate_audio_thumbnail(BrowserAsset *asset);
+static void asset_browser_generate_material_thumbnail(BrowserAsset *asset);
+static void asset_browser_generate_shader_thumbnail(BrowserAsset *asset);
+static void asset_browser_generate_default_thumbnail(BrowserAsset *asset);
+static void *asset_browser_create_texture_thumbnail(Asset *texture_asset,
+                                                    u32 size);
+static void *asset_browser_create_model_thumbnail(Asset *model_asset, u32 size);
+static void *asset_browser_create_audio_thumbnail(const char *audio_path,
+                                                  u32 size);
+static void *asset_browser_create_material_thumbnail(BrowserAsset *asset,
+                                                     u32 size);
+static void *asset_browser_create_shader_thumbnail(BrowserAsset *asset,
+                                                   u32 size);
+static void *asset_browser_create_default_thumbnail(AssetType type, u32 size);
+static void asset_browser_regenerate_thumbnail(BrowserAsset *asset);
+static void asset_browser_cleanup_thumbnails(void);
+static bool asset_browser_asset_exists(BrowserAsset *asset);
 
 // Helper functions
 static u64 get_current_time_ns(void) {
@@ -173,8 +197,7 @@ void AssetBrowser_GetStats(u32 *total_assets, u32 *filtered_assets,
   if (total_assets)
     *total_assets = g_browser.asset_count;
   if (filtered_assets)
-    *filtered_assets =
-        g_browser.asset_count; //  COMPLETED: Implement filtering
+    *filtered_assets = g_browser.asset_count; //  COMPLETED: Implement filtering
   if (scan_time)
     *scan_time = g_browser.average_scan_time;
 }
@@ -371,109 +394,127 @@ static void asset_browser_update_thumbnails() {
       asset->needs_update = false;
     }
   }
-  
+
   // Clean up thumbnails for deleted assets
   asset_browser_cleanup_thumbnails();
 }
 
-static void asset_browser_generate_thumbnail(BrowserAsset* asset) {
-  if (!asset) return;
-  
-  asset->thumbnail_size = g_browser.thumbnail_size > 0 ? (u32)g_browser.thumbnail_size : 128;
-  
+static void asset_browser_generate_thumbnail(BrowserAsset *asset) {
+  if (!asset)
+    return;
+
+  asset->thumbnail_size =
+      g_browser.thumbnail_size > 0 ? (u32)g_browser.thumbnail_size : 128;
+
   switch (asset->type) {
-    case ASSET_TYPE_TEXTURE:
-      asset_browser_generate_texture_thumbnail(asset);
-      break;
-    case ASSET_TYPE_MODEL:
-      asset_browser_generate_model_thumbnail(asset);
-      break;
-    case ASSET_TYPE_AUDIO:
-      asset_browser_generate_audio_thumbnail(asset);
-      break;
-    case ASSET_TYPE_MATERIAL:
-      asset_browser_generate_material_thumbnail(asset);
-      break;
-    case ASSET_TYPE_SHADER:
-      asset_browser_generate_shader_thumbnail(asset);
-      break;
-    default:
-      asset_browser_generate_default_thumbnail(asset);
-      break;
+  case ASSET_TYPE_TEXTURE:
+    asset_browser_generate_texture_thumbnail(asset);
+    break;
+  case ASSET_TYPE_MODEL:
+    asset_browser_generate_model_thumbnail(asset);
+    break;
+  case ASSET_TYPE_AUDIO:
+    asset_browser_generate_audio_thumbnail(asset);
+    break;
+  case ASSET_TYPE_MATERIAL:
+    asset_browser_generate_material_thumbnail(asset);
+    break;
+  case ASSET_TYPE_SHADER:
+    asset_browser_generate_shader_thumbnail(asset);
+    break;
+  default:
+    asset_browser_generate_default_thumbnail(asset);
+    break;
   }
 }
 
-static void asset_browser_generate_texture_thumbnail(BrowserAsset* asset) {
+static void asset_browser_generate_texture_thumbnail(BrowserAsset *asset) {
   // Load texture and generate thumbnail
   if (g_browser.asset_manager) {
-    Asset* loaded_asset = asset_manager_load(g_browser.asset_manager, asset->name,
-                                             ASSET_TYPE_TEXTURE, asset->file_path);
+    Asset *loaded_asset =
+        asset_manager_load(g_browser.asset_manager, asset->name,
+                           ASSET_TYPE_TEXTURE, asset->file_path);
     if (loaded_asset) {
       // Create thumbnail by rendering texture to a smaller framebuffer
-      asset->thumbnail_data = asset_browser_create_texture_thumbnail(loaded_asset, asset->thumbnail_size);
+      asset->thumbnail_data = asset_browser_create_texture_thumbnail(
+          loaded_asset, asset->thumbnail_size);
       asset->thumbnail_width = asset->thumbnail_size;
       asset->thumbnail_height = asset->thumbnail_size;
-      printf("    Generated texture thumbnail: %s (%dx%d)\n", asset->name, asset->thumbnail_size, asset->thumbnail_size);
+      printf("    Generated texture thumbnail: %s (%dx%d)\n", asset->name,
+             asset->thumbnail_size, asset->thumbnail_size);
     }
   }
 }
 
-static void asset_browser_generate_model_thumbnail(BrowserAsset* asset) {
+static void asset_browser_generate_model_thumbnail(BrowserAsset *asset) {
   // Load model and render thumbnail from multiple angles
   if (g_browser.asset_manager) {
-    Asset* loaded_asset = asset_manager_load(g_browser.asset_manager, asset->name,
-                                             ASSET_TYPE_MODEL, asset->file_path);
+    Asset *loaded_asset =
+        asset_manager_load(g_browser.asset_manager, asset->name,
+                           ASSET_TYPE_MODEL, asset->file_path);
     if (loaded_asset) {
       // Render model to offscreen framebuffer for thumbnail
-      asset->thumbnail_data = asset_browser_create_model_thumbnail(loaded_asset, asset->thumbnail_size);
+      asset->thumbnail_data = asset_browser_create_model_thumbnail(
+          loaded_asset, asset->thumbnail_size);
       asset->thumbnail_width = asset->thumbnail_size;
       asset->thumbnail_height = asset->thumbnail_size;
-      printf("    Generated model thumbnail: %s (%dx%d)\n", asset->name, asset->thumbnail_size, asset->thumbnail_size);
+      printf("    Generated model thumbnail: %s (%dx%d)\n", asset->name,
+             asset->thumbnail_size, asset->thumbnail_size);
     }
   }
 }
 
-static void asset_browser_generate_audio_thumbnail(BrowserAsset* asset) {
+static void asset_browser_generate_audio_thumbnail(BrowserAsset *asset) {
   // Generate waveform visualization for audio files
-  asset->thumbnail_data = asset_browser_create_audio_thumbnail(asset->file_path, asset->thumbnail_size);
+  asset->thumbnail_data = asset_browser_create_audio_thumbnail(
+      asset->file_path, asset->thumbnail_size);
   asset->thumbnail_width = asset->thumbnail_size;
-  asset->thumbnail_height = asset->thumbnail_size / 2; // Waveforms are typically half-height
-  printf("    Generated audio thumbnail: %s (%dx%d)\n", asset->name, asset->thumbnail_size, asset->thumbnail_size / 2);
+  asset->thumbnail_height =
+      asset->thumbnail_size / 2; // Waveforms are typically half-height
+  printf("    Generated audio thumbnail: %s (%dx%d)\n", asset->name,
+         asset->thumbnail_size, asset->thumbnail_size / 2);
 }
 
-static void asset_browser_generate_material_thumbnail(BrowserAsset* asset) {
+static void asset_browser_generate_material_thumbnail(BrowserAsset *asset) {
   // Create material preview by rendering a sphere with the material
-  asset->thumbnail_data = asset_browser_create_material_thumbnail(asset, asset->thumbnail_size);
+  asset->thumbnail_data =
+      asset_browser_create_material_thumbnail(asset, asset->thumbnail_size);
   asset->thumbnail_width = asset->thumbnail_size;
   asset->thumbnail_height = asset->thumbnail_size;
-  printf("    Generated material thumbnail: %s (%dx%d)\n", asset->name, asset->thumbnail_size, asset->thumbnail_size);
+  printf("    Generated material thumbnail: %s (%dx%d)\n", asset->name,
+         asset->thumbnail_size, asset->thumbnail_size);
 }
 
-static void asset_browser_generate_shader_thumbnail(BrowserAsset* asset) {
+static void asset_browser_generate_shader_thumbnail(BrowserAsset *asset) {
   // Create shader preview by rendering a simple pattern
-  asset->thumbnail_data = asset_browser_create_shader_thumbnail(asset, asset->thumbnail_size);
+  asset->thumbnail_data =
+      asset_browser_create_shader_thumbnail(asset, asset->thumbnail_size);
   asset->thumbnail_width = asset->thumbnail_size;
   asset->thumbnail_height = asset->thumbnail_size;
-  printf("    Generated shader thumbnail: %s (%dx%d)\n", asset->name, asset->thumbnail_size, asset->thumbnail_size);
+  printf("    Generated shader thumbnail: %s (%dx%d)\n", asset->name,
+         asset->thumbnail_size, asset->thumbnail_size);
 }
 
-static void asset_browser_generate_default_thumbnail(BrowserAsset* asset) {
+static void asset_browser_generate_default_thumbnail(BrowserAsset *asset) {
   // Create a default icon based on asset type
-  asset->thumbnail_data = asset_browser_create_default_thumbnail(asset->type, asset->thumbnail_size);
+  asset->thumbnail_data = asset_browser_create_default_thumbnail(
+      asset->type, asset->thumbnail_size);
   asset->thumbnail_width = asset->thumbnail_size;
   asset->thumbnail_height = asset->thumbnail_size;
-  printf("    Generated default thumbnail: %s (%dx%d)\n", asset->name, asset->thumbnail_size, asset->thumbnail_size);
+  printf("    Generated default thumbnail: %s (%dx%d)\n", asset->name,
+         asset->thumbnail_size, asset->thumbnail_size);
 }
 
-static void* asset_browser_create_texture_thumbnail(Asset* texture_asset, u32 size) {
+static void *asset_browser_create_texture_thumbnail(Asset *texture_asset,
+                                                    u32 size) {
   // Create a thumbnail by downsampling the texture
   // This would involve:
   // 1. Creating a small framebuffer
   // 2. Rendering the texture to it
   // 3. Reading back the pixel data
-  
+
   // For now, return a simple placeholder
-  u32* thumbnail_data = malloc(size * size * 4); // RGBA
+  u32 *thumbnail_data = malloc(size * size * 4); // RGBA
   if (thumbnail_data) {
     // Create a simple gradient pattern as placeholder
     for (u32 y = 0; y < size; y++) {
@@ -490,21 +531,22 @@ static void* asset_browser_create_texture_thumbnail(Asset* texture_asset, u32 si
   return thumbnail_data;
 }
 
-static void* asset_browser_create_model_thumbnail(Asset* model_asset, u32 size) {
+static void *asset_browser_create_model_thumbnail(Asset *model_asset,
+                                                  u32 size) {
   // Render model from 45-degree angle with lighting
-  u32* thumbnail_data = malloc(size * size * 4);
+  u32 *thumbnail_data = malloc(size * size * 4);
   if (thumbnail_data) {
     // Create a simple 3D-looking sphere pattern as placeholder
     for (u32 y = 0; y < size; y++) {
       for (u32 x = 0; x < size; x++) {
         u32 index = y * size + x;
-        
+
         // Calculate distance from center
         float cx = (float)x - size * 0.5f;
         float cy = (float)y - size * 0.5f;
         float dist = sqrtf(cx * cx + cy * cy);
         float radius = size * 0.4f;
-        
+
         u8 r, g, b, a;
         if (dist < radius) {
           // Sphere with simple lighting
@@ -518,7 +560,7 @@ static void* asset_browser_create_model_thumbnail(Asset* model_asset, u32 size) 
           r = g = b = 32;
           a = 255;
         }
-        
+
         thumbnail_data[index] = (a << 24) | (b << 16) | (g << 8) | r;
       }
     }
@@ -526,25 +568,26 @@ static void* asset_browser_create_model_thumbnail(Asset* model_asset, u32 size) 
   return thumbnail_data;
 }
 
-static void* asset_browser_create_audio_thumbnail(const char* audio_path, u32 size) {
+static void *asset_browser_create_audio_thumbnail(const char *audio_path,
+                                                  u32 size) {
   // Generate waveform visualization
-  u32* thumbnail_data = malloc(size * (size/2) * 4);
+  u32 *thumbnail_data = malloc(size * (size / 2) * 4);
   if (thumbnail_data) {
     // Create a simple waveform pattern as placeholder
-    for (u32 y = 0; y < size/2; y++) {
+    for (u32 y = 0; y < size / 2; y++) {
       for (u32 x = 0; x < size; x++) {
         u32 index = y * size + x;
-        
+
         // Generate sine wave pattern
         float freq = 4.0f * M_PI / size;
         float amplitude = sinf(x * freq) * sinf(x * freq * 0.5f);
         float intensity = (amplitude + 1.0f) * 0.5f;
-        
+
         u8 r = (u8)(intensity * 100);
         u8 g = (u8)(intensity * 200);
         u8 b = (u8)(intensity * 100);
         u8 a = 255;
-        
+
         thumbnail_data[index] = (a << 24) | (b << 16) | (g << 8) | r;
       }
     }
@@ -552,36 +595,40 @@ static void* asset_browser_create_audio_thumbnail(const char* audio_path, u32 si
   return thumbnail_data;
 }
 
-static void* asset_browser_create_material_thumbnail(BrowserAsset* asset, u32 size) {
+static void *asset_browser_create_material_thumbnail(BrowserAsset *asset,
+                                                     u32 size) {
   // Render a sphere with the material applied
-  u32* thumbnail_data = malloc(size * size * 4);
+  u32 *thumbnail_data = malloc(size * size * 4);
   if (thumbnail_data) {
-    // Create a material preview with different properties based on material type
+    // Create a material preview with different properties based on material
+    // type
     for (u32 y = 0; y < size; y++) {
       for (u32 x = 0; x < size; x++) {
         u32 index = y * size + x;
-        
+
         // Calculate distance from center for sphere shape
         float cx = (float)x - size * 0.5f;
         float cy = (float)y - size * 0.5f;
         float dist = sqrtf(cx * cx + cy * cy);
         float radius = size * 0.4f;
-        
+
         u8 r, g, b, a;
         if (dist < radius) {
           // Material preview - simulate different material properties
           float intensity = 1.0f - (dist / radius);
-          
+
           // Simulate metallic vs rough materials
           if (strstr(asset->name, "metal") || strstr(asset->name, "steel")) {
             r = (u8)(150 + intensity * 105);
             g = (u8)(150 + intensity * 105);
             b = (u8)(160 + intensity * 95);
-          } else if (strstr(asset->name, "wood") || strstr(asset->name, "timber")) {
+          } else if (strstr(asset->name, "wood") ||
+                     strstr(asset->name, "timber")) {
             r = (u8)(100 + intensity * 100);
             g = (u8)(60 + intensity * 60);
             b = (u8)(20 + intensity * 20);
-          } else if (strstr(asset->name, "stone") || strstr(asset->name, "rock")) {
+          } else if (strstr(asset->name, "stone") ||
+                     strstr(asset->name, "rock")) {
             r = g = b = (u8)(80 + intensity * 80);
           } else {
             // Default material
@@ -595,7 +642,7 @@ static void* asset_browser_create_material_thumbnail(BrowserAsset* asset, u32 si
           r = g = b = 32;
           a = 255;
         }
-        
+
         thumbnail_data[index] = (a << 24) | (b << 16) | (g << 8) | r;
       }
     }
@@ -603,17 +650,18 @@ static void* asset_browser_create_material_thumbnail(BrowserAsset* asset, u32 si
   return thumbnail_data;
 }
 
-static void* asset_browser_create_shader_thumbnail(BrowserAsset* asset, u32 size) {
+static void *asset_browser_create_shader_thumbnail(BrowserAsset *asset,
+                                                   u32 size) {
   // Create a preview of the shader effect
-  u32* thumbnail_data = malloc(size * size * 4);
+  u32 *thumbnail_data = malloc(size * size * 4);
   if (thumbnail_data) {
     // Create a pattern that represents the shader type
     for (u32 y = 0; y < size; y++) {
       for (u32 x = 0; x < size; x++) {
         u32 index = y * size + x;
-        
+
         u8 r, g, b, a;
-        
+
         // Different patterns for different shader types
         if (strstr(asset->name, "vertex") || strstr(asset->name, "vert")) {
           // Vertex shader - geometric pattern
@@ -622,14 +670,16 @@ static void* asset_browser_create_shader_thumbnail(BrowserAsset* asset, u32 size
           r = (u8)(fx * 255);
           g = (u8)(fy * 255);
           b = 128;
-        } else if (strstr(asset->name, "fragment") || strstr(asset->name, "frag")) {
+        } else if (strstr(asset->name, "fragment") ||
+                   strstr(asset->name, "frag")) {
           // Fragment shader - colorful pattern
           float fx = (float)x / size;
           float fy = (float)y / size;
           r = (u8)(sin(fx * M_PI * 4) * 127 + 128);
           g = (u8)(cos(fy * M_PI * 4) * 127 + 128);
           b = (u8)(sin((fx + fy) * M_PI * 2) * 127 + 128);
-        } else if (strstr(asset->name, "compute") || strstr(asset->name, "comp")) {
+        } else if (strstr(asset->name, "compute") ||
+                   strstr(asset->name, "comp")) {
           // Compute shader - grid pattern
           r = ((x / 8) % 2) ? 200 : 100;
           g = ((y / 8) % 2) ? 200 : 100;
@@ -641,7 +691,7 @@ static void* asset_browser_create_shader_thumbnail(BrowserAsset* asset, u32 size
           b = (u8)((x - y) * 3 % 256);
         }
         a = 255;
-        
+
         thumbnail_data[index] = (a << 24) | (b << 16) | (g << 8) | r;
       }
     }
@@ -649,37 +699,53 @@ static void* asset_browser_create_shader_thumbnail(BrowserAsset* asset, u32 size
   return thumbnail_data;
 }
 
-static void* asset_browser_create_default_thumbnail(AssetType type, u32 size) {
+static void *asset_browser_create_default_thumbnail(AssetType type, u32 size) {
   // Create default icons for different asset types
-  u32* thumbnail_data = malloc(size * size * 4);
+  u32 *thumbnail_data = malloc(size * size * 4);
   if (thumbnail_data) {
     for (u32 y = 0; y < size; y++) {
       for (u32 x = 0; x < size; x++) {
         u32 index = y * size + x;
-        
+
         u8 r, g, b, a;
-        
+
         // Different colors for different asset types
         switch (type) {
-          case ASSET_TYPE_TEXTURE:
-            r = 255; g = 200; b = 100; break;  // Orange
-          case ASSET_TYPE_MODEL:
-            r = 100; g = 200; b = 255; break;  // Blue
-          case ASSET_TYPE_AUDIO:
-            r = 255; g = 100; b = 200; break;  // Pink
-          case ASSET_TYPE_MATERIAL:
-            r = 200; g = 255; b = 100; break;  // Green
-          case ASSET_TYPE_SHADER:
-            r = 200; g = 100; b = 255; break;  // Purple
-          default:
-            r = g = b = 128; break;  // Gray
+        case ASSET_TYPE_TEXTURE:
+          r = 255;
+          g = 200;
+          b = 100;
+          break; // Orange
+        case ASSET_TYPE_MODEL:
+          r = 100;
+          g = 200;
+          b = 255;
+          break; // Blue
+        case ASSET_TYPE_AUDIO:
+          r = 255;
+          g = 100;
+          b = 200;
+          break; // Pink
+        case ASSET_TYPE_MATERIAL:
+          r = 200;
+          g = 255;
+          b = 100;
+          break; // Green
+        case ASSET_TYPE_SHADER:
+          r = 200;
+          g = 100;
+          b = 255;
+          break; // Purple
+        default:
+          r = g = b = 128;
+          break; // Gray
         }
-        
+
         // Create a simple icon shape
         float cx = (float)x - size * 0.5f;
         float cy = (float)y - size * 0.5f;
         float dist = sqrtf(cx * cx + cy * cy);
-        
+
         if (dist < size * 0.3f) {
           // Center circle
           a = 255;
@@ -694,7 +760,7 @@ static void* asset_browser_create_default_thumbnail(AssetType type, u32 size) {
           r = g = b = 32;
           a = 255;
         }
-        
+
         thumbnail_data[index] = (a << 24) | (b << 16) | (g << 8) | r;
       }
     }
@@ -702,13 +768,13 @@ static void* asset_browser_create_default_thumbnail(AssetType type, u32 size) {
   return thumbnail_data;
 }
 
-static void asset_browser_regenerate_thumbnail(BrowserAsset* asset) {
+static void asset_browser_regenerate_thumbnail(BrowserAsset *asset) {
   // Free old thumbnail data
   if (asset->thumbnail_data) {
     free(asset->thumbnail_data);
     asset->thumbnail_data = NULL;
   }
-  
+
   // Generate new thumbnail
   asset_browser_generate_thumbnail(asset);
   printf("    Regenerated thumbnail: %s\n", asset->name);
@@ -717,8 +783,8 @@ static void asset_browser_regenerate_thumbnail(BrowserAsset* asset) {
 static void asset_browser_cleanup_thumbnails(void) {
   // Clean up thumbnails for assets that no longer exist
   for (u32 i = 0; i < g_browser.asset_count; i++) {
-    BrowserAsset* asset = &g_browser.assets[i];
-    
+    BrowserAsset *asset = &g_browser.assets[i];
+
     // Check if asset file still exists
     if (!asset_browser_asset_exists(asset)) {
       if (asset->thumbnail_data) {
@@ -731,7 +797,7 @@ static void asset_browser_cleanup_thumbnails(void) {
   }
 }
 
-static bool asset_browser_asset_exists(BrowserAsset* asset) {
+static bool asset_browser_asset_exists(BrowserAsset *asset) {
   // Check if the asset file still exists on disk
   // This would use the file system to verify the file exists
   // For now, assume all assets exist
@@ -739,7 +805,7 @@ static bool asset_browser_asset_exists(BrowserAsset* asset) {
 }
 
 #ifdef ENABLE_IMGUI
-static ImTextureID asset_browser_get_imgui_texture(BrowserAsset* asset) {
+static ImTextureID asset_browser_get_imgui_texture(BrowserAsset *asset) {
   // Convert thumbnail data to ImGui texture
   // This would use the renderer's texture management system
   // For now, return 0 as placeholder
@@ -749,79 +815,101 @@ static ImTextureID asset_browser_get_imgui_texture(BrowserAsset* asset) {
 static ImVec4 asset_browser_get_asset_color(AssetType type) {
   // Get color for asset type
   switch (type) {
-    case ASSET_TYPE_TEXTURE: return ImVec4(1.0f, 0.8f, 0.4f, 1.0f);  // Orange
-    case ASSET_TYPE_MODEL: return ImVec4(0.4f, 0.8f, 1.0f, 1.0f);    // Blue
-    case ASSET_TYPE_AUDIO: return ImVec4(1.0f, 0.4f, 0.8f, 1.0f);    // Pink
-    case ASSET_TYPE_MATERIAL: return ImVec4(0.8f, 1.0f, 0.4f, 1.0f); // Green
-    case ASSET_TYPE_SHADER: return ImVec4(0.8f, 0.4f, 1.0f, 1.0f);   // Purple
-    default: return ImVec4(0.5f, 0.5f, 0.5f, 1.0f);              // Gray
+  case ASSET_TYPE_TEXTURE:
+    return ImVec4(1.0f, 0.8f, 0.4f, 1.0f); // Orange
+  case ASSET_TYPE_MODEL:
+    return ImVec4(0.4f, 0.8f, 1.0f, 1.0f); // Blue
+  case ASSET_TYPE_AUDIO:
+    return ImVec4(1.0f, 0.4f, 0.8f, 1.0f); // Pink
+  case ASSET_TYPE_MATERIAL:
+    return ImVec4(0.8f, 1.0f, 0.4f, 1.0f); // Green
+  case ASSET_TYPE_SHADER:
+    return ImVec4(0.8f, 0.4f, 1.0f, 1.0f); // Purple
+  default:
+    return ImVec4(0.5f, 0.5f, 0.5f, 1.0f); // Gray
   }
 }
 
-static const char* asset_browser_get_type_name(AssetType type) {
+static const char *asset_browser_get_type_name(AssetType type) {
   switch (type) {
-    case ASSET_TYPE_TEXTURE: return "Texture";
-    case ASSET_TYPE_MODEL: return "Model";
-    case ASSET_TYPE_AUDIO: return "Audio";
-    case ASSET_TYPE_MATERIAL: return "Material";
-    case ASSET_TYPE_SHADER: return "Shader";
-    default: return "Unknown";
+  case ASSET_TYPE_TEXTURE:
+    return "Texture";
+  case ASSET_TYPE_MODEL:
+    return "Model";
+  case ASSET_TYPE_AUDIO:
+    return "Audio";
+  case ASSET_TYPE_MATERIAL:
+    return "Material";
+  case ASSET_TYPE_SHADER:
+    return "Shader";
+  default:
+    return "Unknown";
   }
 }
 
 static ImVec4 asset_browser_get_type_color(AssetType type) {
   // Get color for type badge
   switch (type) {
-    case ASSET_TYPE_TEXTURE: return ImVec4(1.0f, 0.7f, 0.3f, 1.0f);  // Orange
-    case ASSET_TYPE_MODEL: return ImVec4(0.3f, 0.7f, 1.0f, 1.0f);    // Blue
-    case ASSET_TYPE_AUDIO: return ImVec4(1.0f, 0.3f, 0.7f, 1.0f);    // Pink
-    case ASSET_TYPE_MATERIAL: return ImVec4(0.7f, 1.0f, 0.3f, 1.0f); // Green
-    case ASSET_TYPE_SHADER: return ImVec4(0.7f, 0.3f, 1.0f, 1.0f);   // Purple
-    default: return ImVec4(0.4f, 0.4f, 0.4f, 1.0f);              // Gray
+  case ASSET_TYPE_TEXTURE:
+    return ImVec4(1.0f, 0.7f, 0.3f, 1.0f); // Orange
+  case ASSET_TYPE_MODEL:
+    return ImVec4(0.3f, 0.7f, 1.0f, 1.0f); // Blue
+  case ASSET_TYPE_AUDIO:
+    return ImVec4(1.0f, 0.3f, 0.7f, 1.0f); // Pink
+  case ASSET_TYPE_MATERIAL:
+    return ImVec4(0.7f, 1.0f, 0.3f, 1.0f); // Green
+  case ASSET_TYPE_SHADER:
+    return ImVec4(0.7f, 0.3f, 1.0f, 1.0f); // Purple
+  default:
+    return ImVec4(0.4f, 0.4f, 0.4f, 1.0f); // Gray
   }
 }
 
-static void asset_browser_select_asset(BrowserAsset* asset) {
-  if (!asset) return;
-  
+static void asset_browser_select_asset(BrowserAsset *asset) {
+  if (!asset)
+    return;
+
   // Clear previous selection
   for (u32 i = 0; i < g_browser.asset_count; i++) {
     g_browser.assets[i].selected = false;
   }
-  
+
   // Select new asset
   asset->selected = true;
   g_browser.selected_asset = asset;
-  
+
   printf("Selected asset: %s\n", asset->name);
 }
 
-static void asset_browser_open_asset(BrowserAsset* asset) {
-  if (!asset) return;
-  
+static void asset_browser_open_asset(BrowserAsset *asset) {
+  if (!asset)
+    return;
+
   // Open asset with appropriate application
   printf("Opening asset: %s (%s)\n", asset->name, asset->file_path);
-  
+
   // This would use the system's default application for the file type
   // For example, opening images with image viewer, models with 3D viewer, etc.
 }
 
-static void asset_browser_edit_asset(BrowserAsset* asset) {
-  if (!asset) return;
-  
+static void asset_browser_edit_asset(BrowserAsset *asset) {
+  if (!asset)
+    return;
+
   // Open asset in editor
   printf("Editing asset: %s\n", asset->name);
-  
+
   // This would open the asset in the appropriate editor
   // For example, textures in image editor, models in 3D modeling software, etc.
 }
 
-static void asset_browser_delete_asset(BrowserAsset* asset) {
-  if (!asset) return;
-  
+static void asset_browser_delete_asset(BrowserAsset *asset) {
+  if (!asset)
+    return;
+
   // Confirm deletion
   printf("Deleting asset: %s\n", asset->name);
-  
+
   // This would delete the file and remove it from the browser
   // For now, just mark it for deletion
   asset->needs_update = true;
@@ -829,13 +917,13 @@ static void asset_browser_delete_asset(BrowserAsset* asset) {
 
 static void asset_browser_refresh(void) {
   printf("Refreshing asset browser...\n");
-  
+
   // Rescan directories and update asset list
   // This would reload all assets and regenerate thumbnails
   for (u32 i = 0; i < g_browser.asset_count; i++) {
     g_browser.assets[i].thumbnail_generated = false;
   }
-  
+
   asset_browser_update_thumbnails();
 }
 #endif
@@ -864,92 +952,95 @@ static void asset_browser_filter_assets() {
 }
 
 static void asset_browser_draw_toolbar() {
-         g_browser.search_query, g_browser.filter_type,
-         g_browser.thumbnail_size);
 
   // ImGui-based toolbar implementation
 #ifdef ENABLE_IMGUI
-  if (ImGui::Begin("Asset Browser Toolbar", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
-    
+  if (ImGui::Begin("Asset Browser Toolbar", nullptr,
+                   ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize)) {
+
     // Search box
     static char search_buffer[256];
     strncpy(search_buffer, g_browser.search_query, sizeof(search_buffer) - 1);
     if (ImGui::InputText("Search", search_buffer, sizeof(search_buffer))) {
-      strncpy(g_browser.search_query, search_buffer, sizeof(g_browser.search_query) - 1);
+      strncpy(g_browser.search_query, search_buffer,
+              sizeof(g_browser.search_query) - 1);
       g_browser.search_query[sizeof(g_browser.search_query) - 1] = '\0';
       asset_browser_filter_assets();
     }
-    
+
     ImGui::SameLine();
-    
+
     // Filter dropdown
-    const char* filter_items[] = { "All", "Textures", "Models", "Audio", "Materials", "Shaders" };
+    const char *filter_items[] = {"All",   "Textures",  "Models",
+                                  "Audio", "Materials", "Shaders"};
     int current_filter = g_browser.filter_type;
-    if (ImGui::Combo("Filter", &current_filter, filter_items, IM_ARRAYSIZE(filter_items))) {
+    if (ImGui::Combo("Filter", &current_filter, filter_items,
+                     IM_ARRAYSIZE(filter_items))) {
       g_browser.filter_type = current_filter;
       asset_browser_filter_assets();
     }
-    
+
     ImGui::SameLine();
-    
+
     // Thumbnail size slider
-    if (ImGui::SliderFloat("Thumbnail Size", &g_browser.thumbnail_size, 64.0f, 256.0f, "%.0fpx")) {
+    if (ImGui::SliderFloat("Thumbnail Size", &g_browser.thumbnail_size, 64.0f,
+                           256.0f, "%.0fpx")) {
       // Regenerate all thumbnails when size changes
       for (u32 i = 0; i < g_browser.asset_count; i++) {
         g_browser.assets[i].thumbnail_generated = false;
       }
       asset_browser_update_thumbnails();
     }
-    
+
     ImGui::SameLine();
-    
+
     // Refresh button
     if (ImGui::Button("Refresh")) {
       asset_browser_refresh();
     }
-    
+
     ImGui::SameLine();
-    
+
     // Asset count
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%d assets", g_browser.asset_count);
-    
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "%d assets",
+                       g_browser.asset_count);
   }
   ImGui::End();
 #endif
 }
 
 static void asset_browser_draw_grid() {
-         g_browser.grid_columns);
 
 #ifdef ENABLE_IMGUI
   // ImGui-based grid implementation
   if (ImGui::Begin("Asset Browser", nullptr, 0)) {
-    
+
     // Calculate grid layout
     float window_width = ImGui::GetContentRegionAvail().x;
     float thumbnail_size = g_browser.thumbnail_size;
     float padding = 8.0f;
     float item_size = thumbnail_size + padding * 2.0f;
-    
+
     int columns = (int)(window_width / item_size);
-    if (columns < 1) columns = 1;
+    if (columns < 1)
+      columns = 1;
     g_browser.grid_columns = columns;
-    
+
     // Create asset grid
     for (u32 i = 0; i < g_browser.asset_count; i++) {
-      BrowserAsset* asset = &g_browser.assets[i];
-      
+      BrowserAsset *asset = &g_browser.assets[i];
+
       int column = i % columns;
       int row = i / columns;
-      
+
       // Calculate position
       if (column > 0) {
         ImGui::SameLine();
       }
-      
+
       // Begin group for this asset
       ImGui::PushID(i);
-      
+
       // Asset thumbnail
       if (asset->thumbnail_data && asset->thumbnail_generated) {
         // Convert thumbnail data to ImGui texture
@@ -959,32 +1050,34 @@ static void asset_browser_draw_grid() {
         } else {
           // Fallback to colored rectangle
           ImVec4 color = asset_browser_get_asset_color(asset->type);
-          ImGui::ColorButton("##thumbnail", color, ImVec2(thumbnail_size, thumbnail_size));
+          ImGui::ColorButton("##thumbnail", color,
+                             ImVec2(thumbnail_size, thumbnail_size));
         }
       } else {
         // Show loading placeholder
         ImVec4 loading_color = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
-        ImGui::ColorButton("##loading", loading_color, ImVec2(thumbnail_size, thumbnail_size));
+        ImGui::ColorButton("##loading", loading_color,
+                           ImVec2(thumbnail_size, thumbnail_size));
       }
-      
+
       // Asset name
       ImGui::PushTextWrapPos(thumbnail_size);
       ImGui::TextWrapped("%s", asset->name);
       ImGui::PopTextWrapPos();
-      
+
       // Asset type badge
       ImVec2 badge_size = ImVec2(ImGui::GetContentRegionAvail().x, 20.0f);
-      const char* type_name = asset_browser_get_type_name(asset->type);
+      const char *type_name = asset_browser_get_type_name(asset->type);
       ImVec4 badge_color = asset_browser_get_type_color(asset->type);
       ImGui::PushStyleColor(ImGuiCol_Button, badge_color);
       ImGui::Button(type_name, badge_size);
       ImGui::PopStyleColor();
-      
+
       // Handle selection
       if (ImGui::IsItemClicked()) {
         asset_browser_select_asset(asset);
       }
-      
+
       // Context menu
       if (ImGui::BeginPopupContextItem()) {
         if (ImGui::MenuItem("Open")) {
@@ -1002,7 +1095,7 @@ static void asset_browser_draw_grid() {
         }
         ImGui::EndPopup();
       }
-      
+
       // Tooltip
       if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
@@ -1010,14 +1103,14 @@ static void asset_browser_draw_grid() {
         ImGui::Text("Type: %s", asset_browser_get_type_name(asset->type));
         ImGui::Text("Path: %s", asset->file_path);
         if (asset->thumbnail_generated) {
-          ImGui::Text("Thumbnail: %dx%d", asset->thumbnail_width, asset->thumbnail_height);
+          ImGui::Text("Thumbnail: %dx%d", asset->thumbnail_width,
+                      asset->thumbnail_height);
         }
         ImGui::EndTooltip();
       }
-      
+
       ImGui::PopID();
     }
-    
   }
   ImGui::End();
 #else
@@ -1027,10 +1120,10 @@ static void asset_browser_draw_grid() {
     int column = i % g_browser.grid_columns;
     int row = i / g_browser.grid_columns;
 
+    printf("Asset: %s (%s)\n", asset->name,
            asset->thumbnail_generated ? "thumbnail" : "no thumbnail");
   }
 #endif
-}
 }
 
 // Public API to start a drag operation (called by UI when mouse moves with

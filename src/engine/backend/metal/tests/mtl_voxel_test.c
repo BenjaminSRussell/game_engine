@@ -27,14 +27,14 @@ static test_stats_t g_stats = {0};
     g_stats.total_tests++;                                                     \
     test_##name();                                                             \
     g_stats.passed_tests++;                                                    \
-    printf("   PASSED\n\n");                                                  \
+    printf("   PASSED\n\n");                                                   \
   }                                                                            \
   static void test_##name(void)
 
-#define TEST_ASSERT(condition, message)                                             \
+#define TEST_ASSERT(condition, message)                                        \
   do {                                                                         \
     if (!(condition)) {                                                        \
-      printf("   FAILED: %s (line %d)\n", message, __LINE__);                 \
+      printf("   FAILED: %s (line %d)\n", message, __LINE__);                  \
       g_stats.failed_tests++;                                                  \
       return;                                                                  \
     }                                                                          \
@@ -51,7 +51,7 @@ TEST(renderer_creation) {
   metal_device_t *device = metal_device_create_system_default();
   ASSERT_NOT_NULL(device, "Device creation failed");
 
-  VoxelRenderer *renderer = voxel_renderer_create(device);
+  VoxelRenderer *renderer = voxel_renderer_native_create(device);
   ASSERT_NOT_NULL(renderer, "Voxel renderer creation failed");
 
   voxel_renderer_destroy(renderer);
@@ -59,7 +59,7 @@ TEST(renderer_creation) {
 
 TEST(mesh_generation) {
   metal_device_t *device = metal_device_create_system_default();
-  VoxelRenderer *renderer = voxel_renderer_create(device);
+  VoxelRenderer *renderer = voxel_renderer_native_create(device);
 
   // Create a small 2x2x2 cube of stone
   uint8_t blocks[8] = {1, 1, 1, 1, 1, 1, 1, 1};

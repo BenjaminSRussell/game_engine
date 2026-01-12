@@ -2,7 +2,7 @@
 // Implements comprehensive 3D audio capabilities
 
 #include "advanced_audio.h"
-#include "src/engine/core/logger.h"
+#include "core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -140,7 +140,7 @@ void audio_world_destroy(AudioWorld* world) {
     
     // Destroy all effects
     for (uint32_t i = 0; i < world->effectCount; i++) {
-        audio_effect_destroy(world, world->effects[i].id);
+        audio_effect_destroy(world, i + 1); // Use index + 1 as ID
     }
     
     // Destroy all streams
@@ -681,4 +681,72 @@ void audio_platform_source_set_velocity(uint32_t sourceId, float vx, float vy, f
 
 void audio_platform_source_set_direction(uint32_t sourceId, float x, float y, float z) {
     // Stub implementation
+}
+
+uint32_t audio_effect_create(AudioWorld* world, AudioEffectType type) {
+    if (!world) return 0;
+    
+    if (world->effectCount >= world->maxEffects) {
+        LOG_ERROR("Maximum number of audio effects reached");
+        return 0;
+    }
+    
+    uint32_t effectId = world->effectCount + 1; // 1-based indexing
+    AudioEffect* effect = &world->effects[world->effectCount];
+    
+    memset(effect, 0, sizeof(AudioEffect));
+    effect->type = type;
+    effect->wetLevel = 0.5f;
+    effect->dryLevel = 0.5f;
+    effect->enabled = true;
+    
+    world->effectCount++;
+    LOG_DEBUG("Created audio effect %u with type %d", effectId, type);
+    return effectId;
+}
+
+void audio_effect_destroy(AudioWorld* world, uint32_t effectId) {
+    if (!world || effectId == 0 || effectId > world->effectCount) return;
+    
+    AudioEffect* effect = &world->effects[effectId - 1];
+    
+    if (effect->effectData) {
+        free(effect->effectData);
+        effect->effectData = NULL;
+    }
+    
+    effect->enabled = false;
+    LOG_DEBUG("Destroyed audio effect %u", effectId);
+}
+
+void audio_stream_destroy(AudioWorld* world, uint32_t streamId) {
+    if (!world || streamId == 0 || streamId > world->streamCount) return;
+    
+    AudioStream* stream = &world->streams[streamId - 1];
+    
+    if (stream->fileHandle) {
+        // Close file handle
+        stream->fileHandle = NULL;
+    }
+    
+    // Free buffers
+    for (int i = 0; i < 4; i++) {
+        if (stream->buffers[i]) {
+            free(stream->buffers[i]);
+            stream->buffers[i] = NULL;
+        }
+    }
+    
+    stream->isStreaming = false;
+    LOG_DEBUG("Destroyed audio stream %u", streamId);
+}
+
+void audio_stream_update(AudioWorld* world, uint32_t streamId) {
+    if (!world || streamId == 0 || streamId > world->streamCount) return;
+    
+    AudioStream* stream = &world->streams[streamId - 1];
+    if (!stream->isStreaming) return;
+    
+    // Stub implementation - would handle streaming buffer updates
+    LOG_DEBUG("Updating audio stream %u", streamId);
 }

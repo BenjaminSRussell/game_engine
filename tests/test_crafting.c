@@ -27,25 +27,32 @@ bool test_furnace_fuel(ItemRegistry *registry) {
   Inventory inventory;
   inventory_init(&inventory);
 
-  // Set up inputs (Iron Ore and Coal)
-  inventory_set_slot(&inventory, 0, ITEM_IRON_ORE, 1);
-  inventory_set_slot(&inventory, 1, ITEM_COAL, 1);
-
+  // Register items (before adding to inventory)
+  // Coal
   ExtendedItemDefinition coal_def = {0};
   strcpy(coal_def.base.name, "Coal");
   coal_def.base.item_type = ITEM_TYPE_MATERIAL;
-  coal_def.fuel_value = 80.0f; // 80 seconds
+  coal_def.base.max_stack_size = 64;
+  coal_def.fuel_value = 80.0f;
   item_registry_register(registry, ITEM_COAL, &coal_def);
 
+  // Iron Ore
   ExtendedItemDefinition ore_def = {0};
   strcpy(ore_def.base.name, "Iron Ore");
   ore_def.base.item_type = ITEM_TYPE_BLOCK;
+  ore_def.base.max_stack_size = 64;
   item_registry_register(registry, ITEM_IRON_ORE, &ore_def);
 
+  // Iron Ingot
   ExtendedItemDefinition ingot_def = {0};
   strcpy(ingot_def.base.name, "Iron Ingot");
   ingot_def.base.item_type = ITEM_TYPE_MATERIAL;
+  ingot_def.base.max_stack_size = 64;
   item_registry_register(registry, ITEM_IRON_INGOT, &ingot_def);
+
+  // Set up inputs now that registry knows about them
+  inventory_set_slot(&inventory, 0, ITEM_IRON_ORE, 1);
+  inventory_set_slot(&inventory, 1, ITEM_COAL, 1);
 
   // Verify initial state
   if (furnace.burn_time > 0.0f) {
@@ -57,13 +64,23 @@ bool test_furnace_fuel(ItemRegistry *registry) {
   furnace_update(&furnace, &inventory, registry, 0.1f);
 
   if (furnace.burn_time <= 0.0f) {
-    printf("FAILED: Furnace did not consume fuel\n");
+    printf("FAILED: Furnace did not consume fuel. Burn time: %f\n",
+           furnace.burn_time);
     return false;
   }
 
   if (fabs(furnace.burn_time - (80.0f - 0.1f)) > 0.01f) {
     printf("FAILED: Burn time incorrect. Expected ~79.9, got %f\n",
            furnace.burn_time);
+    return false;
+  }
+
+  // Verify consumption
+  InventorySlot fuel_slot;
+  inventory_get_slot(&inventory, 1, &fuel_slot);
+  // We had 1 coal, consumed 1, so count should be 0.
+  if (fuel_slot.count != 0) {
+    printf("FAILED: Fuel slot not consumed. Count: %d\n", fuel_slot.count);
     return false;
   }
 

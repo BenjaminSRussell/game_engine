@@ -11,6 +11,7 @@
 
 struct VFS;
 struct Engine;
+struct AssetManager;
 
 // =================================================================================================
 //                                    EDITOR SYSTEM ARCHITECTURE

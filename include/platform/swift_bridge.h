@@ -60,8 +60,8 @@ void swift_engine_init(EntityCallback on_entity_created,
                       EntityCallback on_entity_deleted,
                       EntityCallback on_entity_modified, LogCallback on_log_message,
                       SceneCallback on_scene_loaded);
-void engine_shutdown(void);
-void engine_update(float deltaTime);
+void swift_engine_shutdown(void);
+void swift_engine_update(float deltaTime);
 
 // Entity Management
 uint64_t engine_create_entity(const char *name);
@@ -85,7 +85,7 @@ void engine_get_mesh_renderer(uint64_t entityID, MeshRendererData_C *outData);
 
 // Physics Component
 void engine_set_physics(uint64_t entityID, const PhysicsData_C *data);
-void engine_get_physics(uint64_t entityID, PhysicsData_C *outData);
+void swift_engine_get_physics_data(uint64_t entityID, PhysicsData_C *outData);
 
 // Scene Management
 void engine_load_scene(const char *path);

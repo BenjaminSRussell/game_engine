@@ -8,7 +8,7 @@
 #ifndef MATH_AABB_H
 #define MATH_AABB_H
 
-#include "include/common.h"
+#include "common.h"
 #include "math/vec3.h"
 #include <float.h>
 

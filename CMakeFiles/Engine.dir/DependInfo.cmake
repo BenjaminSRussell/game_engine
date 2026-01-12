@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/advanced/extended_ai_complete.c" "CMakeFiles/Engine.dir/src/engine/ai/advanced/extended_ai_complete.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/ai/advanced/extended_ai_complete.c.o.d"
+  "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/advanced_ai.c" "CMakeFiles/Engine.dir/src/engine/ai/advanced_ai.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/ai/advanced_ai.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/ai_pipeline.c" "CMakeFiles/Engine.dir/src/engine/ai/ai_pipeline.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/ai/ai_pipeline.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/api/ai_command_processor.c" "CMakeFiles/Engine.dir/src/engine/ai/api/ai_command_processor.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/ai/api/ai_command_processor.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/ai/asset_gen/neural_impl.c" "CMakeFiles/Engine.dir/src/engine/ai/asset_gen/neural_impl.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/ai/asset_gen/neural_impl.c.o.d"
@@ -1268,7 +1269,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/dynamics/physics_solver.c" "CMakeFiles/Engine.dir/src/engine/physics/dynamics/physics_solver.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/physics/dynamics/physics_solver.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/dynamics/rigid_body.c" "CMakeFiles/Engine.dir/src/engine/physics/dynamics/rigid_body.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/physics/dynamics/rigid_body.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/dynamics/softbody_simulation.c" "CMakeFiles/Engine.dir/src/engine/physics/dynamics/softbody_simulation.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/physics/dynamics/softbody_simulation.c.o.d"
-  "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/dynamics/vehicle_physics.c" "CMakeFiles/Engine.dir/src/engine/physics/dynamics/vehicle_physics.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/physics/dynamics/vehicle_physics.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/fluid/builder_05.c" "CMakeFiles/Engine.dir/src/engine/physics/fluid/builder_05.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/physics/fluid/builder_05.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/fluid/fluid_physics_manager.c" "CMakeFiles/Engine.dir/src/engine/physics/fluid/fluid_physics_manager.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/physics/fluid/fluid_physics_manager.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/physics/fluid/fluid_physics_system.c" "CMakeFiles/Engine.dir/src/engine/physics/fluid/fluid_physics_system.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/physics/fluid/fluid_physics_system.c.o.d"
@@ -1665,6 +1665,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_pipeline_test.m" "CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o" "gcc" "CMakeFiles/Engine.dir/src/engine/backend/metal/metal_pipeline_test.m.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_raytracing.m" "CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o" "gcc" "CMakeFiles/Engine.dir/src/engine/backend/metal/metal_raytracing.m.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/metal_test.m" "CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o" "gcc" "CMakeFiles/Engine.dir/src/engine/backend/metal/metal_test.m.o.d"
+  "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_advanced_rendering.c" "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_advanced_rendering.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_advanced_rendering.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_argument_buffer.c" "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.c.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_argument_buffer.m" "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o" "gcc" "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.m.o.d"
   "/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/backend/metal/mtl_buffer.c" "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.c.o" "gcc" "CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.c.o.d"

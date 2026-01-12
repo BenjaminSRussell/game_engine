@@ -1,9 +1,7 @@
 CMakeFiles/Engine.dir/src/engine/character/eyes/eye_rendering/eye_caustics.c.o: \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/eyes/eye_rendering/eye_caustics.c \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/character/eyes/eye_rendering/eye_rendering.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../common.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/types.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/character/eyes/eye_rendering/eye_rendering.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/core/resource/resource_handle.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdint.h \
@@ -27,6 +25,9 @@ CMakeFiles/Engine.dir/src/engine/character/eyes/eye_rendering/eye_caustics.c.o: 
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../common.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/../core/types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stdio.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdio.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_bounds.h \
@@ -98,6 +99,7 @@ CMakeFiles/Engine.dir/src/engine/character/eyes/eye_rendering/eye_caustics.c.o: 
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_strings.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/secure/_string.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h \
+  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec3.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h \
@@ -108,6 +110,4 @@ CMakeFiles/Engine.dir/src/engine/character/eyes/eye_rendering/eye_caustics.c.o: 
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_max_align_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/math/vec2.h \
-  /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/assets/resources/resource_management/resource_handle.h \
   /Users/benjaminrussell/Desktop/Minecraft\ v2/src/engine/include/common.h

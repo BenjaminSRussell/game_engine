@@ -41,8 +41,13 @@ typedef struct {
 // Voxel Renderer API
 // ============================================================================
 
-VoxelRenderer *voxel_renderer_create(metal_device_t *device);
+VoxelRenderer *voxel_renderer_native_create(metal_device_t *device);
 void voxel_renderer_destroy(VoxelRenderer *renderer);
+
+VoxelMesh *voxel_mesh_create(VoxelRenderer *renderer);
+void voxel_mesh_update(VoxelMesh *mesh, const void *vertices,
+                       uint32_t vertex_count, const void *indices,
+                       uint32_t index_count);
 
 VoxelMesh *voxel_mesh_generate(VoxelRenderer *renderer, const uint8_t *blocks,
                                uint32_t width, uint32_t height, uint32_t depth);

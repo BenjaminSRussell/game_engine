@@ -1,7 +1,7 @@
 #ifndef DLSS_WRAPPER_H
 #define DLSS_WRAPPER_H
 
-#include "assets/resources/resource_management/resource_handle.h"
+#include <core/resource/resource_handle.h>
 #include <stdbool.h>
 #include <stdlib.h>
 

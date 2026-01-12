@@ -204,7 +204,7 @@ bool engine_unified_init(Engine *engine, const EngineConfig *config) {
 
   // Initialize renderer
   engine->renderer = (Renderer *)renderer_create_with_backend(
-      RENDERER_TYPE_VOXEL, config->renderer_backend);
+      RENDERER_TYPE_VOXEL, config->renderer_backend, engine->platform_window);
   if (!engine->renderer) {
     LOG_ERROR("Failed to create renderer");
     return false;

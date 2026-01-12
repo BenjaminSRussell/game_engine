@@ -42,8 +42,7 @@
 #include "../game_common.h"
 #include "../inventory/inventory.h"
 
-// Forward declaration
-struct ItemRegistry;
+#include "../inventory/item_registry.h"
 
 // Furnace state
 typedef struct {
@@ -72,7 +71,7 @@ void furnace_init(FurnaceState *furnace);
 // 4. If smelt_progress >= 1.0, produce output, add XP to xp_stored, and reset
 // progress.
 void furnace_update(FurnaceState *furnace, Inventory *inventory,
-                    const struct ItemRegistry *registry, f32 delta_time);
+                    const ItemRegistry *registry, f32 delta_time);
 
 // Get smelting progress (0.0 to 1.0)
 f32 furnace_get_progress(FurnaceState *furnace);

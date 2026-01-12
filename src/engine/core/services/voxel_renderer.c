@@ -190,7 +190,8 @@ static void voxel_renderer_render_sprite(IRenderer *self, Vec3 position,
                                          Vec2 size, u32 texture_id,
                                          f32 rotation) {
   VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
-  if (!data) return;
+  if (!data)
+    return;
 
   // Sprite rendering via Vulkan backend
   // TODO: Implement 3D sprite batching and rendering
@@ -211,22 +212,25 @@ static void voxel_renderer_render_entity_sprite(IRenderer *self, Entity entity,
 static void voxel_renderer_render_ui_quad(IRenderer *self, Vec2 pos, Vec2 size,
                                           u32 texture_id) {
   VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
-  if (!data) return;
+  if (!data)
+    return;
 
   // UI quad rendering via Vulkan backend
   // TODO: Implement UI quad batching and rendering
-  LOG_TRACE("UI quad render: pos=[%.2f,%.2f], size=[%.2f,%.2f], tex=%u",
-            pos.x, pos.y, size.x, size.y, texture_id);
+  LOG_TRACE("UI quad render: pos=[%.2f,%.2f], size=[%.2f,%.2f], tex=%u", pos.x,
+            pos.y, size.x, size.y, texture_id);
 }
 static void voxel_renderer_render_text(IRenderer *self, const char *text,
                                        Vec2 pos, f32 scale, Vec3 color) {
   VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
-  if (!data || !text || text[0] == '\0') return;
+  if (!data || !text || text[0] == '\0')
+    return;
 
   // Text rendering via Vulkan backend
   // TODO: Implement text rendering pipeline (font atlas + glyph rendering)
-  LOG_TRACE("Text render: '%s' at [%.2f,%.2f], scale=%.2f, color=[%.2f,%.2f,%.2f]",
-            text, pos.x, pos.y, scale, color.x, color.y, color.z);
+  LOG_TRACE(
+      "Text render: '%s' at [%.2f,%.2f], scale=%.2f, color=[%.2f,%.2f,%.2f]",
+      text, pos.x, pos.y, scale, color.x, color.y, color.z);
 }
 
 static void
@@ -280,25 +284,55 @@ static bool voxel_renderer_update_chunk_buffers(IRenderer *self, Mesh *mesh,
 }
 
 #elif defined(METAL_BUILD)
+#include <backend/metal/mtl_command_buffer.h>
 #include <backend/metal/mtl_device.h>
+#include <backend/metal/mtl_encoder.h>
+#include <backend/metal/mtl_swapchain.h>
 #include <rendering/voxel_renderer.h>
+
+// ... (typedefs remain)
 
 typedef struct {
   VoxelRenderer *renderer;
+  metal_device_t *device;
+  metal_swapchain_t *swapchain;
+  mtl_command_buffer_t cmd;
+  mtl_render_command_encoder_t encoder;
   bool initialized;
 } VoxelRendererData;
 
 static bool voxel_renderer_init(IRenderer *self, RendererInitParams *params) {
   if (!self || !params)
     return false;
+
   VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
-  metal_device_t *device = metal_device_get_default();
-  if (!device)
+
+  // 1. Create Device
+  data->device = metal_device_create_system_default();
+  if (!data->device) {
+    LOG_ERROR("Failed to create Metal device");
     return false;
-  data->renderer = voxel_renderer_create(device);
-  if (data->renderer)
-    data->initialized = true;
-  return data->initialized;
+  }
+
+  // 2. Create Swapchain
+  // params->window is void* (NSView*)
+  bool hdr = false; // TODO: Configurable
+  data->swapchain = metal_swapchain_create(data->device, params->window, hdr);
+  if (!data->swapchain) {
+    LOG_ERROR("Failed to create Metal swapchain");
+    return false;
+  }
+
+  // 3. Create Native Voxel Renderer
+  data->renderer = voxel_renderer_native_create(data->device);
+  if (!data->renderer) {
+    LOG_ERROR("Failed to create Voxel Renderer Native");
+    return false;
+  }
+
+  data->initialized = true;
+  LOG_INFO("Voxel Renderer (Metal) Initialized");
+  return true;
 }
 
 static void voxel_renderer_cleanup(IRenderer *self) {
@@ -308,48 +342,144 @@ static void voxel_renderer_cleanup(IRenderer *self) {
   if (data) {
     if (data->renderer)
       voxel_renderer_destroy(data->renderer);
+    if (data->swapchain)
+      metal_swapchain_destroy(data->swapchain);
+    // Device is usually owned by system or we destroy it?
+    // metal_device_destroy(data->device); // Assuming simple cleanup
     free(data);
   }
   free(self);
 }
 
 static void voxel_renderer_resize(IRenderer *self, u32 width, u32 height) {
-  (void)self;
-  (void)width;
-  (void)height;
+  VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
+  if (data && data->swapchain) {
+    metal_swapchain_resize(data->swapchain, width, height);
+  }
 }
 
 static bool voxel_renderer_begin_frame(IRenderer *self, u32 *image_index) {
   VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
   if (!data || !data->initialized)
     return false;
-  // Remove recursive call - just set image_index and return true
+
+  metal_swapchain_begin_frame(data->swapchain);
+
+  void *texture = metal_swapchain_get_texture(data->swapchain);
+  if (!texture) {
+    // Dropped frame
+    return false;
+  }
+
+  // Create Command Buffer
+  data->cmd = metal_create_command_buffer(data->device);
+  if (!data->cmd)
+    return false;
+
+  // Create Render Encoder
+  // create_with_texture creates a default pass (load=clear, store=store,
+  // clear_color=gray)
+  data->encoder = metal_render_encoder_create_with_texture(data->cmd, texture);
+  if (!data->encoder)
+    return false;
+
   if (image_index)
-    *image_index = 0;
+    *image_index = 0; // Dummy index
   return true;
 }
 
 static void voxel_renderer_end_frame(IRenderer *self, u32 image_index) {
   VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
-  if (data && data->initialized) {
-    // Remove recursive call - just stub implementation
-    (void)image_index; // Suppress unused parameter warning
+  if (!data || !data->initialized)
+    return;
+
+  if (data->encoder) {
+    metal_render_encoder_end_encoding(data->encoder);
+    data->encoder = NULL;
   }
+
+  if (data->cmd) {
+    metal_swapchain_present(data->swapchain, data->cmd);
+    metal_command_buffer_commit(data->cmd);
+    data->cmd = NULL;
+  }
+
+  metal_swapchain_end_frame(data->swapchain);
 }
 
 static void voxel_renderer_render_chunk_mesh(IRenderer *self, Chunk *chunk,
                                              Mat4 view, Mat4 proj) {
-  (void)self;
-  (void)chunk;
-  (void)view;
-  (void)proj;
+  VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
+  if (!data || !data->initialized || !data->encoder)
+    return;
+
+  if (chunk && chunk->mesh.vertex_count > 0) {
+    Mat4 mvp = mat4_mul(proj, view); // TODO: Model matrix? Chunk position?
+    // Chunk mesh is in local coords? No, usually baked world coords or need
+    // model matrix. If baked, Identity model. If local, pass model. VoxelMesh
+    // struct has vertices. Let's assume chunk meshes are positioned using Model
+    // matrix. But function signature doesn't take Model matrix. It takes chunk.
+    // Chunk has position. I should compute Model matrix from chunk->pos.
+    // Actually, `mvp` passed to `draw_mesh` is likely MVP.
+    // So I need M * V * P.
+    // V * P is calculated.
+    // M = Translation(chunk->pos * CHUNK_SIZE).
+
+    Mat4 model = mat4_identity();
+    Vec3 pos = vec3((f32)chunk->pos.x * 16.0f, (f32)chunk->pos.y * 16.0f,
+                    (f32)chunk->pos.z * 16.0f); // Assuming 16 size
+    model = mat4_translate(pos);
+
+    Mat4 mvp_matrix = mat4_mul(mvp, model);
+
+    // Get VoxelMesh from chunk storage (we reuse vertex_buffer pointer)
+    VoxelMesh *vmesh = (VoxelMesh *)chunk->mesh.vertex_buffer;
+    if (vmesh) {
+      voxel_renderer_draw_mesh(data->renderer, data->encoder, vmesh,
+                               (float *)&mvp_matrix);
+    }
+  }
 }
 
-VoxelRenderer *voxel_renderer_create(metal_device_t *device) {
-  (void)device; // Suppress unused parameter warning
-  // This is a stub implementation for now
-  return NULL;
+// Implement create_chunk_buffers
+static bool voxel_renderer_create_chunk_buffers(IRenderer *self, Mesh *mesh,
+                                                void **vertex_buffer,
+                                                void **index_buffer) {
+  // This function signature matches `vulkan_create_chunk_buffers`.
+  // It returns buffers via pointers.
+  // But Metal VoxelRenderer manages its own buffers in `VoxelMesh`.
+  // We can return the `VoxelMesh*` casted to void*?
+  // The callees (chunk manager) likely store these void* into
+  // `chunk->vertex_buffer_handle`.
+
+  VoxelRendererData *data = (VoxelRendererData *)self->impl_data;
+  // Create VoxelMesh from Mesh
+  VoxelMesh *vmesh = voxel_mesh_create(data->renderer);
+  // Upload data
+  voxel_mesh_update(vmesh, mesh->vertices, mesh->vertex_count, mesh->indices,
+                    mesh->index_count);
+
+  *vertex_buffer = (void *)vmesh;
+  *index_buffer = NULL; // We bundle both in vmesh
+  return true;
 }
+
+// ... helper for render ...
+// We need to support `render_chunk_mesh` using the handle.
+// `chunk_manager_render` calls `renderer->render_chunk_mesh`.
+// It passes `Chunk*`. `Chunk` has the handles?
+// I need `Chunk` definition to know where handles are.
+// `src/game/blockgame/chunk/chunk.h`.
+// Assume `chunk->mesh_handle` or similar.
+// Actually, `gamestate_main.c` showed `chunk_create_vulkan_buffers` storing in
+// `renderer` cache? Or `chunk->mesh.vertices`. IRenderer `create_chunk_buffers`
+// is called from `chunk_create_vulkan_buffers`? No,
+// `chunk_create_vulkan_buffers` calls `renderer->create_chunk_buffers`. So if I
+// implement `create_chunk_buffers`, I can control what is stored. But `chunk`
+// likely has `VkBuffer vertex_buffer;` fields if hardcoded. If `Chunk` struct
+// is opaque or has generic `void*`, great. If it has `VkBuffer`, I can cast
+// `VoxelMesh*` to `VkBuffer` (pointer to pointer) safely enough if I am
+// careful.
 
 #else
 
@@ -365,17 +495,37 @@ static bool stub_renderer_begin_frame(IRenderer *self, u32 *image_index) {
 }
 static void stub_renderer_end_frame(IRenderer *self, u32 image_index) {}
 
-IRenderer *voxel_renderer_create(void) {
-  LOG_WARN("Creating STUB Voxel Renderer");
-  IRenderer *renderer = calloc(1, sizeof(IRenderer));
-  if (renderer) {
-    renderer->type = RENDERER_TYPE_VOXEL;
-    renderer->init = stub_renderer_init;
-    renderer->cleanup = stub_renderer_cleanup;
-    renderer->resize = stub_renderer_resize;
-    renderer->begin_frame = stub_renderer_begin_frame;
-    renderer->end_frame = stub_renderer_end_frame;
-  }
+// ... stubs for others ...
+static void stub_render_chunk(IRenderer *self, Chunk *c, Mat4 v, Mat4 p) {}
+// ...
+
+#endif
+
+IRenderer *voxel_renderer_service_create(void) {
+  IRenderer *renderer = (IRenderer *)calloc(1, sizeof(IRenderer));
+  if (!renderer)
+    return NULL;
+
+#ifdef METAL_BUILD
+  renderer->type = RENDERER_TYPE_VOXEL;
+  renderer->impl_data = calloc(1, sizeof(VoxelRendererData));
+  renderer->init = voxel_renderer_init;
+  renderer->cleanup = voxel_renderer_cleanup;
+  renderer->resize = voxel_renderer_resize;
+  renderer->begin_frame = voxel_renderer_begin_frame;
+  renderer->end_frame = voxel_renderer_end_frame;
+  renderer->render_chunk_mesh = voxel_renderer_render_chunk_mesh;
+  renderer->create_chunk_buffers =
+      voxel_renderer_create_chunk_buffers; // Hook this!
+  // ... others stubs or null
+#else
+  renderer->type = RENDERER_TYPE_VOXEL;
+  renderer->init = stub_renderer_init;
+  renderer->cleanup = stub_renderer_cleanup;
+  renderer->resize = stub_renderer_resize;
+  renderer->begin_frame = stub_renderer_begin_frame;
+  renderer->end_frame = stub_renderer_end_frame;
+#endif
+
   return renderer;
 }
-#endif

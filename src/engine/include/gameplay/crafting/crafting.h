@@ -155,7 +155,7 @@ typedef struct {
 
 // Furnace operations
 Furnace furnace_create(void);
-void furnace_update(Furnace *furnace, f32 delta_time);
+// void furnace_update(Furnace *furnace, f32 delta_time); // Conflicts with furnace.h - commented out
 bool furnace_add_input(Furnace *furnace, ItemStack item);
 bool furnace_add_fuel(Furnace *furnace, ItemStack item);
 ItemStack furnace_take_output(Furnace *furnace);

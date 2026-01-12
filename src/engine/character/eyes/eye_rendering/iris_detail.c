@@ -26,5 +26,3 @@ vec2_t calculate_iris_uv(vec3_t V, eye_params_t *params) {
   // Project P onto 2D UV plane
   return vec2(P.x * 0.5f + 0.5f, P.z * 0.5f + 0.5f);
 }
-Disabled for build fix
-#include "include/common.h"

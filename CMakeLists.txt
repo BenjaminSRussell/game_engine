@@ -571,3 +571,23 @@ target_include_directories(test_player_food PRIVATE
     ${CMAKE_SOURCE_DIR}/src/engine
 )
 message(STATUS "Verification target added: test_player_food")
+
+# Test Crafting
+add_executable(test_crafting
+    tests/test_crafting.c
+    src/game/blockgame/crafting/furnace.c
+    src/game/blockgame/inventory/inventory.c
+    src/game/blockgame/inventory/item_registry.c
+    src/engine/core/logger.c
+    src/engine/core/containers/hashmap.c
+    src/engine/core/memory/memory.c
+    src/engine/core/memory/buddy_allocator.c
+    src/engine/core/memory/linear_allocator.c
+    src/engine/core/string_utils.c
+)
+target_include_directories(test_crafting PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/game/blockgame/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+)
+message(STATUS "Verification target added: test_crafting")

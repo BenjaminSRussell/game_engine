@@ -351,7 +351,7 @@ static bool engine_init_subsystems(Engine *engine) {
 
   // 4. Renderer
   engine->subsystems.renderer = renderer_create_with_backend(
-      RENDERER_TYPE_VOXEL, engine->config.renderer_backend);
+      RENDERER_TYPE_VOXEL, engine->config.renderer_backend, &pdata->window);
   if (!engine->subsystems.renderer) {
     LOG_ERROR("Failed to create renderer");
     return false;

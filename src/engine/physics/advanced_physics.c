@@ -2,7 +2,7 @@
 // Implements advanced physics simulation capabilities
 
 #include "advanced_physics.h"
-#include "src/engine/core/logger.h"
+#include "core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -19,6 +19,10 @@ Vec3 vec3_add(const Vec3* a, const Vec3* b) {
 
 Vec3 vec3_subtract(const Vec3* a, const Vec3* b) {
     return vec3_make(a->x - b->x, a->y - b->y, a->z - b->z);
+}
+
+Vec3 vec3_multiply_value(const Vec3* v, float scalar) {
+    return vec3_make(v->x * scalar, v->y * scalar, v->z * scalar);
 }
 
 Vec3 vec3_multiply(const Vec3* v, float scalar) {
@@ -428,7 +432,8 @@ bool physics_ray_cast(PhysicsWorld* world, const Vec3* start, const Vec3* direct
             float projection = vec3_dot(&toCenter, &normalizedDir);
             
             if (projection > 0.0f && projection < maxDistance) {
-                Vec3 closestPoint = vec3_add(start, vec3_multiply(&normalizedDir, projection));
+                Vec3 scaledDir = vec3_multiply_value(&normalizedDir, projection);
+                Vec3 closestPoint = vec3_add(start, &scaledDir);
                 Vec3 toClosest = vec3_subtract(&body->position, &closestPoint);
                 float distance = vec3_length(&toClosest);
                 
@@ -475,7 +480,8 @@ uint32_t physics_get_contacts(PhysicsWorld* world, ContactManifold* contacts, ui
                     contact->bodyA = bodyA->id;
                     contact->bodyB = bodyB->id;
                     contact->pointCount = 1;
-                    contact->points[0] = vec3_add(&bodyA->position, vec3_multiply(&contact->normal, bodyA->shape->geometry.sphere.radius));
+                    Vec3 scaledNormal = vec3_multiply_value(&contact->normal, bodyA->shape->geometry.sphere.radius);
+                    contact->points[0] = vec3_add(&bodyA->position, &scaledNormal);
                     
                     contactCount++;
                 }

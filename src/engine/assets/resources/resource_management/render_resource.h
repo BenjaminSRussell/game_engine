@@ -6,7 +6,7 @@
 #ifndef RENDER_RESOURCE_H
 #define RENDER_RESOURCE_H
 
-#include "assets/resources/resource_management/resource_handle.h"
+#include <core/resource/resource_handle.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>

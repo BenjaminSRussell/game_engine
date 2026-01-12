@@ -141,7 +141,7 @@ static bool voxel_renderer_init_pipeline(VoxelRenderer *renderer) {
   return (renderer->pipeline != NULL);
 }
 
-VoxelRenderer *voxel_renderer_create(metal_device_t *device) {
+VoxelRenderer *voxel_renderer_native_create(metal_device_t *device) {
   if (!device) {
     device = metal_device_create_system_default();
   }

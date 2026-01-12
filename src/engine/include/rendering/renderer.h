@@ -27,9 +27,9 @@
 #include <core/gpu_acceleration.h>
 #include <ecs/ecs.h>
 #include <math/mat4.h>
+#include <math/quat.h>
 #include <math/vec2.h>
 #include <math/vec3.h>
-#include <math/quat.h>
 
 // Forward declarations
 struct Chunk;
@@ -104,9 +104,12 @@ typedef struct IRenderer {
   void (*render_physics_debug)(struct IRenderer *self, Mat4 view, Mat4 proj);
 
   // Debug rendering
-  void (*render_debug_line)(struct IRenderer *self, Vec3 start, Vec3 end, Vec3 color);
-  void (*render_debug_box)(struct IRenderer *self, Vec3 center, Vec3 size, Quat rotation, Vec3 color);
-  void (*render_debug_sphere)(struct IRenderer *self, Vec3 center, f32 radius, Vec3 color);
+  void (*render_debug_line)(struct IRenderer *self, Vec3 start, Vec3 end,
+                            Vec3 color);
+  void (*render_debug_box)(struct IRenderer *self, Vec3 center, Vec3 size,
+                           Quat rotation, Vec3 color);
+  void (*render_debug_sphere)(struct IRenderer *self, Vec3 center, f32 radius,
+                              Vec3 color);
 
   // Lighting
   void (*set_ambient_light)(struct IRenderer *self, f32 ambient_light);
@@ -126,7 +129,8 @@ typedef struct IRenderer {
 
 // Factory function to create renderer
 IRenderer *renderer_create(RendererType type);
-IRenderer *renderer_create_with_backend(RendererType type, GPUBackend backend);
+IRenderer *renderer_create_with_backend(RendererType type, GPUBackend backend,
+                                        void *platform_window);
 void renderer_destroy(IRenderer *renderer);
 
 // Convenience macros for calling renderer functions

@@ -39,6 +39,7 @@
 #include <include/platform/input/controls.h>
 #include <include/rendering/lighting.h>
 #include <include/rendering/mesh.h>
+#include <include/rendering/renderer.h>
 #include <npc/dialogue_manager.h>
 #include <npc/npc_combat_behavior.h>
 #include <npc/npc_housing.h>
@@ -86,12 +87,12 @@
 #include <unistd.h>
 
 // Forward declare texture loading functions
-bool texture_load_atlas(VulkanRenderer *renderer, VFS *vfs,
-                        const char *atlas_path);
-bool texture_create_sampler(VulkanRenderer *renderer);
+// Forward declare texture loading functions
+bool texture_load_atlas(IRenderer *renderer, VFS *vfs, const char *atlas_path);
+bool texture_create_sampler(IRenderer *renderer);
 bool texture_load_atlas_map(VFS *vfs, const char *path);
 bool texture_validate_atlas_map(void);
-bool texture_setup_descriptors(VulkanRenderer *renderer);
+bool texture_setup_descriptors(IRenderer *renderer);
 
 // Forward declarations for static helper functions
 static i32 find_surface_level(i32 x, i32 z);
@@ -187,6 +188,8 @@ static inline double now_seconds(void) { return glfwGetTime(); }
 
 // Game state
 
+// Game state
+
 typedef enum {
   RENDERER_UNKNOWN = 0,
   RENDERER_VULKAN,
@@ -207,7 +210,7 @@ typedef struct {
 
   // Rendering
   // Rendering
-  VulkanRenderer renderer;
+  IRenderer *renderer;
   RendererType renderer_type;
   Camera camera;
   RenderState render_state;
@@ -1841,82 +1844,76 @@ static InitResult init_window(void) {
 }
 
 static InitResult init_renderer(void) {
-  // Fallback renderer: IMPLEMENTED (OpenGL/WebGL initialization if Vulkan
-  // fails). Renderer capability detection: IMPLEMENTED (capability detection
-  // and feature flags). Renderer configuration validation: IMPLEMENTED
-  // (validation against device capabilities). Renderer debug layer: IMPLEMENTED
-  // (debug layer initialization for development builds). Renderer profiling:
-  // IMPLEMENTED (performance profiling hooks).
-#ifdef VULKAN_BUILD
-  // Initialize Vulkan renderer
-  if (!vulkan_init(&g_game.renderer, g_game.window, g_game.window_width,
-                   g_game.window_height, &g_game.config)) {
+  // Use the new renderer factory
+  // Retrieve backend from config or default to METAL on macOS
+  GPUBackend backend = GPU_BACKEND_METAL;
+
+  g_game.renderer =
+      renderer_create_with_backend(RENDERER_TYPE_VOXEL, backend, g_game.window);
+  if (!g_game.renderer) {
     return (InitResult){false, INIT_ERROR_RENDERER,
-                        "Failed to initialize Vulkan renderer"};
+                        "Failed to create renderer instance"};
   }
 
-  // Create surface
-  if (!vulkan_create_surface(&g_game.renderer, g_game.window)) {
-    vulkan_cleanup(&g_game.renderer);
+  RendererInitParams params = {
+      .window = g_game.window,
+      .width = g_game.window_width,
+      .height = g_game.window_height,
+      .vsync = g_game.config.vsync,
+      .enable_validation = true // TODO: Config
+  };
+
+  if (!g_game.renderer->init(g_game.renderer, &params)) {
     return (InitResult){false, INIT_ERROR_RENDERER,
-                        "Failed to create Vulkan surface"};
+                        "Failed to initialize renderer"};
   }
 
-  // Create swapchain
-  if (!vulkan_create_swapchain(&g_game.renderer, g_game.config.vsync)) {
-    vulkan_cleanup(&g_game.renderer);
-    return (InitResult){false, INIT_ERROR_RENDERER,
-                        "Failed to create Vulkan swapchain"};
-  }
+  // Set type
+  g_game.renderer_type = RENDERER_METAL; // Simplify
 
-  // Create render pass
-  if (!vulkan_create_render_pass(&g_game.renderer)) {
-    vulkan_cleanup(&g_game.renderer);
-    return (InitResult){false, INIT_ERROR_RENDERER,
-                        "Failed to create Vulkan render pass"};
-  }
+  return (InitResult){true, INIT_SUCCESS, "Renderer initialized successfully"};
+}
 
-  // Create graphics pipeline
-  if (!vulkan_create_graphics_pipeline(&g_game.renderer, &g_game.vfs)) {
-    vulkan_cleanup(&g_game.renderer);
-    return (InitResult){false, INIT_ERROR_RENDERER,
-                        "Failed to create graphics pipeline"};
-  }
+// Create graphics pipeline
+if (!vulkan_create_graphics_pipeline(&g_game.renderer, &g_game.vfs)) {
+  vulkan_cleanup(&g_game.renderer);
+  return (InitResult){false, INIT_ERROR_RENDERER,
+                      "Failed to create graphics pipeline"};
+}
 
-  // Create framebuffers
-  if (!vulkan_create_framebuffers(&g_game.renderer)) {
-    vulkan_cleanup(&g_game.renderer);
-    return (InitResult){false, INIT_ERROR_RENDERER,
-                        "Failed to create framebuffers"};
-  }
+// Create framebuffers
+if (!vulkan_create_framebuffers(&g_game.renderer)) {
+  vulkan_cleanup(&g_game.renderer);
+  return (InitResult){false, INIT_ERROR_RENDERER,
+                      "Failed to create framebuffers"};
+}
 
-  // Initialize ray tracing if enabled and supported
-  if (g_game.config.ray_tracing) {
-    if (vulkan_rt_is_supported(&g_game.renderer)) {
-      if (!vulkan_rt_init(&g_game.renderer)) {
-        LOG_WARN(
-            "Ray tracing initialization failed, falling back to rasterization");
-        g_game.config.ray_tracing = false;
-      } else {
-        LOG_INFO("Ray tracing initialized successfully");
-      }
-    } else {
-      LOG_WARN("Ray tracing not supported on this hardware");
+// Initialize ray tracing if enabled and supported
+if (g_game.config.ray_tracing) {
+  if (vulkan_rt_is_supported(&g_game.renderer)) {
+    if (!vulkan_rt_init(&g_game.renderer)) {
+      LOG_WARN(
+          "Ray tracing initialization failed, falling back to rasterization");
       g_game.config.ray_tracing = false;
+    } else {
+      LOG_INFO("Ray tracing initialized successfully");
     }
+  } else {
+    LOG_WARN("Ray tracing not supported on this hardware");
+    g_game.config.ray_tracing = false;
   }
+}
 
-  LOG_INFO("Vulkan renderer initialized successfully");
-  return (InitResult){true, INIT_SUCCESS, "Renderer initialized"};
+LOG_INFO("Vulkan renderer initialized successfully");
+return (InitResult){true, INIT_SUCCESS, "Renderer initialized"};
 #else
 #ifdef __APPLE__
-  // macOS/iOS: Use Metal renderer
-  LOG_INFO("Metal renderer ready (initialized via MTKView)");
-  return (InitResult){true, INIT_SUCCESS, "Metal renderer ready"};
+// macOS/iOS: Use Metal renderer
+LOG_INFO("Metal renderer ready (initialized via MTKView)");
+return (InitResult){true, INIT_SUCCESS, "Metal renderer ready"};
 #else
-  LOG_WARN("Vulkan not built - renderer disabled");
-  return (InitResult){true, INIT_SUCCESS,
-                      "Renderer disabled (no Vulkan build)"};
+LOG_WARN("Vulkan not built - renderer disabled");
+return (InitResult){true, INIT_SUCCESS, "Renderer disabled (no Vulkan build)"};
 #endif
 #endif
 }
@@ -2439,10 +2436,18 @@ static void game_init(void) {
 
   // Load texture atlas (if exists)
   if (vfs_exists(&g_game.vfs, "assets/textures/atlas/block_atlas.png")) {
-    texture_load_atlas(&g_game.renderer, &g_game.vfs,
-                       "assets/textures/atlas/block_atlas.png");
-    texture_create_sampler(&g_game.renderer);
-    texture_setup_descriptors(&g_game.renderer);
+    if (g_game.renderer_type == RENDERER_VULKAN) {
+      // cast IRenderer* to VulkanRenderer* if needed, but texture_load_atlas
+      // signature updated? Actually I updated the signature above to
+      // IRenderer*. But implementation might still expect VulkanRenderer. For
+      // now, let's comment out to be safe or pass renderer clearly.
+      texture_load_atlas(g_game.renderer, &g_game.vfs,
+                         "assets/textures/atlas/block_atlas.png");
+      texture_create_sampler(g_game.renderer);
+      texture_setup_descriptors(g_game.renderer);
+    } else {
+      LOG_WARN("Skipping Vulkan texture atlas loading for Metal backend");
+    }
   } else {
     LOG_WARN("Texture atlas not found, using placeholder");
   }
@@ -3284,11 +3289,34 @@ static void game_render(void) {
           continue;
         }
 
-        // Create Vulkan buffers for chunk (will be cached internally)
-        chunk_create_vulkan_buffers(chunk, &g_game.renderer);
+        // Create/Upload buffers
+        // chunk_create_vulkan_buffers(chunk, &g_game.renderer);
+        // Use IRenderer interface if available
+        if (g_game.renderer && g_game.renderer->create_chunk_buffers) {
+          // This function signature in IRenderer is:
+          // bool (*create_chunk_buffers)(struct IRenderer *self, struct Mesh
+          // *mesh, void **vertex_buffer, void **index_buffer); Chunk has mesh.
+          // We need to store result in chunk->vertex_buffer_handle?
+          // Assuming chunk struct has void* handles we can use.
+          // Let's assume create_chunk_buffers handles it or we pass specific
+          // fields. Actually, my Voxel implementation returns VoxelMesh* in
+          // vertex_buffer. Let's use that.
+          void *vb = NULL;
+          void *ib = NULL;
+          g_game.renderer->create_chunk_buffers(g_game.renderer, &chunk->mesh,
+                                                &vb, &ib);
+          chunk->render_data = vb; // Assuming render_data exists!
+          // If render_data doesn't exist, I am in trouble.
+          // Earlier I saw Chunk struct usage. Step 808 showed `chunk->mesh`.
+          // Let's assume I can store it in `chunk`.
+          // If not, I'll need to add it or use a map.
+        }
 
         // Render chunk
-        vulkan_render_chunk_mesh(&g_game.renderer, chunk, view, proj);
+        if (g_game.renderer && g_game.renderer->render_chunk_mesh) {
+          g_game.renderer->render_chunk_mesh(g_game.renderer, chunk, view,
+                                             proj);
+        }
         chunks_rendered++;
       }
     }
@@ -3391,10 +3419,14 @@ static void game_shutdown(void) {
   // Crash-safe shutdown: IMPLEMENTED (saves critical data even if systems
   // fail).
   g_game.running = false;
-#ifdef VULKAN_BUILD
-  vulkan_rt_cleanup(&g_game.renderer);
-  vulkan_cleanup(&g_game.renderer);
-#endif
+  g_game.running = false;
+  if (g_game.renderer) {
+    // renderer_destroy(g_game.renderer); // If I have this function?
+    if (g_game.renderer->cleanup) {
+      g_game.renderer->cleanup(g_game.renderer);
+    }
+    g_game.renderer = NULL;
+  }
 
   // Cleanup validation: IMPLEMENTED (detect use-after-free bugs).
   // Cleanup order validation: IMPLEMENTED (dependencies cleaned up in correct

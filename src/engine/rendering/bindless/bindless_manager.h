@@ -6,7 +6,7 @@
 #ifndef BINDLESS_MANAGER_H
 #define BINDLESS_MANAGER_H
 
-#include "assets/resources/resource_management/resource_handle.h"
+#include <core/resource/resource_handle.h>
 #include <stdint.h>
 #include <stdbool.h>
 

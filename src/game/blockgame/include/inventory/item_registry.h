@@ -69,6 +69,9 @@ typedef u32 ItemID;
 #define ITEM_CARROTS 51
 #define ITEM_POTATOES 52
 #define ITEM_BEETROOT 53
+#define ITEM_PUMPKIN 54
+#define ITEM_RED_MUSHROOM 55
+#define ITEM_BROWN_MUSHROOM 56
 
 // === TOOLS (256-383) ===
 #define ITEM_WOODEN_PICKAXE 256
@@ -162,7 +165,8 @@ typedef u32 ItemID;
 #define ITEM_PUMPKIN_PIE 662
 #define ITEM_SPOILED_FOOD 663
 #define ITEM_HEARTY_STEW 664
-#define ITEM_BOWL 665
+#define ITEM_CAKE 665
+#define ITEM_BOWL 666
 
 // === MATERIALS (768-1023) ===
 #define ITEM_STICK 768
@@ -220,6 +224,9 @@ typedef u32 ItemID;
 #define ITEM_FERMENTED_SPIDER_EYE 1044
 #define ITEM_GHAST_TEAR 1045
 #define ITEM_GOLDEN_CARROT 1046
+#define ITEM_SUGAR 1047
+#define ITEM_EGG 1048
+#define ITEM_MILK_BUCKET 1049
 
 // === MISC (1152-1279) ===
 #define ITEM_BUCKET 1152
@@ -241,8 +248,9 @@ typedef struct {
   bool has_effects;        // Can apply status effects
   u32 effect_id;           // Status effect ID if applicable
   f32 effect_chance;       // Chance of effect (0.0-1.0)
-  f32 quality;             // Food quality, affects hunger/saturation. 1.0 is normal.
-  f32 spoil_time;          // Time in seconds for food to spoil. 0 means it doesn't spoil.
+  f32 quality;    // Food quality, affects hunger/saturation. 1.0 is normal.
+  f32 spoil_time; // Time in seconds for food to spoil. 0 means it doesn't
+                  // spoil.
 } FoodProperties;
 
 // Tool properties

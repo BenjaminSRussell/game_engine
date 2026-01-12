@@ -2,7 +2,7 @@
 #define SKIN_RENDERING_H
 
 #include "math/vec3.h"
-#include "assets/resources/resource_management/resource_handle.h"
+#include <core/resource/resource_handle.h>
 
 /**
  * @struct skin_params

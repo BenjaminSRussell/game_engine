@@ -3,7 +3,7 @@
 
 #include "math/vec3.h"
 #include "math/mat4.h"
-#include "assets/resources/resource_management/resource_handle.h"
+#include <core/resource/resource_handle.h>
 
 /**
  * @struct hair_transparency_params
