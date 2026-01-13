@@ -12,6 +12,20 @@
 #include "ui_renderer.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include "core/logger.h"
+
+// Mock logger for linking
+void unified_logger_log(LogLevel level, LogCategory category, const char *file,
+                        int line, const char *function, const char *format,
+                        ...) {
+    va_list args;
+    va_start(args, format);
+    printf("[LOG] ");
+    vprintf(format, args);
+    printf("\n");
+    va_end(args);
+}
 
 // Example UI element creation
 static LayoutNode* create_example_ui_element(uint32_t id, const char* name, 
