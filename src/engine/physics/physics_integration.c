@@ -10,6 +10,7 @@
 
 #define MAX_PHYSICS_ENTITIES 2048
 #define PHYSICS_MAX_ITERATIONS 8
+#define CCD_VELOCITY_THRESHOLD 10.0f
 
 typedef struct {
   EntityID entity_id;
@@ -26,7 +27,7 @@ typedef struct {
   
   PhysicsWorld *world;
   CollisionSystem *collision_system;
-  CCDSystem *ccd_system;
+  CCDWorld ccd_world;
   
   Vec3 gravity;
   f32 fixed_timestep;
@@ -45,7 +46,7 @@ static PhysicsIntegration g_physics_integration = {0};
 
 bool physics_integration_init(const Vec3 *gravity, f32 fixed_timestep) {
   if (g_physics_integration.is_initialized) {
-    LOG_WARN("Physics integration already initialized");
+    LOG_WARN(LOG_CAT_PHYSICS, "Physics integration already initialized");
     return true;
   }
   
@@ -61,20 +62,20 @@ bool physics_integration_init(const Vec3 *gravity, f32 fixed_timestep) {
   
   g_physics_integration.world = physics_world_create(config);
   if (!g_physics_integration.world) {
-    LOG_ERROR("Failed to create physics world");
+    LOG_ERROR(LOG_CAT_PHYSICS, "Failed to create physics world");
     return false;
   }
   
   // Initialize collision detection
   if (!collision_system_init()) {
-    LOG_ERROR("Failed to initialize collision system");
+    LOG_ERROR(LOG_CAT_PHYSICS, "Failed to initialize collision system");
     physics_world_destroy(g_physics_integration.world);
     return false;
   }
   
   // Initialize CCD
-  if (!ccd_init()) {
-    LOG_ERROR("Failed to initialize CCD system");
+  if (!ccd_world_init(&g_physics_integration.ccd_world, MAX_PHYSICS_ENTITIES)) {
+    LOG_ERROR(LOG_CAT_PHYSICS, "Failed to initialize CCD world");
     collision_system_shutdown();
     physics_world_destroy(g_physics_integration.world);
     return false;
@@ -85,7 +86,7 @@ bool physics_integration_init(const Vec3 *gravity, f32 fixed_timestep) {
   g_physics_integration.simulation_running = true;
   g_physics_integration.is_initialized = true;
   
-  LOG_INFO("Physics integration initialized with gravity (%.2f, %.2f, %.2f), timestep %.4f",
+  LOG_INFO(LOG_CAT_PHYSICS, "Physics integration initialized with gravity (%.2f, %.2f, %.2f), timestep %.4f",
            g_physics_integration.gravity.x, g_physics_integration.gravity.y, 
            g_physics_integration.gravity.z, g_physics_integration.fixed_timestep);
   
@@ -99,7 +100,7 @@ void physics_integration_shutdown(void) {
   physics_integration_clear_all_entities();
   
   // Shutdown subsystems
-  ccd_shutdown();
+  ccd_world_cleanup(&g_physics_integration.ccd_world);
   collision_system_shutdown();
   
   if (g_physics_integration.world) {
@@ -110,7 +111,7 @@ void physics_integration_shutdown(void) {
   g_physics_integration.is_initialized = false;
   g_physics_integration.simulation_running = false;
   
-  LOG_INFO("Physics integration shutdown");
+  LOG_INFO(LOG_CAT_PHYSICS, "Physics integration shutdown");
 }
 
 EntityID physics_integration_add_entity(EntityID entity_id, RigidBody *rigid_body, 
@@ -131,7 +132,7 @@ EntityID physics_integration_add_entity(EntityID entity_id, RigidBody *rigid_bod
     physics_world_add_body(g_physics_integration.world, rigid_body);
   }
   
-  LOG_DEBUG("Added physics entity %d to integration system", entity_id);
+  LOG_DEBUG(LOG_CAT_PHYSICS, "Added physics entity %d to integration system", entity_id);
   return entity_id;
 }
 
@@ -147,13 +148,15 @@ void physics_integration_remove_entity(EntityID entity_id) {
         physics_world_remove_body(g_physics_integration.world, entity->rigid_body);
       }
       
+      ccd_world_remove_entity(&g_physics_integration.ccd_world, entity_id);
+
       // Move last entity to this position
       if (i < g_physics_integration.entity_count - 1) {
         g_physics_integration.entities[i] = g_physics_integration.entities[g_physics_integration.entity_count - 1];
       }
       
       g_physics_integration.entity_count--;
-      LOG_DEBUG("Removed physics entity %d from integration system", entity_id);
+      LOG_DEBUG(LOG_CAT_PHYSICS, "Removed physics entity %d from integration system", entity_id);
       return;
     }
   }
@@ -177,8 +180,61 @@ void physics_integration_update(f32 delta_time) {
   g_physics_integration.simulation_time = get_time_seconds() - start_time;
   g_physics_integration.active_bodies = physics_count_active_bodies();
   
-  LOG_DEBUG("Physics integration update: %.4f ms, %d active bodies", 
+  LOG_DEBUG(LOG_CAT_PHYSICS, "Physics integration update: %.4f ms, %d active bodies",
            g_physics_integration.simulation_time * 1000.0f, g_physics_integration.active_bodies);
+}
+
+static void update_ccd_entities(void) {
+    for (u32 i = 0; i < g_physics_integration.entity_count; i++) {
+        PhysicsEntity *entity = &g_physics_integration.entities[i];
+        if (!entity->enabled || !entity->rigid_body) continue;
+
+        Vec3 vel = rigid_body_get_linear_velocity(entity->rigid_body);
+        Vec3 ang_vel = rigid_body_get_angular_velocity(entity->rigid_body); // Assuming accessor exists
+
+        f32 speed = vec3_length(vel);
+
+        // Update motion if exists, otherwise check if needs adding
+        if (!ccd_world_update_entity_motion(&g_physics_integration.ccd_world, entity->entity_id, vel, ang_vel)) {
+            // Not in world. Should we add it?
+            if (speed > CCD_VELOCITY_THRESHOLD && entity->collider) {
+                // Add to CCD world
+                ColliderType type = collider_get_type(entity->collider);
+                Vec3 pos = rigid_body_get_position(entity->rigid_body);
+                Quat rot = rigid_body_get_rotation(entity->rigid_body);
+
+                if (type == COLLIDER_TYPE_SPHERE) {
+                    CCDSphere sphere = {0};
+                    sphere.base.position = pos;
+                    sphere.base.rotation = rot;
+                    sphere.base.linear_velocity = vel;
+                    sphere.base.angular_velocity = ang_vel;
+                    sphere.base.collision_group = entity->collision_group;
+                    sphere.base.collision_mask = 0xFFFFFFFF; // Default mask
+                    sphere.radius = collider_get_sphere_radius(entity->collider);
+
+                    ccd_world_add_sphere(&g_physics_integration.ccd_world, entity->entity_id, &sphere);
+                } else if (type == COLLIDER_TYPE_BOX) {
+                    CCDBox box = {0};
+                    box.base.position = pos;
+                    box.base.rotation = rot;
+                    box.base.linear_velocity = vel;
+                    box.base.angular_velocity = ang_vel;
+                    box.base.collision_group = entity->collision_group;
+                    box.base.collision_mask = 0xFFFFFFFF;
+                    collider_get_box_half_extents(entity->collider, &box.half_extents.x, &box.half_extents.y, &box.half_extents.z);
+
+                    ccd_world_add_box(&g_physics_integration.ccd_world, entity->entity_id, &box);
+                }
+                // Capsule support if needed
+            }
+        } else {
+            // It is in the world. Should we remove it if slow?
+            if (speed < CCD_VELOCITY_THRESHOLD * 0.8f) { // Hysteresis
+                ccd_world_remove_entity(&g_physics_integration.ccd_world, entity->entity_id);
+            }
+        }
+    }
 }
 
 void physics_simulation_step(f32 delta_time) {
@@ -189,7 +245,8 @@ void physics_simulation_step(f32 delta_time) {
   collision_system_update(delta_time);
   
   // Update CCD for fast-moving objects
-  ccd_update(delta_time);
+  update_ccd_entities();
+  ccd_world_update(&g_physics_integration.ccd_world, delta_time);
   
   // Generate collision manifolds
   physics_generate_collision_manifolds();
@@ -274,7 +331,7 @@ void physics_solve_contact_constraint(PhysicsEntity *entity_a, PhysicsEntity *en
   Vec3 relative_vel = vec3_sub(contact_vel_a, contact_vel_b);
   
   // Calculate normal impulse
-  f32 normal_vel = vec3_dot(&relative_vel, &contact->normal);
+  f32 normal_vel = vec3_dot(relative_vel, contact->normal);
   
   if (normal_vel > 0) return; // Bodies are separating
   
@@ -282,10 +339,20 @@ void physics_solve_contact_constraint(PhysicsEntity *entity_a, PhysicsEntity *en
   f32 impulse_magnitude = -(1.0f + restitution) * normal_vel;
   
   // Apply impulse
-  Vec3 impulse = vec3_scale(contact->normal, impulse_magnitude);
+  Vec3 impulse = vec3_scale(contact->normal, (Vec3){impulse_magnitude, impulse_magnitude, impulse_magnitude});
+  // Wait, vec3_scale(Vec3, Vec3) is component-wise multiplication.
+  // vec3_mul(Vec3, f32) is scalar multiplication.
+  // The original code had vec3_scale(normal, mag).
+  // vec3.h: INLINE Vec3 vec3_mul(Vec3 v, f32 s) { ... }
+  // vec3.h: INLINE Vec3 vec3_scale(Vec3 a, Vec3 b) { ... }
+  // The original code meant vec3_mul!
+
+  // Correcting to vec3_mul
+  impulse = vec3_mul(contact->normal, impulse_magnitude);
   
   rigid_body_apply_impulse_at_point(body_a, &impulse, &contact->point);
-  rigid_body_apply_impulse_at_point(body_b, &vec3_scale(impulse, -1.0f), &contact->point);
+  Vec3 neg_impulse = vec3_mul(impulse, -1.0f);
+  rigid_body_apply_impulse_at_point(body_b, &neg_impulse, &contact->point);
 }
 
 void physics_apply_collision_responses(void) {
@@ -324,19 +391,19 @@ void physics_resolve_penetration(PhysicsEntity *entity_a, PhysicsEntity *entity_
   f32 slop = 0.01f; // Small penetration tolerance
   f32 correction_magnitude = fmaxf(contact->penetration_depth - slop, 0.0f) / total_mass * correction_percent;
   
-  Vec3 correction = vec3_scale(contact->normal, correction_magnitude);
+  Vec3 correction = vec3_mul(contact->normal, correction_magnitude); // was vec3_scale
   
   // Apply position correction
   Vec3 pos_a = rigid_body_get_position(body_a);
   Vec3 pos_b = rigid_body_get_position(body_b);
   
   if (mass_a > 0.0f) {
-    Vec3 new_pos_a = vec3_add(pos_a, vec3_scale(correction, mass_a));
+    Vec3 new_pos_a = vec3_add(pos_a, vec3_mul(correction, mass_a)); // was vec3_scale
     rigid_body_set_position(body_a, &new_pos_a);
   }
   
   if (mass_b > 0.0f) {
-    Vec3 new_pos_b = vec3_sub(pos_b, vec3_scale(correction, mass_b));
+    Vec3 new_pos_b = vec3_sub(pos_b, vec3_mul(correction, mass_b)); // was vec3_scale
     rigid_body_set_position(body_b, &new_pos_b);
   }
 }
@@ -422,10 +489,14 @@ void physics_clear_all_entities(void) {
     }
   }
   
+  ccd_world_cleanup(&g_physics_integration.ccd_world);
+  // Re-init ccd world after clear
+  ccd_world_init(&g_physics_integration.ccd_world, MAX_PHYSICS_ENTITIES);
+
   g_physics_integration.entity_count = 0;
   memset(g_physics_integration.entities, 0, sizeof(g_physics_integration.entities));
   
-  LOG_INFO("Cleared all physics entities");
+  LOG_INFO(LOG_CAT_PHYSICS, "Cleared all physics entities");
 }
 
 void physics_set_block_physics_system(BlockPhysicsSystem *block_physics) {
