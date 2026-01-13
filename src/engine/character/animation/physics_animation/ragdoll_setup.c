@@ -4,38 +4,6 @@
  *
  * Part of the Animation subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement skeletal animation
- * TODO: Add animation blending
- * TODO: Implement IK solvers
- * TODO: Add morph target support
- * TODO: Implement GPU skinning
- * TODO: Add animation compression
- * TODO: Implement state machine
- * TODO: Add procedural animation
- * TODO: Implement ragdoll physics
- * TODO: Add animation retargeting
- * TODO: Implement ragdoll setup initialization
- * TODO: Add ragdoll setup cleanup/shutdown
- * TODO: Implement ragdoll setup validation
- * TODO: Add ragdoll setup error handling
- * TODO: Implement ragdoll setup serialization
- * TODO: Add ragdoll setup debug output
- * TODO: Implement ragdoll setup unit tests
- * TODO: Add ragdoll setup performance counters
- * TODO: Implement ragdoll setup hot-reload
- * TODO: Add ragdoll setup thread safety
- * TODO: Implement ragdoll setup memory pooling
- * TODO: Add ragdoll setup caching layer
- * TODO: Implement ragdoll setup async operations
- * TODO: Add ragdoll setup GPU integration
- * TODO: Implement ragdoll setup SIMD optimization
- * TODO: Add ragdoll setup batch processing
- * TODO: Implement ragdoll setup streaming support
- * TODO: Add ragdoll setup LOD support
- * TODO: Implement ragdoll setup culling integration
- * TODO: Add ragdoll setup render graph node
  */
 
 #include "character/animation/physics_animation/ragdoll_setup.h"
@@ -44,6 +12,9 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdatomic.h>
+#include <pthread.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -65,6 +36,11 @@ typedef struct animation_ragdoll_setup_internal {
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
+    // Animation compression state
+    void* compression_context;
+    // Skeletal data
+    void* skeleton_bones;
+    uint32_t bone_count;
 } animation_ragdoll_setup_internal_t;
 
 typedef struct animation_ragdoll_setup_context {
@@ -73,6 +49,7 @@ typedef struct animation_ragdoll_setup_context {
     uint32_t capacity;
     void* allocator;
     bool initialized;
+    pthread_mutex_t lock;
 } animation_ragdoll_setup_context_t;
 
 static animation_ragdoll_setup_context_t g_ragdoll_setup_ctx = {0};
@@ -82,22 +59,43 @@ static animation_ragdoll_setup_context_t g_ragdoll_setup_ctx = {0};
  * ============================================================================ */
 
 static bool animation_ragdoll_setup_validate(const animation_ragdoll_setup_internal_t* item) {
-    // TODO: Implement skeletal animation
-    // TODO: Add animation blending
     if (!item) return false;
     if (!item->initialized) return false;
+    // TODO: Implement skeletal animation validation
     return true;
 }
 
 static void animation_ragdoll_setup_cleanup_internal(animation_ragdoll_setup_internal_t* item) {
-    // TODO: Implement IK solvers
-    // TODO: Add morph target support
     if (!item) return;
     if (item->data) {
         free(item->data);
         item->data = NULL;
     }
+    if (item->compression_context) {
+        free(item->compression_context);
+        item->compression_context = NULL;
+    }
+    if (item->skeleton_bones) {
+        free(item->skeleton_bones);
+        item->skeleton_bones = NULL;
+    }
     item->initialized = false;
+    item->dirty = false;
+    item->data_size = 0;
+}
+
+static void apply_morph_targets(animation_ragdoll_setup_internal_t* item) {
+    // TODO: Add morph target support
+}
+
+static void update_gpu_skinning(animation_ragdoll_setup_internal_t* item) {
+    // TODO: Implement GPU skinning
+}
+
+static void process_skeletal_animation(animation_ragdoll_setup_internal_t* item) {
+    // TODO: Implement skeletal animation
+    apply_morph_targets(item);
+    update_gpu_skinning(item);
 }
 
 /* ============================================================================
@@ -105,11 +103,6 @@ static void animation_ragdoll_setup_cleanup_internal(animation_ragdoll_setup_int
  * ============================================================================ */
 
 int animation_ragdoll_setup_init(void) {
-    // TODO: Implement GPU skinning
-    // TODO: Add animation compression
-    // TODO: Implement state machine
-    // TODO: Add procedural animation
-
     if (g_ragdoll_setup_ctx.initialized) {
         return 0; // Already initialized
     }
@@ -121,20 +114,24 @@ int animation_ragdoll_setup_init(void) {
     }
 
     g_ragdoll_setup_ctx.count = 0;
+
+    if (pthread_mutex_init(&g_ragdoll_setup_ctx.lock, NULL) != 0) {
+        free(g_ragdoll_setup_ctx.items);
+        g_ragdoll_setup_ctx.items = NULL;
+        return -2;
+    }
+
     g_ragdoll_setup_ctx.initialized = true;
 
     return 0;
 }
 
 void animation_ragdoll_setup_shutdown(void) {
-    // TODO: Implement ragdoll physics
-    // TODO: Add animation retargeting
-    // TODO: Implement ragdoll setup initialization
-    // TODO: Add ragdoll setup cleanup/shutdown
-
     if (!g_ragdoll_setup_ctx.initialized) {
         return;
     }
+
+    pthread_mutex_lock(&g_ragdoll_setup_ctx.lock);
 
     for (uint32_t i = 0; i < g_ragdoll_setup_ctx.count; i++) {
         animation_ragdoll_setup_cleanup_internal(&g_ragdoll_setup_ctx.items[i]);
@@ -145,14 +142,12 @@ void animation_ragdoll_setup_shutdown(void) {
     g_ragdoll_setup_ctx.count = 0;
     g_ragdoll_setup_ctx.capacity = 0;
     g_ragdoll_setup_ctx.initialized = false;
+
+    pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
+    pthread_mutex_destroy(&g_ragdoll_setup_ctx.lock);
 }
 
 int animation_ragdoll_setup_create(animation_ragdoll_setup_handle_t* out_handle, const animation_ragdoll_setup_desc_t* desc) {
-    // TODO: Implement ragdoll setup validation
-    // TODO: Add ragdoll setup error handling
-    // TODO: Implement ragdoll setup serialization
-    // TODO: Add ragdoll setup debug output
-
     if (!out_handle || !desc) {
         return -1;
     }
@@ -161,8 +156,18 @@ int animation_ragdoll_setup_create(animation_ragdoll_setup_handle_t* out_handle,
         return -2;
     }
 
+    // TODO: Implement ragdoll setup validation
+    // TODO: Add ragdoll setup error handling
+
+    pthread_mutex_lock(&g_ragdoll_setup_ctx.lock);
+
+    if (!g_ragdoll_setup_ctx.initialized) {
+        pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
+        return -2;
+    }
+
     if (g_ragdoll_setup_ctx.count >= g_ragdoll_setup_ctx.capacity) {
-        // TODO: Implement ragdoll setup unit tests
+        pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
         return -3;
     }
 
@@ -171,66 +176,112 @@ int animation_ragdoll_setup_create(animation_ragdoll_setup_handle_t* out_handle,
 
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
+    item->data = NULL; // TODO: Implement ragdoll setup serialization
     item->data_size = 0;
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
 
+    // TODO: Add procedural animation
+    // if (desc->flags & PROCEDURAL_ANIMATION) { ... }
+
     out_handle->id = index;
+
+    pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
     return 0;
 }
 
 void animation_ragdoll_setup_destroy(animation_ragdoll_setup_handle_t handle) {
-    // TODO: Add ragdoll setup performance counters
-    // TODO: Implement ragdoll setup hot-reload
+    pthread_mutex_lock(&g_ragdoll_setup_ctx.lock);
 
-    if (handle.id >= g_ragdoll_setup_ctx.count) {
-        return;
+    if (g_ragdoll_setup_ctx.initialized && g_ragdoll_setup_ctx.items && handle.id < g_ragdoll_setup_ctx.count) {
+        animation_ragdoll_setup_cleanup_internal(&g_ragdoll_setup_ctx.items[handle.id]);
     }
 
-    animation_ragdoll_setup_cleanup_internal(&g_ragdoll_setup_ctx.items[handle.id]);
+    pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
 }
 
 int animation_ragdoll_setup_update(animation_ragdoll_setup_handle_t handle, const void* data, size_t size) {
-    // TODO: Add ragdoll setup thread safety
-    // TODO: Implement ragdoll setup memory pooling
-    // TODO: Add ragdoll setup caching layer
-    // TODO: Implement ragdoll setup async operations
+    pthread_mutex_lock(&g_ragdoll_setup_ctx.lock);
+
+    if (!g_ragdoll_setup_ctx.initialized || !g_ragdoll_setup_ctx.items) {
+        pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
+        return -2;
+    }
 
     if (handle.id >= g_ragdoll_setup_ctx.count) {
+        pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
         return -1;
     }
 
     animation_ragdoll_setup_internal_t* item = &g_ragdoll_setup_ctx.items[handle.id];
     if (!item->initialized) {
+        pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
         return -2;
     }
 
-    // TODO: Add ragdoll setup GPU integration
-    // TODO: Implement ragdoll setup SIMD optimization
+    // Update data
+    if (item->data_size != size) {
+        void* new_data = realloc(item->data, size);
+        if (!new_data && size > 0) {
+            pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
+            return -5;
+        }
+        item->data = new_data;
+        item->data_size = size;
+    }
+
+    if (data && size > 0 && item->data) {
+        memcpy(item->data, data, size);
+    }
+
+    // TODO: Add animation compression
+    // if (item->compression_context) { ... }
+
+    // TODO: Add animation retargeting
+    // if (data_needs_retargeting(data)) { perform_retargeting(item, data); }
 
     item->dirty = true;
+
+    // TODO: Add ragdoll setup performance counters
+
+    pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
     return 0;
 }
 
 bool animation_ragdoll_setup_is_valid(animation_ragdoll_setup_handle_t handle) {
-    // TODO: Add ragdoll setup batch processing
-    if (handle.id >= g_ragdoll_setup_ctx.count) {
+    pthread_mutex_lock(&g_ragdoll_setup_ctx.lock);
+
+    if (!g_ragdoll_setup_ctx.initialized || !g_ragdoll_setup_ctx.items) {
+        pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
         return false;
     }
-    return g_ragdoll_setup_ctx.items[handle.id].initialized;
+
+    if (handle.id >= g_ragdoll_setup_ctx.count) {
+        pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
+        return false;
+    }
+
+    bool valid = g_ragdoll_setup_ctx.items[handle.id].initialized;
+    pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
+
+    return valid;
 }
 
 int animation_ragdoll_setup_get_info(animation_ragdoll_setup_handle_t handle, animation_ragdoll_setup_info_t* out_info) {
-    // TODO: Implement ragdoll setup streaming support
-    // TODO: Add ragdoll setup LOD support
-
     if (!out_info) {
         return -1;
     }
 
+    pthread_mutex_lock(&g_ragdoll_setup_ctx.lock);
+
+    if (!g_ragdoll_setup_ctx.initialized || !g_ragdoll_setup_ctx.items) {
+        pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
+        return -2;
+    }
+
     if (handle.id >= g_ragdoll_setup_ctx.count) {
+        pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
         return -2;
     }
 
@@ -239,29 +290,44 @@ int animation_ragdoll_setup_get_info(animation_ragdoll_setup_handle_t handle, an
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
 
+    // TODO: Implement ragdoll setup streaming support
+    // TODO: Add ragdoll setup LOD support
+
+    pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
     return 0;
 }
 
 void animation_ragdoll_setup_mark_dirty(animation_ragdoll_setup_handle_t handle) {
-    // TODO: Implement ragdoll setup culling integration
-    if (handle.id < g_ragdoll_setup_ctx.count) {
+    pthread_mutex_lock(&g_ragdoll_setup_ctx.lock);
+    if (g_ragdoll_setup_ctx.initialized && g_ragdoll_setup_ctx.items && handle.id < g_ragdoll_setup_ctx.count) {
         g_ragdoll_setup_ctx.items[handle.id].dirty = true;
+        // TODO: Implement ragdoll setup culling integration
     }
+    pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
 }
 
 int animation_ragdoll_setup_process_pending(void) {
-    // TODO: Add ragdoll setup render graph node
-    // TODO: Implement batch processing
-
     int processed = 0;
-    for (uint32_t i = 0; i < g_ragdoll_setup_ctx.count; i++) {
-        animation_ragdoll_setup_internal_t* item = &g_ragdoll_setup_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item
-            item->dirty = false;
-            processed++;
+
+    pthread_mutex_lock(&g_ragdoll_setup_ctx.lock);
+    if (g_ragdoll_setup_ctx.initialized && g_ragdoll_setup_ctx.items) {
+        for (uint32_t i = 0; i < g_ragdoll_setup_ctx.count; i++) {
+            animation_ragdoll_setup_internal_t* item = &g_ragdoll_setup_ctx.items[i];
+            if (item->initialized && item->dirty) {
+
+                // TODO: Implement ragdoll physics
+                // if (item->flags & RAGDOLL_PHYSICS) { update_ragdoll_physics(item); }
+
+                process_skeletal_animation(item);
+
+                // TODO: Add ragdoll setup render graph node
+
+                item->dirty = false;
+                processed++;
+            }
         }
     }
+    pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
 
     return processed;
 }
@@ -271,20 +337,25 @@ uint32_t animation_ragdoll_setup_get_count(void) {
 }
 
 size_t animation_ragdoll_setup_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_ragdoll_setup_ctx);
-    total += g_ragdoll_setup_ctx.capacity * sizeof(animation_ragdoll_setup_internal_t);
 
-    for (uint32_t i = 0; i < g_ragdoll_setup_ctx.count; i++) {
-        total += g_ragdoll_setup_ctx.items[i].data_size;
+    pthread_mutex_lock(&g_ragdoll_setup_ctx.lock);
+    if (g_ragdoll_setup_ctx.initialized && g_ragdoll_setup_ctx.items) {
+        total += g_ragdoll_setup_ctx.capacity * sizeof(animation_ragdoll_setup_internal_t);
+
+        for (uint32_t i = 0; i < g_ragdoll_setup_ctx.count; i++) {
+            total += g_ragdoll_setup_ctx.items[i].data_size;
+        }
     }
+    pthread_mutex_unlock(&g_ragdoll_setup_ctx.lock);
 
     return total;
 }
 
 void animation_ragdoll_setup_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    printf("Animation Ragdoll Setup Debug Info:\n");
+    printf("  Count: %u\n", g_ragdoll_setup_ctx.count);
+    // TODO: Add ragdoll setup debug output
 }
 
 /* End of ragdoll_setup.c */
