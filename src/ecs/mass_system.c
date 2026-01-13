@@ -1,3 +1,10 @@
+/**
+ * @file mass_system.c
+ * @brief ECS Implementation
+ * @description Entity Component System implementation
+ * @date 2026-01-13
+ */
+
 #include "../include/ecs/mass_system.h"
 #include "../include/core/memory.h"
 #include "../include/math/vec3.h"
