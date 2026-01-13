@@ -22,8 +22,7 @@ static CrashReportSystem *g_crash_system = NULL;
 static u64 get_current_time_ms(void) {
   struct timespec ts;
   clock_gettime(CLOCK_MONOTONIC, &ts);
-  // TODO(Jules): Enhance get_current_time_ms to support high-resolution timers
-  // on all platforms.
+  // TODO: Add high-resolution timer support for all platforms
   return (u64)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 }
 
