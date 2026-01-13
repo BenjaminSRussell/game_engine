@@ -1,7 +1,7 @@
 #ifndef UNDERWATER_FILTER_H
 #define UNDERWATER_FILTER_H
 
-#include "engine/include/common.h"
+#include <common.h>
 
 void underwater_filter_init(void);
 

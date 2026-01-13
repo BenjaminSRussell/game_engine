@@ -1,7 +1,12 @@
-// src/engine/core/thread_pool.c
-//
-// Purpose: Thread pool implementation for parallel task execution
-// Provides work distribution, load balancing, and dependency tracking
+/*
+ * thread_pool.c
+ * Thread pool implementation for parallel task execution
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides work distribution, load balancing, and dependency tracking
+ */
 
 #include <core/thread_pool.h>
 #include <core/logging_system.h>
