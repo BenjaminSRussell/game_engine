@@ -90,11 +90,11 @@ typedef struct Collider Collider;
  * =================================================================================================
  */
 
-typedef enum RigidBodyType {
-  RIGID_BODY_STATIC,
-  RIGID_BODY_KINEMATIC,
-  RIGID_BODY_DYNAMIC,
-} RigidBodyType;
+// RigidBodyType is already defined in core/math/types.h included via math.h
+// checking if we should redefine it or use existing one.
+// Since we include <include/math/math.h>, we have access to RigidBodyType.
+// However, we need to ensure the values match our expectations.
+// So we do NOT redefine it here.
 
 typedef struct RigidBody {
   uint32_t id;
