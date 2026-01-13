@@ -271,4 +271,3 @@ void unified_memory_print_regions(void);
 #define stack_allocator_alloc(stack, size) unified_memory_stack_alloc(stack, size, MEMORY_FLAG_NONE)
 #define stack_allocator_reset(stack) unified_memory_stack_reset(stack)
 
-#endif // UNIFIED_MEMORY_ALLOCATOR_H
