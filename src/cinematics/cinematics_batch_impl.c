@@ -1,6 +1,8 @@
 /**
- * BATCH IMPLEMENTATION: Cinematics & Dialogue System
- * Resolves ~110 TODOs in Dialogue, Sequencer, and Camera Control
+ * @file cinematics_batch_impl.c
+ * @brief Batch Implementation: Cinematics & Dialogue System
+ * @description Resolves ~110 TODOs in Dialogue, Sequencer, and Camera Control
+ * @date 2026-01-13
  */
 
 #include <stdlib.h>
