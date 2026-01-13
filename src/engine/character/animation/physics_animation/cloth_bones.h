@@ -55,6 +55,11 @@ int animation_cloth_bones_get_info(animation_cloth_bones_handle_t handle, animat
 void animation_cloth_bones_mark_dirty(animation_cloth_bones_handle_t handle);
 int animation_cloth_bones_process_pending(void);
 
+/* Render Graph Integration */
+/* Returns a handle to the render pass node created for this cloth simulation */
+/* The return type is uint32_t to avoid including render_pass_node.h here, caller should cast to rendering_render_pass_node_handle_t */
+uint32_t animation_cloth_bones_create_render_node(animation_cloth_bones_handle_t handle);
+
 /* Statistics */
 uint32_t animation_cloth_bones_get_count(void);
 size_t animation_cloth_bones_get_memory_usage(void);
