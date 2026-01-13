@@ -5,7 +5,7 @@
  * @date 2026-01-13
  */
 
-#include "engine/include/math/math.h"
+#include "math/math.h"
 #include <stdlib.h>
 #include <string.h>
 

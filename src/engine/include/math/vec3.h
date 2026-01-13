@@ -71,14 +71,18 @@ typedef struct {
 // Vector precision enum
 typedef enum { VEC3_PRECISION_SINGLE, VEC3_PRECISION_DOUBLE } Vec3Precision;
 
-// Use unified type from core/math/types.h
-typedef vec3 Vec3;
+// Use unified #include <core/math/types.h>
 
+typedef vec3 Vec3;
 typedef Vec3 vec3_t;
 
 // Vector operations (all inline for performance)
 INLINE Vec3 vec3_create(f32 x, f32 y, f32 z) {
-  Vec3 v = {x, y, z};
+  Vec3 v;
+  v.x = x;
+  v.y = y;
+  v.z = z;
+  v._w = 0.0f;
   return v;
 }
 
