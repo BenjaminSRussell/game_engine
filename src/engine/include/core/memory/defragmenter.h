@@ -55,6 +55,9 @@ int core_defragmenter_get_info(core_defragmenter_handle_t handle, core_defragmen
 void core_defragmenter_mark_dirty(core_defragmenter_handle_t handle);
 int core_defragmenter_process_pending(void);
 
+typedef void (*core_defragmenter_render_node_callback_t)(void);
+void core_defragmenter_register_render_node_callback(core_defragmenter_render_node_callback_t callback);
+
 /* Statistics */
 uint32_t core_defragmenter_get_count(void);
 size_t core_defragmenter_get_memory_usage(void);
