@@ -1,0 +1,45 @@
+#version 450 core
+
+// Enhanced Bloom Blur Compute Shader
+// Provides high-quality bloom blur with improved performance
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D inputTexture;
+layout(binding = 1, rgba16f) uniform image2D outputTexture;
+
+layout(push_constant) uniform PushConstants {
+    vec2 texelSize;
+    float strength;
+    int radius;
+    int iteration;
+} pc;
+
+// Gaussian weights for better blur quality
+const float weights[5] = float[](
+    0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216
+);
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    if (coord.x >= imageSize(outputTexture).x || coord.y >= imageSize(outputTexture).y) {
+        return;
+    }
+    
+    vec3 color = texture(inputTexture, (coord + 0.5) * pc.texelSize).rgb * weights[0];
+    
+    // Apply gaussian blur with improved quality
+    for (int i = 1; i < 5; i++) {
+        vec2 offset1 = vec2(float(i) * pc.texelSize.x, 0.0);
+        vec2 offset2 = vec2(0.0, float(i) * pc.texelSize.y);
+        
+        color += texture(inputTexture, (coord + offset1 + 0.5) * pc.texelSize).rgb * weights[i];
+        color += texture(inputTexture, (coord - offset1 + 0.5) * pc.texelSize).rgb * weights[i];
+        color += texture(inputTexture, (coord + offset2 + 0.5) * pc.texelSize).rgb * weights[i];
+        color += texture(inputTexture, (coord - offset2 + 0.5) * pc.texelSize).rgb * weights[i];
+    }
+    
+    // Apply strength and write output
+    color *= pc.strength;
+    imageStore(outputTexture, coord, vec4(color, 1.0));
+}
