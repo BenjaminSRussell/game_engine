@@ -1,11 +1,10 @@
-/*
- * big_int.c
- * Big integer implementation for handling very large numbers
- *
- * Part of the Core subsystem
- * Advanced 3D Rendering Engine
- * 
- * Essential for GregTech-style mods with massive quantities
+/**
+ * @file big_int.c
+ * @brief Big Integer Implementation
+ * @description Big integer implementation for handling very large numbers
+ * @date 2026-01-13
+ * @note Part of the Core subsystem - Advanced 3D Rendering Engine
+ * @note Essential for GregTech-style mods with massive quantities
  */
 
 #include <core/big_int.h>
