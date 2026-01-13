@@ -10,6 +10,13 @@ typedef struct VkCommandBuffer_T* VkCommandBuffer;
 struct VkImageView_T;
 typedef struct VkImageView_T* VkImageView;
 
+// Basic Vulkan types required by other headers
+struct VkBuffer_T;
+typedef struct VkBuffer_T* VkBuffer;
+
+struct VkDeviceMemory_T;
+typedef struct VkDeviceMemory_T* VkDeviceMemory;
+
 typedef uint64_t VkAccelerationStructureKHR;
 
 // Forward declaration for VulkanRenderer

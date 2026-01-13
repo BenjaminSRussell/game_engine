@@ -10,6 +10,7 @@
 #include <player/player.h>
 #include <player/player_magic.h>
 #include <player/spell_combination.h>
+#include <player/spell_effects.h>
 #include <string.h>
 #include <core/logger.h>
 #include <effects/vfx/particle_system.h>
@@ -50,7 +51,7 @@ static void init_spell_cooldown_system(void) {
     g_cooldown_system.global_cooldown_modifier = 1.0f;
     g_cooldown_system.visual_indicators_enabled = true;
     g_cooldown_system.cooldown_reduction_enabled = false;
-    LOG_INFO("Spell cooldown system initialized");
+    LOG_INFO(LOG_CAT_GAME, "Spell cooldown system initialized");
 }
 
 static SpellCooldown* get_spell_cooldown(SpellType spell) {
@@ -98,7 +99,7 @@ static void start_spell_cooldown(SpellType spell, f32 base_cooldown) {
     cooldown->visual_alpha = 1.0f;
     cooldown->flash_timer = COOLDOWN_FLASH_INTERVAL;
     
-    LOG_DEBUG("Started cooldown for spell %d: %.2fs", spell, actual_cooldown);
+    LOG_DEBUG(LOG_CAT_GAME, "Started cooldown for spell %d: %.2fs", spell, actual_cooldown);
 }
 
 static void update_spell_cooldowns(f32 delta_time) {
@@ -111,7 +112,7 @@ static void update_spell_cooldowns(f32 delta_time) {
             if (cooldown->remaining_cooldown <= 0.0f) {
                 cooldown->remaining_cooldown = 0.0f;
                 cooldown->is_ready = true;
-                LOG_DEBUG("Spell %d is now ready", cooldown->spell_type);
+                LOG_DEBUG(LOG_CAT_GAME, "Spell %d is now ready", cooldown->spell_type);
             }
         }
         
@@ -168,7 +169,7 @@ static void render_spell_cooldown_indicators(PlayerSystem *system) {
         if (cooldown->show_visual_indicator && cooldown->visual_alpha > 0.0f) {
             // Render visual indicator (placeholder implementation)
             // Would draw UI elements at appropriate screen positions
-            LOG_TRACE("Rendering cooldown indicator for spell %d (alpha: %.2f)", 
+            LOG_TRACE(LOG_CAT_GAME, "Rendering cooldown indicator for spell %d (alpha: %.2f)",
                      cooldown->spell_type, cooldown->visual_alpha);
         }
     }
@@ -246,6 +247,10 @@ static bool player_magic_can_teleport(PlayerSystem *system, Vec3 origin,
 void player_magic_init(PlayerMagicComponent *magic) {
   if (!magic)
     return;
+
+  // Initialize spell effects system
+  spell_effects_init();
+
   memset(magic, 0, sizeof(PlayerMagicComponent));
 
   magic->max_mana = 100.0f;
@@ -271,7 +276,7 @@ bool player_cast_spell(PlayerSystem *system, SpellType spell, Vec3 target) {
 
   // Check spell cooldown first
   if (!is_spell_ready(spell)) {
-    LOG_DEBUG("Spell %d is on cooldown", spell);
+    LOG_DEBUG(LOG_CAT_GAME, "Spell %d is on cooldown", spell);
     return false;
   }
 
@@ -344,76 +349,17 @@ bool player_cast_spell(PlayerSystem *system, SpellType spell, Vec3 target) {
   Vec3 direction =
       player_magic_get_direction(system, transform->position, target);
 
-  if (system->audio_system) {
-    SoundType sound = SOUND_SWORD_SWING;
-    f32 volume = 0.7f;
-    switch (spell) {
-    case SPELL_FIREBALL:
-      sound = SOUND_FIRE_BURN;
-      volume = 0.8f;
-      break;
-    case SPELL_LIGHTNING:
-      sound = SOUND_THUNDER_01;
-      volume = 0.9f;
-      break;
-    case SPELL_HEAL:
-      sound = SOUND_PLAYER_HEAL;
-      volume = 0.8f;
-      break;
-    case SPELL_TELEPORT:
-      sound = SOUND_WIND_LIGHT;
-      volume = 0.6f;
-      break;
-    case SPELL_SHIELD:
-      sound = SOUND_CRAFTING_SUCCESS;
-      volume = 0.6f;
-      break;
-    default:
-      break;
-    }
-    audio_play_sound(system->audio_system, sound, transform->position, volume,
-                     SOUND_CATEGORY_PLAYER);
+  // Trigger spell effects (audio + visual)
+  if (spell == SPELL_LIGHTNING) {
+      // Lightning originates at target
+      spell_effects_play(system, spell, SPELL_EFFECT_CAST, target, vec3_zero());
+  } else {
+      spell_effects_play(system, spell, SPELL_EFFECT_CAST, transform->position, direction);
   }
 
-  switch (spell) {
-  case SPELL_FIREBALL:
-    if (g_particle_system) {
-        particle_emit_burst(g_particle_system, PARTICLE_TYPE_FLAME, transform->position, direction, 2.0f, 20, 1.0f);
-    }
-    break;
-  case SPELL_LIGHTNING:
-    if (g_particle_system) {
-        particle_emit_burst(g_particle_system, PARTICLE_TYPE_LIGHTNING, target, vec3_zero(), 1.0f, 10, 0.5f);
-    }
-    break;
-  case SPELL_HEAL:
-    if (g_particle_system) {
-        particle_emit_burst(g_particle_system, PARTICLE_TYPE_HEART, transform->position, vec3(0.0f, 1.0f, 0.0f), 1.0f, 10, 1.0f);
-    }
-    break;
-  case SPELL_TELEPORT:
-    if (g_particle_system) {
-        particle_emit_burst(g_particle_system, PARTICLE_TYPE_PORTAL, transform->position, vec3_zero(), 0.5f, 50, 1.0f);
-        particle_emit_burst(g_particle_system, PARTICLE_TYPE_PORTAL, target, vec3_zero(), 0.5f, 50, 1.0f);
-    }
-    break;
-  case SPELL_SHIELD:
-    if (g_particle_system) {
-        particle_emit_burst(g_particle_system, PARTICLE_TYPE_ENCHANT, transform->position, vec3_zero(), 1.0f, 30, 2.0f);
-    }
-    break;
-  case SPELL_INVISIBILITY:
-    if (g_particle_system) {
-        particle_emit_burst(g_particle_system, PARTICLE_TYPE_SMOKE, transform->position, vec3_zero(), 1.0f, 20, 1.5f);
-    }
-    break;
-  case SPELL_FLIGHT:
-    if (g_particle_system) {
-        particle_emit_burst(g_particle_system, PARTICLE_TYPE_DUST, transform->position, vec3(0.0f, -1.0f, 0.0f), 2.0f, 20, 1.0f);
-    }
-    break;
-  default:
-    break;
+  // Special case for Teleport (start and end effects)
+  if (spell == SPELL_TELEPORT) {
+      spell_effects_play(system, spell, SPELL_EFFECT_TELEPORT_END, target, vec3_zero());
   }
 
   switch (spell) {
@@ -585,17 +531,17 @@ void player_magic_init_cooldown_system(void) {
 
 void player_magic_enable_visual_indicators(bool enable) {
     g_cooldown_system.visual_indicators_enabled = enable;
-    LOG_INFO("Spell visual indicators %s", enable ? "enabled" : "disabled");
+    LOG_INFO(LOG_CAT_GAME, "Spell visual indicators %s", enable ? "enabled" : "disabled");
 }
 
 void player_magic_set_cooldown_modifier(f32 modifier) {
     g_cooldown_system.global_cooldown_modifier = modifier;
-    LOG_INFO("Spell cooldown modifier set to %.2f", modifier);
+    LOG_INFO(LOG_CAT_GAME, "Spell cooldown modifier set to %.2f", modifier);
 }
 
 void player_magic_enable_cooldown_reduction(bool enable) {
     g_cooldown_system.cooldown_reduction_enabled = enable;
-    LOG_INFO("Spell cooldown reduction %s", enable ? "enabled" : "disabled");
+    LOG_INFO(LOG_CAT_GAME, "Spell cooldown reduction %s", enable ? "enabled" : "disabled");
 }
 
 bool player_magic_is_spell_ready(SpellType spell) {

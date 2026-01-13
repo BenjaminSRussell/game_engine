@@ -87,6 +87,8 @@ INLINE Vec3 vec3_create(f32 x, f32 y, f32 z) {
   return v;
 }
 
+#define vec3 vec3_create
+
 INLINE Vec3 vec3_zero(void) { return vec3_create(0.0f, 0.0f, 0.0f); }
 
 INLINE Vec3 vec3_one(void) { return vec3_create(1.0f, 1.0f, 1.0f); }

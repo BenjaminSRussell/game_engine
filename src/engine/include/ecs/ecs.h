@@ -102,7 +102,7 @@ typedef struct {
   u8 data[ARCHETYPE_CHUNK_SIZE];
   u32 entity_count;
   u32 capacity;
-  ECSArchetype *archetype;
+  struct ECSArchetype *archetype;
   struct Chunk *next_chunk;
 } ECSChunk;
 
