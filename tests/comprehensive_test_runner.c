@@ -1,4 +1,5 @@
 #include "comprehensive_test_runner.h"
+#include "rendering_tests.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -531,10 +532,43 @@ TestSuiteResults execute_rendering_tests(void) {
     memset(&results, 0, sizeof(results));
     strcpy(results.suite_name, "Rendering Tests");
     results.was_executed = true;
-    results.passed = true; // Placeholder
-    results.total_tests = 1;
-    results.passed_tests = 1;
-    results.execution_time_ms = 15.0;
+
+    start_test_timer(results.suite_name);
+
+    // Initialize rendering tests
+    RenderingTestConfig config = {
+        .enable_verbose_output = false,
+        .enable_performance_tests = true,
+        .enable_visual_validation = true,
+        .framebuffer_width = 512,
+        .framebuffer_height = 512,
+        .pixel_tolerance = 0.01f
+    };
+
+    if (!rendering_tests_init(&config)) {
+        strcpy(results.error_messages, "Failed to initialize rendering tests");
+        results.passed = false;
+        results.execution_time_ms = stop_test_timer(results.suite_name);
+        return results;
+    }
+
+    // Run rendering tests
+    results.passed = rendering_run_all_tests();
+    RenderingTestResults render_results = rendering_get_test_results();
+
+    results.total_tests = render_results.total_tests;
+    results.passed_tests = render_results.passed_tests;
+    results.failed_tests = render_results.failed_tests;
+    results.skipped_tests = render_results.skipped_tests;
+
+    if (strlen(render_results.error_messages) > 0) {
+        strncpy(results.error_messages, render_results.error_messages,
+                sizeof(results.error_messages) - 1);
+    }
+
+    rendering_tests_shutdown(false);
+
+    results.execution_time_ms = stop_test_timer(results.suite_name);
     return results;
 }
 
