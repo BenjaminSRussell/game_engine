@@ -1,3 +1,10 @@
+/**
+ * @file task_graph.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 #include "task_graph.h"
 #include "core/memory/memory.h"
 #include "engine/include/core/logger.h"
