@@ -303,7 +303,7 @@ bool thread_pool_init(ThreadPool *pool, u32 thread_count) {
     pthread_t *thread = (pthread_t *)&pool->threads[i];
     int result = pthread_create(thread, NULL, worker_loop, pool);
     if (result != 0) {
-      LOG_ERROR("pthread_create failed: %s (%d)", strerror(result), result);
+      LOG_ERROR(LOG_CAT_GENERAL, "pthread_create failed: %s (%d)", strerror(result), result);
 
       // If we couldn't create any threads at all, fail as before.
       if (i == 0) {
@@ -319,11 +319,11 @@ bool thread_pool_init(ThreadPool *pool, u32 thread_count) {
       // active thread count to the number created so far.
 #ifdef EAGAIN
       if (result == EAGAIN) {
-        LOG_WARN(
+        LOG_WARN(LOG_CAT_GENERAL,
             "pthread_create reached system limit; continuing with %u threads",
             i);
       } else {
-        LOG_WARN(
+        LOG_WARN(LOG_CAT_GENERAL,
             "pthread_create failed for one thread; continuing with %u threads",
             i);
       }

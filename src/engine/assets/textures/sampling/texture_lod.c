@@ -762,7 +762,6 @@ typedef struct texture_texture_lod_context {
 static texture_texture_lod_context_t g_texture_lod_ctx = {0};
 static texture_texture_lod_error_code_t g_texture_lod_ctx_last_error = TEXTURE_TEXTURE_LOD_ERROR_NONE;
 static bool g_texture_lod_ctx_mutex_initialized = false;
-    g_texture_lod_ctx.system_state.async_enabled = true;
 
 // Render graph node
 typedef struct texture_lod_render_node {
