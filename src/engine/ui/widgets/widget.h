@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "include/math/math.h"
+#include "include/math/rect.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,6 +23,14 @@ extern "C" {
 /* ============================================================================
  * TYPES
  * ============================================================================ */
+
+typedef struct {
+    float top, right, bottom, left;
+} BoxEdges;
+
+typedef struct {
+    float width, height;
+} Size;
 
 typedef struct Widget Widget;
 typedef struct UIEvent UIEvent;

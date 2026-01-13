@@ -1,30 +1,43 @@
-// include/core/memory.h
-//
-// Purpose: REDIRECTED TO UNIFIED MEMORY ALLOCATOR - CONSOLIDATED SYSTEM
-//
 #ifndef MEMORY_H
 #define MEMORY_H
 
+#include "math/types.h"
+
+// Memory tags
+typedef enum {
+    MEMORY_TAG_UNKNOWN,
+    MEMORY_TAG_ARRAY,
+    MEMORY_TAG_LINEAR_ALLOCATOR,
+    MEMORY_TAG_DARRAY,
+    MEMORY_TAG_DICT,
+    MEMORY_TAG_RING_QUEUE,
+    MEMORY_TAG_BST,
+    MEMORY_TAG_STRING,
+    MEMORY_TAG_ENGINE,
+    MEMORY_TAG_JOB,
+    MEMORY_TAG_TEXTURE,
+    MEMORY_TAG_MATERIAL,
+    MEMORY_TAG_RENDERER,
+    MEMORY_TAG_GAME,
+    MEMORY_TAG_TRANSFORM,
+    MEMORY_TAG_ENTITY,
+    MEMORY_TAG_ENTITY_NODE,
+    MEMORY_TAG_SCENE,
+    MEMORY_TAG_TEMP,
+    MEMORY_TAG_PERSISTENT,
+    MEMORY_TAG_ASSET,
+    MEMORY_TAG_AUDIO,
+    MEMORY_TAG_PHYSICS,
+    MEMORY_TAG_AI,
+    MEMORY_TAG_NETWORK,
+    MEMORY_TAG_UI,
+    MEMORY_TAG_GAMEPLAY,
+    MEMORY_TAG_GEOMETRY,
+    MEMORY_TAG_COUNT
+} MemoryTag;
+
 // Redirect to the unified memory allocator that consolidates all memory systems
 #include "memory/unified_memory_allocator.h"
-
-// Note: All memory management functionality has been consolidated into unified_memory_allocator.h
-// This header is kept for backwards compatibility only
-
-// Legacy compatibility - all existing code continues to work
-// The unified allocator provides:
-// - Memory tracking and leak detection
-// - Memory pools for performance
-// - Stack allocators for temporary data
-// - Arena allocators for bulk allocations
-// - Guard pages and canaries for corruption detection
-// - Statistics and monitoring
-// - Fragmentation analysis
-// - Hot-spot detection
-
-#endif // MEMORY_H
-  MEMORY_TAG_COUNT
-} MemoryTag;
 
 // Advanced allocation tracking with stack traces
 typedef struct {
@@ -68,11 +81,7 @@ extern MemoryTracker g_memory_tracker;
 // Memory tracking
 void memory_tracker_init(u32 initial_capacity);
 void memory_tracker_shutdown(void);
-void *memory_alloc(u32 size, const char *file, u32 line);
-void *memory_calloc(u32 count, u32 size, const char *file, u32 line);
-void *memory_realloc(void *ptr, u32 new_size, const char *file, u32 line);
-void memory_free(void *ptr);
-void memory_tracker_report(void);
+// memory_alloc/free are macros in unified_memory_allocator.h, so we don't declare them here unless we undef
 
 // Memory limits
 void memory_set_limit(u64 limit_bytes);
@@ -80,42 +89,6 @@ void memory_set_enforcement(bool enabled);
 u64 memory_get_limit(void);
 bool memory_is_enforcement_enabled(void);
 bool memory_check_limit(u64 requested_size);
-
-// Convenience macros
-#define MALLOC(size) memory_alloc(size, __FILE__, __LINE__)
-#define CALLOC(count, size) memory_calloc(count, size, __FILE__, __LINE__)
-#define REALLOC(ptr, size) memory_realloc(ptr, size, __FILE__, __LINE__)
-#define FREE(ptr) memory_free(ptr)
-
-// Legacy aliases
-#define core_alloc(size) MALLOC(size)
-#define core_realloc(ptr, size) REALLOC(ptr, size)
-#define core_free(ptr) FREE(ptr)
-
-// Object pool for fast allocation/deallocation
-typedef struct {
-  void *objects;
-  bool *free_list;
-  u32 object_size;
-  u32 capacity;
-  u32 count;
-} ObjectPool;
-
-ObjectPool *object_pool_create(u32 object_size, u32 capacity);
-void object_pool_destroy(ObjectPool *pool);
-void *object_pool_allocate(ObjectPool *pool);
-void object_pool_free(ObjectPool *pool, void *object);
-void object_pool_reset(ObjectPool *pool);
-u32 object_pool_get_available(ObjectPool *pool);
-
-// Stack allocator for temporary allocations
-typedef struct {
-  void *base;
-  u32 size;
-  u32 offset;
-  u32 frame_offset;
-  u32 peak_usage;
-} StackAllocator;
 
 // Linear allocator for ultra-fast per-frame allocations
 typedef struct {
@@ -171,57 +144,6 @@ typedef struct Allocator {
   void *impl;          // Implementation-specific data
 } Allocator;
 
-// Memory profiler visualization data
-typedef struct {
-  u64 timestamp;
-  u64 total_usage;
-  u64 tag_usage[MEMORY_TAG_COUNT];
-  u32 allocation_count;
-  u32 free_count;
-} MemorySnapshot;
-
-typedef struct {
-  MemorySnapshot *snapshots;
-  u32 snapshot_count;
-  u32 max_snapshots;
-  u32 current_index;
-  bool recording;
-} MemoryProfiler;
-
-// StackAllocator API provided by allocator_stack.h
-
-// Memory statistics and pool management
-typedef struct {
-  u32 pool_id;
-  u32 object_size;
-  u32 capacity;
-  u32 allocated;
-  u32 available;
-  f32 fragmentation;
-} PoolStats;
-
-typedef struct {
-  char module_name[64];
-  u64 total_allocated;
-  u64 total_freed;
-  u32 allocation_count;
-  u32 active_allocations;
-  u64 peak_usage;
-} ModuleStats;
-
-PoolStats *memory_get_pool_stats(u32 *out_pool_count);
-ModuleStats *memory_get_module_stats(u32 *out_module_count);
-u64 memory_get_total_used(void);
-u64 memory_get_peak_used(void);
-void memory_print_stats(void);
-void memory_print_module_stats(void);
-void memory_named_region_begin(const char *name);
-void memory_named_region_end(void);
-
-// Leak detection
-void memory_check_leaks(void);
-void memory_dump_allocations(void);
-
 // Linear allocator API
 LinearAllocator *linear_allocator_create(u32 size, u32 buffer_count);
 void linear_allocator_destroy(LinearAllocator *alloc);
@@ -260,43 +182,6 @@ void allocator_free(Allocator *allocator, void *ptr);
 void allocator_reset(Allocator *allocator);
 void allocator_get_stats(Allocator *allocator, char *buffer, u32 buffer_size);
 
-// Memory profiler visualization
-void memory_profiler_init(u32 max_snapshots);
-void memory_profiler_shutdown(void);
-void memory_profiler_start_recording(void);
-void memory_profiler_stop_recording(void);
-void memory_profiler_capture_snapshot(void);
-MemorySnapshot *memory_profiler_get_snapshots(u32 *count);
-void memory_profiler_export_timeline(const char *filename);
-
-// Advanced leak detection
-void memory_enable_advanced_leak_detection(bool enable);
-void memory_enable_stack_traces(bool enable);
-void memory_capture_stack_trace(void **buffer, u32 max_depth, u32 *out_depth);
-char **memory_resolve_stack_trace(void **addresses, u32 depth);
-void memory_free_resolved_stack_trace(char **symbols);
-
-// Enhanced allocation macros with tagging
-#define MALLOC_TAGGED(size, tag)                                               \
-  memory_alloc_tagged(size, tag, __FILE__, __LINE__)
-#define MALLOC_TEMP(size) MALLOC_TAGGED(size, MEMORY_TAG_TEMP)
-#define MALLOC_PERSISTENT(size) MALLOC_TAGGED(size, MEMORY_TAG_PERSISTENT)
-#define MALLOC_ASSET(size) MALLOC_TAGGED(size, MEMORY_TAG_ASSET)
-#define MALLOC_RENDERER(size) MALLOC_TAGGED(size, MEMORY_TAG_RENDERER)
-#define MALLOC_AUDIO(size) MALLOC_TAGGED(size, MEMORY_TAG_AUDIO)
-#define MALLOC_PHYSICS(size) MALLOC_TAGGED(size, MEMORY_TAG_PHYSICS)
-#define MALLOC_AI(size) MALLOC_TAGGED(size, MEMORY_TAG_AI)
-#define MALLOC_NETWORK(size) MALLOC_TAGGED(size, MEMORY_TAG_NETWORK)
-#define MALLOC_UI(size) MALLOC_TAGGED(size, MEMORY_TAG_UI)
-#define MALLOC_GAMEPLAY(size) MALLOC_TAGGED(size, MEMORY_TAG_GAMEPLAY)
-#define MALLOC_GEOMETRY(size) MALLOC_TAGGED(size, MEMORY_TAG_GEOMETRY)
-
-// ============================================================================
-// Vulkan Memory Integration
-// ============================================================================
-// Unified memory tracking for Vulkan driver allocations via
-// VkAllocationCallbacks
-
 // Vulkan allocator context for tracking driver allocations
 typedef struct {
   u64 driver_allocations_count;
@@ -307,15 +192,11 @@ typedef struct {
   bool enabled;
 } VulkanAllocatorStats;
 
-// Initialize Vulkan allocation system (internal)
-// Callbacks are exposed via memory_get_vulkan_callbacks()
-
-// Get VkAllocationCallbacks structure (opaque pointer to avoid Vulkan
-// dependency in this header)
+// Get VkAllocationCallbacks structure
 void *memory_get_vulkan_callbacks(void);
 
 // Vulkan allocator statistics
 void memory_get_vulkan_stats(VulkanAllocatorStats *stats);
 void memory_print_vulkan_stats(void);
 
-#endif
+#endif // MEMORY_H
