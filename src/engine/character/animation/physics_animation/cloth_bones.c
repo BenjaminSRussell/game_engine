@@ -6,17 +6,22 @@
  * Advanced 3D Rendering Engine
  */
 
+#define _POSIX_C_SOURCE 199309L
 #include "character/animation/physics_animation/cloth_bones.h"
+#include "math/vec3.h"
 #include "rendering/render_graph/render_pass_node.h"
 #include <core/logger.h>
 #include <core/performance.h>
 #include <core/threading.h>
+#include <pthread.h>
+#include <stdatomic.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h> // For debug printf
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -24,8 +29,8 @@
  */
 
 #define ANIMATION_CLOTH_BONES_MAX_COUNT 4096
-#define ANIMATION_CLOTH_BONES_DEFAULT_CAPACITY 256
 #define ANIMATION_CLOTH_BONES_ALIGNMENT 16
+#define ANIMATION_CLOTH_BONES_MAX_ITERATIONS 4
 #define ANIMATION_CLOTH_BONES_BATCH_SIZE 64
 
 /* ============================================================================
@@ -33,77 +38,117 @@
  * ============================================================================
  */
 
-typedef struct animation_cloth_bones_data {
-  // Placeholder for actual cloth data
-  float *positions;
-  float *velocities;
-  uint32_t particle_count;
-  float stiffness;
-  float damping;
-} animation_cloth_bones_data_t;
-
 typedef struct animation_cloth_bones_internal {
   uint32_t id;
   uint32_t flags;
-  animation_cloth_bones_data_t *data;
-  size_t data_size;
   bool initialized;
   bool dirty;
-  uint64_t frame_updated;
+
+  // Physics Configuration
+  uint32_t bone_count;
+  uint32_t *bone_indices;
+  float stiffness;
+  float damping;
+  float drag;
+  float mass;
+  float wind_influence;
+  Vec3 gravity;
+  Vec3 accumulated_force;
+
+  // Simulation State
+  Vec3 *current_positions;
+  Vec3 *previous_positions;
+  float *rest_lengths;
+  float previous_dt;
+
+  // Render Graph Integration
   rendering_render_pass_node_handle_t render_node;
+
+  // Thread Safety
+  pthread_mutex_t mutex;
+
+  // Performance
+  uint64_t last_update_time_ns;
+
+  // LOD/Culling
+  float lod_distance_threshold;
+  bool culled;
 } animation_cloth_bones_internal_t;
 
 typedef struct animation_cloth_bones_context {
-  animation_cloth_bones_internal_t *items;
-  uint32_t count;
-  uint32_t capacity;
-  Mutex *lock;
-  animation_cloth_bones_stats_t stats;
-  bool initialized;
+  // Array of pointers to ensure stable memory addresses for mutexes
+  animation_cloth_bones_internal_t *items[ANIMATION_CLOTH_BONES_MAX_COUNT];
+
+  // Use atomics for global counters to avoid locking in update loop
+  atomic_uint_fast32_t count;
+  atomic_bool initialized;
+
+  // Global Stats (Atomic where possible or approximation)
+  atomic_uint_fast64_t stat_update_count;
+  atomic_uint_fast64_t
+      stat_total_time_ns; // Accumulate NS then convert to MS for display
+  atomic_uint_fast32_t stat_active_sims;
+
+  // Stats structure for getter
+  animation_cloth_bones_stats_t cached_stats;
+
+  pthread_mutex_t global_mutex; // Protects creation/destruction logic
 } animation_cloth_bones_context_t;
 
 static animation_cloth_bones_context_t g_cloth_bones_ctx = {0};
 
 /* ============================================================================
- * PRIVATE FUNCTIONS
+ * HELPERS
  * ============================================================================
  */
 
-static bool
-animation_cloth_bones_validate(const animation_cloth_bones_internal_t *item) {
-  if (!item)
-    return false;
-  if (!item->initialized)
-    return false;
-  return true;
+static uint64_t get_time_ns(void) {
+  struct timespec ts;
+  clock_gettime(CLOCK_MONOTONIC, &ts);
+  return (uint64_t)ts.tv_sec * 1000000000ULL + ts.tv_nsec;
+}
+
+static void animation_cloth_bones_execute_render(void *cmd, void *user_data) {
+  // This function is called by the render graph executor
+  // uint32_t id = (uint32_t)(uintptr_t)user_data;
+  (void)cmd;
+  (void)user_data;
+  // Implementation would dispatch compute shader here
 }
 
 static void
 animation_cloth_bones_cleanup_internal(animation_cloth_bones_internal_t *item) {
   if (!item)
     return;
-  if (item->data) {
-    if (item->data->positions)
-      free(item->data->positions);
-    if (item->data->velocities)
-      free(item->data->velocities);
-    free(item->data);
-    item->data = NULL;
-  }
-  // Note: Render node should be destroyed via render graph API, but we store
-  // the handle here. For now we assume the render graph system handles its own
-  // cleanup or we'd call it here.
-  item->initialized = false;
-  item->data_size = 0;
-}
 
-static void animation_cloth_bones_execute_render(void *cmd, void *user_data) {
-  // This function is called by the render graph executor
-  uint32_t id = (uint32_t)(uintptr_t)user_data;
-  (void)cmd; // Unused for now
-  (void)id;
-  // printf("Executing cloth simulation render pass for cloth bone system ID:
-  // %u\n", id);
+  pthread_mutex_lock(&item->mutex);
+
+  if (item->bone_indices) {
+    free(item->bone_indices);
+    item->bone_indices = NULL;
+  }
+  if (item->current_positions) {
+    free(item->current_positions);
+    item->current_positions = NULL;
+  }
+  if (item->previous_positions) {
+    free(item->previous_positions);
+    item->previous_positions = NULL;
+  }
+  if (item->rest_lengths) {
+    free(item->rest_lengths);
+    item->rest_lengths = NULL;
+  }
+
+  // Cleanup render node if necessary (assuming RG handles it, but we clear
+  // handle)
+  item->render_node.id = 0;
+
+  item->initialized = false;
+  item->bone_count = 0;
+
+  pthread_mutex_unlock(&item->mutex);
+  pthread_mutex_destroy(&item->mutex);
 }
 
 /* ============================================================================
@@ -112,297 +157,374 @@ static void animation_cloth_bones_execute_render(void *cmd, void *user_data) {
  */
 
 int animation_cloth_bones_init(void) {
-  if (g_cloth_bones_ctx.initialized) {
+  if (atomic_load(&g_cloth_bones_ctx.initialized)) {
     LOG_WARN(LOG_CAT_ANIMATION, "Cloth bones system already initialized");
     return 0; // Already initialized
   }
 
-  g_cloth_bones_ctx.lock = mutex_create();
-  if (!g_cloth_bones_ctx.lock) {
+  if (pthread_mutex_init(&g_cloth_bones_ctx.global_mutex, NULL) != 0) {
     LOG_FATAL(LOG_CAT_ANIMATION,
               "Failed to create mutex for cloth bones system");
-    return -1;
+    return -2;
   }
 
-  mutex_lock(g_cloth_bones_ctx.lock);
+  memset(g_cloth_bones_ctx.items, 0, sizeof(g_cloth_bones_ctx.items));
+  atomic_store(&g_cloth_bones_ctx.count, 0);
+  atomic_store(&g_cloth_bones_ctx.stat_update_count, 0);
+  atomic_store(&g_cloth_bones_ctx.stat_total_time_ns, 0);
+  atomic_store(&g_cloth_bones_ctx.stat_active_sims, 0);
 
-  g_cloth_bones_ctx.capacity = ANIMATION_CLOTH_BONES_DEFAULT_CAPACITY;
-  g_cloth_bones_ctx.items = calloc(g_cloth_bones_ctx.capacity,
-                                   sizeof(animation_cloth_bones_internal_t));
-  if (!g_cloth_bones_ctx.items) {
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    mutex_destroy(g_cloth_bones_ctx.lock);
-    g_cloth_bones_ctx.lock = NULL;
-    LOG_FATAL(LOG_CAT_ANIMATION,
-              "Failed to allocate memory for cloth bones items");
-    return -1;
-  }
+  atomic_store(&g_cloth_bones_ctx.initialized, true);
 
-  g_cloth_bones_ctx.count = 0;
-
-  // Reset stats
-  memset(&g_cloth_bones_ctx.stats, 0, sizeof(animation_cloth_bones_stats_t));
-
-  g_cloth_bones_ctx.initialized = true;
-
-  mutex_unlock(g_cloth_bones_ctx.lock);
   LOG_INFO(LOG_CAT_ANIMATION, "Cloth bones system initialized");
-
   return 0;
 }
 
 void animation_cloth_bones_shutdown(void) {
-  if (!g_cloth_bones_ctx.initialized) {
+  if (!atomic_load(&g_cloth_bones_ctx.initialized)) {
     return;
   }
 
-  mutex_lock(g_cloth_bones_ctx.lock);
-
-  for (uint32_t i = 0; i < g_cloth_bones_ctx.count; i++) {
-    animation_cloth_bones_cleanup_internal(&g_cloth_bones_ctx.items[i]);
+  pthread_mutex_lock(&g_cloth_bones_ctx.global_mutex);
+  for (uint32_t i = 0; i < ANIMATION_CLOTH_BONES_MAX_COUNT; i++) {
+    if (g_cloth_bones_ctx.items[i]) {
+      if (g_cloth_bones_ctx.items[i]->initialized) {
+        animation_cloth_bones_cleanup_internal(g_cloth_bones_ctx.items[i]);
+      }
+      free(g_cloth_bones_ctx.items[i]);
+      g_cloth_bones_ctx.items[i] = NULL;
+    }
   }
 
-  free(g_cloth_bones_ctx.items);
-  g_cloth_bones_ctx.items = NULL;
-  g_cloth_bones_ctx.count = 0;
-  g_cloth_bones_ctx.capacity = 0;
-  g_cloth_bones_ctx.initialized = false;
-  memset(&g_cloth_bones_ctx.stats, 0, sizeof(animation_cloth_bones_stats_t));
-
-  mutex_unlock(g_cloth_bones_ctx.lock);
-  mutex_destroy(g_cloth_bones_ctx.lock);
-  g_cloth_bones_ctx.lock = NULL;
+  atomic_store(&g_cloth_bones_ctx.count, 0);
+  atomic_store(&g_cloth_bones_ctx.initialized, false);
+  pthread_mutex_unlock(&g_cloth_bones_ctx.global_mutex);
+  pthread_mutex_destroy(&g_cloth_bones_ctx.global_mutex);
 
   LOG_INFO(LOG_CAT_ANIMATION, "Cloth bones system shutdown");
 }
 
 int animation_cloth_bones_create(animation_cloth_bones_handle_t *out_handle,
                                  const animation_cloth_bones_desc_t *desc) {
-  if (!out_handle || !desc) {
-    LOG_ERROR(LOG_CAT_ANIMATION, "Invalid arguments for cloth bones creation");
+  if (!out_handle || !desc)
     return -1;
-  }
-
-  if (!g_cloth_bones_ctx.initialized) {
-    LOG_ERROR(LOG_CAT_ANIMATION, "Cloth bones system not initialized");
+  if (!atomic_load(&g_cloth_bones_ctx.initialized))
     return -2;
-  }
 
-  mutex_lock(g_cloth_bones_ctx.lock);
+  // Needs at least basic physics setup
+  if (desc->bone_count == 0 || !desc->bone_indices)
+    return -4;
+  // Initial positions optional? Assuming required for rest lengths
+  if (!desc->initial_positions)
+    return -7;
 
-  if (g_cloth_bones_ctx.count >= g_cloth_bones_ctx.capacity) {
-    // Simple grow strategy
-    uint32_t new_capacity = g_cloth_bones_ctx.capacity * 2;
-    animation_cloth_bones_internal_t *new_items =
-        realloc(g_cloth_bones_ctx.items,
-                new_capacity * sizeof(animation_cloth_bones_internal_t));
-    if (!new_items) {
-      LOG_ERROR(LOG_CAT_ANIMATION,
-                "Cloth bones capacity reached and reallocation failed");
-      mutex_unlock(g_cloth_bones_ctx.lock);
-      return -3;
+  pthread_mutex_lock(&g_cloth_bones_ctx.global_mutex);
+
+  // Find free slot
+  int index = -1;
+  for (uint32_t i = 0; i < ANIMATION_CLOTH_BONES_MAX_COUNT; ++i) {
+    if (g_cloth_bones_ctx.items[i] == NULL) {
+      index = (int)i;
+      break;
     }
-    // Zero out new memory
-    memset(new_items + g_cloth_bones_ctx.capacity, 0,
-           (new_capacity - g_cloth_bones_ctx.capacity) *
-               sizeof(animation_cloth_bones_internal_t));
-    g_cloth_bones_ctx.items = new_items;
-    g_cloth_bones_ctx.capacity = new_capacity;
   }
 
-  uint32_t index = g_cloth_bones_ctx.count++;
-  animation_cloth_bones_internal_t *item = &g_cloth_bones_ctx.items[index];
+  if (index == -1) {
+    pthread_mutex_unlock(&g_cloth_bones_ctx.global_mutex);
+    LOG_ERROR(LOG_CAT_ANIMATION, "Cloth bones capacity reached");
+    return -3; // Capacity limit reached
+  }
+
+  // Allocate the item container
+  animation_cloth_bones_internal_t *item =
+      calloc(1, sizeof(animation_cloth_bones_internal_t));
+  if (!item) {
+    pthread_mutex_unlock(&g_cloth_bones_ctx.global_mutex);
+    return -6;
+  }
+
+  if (pthread_mutex_init(&item->mutex, NULL) != 0) {
+    free(item);
+    pthread_mutex_unlock(&g_cloth_bones_ctx.global_mutex);
+    return -5;
+  }
+
+  g_cloth_bones_ctx.items[index] = item;
+  atomic_fetch_add(&g_cloth_bones_ctx.count, 1);
 
   item->id = index;
   item->flags = desc->flags;
-
-  // We choose the ORIGIN approach of NULL data for now, as HEAD's allocation
-  // was for demonstration.
-  item->data = NULL; // User data not stored internally yet, might change with
-                     // deeper implementation
-  item->data_size = 0;
-
   item->initialized = true;
   item->dirty = true;
-  item->frame_updated = 0;
-  item->render_node.id = 0; // Invalid initially
+  item->render_node.id = 0;
+
+  // Copy Physics Params
+  item->bone_count = desc->bone_count;
+  item->stiffness = desc->stiffness;
+  item->damping = desc->damping;
+  item->drag = desc->drag;
+  item->mass = desc->mass > 0.001f ? desc->mass : 1.0f;
+  item->wind_influence = desc->wind_influence;
+  item->gravity = desc->gravity;
+  item->lod_distance_threshold = desc->lod_distance_threshold > 0.0f
+                                     ? desc->lod_distance_threshold
+                                     : 100.0f;
+  item->accumulated_force = vec3_zero();
+  item->previous_dt = 0.016f; // Default assumption for first frame
+
+  // Allocate State
+  item->bone_indices = malloc(sizeof(uint32_t) * item->bone_count);
+  item->current_positions = malloc(sizeof(Vec3) * item->bone_count);
+  item->previous_positions = malloc(sizeof(Vec3) * item->bone_count);
+  item->rest_lengths = malloc(sizeof(float) * item->bone_count);
+
+  if (!item->bone_indices || !item->current_positions ||
+      !item->previous_positions || !item->rest_lengths) {
+    animation_cloth_bones_cleanup_internal(item);
+    free(item);
+    g_cloth_bones_ctx.items[index] = NULL;
+    atomic_fetch_sub(&g_cloth_bones_ctx.count, 1);
+    pthread_mutex_unlock(&g_cloth_bones_ctx.global_mutex);
+    return -6;
+  }
+
+  memcpy(item->bone_indices, desc->bone_indices,
+         sizeof(uint32_t) * item->bone_count);
+
+  // Initialize positions from bind pose
+  for (uint32_t i = 0; i < item->bone_count; ++i) {
+    item->current_positions[i] = desc->initial_positions[i];
+    item->previous_positions[i] = desc->initial_positions[i];
+  }
+
+  // Calculate rest lengths from bind pose
+  item->rest_lengths[0] = 0.0f; // Root has no length to parent
+  for (uint32_t i = 1; i < item->bone_count; ++i) {
+    float dist = vec3_distance(desc->initial_positions[i],
+                               desc->initial_positions[i - 1]);
+    item->rest_lengths[i] = dist;
+  }
 
   out_handle->id = index;
 
-  g_cloth_bones_ctx.stats.active_simulations++;
-  g_cloth_bones_ctx.stats.memory_usage =
-      animation_cloth_bones_get_memory_usage();
+  atomic_fetch_add(&g_cloth_bones_ctx.stat_active_sims, 1);
 
-  mutex_unlock(g_cloth_bones_ctx.lock);
-
+  pthread_mutex_unlock(&g_cloth_bones_ctx.global_mutex);
   return 0;
 }
 
 void animation_cloth_bones_destroy(animation_cloth_bones_handle_t handle) {
-  if (!g_cloth_bones_ctx.initialized)
+  if (handle.id >= ANIMATION_CLOTH_BONES_MAX_COUNT)
     return;
 
-  mutex_lock(g_cloth_bones_ctx.lock);
-
-  if (handle.id >= g_cloth_bones_ctx.count) {
-    LOG_WARN(LOG_CAT_ANIMATION,
-             "Attempt to destroy invalid cloth bones handle %u", handle.id);
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    return;
+  pthread_mutex_lock(&g_cloth_bones_ctx.global_mutex);
+  animation_cloth_bones_internal_t *item = g_cloth_bones_ctx.items[handle.id];
+  if (item) {
+    animation_cloth_bones_cleanup_internal(item);
+    free(item);
+    g_cloth_bones_ctx.items[handle.id] = NULL;
+    atomic_fetch_sub(&g_cloth_bones_ctx.count, 1);
+    atomic_fetch_sub(&g_cloth_bones_ctx.stat_active_sims, 1);
   }
-
-  if (g_cloth_bones_ctx.items[handle.id].initialized) {
-    animation_cloth_bones_cleanup_internal(&g_cloth_bones_ctx.items[handle.id]);
-    if (g_cloth_bones_ctx.stats.active_simulations > 0) {
-      g_cloth_bones_ctx.stats.active_simulations--;
-    }
-  }
-  g_cloth_bones_ctx.stats.memory_usage =
-      animation_cloth_bones_get_memory_usage();
-
-  mutex_unlock(g_cloth_bones_ctx.lock);
+  pthread_mutex_unlock(&g_cloth_bones_ctx.global_mutex);
 }
 
 int animation_cloth_bones_update(animation_cloth_bones_handle_t handle,
-                                 const void *data, size_t size) {
-  if (!g_cloth_bones_ctx.initialized)
+                                 float dt) {
+  if (handle.id >= ANIMATION_CLOTH_BONES_MAX_COUNT)
+    return -1;
+  animation_cloth_bones_internal_t *item = g_cloth_bones_ctx.items[handle.id];
+  if (!item)
     return -1;
 
-  // Performance timer
-  Timer *timer = perf_timer_create("cloth_bones_update");
-  timer_start(timer);
-
-  mutex_lock(g_cloth_bones_ctx.lock);
-
-  if (handle.id >= g_cloth_bones_ctx.count) {
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    timer_stop(timer);
-    timer_destroy(timer);
-    return -1;
-  }
-
-  animation_cloth_bones_internal_t *item = &g_cloth_bones_ctx.items[handle.id];
-  if (!item->initialized) {
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    timer_stop(timer);
-    timer_destroy(timer);
-    return -2;
-  }
-
-  // Basic data update simulation
-  // Ideally we copy data here if we were storing it
-  item->dirty = true;
-  item->frame_updated++; // Assuming this increments per update call for now
-
-  // Update stats
-  g_cloth_bones_ctx.stats.updates_per_frame++;
-
-  mutex_unlock(g_cloth_bones_ctx.lock);
-
-  timer_stop(timer);
-
-  // Simple moving average for stats (very rough approximation)
-  g_cloth_bones_ctx.stats.average_update_time_ms =
-      (g_cloth_bones_ctx.stats.average_update_time_ms * 0.95f) +
-      ((float)timer_get_elapsed(timer) * 1000.0f * 0.05f);
-
-  timer_destroy(timer);
-
-  return 0;
-}
-
-bool animation_cloth_bones_is_valid(animation_cloth_bones_handle_t handle) {
-  if (!g_cloth_bones_ctx.initialized)
-    return false;
-
-  // We avoid locking for simple read checks if acceptable, but for strict
-  // thread safety:
-  mutex_lock(g_cloth_bones_ctx.lock);
-  bool valid = false;
-  if (handle.id < g_cloth_bones_ctx.count) {
-    valid = g_cloth_bones_ctx.items[handle.id].initialized;
-  }
-  mutex_unlock(g_cloth_bones_ctx.lock);
-  return valid;
-}
-
-int animation_cloth_bones_get_info(animation_cloth_bones_handle_t handle,
-                                   animation_cloth_bones_info_t *out_info) {
-  if (!out_info) {
-    return -1;
-  }
-
-  if (!g_cloth_bones_ctx.initialized)
+  if (!item->initialized)
     return -2;
 
-  mutex_lock(g_cloth_bones_ctx.lock);
+  // Performance timer wrapper
+  Timer *timer = perf_timer_create("cloth_bones_update_physics");
+  perf_timer_start(timer);
 
-  if (handle.id >= g_cloth_bones_ctx.count) {
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    return -2;
-  }
+  pthread_mutex_lock(&item->mutex);
 
-  const animation_cloth_bones_internal_t *item =
-      &g_cloth_bones_ctx.items[handle.id];
-  out_info->id = item->id;
-  out_info->flags = item->flags;
-  out_info->initialized = item->initialized;
+  uint64_t start_time = get_time_ns();
 
-  mutex_unlock(g_cloth_bones_ctx.lock);
-  return 0;
-}
+  if (dt > 0.0001f) {
+    // Handle variable timestep
+    float dt_correction = dt / item->previous_dt;
+    // Clamp correction to avoid instability
+    if (dt_correction > 2.0f)
+      dt_correction = 2.0f;
+    if (dt_correction < 0.5f)
+      dt_correction = 0.5f;
 
-void animation_cloth_bones_mark_dirty(animation_cloth_bones_handle_t handle) {
-  if (!g_cloth_bones_ctx.initialized)
-    return;
+    item->previous_dt = dt;
 
-  mutex_lock(g_cloth_bones_ctx.lock);
-  if (handle.id < g_cloth_bones_ctx.count) {
-    g_cloth_bones_ctx.items[handle.id].dirty = true;
-  }
-  mutex_unlock(g_cloth_bones_ctx.lock);
-}
+    // Forces
+    Vec3 force_accel = vec3_div(item->accumulated_force, item->mass);
 
-int animation_cloth_bones_process_pending(void) {
-  if (!g_cloth_bones_ctx.initialized)
-    return 0;
+    // Add Wind (Placeholder logic)
+    if (item->wind_influence > 0.0f) {
+      // Vec3 wind = get_global_wind_at(item->current_positions[0]);
+      // force_accel = vec3_add(force_accel, vec3_mul(wind,
+      // item->wind_influence));
+    }
 
-  mutex_lock(g_cloth_bones_ctx.lock);
+    // Total Acceleration: Gravity + (Force / Mass)
+    Vec3 accel = vec3_add(item->gravity, force_accel);
 
-  int processed = 0;
-  int batch_count = 0;
+    // Reset accumulated force
+    item->accumulated_force = vec3_zero();
 
-  // Process in batches
-  for (uint32_t i = 0; i < g_cloth_bones_ctx.count; i++) {
-    animation_cloth_bones_internal_t *item = &g_cloth_bones_ctx.items[i];
-    if (item->initialized && item->dirty) {
-      // Process item logic would go here
-      item->dirty = false;
-      processed++;
-      batch_count++;
+    for (uint32_t i = 0; i < item->bone_count; ++i) {
+      if (i == 0)
+        continue; // Root is kinematic
 
-      if (batch_count >= ANIMATION_CLOTH_BONES_BATCH_SIZE) {
-        // Flush batch
-        batch_count = 0;
+      Vec3 pos = item->current_positions[i];
+      Vec3 prev = item->previous_positions[i];
+
+      Vec3 velocity = vec3_sub(pos, prev);
+      // Apply damping
+      velocity = vec3_mul(velocity, (1.0f - item->damping));
+      // Apply time correction
+      velocity = vec3_mul(velocity, dt_correction);
+
+      Vec3 delta = vec3_add(velocity, vec3_mul(accel, dt * dt));
+
+      item->previous_positions[i] = pos;
+      item->current_positions[i] = vec3_add(pos, delta);
+    }
+
+    // Constraints
+    for (int iter = 0; iter < ANIMATION_CLOTH_BONES_MAX_ITERATIONS; ++iter) {
+      for (uint32_t i = 1; i < item->bone_count; ++i) {
+        Vec3 p1 = item->current_positions[i - 1];
+        Vec3 p2 = item->current_positions[i];
+        Vec3 dir = vec3_sub(p2, p1);
+        float dist = vec3_length(dir);
+        float rest = item->rest_lengths[i];
+
+        if (dist > 0.0001f) {
+          float diff = (dist - rest) / dist;
+          Vec3 correction = vec3_mul(dir, diff * 0.5f * item->stiffness);
+
+          if (i - 1 == 0) {
+            item->current_positions[i] = vec3_sub(item->current_positions[i],
+                                                  vec3_mul(correction, 2.0f));
+          } else {
+            item->current_positions[i - 1] =
+                vec3_add(item->current_positions[i - 1], correction);
+            item->current_positions[i] =
+                vec3_sub(item->current_positions[i], correction);
+          }
+        }
       }
     }
   }
 
-  // Reset frame stats
-  g_cloth_bones_ctx.stats.updates_per_frame = 0;
+  uint64_t end_time = get_time_ns();
+  item->last_update_time_ns = end_time - start_time;
 
-  mutex_unlock(g_cloth_bones_ctx.lock);
-  return processed;
+  item->dirty = true;
+
+  pthread_mutex_unlock(&item->mutex);
+
+  // Atomic stats update
+  atomic_fetch_add(&g_cloth_bones_ctx.stat_update_count, 1);
+  atomic_fetch_add(&g_cloth_bones_ctx.stat_total_time_ns,
+                   item->last_update_time_ns);
+
+  perf_timer_stop(timer);
+  perf_timer_destroy(timer);
+
+  return 0;
+}
+
+int animation_cloth_bones_set_root_transform(
+    animation_cloth_bones_handle_t handle, Vec3 position) {
+  if (handle.id >= ANIMATION_CLOTH_BONES_MAX_COUNT)
+    return -1;
+
+  animation_cloth_bones_internal_t *item = g_cloth_bones_ctx.items[handle.id];
+  if (!item)
+    return -1;
+
+  pthread_mutex_lock(&item->mutex);
+  if (item->initialized && item->bone_count > 0) {
+    item->current_positions[0] = position;
+  }
+  pthread_mutex_unlock(&item->mutex);
+  return 0;
+}
+
+int animation_cloth_bones_reset(animation_cloth_bones_handle_t handle) {
+  if (handle.id >= ANIMATION_CLOTH_BONES_MAX_COUNT)
+    return -1;
+  animation_cloth_bones_internal_t *item = g_cloth_bones_ctx.items[handle.id];
+  if (!item)
+    return -1;
+
+  pthread_mutex_lock(&item->mutex);
+  if (item->initialized) {
+    for (uint32_t i = 0; i < item->bone_count; ++i) {
+      item->previous_positions[i] = item->current_positions[i];
+    }
+    item->accumulated_force = vec3_zero();
+    item->previous_dt = 0.016f;
+  }
+  pthread_mutex_unlock(&item->mutex);
+  return 0;
+}
+
+bool animation_cloth_bones_is_valid(animation_cloth_bones_handle_t handle) {
+  if (handle.id >= ANIMATION_CLOTH_BONES_MAX_COUNT)
+    return false;
+  animation_cloth_bones_internal_t *item = g_cloth_bones_ctx.items[handle.id];
+  return item && item->initialized;
+}
+
+int animation_cloth_bones_get_info(animation_cloth_bones_handle_t handle,
+                                   animation_cloth_bones_info_t *out_info) {
+  if (!out_info)
+    return -1;
+  if (handle.id >= ANIMATION_CLOTH_BONES_MAX_COUNT)
+    return -2;
+
+  animation_cloth_bones_internal_t *item = g_cloth_bones_ctx.items[handle.id];
+  if (!item)
+    return -2;
+
+  pthread_mutex_lock(&item->mutex);
+  out_info->id = item->id;
+  out_info->flags = item->flags;
+  out_info->initialized = item->initialized;
+  out_info->bone_count = item->bone_count;
+  out_info->last_update_time_ns = item->last_update_time_ns;
+  out_info->is_simulating = true;
+  pthread_mutex_unlock(&item->mutex);
+  return 0;
+}
+
+void animation_cloth_bones_mark_dirty(animation_cloth_bones_handle_t handle) {
+  if (handle.id < ANIMATION_CLOTH_BONES_MAX_COUNT) {
+    animation_cloth_bones_internal_t *item = g_cloth_bones_ctx.items[handle.id];
+    if (item)
+      item->dirty = true;
+  }
+}
+
+int animation_cloth_bones_process_pending(void) {
+  // Batch processing stub for graph integration
+  return 0;
 }
 
 uint32_t animation_cloth_bones_create_render_node(
     animation_cloth_bones_handle_t handle) {
-  if (handle.id >= g_cloth_bones_ctx.count ||
-      !g_cloth_bones_ctx.items[handle.id].initialized) {
+  if (handle.id >= ANIMATION_CLOTH_BONES_MAX_COUNT)
     return 0;
-  }
 
-  animation_cloth_bones_internal_t *item = &g_cloth_bones_ctx.items[handle.id];
+  animation_cloth_bones_internal_t *item = g_cloth_bones_ctx.items[handle.id];
+  if (!item || !item->initialized)
+    return 0;
 
   // Create a render graph node
   rendering_render_pass_node_desc_t desc = {0};
@@ -416,195 +538,82 @@ uint32_t animation_cloth_bones_create_render_node(
     item->render_node = node_handle;
     return node_handle.id;
   }
-
-  return 0;
-}
-
-uint32_t animation_cloth_bones_get_count(void) {
-  return g_cloth_bones_ctx.count;
-}
-
-size_t animation_cloth_bones_get_memory_usage(void) {
-  // Basic calculation, potentially unsafe if not locked, but acceptable for
-  // stats
-  size_t total = sizeof(g_cloth_bones_ctx);
-  if (g_cloth_bones_ctx.items) {
-    total +=
-        g_cloth_bones_ctx.capacity * sizeof(animation_cloth_bones_internal_t);
-    for (uint32_t i = 0; i < g_cloth_bones_ctx.count; i++) {
-      total += g_cloth_bones_ctx.items[i].data_size;
-    }
-  }
-  return total;
-}
-
-int animation_cloth_bones_get_stats(animation_cloth_bones_stats_t *out_stats) {
-  if (!out_stats || !g_cloth_bones_ctx.initialized)
-    return -1;
-
-  mutex_lock(g_cloth_bones_ctx.lock);
-  *out_stats = g_cloth_bones_ctx.stats;
-  mutex_unlock(g_cloth_bones_ctx.lock);
-
   return 0;
 }
 
 int animation_cloth_bones_serialize(animation_cloth_bones_handle_t handle,
                                     void *buffer, size_t size,
                                     size_t *out_written) {
-  if (!g_cloth_bones_ctx.initialized)
-    return -1;
-
-  mutex_lock(g_cloth_bones_ctx.lock);
-
-  if (handle.id >= g_cloth_bones_ctx.count ||
-      !g_cloth_bones_ctx.items[handle.id].initialized) {
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    return -2;
-  }
-
-  animation_cloth_bones_internal_t *item = &g_cloth_bones_ctx.items[handle.id];
-  size_t required_size =
-      sizeof(uint32_t) + sizeof(uint32_t) + sizeof(size_t) + item->data_size;
-
-  if (!buffer) {
-    if (out_written)
-      *out_written = required_size;
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    return 0;
-  }
-
-  if (size < required_size) {
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    return -3; // Buffer too small
-  }
-
-  uint8_t *ptr = (uint8_t *)buffer;
-
-  // Serialize ID
-  memcpy(ptr, &item->id, sizeof(uint32_t));
-  ptr += sizeof(uint32_t);
-
-  // Serialize Flags
-  memcpy(ptr, &item->flags, sizeof(uint32_t));
-  ptr += sizeof(uint32_t);
-
-  // Serialize Data Size
-  memcpy(ptr, &item->data_size, sizeof(size_t));
-  ptr += sizeof(size_t);
-
-  // Serialize Data
-  if (item->data_size > 0 && item->data) {
-    memcpy(ptr, item->data, item->data_size);
-    ptr += item->data_size;
-  }
-
-  if (out_written)
-    *out_written = required_size;
-
-  mutex_unlock(g_cloth_bones_ctx.lock);
-  return 0;
+  // Serialization not yet compatible with new physics data structure
+  return -1;
 }
 
 int animation_cloth_bones_deserialize(animation_cloth_bones_handle_t handle,
                                       const void *buffer, size_t size) {
-  if (!g_cloth_bones_ctx.initialized || !buffer)
+  return -1;
+}
+
+uint32_t animation_cloth_bones_get_count(void) {
+  return (uint32_t)atomic_load(&g_cloth_bones_ctx.count);
+}
+
+size_t animation_cloth_bones_get_memory_usage(void) {
+  size_t total = sizeof(g_cloth_bones_ctx);
+  for (uint32_t i = 0; i < ANIMATION_CLOTH_BONES_MAX_COUNT; i++) {
+    animation_cloth_bones_internal_t *item = g_cloth_bones_ctx.items[i];
+    if (item) {
+      total += sizeof(animation_cloth_bones_internal_t);
+      // Add approx heap usage
+      total += sizeof(uint32_t) * item->bone_count;
+      total += sizeof(Vec3) * item->bone_count * 2;
+      total += sizeof(float) * item->bone_count;
+    }
+  }
+  return total;
+}
+
+int animation_cloth_bones_get_stats(animation_cloth_bones_stats_t *out_stats) {
+  if (!out_stats)
     return -1;
-
-  mutex_lock(g_cloth_bones_ctx.lock);
-
-  if (handle.id >= g_cloth_bones_ctx.count ||
-      !g_cloth_bones_ctx.items[handle.id].initialized) {
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    return -2;
-  }
-
-  animation_cloth_bones_internal_t *item = &g_cloth_bones_ctx.items[handle.id];
-  const uint8_t *ptr = (const uint8_t *)buffer;
-  size_t read_bytes = 0;
-
-  // Read ID (verify)
-  uint32_t id;
-  if (size < sizeof(uint32_t)) {
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    return -3;
-  }
-  memcpy(&id, ptr, sizeof(uint32_t));
-  ptr += sizeof(uint32_t);
-  read_bytes += sizeof(uint32_t);
-
-  if (id != item->id) {
-    // ID mismatch, warning
-    LOG_WARN(LOG_CAT_ANIMATION,
-             "Deserialization ID mismatch: expected %u, got %u", item->id, id);
-  }
-
-  // Read Flags
-  if (size - read_bytes < sizeof(uint32_t)) {
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    return -3;
-  }
-  memcpy(&item->flags, ptr, sizeof(uint32_t));
-  ptr += sizeof(uint32_t);
-  read_bytes += sizeof(uint32_t);
-
-  // Read Data Size
-  size_t data_size;
-  if (size - read_bytes < sizeof(size_t)) {
-    mutex_unlock(g_cloth_bones_ctx.lock);
-    return -3;
-  }
-  memcpy(&data_size, ptr, sizeof(size_t));
-  ptr += sizeof(size_t);
-  read_bytes += sizeof(size_t);
-
-  // Read Data
-  if (data_size > 0) {
-    if (size - read_bytes < data_size) {
-      mutex_unlock(g_cloth_bones_ctx.lock);
-      return -3;
-    }
-
-    if (item->data)
-      free(item->data);
-    item->data = malloc(data_size);
-    if (item->data) {
-      memcpy(item->data, ptr, data_size);
-      item->data_size = data_size;
-    } else {
-      LOG_ERROR(LOG_CAT_ANIMATION,
-                "Failed to allocate memory for deserialized data");
-      item->data_size = 0;
-    }
-  } else {
-    if (item->data)
-      free(item->data);
-    item->data = NULL;
-    item->data_size = 0;
-  }
-
-  item->dirty = true;
-  mutex_unlock(g_cloth_bones_ctx.lock);
+  out_stats->active_simulations =
+      atomic_load(&g_cloth_bones_ctx.stat_active_sims);
+  out_stats->update_count = atomic_load(&g_cloth_bones_ctx.stat_update_count);
+  out_stats->total_update_time_ms =
+      (double)atomic_load(&g_cloth_bones_ctx.stat_total_time_ns) / 1000000.0;
+  out_stats->updates_per_frame =
+      0; // Not tracked with atomics per frame easily without reset logic
+  out_stats->memory_usage = animation_cloth_bones_get_memory_usage();
   return 0;
 }
 
 void animation_cloth_bones_debug_print(void) {
-  if (!g_cloth_bones_ctx.initialized)
-    return;
-
-  mutex_lock(g_cloth_bones_ctx.lock);
-
   LOG_INFO(LOG_CAT_ANIMATION, "Cloth Bones Debug Info:");
-  LOG_INFO(LOG_CAT_ANIMATION, "  Count: %u", g_cloth_bones_ctx.count);
-  LOG_INFO(LOG_CAT_ANIMATION, "  Capacity: %u", g_cloth_bones_ctx.capacity);
   LOG_INFO(LOG_CAT_ANIMATION, "  Active Sims: %u",
-           g_cloth_bones_ctx.stats.active_simulations);
-  LOG_INFO(LOG_CAT_ANIMATION, "  Memory Usage: %zu bytes",
-           g_cloth_bones_ctx.stats.memory_usage);
-  LOG_INFO(LOG_CAT_ANIMATION, "  Avg Update Time: %.3f ms",
-           g_cloth_bones_ctx.stats.average_update_time_ms);
+           atomic_load(&g_cloth_bones_ctx.stat_active_sims));
+}
 
-  mutex_unlock(g_cloth_bones_ctx.lock);
+// Stubs for future
+int animation_cloth_bones_set_lod(animation_cloth_bones_handle_t handle,
+                                  int lod_level) {
+  return 0;
+}
+int animation_cloth_bones_enable_gpu(animation_cloth_bones_handle_t handle,
+                                     bool enable) {
+  return 0;
+}
+int animation_cloth_bones_set_params(animation_cloth_bones_handle_t handle,
+                                     float stiffness, float damping) {
+  return 0;
+}
+int animation_cloth_bones_apply_force(animation_cloth_bones_handle_t handle,
+                                      Vec3 force) {
+  return 0;
+}
+int animation_cloth_bones_lock(animation_cloth_bones_handle_t handle) {
+  return 0;
+}
+int animation_cloth_bones_unlock(animation_cloth_bones_handle_t handle) {
+  return 0;
 }
 
 /* End of cloth_bones.c */
