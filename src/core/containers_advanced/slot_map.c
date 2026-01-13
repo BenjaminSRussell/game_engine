@@ -1,3 +1,10 @@
+/**
+ * @file slot_map.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 #include <core/containers_advanced/slot_map.h>
 #include <stdlib.h>
 #include <string.h>
