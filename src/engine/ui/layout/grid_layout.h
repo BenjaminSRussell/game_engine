@@ -14,6 +14,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "include/math/math.h"
+#include "layout_profiling.h"
+#include "flexbox_layout.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -147,6 +149,7 @@ struct GridContainer {
     // Performance tracking
     uint32_t layout_iterations;
     float layout_time_ms;
+    LayoutPerformanceStats stats;
 };
 
 /* ============================================================================
@@ -207,6 +210,7 @@ GridTrack grid_track_min_max(float min_size, float max_size);
 void grid_enable_performance_profiling(bool enable);
 void grid_get_performance_stats(const GridContainer* container, 
                                uint32_t* iterations, float* time_ms);
+void grid_reset_performance_stats(GridContainer* container);
 
 /* Grid Template Areas */
 void grid_define_template_areas(GridContainer* container, const char* areas_string);
