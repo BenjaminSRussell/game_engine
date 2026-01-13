@@ -1,6 +1,11 @@
-/**
- * ECS ENTITY MANAGER (High Performance)
- * Deep Implementation - Data Oriented Design
+/*
+ * ecs_impl.c
+ * ECS Entity Manager implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * High performance Entity Component System with data-oriented design
  */
 
 #include <stdbool.h>

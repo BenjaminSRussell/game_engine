@@ -217,30 +217,6 @@ physics_demos/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/build
 .PHONY : physics_demos/fast
 
-src/engine/assets/system/asset_system/loading/asset_loader.o: src/engine/assets/system/asset_system/loading/asset_loader.c.o
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.o
-
-# target to build an object file
-src/engine/assets/system/asset_system/loading/asset_loader.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/loading/asset_loader.c.o
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.c.o
-
-src/engine/assets/system/asset_system/loading/asset_loader.i: src/engine/assets/system/asset_system/loading/asset_loader.c.i
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.i
-
-# target to preprocess a source file
-src/engine/assets/system/asset_system/loading/asset_loader.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/loading/asset_loader.c.i
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.c.i
-
-src/engine/assets/system/asset_system/loading/asset_loader.s: src/engine/assets/system/asset_system/loading/asset_loader.c.s
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.s
-
-# target to generate assembly for a file
-src/engine/assets/system/asset_system/loading/asset_loader.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/loading/asset_loader.c.s
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.c.s
-
 src/engine/backend/metal/metal_mesh_bridge.o: src/engine/backend/metal/metal_mesh_bridge.c.o
 .PHONY : src/engine/backend/metal/metal_mesh_bridge.o
 
@@ -21355,9 +21331,6 @@ help:
 	@echo "... Engine"
 	@echo "... Game"
 	@echo "... physics_demos"
-	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.o"
-	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.i"
-	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.s"
 	@echo "... src/engine/backend/metal/metal_mesh_bridge.o"
 	@echo "... src/engine/backend/metal/metal_mesh_bridge_2.o"
 	@echo "... src/engine/backend/metal/mtl_argument_buffer.o"
