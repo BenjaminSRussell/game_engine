@@ -12,6 +12,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "math/vec3.h"
+#include "math/mat4.h"
+#include "math/quat.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,16 +28,35 @@ typedef struct animation_spring_bones_handle {
     uint32_t id;
 } animation_spring_bones_handle_t;
 
+typedef struct animation_spring_bone_settings {
+    uint32_t bone_index;
+    float radius;           // Collision radius
+    float stiffness;        // Spring stiffness force
+    float drag;             // Damping/Drag force
+    float gravity_power;    // Gravity influence (0.0 - 1.0)
+    Vec3 gravity_dir;       // Direction of gravity
+    Vec3 local_tail_offset; // Vector from bone head to tail in local space (defines length and axis)
+} animation_spring_bone_settings_t;
+
 typedef struct animation_spring_bones_desc {
     uint32_t flags;
+    uint32_t bone_count;
+    const animation_spring_bone_settings_t* bones;
     void* user_data;
 } animation_spring_bones_desc_t;
 
 typedef struct animation_spring_bones_info {
     uint32_t id;
     uint32_t flags;
+    uint32_t bone_count;
     bool initialized;
 } animation_spring_bones_info_t;
+
+typedef struct animation_spring_bones_update_data {
+    float delta_time;
+    const Mat4* input_pose; // Read-only input pose (world space)
+    // Add other necessary context like global wind, etc.
+} animation_spring_bones_update_data_t;
 
 /* ============================================================================
  * API
@@ -49,7 +71,15 @@ int animation_spring_bones_create(animation_spring_bones_handle_t* out_handle, c
 void animation_spring_bones_destroy(animation_spring_bones_handle_t handle);
 
 /* Operations */
+// Data must be pointer to animation_spring_bones_update_data_t
+// This updates the internal simulation state.
 int animation_spring_bones_update(animation_spring_bones_handle_t handle, const void* data, size_t size);
+
+// Apply the simulation results to the pose.
+// The output_pose array should be initialized with the base animation pose (same as input_pose usually).
+// This function modifies the rotation of the spring bones to point towards the simulated tail.
+int animation_spring_bones_apply(animation_spring_bones_handle_t handle, Mat4* output_pose, uint32_t bone_count);
+
 bool animation_spring_bones_is_valid(animation_spring_bones_handle_t handle);
 int animation_spring_bones_get_info(animation_spring_bones_handle_t handle, animation_spring_bones_info_t* out_info);
 void animation_spring_bones_mark_dirty(animation_spring_bones_handle_t handle);

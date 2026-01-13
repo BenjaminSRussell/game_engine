@@ -5181,3 +5181,7 @@ TODO-32759,todo_md,Infrastructure,main,Extract helper functions from monolithic_
 TODO-32760,todo_md,Infrastructure,main,Extract helper functions from gamestate_main.c update loop,open
 TODO-32761,todo_md,Infrastructure,main,Create internal API boundaries for refactored modules,open
 TODO-32762,todo_md,Infrastructure,main,Update CMakeLists.txt for new modular structure,open
+TODO-29341,todo_md,Master TODO,master/todo.md,Implement spring bones initialization (line 19) (src/engine/character/animation/physics_animation/spring_bones.c),closed
+TODO-29339,todo_md,Master TODO,master/todo.md,Implement ragdoll physics (line 17) (src/engine/character/animation/physics_animation/spring_bones.c),closed
+TODO-29342,todo_md,Master TODO,master/todo.md,Add spring bones cleanup/shutdown (line 20) (src/engine/character/animation/physics_animation/spring_bones.c),closed
+TODO-29331,todo_md,Master TODO,master/todo.md,Implement skeletal animation (line 9) (src/engine/character/animation/physics_animation/spring_bones.c),closed
