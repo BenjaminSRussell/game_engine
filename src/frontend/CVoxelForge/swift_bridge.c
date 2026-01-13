@@ -1,3 +1,10 @@
+/**
+ * @file swift_bridge.c
+ * @brief Frontend Implementation
+ * @description Frontend system implementation
+ * @date 2026-01-13
+ */
+
 #include "voxelforge_bridge.h"
 #include <stdio.h>
 #include <stdlib.h>
