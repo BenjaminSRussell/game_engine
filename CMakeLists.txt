@@ -889,6 +889,21 @@ target_include_directories(test_network_mvp PRIVATE
 )
 add_test(NAME test_network_mvp COMMAND test_network_mvp)
 
+# Ability activation count and total active time.
+# Not add_engine_test: that macro links Engine and
+# tests/unit/test_framework_unified.c, which is missing. Engine does not
+# build on origin/main (missing GLFW, then gpu_profiler.c).
+add_executable(test_spell_stats
+    tests/spell_stats_test.c
+    src/engine/gameplay/gameplay_abilities.c
+)
+target_include_directories(test_spell_stats PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_spell_stats COMMAND test_spell_stats)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================

@@ -64,11 +64,18 @@ typedef struct {
 // Gameplay Ability (Skill, Spell, Action)
 typedef struct GameplayAbility GameplayAbility;
 
+// Ability Statistics
+typedef struct {
+  u32 activation_count;
+  f32 total_active_time;
+} AbilityStats;
+
 typedef struct {
   GameplayAbility *ability;
   bool is_active;
   f32 cooldown_remaining;
   // ... activation data
+  AbilityStats stats;
 } AbilitySpec;
 
 struct GameplayAbility {
@@ -131,6 +138,8 @@ bool gas_try_activate_ability(AbilitySystemComponent *comp,
 bool gas_activate_ability(AbilitySystemComponent *comp, const char *ability_name);
 bool gas_can_activate(AbilitySystemComponent *comp, const char *ability_name);
 void gas_cancel_ability(AbilitySystemComponent *comp, const char *ability_name);
+bool gas_get_ability_stats(AbilitySystemComponent *comp, const char *ability_name,
+                           AbilityStats *out_stats);
 
 // Effects
 void gas_apply_effect_to_self(AbilitySystemComponent *comp,
