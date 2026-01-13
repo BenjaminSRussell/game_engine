@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "include/math/math.h"
+#include "layout_profiling.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -181,6 +182,7 @@ struct FlexboxContainer {
     // Performance tracking
     uint32_t layout_iterations;
     float layout_time_ms;
+    LayoutPerformanceStats stats;
 };
 
 /* ============================================================================
@@ -235,6 +237,7 @@ bool flexbox_is_wrap_reversed(FlexWrap wrap);
 void flexbox_enable_performance_profiling(bool enable);
 void flexbox_get_performance_stats(const FlexboxContainer* container, 
                                  uint32_t* iterations, float* time_ms);
+void flexbox_reset_performance_stats(FlexboxContainer* container);
 
 #ifdef __cplusplus
 }

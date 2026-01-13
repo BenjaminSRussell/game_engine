@@ -9,8 +9,9 @@
 
 #include "grid_layout.h"
 #include "flexbox_layout.h" // Reuse UIElement
-#include "engine/include/core/logger.h"
-#include "engine/include/core/memory.h"
+#include "core/logger.h"
+#include "core/memory.h"
+#include "core/time_system.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -154,13 +155,13 @@ static TrackLayout create_track_layout(const GridTrack* tracks, uint32_t track_c
                                       const float* max_sizes) {
     TrackLayout layout = {0};
     layout.count = track_count;
-    layout.positions = memory_alloc(track_count * sizeof(float));
-    layout.sizes = memory_alloc(track_count * sizeof(float));
+    layout.positions = core_alloc(track_count * sizeof(float));
+    layout.sizes = core_alloc(track_count * sizeof(float));
     
     if (!layout.positions || !layout.sizes) {
-        LOG_ERROR("Failed to allocate track layout arrays");
-        if (layout.positions) memory_free(layout.positions);
-        if (layout.sizes) memory_free(layout.sizes);
+        LOGE("Failed to allocate track layout arrays");
+        if (layout.positions) core_free(layout.positions);
+        if (layout.sizes) core_free(layout.sizes);
         return layout;
     }
     
@@ -186,7 +187,7 @@ static TrackLayout create_track_layout(const GridTrack* tracks, uint32_t track_c
     
     // Distribute fraction space
     if (measurement.total_fraction > 0.0f) {
-        distribute_fraction_space(&layout, tracks, track_count, measurement.free_space, min_sizes, max_sizes);
+        distribute_fraction_space(&layout, tracks, track_count, measurement.free_space);
     }
     
     // Calculate remaining space for auto tracks
@@ -210,9 +211,17 @@ static TrackLayout create_track_layout(const GridTrack* tracks, uint32_t track_c
 
 static void destroy_track_layout(TrackLayout* layout) {
     if (layout) {
-        if (layout->positions) memory_free(layout->positions);
-        if (layout->sizes) memory_free(layout->sizes);
+        if (layout->positions) core_free(layout->positions);
+        if (layout->sizes) core_free(layout->sizes);
         memset(layout, 0, sizeof(TrackLayout));
+    }
+}
+
+static float get_main_margin(const BoxEdges* margins, bool horizontal) {
+    if (horizontal) {
+        return margins->left + margins->right;
+    } else {
+        return margins->top + margins->bottom;
     }
 }
 
@@ -264,9 +273,9 @@ static void position_grid_items(GridContainer* container, const TrackLayout* col
  * ============================================================================ */
 
 GridContainer* grid_container_create(const char* name) {
-    GridContainer* container = memory_alloc(sizeof(GridContainer));
+    GridContainer* container = core_alloc(sizeof(GridContainer));
     if (!container) {
-        LOG_ERROR("Failed to allocate grid container");
+        LOGE("Failed to allocate grid container");
         return NULL;
     }
     
@@ -287,8 +296,10 @@ GridContainer* grid_container_create(const char* name) {
     container->config.align_content = GRID_ALIGN_START;
     
     container->needs_layout = true;
+
+    layout_profiling_reset(&container->stats);
     
-    LOG_INFO("Created grid container: %s", name ? name : "unnamed");
+    LOGI("Created grid container: %s", name ? name : "unnamed");
     return container;
 }
 
@@ -301,38 +312,38 @@ void grid_container_destroy(GridContainer* container) {
     }
     
     if (container->base.children) {
-        memory_free(container->base.children);
+        core_free(container->base.children);
     }
     
     if (container->config.columns) {
-        memory_free(container->config.columns);
+        core_free(container->config.columns);
     }
     
     if (container->config.rows) {
-        memory_free(container->config.rows);
+        core_free(container->config.rows);
     }
     
     if (container->layout.cells) {
-        memory_free(container->layout.cells);
+        core_free(container->layout.cells);
     }
     
     if (container->base.name) {
         free(container->base.name);
     }
     
-    memory_free(container);
+    core_free(container);
 }
 
 void grid_set_columns(GridContainer* container, const GridTrack* tracks, uint32_t count) {
     if (!container || !tracks || count == 0) return;
     
     if (container->config.columns) {
-        memory_free(container->config.columns);
+        core_free(container->config.columns);
     }
     
-    container->config.columns = memory_alloc(count * sizeof(GridTrack));
+    container->config.columns = core_alloc(count * sizeof(GridTrack));
     if (!container->config.columns) {
-        LOG_ERROR("Failed to allocate grid columns");
+        LOGE("Failed to allocate grid columns");
         return;
     }
     
@@ -340,19 +351,19 @@ void grid_set_columns(GridContainer* container, const GridTrack* tracks, uint32_
     container->config.column_count = count;
     container->needs_layout = true;
     
-    LOG_INFO("Set %u grid columns", count);
+    LOGI("Set %u grid columns", count);
 }
 
 void grid_set_rows(GridContainer* container, const GridTrack* tracks, uint32_t count) {
     if (!container || !tracks || count == 0) return;
     
     if (container->config.rows) {
-        memory_free(container->config.rows);
+        core_free(container->config.rows);
     }
     
-    container->config.rows = memory_alloc(count * sizeof(GridTrack));
+    container->config.rows = core_alloc(count * sizeof(GridTrack));
     if (!container->config.rows) {
-        LOG_ERROR("Failed to allocate grid rows");
+        LOGE("Failed to allocate grid rows");
         return;
     }
     
@@ -360,7 +371,7 @@ void grid_set_rows(GridContainer* container, const GridTrack* tracks, uint32_t c
     container->config.row_count = count;
     container->needs_layout = true;
     
-    LOG_INFO("Set %u grid rows", count);
+    LOGI("Set %u grid rows", count);
 }
 
 void grid_add_child(GridContainer* container, UIElement* child) {
@@ -370,10 +381,10 @@ void grid_add_child(GridContainer* container, UIElement* child) {
     if (container->base.child_count >= container->base.child_capacity) {
         uint32_t new_capacity = container->base.child_capacity == 0 ? 8 : 
                                container->base.child_capacity * 2;
-        UIElement** new_children = memory_realloc(container->base.children, 
+        UIElement** new_children = core_realloc(container->base.children,
                                                  new_capacity * sizeof(UIElement*));
         if (!new_children) {
-            LOG_ERROR("Failed to resize children array");
+            LOGE("Failed to resize children array");
             return;
         }
         
@@ -389,13 +400,16 @@ void grid_add_child(GridContainer* container, UIElement* child) {
     container->needs_layout = true;
     child->dirty = true;
     
-    LOG_INFO("Added child %s to grid container %s", child->name, container->base.name);
+    LOGI("Added child %s to grid container %s", child->name, container->base.name);
 }
 
 void grid_layout(GridContainer* container, float available_width, float available_height) {
     if (!container || !container->needs_layout) return;
     
-    clock_t start_time = g_performance_profiling_enabled ? clock() : 0;
+    uint64_t start_ns = 0;
+    if (g_performance_profiling_enabled) {
+        start_ns = get_time_nanos();
+    }
     
     container->available_width = available_width;
     container->available_height = available_height;
@@ -421,6 +435,11 @@ void grid_layout(GridContainer* container, float available_width, float availabl
                                        inner_height, NULL, NULL);
     }
     
+    uint64_t measure_end_ns = 0;
+    if (g_performance_profiling_enabled) {
+        measure_end_ns = get_time_nanos();
+    }
+
     // Position items in grid
     if (column_layout.count > 0 && row_layout.count > 0) {
         position_grid_items(container, &column_layout, &row_layout);
@@ -437,16 +456,22 @@ void grid_layout(GridContainer* container, float available_width, float availabl
     
     // Update performance stats
     if (g_performance_profiling_enabled) {
-        clock_t end_time = clock();
-        container->layout_time_ms = ((double)(end_time - start_time)) / CLOCKS_PER_SEC * 1000.0;
-        container->layout_iterations = 1;
+        uint64_t end_ns = get_time_nanos();
+        uint64_t total_ns = end_ns - start_ns;
+        uint64_t measure_ns = measure_end_ns - start_ns;
+        uint64_t arrange_ns = end_ns - measure_end_ns;
+
+        layout_profiling_update(&container->stats, total_ns, measure_ns, arrange_ns);
+
+        container->layout_time_ms = (float)total_ns / 1000000.0f;
+        container->layout_iterations = (uint32_t)container->stats.total_layout_count;
     }
     
     // Cleanup
     destroy_track_layout(&column_layout);
     destroy_track_layout(&row_layout);
     
-    LOG_DEBUG("Grid layout completed for container %s: %.2fx%.2f", 
+    LOGD("Grid layout completed for container %s: %.2fx%.2f",
               container->base.name, container->base.layout.size.width, container->base.layout.size.height);
 }
 
@@ -489,4 +514,11 @@ void grid_get_performance_stats(const GridContainer* container,
     
     if (iterations) *iterations = container->layout_iterations;
     if (time_ms) *time_ms = container->layout_time_ms;
+}
+
+void grid_reset_performance_stats(GridContainer* container) {
+    if (!container) return;
+    layout_profiling_reset(&container->stats);
+    container->layout_iterations = 0;
+    container->layout_time_ms = 0.0f;
 }

@@ -199,8 +199,8 @@ bool time_system_is_paused(const TimeSystem *time) {
   return time ? time->paused : false;
 }
 
-Timestamp time_get_timestamp(void) {
-  Timestamp ts = {0};
+DateTime time_get_timestamp(void) {
+  DateTime ts = {0};
 
 #ifdef _WIN32
   SYSTEMTIME st;
@@ -228,7 +228,7 @@ Timestamp time_get_timestamp(void) {
   return ts;
 }
 
-const char *time_format_timestamp(const Timestamp *ts, char *buffer, u32 size) {
+const char *time_format_timestamp(const DateTime *ts, char *buffer, u32 size) {
   if (!ts || !buffer || size == 0)
     return NULL;
 

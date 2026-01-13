@@ -74,9 +74,9 @@ typedef struct {
   i32 minute;
   i32 second;
   i32 millisecond;
-} Timestamp;
+} DateTime;
 
-Timestamp time_get_timestamp(void);
-const char *time_format_timestamp(const Timestamp *ts, char *buffer, u32 size);
+DateTime time_get_timestamp(void);
+const char *time_format_timestamp(const DateTime *ts, char *buffer, u32 size);
 
 #endif // TIME_SYSTEM_H

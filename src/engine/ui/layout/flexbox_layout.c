@@ -8,8 +8,9 @@
  */
 
 #include "flexbox_layout.h"
-#include "engine/include/core/logger.h"
-#include "engine/include/core/memory.h"
+#include "core/logger.h"
+#include "core/memory.h"
+#include "core/time_system.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -49,6 +50,7 @@ typedef struct {
     float cross_size;
     float main_offset;
     float cross_offset;
+    FlexboxContainer* container;
 } FlexLine;
 
 /* ============================================================================
@@ -336,9 +338,9 @@ static void align_items_line(FlexLine* line, AlignItems align, float container_c
  * ============================================================================ */
 
 FlexboxContainer* flexbox_container_create(const char* name) {
-    FlexboxContainer* container = memory_alloc(sizeof(FlexboxContainer));
+    FlexboxContainer* container = core_alloc(sizeof(FlexboxContainer));
     if (!container) {
-        LOG_ERROR("Failed to allocate flexbox container");
+        LOGE("Failed to allocate flexbox container");
         return NULL;
     }
     
@@ -358,8 +360,10 @@ FlexboxContainer* flexbox_container_create(const char* name) {
     container->config.wrap = FLEX_WRAP_NOWRAP;
     
     container->needs_layout = true;
+
+    layout_profiling_reset(&container->stats);
     
-    LOG_INFO("Created flexbox container: %s", name ? name : "unnamed");
+    LOGI("Created flexbox container: %s", name ? name : "unnamed");
     return container;
 }
 
@@ -372,14 +376,14 @@ void flexbox_container_destroy(FlexboxContainer* container) {
     }
     
     if (container->base.children) {
-        memory_free(container->base.children);
+        core_free(container->base.children);
     }
     
     if (container->base.name) {
         free(container->base.name);
     }
     
-    memory_free(container);
+    core_free(container);
 }
 
 void flexbox_set_direction(FlexboxContainer* container, FlexDirection direction) {
@@ -411,9 +415,9 @@ void flexbox_set_wrap(FlexboxContainer* container, FlexWrap wrap) {
 }
 
 UIElement* ui_element_create(const char* name) {
-    UIElement* element = memory_alloc(sizeof(UIElement));
+    UIElement* element = core_alloc(sizeof(UIElement));
     if (!element) {
-        LOG_ERROR("Failed to allocate UI element");
+        LOGE("Failed to allocate UI element");
         return NULL;
     }
     
@@ -430,7 +434,7 @@ UIElement* ui_element_create(const char* name) {
     element->flex_item.basis = -1.0f; // Auto
     element->flex_item.align_self = ALIGN_SELF_AUTO;
     
-    LOG_INFO("Created UI element: %s", name ? name : "unnamed");
+    LOGI("Created UI element: %s", name ? name : "unnamed");
     return element;
 }
 
@@ -443,14 +447,14 @@ void ui_element_destroy(UIElement* element) {
     }
     
     if (element->children) {
-        memory_free(element->children);
+        core_free(element->children);
     }
     
     if (element->name) {
         free(element->name);
     }
     
-    memory_free(element);
+    core_free(element);
 }
 
 void flexbox_add_child(FlexboxContainer* container, UIElement* child) {
@@ -460,10 +464,10 @@ void flexbox_add_child(FlexboxContainer* container, UIElement* child) {
     if (container->base.child_count >= container->base.child_capacity) {
         uint32_t new_capacity = container->base.child_capacity == 0 ? 8 : 
                                container->base.child_capacity * 2;
-        UIElement** new_children = memory_realloc(container->base.children, 
+        UIElement** new_children = core_realloc(container->base.children,
                                                  new_capacity * sizeof(UIElement*));
         if (!new_children) {
-            LOG_ERROR("Failed to resize children array");
+            LOGE("Failed to resize children array");
             return;
         }
         
@@ -479,7 +483,7 @@ void flexbox_add_child(FlexboxContainer* container, UIElement* child) {
     container->needs_layout = true;
     child->dirty = true;
     
-    LOG_INFO("Added child %s to container %s", child->name, container->base.name);
+    LOGI("Added child %s to container %s", child->name, container->base.name);
 }
 
 void ui_element_set_flex_grow(UIElement* element, float grow) {
@@ -521,7 +525,10 @@ void ui_element_set_preferred_size(UIElement* element, Size preferred_size) {
 void flexbox_layout(FlexboxContainer* container, float available_width, float available_height) {
     if (!container || !container->needs_layout) return;
     
-    clock_t start_time = g_performance_profiling_enabled ? clock() : 0;
+    uint64_t start_ns = 0;
+    if (g_performance_profiling_enabled) {
+        start_ns = get_time_nanos();
+    }
     
     container->available_width = available_width;
     container->available_height = available_height;
@@ -553,6 +560,11 @@ void flexbox_layout(FlexboxContainer* container, float available_width, float av
         }
         
         child->measured = true;
+    }
+
+    uint64_t measure_end_ns = 0;
+    if (g_performance_profiling_enabled) {
+        measure_end_ns = get_time_nanos();
     }
     
     // Simple single-line layout for now (TODO: implement wrapping)
@@ -654,12 +666,18 @@ void flexbox_layout(FlexboxContainer* container, float available_width, float av
     
     // Update performance stats
     if (g_performance_profiling_enabled) {
-        clock_t end_time = clock();
-        container->layout_time_ms = ((double)(end_time - start_time)) / CLOCKS_PER_SEC * 1000.0;
-        container->layout_iterations = 1;
+        uint64_t end_ns = get_time_nanos();
+        uint64_t total_ns = end_ns - start_ns;
+        uint64_t measure_ns = measure_end_ns - start_ns;
+        uint64_t arrange_ns = end_ns - measure_end_ns;
+
+        layout_profiling_update(&container->stats, total_ns, measure_ns, arrange_ns);
+
+        container->layout_time_ms = (float)total_ns / 1000000.0f;
+        container->layout_iterations = (uint32_t)container->stats.total_layout_count;
     }
     
-    LOG_DEBUG("Layout completed for container %s: %.2fx%.2f", 
+    LOGD("Layout completed for container %s: %.2fx%.2f",
               container->base.name, container->base.layout.size.width, container->base.layout.size.height);
 }
 
@@ -673,4 +691,11 @@ void flexbox_get_performance_stats(const FlexboxContainer* container,
     
     if (iterations) *iterations = container->layout_iterations;
     if (time_ms) *time_ms = container->layout_time_ms;
+}
+
+void flexbox_reset_performance_stats(FlexboxContainer* container) {
+    if (!container) return;
+    layout_profiling_reset(&container->stats);
+    container->layout_iterations = 0;
+    container->layout_time_ms = 0.0f;
 }
