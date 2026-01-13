@@ -67,12 +67,6 @@ typedef struct {
   f64 total_operation_time;
 } Mat4Statistics;
 
-// Matrix decomposition structure
-typedef struct {
-  Vec3 translation;
-  Vec3 rotation; // Euler angles in radians
-  Vec3 scale;
-} Mat4Decomposition;
 
 // Use unified type from core/math/types.h
 typedef mat4 Mat4;
