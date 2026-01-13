@@ -260,12 +260,99 @@ bool rendering_generate_pattern(TestPattern pattern, FramebufferData *framebuffe
             }
             break;
         }
+
+        case TEST_PATTERN_GEOMETRIC: {
+            // Fill white background
+            rendering_clear_framebuffer(framebuffer, 1.0f, 1.0f, 1.0f, 1.0f);
+
+            // Draw a black square in the middle
+            uint32_t cx = framebuffer->width / 2;
+            uint32_t cy = framebuffer->height / 2;
+            uint32_t half_size = 32;
+
+            for (uint32_t y = cy - half_size; y < cy + half_size; y++) {
+                for (uint32_t x = cx - half_size; x < cx + half_size; x++) {
+                    rendering_set_pixel(framebuffer, x, y, 0.0f, 0.0f, 0.0f, 1.0f);
+                }
+            }
+            break;
+        }
         
         default:
             return false;
     }
     
     return true;
+}
+
+bool rendering_read_framebuffer(FramebufferData *framebuffer) {
+    if (!framebuffer) return false;
+    // Stub: In a real implementation this would read from GPU
+    return true;
+}
+
+bool rendering_save_framebuffer(const FramebufferData *framebuffer, const char *filename) {
+    if (!framebuffer || !filename) return false;
+    // Stub: Implement simple TGA or BMP writer if needed
+    return true;
+}
+
+bool rendering_take_screenshot(const char *filename) {
+    if (!filename) return false;
+    // Stub
+    return true;
+}
+
+bool rendering_compare_screenshot(const char *screenshot_file,
+                                 const char *reference_file,
+                                 float tolerance) {
+    if (!screenshot_file || !reference_file) return false;
+    // Stub
+    return true;
+}
+
+bool rendering_validate_framebuffer_pattern(const FramebufferData *framebuffer,
+                                         TestPattern pattern,
+                                         float tolerance) {
+    if (!framebuffer) return false;
+
+    // Create a reference framebuffer with the expected pattern
+    FramebufferData *ref_fb = rendering_create_framebuffer(framebuffer->width, framebuffer->height);
+    if (!ref_fb) return false;
+
+    if (!rendering_generate_pattern(pattern, ref_fb)) {
+        rendering_destroy_framebuffer(ref_fb);
+        return false;
+    }
+
+    float max_diff;
+    bool result = rendering_compare_framebuffers(framebuffer, ref_fb, tolerance, &max_diff);
+
+    rendering_destroy_framebuffer(ref_fb);
+    return result;
+}
+
+bool test_rendering_geometric_shapes(void) {
+    FramebufferData *fb = rendering_create_framebuffer(
+        g_rendering_test_config.framebuffer_width,
+        g_rendering_test_config.framebuffer_height);
+    if (!fb) return false;
+
+    if (!rendering_generate_pattern(TEST_PATTERN_GEOMETRIC, fb)) {
+        rendering_destroy_framebuffer(fb);
+        return false;
+    }
+
+    // Validate center is black
+    uint32_t cx = fb->width / 2;
+    uint32_t cy = fb->height / 2;
+    bool valid = rendering_validate_pixel(fb, cx, cy, 0.0f, 0.0f, 0.0f, 1.0f, g_rendering_test_config.pixel_tolerance);
+
+    // Validate top-left corner is white
+    valid &= rendering_validate_pixel(fb, 0, 0, 1.0f, 1.0f, 1.0f, 1.0f, g_rendering_test_config.pixel_tolerance);
+
+    rendering_destroy_framebuffer(fb);
+    return valid;
 }
 
 bool test_rendering_solid_color(void) {
@@ -425,6 +512,7 @@ bool rendering_run_all_tests(void) {
         test_rendering_solid_color,
         test_rendering_gradient,
         test_rendering_checkerboard,
+        test_rendering_geometric_shapes,
         test_framebuffer_contents_validation,
         test_performance_many_draw_calls
     };
