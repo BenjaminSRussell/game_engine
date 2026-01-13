@@ -39,11 +39,13 @@
  */
 
 #include "character/animation/physics_animation/physics_constraints.h"
+#include <core/threading.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -56,6 +58,13 @@
 /* ============================================================================
  * TYPES
  * ============================================================================ */
+
+typedef struct animation_physics_constraints_stats {
+    uint64_t created_count;
+    uint64_t destroyed_count;
+    uint64_t updated_count;
+    uint64_t processed_count;
+} animation_physics_constraints_stats_t;
 
 typedef struct animation_physics_constraints_internal {
     uint32_t id;
@@ -73,6 +82,8 @@ typedef struct animation_physics_constraints_context {
     uint32_t capacity;
     void* allocator;
     bool initialized;
+    Mutex* mutex;
+    animation_physics_constraints_stats_t stats;
 } animation_physics_constraints_context_t;
 
 static animation_physics_constraints_context_t g_physics_constraints_ctx = {0};
@@ -120,7 +131,14 @@ int animation_physics_constraints_init(void) {
         return -1;
     }
 
+    g_physics_constraints_ctx.mutex = mutex_create();
+    if (!g_physics_constraints_ctx.mutex) {
+        free(g_physics_constraints_ctx.items);
+        return -1;
+    }
+
     g_physics_constraints_ctx.count = 0;
+    memset(&g_physics_constraints_ctx.stats, 0, sizeof(animation_physics_constraints_stats_t));
     g_physics_constraints_ctx.initialized = true;
 
     return 0;
@@ -136,6 +154,7 @@ void animation_physics_constraints_shutdown(void) {
         return;
     }
 
+    mutex_lock(g_physics_constraints_ctx.mutex);
     for (uint32_t i = 0; i < g_physics_constraints_ctx.count; i++) {
         animation_physics_constraints_cleanup_internal(&g_physics_constraints_ctx.items[i]);
     }
@@ -145,6 +164,10 @@ void animation_physics_constraints_shutdown(void) {
     g_physics_constraints_ctx.count = 0;
     g_physics_constraints_ctx.capacity = 0;
     g_physics_constraints_ctx.initialized = false;
+    mutex_unlock(g_physics_constraints_ctx.mutex);
+
+    mutex_destroy(g_physics_constraints_ctx.mutex);
+    g_physics_constraints_ctx.mutex = NULL;
 }
 
 int animation_physics_constraints_create(animation_physics_constraints_handle_t* out_handle, const animation_physics_constraints_desc_t* desc) {
@@ -161,8 +184,15 @@ int animation_physics_constraints_create(animation_physics_constraints_handle_t*
         return -2;
     }
 
+    // Validate flags or other descriptors here
+    // TODO: Enhanced validation logic
+
+    mutex_lock(g_physics_constraints_ctx.mutex);
+
     if (g_physics_constraints_ctx.count >= g_physics_constraints_ctx.capacity) {
         // TODO: Implement physics constraints unit tests
+        // TODO: Implement array resizing
+        mutex_unlock(g_physics_constraints_ctx.mutex);
         return -3;
     }
 
@@ -178,6 +208,10 @@ int animation_physics_constraints_create(animation_physics_constraints_handle_t*
     item->frame_updated = 0;
 
     out_handle->id = index;
+
+    g_physics_constraints_ctx.stats.created_count++;
+
+    mutex_unlock(g_physics_constraints_ctx.mutex);
     return 0;
 }
 
@@ -185,11 +219,21 @@ void animation_physics_constraints_destroy(animation_physics_constraints_handle_
     // TODO: Add physics constraints performance counters
     // TODO: Implement physics constraints hot-reload
 
+    if (!g_physics_constraints_ctx.initialized) {
+        return;
+    }
+
+    mutex_lock(g_physics_constraints_ctx.mutex);
+
     if (handle.id >= g_physics_constraints_ctx.count) {
+        mutex_unlock(g_physics_constraints_ctx.mutex);
         return;
     }
 
     animation_physics_constraints_cleanup_internal(&g_physics_constraints_ctx.items[handle.id]);
+    g_physics_constraints_ctx.stats.destroyed_count++;
+
+    mutex_unlock(g_physics_constraints_ctx.mutex);
 }
 
 int animation_physics_constraints_update(animation_physics_constraints_handle_t handle, const void* data, size_t size) {
@@ -198,12 +242,20 @@ int animation_physics_constraints_update(animation_physics_constraints_handle_t 
     // TODO: Add physics constraints caching layer
     // TODO: Implement physics constraints async operations
 
+    if (!g_physics_constraints_ctx.initialized) {
+        return -1;
+    }
+
+    mutex_lock(g_physics_constraints_ctx.mutex);
+
     if (handle.id >= g_physics_constraints_ctx.count) {
+        mutex_unlock(g_physics_constraints_ctx.mutex);
         return -1;
     }
 
     animation_physics_constraints_internal_t* item = &g_physics_constraints_ctx.items[handle.id];
     if (!item->initialized) {
+        mutex_unlock(g_physics_constraints_ctx.mutex);
         return -2;
     }
 
@@ -211,15 +263,26 @@ int animation_physics_constraints_update(animation_physics_constraints_handle_t 
     // TODO: Implement physics constraints SIMD optimization
 
     item->dirty = true;
+    g_physics_constraints_ctx.stats.updated_count++;
+
+    mutex_unlock(g_physics_constraints_ctx.mutex);
     return 0;
 }
 
 bool animation_physics_constraints_is_valid(animation_physics_constraints_handle_t handle) {
     // TODO: Add physics constraints batch processing
-    if (handle.id >= g_physics_constraints_ctx.count) {
+    if (!g_physics_constraints_ctx.initialized) {
         return false;
     }
-    return g_physics_constraints_ctx.items[handle.id].initialized;
+
+    mutex_lock(g_physics_constraints_ctx.mutex);
+    if (handle.id >= g_physics_constraints_ctx.count) {
+        mutex_unlock(g_physics_constraints_ctx.mutex);
+        return false;
+    }
+    bool valid = g_physics_constraints_ctx.items[handle.id].initialized;
+    mutex_unlock(g_physics_constraints_ctx.mutex);
+    return valid;
 }
 
 int animation_physics_constraints_get_info(animation_physics_constraints_handle_t handle, animation_physics_constraints_info_t* out_info) {
@@ -230,7 +293,14 @@ int animation_physics_constraints_get_info(animation_physics_constraints_handle_
         return -1;
     }
 
+    if (!g_physics_constraints_ctx.initialized) {
+        return -1;
+    }
+
+    mutex_lock(g_physics_constraints_ctx.mutex);
+
     if (handle.id >= g_physics_constraints_ctx.count) {
+        mutex_unlock(g_physics_constraints_ctx.mutex);
         return -2;
     }
 
@@ -239,19 +309,31 @@ int animation_physics_constraints_get_info(animation_physics_constraints_handle_
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
 
+    mutex_unlock(g_physics_constraints_ctx.mutex);
     return 0;
 }
 
 void animation_physics_constraints_mark_dirty(animation_physics_constraints_handle_t handle) {
     // TODO: Implement physics constraints culling integration
+    if (!g_physics_constraints_ctx.initialized) {
+        return;
+    }
+
+    mutex_lock(g_physics_constraints_ctx.mutex);
     if (handle.id < g_physics_constraints_ctx.count) {
         g_physics_constraints_ctx.items[handle.id].dirty = true;
     }
+    mutex_unlock(g_physics_constraints_ctx.mutex);
 }
 
 int animation_physics_constraints_process_pending(void) {
     // TODO: Add physics constraints render graph node
     // TODO: Implement batch processing
+    if (!g_physics_constraints_ctx.initialized) {
+        return 0;
+    }
+
+    mutex_lock(g_physics_constraints_ctx.mutex);
 
     int processed = 0;
     for (uint32_t i = 0; i < g_physics_constraints_ctx.count; i++) {
@@ -263,28 +345,54 @@ int animation_physics_constraints_process_pending(void) {
         }
     }
 
+    g_physics_constraints_ctx.stats.processed_count += processed;
+
+    mutex_unlock(g_physics_constraints_ctx.mutex);
     return processed;
 }
 
 uint32_t animation_physics_constraints_get_count(void) {
-    return g_physics_constraints_ctx.count;
+    if (!g_physics_constraints_ctx.initialized) return 0;
+    // Reading count without lock might be risky if we need strict consistency,
+    // but for stats it's usually acceptable. However, let's be safe.
+    // If getting count is high frequency, lock might be overhead.
+    // Assuming simple read for now, but lock would be better for correctness.
+    mutex_lock(g_physics_constraints_ctx.mutex);
+    uint32_t count = g_physics_constraints_ctx.count;
+    mutex_unlock(g_physics_constraints_ctx.mutex);
+    return count;
 }
 
 size_t animation_physics_constraints_get_memory_usage(void) {
     // TODO: Implement memory tracking
+    if (!g_physics_constraints_ctx.initialized) return 0;
+
+    mutex_lock(g_physics_constraints_ctx.mutex);
     size_t total = sizeof(g_physics_constraints_ctx);
     total += g_physics_constraints_ctx.capacity * sizeof(animation_physics_constraints_internal_t);
 
     for (uint32_t i = 0; i < g_physics_constraints_ctx.count; i++) {
         total += g_physics_constraints_ctx.items[i].data_size;
     }
+    mutex_unlock(g_physics_constraints_ctx.mutex);
 
     return total;
 }
 
 void animation_physics_constraints_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    if (!g_physics_constraints_ctx.initialized) return;
+
+    mutex_lock(g_physics_constraints_ctx.mutex);
+    printf("Animation Physics Constraints System Status:\n");
+    printf("  Initialized: %s\n", g_physics_constraints_ctx.initialized ? "Yes" : "No");
+    printf("  Count: %u\n", g_physics_constraints_ctx.count);
+    printf("  Capacity: %u\n", g_physics_constraints_ctx.capacity);
+    printf("Stats:\n");
+    printf("  Created: %llu\n", (unsigned long long)g_physics_constraints_ctx.stats.created_count);
+    printf("  Destroyed: %llu\n", (unsigned long long)g_physics_constraints_ctx.stats.destroyed_count);
+    printf("  Updated: %llu\n", (unsigned long long)g_physics_constraints_ctx.stats.updated_count);
+    printf("  Processed: %llu\n", (unsigned long long)g_physics_constraints_ctx.stats.processed_count);
+    mutex_unlock(g_physics_constraints_ctx.mutex);
 }
 
 /* End of physics_constraints.c */
