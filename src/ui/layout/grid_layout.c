@@ -155,13 +155,13 @@ static TrackLayout create_track_layout(const GridTrack* tracks, uint32_t track_c
                                       const float* max_sizes) {
     TrackLayout layout = {0};
     layout.count = track_count;
-    layout.positions = memory_alloc(track_count * sizeof(float));
-    layout.sizes = memory_alloc(track_count * sizeof(float));
+    layout.positions = malloc(track_count * sizeof(float));
+    layout.sizes = malloc(track_count * sizeof(float));
     
     if (!layout.positions || !layout.sizes) {
-        LOG_ERROR("Failed to allocate track layout arrays");
-        if (layout.positions) memory_free(layout.positions);
-        if (layout.sizes) memory_free(layout.sizes);
+        fprintf(stderr, "Failed to allocate track layout arrays\n");
+        if (layout.positions) free(layout.positions);
+        if (layout.sizes) free(layout.sizes);
         return layout;
     }
     

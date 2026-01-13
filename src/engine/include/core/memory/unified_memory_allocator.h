@@ -105,7 +105,11 @@ typedef struct StackAllocator {
     void* markers[64];              // Stack markers for rollback
     u32 marker_count;
     bool initialized;
+<<<<<<< HEAD
     struct StackAllocator* next; // Added next pointer for linked list
+=======
+    struct StackAllocator* next;
+>>>>>>> origin/memory-leak-detection-todo-0050-10975818362806360252
 } StackAllocator;
 
 // Arena allocator structure
@@ -118,7 +122,11 @@ typedef struct ArenaAllocator {
     size_t total_allocated;
     pthread_mutex_t mutex;
     bool initialized;
+<<<<<<< HEAD
     struct ArenaAllocator* next; // Added next pointer for linked list
+=======
+    struct ArenaAllocator* next;
+>>>>>>> origin/memory-leak-detection-todo-0050-10975818362806360252
 } ArenaAllocator;
 
 // Memory statistics

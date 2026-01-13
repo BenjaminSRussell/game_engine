@@ -4,7 +4,7 @@
 // This file is kept for backwards compatibility only
 // All functionality has been moved to unified_memory_allocator.c
 
-#include "../memory/unified_memory_allocator.h"
+#include <core/memory/unified_memory_allocator.h>
 #include <stdlib.h>
 #include <string.h>
 
