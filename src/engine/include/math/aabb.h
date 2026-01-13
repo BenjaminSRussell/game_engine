@@ -9,7 +9,7 @@
 #define MATH_AABB_H
 
 #include "common.h"
-#include "math/vec3.h"
+#include "vec3.h"
 #include <float.h>
 
 #ifdef __cplusplus
