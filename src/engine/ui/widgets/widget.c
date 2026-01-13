@@ -10,10 +10,12 @@
 #include "widget.h"
 #include "core/logger.h"
 #include "core/memory.h"
+#include "core/logger/unified_logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <math.h>
+#include <float.h>
 
 // Global widget ID counter
 static uint32_t g_widget_id_counter = 1;
@@ -46,6 +48,19 @@ static void widget_remove_handler_internal(Widget* widget, UIEventHandler* handl
     }
     
     widget->handler_count--;
+}
+
+static Widget* widget_find_focused(Widget* root) {
+    if (!root) return NULL;
+
+    if (root->focused) return root;
+
+    for (uint32_t i = 0; i < root->child_count; i++) {
+        Widget* focused = widget_find_focused(root->children[i]);
+        if (focused) return focused;
+    }
+
+    return NULL;
 }
 
 static bool widget_propagate_event(Widget* widget, UIEvent* event) {
@@ -90,11 +105,25 @@ static bool widget_propagate_event(Widget* widget, UIEvent* event) {
                 // Other events can propagate to children
                 for (uint32_t i = 0; i < widget->child_count; i++) {
                     Widget* child = widget->children[i];
-                    if (child->visible && widget_contains_point(child, event->mouse.position)) {
+
+                    // Convert point to child local space for hit testing
+                    Vec2 point_in_child = {
+                        event->mouse.position.x - child->position.x,
+                        event->mouse.position.y - child->position.y
+                    };
+
+                    if (child->visible && widget_contains_point(child, point_in_child)) {
+                        // Temporarily update event position to child local space
+                        Vec2 old_pos = event->mouse.position;
+                        event->mouse.position = point_in_child;
+
                         if (widget_propagate_event(child, event)) {
                             handled = true;
+                            event->mouse.position = old_pos; // Restore for bubbling/parent usage
                             break;
                         }
+
+                        event->mouse.position = old_pos; // Restore if not handled
                     }
                 }
                 break;
@@ -111,7 +140,7 @@ static bool widget_propagate_event(Widget* widget, UIEvent* event) {
 Widget* widget_create(const char* name) {
     Widget* widget = memory_alloc(sizeof(Widget));
     if (!widget) {
-        LOG_ERROR("Failed to allocate widget");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate widget");
         return NULL;
     }
     
@@ -131,6 +160,9 @@ Widget* widget_create(const char* name) {
     widget->text_color = (Vec4){1.0f, 1.0f, 1.0f, 1.0f};
     widget->opacity = 1.0f;
     
+    widget->min_size = (Vec2){0.0f, 0.0f};
+    widget->max_size = (Vec2){FLT_MAX, FLT_MAX};
+
     // Default state
     widget->state = WIDGET_STATE_NORMAL;
     widget->focus_navigation = UI_FOCUS_NAV_TAB;
@@ -139,7 +171,7 @@ Widget* widget_create(const char* name) {
     widget->needs_layout = true;
     widget->needs_redraw = true;
     
-    LOG_INFO("Created widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
+    LOG_INFO(LOG_CAT_GENERAL, "Created widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
     return widget;
 }
 
@@ -184,7 +216,7 @@ void widget_add_child(Widget* parent, Widget* child) {
         Widget** new_children = memory_realloc(parent->children, 
                                              new_capacity * sizeof(Widget*));
         if (!new_children) {
-            LOG_ERROR("Failed to resize children array");
+            LOG_ERROR(LOG_CAT_GENERAL, "Failed to resize children array");
             return;
         }
         
@@ -201,7 +233,7 @@ void widget_add_child(Widget* parent, Widget* child) {
     widget_invalidate_layout(parent);
     child->dirty = true;
     
-    LOG_INFO("Added child %s to parent %s", child->name, parent->name);
+    LOG_INFO(LOG_CAT_GENERAL, "Added child %s to parent %s", child->name, parent->name);
 }
 
 void widget_remove_child(Widget* parent, Widget* child) {
@@ -231,7 +263,7 @@ void widget_remove_child(Widget* parent, Widget* child) {
     // Invalidate layout
     widget_invalidate_layout(parent);
     
-    LOG_INFO("Removed child %s from parent %s", child->name, parent->name);
+    LOG_INFO(LOG_CAT_GENERAL, "Removed child %s from parent %s", child->name, parent->name);
 }
 
 void widget_remove_from_parent(Widget* widget) {
@@ -321,7 +353,7 @@ void widget_set_focused(Widget* widget, bool focused) {
             widget->state = WIDGET_STATE_NORMAL;
             
             // Emit focus loss event
-            UIEvent* event = ui_event_create(UI_EVENT_FOCUS_LOSS);
+            UIEvent* event = ui_event_create(UI_EVENT_FOCUS_LOST);
             if (event) {
                 widget_emit_event(widget, event);
                 ui_event_destroy(event);
@@ -337,7 +369,7 @@ void widget_add_event_handler(Widget* widget, UIEventType event_type, UIEventCal
     
     UIEventHandler* handler = memory_alloc(sizeof(UIEventHandler));
     if (!handler) {
-        LOG_ERROR("Failed to allocate event handler");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate event handler");
         return;
     }
     
@@ -349,7 +381,40 @@ void widget_add_event_handler(Widget* widget, UIEventType event_type, UIEventCal
     
     widget_add_handler_internal(widget, handler);
     
-    LOG_DEBUG("Added event handler for type %d to widget %s", event_type, widget->name);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Added event handler for type %d to widget %s", event_type, widget->name);
+}
+
+void widget_remove_event_handler(Widget* widget, UIEventHandler* handler) {
+    if (!widget || !handler) return;
+
+    widget_remove_handler_internal(widget, handler);
+    memory_free(handler);
+}
+
+void widget_remove_all_event_handlers(Widget* widget, UIEventType event_type) {
+    if (!widget) return;
+
+    UIEventHandler* current = widget->event_handlers;
+    UIEventHandler* prev = NULL;
+
+    while (current) {
+        UIEventHandler* next = current->next;
+
+        if (event_type == UI_EVENT_NONE || current->event_type == event_type) {
+            if (prev) {
+                prev->next = next;
+            } else {
+                widget->event_handlers = next;
+            }
+            widget->handler_count--;
+            memory_free(current);
+            // prev stays same
+        } else {
+            prev = current;
+        }
+
+        current = next;
+    }
 }
 
 bool widget_handle_event(Widget* widget, UIEvent* event) {
@@ -470,7 +535,10 @@ bool widget_request_focus(Widget* widget) {
     
     // Release current focus
     if (root) {
-        // TODO: Find currently focused widget and release focus
+        Widget* current_focused = widget_find_focused(root);
+        if (current_focused && current_focused != widget) {
+            widget_release_focus(current_focused);
+        }
     }
     
     // Set focus to this widget
@@ -492,7 +560,7 @@ void widget_release_focus(Widget* widget) {
 UIEvent* ui_event_create(UIEventType type) {
     UIEvent* event = memory_alloc(sizeof(UIEvent));
     if (!event) {
-        LOG_ERROR("Failed to allocate UI event");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate UI event");
         return NULL;
     }
     
