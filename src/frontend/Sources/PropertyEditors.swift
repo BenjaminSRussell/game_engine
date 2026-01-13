@@ -1418,7 +1418,7 @@ struct CopyPasteVectorEditor: View {
                             
                             Spacer()
                             
-                            Button(copiedAxis == i ? "✓" : "📋") {
+                            Button(copiedAxis == i ? "" : "") {
                                 copyAxis(i)
                             }
                             .buttonStyle(.plain)
@@ -1426,7 +1426,7 @@ struct CopyPasteVectorEditor: View {
                             .foregroundColor(copiedAxis == i ? .green : .blue)
                             
                             if copiedAxis != nil {
-                                Button("📄") {
+                                Button("") {
                                     pasteToAxis(i)
                                 }
                                 .buttonStyle(.plain)
@@ -1494,7 +1494,7 @@ struct ProportionalVectorEditor: View {
                 
                 Spacer()
                 
-                Toggle("🔗", isOn: $proportionalScale)
+                Toggle("", isOn: $proportionalScale)
                     .toggleStyle(ButtonToggleStyle())
                     .help("Proportional scaling")
             }
@@ -1530,7 +1530,7 @@ struct ProportionalVectorEditor: View {
                         .foregroundColor(.secondary)
                     
                     if proportionalScale {
-                        Text("🔗 Locked")
+                        Text(" Locked")
                             .font(.caption2)
                             .foregroundColor(.blue)
                     }
@@ -9614,7 +9614,7 @@ struct ScriptReferencePicker: View {
                                 .foregroundColor(selectedScript.isEmpty ? DesignSystem.Colors.textDisabled : DesignSystem.Colors.textPrimary)
                             
                             if !selectedScript.isEmpty && !validationErrors.isEmpty {
-                                Text("⚠️ \(validationErrors.count) issues")
+                                Text(" \(validationErrors.count) issues")
                                     .font(DesignSystem.Typography.small)
                                     .foregroundColor(DesignSystem.Colors.warning)
                             }

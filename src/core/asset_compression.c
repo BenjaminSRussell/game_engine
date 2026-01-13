@@ -1,3 +1,13 @@
+/*
+ * asset_compression.c
+ * Asset compression implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides LZ4 and ZSTD compression algorithms for asset optimization
+ */
+
 #include "core/asset_compression.h"
 #include <stdlib.h>
 

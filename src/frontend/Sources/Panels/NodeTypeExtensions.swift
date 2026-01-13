@@ -424,10 +424,10 @@ extension NodeType {
         // Physics
         case .collisionEnter: return "Collision start event"
         case .collisionExit: return "Collision end event"
-        case .collisionStay: return "Collision持续 event"
+        case .collisionStay: return "Collision event"
         case .triggerEnter: return "Trigger start event"
         case .triggerExit: return "Trigger end event"
-        case .triggerStay: return "Trigger持续 event"
+        case .triggerStay: return "Trigger event"
         
         // Flow Control
         case .flowBranch: return "Conditional branch"

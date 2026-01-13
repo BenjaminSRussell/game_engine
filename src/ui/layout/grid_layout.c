@@ -371,10 +371,10 @@ void grid_add_child(GridContainer* container, UIElement* child) {
     if (container->base.child_count >= container->base.child_capacity) {
         uint32_t new_capacity = container->base.child_capacity == 0 ? 8 : 
                                container->base.child_capacity * 2;
-        UIElement** new_children = memory_realloc(container->base.children, 
-                                                 new_capacity * sizeof(UIElement*));
+        UIElement** new_children = realloc(container->base.children, 
+                                       new_capacity * sizeof(UIElement*));
         if (!new_children) {
-            LOG_ERROR("Failed to resize children array");
+            fprintf(stderr, "Failed to resize children array\n");
             return;
         }
         
@@ -390,7 +390,7 @@ void grid_add_child(GridContainer* container, UIElement* child) {
     container->needs_layout = true;
     child->dirty = true;
     
-    LOG_INFO("Added child %s to grid container %s", child->name, container->base.name);
+    printf("Added child %s to grid container %s\n", child->name, container->base.name);
 }
 
 void grid_layout(GridContainer* container, float available_width, float available_height) {

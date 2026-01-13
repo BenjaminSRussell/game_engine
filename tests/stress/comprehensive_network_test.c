@@ -182,21 +182,21 @@ static void generate_test_report(const char *filename) {
     
     fprintf(file, "## Test Summary\n");
     if (g_test_results.all_scenarios_passed) {
-        fprintf(file, "✅ All network stress tests passed successfully.\n");
+        fprintf(file, " All network stress tests passed successfully.\n");
     } else {
-        fprintf(file, "❌ Some network stress tests failed.\n");
+        fprintf(file, " Some network stress tests failed.\n");
     }
     
     if (g_test_results.average_packet_loss_rate < 0.05f) {
-        fprintf(file, "✅ Packet loss within acceptable range (< 5%%).\n");
+        fprintf(file, " Packet loss within acceptable range (< 5%%).\n");
     } else {
-        fprintf(file, "⚠️ High packet loss detected (%.2f%%).\n", g_test_results.average_packet_loss_rate * 100.0f);
+        fprintf(file, " High packet loss detected (%.2f%%).\n", g_test_results.average_packet_loss_rate * 100.0f);
     }
     
     if (g_test_results.average_throughput_mbps > 1.0f) {
-        fprintf(file, "✅ Good throughput achieved (%.2f Mbps).\n", g_test_results.average_throughput_mbps);
+        fprintf(file, " Good throughput achieved (%.2f Mbps).\n", g_test_results.average_throughput_mbps);
     } else {
-        fprintf(file, "⚠️ Low throughput (%.2f Mbps).\n", g_test_results.average_throughput_mbps);
+        fprintf(file, " Low throughput (%.2f Mbps).\n", g_test_results.average_throughput_mbps);
     }
     
     fclose(file);

@@ -3,9 +3,10 @@
 
 #include "../framebuffer.h"
 #include "../gpu_memory.h"
+#include "../lighting/lighting_system.c"
 #include "../render_pipeline.h"
 #include "../render_types.h"
-#include <core/logger.h>>
+#include <core/logger.h>
 #include <float.h>
 #include <math/mat4.h>
 #include <math/vec3.h>

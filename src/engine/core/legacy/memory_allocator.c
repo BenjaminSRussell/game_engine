@@ -60,11 +60,11 @@ void memory_allocator_set_limit(size_t limit) {
 
 // Legacy compatibility - all existing code continues to work
 // The unified allocator provides:
-// - Memory tracking and leak detection ✓
-// - Memory pools for performance ✓
-// - Stack allocators for temporary data ✓
-// - Arena allocators for bulk allocations ✓
-// - Guard pages and canaries for corruption detection ✓
-// - Statistics and monitoring ✓
-// - Fragmentation analysis ✓
-// - Hot-spot detection ✓
+// - Memory tracking and leak detection 
+// - Memory pools for performance 
+// - Stack allocators for temporary data 
+// - Arena allocators for bulk allocations 
+// - Guard pages and canaries for corruption detection 
+// - Statistics and monitoring 
+// - Fragmentation analysis 
+// - Hot-spot detection 

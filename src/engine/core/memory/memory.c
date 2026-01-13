@@ -5,16 +5,16 @@
 // All functionality has been moved to unified_memory_allocator.c
 //
 // The unified allocator provides all features that were in this file:
-// ✓ Memory allocation profiling with call stack tracking
-// ✓ Memory leak detection with automatic reporting
-// ✓ Memory pool system with O(1) allocations
-// ✓ Memory fragmentation analysis and reporting
-// ✓ Memory usage limits and enforcement
-// ✓ Memory allocation hot-spot detection
-// ✓ Memory allocation patterns analysis
-// ✓ Memory corruption detection (guard pages, canaries)
-// ✓ Per-module memory statistics
-// ✓ Memory allocation benchmarking
+//  Memory allocation profiling with call stack tracking
+//  Memory leak detection with automatic reporting
+//  Memory pool system with O(1) allocations
+//  Memory fragmentation analysis and reporting
+//  Memory usage limits and enforcement
+//  Memory allocation hot-spot detection
+//  Memory allocation patterns analysis
+//  Memory corruption detection (guard pages, canaries)
+//  Per-module memory statistics
+//  Memory allocation benchmarking
 
 #include "unified_memory_allocator.h"
 #include <stdlib.h>
@@ -117,14 +117,14 @@ void memory_print_module_stats(void) {
 }
 
 // All advanced features from the original file are now provided by the unified allocator:
-// - Call stack capture and symbol resolution ✓
-// - Stack pruning and filtering ✓
-// - Leak categorization and periodic checking ✓
-// - Multiple pool types with dynamic resizing ✓
-// - Fragmentation visualization and alerts ✓
-// - Per-module limits with enforcement ✓
-// - Hot-spot identification and ranking ✓
-// - Allocation size distribution and timing patterns ✓
-// - Lifetime analysis and pattern detection ✓
-// - Guard pages, canaries, double-free detection ✓
-// - Allocation/deallocation speed benchmarks ✓
+// - Call stack capture and symbol resolution 
+// - Stack pruning and filtering 
+// - Leak categorization and periodic checking 
+// - Multiple pool types with dynamic resizing 
+// - Fragmentation visualization and alerts 
+// - Per-module limits with enforcement 
+// - Hot-spot identification and ranking 
+// - Allocation size distribution and timing patterns 
+// - Lifetime analysis and pattern detection 
+// - Guard pages, canaries, double-free detection 
+// - Allocation/deallocation speed benchmarks 

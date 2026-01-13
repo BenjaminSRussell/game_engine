@@ -8,32 +8,32 @@ The sample assets provide comprehensive coverage of all engine subsystems for fr
 
 ## Subsystem Coverage
 
-### ✅ AI & Behavior
+###  AI & Behavior
 - `ai/villager_wander.bt` - Peaceful NPC behavior tree
 - `ai/hostile_combat.bt` - Combat AI for hostile mobs
 
-### ✅ Animation
+###  Animation
 - `animations/player_idle.anim` - Idle breathing animation
 - `animations/player_walk.anim` - Walk cycle with IK
 - `animations/player_run.anim` - Run cycle with increased speed
 - `animations/player_jump.anim` - Jump with crouch and landing
 
-### ✅ Audio
+###  Audio
 - `audio/main_mixer.mixer` - Audio mixer with groups, effects, spatial audio, and surround sound
 
-### ✅ Cinematics
+###  Cinematics
 - `cinematics/intro_cutscene.cinematic` - Full cinematic sequence with camera, audio, subtitles, and events
 
-### ✅ Dialogue
+###  Dialogue
 - `gameplay/dialogue/elder_welcome.dialogue` - Branching dialogue tree with quest integration
 
-### ✅ Environment & Weather
+###  Environment & Weather
 - `environment/weather/rainy_day.weather` - Weather preset with precipitation, lighting, and effects
 
-### ✅ Fonts
+###  Fonts
 - `fonts/roboto_regular.font` - Font definition with SDF
 
-### ✅ Gameplay Systems
+###  Gameplay Systems
 
 #### Quests
 - `gameplay/quests/village_welcome.quest` - Multi-objective quest with rewards
@@ -41,41 +41,41 @@ The sample assets provide comprehensive coverage of all engine subsystems for fr
 #### Crafting
 - `gameplay/crafting/wooden_pickaxe.recipe` - Crafting recipe example
 
-### ✅ Input
+###  Input
 - `input/default_controls.input` - Keyboard, mouse, and gamepad mappings
 
-### ✅ Levels & Scenes
+###  Levels & Scenes
 - `levels/sample_village.json` - Complete test scene with terrain, entities, lighting, and audio
 
-### ✅ Localization
+###  Localization
 - `localization/en_US.loc` - English localization strings
 
-### ✅ Materials
+###  Materials
 - `materials/terrain_grass.mat` - PBR terrain material
 - `materials/leaf.mat` - Translucent particle material
 
-### ✅ Networking
+###  Networking
 - `network/multiplayer_config.netcfg` - Multiplayer configuration with replication, voice chat, anti-cheat
 
-### ✅ Particles
+###  Particles
 - `particles/falling_leaves.particle` - Particle system with forces and rendering
 
-### ✅ Persistence
+###  Persistence
 - `persistence/player_save_example.save` - Complete save game data
 
-### ✅ Physics
+###  Physics
 - `physics/physics_test_scene.json` - Physics simulation with rigidbodies, colliders, and constraints
 
-### ✅ Post-Processing
+###  Post-Processing
 - `postprocess/cinematic_profile.pp` - Post-processing effects (bloom, DOF, color grading, etc.)
 
-### ✅ Procedural Content Generation
+###  Procedural Content Generation
 - `pcg/dungeon_generator.pcg` - PCG graph for dungeon generation
 
-### ✅ Prefabs
+###  Prefabs
 - `prefabs/tree_oak.prefab` - Entity prefab with multiple components
 
-### ✅ Scripting
+###  Scripting
 
 #### Lua Scripts
 - `scripts/player_controller.lua` - Player controller with movement, animation, and collision
@@ -83,41 +83,41 @@ The sample assets provide comprehensive coverage of all engine subsystems for fr
 #### Visual Scripting
 - `scripts/visual/door_interaction.vscript` - Visual script graph for interactive door
 
-### ✅ Terrain
+###  Terrain
 - `terrain/hills_terrain.terrain` - Terrain with heightmap, layers, vegetation, LOD, and streaming
 
-### ✅ UI
+###  UI
 - `ui/main_menu.layout` - UI layout with buttons and panels
 
 ## Testing Coverage
 
 These samples enable testing of:
-- ✅ Model loading (OBJ, GLTF, GLB)
-- ✅ Texture loading (PNG, JPG, HDR)
-- ✅ Material application (PBR workflow)
-- ✅ Skeletal animation playback
-- ✅ Particle system rendering
-- ✅ Audio spatialization & mixing
-- ✅ UI rendering & layouts
-- ✅ Scene graph construction
-- ✅ Physics simulation & constraints
-- ✅ Level streaming & LOD
-- ✅ AI behavior trees
-- ✅ Quest system
-- ✅ Dialogue system
-- ✅ Crafting system
-- ✅ Save/load system
-- ✅ Network replication
-- ✅ Weather & environment
-- ✅ Terrain rendering
-- ✅ Post-processing effects
-- ✅ Cinematic sequences
-- ✅ Visual scripting
-- ✅ Lua scripting
-- ✅ Procedural generation
-- ✅ Input mapping
-- ✅ Localization
-- ✅ Prefab instantiation
+-  Model loading (OBJ, GLTF, GLB)
+-  Texture loading (PNG, JPG, HDR)
+-  Material application (PBR workflow)
+-  Skeletal animation playback
+-  Particle system rendering
+-  Audio spatialization & mixing
+-  UI rendering & layouts
+-  Scene graph construction
+-  Physics simulation & constraints
+-  Level streaming & LOD
+-  AI behavior trees
+-  Quest system
+-  Dialogue system
+-  Crafting system
+-  Save/load system
+-  Network replication
+-  Weather & environment
+-  Terrain rendering
+-  Post-processing effects
+-  Cinematic sequences
+-  Visual scripting
+-  Lua scripting
+-  Procedural generation
+-  Input mapping
+-  Localization
+-  Prefab instantiation
 
 ## Usage Examples
 

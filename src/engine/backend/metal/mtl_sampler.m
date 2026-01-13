@@ -744,7 +744,7 @@ struct mtl_sampler* mtl_sampler_create_anisotropic(id<MTLDevice> device, f32 max
 /*
  * COMPREHENSIVE METAL SAMPLER SYSTEM - ALL FEATURES IMPLEMENTED
  *
- * ✅ IMPLEMENTED FEATURES:
+ *  IMPLEMENTED FEATURES:
  *
  * Streaming Support (TODO-27256):
  * - Texture streaming with priority-based loading
@@ -836,7 +836,7 @@ struct mtl_sampler* mtl_sampler_create_anisotropic(id<MTLDevice> device, f32 max
  * - Vectorized filtering operations
  * - Performance-optimized processing paths
  *
- * ✅ PRODUCTION-READY FEATURES:
+ *  PRODUCTION-READY FEATURES:
  * - Enterprise-grade error handling and validation
  * - Comprehensive performance monitoring and profiling
  * - Thread-safe operations throughout

@@ -209,7 +209,7 @@ void render_ascii(void) {
         if (screen_x >= 0 && screen_x < 80 && screen_y >= 0 && screen_y < 20) {
             // Simple color coding based on ball properties
             int color_code = 41 + (int)(balls[i].color[0] * 3);
-            printf("\033[%dm●\033[0m", color_code);
+            printf("\033[%dm\033[0m", color_code);
         }
     }
     

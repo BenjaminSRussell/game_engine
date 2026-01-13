@@ -444,13 +444,13 @@ bool verify_compute_shader_functionality(void) {
     printf("\n1. Testing Particle Simulation Shader:\n");
     if (compile_and_validate_shader(COMPUTE_SHADER_PARTICLE_SIMULATION)) {
         if (execute_compute_shader(COMPUTE_SHADER_PARTICLE_SIMULATION, 16, 1, 1)) {
-            printf("   ✓ Particle simulation shader working correctly\n");
+            printf("    Particle simulation shader working correctly\n");
         } else {
-            printf("   ✗ Particle simulation shader execution failed\n");
+            printf("    Particle simulation shader execution failed\n");
             all_passed = false;
         }
     } else {
-        printf("   ✗ Particle simulation shader compilation failed\n");
+        printf("    Particle simulation shader compilation failed\n");
         all_passed = false;
     }
     
@@ -458,13 +458,13 @@ bool verify_compute_shader_functionality(void) {
     printf("\n2. Testing Physics Culling Shader:\n");
     if (compile_and_validate_shader(COMPUTE_SHADER_PHYSICS_CULLING)) {
         if (execute_compute_shader(COMPUTE_SHADER_PHYSICS_CULLING, 8, 8, 1)) {
-            printf("   ✓ Physics culling shader working correctly\n");
+            printf("    Physics culling shader working correctly\n");
         } else {
-            printf("   ✗ Physics culling shader execution failed\n");
+            printf("    Physics culling shader execution failed\n");
             all_passed = false;
         }
     } else {
-        printf("   ✗ Physics culling shader compilation failed\n");
+        printf("    Physics culling shader compilation failed\n");
         all_passed = false;
     }
     
@@ -472,13 +472,13 @@ bool verify_compute_shader_functionality(void) {
     printf("\n3. Testing Terrain Generation Shader:\n");
     if (compile_and_validate_shader(COMPUTE_SHADER_TERRAIN_GENERATION)) {
         if (execute_compute_shader(COMPUTE_SHADER_TERRAIN_GENERATION, 32, 32, 1)) {
-            printf("   ✓ Terrain generation shader working correctly\n");
+            printf("    Terrain generation shader working correctly\n");
         } else {
-            printf("   ✗ Terrain generation shader execution failed\n");
+            printf("    Terrain generation shader execution failed\n");
             all_passed = false;
         }
     } else {
-        printf("   ✗ Terrain generation shader compilation failed\n");
+        printf("    Terrain generation shader compilation failed\n");
         all_passed = false;
     }
     
@@ -486,13 +486,13 @@ bool verify_compute_shader_functionality(void) {
     printf("\n4. Testing Lighting Culling Shader:\n");
     if (compile_and_validate_shader(COMPUTE_SHADER_LIGHTING_CULLING)) {
         if (execute_compute_shader(COMPUTE_SHADER_LIGHTING_CULLING, 64, 1, 1)) {
-            printf("   ✓ Lighting culling shader working correctly\n");
+            printf("    Lighting culling shader working correctly\n");
         } else {
-            printf("   ✗ Lighting culling shader execution failed\n");
+            printf("    Lighting culling shader execution failed\n");
             all_passed = false;
         }
     } else {
-        printf("   ✗ Lighting culling shader compilation failed\n");
+        printf("    Lighting culling shader compilation failed\n");
         all_passed = false;
     }
     

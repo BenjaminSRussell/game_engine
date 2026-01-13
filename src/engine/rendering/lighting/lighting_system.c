@@ -1,7 +1,7 @@
 // src/engine/rendering/lighting/lighting_system.c
 // Lighting System - PBR lighting with multiple light types and shadow support
 
-#include "engine/include/core/logger.h"
+#include <core/logger.h>
 #include <float.h>
 #include <math.h>
 #include <stdbool.h>

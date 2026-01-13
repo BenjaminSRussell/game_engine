@@ -31,12 +31,12 @@ struct AnimationEditorTest: View {
                     
                     HStack {
                         Text("Snap to Frame:")
-                        Text(animationManager.snapToFrame ? "✅" : "❌")
+                        Text(animationManager.snapToFrame ? "" : "")
                     }
                     
                     HStack {
                         Text("Reverse Playback:")
-                        Text(animationManager.isReversePlayback ? "✅" : "❌")
+                        Text(animationManager.isReversePlayback ? "" : "")
                     }
                 }
                 
@@ -49,17 +49,17 @@ struct AnimationEditorTest: View {
                     
                     HStack {
                         Text("Color by Property:")
-                        Text(animationManager.keyframeColorByProperty ? "✅" : "❌")
+                        Text(animationManager.keyframeColorByProperty ? "" : "")
                     }
                     
                     HStack {
                         Text("Shape by Interpolation:")
-                        Text(animationManager.keyframeShapeByInterpolation ? "✅" : "❌")
+                        Text(animationManager.keyframeShapeByInterpolation ? "" : "")
                     }
                     
                     HStack {
                         Text("Selection Highlight:")
-                        Text(animationManager.selectionHighlightIntensity > 0.5 ? "✅" : "❌")
+                        Text(animationManager.selectionHighlightIntensity > 0.5 ? "" : "")
                     }
                 }
                 
@@ -72,17 +72,17 @@ struct AnimationEditorTest: View {
                     
                     HStack {
                         Text("Multi-curve Display:")
-                        Text(!curveManager.curves.isEmpty ? "✅" : "❌")
+                        Text(!curveManager.curves.isEmpty ? "" : "")
                     }
                     
                     HStack {
                         Text("Tangent Handles:")
-                        Text(curveManager.showTangentHandles ? "✅" : "❌")
+                        Text(curveManager.showTangentHandles ? "" : "")
                     }
                     
                     HStack {
                         Text("Infinity Visualization:")
-                        Text(curveManager.showInfinityVisualization ? "✅" : "❌")
+                        Text(curveManager.showInfinityVisualization ? "" : "")
                     }
                 }
                 
@@ -95,12 +95,12 @@ struct AnimationEditorTest: View {
                     
                     HStack {
                         Text("Track Management:")
-                        Text(!dopesheetManager.tracks.isEmpty ? "✅" : "❌")
+                        Text(!dopesheetManager.tracks.isEmpty ? "" : "")
                     }
                     
                     HStack {
                         Text("Search/Filter:")
-                        Text(!dopesheetManager.searchQuery.isEmpty ? "✅" : "❌")
+                        Text(!dopesheetManager.searchQuery.isEmpty ? "" : "")
                     }
                 }
             }
