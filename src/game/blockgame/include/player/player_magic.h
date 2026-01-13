@@ -111,4 +111,8 @@ void player_magic_update(PlayerSystem *system, f32 delta_time);
 bool player_can_cast_spell(PlayerMagicComponent *magic, SpellType spell);
 bool player_has_mana(PlayerMagicComponent *magic, f32 amount);
 
+// Spell upgrades
+void player_magic_add_spell_points(PlayerMagicComponent *magic, u32 points);
+bool player_magic_upgrade_spell(PlayerMagicComponent *magic, SpellType spell);
+
 #endif // PLAYER_MAGIC_H

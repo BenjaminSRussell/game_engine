@@ -21,6 +21,7 @@ extern ParticleSystem *g_particle_system;
 #define MAX_COOLDOWN_SPELLS 16
 #define COOLDOWN_VISUAL_DURATION 0.5f
 #define COOLDOWN_FLASH_INTERVAL 0.2f
+#define MAX_SPELL_LEVEL 5
 
 typedef struct {
     SpellType spell_type;
@@ -615,4 +616,32 @@ void player_magic_get_cooldown_stats(SpellType spell, f32 *remaining, f32 *total
         if (remaining) *remaining = 0.0f;
         if (total) *total = 0.0f;
     }
+}
+
+void player_magic_add_spell_points(PlayerMagicComponent *magic, u32 points) {
+    if (magic) {
+        magic->spell_points += points;
+        LOG_INFO("Added %u spell points. Total: %u", points, magic->spell_points);
+    }
+}
+
+bool player_magic_upgrade_spell(PlayerMagicComponent *magic, SpellType spell) {
+    if (!magic || spell >= SPELL_COUNT) return false;
+
+    if (magic->spell_points == 0) {
+        LOG_WARN("Cannot upgrade spell: No spell points available");
+        return false;
+    }
+
+    SpellState *state = &magic->spells[spell];
+    if (state->level >= MAX_SPELL_LEVEL) {
+        LOG_WARN("Cannot upgrade spell %d: Max level reached (%d)", spell, MAX_SPELL_LEVEL);
+        return false;
+    }
+
+    magic->spell_points--;
+    state->level++;
+    LOG_INFO("Upgraded spell %d to level %u. Remaining points: %u", spell, state->level, magic->spell_points);
+
+    return true;
 }
