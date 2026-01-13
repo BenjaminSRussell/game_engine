@@ -1,6 +1,8 @@
 /**
- * CINEMATIC CAMERA SYSTEM
- * Dolly, Crane, Rail Cameras
+ * @file cinema_camera_impl.c
+ * @brief Cinematic Camera System
+ * @description Dolly, Crane, Rail Cameras for cinematics
+ * @date 2026-01-13
  */
 
 #include <include/math/math.h>
