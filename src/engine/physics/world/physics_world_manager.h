@@ -11,6 +11,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,8 +39,8 @@ typedef enum PhysicsObjectType {
     PHYSICS_OBJECT_FLUID,             // Fluid system
     PHYSICS_OBJECT_TERRAIN,           // Terrain object
     PHYSICS_OBJECT_TRIGGER,           // Trigger volume
-    PHYSICS_OBJECT_SENSOR             // Sensor volume
-    PHYSICS_OBJECT_JOINT               // Joint/constraint
+    PHYSICS_OBJECT_SENSOR,            // Sensor volume
+    PHYSICS_OBJECT_JOINT,              // Joint/constraint
     PHYSICS_OBJECT_FORCE_FIELD         // Force field
 } PhysicsObjectType;
 
@@ -334,7 +335,7 @@ int physics_world_find_objects_in_region(PhysicsWorld *world, const float *min_p
  * @return Number of objects found
  */
 int physics_world_find_objects_by_layer(PhysicsWorld *world, uint32_t layer_mask, 
-                                        PhysicsObject **objects, int_objects);
+                                        PhysicsObject **objects, int max_objects);
 
 /**
  * Set object transform
