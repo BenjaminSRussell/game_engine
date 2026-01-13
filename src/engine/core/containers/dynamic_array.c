@@ -88,7 +88,7 @@ void dynamic_array_push(DynamicArray *arr, const void *element) {
         arr->capacity = arr->capacity * 2 + 1;
         void *new_data = realloc(arr->data, arr->element_size * arr->capacity);
         if (!new_data) {
-            LOG_ERROR("Failed to grow dynamic array");
+            LOG_ERROR(LOG_CAT_MEMORY, "Failed to grow dynamic array");
             return;
         }
         arr->data = new_data;

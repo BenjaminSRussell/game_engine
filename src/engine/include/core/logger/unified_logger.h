@@ -173,5 +173,3 @@ void unified_logger_free_query_result(LogQueryResult* result);
 #define LOGW(format, ...) LOG_WARN(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
 #define LOGI(format, ...) LOG_INFO(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
 #define LOGD(format, ...) LOG_DEBUG(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
-
-#endif // UNIFIED_LOGGER_H
