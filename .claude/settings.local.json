@@ -42,7 +42,12 @@
       "Bash(do grep -l \"stub\\\\|STUB\\\\|Not implemented\\\\|unimplemented\" \"$f\")",
       "Bash(done)",
       "Bash(cd /Users/benjaminrussell/Desktop/Minecraft\\\\ v2 && git fsck:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(for file in \"src/core/monolithic_main.c\" \"src/core/gamestate_main.c\" \"src/engine/include/vendor/miniaudio.h\" \"src/engine/include/vendor/stb_image.h\" \"src/engine/include/vendor/cgltf.h\" \"src/engine/include/vk_mem_alloc.h\" \"src/engine/vendor/cgltf.h\" \"src/vendor/cgltf.h\")",
+      "Bash(do if git ls-files \"$file\")",
+      "Bash(then echo \"✗ Still in git: $file\")",
+      "Bash(else echo \"✓ Deleted: $file\")",
+      "Bash(fi)"
     ],
     "additionalDirectories": [
       "/Users/benjaminrussell/Desktop/Minecraft\\ v2"
