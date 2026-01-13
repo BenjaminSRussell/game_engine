@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "include/math/math.h"
-#include "ui/ui_types.h"
+#include "include/math/rect.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +27,18 @@ extern "C" {
 typedef struct Widget Widget;
 typedef struct UIEvent UIEvent;
 typedef struct UIEventHandler UIEventHandler;
+
+typedef struct BoxEdges {
+    float top;
+    float left;
+    float bottom;
+    float right;
+} BoxEdges;
+
+typedef struct Size {
+    float width;
+    float height;
+} Size;
 
 // Event types
 typedef enum {
