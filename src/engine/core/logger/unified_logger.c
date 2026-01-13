@@ -42,7 +42,8 @@ static const char* level_colors[] = {
 static const char* category_strings[] = {
     "GENERAL", "GAME", "PHYSICS", "GRAPHICS", "RENDERER",
     "AI", "NETWORK", "AUDIO", "MEMORY", "IO", "SCRIPT",
-    "PLATFORM", "EDITOR", "ASSET", "ANIMATION", "INPUT"
+    "PLATFORM", "EDITOR", "ASSET", "ANIMATION", "INPUT",
+    "UI"
 };
 
 static const char* reset_color = "\x1b[0m";
