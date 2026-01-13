@@ -1,5 +1,5 @@
 // status_effects.c - Status Effects System Implementation
-#include <include/gameplay/combat/status_effects.h>
+#include "status_effects.h"
 #include <include/gameplay/combat/damage.h>
 #include <include/core/logger.h>
 #include <include/ecs/component_ids.h>
@@ -83,7 +83,7 @@ static void apply_effect_logic(StatusEffectInstance *effect, u64 entity_id, floa
   // Check if effect has expired
   if (!effect->is_permanent && effect->duration_remaining <= 0.0f) {
     effect->is_active = false;
-    LOG_DEBUG("Effect %s expired for entity %llu", get_effect_name(effect->type), entity_id);
+    LOGD("Effect %s expired for entity %llu", get_effect_name(effect->type), entity_id);
     return;
   }
 
@@ -99,7 +99,7 @@ static void apply_effect_logic(StatusEffectInstance *effect, u64 entity_id, floa
           Entity source = {.id = effect->source_entity_id};
           Entity target = {.id = entity_id};
           damage_event_create(source, target, effect->magnitude, DAMAGE_TYPE_FIRE);
-          LOG_DEBUG("Burning: Applied %.1f fire damage to entity %llu", effect->magnitude, entity_id);
+          LOGD("Burning: Applied %.1f fire damage to entity %llu", effect->magnitude, entity_id);
         }
         break;
 
@@ -110,14 +110,14 @@ static void apply_effect_logic(StatusEffectInstance *effect, u64 entity_id, floa
           Entity source = {.id = effect->source_entity_id};
           Entity target = {.id = entity_id};
           damage_event_create(source, target, effect->magnitude, DAMAGE_TYPE_POISON);
-          LOG_DEBUG("Poison: Applied %.1f poison damage to entity %llu", effect->magnitude, entity_id);
+          LOGD("Poison: Applied %.1f poison damage to entity %llu", effect->magnitude, entity_id);
         }
         break;
 
       case EFFECT_FREEZING:
         // Slow down entity movement - magnitude is the speed multiplier (0.5 = 50% speed)
         // This would be applied by movement system checking status effects
-        LOG_DEBUG("Freezing: Slowed entity %llu by %.1f%%", entity_id, (1.0f - effect->magnitude) * 100.0f);
+        LOGD("Freezing: Slowed entity %llu by %.1f%%", entity_id, (1.0f - effect->magnitude) * 100.0f);
         break;
 
       case EFFECT_HEALING:
@@ -130,20 +130,20 @@ static void apply_effect_logic(StatusEffectInstance *effect, u64 entity_id, floa
           Entity target = {.id = entity_id};
           // Negative damage = healing, TRUE damage type bypasses resistances
           damage_event_create(source, target, -effect->magnitude, DAMAGE_TYPE_TRUE);
-          LOG_DEBUG("Healing: Healed entity %llu for %.1f HP", entity_id, effect->magnitude);
+          LOGD("Healing: Healed entity %llu for %.1f HP", entity_id, effect->magnitude);
         }
         break;
 
       case EFFECT_SHIELD:
         // Provide damage absorption - typically applied to a shield component
         // Magnitude is the shield amount (reduces incoming damage up to shield value)
-        LOG_DEBUG("Shield: Entity %llu has %.1f shield points", entity_id, effect->magnitude);
+        LOGD("Shield: Entity %llu has %.1f shield points", entity_id, effect->magnitude);
         break;
 
       case EFFECT_SPEED:
         // Increase movement speed - magnitude is the speed multiplier (1.5 = 150% speed)
         // This would be applied by movement system checking status effects
-        LOG_DEBUG("Speed: Entity %llu speed increased by %.1f%%", entity_id, (effect->magnitude - 1.0f) * 100.0f);
+        LOGD("Speed: Entity %llu speed increased by %.1f%%", entity_id, (effect->magnitude - 1.0f) * 100.0f);
         break;
     }
   }
@@ -230,7 +230,7 @@ static void remove_effect(EntityStatusEffects *entity_effects, StatusEffectType 
         entity_effects->effect_count--;
       }
       
-      LOG_DEBUG("Removed effect %s from entity %llu", get_effect_name(type), entity_effects->entity_id);
+      LOGD("Removed effect %s from entity %llu", get_effect_name(type), entity_effects->entity_id);
       return;
     }
   }
@@ -262,7 +262,7 @@ static void cleanup_entity_effects(u32 index) {
 // Public API
 void status_sys_init(void) {
   if (g_status_system.is_initialized) {
-    LOG_WARN("Status effects system already initialized");
+    LOGW("Status effects system already initialized");
     return;
   }
   
@@ -271,7 +271,7 @@ void status_sys_init(void) {
   g_status_system.current_time = 0.0f;
   g_status_system.update_timer = 0.0f;
   
-  LOG_INFO("Status effects system initialized");
+  LOGI("Status effects system initialized");
 }
 
 void status_sys_shutdown(void) {
@@ -280,7 +280,7 @@ void status_sys_shutdown(void) {
   memset(&g_status_system, 0, sizeof(StatusEffectSystem));
   g_status_system.is_initialized = false;
   
-  LOG_INFO("Status effects system shutdown");
+  LOGI("Status effects system shutdown");
 }
 
 void status_sys_update(float delta_time) {
@@ -317,7 +317,7 @@ void status_sys_apply_effect(u64 entity_id, StatusEffectType type, float duratio
   
   EntityStatusEffects *entity_effects = find_or_create_entity_effects(entity_id);
   if (!entity_effects) {
-    LOG_WARN("Failed to apply effect %s to entity %llu - system full", 
+    LOGW("Failed to apply effect %s to entity %llu - system full",
              get_effect_name(type), entity_id);
     return;
   }
@@ -331,10 +331,10 @@ void status_sys_apply_effect(u64 entity_id, StatusEffectType type, float duratio
       existing_effect->magnitude += magnitude;
       existing_effect->duration_remaining = fmaxf(existing_effect->duration_remaining, duration);
       
-      LOG_DEBUG("Stacked effect %s on entity %llu (stack count: %u, magnitude: %.1f)", 
+      LOGD("Stacked effect %s on entity %llu (stack count: %u, magnitude: %.1f)",
                get_effect_name(type), entity_id, existing_effect->stack_count, existing_effect->magnitude);
     } else {
-      LOG_DEBUG("Effect %s on entity %llu reached stack limit", get_effect_name(type), entity_id);
+      LOGD("Effect %s on entity %llu reached stack limit", get_effect_name(type), entity_id);
     }
     return;
   }
@@ -342,7 +342,7 @@ void status_sys_apply_effect(u64 entity_id, StatusEffectType type, float duratio
   // Add new effect
   StatusEffectInstance *effect = add_effect(entity_effects, type);
   if (!effect) {
-    LOG_WARN("Failed to add effect %s to entity %llu - entity full", 
+    LOGW("Failed to add effect %s to entity %llu - entity full",
              get_effect_name(type), entity_id);
     return;
   }
@@ -353,7 +353,7 @@ void status_sys_apply_effect(u64 entity_id, StatusEffectType type, float duratio
   effect->tick_timer = 0.0f;
   effect->is_permanent = (duration <= 0.0f);
   
-  LOG_DEBUG("Applied effect %s to entity %llu (duration: %.1f, magnitude: %.1f)", 
+  LOGD("Applied effect %s to entity %llu (duration: %.1f, magnitude: %.1f)",
            get_effect_name(type), entity_id, duration, magnitude);
 }
 
@@ -367,7 +367,7 @@ void status_sys_apply_effect_with_source(u64 entity_id, StatusEffectType type, f
     StatusEffectInstance *effect = find_effect(entity_effects, type);
     if (effect) {
       effect->source_entity_id = source_entity_id;
-      LOG_DEBUG("Set effect %s source to entity %llu", get_effect_name(type), source_entity_id);
+      LOGD("Set effect %s source to entity %llu", get_effect_name(type), source_entity_id);
     }
   }
 }
@@ -387,7 +387,7 @@ void status_sys_clear_all_effects(u64 entity_id) {
   // Find and remove entity effects
   for (u32 i = 0; i < g_status_system.entity_count; i++) {
     if (g_status_system.entities[i].entity_id == entity_id) {
-      LOG_DEBUG("Cleared all effects from entity %llu", entity_id);
+      LOGD("Cleared all effects from entity %llu", entity_id);
       cleanup_entity_effects(i);
       return;
     }
@@ -480,45 +480,45 @@ void status_sys_debug_print_entity(u64 entity_id) {
   
   EntityStatusEffects *entity_effects = find_or_create_entity_effects(entity_id);
   if (!entity_effects) {
-    LOG_DEBUG("Entity %llu has no status effects", entity_id);
+    LOGD("Entity %llu has no status effects", entity_id);
     return;
   }
   
-  LOG_DEBUG("=== Status Effects for Entity %llu ===", entity_id);
-  LOG_DEBUG("Total effects: %u", entity_effects->effect_count);
+  LOGD("=== Status Effects for Entity %llu ===", entity_id);
+  LOGD("Total effects: %u", entity_effects->effect_count);
   
   for (u32 i = 0; i < entity_effects->effect_count; i++) {
     StatusEffectInstance *effect = &entity_effects->effects[i];
     
     if (effect->is_active) {
-      LOG_DEBUG("  %s: magnitude=%.1f, remaining=%.1fs, stacks=%u, source=%llu",
+      LOGD("  %s: magnitude=%.1f, remaining=%.1fs, stacks=%u, source=%llu",
                get_effect_name(effect->type), effect->magnitude, effect->duration_remaining,
                effect->stack_count, effect->source_entity_id);
     }
   }
   
-  LOG_DEBUG("=================================");
+  LOGD("=================================");
 }
 
 void status_sys_debug_print_all(void) {
   if (!g_status_system.is_initialized) return;
   
-  LOG_DEBUG("=== Status Effects System Status ===");
-  LOG_DEBUG("Total entities with effects: %u", g_status_system.entity_count);
-  LOG_DEBUG("Current time: %.2f", g_status_system.current_time);
+  LOGD("=== Status Effects System Status ===");
+  LOGD("Total entities with effects: %u", g_status_system.entity_count);
+  LOGD("Current time: %.2f", g_status_system.current_time);
   
   u32 total_effects = 0, active_effects = 0;
   status_sys_get_statistics(NULL, &total_effects, &active_effects);
   
-  LOG_DEBUG("Total effects: %u", total_effects);
-  LOG_DEBUG("Active effects: %u", active_effects);
+  LOGD("Total effects: %u", total_effects);
+  LOGD("Active effects: %u", active_effects);
   
   for (u32 i = 0; i < g_status_system.entity_count; i++) {
     EntityStatusEffects *entity_effects = &g_status_system.entities[i];
     status_sys_debug_print_entity(entity_effects->entity_id);
   }
   
-  LOG_DEBUG("==================================");
+  LOGD("==================================");
 }
 
 bool status_sys_is_initialized(void) {

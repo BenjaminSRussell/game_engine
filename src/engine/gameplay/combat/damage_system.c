@@ -1,9 +1,16 @@
 // damage_system.c - Implementation
 #include "engine/include/core/logger.h"
 #include <gameplay/combat/damage.h>
+#include <ecs/components/health.h>
+#include <ecs/components/transform.h>
+#include <ecs/component_ids.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifndef RESISTANCE_COMPONENT_ID
+#define RESISTANCE_COMPONENT_ID 50 // Stub if not defined
+#endif
 
 static DamageEvent *g_damage_queue = NULL;
 static u32 g_max_events = 0;
@@ -14,7 +21,7 @@ void damage_system_init(u32 max_events_per_frame) {
   g_damage_queue = (DamageEvent *)malloc(sizeof(DamageEvent) * g_max_events);
   g_event_count = 0;
 
-  LOG_INFO("Damage system initialized with capacity: %u", g_max_events);
+  LOGI("Damage system initialized with capacity: %u", g_max_events);
 }
 
 void damage_system_shutdown(void) {
@@ -25,13 +32,13 @@ void damage_system_shutdown(void) {
   g_max_events = 0;
   g_event_count = 0;
 
-  LOG_INFO("Damage system shutdown");
+  LOGI("Damage system shutdown");
 }
 
 DamageEvent *damage_event_create(Entity source, Entity target, f32 amount,
                                  DamageType type) {
   if (g_event_count >= g_max_events) {
-    LOG_WARN("Damage event queue full, skipping event");
+    LOGW("Damage event queue full, skipping event");
     return NULL;
   }
 
@@ -74,7 +81,7 @@ void damage_system_process_events(World *world, f64 delta_time) {
         world, event->target, HEALTH_COMPONENT_ID);
 
     if (!health) {
-      LOG_WARN("Target entity %u has no health component", event->target.id);
+      LOGW("Target entity %u has no health component", event->target.id);
       continue;
     }
 
@@ -90,7 +97,7 @@ void damage_system_process_events(World *world, f64 delta_time) {
     health->health -= final_damage;
     health->last_damage_time = (f32)delta_time;
 
-    LOG_DEBUG("Applied damage: entity %u -> %u, base=%.2f final=%.2f blocked=%.2f, type %d",
+    LOGD("Applied damage: entity %u -> %u, base=%.2f final=%.2f blocked=%.2f, type %d",
               event->source.id, event->target.id, event->base_amount,
               final_damage, blocked_amount, event->type);
 
@@ -105,7 +112,7 @@ void damage_system_process_events(World *world, f64 delta_time) {
 
       Vec3 death_pos = transform ? transform->position : vec3(0, 0, 0);
 
-      LOG_INFO("Entity %u died at (%.1f, %.1f, %.1f) from damage type %d by entity %u",
+      LOGI("Entity %u died at (%.1f, %.1f, %.1f) from damage type %d by entity %u",
                event->target.id, death_pos.x, death_pos.y, death_pos.z,
                event->type, event->source.id);
 

@@ -9,25 +9,25 @@ static World *health_world = NULL;
 
 bool health_system_init(World *world) {
   if (!world) {
-    LOG_ERROR("Health system: NULL world provided");
+    LOGE("Health system: NULL world provided");
     return false;
   }
 
   health_world = world;
 
-  LOG_INFO("Health system initialized");
+  LOGI("Health system initialized");
   return true;
 }
 
 void health_system_shutdown(void) {
   health_world = NULL;
-  LOG_INFO("Health system shutdown");
+  LOGI("Health system shutdown");
 }
 
 HealthComponent *health_create_component(f32 max_health) {
   HealthComponent *health = calloc(1, sizeof(HealthComponent));
   if (!health) {
-    LOG_ERROR("Failed to allocate health component");
+    LOGE("Failed to allocate health component");
     return NULL;
   }
 
@@ -57,7 +57,7 @@ bool health_apply_damage(HealthComponent *health, f32 damage) {
   if (health->health <= 0.0f) {
     health->health = 0.0f;
     health->is_alive = false;
-    LOG_DEBUG("Entity died");
+    LOGD("Entity died");
   }
 
   return true;
@@ -112,5 +112,5 @@ void health_revive(HealthComponent *health) {
   health->is_alive = true;
   health->last_damage_time = 0.0f;
 
-  LOG_DEBUG("Entity revived");
+  LOGD("Entity revived");
 }

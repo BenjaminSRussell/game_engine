@@ -147,15 +147,17 @@ void unified_logger_flush(void) {
 
             // Write formatted log entry
             if (g_unified_logger.config.use_colors) {
-                fprintf(g_unified_logger.log_file, "%s[%s] [%s] %s:%d %s(): %s%s\n",
+                fprintf(g_unified_logger.log_file, "%s[%s] [%s] [%s] %s:%d %s(): %s%s\n",
                         level_colors[entry->level],
+                        timestamp_str,
                         level_strings[entry->level],
                         category_strings[entry->category],
                         entry->file, entry->line, entry->function,
                         entry->message,
                         reset_color);
             } else {
-                fprintf(g_unified_logger.log_file, "[%s] [%s] %s:%d %s(): %s\n",
+                fprintf(g_unified_logger.log_file, "[%s] [%s] [%s] %s:%d %s(): %s\n",
+                        timestamp_str,
                         level_strings[entry->level],
                         category_strings[entry->category],
                         entry->file, entry->line, entry->function,
@@ -242,14 +244,16 @@ void unified_logger_log(LogLevel level, LogCategory category, const char* file, 
         strftime(timestamp_str, sizeof(timestamp_str), "%H:%M:%S", tm_info);
 
         if (g_unified_logger.config.use_colors) {
-            printf("%s[%s] [%s] %s%s\n",
+            printf("%s[%s] [%s] %s %s%s\n",
                    level_colors[level],
+                   timestamp_str,
                    level_strings[level],
                    category_strings[category],
                    entry.message,
                    reset_color);
         } else {
-            printf("[%s] [%s] %s\n",
+            printf("[%s] [%s] [%s] %s\n",
+                   timestamp_str,
                    level_strings[level],
                    category_strings[category],
                    entry.message);
@@ -353,15 +357,21 @@ void unified_logger_log_structured(LogLevel level, LogCategory category, const c
 
     // Output to console with JSON formatting
     if (g_unified_logger.config.enabled_channels & LOG_CHANNEL_CONSOLE) {
+        struct tm* tm_info = localtime(&entry.timestamp);
+        char timestamp_str[64];
+        strftime(timestamp_str, sizeof(timestamp_str), "%H:%M:%S", tm_info);
+
         if (g_unified_logger.config.use_colors) {
-            printf("%s[%s] [%s] %s%s\n",
+            printf("%s[%s] [%s] %s %s%s\n",
                    level_colors[level],
+                   timestamp_str,
                    level_strings[level],
                    category_strings[category],
                    entry.message,
                    reset_color);
         } else {
-            printf("[%s] [%s] %s\n",
+            printf("[%s] [%s] [%s] %s\n",
+                   timestamp_str,
                    level_strings[level],
                    category_strings[category],
                    entry.message);
@@ -385,13 +395,12 @@ void unified_logger_rotate(void) {
 
     // Create backup filename
     char backup_path[512];
-    char time_str[64];
     time_t now = time(NULL);
     struct tm* tm_info = localtime(&now);
-
-    strftime(time_str, sizeof(time_str), ".%Y%m%d_%H%M%S", tm_info);
+    char timestamp_str[64];
+    strftime(timestamp_str, sizeof(timestamp_str), ".%Y%m%d_%H%M%S", tm_info);
     snprintf(backup_path, sizeof(backup_path), "%s%s",
-             g_unified_logger.config.log_file_path, time_str);
+             g_unified_logger.config.log_file_path, timestamp_str);
 
     // Rename current log file
     rename(g_unified_logger.config.log_file_path, backup_path);
