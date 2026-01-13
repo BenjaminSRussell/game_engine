@@ -1,3 +1,10 @@
+/**
+ * @file pcg_graph.c
+ * @brief PCG Graph Implementation
+ * @description Procedural Content Generation graph system
+ * @date 2026-01-13
+ */
+
 #include "../include/pcg/pcg_graph.h"
 #include "engine/include/core/memory.h"
 #include <stdio.h>
