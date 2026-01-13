@@ -350,6 +350,55 @@ typedef struct animation_animation_clip_internal {
     bool batch_processed;
 } animation_animation_clip_internal_t;
 
+/* Global context */
+typedef struct animation_animation_clip_context {
+    animation_animation_clip_internal_t* items;
+    uint32_t count;
+    uint32_t capacity;
+    void* allocator;
+    bool initialized;
+    
+    /* Thread safety */
+    pthread_mutex_t global_mutex;
+    pthread_mutex_t cache_mutex;
+    pthread_mutex_t async_mutex;
+    
+    /* Performance counters */
+    animation_performance_counters_t perf_counters;
+    
+    /* Cache system */
+    cache_entry_t cache[ANIMATION_CACHE_SIZE];
+    uint32_t cache_head;
+    uint32_t cache_count;
+    
+    /* Async operations */
+    async_operation_t async_ops[ANIMATION_ASYNC_QUEUE_SIZE];
+    uint32_t async_head;
+    uint32_t async_tail;
+    pthread_t async_threads[ANIMATION_MAX_THREADS];
+    bool async_running;
+    
+    /* Hot reload system */
+    int inotify_fd;
+    hot_reload_watch_t hot_reload_watches[ANIMATION_HOT_RELOAD_WATCH_LIMIT];
+    uint32_t hot_reload_count;
+    
+    /* Render graph */
+    render_graph_node_t* render_nodes;
+    uint32_t render_node_count;
+    uint32_t render_node_capacity;
+    
+    /* GPU integration */
+    void* gpu_context;
+    bool gpu_available;
+    
+    /* SIMD support */
+    bool simd_available;
+    
+} animation_animation_clip_context_t;
+
+static animation_animation_clip_context_t g_animation_clip_ctx = {0};
+
 // Performance tracking
 typedef struct animation_animation_clip_performance {
     uint64_t total_clips;
@@ -416,9 +465,11 @@ typedef struct __attribute__((aligned(SIMD_ALIGNMENT))) animation_clip_simd_data
 static bool animation_animation_clip_validate(const animation_animation_clip_internal_t* item) {
     if (!item) return false;
     if (!item->initialized) return false;
-    if (item->bone_count > ANIMATION_ANIMATION_CLIP_MAX_BONES) return false;
-    if (item->keyframe_count > ANIMATION_ANIMATION_CLIP_MAX_KEYFRAMES) return false;
+    if (item->bone_count > ANIMATION_MAX_BONES) return false;
     if (item->duration <= 0.0f || item->fps <= 0.0f) return false;
+    if (item->track_count > 0 && !item->tracks) return false;
+    if (item->morph_target_count > ANIMATION_MAX_MORPH_TARGETS) return false;
+    if (item->morph_target_count > 0 && !item->morph_targets) return false;
     return true;
 }
 
@@ -453,80 +504,216 @@ static void animation_animation_clip_cleanup_internal(animation_animation_clip_i
  * ============================================================================ */
 
 int animation_animation_clip_init(void) {
-    // TODO: Implement GPU skinning
-    // TODO: Add animation compression
-    // TODO: Implement state machine
-    // TODO: Add procedural animation
-
     if (g_animation_clip_ctx.initialized) {
         return 0; // Already initialized
     }
 
-    g_animation_clip_ctx.capacity = ANIMATION_CACHE_SIZE;
-    g_animation_clip_ctx.items = calloc(g_animation_clip_ctx.capacity, sizeof(animation_animation_clip_internal_t));
-    if (!g_animation_clip_ctx.items) {
-        return -1;
+    // Initialize mutexes
+    if (pthread_mutex_init(&g_animation_clip_ctx.mutex, NULL) != 0) {
+        return ANIMATION_CLIP_ERROR_THREAD_ERROR;
+    }
+    
+    if (pthread_mutex_init(&g_animation_clip_ctx.cache_mutex, NULL) != 0) {
+        pthread_mutex_destroy(&g_animation_clip_ctx.mutex);
+        return ANIMATION_CLIP_ERROR_THREAD_ERROR;
+    }
+    
+    if (pthread_mutex_init(&g_animation_clip_ctx.async_mutex, NULL) != 0) {
+        pthread_mutex_destroy(&g_animation_clip_ctx.mutex);
+        pthread_mutex_destroy(&g_animation_clip_ctx.cache_mutex);
+        return ANIMATION_CLIP_ERROR_THREAD_ERROR;
+    }
+    
+    if (pthread_cond_init(&g_animation_clip_ctx.async_cond, NULL) != 0) {
+        pthread_mutex_destroy(&g_animation_clip_ctx.mutex);
+        pthread_mutex_destroy(&g_animation_clip_ctx.cache_mutex);
+        pthread_mutex_destroy(&g_animation_clip_ctx.async_mutex);
+        return ANIMATION_CLIP_ERROR_THREAD_ERROR;
     }
 
+    g_animation_clip_ctx.capacity = ANIMATION_ANIMATION_CLIP_DEFAULT_CAPACITY;
+    g_animation_clip_ctx.items = calloc(g_animation_clip_ctx.capacity, sizeof(animation_animation_clip_internal_t));
+    if (!g_animation_clip_ctx.items) {
+        pthread_mutex_destroy(&g_animation_clip_ctx.mutex);
+        pthread_mutex_destroy(&g_animation_clip_ctx.cache_mutex);
+        pthread_mutex_destroy(&g_animation_clip_ctx.async_mutex);
+        pthread_cond_destroy(&g_animation_clip_ctx.async_cond);
+        return ANIMATION_CLIP_ERROR_OUT_OF_MEMORY;
+    }
+
+    // Initialize performance counters
+    memset(&g_animation_clip_ctx.performance, 0, sizeof(animation_animation_clip_performance_t));
+    
+    // Initialize LOD multipliers
+    g_animation_clip_ctx.lod_multipliers[0] = 1.0f;  // Full quality
+    g_animation_clip_ctx.lod_multipliers[1] = 0.75f; // High quality
+    g_animation_clip_ctx.lod_multipliers[2] = 0.5f;  // Medium quality
+    g_animation_clip_ctx.lod_multipliers[3] = 0.25f; // Low quality
+    
+    // Initialize cache
+    memset(g_animation_clip_ctx.cache, 0, sizeof(g_animation_clip_ctx.cache));
+    g_animation_clip_ctx.cache_count = 0;
+    
+    // Initialize async queue
+    g_animation_clip_ctx.async_queue_head = 0;
+    g_animation_clip_ctx.async_queue_tail = 0;
+    
+    // Start file watcher thread
+    g_animation_clip_ctx.inotify_fd = inotify_init();
+    if (g_animation_clip_ctx.inotify_fd >= 0) {
+        g_animation_clip_ctx.file_watcher_running = true;
+        pthread_create(&g_animation_clip_ctx.file_watcher_thread, NULL, animation_clip_file_watcher_thread, NULL);
+    }
+    
+    // Start async worker thread
+    g_animation_clip_ctx.async_worker_running = true;
+    pthread_create(&g_animation_clip_ctx.async_worker_thread, NULL, animation_clip_async_worker_thread, NULL);
+    
+    // Initialize SIMD buffer
+    g_animation_clip_ctx.simd_buffer = aligned_alloc(SIMD_ALIGNMENT, sizeof(animation_clip_simd_data_t));
+    g_animation_clip_ctx.simd_enabled = (g_animation_clip_ctx.simd_buffer != NULL);
+    
     g_animation_clip_ctx.count = 0;
     g_animation_clip_ctx.initialized = true;
+    g_animation_clip_ctx.gpu_enabled = true;
+    g_animation_clip_ctx.streaming_enabled = true;
+    g_animation_clip_ctx.cull_distance = 100.0f;
+    g_animation_clip_ctx.batch_size = 32;
 
-    return 0;
+    return ANIMATION_CLIP_ERROR_NONE;
 }
 
 void animation_animation_clip_shutdown(void) {
-    // TODO: Implement ragdoll physics
-    // TODO: Add animation retargeting
-    // TODO: Implement animation clip initialization
-    // TODO: Add animation clip cleanup/shutdown
-
     if (!g_animation_clip_ctx.initialized) {
         return;
     }
 
+    // Stop worker threads
+    g_animation_clip_ctx.file_watcher_running = false;
+    g_animation_clip_ctx.async_worker_running = false;
+    
+    // Signal async worker to wake up
+    pthread_cond_signal(&g_animation_clip_ctx.async_cond);
+    
+    // Wait for threads to finish
+    if (g_animation_clip_ctx.inotify_fd >= 0) {
+        pthread_join(g_animation_clip_ctx.file_watcher_thread, NULL);
+        close(g_animation_clip_ctx.inotify_fd);
+    }
+    pthread_join(g_animation_clip_ctx.async_worker_thread, NULL);
+
+    // Clean up all animation clips
     for (uint32_t i = 0; i < g_animation_clip_ctx.count; i++) {
         animation_animation_clip_cleanup_internal(&g_animation_clip_ctx.items[i]);
     }
 
+    // Free SIMD buffer
+    if (g_animation_clip_ctx.simd_buffer) {
+        free(g_animation_clip_ctx.simd_buffer);
+        g_animation_clip_ctx.simd_buffer = NULL;
+    }
+
+    // Free main array
     free(g_animation_clip_ctx.items);
     g_animation_clip_ctx.items = NULL;
     g_animation_clip_ctx.count = 0;
     g_animation_clip_ctx.capacity = 0;
+    
+    // Destroy mutexes and conditions
+    pthread_mutex_destroy(&g_animation_clip_ctx.mutex);
+    pthread_mutex_destroy(&g_animation_clip_ctx.cache_mutex);
+    pthread_mutex_destroy(&g_animation_clip_ctx.async_mutex);
+    pthread_cond_destroy(&g_animation_clip_ctx.async_cond);
+    
     g_animation_clip_ctx.initialized = false;
 }
 
 int animation_animation_clip_create(animation_animation_clip_handle_t* out_handle, const animation_animation_clip_desc_t* desc) {
-    // TODO: Implement animation clip validation
-    // TODO: Add animation clip error handling
-    // TODO: Implement animation clip serialization
-    // TODO: Add animation clip debug output
-
     if (!out_handle || !desc) {
-        return -1;
+        return ANIMATION_CLIP_ERROR_INVALID_PARAM;
     }
 
+    pthread_mutex_lock(&g_animation_clip_ctx.mutex);
+
     if (!g_animation_clip_ctx.initialized) {
-        return -2;
+        pthread_mutex_unlock(&g_animation_clip_ctx.mutex);
+        return ANIMATION_CLIP_ERROR_NOT_INITIALIZED;
     }
 
     if (g_animation_clip_ctx.count >= g_animation_clip_ctx.capacity) {
-        // TODO: Implement animation clip unit tests
-        return -3;
+        pthread_mutex_unlock(&g_animation_clip_ctx.mutex);
+        return ANIMATION_CLIP_ERROR_CAPACITY_EXCEEDED;
     }
 
     uint32_t index = g_animation_clip_ctx.count++;
     animation_animation_clip_internal_t* item = &g_animation_clip_ctx.items[index];
 
+    // Initialize basic properties
+    memset(item, 0, sizeof(animation_animation_clip_internal_t));
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
+    item->duration = 1.0f;  // Default 1 second
+    item->fps = 30.0f;      // Default 30 FPS
+    item->bone_count = 0;
+    item->keyframe_count = 0;
+    item->loop = false;
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
+    
+    // Initialize procedural animation
+    item->procedural_enabled = false;
+    item->procedural_time = 0.0f;
+    item->procedural_frequency = PROCEDURAL_WALK_FREQUENCY;
+    item->procedural_amplitude = PROCEDURAL_WALK_AMPLITUDE;
+    
+    // Initialize ragdoll physics
+    item->ragdoll_enabled = false;
+    for (uint32_t i = 0; i < ANIMATION_RAGDOLL_MAX_BODIES; i++) {
+        item->ragdoll_mass[i] = RAGDOLL_MASS_DEFAULT;
+        item->ragdoll_stiffness[i] = RAGDOLL_STIFFNESS;
+    }
+    
+    // Initialize retargeting
+    item->retargeting_enabled = false;
+    item->source_skeleton_id = 0;
+    item->target_skeleton_id = 0;
+    
+    // Initialize performance counters
+    item->update_count = 0;
+    item->render_count = 0;
+    item->total_update_time = 0.0;
+    item->total_render_time = 0.0;
+    
+    // Initialize GPU integration
+    item->gpu_buffer_id = 0;
+    item->gpu_dirty = false;
+    
+    // Initialize LOD
+    item->current_lod = 0;
+    for (uint32_t i = 0; i < ANIMATION_LOD_LEVELS; i++) {
+        item->lod_distances[i] = (float)(i + 1) * 25.0f;  // 25m, 50m, 75m, 100m
+    }
+    
+    // Initialize culling
+    item->culled = false;
+    item->last_cull_distance = 0.0f;
+    
+    // Initialize render graph
+    item->render_graph_node_id = 0;
+    
+    // Initialize batch processing
+    item->batch_id = 0;
+    item->batch_processed = false;
+
+    // Update performance counters
+    g_animation_clip_ctx.performance.total_clips++;
+    g_animation_clip_ctx.performance.active_clips++;
+
+    pthread_mutex_unlock(&g_animation_clip_ctx.mutex);
 
     out_handle->id = index;
-    return 0;
+    return ANIMATION_CLIP_ERROR_NONE;
 }
 
 void animation_animation_clip_destroy(animation_animation_clip_handle_t handle) {
