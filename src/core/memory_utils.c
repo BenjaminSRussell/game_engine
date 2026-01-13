@@ -1,3 +1,10 @@
+/**
+ * @file memory_utils.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 // Memory Utilities Implementation
 // Centralized memory allocation utilities to reduce code duplication
 
