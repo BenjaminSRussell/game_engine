@@ -5181,3 +5181,27 @@ TODO-32759,todo_md,Infrastructure,main,Extract helper functions from monolithic_
 TODO-32760,todo_md,Infrastructure,main,Extract helper functions from gamestate_main.c update loop,open
 TODO-32761,todo_md,Infrastructure,main,Create internal API boundaries for refactored modules,open
 TODO-32762,todo_md,Infrastructure,main,Update CMakeLists.txt for new modular structure,open
+TODO-30343,todo_md,Master TODO,master/todo.md,Implement D3D12 backend (line 11) (src/engine/core/memory/budget_tracker.c),done
+TODO-30344,todo_md,Master TODO,master/todo.md,Add thread-safe access patterns (line 12) (src/engine/core/memory/budget_tracker.c),done
+TODO-30345,todo_md,Master TODO,master/todo.md,Implement proper error handling with error codes (line 13) (src/engine/core/memory/budget_tracker.c),done
+TODO-30346,todo_md,Master TODO,master/todo.md,Add memory tracking and leak detection (line 14) (src/engine/core/memory/budget_tracker.c),done
+TODO-30347,todo_md,Master TODO,master/todo.md,Implement hot-reload support (line 15) (src/engine/core/memory/budget_tracker.c),done
+TODO-30348,todo_md,Master TODO,master/todo.md,Add validation layer integration (line 16) (src/engine/core/memory/budget_tracker.c),done
+TODO-30349,todo_md,Master TODO,master/todo.md,Implement resource state tracking (line 17) (src/engine/core/memory/budget_tracker.c),done
+TODO-30351,todo_md,Master TODO,master/todo.md,Implement budget tracker initialization (line 19) (src/engine/core/memory/budget_tracker.c),done
+TODO-30352,todo_md,Master TODO,master/todo.md,Add budget tracker cleanup/shutdown (line 20) (src/engine/core/memory/budget_tracker.c),done
+TODO-30353,todo_md,Master TODO,master/todo.md,Implement budget tracker validation (line 21) (src/engine/core/memory/budget_tracker.c),done
+TODO-30354,todo_md,Master TODO,master/todo.md,Add budget tracker error handling (line 22) (src/engine/core/memory/budget_tracker.c),done
+TODO-30355,todo_md,Master TODO,master/todo.md,Implement budget tracker serialization (line 23) (src/engine/core/memory/budget_tracker.c),done
+TODO-30358,todo_md,Master TODO,master/todo.md,Add budget tracker performance counters (line 26) (src/engine/core/memory/budget_tracker.c),done
+TODO-30359,todo_md,Master TODO,master/todo.md,Implement budget tracker hot-reload (line 27) (src/engine/core/memory/budget_tracker.c),done
+TODO-30360,todo_md,Master TODO,master/todo.md,Add budget tracker thread safety (line 28) (src/engine/core/memory/budget_tracker.c),done
+TODO-30362,todo_md,Master TODO,master/todo.md,Add budget tracker caching layer (line 30) (src/engine/core/memory/budget_tracker.c),done
+TODO-30363,todo_md,Master TODO,master/todo.md,Implement budget tracker async operations (line 31) (src/engine/core/memory/budget_tracker.c),done
+TODO-30364,todo_md,Master TODO,master/todo.md,Add budget tracker GPU integration (line 32) (src/engine/core/memory/budget_tracker.c),done
+TODO-30365,todo_md,Master TODO,master/todo.md,Implement budget tracker SIMD optimization (line 33) (src/engine/core/memory/budget_tracker.c),done
+TODO-30366,todo_md,Master TODO,master/todo.md,Add budget tracker batch processing (line 34) (src/engine/core/memory/budget_tracker.c),done
+TODO-30367,todo_md,Master TODO,master/todo.md,Implement budget tracker streaming support (line 35) (src/engine/core/memory/budget_tracker.c),done
+TODO-30368,todo_md,Master TODO,master/todo.md,Add budget tracker LOD support (line 36) (src/engine/core/memory/budget_tracker.c),done
+TODO-30369,todo_md,Master TODO,master/todo.md,Implement budget tracker culling integration (line 37) (src/engine/core/memory/budget_tracker.c),done
+TODO-30370,todo_md,Master TODO,master/todo.md,Add budget tracker render graph node (line 38) (src/engine/core/memory/budget_tracker.c),done
