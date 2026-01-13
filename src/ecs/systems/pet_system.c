@@ -1,3 +1,10 @@
+/**
+ * @file pet_system.c
+ * @brief System Implementation
+ * @description System implementation
+ * @date 2026-01-13
+ */
+
 #include "pet_system.h"
 #include <stdio.h>
 
