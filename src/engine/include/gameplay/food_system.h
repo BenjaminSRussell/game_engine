@@ -72,6 +72,13 @@ bool food_consume_item(uint32_t player_id, uint32_t item_id, uint32_t quantity);
 // cooked_item_id: Resulting cooked food item
 bool food_cook_item(uint32_t player_id, uint32_t raw_item_id, uint32_t cooked_item_id);
 
+// Create a crafting recipe for cooking food
+// raw_item_id: The raw ingredient item ID
+// cooked_item_id: The resulting cooked item ID
+// station_type: The crafting station type required (e.g., campfire, stove)
+// cook_time_ms: Time required to cook in milliseconds
+bool food_set_cooking_recipe(uint32_t raw_item_id, uint32_t cooked_item_id, uint32_t station_type, uint32_t cook_time_ms);
+
 // Update nutrition status for a player
 // player_id: Player to update
 // delta_time: Time since last update in seconds

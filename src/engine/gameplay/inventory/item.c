@@ -39,12 +39,12 @@ bool item_database_init(u32 max_items) {
   g_items = calloc(g_item_capacity, sizeof(Item));
   if (!g_items) {
     g_item_capacity = 0;
-    LOG_ERROR("Failed to allocate item database");
+    LOGE("Failed to allocate item database");
     return false;
   }
 
   g_item_count = 0;
-  LOG_INFO("Item database initialized (capacity: %u)", g_item_capacity);
+  LOGI("Item database initialized (capacity: %u)", g_item_capacity);
   return true;
 }
 
@@ -53,7 +53,7 @@ void item_database_shutdown(void) {
   g_items = NULL;
   g_item_count = 0;
   g_item_capacity = 0;
-  LOG_INFO("Item database shutdown");
+  LOGI("Item database shutdown");
 }
 
 bool item_database_register(const Item *item) {
@@ -69,7 +69,7 @@ bool item_database_register(const Item *item) {
 
 bool item_database_load_from_json(const char *filepath) {
   (void)filepath;
-  LOG_WARN("item_database_load_from_json not implemented");
+  LOGW("item_database_load_from_json not implemented");
   return false;
 }
 
@@ -157,7 +157,7 @@ ItemStack item_create_stack(u32 item_id, u32 quantity) {
   ItemStack stack = {0};
   const Item *item = item_database_get(item_id);
   if (!item) {
-    LOG_ERROR("Invalid item ID: %u", item_id);
+    LOGE("Invalid item ID: %u", item_id);
     return stack;
   }
 
