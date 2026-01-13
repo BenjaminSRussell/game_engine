@@ -35,6 +35,29 @@ Quat quat_from_euler(f32 pitch, f32 yaw, f32 roll) {
     return q;
 }
 
+Vec3 quat_to_euler(Quat q) {
+    Vec3 euler;
+
+    // Roll (x-axis rotation)
+    f32 sinr_cosp = 2.0f * (q.w * q.x + q.y * q.z);
+    f32 cosr_cosp = 1.0f - 2.0f * (q.x * q.x + q.y * q.y);
+    euler.x = atan2f(sinr_cosp, cosr_cosp);
+
+    // Pitch (y-axis rotation)
+    f32 sinp = 2.0f * (q.w * q.y - q.z * q.x);
+    if (fabsf(sinp) >= 1.0f)
+        euler.y = copysignf((float)M_PI / 2.0f, sinp);
+    else
+        euler.y = asinf(sinp);
+
+    // Yaw (z-axis rotation)
+    f32 siny_cosp = 2.0f * (q.w * q.z + q.x * q.y);
+    f32 cosy_cosp = 1.0f - 2.0f * (q.y * q.y + q.z * q.z);
+    euler.z = atan2f(siny_cosp, cosy_cosp);
+
+    return euler;
+}
+
 Quat quat_mul(Quat a, Quat b) {
     Quat q;
     q.w = a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z;
@@ -161,4 +184,29 @@ Quat quat_nlerp(Quat a, Quat b, f32 t) {
     r.y = a.y + (b.y - a.y) * t;
     r.z = a.z + (b.z - a.z) * t;
     return quat_normalize(r);
+}
+
+Quat quat_conjugate(Quat q) {
+    Quat res;
+    res.w = q.w;
+    res.x = -q.x;
+    res.y = -q.y;
+    res.z = -q.z;
+    return res;
+}
+
+Quat quat_inverse(Quat q) {
+    // For unit quaternion, inverse == conjugate
+    // But generally inv = conj / norm_sq
+    // Assuming normalized for rotation, but robust version:
+    f32 norm_sq = q.w*q.w + q.x*q.x + q.y*q.y + q.z*q.z;
+    if (norm_sq < EPSILON) return quat_identity();
+    f32 inv_norm_sq = 1.0f / norm_sq;
+
+    Quat res;
+    res.w = q.w * inv_norm_sq;
+    res.x = -q.x * inv_norm_sq;
+    res.y = -q.y * inv_norm_sq;
+    res.z = -q.z * inv_norm_sq;
+    return res;
 }

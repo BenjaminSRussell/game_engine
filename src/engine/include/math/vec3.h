@@ -45,6 +45,7 @@
 #ifndef VEC3_H
 #define VEC3_H
 
+// Define VEC3_H before including common.h to prevent types.h from defining vec3 functions
 #include <common.h>
 #include <math.h>
 

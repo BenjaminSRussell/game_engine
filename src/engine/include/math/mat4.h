@@ -41,9 +41,9 @@
 #ifndef MAT4_H
 #define MAT4_H
 
+#include <math/vec3.h>
 #include <common.h>
 #include <math/vec2.h>
-#include <math/vec3.h>
 #include <math/vec4.h>
 #include <stdbool.h>
 #include <stddef.h>
