@@ -65,7 +65,7 @@ static f64 internal_get_time(void) {
     return ts.tv_sec + ts.tv_nsec / 1e9;
 }
 
-Timer *timer_create(const char *name) {
+Timer *perf_timer_create(const char *name) {
     Timer *timer = (Timer *)malloc(sizeof(Timer));
     if (!timer) return NULL;
     
@@ -113,7 +113,7 @@ void timer_reset(Timer *timer) {
 void profiler_init(void) {
     memset(&g_profiler, 0, sizeof(Profiler));
     g_profiler.enabled = true;
-    LOG_DEBUG("Profiler initialized");
+    LOG_GENERAL_DEBUG("Profiler initialized");
 }
 
 void profiler_shutdown(void) {
@@ -184,14 +184,14 @@ void profiler_reset(void) {
 }
 
 void profiler_report(void) {
-    LOG_INFO("=== Profiler Report ===");
-    LOG_INFO("%-40s %10s %12s %12s %12s", "Name", "Calls", "Total (ms)", "Avg (ms)", "Max (ms)");
-    LOG_INFO("%s", "");
+    LOG_GENERAL_INFO("=== Profiler Report ===");
+    LOG_GENERAL_INFO("%-40s %10s %12s %12s %12s", "Name", "Calls", "Total (ms)", "Avg (ms)", "Max (ms)");
+    LOG_GENERAL_INFO("%s", "");
     
     for (u32 i = 0; i < g_profiler.entry_count; i++) {
         ProfilerEntry *entry = &g_profiler.entries[i];
         if (entry->call_count > 0) {
-            LOG_INFO("%-40s %10u %12.3f %12.3f %12.3f",
+            LOG_GENERAL_INFO("%-40s %10u %12.3f %12.3f %12.3f",
                     entry->name,
                     entry->call_count,
                     entry->total_time * 1000.0,
@@ -233,14 +233,14 @@ f32 frame_stats_get_fps(void) {
 void logger_errno_context(int err_code) {
     extern int errno;
     const char *err_str = strerror(err_code ? err_code : errno);
-    LOG_ERROR("System error [%d]: %s", err_code ? err_code : errno, err_str);
+    LOG_GENERAL_ERROR("System error [%d]: %s", err_code ? err_code : errno, err_str);
 }
 
 void performance_frame_breakdown(void) {
-    LOG_INFO("=== FRAME TIME BREAKDOWN ===");
-    LOG_INFO("Total frame time: %.2fms", g_frame_stats.frame_time * 1000.0);
-    LOG_INFO("FPS: %.1f", g_frame_stats.fps);
-    LOG_INFO("Frame count: %u", g_frame_stats.frame_count);
+    LOG_GENERAL_INFO("=== FRAME TIME BREAKDOWN ===");
+    LOG_GENERAL_INFO("Total frame time: %.2fms", g_frame_stats.frame_time * 1000.0);
+    LOG_GENERAL_INFO("FPS: %.1f", g_frame_stats.fps);
+    LOG_GENERAL_INFO("Frame count: %u", g_frame_stats.frame_count);
 }
 
 typedef struct {
@@ -264,8 +264,8 @@ void memory_spike_detector_check(u64 current_memory) {
     }
     
     if (current_memory > (g_memory_monitor.peak_memory * 0.9)) {
-        LOG_WARN("Memory spike detected: %llu bytes (peak: %llu)", current_memory, 
-                 g_memory_monitor.peak_memory);
+        LOG_GENERAL_WARN("Memory spike detected: %llu bytes (peak: %llu)", (unsigned long long)current_memory,
+                 (unsigned long long)g_memory_monitor.peak_memory);
     }
 }
 
@@ -324,7 +324,7 @@ void physics_profile_end(void) {
 }
 
 void entity_lifecycle_log(const char *event, const char *entity_type) {
-    LOG_CAT_DEBUG(LOG_CAT_GAME, "Entity event: %s for %s", event, entity_type);
+    LOG_GAME_DEBUG("Entity event: %s for %s", event, entity_type);
 }
 
 void world_gen_profile_start(void) {
@@ -336,22 +336,28 @@ void world_gen_profile_end(void) {
 }
 
 void chunk_lifecycle_log(int chunk_x, int chunk_z, const char *event) {
-    LOG_CAT_DEBUG(LOG_CAT_GAME, "Chunk [%d,%d] %s", chunk_x, chunk_z, event);
+    LOG_GAME_DEBUG("Chunk [%d,%d] %s", chunk_x, chunk_z, event);
 }
 
 void npc_behavior_log(const char *npc_name, const char *behavior) {
-    LOG_CAT_DEBUG(LOG_CAT_AI, "NPC %s: %s", npc_name, behavior);
+    LOG_AI_DEBUG("NPC %s: %s", npc_name, behavior);
 }
 
 void input_event_log(const char *input_type, const char *action) {
-    LOG_CAT_DEBUG(LOG_CAT_GAME, "Input %s: %s", input_type, action);
+    LOG_GAME_DEBUG("Input %s: %s", input_type, action);
 }
 
 void crafting_event_log(const char *recipe_name, bool success) {
-    LOG_CAT_INFO(LOG_CAT_GAME, "Crafting %s: %s", recipe_name, 
+    LOG_GAME_INFO("Crafting %s: %s", recipe_name,
                  success ? "SUCCESS" : "FAILED");
 }
 
 void save_load_log(const char *operation, const char *target) {
-    LOG_CAT_INFO(LOG_CAT_IO, "Save/Load operation: %s on %s", operation, target);
+    // There is no LOG_IO_INFO macro defined in unified_logger.h as per my read.
+    // I should use LOG_GENERAL_INFO with category LOG_CAT_IO or verify macros.
+    // Looking at unified_logger.h read earlier:
+    // It has LOG_GENERAL_*, LOG_GAME_*, LOG_PHYSICS_*, LOG_GRAPHICS_*, LOG_RENDERER_*, LOG_AI_*, LOG_NETWORK_*, LOG_AUDIO_*, LOG_MEMORY_*
+    // It does NOT have LOG_IO_*.
+    // So I will use logger_log directly for IO.
+    logger_log(LOG_LEVEL_INFO, LOG_CAT_IO, __FILE__, __LINE__, __func__, "Save/Load operation: %s on %s", operation, target);
 }

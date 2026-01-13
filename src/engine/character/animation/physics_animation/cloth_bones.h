@@ -36,6 +36,13 @@ typedef struct animation_cloth_bones_info {
     bool initialized;
 } animation_cloth_bones_info_t;
 
+typedef struct animation_cloth_bones_stats {
+    uint32_t active_simulations;
+    size_t memory_usage;
+    uint32_t updates_per_frame;
+    float average_update_time_ms;
+} animation_cloth_bones_stats_t;
+
 /* ============================================================================
  * API
  * ============================================================================ */
@@ -55,9 +62,14 @@ int animation_cloth_bones_get_info(animation_cloth_bones_handle_t handle, animat
 void animation_cloth_bones_mark_dirty(animation_cloth_bones_handle_t handle);
 int animation_cloth_bones_process_pending(void);
 
+/* Serialization */
+int animation_cloth_bones_serialize(animation_cloth_bones_handle_t handle, void* buffer, size_t size, size_t* out_written);
+int animation_cloth_bones_deserialize(animation_cloth_bones_handle_t handle, const void* buffer, size_t size);
+
 /* Statistics */
 uint32_t animation_cloth_bones_get_count(void);
 size_t animation_cloth_bones_get_memory_usage(void);
+int animation_cloth_bones_get_stats(animation_cloth_bones_stats_t* out_stats);
 void animation_cloth_bones_debug_print(void);
 
 #ifdef __cplusplus
