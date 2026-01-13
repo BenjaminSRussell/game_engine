@@ -1,4 +1,11 @@
 /**
+ * @file miscellaneous_systems_complete.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
+/**
  * FINAL MAJOR BATCH: Remaining utility, tool, and miscellaneous TODOs
  * All ~200+ remaining miscellaneous TODOs across various categories
  */
