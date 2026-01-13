@@ -81,8 +81,8 @@ static Vec3 rotate_point_around_axis(const Vec3* point, const Vec3* axis_origin,
     float sin_angle = sinf(angle);
     
     Vec3 term1 = vec3_mul(p, cos_angle);
-    Vec3 term2 = vec3_mul(vec3_cross(&k, &p), sin_angle);
-    Vec3 term3 = vec3_mul(k, vec3_dot(&k, &p) * (1.0f - cos_angle));
+    Vec3 term2 = vec3_mul(vec3_cross(k, p), sin_angle);
+    Vec3 term3 = vec3_mul(k, vec3_dot(k, p) * (1.0f - cos_angle));
     
     return vec3_add(*axis_origin, vec3_add(vec3_add(term1, term2), term3));
 }
@@ -98,14 +98,14 @@ static void apply_joint_constraints(FabrikChain* chain, int joint_index) {
                                          chain->positions[joint_index-1]));
     Vec3 bone2 = vec3_normalize(vec3_sub(chain->positions[joint_index+1], 
                                          chain->positions[joint_index]));
-    float angle = acosf(fmaxf(-1.0f, fminf(1.0f, vec3_dot(&bone1, &bone2))));
+    float angle = acosf(fmaxf(-1.0f, fminf(1.0f, vec3_dot(bone1, bone2))));
     float angle_deg = angle * 180.0f / M_PI;
     
     // Enforce angle constraints
     if (angle_deg < chain->min_angles[joint_index]) {
         // Rotate to minimum angle
         float rotation_needed = (chain->min_angles[joint_index] - angle_deg) * M_PI / 180.0f;
-        Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
+        Vec3 axis = vec3_normalize(vec3_cross(bone1, bone2));
         chain->positions[joint_index+1] = rotate_point_around_axis(
             &chain->positions[joint_index+1],
             &chain->positions[joint_index],
@@ -113,7 +113,7 @@ static void apply_joint_constraints(FabrikChain* chain, int joint_index) {
     } else if (angle_deg > chain->max_angles[joint_index]) {
         // Rotate to maximum angle
         float rotation_needed = (angle_deg - chain->max_angles[joint_index]) * M_PI / 180.0f;
-        Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
+        Vec3 axis = vec3_normalize(vec3_cross(bone1, bone2));
         chain->positions[joint_index+1] = rotate_point_around_axis(
             &chain->positions[joint_index+1],
             &chain->positions[joint_index],
@@ -334,12 +334,42 @@ uint32_t animation_fabrik_solver_add_chain(animation_fabrik_solver_handle_t hand
         
         if (i > 0) {
             Vec3 bone = vec3_sub(positions[i], positions[i-1]);
-            chain->lengths[i-1] = vec3_length(&bone);
+            chain->lengths[i-1] = vec3_length(bone);
             chain->total_length += chain->lengths[i-1];
         }
     }
     
     return chain_id;
+}
+
+int animation_fabrik_solver_set_chain_positions(animation_fabrik_solver_handle_t handle,
+                                                uint32_t chain_id, const Vec3* positions, uint32_t joint_count) {
+    if (handle.id >= g_fabrik_solver_ctx.count || !positions || joint_count < 2 || joint_count > 16) {
+        return -1;
+    }
+
+    animation_fabrik_solver_internal_t* item = &g_fabrik_solver_ctx.items[handle.id];
+    if (!item->initialized || chain_id >= item->chain_count) {
+        return -1;
+    }
+
+    FabrikChain* chain = &item->chains[chain_id];
+
+    chain->joint_count = joint_count;
+    chain->total_length = 0.0f;
+
+    // Copy positions and calculate bone lengths
+    for (uint32_t i = 0; i < joint_count; i++) {
+        chain->positions[i] = positions[i];
+
+        if (i > 0) {
+            Vec3 bone = vec3_sub(positions[i], positions[i-1]);
+            chain->lengths[i-1] = vec3_length(bone);
+            chain->total_length += chain->lengths[i-1];
+        }
+    }
+
+    return 0;
 }
 
 bool animation_fabrik_solver_solve_chain(animation_fabrik_solver_handle_t handle, 
@@ -364,11 +394,17 @@ bool animation_fabrik_solver_solve_chain(animation_fabrik_solver_handle_t handle
         max_iterations = FABRIK_MAX_ITERATIONS;
     }
     
+    // Capture root position to ensure it stays pinned
+    Vec3 root_pos = chain->positions[0];
+
     // Check if target is reachable
-    float target_distance = vec3_distance(&chain->positions[0], target);
+    float target_distance = vec3_distance(root_pos, *target);
     if (target_distance > chain->total_length) {
         // Target unreachable - stretch towards it
-        Vec3 direction = vec3_normalize(vec3_sub(*target, chain->positions[0]));
+        Vec3 direction = vec3_normalize(vec3_sub(*target, root_pos));
+        // Reset root (just in case)
+        chain->positions[0] = root_pos;
+
         for (uint32_t i = 1; i < chain->joint_count; i++) {
             chain->positions[i] = vec3_add(chain->positions[i-1], 
                                           vec3_mul(direction, chain->lengths[i-1]));
@@ -392,6 +428,9 @@ bool animation_fabrik_solver_solve_chain(animation_fabrik_solver_handle_t handle
         }
         
         // Backward reaching
+        // IMPORTANT: Restore root position to ensure pinning
+        chain->positions[0] = root_pos;
+
         for (uint32_t i = 1; i < chain->joint_count; i++) {
             Vec3 direction = vec3_normalize(vec3_sub(chain->positions[i], 
                                                    chain->positions[i - 1]));
@@ -400,7 +439,7 @@ bool animation_fabrik_solver_solve_chain(animation_fabrik_solver_handle_t handle
         }
         
         // Check convergence
-        float end_error = vec3_distance(&chain->positions[chain->joint_count - 1], target);
+        float end_error = vec3_distance(chain->positions[chain->joint_count - 1], *target);
         if (end_error < FABRIK_TOLERANCE) {
             break;
         }

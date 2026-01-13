@@ -64,6 +64,8 @@ void animation_fabrik_solver_debug_print(void);
 /* FABRIK solving functions */
 uint32_t animation_fabrik_solver_add_chain(animation_fabrik_solver_handle_t handle, 
                                            const Vec3* positions, uint32_t joint_count);
+int animation_fabrik_solver_set_chain_positions(animation_fabrik_solver_handle_t handle,
+                                                uint32_t chain_id, const Vec3* positions, uint32_t joint_count);
 bool animation_fabrik_solver_solve_chain(animation_fabrik_solver_handle_t handle, 
                                         uint32_t chain_id, const Vec3* target, 
                                         int max_iterations);

@@ -12,7 +12,7 @@
 
 typedef enum {
   IK_SOLVER_TWO_BONE, // Leg/arm IK
-  IK_SOLVER_FABR IK,  // Full body IK
+  IK_SOLVER_FABRIK,   // Full body IK
   IK_SOLVER_CCD,      // Cyclic coordinate descent
   IK_SOLVER_LIMB      // Specialized limb IK
 } IKSolverType;
@@ -43,11 +43,14 @@ typedef struct {
   u32 max_iterations;
   f32 precision;
 
+  // Internal solver data
+  u32 fabrik_chain_id;
 } IKChain;
 
 typedef struct {
   IKChain chains[MAX_IK_CHAINS];
   u32 chain_count;
+  u32 fabrik_solver_id; // Handle ID for consolidated FABRIK solver
 
 } IKSystem;
 
@@ -65,7 +68,7 @@ void ik_solve(IKSystem *system, u32 chain_id);
 
 // Solvers
 void ik_solve_two_bone(IKChain *chain);
-void ik_solve_fabrik(IKChain *chain);
+void ik_solve_fabrik(IKSystem *system, IKChain *chain);
 void ik_solve_ccd(IKChain *chain);
 
 #ifdef __cplusplus
