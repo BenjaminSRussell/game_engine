@@ -1,6 +1,5 @@
 #include <core/logger.h>
 #include <core/memory.h>
-#include <core/thread_pool.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,10 +9,10 @@
 typedef struct ThreadPool ThreadPool;
 
 // ThreadPool function declarations
-ThreadPool *thread_pool_create(u32 thread_count);
-void thread_pool_destroy(ThreadPool *pool);
-void thread_pool_submit(ThreadPool *pool, void (*function)(void *), void *arg);
-void thread_pool_wait(ThreadPool *pool);
+ThreadPool* thread_pool_create(u32 thread_count);
+void thread_pool_destroy(ThreadPool* pool);
+u32 thread_pool_submit(ThreadPool* pool, void (*function)(void*), void* user_data, const char* name);
+void thread_pool_wait(ThreadPool* pool);
 
 // Asset loader core implementation
 #define MAX_ASSET_LOADERS 64
@@ -419,7 +418,7 @@ u32 asset_loader_load_async(const char *path,
   task->userdata = userdata;
 
   // Submit to thread pool
-  thread_pool_submit(g_asset_system.thread_pool, asset_load_worker, task);
+  thread_pool_submit(g_asset_system.thread_pool, asset_load_worker, task, "asset_load_worker");
 
   LOG_INFO(LOG_CAT_GENERAL, "Submitted asset '%s' for async loading (ID: %u)",
            path, asset_id);
