@@ -1,15 +1,26 @@
 // src/engine/rendering/shadows/shadow_mapping.c
 // Shadow Mapping System - Cascaded shadow maps and PCF filtering
 
-#include "engine/include/core/logger.h"
-#include <math.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "../framebuffer.h"
+#include "../gpu_memory.h"
 #include "../lighting/lighting_system.c"
 #include "../render_pipeline.h"
+#include "../render_types.h"
+#include <core/logger.h>
+#include <float.h>
+#include <math/mat4.h>
+#include <math/vec3.h>
+#include <math/vec4.h>
+
+extern uint64_t get_time_nanos(void);
+#define nanos_to_ms(x) ((x) / 1000000.0f)
+#define TEXTURE_FORMAT_DEPTH32F TEX_FORMAT_D32F
+extern void texture_configure_depth(void *texture, int w, int h, int fmt);
+
+void shadow_mapping_shutdown(void);
+extern void shader_bind_texture(void *shader, void *tex, uint32_t slot);
+extern void renderer_set_cube_map_face(int face);
+#define RENDERER_CULL_FRONT 0
 
 // Declarations for missing renderer functions
 extern void renderer_set_viewport(int x, int y, int w, int h);

@@ -1,13 +1,20 @@
+/*
+ * astar_pathfinding.c
+ * A* Pathfinding Implementation - AGENT_CORE_2
+ *
+ * Part of the Core Algorithms subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Optimal pathfinding algorithm using heuristic-guided search
+ * Combines Dijkstra's completeness with greedy best-first efficiency
+ */
+
 #include "core/core.h"
 #include <stdlib.h>
 #include <string.h>
 #include <include/math/math.h>
 #include <float.h>
 #include <stdint.h>
-
-//  COMPLETED: A* Pathfinding Implementation - AGENT_CORE_2
-// Optimal pathfinding algorithm using heuristic-guided search
-// Combines Dijkstra's completeness with greedy best-first efficiency
 
 typedef struct {
     i32 x, y;              // Grid coordinates
