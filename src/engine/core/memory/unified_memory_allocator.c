@@ -267,6 +267,28 @@ void *unified_memory_alloc(size_t size, MemoryStrategy strategy,
   return ptr;
 }
 
+void* unified_memory_realloc(void* ptr, size_t new_size, MemoryFlags flags, const char* file, int line, const char* function) {
+    if (!ptr) return unified_memory_alloc(new_size, MEMORY_STRATEGY_DEFAULT, flags, file, line, function);
+    if (new_size == 0) { unified_memory_free(ptr, file, line, function); return NULL; }
+
+    if (!g_allocator.initialized) return realloc(ptr, new_size);
+
+    pthread_mutex_lock(&g_allocator.global_mutex);
+    AllocationMetadata* metadata = find_allocation(ptr);
+    pthread_mutex_unlock(&g_allocator.global_mutex);
+
+    if (!metadata) return realloc(ptr, new_size);
+
+    // Alloc new, Copy, Free old (simple implementation)
+    void* new_ptr = unified_memory_alloc(new_size, metadata->strategy, flags | (metadata->flags & ~MEMORY_FLAG_TRACK), file, line, function);
+    if (new_ptr) {
+        size_t copy_size = metadata->size < new_size ? metadata->size : new_size;
+        memcpy(new_ptr, ptr, copy_size);
+        unified_memory_free(ptr, file, line, function);
+    }
+    return new_ptr;
+}
+
 void unified_memory_free(void *ptr, const char *file, int line,
                          const char *function) {
   if (!ptr)

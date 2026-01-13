@@ -13,7 +13,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "include/math/math.h"
+#include "include/math/vec2.h"
+#include "include/math/vec4.h"
 #include "include/math/rect.h"
 
 #ifdef __cplusplus
