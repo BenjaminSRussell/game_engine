@@ -126,6 +126,8 @@ Widget* widget_create(const char* name) {
     widget->focusable = false;
     widget->draggable = false;
     
+    widget->max_size = (Vec2){100000.0f, 100000.0f};
+
     // Default visual properties
     widget->background_color = (Vec4){0.0f, 0.0f, 0.0f, 0.0f};
     widget->border_color = (Vec4){0.0f, 0.0f, 0.0f, 1.0f};
@@ -610,6 +612,52 @@ Vec2 ui_event_get_position(const UIEvent* event) {
     }
     
     return (Vec2){0, 0};
+}
+
+/* ============================================================================
+ * MISSING IMPLEMENTATIONS
+ * ============================================================================ */
+
+Vec2 widget_get_position(const Widget* widget) {
+    if (!widget) return (Vec2){0,0};
+    return widget->position;
+}
+
+Vec2 widget_get_size(const Widget* widget) {
+    if (!widget) return (Vec2){0,0};
+    return widget->size;
+}
+
+void widget_set_opacity(Widget* widget, float opacity) {
+    if (!widget) return;
+    widget->opacity = opacity;
+    widget->dirty = true;
+    widget->needs_redraw = true;
+}
+
+bool widget_is_visible(const Widget* widget) {
+    return widget && widget->visible;
+}
+
+void widget_set_background_color(Widget* widget, Vec4 color) {
+    if (!widget) return;
+    widget->background_color = color;
+    widget->dirty = true;
+    widget->needs_redraw = true;
+}
+
+void widget_set_border_color(Widget* widget, Vec4 color) {
+    if (!widget) return;
+    widget->border_color = color;
+    widget->dirty = true;
+    widget->needs_redraw = true;
+}
+
+void widget_set_text_color(Widget* widget, Vec4 color) {
+    if (!widget) return;
+    widget->text_color = color;
+    widget->dirty = true;
+    widget->needs_redraw = true;
 }
 
 /* ============================================================================

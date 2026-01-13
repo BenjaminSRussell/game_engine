@@ -41,31 +41,31 @@ typedef vec2 Vec2;
 
 typedef Vec2 vec2_t;
 
-INLINE Vec2 vec2_create(f32 x, f32 y) {
+static INLINE Vec2 vec2_create(f32 x, f32 y) {
   Vec2 v = {x, y};
   return v;
 }
 
-INLINE Vec2 vec2_zero(void) { return vec2_create(0.0f, 0.0f); }
+static INLINE Vec2 vec2_zero(void) { return vec2_create(0.0f, 0.0f); }
 
-INLINE Vec2 vec2_add(Vec2 a, Vec2 b) {
+static INLINE Vec2 vec2_add(Vec2 a, Vec2 b) {
   return vec2_create(a.x + b.x, a.y + b.y);
 }
 
-INLINE Vec2 vec2_sub(Vec2 a, Vec2 b) {
+static INLINE Vec2 vec2_sub(Vec2 a, Vec2 b) {
   return vec2_create(a.x - b.x, a.y - b.y);
 }
 
-INLINE Vec2 vec2_mul(Vec2 v, f32 s) { return vec2_create(v.x * s, v.y * s); }
+static INLINE Vec2 vec2_mul(Vec2 v, f32 s) { return vec2_create(v.x * s, v.y * s); }
 
-INLINE Vec2 vec2_scale_componentwise(Vec2 a, Vec2 b) {
+static INLINE Vec2 vec2_scale_componentwise(Vec2 a, Vec2 b) {
   return vec2_create(a.x * b.x, a.y * b.y);
 }
 
-INLINE f32 vec2_dot(Vec2 a, Vec2 b) { return a.x * b.x + a.y * b.y; }
+static INLINE f32 vec2_dot(Vec2 a, Vec2 b) { return a.x * b.x + a.y * b.y; }
 
-INLINE f32 vec2_length_sq(Vec2 v) { return vec2_dot(v, v); }
+static INLINE f32 vec2_length_sq(Vec2 v) { return vec2_dot(v, v); }
 
-INLINE f32 vec2_length(Vec2 v) { return sqrtf(vec2_length_sq(v)); }
+static INLINE f32 vec2_length(Vec2 v) { return sqrtf(vec2_length_sq(v)); }
 
 #endif // VEC2_H

@@ -267,6 +267,48 @@ void *unified_memory_alloc(size_t size, MemoryStrategy strategy,
   return ptr;
 }
 
+void* unified_memory_realloc(void* ptr, size_t new_size, MemoryFlags flags,
+                           const char* file, int line, const char* function) {
+    if (!ptr) {
+        return unified_memory_alloc(new_size, MEMORY_STRATEGY_DEFAULT, flags, file, line, function);
+    }
+    if (new_size == 0) {
+        unified_memory_free(ptr, file, line, function);
+        return NULL;
+    }
+
+    // Simple implementation: alloc new, copy, free old
+    // We don't know the old size easily without looking up metadata
+    // But unified_memory_alloc tracks it.
+
+    // Find metadata to get old size
+    size_t old_size = 0;
+    AllocationMetadata* metadata = find_allocation(ptr);
+    if (metadata) {
+        old_size = metadata->size;
+    } else {
+        // Not tracked? Assume we can't realloc safely with our tracking system via realloc()
+        // unless we fallback to realloc() directly, but if it WAS tracked, we corrupt heap.
+        // If find_allocation returned NULL, it means it's not in our list (or allocator not init).
+        if (!g_allocator.initialized) {
+            return realloc(ptr, new_size);
+        }
+        // If initialized but not found, maybe allocated with raw malloc?
+        // Let's assume user error or untracked.
+        // We can't copy because we don't know size.
+        // But realloc knows.
+        return realloc(ptr, new_size);
+    }
+
+    void* new_ptr = unified_memory_alloc(new_size, MEMORY_STRATEGY_DEFAULT, flags, file, line, function);
+    if (new_ptr) {
+        size_t copy_size = old_size < new_size ? old_size : new_size;
+        memcpy(new_ptr, ptr, copy_size);
+        unified_memory_free(ptr, file, line, function);
+    }
+    return new_ptr;
+}
+
 void unified_memory_free(void *ptr, const char *file, int line,
                          const char *function) {
   if (!ptr)

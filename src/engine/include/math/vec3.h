@@ -90,28 +90,28 @@ INLINE Vec3 vec3_zero(void) { return vec3_create(0.0f, 0.0f, 0.0f); }
 
 INLINE Vec3 vec3_one(void) { return vec3_create(1.0f, 1.0f, 1.0f); }
 
-INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
+static INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
   return vec3_create(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
-INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
+static INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
   return vec3_create(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 
-INLINE Vec3 vec3_mul(Vec3 v, f32 s) {
+static INLINE Vec3 vec3_mul(Vec3 v, f32 s) {
   return vec3_create(v.x * s, v.y * s, v.z * s);
 }
 
-INLINE Vec3 vec3_div(Vec3 v, f32 s) {
+static INLINE Vec3 vec3_div(Vec3 v, f32 s) {
   f32 inv = 1.0f / s;
   return vec3_create(v.x * inv, v.y * inv, v.z * inv);
 }
 
-INLINE Vec3 vec3_scale(Vec3 a, Vec3 b) {
+static INLINE Vec3 vec3_scale(Vec3 a, Vec3 b) {
   return vec3_create(a.x * b.x, a.y * b.y, a.z * b.z);
 }
 
-INLINE f32 vec3_dot(Vec3 a, Vec3 b) {
+static INLINE f32 vec3_dot(Vec3 a, Vec3 b) {
   return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
