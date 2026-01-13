@@ -143,6 +143,30 @@ UIAnimation* ui_animation_create(Widget* target, UIAnimationProperty property, f
     return anim;
 }
 
+void ui_animation_chain(UIAnimation* first, UIAnimation* next) {
+    if (!first || !next || first == next) return;
+
+    first->next_in_sequence = next;
+
+    // Remove 'next' from active list if present
+    if (g_active_animations == next) {
+        g_active_animations = next->next;
+    } else {
+        UIAnimation* curr = g_active_animations;
+        while (curr && curr->next != next) {
+            curr = curr->next;
+        }
+        if (curr) {
+            curr->next = next->next;
+        }
+    }
+
+    // Ensure next is not playing and detached from the list
+    next->is_playing = false;
+    next->elapsed = 0;
+    next->next = NULL;
+}
+
 void ui_animation_destroy(UIAnimation* anim) {
     if (!anim) return;
 
@@ -157,6 +181,12 @@ void ui_animation_destroy(UIAnimation* anim) {
         if (curr) {
             curr->next = anim->next;
         }
+    }
+
+    // Recursively destroy sequenced animations
+    if (anim->next_in_sequence) {
+        ui_animation_destroy(anim->next_in_sequence);
+        anim->next_in_sequence = NULL;
     }
 
     memory_free(anim);
@@ -360,6 +390,19 @@ void ui_animation_update(float delta_time) {
         }
 
         if (exists) {
+            // Check for sequencing
+            if (curr->is_finished && !curr->is_playing && curr->next_in_sequence) {
+                // Activate next animation
+                UIAnimation* next_seq = curr->next_in_sequence;
+                curr->next_in_sequence = NULL; // Detach ownership
+
+                // Add to active list
+                next_seq->next = g_active_animations;
+                g_active_animations = next_seq;
+
+                ui_animation_play(next_seq);
+            }
+
             if (curr->auto_destroy && curr->is_finished) {
                 ui_animation_destroy(curr);
                 // curr is dead. prev stays same.
@@ -606,9 +649,31 @@ void ui_transition_screen(Widget* current, Widget* next, UITransitionType type, 
                 FREE(data);
             }
 
+            // Prepare next widget (Zoom In)
             widget_set_opacity(next, 0.0f);
-            UIAnimation* anim2 = ui_animate_fade(next, 1.0f, duration, UI_EASE_OUT_QUAD);
-            if (anim2) anim2->auto_destroy = true;
+            Vec2 final_size = widget_get_size(next);
+            Vec2 final_pos = widget_get_position(next);
+
+            float start_scale = 0.5f;
+            Vec2 start_size = { final_size.x * start_scale, final_size.y * start_scale };
+            Vec2 start_pos = {
+                final_pos.x + (final_size.x - start_size.x) * 0.5f,
+                final_pos.y + (final_size.y - start_size.y) * 0.5f
+            };
+
+            widget_set_size(next, start_size);
+            widget_set_position(next, start_pos);
+
+            // Parallel animations for Zoom In effect
+            UIAnimation* anim_fade = ui_animate_fade(next, 1.0f, duration, UI_EASE_OUT_CUBIC);
+            if (anim_fade) anim_fade->auto_destroy = true;
+
+            UIAnimation* anim_size = ui_animate_resize(next, final_size, duration, UI_EASE_OUT_CUBIC);
+            if (anim_size) anim_size->auto_destroy = true;
+
+            UIAnimation* anim_pos = ui_animate_move(next, final_pos, duration, UI_EASE_OUT_CUBIC);
+            if (anim_pos) anim_pos->auto_destroy = true;
+
             break;
         }
 

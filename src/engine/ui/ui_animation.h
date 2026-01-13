@@ -82,7 +82,8 @@ struct UIAnimation {
     UIAnimationCallback on_complete;
     void* user_data;
 
-    UIAnimation* next; // Linked list
+    struct UIAnimation* next_in_sequence; // Next animation to play automatically
+    UIAnimation* next; // Linked list (active animations)
 };
 
 // --- System ---
@@ -94,6 +95,10 @@ void ui_animation_update(float delta_time);
 UIAnimation* ui_animation_create(Widget* target, UIAnimationProperty property, float duration);
 void ui_animation_destroy(UIAnimation* anim);
 void ui_animation_destroy_all(void);
+
+// Chains 'next' to play after 'first' finishes.
+// 'next' should NOT be playing and should not be in the active list yet.
+void ui_animation_chain(UIAnimation* first, UIAnimation* next);
 
 // --- Configuration ---
 void ui_animation_set_float(UIAnimation* anim, float start, float end);
