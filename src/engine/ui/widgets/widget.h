@@ -220,6 +220,9 @@ struct Widget {
     Widget* focus_prev;
     Widget* focus_next;
     
+    // Tooltip
+    char* tooltip_text;
+
     // User data
     void* user_data;
     
