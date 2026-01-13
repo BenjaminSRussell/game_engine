@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <rendering/renderer.h>
+#include <core/unified_engine.h>
 
 // Helper min/max if not defined
 #ifndef min
@@ -357,22 +359,6 @@ void transform_gizmo_update(TransformGizmo *gizmo,
     return;
 
   gizmo->position = *target_position;
-
-  // Update gizmo rendering based on mode
-  switch (gizmo->mode) {
-  case GIZMO_TRANSLATE:
-    // Update translation arrows
-    break;
-  case GIZMO_ROTATE:
-    // Update rotation arcs
-    break;
-  case GIZMO_SCALE:
-    // Update scale boxes
-    break;
-  case GIZMO_NONE:
-  case GIZMO_COUNT:
-    break;
-  }
 }
 
 bool transform_gizmo_handle_input(TransformGizmo *gizmo, const Vec2 *mouse_pos,
@@ -380,22 +366,31 @@ bool transform_gizmo_handle_input(TransformGizmo *gizmo, const Vec2 *mouse_pos,
   if (!gizmo->is_active)
     return false;
 
-  // Ray-picking for gizmo interaction
-  // In real implementation, this would use actual ray casting
-
   if (mouse_down && !gizmo->is_dragging) {
     gizmo->is_dragging = true;
     gizmo->initial_mouse_pos = (Vec3){mouse_pos->x, mouse_pos->y, 0};
     gizmo->initial_position = gizmo->position;
-    printf("    Gizmo interaction started\n");
     return true;
   } else if (!mouse_down && gizmo->is_dragging) {
     gizmo->is_dragging = false;
-    printf("    Gizmo interaction ended\n");
     return true;
   }
 
   return false;
+}
+
+void transform_gizmo_render(TransformGizmo *gizmo, IRenderer *renderer) {
+    if (!gizmo->is_active || !renderer) return;
+
+    // Draw axes
+    Vec3 origin = gizmo->position;
+    Vec3 x_end = {origin.x + gizmo->size, origin.y, origin.z};
+    Vec3 y_end = {origin.x, origin.y + gizmo->size, origin.z};
+    Vec3 z_end = {origin.x, origin.y, origin.z + gizmo->size};
+
+    RENDERER_DRAW_LINE(renderer, origin, x_end, (Vec3){1,0,0});
+    RENDERER_DRAW_LINE(renderer, origin, y_end, (Vec3){0,1,0});
+    RENDERER_DRAW_LINE(renderer, origin, z_end, (Vec3){0,0,1});
 }
 
 // =================================================================================================
@@ -426,23 +421,12 @@ void selection_outline_set_selected(SelectionOutlineSystem *system,
   system->selected_count = count;
 }
 
-void selection_outline_render(SelectionOutlineSystem *system) {
-  if (system->selected_count == 0)
+void selection_outline_render(SelectionOutlineSystem *system, IRenderer *renderer) {
+  if (system->selected_count == 0 || !renderer)
     return;
 
-  f64 start_time = get_current_time_ms();
-
-  // Render selected objects to stencil buffer
-  // Apply edge detection shader for outline
-  // Render with configurable color and thickness
-
-  f64 render_time = get_current_time_ms() - start_time;
-
-  if (render_time > OUTLINE_RENDER_TIME_TARGET) {
-    printf(
-        "  [Selection] Warning: Outline render took %.3fms (>%.1fms target)\n",
-        render_time, OUTLINE_RENDER_TIME_TARGET);
-  }
+  // Implementation using renderer's post-process or debug hooks if available
+  // For now we just use a placeholder call as outline usually requires full pass
 }
 
 // =================================================================================================
@@ -624,6 +608,63 @@ void editor_memory_profiler_detect_leaks(EditorMemoryProfiler *profiler) {
     }
   } else {
   }
+}
+
+void editor_memory_profiler_update(EditorMemoryProfiler *profiler) {
+    // Stub
+}
+
+void editor_memory_profiler_shutdown(EditorMemoryProfiler *profiler) {
+    // Stub
+}
+
+void performance_profiler_shutdown(PerformanceProfiler *profiler) {
+    // Stub
+}
+
+void selection_outline_shutdown(SelectionOutlineSystem *system) {
+    // Stub
+}
+
+void selection_outline_update(SelectionOutlineSystem *system) {
+    // Stub
+}
+
+void transform_gizmo_shutdown(TransformGizmo *gizmo) {
+    // Stub
+}
+
+void play_in_editor_shutdown(PlayInEditorSystem *system) {
+    if (system->scene_snapshot) {
+        free(system->scene_snapshot);
+        system->scene_snapshot = NULL;
+    }
+}
+
+void play_in_editor_update(PlayInEditorSystem *system, f32 delta_time) {
+    if (system->state == PLAY_STATE_PLAYING) {
+        // Update runtime logic
+    }
+}
+
+void undo_redo_system_shutdown(UndoRedoSystem *system) {
+    // Cleanup any commands
+}
+
+void viewport_system_shutdown(MultiViewportSystem *system) {
+    // Cleanup textures
+}
+
+void viewport_system_update(MultiViewportSystem *system, f32 delta_time) {
+    // Handle camera movement, etc.
+}
+
+void viewport_system_render(MultiViewportSystem *system) {
+    // Render viewports
+}
+
+void layout_system_shutdown(LayoutSystem *system) {
+    // Save layout to disk
 }
 
 // =================================================================================================

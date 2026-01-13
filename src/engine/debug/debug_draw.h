@@ -1,29 +1,44 @@
 #ifndef DEBUG_DRAW_H
 #define DEBUG_DRAW_H
 
-#include <stdbool.h>
+#include <core/types.h>
+#include <math/vec3.h>
+#include <math/quat.h>
+#include <math/mat4.h>
 
-// Simple vector/color types
-typedef struct { float x, y, z; } DebugVec3;
-typedef struct { float r, g, b, a; } DebugColor;
+typedef struct IRenderer IRenderer;
 
-void DebugDraw_Init(void);
-void DebugDraw_Shutdown(void);
+typedef struct {
+    Vec3 start;
+    Vec3 end;
+    Vec3 color;
+    f32 duration; // <= 0 for single frame
+} DebugLine;
 
-// Clear all debug primitives (call at start of frame)
-void DebugDraw_Clear(void);
+typedef struct {
+    Vec3 center;
+    Vec3 size;
+    Quat rotation;
+    Vec3 color;
+    f32 duration;
+} DebugBox;
 
-// Render all queued primitives (call at end of frame)
-void DebugDraw_Render(void);
+typedef struct {
+    Vec3 center;
+    f32 radius;
+    Vec3 color;
+    f32 duration;
+} DebugSphere;
 
-// Primitives
-void DebugDraw_Line(DebugVec3 start, DebugVec3 end, DebugColor color);
-void DebugDraw_Box(DebugVec3 center, DebugVec3 extent, DebugColor color);
-void DebugDraw_Sphere(DebugVec3 center, float radius, DebugColor color);
-void DebugDraw_Grid(int size, float spacing, DebugColor color);
+void debug_draw_init(void);
+void debug_draw_shutdown(void);
+void debug_draw_update(f32 delta_time);
+void debug_draw_render(const Mat4* view, const Mat4* proj, IRenderer* renderer);
 
-// Toggle visibility
-void DebugDraw_SetVisible(bool visible);
-bool DebugDraw_IsVisible(void);
+// Drawing API
+void debug_draw_line(Vec3 start, Vec3 end, Vec3 color, f32 duration);
+void debug_draw_box(Vec3 center, Vec3 size, Quat rotation, Vec3 color, f32 duration);
+void debug_draw_sphere(Vec3 center, f32 radius, Vec3 color, f32 duration);
+void debug_draw_axis_triad(Mat4 transform, f32 size, f32 duration);
 
 #endif // DEBUG_DRAW_H

@@ -1,46 +1,48 @@
 #include "property_editor.h"
+#include <core/logger.h>
+#include <editor/editor_main.h>
 #include <stdio.h>
 
+#ifdef ENABLE_IMGUI
+#include <imgui.h>
+#endif
+
+static Entity g_selected_entity = {0}; // Invalid entity
+static bool g_has_selection = false;
+
 void PropertyEditor_Init(void) {
-    printf("[PropertyEditor] Initialized\n");
+    LOG_INFO("Property Editor initialized");
 }
 
-void PropertyEditor_Shutdown(void) {
-    printf("[PropertyEditor] Shutdown\n");
+void PropertyEditor_Update(void) {
 }
 
-void PropertyEditor_Begin(const char* title) {
-    // In a real UI system (like Dear ImGui), this would start a window
-    // printf("[PropertyEditor] Begin Panel: %s\n", title);
+void PropertyEditor_Render(void) {
+    if (!g_has_selection) {
+        return;
+    }
+
+#ifdef ENABLE_IMGUI
+    if (ImGui::Begin("Inspector")) {
+        ImGui::Text("Entity ID: %d", g_selected_entity.id);
+
+        // Placeholder for component inspection
+        if (ImGui::CollapsingHeader("Transform")) {
+            // ImGui::DragFloat3("Position", &position.x);
+            // ImGui::DragFloat3("Rotation", &rotation.x);
+            // ImGui::DragFloat3("Scale", &scale.x);
+        }
+    }
+    ImGui::End();
+#endif
 }
 
-void PropertyEditor_End(void) {
-    // printf("[PropertyEditor] End Panel\n");
+void PropertyEditor_SetSelection(Entity entity) {
+    g_selected_entity = entity;
+    g_has_selection = true;
+    LOG_INFO("Property Editor: Selected entity %d", entity.id);
 }
 
-bool PropertyEditor_Field(PropertyField field) {
-    // Simulate drawing a field and detecting change
-    // For this mock, we assume no user input, so no change
-    // printf("[PropertyEditor] Field: %s (Type: %d)\n", field.name, field.type);
-    return false;
-}
-
-bool PropertyEditor_Int(const char* label, int* value) {
-    PropertyField f = { .name = label, .type = PROP_TYPE_INT, .data = value };
-    return PropertyEditor_Field(f);
-}
-
-bool PropertyEditor_Float(const char* label, float* value) {
-    PropertyField f = { .name = label, .type = PROP_TYPE_FLOAT, .data = value };
-    return PropertyEditor_Field(f);
-}
-
-bool PropertyEditor_Bool(const char* label, bool* value) {
-    PropertyField f = { .name = label, .type = PROP_TYPE_BOOL, .data = value };
-    return PropertyEditor_Field(f);
-}
-
-bool PropertyEditor_String(const char* label, char* value, size_t max_len) {
-    PropertyField f = { .name = label, .type = PROP_TYPE_STRING, .data = value };
-    return PropertyEditor_Field(f);
+void PropertyEditor_ClearSelection(void) {
+    g_has_selection = false;
 }
