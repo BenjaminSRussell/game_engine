@@ -1,11 +1,19 @@
+/*
+ * sorting.c
+ * Sorting algorithms implementation
+ *
+ * Part of the Core Algorithms subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * LSD Radix Sort Implementation - AGENT_CORE_2
+ * Linear time sorting for fixed-size integers and floats
+ * Uses counting sort as stable subroutine for each digit
+ */
+
 #include <core/algorithms/sorting.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-
-//  COMPLETED: LSD Radix Sort Implementation - AGENT_CORE_2
-// Linear time sorting for fixed-size integers and floats
-// Uses counting sort as stable subroutine for each digit
 
 #define RADIX_BITS 8
 #define RADIX_SIZE (1 << RADIX_BITS)

@@ -564,42 +564,188 @@ void physics_quaternion_rotate_vector(float *result, const float *quat,
   quaternion_rotate_vector(result, quat, vec);
 }
 
-// Stub implementations for remaining functions
-void physics_body_set_position(RigidBody *body,
-                               const float *position) { /* TODO */ }
-void physics_body_set_rotation(RigidBody *body,
-                               const float *rotation) { /* TODO */ }
-void physics_body_set_velocity(RigidBody *body,
-                               const float *velocity) { /* TODO */ }
-void physics_body_set_angular_velocity(
-    RigidBody *body, const float *angular_velocity) { /* TODO */ }
-void physics_body_get_position(RigidBody *body,
-                               float *out_position) { /* TODO */ }
-void physics_body_get_rotation(RigidBody *body,
-                               float *out_rotation) { /* TODO */ }
-void physics_body_get_velocity(RigidBody *body,
-                               float *out_velocity) { /* TODO */ }
+// Body property implementations
+void physics_body_set_position(RigidBody *body, const float *position) {
+  if (!body || !position)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  vector3_copy(internal->position, position);
+}
+
+void physics_body_set_rotation(RigidBody *body, const float *rotation) {
+  if (!body || !rotation)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  // Rotation is quaternion [x, y, z, w]
+  internal->rotation[0] = rotation[0];
+  internal->rotation[1] = rotation[1];
+  internal->rotation[2] = rotation[2];
+  internal->rotation[3] = rotation[3];
+}
+
+void physics_body_set_velocity(RigidBody *body, const float *velocity) {
+  if (!body || !velocity)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  vector3_copy(internal->velocity, velocity);
+}
+
+void physics_body_set_angular_velocity(RigidBody *body,
+                                       const float *angular_velocity) {
+  if (!body || !angular_velocity)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  vector3_copy(internal->angular_velocity, angular_velocity);
+}
+
+void physics_body_get_position(RigidBody *body, float *out_position) {
+  if (!body || !out_position)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  vector3_copy(out_position, internal->position);
+}
+
+void physics_body_get_rotation(RigidBody *body, float *out_rotation) {
+  if (!body || !out_rotation)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  out_rotation[0] = internal->rotation[0];
+  out_rotation[1] = internal->rotation[1];
+  out_rotation[2] = internal->rotation[2];
+  out_rotation[3] = internal->rotation[3];
+}
+
+void physics_body_get_velocity(RigidBody *body, float *out_velocity) {
+  if (!body || !out_velocity)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  vector3_copy(out_velocity, internal->velocity);
+}
+
 void physics_body_get_angular_velocity(RigidBody *body,
-                                       float *out_angular_velocity) { /* TODO */
+                                       float *out_angular_velocity) {
+  if (!body || !out_angular_velocity)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  vector3_copy(out_angular_velocity, internal->angular_velocity);
 }
-void physics_body_apply_force(RigidBody *body, const float *force) { /* TODO */
+
+void physics_body_apply_force(RigidBody *body, const float *force) {
+  if (!body || !force)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  vector3_add(internal->force_accumulator, internal->force_accumulator, force);
 }
-void physics_body_apply_impulse(RigidBody *body,
-                                const float *impulse) { /* TODO */ }
-void physics_body_apply_torque(RigidBody *body,
-                               const float *torque) { /* TODO */ }
-void physics_body_set_mass(RigidBody *body, float mass) { /* TODO */ }
-float physics_body_get_mass(RigidBody *body) { return 0.0f; /* TODO */ }
-void physics_body_set_friction(RigidBody *body, float friction) { /* TODO */ }
-void physics_body_set_restitution(RigidBody *body,
-                                  float restitution) { /* TODO */ }
-void physics_body_set_user_data(RigidBody *body, void *user_data) { /* TODO */ }
-void *physics_body_get_user_data(RigidBody *body) { return NULL; /* TODO */ }
-void physics_body_get_aabb(RigidBody *body, float *min_out,
-                           float *max_out) { /* TODO */ }
+
+void physics_body_apply_impulse(RigidBody *body, const float *impulse) {
+  if (!body || !impulse)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  // J = m * Δv => Δv = J / m
+  if (internal->inverse_mass > 0.0f) {
+    float delta_v[3];
+    vector3_multiply(delta_v, impulse, internal->inverse_mass);
+    vector3_add(internal->velocity, internal->velocity, delta_v);
+  }
+}
+
+void physics_body_apply_torque(RigidBody *body, const float *torque) {
+  if (!body || !torque)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  vector3_add(internal->torque_accumulator, internal->torque_accumulator,
+              torque);
+}
+
+void physics_body_set_mass(RigidBody *body, float mass) {
+  if (!body || mass <= 0.0f)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  internal->mass = mass;
+  internal->inverse_mass = 1.0f / mass;
+}
+
+float physics_body_get_mass(RigidBody *body) {
+  if (!body)
+    return 0.0f;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  return internal->mass;
+}
+
+void physics_body_set_friction(RigidBody *body, float friction) {
+  if (!body)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  internal->friction = friction;
+}
+
+void physics_body_set_restitution(RigidBody *body, float restitution) {
+  if (!body)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  internal->restitution = restitution;
+}
+
+void physics_body_set_user_data(RigidBody *body, void *user_data) {
+  if (!body)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  internal->user_data = user_data;
+}
+
+void *physics_body_get_user_data(RigidBody *body) {
+  if (!body)
+    return NULL;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+  return internal->user_data;
+}
+
+void physics_body_get_aabb(RigidBody *body, float *min_out, float *max_out) {
+  if (!body || !min_out || !max_out)
+    return;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+
+  // Simple AABB based on shape type
+  if (!internal->shape) {
+    // No shape - point AABB
+    vector3_copy(min_out, internal->position);
+    vector3_copy(max_out, internal->position);
+    return;
+  }
+
+  CollisionShapeInternal *shape = (CollisionShapeInternal *)internal->shape;
+  float radius = shape->bounding_radius;
+
+  // Conservative AABB using bounding radius
+  min_out[0] = internal->position[0] - radius;
+  min_out[1] = internal->position[1] - radius;
+  min_out[2] = internal->position[2] - radius;
+  max_out[0] = internal->position[0] + radius;
+  max_out[1] = internal->position[1] + radius;
+  max_out[2] = internal->position[2] + radius;
+}
+
 bool physics_body_get_velocity_at_point(RigidBody *body, const float *point,
                                         float *out_vel) {
-  return false; /* TODO */
+  if (!body || !point || !out_vel)
+    return false;
+  RigidBodyInternal *internal = (RigidBodyInternal *)body;
+
+  // v = v_linear + ω × r
+  // where r = point - center_of_mass
+  float r[3];
+  vector3_subtract(r, point, internal->position);
+
+  float angular_contrib[3];
+  angular_contrib[0] = internal->angular_velocity[1] * r[2] -
+                       internal->angular_velocity[2] * r[1];
+  angular_contrib[1] = internal->angular_velocity[2] * r[0] -
+                       internal->angular_velocity[0] * r[2];
+  angular_contrib[2] = internal->angular_velocity[0] * r[1] -
+                       internal->angular_velocity[1] * r[0];
+
+  vector3_add(out_vel, internal->velocity, angular_contrib);
+  return true;
 }
 
 CollisionShape *physics_shape_capsule_create(float radius, float height) {

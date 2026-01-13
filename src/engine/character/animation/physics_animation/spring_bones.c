@@ -8,12 +8,12 @@
 
 #include "character/animation/physics_animation/spring_bones.h"
 #include "math/mat4.h"
+#include "math/math.h"
 #include "math/quat.h"
 #include "math/vec3.h"
 #include <animation/skeleton_system.h>
 #include <core/types.h>
 #include <math.h>
-#include "engine/include/math/math.h"
 #include <math/quat.h>
 #include <math/vec3.h>
 #include <stdbool.h>

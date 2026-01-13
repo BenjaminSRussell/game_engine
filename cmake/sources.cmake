@@ -132,7 +132,7 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/physics/solver/physics_simd_integration.c"
 
     # Pathfinding Optimization
-    "src/engine/ai/pathfinding/pathfinding_optimizer.c"
+    # "src/engine/ai/pathfinding/pathfinding_optimizer.c"
 
     # Threading and synchronization
     "src/engine/core/threading/mutex.c"
