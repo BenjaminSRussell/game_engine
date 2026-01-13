@@ -5,9 +5,18 @@
 #include <stdint.h>
 
 // Network address structure
+typedef enum {
+    ADDRESS_TYPE_IPV4 = 0,
+    ADDRESS_TYPE_IPV6 = 1
+} AddressType;
+
 typedef struct {
-  uint32_t host; // IPv4 address in network byte order
-  uint16_t port; // Port in network byte order
+    AddressType type;
+    union {
+        uint32_t ipv4; // IPv4 address in network byte order
+        uint8_t ipv6[16]; // IPv6 address in network byte order
+    } address;
+    uint16_t port; // Port in network byte order
 } NetAddress;
 
 // Packet types
@@ -45,7 +54,22 @@ typedef struct {
   uint16_t sequence;  // Packet sequence number
   uint32_t timestamp; // Milliseconds since connection
   uint16_t data_size; // Size of payload
+  uint16_t fragment_id;     // Fragment identifier (0 = not fragmented)
+  uint16_t fragment_offset; // Offset in original packet
+  uint16_t total_fragments;  // Total number of fragments
+  uint32_t original_size;   // Original packet size before fragmentation
 } PacketHeader;
+
+// Packet flags
+#define PACKET_FLAG_COMPRESSED    0x01
+#define PACKET_FLAG_FRAGMENTED   0x02
+#define PACKET_FLAG_RELIABLE     0x04
+#define PACKET_FLAG_ENCRYPTED    0x08
+#define PACKET_FLAG_PRIORITY     0x10
+
+// Fragmentation settings
+#define MAX_FRAGMENTS_PER_PACKET 32
+#define FRAGMENT_THRESHOLD 1200 // Fragment packets larger than this
 
 // Network configuration
 typedef struct {

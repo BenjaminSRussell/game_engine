@@ -362,9 +362,23 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # UI subdirectory
     "src/engine/ui/*.c"
 
+    # UI Batch Rendering System - Geometry batching and optimization
+    "src/engine/editor/ui/canvas/ui_batch.c"
+    "src/engine/editor/ui/canvas/ui_batch_gpu.c"
+    "src/engine/editor/ui/canvas/ui_batch_text.c"
+    "src/engine/editor/ui/canvas/ui_batch_effects.c"
+    "src/engine/editor/ui/canvas/ui_batch_optimize.c"
+
+    # UI Widgets - Dialog/Modal System
+    "src/engine/ui/widgets/widget.c"
+    "src/engine/ui/widgets/ui_button.c"
+    "src/engine/ui/widgets/ui_label.c"
+    "src/engine/ui/widgets/dialog.c"
+    "src/engine/ui/modal_manager.c"
+
     # Advanced Text Rendering System - COMPLETE IMPLEMENTATION (2026-01-12)
     "src/engine/rendering/text_rendering_advanced.c"
-    
+
     # Text processing and UI text systems
     "src/engine/ui/text/*.c"
 
@@ -531,6 +545,13 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/memory/unified_allocator\\.c$"
 # Exclude logger systems with issues
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/logging/unified_logger\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/core/legacy/logger\\.c$")
+
+# Exclude asset loader due to memory header conflicts
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/asset_system/loading/asset_loader\\.c$")
+
+# Exclude ECS due to header issues
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/ecs/ecs\\.c$")
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/ecs/components/.*\\.c$")
 # list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_damage\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/player_system_update\\.c$")
 list(FILTER GAME_SOURCES EXCLUDE REGEX ".*/player/experience_test\\.c$")

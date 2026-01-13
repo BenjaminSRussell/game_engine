@@ -29,6 +29,12 @@
 #include "test_audio_system.h"
 #include "test_asset_management.h"
 
+// Integration tests
+#include "test_system_integration.h"
+
+// Stress tests
+#include "test_entity_performance.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -52,6 +58,12 @@ typedef enum TestSuite {
     TEST_SUITE_VULKAN_BACKEND,         // Vulkan backend tests
     TEST_SUITE_AUDIO_SYSTEM,            // Audio system tests
     TEST_SUITE_ASSET_MANAGEMENT,       // Asset management tests
+    
+    // Integration tests
+    TEST_SUITE_SYSTEM_INTEGRATION,       // System integration tests
+    
+    // Stress tests
+    TEST_SUITE_ENTITY_PERFORMANCE,       // Entity performance stress tests
     
     TEST_SUITE_ALL,                    // Run all test suites
     TEST_SUITE_COUNT                   // Total number of test suites

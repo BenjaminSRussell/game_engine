@@ -16,7 +16,7 @@
 // ✓ Per-module memory statistics
 // ✓ Memory allocation benchmarking
 
-#include "unified_memory_allocator.h"
+#include "engine/include/core/memory/unified_memory_allocator.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -35,18 +35,18 @@ void memory_shutdown(void) {
 
 // Allocate memory with tracking
 void* memory_alloc(u32 size, const char* file, u32 line) {
-    return unified_memory_alloc(size, MEMORY_STRATEGY_TRACKED, MEMORY_FLAG_TRACK, file, line);
+    return unified_memory_alloc(size, MEMORY_STRATEGY_TRACKED, MEMORY_FLAG_TRACK, file, line, __func__);
 }
 
 // Allocate and zero memory with tracking
 void* memory_calloc(u32 count, u32 size, const char* file, u32 line) {
-    void* ptr = unified_memory_alloc(count * size, MEMORY_STRATEGY_TRACKED, MEMORY_FLAG_TRACK | MEMORY_FLAG_ZERO, file, line);
+    void* ptr = unified_memory_alloc(count * size, MEMORY_STRATEGY_TRACKED, MEMORY_FLAG_TRACK | MEMORY_FLAG_ZERO, file, line, __func__);
     return ptr;
 }
 
 // Reallocate memory with tracking
 void* memory_realloc(void* ptr, u32 new_size, const char* file, u32 line) {
-    return unified_memory_realloc(ptr, new_size, MEMORY_STRATEGY_TRACKED, MEMORY_FLAG_TRACK, file, line);
+    return unified_memory_realloc(ptr, new_size, MEMORY_STRATEGY_TRACKED, MEMORY_FLAG_TRACK, file, line, __func__);
 }
 
 // Free memory with tracking
@@ -98,15 +98,15 @@ void memory_tracker_report(void) {
 }
 
 // Module tracking functions - redirected to unified system
-ModuleStats* memory_register_module(const char* module_name) {
+MemoryStats* memory_register_module(const char* module_name) {
+    (void)module_name; // Suppress unused parameter warning
     // Unified allocator handles module tracking automatically
     // Return a dummy stats pointer for compatibility
-    static ModuleStats dummy_stats = {0};
-    strncpy(dummy_stats.module_name, module_name, sizeof(dummy_stats.module_name) - 1);
+    static MemoryStats dummy_stats = {0};
     return &dummy_stats;
 }
 
-ModuleStats* memory_get_module_stats(u32* out_module_count) {
+MemoryStats* memory_get_module_stats(u32* out_module_count) {
     // Unified allocator provides comprehensive stats
     if (out_module_count) *out_module_count = 1;
     return memory_register_module("unified");

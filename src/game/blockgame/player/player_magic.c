@@ -321,6 +321,9 @@ bool player_cast_spell(PlayerSystem *system, SpellType spell, Vec3 target) {
   magic->stats.total_mana_consumed += spell_state->mana_cost;
   magic->stats.spell_counts[spell]++;
 
+  // Track spell for combination system
+  spell_combination_system_add_spell(magic, spell);
+
   f32 anim_duration = 0.45f;
   switch (spell) {
   case SPELL_HEAL:
@@ -530,6 +533,9 @@ void player_magic_update(PlayerSystem *system, f32 delta_time) {
   // Render visual indicators
   render_spell_cooldown_indicators(system);
 
+  // Update spell combination system
+  spell_combination_system_update(magic, delta_time);
+
   // Update channeling/active durations
   for (int i = 0; i < SPELL_COUNT; i++) {
     if (!magic->spells[i].is_channeling) {
@@ -615,4 +621,113 @@ void player_magic_get_cooldown_stats(SpellType spell, f32 *remaining, f32 *total
         if (remaining) *remaining = 0.0f;
         if (total) *total = 0.0f;
     }
+}
+
+// Spell upgrade system
+typedef struct {
+    u32 spell_points_required;
+    f32 mana_cost_multiplier;
+    f32 cooldown_multiplier;
+    f32 magnitude_multiplier;
+    f32 duration_multiplier;
+    u32 max_level;
+} SpellUpgradeConfig;
+
+static const SpellUpgradeConfig kSpellUpgradeConfigs[SPELL_COUNT] = {
+    [SPELL_FIREBALL] = {1, 1.2f, 0.9f, 1.3f, 1.0f, 5},
+    [SPELL_HEAL] = {1, 1.15f, 0.85f, 1.4f, 1.2f, 5},
+    [SPELL_TELEPORT] = {2, 1.25f, 0.8f, 1.2f, 1.0f, 5},
+    [SPELL_SHIELD] = {2, 1.3f, 0.75f, 1.0f, 1.5f, 5},
+    [SPELL_LIGHTNING] = {3, 1.35f, 0.9f, 1.5f, 1.0f, 5},
+    [SPELL_FREEZE] = {2, 1.2f, 0.85f, 1.0f, 1.3f, 5},
+    [SPELL_INVISIBILITY] = {3, 1.4f, 0.8f, 1.0f, 1.4f, 5},
+    [SPELL_FLIGHT] = {4, 1.5f, 0.7f, 1.0f, 1.2f, 5},
+};
+
+bool player_magic_upgrade_spell(PlayerMagicComponent *magic, SpellType spell) {
+    if (!magic || spell >= SPELL_COUNT)
+        return false;
+    
+    SpellState *spell_state = &magic->spells[spell];
+    const SpellUpgradeConfig *upgrade_config = &kSpellUpgradeConfigs[spell];
+    
+    if (spell_state->level >= upgrade_config->max_level) {
+        LOG_DEBUG("Spell %d is already at max level %u", spell, upgrade_config->max_level);
+        return false;
+    }
+    
+    if (magic->spell_points < upgrade_config->spell_points_required) {
+        LOG_DEBUG("Not enough spell points to upgrade spell %d (need %u, have %u)", 
+                 spell, upgrade_config->spell_points_required, magic->spell_points);
+        return false;
+    }
+    
+    // Upgrade spell
+    spell_state->level++;
+    magic->spell_points -= upgrade_config->spell_points_required;
+    
+    // Apply upgrade multipliers
+    const SpellConfig *base_config = &kSpellConfigs[spell];
+    spell_state->mana_cost = base_config->mana_cost * 
+                           powf(upgrade_config->mana_cost_multiplier, spell_state->level - 1);
+    
+    LOG_INFO("Upgraded spell %d to level %u", spell, spell_state->level);
+    return true;
+}
+
+bool player_magic_can_upgrade_spell(PlayerMagicComponent *magic, SpellType spell) {
+    if (!magic || spell >= SPELL_COUNT)
+        return false;
+    
+    SpellState *spell_state = &magic->spells[spell];
+    const SpellUpgradeConfig *upgrade_config = &kSpellUpgradeConfigs[spell];
+    
+    return spell_state->level < upgrade_config->max_level && 
+           magic->spell_points >= upgrade_config->spell_points_required;
+}
+
+void player_magic_award_spell_points(PlayerMagicComponent *magic, u32 points) {
+    if (!magic)
+        return;
+    
+    magic->spell_points += points;
+    LOG_INFO("Awarded %u spell points (total: %u)", points, magic->spell_points);
+}
+
+u32 player_magic_get_spell_level(PlayerMagicComponent *magic, SpellType spell) {
+    if (!magic || spell >= SPELL_COUNT)
+        return 0;
+    
+    return magic->spells[spell].level;
+}
+
+f32 player_magic_get_spell_mana_cost(PlayerMagicComponent *magic, SpellType spell) {
+    if (!magic || spell >= SPELL_COUNT)
+        return 0.0f;
+    
+    return magic->spells[spell].mana_cost;
+}
+
+void player_magic_get_spell_stats(PlayerMagicComponent *magic, SpellStats *out_stats) {
+    if (!magic || !out_stats)
+        return;
+    
+    *out_stats = magic->stats;
+}
+
+void player_magic_reset_stats(PlayerMagicComponent *magic) {
+    if (!magic)
+        return;
+    
+    memset(&magic->stats, 0, sizeof(SpellStats));
+    LOG_INFO("Reset magic statistics");
+}
+
+// Spell combination system wrapper functions
+void player_magic_init_combination_system(void) {
+    spell_combination_system_init();
+}
+
+void player_magic_add_spell_to_combination(PlayerMagicComponent *magic, SpellType spell) {
+    spell_combination_system_add_spell(magic, spell);
 }

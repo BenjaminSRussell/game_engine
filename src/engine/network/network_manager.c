@@ -18,6 +18,7 @@
 #define CONNECTION_TIMEOUT 10.0f
 
 typedef struct {
+    NetSocket* handle;
     NetAddress address;
     uint32_t client_id;
     char username[MAX_USERNAME_LENGTH];
@@ -25,6 +26,11 @@ typedef struct {
     float last_heartbeat;
     uint16_t next_sequence;
     uint16_t expected_sequence;
+    
+    // Migration state
+    ConnectionStateMigration migration_state;
+    uint64_t migration_start_time;
+    uint32_t migration_attempts;
 } NetworkClient;
 
 typedef struct {
@@ -42,6 +48,9 @@ typedef struct {
     NetAddress server_address;
     bool connected_to_server;
     
+    // Migration state
+    ConnectionMigration migration;
+    
     // Common state
     float last_heartbeat_sent;
     NetworkStats stats;
@@ -49,7 +58,7 @@ typedef struct {
 
 static NetworkManager g_network = {0};
 
-// Utility functions
+// Helper functions
 static uint64_t get_timestamp_ms(void) {
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -59,6 +68,85 @@ static uint64_t get_timestamp_ms(void) {
 static uint32_t generate_client_id(void) {
     static uint32_t counter = 1000;
     return ++counter;
+}
+
+static bool address_equals(const NetAddress* a, const NetAddress* b) {
+    if (!a || !b) return false;
+    if (a->type != b->type) return false;
+    if (a->port != b->port) return false;
+    
+    if (a->type == ADDRESS_TYPE_IPV4) {
+        return a->address.ipv4 == b->address.ipv4;
+    } else if (a->type == ADDRESS_TYPE_IPV6) {
+        return memcmp(a->address.ipv6, b->address.ipv6, 16) == 0;
+    }
+    
+    return false;
+}
+
+static void init_migration_config(void) {
+    g_network.migration.primary_address = (NetAddress){0};
+    g_network.migration.secondary_address = (NetAddress){0};
+    g_network.migration.current_address = (NetAddress){0};
+    g_network.migration.migration_timeout_ms = DEFAULT_MIGRATION_TIMEOUT;
+    g_network.migration.max_migration_attempts = DEFAULT_MAX_MIGRATION_ATTEMPTS;
+    g_network.migration.current_attempt = 0;
+    g_network.migration.migration_active = false;
+    g_network.migration.failover_enabled = true;
+    g_network.migration.health_check_interval = DEFAULT_HEALTH_CHECK_INTERVAL;
+    g_network.migration.last_health_check = get_timestamp_ms();
+    g_network.migration.consecutive_failures = 0;
+}
+
+static bool test_connection(const NetAddress* address) {
+    if (!address) return false;
+    
+    // Create temporary socket for testing
+    NetSocket* test_socket = socket_create(address->port);
+    if (!test_socket) {
+        return false;
+    }
+    
+    // Try to send a ping packet
+    const char* test_data = "PING";
+    bool result = socket_send(test_socket, address, test_data, strlen(test_data));
+    
+    socket_close(test_socket);
+    return result;
+}
+
+static void switch_to_secondary(void) {
+    if (!g_network.migration.failover_enabled || 
+        g_network.migration.migration_active || 
+        g_network.migration.consecutive_failures < MAX_CONSECUTIVE_FAILURES) {
+        return;
+    }
+    
+    log_info("Switching to secondary server due to connection issues");
+    
+    // Update migration state
+    g_network.migration.migration_active = true;
+    g_network.migration.current_attempt++;
+    g_network.migration_start_time = get_timestamp_ms();
+    g_network.migration.current_address = g_network.migration.secondary_address;
+    
+    // Update server address for client
+    if (g_network.is_server) {
+        // Server would need to notify clients of new address
+        log_info("Server migration: notifying clients of new address");
+    } else {
+        // Client would disconnect and reconnect to secondary
+        log_info("Client migration: disconnecting from primary server");
+        network_client_disconnect();
+        
+        // Attempt connection to secondary
+        char addr_str[64];
+        address_to_string(&g_network.migration.secondary_address, addr_str, sizeof(addr_str));
+        
+        // Use existing username for reconnection
+        network_client_connect(addr_str, g_network.migration.secondary_address.port, 
+                           "", NULL);
+    }
 }
 
 // Internal packet handlers forward declarations
@@ -303,11 +391,145 @@ uint32_t network_client_get_id(void) {
     return g_network.local_client_id;
 }
 
-// Network update
-int network_update(float delta_time) {
-    if (!g_network.is_running || !g_network.socket) {
-        return -1;
+// Connection migration and failover implementation
+void network_migration_init(const NetAddress* primary, const NetAddress* secondary) {
+    if (!primary) {
+        log_error("Network migration init: primary address required");
+        return;
     }
+    
+    init_migration_config();
+    
+    g_network.migration.primary_address = *primary;
+    if (secondary) {
+        g_network.migration.secondary_address = *secondary;
+    }
+    
+    g_network.migration.current_address = *primary;
+    
+    log_info("Network migration initialized: primary=%s, secondary=%s", 
+             secondary ? "configured" : "none", 
+             secondary ? "configured" : "none");
+}
+
+void network_migration_set_config(const ConnectionMigration* config) {
+    if (config) {
+        g_network.migration = *config;
+        log_info("Network migration config updated");
+    }
+}
+
+void network_migration_get_config(ConnectionMigration* config) {
+    if (config) {
+        *config = g_network.migration;
+    }
+}
+
+bool network_migration_start(void) {
+    if (!g_network.migration.failover_enabled) {
+        log_warn("Network migration not enabled");
+        return false;
+    }
+    
+    if (g_network.migration.migration_active) {
+        log_warn("Network migration already in progress");
+        return false;
+    }
+    
+    // Test secondary connection before migrating
+    if (!test_connection(&g_network.migration.secondary_address)) {
+        log_error("Secondary server not reachable, cannot migrate");
+        return false;
+    }
+    
+    switch_to_secondary();
+    return true;
+}
+
+void network_migration_stop(void) {
+    g_network.migration.migration_active = false;
+    g_network.migration.current_attempt = 0;
+    g_network.migration.consecutive_failures = 0;
+    
+    log_info("Network migration stopped");
+}
+
+bool network_migration_is_active(void) {
+    return g_network.migration.migration_active;
+}
+
+ConnectionStateMigration network_migration_get_state(void) {
+    if (address_equals(&g_network.migration.current_address, &g_network.migration.primary_address)) {
+        return CONNECTION_STATE_PRIMARY;
+    } else if (address_equals(&g_network.migration.current_address, &g_network.migration.secondary_address)) {
+        return CONNECTION_STATE_SECONDARY;
+    } else if (g_network.migration.migration_active) {
+        return CONNECTION_STATE_MIGRATING;
+    } else {
+        return CONNECTION_STATE_FAILED;
+    }
+}
+
+void network_migration_update(float delta_time) {
+    if (!g_network.migration.failover_enabled) {
+        return;
+    }
+    
+    uint64_t current_time = get_timestamp_ms();
+    
+    // Check if it's time for health check
+    if (current_time - g_network.migration.last_health_check >= 
+        (uint64_t)(g_network.migration.health_check_interval * 1000.0f)) {
+        
+        g_network.migration.last_health_check = current_time;
+        
+        // Test current connection
+        bool current_ok = test_connection(&g_network.migration.current_address);
+        
+        if (!current_ok) {
+            g_network.migration.consecutive_failures++;
+            
+            log_warn("Connection health check failed (%u consecutive failures)", 
+                      g_network.migration.consecutive_failures);
+            
+            // Check if we should failover
+            if (network_migration_should_failover()) {
+                if (!g_network.migration.migration_active) {
+                    network_migration_start();
+                }
+            }
+        } else {
+            // Reset failure count on successful check
+            g_network.migration.consecutive_failures = 0;
+        }
+    }
+    
+    // Check migration timeout
+    if (g_network.migration.migration_active) {
+        if (current_time - g_network.migration_start_time >= g_network.migration.migration_timeout_ms) {
+            log_error("Migration timeout, reverting to primary");
+            
+            // Reset migration state
+            g_network.migration.migration_active = false;
+            g_network.migration.current_address = g_network.migration.primary_address;
+            g_network.migration.current_attempt = 0;
+        }
+    }
+}
+
+bool network_migration_should_failover(void) {
+    return g_network.migration.consecutive_failures >= MAX_CONSECUTIVE_FAILURES &&
+           g_network.migration.current_attempt < g_network.migration.max_migration_attempts;
+}
+
+// Network update function with migration support
+int network_update(float delta_time) {
+    if (!g_network.is_running) {
+        return 0;
+    }
+    
+    // Update migration system
+    network_migration_update(delta_time);
     
     uint8_t buffer[MAX_PACKET_SIZE];
     NetAddress from;

@@ -67,6 +67,10 @@ struct ContentView: View {
                 CityGenerationPanel()
             case "ecosystem":
                 EcosystemPanel()
+            case "texture_inspector":
+                TextureInspectorPanel()
+            case "graphics_settings":
+                GraphicsSettingsPanel()
             case "world_building":
                 WorldBuildingPanel()
             case "skeleton":
@@ -227,6 +231,8 @@ private struct PremiumSidebar: View {
                         SidebarItem(icon: "leaf.fill", title: "Ecosystem", value: "ecosystem", selectedTab: $selectedTab)
                         SidebarItem(icon: "globe.americas.fill", title: "World Building", value: "world_building", selectedTab: $selectedTab)
                         SidebarItem(icon: "mountain.2.fill", title: "Terrain", value: "terrain", selectedTab: $selectedTab)
+                        SidebarItem(icon: "photo.fill", title: "Texture Inspector", value: "texture_inspector", selectedTab: $selectedTab)
+                        SidebarItem(icon: "gearshape.fill", title: "Graphics Settings", value: "graphics_settings", selectedTab: $selectedTab)
                         SidebarItem(icon: "rectangle.3.group.fill", title: "UI Editor", value: "uieditor", selectedTab: $selectedTab)
                         SidebarItem(icon: "cube.transparent", title: "Prefabs", value: "prefab", selectedTab: $selectedTab)
                         SidebarItem(icon: "camera.filters", title: "Rendering", value: "rendering", selectedTab: $selectedTab)

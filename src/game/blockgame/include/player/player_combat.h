@@ -114,6 +114,9 @@ bool player_can_attack(PlayerCombatState *combat, const struct PlayerComponent *
 bool player_can_block(PlayerCombatState *combat, const struct PlayerComponent *player);
 bool player_is_invulnerable(PlayerCombatState *combat);
 
+// Damage handling
+f32 player_block_damage(struct PlayerSystem *system, f32 incoming_damage, bool *out_perfect_block);
+
 void player_combat_set_weapon_override(PlayerCombatState *combat, WeaponType weapon);
 void player_combat_clear_weapon_override(PlayerCombatState *combat);
 const PlayerCombatStats *player_combat_get_stats(void);

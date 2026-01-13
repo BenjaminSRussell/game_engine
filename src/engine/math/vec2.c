@@ -1,4 +1,4 @@
-#include <math/vec2.h>
+#include "src/include/math/vec2.h"
 #include <math.h>
 
 float vec2_distance(vec2_t a, vec2_t b) {

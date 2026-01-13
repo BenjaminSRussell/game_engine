@@ -1,4 +1,4 @@
-#include <math/quat.h>
+#include "src/include/math/quat.h"
 #include <math.h>
 
 Quat quat_from_euler(f32 pitch, f32 yaw, f32 roll) {

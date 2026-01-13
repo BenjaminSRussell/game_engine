@@ -2,7 +2,7 @@
 #define RENDERING_VEC3_H
 
 #include <math/math.h>
-#include "include/common.h"
+#include "../../include/common.h"
 
 #if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
     #define RENDERING_SIMD_SSE

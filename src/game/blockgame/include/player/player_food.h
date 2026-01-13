@@ -28,6 +28,27 @@ typedef struct {
   u32 slot_index;   // Inventory slot being consumed from
 } EatingState;
 
+// Cooking state for furnace integration
+typedef struct {
+  bool is_cooking;
+  u32 furnace_entity_id;
+  u32 raw_item_id;
+  f32 cook_progress;
+  f32 total_cook_time;
+  f32 burn_time;
+} CookingState;
+
+// Food tooltip information
+typedef struct {
+    f32 hunger_restore;
+    f32 saturation;
+    f32 health_restore;
+    f32 effect_chance;
+    u32 effect_id;
+    f32 spoil_time;
+    bool has_effects;
+} FoodTooltipInfo;
+
 // Check if player can eat a food item
 bool player_can_eat(struct PlayerComponent *player, u32 food_item_id,
                     const ItemRegistry *item_registry);
@@ -54,5 +75,21 @@ EatingState *player_get_eating_state(struct PlayerComponent *player);
 void player_update_inventory_spoilage(struct PlayerComponent *player,
                                       f32 delta_time,
                                       const ItemRegistry *item_registry);
+
+// Cooking system functions
+bool player_start_cooking(struct PlayerComponent *player, u32 furnace_entity_id, u32 slot_index);
+void player_update_cooking(struct PlayerComponent *player, f32 delta_time);
+void player_finish_cooking(struct PlayerComponent *player);
+void player_burn_food(struct PlayerComponent *player);
+
+// Recipe system functions
+bool player_can_craft_food(u32 result_item_id);
+bool player_has_crafting_ingredients(struct PlayerComponent *player, const void *recipe);
+bool player_craft_food(struct PlayerComponent *player, u32 result_item_id, bool has_crafting_table);
+
+// Tooltip system functions
+bool player_get_food_tooltip_info(u32 item_id, const ItemRegistry *item_registry, 
+                                 FoodTooltipInfo *tooltip_info);
+void player_format_food_tooltip(const FoodTooltipInfo *info, char *buffer, size_t buffer_size);
 
 #endif // PLAYER_FOOD_H

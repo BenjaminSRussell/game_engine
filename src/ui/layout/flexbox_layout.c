@@ -8,8 +8,8 @@
  */
 
 #include "flexbox_layout.h"
-#include "core/logger.h"
-#include "core/memory.h"
+#include "include/core/logger.h"
+#include "include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -667,10 +667,158 @@ void flexbox_enable_performance_profiling(bool enable) {
     g_performance_profiling_enabled = enable;
 }
 
-void flexbox_get_performance_stats(const FlexboxContainer* container, 
+void flexbox_get_performance_stats(const FlexboxContainer* container,
                                  uint32_t* iterations, float* time_ms) {
     if (!container) return;
-    
+
     if (iterations) *iterations = container->layout_iterations;
     if (time_ms) *time_ms = container->layout_time_ms;
+}
+
+void flexbox_set_align_content(FlexboxContainer* container, AlignContent align) {
+    if (!container) return;
+
+    container->config.align_content = align;
+    container->needs_layout = true;
+}
+
+void flexbox_set_padding(FlexboxContainer* container, BoxEdges padding) {
+    if (!container) return;
+
+    container->config.padding = padding;
+    container->needs_layout = true;
+}
+
+void flexbox_set_margin(FlexboxContainer* container, BoxEdges margin) {
+    if (!container) return;
+
+    container->config.margin = margin;
+    container->needs_layout = true;
+}
+
+void flexbox_remove_child(FlexboxContainer* container, UIElement* child) {
+    if (!container || !child) return;
+
+    for (uint32_t i = 0; i < container->base.child_count; i++) {
+        if (container->base.children[i] == child) {
+            // Shift remaining children
+            for (uint32_t j = i; j < container->base.child_count - 1; j++) {
+                container->base.children[j] = container->base.children[j + 1];
+            }
+            container->base.child_count--;
+            container->needs_layout = true;
+            LOG_INFO("Removed child %s from container %s", child->name, container->base.name);
+            return;
+        }
+    }
+}
+
+void ui_element_set_flex_basis(UIElement* element, float basis) {
+    if (!element) return;
+
+    element->flex_item.basis = basis;
+    element->dirty = true;
+
+    if (element->parent) {
+        FlexboxContainer* container = (FlexboxContainer*)element->parent;
+        container->needs_layout = true;
+    }
+}
+
+void ui_element_set_align_self(UIElement* element, AlignSelf align_self) {
+    if (!element) return;
+
+    element->flex_item.align_self = align_self;
+    element->dirty = true;
+
+    if (element->parent) {
+        FlexboxContainer* container = (FlexboxContainer*)element->parent;
+        container->needs_layout = true;
+    }
+}
+
+void ui_element_set_min_size(UIElement* element, Size min_size) {
+    if (!element) return;
+
+    element->min_size = min_size;
+    element->dirty = true;
+
+    if (element->parent) {
+        FlexboxContainer* container = (FlexboxContainer*)element->parent;
+        container->needs_layout = true;
+    }
+}
+
+void ui_element_set_max_size(UIElement* element, Size max_size) {
+    if (!element) return;
+
+    element->max_size = max_size;
+    element->dirty = true;
+
+    if (element->parent) {
+        FlexboxContainer* container = (FlexboxContainer*)element->parent;
+        container->needs_layout = true;
+    }
+}
+
+void flexbox_invalidate_layout(FlexboxContainer* container) {
+    if (!container) return;
+
+    container->needs_layout = true;
+    container->base.dirty = true;
+
+    for (uint32_t i = 0; i < container->base.child_count; i++) {
+        container->base.children[i]->dirty = true;
+    }
+}
+
+bool flexbox_needs_layout(const FlexboxContainer* container) {
+    return container ? container->needs_layout : false;
+}
+
+LayoutResult ui_element_get_layout(const UIElement* element) {
+    return element ? element->layout : (LayoutResult){0};
+}
+
+Size ui_element_get_content_size(const UIElement* element) {
+    if (!element) return (Size){0};
+
+    return (Size){
+        element->layout.size.width - element->padding.left - element->padding.right,
+        element->layout.size.height - element->padding.top - element->padding.bottom
+    };
+}
+
+Position ui_element_get_content_position(const UIElement* element) {
+    if (!element) return (Position){0};
+
+    return (Position){
+        element->layout.position.x + element->padding.left,
+        element->layout.position.y + element->padding.top
+    };
+}
+
+Size flexbox_measure_content(const UIElement* element) {
+    if (!element) return (Size){0};
+
+    return (Size){
+        element->preferred_size.width > 0 ? element->preferred_size.width : element->min_size.width,
+        element->preferred_size.height > 0 ? element->preferred_size.height : element->min_size.height
+    };
+}
+
+float flexbox_resolve_flex_basis(const UIElement* element, float container_main_size) {
+    if (!element) return 0.0f;
+
+    float basis = element->flex_item.basis;
+    if (basis < 0.0f) return element->preferred_size.width;
+    return basis;
+}
+
+bool flexbox_is_main_axis_horizontal(FlexDirection direction) {
+    return is_main_axis_horizontal(direction);
+}
+
+bool flexbox_is_wrap_reversed(FlexWrap wrap) {
+    return wrap == FLEX_WRAP_WRAP_REVERSE;
 }

@@ -34,6 +34,16 @@ typedef struct texture_texture_lod_info {
     uint32_t id;
     uint32_t flags;
     bool initialized;
+    uint32_t width;
+    uint32_t height;
+    uint32_t mip_levels;
+    uint32_t format;
+    float lod_bias;
+    bool streaming_enabled;
+    uint32_t streaming_priority;
+    float streaming_bandwidth;
+    bool compression_enabled;
+    uint32_t compression_format;
 } texture_texture_lod_info_t;
 
 /* ============================================================================

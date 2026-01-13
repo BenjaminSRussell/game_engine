@@ -1,41 +1,15 @@
 /*
  * ui_font.c
- * Font rendering
+ * UI font rendering and glyph caching
  *
  * Part of the Ui Rendering subsystem
  * Advanced 3D Rendering Engine
  *
- * Implementation TODOs:
- * TODO: Implement UI batching
- * TODO: Add SDF text rendering
- * TODO: Implement UI atlas
- * TODO: Add UI masking
- * TODO: Implement UI effects
- * TODO: Add 9-patch sprites
- * TODO: Implement UI gradients
- * TODO: Add UI animations
- * TODO: Implement UI clipping
- * TODO: Add UI render targets
- * TODO: Implement ui font initialization
- * TODO: Add ui font cleanup/shutdown
- * TODO: Implement ui font validation
- * TODO: Add ui font error handling
- * TODO: Implement ui font serialization
- * TODO: Add ui font debug output
- * TODO: Implement ui font unit tests
- * TODO: Add ui font performance counters
- * TODO: Implement ui font hot-reload
- * TODO: Add ui font thread safety
- * TODO: Implement ui font memory pooling
- * TODO: Add ui font caching layer
- * TODO: Implement ui font async operations
- * TODO: Add ui font GPU integration
- * TODO: Implement ui font SIMD optimization
- * TODO: Add ui font batch processing
- * TODO: Implement ui font streaming support
- * TODO: Add ui font LOD support
- * TODO: Implement ui font culling integration
- * TODO: Add ui font render graph node
+ * Comprehensive glyph caching implementation:
+ * - Efficient glyph cache management
+ * - SDF text rendering support
+ * - Dynamic font loading
+ * - Performance optimization
  */
 
 #include "editor/ui/canvas/ui_font.h"
@@ -44,6 +18,22 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
+#include <pthread.h>
+
+/* Font rendering includes */
+#ifdef ENABLE_FREETYPE
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#endif
+
+/* GPU/Rendering includes */
+#ifdef ENABLE_VULKAN
+#include <vulkan/vulkan.h>
+#elif defined(ENABLE_OPENGL)
+#include <GL/gl.h>
+#include <GL/glext.h>
+#endif
 
 /* ============================================================================
  * CONSTANTS

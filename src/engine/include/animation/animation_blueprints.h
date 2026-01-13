@@ -91,6 +91,9 @@ void anim_bp_destroy(AnimationBlueprint *blueprint);
 // State management
 u32 anim_bp_add_state(AnimationBlueprint *bp, const char *name,
                       AnimationClip *clip);
+void anim_bp_set_state_callbacks(AnimationBlueprint *bp, u32 state_id,
+                                 void (*on_enter)(void *context),
+                                 void (*on_exit)(void *context));
 void anim_bp_add_transition(AnimationBlueprint *bp, u32 from_state,
                             u32 to_state, bool (*condition)(void *),
                             f32 blend_time);

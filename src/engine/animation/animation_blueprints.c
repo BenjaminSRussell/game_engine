@@ -49,6 +49,19 @@ u32 anim_bp_add_state(AnimationBlueprint *bp, const char *name,
   return state_id;
 }
 
+void anim_bp_set_state_callbacks(AnimationBlueprint *bp, u32 state_id,
+                                 void (*on_enter)(void *context),
+                                 void (*on_exit)(void *context)) {
+  if (!bp || state_id >= bp->state_count) {
+    LOG_ERROR("Cannot set callbacks: invalid state ID %u", state_id);
+    return;
+  }
+
+  AnimBPState *state = &bp->states[state_id];
+  state->on_enter = on_enter;
+  state->on_exit = on_exit;
+}
+
 void anim_bp_add_transition(AnimationBlueprint *bp, u32 from_state,
                             u32 to_state, bool (*condition)(void *),
                             f32 blend_time) {

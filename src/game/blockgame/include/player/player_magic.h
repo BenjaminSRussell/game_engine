@@ -111,4 +111,26 @@ void player_magic_update(PlayerSystem *system, f32 delta_time);
 bool player_can_cast_spell(PlayerMagicComponent *magic, SpellType spell);
 bool player_has_mana(PlayerMagicComponent *magic, f32 amount);
 
+// Enhanced cooldown system API
+void player_magic_init_cooldown_system(void);
+void player_magic_enable_visual_indicators(bool enable);
+void player_magic_set_cooldown_modifier(f32 modifier);
+void player_magic_enable_cooldown_reduction(bool enable);
+bool player_magic_is_spell_ready(SpellType spell);
+f32 player_magic_get_cooldown_progress(SpellType spell);
+void player_magic_get_cooldown_stats(SpellType spell, f32 *remaining, f32 *total);
+
+// Spell upgrade system API
+bool player_magic_upgrade_spell(PlayerMagicComponent *magic, SpellType spell);
+bool player_magic_can_upgrade_spell(PlayerMagicComponent *magic, SpellType spell);
+void player_magic_award_spell_points(PlayerMagicComponent *magic, u32 points);
+u32 player_magic_get_spell_level(PlayerMagicComponent *magic, SpellType spell);
+f32 player_magic_get_spell_mana_cost(PlayerMagicComponent *magic, SpellType spell);
+void player_magic_get_spell_stats(PlayerMagicComponent *magic, SpellStats *out_stats);
+void player_magic_reset_stats(PlayerMagicComponent *magic);
+
+// Spell combination system API
+void player_magic_init_combination_system(void);
+void player_magic_add_spell_to_combination(PlayerMagicComponent *magic, SpellType spell);
+
 #endif // PLAYER_MAGIC_H

@@ -1,7 +1,11 @@
 #include <math/math.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
-#include <immintrin.h>
+#if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
+    #include <immintrin.h>
+#elif defined(__arm64__) || defined(__aarch64__) || defined(_M_ARM64)
+    #include <arm_neon.h>
+#endif
 #include <string.h>
 
 // SIMD-optimized implementations for common math operations

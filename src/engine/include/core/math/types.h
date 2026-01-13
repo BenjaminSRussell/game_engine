@@ -68,6 +68,7 @@ typedef u32 uintptr;
 #endif
 
 // Debug/Release macros
+#ifndef ASSERT
 #ifdef NDEBUG
 #define ASSERT(condition) ((void)0)
 #define DEBUG_ONLY(code) ((void)0)
@@ -79,6 +80,7 @@ typedef u32 uintptr;
         } \
     } while(0)
 #define DEBUG_ONLY(code) code
+#endif
 #endif
 
 // ============================================================================
@@ -448,8 +450,12 @@ typedef enum {
 // CONSTANTS
 // ============================================================================
 
+#ifndef PI
 #define PI 3.14159265358979323846f
+#endif
+#ifndef PI_2
 #define PI_2 1.57079632679489661923f
+#endif
 #define PI_4 0.78539816339744830962f
 #define TWO_PI 6.28318530717958647692f
 #define INV_PI 0.31830988618379067154f
@@ -466,7 +472,9 @@ typedef enum {
 // Min/Max/Clamp
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
+#ifndef CLAMP
 #define CLAMP(x, min, max) MIN(MAX((x), (min)), (max))
+#endif
 
 // Array size
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))

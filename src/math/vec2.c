@@ -24,14 +24,14 @@ vec2_t vec2_rotate(vec2_t v, float angle) {
 
 vec2_t vec2_reflect(vec2_t v, vec2_t normal) {
     float dot = vec2_dot(v, normal);
-    return vec2_sub(v, vec2_scale(normal, 2.0f * dot));
+    return vec2_sub(v, vec2_mul(normal, 2.0f * dot));
 }
 
 vec2_t vec2_project(vec2_t a, vec2_t b) {
     float dot = vec2_dot(a, b);
     float len_sq = vec2_dot(b, b);
     if (len_sq < EPSILON) return vec2_zero();
-    return vec2_scale(b, dot / len_sq);
+    return vec2_mul(b, dot / len_sq);
 }
 
 vec2_t vec2_perpendicular(vec2_t v) {

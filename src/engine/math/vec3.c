@@ -1,4 +1,4 @@
-#include "include/math/vec3.h"
+#include "src/include/math/vec3.h"
 #include <math.h>
 
 float vec3_angle_between(Vec3 a, Vec3 b) {

@@ -7,6 +7,8 @@
 #include <stdint.h>
 
 #define MAX_PACKET_SIZE 1400 // Typical MTU is 1500, leave room for headers
+#define MAX_FRAGMENT_SIZE (MAX_PACKET_SIZE - sizeof(PacketHeader))
+#define MAX_ORIGINAL_PACKET_SIZE (MAX_FRAGMENT_SIZE * MAX_FRAGMENTS_PER_PACKET)
 
 typedef struct {
   uint8_t buffer[MAX_PACKET_SIZE];
@@ -14,6 +16,40 @@ typedef struct {
   uint16_t read_pos;
   uint16_t length;
 } Packet;
+
+// Fragmentation and compression functions
+typedef struct {
+    Packet fragments[MAX_FRAGMENTS_PER_PACKET];
+    uint16_t fragment_count;
+    uint16_t expected_fragments;
+    uint32_t original_size;
+    uint8_t type;
+    uint8_t flags;
+    uint16_t sequence;
+    uint32_t timestamp;
+    bool is_complete;
+} PacketAssembler;
+
+// Compression types
+typedef enum {
+    COMPRESSION_NONE = 0,
+    COMPRESSION_LZ4 = 1,
+    COMPRESSION_ZSTD = 2
+} CompressionType;
+
+// Fragmentation functions
+uint16_t packet_fragment_data(const void* data, uint32_t data_size, Packet* fragments, 
+                           uint16_t sequence, uint32_t timestamp);
+bool packet_assemble_fragment(PacketAssembler* assembler, const Packet* fragment);
+void packet_init_assembler(PacketAssembler* assembler, uint16_t expected_fragments);
+bool packet_is_assembler_complete(const PacketAssembler* assembler);
+
+// Compression functions
+uint32_t packet_compress_data(const void* input, uint32_t input_size, void* output, 
+                           uint32_t output_size, CompressionType type);
+uint32_t packet_decompress_data(const void* input, uint32_t input_size, void* output, 
+                             uint32_t output_size, CompressionType type);
+CompressionType packet_get_best_compression(uint32_t data_size);
 
 // Initialize a packet for writing
 void packet_init_write(Packet *packet, uint8_t type, uint8_t flags);

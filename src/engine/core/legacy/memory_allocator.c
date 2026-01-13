@@ -4,7 +4,8 @@
 // This file is kept for backwards compatibility only
 // All functionality has been moved to unified_memory_allocator.c
 
-#include "../memory/unified_memory_allocator.h"
+#include "core/memory.h"
+#include "core/memory/unified_memory_allocator.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -21,17 +22,17 @@ void memory_allocator_shutdown(void) {
 
 // Legacy allocation - redirects to unified system
 void* memory_allocate(size_t size, const char* file, int line) {
-    return unified_memory_alloc(size, MEMORY_STRATEGY_DEFAULT, MEMORY_FLAG_TRACK, file, line);
+    return unified_memory_alloc(size, MEMORY_STRATEGY_DEFAULT, MEMORY_FLAG_TRACK, file, line, __func__);
 }
 
 // Legacy reallocation - redirects to unified system
 void* memory_reallocate(void* ptr, size_t new_size, const char* file, int line) {
-    return unified_memory_realloc(ptr, new_size, MEMORY_STRATEGY_DEFAULT, MEMORY_FLAG_TRACK, file, line);
+    return unified_memory_realloc(ptr, new_size, MEMORY_STRATEGY_DEFAULT, MEMORY_FLAG_TRACK, file, line, __func__);
 }
 
 // Legacy deallocation - redirects to unified system
 void memory_deallocate(void* ptr) {
-    unified_memory_free(ptr);
+    memory_free(ptr);
 }
 
 // Get memory statistics - redirects to unified system
@@ -46,7 +47,7 @@ void memory_allocator_get_stats(size_t* total_allocated, size_t* peak_allocated,
 
 // Check for memory leaks - redirects to unified system
 void memory_allocator_check_leaks(void) {
-    unified_memory_check_leaks();
+    memory_tracker_report();
 }
 
 // Set memory limit - redirects to unified system

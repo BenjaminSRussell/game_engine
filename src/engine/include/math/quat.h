@@ -73,7 +73,7 @@ typedef union {
 } K_ALIGN(16) Quat;
 
 INLINE Quat quat_create(f32 w, f32 x, f32 y, f32 z) {
-  Quat q = {w, x, y, z};
+  Quat q = {{w, x, y, z}};
   return q;
 }
 

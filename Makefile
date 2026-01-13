@@ -315,30 +315,6 @@ src/engine/ai/pathfinding/pathfinding_optimizer.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_optimizer.c.s
 .PHONY : src/engine/ai/pathfinding/pathfinding_optimizer.c.s
 
-src/engine/assets/system/asset_system/loading/asset_loader.o: src/engine/assets/system/asset_system/loading/asset_loader.c.o
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.o
-
-# target to build an object file
-src/engine/assets/system/asset_system/loading/asset_loader.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/loading/asset_loader.c.o
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.c.o
-
-src/engine/assets/system/asset_system/loading/asset_loader.i: src/engine/assets/system/asset_system/loading/asset_loader.c.i
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.i
-
-# target to preprocess a source file
-src/engine/assets/system/asset_system/loading/asset_loader.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/loading/asset_loader.c.i
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.c.i
-
-src/engine/assets/system/asset_system/loading/asset_loader.s: src/engine/assets/system/asset_system/loading/asset_loader.c.s
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.s
-
-# target to generate assembly for a file
-src/engine/assets/system/asset_system/loading/asset_loader.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/assets/system/asset_system/loading/asset_loader.c.s
-.PHONY : src/engine/assets/system/asset_system/loading/asset_loader.c.s
-
 src/engine/backend/metal/metal_mesh_bridge.o: src/engine/backend/metal/metal_mesh_bridge.c.o
 .PHONY : src/engine/backend/metal/metal_mesh_bridge.o
 
@@ -1282,78 +1258,6 @@ src/engine/core/utils.s: src/engine/core/utils.c.s
 src/engine/core/utils.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/utils.c.s
 .PHONY : src/engine/core/utils.c.s
-
-src/engine/ecs/components/asset_instance_component.o: src/engine/ecs/components/asset_instance_component.c.o
-.PHONY : src/engine/ecs/components/asset_instance_component.o
-
-# target to build an object file
-src/engine/ecs/components/asset_instance_component.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ecs/components/asset_instance_component.c.o
-.PHONY : src/engine/ecs/components/asset_instance_component.c.o
-
-src/engine/ecs/components/asset_instance_component.i: src/engine/ecs/components/asset_instance_component.c.i
-.PHONY : src/engine/ecs/components/asset_instance_component.i
-
-# target to preprocess a source file
-src/engine/ecs/components/asset_instance_component.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ecs/components/asset_instance_component.c.i
-.PHONY : src/engine/ecs/components/asset_instance_component.c.i
-
-src/engine/ecs/components/asset_instance_component.s: src/engine/ecs/components/asset_instance_component.c.s
-.PHONY : src/engine/ecs/components/asset_instance_component.s
-
-# target to generate assembly for a file
-src/engine/ecs/components/asset_instance_component.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ecs/components/asset_instance_component.c.s
-.PHONY : src/engine/ecs/components/asset_instance_component.c.s
-
-src/engine/ecs/components/transform_component.o: src/engine/ecs/components/transform_component.c.o
-.PHONY : src/engine/ecs/components/transform_component.o
-
-# target to build an object file
-src/engine/ecs/components/transform_component.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ecs/components/transform_component.c.o
-.PHONY : src/engine/ecs/components/transform_component.c.o
-
-src/engine/ecs/components/transform_component.i: src/engine/ecs/components/transform_component.c.i
-.PHONY : src/engine/ecs/components/transform_component.i
-
-# target to preprocess a source file
-src/engine/ecs/components/transform_component.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ecs/components/transform_component.c.i
-.PHONY : src/engine/ecs/components/transform_component.c.i
-
-src/engine/ecs/components/transform_component.s: src/engine/ecs/components/transform_component.c.s
-.PHONY : src/engine/ecs/components/transform_component.s
-
-# target to generate assembly for a file
-src/engine/ecs/components/transform_component.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ecs/components/transform_component.c.s
-.PHONY : src/engine/ecs/components/transform_component.c.s
-
-src/engine/ecs/ecs.o: src/engine/ecs/ecs.c.o
-.PHONY : src/engine/ecs/ecs.o
-
-# target to build an object file
-src/engine/ecs/ecs.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ecs/ecs.c.o
-.PHONY : src/engine/ecs/ecs.c.o
-
-src/engine/ecs/ecs.i: src/engine/ecs/ecs.c.i
-.PHONY : src/engine/ecs/ecs.i
-
-# target to preprocess a source file
-src/engine/ecs/ecs.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ecs/ecs.c.i
-.PHONY : src/engine/ecs/ecs.c.i
-
-src/engine/ecs/ecs.s: src/engine/ecs/ecs.c.s
-.PHONY : src/engine/ecs/ecs.s
-
-# target to generate assembly for a file
-src/engine/ecs/ecs.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ecs/ecs.c.s
-.PHONY : src/engine/ecs/ecs.c.s
 
 src/engine/ecs/ecs_advanced_impl.o: src/engine/ecs/ecs_advanced_impl.c.o
 .PHONY : src/engine/ecs/ecs_advanced_impl.o
@@ -10590,30 +10494,6 @@ src/engine/physics/demos/demo_stack_collapse.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_stack_collapse.c.s
 .PHONY : src/engine/physics/demos/demo_stack_collapse.c.s
 
-src/engine/physics/demos/demo_vehicle_physics.o: src/engine/physics/demos/demo_vehicle_physics.c.o
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.o
-
-# target to build an object file
-src/engine/physics/demos/demo_vehicle_physics.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_vehicle_physics.c.o
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.c.o
-
-src/engine/physics/demos/demo_vehicle_physics.i: src/engine/physics/demos/demo_vehicle_physics.c.i
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.i
-
-# target to preprocess a source file
-src/engine/physics/demos/demo_vehicle_physics.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_vehicle_physics.c.i
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.c.i
-
-src/engine/physics/demos/demo_vehicle_physics.s: src/engine/physics/demos/demo_vehicle_physics.c.s
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.s
-
-# target to generate assembly for a file
-src/engine/physics/demos/demo_vehicle_physics.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/demo_vehicle_physics.c.s
-.PHONY : src/engine/physics/demos/demo_vehicle_physics.c.s
-
 src/engine/physics/demos/main.o: src/engine/physics/demos/main.c.o
 .PHONY : src/engine/physics/demos/main.o
 
@@ -16454,6 +16334,30 @@ src/engine/ui/core/ui_layout_engine.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/core/ui_layout_engine.c.s
 .PHONY : src/engine/ui/core/ui_layout_engine.c.s
 
+src/engine/ui/layout/constraint_layout.o: src/engine/ui/layout/constraint_layout.c.o
+.PHONY : src/engine/ui/layout/constraint_layout.o
+
+# target to build an object file
+src/engine/ui/layout/constraint_layout.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/constraint_layout.c.o
+.PHONY : src/engine/ui/layout/constraint_layout.c.o
+
+src/engine/ui/layout/constraint_layout.i: src/engine/ui/layout/constraint_layout.c.i
+.PHONY : src/engine/ui/layout/constraint_layout.i
+
+# target to preprocess a source file
+src/engine/ui/layout/constraint_layout.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/constraint_layout.c.i
+.PHONY : src/engine/ui/layout/constraint_layout.c.i
+
+src/engine/ui/layout/constraint_layout.s: src/engine/ui/layout/constraint_layout.c.s
+.PHONY : src/engine/ui/layout/constraint_layout.s
+
+# target to generate assembly for a file
+src/engine/ui/layout/constraint_layout.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/constraint_layout.c.s
+.PHONY : src/engine/ui/layout/constraint_layout.c.s
+
 src/engine/ui/layout/flexbox_layout.o: src/engine/ui/layout/flexbox_layout.c.o
 .PHONY : src/engine/ui/layout/flexbox_layout.o
 
@@ -16501,6 +16405,30 @@ src/engine/ui/layout/grid_layout.s: src/engine/ui/layout/grid_layout.c.s
 src/engine/ui/layout/grid_layout.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/grid_layout.c.s
 .PHONY : src/engine/ui/layout/grid_layout.c.s
+
+src/engine/ui/layout/layout_invalidation.o: src/engine/ui/layout/layout_invalidation.c.o
+.PHONY : src/engine/ui/layout/layout_invalidation.o
+
+# target to build an object file
+src/engine/ui/layout/layout_invalidation.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/layout_invalidation.c.o
+.PHONY : src/engine/ui/layout/layout_invalidation.c.o
+
+src/engine/ui/layout/layout_invalidation.i: src/engine/ui/layout/layout_invalidation.c.i
+.PHONY : src/engine/ui/layout/layout_invalidation.i
+
+# target to preprocess a source file
+src/engine/ui/layout/layout_invalidation.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/layout_invalidation.c.i
+.PHONY : src/engine/ui/layout/layout_invalidation.c.i
+
+src/engine/ui/layout/layout_invalidation.s: src/engine/ui/layout/layout_invalidation.c.s
+.PHONY : src/engine/ui/layout/layout_invalidation.s
+
+# target to generate assembly for a file
+src/engine/ui/layout/layout_invalidation.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/layout/layout_invalidation.c.s
+.PHONY : src/engine/ui/layout/layout_invalidation.c.s
 
 src/engine/ui/layout/layout_solver.o: src/engine/ui/layout/layout_solver.c.o
 .PHONY : src/engine/ui/layout/layout_solver.o
@@ -20216,9 +20144,6 @@ help:
 	@echo "... src/engine/ai/pathfinding/pathfinding_optimizer.o"
 	@echo "... src/engine/ai/pathfinding/pathfinding_optimizer.i"
 	@echo "... src/engine/ai/pathfinding/pathfinding_optimizer.s"
-	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.o"
-	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.i"
-	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.s"
 	@echo "... src/engine/backend/metal/metal_mesh_bridge.o"
 	@echo "... src/engine/backend/metal/metal_mesh_bridge_2.o"
 	@echo "... src/engine/backend/metal/mtl_argument_buffer.o"
@@ -20337,15 +20262,6 @@ help:
 	@echo "... src/engine/core/utils.o"
 	@echo "... src/engine/core/utils.i"
 	@echo "... src/engine/core/utils.s"
-	@echo "... src/engine/ecs/components/asset_instance_component.o"
-	@echo "... src/engine/ecs/components/asset_instance_component.i"
-	@echo "... src/engine/ecs/components/asset_instance_component.s"
-	@echo "... src/engine/ecs/components/transform_component.o"
-	@echo "... src/engine/ecs/components/transform_component.i"
-	@echo "... src/engine/ecs/components/transform_component.s"
-	@echo "... src/engine/ecs/ecs.o"
-	@echo "... src/engine/ecs/ecs.i"
-	@echo "... src/engine/ecs/ecs.s"
 	@echo "... src/engine/ecs/ecs_advanced_impl.o"
 	@echo "... src/engine/ecs/ecs_advanced_impl.i"
 	@echo "... src/engine/ecs/ecs_advanced_impl.s"
@@ -21500,9 +21416,6 @@ help:
 	@echo "... src/engine/physics/demos/demo_stack_collapse.o"
 	@echo "... src/engine/physics/demos/demo_stack_collapse.i"
 	@echo "... src/engine/physics/demos/demo_stack_collapse.s"
-	@echo "... src/engine/physics/demos/demo_vehicle_physics.o"
-	@echo "... src/engine/physics/demos/demo_vehicle_physics.i"
-	@echo "... src/engine/physics/demos/demo_vehicle_physics.s"
 	@echo "... src/engine/physics/demos/main.o"
 	@echo "... src/engine/physics/demos/main.i"
 	@echo "... src/engine/physics/demos/main.s"
@@ -22233,12 +22146,18 @@ help:
 	@echo "... src/engine/ui/core/ui_layout_engine.o"
 	@echo "... src/engine/ui/core/ui_layout_engine.i"
 	@echo "... src/engine/ui/core/ui_layout_engine.s"
+	@echo "... src/engine/ui/layout/constraint_layout.o"
+	@echo "... src/engine/ui/layout/constraint_layout.i"
+	@echo "... src/engine/ui/layout/constraint_layout.s"
 	@echo "... src/engine/ui/layout/flexbox_layout.o"
 	@echo "... src/engine/ui/layout/flexbox_layout.i"
 	@echo "... src/engine/ui/layout/flexbox_layout.s"
 	@echo "... src/engine/ui/layout/grid_layout.o"
 	@echo "... src/engine/ui/layout/grid_layout.i"
 	@echo "... src/engine/ui/layout/grid_layout.s"
+	@echo "... src/engine/ui/layout/layout_invalidation.o"
+	@echo "... src/engine/ui/layout/layout_invalidation.i"
+	@echo "... src/engine/ui/layout/layout_invalidation.s"
 	@echo "... src/engine/ui/layout/layout_solver.o"
 	@echo "... src/engine/ui/layout/layout_solver.i"
 	@echo "... src/engine/ui/layout/layout_solver.s"

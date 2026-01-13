@@ -1,6 +1,4 @@
-// packet.c - Reliable packet serialization system
-// TODO: MVP PATH - Implement packet fragmentation for large payloads
-// TODO: MVP PATH - Add packet compression (LZ4, Zstd) for bandwidth optimization
+// packet.c - Reliable packet serialization system with fragmentation and compression
 // TODO: MVP PATH - Implement packet prioritization (critical vs non-critical data)
 // TODO: MVP PATH - Add packet encryption and authentication (AES-GCM, HMAC)
 // TODO: MVP PATH - Implement adaptive MTU discovery for optimal packet sizes
@@ -8,6 +6,14 @@
 #include "include/core/logger.h"
 #include <string.h>
 #include <stdlib.h>
+
+#ifdef HAVE_LZ4
+#include <lz4.h>
+#endif
+
+#ifdef HAVE_ZSTD
+#include <zstd.h>
+#endif
 
 static bool packet_has_space(const Packet *packet, uint16_t size) {
     return packet->write_pos + size <= MAX_PACKET_SIZE;
@@ -305,6 +311,228 @@ uint16_t packet_finalize(Packet *packet) {
     
     packet->length = packet->write_pos;
     return packet->length;
+}
+
+// Fragmentation implementation
+uint16_t packet_fragment_data(const void* data, uint32_t data_size, Packet* fragments, 
+                           uint16_t sequence, uint32_t timestamp) {
+    if (!data || data_size == 0 || !fragments) {
+        return 0;
+    }
+    
+    // Don't fragment if data is small enough
+    if (data_size <= MAX_FRAGMENT_SIZE) {
+        return 0;
+    }
+    
+    uint16_t fragment_count = (data_size + MAX_FRAGMENT_SIZE - 1) / MAX_FRAGMENT_SIZE;
+    if (fragment_count > MAX_FRAGMENTS_PER_PACKET) {
+        log_error("Data too large, would require %u fragments (max %u)", 
+                 fragment_count, MAX_FRAGMENTS_PER_PACKET);
+        return 0;
+    }
+    
+    const uint8_t* src_data = (const uint8_t*)data;
+    uint32_t offset = 0;
+    
+    for (uint16_t i = 0; i < fragment_count; i++) {
+        // Initialize fragment packet
+        packet_init_write(&fragments[i], 0, PACKET_FLAG_FRAGMENTED);
+        
+        // Calculate fragment size
+        uint32_t fragment_size = (data_size - offset > MAX_FRAGMENT_SIZE) ? 
+                                  MAX_FRAGMENT_SIZE : (data_size - offset);
+        
+        // Write fragment data
+        if (!packet_write_bytes(&fragments[i], src_data + offset, fragment_size)) {
+            log_error("Failed to write fragment %u data", i);
+            return 0;
+        }
+        
+        // Update header with fragmentation info
+        PacketHeader* header = (PacketHeader*)fragments[i].buffer;
+        header->type = 0; // Will be set by caller
+        header->sequence = sequence;
+        header->timestamp = timestamp;
+        header->fragment_id = i + 1; // 1-based fragment ID
+        header->fragment_offset = offset;
+        header->total_fragments = fragment_count;
+        header->original_size = data_size;
+        
+        // Finalize fragment
+        fragments[i].length = packet_finalize(&fragments[i]);
+        
+        offset += fragment_size;
+    }
+    
+    return fragment_count;
+}
+
+bool packet_assemble_fragment(PacketAssembler* assembler, const Packet* fragment) {
+    if (!assembler || !fragment) {
+        return false;
+    }
+    
+    PacketHeader header = packet_get_header(fragment);
+    
+    // Check if this is a fragment
+    if (!(header.flags & PACKET_FLAG_FRAGMENTED)) {
+        return false;
+    }
+    
+    // Validate fragment ID
+    if (header.fragment_id == 0 || header.fragment_id > assembler->expected_fragments) {
+        log_warn("Invalid fragment ID: %u (expected 1-%u)", 
+                  header.fragment_id, assembler->expected_fragments);
+        return false;
+    }
+    
+    // Check if we already have this fragment
+    if (assembler->fragments[header.fragment_id - 1].length > 0) {
+        log_warn("Duplicate fragment %u", header.fragment_id);
+        return false;
+    }
+    
+    // Store fragment
+    assembler->fragments[header.fragment_id - 1] = *fragment;
+    assembler->fragment_count++;
+    
+    // Check if assembly is complete
+    if (assembler->fragment_count == assembler->expected_fragments) {
+        assembler->is_complete = true;
+        return true;
+    }
+    
+    return false;
+}
+
+void packet_init_assembler(PacketAssembler* assembler, uint16_t expected_fragments) {
+    if (!assembler) return;
+    
+    memset(assembler, 0, sizeof(PacketAssembler));
+    assembler->expected_fragments = expected_fragments;
+}
+
+bool packet_is_assembler_complete(const PacketAssembler* assembler) {
+    return assembler ? assembler->is_complete : false;
+}
+
+// Compression implementation
+CompressionType packet_get_best_compression(uint32_t data_size) {
+    // For small data, compression might not be worth it
+    if (data_size < 128) {
+        return COMPRESSION_NONE;
+    }
+    
+#ifdef HAVE_LZ4
+    return COMPRESSION_LZ4;
+#elif defined(HAVE_ZSTD)
+    return COMPRESSION_ZSTD;
+#else
+    return COMPRESSION_NONE;
+#endif
+}
+
+uint32_t packet_compress_data(const void* input, uint32_t input_size, void* output, 
+                           uint32_t output_size, CompressionType type) {
+    if (!input || input_size == 0 || !output || output_size == 0) {
+        return 0;
+    }
+    
+    switch (type) {
+        case COMPRESSION_LZ4:
+#ifdef HAVE_LZ4
+        {
+            int compressed_size = LZ4_compress_default((const char*)input, (int)input_size, 
+                                                    (char*)output, (int)output_size);
+            if (compressed_size < 0) {
+                log_error("LZ4 compression failed");
+                return 0;
+            }
+            return (uint32_t)compressed_size;
+        }
+#else
+        {
+            log_error("LZ4 compression not available");
+            return 0;
+        }
+        
+        case COMPRESSION_ZSTD:
+#ifdef HAVE_ZSTD
+        {
+            size_t compressed_size = ZSTD_compress(output, output_size, input, input_size, 1);
+            if (ZSTD_isError(compressed_size)) {
+                log_error("ZSTD compression failed: %s", ZSTD_getErrorName(compressed_size));
+                return 0;
+            }
+            return (uint32_t)compressed_size;
+        }
+#else
+        {
+            log_error("ZSTD compression not available");
+            return 0;
+        }
+        
+        case COMPRESSION_NONE:
+        default:
+            // No compression, just copy
+            if (input_size > output_size) {
+                return 0;
+            }
+            memcpy(output, input, input_size);
+            return input_size;
+    }
+}
+
+uint32_t packet_decompress_data(const void* input, uint32_t input_size, void* output, 
+                             uint32_t output_size, CompressionType type) {
+    if (!input || input_size == 0 || !output || output_size == 0) {
+        return 0;
+    }
+    
+    switch (type) {
+        case COMPRESSION_LZ4:
+#ifdef HAVE_LZ4
+        {
+            int decompressed_size = LZ4_decompress_safe((const char*)input, (int)input_size, 
+                                                      (char*)output, (int)output_size);
+            if (decompressed_size < 0) {
+                log_error("LZ4 decompression failed");
+                return 0;
+            }
+            return (uint32_t)decompressed_size;
+        }
+#else
+        {
+            log_error("LZ4 decompression not available");
+            return 0;
+        }
+        
+        case COMPRESSION_ZSTD:
+#ifdef HAVE_ZSTD
+        {
+            size_t decompressed_size = ZSTD_decompress(output, output_size, input, input_size);
+            if (ZSTD_isError(decompressed_size)) {
+                log_error("ZSTD decompression failed: %s", ZSTD_getErrorName(decompressed_size));
+                return 0;
+            }
+            return (uint32_t)decompressed_size;
+        }
+#else
+        {
+            log_error("ZSTD decompression not available");
+            return 0;
+        }
+        
+        case COMPRESSION_NONE:
+        default:
+            // No compression, just copy
+            if (input_size > output_size) {
+                return 0;
+            }
+            memcpy(output, input, input_size);
+            return input_size;
+    }
 }
 
 // TODO: MVP PATH - Add packet validation and checksum verification

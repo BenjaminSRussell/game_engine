@@ -7,6 +7,34 @@
 #include <stddef.h>
 #include <arpa/inet.h>
 
+// Connection migration and failover configuration
+typedef struct {
+    NetAddress primary_address;
+    NetAddress secondary_address;
+    NetAddress current_address;
+    uint32_t migration_timeout_ms;    // Timeout for migration attempts
+    uint32_t max_migration_attempts; // Maximum migration attempts
+    uint32_t current_attempt;       // Current migration attempt
+    bool migration_active;          // Migration in progress
+    bool failover_enabled;         // Automatic failover enabled
+    float health_check_interval;    // Health check interval in seconds
+    uint64_t last_health_check;   // Last health check timestamp
+    uint32_t consecutive_failures;  // Consecutive connection failures
+} ConnectionMigration;
+
+// Connection states for migration
+typedef enum {
+    CONNECTION_STATE_PRIMARY = 0,
+    CONNECTION_STATE_SECONDARY = 1,
+    CONNECTION_STATE_MIGRATING = 2,
+    CONNECTION_STATE_FAILED = 3
+} ConnectionStateMigration;
+
+#define DEFAULT_MIGRATION_TIMEOUT 5000     // 5 seconds
+#define DEFAULT_MAX_MIGRATION_ATTEMPTS 3
+#define DEFAULT_HEALTH_CHECK_INTERVAL 2.0f  // 2 seconds
+#define MAX_CONSECUTIVE_FAILURES 5
+
 // Network constants
 // MAX_PACKET_SIZE is defined in packet.h
 #define MAX_CLIENTS 64
@@ -98,6 +126,17 @@ typedef struct {
     float jitter_ms;
     float packet_loss_rate;
 } NetworkStats;
+
+// Connection migration and failover functions
+void network_migration_init(const NetAddress* primary, const NetAddress* secondary);
+void network_migration_set_config(const ConnectionMigration* config);
+void network_migration_get_config(ConnectionMigration* config);
+bool network_migration_start(void);
+void network_migration_stop(void);
+bool network_migration_is_active(void);
+ConnectionStateMigration network_migration_get_state(void);
+void network_migration_update(float delta_time);
+bool network_migration_should_failover(void);
 
 // Server functions
 int network_server_start(const char* server_name, uint16_t port, uint32_t max_players, const char* password);

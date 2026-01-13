@@ -568,7 +568,6 @@ add_executable(physics_demos
     src/engine/physics/demos/demo_newton_cradle.c
     src/engine/physics/demos/demo_domino_chain.c
     src/engine/physics/demos/demo_ragdoll.c
-    src/engine/physics/demos/demo_vehicle_physics.c
     src/engine/physics/demos/demo_fluid_simulation.c
 )
 target_link_libraries(physics_demos PRIVATE Engine Game ZLIB::ZLIB Threads::Threads "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")

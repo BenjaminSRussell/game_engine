@@ -68,4 +68,6 @@ INLINE f32 vec2_length_sq(Vec2 v) { return vec2_dot(v, v); }
 
 INLINE f32 vec2_length(Vec2 v) { return sqrtf(vec2_length_sq(v)); }
 
+INLINE Vec2 vec2_scale(Vec2 v, f32 s) { return vec2_mul(v, s); }
+
 #endif // VEC2_H

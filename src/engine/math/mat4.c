@@ -1,7 +1,7 @@
 #include <math.h>
-#include <math/mat4.h>
-#include <math/vec3.h>
-#include <math/vec4.h>
+#include "src/include/math/mat4.h"
+#include "src/include/math/vec3.h"
+#include "src/include/math/vec4.h"
 
 // Note: mat4_identity and mat4_zero are defined as INLINE in mat4.h
 
