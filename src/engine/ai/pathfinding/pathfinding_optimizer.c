@@ -32,7 +32,7 @@ static PathCache g_path_cache = {0};
 // Initialize path cache
 void pathfinding_cache_init(void) {
     memset(&g_path_cache, 0, sizeof(PathCache));
-    LOG_INFO("PATHFINDING", "Path cache initialized with capacity %u", PATHCACHE_MAX_ENTRIES);
+    LOG_INFO(LOG_CAT_AI, "Path cache initialized with capacity %u", PATHCACHE_MAX_ENTRIES);
 }
 
 // Destroy path cache
@@ -43,7 +43,7 @@ void pathfinding_cache_shutdown(void) {
         }
     }
     memset(&g_path_cache, 0, sizeof(PathCache));
-    LOG_INFO("PATHFINDING", "Path cache shutdown");
+    LOG_INFO(LOG_CAT_AI, "Path cache shutdown");
 }
 
 // Check if two points are within tolerance
@@ -73,7 +73,7 @@ bool pathfinding_cache_lookup(vec3 start, vec3 goal, vec3 **out_waypoints, u32 *
             *out_waypoints = entry->waypoints;
             *out_count = entry->waypoint_count;
 
-            LOG_DEBUG("PATHFINDING", "Cache hit: %u waypoints, usage_count=%u",
+            LOG_DEBUG(LOG_CAT_AI, "Cache hit: %u waypoints, usage_count=%u",
                       entry->waypoint_count, entry->usage_count);
             return true;
         }
@@ -131,7 +131,7 @@ void pathfinding_cache_store(vec3 start, vec3 goal, vec3 *waypoints, u32 waypoin
             entry->path_length += sqrtf(dx*dx + dy*dy + dz*dz);
         }
 
-        LOG_DEBUG("PATHFINDING", "Cached path: %u waypoints, length=%.2f",
+        LOG_DEBUG(LOG_CAT_AI, "Cached path: %u waypoints, length=%.2f",
                   waypoint_count, entry->path_length);
     }
 }
@@ -171,7 +171,7 @@ u32 pathfinding_smooth_path(vec3 *waypoints, u32 waypoint_count, vec3 *out_smoot
     // Always add goal
     out_smoothed[smooth_count++] = waypoints[waypoint_count - 1];
 
-    LOG_DEBUG("PATHFINDING", "Path smoothed: %u waypoints -> %u waypoints",
+    LOG_DEBUG(LOG_CAT_AI, "Path smoothed: %u waypoints -> %u waypoints",
               waypoint_count, smooth_count);
     return smooth_count;
 }

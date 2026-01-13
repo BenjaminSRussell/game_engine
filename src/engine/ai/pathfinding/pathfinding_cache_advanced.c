@@ -18,6 +18,11 @@
 #define ADVANCED_CACHE_MAX_PATHS_PER_REGION 128
 #define ADVANCED_CACHE_MAX_WAYPOINTS 1024
 #define ADVANCED_CACHE_TOLERANCE 0.25f
+
+// Alignment helper
+#ifndef alignof
+#define alignof(type) __alignof__(type)
+#endif
 #define ADVANCED_CACHE_MAX_AGE 30.0f  // seconds
 #define ADVANCED_CACHE_PREDICTION_FRAMES 10
 
@@ -124,7 +129,7 @@ static u32 find_or_create_region(vec3 position) {
         region->radius = 10.0f;  // Default region radius
         region->path_count = 0;
         region->path_capacity = 32;
-        region->path_indices = MALLOC_PERSISTENT(region->path_capacity * sizeof(u32));
+        region->path_indices = allocator_alloc(g_persistent_allocator, region->path_capacity * sizeof(u32), alignof(u32));
         region->last_access_time = g_advanced_cache->current_time;
         
         return region_idx;
@@ -151,7 +156,7 @@ static u32 find_or_create_region(vec3 position) {
     region->radius = 10.0f;
     region->path_count = 0;
     region->path_capacity = 32;
-    region->path_indices = MALLOC_PERSISTENT(region->path_capacity * sizeof(u32));
+    region->path_indices = allocator_alloc(g_persistent_allocator, region->path_capacity * sizeof(u32), alignof(u32));
     region->last_access_time = g_advanced_cache->current_time;
     
     return lru_idx;

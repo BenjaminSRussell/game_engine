@@ -131,6 +131,61 @@ typedef struct io_export_renderer_03_stats {
     uint64_t ray_tracing_calls;
     uint64_t mesh_shader_calls;
     uint64_t render_graph_nodes;
+    
+    // TODO-24041: Implement indirect rendering for GPU-driven pipelines
+    uint64_t gpu_pipeline_commands;
+    uint64_t gpu_draw_calls;
+    uint64_t indirect_buffer_updates;
+    
+    // TODO-24042: Add mesh shader support for next-gen hardware
+    uint64_t meshlet_processing_calls;
+    uint64_t mesh_shader_compiles;
+    uint64_t gpu_culling_operations;
+    
+    // TODO-24043: Add ray tracing hybrid rendering path
+    uint64_t ray_trace_bounces;
+    uint64_t hybrid_render_calls;
+    uint64_t denoising_passes;
+    
+    // TODO-24044: Add variable rate shading support
+    uint64_t vrs_tile_updates;
+    uint64_t shading_rate_changes;
+    uint64_t foveated_rendering_calls;
+    
+    // TODO-24045: Implement asset bundling
+    uint64_t bundle_creations;
+    uint64_t bundle_extractions;
+    uint64_t bundle_compression_ops;
+    
+    // TODO-24047: Implement scene file parsing
+    uint64_t gltf_files_parsed;
+    uint64_t fbx_files_parsed;
+    uint64_t scene_nodes_processed;
+    
+    // TODO-24048: Implement visibility buffer rendering
+    uint64_t visibility_passes;
+    uint64_t surface_id_writes;
+    uint64_t depth_buffer_updates;
+    
+    // TODO-24049: Implement async compute integration
+    uint64_t compute_dispatches;
+    uint64_t async_task_completions;
+    uint64_t gpu_memory_transfers;
+    
+    // TODO-24050: Implement hierarchical culling with GPU feedback
+    uint64_t culling_hierarchy_updates;
+    uint64_t gpu_visibility_queries;
+    uint64_t frustum_culling_calls;
+    
+    // TODO-24051: Implement indirect rendering for GPU-driven pipelines
+    uint64_t command_buffer_updates;
+    uint64_t instance_count_updates;
+    uint64_t draw_call_batches;
+    
+    // TODO-24052: Implement async file loading
+    uint64_t file_load_requests;
+    uint64_t file_load_completions;
+    uint64_t file_cache_hits;
 } io_export_renderer_03_stats_t;
 
 /* ============================================================================
@@ -147,6 +202,18 @@ typedef struct asset_bundle {
     uint32_t asset_count;
     uint64_t hash;
     bool is_compressed;
+    
+    // TODO-24045: Implement asset bundling
+    uint32_t version;
+    uint64_t creation_time;
+    uint64_t last_modified;
+    char compression_type[32];
+    void* metadata;
+    size_t metadata_size;
+    bool is_streaming;
+    uint32_t priority;
+    char dependencies[16][256];
+    uint32_t dependency_count;
 } asset_bundle_t;
 
 typedef struct asset_bundle_system {
@@ -154,6 +221,15 @@ typedef struct asset_bundle_system {
     uint32_t capacity;
     uint32_t count;
     pthread_mutex_t mutex;
+    
+    // TODO-24045: Implement asset bundling
+    void* bundle_cache;
+    uint32_t max_cache_size;
+    uint32_t current_cache_usage;
+    bool async_loading_enabled;
+    void* compression_context;
+    uint64_t total_bundle_size;
+    uint32_t active_bundles;
 } asset_bundle_system_t;
 
 // Scene File Parser
@@ -165,6 +241,14 @@ typedef struct scene_node {
     uint32_t material_id;
     uint32_t child_count;
     uint32_t* children;
+    
+    // TODO-24047: Implement scene file parsing
+    float bounding_box_min[3];
+    float bounding_box_max[3];
+    bool is_visible;
+    uint32_t node_type; // 0=mesh, 1=light, 2=camera, 3=empty
+    char custom_properties[512];
+    uint32_t parent_id;
 } scene_node_t;
 
 typedef struct scene_data {
@@ -174,12 +258,35 @@ typedef struct scene_data {
     uint32_t mesh_count;
     void* materials;
     uint32_t material_count;
+    
+    // TODO-24047: Implement scene file parsing
+    void* textures;
+    uint32_t texture_count;
+    void* cameras;
+    uint32_t camera_count;
+    void* lights;
+    uint32_t light_count;
+    void* animations;
+    uint32_t animation_count;
+    char scene_format[32]; // gltf, fbx, obj, etc.
+    uint32_t format_version;
 } scene_data_t;
 
 typedef struct scene_parser {
     scene_data_t current_scene;
     char current_file[512];
     bool is_loaded;
+    
+    // TODO-24047: Implement scene file parsing
+    void* parser_context;
+    uint32_t parse_flags;
+    float scale_factor;
+    bool merge_vertices;
+    bool calculate_tangents;
+    bool generate_normals;
+    uint64_t parse_time;
+    uint32_t error_count;
+    char last_error[256];
 } scene_parser_t;
 
 // Visibility Buffer System
@@ -239,7 +346,32 @@ typedef struct indirect_rendering_system {
     uint32_t command_count;
     uint32_t capacity;
     bool gpu_driven;
+    
+    // TODO-24041: Implement indirect rendering for GPU-driven pipelines
+    void* gpu_command_buffer;
+    uint32_t max_draw_calls;
+    uint64_t last_update_timestamp;
+    bool multi_draw_enabled;
+    void* instance_data_buffer;
+    size_t instance_data_size;
 } indirect_rendering_system_t;
+
+// Multi-Draw Indirect System
+typedef struct multi_draw_indirect_command {
+    indirect_command_t* commands;
+    uint32_t command_count;
+    uint32_t stride;
+    uint32_t draw_count;
+} multi_draw_indirect_command_t;
+
+typedef struct multi_draw_indirect_system {
+    multi_draw_indirect_command_t* batches;
+    uint32_t batch_count;
+    uint32_t capacity;
+    void* gpu_buffer;
+    bool is_gpu_resident;
+    uint32_t max_commands_per_batch;
+} multi_draw_indirect_system_t;
 
 // Async File Loader
 typedef struct file_load_request {
@@ -288,6 +420,19 @@ typedef struct variable_rate_shading {
     uint32_t tile_count_y;
     uint32_t tile_size;
     bool is_enabled;
+    
+    // TODO-24044: Add variable rate shading support
+    void* vrs_image;
+    void* shading_rate_image;
+    bool foveated_rendering;
+    float fovea_center_x;
+    float fovea_center_y;
+    float fovea_radius;
+    uint8_t peripheral_rate;
+    uint8_t center_rate;
+    bool adaptive_vrs;
+    float motion_threshold;
+    uint64_t vrs_update_time;
 } variable_rate_shading_t;
 
 // Compression System
@@ -306,6 +451,18 @@ typedef struct ray_tracing_system {
     float rasterization_ratio;
     uint32_t max_bounces;
     bool denoising_enabled;
+    
+    // TODO-24043: Add ray tracing hybrid rendering path
+    void* tlas; // Top-level acceleration structure
+    void* blas_array; // Bottom-level acceleration structures
+    uint32_t blas_count;
+    bool rt_core_enabled;
+    float hybrid_threshold;
+    void* denoiser;
+    uint32_t max_ray_gen_calls;
+    uint64_t ray_tracing_time;
+    bool indirect_lighting_enabled;
+    float ambient_occlusion_strength;
 } ray_tracing_system_t;
 
 // Mesh Shader System
@@ -314,6 +471,16 @@ typedef struct mesh_shader_system {
     uint32_t meshlet_size;
     uint32_t max_primitives;
     bool gpu_culling;
+    
+    // TODO-24042: Add mesh shader support for next-gen hardware
+    void* meshlet_buffer;
+    void* amplification_shader;
+    void* mesh_shader;
+    uint32_t max_meshlets;
+    uint32_t active_meshlets;
+    bool task_shader_enabled;
+    void* culling_compute_shader;
+    uint64_t mesh_processing_time;
 } mesh_shader_system_t;
 
 // Render Graph Scheduler

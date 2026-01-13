@@ -87,6 +87,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Game.dir/src/game/blockgame/player/player_damage.c.o.d"
   "CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.o"
   "CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.o.d"
+  "CMakeFiles/Game.dir/src/game/blockgame/player/player_movement_enhancements.c.o"
+  "CMakeFiles/Game.dir/src/game/blockgame/player/player_movement_enhancements.c.o.d"
   "CMakeFiles/Game.dir/src/game/blockgame/player/player_movement_physics.c.o"
   "CMakeFiles/Game.dir/src/game/blockgame/player/player_movement_physics.c.o.d"
   "CMakeFiles/Game.dir/src/game/blockgame/player/spell_combination.c.o"
