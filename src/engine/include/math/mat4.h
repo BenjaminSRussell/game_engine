@@ -67,12 +67,19 @@ typedef struct {
   f64 total_operation_time;
 } Mat4Statistics;
 
+// Matrix decomposition structure
+typedef struct {
+  Vec3 translation;
+  Vec3 rotation; // Euler angles in radians
+  Vec3 scale;
+} Mat4Decomposition;
+
 // Use unified type from core/math/types.h
 typedef mat4 Mat4;
 
 INLINE Mat4 mat4_identity(void) {
   Mat4 m = {0};
-  m.m00 = m.m11 = m.m22 = m.m33 = 1.0f;
+  m.m[0][0] = m.m[1][1] = m.m[2][2] = m.m[3][3] = 1.0f;
   return m;
 }
 
@@ -98,6 +105,14 @@ Vec4 mat4_mul_vec4(Mat4 m, Vec4 v);
 Vec3 mat4_mul_vec3(Mat4 m, Vec3 v, float w);
 
 // Matrix decomposition system
+typedef struct {
+  Vec3 translation;
+  quat rotation;
+  Vec3 scale;
+  Vec3 shear;
+  Vec4 perspective;
+} Mat4Decomposition;
+
 Mat4Decomposition mat4_decompose(Mat4 m);
 Mat4 mat4_compose(Mat4Decomposition decomp);
 
