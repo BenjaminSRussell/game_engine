@@ -2,6 +2,7 @@
 #define BEHAVIOR_TREE_H
 
 #include <core/types.h>
+#include <math/vec3.h>
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -19,6 +20,13 @@ typedef enum {
     BT_NODE_DECORATOR,   // Modifies child behavior (inverter, repeater, etc.)
     BT_NODE_CUSTOM       // Custom node implementation
 } BTNodeType;
+
+typedef enum {
+    BT_DECORATOR_GENERIC,
+    BT_DECORATOR_INVERTER,
+    BT_DECORATOR_REPEATER,
+    BT_DECORATOR_TIMER
+} BTDecoratorType;
 
 // Behavior Node Status
 typedef enum {
@@ -67,6 +75,7 @@ typedef struct BehaviorNode {
         struct {
             struct BehaviorNode* child;
             BTNodeStatus (*decorate)(BTNodeStatus child_status);
+            BTDecoratorType type; // Sub-type for decorators
         } decorator;
         
         struct {
@@ -81,18 +90,21 @@ typedef struct BehaviorNode {
     
 } BehaviorNode;
 
+// Forward declaration
+typedef struct BTBlackboard BTBlackboard;
+
 // Behavior Tree structure
 typedef struct BehaviorTree {
     BehaviorNode* root;
     char name[64];
     bool enabled;
-    void* blackboard;
+    BTBlackboard* blackboard;
 } BehaviorTree;
 
 // Blackboard for shared data between nodes
-typedef struct {
+typedef struct BTBlackboard {
     // Target tracking
-    Entity target_entity;
+    Entity* target_entity;
     Vec3 target_position;
     bool has_target;
     
