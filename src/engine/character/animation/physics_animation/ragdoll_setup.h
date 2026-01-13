@@ -54,6 +54,7 @@ typedef struct RagdollBoneSetup {
 } RagdollBoneSetup;
 
 typedef struct animation_ragdoll_setup_desc {
+    uint32_t skeleton_id;
     uint32_t flags;
     uint32_t bone_count;
     RagdollBoneSetup* bones;
@@ -62,6 +63,7 @@ typedef struct animation_ragdoll_setup_desc {
 
 typedef struct animation_ragdoll_setup_info {
     uint32_t id;
+    uint32_t skeleton_id;
     uint32_t flags;
     uint32_t bone_count;
     bool initialized;
