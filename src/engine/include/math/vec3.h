@@ -45,7 +45,7 @@
 #ifndef VEC3_H
 #define VEC3_H
 
-#include "../common.h"
+#include <common.h>
 #include <math.h>
 
 #include <stdbool.h>
@@ -99,7 +99,9 @@ INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
   return vec3_create(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 
-INLINE Vec3 vec3_mul(Vec3 v, f32 s) { return vec3_create(v.x * s, v.y * s, v.z * s); }
+INLINE Vec3 vec3_mul(Vec3 v, f32 s) {
+  return vec3_create(v.x * s, v.y * s, v.z * s);
+}
 
 INLINE Vec3 vec3_div(Vec3 v, f32 s) {
   f32 inv = 1.0f / s;
@@ -116,7 +118,7 @@ INLINE f32 vec3_dot(Vec3 a, Vec3 b) {
 
 INLINE Vec3 vec3_cross(Vec3 a, Vec3 b) {
   return vec3_create(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z,
-              a.x * b.y - a.y * b.x);
+                     a.x * b.y - a.y * b.x);
 }
 
 INLINE f32 vec3_length_sq(Vec3 v) { return vec3_dot(v, v); }

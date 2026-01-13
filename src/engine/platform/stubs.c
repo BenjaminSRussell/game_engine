@@ -24,9 +24,13 @@ typedef struct ChunkManager ChunkManager;
 
 #include <core/config.h>
 
-.mouse_sensitivity = 0.3f
-}
-;
+// Global game configuration
+static GameConfig g_default_config = {.window_width = 1280,
+                                      .window_height = 720,
+                                      .vsync = true,
+                                      .fullscreen = false,
+                                      .fov = 70.0f,
+                                      .mouse_sensitivity = 0.3f};
 
 // =============================================================================
 // COMBAT SYSTEM - Real Implementation

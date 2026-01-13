@@ -33,7 +33,7 @@
 #ifndef VEC2_H
 #define VEC2_H
 
-#include "../common.h"
+#include <common.h>
 #include <math.h>
 
 typedef union {
@@ -52,9 +52,13 @@ INLINE Vec2 vec2_create(f32 x, f32 y) {
 
 INLINE Vec2 vec2_zero(void) { return vec2_create(0.0f, 0.0f); }
 
-INLINE Vec2 vec2_add(Vec2 a, Vec2 b) { return vec2_create(a.x + b.x, a.y + b.y); }
+INLINE Vec2 vec2_add(Vec2 a, Vec2 b) {
+  return vec2_create(a.x + b.x, a.y + b.y);
+}
 
-INLINE Vec2 vec2_sub(Vec2 a, Vec2 b) { return vec2_create(a.x - b.x, a.y - b.y); }
+INLINE Vec2 vec2_sub(Vec2 a, Vec2 b) {
+  return vec2_create(a.x - b.x, a.y - b.y);
+}
 
 INLINE Vec2 vec2_mul(Vec2 v, f32 s) { return vec2_create(v.x * s, v.y * s); }
 

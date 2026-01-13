@@ -41,10 +41,10 @@
 #ifndef MAT4_H
 #define MAT4_H
 
-#include "engine/include/common.h""
-#include "vec2.h"
-#include "vec3.h"
-#include "vec4.h"
+#include <common.h>
+#include <math/vec2.h>
+#include <math/vec3.h>
+#include <math/vec4.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>

@@ -1,7 +1,7 @@
 #ifndef VEC4_H
 #define VEC4_H
 
-#include "../common.h"
+#include <common.h>
 
 typedef struct {
   f32 x, y, z, w;
@@ -16,7 +16,7 @@ static inline Vec4 vec4_create(f32 x, f32 y, f32 z, f32 w) {
 
 static inline Vec4 vec4_lerp(Vec4 a, Vec4 b, f32 t) {
   return vec4_create(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t,
-              a.z + (b.z - a.z) * t, a.w + (b.w - a.w) * t);
+                     a.z + (b.z - a.z) * t, a.w + (b.w - a.w) * t);
 }
 
 #endif // VEC4_H
