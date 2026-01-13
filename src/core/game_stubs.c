@@ -1,3 +1,10 @@
+/**
+ * @file game_stubs.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 // game_stubs.c
 // Minimal implementations for missing game functions to get the build working
 
