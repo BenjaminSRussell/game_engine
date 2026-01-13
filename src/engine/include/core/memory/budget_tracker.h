@@ -21,18 +21,32 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
+typedef enum CoreBudgetBackend {
+    CORE_BUDGET_BACKEND_GENERIC = 0,
+    CORE_BUDGET_BACKEND_VULKAN,
+    CORE_BUDGET_BACKEND_METAL,
+    CORE_BUDGET_BACKEND_D3D12,
+    CORE_BUDGET_BACKEND_COUNT
+} CoreBudgetBackend;
+
 typedef struct core_budget_tracker_handle {
     uint32_t id;
 } core_budget_tracker_handle_t;
 
 typedef struct core_budget_tracker_desc {
     uint32_t flags;
+    CoreBudgetBackend backend;
+    size_t limit; /* 0 for unlimited */
     void* user_data;
 } core_budget_tracker_desc_t;
 
 typedef struct core_budget_tracker_info {
     uint32_t id;
     uint32_t flags;
+    CoreBudgetBackend backend;
+    size_t current_usage;
+    size_t peak_usage;
+    size_t limit;
     bool initialized;
 } core_budget_tracker_info_t;
 
@@ -49,6 +63,7 @@ int core_budget_tracker_create(core_budget_tracker_handle_t* out_handle, const c
 void core_budget_tracker_destroy(core_budget_tracker_handle_t handle);
 
 /* Operations */
+/* Updates the current usage. data pointer is optional (can be NULL) if only tracking size. */
 int core_budget_tracker_update(core_budget_tracker_handle_t handle, const void* data, size_t size);
 bool core_budget_tracker_is_valid(core_budget_tracker_handle_t handle);
 int core_budget_tracker_get_info(core_budget_tracker_handle_t handle, core_budget_tracker_info_t* out_info);
