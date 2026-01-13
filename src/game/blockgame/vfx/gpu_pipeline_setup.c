@@ -31,7 +31,7 @@ void gpu_pipeline_setup_shutdown(GPUPipelineSetup* setup, VulkanRenderer* render
 #else
 // Full Vulkan implementation below requires Vulkan SDK
 #include <effects/vfx/gpu_pipeline_setup.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

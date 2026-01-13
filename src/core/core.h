@@ -6,7 +6,7 @@
 #include <core/memory.h>
 #include <core/hashmap.h>
 #include <core/containers.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/time_system.h>
 #include <core/config_system.h>
 #include <core/utils.h>

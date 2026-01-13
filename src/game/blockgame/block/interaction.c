@@ -71,7 +71,7 @@
 #include <math.h>
 #include <math/vec3.h>
 #include <physics/physics.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 
 // Perform raycast against blocks
 BlockRaycastResult block_raycast(ChunkManager *chunks, Vec3 origin,

@@ -4,7 +4,7 @@
 //
 #include <core/engine_core.h>
 #include <core/game_api.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/scene.h>
 #include <math/mat4.h>
 #include <rendering/camera.h>

@@ -1,7 +1,7 @@
 // Enhanced NPC spawn logic with caps, time/light-based rules, and despawning.
 #include <block/block.h>
 #include <chunk/chunk.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/component_ids.h>
 #include <ecs/components/npc.h>
 #include <ecs/components/transform.h>

@@ -14,7 +14,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 
 ModLoader *mod_loader_create(const char *mod_dir) {
     if (!mod_dir) {

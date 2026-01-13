@@ -5,7 +5,7 @@
 #include <core/resource/vfs/vfs.h>
 #include <core/time_system.h>
 #include <editor/editor_main.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

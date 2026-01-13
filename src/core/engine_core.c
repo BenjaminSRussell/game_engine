@@ -4,7 +4,7 @@
 //
 #include "core/engine_core.h"
 #include "cinematics/audio/audio_system.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/resource/vfs/vfs.h"
 #include "core/threading/job.h"
 #include "include/physics/physics.h"

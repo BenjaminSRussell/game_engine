@@ -6,7 +6,7 @@
 
 // Core types
 #include "core/types.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 
 // Render Graph System
 #include "include/rendering/frame_graph/frame_graph.h"

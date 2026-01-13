@@ -5,7 +5,7 @@
 #include <block/interaction.h>
 #include <block/water_bucket.h>
 #include <block/water_physics.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <inventory/item_registry.h>
 #include <audio/audio.h>
 #include <mobs/mob_system.h>

@@ -4,7 +4,7 @@
 // Essential for GregTech-style mods with massive quantities
 //
 #include <core/big_int.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <common.h>
 #include <string.h>
 #include <stdlib.h>

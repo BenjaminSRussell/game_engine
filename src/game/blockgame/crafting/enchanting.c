@@ -15,7 +15,7 @@
 #include <audio/audio_system.h>
 #include <block/block.h>
 #include <chunk/chunk.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <crafting/enchanting.h>
 #include <effects/vfx/particle_system.h>
 #include <math.h>

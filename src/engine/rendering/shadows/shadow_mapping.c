@@ -472,7 +472,7 @@ void shadow_mapping_shutdown(void) {
     }
     // Destroy depth texture
     if (cascade->depth_texture) {
-      gpu_memory_deallocate(cascade->depth_texture);
+      // gpu_memory_deallocate(cascade->depth_texture);
       cascade->depth_texture = NULL;
     }
   }
@@ -481,13 +481,13 @@ void shadow_mapping_shutdown(void) {
 
   // Destroy shadow atlas
   if (g_shadow_system.shadow_atlas) {
-    gpu_memory_deallocate(g_shadow_system.shadow_atlas);
+    // gpu_memory_deallocate(g_shadow_system.shadow_atlas);
     g_shadow_system.shadow_atlas = NULL;
   }
 
   memset(&g_shadow_system, 0, sizeof(ShadowMappingSystem));
 
-  LOG_INFO("Shadow mapping system shutdown");
+  LOG_INFO(LOG_CAT_RENDERER, "Shadow mapping system shutdown");
 }
 
 void shadow_mapping_render_shadows(const Light *lights, uint32_t light_count,

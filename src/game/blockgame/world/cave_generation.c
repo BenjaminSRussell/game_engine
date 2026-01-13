@@ -10,7 +10,7 @@
 // Cave entrances: IMPLEMENTED (natural openings to surface).
 // Cave optimization: IMPLEMENTED (simplify distant caves).
 #include <block/block.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>

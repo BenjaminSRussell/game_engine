@@ -1,6 +1,9 @@
 /*
- * NPC Jobs System
+ * npc_jobs.c
  * Job assignment and task management for NPCs
+ *
+ * Part of the NPC subsystem
+ * Advanced 3D Rendering Engine
  */
 
 #include "npc/npc_jobs.h"

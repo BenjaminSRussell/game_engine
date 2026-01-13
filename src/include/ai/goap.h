@@ -2,7 +2,7 @@
 #define GOAP_H
 
 #include <core/types.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math/vec3.h>
 #include <stdbool.h>
 

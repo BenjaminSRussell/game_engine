@@ -12,7 +12,7 @@
 // AI territory marking and defense systems
 // AI day/night cycle behavior variations
 #include <ai/enemy_ai.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/ecs.h>
 #include <ecs/component_ids.h>
 #include <ecs/components/transform.h>

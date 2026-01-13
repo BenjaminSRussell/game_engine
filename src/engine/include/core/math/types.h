@@ -752,8 +752,8 @@ static INLINE f32 vec3_dot(vec3 a, vec3 b) {
     #else
         return a.x * b.x + a.y * b.y + a.z * b.z;
     #endif
-}
 #endif
+}
 
 // Get available SIMD features at runtime
 SimdFeature simd_get_available_features(void);

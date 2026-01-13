@@ -19,7 +19,7 @@
 #include <core/engine.h>
 #include <core/engine_core.h>
 #include <core/game_module.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <effects/vfx/particle_system.h>
 #include <math/mat4.h>
 #include "engine/include/math/math.h"

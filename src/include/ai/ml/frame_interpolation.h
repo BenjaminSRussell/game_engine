@@ -26,7 +26,7 @@
 
 #include "include/common.h"
 #include <ai/ml/ml_core.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 

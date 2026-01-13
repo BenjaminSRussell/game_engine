@@ -9,7 +9,7 @@
 //
 // This file provides functions to register all default recipes.
 //
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <crafting/recipe_registry.h>
 
 // Helper macro to create a recipe

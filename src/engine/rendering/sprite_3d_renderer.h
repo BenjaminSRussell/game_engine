@@ -8,7 +8,7 @@
 #include "rendering/core/renderer.h"
 #include "rendering/core/texture.h"
 #include "rendering/core/buffer.h"
-#include "math/math.h"
+#include "engine/include/math/math.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,5 +1,5 @@
 #include "modding/mod_api.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "player/player.h"
 #include "rendering/camera.h"
 #include "math/vec3.h"

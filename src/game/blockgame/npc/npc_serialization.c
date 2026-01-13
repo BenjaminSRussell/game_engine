@@ -1,5 +1,5 @@
 // NPC serialization for save/load.
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/component_ids.h>
 #include <ecs/components/npc.h>
 #include <ecs/components/transform.h>

@@ -1,5 +1,5 @@
 // NPC dialogue system implementation.
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <ecs/component_ids.h>
 #include <npc/dialogue.h>

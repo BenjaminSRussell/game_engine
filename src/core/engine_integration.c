@@ -7,7 +7,7 @@
 #include <core/engine.h>
 #include <core/engine_core.h>
 #include <core/game_module.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 // core/engine_integration.c
 // High-level Subsystem Integration and Lifecycle management.
 //

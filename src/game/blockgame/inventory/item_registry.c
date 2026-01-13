@@ -4,7 +4,7 @@
 // default item definitions for all game items.
 //
 #include <containers/hashmap.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <ctype.h>
 #include <inventory/item_registry.h>

@@ -13,7 +13,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include "math/math.h"
+#include "engine/include/math/math.h"
 
 #ifdef __cplusplus
 extern "C" {

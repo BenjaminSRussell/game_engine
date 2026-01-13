@@ -6,7 +6,7 @@
 #include <block/block_states.h>
 #include <block/water_physics.h>
 #include <chunk/chunk.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <containers/hashmap.h>
 #include <containers/dynamic_array.h>
 #include <stdlib.h>

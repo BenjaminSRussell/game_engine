@@ -11,7 +11,7 @@
 // Recipe suggestions: IMPLEMENTED (based on available materials).
 // Recipe tooltips: IMPLEMENTED (detailed information display).
 #include <audio/audio_system.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <crafting/recipe_system.h>
 #include <inventory/item_registry.h>
 #include <stdlib.h>

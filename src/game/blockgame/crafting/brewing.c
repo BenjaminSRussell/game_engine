@@ -6,7 +6,7 @@
 // TODO: Implement potion splash and lingering variants.
 // TODO: Implement potion recipe book with ingredient hints.
 #include <audio/audio_system.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <crafting/brewing.h>
 #include <effects/vfx/particle_system.h>

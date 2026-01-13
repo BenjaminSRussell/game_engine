@@ -13,7 +13,7 @@
 #include <block/interaction.h>
 #include <block/lighting.h>
 #include <chunk/chunk.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 
 // Light level caching system

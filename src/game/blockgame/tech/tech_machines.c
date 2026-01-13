@@ -13,7 +13,7 @@
 // Machine visuals: IMPLEMENTED (particles, lights, animations).
 // Machine networking: IMPLEMENTED (multiplayer synchronization).
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <inventory/item_registry.h>
 #include <math.h>

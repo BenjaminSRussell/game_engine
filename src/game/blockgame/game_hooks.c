@@ -4,7 +4,7 @@
 // Provides registration and trigger mechanisms for game events.
 //
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <game/game_hooks.h>
 #include <modding/mod_api.h>
 #include <stdlib.h>

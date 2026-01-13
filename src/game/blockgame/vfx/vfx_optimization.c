@@ -3,7 +3,7 @@
 // Implementation of VFX optimization systems
 //
 #include <effects/vfx/vfx_optimization.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

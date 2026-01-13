@@ -1,7 +1,7 @@
 #include "node_editor.h"
 #include <core/logger.h>
 #include <editor/ui/canvas/ui_canvas.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <scripting/visual_scripting.h>
 #include <stdlib.h>
 

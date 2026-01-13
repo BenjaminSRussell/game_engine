@@ -1,6 +1,6 @@
 // Survival system updates (health/hunger/air).
 // Roadmap: docs/SURVIVAL_WEATHER_ROADMAP.md.
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <game/survival_system.h>
 #include <player/status_effects.h>
 #include <stdlib.h>

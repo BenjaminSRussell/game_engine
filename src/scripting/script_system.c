@@ -1,5 +1,5 @@
 #include "scripting/script_system.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/types.h"
 #include <ctype.h>
 #include <stdbool.h>

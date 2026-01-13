@@ -8,7 +8,7 @@
 // UI-SYSTEM-008: Add UI rendering unit testing framework.
 // UI-SYSTEM-009: Implement UI rendering documentation system.
 // UI-SYSTEM-010: Add UI rendering optimization suggestions.
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <rendering/ui_renderer.h>
 #include <rendering/vulkan.h>
 #include <stdbool.h>

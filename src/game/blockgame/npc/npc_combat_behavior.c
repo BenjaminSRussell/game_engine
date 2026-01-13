@@ -1,5 +1,5 @@
 // Combat behavior extensions for NPCs (Milestone 4).
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/component_ids.h>
 #include <ecs/components/health.h>
 #include <ecs/components/npc.h>

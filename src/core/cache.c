@@ -10,7 +10,7 @@
 //  COMPLETED: Implement cache metrics export for performance analysis.
 //  COMPLETED: Add cache configuration system for tuning parameters.
 #include <core/cache.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>

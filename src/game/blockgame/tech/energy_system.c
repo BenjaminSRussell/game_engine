@@ -3,7 +3,7 @@
 // Energy system implementation inspired by GregTech
 // Handles EU (Energy Units), voltage tiers, and energy networks
 //
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <game_common.h>
 #include <math.h>
 #include <stdlib.h>

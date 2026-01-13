@@ -1,6 +1,6 @@
 #include "../include/ui/hotbar.h"
 #include "common.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "../include/inventory/inventory.h"
 #include <string.h>
 #include <time.h>

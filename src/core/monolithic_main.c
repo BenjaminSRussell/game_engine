@@ -25,7 +25,7 @@
 #include <combat/combat_animations.h>
 #include <common.h>
 #include <config/config.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory/pool.h>
 #include <core/resource/vfs/vfs.h>
 #include <core/threading/job.h>

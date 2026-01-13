@@ -1,6 +1,6 @@
 // Physics Demo: Domino Chain - Chain reaction simulation
 #include "physics_demo_framework.c"
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <stdlib.h>
 
 static RigidBody* dominos[50];

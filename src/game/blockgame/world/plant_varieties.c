@@ -1,7 +1,7 @@
 // Extended plant generation system with 70+ plant species.
 // Roadmap: docs/WORLD_ROADMAP.md
 #include <block/block.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>

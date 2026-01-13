@@ -1,6 +1,6 @@
 #include "network_state_sync.h"
 #include "core/common/memory/allocator.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "network_manager.h"
 #include <string.h>
 #include <stdlib.h>

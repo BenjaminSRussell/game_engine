@@ -11,7 +11,7 @@
 //  COMPLETED: Implement input statistics tracking (key presses, usage).
 //  COMPLETED: Add input accessibility features (sticky keys, repeat rate).
 #include <config/config.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ctype.h>
 #include <platform/input/controls.h>
 #include <stdio.h>

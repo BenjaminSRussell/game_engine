@@ -80,7 +80,7 @@
 #include <block/lighting.h>
 #include <chunk/chunk.h>
 #include <chunk/chunk_format.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 // #include <crafting/brewing.h>
 #include <math/vec3.h>
 #include <pthread.h>

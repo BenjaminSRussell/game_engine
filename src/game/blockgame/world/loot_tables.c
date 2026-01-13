@@ -1,6 +1,6 @@
 // Loot table system implementation for randomized item generation.
 // Roadmap: docs/WORLD_ROADMAP.md
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>

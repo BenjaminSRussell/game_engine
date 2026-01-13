@@ -3,7 +3,7 @@
 // Purpose: Implementation of the villager trading system with professions,
 // trades, and dynamic pricing based on reputation and demand.
 //
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <inventory/inventory.h>
 #include <inventory/item_registry.h>

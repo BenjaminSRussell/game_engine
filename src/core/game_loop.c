@@ -2,7 +2,7 @@
 //
 // Purpose: Fixed timestep game loop implementation
 //
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/game_loop.h>
 #include <string.h>
 

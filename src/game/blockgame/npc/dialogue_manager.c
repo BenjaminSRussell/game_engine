@@ -1,5 +1,5 @@
 // Minimal dialogue manager for Milestone 2 scaffolding.
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/component_ids.h>
 #include <ecs/components/npc.h>
 #include <ecs/components/transform.h>

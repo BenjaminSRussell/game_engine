@@ -1,7 +1,7 @@
 // src/npc/npc_ai.c
 // NPC AI and behavior implementation
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/component_ids.h>
 #include <ecs/components/health.h>
 #include <ecs/components/transform.h>

@@ -6,7 +6,7 @@
 #include <execinfo.h>
 #include <mach/mach.h>
 #include <mach/mach_vm.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <math/vec3.h>
 #include <pthread.h>
 #include <stdio.h>

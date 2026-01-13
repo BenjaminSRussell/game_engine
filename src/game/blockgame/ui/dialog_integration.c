@@ -6,7 +6,7 @@
 
 #include "dialog_integration.h"
 #include "engine/ui/modal_manager.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 
 /* ============================================================================
  * GAME STATE

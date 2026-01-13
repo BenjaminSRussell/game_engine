@@ -1,6 +1,6 @@
 #include "core/resource/asset_instance.h"
 #include "core/asset_manager.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 

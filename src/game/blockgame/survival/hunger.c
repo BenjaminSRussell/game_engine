@@ -1,6 +1,6 @@
 // Hunger and food mechanics implementation.
 #include <survival/hunger.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <string.h>
 #include <math.h>
 

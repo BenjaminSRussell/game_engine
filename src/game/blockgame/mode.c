@@ -1,7 +1,7 @@
 // Game mode state handling and rules.
 // Roadmap: docs/GAME_MODE_ROADMAP.md.
 #include <chunk/chunk.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/component_ids.h>
 #include <ecs/components/health.h>
 #include <ecs/ecs.h>

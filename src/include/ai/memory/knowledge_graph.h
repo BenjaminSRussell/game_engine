@@ -1,7 +1,7 @@
 #ifndef KNOWLEDGE_GRAPH_H
 #define KNOWLEDGE_GRAPH_H
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/types.h>
 #include <math/vec3.h>
 #include <stdbool.h>

@@ -1,5 +1,5 @@
 #include "core/services/vfx_optimizer.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 
 static struct {
   bool culling_enabled;

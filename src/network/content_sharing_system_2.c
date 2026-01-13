@@ -1,6 +1,6 @@
 // Content Sharing System implementation
 #include "network/content_sharing_system.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math/vec3.h>
 #include <math/vec4.h>
 #include "engine/include/math/math.h"

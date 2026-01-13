@@ -1,5 +1,5 @@
 #include <GLFW/glfw3.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/window.h>
 #include <stdlib.h>
 

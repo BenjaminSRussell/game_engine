@@ -4,7 +4,7 @@
 // particle, audio, and screen effects.
 //
 #include <effects/vfx/visual_effects.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

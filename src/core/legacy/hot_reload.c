@@ -1,5 +1,5 @@
 #include "common.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <core/hashmap.h>
 #include <core/hot_reload.h>
 #include <dlfcn.h>

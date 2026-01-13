@@ -5,7 +5,7 @@
 #define LOGGING_UTILS_H
 
 #include "core/types.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 
 #ifdef __cplusplus
 extern "C" {

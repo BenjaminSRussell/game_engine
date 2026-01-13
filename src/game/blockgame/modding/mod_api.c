@@ -11,7 +11,7 @@
 // TODO: Implement mod API dependency resolution system.
 // TODO: Add mod API error recovery system.
 #include <modding/mod_api.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <dlfcn.h>

@@ -54,7 +54,7 @@
 // Block registry versioning for save compatibility
 // Block registry hot-reload support for development
 // Block registry compression for memory efficiency
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/types.h>
 #include <block/block.h>
 #include <block/lighting.h>
