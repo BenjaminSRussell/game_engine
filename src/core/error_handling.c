@@ -1,3 +1,10 @@
+/**
+ * @file error_handling.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 /*
  * error_handling.c
  * Standardized error handling implementation
