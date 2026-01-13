@@ -1,3 +1,10 @@
+/**
+ * @file pcg_system.c
+ * @brief PCG System Implementation
+ * @description Procedural Content Generation system core
+ * @date 2026-01-13
+ */
+
 #include "../include/core/memory.h"
 #include "../include/ecs/components/pcg_component.h"
 #include "../include/ecs/components/transform.h"
