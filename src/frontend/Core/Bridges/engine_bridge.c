@@ -1,3 +1,10 @@
+/**
+ * @file engine_bridge.c
+ * @brief Frontend Implementation
+ * @description Frontend system implementation
+ * @date 2026-01-13
+ */
+
 #include "engine_bridge.h"
 #include "engine/include/core/memory.h"
 #include <ecs/ecs.h>
