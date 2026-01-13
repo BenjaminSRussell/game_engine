@@ -3,7 +3,7 @@
 #ifndef AUDIO_REVERB_H
 #define AUDIO_REVERB_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <vendor/miniaudio.h>
 
 #define REVERB_MAX_DELAY_SAMPLES 48000 // 1 second at 48kHz

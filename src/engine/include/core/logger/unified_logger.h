@@ -1,6 +1,4 @@
 #pragma once
-#ifndef UNIFIED_LOGGER_H
-#define UNIFIED_LOGGER_H
 
 #include "../math/types.h"
 #include <stdarg.h>

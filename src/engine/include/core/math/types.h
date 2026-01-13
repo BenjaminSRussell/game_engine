@@ -718,8 +718,10 @@ static INLINE quat quat_make(f32 x, f32 y, f32 z, f32 w) {
 }
 
 // SIMD vector operations (when available)
-#if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON) && !defined(VEC3_FUNCTIONS_DEFINED)
+#if defined(UNIFIED_SIMD_SSE) ||                                               \
+    defined(UNIFIED_SIMD_NEON) && !defined(VEC3_FUNCTIONS_DEFINED)
 #define VEC3_FUNCTIONS_DEFINED
+#define TYPES_DEFINED_VEC_OPS 1
 static INLINE vec3 vec3_add(vec3 a, vec3 b) {
   vec3 result;
 #if defined(UNIFIED_SIMD_SSE)
@@ -741,7 +743,8 @@ static INLINE vec3 vec3_sub(vec3 a, vec3 b) {
 }
 #endif
 
-#if !defined(VEC3_H)
+// #if !defined(VEC3_H) - Removed to allow definition even when included from
+// vec3.h
 static INLINE f32 vec3_dot(vec3 a, vec3 b) {
 #if defined(UNIFIED_SIMD_SSE)
   __m128 mul = _mm_mul_ps(a.simd, b.simd);
@@ -758,10 +761,10 @@ static INLINE f32 vec3_dot(vec3 a, vec3 b) {
 #else
   return a.x * b.x + a.y * b.y + a.z * b.z;
 #endif
-#endif
+}
 
-  // Get available SIMD features at runtime
-  SimdFeature simd_get_available_features(void);
-  bool simd_is_feature_supported(SimdFeature feature);
+// Get available SIMD features at runtime
+SimdFeature simd_get_available_features(void);
+bool simd_is_feature_supported(SimdFeature feature);
 
-  // End of types.h
+// End of types.h

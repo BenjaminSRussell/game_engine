@@ -7,13 +7,14 @@
  * Advanced 3D Rendering Engine
  */
 
-#include "grid_layout.h"
 #include "flexbox_layout.h" // Reuse UIElement
-#include "engine/include/core/logger.h"
-#include "engine/include/core/memory.h"
+#include "grid_layout.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "engine/include/math/math.h"
+#include <math.h>
+#include <float.h>
+#include <math/math.h>
 
 #define MAX_GRID_SIZE 100
 #define LAYOUT_TOLERANCE 0.1f

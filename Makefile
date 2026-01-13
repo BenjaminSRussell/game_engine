@@ -217,32 +217,6 @@ physics_demos/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/build
 .PHONY : physics_demos/fast
 
-#=============================================================================
-# Target rules for targets named Catch2
-
-# Build rule for target.
-Catch2: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Catch2
-.PHONY : Catch2
-
-# fast build rule for target.
-Catch2/fast:
-	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2.dir/build
-.PHONY : Catch2/fast
-
-#=============================================================================
-# Target rules for targets named Catch2WithMain
-
-# Build rule for target.
-Catch2WithMain: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Catch2WithMain
-.PHONY : Catch2WithMain
-
-# fast build rule for target.
-Catch2WithMain/fast:
-	$(MAKE) $(MAKESILENT) -f Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/build.make Vendor/Catch2/src/CMakeFiles/Catch2WithMain.dir/build
-.PHONY : Catch2WithMain/fast
-
 src/engine/ai/pathfinding/pathfinding_cache_advanced.o: src/engine/ai/pathfinding/pathfinding_cache_advanced.c.o
 .PHONY : src/engine/ai/pathfinding/pathfinding_cache_advanced.o
 
@@ -21450,8 +21424,6 @@ help:
 	@echo "... compile_shaders"
 	@echo "... validate_assets"
 	@echo "... BlockGameApp"
-	@echo "... Catch2"
-	@echo "... Catch2WithMain"
 	@echo "... Engine"
 	@echo "... Game"
 	@echo "... physics_demos"

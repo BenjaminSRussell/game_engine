@@ -1,3 +1,11 @@
+/*
+ * random.c
+ * Random number generation algorithms
+ *
+ * Part of the Core Algorithms subsystem
+ * Advanced 3D Rendering Engine
+ */
+
 #include <core/algorithms/random.h>
 #include <stdlib.h>
 

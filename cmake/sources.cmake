@@ -16,10 +16,10 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # "src/engine/ai/legacy/npc.c"  # Disabled: legacy directory doesn't exist, modern npc.c in src/engine/ai/ is used instead
     # "src/engine/ai/*.c"  # Disabled: too many errors in npc.c, npc_ai.c, and visual_cortex.c
     
-    # AI pathfinding - advanced caching system
-    "src/engine/ai/pathfinding/pathfinding_complete.c"
-    "src/engine/ai/pathfinding/pathfinding_optimizer.c"
-    "src/engine/ai/pathfinding/pathfinding_cache_advanced.c"
+    # AI pathfinding - advanced caching system (Disabled)
+    # "src/engine/ai/pathfinding/pathfinding_complete.c"
+    # "src/engine/ai/pathfinding/pathfinding_optimizer.c"
+    # "src/engine/ai/pathfinding/pathfinding_cache_advanced.c"
     
     # Animation subdirectory - excluding broken implementations
     # "src/engine/animation/*.c"  # Disabled: struct Pose definition mismatch in blend_tree_impl.c
@@ -61,6 +61,13 @@ file(GLOB_RECURSE ENGINE_SOURCES
     "src/engine/core/profiling/gpu_profiler.c"
     "src/engine/core/hot_reload.c"
     "src/engine/core/data_structures/hashmap.c"
+
+    # Core Initialization Subsystem (New Modular Architecture)
+    "src/engine/core/initialization/private/init_sequence.c"
+    "src/engine/core/initialization/private/subsystem_manager.c"
+    "src/engine/core/initialization/private/error_recovery.c"
+    "src/engine/core/initialization/platform/desktop/desktop_init.c"
+    "src/engine/core/initialization/platform/desktop/window_system.c"
     
     # Engine core systems and globals
     "src/engine/core/engine.c"

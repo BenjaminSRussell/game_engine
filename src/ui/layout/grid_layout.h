@@ -13,7 +13,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "engine/include/math/math.h"
+#include <math/math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -124,11 +124,6 @@ typedef struct {
     float height;
 } GridCell;
 
-// Position type
-typedef struct {
-    float x;
-    float y;
-} Position;
 
 // Grid layout result
 typedef struct {

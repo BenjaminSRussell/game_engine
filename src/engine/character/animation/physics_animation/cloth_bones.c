@@ -8,9 +8,9 @@
 
 #define _POSIX_C_SOURCE 199309L
 #include "character/animation/physics_animation/cloth_bones.h"
+#include "core/logger.h"
 #include "math/vec3.h"
 #include "rendering/render_graph/render_pass_node.h"
-#include "engine/include/core/logger.h"
 #include <core/performance.h>
 #include <core/threading.h>
 #include <pthread.h>

@@ -25,10 +25,8 @@
 #include <unistd.h>
 
 #include "assets/io/export/processor_04.h"
-#include "engine/include/core/logger.h"
-#include "engine/include/core/memory.h"
-#include "include/core/memory.h"
-#include "include/core/types.h"
+#include "core/logger.h"
+#include "core/memory.h"
 
 /* ============================================================================
  * CONSTANTS AND MACROS

@@ -32,7 +32,7 @@
 #ifndef AUDIO_SYSTEM_H
 #define AUDIO_SYSTEM_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/vec3.h>
 #include <stdbool.h>
 #include <stdint.h>
