@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <time.h>
+#include "core/memory/unified_memory_allocator.h"
 
 // Test result structure
 typedef struct {
@@ -269,14 +270,61 @@ static bool run_memory_leak_detection(void) {
     
     clock_t start = clock();
     
-    // Simulate memory leak detection test
-    bool passed = true; // Assume test passes
+    // Initialize memory system
+    if (!unified_memory_init(NULL)) {
+        printf("Failed to initialize memory system\n");
+        add_test_result("Core Systems", "Memory Leak Detection", "TODO-0050",
+                       false, 0.0, "Initialization failed");
+        return false;
+    }
+
+    bool passed = true;
+    const char* error_msg = NULL;
+
+    // 1. Base State Check
+    MemoryStats stats = unified_memory_get_stats();
+    u64 initial_allocations = stats.current_allocations;
+
+    // 2. Allocation & Verification
+    void* ptr = unified_memory_alloc(128, MEMORY_STRATEGY_TRACKED, MEMORY_FLAG_NONE, __FILE__, __LINE__, __func__);
+    stats = unified_memory_get_stats();
+
+    if (stats.current_allocations != initial_allocations + 1) {
+        passed = false;
+        error_msg = "Allocation tracking failed";
+    }
+
+    // 3. Leak Detection (Simulated Leak)
+    if (passed) {
+        printf("Verifying leak detection (expecting 1 leak)...\n");
+        // We verify via stats as check_leaks prints to stdout
+        if (stats.current_allocations == 0) {
+             passed = false;
+             error_msg = "Leak not tracked";
+        } else {
+             unified_memory_check_leaks(); // Verify visual output
+        }
+    }
+
+    // 4. Cleanup & Verification
+    if (ptr) {
+        unified_memory_free(ptr, __FILE__, __LINE__, __func__);
+    }
+
+    stats = unified_memory_get_stats();
+    if (stats.current_allocations != initial_allocations) {
+        passed = false;
+        error_msg = "Deallocation tracking failed";
+    }
+
+    // Cleanup
+    unified_memory_shutdown();
     
     clock_t end = clock();
     double time_ms = ((double)(end - start)) / CLOCKS_PER_SEC * 1000.0;
     
     add_test_result("Core Systems", "Memory Leak Detection", "TODO-0050",
-                   passed, time_ms, passed ? NULL : "Memory leaks detected");
+                   passed, time_ms, passed ? NULL : error_msg);
     
     printf("Memory leak detection: %s (%.2f ms)\n", passed ? "PASSED" : "FAILED", time_ms);
     return passed;
@@ -398,9 +446,9 @@ static bool run_stress_test(void) {
 
 // Generate comprehensive report
 static void generate_comprehensive_report(void) {
-    printf("\n" "=" * 80 "\n");
+    printf("\n================================================================================\n");
     printf("COMPREHENSIVE INTEGRATION VERIFICATION REPORT\n");
-    printf("=" * 80 "\n\n");
+    printf("================================================================================\n\n");
     
     uint32_t total_tests = 0;
     uint32_t total_passed = 0;
@@ -435,9 +483,9 @@ static void generate_comprehensive_report(void) {
     }
     
     // Overall summary
-    printf("=" * 80 "\n");
+    printf("================================================================================\n");
     printf("OVERALL SUMMARY\n");
-    printf("=" * 80 "\n");
+    printf("================================================================================\n");
     printf("Total Tests: %u\n", total_tests);
     printf("Passed: %u (%.1f%%)\n", total_passed, (float)total_passed / total_tests * 100.0f);
     printf("Failed: %u (%.1f%%)\n", total_tests - total_passed, 
@@ -458,7 +506,7 @@ static void generate_comprehensive_report(void) {
         printf("   Some TODO items need attention before production.\n");
     }
     
-    printf("=" * 80 "\n");
+    printf("================================================================================\n");
 }
 
 // Generate CSV report for external tools
@@ -501,9 +549,9 @@ static void cleanup_test_results(void) {
 
 // Main verification runner
 int main(void) {
-    printf("=" * 80 "\n");
+    printf("================================================================================\n");
     printf("MINECRAFT V2 ENGINE - INTEGRATION VERIFICATION RUNNER\n");
-    printf("=" * 80 "\n");
+    printf("================================================================================\n");
     printf("Running comprehensive verification of all TODO items...\n\n");
     
     clock_t total_start = clock();

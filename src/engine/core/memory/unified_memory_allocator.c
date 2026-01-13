@@ -99,9 +99,9 @@ void unified_memory_shutdown(void) {
     pthread_mutex_lock(&g_allocator.stacks_mutex);
     StackAllocator* stack = g_allocator.stacks;
     while (stack) {
-        StackAllocator* next = stack;
-        stack = (StackAllocator*)next; // Simple linked list traversal
-        unified_memory_stack_destroy(next);
+        StackAllocator* next = stack->next;
+        unified_memory_stack_destroy(stack);
+        stack = next;
     }
     pthread_mutex_unlock(&g_allocator.stacks_mutex);
 
@@ -109,9 +109,9 @@ void unified_memory_shutdown(void) {
     pthread_mutex_lock(&g_allocator.arenas_mutex);
     ArenaAllocator* arena = g_allocator.arenas;
     while (arena) {
-        ArenaAllocator* next = arena;
-        arena = (ArenaAllocator*)next; // Simple linked list traversal
-        unified_memory_arena_destroy(next);
+        ArenaAllocator* next = arena->next;
+        unified_memory_arena_destroy(arena);
+        arena = next;
     }
     pthread_mutex_unlock(&g_allocator.arenas_mutex);
 
@@ -359,6 +359,23 @@ MemoryPool* unified_memory_pool_create(const MemoryPoolConfig* config) {
 void unified_memory_pool_destroy(MemoryPool* pool) {
     if (!pool) return;
 
+    // Remove from global list
+    if (g_allocator.initialized) {
+        pthread_mutex_lock(&g_allocator.pools_mutex);
+        if (g_allocator.pools == pool) {
+            g_allocator.pools = pool->next;
+        } else {
+            MemoryPool* current = g_allocator.pools;
+            while (current && current->next != pool) {
+                current = current->next;
+            }
+            if (current) {
+                current->next = pool->next;
+            }
+        }
+        pthread_mutex_unlock(&g_allocator.pools_mutex);
+    }
+
     pthread_mutex_lock(&pool->mutex);
     
     if (pool->buffer) free(pool->buffer);
@@ -461,6 +478,23 @@ StackAllocator* unified_memory_stack_create(size_t size) {
 void unified_memory_stack_destroy(StackAllocator* stack) {
     if (!stack) return;
 
+    // Remove from global list
+    if (g_allocator.initialized) {
+        pthread_mutex_lock(&g_allocator.stacks_mutex);
+        if (g_allocator.stacks == stack) {
+            g_allocator.stacks = stack->next;
+        } else {
+            StackAllocator* current = g_allocator.stacks;
+            while (current && current->next != stack) {
+                current = current->next;
+            }
+            if (current) {
+                current->next = stack->next;
+            }
+        }
+        pthread_mutex_unlock(&g_allocator.stacks_mutex);
+    }
+
     pthread_mutex_lock(&stack->mutex);
     
     if (stack->buffer) free(stack->buffer);
@@ -507,6 +541,174 @@ void unified_memory_stack_reset(StackAllocator* stack) {
     stack->current_offset = 0;
     stack->marker_count = 0;
     pthread_mutex_unlock(&stack->mutex);
+}
+
+// ============================================================================
+// ARENA ALLOCATOR FUNCTIONS
+// ============================================================================
+
+ArenaAllocator* unified_memory_arena_create(size_t initial_block_size) {
+    if (!g_allocator.initialized) return NULL;
+
+    ArenaAllocator* arena = malloc(sizeof(ArenaAllocator));
+    if (!arena) return NULL;
+
+    memset(arena, 0, sizeof(ArenaAllocator));
+
+    // Allocate first block
+    arena->blocks = malloc(sizeof(void*));
+    arena->block_sizes = malloc(sizeof(size_t));
+
+    if (!arena->blocks || !arena->block_sizes) {
+        if (arena->blocks) free(arena->blocks);
+        if (arena->block_sizes) free(arena->block_sizes);
+        free(arena);
+        return NULL;
+    }
+
+    arena->blocks[0] = malloc(initial_block_size);
+    if (!arena->blocks[0]) {
+        free(arena->blocks);
+        free(arena->block_sizes);
+        free(arena);
+        return NULL;
+    }
+
+    arena->block_sizes[0] = initial_block_size;
+    arena->block_count = 1;
+    arena->current_block = 0;
+
+    pthread_mutex_init(&arena->mutex, NULL);
+    arena->initialized = true;
+
+    // Add to global arena list
+    pthread_mutex_lock(&g_allocator.arenas_mutex);
+    arena->next = g_allocator.arenas;
+    g_allocator.arenas = arena;
+    pthread_mutex_unlock(&g_allocator.arenas_mutex);
+
+    return arena;
+}
+
+void unified_memory_arena_destroy(ArenaAllocator* arena) {
+    if (!arena) return;
+
+    // Remove from global list
+    if (g_allocator.initialized) {
+        pthread_mutex_lock(&g_allocator.arenas_mutex);
+        if (g_allocator.arenas == arena) {
+            g_allocator.arenas = arena->next;
+        } else {
+            ArenaAllocator* current = g_allocator.arenas;
+            while (current && current->next != arena) {
+                current = current->next;
+            }
+            if (current) {
+                current->next = arena->next;
+            }
+        }
+        pthread_mutex_unlock(&g_allocator.arenas_mutex);
+    }
+
+    pthread_mutex_lock(&arena->mutex);
+
+    for (u32 i = 0; i < arena->block_count; i++) {
+        free(arena->blocks[i]);
+    }
+    free(arena->blocks);
+    free(arena->block_sizes);
+
+    arena->initialized = false;
+
+    pthread_mutex_unlock(&arena->mutex);
+    pthread_mutex_destroy(&arena->mutex);
+
+    free(arena);
+}
+
+void* unified_memory_arena_alloc(ArenaAllocator* arena, size_t size, MemoryFlags flags) {
+    if (!arena || !arena->initialized) return NULL;
+
+    pthread_mutex_lock(&arena->mutex);
+
+    // Align size
+    size = (size + 15) & ~15; // 16-byte alignment
+
+    // Try current block
+    size_t current_size = arena->block_sizes[arena->current_block];
+    if (arena->current_offset + size <= current_size) {
+        void* ptr = (u8*)arena->blocks[arena->current_block] + arena->current_offset;
+        arena->current_offset += size;
+        arena->total_allocated += size;
+
+        if (flags & MEMORY_FLAG_ZERO) {
+            memset(ptr, 0, size);
+        }
+
+        pthread_mutex_unlock(&arena->mutex);
+        return ptr;
+    }
+
+    // Need new block
+    // Simplistic strategy: allocate new block of size max(current_size * 2, size)
+    size_t new_block_size = current_size * 2;
+    if (new_block_size < size) new_block_size = size;
+
+    void* new_block = malloc(new_block_size);
+    if (!new_block) {
+        pthread_mutex_unlock(&arena->mutex);
+        return NULL;
+    }
+
+    // Expand arrays
+    // Safe realloc: update struct only on success, but handle partial success to avoid dangling pointers
+    void** new_blocks = realloc(arena->blocks, (arena->block_count + 1) * sizeof(void*));
+    if (new_blocks) {
+        arena->blocks = new_blocks;
+    } else {
+        free(new_block);
+        pthread_mutex_unlock(&arena->mutex);
+        return NULL;
+    }
+
+    size_t* new_sizes = realloc(arena->block_sizes, (arena->block_count + 1) * sizeof(size_t));
+    if (new_sizes) {
+        arena->block_sizes = new_sizes;
+    } else {
+        // Blocks expanded but sizes failed. We are consistent (count unchanged) but can't proceed.
+        free(new_block);
+        pthread_mutex_unlock(&arena->mutex);
+        return NULL;
+    }
+
+    arena->blocks[arena->block_count] = new_block;
+    arena->block_sizes[arena->block_count] = new_block_size;
+    arena->current_block = arena->block_count;
+    arena->block_count++;
+
+    void* ptr = new_block;
+    arena->current_offset = size;
+    arena->total_allocated += size;
+
+    if (flags & MEMORY_FLAG_ZERO) {
+        memset(ptr, 0, size);
+    }
+
+    pthread_mutex_unlock(&arena->mutex);
+    return ptr;
+}
+
+void unified_memory_arena_reset(ArenaAllocator* arena) {
+    if (!arena || !arena->initialized) return;
+
+    pthread_mutex_lock(&arena->mutex);
+
+    // Reset to first block
+    arena->current_block = 0;
+    arena->current_offset = 0;
+    arena->total_allocated = 0;
+
+    pthread_mutex_unlock(&arena->mutex);
 }
 
 // ============================================================================
