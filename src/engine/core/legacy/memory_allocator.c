@@ -1,3 +1,10 @@
+/**
+ * @file memory_allocator.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 // src/engine/core/legacy/memory_allocator.c
 //
 // REDIRECTED TO UNIFIED MEMORY ALLOCATOR - CONSOLIDATED SYSTEM
