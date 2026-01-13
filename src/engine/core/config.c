@@ -1,66 +1,77 @@
 // src/config/config.c
 //
 // Module Overview:
-// This module provides the concrete implementation for managing the game's configuration
-// settings. It is responsible for setting default values for all game parameters,
-// loading configurations from an INI-style text file, saving the current settings
-// back to a file, and validating all configuration values to ensure they fall
-// within acceptable and safe ranges. Additionally, it supports checking for external
-// modifications to the configuration file, enabling dynamic reloading of settings.
-//  COMPLETED: Implement config file encryption for sensitive settings -  COMPLETED
-//  COMPLETED: Add config file backup system before modifications -  COMPLETED
-//  COMPLETED: Implement config validation with detailed error reporting -  COMPLETED
-//  COMPLETED: Add config preset system for quick settings changes -  COMPLETED
-//  COMPLETED: Implement config import/export system for sharing settings -  COMPLETED
-//  COMPLETED: Add config migration system for version updates -  COMPLETED
-//  COMPLETED: Implement config hot-reload with change notifications -  COMPLETED
-//  COMPLETED: Add config validation against hardware capabilities -  COMPLETED
-//  COMPLETED: Implement config profile system for multiple users -  COMPLETED
-//  COMPLETED: Add config command-line override system -  COMPLETED
+// This module provides the concrete implementation for managing the game's
+// configuration settings. It is responsible for setting default values for all
+// game parameters, loading configurations from an INI-style text file, saving
+// the current settings back to a file, and validating all configuration values
+// to ensure they fall within acceptable and safe ranges. Additionally, it
+// supports checking for external modifications to the configuration file,
+// enabling dynamic reloading of settings.
+//  COMPLETED: Implement config file encryption for sensitive settings -
+//  COMPLETED COMPLETED: Add config file backup system before modifications -
+//  COMPLETED COMPLETED: Implement config validation with detailed error
+//  reporting -  COMPLETED COMPLETED: Add config preset system for quick
+//  settings changes -  COMPLETED COMPLETED: Implement config import/export
+//  system for sharing settings -  COMPLETED COMPLETED: Add config migration
+//  system for version updates -  COMPLETED COMPLETED: Implement config
+//  hot-reload with change notifications -  COMPLETED COMPLETED: Add config
+//  validation against hardware capabilities -  COMPLETED COMPLETED: Implement
+//  config profile system for multiple users -  COMPLETED COMPLETED: Add config
+//  command-line override system -  COMPLETED
 //
 // Key Flows:
-// 1. **Setting Defaults (`config_set_defaults`):** Initializes a `GameConfig` structure
-//    with a predefined set of values for rendering, graphics, performance, world generation,
-//    audio, and controls. It dynamically determines the number of CPU cores to set
-//    appropriate multithreading defaults.
+// 1. **Setting Defaults (`config_set_defaults`):** Initializes a `GameConfig`
+// structure
+//    with a predefined set of values for rendering, graphics, performance,
+//    world generation, audio, and controls. It dynamically determines the
+//    number of CPU cores to set appropriate multithreading defaults.
 // 2. **Loading Configuration (`config_load`):**
 //    - Attempts to open and read an INI-style configuration file.
 //    - If the file doesn't exist, it proceeds with default settings.
-//    - Parses each line, extracting key-value pairs, and updates the `GameConfig` structure.
+//    - Parses each line, extracting key-value pairs, and updates the
+//    `GameConfig` structure.
 //    - After loading, it calls `config_validate` to ensure data integrity.
-// 3. **Saving Configuration (`config_save`):** Writes the current `GameConfig` values
+// 3. **Saving Configuration (`config_save`):** Writes the current `GameConfig`
+// values
 //    to an INI-style text file, including comments for section separation.
-// 4. **Validation (`config_validate`):** Clamps various configuration values (like
-//    window dimensions, FPS, FOV, render distance, volumes, sensitivities) to predefined
-//    minimum and maximum safe ranges, logging warnings if values are adjusted.
+// 4. **Validation (`config_validate`):** Clamps various configuration values
+// (like
+//    window dimensions, FPS, FOV, render distance, volumes, sensitivities) to
+//    predefined minimum and maximum safe ranges, logging warnings if values are
+//    adjusted.
 // 5. **Checking for Modifications (`config_reload_if_modified`):** Compares the
-//    last recorded modification time of the config file with its current timestamp.
-//    If modified, it reloads the configuration.
-// 6. **Merging Configurations (`config_merge`):** Overwrites a base configuration
+//    last recorded modification time of the config file with its current
+//    timestamp. If modified, it reloads the configuration.
+// 6. **Merging Configurations (`config_merge`):** Overwrites a base
+// configuration
 //    with values from an override configuration, followed by validation.
 //
 // Invariants:
-// - A `GameConfig` structure must be initialized (e.g., with `config_set_defaults`)
+// - A `GameConfig` structure must be initialized (e.g., with
+// `config_set_defaults`)
 //   before loading or saving to ensure all fields have valid values.
 // - Configuration files are expected to follow a simple `key=value` format.
 // - `filename` parameters must be valid paths to configuration files.
-// - `LOG_WARN` is used to report out-of-range configuration values that are clamped.
-// - Platform-specific `sysconf` or `GetSystemInfo` are used for CPU core detection.
+// - `LOG_WARN` is used to report out-of-range configuration values that are
+// clamped.
+// - Platform-specific `sysconf` or `GetSystemInfo` are used for CPU core
+// detection.
 //
 // (Additional comments from the file indicating roadmaps are preserved.)
 // Game configuration defaults and load/store helpers.
 // Roadmap: docs/CONFIG_ROADMAP.md.
-#include <config/config.h>
+#include <core/config.h>
 #include <core/logger.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #ifdef _WIN32
-  #include <sys/stat.h>
-  #include <windows.h>
+#include <sys/stat.h>
+#include <windows.h>
 #else
-  #include <sys/stat.h>
-  #include <unistd.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #endif
 
 void config_set_defaults(GameConfig *config) {
@@ -76,7 +87,8 @@ void config_set_defaults(GameConfig *config) {
   }
 #endif
   u32 worker_count = cpu_count > 2 ? cpu_count - 1 : 1;
-  if (worker_count > 8) worker_count = 8;
+  if (worker_count > 8)
+    worker_count = 8;
 
   // Rendering defaults
   config->window_width = 1280;
@@ -203,24 +215,18 @@ void config_validate(GameConfig *config) {
     config->gravity = -config->gravity;
   }
   config->gravity = clamp_f32(config->gravity, -50.0f, -1.0f, "gravity");
-  config->ground_check_distance =
-      clamp_f32(config->ground_check_distance, 0.05f, 1.0f,
-                "ground_check_distance");
-  config->reach_distance_survival =
-      clamp_f32(config->reach_distance_survival, 3.0f, 6.0f,
-                "reach_distance_survival");
-  config->reach_distance_creative =
-      clamp_f32(config->reach_distance_creative, 5.0f, 12.0f,
-                "reach_distance_creative");
+  config->ground_check_distance = clamp_f32(
+      config->ground_check_distance, 0.05f, 1.0f, "ground_check_distance");
+  config->reach_distance_survival = clamp_f32(
+      config->reach_distance_survival, 3.0f, 6.0f, "reach_distance_survival");
+  config->reach_distance_creative = clamp_f32(
+      config->reach_distance_creative, 5.0f, 12.0f, "reach_distance_creative");
   config->controller_deadzone =
-      clamp_f32(config->controller_deadzone, 0.0f, 0.5f,
-                "controller_deadzone");
-  config->controller_sensitivity =
-      clamp_f32(config->controller_sensitivity, 0.1f, 5.0f,
-                "controller_sensitivity");
-  config->controller_vibration =
-      clamp_f32(config->controller_vibration, 0.0f, 1.0f,
-                "controller_vibration");
+      clamp_f32(config->controller_deadzone, 0.0f, 0.5f, "controller_deadzone");
+  config->controller_sensitivity = clamp_f32(
+      config->controller_sensitivity, 0.1f, 5.0f, "controller_sensitivity");
+  config->controller_vibration = clamp_f32(config->controller_vibration, 0.0f,
+                                           1.0f, "controller_vibration");
 }
 
 void config_load(GameConfig *config, const char *filename) {
@@ -362,8 +368,7 @@ void config_save(const GameConfig *config, const char *filename) {
           config->generate_structures ? "true" : "false");
   fprintf(file, "generate_caves=%s\n",
           config->generate_caves ? "true" : "false");
-  fprintf(file, "generate_ores=%s\n",
-          config->generate_ores ? "true" : "false");
+  fprintf(file, "generate_ores=%s\n", config->generate_ores ? "true" : "false");
 
   fprintf(file, "\n# Audio\n");
   fprintf(file, "master_volume=%.2f\n", config->master_volume);
@@ -384,8 +389,7 @@ void config_save(const GameConfig *config, const char *filename) {
   fprintf(file, "fly_speed=%.1f\n", config->fly_speed);
   fprintf(file, "air_control=%.2f\n", config->air_control);
   fprintf(file, "gravity=%.2f\n", config->gravity);
-  fprintf(file, "ground_check_distance=%.2f\n",
-          config->ground_check_distance);
+  fprintf(file, "ground_check_distance=%.2f\n", config->ground_check_distance);
   fprintf(file, "reach_distance_survival=%.2f\n",
           config->reach_distance_survival);
   fprintf(file, "reach_distance_creative=%.2f\n",

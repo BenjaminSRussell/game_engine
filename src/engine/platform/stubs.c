@@ -8,6 +8,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Type definitions
+typedef struct PhysicsWorld PhysicsWorld;
+typedef struct Collider Collider;
+typedef struct CombatSystem CombatSystem;
+typedef struct NPCSystem NPCSystem;
+typedef struct World World;
+typedef struct Entity {
+  unsigned int id;
+} Entity;
+typedef struct BlockState {
+  int id;
+} BlockState;
+typedef struct ChunkManager ChunkManager;
+
 #include <core/config.h>
 
 // Global game configuration
