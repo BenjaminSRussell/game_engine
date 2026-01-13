@@ -47,6 +47,16 @@ void ray_tracing_trace(VkCommandBuffer command_buffer);
 // Check if ray tracing is available on current hardware
 bool ray_tracing_is_available(void);
 
+// Extended instance management API
+uint32_t ray_tracing_add_instance(const vec3* position, const vec3* scale, const quat* rotation,
+                                 uint32_t mesh_id, uint32_t material_id);
+void ray_tracing_remove_instance(uint32_t instance_id);
+void ray_tracing_set_instance_material(uint32_t instance_id, float roughness, float metallic, float emissive);
+
+// Statistics and debugging
+void ray_tracing_get_stats(uint64_t* total_rays, float* avg_time, uint32_t* rays_per_frame, float* frame_time);
+void ray_tracing_debug_print(void);
+
 #ifdef __cplusplus
 }
 #endif

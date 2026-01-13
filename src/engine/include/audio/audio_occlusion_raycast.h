@@ -8,7 +8,6 @@ extern "C" {
 struct AudioSystem;
 typedef struct AudioSystem AudioSystem;
 struct BlockPhysicsSystem;
-typedef struct BlockPhysicsSystem BlockPhysicsSystem;
 
 #include <audio/audio_engine_types.h>
 #include <physics/block_physics.h>

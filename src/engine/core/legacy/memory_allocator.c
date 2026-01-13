@@ -36,8 +36,7 @@ void memory_deallocate(void* ptr) {
 
 // Get memory statistics - redirects to unified system
 void memory_allocator_get_stats(size_t* total_allocated, size_t* peak_allocated, u64* allocation_count) {
-    MemoryStats stats;
-    unified_memory_get_stats(&stats);
+    MemoryStats stats = unified_memory_get_stats();
     
     if (total_allocated) *total_allocated = stats.total_allocated;
     if (peak_allocated) *peak_allocated = stats.peak_allocated;
@@ -51,8 +50,7 @@ void memory_allocator_check_leaks(void) {
 
 // Set memory limit - redirects to unified system
 void memory_allocator_set_limit(size_t limit) {
-    MemoryPolicy policy = {0};
-    unified_memory_get_policy(&policy);
+    MemoryPolicy policy = unified_memory_get_policy();
     policy.global_limit = limit;
     unified_memory_set_policy(&policy);
 }

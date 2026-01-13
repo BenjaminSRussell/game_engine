@@ -1,0 +1,78 @@
+#version 450 core
+
+// Bloom Upsample Compute Shader
+// High-quality upsampling with tent filter and additive blending
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D uInputTexture;
+layout(binding = 1, rgba16f) uniform image2D uOutputImage;
+
+layout(std140, binding = 2) uniform BloomUpsampleUniforms {
+    vec2 uTexelSize;
+    uint uSourceMip;
+    uint uTargetMip;
+    float uFilterRadius;
+    float uIntensity;
+};
+
+// 9-tap tent filter for upsampling
+vec3 tentFilter9(sampler2D tex, vec2 uv, vec2 texelSize) {
+    vec3 result = vec3(0.0);
+    
+    // Sample pattern for 9-tap tent filter
+    // Weights: [1, 2, 1] in both X and Y
+    float weights[3] = float[3](1.0, 2.0, 1.0);
+    float totalWeight = 4.0; // Sum of weights
+    
+    for (int y = -1; y <= 1; y++) {
+        for (int x = -1; x <= 1; x++) {
+            vec2 offset = vec2(x, y) * texelSize * uFilterRadius;
+            vec2 sampleUV = uv + offset;
+            
+            // Calculate weight
+            float weight = weights[abs(x)] * weights[abs(y)];
+            
+            // Sample and accumulate
+            result += texture(tex, sampleUV).rgb * weight;
+        }
+    }
+    
+    return result / totalWeight;
+}
+
+// Bilinear filter for faster upsampling
+vec3 bilinearFilter(sampler2D tex, vec2 uv) {
+    return texture(tex, uv).rgb;
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    vec2 uv = (vec2(coord) + 0.5) / imageSize(uOutputImage).xy;
+    
+    // Upsample from source mip
+    vec3 upsampledColor;
+    
+    if (uFilterRadius > 0.5) {
+        // Use tent filter for higher quality
+        vec2 sourceTexelSize = uTexelSize * exp2(uSourceMip);
+        upsampledColor = tentFilter9(uInputTexture, uv, sourceTexelSize);
+    } else {
+        // Use bilinear filter for performance
+        upsampledColor = bilinearFilter(uInputTexture, uv);
+    }
+    
+    // Apply intensity
+    upsampledColor *= uIntensity;
+    
+    // Additive blending with existing content
+    // For mip 0, we're writing to the final output, so just store
+    // For other mips, we need to add to existing content
+    if (uTargetMip > 0) {
+        vec3 existingColor = imageLoad(uOutputImage, coord).rgb;
+        upsampledColor += existingColor;
+    }
+    
+    // Output upsampled result
+    imageStore(uOutputImage, coord, vec4(upsampledColor, 1.0));
+}

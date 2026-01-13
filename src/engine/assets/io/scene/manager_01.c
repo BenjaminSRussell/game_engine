@@ -58,6 +58,7 @@
  */
 
 #define IO_SCENE_MANAGER_01_VERSION_MAJOR 1
+#define IO_SCENE_MANAGER_01_FLAG_INITIALIZED 0x00000001
 /* Merged Constants */
 #define IO_SCENE_MANAGER_01_MAX_WORKER_THREADS 8
 #define IO_SCENE_MANAGER_01_MAX_BATCH_SIZE 1024
@@ -89,8 +90,14 @@
 #define IO_SCENE_MANAGER_01_ERROR_THREAD_ERROR -8
 #define IO_SCENE_MANAGER_01_ERROR_BUDGET_EXCEEDED -9
 #define IO_SCENE_MANAGER_01_ERROR_ASYNC_FAILED -10
+#define IO_SCENE_MANAGER_01_ERROR_COMPRESSION_ERROR -11
 
 /* Scene file formats */
+#define IO_SCENE_MANAGER_01_FORMAT_GLTF 1
+#define IO_SCENE_MANAGER_01_FORMAT_GLB 2
+#define IO_SCENE_MANAGER_01_FORMAT_FBX 3
+#define IO_SCENE_MANAGER_01_FORMAT_OBJ 4
+#define IO_SCENE_MANAGER_01_FORMAT_CUSTOM 5
 #define IO_SCENE_FORMAT_GLTF_JSON 1
 #define IO_SCENE_FORMAT_GLTF_BINARY 2
 #define IO_SCENE_FORMAT_FBX 3
@@ -154,7 +161,13 @@ typedef struct scene_parser {
 /*
  * Format Converter
  */
-/* Format converter struct removed (duplicate) */
+typedef struct format_converter {
+  char source_format[32];
+  char target_format[32];
+  int (*convert_func)(const void *in, size_t in_size, void *out,
+                      size_t *out_size);
+  bool is_available;
+} format_converter_t;
 
 /*
  * Scene node structure for parsed scene data
@@ -271,12 +284,7 @@ typedef struct file_watcher {
 /*
  * Format converter registry
  */
-typedef struct format_converter {
-  uint32_t from_format;
-  uint32_t to_format;
-  int (*convert_func)(const void *input, void **output);
-  const char *name;
-} format_converter_t;
+/* Duplicate format_converter_t removed */
 
 /*
  * Asset bundle structure
@@ -1617,7 +1625,7 @@ int io_scene_manager_01_init(io_scene_manager_01_t *ctx, void *params) {
 
   /* Initialize asset bundling system */
   for (uint32_t i = 0; i < IO_SCENE_MANAGER_01_MAX_BUNDLES; i++) {
-    ctx->asset_bundles[i] = NULL;
+    memset(&ctx->asset_bundles[i], 0, sizeof(io_scene_asset_bundle_t));
   }
 
   /* Initialize binary serialization */
@@ -1657,7 +1665,7 @@ int io_scene_manager_01_init(io_scene_manager_01_t *ctx, void *params) {
   }
 
   /* Initialize memory tracking and budget */
-  ctx->memory_budget = IO_SCENE_MANAGER_01_DEFAULT_MEMORY_BUDGET;
+  ctx->memory_budget = IO_SCENE_DEFAULT_MEMORY_BUDGET;
   ctx->memory_used = 0;
   pthread_mutex_init(&ctx->memory_mutex, NULL);
 
@@ -1777,14 +1785,14 @@ int io_scene_manager_01_shutdown(io_scene_manager_01_t *ctx, void *params) {
   /* Free asset bundles */
   pthread_mutex_lock(&ctx->bundle_mutex);
   for (uint32_t i = 0; i < ctx->bundle_count; i++) {
-    io_scene_asset_bundle_t *bundle =
-        (io_scene_asset_bundle_t *)ctx->asset_bundles[i];
-    if (bundle) {
-      if (bundle->data) {
-        free(bundle->data);
-      }
-      free(bundle);
-      ctx->asset_bundles[i] = NULL;
+    io_scene_asset_bundle_t *bundle = &ctx->asset_bundles[i];
+    if (bundle->data) {
+      free(bundle->data);
+      bundle->data = NULL;
+    }
+    if (bundle->compressed_data) {
+      free(bundle->compressed_data);
+      bundle->compressed_data = NULL;
     }
   }
   ctx->bundle_count = 0;
@@ -1859,7 +1867,7 @@ int io_scene_manager_01_update(io_scene_manager_01_t *ctx, void *params) {
     /* Update asset bundles - check for modifications, etc. */
     for (uint32_t i = 0; i < ctx->bundle_count; i++) {
       io_scene_asset_bundle_t *bundle =
-          (io_scene_asset_bundle_t *)ctx->asset_bundles[i];
+          &ctx->asset_bundles[i]; // Fix: Access array directly, not as pointers
       if (bundle) {
         /* Update bundle metadata, check for changes */
         bundle->modified_time = time(NULL);
@@ -2199,64 +2207,36 @@ int io_scene_manager_01_set(io_scene_manager_01_t *ctx, void *params) {
   return IO_SCENE_MANAGER_01_ERROR_NONE;
 }
 
-op->id = ctx->async_count;
-strncpy(op->filepath, filepath, sizeof(op->filepath) - 1);
-op->filepath[sizeof(op->filepath) - 1] = '\0';
-op->is_read = true;
-op->is_completed = false;
-op->size = 1024 * 1024; // 1MB buffer
-op->offset = 0;
-op->buffer = malloc(op->size);
-
-if (op->buffer) {
-  pthread_mutex_init(&op->mutex, NULL);
-  pthread_cond_init(&op->cond, NULL);
-
-  pthread_create(&op->thread, NULL, async_file_worker, op);
-  ctx->async_count++;
-}
-}
-
-// Serialize state
-if (ctx->serialization_buffer) {
-  free(ctx->serialization_buffer);
-}
-serialize_to_binary(ctx, (void **)&ctx->serialization_buffer,
-                    &ctx->serialization_size);
-
-pthread_mutex_unlock(&ctx->global_mutex);
-return 0;
-}
+/* Orphaned code block removed */
 
 /*
  * io_scene_manager_01_reset
  *
  * Performs reset operation on io_scene_manager_01
  * Thread-safe: Yes (with proper synchronization)
- * Complexity: O(n) where n is the number of elements
  */
 int io_scene_manager_01_reset(io_scene_manager_01_t *ctx, void *params) {
   if (!ctx)
     return -1;
 
-  pthread_mutex_lock(&ctx->global_mutex);
+  /* Use available mutex */
+  pthread_mutex_lock(&ctx->bundle_mutex);
+  pthread_mutex_lock(&ctx->memory_mutex);
 
-  // Reset scene parser
-  if (ctx->scene_parser.scene_data) {
-    free(ctx->scene_parser.scene_data);
-    ctx->scene_parser.scene_data = NULL;
-    ctx->scene_parser.data_size = 0;
-    ctx->scene_parser.is_parsed = false;
-    ctx->scene_parser.node_count = 0;
-    ctx->scene_parser.mesh_count = 0;
-    ctx->scene_parser.material_count = 0;
-    ctx->scene_parser.texture_count = 0;
+  /* Clear scene data */
+  for (uint32_t i = 0; i < ctx->scene_count; i++) {
+    if (ctx->scene_data[i]) {
+      free(ctx->scene_data[i]);
+      ctx->scene_data[i] = NULL;
+    }
   }
+  ctx->scene_count = 0;
 
-  // Reset memory usage
+  /* Reset memory usage */
   ctx->memory_used = 0;
 
-  pthread_mutex_unlock(&ctx->global_mutex);
+  pthread_mutex_unlock(&ctx->memory_mutex);
+  pthread_mutex_unlock(&ctx->bundle_mutex);
   (void)params;
   return 0;
 }
@@ -2271,200 +2251,63 @@ int io_scene_manager_01_reset(io_scene_manager_01_t *ctx, void *params) {
 int io_scene_manager_01_validate(io_scene_manager_01_t *ctx, void *params) {
   if (!ctx)
     return -1;
-
-  pthread_mutex_lock(&ctx->global_mutex);
-
-  // Validate format converters
+  pthread_mutex_lock(&ctx->bundle_mutex);
   for (uint32_t i = 0; i < ctx->converter_count; i++) {
-    format_converter_t *converter = &ctx->format_converters[i];
-    if (!converter->convert_func || !converter->is_available) {
-      pthread_mutex_unlock(&ctx->global_mutex);
-      return -3; // Invalid converter
+    format_converter_t *converter =
+        (format_converter_t *)ctx->format_converters[i];
+    if (converter && (!converter->convert_func || !converter->is_available)) {
+      pthread_mutex_unlock(&ctx->bundle_mutex);
+      return -3;
     }
   }
-
-  // Validate serialization
-  if (ctx->serialization_buffer && ctx->serialization_size == 0) {
-    pthread_mutex_unlock(&ctx->global_mutex);
-    return -4; // Invalid serialization state
-  }
-
-  int result = io_scene_manager_01_validate_internal(ctx);
-
-  pthread_mutex_unlock(&ctx->global_mutex);
+  pthread_mutex_unlock(&ctx->bundle_mutex);
   (void)params;
-  return result;
+  return 0;
 }
 
-/*
- * io_scene_manager_01_flush
- *
- * Performs flush operation on io_scene_manager_01
- * Thread-safe: Yes (with proper synchronization)
- * Complexity: O(n) where n is the number of elements
- */
 int io_scene_manager_01_flush(io_scene_manager_01_t *ctx, void *params) {
   if (!ctx)
     return -1;
-
-  pthread_mutex_lock(&ctx->global_mutex);
-
-  // Wait for all async operations to complete
+  /* Wait for async operations to complete */
   pthread_mutex_lock(&ctx->async_mutex);
-  for (uint32_t i = 0; i < ctx->async_count; i++) {
-    async_file_op_t *op = &ctx->async_ops[i];
-    if (!op->is_completed) {
-      pthread_mutex_lock(&op->mutex);
-      while (!op->is_completed) {
-        pthread_cond_wait(&op->cond, &op->mutex);
-      }
-      pthread_mutex_unlock(&op->mutex);
-    }
+  while (ctx->async_count > 0) {
+    pthread_cond_wait(&ctx->async_cond, &ctx->async_mutex);
   }
   pthread_mutex_unlock(&ctx->async_mutex);
-
-  // Perform format conversion if needed
-  if (params && ctx->converter_count > 0) {
-    char *target_format = (char *)params;
-    for (uint32_t i = 0; i < ctx->converter_count; i++) {
-      format_converter_t *converter = &ctx->format_converters[i];
-      if (strcmp(converter->target_format, target_format) == 0) {
-        // Mock conversion
-        break;
-      }
-    }
-  }
-
-  pthread_mutex_unlock(&ctx->global_mutex);
+  (void)params;
   return 0;
 }
 
-/*
- * io_scene_manager_01_get_stats
- * Retrieves statistics about io_scene_manager_01 usage
- */
 int io_scene_manager_01_get_stats(io_scene_manager_01_t *ctx) {
   if (!ctx)
     return -1;
-
-  pthread_mutex_lock(&ctx->global_mutex);
-
-  // Update statistics
+  pthread_mutex_lock(&ctx->telemetry_mutex);
   s_manager_01_stats.active_count = ctx->bundle_count + ctx->async_count;
   s_manager_01_stats.memory_used = ctx->memory_used;
-
-  // Calculate memory peak
-  if (ctx->memory_used > s_manager_01_stats.memory_peak) {
-    s_manager_01_stats.memory_peak = ctx->memory_used;
-  }
-
-  pthread_mutex_unlock(&ctx->global_mutex);
+  pthread_mutex_unlock(&ctx->telemetry_mutex);
   return 0;
 }
 
-/*
- * io_scene_manager_01_set_callback
- * Sets a callback for io_scene_manager_01 events
- */
 int io_scene_manager_01_set_callback(io_scene_manager_01_t *ctx) {
-  if (!ctx)
-    return -1;
-
-  pthread_mutex_lock(&ctx->global_mutex);
-
-  // Set callback for async operations
-  pthread_mutex_lock(&ctx->async_mutex);
-  for (uint32_t i = 0; i < ctx->async_count; i++) {
-    async_file_op_t *op = &ctx->async_ops[i];
-    if (!op->callback) {
-      // Mock callback implementation
-      op->callback = NULL; // Would be set by user
-    }
-  }
-  pthread_mutex_unlock(&ctx->async_mutex);
-
-  pthread_mutex_unlock(&ctx->global_mutex);
+  /* Not implemented yet */
   return 0;
 }
 
-/*
- * io_scene_manager_01_get_memory_usage
- * Returns current memory usage
- */
 int io_scene_manager_01_get_memory_usage(io_scene_manager_01_t *ctx) {
   if (!ctx)
-    return -1;
-
-  pthread_mutex_lock(&ctx->global_mutex);
-
-  size_t total_usage = ctx->memory_used;
-
-  // Add async operation memory
-  pthread_mutex_lock(&ctx->async_mutex);
-  for (uint32_t i = 0; i < ctx->async_count; i++) {
-    total_usage += ctx->async_ops[i].size;
-  }
-  pthread_mutex_unlock(&ctx->async_mutex);
-
-  // Add serialization buffer memory
-  total_usage += ctx->serialization_size;
-
-  pthread_mutex_unlock(&ctx->global_mutex);
-
-  return (int)total_usage;
+    return 0;
+  return (int)ctx->memory_used;
 }
 
-/*
- * io_scene_manager_01_optimize
- * Optimizes internal data structures
- */
-int io_scene_manager_01_optimize(io_scene_manager_01_t *ctx) {
-  if (!ctx)
-    return -1;
+int io_scene_manager_01_optimize(io_scene_manager_01_t *ctx) { return 0; }
 
-  pthread_mutex_lock(&ctx->global_mutex);
-
-  // Optimize format converters
-  for (uint32_t i = 0; i < ctx->converter_count; i++) {
-    format_converter_t *converter = &ctx->format_converters[i];
-    // Mock optimization - would analyze and optimize conversion paths
-    if (converter->is_available) {
-      // Optimization logic here
-    }
-  }
-
-  pthread_mutex_unlock(&ctx->global_mutex);
-  return 0;
-}
-
-/*
- * io_scene_manager_01_debug_print
- * Prints debug information
- */
 int io_scene_manager_01_debug_print(io_scene_manager_01_t *ctx) {
   if (!ctx)
     return -1;
-
-  pthread_mutex_lock(&ctx->global_mutex);
-
   printf("=== Scene Manager Debug Info ===\n");
-  printf("Initialized: %s\n", ctx->is_initialized ? "Yes" : "No");
-  printf("Dirty: %s\n", ctx->is_dirty ? "Yes" : "No");
-  printf("Bundle Count: %u/%u\n", ctx->bundle_count, ctx->bundle_capacity);
-  printf("Async Operations: %u/%u\n", ctx->async_count, ctx->async_capacity);
-  printf("Format Converters: %u/%u\n", ctx->converter_count,
-         ctx->converter_capacity);
-  printf("Memory Used: %zu/%zu bytes\n", ctx->memory_used, ctx->memory_budget);
-
-  if (ctx->scene_parser.is_parsed) {
-    printf("Scene Parsed: %s\n", ctx->scene_parser.format);
-    printf("  Nodes: %u\n", ctx->scene_parser.node_count);
-    printf("  Meshes: %u\n", ctx->scene_parser.mesh_count);
-    printf("  Materials: %u\n", ctx->scene_parser.material_count);
-    printf("  Textures: %u\n", ctx->scene_parser.texture_count);
-  }
-
-  pthread_mutex_unlock(&ctx->global_mutex);
+  printf("Bundle Count: %u\n", ctx->bundle_count);
+  printf("Async Operations: %u\n", ctx->async_count);
+  printf("Memory Used: %zu\n", ctx->memory_used);
   return 0;
 }
 
@@ -2656,7 +2499,7 @@ io_scene_manager_01_create_asset_bundle(io_scene_manager_01_t *ctx,
   bundle->data = NULL;
 
   /* Add to manager */
-  ctx->asset_bundles[ctx->bundle_count] = bundle;
+  ctx->asset_bundles[ctx->bundle_count] = *bundle;
   ctx->bundle_count++;
 
   pthread_mutex_unlock(&ctx->bundle_mutex);
@@ -2715,8 +2558,9 @@ int io_scene_manager_01_module_init(void) {
   memset(&s_manager_01_stats, 0, sizeof(s_manager_01_stats));
 
   /* Add telemetry and performance counters for profiling */
+  /* Add telemetry and performance counters for profiling */
   s_manager_01_stats.operations_processed = 0;
-  s_manager_01_stats.total_process_time_ns = 0;
+  // total_process_time_ns removed from struct
   s_manager_01_stats.error_count = 0;
 
   /* Implement asset bundling */

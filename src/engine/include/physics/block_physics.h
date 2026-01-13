@@ -49,11 +49,11 @@
 #ifndef BLOCK_PHYSICS_H
 #define BLOCK_PHYSICS_H
 
-#include "block/block.h"
-#include "chunk/chunk.h"
+#include <../../game/blockgame/include/block/block.h>
+#include <../../game/blockgame/include/chunk/chunk.h>
 #include "common.h"
 #include "math/vec3.h"
-#include "../physics/physics_engine_core.h"
+#include "../physics/core/physics_types.h"
 
 typedef struct {
   Vec3 position;

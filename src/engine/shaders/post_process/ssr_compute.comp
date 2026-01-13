@@ -1,0 +1,154 @@
+#version 450 core
+
+// Screen Space Reflections Compute Shader
+// High-performance SSR with hierarchical Z-buffer and temporal filtering
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D uSceneColorTexture;
+layout(binding = 1) uniform sampler2D uNormalRoughnessTexture;
+layout(binding = 2) uniform sampler2D uDepthTexture;
+layout(binding = 3, rgba16f) uniform image2D uOutputImage;
+
+layout(std140, binding = 4) uniform SSRUniforms {
+    float uMaxDistance;
+    float uMaxSteps;
+    float uThickness;
+    float uEdgeFade;
+    vec2 uTexelSize;
+    uint uFrameIndex;
+    uint uEnableTemporal;
+    float uPadding;
+};
+
+layout(std140, binding = 5) uniform CameraUniforms {
+    mat4 uInverseViewProjection;
+    mat4 uViewProjection;
+    vec4 uCameraPosition;
+};
+
+// Reconstruct world position from depth
+vec3 reconstructWorldPosition(vec2 uv, float depth) {
+    vec4 clipPos = vec4(uv * 2.0 - 1.0, depth, 1.0);
+    vec4 worldPos = uInverseViewProjection * clipPos;
+    return worldPos.xyz / worldPos.w;
+}
+
+// Hierarchical Z-Buffer ray marching
+bool rayMarchHZB(vec3 rayOrigin, vec3 rayDir, float maxDistance, out vec3 hitPos) {
+    float stepSize = 0.01; // Initial step size
+    vec3 currentPos = rayOrigin;
+    
+    for (float i = 0.0; i < uMaxSteps; i++) {
+        currentPos += rayDir * stepSize;
+        
+        // Check if we've gone too far
+        if (distance(rayOrigin, currentPos) > maxDistance) {
+            return false;
+        }
+        
+        // Project to screen space
+        vec4 clipPos = uViewProjection * vec4(currentPos, 1.0);
+        clipPos /= clipPos.w;
+        
+        // Check if out of bounds
+        if (clipPos.x < -1.0 || clipPos.x > 1.0 || clipPos.y < -1.0 || clipPos.y > 1.0) {
+            return false;
+        }
+        
+        vec2 screenUV = clipPos.xy * 0.5 + 0.5;
+        float sceneDepth = texture(uDepthTexture, screenUV).r;
+        
+        // Reconstruct world position at this pixel
+        vec3 sceneWorldPos = reconstructWorldPosition(screenUV, sceneDepth);
+        
+        // Check for intersection
+        float distanceToSurface = distance(currentPos, sceneWorldPos);
+        if (distanceToSurface < uThickness) {
+            hitPos = sceneWorldPos;
+            return true;
+        }
+        
+        // Adaptive step size based on distance
+        stepSize = max(stepSize * 1.1, distanceToSurface * 0.5);
+    }
+    
+    return false;
+}
+
+// Calculate edge fade
+float calculateEdgeFade(vec2 uv) {
+    vec2 edgeDistance = min(uv, 1.0 - uv);
+    float minDistance = min(edgeDistance.x, edgeDistance.y);
+    return smoothstep(0.0, uEdgeFade, minDistance);
+}
+
+// Calculate fresnel reflectance
+float calculateFresnel(vec3 viewDir, vec3 normal, float f0) {
+    float cosTheta = dot(viewDir, normal);
+    return f0 + (1.0 - f0) * pow(1.0 - cosTheta, 5.0);
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    vec2 uv = (vec2(coord) + 0.5) * uTexelSize;
+    
+    // Get surface data
+    vec4 normalRoughness = texture(uNormalRoughnessTexture, uv);
+    vec3 normal = normalize(normalRoughness.rgb * 2.0 - 1.0);
+    float roughness = normalRoughness.a;
+    
+    float depth = texture(uDepthTexture, uv).r;
+    
+    // Skip sky/background
+    if (depth >= 1.0) {
+        imageStore(uOutputImage, coord, vec4(0.0));
+        return;
+    }
+    
+    // Reconstruct world position
+    vec3 worldPos = reconstructWorldPosition(uv, depth);
+    vec3 viewDir = normalize(uCameraPosition.xyz - worldPos);
+    
+    // Calculate reflection direction
+    vec3 reflectDir = reflect(-viewDir, normal);
+    
+    // Skip if surface is too rough or facing away
+    if (roughness > 0.8 || dot(reflectDir, normal) < 0.0) {
+        imageStore(uOutputImage, coord, vec4(0.0));
+        return;
+    }
+    
+    // Ray march to find intersection
+    vec3 hitPos;
+    bool hit = rayMarchHZB(worldPos, reflectDir, uMaxDistance, hitPos);
+    
+    vec4 reflectionColor = vec4(0.0);
+    
+    if (hit) {
+        // Project hit position to screen space
+        vec4 hitClip = uViewProjection * vec4(hitPos, 1.0);
+        hitClip /= hitClip.w;
+        vec2 hitUV = hitClip.xy * 0.5 + 0.5;
+        
+        // Check if hit UV is valid
+        if (hitUV.x >= 0.0 && hitUV.x <= 1.0 && hitUV.y >= 0.0 && hitUV.y <= 1.0) {
+            // Sample scene color at hit point
+            reflectionColor = texture(uSceneColorTexture, hitUV);
+            
+            // Apply edge fade
+            float edgeFade = calculateEdgeFade(hitUV);
+            reflectionColor *= edgeFade;
+            
+            // Apply fresnel
+            float fresnel = calculateFresnel(viewDir, normal, 0.04); // Default F0 for dielectrics
+            reflectionColor *= fresnel;
+            
+            // Apply roughness fade
+            reflectionColor *= (1.0 - roughness);
+        }
+    }
+    
+    // Output reflection
+    imageStore(uOutputImage, coord, reflectionColor);
+}

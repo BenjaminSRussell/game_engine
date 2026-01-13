@@ -41,7 +41,17 @@
       "Bash(__NEW_LINE_ff0920d82c7a9478__ echo \"=== FINAL ORGANIZATION STATUS ===\")",
       "Bash(do grep -l \"stub\\\\|STUB\\\\|Not implemented\\\\|unimplemented\" \"$f\")",
       "Bash(done)",
-      "Bash(cd /Users/benjaminrussell/Desktop/Minecraft\\\\ v2 && git fsck:*)"
+      "Bash(cd /Users/benjaminrussell/Desktop/Minecraft\\\\ v2 && git fsck:*)",
+      "Bash(for file in miniaudio.h cgltf.h stb_image.h vk_mem_alloc.h)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash( for file in src/core/monolithic_main.c src/core/gamestate_main.c src/core/localization.c)",
+      "Bash(do  if [ -f \"$file\" ])",
+      "Bash( if [ -f \"$engine_version\" ])",
+      "Bash(then  if diff -q \"$file\" \"$engine_version\")",
+      "Bash(then  echo \"✓ $file is IDENTICAL to $engine_version\")",
+      "Bash( else  echo \"✗ $file DIFFERS from $engine_version\")",
+      "Bash( fi)",
+      "Bash( echo \"Total directories:\" ls -d src/assets/*/ src/engine/assets/*/)"
     ],
     "additionalDirectories": [
       "/Users/benjaminrussell/Desktop/Minecraft\\ v2"

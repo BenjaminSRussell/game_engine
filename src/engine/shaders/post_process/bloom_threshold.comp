@@ -1,0 +1,79 @@
+#version 450 core
+
+// Bloom Threshold Extraction Compute Shader
+// Extracts bright pixels above threshold for bloom processing
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D uInputTexture;
+layout(binding = 1, rgba16f) uniform image2D uOutputImage;
+
+layout(std140, binding = 2) uniform BloomThresholdUniforms {
+    float uThreshold;
+    float uSoftKnee;
+    float uIntensity;
+    float uColorShiftR;
+    float uColorShiftG;
+    float uColorShiftB;
+    uint uEnableColorShift;
+    float uPadding;
+};
+
+// Calculate luminance using standard formula
+float calculateLuminance(vec3 color) {
+    return dot(color, vec3(0.2126, 0.7152, 0.0722));
+}
+
+// Soft knee threshold function
+float softKneeThreshold(float value, float threshold, float softKnee) {
+    float knee = threshold * softKnee;
+    if (value < threshold - knee) {
+        return 0.0;
+    } else if (value > threshold + knee) {
+        return value - threshold;
+    } else {
+        // Smooth transition
+        float x = (value - (threshold - knee)) / (2.0 * knee);
+        return knee * smoothstep(0.0, 1.0, x);
+    }
+}
+
+// Apply color shift to bloom
+vec3 applyColorShift(vec3 color) {
+    if (uEnableColorShift == 0) return color;
+    
+    // Apply subtle color shift for artistic effect
+    mat3 colorShift = mat3(
+        1.0 + uColorShiftR, 0.0, 0.0,
+        0.0, 1.0 + uColorShiftG, 0.0,
+        0.0, 0.0, 1.0 + uColorShiftB
+    );
+    
+    return colorShift * color;
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    vec2 uv = (vec2(coord) + 0.5) / imageSize(uOutputImage).xy;
+    
+    // Sample input color
+    vec3 inputColor = texture(uInputTexture, uv).rgb;
+    
+    // Calculate luminance
+    float luminance = calculateLuminance(inputColor);
+    
+    // Apply threshold
+    float brightAmount = softKneeThreshold(luminance, uThreshold, uSoftKnee);
+    
+    // Scale by intensity
+    brightAmount *= uIntensity;
+    
+    // Apply threshold to color
+    vec3 bloomColor = inputColor * brightAmount;
+    
+    // Apply color shift
+    bloomColor = applyColorShift(bloomColor);
+    
+    // Output result
+    imageStore(uOutputImage, coord, vec4(bloomColor, 1.0));
+}

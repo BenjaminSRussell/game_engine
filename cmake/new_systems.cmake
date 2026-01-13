@@ -1,6 +1,45 @@
 # CMake additions for all new systems
 # Add to cmake/sources.cmake
 
+# ============================================================================
+# UNIFIED CORE SYSTEMS - PHASE 5 IMPLEMENTATION
+# ============================================================================
+
+# Unified Type System (SIMD-enhanced)
+set(CORE_TYPES_SOURCES
+    src/engine/include/core/math/types.h
+    src/engine/include/core/types.h
+)
+
+# Consolidated Memory Allocator System
+set(CORE_MEMORY_SOURCES
+    src/engine/core/memory/consolidated_memory_allocator.c
+    src/engine/include/core/memory/unified_memory_allocator.h
+    src/engine/include/core/memory/unified_allocator.h
+    src/engine/include/core/memory/allocator.h
+    src/engine/include/core/memory/aligned_allocator.h
+    src/engine/include/core/memory/arena_allocator.h
+    src/engine/include/core/memory/pool_allocator.h
+    src/engine/include/core/memory/stack_allocator.h
+    src/engine/include/core/memory/buddy_allocator.h
+    src/engine/include/core/memory/gpu_allocator.h
+)
+
+# Consolidated Logging System
+set(CORE_LOGGING_SOURCES
+    src/engine/core/logging/consolidated_logging.c
+    src/engine/include/core/logger.h
+    src/engine/include/core/logger/unified_logger.h
+    src/engine/include/core/logging.h
+    src/engine/include/core/logging_utils.h
+    src/engine/include/core/logging_system.h
+    src/engine/include/core/logger/structured_logger.h
+)
+
+# ============================================================================
+# EXISTING SYSTEMS (preserved for compatibility)
+# ============================================================================
+
 # New rendering systems
 set(RENDERING_METALFX_SOURCES
     src/engine/backend/metal/mtl_metalfx.m

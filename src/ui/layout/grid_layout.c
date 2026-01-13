@@ -9,11 +9,12 @@
 
 #include "grid_layout.h"
 #include "flexbox_layout.h" // Reuse UIElement
-#include "core/logger.h"
-#include "core/memory.h"
+#include "engine/include/core/logger.h"
+#include "engine/include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math/math.h>
+#include <math.h>
 
 #define MAX_GRID_SIZE 100
 #define LAYOUT_TOLERANCE 0.1f

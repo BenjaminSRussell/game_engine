@@ -57,7 +57,7 @@ bool hot_reload_init(HotReloadConfig config) {
       16, sizeof(char *), sizeof(ReloadState *), str_hash, str_equals);
   g_hot_reload.initialized = true;
 
-  LOG_INFO("Hot Reload System initialized");
+  LOG_INFO(LOG_CAT_GENERAL, "Hot Reload System initialized");
   return true;
 }
 
@@ -82,13 +82,13 @@ HotReloadModule *hot_reload_register_module(const char *module_name,
                                             const char *library_path) {
   time_t mod_time = get_file_modified_time(library_path);
   if (mod_time == 0) {
-    LOG_ERROR("Failed to find module library: %s", library_path);
+    LOG_ERROR(LOG_CAT_IO, "Failed to find module library: %s", library_path);
     return NULL;
   }
 
   void *handle = dlopen(library_path, RTLD_NOW);
   if (!handle) {
-    LOG_ERROR("Failed to load module: %s (Error: %s)", library_path, dlerror());
+    LOG_ERROR(LOG_CAT_IO, "Failed to load module: %s (Error: %s)", library_path, dlerror());
     return NULL;
   }
 
@@ -99,7 +99,7 @@ HotReloadModule *hot_reload_register_module(const char *module_name,
   module->last_modified = mod_time;
 
   hashmap_insert(g_hot_reload.modules, module_name, module);
-  LOG_INFO("Registered hot-reload module: %s", module_name);
+  LOG_INFO(LOG_CAT_GENERAL, "Registered hot-reload module: %s", module_name);
 
   return module;
 }
@@ -110,7 +110,7 @@ bool hot_reload_check_module(HotReloadModule *module) {
 
   time_t current_mod_time = get_file_modified_time(module->path);
   if (current_mod_time > module->last_modified) {
-    LOG_INFO("Detected change in module: %s, reloading...", module->name);
+    LOG_INFO(LOG_CAT_GENERAL, "Detected change in module: %s, reloading...", module->name);
 
     if (module->handle) {
       dlclose(module->handle);
@@ -122,10 +122,10 @@ bool hot_reload_check_module(HotReloadModule *module) {
     if (new_handle) {
       module->handle = new_handle;
       module->last_modified = current_mod_time;
-      LOG_INFO("Module %s reloaded successfully", module->name);
+      LOG_INFO(LOG_CAT_GENERAL, "Module %s reloaded successfully", module->name);
       return true;
     } else {
-      LOG_ERROR("Failed to reload module %s: %s", module->name, dlerror());
+      LOG_ERROR(LOG_CAT_IO, "Failed to reload module %s: %s", module->name, dlerror());
       module->handle = NULL;
     }
   }

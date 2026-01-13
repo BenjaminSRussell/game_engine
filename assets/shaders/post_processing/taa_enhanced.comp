@@ -1,0 +1,264 @@
+#version 450
+
+// Enhanced Temporal Anti-Aliasing (TAA) Compute Shader
+// Advanced TAA with motion blur, ghosting prevention, and adaptive sampling
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D currentFrame;
+layout(binding = 1) uniform sampler2D historyFrame;
+layout(binding = 2) uniform sampler2D velocityBuffer;
+layout(binding = 3) uniform sampler2D depthBuffer;
+layout(binding = 4) uniform sampler2D exposureBuffer;
+layout(binding = 5) uniform sampler2D roughnessBuffer;
+
+layout(rgba16f) uniform image2D outputImage;
+layout(rgba16f) uniform image2D historyOutput; // For next frame
+
+layout(push_constant) uniform TAAParams {
+    vec2 jitterOffset;
+    float blendFactor;
+    float varianceClamp;
+    float motionBlurStrength;
+    float ghostReduction;
+    float sharpening;
+    vec2 texelSize;
+    u32 frameIndex;
+    u32 enableMotionBlur;
+    u32 enableGhostReduction;
+    u32 enableSharpening;
+} params;
+
+// Shared memory for neighborhood samples
+shared vec3 neighborhoodColors[18][18]; // 18x18 for 1-pixel border
+shared float neighborhoodDepth[18][18];
+shared vec2 neighborhoodVelocity[18][18];
+shared float neighborhoodRoughness[18][18];
+
+// Utility functions
+vec3 rgbToYcocg(vec3 rgb) {
+    float y = rgb.r * 0.25 + rgb.g * 0.5 + rgb.b * 0.25;
+    float co = rgb.r - rgb.b;
+    float cg = rgb.r * 0.5 - rgb.g * 0.5 + rgb.b * 0.5;
+    return vec3(y, co, cg);
+}
+
+vec3 ycocgToRgb(vec3 ycocg) {
+    float r = ycocg.x + ycocg.y * 0.5 + ycocg.z * 0.5;
+    float g = ycocg.x - ycocg.z;
+    float b = ycocg.x - ycocg.y * 0.5 + ycocg.z * 0.5;
+    return vec3(r, g, b);
+}
+
+float computeDepthWeight(float currentDepth, float historyDepth, float maxDiff) {
+    float diff = abs(currentDepth - historyDepth);
+    return 1.0 - clamp(diff / maxDiff, 0.0, 1.0);
+}
+
+float computeMotionWeight(vec2 velocity) {
+    float motionMagnitude = length(velocity);
+    return exp(-motionMagnitude * 20.0); // Faster falloff for motion
+}
+
+float computeRoughnessWeight(float roughness) {
+    // Reduce temporal accumulation for rough surfaces
+    return 1.0 - roughness * 0.7;
+}
+
+vec3 sharpenColor(vec3 color, vec2 uv) {
+    if (params.enableSharpening == 0) return color;
+    
+    // Simple 3x3 sharpening kernel
+    vec3 sum = vec3(0.0);
+    float totalWeight = 0.0;
+    
+    for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+            if (x == 0 && y == 0) continue;
+            
+            vec2 sampleUV = uv + vec2(x, y) * params.texelSize;
+            vec3 sampleColor = texture(currentFrame, sampleUV).rgb;
+            
+            float weight = 1.0 / (1.0 + abs(x) + abs(y));
+            sum += sampleColor * weight;
+            totalWeight += weight;
+        }
+    }
+    
+    if (totalWeight > 0.0) {
+        vec3 blurred = sum / totalWeight;
+        return color + (color - blurred) * params.sharpening;
+    }
+    
+    return color;
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    ivec2 size = imageSize(outputImage);
+    
+    if (coord.x >= size.x || coord.y >= size.y) {
+        return;
+    }
+    
+    vec2 uv = (vec2(coord) + 0.5) * params.texelSize;
+    
+    // Load current frame data
+    vec3 currentColor = texture(currentFrame, uv).rgb;
+    float currentDepth = texture(depthBuffer, uv).r;
+    vec2 velocity = texture(velocityBuffer, uv).rg;
+    float roughness = texture(roughnessBuffer, uv).r;
+    float exposure = texture(exposureBuffer, uv).r;
+    
+    // Store in shared memory with 1-pixel border
+    ivec2 tileCoord = ivec2(gl_LocalInvocationID.xy) + ivec2(1);
+    
+    // Load 18x18 tile (each thread loads multiple pixels)
+    for (int dy = -1; dy <= 1; dy++) {
+        for (int dx = -1; dx <= 1; dx++) {
+            ivec2 sampleCoord = coord + ivec2(dx, dy);
+            ivec2 sharedCoord = tileCoord + ivec2(dx, dy);
+            
+            if (sampleCoord.x >= 0 && sampleCoord.x < size.x &&
+                sampleCoord.y >= 0 && sampleCoord.y < size.y) {
+                vec2 sampleUV = (vec2(sampleCoord) + 0.5) * params.texelSize;
+                
+                neighborhoodColors[sharedCoord.x][sharedCoord.y] = texture(currentFrame, sampleUV).rgb;
+                neighborhoodDepth[sharedCoord.x][sharedCoord.y] = texture(depthBuffer, sampleUV).r;
+                neighborhoodVelocity[sharedCoord.x][sharedCoord.y] = texture(velocityBuffer, sampleUV).rg;
+                neighborhoodRoughness[sharedCoord.x][sharedCoord.y] = texture(roughnessBuffer, sampleUV).r;
+            } else {
+                neighborhoodColors[sharedCoord.x][sharedCoord.y] = vec3(0.0);
+                neighborhoodDepth[sharedCoord.x][sharedCoord.y] = 1.0;
+                neighborhoodVelocity[sharedCoord.x][sharedCoord.y] = vec2(0.0);
+                neighborhoodRoughness[sharedCoord.x][sharedCoord.y] = 1.0;
+            }
+        }
+    }
+    
+    // Synchronize threads
+    barrier();
+    
+    // Calculate neighborhood statistics for variance clamping
+    vec3 minColor = vec3(1e10);
+    vec3 maxColor = vec3(-1e10);
+    vec3 avgColor = vec3(0.0);
+    float sampleCount = 0.0;
+    
+    for (int x = -2; x <= 2; x++) {
+        for (int y = -2; y <= 2; y++) {
+            ivec2 sampleCoord = tileCoord + ivec2(x, y);
+            
+            if (sampleCoord.x >= 0 && sampleCoord.x < 18 &&
+                sampleCoord.y >= 0 && sampleCoord.y < 18) {
+                vec3 sampleColor = neighborhoodColors[sampleCoord.x][sampleCoord.y];
+                minColor = min(minColor, sampleColor);
+                maxColor = max(maxColor, sampleColor);
+                avgColor += sampleColor;
+                sampleCount += 1.0;
+            }
+        }
+    }
+    
+    avgColor /= sampleCount;
+    
+    // Convert to YCoCg for better variance clamping
+    vec3 currentYCoCg = rgbToYcocg(currentColor);
+    vec3 minYCoCg = rgbToYcocg(minColor);
+    vec3 maxYCoCg = rgbToYcocg(maxColor);
+    vec3 avgYCoCg = rgbToYcocg(avgColor);
+    
+    // Reproject history position
+    vec2 historyUV = uv - velocity;
+    
+    vec3 result = currentColor;
+    vec3 resultYCoCg = currentYCoCg;
+    
+    // Check if history UV is valid and we have meaningful motion
+    if (historyUV.x >= 0.0 && historyUV.x <= 1.0 &&
+        historyUV.y >= 0.0 && historyUV.y <= 1.0 &&
+        length(velocity) > 1e-6) {
+        
+        // Sample history with bilinear filtering
+        vec3 historyColor = texture(historyFrame, historyUV).rgb;
+        vec3 historyYCoCg = rgbToYcocg(historyColor);
+        
+        // Sample history depth for depth comparison
+        float historyDepth = texture(depthBuffer, historyUV).r;
+        float historyRoughness = texture(roughnessBuffer, historyUV).r;
+        
+        // Compute adaptive weights
+        float depthWeight = computeDepthWeight(currentDepth, historyDepth, 0.01);
+        float motionWeight = computeMotionWeight(velocity);
+        float roughnessWeight = computeRoughnessWeight(roughness);
+        float roughnessDiffWeight = 1.0 - abs(roughness - historyRoughness) * 2.0;
+        
+        // Combined weight
+        float combinedWeight = depthWeight * motionWeight * roughnessWeight * roughnessDiffWeight;
+        
+        // Enhanced variance clamping in YCoCg space
+        vec3 varianceClamp = vec3(params.varianceClamp);
+        varianceClamp.x *= 2.0; // More tolerance for luminance
+        varianceClamp.yz *= 0.5; // Less tolerance for chroma
+        
+        vec3 clampedHistoryYCoCg = clamp(historyYCoCg, minYCoCg - varianceClamp, maxYCoCg + varianceClamp);
+        
+        // Ghost reduction: bias towards current frame for high-contrast areas
+        if (params.enableGhostReduction != 0) {
+            float contrast = max(maxColor.r, max(maxColor.g, maxColor.b)) - 
+                           min(minColor.r, min(minColor.g, minColor.b));
+            float ghostReductionFactor = 1.0 - clamp(contrast * params.ghostReduction, 0.0, 0.8);
+            combinedWeight *= ghostReductionFactor;
+        }
+        
+        // Adaptive temporal blend
+        float adaptiveBlendFactor = params.blendFactor * combinedWeight;
+        
+        // Additional reduction for very bright areas (to prevent bloom ghosting)
+        float luminance = max(currentColor.r, max(currentColor.g, currentColor.b));
+        if (luminance > 2.0) {
+            adaptiveBlendFactor *= 0.5;
+        }
+        
+        // Blend in YCoCg space for better color stability
+        resultYCoCg = mix(currentYCoCg, clampedHistoryYCoCg, adaptiveBlendFactor);
+        result = ycocgToRgb(resultYCoCg);
+        
+        // Motion blur effect
+        if (params.enableMotionBlur != 0 && length(velocity) > 1e-4) {
+            const int SAMPLES = 8;
+            vec3 motionBlurResult = vec3(0.0);
+            float totalWeight = 0.0;
+            
+            for (int i = 0; i < SAMPLES; i++) {
+                float t = float(i) / float(SAMPLES - 1);
+                vec2 sampleUV = uv - velocity * t * params.motionBlurStrength;
+                
+                if (sampleUV.x >= 0.0 && sampleUV.x <= 1.0 &&
+                    sampleUV.y >= 0.0 && sampleUV.y <= 1.0) {
+                    vec3 sampleColor = texture(currentFrame, sampleUV).rgb;
+                    float weight = 1.0 - abs(t - 0.5) * 0.5; // Center-weighted
+                    motionBlurResult += sampleColor * weight;
+                    totalWeight += weight;
+                }
+            }
+            
+            if (totalWeight > 0.0) {
+                motionBlurResult /= totalWeight;
+                result = mix(result, motionBlurResult, params.motionBlurStrength);
+            }
+        }
+    }
+    
+    // Apply sharpening
+    result = sharpenColor(result, uv);
+    
+    // Exposure compensation
+    result *= exposure;
+    
+    // Write result to output image
+    imageStore(outputImage, coord, vec4(result, 1.0));
+    
+    // Store current frame for next frame's history
+    imageStore(historyOutput, coord, vec4(result, 1.0));
+}

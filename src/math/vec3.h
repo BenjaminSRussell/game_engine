@@ -1,7 +1,7 @@
 #ifndef RENDERING_VEC3_H
 #define RENDERING_VEC3_H
 
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include "include/common.h"
 
 #if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
@@ -15,7 +15,7 @@
 #endif
 
 // vec3_t is padded to 4 floats for SIMD efficiency
-typedef union ALIGN(16) vec3 {
+typedef union __attribute__((aligned(16))) vec3 {
     struct { float x, y, z, _w; };
     float e[4];
     simd_vec3_t simd;

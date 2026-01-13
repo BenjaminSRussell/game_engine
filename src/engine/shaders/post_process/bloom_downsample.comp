@@ -1,0 +1,77 @@
+#version 450 core
+
+// Bloom Downsample Compute Shader
+// High-quality downsampling using tent filter for bloom mip chain
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D uInputTexture;
+layout(binding = 1, rgba16f) uniform image2D uOutputImage;
+
+layout(std140, binding = 2) uniform BloomDownsampleUniforms {
+    vec2 uTexelSize;
+    uint uMipLevel;
+    uint uFilterType; // 0 = box, 1 = tent
+    float uPadding;
+};
+
+// 13-tap tent filter for high-quality downsampling
+vec3 tentFilter13(sampler2D tex, vec2 uv, vec2 texelSize) {
+    vec3 result = vec3(0.0);
+    
+    // Sample pattern for 13-tap tent filter
+    // Weights: [1, 2, 2, 4, 2, 2, 1] in both X and Y
+    float weights[7] = float[7](1.0, 2.0, 2.0, 4.0, 2.0, 2.0, 1.0);
+    float totalWeight = 16.0; // Sum of weights
+    
+    for (int y = -3; y <= 3; y++) {
+        for (int x = -3; x <= 3; x++) {
+            // Skip corners (13-tap, not 49-tap)
+            if (abs(x) == 3 && abs(y) == 3) continue;
+            
+            vec2 offset = vec2(x, y) * texelSize;
+            vec2 sampleUV = uv + offset;
+            
+            // Calculate weight
+            float weight = weights[abs(x)] * weights[abs(y)];
+            
+            // Sample and accumulate
+            result += texture(tex, sampleUV).rgb * weight;
+        }
+    }
+    
+    return result / totalWeight;
+}
+
+// Simple box filter for faster downsampling
+vec3 boxFilter(sampler2D tex, vec2 uv, vec2 texelSize) {
+    vec3 result = vec3(0.0);
+    
+    // 2x2 box filter
+    for (int y = 0; y <= 1; y++) {
+        for (int x = 0; x <= 1; x++) {
+            vec2 offset = vec2(x, y) * texelSize;
+            result += texture(tex, uv + offset).rgb;
+        }
+    }
+    
+    return result * 0.25;
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    vec2 uv = (vec2(coord) + 0.5) / imageSize(uOutputImage).xy;
+    
+    vec3 downsampledColor;
+    
+    if (uFilterType == 1) {
+        // Use tent filter for higher quality
+        downsampledColor = tentFilter13(uInputTexture, uv, uTexelSize);
+    } else {
+        // Use box filter for performance
+        downsampledColor = boxFilter(uInputTexture, uv, uTexelSize);
+    }
+    
+    // Output downsampled result
+    imageStore(uOutputImage, coord, vec4(downsampledColor, 1.0));
+}

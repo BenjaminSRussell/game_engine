@@ -1,0 +1,160 @@
+#version 450
+
+// Enhanced Bloom Composite Compute Shader
+// Advanced bloom compositing with HDR tonemapping, lens effects, and color grading
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D originalScene;
+layout(binding = 1) uniform sampler2D blurredBloom;
+layout(binding = 2) uniform sampler2D lensDirtTexture;
+layout(binding = 3) uniform sampler2D lensFlareTexture;
+layout(binding = 4) uniform sampler2D vignetteTexture;
+layout(rgba16f) uniform image2D outputImage;
+
+layout(push_constant) uniform BloomCompositeParams {
+    float intensity;
+    float dirtIntensity;
+    float flareIntensity;
+    float vignetteIntensity;
+    vec3 colorShift;
+    vec3 bloomTint;
+    vec3 flareTint;
+    vec2 texelSize;
+    u32 enableLensDirt;
+    u32 enableLensFlare;
+    u32 enableVignette;
+    u32 enableHDR;
+    float hdrExposure;
+    float hdrGamma;
+} params;
+
+// Utility functions
+vec3 applyColorGrading(vec3 color, vec3 tint) {
+    return color * tint;
+}
+
+vec3 applyHDR(vec3 color, float exposure, float gamma) {
+    // Simple HDR tonemapping
+    vec3 exposed = color * exposure;
+    
+    // ACES filmic tonemapper approximation
+    float a = 2.51;
+    float b = 0.03;
+    float c = 2.43;
+    float d = 0.59;
+    float e = 0.14;
+    vec3 tonemapped = (exposed * (a * exposed + b)) / (exposed * (c * exposed + d) + e);
+    
+    // Apply gamma correction
+    return pow(tonemapped, vec3(1.0 / gamma));
+}
+
+vec3 applyVignette(vec3 color, vec2 uv, float intensity) {
+    if (params.enableVignette == 0) return color;
+    
+    // Create vignette effect
+    vec2 center = vec2(0.5, 0.5);
+    float dist = distance(uv, center);
+    float vignette = 1.0 - smoothstep(0.0, 0.7, dist * intensity);
+    
+    // Use vignette texture if available
+    vec4 vignetteTex = texture(vignetteTexture, uv);
+    vignette *= vignetteTex.r;
+    
+    return color * vignette;
+}
+
+vec3 generateLensFlare(vec2 uv, vec2 lightPos) {
+    if (params.enableLensFlare == 0) return vec3(0.0);
+    
+    vec3 flareColor = vec3(0.0);
+    
+    // Basic lens flare pattern
+    vec2 flareDir = normalize(lightPos - vec2(0.5));
+    
+    // Multiple flare elements
+    for (int i = 0; i < 6; i++) {
+        float flarePos = float(i) * 0.15 + 0.1;
+        vec2 flareUV = lightPos + flareDir * flarePos;
+        
+        // Check if flare is within screen bounds
+        if (flareUV.x >= 0.0 && flareUV.x <= 1.0 && flareUV.y >= 0.0 && flareUV.y <= 1.0) {
+            float flareIntensity = 1.0 / (1.0 + float(i) * 0.5);
+            float flareSize = 0.02 * (1.0 + float(i) * 0.3);
+            
+            float dist = distance(uv, flareUV);
+            float flare = exp(-dist * dist / (2.0 * flareSize * flareSize));
+            
+            vec3 flareTint = mix(vec3(1.0, 0.8, 0.6), params.flareTint, float(i) / 6.0);
+            flareColor += flare * flareIntensity * flareTint;
+        }
+    }
+    
+    // Add lens flare texture contribution
+    vec2 flareTexUV = uv * 2.0 - 1.0; // Center and scale
+    vec4 flareTex = texture(lensFlareTexture, flareTexUV * 0.5 + 0.5);
+    flareColor += flareTex.rgb * flareTex.a * params.flareIntensity;
+    
+    return flareColor;
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    ivec2 size = imageSize(outputImage);
+    
+    if (coord.x >= size.x || coord.y >= size.y) {
+        return;
+    }
+    
+    vec2 uv = (vec2(coord) + 0.5) / vec2(size);
+    
+    // Sample original scene and bloom
+    vec3 hdrColor = texture(originalScene, uv).rgb;
+    vec3 bloomColor = texture(blurredBloom, uv).rgb;
+    
+    // Apply color grading to bloom
+    vec3 gradedBloom = applyColorGrading(bloomColor, params.bloomTint);
+    
+    // Apply intensity and color shift
+    vec3 modifiedBloom = gradedBloom * params.colorShift * params.intensity;
+    
+    // Lens dirt effect
+    if (params.enableLensDirt != 0) {
+        vec3 dirtColor = texture(lensDirtTexture, uv).rgb;
+        modifiedBloom += dirtColor * params.dirtIntensity * modifiedBloom;
+    }
+    
+    // Generate lens flare (simplified - would need light positions in real implementation)
+    vec3 flareColor = generateLensFlare(uv, vec2(0.5, 0.3)); // Example light position
+    modifiedBloom += flareColor * params.flareIntensity;
+    
+    // Combine scene with bloom
+    vec3 result = hdrColor + modifiedBloom;
+    
+    // Apply vignette
+    result = applyVignette(result, uv, params.vignetteIntensity);
+    
+    // Apply HDR tonemapping if enabled
+    if (params.enableHDR != 0) {
+        result = applyHDR(result, params.hdrExposure, params.hdrGamma);
+    }
+    
+    // Additional post-processing effects
+    
+    // Subtle chromatic aberration for bloom areas
+    float bloomStrength = length(modifiedBloom);
+    if (bloomStrength > 0.1) {
+        vec2 caOffset = vec2(1.0, 0.0) * params.texelSize.x * bloomStrength * 0.5;
+        float caR = texture(originalScene, uv + caOffset).r;
+        float caB = texture(originalScene, uv - caOffset).b;
+        result.r = mix(result.r, caR, bloomStrength * 0.1);
+        result.b = mix(result.b, caB, bloomStrength * 0.1);
+    }
+    
+    // Film grain for cinematic effect (subtle)
+    float noise = fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453);
+    result += (noise - 0.5) * 0.01;
+    
+    imageStore(outputImage, coord, vec4(result, 1.0));
+}

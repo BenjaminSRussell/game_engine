@@ -1,0 +1,118 @@
+#version 450
+
+// Enhanced Bloom Blur Compute Shader
+// High-performance separable Gaussian blur with variable kernel size and anamorphic blur
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D inputTexture;
+layout(rgba16f) uniform image2D outputImage;
+
+layout(push_constant) uniform BloomBlurParams {
+    vec2 texelSize;
+    vec2 direction;  // (1,0) for horizontal, (0,1) for vertical
+    float sigma;
+    float anamorphicStrength; // For directional stretch
+    u32 kernelSize;           // Variable kernel size (5, 9, 13, 17)
+    u32 enableAnamorphic;
+} params;
+
+// Shared memory for larger tiles (up to 32x32 with border)
+shared vec3 tile[32 + 2][32 + 2]; // Maximum 32x32 workgroup with 1-pixel border
+
+// Gaussian weight calculation
+float gaussianWeight(float x, float sigma) {
+    return exp(-(x * x) / (2.0 * sigma * sigma));
+}
+
+// Anamorphic stretch for cinematic bloom effect
+vec2 applyAnamorphicStretch(vec2 offset) {
+    if (params.enableAnamorphic == 0) return offset;
+    
+    // Stretch horizontally for anamorphic bloom
+    float stretch = 1.0 + params.anamorphicStrength;
+    return vec2(offset.x * stretch, offset.y);
+}
+
+void main() {
+    ivec2 coord = ivec2(gl_GlobalInvocationID.xy);
+    ivec2 size = imageSize(outputImage);
+    
+    if (coord.x >= size.x || coord.y >= size.y) {
+        return;
+    }
+    
+    // Determine actual kernel size
+    int kernelRadius = int(params.kernelSize) / 2;
+    
+    // Calculate tile position in shared memory
+    ivec2 tileCoord = ivec2(gl_LocalInvocationID.xy) + ivec2(1);
+    
+    // Load tile into shared memory (each thread loads multiple pixels)
+    int loadRadius = kernelRadius + 1; // Extra pixel for safety
+    
+    for (int dy = -loadRadius; dy <= loadRadius; dy++) {
+        for (int dx = -loadRadius; dx <= loadRadius; dx++) {
+            ivec2 sampleCoord = coord + ivec2(dx, dy);
+            ivec2 sharedCoord = tileCoord + ivec2(dx, dy);
+            
+            vec3 sampleColor = vec3(0.0);
+            if (sampleCoord.x >= 0 && sampleCoord.x < size.x &&
+                sampleCoord.y >= 0 && sampleCoord.y < size.y) {
+                vec2 uv = (vec2(sampleCoord) + 0.5) / vec2(size);
+                sampleColor = texture(inputTexture, uv).rgb;
+            }
+            
+            tile[sharedCoord.x][sharedCoord.y] = sampleColor;
+        }
+    }
+    
+    // Synchronize all threads in workgroup
+    barrier();
+    
+    // Pre-compute Gaussian weights
+    float weights[17]; // Maximum kernel size is 17
+    float weightSum = 0.0;
+    
+    for (int i = 0; i < int(params.kernelSize); i++) {
+        float offset = float(i - kernelRadius);
+        
+        // Apply anamorphic stretch to offset
+        vec2 stretchedOffset = applyAnamorphicStretch(vec2(offset, 0.0));
+        float stretchedDistance = length(stretchedOffset * params.direction);
+        
+        weights[i] = gaussianWeight(stretchedDistance, params.sigma);
+        weightSum += weights[i];
+    }
+    
+    // Normalize weights
+    for (int i = 0; i < int(params.kernelSize); i++) {
+        weights[i] /= weightSum;
+    }
+    
+    // Apply separable Gaussian blur with anamorphic stretch
+    vec3 blurredColor = vec3(0.0);
+    
+    for (int i = 0; i < int(params.kernelSize); i++) {
+        int offset = i - kernelRadius;
+        
+        // Apply anamorphic stretch to sampling offset
+        vec2 stretchedOffset = applyAnamorphicStretch(vec2(offset, 0.0));
+        ivec2 sampleCoord = tileCoord + ivec2(stretchedOffset * params.direction);
+        
+        // Ensure we're within shared memory bounds
+        sampleCoord = clamp(sampleCoord, ivec2(0), ivec2(32 + 1));
+        
+        blurredColor += tile[sampleCoord.x][sampleCoord.y] * weights[i];
+    }
+    
+    // Additional bloom enhancement for very bright areas
+    float brightness = max(blurredColor.r, max(blurredColor.g, blurredColor.b));
+    if (brightness > 2.0) {
+        float enhancement = 1.0 + (brightness - 2.0) * 0.1;
+        blurredColor *= min(enhancement, 2.0); // Cap enhancement
+    }
+    
+    // Write result
+    imageStore(outputImage, coord, vec4(blurredColor, 1.0));
+}

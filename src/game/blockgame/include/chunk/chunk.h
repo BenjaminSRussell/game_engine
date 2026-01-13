@@ -46,8 +46,8 @@
 #ifndef CHUNK_H
 #define CHUNK_H
 
-#include <block/block.h>
-#include <game_common.h>
+#include "../block/block.h"
+#include "../game_common.h"
 #include <math/mat4.h>
 #include <math/vec3.h>
 #include <pthread.h>

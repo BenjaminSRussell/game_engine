@@ -172,7 +172,7 @@
 //
 #include <audio/audio_reverb.h>
 #define MINIAUDIO_IMPLEMENTATION
-#include "core/services/weather_system.h"
+#include <../../core/services/weather_system.h>
 #include <audio/audio_system.h>
 #include <audio/underwater_filter.h>
 #include <core/asset_importers.h>

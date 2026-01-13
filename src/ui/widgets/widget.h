@@ -27,6 +27,14 @@ typedef struct Widget Widget;
 typedef struct UIEvent UIEvent;
 typedef struct UIEventHandler UIEventHandler;
 
+// Box edges for layout
+typedef struct {
+    float top;
+    float right;
+    float bottom;
+    float left;
+} BoxEdges;
+
 // Event types
 typedef enum {
     UI_EVENT_NONE,

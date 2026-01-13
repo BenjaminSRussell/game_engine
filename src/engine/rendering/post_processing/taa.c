@@ -129,36 +129,55 @@ static void taa_execute_pass(RGPassContext *ctx, void *user_data) {
         return;
     }
 
-    // Dispatch TAA compute shader with resources and return actual output
+    // Dispatch TAA compute shader with resources
     
     // Bind TAA shader resources
-    // texture_manager_bind(scene_color_tex, 0);
-    // texture_manager_bind(velocity_tex, 1);
-    // texture_manager_bind(history_tex, 2);
-    // texture_manager_bind(output_tex, 3);
+    texture_manager_bind(scene_color_tex, 0);
+    texture_manager_bind(velocity_tex, 1);
+    texture_manager_bind(history_tex, 2);
+    texture_manager_bind(output_tex, 3);
     
     // Set TAA uniforms
-    // struct TAAUniforms {
-    //     f32 blend_factor;
-    //     f32 sharpness;
-    //     u32 enable_sharpening;
-    //     u32 frame_index;
-    // } uniforms = {
-    //     .blend_factor = data->ctx->settings.blend_factor,
-    //     .sharpness = data->ctx->settings.sharpness,
-    //     .enable_sharpening = data->ctx->settings.enable_sharpening ? 1 : 0,
-    //     .frame_index = data->ctx->frame_index
-    // };
-    // 
-    // shader_set_uniforms(&uniforms, sizeof(uniforms));
+    struct TAAUniforms {
+        f32 blend_factor;
+        f32 sharpness;
+        u32 enable_sharpening;
+        u32 frame_index;
+        f32 jitter_x;
+        f32 jitter_y;
+        u32 enable_jitter;
+        f32 padding;
+    } uniforms = {
+        .blend_factor = data->ctx->settings.blend_factor,
+        .sharpness = data->ctx->settings.sharpness,
+        .enable_sharpening = data->ctx->settings.enable_sharpening ? 1 : 0,
+        .frame_index = data->ctx->frame_index,
+        .jitter_x = 0.0f,
+        .jitter_y = 0.0f,
+        .enable_jitter = data->ctx->settings.enable_jitter ? 1 : 0,
+        .padding = 0.0f
+    };
+    
+    // Get current jitter offset
+    if (data->ctx->settings.enable_jitter) {
+        u32 pattern_index = data->ctx->frame_index % 16;
+        uniforms.jitter_x = HALTON_2[pattern_index] * data->ctx->settings.jitter_scale;
+        uniforms.jitter_y = HALTON_3[pattern_index] * data->ctx->settings.jitter_scale;
+    }
+    
+    shader_set_uniforms(&uniforms, sizeof(uniforms));
+    
+    // Get texture dimensions for compute dispatch
+    u32 tex_width, tex_height;
+    texture_manager_get_dimensions(output_tex, &tex_width, &tex_height);
     
     // Dispatch compute shader
-    // MTLSize gridSize = MTLSizeMake((output_tex.width + 15) / 16, (output_tex.height + 15) / 16, 1);
-    // MTLSize threadgroupSize = MTLSizeMake(16, 16, 1);
-    // compute_dispatch_threadgroups(gridSize, threadgroupSize);
+    MTLSize gridSize = MTLSizeMake((tex_width + 15) / 16, (tex_height + 15) / 16, 1);
+    MTLSize threadgroupSize = MTLSizeMake(16, 16, 1);
+    compute_dispatch_threadgroups(gridSize, threadgroupSize);
     
-    // Return actual TAA output texture handle
-    return output_tex;
+    // Update frame index for next frame
+    data->ctx->frame_index = (data->ctx->frame_index + 1) & 0xFFFF;
 
     LOG_DEBUG("TAA shader executed for frame %u", data->ctx->frame_index);
 }
@@ -173,10 +192,14 @@ RGResourceHandle taa_add_to_graph(RenderGraph *rg,
         return RG_INVALID_RESOURCE;
     }
 
+    // Get actual render resolution from render graph
+    u32 render_width, render_height;
+    rg_get_resolution(rg, &render_width, &render_height);
+    
     // Create output texture for TAA result
     RGTextureDesc output_desc = {
-        .width = 1920,  // TODO: Get from actual render resolution
-        .height = 1080,
+        .width = render_width,
+        .height = render_height,
         .depth = 1,
         .format = TEXTURE_FORMAT_RGBA16F,
         .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
@@ -187,8 +210,8 @@ RGResourceHandle taa_add_to_graph(RenderGraph *rg,
     // Create or reuse history buffer
     if (ctx->history_buffer == 0) {
         RGTextureDesc history_desc = {
-            .width = 1920,
-            .height = 1080,
+            .width = render_width,
+            .height = render_height,
             .depth = 1,
             .format = TEXTURE_FORMAT_RGBA16F,
             .usage = TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,

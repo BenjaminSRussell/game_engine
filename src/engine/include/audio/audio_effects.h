@@ -26,7 +26,7 @@
 
 #include <common.h>
 #include <math/vec3.h>
-#include <vendor/miniaudio.h>
+#include <../../include/vendor/miniaudio.h>
 
 #define MAX_EFFECT_BUSES 4
 #define MAX_REVERB_PRESETS 8

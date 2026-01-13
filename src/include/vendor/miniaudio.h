@@ -19484,7 +19484,7 @@ DEVICE I/O
 #endif
 
 #ifdef MA_POSIX
-    #include <include/core/types.h>
+    #include <../../engine/include/core/types.h>
 #endif
 
 /* This must be set to at least 26. */
@@ -37561,7 +37561,7 @@ audio(4) Backend
 #include <poll.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <include/core/types.h>
+#include <../../engine/include/core/types.h>
 #include <sys/ioctl.h>
 #include <sys/audioio.h>
 
