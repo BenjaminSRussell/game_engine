@@ -13,7 +13,7 @@
 //  COMPLETED: Implement GPU memory allocation optimization.
 //  COMPLETED: Add GPU memory validation system.
 #include "include/rendering/gpu_memory.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

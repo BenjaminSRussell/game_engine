@@ -1,6 +1,6 @@
 // Physics Demos Main Entry Point
 #include "physics_demo_framework.c"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 
 int main(int argc, char* argv[]) {

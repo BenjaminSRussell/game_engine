@@ -2,7 +2,7 @@
 // Manages enabling/disabling different rendering paths and features
 
 #include "rendering_path_manager.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 #include "rendering/voxel_renderer.h"
 #include "rendering/sprite_3d_renderer.h"

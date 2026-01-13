@@ -2,7 +2,7 @@
 //
 // 2.5D sprite renderer implementation (stub)
 //
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math/mat4.h>
 #include <rendering/camera.h>
 #include <rendering/renderer.h>

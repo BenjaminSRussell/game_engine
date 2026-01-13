@@ -1,6 +1,6 @@
 // block_physics.c - Block Physics Implementation
 #include "physics/block_physics.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "block/block.h"
 #include "chunk/chunk.h"
 #include "math/vec3.h"

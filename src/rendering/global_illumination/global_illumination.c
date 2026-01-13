@@ -1,7 +1,7 @@
 // src/engine/rendering/global_illumination/global_illumination.c
 // Global Illumination System - Real-time GI with DDGI and ReSTIR
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

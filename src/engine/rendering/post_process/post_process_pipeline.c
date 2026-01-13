@@ -1,7 +1,7 @@
 // src/engine/rendering/post_process/post_process_pipeline.c
 // Post-Processing Pipeline - Bloom, tone mapping, FXAA, and other effects
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdint.h>

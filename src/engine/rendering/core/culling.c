@@ -1,7 +1,7 @@
 // src/engine/rendering/core/culling.c
 // Culling System - Frustum, occlusion, and distance culling
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

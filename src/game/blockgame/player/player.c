@@ -8,7 +8,7 @@
 #include <chunk/chunk.h>
 #include <combat/combat.h>
 #include <combat/equipment.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <ecs/component_ids.h>
 #include <ecs/components/health.h>

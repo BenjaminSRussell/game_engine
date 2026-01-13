@@ -5,7 +5,7 @@
 
 #include "network/network_manager.h"
 #include "network/network_types.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 #include <stdlib.h>
 #include <string.h>

@@ -5,7 +5,7 @@
 #include "ecs/components/asset_instance_component.h"
 #include "include/core/resource/asset_instance.h"
 #include "core/asset_manager.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <stddef.h>
 
 /**

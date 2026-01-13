@@ -711,8 +711,8 @@ static INLINE quat quat_make(f32 x, f32 y, f32 z, f32 w) {
 }
 
 // SIMD vector operations (when available)
-#if !defined(VEC3_H)
-#if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
+#if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON) && !defined(VEC3_FUNCTIONS_DEFINED)
+#define VEC3_FUNCTIONS_DEFINED
 static INLINE vec3 vec3_add(vec3 a, vec3 b) {
     vec3 result;
     #if defined(UNIFIED_SIMD_SSE)
@@ -732,7 +732,6 @@ static INLINE vec3 vec3_sub(vec3 a, vec3 b) {
     #endif
     return result;
 }
-#endif
 #endif
 
 #if !defined(VEC3_H)

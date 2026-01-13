@@ -1,7 +1,7 @@
 #include <audio/audio_loader.h>
 #include <audio/audio_system.h>
 #include <core/asset_manager.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>

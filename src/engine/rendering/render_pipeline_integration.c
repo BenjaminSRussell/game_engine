@@ -1,7 +1,7 @@
 // src/engine/rendering/render_pipeline_integration.c
 // Render Pipeline Integration - Unified API for all rendering systems
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

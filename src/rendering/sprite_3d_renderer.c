@@ -2,7 +2,7 @@
 // 2.5D sprite-based rendering system for isometric and orthographic views
 
 #include "sprite_3d_renderer.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 #include "rendering/core/renderer.h"
 #include "rendering/core/texture.h"

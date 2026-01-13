@@ -13,7 +13,7 @@
 #include "vendor/cgltf.h"
 
 #include <core/asset_importers.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <geometry/mesh_primitives.h>
 #include <rendering/mesh.h>
 

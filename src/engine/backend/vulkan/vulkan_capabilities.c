@@ -10,7 +10,7 @@
 // VULKAN-CAPS-009: Implement capability documentation system
 // VULKAN-CAPS-010: Add capability optimization suggestions
 #include "config/config.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "rendering/vulkan.h"
 #include <stdio.h>
 #include <stdlib.h>

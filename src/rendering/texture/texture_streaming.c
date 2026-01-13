@@ -1,7 +1,7 @@
 // src/engine/rendering/texture/texture_streaming.c
 // Texture Streaming System - Dynamic texture loading and unloading
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

@@ -1,7 +1,7 @@
 // src/engine/rendering/particles/particle_system.c
 // Particle System - GPU-accelerated particle rendering with physics simulation
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/time_system.h>
 #include <math.h>
 #include <pthread.h>

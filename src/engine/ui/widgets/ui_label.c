@@ -5,7 +5,7 @@
  */
 
 #include "ui_label.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 #include <stdlib.h>
 #include <string.h>

@@ -1,5 +1,5 @@
 #include "svg_particle_renderer.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>

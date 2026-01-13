@@ -1,7 +1,7 @@
 // src/engine/rendering/core/shader.c
 // Consolidated Shader System - Unified shader compilation and management
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <core/file_system.h>
 #include <stdbool.h>

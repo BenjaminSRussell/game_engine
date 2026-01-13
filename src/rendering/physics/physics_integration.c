@@ -1,7 +1,7 @@
 // src/engine/rendering/physics/physics_integration.c
 // Physics Integration - Real-time physics simulation with rendering integration
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

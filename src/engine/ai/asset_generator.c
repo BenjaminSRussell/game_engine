@@ -4,7 +4,7 @@
 // Generates modular 3D and 2.5D assets in 25 different styles.
 //
 #include <ai/ai_asset_generator.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <include/math/math.h>
 #include <include/rendering/mesh.h>
 #include <rendering/texture_system.h>

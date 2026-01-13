@@ -3,7 +3,7 @@
 // Implementation of the audio streaming system for long-form audio playback.
 //
 #include <audio/audio_streaming.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

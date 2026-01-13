@@ -1,5 +1,5 @@
 #include "../include/core/asset_manager.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "ecs/components/asset_instance_component.h"
 #include "ecs/components/transform.h"
 #include "ecs/ecs.h"

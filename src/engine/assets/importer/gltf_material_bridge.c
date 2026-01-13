@@ -2,7 +2,7 @@
 // Maps GLTF PBR materials to engine's GPU material system
 
 #include <assets/gltf_loader.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <rendering/gpu_material.h>
 #include <string.h>
 

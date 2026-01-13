@@ -1,7 +1,7 @@
 // src/engine/rendering/memory/gpu_memory_manager.c
 // GPU Memory Management System - Efficient GPU resource allocation and tracking
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

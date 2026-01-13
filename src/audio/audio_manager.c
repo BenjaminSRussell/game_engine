@@ -6,7 +6,7 @@
 #include <audio/audio_system.h>
 #include <audio/underwater_filter.h>
 #include <core/common.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include "engine/include/math/math.h"
 #include <math/vec3.h>
 #include <physics/block_physics.h>

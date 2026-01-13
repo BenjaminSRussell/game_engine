@@ -2,7 +2,7 @@
 // Proper cross-queue resource sharing with barriers
 
 #include <rendering/queue_ownership.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 
 #ifdef VULKAN_BUILD
 

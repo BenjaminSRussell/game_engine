@@ -2,7 +2,7 @@
 // Metal-specific optimizations and features for voxel rendering
 
 #include "voxel_renderer_metal.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 #include "engine/include/math/math.h"
 #include <stdlib.h>

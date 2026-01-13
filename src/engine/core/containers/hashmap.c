@@ -70,7 +70,7 @@
 //
 // Hash map container implementation.
 #include <core/containers/hashmap.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 

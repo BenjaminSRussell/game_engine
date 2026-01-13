@@ -1,7 +1,7 @@
 // src/engine/rendering/water/water_rendering.c
 // Water Rendering System - Realistic water with waves, reflections, and refractions
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

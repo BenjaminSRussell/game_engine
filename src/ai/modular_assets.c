@@ -4,7 +4,7 @@
 // components.
 //
 #include <ai/ai_asset_generator.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/modular_assets.h>
 #include <float.h>
 #include <math/mat4.h>

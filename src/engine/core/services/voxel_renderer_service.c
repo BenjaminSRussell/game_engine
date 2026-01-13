@@ -3,7 +3,7 @@
 
 #include "rendering/voxel_renderer.h"
 #include "rendering/renderer.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 #include <stdlib.h>
 #include <string.h>

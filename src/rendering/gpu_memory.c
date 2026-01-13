@@ -1,7 +1,7 @@
 // src/engine/rendering/gpu_memory.c
 // GPU Memory Management and Defragmentation System
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <stdbool.h>
 #include <stdint.h>

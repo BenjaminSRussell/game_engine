@@ -1,5 +1,5 @@
 // damage_system.c - Implementation
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <gameplay/combat/damage.h>
 #include <math.h>
 #include <stdlib.h>

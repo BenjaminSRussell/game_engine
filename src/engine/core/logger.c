@@ -54,7 +54,7 @@
 //     - Date range queries: IMPLEMENTED (filter by time range)
 //     - Category/level queries: IMPLEMENTED (filter by category/level)
 //     - Result highlighting: IMPLEMENTED (highlight matches)
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>

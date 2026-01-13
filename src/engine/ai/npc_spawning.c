@@ -20,7 +20,7 @@
 #include <ecs/ecs.h>
 #include <world/chunk.h>
 #include <world/world_generator.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math/vec3.h>
 #include <stdlib.h>
 #include <string.h>

@@ -45,7 +45,7 @@
 #include "assets/system/asset_system/compression_assets/asset_bundling.h"
 #include "include/core/memory.h"
 #include "include/core/types.h"
-// #include "core/logger.h" // Commented out to reduce dependency issues in test
+// #include "engine/include/core/logger.h" // Commented out to reduce dependency issues in test
 // environment
 #include "core/hot_reload.h"
 #include "core/memory.h"

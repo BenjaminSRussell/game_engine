@@ -34,7 +34,7 @@
 #include <ecs/compat_world_api.h>
 #include <ecs/component_ids.h>
 #include <physics/physics.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <math/vec3.h>
 #include "engine/include/math/math.h"

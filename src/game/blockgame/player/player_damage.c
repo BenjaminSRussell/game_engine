@@ -4,7 +4,7 @@
 
 #include <audio/audio_system.h>
 #include <combat/equipment.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/component_ids.h> // Added for HEALTH_COMPONENT_ID
 #include <ecs/components/health.h>
 #include <math.h>

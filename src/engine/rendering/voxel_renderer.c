@@ -2,7 +2,7 @@
 // 3D voxel-based rendering system with block-based world representation
 
 #include "voxel_renderer.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 #include "rendering/core/renderer.h"
 #include "rendering/core/texture.h"

@@ -8,7 +8,7 @@
 // 4. Integration with the engine's core memory tracking system
 
 #include <core/memory.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 

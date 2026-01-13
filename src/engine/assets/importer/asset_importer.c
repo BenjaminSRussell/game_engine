@@ -14,7 +14,7 @@
 #include "assets/system/asset_system/import/fbx_importer.h"
 
 #include <core/asset_importers.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <geometry/mesh_primitives.h>
 #include <rendering/mesh.h>
 

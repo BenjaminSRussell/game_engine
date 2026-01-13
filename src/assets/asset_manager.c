@@ -1,6 +1,6 @@
 // asset_manager.c - Stub implementation
 #include "core/asset_manager.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 
 AssetManager* asset_manager_create(u32 initial_capacity, World *ecs_world, VFS *vfs) {

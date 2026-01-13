@@ -51,7 +51,7 @@
 // Game configuration defaults and load/store helpers.
 // Roadmap: docs/CONFIG_ROADMAP.md.
 #include <config/config.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

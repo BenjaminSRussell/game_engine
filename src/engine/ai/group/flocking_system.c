@@ -1,6 +1,6 @@
 // Flocking and Crowd Simulation System implementation
 #include "ai/group/flocking_system.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math/vec3.h>
 #include "engine/include/math/math.h"
 #include <stdlib.h>

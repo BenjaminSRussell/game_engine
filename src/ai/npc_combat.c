@@ -11,7 +11,7 @@
 #include <ecs/components/transform.h>
 #include <ecs/components/health.h>
 #include <ecs/components/rigidbody.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <math/vec3.h>
 #include "engine/include/math/math.h"

@@ -1,7 +1,7 @@
 // src/engine/rendering/core/render_stats.c
 // Render Statistics Tracking - Performance monitoring and metrics collection
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

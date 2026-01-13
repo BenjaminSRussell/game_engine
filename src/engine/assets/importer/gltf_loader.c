@@ -8,7 +8,7 @@
 // 4. Create Vulkan buffers for meshes
 // 5. Load textures into GPU
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <math/vec2.h>
 #include <math/vec3.h>

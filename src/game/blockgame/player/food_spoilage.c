@@ -1,6 +1,6 @@
 #include <player/food_spoilage.h>
 #include <inventory/inventory.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 
 void food_spoilage_system_update(Player* player, const ItemRegistry* item_registry, f32 delta_time) {
     if (!player || !item_registry) {

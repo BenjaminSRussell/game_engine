@@ -1,7 +1,7 @@
 // src/engine/rendering/ai_ml/ai_assisted_rendering.c
 // AI-Assisted Rendering - Machine learning optimization for intelligent rendering
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

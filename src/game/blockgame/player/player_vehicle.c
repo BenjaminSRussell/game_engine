@@ -15,7 +15,7 @@
 // TODO: Add vehicle statistics tracking system.
 // TODO: Implement vehicle save/load system.
 // TODO: Add vehicle AI system for NPCs.
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/component_ids.h>
 #include <ecs/components/transform.h>
 #include <math.h>

@@ -3,7 +3,7 @@
 // Implementation of audio event queue system
 //
 #include <audio/audio_event_queue.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

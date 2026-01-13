@@ -11,7 +11,7 @@
 #include <player/player_magic.h>
 #include <player/spell_combination.h>
 #include <string.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <effects/vfx/particle_system.h>
 
 // Forward declaration for global particle system

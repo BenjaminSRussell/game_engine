@@ -10,7 +10,7 @@
 //  COMPLETED: Implement surface resize handling optimization.
 //  COMPLETED: Add surface format selection optimization.
 #include <common.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <rendering/vulkan.h>
 #include <stdbool.h>
 #include <stdlib.h>

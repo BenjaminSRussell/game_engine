@@ -1,7 +1,7 @@
 // src/engine/rendering/core/material.c
 // Material System - PBR materials and texture management
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <stdbool.h>
 #include <stdint.h>

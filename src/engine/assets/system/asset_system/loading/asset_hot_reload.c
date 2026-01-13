@@ -8,7 +8,7 @@
 
 #include "asset_hot_reload.h"
 #include "core/common/memory/allocator.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "platform/file_system.h"
 #include <string.h>
 #include <stdlib.h>

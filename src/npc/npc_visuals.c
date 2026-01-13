@@ -1,6 +1,9 @@
 /*
- * NPC Visuals System
+ * npc_visuals.c
  * Visual representation and rendering for NPCs
+ *
+ * Part of the NPC subsystem
+ * Advanced 3D Rendering Engine
  */
 
 #include "npc/npc_visuals.h"

@@ -1,7 +1,7 @@
 // src/engine/rendering/core/renderer.c
 // Core Renderer System - Main rendering pipeline orchestrator
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <core/time_system.h>
 #include <core/window.h>

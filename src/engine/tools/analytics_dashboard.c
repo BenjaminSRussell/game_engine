@@ -1,6 +1,6 @@
 // Analytics Dashboard implementation
 #include "tools/analytics_dashboard.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>

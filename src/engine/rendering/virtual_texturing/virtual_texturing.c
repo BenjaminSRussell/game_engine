@@ -2,7 +2,7 @@
 // Virtual Texturing System - Mega-texture streaming for unlimited texture
 // detail
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdint.h>

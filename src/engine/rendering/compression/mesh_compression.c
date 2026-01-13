@@ -1,7 +1,7 @@
 // src/engine/rendering/compression/mesh_compression.c
 // Mesh Compression System - Advanced mesh compression for memory optimization
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

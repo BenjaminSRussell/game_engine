@@ -51,8 +51,7 @@ void memory_allocator_check_leaks(void) {
 
 // Set memory limit - redirects to unified system
 void memory_allocator_set_limit(size_t limit) {
-    MemoryPolicy policy = {0};
-    unified_memory_get_policy(&policy);
+    MemoryPolicy policy = unified_memory_get_policy();
     policy.global_limit = limit;
     unified_memory_set_policy(&policy);
 }

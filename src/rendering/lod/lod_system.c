@@ -1,7 +1,7 @@
 // src/engine/rendering/lod/lod_system.c
 // LOD System - Level of Detail with mesh optimization and distance-based scaling
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

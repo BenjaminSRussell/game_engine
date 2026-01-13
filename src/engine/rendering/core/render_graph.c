@@ -1,7 +1,7 @@
 // src/engine/rendering/core/render_graph.c
 // Render Graph System - Manages render passes and resource dependencies
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <stdbool.h>
 #include <stdint.h>

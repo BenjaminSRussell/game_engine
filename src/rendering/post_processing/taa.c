@@ -1,7 +1,7 @@
 // Temporal Anti-Aliasing (TAA) Implementation
 // Reduces aliasing through temporal reprojection and history blending
 #include "taa.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "renderer/texture_manager.h"
 #include <stdlib.h>
 #include <string.h>

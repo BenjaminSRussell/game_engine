@@ -11,7 +11,7 @@
 // TODO: Add food tooltip system with nutrition info (UI system integration)
 //
 #include <audio/audio_system.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/component_ids.h>
 #include <ecs/components/transform.h>
 #include <ecs/ecs.h>

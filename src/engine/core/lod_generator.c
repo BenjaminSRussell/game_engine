@@ -3,7 +3,7 @@
 // Implementation of runtime LOD generation for meshes.
 
 #include <core/lod_generator.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <include/math/math.h>
 #include <stdlib.h>

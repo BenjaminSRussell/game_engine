@@ -5,7 +5,7 @@
 
 #ifdef VULKAN_BUILD
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <string.h>
 
 // Platform-specific dynamic library loading

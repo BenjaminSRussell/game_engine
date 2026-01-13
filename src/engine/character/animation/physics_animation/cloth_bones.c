@@ -10,7 +10,7 @@
 #include "character/animation/physics_animation/cloth_bones.h"
 #include "math/vec3.h"
 #include "rendering/render_graph/render_pass_node.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/performance.h>
 #include <core/threading.h>
 #include <pthread.h>

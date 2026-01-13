@@ -36,7 +36,7 @@
 #include <unistd.h>
 
 #include "assets/io/scene/manager_01.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 #include "core/types.h"
 

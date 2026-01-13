@@ -3,7 +3,7 @@
  * Matches ecs.h API with safe internal state management
  */
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ecs/ecs.h>
 #include <ecs/component_ids.h>
 #include <stdbool.h>

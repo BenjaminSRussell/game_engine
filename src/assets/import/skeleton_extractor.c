@@ -1,6 +1,6 @@
 #include "assets/import/skeleton_extractor.h"
 #include "include/core/utils.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

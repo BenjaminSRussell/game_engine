@@ -2,7 +2,7 @@
 #define ENGINE_VISUAL_SCRIPTING_CORE_H
 
 #include "common.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 
 typedef struct VSContext VSContext;

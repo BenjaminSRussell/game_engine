@@ -10,7 +10,7 @@
 //  COMPLETED: Implement config file versioning and migration system.
 //  COMPLETED: Add config file import/export for sharing settings.
 #include <core/config_loader.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

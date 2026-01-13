@@ -1,7 +1,7 @@
 // src/engine/rendering/core/shader_compiler.c
 // Consolidated Shader System with Compilation and Validation
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <core/vfs/vfs.h>
 #include <stdlib.h>

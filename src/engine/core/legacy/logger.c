@@ -49,7 +49,7 @@
 //    - Encrypted file format: IMPLEMENTED (encrypted log format)
 //    - Decryption support: IMPLEMENTED (decrypt for reading)
 
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

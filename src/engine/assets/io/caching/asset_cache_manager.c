@@ -37,7 +37,7 @@
 #include "assets/io/caching/asset_cache_manager.h"
 #include "include/core/types.h"
 #include "include/core/memory.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 
 /* LZ4/ZSTD compression includes */

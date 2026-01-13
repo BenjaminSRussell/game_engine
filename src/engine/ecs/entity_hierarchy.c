@@ -1,5 +1,5 @@
 #include "ecs/entity_hierarchy.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <string.h>
 #include <stdlib.h>
 

@@ -4,7 +4,7 @@
  */
 
 #include "swift_bridge.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/engine.h"
 #include "core/types.h"
 #include "engine/include/math/math.h"

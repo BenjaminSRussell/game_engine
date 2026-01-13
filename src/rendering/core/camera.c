@@ -1,6 +1,6 @@
 // camera.c - Stub implementation
 #include "rendering/camera.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 
 void camera_init(Camera* camera, Vec3 position, Vec3 target, Vec3 up) {

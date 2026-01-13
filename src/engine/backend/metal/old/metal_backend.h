@@ -3,7 +3,7 @@
 
 #include <rendering/renderer.h>
 #include <core/types.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 
 // Metal Renderer Type
 typedef struct MetalRenderer {

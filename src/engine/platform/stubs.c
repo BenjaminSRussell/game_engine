@@ -1,7 +1,7 @@
 // src/engine/platform/stubs.c - FULL IMPLEMENTATIONS
 // Replaces all placeholders with real functional code
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math.h>
 #include <platform/input/input.h>
 #include <stdbool.h>

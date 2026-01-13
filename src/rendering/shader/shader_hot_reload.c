@@ -1,7 +1,7 @@
 // src/engine/rendering/shader/shader_hot_reload.c
 // Shader Hot-Reloading System - Automatic shader recompilation on file changes
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

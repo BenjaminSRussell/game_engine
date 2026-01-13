@@ -1,7 +1,7 @@
 // src/engine/rendering/virtual_texturing/virtual_texturing.c
 // Virtual Texturing System - Mega-texture streaming for unlimited texture detail
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

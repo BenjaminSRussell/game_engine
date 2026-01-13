@@ -1,7 +1,7 @@
 // src/engine/rendering/frame_graph/frame_graph.c
 // Frame Graph System Implementation - Modern render graph with automatic resource management
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <core/string.h>
 #include <stdbool.h>

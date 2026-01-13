@@ -1,7 +1,7 @@
 // src/engine/rendering/vr_ar/vr_ar_support.c
 // VR/AR Support - Virtual and Augmented Reality rendering with stereo 3D and tracking
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 
 // Weather System Stubs
 WeatherType weather_sys_get_type(void) {

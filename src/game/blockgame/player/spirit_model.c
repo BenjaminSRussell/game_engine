@@ -3,7 +3,7 @@
 // asset validation, texture management, and optimization support.
 
 #include <player/spirit_model.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/memory.h>
 #include <engine/assets/system/asset_system/loading/asset_loader.h>
 #include <rendering/renderer.h>

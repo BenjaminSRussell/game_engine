@@ -1,7 +1,7 @@
 // src/engine/platform/vulkan/vulkan_removal.c
 // Vulkan Backend Removal - Stub implementation for macOS-focused engine
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 
 // ============================================================================

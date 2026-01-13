@@ -1,5 +1,5 @@
 #include <player/spell_combination.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <string.h>
 
 #define MAX_COMBINATIONS 16

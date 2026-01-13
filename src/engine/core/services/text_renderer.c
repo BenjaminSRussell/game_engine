@@ -12,7 +12,7 @@
 // TEXT-SYSTEM-008: Add text rendering unit testing framework.
 // TEXT-SYSTEM-009: Implement text rendering documentation system.
 // TEXT-SYSTEM-010: Add text rendering optimization suggestions.
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ctype.h>
 #include <include/math/math.h>
 #include <rendering/text_renderer.h>

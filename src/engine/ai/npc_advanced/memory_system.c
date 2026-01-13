@@ -1,6 +1,6 @@
 #include "../../include/ai/npc_advanced/memory_system.h"
 #include <ai/npc/perception_system.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 // ai/npc_advanced/memory_system.c
 // Advanced AI Memory and Knowledge Graph system.
 //

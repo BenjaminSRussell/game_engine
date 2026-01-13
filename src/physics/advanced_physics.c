@@ -2,7 +2,7 @@
 // Implements advanced physics simulation capabilities
 
 #include "advanced_physics.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

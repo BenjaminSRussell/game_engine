@@ -12,7 +12,7 @@
 #include <float.h> // For FLT_MAX
 
 // Use core logger
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 
 // Macros to replace printf logging with core logging
 #define log_error(fmt, ...) LOG_ERROR(fmt, ##__VA_ARGS__)

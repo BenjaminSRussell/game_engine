@@ -1,7 +1,7 @@
 // src/engine/rendering/procedural/procedural_generation.c
 // Procedural Content Generation - Advanced procedural algorithms for infinite content
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

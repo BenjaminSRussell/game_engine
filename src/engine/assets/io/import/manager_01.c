@@ -32,7 +32,7 @@
 #include "assets/io/import/manager_01.h"
 #include "include/core/types.h"
 #include "include/core/memory.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 
 /* ============================================================================

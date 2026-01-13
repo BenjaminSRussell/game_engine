@@ -1,7 +1,7 @@
 // src/engine/rendering/animation/advanced_animation.c
 // Advanced Animation System - GPU-accelerated animation with skeletal and morph targets
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

@@ -3,7 +3,7 @@
 
 #include <rendering/dynamic_rendering.h>
 #include <rendering/vulkan_dispatch.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <string.h>
 
 #ifdef VULKAN_BUILD

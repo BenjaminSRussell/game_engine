@@ -1,7 +1,7 @@
 // src/engine/rendering/profiling/performance_profiling.c
 // Performance Profiling Tools - Real-time performance monitoring and analysis
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

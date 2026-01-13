@@ -1,7 +1,7 @@
 // src/engine/rendering/audio_visual/audio_visual_sync.c
 // Audio-Visual Synchronization - Real-time audio analysis and visual effects synchronization
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

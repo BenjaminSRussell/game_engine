@@ -1,6 +1,6 @@
 // Skeleton System implementation
 #include "animation/skeleton_system.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math/vec3.h>
 #include <math/vec4.h>
 #include <math/mat4.h>

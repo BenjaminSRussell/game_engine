@@ -1,5 +1,5 @@
 #include "geometry/mesh_gpu.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "core/memory.h"
 #include "core/sync/thread_pool.h"
 #include <stdlib.h>

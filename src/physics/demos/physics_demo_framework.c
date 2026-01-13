@@ -1,6 +1,6 @@
 // Physics Demo Framework - Common utilities for physics demonstrations
 #include "physics_demo_framework.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "rendering/renderer.h"
 #include "engine/include/math/math.h"
 #include <stdio.h>

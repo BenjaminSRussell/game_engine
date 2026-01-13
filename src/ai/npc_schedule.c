@@ -2,7 +2,7 @@
 #include <ai/npc_schedule.h>
 #include <ai/npc.h>
 #include <ecs/components/npc.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 

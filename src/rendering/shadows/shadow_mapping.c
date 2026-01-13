@@ -1,7 +1,7 @@
 // src/engine/rendering/shadows/shadow_mapping.c
 // Shadow Mapping System - Cascaded shadow maps and PCF filtering
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

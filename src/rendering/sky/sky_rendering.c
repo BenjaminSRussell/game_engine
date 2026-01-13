@@ -1,7 +1,7 @@
 // src/engine/rendering/sky/sky_rendering.c
 // Sky Rendering System - Atmospheric scattering, clouds, and celestial bodies
 
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
