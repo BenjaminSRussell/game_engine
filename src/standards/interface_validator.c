@@ -13,9 +13,9 @@
 #include <ctype.h>
 #include <regex.h>
 
-// ========================================
-// Validation Rules
-// ========================================
+/* ============================================================================
+ * VALIDATION RULES
+ * ============================================================================ */
 
 typedef struct ValidationRule {
     const char *name;                      // Rule name
@@ -24,9 +24,9 @@ typedef struct ValidationRule {
     bool is_critical;                       // Whether rule is critical
 } ValidationRule;
 
-// ========================================
-// Validation Results
-// ========================================
+/* ============================================================================
+ * VALIDATION RESULTS
+ * ============================================================================ */
 
 typedef struct ValidationResult {
     const char *rule_name;                 // Rule name
