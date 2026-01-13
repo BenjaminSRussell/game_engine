@@ -1,3 +1,10 @@
+/**
+ * @file rendering_pipeline_tests.c
+ * @brief Test Implementation
+ * @description Test system implementation
+ * @date 2026-01-13
+ */
+
 /*
  * rendering_pipeline_tests.c
  * Unit tests for 3D rendering pipeline
