@@ -9,16 +9,16 @@ void platform_desktop_destroy_window(void);
 #include <GLFW/glfw3.h>
 
 static void glfw_error_callback(int error, const char *description) {
-  LOG_ERROR("GLFW Error (%d): %s", error, description);
+  LOG_ERROR(LOG_CAT_PLATFORM, "GLFW Error (%d): %s", error, description);
 }
 
 bool platform_init(const EngineConfig *config) {
-  LOG_INFO("Initializing Desktop Platform...");
+  LOG_INFO(LOG_CAT_PLATFORM, "Initializing Desktop Platform...");
 
   glfwSetErrorCallback(glfw_error_callback);
 
   if (!glfwInit()) {
-    LOG_FATAL("Failed to initialize GLFW");
+    LOG_FATAL(LOG_CAT_PLATFORM, "Failed to initialize GLFW");
     return false;
   }
 
@@ -33,7 +33,7 @@ bool platform_init(const EngineConfig *config) {
 void platform_shutdown(void) {
   platform_desktop_destroy_window();
   glfwTerminate();
-  LOG_INFO("Desktop Platform Shutdown");
+  LOG_INFO(LOG_CAT_PLATFORM, "Desktop Platform Shutdown");
 }
 
 #else
