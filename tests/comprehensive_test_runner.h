@@ -24,6 +24,11 @@
 #include "memory_allocation_test.h"
 #include "physics_stability_test.h"
 
+// New comprehensive test suites
+#include "test_vulkan_backend.h"
+#include "test_audio_system.h"
+#include "test_asset_management.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -42,6 +47,12 @@ typedef enum TestSuite {
     TEST_SUITE_ENTITY_STRESS,           // Entity stress tests
     TEST_SUITE_MEMORY_ALLOCATION,        // Memory allocation tests
     TEST_SUITE_PHYSICS_STABILITY,       // Physics stability tests
+    
+    // New comprehensive test suites
+    TEST_SUITE_VULKAN_BACKEND,         // Vulkan backend tests
+    TEST_SUITE_AUDIO_SYSTEM,            // Audio system tests
+    TEST_SUITE_ASSET_MANAGEMENT,       // Asset management tests
+    
     TEST_SUITE_ALL,                    // Run all test suites
     TEST_SUITE_COUNT                   // Total number of test suites
 } TestSuite;
