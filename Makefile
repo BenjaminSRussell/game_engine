@@ -217,78 +217,6 @@ physics_demos/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/build
 .PHONY : physics_demos/fast
 
-src/engine/ai/pathfinding/pathfinding_cache_advanced.o: src/engine/ai/pathfinding/pathfinding_cache_advanced.c.o
-.PHONY : src/engine/ai/pathfinding/pathfinding_cache_advanced.o
-
-# target to build an object file
-src/engine/ai/pathfinding/pathfinding_cache_advanced.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_cache_advanced.c.o
-.PHONY : src/engine/ai/pathfinding/pathfinding_cache_advanced.c.o
-
-src/engine/ai/pathfinding/pathfinding_cache_advanced.i: src/engine/ai/pathfinding/pathfinding_cache_advanced.c.i
-.PHONY : src/engine/ai/pathfinding/pathfinding_cache_advanced.i
-
-# target to preprocess a source file
-src/engine/ai/pathfinding/pathfinding_cache_advanced.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_cache_advanced.c.i
-.PHONY : src/engine/ai/pathfinding/pathfinding_cache_advanced.c.i
-
-src/engine/ai/pathfinding/pathfinding_cache_advanced.s: src/engine/ai/pathfinding/pathfinding_cache_advanced.c.s
-.PHONY : src/engine/ai/pathfinding/pathfinding_cache_advanced.s
-
-# target to generate assembly for a file
-src/engine/ai/pathfinding/pathfinding_cache_advanced.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_cache_advanced.c.s
-.PHONY : src/engine/ai/pathfinding/pathfinding_cache_advanced.c.s
-
-src/engine/ai/pathfinding/pathfinding_complete.o: src/engine/ai/pathfinding/pathfinding_complete.c.o
-.PHONY : src/engine/ai/pathfinding/pathfinding_complete.o
-
-# target to build an object file
-src/engine/ai/pathfinding/pathfinding_complete.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_complete.c.o
-.PHONY : src/engine/ai/pathfinding/pathfinding_complete.c.o
-
-src/engine/ai/pathfinding/pathfinding_complete.i: src/engine/ai/pathfinding/pathfinding_complete.c.i
-.PHONY : src/engine/ai/pathfinding/pathfinding_complete.i
-
-# target to preprocess a source file
-src/engine/ai/pathfinding/pathfinding_complete.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_complete.c.i
-.PHONY : src/engine/ai/pathfinding/pathfinding_complete.c.i
-
-src/engine/ai/pathfinding/pathfinding_complete.s: src/engine/ai/pathfinding/pathfinding_complete.c.s
-.PHONY : src/engine/ai/pathfinding/pathfinding_complete.s
-
-# target to generate assembly for a file
-src/engine/ai/pathfinding/pathfinding_complete.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_complete.c.s
-.PHONY : src/engine/ai/pathfinding/pathfinding_complete.c.s
-
-src/engine/ai/pathfinding/pathfinding_optimizer.o: src/engine/ai/pathfinding/pathfinding_optimizer.c.o
-.PHONY : src/engine/ai/pathfinding/pathfinding_optimizer.o
-
-# target to build an object file
-src/engine/ai/pathfinding/pathfinding_optimizer.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_optimizer.c.o
-.PHONY : src/engine/ai/pathfinding/pathfinding_optimizer.c.o
-
-src/engine/ai/pathfinding/pathfinding_optimizer.i: src/engine/ai/pathfinding/pathfinding_optimizer.c.i
-.PHONY : src/engine/ai/pathfinding/pathfinding_optimizer.i
-
-# target to preprocess a source file
-src/engine/ai/pathfinding/pathfinding_optimizer.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_optimizer.c.i
-.PHONY : src/engine/ai/pathfinding/pathfinding_optimizer.c.i
-
-src/engine/ai/pathfinding/pathfinding_optimizer.s: src/engine/ai/pathfinding/pathfinding_optimizer.c.s
-.PHONY : src/engine/ai/pathfinding/pathfinding_optimizer.s
-
-# target to generate assembly for a file
-src/engine/ai/pathfinding/pathfinding_optimizer.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_optimizer.c.s
-.PHONY : src/engine/ai/pathfinding/pathfinding_optimizer.c.s
-
 src/engine/assets/system/asset_system/loading/asset_loader.o: src/engine/assets/system/asset_system/loading/asset_loader.c.o
 .PHONY : src/engine/assets/system/asset_system/loading/asset_loader.o
 
@@ -21427,15 +21355,6 @@ help:
 	@echo "... Engine"
 	@echo "... Game"
 	@echo "... physics_demos"
-	@echo "... src/engine/ai/pathfinding/pathfinding_cache_advanced.o"
-	@echo "... src/engine/ai/pathfinding/pathfinding_cache_advanced.i"
-	@echo "... src/engine/ai/pathfinding/pathfinding_cache_advanced.s"
-	@echo "... src/engine/ai/pathfinding/pathfinding_complete.o"
-	@echo "... src/engine/ai/pathfinding/pathfinding_complete.i"
-	@echo "... src/engine/ai/pathfinding/pathfinding_complete.s"
-	@echo "... src/engine/ai/pathfinding/pathfinding_optimizer.o"
-	@echo "... src/engine/ai/pathfinding/pathfinding_optimizer.i"
-	@echo "... src/engine/ai/pathfinding/pathfinding_optimizer.s"
 	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.o"
 	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.i"
 	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.s"

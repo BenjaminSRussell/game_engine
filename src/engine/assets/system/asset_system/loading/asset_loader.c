@@ -1,10 +1,12 @@
 #include <core/logger.h>
 #include <core/memory.h>
-#include <core/sync/thread_pool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+
+// Forward declaration for ThreadPool
+typedef struct ThreadPool ThreadPool;
 
 // Asset loader core implementation
 #define MAX_ASSET_LOADERS 64

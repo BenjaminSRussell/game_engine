@@ -1,33 +1,15 @@
-// src/config/config.c
-//
-// Module Overview:
-// This module provides the concrete implementation for managing the game's configuration
-// settings. It is responsible for setting default values for all game parameters,
-// loading configurations from an INI-style text file, saving the current settings
-// back to a file, and validating all configuration values to ensure they fall
-// within acceptable and safe ranges. Additionally, it supports checking for external
-// modifications to the configuration file, enabling dynamic reloading of settings.
-//  COMPLETED: Implement config file encryption for sensitive settings -  COMPLETED
-//  COMPLETED: Add config file backup system before modifications -  COMPLETED
-//  COMPLETED: Implement config validation with detailed error reporting -  COMPLETED
-//  COMPLETED: Add config preset system for quick settings changes -  COMPLETED
-//  COMPLETED: Implement config import/export system for sharing settings -  COMPLETED
-//  COMPLETED: Add config migration system for version updates -  COMPLETED
-//  COMPLETED: Implement config hot-reload with change notifications -  COMPLETED
-//  COMPLETED: Add config validation against hardware capabilities -  COMPLETED
-//  COMPLETED: Implement config profile system for multiple users -  COMPLETED
-//  COMPLETED: Add config command-line override system -  COMPLETED
-//
-// Key Flows:
-// 1. **Setting Defaults (`config_set_defaults`):** Initializes a `GameConfig` structure
-//    with a predefined set of values for rendering, graphics, performance, world generation,
-//    audio, and controls. It dynamically determines the number of CPU cores to set
-//    appropriate multithreading defaults.
-// 2. **Loading Configuration (`config_load`):**
-//    - Attempts to open and read an INI-style configuration file.
-//    - If the file doesn't exist, it proceeds with default settings.
-//    - Parses each line, extracting key-value pairs, and updates the `GameConfig` structure.
-//    - After loading, it calls `config_validate` to ensure data integrity.
+/*
+ * config.c
+ * Game configuration management implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides configuration file loading, saving, validation, and hot-reload functionality
+ * Supports INI-style files, encryption, backup system, presets, and profile management
+ */
+
+#include "config.h"
 // 3. **Saving Configuration (`config_save`):** Writes the current `GameConfig` values
 //    to an INI-style text file, including comments for section separation.
 // 4. **Validation (`config_validate`):** Clamps various configuration values (like

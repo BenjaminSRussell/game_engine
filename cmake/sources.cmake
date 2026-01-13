@@ -485,6 +485,9 @@ list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/scripting/script_system\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/rendering/voxel_renderer\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/rendering/renderer_factory\\.c$")
 
+# Exclude broken asset_loader (contains syntax errors)
+list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/asset_loader\\.c$")
+
 # Cinematic subsystems (currently broken)
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/cinematic/.*\\.c$")
 list(FILTER ENGINE_SOURCES EXCLUDE REGEX ".*/cinematics/.*\\.c$")
