@@ -1384,50 +1384,59 @@ uint32_t texture_texture_lod_get_count(void) {
 }
 
 size_t texture_texture_lod_get_memory_usage(void) {
-    // Implement comprehensive memory tracking
-    size_t total = sizeof(g_texture_lod_ctx);
     texture_texture_lod_lock();
     
+    size_t total_memory = sizeof(texture_texture_lod_context_t);
+    
     // Add context memory
-    total += g_texture_lod_ctx.capacity * sizeof(texture_texture_lod_internal_t);
+    total_memory += g_texture_lod_ctx.capacity * sizeof(texture_texture_lod_internal_t);
     
     // Add virtual texturing memory
-    total += g_texture_lod_ctx.virtual_system.page_cache_size;
+    total_memory += g_texture_lod_ctx.virtual_system.page_cache_size;
     
     // Add compression workspace memory
-    total += g_texture_lod_ctx.compression_system.workspace_size;
-    
-    // Add bindless descriptor pool memory (estimate)
-    total += MAX_BINDLESS_TEXTURES * BINDLESS_TEXTURE_HANDLE_SIZE;
-    
-    // Add texture array memory (estimate)
-    total += MAX_TEXTURE_ARRAYS * MAX_TEXTURE_ARRAY_LAYERS * sizeof(void*);
-    
-    // Add feedback system memory
-    total += sizeof(g_texture_lod_ctx.feedback_system);
+    total_memory += g_texture_lod_ctx.compression_system.workspace_size;
     
     // Add cache memory
-    total += TEXTURE_TEXTURE_LOD_CACHE_SIZE * sizeof(g_texture_lod_ctx.cache[0]);
+    total_memory += TEXTURE_TEXTURE_LOD_CACHE_SIZE * sizeof(g_texture_lod_ctx.cache[0]);
     
-    // Add per-item data memory
+    // Add individual texture data
     for (uint32_t i = 0; i < g_texture_lod_ctx.count; i++) {
-        total += g_texture_lod_ctx.items[i].data_size;
-        total += g_texture_lod_ctx.items[i].pending_size;
-        total += g_texture_lod_ctx.items[i].cache_size;
-        
-        // Add virtual texture cache memory
-        if (g_texture_lod_ctx.items[i].virtual_texture.virtual_cache) {
-            total += g_texture_lod_ctx.items[i].virtual_texture.virtual_cache_size;
-        }
-        
-        // Add compression memory
-        if (g_texture_lod_ctx.items[i].compression.compressed_data) {
-            total += g_texture_lod_ctx.items[i].compression.compressed_size;
+        const texture_texture_lod_internal_t* item = &g_texture_lod_ctx.items[i];
+        if (item->initialized) {
+            total_memory += item->data_size;
+            
+            // Add mipmap data
+            if (item->mipmap.mipmaps_generated) {
+                for (uint32_t j = 0; j < item->mipmap.mip_count; j++) {
+                    total_memory += item->mipmap.mip_sizes[j];
+                }
+            }
+            
+            // Add compression data
+            if (item->compressed && item->compression.compressed_data) {
+                total_memory += item->compression.compressed_size;
+            }
+            
+            // Add virtual texturing data
+            if (item->virtual_texturing_enabled && item->virtual_texture.virtual_cache) {
+                total_memory += item->virtual_texture.virtual_cache_size;
+            }
+            
+            // Add bindless data
+            if (item->bindless_enabled) {
+                total_memory += sizeof(uint64_t);
+            }
+            
+            // Add array data
+            if (item->texture_array_enabled) {
+                total_memory += item->texture_array.array_layers * sizeof(void*);
+            }
         }
     }
     
     texture_texture_lod_unlock();
-    return total;
+    return total_memory;
 }
 
 void texture_texture_lod_debug_print(void) {
