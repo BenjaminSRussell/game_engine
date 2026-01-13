@@ -48,7 +48,7 @@
 #ifndef PERFORMANCE_H
 #define PERFORMANCE_H
 
-#include "engine/include/common.h"
+#include "common.h"
 
 typedef struct {
   const char *name;

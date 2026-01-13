@@ -483,6 +483,9 @@ endmacro()
 # add_engine_test(test_cache tests/unit/core/test_cache.c)
 # add_engine_test(test_hashmap tests/unit/core/test_hashmap.c)
 
+# Verification Test for New Core Architecture
+add_engine_test(test_core_init tests/unit/core/test_core_init.c)
+
 # ===========================================
 # Unit Tests - ECS Subsystem
 # ===========================================
