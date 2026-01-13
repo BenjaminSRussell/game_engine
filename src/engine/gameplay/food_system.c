@@ -1,25 +1,18 @@
 #include "food_system.h"
 #include "core/common/memory/allocator.h"
 #include "core/logger.h"
+#include "gameplay/inventory/item_database.h"
+#include "gameplay/crafting_system.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define MAX_FOOD_ITEMS 512
 #define MAX_FOOD_TYPES 64
 #define FOOD_NAME_LENGTH 32
 #define FOOD_DESCRIPTION_LENGTH 128
 #define MAX_NUTRIENTS 8
-
-typedef enum nutrient_type {
-    NUTRIENT_PROTEIN = 0,
-    NUTRIENT_CARBS,
-    NUTRIENT_FAT,
-    NUTRIENT_VITAMINS,
-    NUTRIENT_MINERALS,
-    NUTRIENT_WATER,
-    NUTRIENT_FIBER,
-    NUTRIENT_ANTIOXIDANTS
-} nutrient_type_t;
+#define MAX_PLAYERS 32
 
 typedef struct nutrient_value {
     nutrient_type_t type;
@@ -55,6 +48,7 @@ typedef struct food_item {
 } food_item_t;
 
 typedef struct character_nutrition {
+    uint32_t player_id;
     float nutrient_levels[MAX_NUTRIENTS];
     float last_meal_time;
     float total_calories_consumed;
@@ -90,6 +84,7 @@ static character_nutrition_t* get_player_nutrition(uint32_t player_id);
 static void apply_nutrients(uint32_t player_id, const food_item_t* food);
 static void update_nutrition_status(uint32_t player_id, float delta_time);
 static float calculate_nutrition_bonus(const character_nutrition_t* nutrition);
+static float calculate_calories(const food_item_t* food);
 
 bool food_system_init(void) {
     if (g_food_system.initialized) {
@@ -144,6 +139,25 @@ uint32_t food_add_item(const char* name, const char* description,
     g_food_system.food_count++;
     log_debug("Added food item: %s (ID: %u)", name, food->item_id);
     
+    // Register item with global item database
+    Item item_def = {0};
+    item_def.id = food->item_id;
+    item_def.name = food->name;
+    item_def.description = food->description;
+    item_def.type = ITEM_TYPE_CONSUMABLE;
+    item_def.flags = ITEM_FLAG_CONSUMABLE;
+    if (food->stack_size > 1) {
+        item_def.flags |= ITEM_FLAG_STACKABLE;
+    }
+    item_def.max_stack_size = food->stack_size;
+    item_def.weight = food->weight;
+    item_def.value = 10; // Default value
+
+    // Set consumable data
+    item_def.data.consumable.healing = food->health_restore;
+
+    item_database_register(&item_def);
+
     return food->item_id;
 }
 
@@ -270,6 +284,54 @@ bool food_cook_item(uint32_t player_id, uint32_t raw_item_id, uint32_t cooked_it
     log_info("Player %u cooked %s into %s", player_id, raw_food->name, cooked_food->name);
     
     // This would typically remove raw item from inventory and add cooked item
+    return true;
+}
+
+bool food_set_cooking_recipe(uint32_t raw_item_id, uint32_t cooked_item_id, uint32_t station_type, uint32_t cook_time_ms) {
+    if (!g_food_system.initialized) {
+        return false;
+    }
+
+    food_item_t* raw_food = get_food_item(raw_item_id);
+    food_item_t* cooked_food = get_food_item(cooked_item_id);
+
+    if (!raw_food || !cooked_food) {
+        log_error("Cannot create cooking recipe: food items not found");
+        return false;
+    }
+
+    // Mark raw food as requiring cooking
+    raw_food->requires_cooking = true;
+
+    // Create recipe name
+    char recipe_name[64];
+    snprintf(recipe_name, sizeof(recipe_name), "Cook %s", raw_food->name);
+
+    // Add recipe to crafting system
+    // 5.0f is default XP reward
+    uint32_t recipe_id = crafting_add_recipe(recipe_name, cook_time_ms, station_type, 1, 5.0f);
+    if (recipe_id == 0) {
+        log_error("Failed to create cooking recipe for %s", raw_food->name);
+        return false;
+    }
+
+    // Add ingredient
+    if (!crafting_add_recipe_ingredient(recipe_id, raw_item_id, 1, true)) {
+        log_error("Failed to add ingredient to cooking recipe %u", recipe_id);
+        return false;
+    }
+
+    // Add result
+    // 100% success rate
+    if (!crafting_add_recipe_result(recipe_id, cooked_item_id, 1, 1.0f)) {
+        log_error("Failed to add result to cooking recipe %u", recipe_id);
+        return false;
+    }
+
+    // Auto-discover the recipe
+    crafting_discover_recipe(recipe_id);
+
+    log_debug("Created cooking recipe %u: %s -> %s", recipe_id, raw_food->name, cooked_food->name);
     return true;
 }
 
