@@ -27,14 +27,6 @@
 #define MEMORY_ALIGNMENT 256       // 256-byte alignment for GPU memory
 
 // Memory pool types
-typedef enum {
-    MEMORY_POOL_TEXTURE,
-    MEMORY_POOL_BUFFER,
-    MEMORY_POOL_UNIFORM,
-    MEMORY_POOL_VERTEX,
-    MEMORY_POOL_INDEX,
-    MEMORY_POOL_COUNT
-} MemoryPoolType;
 
 // ============================================================================
 // Memory Block Structure
@@ -64,7 +56,7 @@ typedef struct MemoryBlock {
 // Memory Pool Structure
 // ============================================================================
 
-typedef struct MemoryPool {
+typedef struct GPUMemoryPool {
     MemoryPoolType type;
     char name[64];
     
@@ -90,14 +82,14 @@ typedef struct MemoryPool {
     // Defragmentation
     bool needs_defragmentation;
     float fragmentation_ratio;
-} MemoryPool;
+} GPUMemoryPool;
 
 // ============================================================================
 // GPU Memory Manager Structure
 // ============================================================================
 
 typedef struct GPUMemoryManager {
-    MemoryPool pools[MAX_MEMORY_POOLS];
+    GPUMemoryPool pools[MAX_MEMORY_POOLS];
     uint32_t pool_count;
     
     // Global statistics
@@ -140,11 +132,11 @@ static GPUMemoryManager* g_memory_manager = NULL;
 
 static const char* pool_type_to_string(MemoryPoolType type);
 static uint64_t align_size(uint64_t size, uint64_t alignment);
-static float calculate_fragmentation_ratio(MemoryPool* pool);
+static float calculate_fragmentation_ratio(GPUMemoryPool* pool);
 static bool gpu_memory_validate_allocation(GPUMemoryAllocation* allocation);
 static void gpu_memory_log_validation_error(const char* error);
 static uint64_t gpu_memory_get_timestamp(void);
-static bool gpu_memory_validate_pool_integrity(MemoryPool* pool);
+static bool gpu_memory_validate_pool_integrity(GPUMemoryPool* pool);
 static bool gpu_memory_detect_memory_leaks(void);
 
 static uint64_t align_size(uint64_t size, uint64_t alignment) {
@@ -162,7 +154,7 @@ static const char* pool_type_to_string(MemoryPoolType type) {
     }
 }
 
-static float calculate_fragmentation_ratio(MemoryPool* pool) {
+static float calculate_fragmentation_ratio(GPUMemoryPool* pool) {
     if (pool->block_count <= 1) return 0.0f;
     
     uint64_t total_free = 0;
@@ -193,8 +185,8 @@ static bool create_memory_pool(MemoryPoolType type, uint64_t size, const char* n
         return false;
     }
     
-    MemoryPool* pool = &g_memory_manager->pools[g_memory_manager->pool_count];
-    memset(pool, 0, sizeof(MemoryPool));
+    GPUMemoryPool* pool = &g_memory_manager->pools[g_memory_manager->pool_count];
+    memset(pool, 0, sizeof(GPUMemoryPool));
     
     pool->type = type;
     pool->size = align_size(size, MEMORY_ALIGNMENT);
@@ -214,7 +206,7 @@ static bool create_memory_pool(MemoryPoolType type, uint64_t size, const char* n
     
     pool->metal_buffer = [g_metal_device newBufferWithLength:pool->size options:options];
     if (!pool->metal_buffer) {
-        LOG_ERROR("Failed to create Metal buffer for pool '%s'", pool->name);
+        LOG_ERROR(LOG_CAT_MEMORY, "Failed to create Metal buffer for pool '%s'", pool->name);
         return false;
     }
     
@@ -240,11 +232,11 @@ static bool create_memory_pool(MemoryPoolType type, uint64_t size, const char* n
     g_memory_manager->pool_count++;
     g_memory_manager->stats.total_memory += pool->size;
     
-    LOG_INFO("Created memory pool '%s': %llu bytes", pool->name, pool->size);
+    LOG_INFO(LOG_CAT_MEMORY, "Created memory pool '%s': %llu bytes", pool->name, pool->size);
     return true;
 }
 
-static MemoryPool* find_pool(MemoryPoolType type) {
+static GPUMemoryPool* find_pool(MemoryPoolType type) {
     if (!g_memory_manager) return NULL;
     
     for (uint32_t i = 0; i < g_memory_manager->pool_count; i++) {
@@ -255,7 +247,7 @@ static MemoryPool* find_pool(MemoryPoolType type) {
     return NULL;
 }
 
-static uint32_t find_best_fit_block(MemoryPool* pool, uint64_t size) {
+static uint32_t find_best_fit_block(GPUMemoryPool* pool, uint64_t size) {
     uint32_t best_block = UINT32_MAX;
     uint64_t best_size = UINT64_MAX;
     
@@ -281,7 +273,7 @@ static uint32_t find_best_fit_block(MemoryPool* pool, uint64_t size) {
     return best_block;
 }
 
-static void remove_from_free_list(MemoryPool* pool, uint32_t block_index) {
+static void remove_from_free_list(GPUMemoryPool* pool, uint32_t block_index) {
     MemoryBlock* block = &pool->blocks[block_index];
     
     if (block->prev_block != UINT32_MAX) {
@@ -298,7 +290,7 @@ static void remove_from_free_list(MemoryPool* pool, uint32_t block_index) {
     block->next_block = UINT32_MAX;
 }
 
-static void add_to_free_list(MemoryPool* pool, uint32_t block_index) {
+static void add_to_free_list(GPUMemoryPool* pool, uint32_t block_index) {
     MemoryBlock* block = &pool->blocks[block_index];
     
     // Insert at head of free list
@@ -312,7 +304,7 @@ static void add_to_free_list(MemoryPool* pool, uint32_t block_index) {
     pool->free_list_head = block_index;
 }
 
-static void merge_adjacent_free_blocks(MemoryPool* pool) {
+static void merge_adjacent_free_blocks(GPUMemoryPool* pool) {
     for (uint32_t i = 0; i < pool->block_count; i++) {
         MemoryBlock* block = &pool->blocks[i];
         
@@ -335,16 +327,21 @@ static void merge_adjacent_free_blocks(MemoryPool* pool) {
             
             pool->block_count--;
             
-            // Update block indices in free list
-            uint32_t current = pool->free_list_head;
-            while (current != UINT32_MAX) {
-                if (pool->blocks[current].prev_block > i + 1) {
-                    pool->blocks[current].prev_block--;
+            // Update free_list_head if it points to a moved block
+            if (pool->free_list_head != UINT32_MAX && pool->free_list_head > i + 1) {
+                pool->free_list_head--;
+            }
+
+            // Update indices in all blocks
+            for (uint32_t j = 0; j < pool->block_count; j++) {
+                if (pool->blocks[j].is_free) {
+                     if (pool->blocks[j].prev_block != UINT32_MAX && pool->blocks[j].prev_block > i + 1) {
+                         pool->blocks[j].prev_block--;
+                     }
+                     if (pool->blocks[j].next_block != UINT32_MAX && pool->blocks[j].next_block > i + 1) {
+                         pool->blocks[j].next_block--;
+                     }
                 }
-                if (pool->blocks[current].next_block > i + 1) {
-                    pool->blocks[current].next_block--;
-                }
-                current = pool->blocks[current].next_block;
             }
             
             // Recheck this block
@@ -359,13 +356,13 @@ static void merge_adjacent_free_blocks(MemoryPool* pool) {
 
 bool gpu_memory_init(void) {
     if (g_memory_manager) {
-        LOG_WARNING("GPU memory manager already initialized");
+        LOG_WARN(LOG_CAT_MEMORY, "GPU memory manager already initialized");
         return true;
     }
     
     g_memory_manager = calloc(1, sizeof(GPUMemoryManager));
     if (!g_memory_manager) {
-        LOG_ERROR("Failed to allocate GPU memory manager");
+        LOG_ERROR(LOG_CAT_MEMORY, "Failed to allocate GPU memory manager");
         return false;
     }
     
@@ -387,7 +384,7 @@ bool gpu_memory_init(void) {
         !create_memory_pool(MEMORY_POOL_BUFFER, buffer_pool_size, "buffer_pool") ||
         !create_memory_pool(MEMORY_POOL_VERTEX, vertex_pool_size, "vertex_pool") ||
         !create_memory_pool(MEMORY_POOL_UNIFORM, uniform_pool_size, "uniform_pool")) {
-        LOG_ERROR("Failed to create default memory pools");
+        LOG_ERROR(LOG_CAT_MEMORY, "Failed to create default memory pools");
         free(g_memory_manager);
         g_memory_manager = NULL;
         return false;
@@ -402,7 +399,7 @@ bool gpu_memory_init(void) {
     g_memory_manager->next_allocation_id = 1;
     g_memory_manager->initialized = true;
     
-    LOG_INFO("GPU memory manager initialized with validation enabled");
+    LOG_INFO(LOG_CAT_MEMORY, "GPU memory manager initialized with validation enabled");
     return true;
 }
 
@@ -413,21 +410,21 @@ void gpu_memory_shutdown(void) {
     
     // Report statistics before destruction
     if (g_memory_manager->validation_enabled) {
-        LOG_INFO("GPU Memory Management Statistics:");
-        LOG_INFO("  Validation errors: %lu", g_memory_manager->validation_errors);
-        LOG_INFO("  Total defragmentations: %lu", g_memory_manager->total_defragmentations);
-        LOG_INFO("  Failed defragmentations: %lu", g_memory_manager->failed_defragmentations);
-        LOG_INFO("  Memory leaks detected: %lu", g_memory_manager->memory_leaks_detected);
+        LOG_INFO(LOG_CAT_MEMORY, "GPU Memory Management Statistics:");
+        LOG_INFO(LOG_CAT_MEMORY, "  Validation errors: %lu", g_memory_manager->validation_errors);
+        LOG_INFO(LOG_CAT_MEMORY, "  Total defragmentations: %lu", g_memory_manager->total_defragmentations);
+        LOG_INFO(LOG_CAT_MEMORY, "  Failed defragmentations: %lu", g_memory_manager->failed_defragmentations);
+        LOG_INFO(LOG_CAT_MEMORY, "  Memory leaks detected: %lu", g_memory_manager->memory_leaks_detected);
         
         // Check for memory leaks before shutdown
         if (gpu_memory_detect_memory_leaks()) {
-            LOG_WARN("Memory leaks detected during shutdown");
+            LOG_WARN(LOG_CAT_MEMORY, "Memory leaks detected during shutdown");
         }
     }
     
     // Cleanup all pools
     for (uint32_t i = 0; i < g_memory_manager->pool_count; i++) {
-        MemoryPool* pool = &g_memory_manager->pools[i];
+        GPUMemoryPool* pool = &g_memory_manager->pools[i];
         
 #ifdef __APPLE__
         if (pool->metal_buffer) {
@@ -439,20 +436,20 @@ void gpu_memory_shutdown(void) {
     free(g_memory_manager);
     g_memory_manager = NULL;
     
-    LOG_INFO("GPU memory manager shutdown");
+    LOG_INFO(LOG_CAT_MEMORY, "GPU memory manager shutdown");
 }
 
 GPUMemoryAllocation gpu_memory_allocate(MemoryPoolType type, uint64_t size, const char* name) {
     GPUMemoryAllocation allocation = {0};
     
     if (!g_memory_manager) {
-        LOG_ERROR("GPU memory manager not initialized");
+        LOG_ERROR(LOG_CAT_MEMORY, "GPU memory manager not initialized");
         return allocation;
     }
     
-    MemoryPool* pool = find_pool(type);
+    GPUMemoryPool* pool = find_pool(type);
     if (!pool) {
-        LOG_ERROR("No pool found for type %s", pool_type_to_string(type));
+        LOG_ERROR(LOG_CAT_MEMORY, "No pool found for type %s", pool_type_to_string(type));
         return allocation;
     }
     
@@ -461,7 +458,7 @@ GPUMemoryAllocation gpu_memory_allocate(MemoryPoolType type, uint64_t size, cons
     // Find best fit block
     uint32_t block_index = find_best_fit_block(pool, aligned_size);
     if (block_index == UINT32_MAX) {
-        LOG_ERROR("Failed to find free block of size %llu in pool '%s'", 
+        LOG_ERROR(LOG_CAT_MEMORY, "Failed to find free block of size %llu in pool '%s'",
                   aligned_size, pool->name);
         return allocation;
     }
@@ -471,7 +468,7 @@ GPUMemoryAllocation gpu_memory_allocate(MemoryPoolType type, uint64_t size, cons
     // If block is larger than needed, split it
     if (block->size > aligned_size + MIN_BLOCK_SIZE) {
         if (pool->block_count >= MAX_MEMORY_BLOCKS) {
-            LOG_ERROR("Too many memory blocks in pool '%s'", pool->name);
+            LOG_ERROR(LOG_CAT_MEMORY, "Too many memory blocks in pool '%s'", pool->name);
             return allocation;
         }
         
@@ -535,7 +532,7 @@ GPUMemoryAllocation gpu_memory_allocate(MemoryPoolType type, uint64_t size, cons
                            (uint8_t*)pool->cpu_pointer + block->offset : NULL;
 #endif
     
-    LOG_DEBUG("Allocated %llu bytes from pool '%s': %s", 
+    LOG_DEBUG(LOG_CAT_MEMORY, "Allocated %llu bytes from pool '%s': %s",
               aligned_size, pool->name, block->debug_name);
     
     return allocation;
@@ -546,9 +543,9 @@ void gpu_memory_free(GPUMemoryAllocation* allocation) {
         return;
     }
     
-    MemoryPool* pool = find_pool(allocation->pool_type);
+    GPUMemoryPool* pool = find_pool(allocation->pool_type);
     if (!pool) {
-        LOG_ERROR("Invalid pool type in allocation");
+        LOG_ERROR(LOG_CAT_MEMORY, "Invalid pool type in allocation");
         return;
     }
     
@@ -562,7 +559,7 @@ void gpu_memory_free(GPUMemoryAllocation* allocation) {
     }
     
     if (block_index == UINT32_MAX) {
-        LOG_ERROR("Allocation %u not found in pool '%s'", 
+        LOG_ERROR(LOG_CAT_MEMORY, "Allocation %u not found in pool '%s'",
                   allocation->allocation_id, pool->name);
         return;
     }
@@ -595,7 +592,7 @@ void gpu_memory_free(GPUMemoryAllocation* allocation) {
         pool->needs_defragmentation = true;
     }
     
-    LOG_DEBUG("Freed %llu bytes from pool '%s'", block->size, pool->name);
+    LOG_DEBUG(LOG_CAT_MEMORY, "Freed %llu bytes from pool '%s'", block->size, pool->name);
     
     // Clear allocation handle
     memset(allocation, 0, sizeof(GPUMemoryAllocation));
@@ -615,7 +612,7 @@ void* gpu_memory_get_cpu_pointer(GPUMemoryAllocation* allocation) {
 // Defragmentation
 // ============================================================================
 
-static bool plan_defragmentation(MemoryPool* pool) {
+static bool plan_defragmentation(GPUMemoryPool* pool) {
     if (!pool->needs_defragmentation) {
         return true;
     }
@@ -638,7 +635,7 @@ static bool plan_defragmentation(MemoryPool* pool) {
     return true;
 }
 
-static bool execute_defragmentation(MemoryPool* pool) {
+static bool execute_defragmentation(GPUMemoryPool* pool) {
     bool any_moves = false;
     
     for (uint32_t i = 0; i < pool->block_count; i++) {
@@ -675,7 +672,7 @@ static bool execute_defragmentation(MemoryPool* pool) {
         pool->fragmentation_ratio = calculate_fragmentation_ratio(pool);
         pool->needs_defragmentation = false;
         
-        LOG_INFO("Defragmented pool '%s': fragmentation %.2f%%", 
+        LOG_INFO(LOG_CAT_MEMORY, "Defragmented pool '%s': fragmentation %.2f%%",
                  pool->name, pool->fragmentation_ratio * 100.0f);
     }
     
@@ -692,7 +689,7 @@ void gpu_memory_defragment(void) {
     uint32_t failed_defrags = 0;
     
     for (uint32_t i = 0; i < g_memory_manager->pool_count; i++) {
-        MemoryPool* pool = &g_memory_manager->pools[i];
+        GPUMemoryPool* pool = &g_memory_manager->pools[i];
         
         if (pool->needs_defragmentation) {
             // Validate pool integrity before defragmentation
@@ -723,7 +720,7 @@ void gpu_memory_defragment(void) {
     uint64_t defrag_time = defrag_end - defrag_start;
     
     if (successful_defrags > 0 || failed_defrags > 0) {
-        LOG_INFO("Defragmentation completed: %u successful, %u failed (%.2f ms)", 
+        LOG_INFO(LOG_CAT_MEMORY, "Defragmentation completed: %u successful, %u failed (%.2f ms)",
                  successful_defrags, failed_defrags, defrag_time / 1000000.0);
     }
 }
@@ -760,7 +757,7 @@ void gpu_memory_get_stats(GPUMemoryStats* out) {
     uint32_t pools_with_fragmentation = 0;
     
     for (uint32_t i = 0; i < g_memory_manager->pool_count; i++) {
-        MemoryPool* pool = &g_memory_manager->pools[i];
+        GPUMemoryPool* pool = &g_memory_manager->pools[i];
         total_fragmentation += pool->fragmentation_ratio;
         if (pool->fragmentation_ratio > 0.0f) {
             pools_with_fragmentation++;
@@ -777,22 +774,22 @@ void gpu_memory_log_stats(void) {
     GPUMemoryStats stats;
     gpu_memory_get_stats(&stats);
     
-    LOG_INFO("=== GPU Memory Statistics ===");
-    LOG_INFO("Total memory: %llu MB", stats.total_memory / (1024 * 1024));
-    LOG_INFO("Used memory: %llu MB (%.1f%%)", 
+    LOG_INFO(LOG_CAT_MEMORY, "=== GPU Memory Statistics ===");
+    LOG_INFO(LOG_CAT_MEMORY, "Total memory: %llu MB", stats.total_memory / (1024 * 1024));
+    LOG_INFO(LOG_CAT_MEMORY, "Used memory: %llu MB (%.1f%%)",
              stats.used_memory / (1024 * 1024),
              (float)stats.used_memory / stats.total_memory * 100.0f);
-    LOG_INFO("Free memory: %llu MB", stats.free_memory / (1024 * 1024));
-    LOG_INFO("Total allocations: %u", stats.total_allocations);
-    LOG_INFO("Total frees: %u", stats.total_frees);
-    LOG_INFO("Peak usage: %llu MB", stats.peak_usage / (1024 * 1024));
-    LOG_INFO("Fragmentation: %.1f%%", stats.fragmentation_ratio * 100.0f);
-    LOG_INFO("================================");
+    LOG_INFO(LOG_CAT_MEMORY, "Free memory: %llu MB", stats.free_memory / (1024 * 1024));
+    LOG_INFO(LOG_CAT_MEMORY, "Total allocations: %u", stats.total_allocations);
+    LOG_INFO(LOG_CAT_MEMORY, "Total frees: %u", stats.total_frees);
+    LOG_INFO(LOG_CAT_MEMORY, "Peak usage: %llu MB", stats.peak_usage / (1024 * 1024));
+    LOG_INFO(LOG_CAT_MEMORY, "Fragmentation: %.1f%%", stats.fragmentation_ratio * 100.0f);
+    LOG_INFO(LOG_CAT_MEMORY, "================================");
     
     // Per-pool statistics
     for (uint32_t i = 0; i < g_memory_manager->pool_count; i++) {
-        MemoryPool* pool = &g_memory_manager->pools[i];
-        LOG_INFO("Pool '%s': %llu/%llu MB used, %u blocks, %.1f%% fragmented",
+        GPUMemoryPool* pool = &g_memory_manager->pools[i];
+        LOG_INFO(LOG_CAT_MEMORY, "Pool '%s': %llu/%llu MB used, %u blocks, %.1f%% fragmented",
                  pool->name,
                  pool->used_size / (1024 * 1024),
                  pool->size / (1024 * 1024),
@@ -839,7 +836,7 @@ static void gpu_memory_log_validation_error(const char* error) {
     if (!error) return;
     
     g_memory_manager->validation_errors++;
-    LOG_ERROR("GPU Memory Validation Error [%lu]: %s", 
+    LOG_ERROR(LOG_CAT_MEMORY, "GPU Memory Validation Error [%lu]: %s",
              g_memory_manager->validation_errors, error);
 }
 
@@ -849,7 +846,7 @@ static uint64_t gpu_memory_get_timestamp(void) {
     return (uint64_t)ts.tv_sec * 1000000000ULL + (uint64_t)ts.tv_nsec;
 }
 
-static bool gpu_memory_validate_pool_integrity(MemoryPool* pool) {
+static bool gpu_memory_validate_pool_integrity(GPUMemoryPool* pool) {
     if (!pool) return false;
     
     // Check pool size
@@ -932,7 +929,7 @@ static bool gpu_memory_detect_memory_leaks(void) {
     bool leaks_detected = false;
     
     for (uint32_t i = 0; i < g_memory_manager->pool_count; i++) {
-        MemoryPool* pool = &g_memory_manager->pools[i];
+        GPUMemoryPool* pool = &g_memory_manager->pools[i];
         
         // Check for allocated blocks that should be freed
         for (uint32_t j = 0; j < pool->block_count; j++) {
@@ -941,7 +938,7 @@ static bool gpu_memory_detect_memory_leaks(void) {
             if (!block->is_free && block->allocation_id > 0) {
                 // This block is allocated - check if it's a potential leak
                 // In a real implementation, you'd track allocation lifetimes
-                LOG_WARN("Potential memory leak in pool '%s': %s (%llu bytes)", 
+                LOG_WARN(LOG_CAT_MEMORY, "Potential memory leak in pool '%s': %s (%llu bytes)",
                          pool->name, block->debug_name, block->size);
                 leaks_detected = true;
                 g_memory_manager->memory_leaks_detected++;
@@ -961,7 +958,7 @@ void gpu_memory_enable_validation(bool enabled) {
     
     g_memory_manager->validation_enabled = enabled;
     g_memory_manager->last_validation_time = gpu_memory_get_timestamp();
-    LOG_INFO("GPU memory validation %s", enabled ? "enabled" : "disabled");
+    LOG_INFO(LOG_CAT_MEMORY, "GPU memory validation %s", enabled ? "enabled" : "disabled");
 }
 
 bool gpu_memory_validate_state(void) {
@@ -1024,5 +1021,5 @@ void gpu_memory_reset_validation_statistics(void) {
     g_memory_manager->memory_leaks_detected = 0;
     g_memory_manager->last_validation_time = gpu_memory_get_timestamp();
     
-    LOG_INFO("GPU memory validation statistics reset");
+    LOG_INFO(LOG_CAT_MEMORY, "GPU memory validation statistics reset");
 }

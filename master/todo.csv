@@ -39,7 +39,7 @@ TODO-0037,doc_checklist,Comprehensive Subsystem Audit - Engineering Deep Dive > 
 TODO-0038,doc_checklist,Comprehensive Subsystem Audit - Engineering Deep Dive > CONCLUSION & ROADMAP > Next 30 Days,COMPREHENSIVE_SUBSYSTEM_AUDIT.md,Full integration test suite (all systems interacting),open
 TODO-0039,doc_checklist,Comprehensive Subsystem Audit - Engineering Deep Dive > CONCLUSION & ROADMAP > Next 30 Days,COMPREHENSIVE_SUBSYSTEM_AUDIT.md,Documentation expansion to 500+ pages,open
 TODO-0040,doc_checklist,Minecraft v2 Engine - Complete Engineering Audit & Architecture Guide > 7. INTEGRATION VERIFICATION CHECKLIST > 7.1 Rendering Pipeline,ENGINE_ARCHITECTURE_MASTER_AUDIT.md,**PENDING**: Shader implementations for compute passes,open
-TODO-0041,doc_checklist,Minecraft v2 Engine - Complete Engineering Audit & Architecture Guide > 7. INTEGRATION VERIFICATION CHECKLIST > 7.1 Rendering Pipeline,ENGINE_ARCHITECTURE_MASTER_AUDIT.md,**PENDING**: GPU memory allocation validation,open
+TODO-0041,doc_checklist,Minecraft v2 Engine - Complete Engineering Audit & Architecture Guide > 7. INTEGRATION VERIFICATION CHECKLIST > 7.1 Rendering Pipeline,ENGINE_ARCHITECTURE_MASTER_AUDIT.md,**DONE**: GPU memory allocation validation,closed
 TODO-0042,doc_checklist,Minecraft v2 Engine - Complete Engineering Audit & Architecture Guide > 7. INTEGRATION VERIFICATION CHECKLIST > 7.1 Rendering Pipeline,ENGINE_ARCHITECTURE_MASTER_AUDIT.md,**PENDING**: Render target setup verification,open
 TODO-0043,doc_checklist,Minecraft v2 Engine - Complete Engineering Audit & Architecture Guide > 7. INTEGRATION VERIFICATION CHECKLIST > 7.2 Physics System,ENGINE_ARCHITECTURE_MASTER_AUDIT.md,**PENDING**: Continuous collision detection on high-speed objects,open
 TODO-0044,doc_checklist,Minecraft v2 Engine - Complete Engineering Audit & Architecture Guide > 7. INTEGRATION VERIFICATION CHECKLIST > 7.2 Physics System,ENGINE_ARCHITECTURE_MASTER_AUDIT.md,**PENDING**: Deterministic replay for networked physics,open
@@ -498,7 +498,7 @@ TODO-0486,feature,Rendering Pipeline Review,Agent Review,Remove redundant Metal 
 TODO-0487,feature,Rendering Pipeline Review,Agent Review,Implement unified render graph system for pipeline management,open
 TODO-0488,feature,Rendering Pipeline Review,Agent Review,Add shader hot-reload system for development workflow,open
 TODO-0489,feature,Rendering Pipeline Review,Agent Review,Implement render target management system,open
-TODO-0490,feature,Rendering Pipeline Review,Agent Review,Add GPU memory allocation validation and tracking,open
+TODO-0490,feature,Rendering Pipeline Review,Agent Review,Add GPU memory allocation validation and tracking,closed
 TODO-0477,doc_checklist,Master Implementation Checklist - Minecraft v2 Rendering > 🔴 PHASE 1: CRITICAL FIXES & STABILIZATION > Phase 1.3: Duplicate Code Removal ⏳ PENDING,MASTER_IMPLEMENTATION_CHECKLIST.md,Delete `vulkan_capabilities_alt.c`,open
 TODO-0478,doc_checklist,Master Implementation Checklist - Minecraft v2 Rendering > 🔴 PHASE 1: CRITICAL FIXES & STABILIZATION > Phase 1.3: Duplicate Code Removal ⏳ PENDING,MASTER_IMPLEMENTATION_CHECKLIST.md,Delete `vulkan_surface_alt.c`,open
 TODO-0479,doc_checklist,Master Implementation Checklist - Minecraft v2 Rendering > 🔴 PHASE 1: CRITICAL FIXES & STABILIZATION > Phase 1.3: Duplicate Code Removal ⏳ PENDING,MASTER_IMPLEMENTATION_CHECKLIST.md,Verify no linker conflicts,open
@@ -16662,7 +16662,7 @@ TODO-16539,todo_md,Master TODO,master/todo.md,Performance profiling and optimiza
 TODO-16540,todo_md,Master TODO,master/todo.md,Full integration test suite (all systems interacting) (COMPREHENSIVE_SUBSYSTEM_AUDIT.md),open
 TODO-16541,todo_md,Master TODO,master/todo.md,Documentation expansion to 500+ pages (COMPREHENSIVE_SUBSYSTEM_AUDIT.md),open
 TODO-16542,todo_md,Master TODO,master/todo.md,**PENDING**: Shader implementations for compute passes (ENGINE_ARCHITECTURE_MASTER_AUDIT.md),open
-TODO-16543,todo_md,Master TODO,master/todo.md,**PENDING**: GPU memory allocation validation (ENGINE_ARCHITECTURE_MASTER_AUDIT.md),open
+TODO-16543,todo_md,Master TODO,master/todo.md,**DONE**: GPU memory allocation validation (ENGINE_ARCHITECTURE_MASTER_AUDIT.md),closed
 TODO-16544,todo_md,Master TODO,master/todo.md,**PENDING**: Render target setup verification (ENGINE_ARCHITECTURE_MASTER_AUDIT.md),open
 TODO-16545,todo_md,Master TODO,master/todo.md,**PENDING**: Continuous collision detection on high-speed objects (ENGINE_ARCHITECTURE_MASTER_AUDIT.md),open
 TODO-16546,todo_md,Master TODO,master/todo.md,**PENDING**: Deterministic replay for networked physics (ENGINE_ARCHITECTURE_MASTER_AUDIT.md),open
