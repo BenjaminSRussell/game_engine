@@ -6,7 +6,7 @@
 #ifndef TEXTURE_SYSTEM_H
 #define TEXTURE_SYSTEM_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>

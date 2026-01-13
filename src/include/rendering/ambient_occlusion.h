@@ -15,7 +15,7 @@
 #ifndef AMBIENT_OCCLUSION_H
 #define AMBIENT_OCCLUSION_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 #include <math/vec4.h>
 

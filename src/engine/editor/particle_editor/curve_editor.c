@@ -1,6 +1,6 @@
 #include "editor/particle_editor/curve_editor.h"
-#include "core/memory.h"
-#include "core/logger.h"
+#include "engine/include/core/memory.h"
+#include "engine/include/core/logger.h"
 #include <string.h>
 #include <include/math/math.h>
 #include <stdlib.h>

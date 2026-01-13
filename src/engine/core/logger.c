@@ -62,7 +62,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <execinfo.h>
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 
 Logger g_logger = {
     .level = LOG_LEVEL_INFO,

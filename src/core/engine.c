@@ -6,7 +6,7 @@
 #include <core/game_loop.h>
 #include <core/game_module.h>
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <core/performance.h>
 #include <core/string_utils.h>
 #include <core/window.h>

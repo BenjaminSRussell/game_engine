@@ -1,7 +1,7 @@
 #ifndef AMBIENT_SYSTEM_H
 #define AMBIENT_SYSTEM_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 #include "include/audio/audio_system.h"
 

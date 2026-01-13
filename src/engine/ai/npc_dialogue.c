@@ -18,7 +18,7 @@
 #include <ecs/components/npc.h>
 #include <ecs/components/transform.h>
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>

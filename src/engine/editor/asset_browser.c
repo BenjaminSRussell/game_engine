@@ -1,7 +1,7 @@
 #include <common.h>
 #include <core/asset_manager.h>
-#include <core/logger.h>
-#include <core/memory.h>
+#include "engine/include/core/logger.h"
+#include "engine/include/core/memory.h"
 #include <core/resource/vfs/vfs.h>
 #include <core/time_system.h>
 #include <editor/editor_main.h>

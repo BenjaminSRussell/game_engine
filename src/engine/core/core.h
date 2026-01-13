@@ -3,7 +3,7 @@
 #include <common.h>
 #include <core/types.h>
 #include <core/engine_core.h>
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <core/hashmap.h>
 #include <core/containers.h>
 #include "engine/include/core/logger.h"

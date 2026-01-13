@@ -3,7 +3,7 @@
 #ifndef AUDIO_INTEGRATION_H
 #define AUDIO_INTEGRATION_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 
 // Forward declarations

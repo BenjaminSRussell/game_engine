@@ -1,6 +1,6 @@
 // Crash Report System implementation
 #include "debug/crash_report_system.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <curl/curl.h>
 #include <execinfo.h>
 #include "engine/include/math/math.h"

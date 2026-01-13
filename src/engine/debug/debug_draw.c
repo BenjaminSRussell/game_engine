@@ -1,6 +1,6 @@
 #include "debug_draw.h"
-#include <core/logger.h>
-#include <core/memory.h>
+#include "engine/include/core/logger.h"
+#include "engine/include/core/memory.h"
 #include <core/time_system.h>
 #include <rendering/renderer.h>
 #include <stdlib.h>

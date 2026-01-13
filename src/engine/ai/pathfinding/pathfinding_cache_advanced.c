@@ -4,7 +4,7 @@
 // Provides hierarchical caching, path prediction, and dynamic optimization
 
 #include <ai/pathfinding/pathfinding_cache_advanced.h>
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <core/logging/unified_logger.h>
 #include <string.h>
 #include <math.h>

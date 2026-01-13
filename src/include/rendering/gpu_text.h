@@ -8,7 +8,7 @@
 #define GPU_TEXT_H
 
 #include "include/rendering/text_renderer.h"
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/mat4.h>
 #include <math/vec2.h>
 #include <math/vec3.h>

@@ -1,5 +1,5 @@
 #include "level_editor.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <core/input.h>
 #include <scene/scene_system.h>
 #include <editor/editor_main.h> // For g_editor if needed

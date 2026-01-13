@@ -1,6 +1,6 @@
 #include "editor/ui/docking_system.h"
-#include "core/memory.h"
-#include "core/logger.h"
+#include "engine/include/core/memory.h"
+#include "engine/include/core/logger.h"
 #include "core/json.h" // Assuming JSON support exists given json.c in metadata
 #include <string.h>
 #include <stdio.h>

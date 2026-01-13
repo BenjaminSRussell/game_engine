@@ -14,7 +14,7 @@
 // Machine networking: IMPLEMENTED (multiplayer synchronization).
 
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <inventory/item_registry.h>
 #include <math.h>
 #include <stdlib.h>

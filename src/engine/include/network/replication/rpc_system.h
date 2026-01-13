@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/core.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 
 typedef struct RPCSystem RPCSystem;
 

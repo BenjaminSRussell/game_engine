@@ -1,5 +1,5 @@
 #include "core/sync/sync_primitives.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 #include "core/logging.h"
 #include <stdint.h>
 #include <stdbool.h>

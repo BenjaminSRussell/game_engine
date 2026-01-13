@@ -15,7 +15,7 @@
 #ifndef ENGINE_INPUT_H
 #define ENGINE_INPUT_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/math/math.h"
 
 // Forward declarations

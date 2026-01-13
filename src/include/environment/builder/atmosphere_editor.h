@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include "engine/include/common.h"
 #include "math/vec3.h"
 
 typedef struct AtmosphereConfig {

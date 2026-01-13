@@ -5,7 +5,7 @@
 #ifndef NETWORK_SYSTEM_H
 #define NETWORK_SYSTEM_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 
 // Forward declarations

@@ -1,5 +1,5 @@
 #include "property_editor.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <editor/editor_main.h>
 #include <stdio.h>
 

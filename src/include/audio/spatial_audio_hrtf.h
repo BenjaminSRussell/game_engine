@@ -1,7 +1,7 @@
 #ifndef SPATIAL_AUDIO_HRTF_H
 #define SPATIAL_AUDIO_HRTF_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------

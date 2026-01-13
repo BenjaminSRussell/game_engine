@@ -90,7 +90,7 @@ Logger g_logger = {0};
 #include <sys/stat.h>
 #include <errno.h>
 #include <execinfo.h>
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 
 static LogEntry g_breadcrumb_buffer[LOG_ENTRY_RINGBUFFER_SIZE];
 static u32 g_breadcrumb_index = 0;

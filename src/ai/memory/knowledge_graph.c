@@ -1,5 +1,5 @@
 #include "ai/memory/knowledge_graph.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <core/threading/mutex.h>
 #include <core/time_system.h>
 #include <string.h>

@@ -34,7 +34,7 @@
 #include "include/core/types.h"
 #include "include/core/memory.h"
 #include "engine/include/core/logger.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 
 // Additional includes for advanced features
 #ifdef _WIN32

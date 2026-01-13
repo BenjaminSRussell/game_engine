@@ -1,6 +1,6 @@
 // svg_test.c - SVG Import Test Utility
 #include "svg_importer.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 

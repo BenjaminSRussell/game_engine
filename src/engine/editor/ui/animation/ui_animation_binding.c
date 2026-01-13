@@ -5,7 +5,7 @@
 
 #include "editor/ui/animation/ui_animation_binding.h"
 #include "editor/ui/widgets/ui_rect.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 

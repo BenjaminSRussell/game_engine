@@ -15,7 +15,7 @@
 #ifndef ENGINE_AUDIO_H
 #define ENGINE_AUDIO_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/math/math.h"
 
 // Forward declarations

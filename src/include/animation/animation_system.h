@@ -5,7 +5,7 @@
 #ifndef ANIMATION_ANIMATION_SYSTEM_H
 #define ANIMATION_ANIMATION_SYSTEM_H
 
-#include "common.h"
+#include "engine/include/common.h"
 #include "math/vec3.h"
 #include "math/quat.h"
 #include "math/mat4.h"

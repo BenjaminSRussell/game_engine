@@ -6,7 +6,7 @@
 
 // Include engine headers for type definitions
 #include <ecs/ecs.h>
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 
 #ifdef __cplusplus
 extern "C" {

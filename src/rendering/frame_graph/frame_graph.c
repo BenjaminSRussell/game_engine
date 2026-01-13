@@ -2,7 +2,7 @@
 // Frame Graph System Implementation - Modern render graph with automatic resource management
 
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <core/string.h>
 #include <stdbool.h>
 #include <stdint.h>

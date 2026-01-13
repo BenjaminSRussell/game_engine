@@ -6,7 +6,7 @@
 #ifndef RAYTRACING_ACCELERATION_STRUCTURES_H
 #define RAYTRACING_ACCELERATION_STRUCTURES_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "include/rendering/vulkan.h"
 #include <math/mat4.h>
 

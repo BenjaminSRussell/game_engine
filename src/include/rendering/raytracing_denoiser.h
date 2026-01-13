@@ -6,7 +6,7 @@
 #ifndef RAYTRACING_DENOISER_H
 #define RAYTRACING_DENOISER_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "include/rendering/vulkan.h"
 
 #ifdef __cplusplus

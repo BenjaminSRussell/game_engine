@@ -7,7 +7,7 @@
 // TODO: Implement potion recipe book with ingredient hints.
 #include <audio/audio_system.h>
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <crafting/brewing.h>
 #include <effects/vfx/particle_system.h>
 #include <inventory/item_registry.h>

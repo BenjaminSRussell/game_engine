@@ -1,6 +1,6 @@
 // debug_overlay.c - Comprehensive Debugging Overlay Implementation
 #include "debug_overlay.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

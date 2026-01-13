@@ -3,7 +3,7 @@
 
 #include "sprite_3d_renderer.h"
 #include "engine/include/core/logger.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 #include "rendering/core/renderer.h"
 #include "rendering/core/texture.h"
 #include "rendering/core/buffer.h"

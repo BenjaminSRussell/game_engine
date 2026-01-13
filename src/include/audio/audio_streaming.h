@@ -25,7 +25,7 @@
 #ifndef AUDIO_STREAMING_H
 #define AUDIO_STREAMING_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "include/vendor/miniaudio.h"
 #include "include/audio/audio_system.h"
 

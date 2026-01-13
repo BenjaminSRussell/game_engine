@@ -1,6 +1,6 @@
 #include "editor/terrain_editor/brush_system.h"
-#include "core/memory.h"
-#include "core/logger.h"
+#include "engine/include/core/memory.h"
+#include "engine/include/core/logger.h"
 #include <string.h>
 #include <include/math/math.h>
 #include <stdlib.h>

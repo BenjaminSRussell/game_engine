@@ -1,7 +1,7 @@
 // BVH Structure Definition for Debug Visualization implementation
 #include "debug/debug_bvh_visualization.h"
 #include <OpenGL/gl3.h>
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <math/mat4.h>
 #include "engine/include/math/math.h"
 #include <math/vec3.h>

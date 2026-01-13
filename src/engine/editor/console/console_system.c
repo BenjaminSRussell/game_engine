@@ -1,5 +1,5 @@
 #include "editor/console/console_system.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include <stdio.h>
 #include <string.h>
 

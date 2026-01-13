@@ -7,7 +7,7 @@
 // 3. Edge case handling for pfnReallocation (NULL ptr, zero size)
 // 4. Integration with the engine's core memory tracking system
 
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>

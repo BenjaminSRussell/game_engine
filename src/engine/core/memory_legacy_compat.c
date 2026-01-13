@@ -3,7 +3,7 @@
 // Purpose: Legacy compatibility for unified memory system
 //
 
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 
 // Global allocator instances for compatibility
 void *g_persistent_allocator = NULL;

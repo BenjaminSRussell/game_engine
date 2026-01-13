@@ -1,7 +1,7 @@
 #ifndef SPATIAL_DISTANCE_ATTENUATION_H
 #define SPATIAL_DISTANCE_ATTENUATION_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------

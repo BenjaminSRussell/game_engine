@@ -4,7 +4,7 @@
 
 #include <player/spirit_model.h>
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <engine/assets/system/asset_system/loading/asset_loader.h>
 #include <rendering/renderer.h>
 #include <string.h>

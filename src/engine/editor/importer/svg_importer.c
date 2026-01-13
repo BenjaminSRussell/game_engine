@@ -1,6 +1,6 @@
 // svg_importer.c - SVG Vector Graphics Importer Implementation
 #include "svg_importer.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <ctype.h>
 #include <math.h>
 #include <stdio.h>

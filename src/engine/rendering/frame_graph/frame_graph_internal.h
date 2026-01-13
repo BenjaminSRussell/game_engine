@@ -5,7 +5,7 @@
 #include "core/types.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 
 #ifdef __cplusplus
 extern "C" {

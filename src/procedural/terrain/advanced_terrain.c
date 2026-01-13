@@ -1,3 +1,11 @@
+/*
+ * advanced_terrain.c
+ * Advanced terrain generation algorithms
+ *
+ * Part of the Procedural Generation subsystem
+ * Advanced 3D Rendering Engine
+ */
+
 #include "advanced_terrain.h"
 #include <stdlib.h>
 #include <string.h>

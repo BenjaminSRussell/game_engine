@@ -1,6 +1,6 @@
 // playground.h does not exist, so we define types here
-#include <core/logger.h>
-#include <core/memory.h>
+#include "engine/include/core/logger.h"
+#include "engine/include/core/memory.h"
 #include <core/time_system.h>
 #include <ecs/ecs.h>
 #include <math/quat.h>

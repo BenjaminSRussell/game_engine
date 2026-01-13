@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/core.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 
 #define DELTA_MAX_STATE_SIZE 4096
 #define DELTA_MAX_DIFF_SIZE 2048

@@ -3,7 +3,7 @@
 #ifndef CONFIG_LOADER_H
 #define CONFIG_LOADER_H
 
-#include "common.h"
+#include "engine/include/common.h"
 
 // Config value types
 typedef enum {

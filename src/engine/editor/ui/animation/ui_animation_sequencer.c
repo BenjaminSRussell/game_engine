@@ -5,7 +5,7 @@
 
 #include "editor/ui/animation/ui_animation_sequencer.h"
 #include "editor/ui/animation/ui_animation_curves.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
 

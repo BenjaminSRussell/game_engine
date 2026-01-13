@@ -1,6 +1,6 @@
 #include "core/resource/streaming/asset_streaming_priority.h"
 #include "engine/include/core/logger.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <include/math/math.h>

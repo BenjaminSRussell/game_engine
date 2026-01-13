@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "common.h"
+#include "engine/include/common.h"
 #include "math/vec3.h"
 #include "math/vec2.h"
 #include <include/rendering/camera.h>

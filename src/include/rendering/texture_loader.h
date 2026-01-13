@@ -1,7 +1,7 @@
 #ifndef TEXTURE_LOADER_H
 #define TEXTURE_LOADER_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <include/rendering/vulkan.h>
 #include "include/core/resource/vfs/vfs.h"
 

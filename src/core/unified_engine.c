@@ -9,7 +9,7 @@
 #include "core/config_system.h"
 #include "core/game_module.h"
 #include "engine/include/core/logger.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 #include "core/performance.h"
 #include "core/resource/vfs/vfs.h"
 #include "core/threading/job.h"

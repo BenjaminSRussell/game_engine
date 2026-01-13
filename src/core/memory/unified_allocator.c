@@ -4,7 +4,7 @@
 // Provides high-performance allocation with comprehensive tracking and debugging features
 
 #include <core/memory/unified_allocator.h>
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

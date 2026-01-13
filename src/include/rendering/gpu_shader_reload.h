@@ -7,7 +7,7 @@
 #ifndef GPU_SHADER_RELOAD_H
 #define GPU_SHADER_RELOAD_H
 
-#include <common.h>
+#include "engine/include/common.h"
 
 #include <time.h>
 #include <include/rendering/vulkan.h>

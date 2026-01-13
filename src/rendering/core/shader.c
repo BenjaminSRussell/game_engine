@@ -2,7 +2,7 @@
 // Consolidated Shader System - Unified shader compilation and management
 
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <core/file_system.h>
 #include <stdbool.h>
 #include <stdint.h>

@@ -2,7 +2,7 @@
 // Efficient device memory sub-allocation with custom host allocators
 
 #include <core/vma_integration.h>
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include "engine/include/core/logger.h"
 
 #ifdef VULKAN_BUILD

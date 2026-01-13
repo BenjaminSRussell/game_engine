@@ -2,7 +2,7 @@
 // Consolidated Shader System with Compilation and Validation
 
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <core/vfs/vfs.h>
 #include <stdlib.h>
 #include <string.h>

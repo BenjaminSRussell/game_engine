@@ -54,7 +54,7 @@
 // Dynamic array container implementation.
 #include <core/containers/dynamic_array.h>
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <string.h>
 #include <stdlib.h>
 

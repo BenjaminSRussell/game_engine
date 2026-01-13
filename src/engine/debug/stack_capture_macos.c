@@ -1,6 +1,6 @@
 // Stack Capture System for macOS implementation
 #include "debug/stack_capture_macos.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <cxxabi.h>
 #include <dlfcn.h>
 #include <execinfo.h>

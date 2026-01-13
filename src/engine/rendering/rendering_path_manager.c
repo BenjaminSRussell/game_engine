@@ -3,7 +3,7 @@
 
 #include "rendering_path_manager.h"
 #include "engine/include/core/logger.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 #include "rendering/voxel_renderer.h"
 #include "rendering/sprite_3d_renderer.h"
 #include <stdlib.h>

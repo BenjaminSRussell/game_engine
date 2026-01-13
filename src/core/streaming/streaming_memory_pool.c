@@ -1,6 +1,6 @@
 #include "core/resource/streaming/streaming_memory_pool.h"
 #include "engine/include/core/logger.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <include/math/math.h>

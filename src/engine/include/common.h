@@ -1,8 +1,8 @@
 #ifndef ENGINE_COMMON_H
 #define ENGINE_COMMON_H
 
-#include "engine/include/core/logger.h"
-#include "core/types.h"
+#include <core/logger.h>
+#include <core/types.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

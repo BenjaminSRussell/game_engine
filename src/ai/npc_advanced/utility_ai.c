@@ -1,6 +1,6 @@
 #include "ai/npc_advanced/utility_ai.h"
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <float.h>
 #include <include/math/math.h>
 #include <string.h>

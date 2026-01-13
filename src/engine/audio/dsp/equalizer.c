@@ -1,5 +1,5 @@
 #include "audio/dsp/equalizer.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 #include "include/math/math.h"
 #include <include/math/math.h>
 #include <string.h>

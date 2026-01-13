@@ -5,7 +5,7 @@
 //
 #include <containers/hashmap.h>
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <ctype.h>
 #include <inventory/item_registry.h>
 #include <stdio.h>

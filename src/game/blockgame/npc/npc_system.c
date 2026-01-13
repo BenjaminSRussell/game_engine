@@ -1,7 +1,7 @@
 #include <block/block.h>
 #include <combat/combat.h>
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <ecs/component_ids.h>
 #include <ecs/components/health.h>
 #include <ecs/components/npc.h>

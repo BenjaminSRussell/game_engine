@@ -1,7 +1,7 @@
 #ifndef SPATIAL_PROPAGATION_H
 #define SPATIAL_PROPAGATION_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------

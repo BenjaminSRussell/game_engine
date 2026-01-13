@@ -12,7 +12,7 @@
 #include <ecs/components/health.h>
 #include <ecs/components/rigidbody.h>
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <math/vec3.h>
 #include "engine/include/math/math.h"
 #include <stdlib.h>

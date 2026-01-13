@@ -7,7 +7,7 @@
 #ifndef SHADER_COMPILER_H
 #define SHADER_COMPILER_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "include/rendering/material.h"
 
 #define MAX_SHADER_VARIANTS 512

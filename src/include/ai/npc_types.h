@@ -32,7 +32,7 @@
 #ifndef AI_NPC_TYPES_H
 #define AI_NPC_TYPES_H
 
-#include <common.h>
+#include "engine/include/common.h"
 
 // NPC types
 typedef enum {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/core.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 #include "include/network/transport/udp_socket.h"
 
 #define RELIABLE_CHANNEL_MAX_SEQUENCE 0xFFFFFFFF

@@ -1,7 +1,7 @@
 #ifndef VULKAN_MEMORY_H
 #define VULKAN_MEMORY_H
 
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 
 #ifdef VULKAN_BUILD
 #include <include/rendering/vulkan.h>

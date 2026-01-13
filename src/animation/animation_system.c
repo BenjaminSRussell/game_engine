@@ -3,7 +3,7 @@
 #include "../include/math/quat.h"
 #include "../include/math/vec3.h"
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 

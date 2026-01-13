@@ -50,7 +50,7 @@
 #include "include/core/types.h"
 #include "include/core/memory.h"
 #include "engine/include/core/logger.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 
 /* Include compression libraries */
 #ifdef USE_LZ4

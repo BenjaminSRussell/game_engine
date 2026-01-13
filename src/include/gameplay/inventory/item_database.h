@@ -13,7 +13,7 @@
 #define ITEM_DATABASE_H
 
 #include "include/gameplay/inventory/item.h"
-#include <common.h>
+#include "engine/include/common.h"
 
 // ============================================================================
 // DATABASE MANAGEMENT

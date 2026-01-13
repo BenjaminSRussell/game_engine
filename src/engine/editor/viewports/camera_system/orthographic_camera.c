@@ -4,7 +4,7 @@
  */
 
 #include "orthographic_camera.h"
-#include "core/logger.h"
+#include "engine/include/core/logger.h"
 #include "math/mat4.h"
 #include <math.h>
 #include <stdlib.h>

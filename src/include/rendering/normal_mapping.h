@@ -16,7 +16,7 @@
 #ifndef NORMAL_MAPPING_H
 #define NORMAL_MAPPING_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>

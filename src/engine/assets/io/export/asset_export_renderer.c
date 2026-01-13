@@ -38,7 +38,7 @@
 #include "include/core/types.h"
 #include "include/core/memory.h"
 #include "engine/include/core/logger.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 
 // External library includes for compression
 #include <lz4.h>

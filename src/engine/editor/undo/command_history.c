@@ -1,6 +1,6 @@
 #include <editor/undo/command_history.h>
-#include "core/memory.h"
-#include "core/logger.h"
+#include "engine/include/core/memory.h"
+#include "engine/include/core/logger.h"
 // #include "core/time.h"
 #include "math/vec3.h"
 #include "stdio.h"

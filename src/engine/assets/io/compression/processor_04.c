@@ -48,7 +48,7 @@
 // #include "engine/include/core/logger.h" // Commented out to reduce dependency issues in test
 // environment
 #include "core/hot_reload.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 #include "include/core/asset_compression.h"
 #include "include/core/file_watcher.h"
 #include "include/core/scene.h"

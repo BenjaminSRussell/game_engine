@@ -5,7 +5,7 @@
 #ifndef CONFIG_SYSTEM_H
 #define CONFIG_SYSTEM_H
 
-#include "common.h"
+#include "engine/include/common.h"
 #include "core/config_loader.h"
 
 // Configuration system

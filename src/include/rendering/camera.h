@@ -36,7 +36,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/mat4.h>
 #include <math/vec3.h>
 

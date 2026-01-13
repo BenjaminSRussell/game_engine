@@ -6,7 +6,7 @@
 
 #include "editor/ui/canvas/ui_canvas.h"
 #include "editor/ui/widgets/ui_rect.h"
-#include <core/logger.h>
+#include "engine/include/core/logger.h"
 #include <stdlib.h>
 
 typedef struct ui_rendering_ui_canvas_context {

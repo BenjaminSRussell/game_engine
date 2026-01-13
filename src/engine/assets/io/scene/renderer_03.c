@@ -37,7 +37,7 @@
 #include "include/core/types.h"
 #include "include/core/memory.h"
 #include "engine/include/core/logger.h"
-#include "core/memory.h"
+#include "engine/include/core/memory.h"
 
 // External dependencies for advanced features
 #include <lz4.h>

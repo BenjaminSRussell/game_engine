@@ -1,7 +1,7 @@
 #include <ai/npc/perception_system.h>
 #include <ai/npc_advanced/memory_system.h>
 #include <common.h>
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <core/multithreading.h>
 #include <core/threading/mutex.h>
 #include <core/time_system.h>

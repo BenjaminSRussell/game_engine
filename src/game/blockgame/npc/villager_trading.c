@@ -4,7 +4,7 @@
 // trades, and dynamic pricing based on reputation and demand.
 //
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <inventory/inventory.h>
 #include <inventory/item_registry.h>
 #include <npc/villager_trading.h>

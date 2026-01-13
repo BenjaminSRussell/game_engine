@@ -2,7 +2,7 @@
 // GPU Memory Management and Defragmentation System
 
 #include "engine/include/core/logger.h"
-#include <core/memory.h>
+#include "engine/include/core/memory.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

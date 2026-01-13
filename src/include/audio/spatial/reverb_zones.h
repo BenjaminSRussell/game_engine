@@ -1,7 +1,7 @@
 #ifndef SPATIAL_REVERB_ZONES_H
 #define SPATIAL_REVERB_ZONES_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------
