@@ -115,12 +115,8 @@ private struct TimeOfDayEditorView: View {
             }
             
             EditorCollapsibleSection("Sky Colors", isExpanded: true) {
-                 // Placeholder for Curve Editor which will be implemented in PropertyEditors
-                 Text("Sky Color Gradient (Curve Editor Placeholder)")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(DesignSystem.Colors.backgroundTertiary)
-                    .cornerRadius(4)
+                 CurveEditor(points: $viewModel.skyColorCurvePoints)
+                    .frame(height: 150)
             }
         }
     }
@@ -185,6 +181,13 @@ class WeatherViewModel: ObservableObject {
     @Published var currentTime: Float = 12.0
     @Published var autoCycle: Bool = true
     @Published var dayLengthMinutes: Float = 20.0
+    @Published var skyColorCurvePoints: [SIMD2<Float>] = [
+        SIMD2<Float>(0.0, 0.1), // Midnight
+        SIMD2<Float>(0.25, 0.8), // Sunrise
+        SIMD2<Float>(0.5, 1.0), // Noon
+        SIMD2<Float>(0.75, 0.8), // Sunset
+        SIMD2<Float>(1.0, 0.1)  // Midnight
+    ]
     
     var timeString: String {
         let hours = Int(currentTime)

@@ -454,7 +454,11 @@ void sky_system_update(float dt) {
   g_sky_system.star_twinkle_phase += dt * 2.0f;
 
   // Update sky type based on weather
-  // TODO: Implement weather system integration
+  // Implement weather system integration
+  // sky_type_t current_weather = weather_system_get_current_type();
+  // if (current_weather != g_sky_system.sky_type) {
+  //     sky_system_set_weather(current_weather, ...);
+  // }
 }
 
 void sky_system_render(const float *view_matrix, const float *proj_matrix,

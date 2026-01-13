@@ -85,6 +85,8 @@
 #define CLOTH_SYSTEM_CLOTH_CONSTRAINTS_MEMORY_POOL_SIZE (64 * 1024 * 1024) // 64MB
 #define CLOTH_SYSTEM_CLOTH_CONSTRAINTS_MAX_LOD_LEVELS 8
 #define CLOTH_SYSTEM_CLOTH_CONSTRAINTS_BATCH_SIZE 128
+#define CLOTH_SYSTEM_CLOTH_CONSTRAINTS_MAX_RENDER_NODES 32
+#define CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STREAMING_THRESHOLD (512 * 1024u)
 
 // Error codes
 typedef enum {
@@ -159,6 +161,77 @@ typedef enum cloth_system_cloth_constraints_state {
     CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_PROCESSING
 } cloth_system_cloth_constraints_state_t;
 
+typedef struct cloth_constraints_cache_entry {
+    uint64_t hash;
+    void* data;
+    size_t size;
+    uint64_t last_access;
+    uint64_t access_count;
+    bool valid;
+} cloth_constraints_cache_entry_t;
+
+typedef struct cloth_constraints_async_operation {
+    uint32_t id;
+    cloth_constraint_type_t type;
+    void* input_data;
+    size_t input_size;
+    void* output_data;
+    size_t output_size;
+    bool completed;
+    bool cancelled;
+    pthread_t thread;
+    pthread_mutex_t mutex;
+    pthread_cond_t condition;
+} cloth_constraints_async_operation_t;
+
+typedef struct cloth_constraints_memory_pool {
+    void* memory;
+    size_t size;
+    size_t used;
+    size_t peak_usage;
+    uint64_t allocation_count;
+    pthread_mutex_t mutex;
+} cloth_constraints_memory_pool_t;
+
+typedef struct cloth_constraints_validation_state {
+    bool enabled;
+    uint32_t error_count;
+    uint32_t warning_count;
+    char last_error[256];
+    char last_warning[256];
+    pthread_mutex_t mutex;
+} cloth_constraints_validation_state_t;
+
+typedef struct cloth_constraints_performance_counters {
+    uint64_t active_constraints;
+    uint64_t constraints_processed;
+    uint64_t constraints_validated;
+    uint64_t gpu_operations;
+    uint64_t simd_operations;
+    uint64_t batch_operations;
+    double total_processing_time;
+    double average_processing_time;
+} cloth_constraints_performance_counters_t;
+
+typedef struct cloth_constraints_lod_level {
+    uint32_t level;
+    float distance_threshold;
+    uint32_t constraint_count;
+    float simplification_ratio;
+    bool active;
+} cloth_constraints_lod_level_t;
+
+typedef struct cloth_constraints_hot_reload_state {
+    int inotify_fd;
+    int watch_descriptor;
+} cloth_constraints_hot_reload_state_t;
+
+typedef struct cloth_constraints_render_node {
+    uint32_t constraint_id;
+    uint32_t dependency_count;
+    uint32_t* dependencies;
+} cloth_constraints_render_node_t;
+
 typedef struct cloth_system_cloth_constraints_backend_ctx {
     uint32_t version;
     uint64_t last_frame;
@@ -168,17 +241,25 @@ typedef struct cloth_system_cloth_constraints_internal {
     uint32_t id;
     uint32_t flags;
     cloth_constraint_type_t type;
-    cloth_constraints_backend_t backend;
+    cloth_system_cloth_constraints_backend_t backend;
+    cloth_system_cloth_constraints_backend_ctx_t* backend_ctx;
     void* data;
     size_t data_size;
     bool initialized;
     bool dirty;
+    bool pending_async;
+    cloth_system_cloth_constraints_state_t resource_state;
     uint64_t frame_updated;
     uint64_t creation_time;
     uint64_t last_access_time;
+    uint64_t cached_hash;
+    size_t cached_size;
+    uint64_t bytes_serialized;
+    uint64_t update_count;
     uint32_t lod_level;
     bool visible;
     float distance_from_camera;
+    bool hot_reload_enabled;
     
     // SIMD optimization data
     __m128 simd_data[4];  // For SIMD-optimized constraint data
@@ -197,12 +278,52 @@ typedef struct cloth_system_cloth_constraints_context {
     void* allocator;
     bool initialized;
     pthread_mutex_t mutex;
+    pthread_rwlock_t data_lock;
+    cloth_constraints_memory_pool_t memory_pool;
     size_t allocated_bytes;
     size_t peak_bytes;
     uint64_t total_updates;
     uint64_t total_cache_hits;
     uint64_t total_async_submits;
     uint64_t total_processed;
+    cloth_constraints_backend_t active_backend;
+    bool validation_enabled;
+    bool hot_reload_enabled;
+    cloth_constraints_simd_level_t simd_level;
+    cloth_constraints_validation_state_t validation;
+    cloth_constraints_async_operation_t async_ops[CLOTH_SYSTEM_CLOTH_CONSTRAINTS_MAX_ASYNC_OPERATIONS];
+    pthread_mutex_t async_mutex;
+    uint32_t async_operation_count;
+    uint32_t next_async_id;
+    cloth_constraints_performance_counters_t performance;
+    pthread_mutex_t performance_mutex;
+    cloth_constraints_lod_level_t lod_levels[CLOTH_SYSTEM_CLOTH_CONSTRAINTS_MAX_LOD_LEVELS];
+    uint32_t active_lod_count;
+    float lod_bias;
+    cloth_constraints_cache_entry_t cache[CLOTH_SYSTEM_CLOTH_CONSTRAINTS_CACHE_SIZE];
+    uint32_t cache_size;
+    uint64_t cache_hits;
+    uint64_t cache_misses;
+    cloth_constraints_hot_reload_state_t hot_reload;
+    cloth_constraints_render_node_t render_nodes[CLOTH_SYSTEM_CLOTH_CONSTRAINTS_MAX_RENDER_NODES];
+    uint32_t render_node_count;
+    size_t total_allocated;
+    size_t peak_memory_usage;
+    uint64_t allocation_count;
+    uint32_t active_constraints;
+    uint32_t dirty_constraints;
+    uint64_t current_frame;
+#ifdef __linux__
+    VkInstance vulkan_instance;
+#endif
+#ifdef __APPLE__
+    id<MTLDevice> metal_device;
+    id<MTLCommandQueue> metal_command_queue;
+#endif
+#ifdef _WIN32
+    ID3D12Device* d3d12_device;
+    ID3D12CommandQueue* d3d12_command_queue;
+#endif
 } cloth_system_cloth_constraints_context_t;
 
 static cloth_system_cloth_constraints_context_t g_cloth_constraints_ctx = {
@@ -213,15 +334,15 @@ static cloth_system_cloth_constraints_context_t g_cloth_constraints_ctx = {
     .allocator = NULL,
     .mutex = PTHREAD_MUTEX_INITIALIZER,
     .allocated_bytes = 0,
-    .peak_allocated_bytes = 0,
+    .peak_bytes = 0,
     .total_updates = 0,
     .total_cache_hits = 0,
     .total_async_submits = 0,
     .total_processed = 0,
-    .active_backend = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_BACKEND_CPU,
+    .active_backend = CLOTH_CONSTRAINTS_BACKEND_NONE,
     .validation_enabled = false,
     .hot_reload_enabled = false,
-    .simd_level = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_SIMD_NONE
+    .simd_level = CLOTH_CONSTRAINTS_SIMD_NONE
 };
 
 /* ============================================================================
@@ -233,6 +354,10 @@ typedef struct cloth_constraints_serialized_header {
     uint32_t reserved;
     uint64_t hash;
 } cloth_constraints_serialized_header_t;
+
+static uint64_t cloth_system_cloth_constraints_hash_buffer(const void* data, size_t size);
+static int cloth_system_cloth_constraints_cache_lookup(uint64_t hash, void** out_data, size_t* out_size);
+static int cloth_system_cloth_constraints_cache_store(uint64_t hash, const void* data, size_t size);
 
 static void cloth_system_cloth_constraints_lock(void) {
     pthread_mutex_lock(&g_cloth_constraints_ctx.mutex);
@@ -248,6 +373,11 @@ static void cloth_system_cloth_constraints_track_alloc(ssize_t delta) {
         if (g_cloth_constraints_ctx.allocated_bytes > g_cloth_constraints_ctx.peak_bytes) {
             g_cloth_constraints_ctx.peak_bytes = g_cloth_constraints_ctx.allocated_bytes;
         }
+        g_cloth_constraints_ctx.total_allocated += (size_t)delta;
+        if (g_cloth_constraints_ctx.total_allocated > g_cloth_constraints_ctx.peak_memory_usage) {
+            g_cloth_constraints_ctx.peak_memory_usage = g_cloth_constraints_ctx.total_allocated;
+        }
+        g_cloth_constraints_ctx.allocation_count++;
     } else if (delta < 0) {
         size_t abs_delta = (size_t)(-delta);
         if (g_cloth_constraints_ctx.allocated_bytes >= abs_delta) {
@@ -255,7 +385,173 @@ static void cloth_system_cloth_constraints_track_alloc(ssize_t delta) {
         } else {
             g_cloth_constraints_ctx.allocated_bytes = 0;
         }
+        if (g_cloth_constraints_ctx.total_allocated >= abs_delta) {
+            g_cloth_constraints_ctx.total_allocated -= abs_delta;
+        } else {
+            g_cloth_constraints_ctx.total_allocated = 0;
+        }
     }
+}
+
+static void cloth_system_cloth_constraints_update_lod(cloth_system_cloth_constraints_internal_t* item) {
+    if (!item || g_cloth_constraints_ctx.active_lod_count == 0) {
+        return;
+    }
+
+    float distance = item->distance_from_camera * g_cloth_constraints_ctx.lod_bias;
+    uint32_t selected_level = 0;
+
+    for (uint32_t i = 0; i < g_cloth_constraints_ctx.active_lod_count; i++) {
+        const cloth_constraints_lod_level_t* lod = &g_cloth_constraints_ctx.lod_levels[i];
+        if (!lod->active) {
+            continue;
+        }
+        if (distance >= lod->distance_threshold) {
+            selected_level = lod->level;
+        } else {
+            break;
+        }
+    }
+
+    item->lod_level = selected_level;
+}
+
+static bool cloth_system_cloth_constraints_is_visible(const cloth_system_cloth_constraints_internal_t* item) {
+    if (!item || g_cloth_constraints_ctx.active_lod_count == 0) {
+        return true;
+    }
+
+    float max_distance = 0.0f;
+    for (uint32_t i = 0; i < g_cloth_constraints_ctx.active_lod_count; i++) {
+        const cloth_constraints_lod_level_t* lod = &g_cloth_constraints_ctx.lod_levels[i];
+        if (lod->active && lod->distance_threshold > max_distance) {
+            max_distance = lod->distance_threshold;
+        }
+    }
+
+    return item->distance_from_camera <= max_distance * g_cloth_constraints_ctx.lod_bias;
+}
+
+static void cloth_system_cloth_constraints_update_visibility(cloth_system_cloth_constraints_internal_t* item) {
+    if (!item) {
+        return;
+    }
+    item->visible = cloth_system_cloth_constraints_is_visible(item);
+}
+
+static int cloth_system_cloth_constraints_stream_in(cloth_system_cloth_constraints_internal_t* item) {
+    if (!item || item->data || item->cached_hash == 0) {
+        return CLOTH_CONSTRAINTS_SUCCESS;
+    }
+
+    void* cached_data = NULL;
+    size_t cached_size = 0;
+    if (cloth_system_cloth_constraints_cache_lookup(item->cached_hash, &cached_data, &cached_size) != CLOTH_CONSTRAINTS_SUCCESS) {
+        return CLOTH_CONSTRAINTS_ERROR_SERIALIZATION;
+    }
+
+    item->data = malloc(cached_size);
+    if (!item->data) {
+        return CLOTH_CONSTRAINTS_ERROR_OUT_OF_MEMORY;
+    }
+
+    memcpy(item->data, cached_data, cached_size);
+    item->data_size = cached_size;
+    cloth_system_cloth_constraints_track_alloc((ssize_t)cached_size);
+    item->resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_READY;
+
+    return CLOTH_CONSTRAINTS_SUCCESS;
+}
+
+static int cloth_system_cloth_constraints_stream_out(cloth_system_cloth_constraints_internal_t* item) {
+    if (!item || !item->data || item->data_size == 0) {
+        return CLOTH_CONSTRAINTS_SUCCESS;
+    }
+
+    const cloth_constraints_serialized_header_t* header = (const cloth_constraints_serialized_header_t*)item->data;
+    uint64_t hash = item->cached_hash;
+    if (hash == 0) {
+        hash = header->hash;
+    }
+    if (hash == 0 && item->data_size > sizeof(*header)) {
+        hash = cloth_system_cloth_constraints_hash_buffer(
+            (const uint8_t*)item->data + sizeof(*header),
+            item->data_size - sizeof(*header));
+    }
+
+    if (hash != 0) {
+        cloth_system_cloth_constraints_cache_store(hash, item->data, item->data_size);
+        item->cached_hash = hash;
+    }
+
+    cloth_system_cloth_constraints_track_alloc(-((ssize_t)item->data_size));
+    free(item->data);
+    item->data = NULL;
+    item->data_size = 0;
+    item->resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_READY;
+
+    return CLOTH_CONSTRAINTS_SUCCESS;
+}
+
+static void cloth_system_cloth_constraints_add_render_node(uint32_t constraint_id) {
+    for (uint32_t i = 0; i < g_cloth_constraints_ctx.render_node_count; i++) {
+        if (g_cloth_constraints_ctx.render_nodes[i].constraint_id == constraint_id) {
+            return;
+        }
+    }
+
+    if (g_cloth_constraints_ctx.render_node_count >= CLOTH_SYSTEM_CLOTH_CONSTRAINTS_MAX_RENDER_NODES) {
+        return;
+    }
+
+    cloth_constraints_render_node_t* node = &g_cloth_constraints_ctx.render_nodes[g_cloth_constraints_ctx.render_node_count++];
+    node->constraint_id = constraint_id;
+    node->dependency_count = 0;
+    node->dependencies = NULL;
+}
+
+static int cloth_system_cloth_constraints_process_batch(uint32_t max_batch) {
+    int processed = 0;
+    uint32_t batch_count = 0;
+
+    for (uint32_t i = 0; i < g_cloth_constraints_ctx.count && processed < (int)max_batch; i++) {
+        cloth_system_cloth_constraints_internal_t* item = &g_cloth_constraints_ctx.items[i];
+        if (!item->initialized || !item->dirty) {
+            continue;
+        }
+
+        cloth_system_cloth_constraints_update_lod(item);
+        cloth_system_cloth_constraints_update_visibility(item);
+        if (!item->visible) {
+            continue;
+        }
+
+        item->resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_PROCESSING;
+        if (item->pending_async) {
+            if (cloth_system_cloth_constraints_backend_update(item) == 0) {
+                item->pending_async = false;
+            }
+        }
+        item->dirty = false;
+        item->resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_READY;
+
+        if (g_cloth_constraints_ctx.dirty_constraints > 0) {
+            g_cloth_constraints_ctx.dirty_constraints--;
+        }
+
+        cloth_system_cloth_constraints_add_render_node(item->id);
+        processed++;
+        batch_count++;
+    }
+
+    if (batch_count > 0) {
+        pthread_mutex_lock(&g_cloth_constraints_ctx.performance_mutex);
+        g_cloth_constraints_ctx.performance.constraints_processed += (uint64_t)batch_count;
+        g_cloth_constraints_ctx.performance.batch_operations++;
+        pthread_mutex_unlock(&g_cloth_constraints_ctx.performance_mutex);
+    }
+
+    return processed;
 }
 
 static uint64_t cloth_system_cloth_constraints_hash_buffer(const void* data, size_t size) {
@@ -681,6 +977,11 @@ static void cloth_system_cloth_constraints_cleanup_internal(cloth_system_cloth_c
     item->pending_async = false;
     item->resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_UNINITIALIZED;
     item->initialized = false;
+    item->cached_hash = 0;
+    item->cached_size = 0;
+    item->bytes_serialized = 0;
+    item->update_count = 0;
+    item->hot_reload_enabled = false;
 }
 
 /* ============================================================================
@@ -731,6 +1032,7 @@ int cloth_system_cloth_constraints_init(void) {
 
     // Initialize validation layer
     g_cloth_constraints_ctx.validation.enabled = true;
+    g_cloth_constraints_ctx.validation_enabled = true;
     g_cloth_constraints_ctx.validation.error_count = 0;
     g_cloth_constraints_ctx.validation.warning_count = 0;
     pthread_mutex_init(&g_cloth_constraints_ctx.validation.mutex, NULL);
@@ -898,12 +1200,19 @@ int cloth_system_cloth_constraints_create(cloth_system_cloth_constraints_handle_
     item->data_size = 0;
     item->initialized = false;
     item->dirty = true;
+    item->pending_async = false;
+    item->resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_DIRTY;
     item->frame_updated = g_cloth_constraints_ctx.current_frame;
     item->creation_time = time(NULL);
     item->last_access_time = item->creation_time;
+    item->cached_hash = 0;
+    item->cached_size = 0;
+    item->bytes_serialized = 0;
+    item->update_count = 0;
     item->lod_level = 0;
     item->visible = true;
     item->distance_from_camera = 0.0f;
+    item->hot_reload_enabled = g_cloth_constraints_ctx.hot_reload_enabled;
     item->simd_optimized = false;
     item->serialization_version = 1;
     item->data_checksum = 0;
@@ -1011,6 +1320,9 @@ int cloth_system_cloth_constraints_update(cloth_system_cloth_constraints_handle_
     item->cached_hash = hash;
     item->cached_size = size;
     item->frame_updated++;
+    if (!item->dirty) {
+        g_cloth_constraints_ctx.dirty_constraints++;
+    }
     item->dirty = true;
     item->resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_DIRTY;
     item->update_count++;
@@ -1035,20 +1347,24 @@ int cloth_system_cloth_constraints_update(cloth_system_cloth_constraints_handle_
 }
 
 bool cloth_system_cloth_constraints_is_valid(cloth_system_cloth_constraints_handle_t handle) {
-    // TODO: Add cloth constraints batch processing
     if (handle.id >= g_cloth_constraints_ctx.count) {
         return false;
+    }
+    if (g_cloth_constraints_ctx.dirty_constraints > 0) {
+        cloth_system_cloth_constraints_lock();
+        cloth_system_cloth_constraints_process_batch(CLOTH_SYSTEM_CLOTH_CONSTRAINTS_BATCH_SIZE);
+        cloth_system_cloth_constraints_unlock();
     }
     cloth_system_cloth_constraints_lock();
     bool valid = g_cloth_constraints_ctx.items[handle.id].initialized;
     cloth_system_cloth_constraints_unlock();
+    pthread_mutex_lock(&g_cloth_constraints_ctx.performance_mutex);
+    g_cloth_constraints_ctx.performance.constraints_validated++;
+    pthread_mutex_unlock(&g_cloth_constraints_ctx.performance_mutex);
     return valid;
 }
 
 int cloth_system_cloth_constraints_get_info(cloth_system_cloth_constraints_handle_t handle, cloth_system_cloth_constraints_info_t* out_info) {
-    // TODO: Implement cloth constraints streaming support
-    // TODO: Add cloth constraints LOD support
-
     if (!out_info) {
         return -1;
     }
@@ -1058,7 +1374,18 @@ int cloth_system_cloth_constraints_get_info(cloth_system_cloth_constraints_handl
     }
 
     cloth_system_cloth_constraints_lock();
-    const cloth_system_cloth_constraints_internal_t* item = &g_cloth_constraints_ctx.items[handle.id];
+    cloth_system_cloth_constraints_internal_t* item = &g_cloth_constraints_ctx.items[handle.id];
+    cloth_system_cloth_constraints_update_lod(item);
+    cloth_system_cloth_constraints_update_visibility(item);
+    item->last_access_time = time(NULL);
+
+    if (!item->data && item->cached_hash != 0) {
+        cloth_system_cloth_constraints_stream_in(item);
+    } else if (!item->dirty && !item->pending_async && !item->visible &&
+               item->data_size >= CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STREAMING_THRESHOLD) {
+        cloth_system_cloth_constraints_stream_out(item);
+    }
+
     out_info->id = item->id;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
@@ -1068,39 +1395,35 @@ int cloth_system_cloth_constraints_get_info(cloth_system_cloth_constraints_handl
 }
 
 void cloth_system_cloth_constraints_mark_dirty(cloth_system_cloth_constraints_handle_t handle) {
-    // TODO: Implement cloth constraints culling integration
     if (handle.id < g_cloth_constraints_ctx.count) {
         cloth_system_cloth_constraints_lock();
-        g_cloth_constraints_ctx.items[handle.id].dirty = true;
-        g_cloth_constraints_ctx.items[handle.id].resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_DIRTY;
+        cloth_system_cloth_constraints_internal_t* item = &g_cloth_constraints_ctx.items[handle.id];
+        cloth_system_cloth_constraints_update_visibility(item);
+        if (!item->visible) {
+            cloth_system_cloth_constraints_unlock();
+            return;
+        }
+        if (!item->dirty) {
+            g_cloth_constraints_ctx.dirty_constraints++;
+        }
+        item->dirty = true;
+        item->resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_DIRTY;
         cloth_system_cloth_constraints_unlock();
     }
 }
 
 int cloth_system_cloth_constraints_process_pending(void) {
-    // TODO: Add cloth constraints render graph node
-    // TODO: Implement batch processing
-
-    int processed = 0;
+    int processed_total = 0;
     cloth_system_cloth_constraints_lock();
-    for (uint32_t i = 0; i < g_cloth_constraints_ctx.count; i++) {
-        cloth_system_cloth_constraints_internal_t* item = &g_cloth_constraints_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            item->resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_PROCESSING;
-            if (item->pending_async) {
-                if (cloth_system_cloth_constraints_backend_update(item) == 0) {
-                    item->pending_async = false;
-                }
-            }
-            item->dirty = false;
-            item->resource_state = CLOTH_SYSTEM_CLOTH_CONSTRAINTS_STATE_READY;
-            processed++;
-        }
-    }
-    g_cloth_constraints_ctx.total_processed += (uint64_t)processed;
+    int batch_processed = 0;
+    do {
+        batch_processed = cloth_system_cloth_constraints_process_batch(CLOTH_SYSTEM_CLOTH_CONSTRAINTS_BATCH_SIZE);
+        processed_total += batch_processed;
+    } while (batch_processed > 0);
+    g_cloth_constraints_ctx.total_processed += (uint64_t)processed_total;
     cloth_system_cloth_constraints_unlock();
 
-    return processed;
+    return processed_total;
 }
 
 uint32_t cloth_system_cloth_constraints_get_count(void) {

@@ -22193,3 +22193,113 @@ struct RoundingSettingsView: View {
         .frame(width: 400, height: 600)
     }
 }
+
+// MARK: - Curve Editor
+struct CurveEditor: View {
+    @Binding var points: [SIMD2<Float>]
+    var rangeX: ClosedRange<Float> = 0...1
+    var rangeY: ClosedRange<Float> = 0...1
+    
+    @State private var draggedPointIndex: Int?
+    @State private var hoveredPointIndex: Int?
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                // Background grid
+                CurveGrid(rangeX: rangeX, rangeY: rangeY)
+                
+                // Curve Path
+                Path { path in
+                    guard points.count >= 2 else { return }
+                    
+                    let sortedPoints = points.sorted { $0.x < $1.x }
+                    let start = pointToScreen(sortedPoints[0], size: geometry.size)
+                    path.move(to: start)
+                    
+                    for i in 1..<sortedPoints.count {
+                        let pt = pointToScreen(sortedPoints[i], size: geometry.size)
+                        path.addLine(to: pt)
+                    }
+                }
+                .stroke(DesignSystem.Colors.accentPrimary, lineWidth: 2)
+                
+                // Control Points
+                ForEach(0..<points.count, id: \.self) { index in
+                    let pt = pointToScreen(points[index], size: geometry.size)
+                    Circle()
+                        .fill(DesignSystem.Colors.textPrimary)
+                        .frame(width: 8, height: 8)
+                        .position(pt)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { value in
+                                    draggedPointIndex = index
+                                    let location = value.location
+                                    let newPoint = screenToPoint(location, size: geometry.size)
+                                    
+                                    // Constrain to range
+                                    let constrainedX = min(rangeX.upperBound, max(rangeX.lowerBound, newPoint.x))
+                                    let constrainedY = min(rangeY.upperBound, max(rangeY.lowerBound, newPoint.y))
+                                    
+                                    points[index] = SIMD2<Float>(constrainedX, constrainedY)
+                                }
+                                .onEnded { _ in
+                                    draggedPointIndex = nil
+                                    points.sort { $0.x < $1.x }
+                                }
+                        )
+                        .onHover { isHovering in
+                            hoveredPointIndex = isHovering ? index : nil
+                        }
+                }
+            }
+            .background(DesignSystem.Colors.backgroundSecondary)
+            .cornerRadius(DesignSystem.CornerRadius.md)
+            .clipped()
+        }
+    }
+    
+    private func pointToScreen(_ point: SIMD2<Float>, size: CGSize) -> CGPoint {
+        let normalizedX = (point.x - rangeX.lowerBound) / (rangeX.upperBound - rangeX.lowerBound)
+        let normalizedY = (point.y - rangeY.lowerBound) / (rangeY.upperBound - rangeY.lowerBound)
+        
+        return CGPoint(
+            x: CGFloat(normalizedX) * size.width,
+            y: size.height - CGFloat(normalizedY) * size.height
+        )
+    }
+    
+    private func screenToPoint(_ point: CGPoint, size: CGSize) -> SIMD2<Float> {
+        let normalizedX = Float(point.x / size.width)
+        let normalizedY = Float(1.0 - (point.y / size.height))
+        
+        let x = normalizedX * (rangeX.upperBound - rangeX.lowerBound) + rangeX.lowerBound
+        let y = normalizedY * (rangeY.upperBound - rangeY.lowerBound) + rangeY.lowerBound
+        
+        return SIMD2<Float>(x, y)
+    }
+}
+
+struct CurveGrid: View {
+    let rangeX: ClosedRange<Float>
+    let rangeY: ClosedRange<Float>
+    
+    var body: some View {
+        Canvas { context, size in
+            let path = Path { p in
+                for i in 0...10 {
+                    let x = size.width * CGFloat(i) / 10.0
+                    p.move(to: CGPoint(x: x, y: 0))
+                    p.addLine(to: CGPoint(x: x, y: size.height))
+                }
+                for i in 0...10 {
+                    let y = size.height * CGFloat(i) / 10.0
+                    p.move(to: CGPoint(x: 0, y: y))
+                    p.addLine(to: CGPoint(x: size.width, y: y))
+                }
+            }
+            context.stroke(path, with: .color(DesignSystem.Colors.backgroundTertiary), lineWidth: 1)
+        }
+    }
+}

@@ -827,70 +827,234 @@ static void animation_spring_bones_cleanup_internal(animation_spring_bones_inter
  * ============================================================================ */
 
 int animation_spring_bones_init(void) {
-    // TODO: Implement GPU skinning
-    // TODO: Add animation compression
-    // TODO: Implement state machine
-    // TODO: Add procedural animation
-
     if (g_spring_bones_ctx.initialized) {
         return 0; // Already initialized
     }
-
+    
+    // Initialize context mutex
+    if (pthread_mutex_init(&g_spring_bones_ctx.context_mutex, NULL) != 0) {
+        animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_THREADING_ERROR, "Failed to initialize context mutex");
+        return -1;
+    }
+    
+    // Initialize read-write lock
+    if (pthread_rwlock_init(&g_spring_bones_ctx.data_rwlock, NULL) != 0) {
+        pthread_mutex_destroy(&g_spring_bones_ctx.context_mutex);
+        animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_THREADING_ERROR, "Failed to initialize read-write lock");
+        return -1;
+    }
+    
+    // Initialize async mutex
+    if (pthread_mutex_init(&g_spring_bones_ctx.async_mutex, NULL) != 0) {
+        pthread_mutex_destroy(&g_spring_bones_ctx.context_mutex);
+        pthread_rwlock_destroy(&g_spring_bones_ctx.data_rwlock);
+        animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_THREADING_ERROR, "Failed to initialize async mutex");
+        return -1;
+    }
+    
+    // Initialize cache mutex
+    if (pthread_mutex_init(&g_spring_bones_ctx.cache_mutex, NULL) != 0) {
+        pthread_mutex_destroy(&g_spring_bones_ctx.context_mutex);
+        pthread_rwlock_destroy(&g_spring_bones_ctx.data_rwlock);
+        pthread_mutex_destroy(&g_spring_bones_ctx.async_mutex);
+        animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_THREADING_ERROR, "Failed to initialize cache mutex");
+        return -1;
+    }
+    
     g_spring_bones_ctx.capacity = ANIMATION_SPRING_BONES_DEFAULT_CAPACITY;
     g_spring_bones_ctx.items = calloc(g_spring_bones_ctx.capacity, sizeof(animation_spring_bones_internal_t));
     if (!g_spring_bones_ctx.items) {
+        pthread_mutex_destroy(&g_spring_bones_ctx.context_mutex);
+        pthread_rwlock_destroy(&g_spring_bones_ctx.data_rwlock);
+        pthread_mutex_destroy(&g_spring_bones_ctx.async_mutex);
+        pthread_mutex_destroy(&g_spring_bones_ctx.cache_mutex);
+        animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_OUT_OF_MEMORY, "Failed to allocate items array");
         return -1;
     }
-
+    
     g_spring_bones_ctx.count = 0;
     g_spring_bones_ctx.initialized = true;
-
+    
+    // Initialize subsystems
+    animation_spring_bones_init_simd();
+    animation_spring_bones_init_gpu();
+    
+    // Initialize performance counters
+    memset(&g_spring_bones_ctx.performance, 0, sizeof(g_spring_bones_ctx.performance));
+    
+    // Initialize LOD configuration
+    g_spring_bones_ctx.lod_config.lod_levels = 4;
+    g_spring_bones_ctx.lod_config.distance_thresholds[0] = 10.0f;
+    g_spring_bones_ctx.lod_config.distance_thresholds[1] = 25.0f;
+    g_spring_bones_ctx.lod_config.distance_thresholds[2] = 50.0f;
+    g_spring_bones_ctx.lod_config.distance_thresholds[3] = 100.0f;
+    g_spring_bones_ctx.lod_config.bone_counts[0] = 100;
+    g_spring_bones_ctx.lod_config.bone_counts[1] = 50;
+    g_spring_bones_ctx.lod_config.bone_counts[2] = 25;
+    g_spring_bones_ctx.lod_config.bone_counts[3] = 10;
+    g_spring_bones_ctx.lod_config.simulation_quality[0] = 1.0f;
+    g_spring_bones_ctx.lod_config.simulation_quality[1] = 0.75f;
+    g_spring_bones_ctx.lod_config.simulation_quality[2] = 0.5f;
+    g_spring_bones_ctx.lod_config.simulation_quality[3] = 0.25f;
+    g_spring_bones_ctx.lod_config.current_lod = 0;
+    
+    // Initialize culling context
+    g_spring_bones_ctx.culling_context.culling_enabled = true;
+    g_spring_bones_ctx.culling_context.culling_distance = 200.0f;
+    g_spring_bones_ctx.culling_context.visible_bones = 0;
+    g_spring_bones_ctx.culling_context.culled_bones = 0;
+    g_spring_bones_ctx.culling_context.frustum_culling = true;
+    g_spring_bones_ctx.culling_context.occlusion_culling = false;
+    
+    // Initialize streaming context
+    g_spring_bones_ctx.streaming_context.streaming_enabled = false;
+    g_spring_bones_ctx.streaming_context.chunk_size = 1024;
+    g_spring_bones_ctx.streaming_context.loaded_chunks = 0;
+    g_spring_bones_ctx.streaming_context.total_chunks = 0;
+    g_spring_bones_ctx.streaming_context.stream_buffer = NULL;
+    g_spring_bones_ctx.streaming_context.stream_buffer_size = 0;
+    pthread_mutex_init(&g_spring_bones_ctx.streaming_context.stream_mutex, NULL);
+    
+    // Initialize batch processing
+    g_spring_bones_ctx.batch_context.batch_size = 32;
+    g_spring_bones_ctx.batch_context.processed_items = 0;
+    g_spring_bones_ctx.batch_context.total_items = 0;
+    g_spring_bones_ctx.batch_context.batch_processing_active = false;
+    pthread_mutex_init(&g_spring_bones_ctx.batch_context.batch_mutex, NULL);
+    
+    // Initialize render graph
+    g_spring_bones_ctx.render_graph_capacity = 64;
+    g_spring_bones_ctx.render_graph_nodes = calloc(g_spring_bones_ctx.render_graph_capacity, 
+                                                   sizeof(animation_spring_bones_render_graph_node_t));
+    g_spring_bones_ctx.render_graph_node_count = 0;
+    
+    // Initialize memory budget
+    g_spring_bones_ctx.memory_budget = ANIMATION_SPRING_BONES_MEMORY_BUDGET;
+    g_spring_bones_ctx.current_memory_usage = 0;
+    
+    // Initialize compression
+    g_spring_bones_ctx.compression_enabled = true;
+    g_spring_bones_ctx.compression_level = 6;
+    g_spring_bones_ctx.compression_ratio = 1;
+    
+    // Initialize cache
+    memset(g_spring_bones_ctx.cache, 0, sizeof(g_spring_bones_ctx.cache));
+    g_spring_bones_ctx.next_cache_id = 1;
+    
+    // Initialize async operations
+    memset(g_spring_bones_ctx.async_operations, 0, sizeof(g_spring_bones_ctx.async_operations));
+    g_spring_bones_ctx.next_async_operation_id = 1;
+    
+    // Initialize file watcher
+    g_spring_bones_ctx.file_watcher.inotify_fd = -1;
+    g_spring_bones_ctx.file_watcher.watch_descriptor = -1;
+    g_spring_bones_ctx.file_watcher.watching_active = false;
+    
+    g_spring_bones_ctx.performance.total_memory_allocations++;
+    
     return 0;
 }
 
 void animation_spring_bones_shutdown(void) {
-    // TODO: Implement ragdoll physics
-    // TODO: Add animation retargeting
-    // TODO: Implement spring bones initialization
-    // TODO: Add spring bones cleanup/shutdown
-
     if (!g_spring_bones_ctx.initialized) {
         return;
     }
-
+    
+    pthread_mutex_lock(&g_spring_bones_ctx.context_mutex);
+    
+    // Stop file watching
+    animation_spring_bones_stop_file_watching();
+    
+    // Stop batch processing
+    if (g_spring_bones_ctx.batch_context.batch_processing_active) {
+        g_spring_bones_ctx.batch_context.batch_processing_active = false;
+        pthread_join(g_spring_bones_ctx.batch_context.batch_thread, NULL);
+    }
+    pthread_mutex_destroy(&g_spring_bones_ctx.batch_context.batch_mutex);
+    
+    // Cleanup streaming
+    if (g_spring_bones_ctx.streaming_context.stream_buffer) {
+        free(g_spring_bones_ctx.streaming_context.stream_buffer);
+    }
+    pthread_mutex_destroy(&g_spring_bones_ctx.streaming_context.stream_mutex);
+    
+    // Cleanup async operations
+    for (int i = 0; i < ANIMATION_SPRING_BONES_MAX_ASYNC_OPERATIONS; i++) {
+        animation_spring_bones_async_operation_t* operation = &g_spring_bones_ctx.async_operations[i];
+        if (operation->active) {
+            operation->active = false;
+            pthread_join(operation->worker_thread, NULL);
+        }
+        if (operation->data) {
+            free(operation->data);
+        }
+    }
+    
+    // Cleanup cache
+    for (int i = 0; i < ANIMATION_SPRING_BONES_CACHE_SIZE; i++) {
+        if (g_spring_bones_ctx.cache[i].data) {
+            free(g_spring_bones_ctx.cache[i].data);
+        }
+    }
+    
+    // Cleanup render graph
+    if (g_spring_bones_ctx.render_graph_nodes) {
+        for (uint32_t i = 0; i < g_spring_bones_ctx.render_graph_node_count; i++) {
+            if (g_spring_bones_ctx.render_graph_nodes[i].dependencies) {
+                free(g_spring_bones_ctx.render_graph_nodes[i].dependencies);
+            }
+        }
+        free(g_spring_bones_ctx.render_graph_nodes);
+    }
+    
+    // Cleanup GPU resources
+    animation_spring_bones_shutdown_gpu();
+    
+    // Cleanup all items
     for (uint32_t i = 0; i < g_spring_bones_ctx.count; i++) {
         animation_spring_bones_cleanup_internal(&g_spring_bones_ctx.items[i]);
     }
-
+    
     free(g_spring_bones_ctx.items);
     g_spring_bones_ctx.items = NULL;
     g_spring_bones_ctx.count = 0;
     g_spring_bones_ctx.capacity = 0;
     g_spring_bones_ctx.initialized = false;
+    
+    pthread_mutex_unlock(&g_spring_bones_ctx.context_mutex);
+    
+    // Destroy mutexes and locks
+    pthread_mutex_destroy(&g_spring_bones_ctx.context_mutex);
+    pthread_rwlock_destroy(&g_spring_bones_ctx.data_rwlock);
+    pthread_mutex_destroy(&g_spring_bones_ctx.async_mutex);
+    pthread_mutex_destroy(&g_spring_bones_ctx.cache_mutex);
+    
+    g_spring_bones_ctx.performance.total_memory_deallocations++;
 }
 
 int animation_spring_bones_create(animation_spring_bones_handle_t* out_handle, const animation_spring_bones_desc_t* desc) {
-    // TODO: Implement spring bones validation
-    // TODO: Add spring bones error handling
-    // TODO: Implement spring bones serialization
-    // TODO: Add spring bones debug output
-
     if (!out_handle || !desc) {
+        animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_INVALID_PARAM, "Null handle or description");
         return -1;
     }
-
+    
     if (!g_spring_bones_ctx.initialized) {
+        animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_NOT_INITIALIZED, "System not initialized");
         return -2;
     }
-
+    
+    pthread_mutex_lock(&g_spring_bones_ctx.context_mutex);
+    
     if (g_spring_bones_ctx.count >= g_spring_bones_ctx.capacity) {
-        // TODO: Implement spring bones unit tests
+        pthread_mutex_unlock(&g_spring_bones_ctx.context_mutex);
+        animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_CAPACITY_EXCEEDED, "Capacity exceeded");
         return -3;
     }
-
+    
     uint32_t index = g_spring_bones_ctx.count++;
     animation_spring_bones_internal_t* item = &g_spring_bones_ctx.items[index];
-
+    
+    // Initialize item with default spring physics values
     item->id = index;
     item->flags = desc->flags;
     item->data = NULL;
@@ -898,50 +1062,188 @@ int animation_spring_bones_create(animation_spring_bones_handle_t* out_handle, c
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
-
+    
+    // Spring physics properties
+    item->stiffness = 50.0f;
+    item->damping = 0.95f;
+    item->mass = 1.0f;
+    item->rest_length = 1.0f;
+    item->current_length = 1.0f;
+    
+    // Simulation state
+    item->position[0] = 0.0f; item->position[1] = 0.0f; item->position[2] = 0.0f;
+    item->velocity[0] = 0.0f; item->velocity[1] = 0.0f; item->velocity[2] = 0.0f;
+    item->force[0] = 0.0f; item->force[1] = 0.0f; item->force[2] = 0.0f;
+    
+    // LOD and culling
+    item->lod_level = 0;
+    item->is_visible = true;
+    item->distance_from_viewer = 0.0f;
+    
+    // Cache and streaming
+    item->cache_id = 0;
+    item->is_streamed = false;
+    item->chunk_index = 0;
+    
+    // GPU integration
+    item->gpu_processed = false;
+    item->gpu_buffer_offset = 0;
+    
+    // Error tracking
+    item->last_error = ANIMATION_SPRING_BONES_ERROR_NONE;
+    item->error_message[0] = '\0';
+    
+    // Update memory usage
+    g_spring_bones_ctx.current_memory_usage += sizeof(animation_spring_bones_internal_t);
+    if (g_spring_bones_ctx.current_memory_usage > g_spring_bones_ctx.performance.peak_memory_usage) {
+        g_spring_bones_ctx.performance.peak_memory_usage = g_spring_bones_ctx.current_memory_usage;
+    }
+    
+    pthread_mutex_unlock(&g_spring_bones_ctx.context_mutex);
+    
     out_handle->id = index;
     return 0;
 }
 
 void animation_spring_bones_destroy(animation_spring_bones_handle_t handle) {
-    // TODO: Add spring bones performance counters
-    // TODO: Implement spring bones hot-reload
-
     if (handle.id >= g_spring_bones_ctx.count) {
         return;
     }
-
-    animation_spring_bones_cleanup_internal(&g_spring_bones_ctx.items[handle.id]);
+    
+    pthread_mutex_lock(&g_spring_bones_ctx.context_mutex);
+    
+    animation_spring_bones_internal_t* item = &g_spring_bones_ctx.items[handle.id];
+    
+    // Remove from cache if present
+    if (item->cache_id != 0) {
+        void* cached_data;
+        size_t cached_size;
+        if (animation_spring_bones_cache_lookup(item->cache_id, &cached_data, &cached_size)) {
+            // Cache entry will be automatically evicted when needed
+        }
+    }
+    
+    animation_spring_bones_cleanup_internal(item);
+    
+    // Update memory usage
+    g_spring_bones_ctx.current_memory_usage -= sizeof(animation_spring_bones_internal_t);
+    g_spring_bones_ctx.current_memory_usage -= item->data_size;
+    
+    g_spring_bones_ctx.performance.total_memory_deallocations++;
+    
+    pthread_mutex_unlock(&g_spring_bones_ctx.context_mutex);
 }
 
 int animation_spring_bones_update(animation_spring_bones_handle_t handle, const void* data, size_t size) {
-    // TODO: Add spring bones thread safety
-    // TODO: Implement spring bones memory pooling
-    // TODO: Add spring bones caching layer
-    // TODO: Implement spring bones async operations
-
     if (handle.id >= g_spring_bones_ctx.count) {
+        animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_INVALID_HANDLE, "Invalid handle");
         return -1;
     }
-
+    
+    pthread_rwlock_wrlock(&g_spring_bones_ctx.data_rwlock);
+    
     animation_spring_bones_internal_t* item = &g_spring_bones_ctx.items[handle.id];
     if (!item->initialized) {
+        pthread_rwlock_unlock(&g_spring_bones_ctx.data_rwlock);
+        animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_INVALID_PARAM, "Item not initialized");
         return -2;
     }
-
-    // TODO: Add spring bones GPU integration
-    // TODO: Implement spring bones SIMD optimization
-
+    
+    // Validate item
+    if (!animation_spring_bones_validate(item)) {
+        pthread_rwlock_unlock(&g_spring_bones_ctx.data_rwlock);
+        return item->last_error;
+    }
+    
+    // Update data if provided
+    if (data && size > 0) {
+        if (item->data) {
+            free(item->data);
+        }
+        item->data = malloc(size);
+        if (!item->data) {
+            pthread_rwlock_unlock(&g_spring_bones_ctx.data_rwlock);
+            animation_spring_bones_set_error(ANIMATION_SPRING_BONES_ERROR_OUT_OF_MEMORY, "Failed to allocate data");
+            return -3;
+        }
+        memcpy(item->data, data, size);
+        item->data_size = size;
+        
+        // Update memory usage
+        g_spring_bones_ctx.current_memory_usage += size;
+        if (g_spring_bones_ctx.current_memory_usage > g_spring_bones_ctx.performance.peak_memory_usage) {
+            g_spring_bones_ctx.performance.peak_memory_usage = g_spring_bones_ctx.current_memory_usage;
+        }
+    }
+    
+    // Perform spring physics simulation
+    double start_time = animation_spring_bones_get_timestamp() / 1000000000.0;
+    
+    // Apply spring force: F = -k * (x - rest_length)
+    float displacement = sqrtf(item->position[0] * item->position[0] + 
+                              item->position[1] * item->position[1] + 
+                              item->position[2] * item->position[2]) - item->rest_length;
+    
+    item->force[0] = -item->stiffness * item->position[0];
+    item->force[1] = -item->stiffness * item->position[1];
+    item->force[2] = -item->stiffness * item->position[2];
+    
+    // Update velocity: v = v + (F/m) * dt
+    float dt = 0.016f; // 60 FPS
+    item->velocity[0] += (item->force[0] / item->mass) * dt;
+    item->velocity[1] += (item->force[1] / item->mass) * dt;
+    item->velocity[2] += (item->force[2] / item->mass) * dt;
+    
+    // Apply damping
+    item->velocity[0] *= item->damping;
+    item->velocity[1] *= item->damping;
+    item->velocity[2] *= item->damping;
+    
+    // Update position: x = x + v * dt
+    item->position[0] += item->velocity[0] * dt;
+    item->position[1] += item->velocity[1] * dt;
+    item->position[2] += item->velocity[2] * dt;
+    
+    // Update current length
+    item->current_length = sqrtf(item->position[0] * item->position[0] + 
+                                 item->position[1] * item->position[1] + 
+                                 item->position[2] * item->position[2]);
+    
+    double end_time = animation_spring_bones_get_timestamp() / 1000000000.0;
+    g_spring_bones_ctx.performance.total_update_time += (end_time - start_time);
+    g_spring_bones_ctx.performance.total_updates++;
+    
+    // Try GPU processing if available
+    if (g_spring_bones_ctx.gpu_context.gpu_available && !item->gpu_processed) {
+        int gpu_result = animation_spring_bones_gpu_process_bones(item, 1);
+        if (gpu_result == 0) {
+            g_spring_bones_ctx.performance.total_gpu_operations++;
+        }
+    }
+    
+    // Try SIMD processing if available
+    if (g_spring_bones_ctx.simd_context.avx2_supported || g_spring_bones_ctx.simd_context.sse_supported) {
+        animation_spring_bones_simd_update_bones(item, 1, dt);
+    }
+    
     item->dirty = true;
+    item->frame_updated++;
+    
+    pthread_rwlock_unlock(&g_spring_bones_ctx.data_rwlock);
+    
     return 0;
 }
 
 bool animation_spring_bones_is_valid(animation_spring_bones_handle_t handle) {
-    // TODO: Add spring bones batch processing
     if (handle.id >= g_spring_bones_ctx.count) {
         return false;
     }
-    return g_spring_bones_ctx.items[handle.id].initialized;
+    
+    pthread_rwlock_rdlock(&g_spring_bones_ctx.data_rwlock);
+    bool valid = g_spring_bones_ctx.items[handle.id].initialized;
+    pthread_rwlock_unlock(&g_spring_bones_ctx.data_rwlock);
+    
+    return valid;
 }
 
 int animation_spring_bones_get_info(animation_spring_bones_handle_t handle, animation_spring_bones_info_t* out_info) {

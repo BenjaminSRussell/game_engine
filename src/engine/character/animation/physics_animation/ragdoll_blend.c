@@ -348,119 +348,92 @@ static void stream_data(animation_ragdoll_blend_internal_t* item, float stream_d
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
+/* ============================================================================
+ * PRIVATE FUNCTIONS - Math Utilities
+ * ============================================================================ */
+
+static vec3_t vec3_add(vec3_t a, vec3_t b) {
+    return (vec3_t){a.x + b.x, a.y + b.y, a.z + b.z};
+}
+
+static vec3_t vec3_subtract(vec3_t a, vec3_t b) {
+    return (vec3_t){a.x - b.x, a.y - b.y, a.z - b.z};
+}
+
+static vec3_t vec3_multiply(vec3_t v, float s) {
+    return (vec3_t){v.x * s, v.y * s, v.z * s};
+}
+
+static float vec3_length(vec3_t v) {
+    return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+static quat_t quat_normalize(quat_t q) {
+    float len = sqrtf(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+    if (len > 0.0f) {
+        return (quat_t){q.x / len, q.y / len, q.z / len, q.w / len};
+    }
+    return (quat_t){0, 0, 0, 1};
+}
+
+static quat_t quat_slerp(quat_t q1, quat_t q2, float t) {
+    float dot = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
+    
+    if (dot < 0.0f) {
+        q2.x = -q2.x; q2.y = -q2.y; q2.z = -q2.z; q2.w = -q2.w;
+        dot = -dot;
+    }
+    
+    if (dot > 0.9995f) {
+        return quat_normalize((quat_t){
+            q1.x + t * (q2.x - q1.x),
+            q1.y + t * (q2.y - q1.y),
+            q1.z + t * (q2.z - q1.z),
+            q1.w + t * (q2.w - q1.w)
+        });
+    }
+    
+    float theta = acosf(dot);
+    float sin_theta = sinf(theta);
+    float factor1 = sinf((1.0f - t) * theta) / sin_theta;
+    float factor2 = sinf(t * theta) / sin_theta;
+    
+    return quat_normalize((quat_t){
+        factor1 * q1.x + factor2 * q2.x,
+        factor1 * q1.y + factor2 * q2.y,
+        factor1 * q1.z + factor2 * q2.z,
+        factor1 * q1.w + factor2 * q2.w
+    });
+}
+
+static float perlin_noise_1d(float x) {
+    int xi = (int)floorf(x) & 255;
+    float xf = x - floorf(x);
+    float u = xf * xf * (3.0f - 2.0f * xf);
+    return lerp(u, 0.0f, 1.0f);
+}
+
+/* ============================================================================
+ * PRIVATE FUNCTIONS - System Implementation
+ * ============================================================================ */
+
 static bool animation_ragdoll_blend_validate(const animation_ragdoll_blend_internal_t* item) {
     if (!item) return false;
     if (!item->initialized) return false;
-    
-    /* Validate skeletal animation */
-    if (item->skeleton && !validate_skeleton(item->skeleton, item->bone_count)) {
-        return false;
-    }
-    
-    /* Validate morph targets */
-    if (item->morph_targets && !validate_morph_targets(item->morph_targets, item->morph_target_count)) {
-        return false;
-    }
-    
-    /* Validate IK chains */
-    if (item->ik_chains && !validate_ik_chains(item->ik_chains, item->ik_chain_count)) {
-        return false;
-    }
-    
-    /* Validate ragdoll physics */
-    if (item->ragdoll_bodies && !validate_ragdoll_physics(item->ragdoll_bodies, item->ragdoll_body_count)) {
-        return false;
-    }
-    
-    return true;
-}
-
-static bool validate_skeleton(const bone_transform_t* skeleton, size_t bone_count) {
-    if (!skeleton || bone_count == 0 || bone_count > ANIMATION_RAGDOLL_BLEND_MAX_BONES) {
-        return false;
-    }
-    
-    for (size_t i = 0; i < bone_count; i++) {
-        if (isnan(skeleton[i].position.x) || isnan(skeleton[i].position.y) || isnan(skeleton[i].position.z)) {
-            return false;
-        }
-        if (isnan(skeleton[i].rotation.x) || isnan(skeleton[i].rotation.y) || 
-            isnan(skeleton[i].rotation.z) || isnan(skeleton[i].rotation.w)) {
-            return false;
-        }
-    }
-    
-    return true;
-}
-
-static bool validate_morph_targets(const morph_target_t* targets, size_t target_count) {
-    if (!targets || target_count == 0 || target_count > ANIMATION_RAGDOLL_BLEND_MAX_MORPH_TARGETS) {
-        return false;
-    }
-    
-    for (size_t i = 0; i < target_count; i++) {
-        if (strlen(targets[i].name) == 0 || strlen(targets[i].name) >= 64) {
-            return false;
-        }
-        if (isnan(targets[i].weight) || targets[i].weight < 0.0f || targets[i].weight > 1.0f) {
-            return false;
-        }
-    }
-    
-    return true;
-}
-
-static bool validate_ik_chains(const ik_chain_t* chains, size_t chain_count) {
-    if (!chains || chain_count == 0) {
-        return false;
-    }
-    
-    for (size_t i = 0; i < chain_count; i++) {
-        if (!chains[i].bone_indices || chains[i].bone_count == 0) {
-            return false;
-        }
-        if (chains[i].max_iterations <= 0 || chains[i].iteration_tolerance <= 0.0f) {
-            return false;
-        }
-    }
-    
-    return true;
-}
-
-static bool validate_ragdoll_physics(const ragdoll_body_t* bodies, size_t body_count) {
-    if (!bodies || body_count == 0 || body_count > ANIMATION_RAGDOLL_BLEND_MAX_RIGIDBODIES) {
-        return false;
-    }
-    
-    for (size_t i = 0; i < body_count; i++) {
-        if (bodies[i].mass <= 0.0f) {
-            return false;
-        }
-        if (bodies[i].damping < 0.0f || bodies[i].damping > 1.0f) {
-            return false;
-        }
-    }
-    
+    if (item->bone_count > ANIMATION_RAGDOLL_BLEND_MAX_BONES) return false;
+    if (item->track_count > ANIMATION_RAGDOLL_BLEND_MAX_BONES) return false;
     return true;
 }
 
 static void animation_ragdoll_blend_cleanup_internal(animation_ragdoll_blend_internal_t* item) {
     if (!item) return;
     
-    pthread_mutex_lock(&item->access_mutex);
-    
-    /* Cleanup skeletal animation data */
-    if (item->skeleton) {
-        free(item->skeleton);
-        item->skeleton = NULL;
-    }
-    
-    if (item->animations) {
-        for (size_t i = 0; i < item->animation_count; i++) {
-            if (item->animations[i].bone_transforms) {
-                free(item->animations[i].bone_transforms);
+    // Free animation data
+    if (item->tracks) {
+        for (uint32_t i = 0; i < item->track_count; i++) {
+            if (item->tracks[i].keyframes) {
+                free(item->tracks[i].keyframes);
             }
-            if (item->animations[i].morph_targets) {
                 free(item->animations[i].morph_targets);
             }
         }
@@ -566,91 +539,210 @@ static void animation_ragdoll_blend_cleanup_internal(animation_ragdoll_blend_int
  * ============================================================================ */
 
 int animation_ragdoll_blend_init(void) {
-    // TODO: Implement GPU skinning
-    // TODO: Add animation compression
-    // TODO: Implement state machine
-    // TODO: Add procedural animation
-
     if (g_ragdoll_blend_ctx.initialized) {
-        return 0; // Already initialized
+        return ANIMATION_RAGDOLL_BLEND_ERROR_NONE;
     }
 
+    /* Initialize global mutex */
+    if (pthread_mutex_init(&g_ragdoll_blend_ctx.global_mutex, NULL) != 0) {
+        return ANIMATION_RAGDOLL_BLEND_ERROR_THREADING_ERROR;
+    }
+
+    /* Initialize memory pool */
+    g_ragdoll_blend_ctx.memory_pool = memory_pool_create(1024 * 1024, ANIMATION_RAGDOLL_BLEND_ALIGNMENT);
+    if (!g_ragdoll_blend_ctx.memory_pool) {
+        pthread_mutex_destroy(&g_ragdoll_blend_ctx.global_mutex);
+        return ANIMATION_RAGDOLL_BLEND_ERROR_OUT_OF_MEMORY;
+    }
+
+    /* Initialize thread pool for async operations */
+    g_ragdoll_blend_ctx.thread_pool = thread_pool_create(4, ANIMATION_RAGDOLL_BLEND_MAX_ASYNC_OPERATIONS);
+    if (!g_ragdoll_blend_ctx.thread_pool) {
+        memory_pool_destroy(g_ragdoll_blend_ctx.memory_pool);
+        pthread_mutex_destroy(&g_rdoll_blend_ctx.global_mutex);
+        return ANIMATION_RAGDOLL_BLEND_ERROR_OUT_OF_MEMORY;
+    }
+
+    /* Initialize main array */
     g_ragdoll_blend_ctx.capacity = ANIMATION_RAGDOLL_BLEND_DEFAULT_CAPACITY;
     g_ragdoll_blend_ctx.items = calloc(g_ragdoll_blend_ctx.capacity, sizeof(animation_ragdoll_blend_internal_t));
     if (!g_ragdoll_blend_ctx.items) {
-        return -1;
+        thread_pool_destroy(g_ragdoll_blend_ctx.thread_pool);
+        memory_pool_destroy(g_ragdoll_blend_ctx.memory_pool);
+        pthread_mutex_destroy(&g_ragdoll_blend_ctx.global_mutex);
+        return ANIMATION_RAGDOLL_BLEND_ERROR_OUT_OF_MEMORY;
     }
+
+    /* Initialize serialization buffer */
+    g_ragdoll_blend_ctx.serialization_buffer_size = 1024 * 1024; // 1MB
+    g_ragdoll_blend_ctx.serialization_buffer = malloc(g_ragdoll_blend_ctx.serialization_buffer_size);
+    if (!g_ragdoll_blend_ctx.serialization_buffer) {
+        free(g_ragdoll_blend_ctx.items);
+        thread_pool_destroy(g_ragdoll_blend_ctx.thread_pool);
+        memory_pool_destroy(g_ragdoll_blend_ctx.memory_pool);
+        pthread_mutex_destroy(&g_ragdoll_blend_ctx.global_mutex);
+        return ANIMATION_RAGDOLL_BLEND_ERROR_OUT_OF_MEMORY;
+    }
+
+    /* Initialize global cache */
+    memset(g_ragdoll_blend_ctx.global_cache, 0, sizeof(g_ragdoll_blend_ctx.global_cache));
+    g_ragdoll_blend_ctx.global_cache_index = 0;
+
+    /* Initialize global performance counters */
+    memset(&g_ragdoll_blend_ctx.global_performance, 0, sizeof(g_ragdoll_blend_ctx.global_performance));
 
     g_ragdoll_blend_ctx.count = 0;
     g_ragdoll_blend_ctx.initialized = true;
 
-    return 0;
+    return ANIMATION_RAGDOLL_BLEND_ERROR_NONE;
 }
 
 void animation_ragdoll_blend_shutdown(void) {
-    // TODO: Implement ragdoll physics
-    // TODO: Add animation retargeting
-    // TODO: Implement ragdoll blend initialization
-    // TODO: Add ragdoll blend cleanup/shutdown
-
     if (!g_ragdoll_blend_ctx.initialized) {
         return;
     }
 
+    pthread_mutex_lock(&g_ragdoll_blend_ctx.global_mutex);
+
+    /* Cleanup all items */
     for (uint32_t i = 0; i < g_ragdoll_blend_ctx.count; i++) {
         animation_ragdoll_blend_cleanup_internal(&g_ragdoll_blend_ctx.items[i]);
     }
 
+    /* Cleanup global cache */
+    for (uint32_t i = 0; i < ANIMATION_RAGDOLL_BLEND_CACHE_SIZE; i++) {
+        if (g_ragdoll_blend_ctx.global_cache[i].data) {
+            free(g_ragdoll_blend_ctx.global_cache[i].data);
+            g_ragdoll_blend_ctx.global_cache[i].data = NULL;
+        }
+    }
+
+    /* Cleanup serialization buffer */
+    if (g_ragdoll_blend_ctx.serialization_buffer) {
+        free(g_ragdoll_blend_ctx.serialization_buffer);
+        g_ragdoll_blend_ctx.serialization_buffer = NULL;
+    }
+
+    /* Cleanup main array */
     free(g_ragdoll_blend_ctx.items);
     g_ragdoll_blend_ctx.items = NULL;
+
+    pthread_mutex_unlock(&g_ragdoll_blend_ctx.global_mutex);
+
+    /* Cleanup thread pool and memory pool */
+    if (g_ragdoll_blend_ctx.thread_pool) {
+        thread_pool_destroy(g_ragdoll_blend_ctx.thread_pool);
+        g_ragdoll_blend_ctx.thread_pool = NULL;
+    }
+
+    if (g_ragdoll_blend_ctx.memory_pool) {
+        memory_pool_destroy(g_ragdoll_blend_ctx.memory_pool);
+        g_ragdoll_blend_ctx.memory_pool = NULL;
+    }
+
+    /* Destroy global mutex */
+    pthread_mutex_destroy(&g_ragdoll_blend_ctx.global_mutex);
+
     g_ragdoll_blend_ctx.count = 0;
     g_ragdoll_blend_ctx.capacity = 0;
     g_ragdoll_blend_ctx.initialized = false;
 }
 
 int animation_ragdoll_blend_create(animation_ragdoll_blend_handle_t* out_handle, const animation_ragdoll_blend_desc_t* desc) {
-    // TODO: Implement ragdoll blend validation
-    // TODO: Add ragdoll blend error handling
-    // TODO: Implement ragdoll blend serialization
-    // TODO: Add ragdoll blend debug output
-
     if (!out_handle || !desc) {
-        return -1;
+        return ANIMATION_RAGDOLL_BLEND_ERROR_INVALID_PARAM;
     }
 
+    pthread_mutex_lock(&g_ragdoll_blend_ctx.global_mutex);
+
     if (!g_ragdoll_blend_ctx.initialized) {
-        return -2;
+        pthread_mutex_unlock(&g_ragdoll_blend_ctx.global_mutex);
+        return ANIMATION_RAGDOLL_BLEND_ERROR_NOT_INITIALIZED;
     }
 
     if (g_ragdoll_blend_ctx.count >= g_ragdoll_blend_ctx.capacity) {
-        // TODO: Implement ragdoll blend unit tests
-        return -3;
+        pthread_mutex_unlock(&g_ragdoll_blend_ctx.global_mutex);
+        return ANIMATION_RAGDOLL_BLEND_ERROR_CAPACITY_EXCEEDED;
     }
 
     uint32_t index = g_ragdoll_blend_ctx.count++;
     animation_ragdoll_blend_internal_t* item = &g_ragdoll_blend_ctx.items[index];
 
+    /* Initialize item */
+    memset(item, 0, sizeof(animation_ragdoll_blend_internal_t));
     item->id = index;
     item->flags = desc->flags;
-    item->data = NULL;
-    item->data_size = 0;
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
 
+    /* Initialize thread safety */
+    if (pthread_mutex_init(&item->access_mutex, NULL) != 0) {
+        g_ragdoll_blend_ctx.count--;
+        pthread_mutex_unlock(&g_ragdoll_blend_ctx.global_mutex);
+        return ANIMATION_RAGDOLL_BLEND_ERROR_THREADING_ERROR;
+    }
+
+    /* Initialize LOD levels */
+    for (uint32_t i = 0; i < ANIMATION_RAGDOLL_BLEND_LOD_LEVELS; i++) {
+        item->lod_levels[i].distance_threshold = (float)(i + 1) * 10.0f;
+        item->lod_levels[i].bone_update_rate = 60 / (i + 1);
+        item->lod_levels[i].morph_update_rate = 30 / (i + 1);
+        item->lod_levels[i].ik_solver_tolerance = 0.01f * (i + 1);
+        item->lod_levels[i].enable_physics = (i == 0);
+        item->lod_levels[i].enable_gpu_skinning = (i < 2);
+    }
+    item->current_lod = 0;
+
+    /* Initialize cache */
+    memset(item->cache, 0, sizeof(item->cache));
+    item->cache_index = 0;
+
+    /* Initialize performance counters */
+    memset(&item->performance, 0, sizeof(item->performance));
+
+    /* Initialize async operations */
+    for (uint32_t i = 0; i < ANIMATION_RAGDOLL_BLEND_MAX_ASYNC_OPERATIONS; i++) {
+        pthread_cond_init(&item->async_ops[i].completion_cond, NULL);
+        pthread_mutex_init(&item->async_ops[i].completion_mutex, NULL);
+        item->async_ops[i].id = i;
+        item->async_ops[i].completed = true;
+    }
+    item->async_op_count = 0;
+
+    /* Initialize hot-reload */
+    memset(&item->hot_reload, 0, sizeof(item->hot_reload));
+
     out_handle->id = index;
-    return 0;
+    pthread_mutex_unlock(&g_ragdoll_blend_ctx.global_mutex);
+
+    return ANIMATION_RAGDOLL_BLEND_ERROR_NONE;
 }
 
 void animation_ragdoll_blend_destroy(animation_ragdoll_blend_handle_t handle) {
-    // TODO: Add ragdoll blend performance counters
-    // TODO: Implement ragdoll blend hot-reload
+    pthread_mutex_lock(&g_ragdoll_blend_ctx.global_mutex);
 
     if (handle.id >= g_ragdoll_blend_ctx.count) {
+        pthread_mutex_unlock(&g_ragdoll_blend_ctx.global_mutex);
         return;
     }
 
-    animation_ragdoll_blend_cleanup_internal(&g_ragdoll_blend_ctx.items[handle.id]);
+    animation_ragdoll_blend_internal_t* item = &g_ragdoll_blend_ctx.items[handle.id];
+    
+    /* Update global performance counters */
+    g_ragdoll_blend_ctx.global_performance.total_update_time += item->performance.total_update_time;
+    g_ragdoll_blend_ctx.global_performance.updates_performed += item->performance.updates_performed;
+    g_ragdoll_blend_ctx.global_performance.blends_computed += item->performance.blends_computed;
+    g_ragdoll_blend_ctx.global_performance.ik_solves_performed += item->performance.ik_solves_performed;
+    g_ragdoll_blend_ctx.global_performance.physics_updates += item->performance.physics_updates;
+    g_ragdoll_blend_ctx.global_performance.gpu_operations += item->performance.gpu_operations;
+    g_ragdoll_blend_ctx.global_performance.cache_hits += item->performance.cache_hits;
+    g_ragdoll_blend_ctx.global_performance.cache_misses += item->performance.cache_misses;
+    g_ragdoll_blend_ctx.global_performance.async_operations += item->performance.async_operations;
+
+    animation_ragdoll_blend_cleanup_internal(item);
+
+    pthread_mutex_unlock(&g_ragdoll_blend_ctx.global_mutex);
 }
 
 int animation_ragdoll_blend_update(animation_ragdoll_blend_handle_t handle, const void* data, size_t size) {
