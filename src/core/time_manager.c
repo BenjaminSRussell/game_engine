@@ -1,3 +1,13 @@
+/*
+ * time_manager.c
+ * Time management system implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides time tracking, scaling, and high-resolution timing functionality
+ */
+
 // #include "core/time/time_manager.h"  // Header not found - stubbed for compilation
 #include <time.h>
 
