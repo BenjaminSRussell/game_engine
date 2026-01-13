@@ -122,21 +122,6 @@ static AdvancedPathCache* g_advanced_cache = NULL;
 // UTILITY FUNCTIONS
 // ============================================================================
 
-static f32 vec3_distance_squared(vec3 a, vec3 b) {
-    f32 dx = a.x - b.x;
-    f32 dy = a.y - b.y;
-    f32 dz = a.z - b.z;
-    return dx * dx + dy * dy + dz * dz;
-}
-
-static f32 vec3_distance(vec3 a, vec3 b) {
-    return sqrtf(vec3_distance_squared(a, b));
-}
-
-static bool vec3_within_tolerance(vec3 a, vec3 b, f32 tolerance) {
-    return vec3_distance_squared(a, b) <= (tolerance * tolerance);
-}
-
 static u32 find_or_create_region(vec3 position) {
     // Find existing region
     for (u32 i = 0; i < g_advanced_cache->region_count; i++) {
