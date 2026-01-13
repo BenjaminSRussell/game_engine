@@ -1,4 +1,13 @@
-// Utility string helpers.
+/*
+ * string_utils.c
+ * Utility string helpers implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides string manipulation, formatting, and utility functions
+ */
+
 #include <core/string_utils.h>
 #include <ctype.h>
 #include <stdarg.h>
