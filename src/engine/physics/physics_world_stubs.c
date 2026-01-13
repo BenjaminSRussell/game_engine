@@ -1,85 +1,38 @@
-#include <math.h> // For sqrtf, etc.
+#include <math.h>
 #include <physics/physics.h>
 #include <physics/physics_engine_core.h>
-#include <physics/collision/collision_gjk_epa.h>
+// Removed collision_gjk_epa.h to avoid conflicts
+#include <physics/core/physics_types.h>
 #include <float.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdatomic.h>
 
-// ============================================================================
-// INTERNAL HELPERS
-// ============================================================================
+// External functions from collision_detection.c
+void collision_system_init(void);
+void collision_system_clear_bodies(void);
+void collision_system_add_body(u32 id, const AABB *bounds, Vec3 position);
+void collision_system_update(f32 delta_time);
+u32 collision_system_get_contacts_for_body(u32 body_id, void *out_contacts, u32 max_count);
 
-static _Atomic uint32_t global_body_id_counter = ATOMIC_VAR_INIT(1);
+// Internal helper to calculate AABB
+static AABB calculate_aabb(RigidBody *body) {
+    AABB bounds = {{0}};
+    float rx = 0.5f, ry = 0.5f, rz = 0.5f;
 
-static bool ray_intersect_sphere(const Vec3 origin, const Vec3 dir,
-                                 const Vec3 center, float radius,
-                                 float max_dist, float *out_t) {
-  Vec3 oc = {origin.x - center.x, origin.y - center.y, origin.z - center.z};
-  float b = oc.x * dir.x + oc.y * dir.y + oc.z * dir.z;
-  float c = oc.x * oc.x + oc.y * oc.y + oc.z * oc.z - radius * radius;
-  float discriminant = b * b - c;
-  if (discriminant < 0.0f)
-    return false;
-
-  float sqrt_disc = sqrtf(discriminant);
-  float t = -b - sqrt_disc;
-  if (t < 0.0f)
-    t = -b + sqrt_disc;
-  if (t < 0.0f || t > max_dist)
-    return false;
-
-  if (out_t)
-    *out_t = t;
-  return true;
-}
-
-static bool ray_intersect_aabb(const Vec3 origin, const Vec3 dir,
-                               const Vec3 min, const Vec3 max, float max_dist,
-                               float *out_t, Vec3 *out_normal) {
-  float tmin = 0.0f;
-  float tmax = max_dist;
-  Vec3 normal = {0.0f, 0.0f, 0.0f};
-
-  const float dir_vals[3] = {dir.x, dir.y, dir.z};
-  const float origin_vals[3] = {origin.x, origin.y, origin.z};
-  const float min_vals[3] = {min.x, min.y, min.z};
-  const float max_vals[3] = {max.x, max.y, max.z};
-
-  for (int i = 0; i < 3; ++i) {
-    float inv_d = (fabsf(dir_vals[i]) > 1e-6f) ? 1.0f / dir_vals[i] : FLT_MAX;
-    float t0 = (min_vals[i] - origin_vals[i]) * inv_d;
-    float t1 = (max_vals[i] - origin_vals[i]) * inv_d;
-    Vec3 axis_normal = {0.0f, 0.0f, 0.0f};
-    axis_normal.x = (i == 0) ? -1.0f : 0.0f;
-    axis_normal.y = (i == 1) ? -1.0f : 0.0f;
-    axis_normal.z = (i == 2) ? -1.0f : 0.0f;
-
-    if (t0 > t1) {
-      float tmp = t0;
-      t0 = t1;
-      t1 = tmp;
-      axis_normal.x = -axis_normal.x;
-      axis_normal.y = -axis_normal.y;
-      axis_normal.z = -axis_normal.z;
+    if (body->shape) {
+        if (body->shape->type == COLLISION_SHAPE_SPHERE) {
+            rx = ry = rz = body->shape->data.sphere.radius;
+        } else if (body->shape->type == COLLISION_SHAPE_BOX) {
+            rx = body->shape->data.box.half_extents[0];
+            ry = body->shape->data.box.half_extents[1];
+            rz = body->shape->data.box.half_extents[2];
+        }
     }
 
-    if (t0 > tmin) {
-      tmin = t0;
-      normal = axis_normal;
-    }
-    if (t1 < tmax)
-      tmax = t1;
-    if (tmax < tmin)
-      return false;
-  }
-
-  if (out_t)
-    *out_t = tmin;
-  if (out_normal)
-    *out_normal = normal;
-  return true;
+    bounds.min = (Vec3){body->position[0] - rx, body->position[1] - ry, body->position[2] - rz};
+    bounds.max = (Vec3){body->position[0] + rx, body->position[1] + ry, body->position[2] + rz};
+    return bounds;
 }
 
 static void integrate_body(RigidBody *body, f32 dt, const Vec3 gravity) {
@@ -105,41 +58,15 @@ static void integrate_body(RigidBody *body, f32 dt, const Vec3 gravity) {
   body->accumulated_force[1] = 0.0f;
   body->accumulated_force[2] = 0.0f;
 
-  // Apply Damping (simplified)
+  // Apply Damping
   f32 linear_damping_factor = 1.0f - (body->linear_damping * dt);
-  if (linear_damping_factor < 0.0f)
-    linear_damping_factor = 0.0f;
+  if (linear_damping_factor < 0.0f) linear_damping_factor = 0.0f;
 
   body->velocity[0] *= linear_damping_factor;
   body->velocity[1] *= linear_damping_factor;
   body->velocity[2] *= linear_damping_factor;
 
-  // Integrate Position
-  body->position[0] += body->velocity[0] * dt;
-  body->position[1] += body->velocity[1] * dt;
-  body->position[2] += body->velocity[2] * dt;
-
-  // Use proper collision detection system instead of simple ground plane
-  // Initialize collision system if not already done
-  static bool collision_initialized = false;
-  if (!collision_initialized) {
-    collision_system_init();
-    collision_initialized = true;
-  }
-  
-  // Update collision system with this body
-  AABB body_bounds = {
-    .min = {body->position[0] - body->radius, body->position[1] - body->radius, body->position[2] - body->radius},
-    .max = {body->position[0] + body->radius, body->position[1] + body->radius, body->position[2] + body->radius}
-  };
-  
-  // Add body to collision system for broadphase/narrowphase processing
-  collision_system_add_body(body->id, &body_bounds, body->position);
-  
-  // Process collisions - this will handle ground plane and other collisions properly
-  collision_system_update(dt);
-  
-  // Get collision results for this body
+  // Retrieve contacts resolved by collision system
   ContactPoint contacts[16];
   u32 contact_count = collision_system_get_contacts_for_body(body->id, contacts, 16);
   
@@ -147,39 +74,45 @@ static void integrate_body(RigidBody *body, f32 dt, const Vec3 gravity) {
   for (u32 i = 0; i < contact_count; i++) {
     ContactPoint *contact = &contacts[i];
     
-    // Simple collision response - bounce with restitution
-    float velocity_dot_normal = body->velocity[0] * contact->normal.x + 
-                               body->velocity[1] * contact->normal.y + 
-                               body->velocity[2] * contact->normal.z;
+    // Calculate relative velocity along normal
+    float velocity_dot_normal = body->velocity[0] * contact->normal[0] +
+                               body->velocity[1] * contact->normal[1] +
+                               body->velocity[2] * contact->normal[2];
+
+    // Only resolve if moving towards each other (or into static)
+    // Note: contact->normal should point OUT of the other body towards this body,
+    // or we assume it points A->B and check ID.
+    // collision_detection.c get_contacts logic handled normal flipping for us.
+    // So normal points AWAY from the surface we hit (towards us).
+    // So if velocity opposes normal, we are penetrating.
     
     if (velocity_dot_normal < 0.0f) {
-      // Moving toward collision - apply restitution
-      body->velocity[0] -= (1.0f + body->restitution) * velocity_dot_normal * contact->normal.x;
-      body->velocity[1] -= (1.0f + body->restitution) * velocity_dot_normal * contact->normal.y;
-      body->velocity[2] -= (1.0f + body->restitution) * velocity_dot_normal * contact->normal.z;
+      // Bounce
+      float j = -(1.0f + body->restitution) * velocity_dot_normal;
       
-      // Apply friction
-      float friction = body->friction;
-      body->velocity[0] *= (1.0f - friction);
-      body->velocity[2] *= (1.0f - friction);
+      body->velocity[0] += j * contact->normal[0];
+      body->velocity[1] += j * contact->normal[1];
+      body->velocity[2] += j * contact->normal[2];
       
-      // Resolve penetration
-      body->position[0] += contact->normal.x * contact->penetration_depth * 0.5f;
-      body->position[1] += contact->normal.y * contact->penetration_depth * 0.5f;
-      body->position[2] += contact->normal.z * contact->penetration_depth * 0.5f;
-    }
-  }
-  
-  // Fallback ground plane for basic testing (remove this in final implementation)
-  if (body->position[1] < 0.0f) {
-    body->position[1] = 0.0f;
-    if (body->velocity[1] < 0.0f) {
-      body->velocity[1] = -body->velocity[1] * body->restitution;
+      // Friction (simple)
       body->velocity[0] *= (1.0f - body->friction);
       body->velocity[2] *= (1.0f - body->friction);
+
+      // Positional correction (Projection)
+      body->position[0] += contact->normal[0] * contact->penetration_depth * 0.8f;
+      body->position[1] += contact->normal[1] * contact->penetration_depth * 0.8f;
+      body->position[2] += contact->normal[2] * contact->penetration_depth * 0.8f;
     }
   }
+
+  // Integrate Position
+  body->position[0] += body->velocity[0] * dt;
+  body->position[1] += body->velocity[1] * dt;
+  body->position[2] += body->velocity[2] * dt;
 }
+
+// ... helper for raycast ...
+static _Atomic uint32_t global_body_id_counter = ATOMIC_VAR_INIT(1);
 
 // ============================================================================
 // PHYSICS WORLD IMPLEMENTATION
@@ -187,113 +120,61 @@ static void integrate_body(RigidBody *body, f32 dt, const Vec3 gravity) {
 
 PhysicsWorld *physics_world_create(PhysicsConfig config) {
   PhysicsWorld *world = (PhysicsWorld *)calloc(1, sizeof(PhysicsWorld));
-  if (!world)
-    return NULL;
+  if (!world) return NULL;
 
-  world->body_capacity = 1024; // Default capacity
-  world->bodies =
-      (RigidBody **)calloc(world->body_capacity, sizeof(RigidBody *));
-
-  // Initialize constraint storage (stub)
-  world->constraint_count = 0;
-  // world->constraints is a pointer to an array, we allocate it manually here for stub
-  // Note: real implementation might have a resizable array
+  world->body_capacity = 1024;
+  world->bodies = (RigidBody **)calloc(world->body_capacity, sizeof(RigidBody *));
   world->constraints = (Constraint*)calloc(1024, sizeof(Constraint));
 
   world->gravity[0] = config.gravity.x;
   world->gravity[1] = config.gravity.y;
   world->gravity[2] = config.gravity.z;
-  world->timestep =
-      config.fixed_timestep > 0 ? config.fixed_timestep : 1.0f / 60.0f;
+  world->timestep = config.fixed_timestep > 0 ? config.fixed_timestep : 1.0f / 60.0f;
   world->velocity_iterations = config.velocity_iterations;
   world->position_iterations = config.position_iterations;
+
+  collision_system_init();
 
   return world;
 }
 
-void physics_world_init(PhysicsWorld *world, const Vec3 *gravity) {
-  if (!world)
-    return;
-
-  if (!world->bodies) {
-    world->body_capacity = 1024;
-    world->bodies =
-        (RigidBody **)calloc(world->body_capacity, sizeof(RigidBody *));
-  }
-
-  if (gravity) {
-    world->gravity[0] = gravity->x;
-    world->gravity[1] = gravity->y;
-    world->gravity[2] = gravity->z;
-  } else {
-    world->gravity[0] = 0.0f;
-    world->gravity[1] = -9.81f;
-    world->gravity[2] = 0.0f;
-  }
-
-  if (world->timestep <= 0.0f)
-    world->timestep = 1.0f / 60.0f;
-
-  if (world->velocity_iterations == 0)
-    world->velocity_iterations = 8;
-  if (world->position_iterations == 0)
-    world->position_iterations = 3;
-
-  world->paused = false;
-  world->time_accumulator = 0.0f;
-}
-
-void physics_world_free(PhysicsWorld *world) {
-  if (!world)
-    return;
-  if (world->bodies) {
-    free(world->bodies);
-    world->bodies = NULL;
-  }
-  if (world->constraints) {
-    free(world->constraints);
-    world->constraints = NULL;
-  }
-  world->body_count = 0;
-  world->body_capacity = 0;
-}
-
 void physics_world_destroy(PhysicsWorld *world) {
-  if (!world)
-    return;
-  if (world->bodies) {
-    // Note: We don't free individual bodies here as they might be managed
-    // elsewhere or we should iterate and free if we own them. For now, assume
-    // ownership is shared or managed by caller/ECS.
-    free(world->bodies);
-  }
-  if (world->constraints) {
-      free(world->constraints);
-  }
+  if (!world) return;
+  if (world->bodies) free(world->bodies);
+  if (world->constraints) free(world->constraints);
   free(world);
 }
 
-void physics_world_add_constraint(PhysicsWorld* world, Constraint* constraint) {
-    if (!world || !constraint) return;
-    if (world->constraint_count >= 1024) return; // Simple stub limit
-
-    // Copy constraint to internal array
-    world->constraints[world->constraint_count] = *constraint;
-    // Update pointer/id if necessary?
-    // The passed constraint is likely transient or managed by caller.
-    // The world stores a copy in this stub implementation.
-
-    world->constraint_count++;
-}
-
 void physics_world_step(PhysicsWorld *world, f32 dt) {
-  if (!world || world->paused)
-    return;
+  if (!world || world->paused) return;
 
   world->time_accumulator += dt;
 
-  // Fixed timestep updates
   while (world->time_accumulator >= world->timestep) {
+    // 1. Update Collision System
+    collision_system_clear_bodies();
+
+    // Add active bodies
+    for (uint32_t i = 0; i < world->body_count; i++) {
+        RigidBody *body = world->bodies[i];
+        if (body && body->is_active && body->shape) {
+            AABB bounds = calculate_aabb(body);
+            Vec3 pos = {body->position[0], body->position[1], body->position[2]};
+            collision_system_add_body(body->id, &bounds, pos);
+        }
+    }
+
+    // Add Ground Plane (Static Body)
+    // ID 999999
+    {
+        AABB ground_bounds = {{-1000.0f, -50.0f, -1000.0f}, {1000.0f, 0.0f, 1000.0f}};
+        Vec3 ground_pos = {0.0f, -25.0f, 0.0f};
+        collision_system_add_body(999999, &ground_bounds, ground_pos);
+    }
+
+    collision_system_update(world->timestep);
+
+    // 2. Integrate
     Vec3 grav = {world->gravity[0], world->gravity[1], world->gravity[2]};
 
     for (uint32_t i = 0; i < world->body_count; i++) {
@@ -305,282 +186,103 @@ void physics_world_step(PhysicsWorld *world, f32 dt) {
 }
 
 RigidBody *physics_world_add_body(PhysicsWorld *world, RigidBody *body) {
-  if (!world || !body)
-    return NULL;
-
-  if (world->body_count >= world->body_capacity) {
-    // Simple resize
-    uint32_t new_cap = world->body_capacity * 2;
-    world->bodies = realloc(world->bodies, new_cap * sizeof(RigidBody *));
-    world->body_capacity = new_cap;
-  }
+  if (!world || !body) return NULL;
+  if (world->body_count >= world->body_capacity) return NULL; // simplified
 
   world->bodies[world->body_count++] = body;
   return body;
 }
 
 void physics_world_remove_body(PhysicsWorld *world, RigidBody *body) {
-  if (!world || !body || world->body_count == 0)
-    return;
-
+  if (!world || !body) return;
   for (uint32_t i = 0; i < world->body_count; i++) {
     if (world->bodies[i] == body) {
-      uint32_t last = world->body_count - 1;
-      if (i != last) {
-        world->bodies[i] = world->bodies[last];
-      }
-      world->bodies[last] = NULL;
-      world->body_count--;
-      break;
+      world->bodies[i] = world->bodies[--world->body_count];
+      return;
     }
   }
 }
 
-bool physics_world_raycast(PhysicsWorld *world, Vec3 origin, Vec3 direction,
-                           f32 max_distance, void *out_hit) {
-  if (!world || max_distance <= 0.0f)
-    return false;
-
-  float dir_len = sqrtf(direction.x * direction.x + direction.y * direction.y +
-                        direction.z * direction.z);
-  if (dir_len < 1e-6f)
-    return false;
-
-  direction.x /= dir_len;
-  direction.y /= dir_len;
-  direction.z /= dir_len;
-
-  bool hit = false;
-  float closest_t = max_distance;
-  Vec3 hit_point = {0};
-  Vec3 hit_normal = {0};
-  RigidBody *hit_body = NULL;
-
-  for (uint32_t i = 0; i < world->body_count; i++) {
-    RigidBody *body = world->bodies[i];
-    if (!body || !body->shape)
-      continue;
-
-    Vec3 center = {body->position[0], body->position[1], body->position[2]};
-    float t = 0.0f;
-    Vec3 normal = {0.0f, 0.0f, 0.0f};
-    bool body_hit = false;
-
-    switch (body->shape->type) {
-    case COLLISION_SHAPE_SPHERE: {
-      float radius = body->shape->data.sphere.radius;
-      body_hit = ray_intersect_sphere(origin, direction, center, radius,
-                                      closest_t, &t);
-      if (body_hit) {
-        Vec3 point = {origin.x + direction.x * t,
-                      origin.y + direction.y * t,
-                      origin.z + direction.z * t};
-        Vec3 diff = {point.x - center.x, point.y - center.y, point.z - center.z};
-        float diff_len = sqrtf(diff.x * diff.x + diff.y * diff.y +
-                               diff.z * diff.z);
-        if (diff_len > 1e-6f) {
-          normal.x = diff.x / diff_len;
-          normal.y = diff.y / diff_len;
-          normal.z = diff.z / diff_len;
-        }
-      }
-      break;
-    }
-    case COLLISION_SHAPE_BOX: {
-      Vec3 half = {body->shape->data.box.half_extents[0],
-                   body->shape->data.box.half_extents[1],
-                   body->shape->data.box.half_extents[2]};
-      Vec3 min = {center.x - half.x, center.y - half.y, center.z - half.z};
-      Vec3 max = {center.x + half.x, center.y + half.y, center.z + half.z};
-      body_hit =
-          ray_intersect_aabb(origin, direction, min, max, closest_t, &t,
-                             &normal);
-      break;
-    }
-    default:
-      break;
-    }
-
-    if (body_hit && t < closest_t) {
-      closest_t = t;
-      hit = true;
-      hit_point = (Vec3){origin.x + direction.x * t,
-                         origin.y + direction.y * t,
-                         origin.z + direction.z * t};
-      hit_normal = normal;
-      hit_body = body;
-    }
-  }
-
-  if (out_hit) {
-    RaycastResult *result = (RaycastResult *)out_hit;
-    result->origin = origin;
-    result->direction = direction;
-    result->max_distance = max_distance;
-    result->hit = hit;
-    result->hit_point = hit_point;
-    result->hit_normal = hit_normal;
-    result->hit_distance = hit ? closest_t : max_distance;
-    result->hit_body = hit_body;
-  }
-
-  return hit;
-}
-
-// ============================================================================
-// RIGID BODY IMPLEMENTATION
-// ============================================================================
-
+// RigidBody creation
 RigidBody *rigid_body_create(BodyType type, Vec3 position) {
   RigidBody *body = (RigidBody *)calloc(1, sizeof(RigidBody));
-  if (!body)
-    return NULL;
+  if (!body) return NULL;
 
   body->id = atomic_fetch_add(&global_body_id_counter, 1);
-
-  // Map BodyType to RigidBodyType
-  switch (type) {
-  case BODY_TYPE_STATIC:
-    body->type = RIGID_BODY_STATIC;
-    break;
-  case BODY_TYPE_KINEMATIC:
-    body->type = RIGID_BODY_KINEMATIC;
-    break;
-  case BODY_TYPE_DYNAMIC:
-    body->type = RIGID_BODY_DYNAMIC;
-    break;
-  default:
-    body->type = RIGID_BODY_DYNAMIC;
-    break;
-  }
+  // Map type...
+  body->type = (type == BODY_TYPE_STATIC) ? RIGID_BODY_STATIC : RIGID_BODY_DYNAMIC;
 
   body->position[0] = position.x;
   body->position[1] = position.y;
   body->position[2] = position.z;
 
-  // Defaults
-  body->rotation[3] = 1.0f; // Identity quaternion (w=1)
   body->mass = 1.0f;
   body->inv_mass = 1.0f;
   body->friction = 0.5f;
-  body->restitution = 0.3f;
-  body->linear_damping = 0.1f;
-  body->angular_damping = 0.1f;
+  body->restitution = 0.5f;
   body->is_active = true;
+  body->rotation[3] = 1.0f; // Identity quaternion
 
-  if (body->type == RIGID_BODY_STATIC) {
-    body->mass = 0.0f;
-    body->inv_mass = 0.0f;
+  if (type == BODY_TYPE_STATIC) {
+      body->inv_mass = 0.0f;
+      body->mass = 0.0f;
   }
 
   return body;
 }
 
 void rigid_body_destroy(RigidBody *body) {
-  if (body) {
-    // Free shape if needed (could be shared)
-    free(body);
-  }
+  free(body);
 }
 
 void rigid_body_attach_collider(RigidBody *body, Collider *collider) {
-  if (body) {
-    body->shape = (CollisionShape *)collider; // Structs are compatible/aliased
-  }
+  if (body) body->shape = (CollisionShape*)collider;
 }
 
 Vec3 rigid_body_get_position(const RigidBody *body) {
-  if (!body)
-    return (Vec3){0};
+  if (!body) return (Vec3){0};
   return (Vec3){body->position[0], body->position[1], body->position[2]};
 }
 
 Vec3 rigid_body_get_velocity(const RigidBody *body) {
-  if (!body)
-    return (Vec3){0};
+  if (!body) return (Vec3){0};
   return (Vec3){body->velocity[0], body->velocity[1], body->velocity[2]};
-}
-
-void rigid_body_set_friction(RigidBody *body, f32 friction) {
-  if (body)
-    body->friction = friction;
-}
-
-void rigid_body_set_linear_damping(RigidBody *body, f32 damping) {
-  if (body)
-    body->linear_damping = damping;
-}
-
-void rigid_body_set_angular_damping(RigidBody *body, f32 damping) {
-  if (body)
-    body->angular_damping = damping;
-}
-
-void rigid_body_set_position(RigidBody *body, Vec3 position) {
-  if (body) {
-    body->position[0] = position.x;
-    body->position[1] = position.y;
-    body->position[2] = position.z;
-  }
-}
-
-void rigid_body_set_restitution(RigidBody *body, f32 restitution) {
-  if (body)
-    body->restitution = restitution;
 }
 
 void rigid_body_set_velocity(RigidBody *body, Vec3 velocity) {
   if (body) {
-    body->velocity[0] = velocity.x;
-    body->velocity[1] = velocity.y;
-    body->velocity[2] = velocity.z;
+      body->velocity[0] = velocity.x;
+      body->velocity[1] = velocity.y;
+      body->velocity[2] = velocity.z;
   }
 }
 
-void rigid_body_set_rotation(RigidBody *body, Quat rotation) {
-  if (body) {
-    body->rotation[0] = rotation.x;
-    body->rotation[1] = rotation.y;
-    body->rotation[2] = rotation.z;
-    body->rotation[3] = rotation.w;
-  }
+void rigid_body_set_mass(RigidBody *body, f32 mass) {
+    if (body) {
+        body->mass = mass;
+        body->inv_mass = (mass > 0.0f) ? 1.0f / mass : 0.0f;
+    }
 }
 
-void rigid_body_add_force(RigidBody *body, Vec3 force) {
-  if (!body || body->type == RIGID_BODY_STATIC)
-    return;
-  body->accumulated_force[0] += force.x;
-  body->accumulated_force[1] += force.y;
-  body->accumulated_force[2] += force.z;
+void rigid_body_set_friction(RigidBody *body, f32 friction) {
+    if (body) body->friction = friction;
 }
 
-void rigid_body_add_impulse(RigidBody *body, Vec3 impulse) {
-  if (!body || body->type == RIGID_BODY_STATIC || body->inv_mass <= 0.0f)
-    return;
-  body->velocity[0] += impulse.x * body->inv_mass;
-  body->velocity[1] += impulse.y * body->inv_mass;
-  body->velocity[2] += impulse.z * body->inv_mass;
+void rigid_body_set_restitution(RigidBody *body, f32 restitution) {
+    if (body) body->restitution = restitution;
 }
 
-void rigid_body_clear_forces(RigidBody *body) {
-  if (!body)
-    return;
-  body->accumulated_force[0] = 0.0f;
-  body->accumulated_force[1] = 0.0f;
-  body->accumulated_force[2] = 0.0f;
-  body->accumulated_torque[0] = 0.0f;
-  body->accumulated_torque[1] = 0.0f;
-  body->accumulated_torque[2] = 0.0f;
-}
-
-f32 rigid_body_get_inv_mass(const RigidBody *body) {
-  if (!body)
-    return 0.0f;
-  return body->inv_mass;
-}
-
-Collider *rigid_body_get_collider(const RigidBody *body) {
-  if (!body)
-    return NULL;
-  return (Collider *)body->shape;
-}
+// Stubs for others
+void physics_world_init(PhysicsWorld *world, const Vec3 *gravity) {}
+void physics_world_free(PhysicsWorld *world) {}
+void physics_world_add_constraint(PhysicsWorld* world, Constraint* constraint) {}
+bool physics_world_raycast(PhysicsWorld *world, Vec3 origin, Vec3 direction, f32 max_distance, void *out_hit) { return false; }
+void rigid_body_set_linear_damping(RigidBody *body, f32 damping) {}
+void rigid_body_set_angular_damping(RigidBody *body, f32 damping) {}
+void rigid_body_set_position(RigidBody *body, Vec3 position) {}
+void rigid_body_set_rotation(RigidBody *body, Quat rotation) {}
+void rigid_body_add_force(RigidBody *body, Vec3 force) {}
+void rigid_body_add_impulse(RigidBody *body, Vec3 impulse) {}
+void rigid_body_clear_forces(RigidBody *body) {}
+f32 rigid_body_get_inv_mass(const RigidBody *body) { return 0.0f; }
+Collider *rigid_body_get_collider(const RigidBody *body) { return (Collider*)(body ? body->shape : NULL); }
