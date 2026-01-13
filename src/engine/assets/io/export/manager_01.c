@@ -41,6 +41,7 @@
 #include "include/core/memory.h"
 #include "core/logger.h"
 #include "core/memory.h"
+#include "include/vendor/cgltf.h"
 
 // LZ4/ZSTD compression includes
 #ifdef ENABLE_LZ4
@@ -496,6 +497,180 @@ static int io_export_manager_01_cleanup_internal(io_export_manager_01_t* ctx) {
     
     ctx->is_dirty = false;
     return IO_EXPORT_ERROR_NONE;
+}
+
+/* ============================================================================
+ * SCENE PARSING IMPLEMENTATION
+ * ============================================================================ */
+
+static io_export_scene_t* io_export_parse_gltf_scene(const char* file_path) {
+    cgltf_options options = {0};
+    cgltf_data* data = NULL;
+    cgltf_result result = cgltf_parse_file(&options, file_path, &data);
+
+    if (result != cgltf_result_success) {
+        LOG_ERROR(LOG_CAT_IO, "Failed to parse glTF file: %s (Error code: %d)", file_path, result);
+        return NULL;
+    }
+
+    result = cgltf_load_buffers(&options, data, file_path);
+    if (result != cgltf_result_success) {
+        LOG_ERROR(LOG_CAT_IO, "Failed to load buffers for glTF file: %s (Error code: %d)", file_path, result);
+        cgltf_free(data);
+        return NULL;
+    }
+
+    io_export_scene_t* scene = calloc(1, sizeof(io_export_scene_t));
+    if (!scene) {
+        LOG_ERROR(LOG_CAT_IO, "Failed to allocate memory for scene");
+        cgltf_free(data);
+        return NULL;
+    }
+
+    strncpy(scene->name, file_path, sizeof(scene->name) - 1);
+
+    // Convert meshes
+    if (data->meshes_count > 0) {
+        scene->mesh_count = (uint32_t)data->meshes_count;
+        scene->meshes = calloc(scene->mesh_count, sizeof(io_export_scene_mesh_t*));
+
+        for (cgltf_size i = 0; i < data->meshes_count; i++) {
+            cgltf_mesh* src_mesh = &data->meshes[i];
+            io_export_scene_mesh_t* dst_mesh = calloc(1, sizeof(io_export_scene_mesh_t));
+            scene->meshes[i] = dst_mesh;
+
+            strncpy(dst_mesh->name, src_mesh->name ? src_mesh->name : "Unnamed", sizeof(dst_mesh->name) - 1);
+
+            if (src_mesh->primitives_count > 0) {
+                // For simplicity, take the first primitive
+                cgltf_primitive* prim = &src_mesh->primitives[0];
+
+                // Get vertex count from POSITION attribute
+                cgltf_accessor* pos_acc = NULL;
+                for (cgltf_size k = 0; k < prim->attributes_count; k++) {
+                    if (prim->attributes[k].type == cgltf_attribute_type_position) {
+                        pos_acc = prim->attributes[k].data;
+                        break;
+                    }
+                }
+
+                if (pos_acc) {
+                    dst_mesh->vertex_count = (uint32_t)pos_acc->count;
+                    dst_mesh->vertices = calloc(dst_mesh->vertex_count * 3, sizeof(float));
+                    cgltf_accessor_unpack_floats(pos_acc, dst_mesh->vertices, dst_mesh->vertex_count * 3);
+                }
+
+                // Indices
+                if (prim->indices) {
+                    dst_mesh->index_count = (uint32_t)prim->indices->count;
+                    dst_mesh->indices = calloc(dst_mesh->index_count, sizeof(uint32_t));
+                    for (cgltf_size k = 0; k < prim->indices->count; k++) {
+                        dst_mesh->indices[k] = (uint32_t)cgltf_accessor_read_index(prim->indices, k);
+                    }
+                }
+
+                // Normals
+                cgltf_accessor* norm_acc = NULL;
+                for (cgltf_size k = 0; k < prim->attributes_count; k++) {
+                    if (prim->attributes[k].type == cgltf_attribute_type_normal) {
+                        norm_acc = prim->attributes[k].data;
+                        break;
+                    }
+                }
+                if (norm_acc) {
+                    dst_mesh->normals = calloc(dst_mesh->vertex_count * 3, sizeof(float));
+                    cgltf_accessor_unpack_floats(norm_acc, dst_mesh->normals, dst_mesh->vertex_count * 3);
+                }
+
+                // UVs
+                cgltf_accessor* uv_acc = NULL;
+                for (cgltf_size k = 0; k < prim->attributes_count; k++) {
+                    if (prim->attributes[k].type == cgltf_attribute_type_texcoord && prim->attributes[k].index == 0) {
+                        uv_acc = prim->attributes[k].data;
+                        break;
+                    }
+                }
+                if (uv_acc) {
+                    dst_mesh->uvs = calloc(dst_mesh->vertex_count * 2, sizeof(float));
+                    cgltf_accessor_unpack_floats(uv_acc, dst_mesh->uvs, dst_mesh->vertex_count * 2);
+                }
+            }
+        }
+    }
+
+    // Convert nodes
+    if (data->nodes_count > 0) {
+        scene->node_count = (uint32_t)data->nodes_count;
+        scene->nodes = calloc(scene->node_count, sizeof(io_export_scene_node_t*));
+
+        // First pass: Allocate nodes
+        for (cgltf_size i = 0; i < data->nodes_count; i++) {
+            scene->nodes[i] = calloc(1, sizeof(io_export_scene_node_t));
+            strncpy(scene->nodes[i]->name, data->nodes[i].name ? data->nodes[i].name : "Node", sizeof(scene->nodes[i]->name) - 1);
+
+            cgltf_node_transform_local(&data->nodes[i], scene->nodes[i]->transform);
+
+            if (data->nodes[i].mesh) {
+                scene->nodes[i]->mesh_id = (uint32_t)cgltf_mesh_index(data, data->nodes[i].mesh);
+            } else {
+                scene->nodes[i]->mesh_id = (uint32_t)-1; // No mesh
+            }
+        }
+
+        // Second pass: Link children
+        for (cgltf_size i = 0; i < data->nodes_count; i++) {
+            if (data->nodes[i].children_count > 0) {
+                scene->nodes[i]->child_count = (uint32_t)data->nodes[i].children_count;
+                scene->nodes[i]->children = calloc(scene->nodes[i]->child_count, sizeof(io_export_scene_node_t*));
+
+                for (cgltf_size k = 0; k < data->nodes[i].children_count; k++) {
+                    cgltf_size child_idx = cgltf_node_index(data, data->nodes[i].children[k]);
+                    scene->nodes[i]->children[k] = scene->nodes[child_idx];
+                }
+            }
+        }
+    }
+
+    cgltf_free(data);
+    return scene;
+}
+
+static io_export_scene_t* io_export_parse_fbx_scene(const char* file_path) {
+    LOG_WARN(LOG_CAT_IO, "FBX scene parsing is not fully implemented yet: %s", file_path);
+    return NULL;
+}
+
+static void io_export_scene_free(io_export_scene_t* scene) {
+    if (!scene) return;
+
+    if (scene->meshes) {
+        for (uint32_t i = 0; i < scene->mesh_count; i++) {
+            if (scene->meshes[i]) {
+                if (scene->meshes[i]->vertices) free(scene->meshes[i]->vertices);
+                if (scene->meshes[i]->indices) free(scene->meshes[i]->indices);
+                if (scene->meshes[i]->normals) free(scene->meshes[i]->normals);
+                if (scene->meshes[i]->uvs) free(scene->meshes[i]->uvs);
+                free(scene->meshes[i]);
+            }
+        }
+        free(scene->meshes);
+    }
+
+    if (scene->nodes) {
+        for (uint32_t i = 0; i < scene->node_count; i++) {
+            if (scene->nodes[i]) {
+                if (scene->nodes[i]->children) free(scene->nodes[i]->children);
+                free(scene->nodes[i]);
+            }
+        }
+        free(scene->nodes);
+    }
+
+    if (scene->materials) {
+        free(scene->materials);
+    }
+
+    free(scene);
 }
 
 /* ============================================================================
