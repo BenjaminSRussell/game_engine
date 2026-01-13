@@ -295,7 +295,7 @@ const char *ml_get_error_string(MLError error);
 #define ML_CHECK_ERROR(condition, error) \
     do { \
         if (!(condition)) { \
-            LOG_ERROR("ML Error: %s", ml_get_error_string(error)); \
+            LOG_ERROR(LOG_CAT_AI, "ML Error: %s", ml_get_error_string(error)); \
             return error; \
         } \
     } while(0)
@@ -303,7 +303,7 @@ const char *ml_get_error_string(MLError error);
 #define ML_CHECK_NULL_PARAM_PTR(param) \
     do { \
         if ((param) == NULL) { \
-            LOG_ERROR("ML Error: %s", ml_get_error_string(ML_ERROR_INVALID_PARAMETER)); \
+            LOG_ERROR(LOG_CAT_AI, "ML Error: %s", ml_get_error_string(ML_ERROR_INVALID_PARAMETER)); \
             return NULL; \
         } \
     } while(0)
@@ -311,7 +311,7 @@ const char *ml_get_error_string(MLError error);
 #define ML_CHECK_NULL_PARAM_BOOL(param) \
     do { \
         if ((param) == NULL) { \
-            LOG_ERROR("ML Error: %s", ml_get_error_string(ML_ERROR_INVALID_PARAMETER)); \
+            LOG_ERROR(LOG_CAT_AI, "ML Error: %s", ml_get_error_string(ML_ERROR_INVALID_PARAMETER)); \
             return false; \
         } \
     } while(0)
@@ -319,7 +319,7 @@ const char *ml_get_error_string(MLError error);
 #define ML_CHECK_ERROR_PTR(condition, error) \
     do { \
         if (!(condition)) { \
-            LOG_ERROR("ML Error: %s", ml_get_error_string(error)); \
+            LOG_ERROR(LOG_CAT_AI, "ML Error: %s", ml_get_error_string(error)); \
             return NULL; \
         } \
     } while(0)
