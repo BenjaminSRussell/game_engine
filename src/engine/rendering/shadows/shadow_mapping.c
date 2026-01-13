@@ -12,6 +12,57 @@
 #include <math/vec3.h>
 #include <math/vec4.h>
 
+// Math wrappers for engine compatibility
+static INLINE void matrix_multiply(float *out, const float *a, const float *b) {
+  Mat4 ma, mb, mr;
+  memcpy(ma.m, a, sizeof(float) * 16);
+  memcpy(mb.m, b, sizeof(float) * 16);
+  mr = mat4_mul(ma, mb);
+  memcpy(out, mr.m, sizeof(float) * 16);
+}
+
+static INLINE void matrix_inverse(float *out, const float *in) {
+  Mat4 m, mi;
+  memcpy(m.m, in, sizeof(float) * 16);
+  mi = mat4_inverse(m);
+  memcpy(out, mi.m, sizeof(float) * 16);
+}
+
+static INLINE void matrix_vector_multiply(float *out, const float *m,
+                                          const float *v) {
+  Mat4 mat;
+  memcpy(mat.m, m, sizeof(float) * 16);
+  Vec4 vec = {v[0], v[1], v[2], v[3]};
+  Vec4 res = mat4_mul_vec4(mat, vec);
+  out[0] = res.x;
+  out[1] = res.y;
+  out[2] = res.z;
+  out[3] = res.w;
+}
+
+static INLINE void vector_normalize(float *v) {
+  Vec3 vec = {v[0], v[1], v[2]};
+  vec = vec3_normalize(vec);
+  v[0] = vec.x;
+  v[1] = vec.y;
+  v[2] = vec.z;
+}
+
+static INLINE void vector_cross(float *out, const float *a, const float *b) {
+  Vec3 va = {a[0], a[1], a[2]};
+  Vec3 vb = {b[0], b[1], b[2]};
+  Vec3 vr = vec3_cross(va, vb);
+  out[0] = vr.x;
+  out[1] = vr.y;
+  out[2] = vr.z;
+}
+
+static INLINE float vector_dot(const float *a, const float *b) {
+  Vec3 va = {a[0], a[1], a[2]};
+  Vec3 vb = {b[0], b[1], b[2]};
+  return vec3_dot(va, vb);
+}
+
 extern uint64_t get_time_nanos(void);
 #define nanos_to_ms(x) ((x) / 1000000.0f)
 #define TEXTURE_FORMAT_DEPTH32F TEX_FORMAT_D32F
@@ -28,13 +79,9 @@ extern void renderer_set_cull_mode(int mode);
 extern void renderer_set_depth_bias(float constant, float slope);
 extern void renderer_set_polygon_offset(float factor, float units);
 extern void renderer_begin_shadow_pass(void);
-extern void renderer_set_shadow_matrices(
-    float *view_proj); // Changed Mat4 to float* based on usage
+extern void renderer_set_shadow_matrices(float *view_proj);
 extern void render_scene_shadow_casters(float *view_proj, int size);
 extern void renderer_end_shadow_pass(void);
-extern void renderer_set_cube_map_face(int face);
-extern void shader_bind_texture(void *shader, void *tex, uint32_t slot);
-#define RENDERER_CULL_FRONT 0
 
 // ============================================================================
 // Shadow Mapping Types
