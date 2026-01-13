@@ -8,123 +8,12 @@
  * =================================================================================================
  */
 
+#include "include/animation/state_machines/anim_state_machine.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-
-#define MAX_STATES 64
-#define MAX_TRANSITIONS 256
-#define MAX_PARAMETERS 32
-#define MAX_LAYERS 8
-#define MAX_NAME_LENGTH 64
-
-// Parameter types
-typedef enum {
-  PARAM_FLOAT,
-  PARAM_INT,
-  PARAM_BOOL,
-  PARAM_TRIGGER
-} AnimParamType;
-
-// Transition conditions
-typedef enum {
-  COND_GREATER,
-  COND_LESS,
-  COND_EQUALS,
-  COND_NOT_EQUALS,
-  COND_TRUE,
-  COND_FALSE
-} ConditionType;
-
-// Blend mode for state
-typedef enum { BLEND_OVERRIDE, BLEND_ADDITIVE, BLEND_MULTIPLY } LayerBlendMode;
-
-// Animation parameter
-typedef struct {
-  char name[MAX_NAME_LENGTH];
-  AnimParamType type;
-  union {
-    float float_val;
-    int int_val;
-    bool bool_val;
-  } value;
-  bool trigger_consumed;
-} AnimParameter;
-
-// Transition condition
-typedef struct {
-  uint32_t param_index;
-  ConditionType condition;
-  union {
-    float float_val;
-    int int_val;
-  } threshold;
-} TransitionCondition;
-
-// State transition
-typedef struct {
-  uint32_t from_state;
-  uint32_t to_state;
-  float duration;  // Blend duration
-  float exit_time; // When to allow transition (0-1 of anim)
-  bool has_exit_time;
-  TransitionCondition conditions[4];
-  uint32_t condition_count;
-  bool interruption_source; // Can be interrupted
-  int priority;
-} StateTransition;
-
-// Animation state
-typedef struct {
-  char name[MAX_NAME_LENGTH];
-  uint32_t animation_clip; // Reference to animation clip
-  float speed;
-  bool loop;
-  float normalized_time; // 0-1 progress
-
-  // Blend tree (optional)
-  bool is_blend_tree;
-  uint32_t blend_tree_id;
-
-  // Motion
-  bool apply_root_motion;
-  float motion_speed;
-} AnimState;
-
-// Animation layer
-typedef struct {
-  char name[MAX_NAME_LENGTH];
-  uint32_t current_state;
-  uint32_t previous_state;
-  float blend_weight;
-  float transition_time;
-  float transition_duration;
-  bool is_transitioning;
-  LayerBlendMode blend_mode;
-  uint32_t avatar_mask; // Which bones this layer affects
-  float weight;         // Layer weight
-  bool additive;
-} AnimLayer;
-
-// State machine
-typedef struct {
-  AnimState states[MAX_STATES];
-  uint32_t state_count;
-
-  StateTransition transitions[MAX_TRANSITIONS];
-  uint32_t transition_count;
-
-  AnimParameter parameters[MAX_PARAMETERS];
-  uint32_t param_count;
-
-  AnimLayer layers[MAX_LAYERS];
-  uint32_t layer_count;
-
-  uint32_t default_state;
-  bool initialized;
-} AnimStateMachine;
 
 // -----------------------------------------------------------------------------
 // State Machine Creation
@@ -305,7 +194,7 @@ void anim_add_transition_condition_float(AnimStateMachine *sm,
     return;
 
   StateTransition *t = &sm->transitions[trans_id];
-  if (t->condition_count >= 4)
+  if (t->condition_count >= MAX_CONDITIONS_PER_TRANSITION)
     return;
 
   TransitionCondition *c = &t->conditions[t->condition_count++];
@@ -314,13 +203,29 @@ void anim_add_transition_condition_float(AnimStateMachine *sm,
   c->threshold.float_val = threshold;
 }
 
+void anim_add_transition_condition_int(AnimStateMachine *sm,
+                                       uint32_t trans_id, uint32_t param_id,
+                                       ConditionType cond, int threshold) {
+  if (!sm || trans_id >= sm->transition_count)
+    return;
+
+  StateTransition *t = &sm->transitions[trans_id];
+  if (t->condition_count >= MAX_CONDITIONS_PER_TRANSITION)
+    return;
+
+  TransitionCondition *c = &t->conditions[t->condition_count++];
+  c->param_index = param_id;
+  c->condition = cond;
+  c->threshold.int_val = threshold;
+}
+
 void anim_add_transition_condition_bool(AnimStateMachine *sm, uint32_t trans_id,
                                         uint32_t param_id, bool expected) {
   if (!sm || trans_id >= sm->transition_count)
     return;
 
   StateTransition *t = &sm->transitions[trans_id];
-  if (t->condition_count >= 4)
+  if (t->condition_count >= MAX_CONDITIONS_PER_TRANSITION)
     return;
 
   TransitionCondition *c = &t->conditions[t->condition_count++];
@@ -343,6 +248,10 @@ static bool check_condition(AnimStateMachine *sm,
       return p->value.float_val > cond->threshold.float_val;
     case COND_LESS:
       return p->value.float_val < cond->threshold.float_val;
+    case COND_GREATER_EQUAL:
+      return p->value.float_val >= cond->threshold.float_val;
+    case COND_LESS_EQUAL:
+      return p->value.float_val <= cond->threshold.float_val;
     case COND_EQUALS:
       return fabsf(p->value.float_val - cond->threshold.float_val) < 0.0001f;
     default:
@@ -354,6 +263,10 @@ static bool check_condition(AnimStateMachine *sm,
       return p->value.int_val > cond->threshold.int_val;
     case COND_LESS:
       return p->value.int_val < cond->threshold.int_val;
+    case COND_GREATER_EQUAL:
+      return p->value.int_val >= cond->threshold.int_val;
+    case COND_LESS_EQUAL:
+      return p->value.int_val <= cond->threshold.int_val;
     case COND_EQUALS:
       return p->value.int_val == cond->threshold.int_val;
     case COND_NOT_EQUALS:
