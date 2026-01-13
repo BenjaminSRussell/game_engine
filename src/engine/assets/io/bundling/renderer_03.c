@@ -28,12 +28,14 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "assets/io/bundling/renderer_03.h"
 #include "include/core/types.h"
 #include "include/core/memory.h"
 #include "core/logger.h"
 #include "core/memory.h"
+#include "core/command/indirect_commands.h"
 
 /* ============================================================================
  * CONSTANTS AND MACROS
@@ -196,6 +198,7 @@ typedef struct io_bundling_renderer_03_mesh_shader_context {
 
 /* Indirect rendering structures */
 typedef struct io_bundling_renderer_03_indirect_context {
+    core_indirect_commands_handle_t handle;
     uint32_t command_buffer;
     uint32_t max_commands;
     uint32_t command_count;
@@ -948,6 +951,15 @@ static int io_bundling_renderer_03_init_indirect_rendering(void) {
     s_indirect_ctx.gpu_driven = true;
     s_indirect_ctx.culling_enabled = true;
     
+    /* Create core indirect commands handle */
+    core_indirect_commands_desc_t desc = {0};
+    desc.flags = 0;
+    desc.user_data = NULL;
+
+    if (core_indirect_commands_create(&s_indirect_ctx.handle, &desc) != 0) {
+        return -1;
+    }
+
     /* Create command buffer (placeholder) */
     s_indirect_ctx.command_buffer = 1;
     
@@ -958,6 +970,12 @@ static int io_bundling_renderer_03_init_indirect_rendering(void) {
 }
 
 static void io_bundling_renderer_03_shutdown_indirect_rendering(void) {
+    /* Destroy core indirect commands handle */
+    if (core_indirect_commands_is_valid(s_indirect_ctx.handle)) {
+        core_indirect_commands_destroy(s_indirect_ctx.handle);
+        s_indirect_ctx.handle.id = 0;
+    }
+
     /* Clean up command buffer */
     if (s_indirect_ctx.command_buffer != 0) {
         /* Destroy command buffer */
@@ -978,14 +996,30 @@ static int io_bundling_renderer_03_execute_indirect_commands(void) {
         return -1;
     }
     
+    if (!core_indirect_commands_is_valid(s_indirect_ctx.handle)) {
+        return -2;
+    }
+
+    /* Update indirect commands data */
+    /* In a real implementation, we would populate this with actual draw commands */
+    uint32_t dummy_data[16] = {0};
+    core_indirect_commands_update(s_indirect_ctx.handle, dummy_data, sizeof(dummy_data));
+
+    /* Mark dirty to trigger processing */
+    core_indirect_commands_mark_dirty(s_indirect_ctx.handle);
+
     /* Execute indirect commands */
     if (s_indirect_ctx.gpu_driven) {
         /* GPU-driven indirect rendering */
         if (s_indirect_ctx.culling_enabled) {
             /* Perform GPU-side culling */
+            io_bundling_renderer_03_cull_with_gpu_feedback();
         }
     }
     
+    /* Process pending commands */
+    core_indirect_commands_process_pending();
+
     return 0;
 }
 
@@ -1448,424 +1482,6 @@ static int io_bundling_renderer_03_parse_fbx_scene(const char* file_path) {
     return 0;
 }
 
-/* ============================================================================
- * ENHANCED ASYNC COMPUTE IMPLEMENTATION
- * ============================================================================ */
-
-static int io_bundling_renderer_03_init_async_compute(void) {
-    if (s_async_compute_ctx.compute_queue != 0) {
-        return 0;  /* Already initialized */
-    }
-    
-    /* Initialize async compute context */
-    s_async_compute_ctx.compute_queue = 1;  /* Mock handle */
-    s_async_compute_ctx.command_buffer = 0;
-    s_async_compute_ctx.fence = 0;
-    s_async_compute_ctx.in_flight = false;
-    s_async_compute_ctx.double_buffer_index = 0;
-    s_async_compute_ctx.double_buffering_enabled = true;
-    
-    return 0;
-}
-
-static void io_bundling_renderer_03_shutdown_async_compute(void) {
-    /* Wait for any in-flight operations */
-    if (s_async_compute_ctx.in_flight) {
-        io_bundling_renderer_03_wait_for_async_compute();
-    }
-    
-    /* Clean up resources */
-    if (s_async_compute_ctx.command_buffer != 0) {
-        /* Destroy command buffer */
-        s_async_compute_ctx.command_buffer = 0;
-    }
-    
-    if (s_async_compute_ctx.fence != 0) {
-        /* Destroy fence */
-        s_async_compute_ctx.fence = 0;
-    }
-    
-    if (s_async_compute_ctx.compute_queue != 0) {
-        /* Destroy compute queue */
-        s_async_compute_ctx.compute_queue = 0;
-    }
-    
-    memset(&s_async_compute_ctx, 0, sizeof(s_async_compute_ctx));
-}
-
-static int io_bundling_renderer_03_dispatch_async_compute(uint32_t x, uint32_t y, uint32_t z) {
-    if (!s_async_compute_ctx.compute_queue) {
-        return -1;
-    }
-    
-    /* Wait for previous operation if still in flight */
-    if (s_async_compute_ctx.in_flight) {
-        io_bundling_renderer_03_wait_for_async_compute();
-    }
-    
-    /* Create command buffer for this frame */
-    s_async_compute_ctx.command_buffer = 1;  /* Mock handle */
-    
-    /* Record compute dispatch commands */
-    /* Dispatch compute shader with specified thread count */
-    
-    /* Submit to compute queue */
-    s_async_compute_ctx.in_flight = true;
-    s_async_compute_ctx.start_time = 0;  /* Get timestamp */
-    
-    /* Switch double buffer */
-    if (s_async_compute_ctx.double_buffering_enabled) {
-        s_async_compute_ctx.double_buffer_index = 1 - s_async_compute_ctx.double_buffer_index;
-    }
-    
-    return 0;
-}
-
-static int io_bundling_renderer_03_wait_for_async_compute(void) {
-    if (!s_async_compute_ctx.in_flight) {
-        return 0;  /* No operation in flight */
-    }
-    
-    /* Wait for fence to be signaled */
-    /* This would block until compute shader completes */
-    
-    s_async_compute_ctx.in_flight = false;
-    s_async_compute_ctx.completion_time = 0;  /* Get timestamp */
-    
-    /* Clean up command buffer */
-    if (s_async_compute_ctx.command_buffer != 0) {
-        /* Destroy command buffer */
-        s_async_compute_ctx.command_buffer = 0;
-    }
-    
-    return 0;
-}
-
-/* ============================================================================
- * MESH SHADER IMPLEMENTATION
- * ============================================================================ */
-
-static int io_bundling_renderer_03_init_mesh_shaders(void) {
-    if (s_mesh_shader_ctx.enabled) {
-        return 0;  /* Already initialized */
-    }
-    
-    /* Initialize mesh shader context */
-    s_mesh_shader_ctx.enabled = true;
-    s_mesh_shader_ctx.max_meshlets = 65536;
-    s_mesh_shader_ctx.max_vertices_per_meshlet = 256;
-    s_mesh_shader_ctx.max_primitives_per_meshlet = 512;
-    s_mesh_shader_ctx.meshlets_processed = 0;
-    
-    /* Create shader pipelines (placeholder handles) */
-    s_mesh_shader_ctx.mesh_shader_pipeline = 1;
-    s_mesh_shader_ctx.task_shader_pipeline = 2;
-    
-    return 0;
-}
-
-static void io_bundling_renderer_03_shutdown_mesh_shaders(void) {
-    if (s_mesh_shader_ctx.mesh_shader_pipeline != 0) {
-        /* Destroy mesh shader pipeline */
-        s_mesh_shader_ctx.mesh_shader_pipeline = 0;
-    }
-    
-    if (s_mesh_shader_ctx.task_shader_pipeline != 0) {
-        /* Destroy task shader pipeline */
-        s_mesh_shader_ctx.task_shader_pipeline = 0;
-    }
-    
-    memset(&s_mesh_shader_ctx, 0, sizeof(s_mesh_shader_ctx));
-}
-
-static int io_bundling_renderer_03_process_meshlets(uint32_t meshlet_count) {
-    if (!s_mesh_shader_ctx.enabled || meshlet_count == 0) {
-        return -1;
-    }
-    
-    /* Process meshlets using mesh shaders */
-    /* Dispatch task shader to cull meshlets */
-    /* Dispatch mesh shader to generate geometry */
-    
-    s_mesh_shader_ctx.meshlets_processed += meshlet_count;
-    
-    return 0;
-}
-
-/* ============================================================================
- * INDIRECT RENDERING IMPLEMENTATION
- * ============================================================================ */
-
-static int io_bundling_renderer_03_init_indirect_rendering(void) {
-    if (s_indirect_ctx.command_buffer != 0) {
-        return 0;  /* Already initialized */
-    }
-    
-    /* Initialize indirect rendering context */
-    s_indirect_ctx.max_commands = 4096;
-    s_indirect_ctx.command_count = 0;
-    s_indirect_ctx.gpu_driven = true;
-    s_indirect_ctx.culling_enabled = true;
-    
-    /* Create resources (placeholder handles) */
-    s_indirect_ctx.command_buffer = 1;
-    s_indirect_ctx.counter_buffer = 2;
-    
-    return 0;
-}
-
-static void io_bundling_renderer_03_shutdown_indirect_rendering(void) {
-    if (s_indirect_ctx.command_buffer != 0) {
-        /* Destroy command buffer */
-        s_indirect_ctx.command_buffer = 0;
-    }
-    
-    if (s_indirect_ctx.counter_buffer != 0) {
-        /* Destroy counter buffer */
-        s_indirect_ctx.counter_buffer = 0;
-    }
-    
-    memset(&s_indirect_ctx, 0, sizeof(s_indirect_ctx));
-}
-
-static int io_bundling_renderer_03_execute_indirect_commands(void) {
-    if (!s_indirect_ctx.command_buffer || s_indirect_ctx.command_count == 0) {
-        return -1;
-    }
-    
-    /* Execute indirect draw commands */
-    /* GPU-driven rendering with command buffer */
-    
-    return 0;
-}
-
-/* ============================================================================
- * HIERARCHICAL CULLING IMPLEMENTATION
- * ============================================================================ */
-
-static int io_bundling_renderer_03_init_hierarchical_culling(void) {
-    if (s_culling_ctx.bvh_acceleration_structure != 0) {
-        return 0;  /* Already initialized */
-    }
-    
-    /* Initialize culling context */
-    s_culling_ctx.gpu_feedback_enabled = true;
-    s_culling_ctx.max_depth = 8;
-    s_culling_ctx.nodes_culled = 0;
-    s_culling_ctx.triangles_culled = 0;
-    
-    /* Initialize nodes per level */
-    for (int i = 0; i < 8; i++) {
-        s_culling_ctx.nodes_per_level[i] = 0;
-    }
-    
-    /* Create BVH acceleration structure (placeholder) */
-    s_culling_ctx.bvh_acceleration_structure = 1;
-    s_culling_ctx.gpu_feedback_buffer = 2;
-    
-    return io_bundling_renderer_03_build_bvh();
-}
-
-static void io_bundling_renderer_03_shutdown_hierarchical_culling(void) {
-    if (s_culling_ctx.bvh_acceleration_structure != 0) {
-        /* Destroy BVH acceleration structure */
-        s_culling_ctx.bvh_acceleration_structure = 0;
-    }
-    
-    if (s_culling_ctx.gpu_feedback_buffer != 0) {
-        /* Destroy GPU feedback buffer */
-        s_culling_ctx.gpu_feedback_buffer = 0;
-    }
-    
-    memset(&s_culling_ctx, 0, sizeof(s_culling_ctx));
-}
-
-static int io_bundling_renderer_03_build_bvh(void) {
-    if (!s_culling_ctx.bvh_acceleration_structure) {
-        return -1;
-    }
-    
-    /* Build BVH acceleration structure */
-    /* Create hierarchy of bounding volumes */
-    /* Optimize for GPU traversal */
-    
-    return 0;
-}
-
-static int io_bundling_renderer_03_cull_with_gpu_feedback(void) {
-    if (!s_culling_ctx.gpu_feedback_enabled || !s_culling_ctx.bvh_acceleration_structure) {
-        return -1;
-    }
-    
-    /* Perform GPU-based culling */
-    /* Use compute shader to test visibility */
-    /* Write results to feedback buffer */
-    
-    return 0;
-}
-
-/* ============================================================================
- * HOT RELOAD IMPLEMENTATION
- * ============================================================================ */
-
-static int io_bundling_renderer_03_init_hot_reload(const char* directory) {
-    if (s_hot_reload_ctx.enabled) {
-        return 0;  /* Already initialized */
-    }
-    
-    if (!directory) {
-        return -1;
-    }
-    
-    /* Initialize hot reload context */
-    s_hot_reload_ctx.enabled = true;
-    strncpy(s_hot_reload_ctx.watched_directory, directory, sizeof(s_hot_reload_ctx.watched_directory) - 1);
-    s_hot_reload_ctx.file_watch_handle = 1;  /* Mock handle */
-    s_hot_reload_ctx.reload_callback = NULL;
-    s_hot_reload_ctx.last_reload_time = 0;
-    
-    return 0;
-}
-
-static void io_bundling_renderer_03_shutdown_hot_reload(void) {
-    if (s_hot_reload_ctx.file_watch_handle != 0) {
-        /* Stop file watching */
-        s_hot_reload_ctx.file_watch_handle = 0;
-    }
-    
-    memset(&s_hot_reload_ctx, 0, sizeof(s_hot_reload_ctx));
-}
-
-static void io_bundling_renderer_03_process_file_changes(void) {
-    if (!s_hot_reload_ctx.enabled) {
-        return;
-    }
-    
-    /* Check for file changes */
-    /* Process modified files */
-    /* Call reload callback for each changed file */
-    
-    if (s_hot_reload_ctx.reload_callback) {
-        /* Mock file change processing */
-        s_hot_reload_ctx.reload_callback("example_texture.png");
-        s_hot_reload_ctx.last_reload_time = 0;  /* Get timestamp */
-    }
-}
-
-/* ============================================================================
- * ASSET BUNDLING IMPLEMENTATION
- * ============================================================================ */
-
-static int io_bundling_renderer_03_create_asset_bundle(const char* name, const void* data, size_t size) {
-    if (!name || !data || size == 0) {
-        return -1;
-    }
-    
-    if (s_asset_bundle_count >= 32) {
-        return -2;  /* Maximum bundles reached */
-    }
-    
-    /* Create new asset bundle */
-    io_bundling_renderer_03_asset_bundle_t* bundle = calloc(1, sizeof(io_bundling_renderer_03_asset_bundle_t));
-    if (!bundle) {
-        return -3;
-    }
-    
-    /* Initialize bundle */
-    bundle->id = s_asset_bundle_count;
-    strncpy(bundle->name, name, sizeof(bundle->name) - 1);
-    strcpy(bundle->version, "1.0");
-    bundle->data = malloc(size);
-    if (!bundle->data) {
-        free(bundle);
-        return -4;
-    }
-    
-    memcpy(bundle->data, data, size);
-    bundle->data_size = size;
-    bundle->compressed_size = size;  /* Initially uncompressed */
-    bundle->asset_count = 1;
-    bundle->is_compressed = false;
-    bundle->load_time_ms = 0;  /* Get timestamp */
-    
-    s_asset_bundles[s_asset_bundle_count] = bundle;
-    s_asset_bundle_count++;
-    
-    return bundle->id;
-}
-
-static int io_bundling_renderer_03_load_asset_bundle(const char* path) {
-    if (!path) {
-        return -1;
-    }
-    
-    /* Load asset bundle from file */
-    /* Parse bundle header and metadata */
-    /* Load compressed data and decompress */
-    
-    return 0;
-}
-
-static int io_bundling_renderer_03_save_asset_bundle(uint32_t bundle_id, const char* path) {
-    if (bundle_id >= s_asset_bundle_count || !path) {
-        return -1;
-    }
-    
-    io_bundling_renderer_03_asset_bundle_t* bundle = s_asset_bundles[bundle_id];
-    if (!bundle) {
-        return -2;
-    }
-    
-    /* Save asset bundle to file */
-    /* Compress data if needed */
-    /* Write bundle header and data */
-    
-    return 0;
-}
-
-/* ============================================================================
- * FORMAT CONVERSION IMPLEMENTATION
- * ============================================================================ */
-
-static int io_bundling_renderer_03_register_format_converter(const char* source, const char* target, 
-                                                         int (*convert_func)(const void*, size_t, void**, size_t*)) {
-    if (!source || !target || !convert_func) {
-        return -1;
-    }
-    
-    if (s_format_converter_count >= 16) {
-        return -2;  /* Maximum converters reached */
-    }
-    
-    /* Register new format converter */
-    io_bundling_renderer_03_format_converter_t* converter = &s_format_converters[s_format_converter_count];
-    strncpy(converter->source_format, source, sizeof(converter->source_format) - 1);
-    strncpy(converter->target_format, target, sizeof(converter->target_format) - 1);
-    converter->convert_func = convert_func;
-    converter->is_gpu_accelerated = false;
-    
-    s_format_converter_count++;
-    return s_format_converter_count - 1;
-}
-
-static int io_bundling_renderer_03_convert_format(const char* source_format, const char* target_format,
-                                                 const void* source_data, size_t source_size,
-                                                 void** target_data, size_t* target_size) {
-    if (!source_format || !target_format || !source_data || !target_data || !target_size) {
-        return -1;
-    }
-    
-    /* Find appropriate converter */
-    for (uint32_t i = 0; i < s_format_converter_count; i++) {
-        io_bundling_renderer_03_format_converter_t* converter = &s_format_converters[i];
-        if (strcmp(converter->source_format, source_format) == 0 &&
-            strcmp(converter->target_format, target_format) == 0) {
-            return converter->convert_func(source_data, source_size, target_data, target_size);
-        }
-    }
-    
-    return -2;  /* Converter not found */
-}
 int io_bundling_renderer_03_render(io_bundling_renderer_03_t* ctx, void* params) {
     if (!ctx) {
         // LOG_ERROR("io_bundling_renderer_03_render: Invalid context");
@@ -2400,10 +2016,6 @@ int io_bundling_renderer_03_module_shutdown(void) {
         io_bundling_renderer_03_shutdown_render_graph();
     }
     
-    /* Add asset cache management */
-    if (s_asset_cache) {
-        io_bundling_renderer_03_shutdown_asset_cache();
-    }
     
     /* Implement asset bundling */
     /* Clean up asset bundles */
