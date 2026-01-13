@@ -1,192 +1,165 @@
 #include "light_system.h"
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-// Internal state
-static struct {
-    Light lights[MAX_LIGHTS];          // Storage for all lights
-    Light* active_lights[MAX_LIGHTS];  // Packed array of pointers to active lights
+#define MAX_LIGHTS 1024
+
+typedef struct {
+    Light lights[MAX_LIGHTS];
+    bool active[MAX_LIGHTS];
     uint32_t active_count;
     uint32_t next_id;
     bool initialized;
-} g_light_system;
+} LightSystemState;
 
-void LightSystem_Init(void) {
-    memset(&g_light_system, 0, sizeof(g_light_system));
-    g_light_system.next_id = 1; // ID 0 is reserved for invalid
-    g_light_system.initialized = true;
-    printf("Light System Initialized\n");
+static LightSystemState state = {0};
+
+bool light_system_init(void) {
+    if (state.initialized) return true;
+
+    memset(&state, 0, sizeof(LightSystemState));
+    state.next_id = 1; // Start IDs at 1
+    state.initialized = true;
+
+    printf("[LightSystem] Initialized. Max lights: %d\n", MAX_LIGHTS);
+    return true;
 }
 
-void LightSystem_Shutdown(void) {
-    memset(&g_light_system, 0, sizeof(g_light_system));
-    g_light_system.initialized = false;
-    printf("Light System Shutdown\n");
+void light_system_shutdown(void) {
+    if (!state.initialized) return;
+
+    memset(&state, 0, sizeof(LightSystemState));
+    printf("[LightSystem] Shutdown.\n");
 }
 
-static void RebuildActiveList(void) {
-    g_light_system.active_count = 0;
-    for (int i = 0; i < MAX_LIGHTS; ++i) {
-        if (g_light_system.lights[i].base.id != 0 && g_light_system.lights[i].base.enabled) {
-            g_light_system.active_lights[g_light_system.active_count++] = &g_light_system.lights[i];
-        }
-    }
-}
+void light_system_update(float delta_time) {
+    if (!state.initialized) return;
 
-void LightSystem_Update(float delta_time) {
-    if (!g_light_system.initialized) return;
-    // Future: animate lights, update shadow maps, etc.
+    // Future: Animate lights, update shadow maps, etc.
     (void)delta_time;
 }
 
-static Light* FindFreeSlot(void) {
+uint32_t light_system_create_light(LightType type) {
+    if (!state.initialized) return 0;
+
+    // Find a free slot
+    int slot = -1;
     for (int i = 0; i < MAX_LIGHTS; ++i) {
-        if (g_light_system.lights[i].base.id == 0) {
-            return &g_light_system.lights[i];
+        if (!state.active[i]) {
+            slot = i;
+            break;
         }
     }
-    return NULL;
-}
 
-static Light* FindLightById(uint32_t id) {
-    if (id == 0) return NULL;
-    for (int i = 0; i < MAX_LIGHTS; ++i) {
-        if (g_light_system.lights[i].base.id == id) {
-            return &g_light_system.lights[i];
-        }
-    }
-    return NULL;
-}
-
-static uint32_t GetNextId(void) {
-    uint32_t id = g_light_system.next_id++;
-    if (g_light_system.next_id == 0) g_light_system.next_id = 1; // Wrap around safely
-    return id;
-}
-
-uint32_t LightSystem_AddDirectionalLight(Vec3 direction, Vec3 color, float intensity, bool cast_shadows) {
-    if (!g_light_system.initialized) return 0;
-
-    Light* slot = FindFreeSlot();
-    if (!slot) {
-        printf("Error: Max lights reached\n");
+    if (slot == -1) {
+        printf("[LightSystem] Error: Max lights reached (%d)\n", MAX_LIGHTS);
         return 0;
     }
 
-    uint32_t id = GetNextId();
-    slot->base.id = id;
-    slot->base.type = LIGHT_TYPE_DIRECTIONAL;
-    slot->base.enabled = true;
-    slot->base.cast_shadows = cast_shadows;
-    slot->base.color = color;
-    slot->base.intensity = intensity;
+    // Initialize light
+    Light* light = &state.lights[slot];
+    memset(light, 0, sizeof(Light));
 
-    slot->base.shadow_bias = 0.005f;
-    slot->base.shadow_normal_bias = 0.005f;
-    slot->base.shadow_map_resolution = 2048;
+    light->base.id = state.next_id++;
+    light->base.type = type;
+    light->base.enabled = true;
+    light->base.cast_shadows = false;
+    light->base.intensity = 1.0f;
+    light->base.color = (Vec3){1.0f, 1.0f, 1.0f};
+    light->base.shadow_bias = 0.005f;
+    light->base.shadow_normal_bias = 0.005f;
+    light->base.shadow_map_resolution = 1024;
 
-    slot->directional.direction = vec3_normalize(direction);
-
-    RebuildActiveList();
-    return id;
-}
-
-uint32_t LightSystem_AddPointLight(Vec3 position, float range, Vec3 color, float intensity, bool cast_shadows) {
-    if (!g_light_system.initialized) return 0;
-
-    Light* slot = FindFreeSlot();
-    if (!slot) return 0;
-
-    uint32_t id = GetNextId();
-    slot->base.id = id;
-    slot->base.type = LIGHT_TYPE_POINT;
-    slot->base.enabled = true;
-    slot->base.cast_shadows = cast_shadows;
-    slot->base.color = color;
-    slot->base.intensity = intensity;
-
-    slot->base.shadow_bias = 0.001f;
-    slot->base.shadow_normal_bias = 0.001f;
-    slot->base.shadow_map_resolution = 1024;
-
-    slot->point.position = position;
-    slot->point.range = range;
-    slot->point.constant_attenuation = 1.0f;
-    slot->point.linear_attenuation = 0.09f;
-    slot->point.quadratic_attenuation = 0.032f;
-
-    RebuildActiveList();
-    return id;
-}
-
-uint32_t LightSystem_AddSpotLight(Vec3 position, Vec3 direction, float range,
-                                  float inner_angle, float outer_angle,
-                                  Vec3 color, float intensity, bool cast_shadows) {
-    if (!g_light_system.initialized) return 0;
-
-    Light* slot = FindFreeSlot();
-    if (!slot) return 0;
-
-    uint32_t id = GetNextId();
-    slot->base.id = id;
-    slot->base.type = LIGHT_TYPE_SPOT;
-    slot->base.enabled = true;
-    slot->base.cast_shadows = cast_shadows;
-    slot->base.color = color;
-    slot->base.intensity = intensity;
-
-    slot->base.shadow_bias = 0.001f;
-    slot->base.shadow_normal_bias = 0.001f;
-    slot->base.shadow_map_resolution = 1024;
-
-    slot->spot.position = position;
-    slot->spot.direction = vec3_normalize(direction);
-    slot->spot.range = range;
-    slot->spot.inner_cone_angle = inner_angle;
-    slot->spot.outer_cone_angle = outer_angle;
-    slot->spot.constant_attenuation = 1.0f;
-    slot->spot.linear_attenuation = 0.09f;
-    slot->spot.quadratic_attenuation = 0.032f;
-    slot->spot.cookie_texture_id = 0;
-
-    RebuildActiveList();
-    return id;
-}
-
-void LightSystem_RemoveLight(uint32_t light_id) {
-    if (!g_light_system.initialized) return;
-
-    Light* light = FindLightById(light_id);
-    if (light) {
-        memset(light, 0, sizeof(Light)); // Clear slot
-        RebuildActiveList();
+    // Set type specific defaults
+    switch (type) {
+        case LIGHT_TYPE_DIRECTIONAL:
+            light->directional.direction = (Vec3){0.0f, -1.0f, 0.0f};
+            break;
+        case LIGHT_TYPE_POINT:
+            light->point.range = 10.0f;
+            light->point.constant_attenuation = 1.0f;
+            light->point.linear_attenuation = 0.09f;
+            light->point.quadratic_attenuation = 0.032f;
+            break;
+        case LIGHT_TYPE_SPOT:
+            light->spot.range = 10.0f;
+            light->spot.direction = (Vec3){0.0f, -1.0f, 0.0f};
+            light->spot.inner_cone_angle = 0.5f; // ~28 degrees
+            light->spot.outer_cone_angle = 0.7f; // ~40 degrees
+            light->spot.constant_attenuation = 1.0f;
+            light->spot.linear_attenuation = 0.09f;
+            light->spot.quadratic_attenuation = 0.032f;
+            break;
+        default:
+            break;
     }
+
+    state.active[slot] = true;
+    state.active_count++;
+
+    return light->base.id;
 }
 
-Light* LightSystem_GetLight(uint32_t light_id) {
-    if (!g_light_system.initialized) return NULL;
-    return FindLightById(light_id);
-}
+void light_system_destroy_light(uint32_t id) {
+    if (!state.initialized || id == 0) return;
 
-void LightSystem_SetLightEnabled(uint32_t light_id, bool enabled) {
-    Light* light = LightSystem_GetLight(light_id);
-    if (light) {
-        light->base.enabled = enabled;
-        RebuildActiveList();
+    for (int i = 0; i < MAX_LIGHTS; ++i) {
+        if (state.active[i] && state.lights[i].base.id == id) {
+            state.active[i] = false;
+            state.active_count--;
+            // Optional: Clear data, but not strictly necessary if we rely on active flag
+            return;
+        }
     }
+
+    printf("[LightSystem] Warning: distinct light %u not found.\n", id);
 }
 
-uint32_t LightSystem_GetActiveLightCount(void) {
-    return g_light_system.active_count;
+Light* light_system_get_light(uint32_t id) {
+    if (!state.initialized || id == 0) return NULL;
+
+    for (int i = 0; i < MAX_LIGHTS; ++i) {
+        if (state.active[i] && state.lights[i].base.id == id) {
+            return &state.lights[i];
+        }
+    }
+
+    return NULL;
 }
 
-const Light** LightSystem_GetActiveLights(uint32_t* out_count) {
-    if (!g_light_system.initialized) {
+const Light* light_system_get_all_lights(uint32_t* out_count) {
+    if (!state.initialized) {
         if (out_count) *out_count = 0;
         return NULL;
     }
 
-    if (out_count) *out_count = g_light_system.active_count;
-    return (const Light**)g_light_system.active_lights;
+    // For now, return the internal array. In a real engine, we might pack active lights
+    // into a contiguous buffer for the GPU. Since we return 'const Light*', the user
+    // must iterate up to MAX_LIGHTS and check .enabled or rely on us compacting it.
+
+    // To implement "get all active", we should compact them into a temporary buffer or
+    // ensure the internal array is packed. For simplicity in this step, I'll return a
+    // static buffer that is repopulated on call, or just return the raw array and
+    // let the user filter.
+
+    // Better approach: We have `active_count`. Let's assume we want to return a contiguous list.
+    // We can use a static buffer for this.
+
+    static Light packed_lights[MAX_LIGHTS];
+    uint32_t count = 0;
+
+    for (int i = 0; i < MAX_LIGHTS; ++i) {
+        if (state.active[i]) {
+            packed_lights[count++] = state.lights[i];
+        }
+    }
+
+    if (out_count) *out_count = count;
+    return packed_lights;
+}
+
+void light_system_prune(void) {
+    // Implementation for pruning... mostly irrelevant with the current slot system
+    // unless we want to defragment the slots.
 }

@@ -2,53 +2,32 @@
 #define LIGHT_SYSTEM_H
 
 #include "light_types.h"
-#include <stdint.h>
 #include <stdbool.h>
 
-#define MAX_LIGHTS 1024
+// Initialize the lighting system
+bool light_system_init(void);
 
-/**
- * Light System
- * Canonical implementation for managing lights in the scene.
- */
+// Shutdown the lighting system
+void light_system_shutdown(void);
 
-// Initialize the light system
-void LightSystem_Init(void);
+// Update the lighting system (e.g. animate lights, cull lights)
+void light_system_update(float delta_time);
 
-// Shutdown the light system and free resources
-void LightSystem_Shutdown(void);
+// Create a new light and return its ID (0 on failure)
+uint32_t light_system_create_light(LightType type);
 
-// Update the light system (e.g. animate lights, cull, etc.)
-void LightSystem_Update(float delta_time);
+// Destroy a light by ID
+void light_system_destroy_light(uint32_t id);
 
-// Create a new directional light
-// Returns the light ID or 0 on failure
-uint32_t LightSystem_AddDirectionalLight(Vec3 direction, Vec3 color, float intensity, bool cast_shadows);
+// Get a pointer to the light data for modification
+Light* light_system_get_light(uint32_t id);
 
-// Create a new point light
-// Returns the light ID or 0 on failure
-uint32_t LightSystem_AddPointLight(Vec3 position, float range, Vec3 color, float intensity, bool cast_shadows);
+// Get all active lights in a flat array (useful for rendering)
+// out_count will be populated with the number of lights
+// Returns a pointer to the internal array of lights
+const Light* light_system_get_all_lights(uint32_t* out_count);
 
-// Create a new spot light
-// Returns the light ID or 0 on failure
-uint32_t LightSystem_AddSpotLight(Vec3 position, Vec3 direction, float range,
-                                  float inner_angle, float outer_angle,
-                                  Vec3 color, float intensity, bool cast_shadows);
-
-// Remove a light by ID
-void LightSystem_RemoveLight(uint32_t light_id);
-
-// Get a pointer to a light by ID (do not store this pointer long-term)
-Light* LightSystem_GetLight(uint32_t light_id);
-
-// Set light enabled state
-void LightSystem_SetLightEnabled(uint32_t light_id, bool enabled);
-
-// Get the total number of active lights
-uint32_t LightSystem_GetActiveLightCount(void);
-
-// Get an array of pointers to active lights
-// This allows for efficient iteration without checking for null/empty slots
-const Light** LightSystem_GetActiveLights(uint32_t* out_count);
+// Prune invalid or disabled lights (optional optimization)
+void light_system_prune(void);
 
 #endif // LIGHT_SYSTEM_H

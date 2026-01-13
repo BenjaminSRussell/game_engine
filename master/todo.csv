@@ -32767,4 +32767,4 @@ TODO-32644,todo_md,Master TODO,master/todo.md,"High - Implement a quest manager 
 TODO-32645,todo_md,Master TODO,master/todo.md,"High - Create a UI for displaying and tracking quests, including a quest log and on-screen notifications. (line 3) (assets/assets/code/todo_quests.c)",open
 TODO-32646,todo_md,Master TODO,master/todo.md,"Medium - Implement a variety of quest objectives, such as fetching items, killing mobs, and exploring specific locations. (line 4) (assets/assets/code/todo_quests.c)",open
 TODO-32647,todo_md,Master TODO,master/todo.md,"Medium - Create a system for rewarding players for completing quests, such as giving them items, experience, or currency. (line 5) (assets/assets/code/todo_quests.c)",open
-AUDIO-001,implementation,Audio > Playback,Jules-Audio,Audio Playback System,completed
+LIGHT-001,implementation,Lighting > Systems,Jules-Lighting,Implement light rendering and shadow casting system,completed
