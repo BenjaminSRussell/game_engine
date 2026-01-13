@@ -836,7 +836,7 @@ int main(int argc, char *argv[]) {
   // Start performance monitoring for the main loop
   Timer *main_loop_timer = perf_timer_create("main_loop");
   if (main_loop_timer) {
-    timer_start(main_loop_timer);
+    perf_timer_start(main_loop_timer);
   }
 
   engine_run(&engine, game_module);

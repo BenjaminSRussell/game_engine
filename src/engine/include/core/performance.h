@@ -11,7 +11,7 @@
 // - `Profiler`: The main structure managing a collection of `ProfilerEntry` instances,
 //   with global control over profiling enablement.
 // - `g_profiler`: An external global instance of the `Profiler`.
-// - `timer_create`, `timer_destroy`, `timer_start`, `timer_stop`, `timer_get_elapsed`, `timer_reset`: API for `Timer` management.
+// - `perf_timer_create`, `perf_timer_destroy`, `perf_timer_start`, `perf_timer_stop`, `perf_timer_get_elapsed`, `perf_timer_reset`: API for `Timer` management.
 // - `profiler_init`, `profiler_shutdown`, `profiler_start`, `profiler_stop`, `profiler_reset`, `profiler_report`, `profiler_enable`: API for `Profiler` management and reporting.
 // - `FrameStats`: Structure to track per-frame performance metrics (frame time, FPS, frame count).
 // - `g_frame_stats`: An external global instance of `FrameStats`.
@@ -64,11 +64,11 @@ extern Profiler g_profiler;
 
 // Timer functions
 Timer *perf_timer_create(const char *name);
-void timer_destroy(Timer *timer);
-void timer_start(Timer *timer);
-void timer_stop(Timer *timer);
-f64 timer_get_elapsed(Timer *timer);
-void timer_reset(Timer *timer);
+void perf_timer_destroy(Timer *timer);
+void perf_timer_start(Timer *timer);
+void perf_timer_stop(Timer *timer);
+f64 perf_timer_get_elapsed(Timer *timer);
+void perf_timer_reset(Timer *timer);
 
 // Profiler functions
 void profiler_init(void);
