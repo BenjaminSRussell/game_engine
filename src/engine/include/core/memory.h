@@ -5,9 +5,7 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
-#include "math/types.h"
-
-// Memory tags need to be defined before including unified_memory_allocator.h
+// Memory tags need to be defined before unified allocator uses them
 typedef enum {
     MEMORY_TAG_UNKNOWN = 0,
     MEMORY_TAG_TEMP,
@@ -27,27 +25,7 @@ typedef enum {
 // Redirect to the unified memory allocator that consolidates all memory systems
 #include "memory/unified_memory_allocator.h"
 
-// Legacy compatibility - all existing code continues to work
-// The unified allocator provides:
-// - Memory tracking and leak detection
-// - Memory pools for performance
-// - Stack allocators for temporary data
-// - Arena allocators for bulk allocations
-// - Guard pages and canaries for corruption detection
-// - Statistics and monitoring
-// - Fragmentation analysis
-// - Hot-spot detection
-
-// Linear allocator for ultra-fast per-frame allocations
-// Note: LinearAllocator struct is not defined in unified_memory_allocator.h
-typedef struct {
-  void *base;
-  u32 size;
-  u32 offset;
-  u32 peak_usage;
-  u32 buffer_count;
-  u32 current_buffer;
-  void **buffers; // Double-buffering for multi-threading
-} LinearAllocator;
+// Legacy compatibility
+// Note: Conflicting declarations removed. Use macros from unified_memory_allocator.h.
 
 #endif // MEMORY_H

@@ -28,17 +28,8 @@ typedef struct Widget Widget;
 typedef struct UIEvent UIEvent;
 typedef struct UIEventHandler UIEventHandler;
 
-typedef struct BoxEdges {
-    float top;
-    float left;
-    float bottom;
-    float right;
-} BoxEdges;
-
-typedef struct Size {
-    float width;
-    float height;
-} Size;
+typedef Vec2 Size;
+typedef struct { float top, right, bottom, left; } BoxEdges;
 
 // Event types
 typedef enum {
@@ -183,6 +174,7 @@ struct UIEventHandler {
 struct Widget {
     uint32_t id;
     char* name;
+    char* text;
     
     // Hierarchy
     Widget* parent;
@@ -287,6 +279,8 @@ void widget_set_text_color(Widget* widget, Vec4 color);
 void widget_set_opacity(Widget* widget, float opacity);
 void widget_set_border_width(Widget* widget, float width);
 void widget_set_corner_radius(Widget* widget, float radius);
+void widget_set_text(Widget* widget, const char* text);
+const char* widget_get_text(const Widget* widget);
 
 /* State Management */
 void widget_set_visible(Widget* widget, bool visible);
