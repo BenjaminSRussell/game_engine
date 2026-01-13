@@ -40,6 +40,7 @@
 #include <pthread.h>
 #include <time.h>
 #include <errno.h>
+#include <stdio.h>
 
 /* SIMD includes */
 #ifdef __SSE2__
@@ -95,6 +96,7 @@ typedef struct animation_jiggle_bone {
 typedef struct animation_async_operation {
     uint32_t operation_id;
     bool completed;
+    bool busy;
     pthread_cond_t completion_cond;
     pthread_mutex_t completion_mutex;
     void* result_data;
@@ -117,6 +119,7 @@ typedef struct animation_gpu_resources {
     uint32_t buffer_size;
     bool compute_shader_enabled;
     uint32_t compute_shader_id;
+    uint32_t workgroup_size[3];
 } animation_gpu_resources_t;
 
 typedef struct animation_jiggle_bones_internal {
@@ -201,7 +204,7 @@ static animation_jiggle_bones_context_t g_jiggle_bones_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
-static bool animation_jiggle_bones_validate(const animation_jiggle_bones_internal_t* item) {
+static bool animation_jiggle_bones_validate_internal(const animation_jiggle_bones_internal_t* item) {
     if (!item) return false;
     if (!item->initialized) return false;
     if (item->bone_count == 0) return false;
@@ -382,6 +385,23 @@ static void animation_jiggle_bones_update_procedural_internal(animation_jiggle_b
         
         bone->current_displacement[1] += procedural_offset;
     }
+}
+
+static void animation_jiggle_bones_update_morph_targets_internal(animation_jiggle_bones_internal_t* item, float delta_time) {
+    /* Update morph target weights with smooth blending */
+    const float blend_speed = 2.0f; /* Adjust for faster/slower blending */
+    for (uint32_t i = 0; i < item->morph_target_count; i++) {
+        float diff = item->morph_targets[i].target_weight - item->morph_targets[i].weight;
+        float step = diff * blend_speed * delta_time;
+
+        if (fabsf(step) > fabsf(diff)) {
+            item->morph_targets[i].weight = item->morph_targets[i].target_weight;
+        } else {
+            item->morph_targets[i].weight += step;
+        }
+    }
+
+    item->performance.morph_updates += item->morph_target_count;
 }
 
 static bool animation_jiggle_bones_check_simd_availability(void) {
@@ -829,23 +849,9 @@ int animation_jiggle_bones_update_morph_targets(animation_jiggle_bones_handle_t 
     }
     
     pthread_mutex_lock(&item->mutex);
-    
-    /* Update morph target weights with smooth blending */
-    const float blend_speed = 2.0f; /* Adjust for faster/slower blending */
-    for (uint32_t i = 0; i < item->morph_target_count; i++) {
-        float diff = item->morph_targets[i].target_weight - item->morph_targets[i].weight;
-        float step = diff * blend_speed * delta_time;
-        
-        if (fabsf(step) > fabsf(diff)) {
-            item->morph_targets[i].weight = item->morph_targets[i].target_weight;
-        } else {
-            item->morph_targets[i].weight += step;
-        }
-    }
-    
-    item->performance.morph_updates += item->morph_target_count;
-    
+    animation_jiggle_bones_update_morph_targets_internal(item, delta_time);
     pthread_mutex_unlock(&item->mutex);
+
     return ANIMATION_JIGGLE_BONES_ERROR_NONE;
 }
 
@@ -1001,7 +1007,7 @@ int animation_jiggle_bones_update(animation_jiggle_bones_handle_t handle, const 
         animation_jiggle_bones_update_procedural_internal(item, delta_time);
         
         /* Update morph targets */
-        animation_jiggle_bones_update_morph_targets(handle, delta_time);
+        animation_jiggle_bones_update_morph_targets_internal(item, delta_time);
     }
     
     item->dirty = true;
@@ -1464,7 +1470,7 @@ int animation_jiggle_bones_validate(animation_jiggle_bones_handle_t handle) {
     }
     
     animation_jiggle_bones_internal_t* item = &g_jiggle_bones_ctx.items[handle.id];
-    return animation_jiggle_bones_validate(item) ? ANIMATION_JIGGLE_BONES_ERROR_NONE : ANIMATION_JIGGLE_BONES_ERROR_OPERATION_FAILED;
+    return animation_jiggle_bones_validate_internal(item) ? ANIMATION_JIGGLE_BONES_ERROR_NONE : ANIMATION_JIGGLE_BONES_ERROR_OPERATION_FAILED;
 }
 
 int animation_jiggle_bones_get_last_error(animation_jiggle_bones_handle_t handle, char* error_buffer, size_t buffer_size) {
@@ -1883,6 +1889,217 @@ int animation_jiggle_bones_deserialize(animation_jiggle_bones_handle_t handle, c
     
     pthread_mutex_unlock(&item->mutex);
     return ANIMATION_JIGGLE_BONES_ERROR_NONE;
+}
+
+/* ============================================================================
+ * ASYNC OPERATIONS IMPLEMENTATION
+ * ============================================================================ */
+
+typedef struct animation_async_args {
+    animation_jiggle_bones_handle_t handle;
+    void* data;
+    size_t size;
+    animation_async_operation_t* op;
+} animation_async_args_t;
+
+static void* animation_jiggle_bones_async_thread(void* arg) {
+    animation_async_args_t* args = (animation_async_args_t*)arg;
+
+    /* Call synchronous update */
+    int result = animation_jiggle_bones_update(args->handle, args->data, args->size);
+
+    /* Update operation status */
+    pthread_mutex_lock(&args->op->completion_mutex);
+    args->op->completed = true;
+    args->op->busy = false;
+    args->op->error_code = result;
+    pthread_cond_signal(&args->op->completion_cond);
+    pthread_mutex_unlock(&args->op->completion_mutex);
+
+    /* Cleanup */
+    if (args->data) free(args->data);
+    free(args);
+
+    return NULL;
+}
+
+int animation_jiggle_bones_update_async(animation_jiggle_bones_handle_t handle, const void* data, size_t size) {
+    if (!g_jiggle_bones_ctx.initialized) {
+        return ANIMATION_JIGGLE_BONES_ERROR_NOT_INITIALIZED;
+    }
+
+    if (handle.id >= g_jiggle_bones_ctx.count) {
+        return ANIMATION_JIGGLE_BONES_ERROR_INVALID_HANDLE;
+    }
+
+    animation_jiggle_bones_internal_t* item = &g_jiggle_bones_ctx.items[handle.id];
+    if (!item->initialized) {
+        return ANIMATION_JIGGLE_BONES_ERROR_NOT_INITIALIZED;
+    }
+
+    /* Find a free async operation slot or use the first one (circular buffer style or just simplified) */
+    /* For this implementation, let's use the first slot as the "current" async update */
+    animation_async_operation_t* op = &item->async_operations[0];
+
+    pthread_mutex_lock(&item->mutex);
+
+    /* Initialize operation if needed */
+    if (op->operation_id == 0) {
+        pthread_mutex_init(&op->completion_mutex, NULL);
+        pthread_cond_init(&op->completion_cond, NULL);
+
+        pthread_mutex_lock(&g_jiggle_bones_ctx.global_mutex);
+        op->operation_id = g_jiggle_bones_ctx.next_async_operation_id++;
+        pthread_mutex_unlock(&g_jiggle_bones_ctx.global_mutex);
+        op->busy = false;
+    }
+
+    /* Check if operation is already in progress */
+    pthread_mutex_lock(&op->completion_mutex);
+    if (op->busy) {
+        pthread_mutex_unlock(&op->completion_mutex);
+        pthread_mutex_unlock(&item->mutex);
+        return ANIMATION_JIGGLE_BONES_ERROR_OPERATION_FAILED; /* Or BUSY */
+    }
+
+    /* Reset operation state */
+    op->completed = false;
+    op->busy = true;
+    op->error_code = 0;
+    pthread_mutex_unlock(&op->completion_mutex);
+
+    /* Prepare thread args */
+    animation_async_args_t* args = malloc(sizeof(animation_async_args_t));
+    if (!args) {
+        pthread_mutex_unlock(&item->mutex);
+        return ANIMATION_JIGGLE_BONES_ERROR_OUT_OF_MEMORY;
+    }
+
+    args->handle = handle;
+    args->op = op;
+    args->size = size;
+    args->data = NULL;
+
+    if (data && size > 0) {
+        args->data = malloc(size);
+        if (!args->data) {
+            free(args);
+            pthread_mutex_unlock(&item->mutex);
+            return ANIMATION_JIGGLE_BONES_ERROR_OUT_OF_MEMORY;
+        }
+        memcpy(args->data, data, size);
+    }
+
+    pthread_t thread;
+    if (pthread_create(&thread, NULL, animation_jiggle_bones_async_thread, args) != 0) {
+        if (args->data) free(args->data);
+        free(args);
+        pthread_mutex_unlock(&item->mutex);
+        return ANIMATION_JIGGLE_BONES_ERROR_OPERATION_FAILED;
+    }
+
+    /* Detach thread as we wait on condition variable */
+    pthread_detach(thread);
+
+    pthread_mutex_unlock(&item->mutex);
+    return ANIMATION_JIGGLE_BONES_ERROR_NONE;
+}
+
+int animation_jiggle_bones_wait_for_async(animation_jiggle_bones_handle_t handle) {
+    if (!g_jiggle_bones_ctx.initialized) {
+        return ANIMATION_JIGGLE_BONES_ERROR_NOT_INITIALIZED;
+    }
+
+    if (handle.id >= g_jiggle_bones_ctx.count) {
+        return ANIMATION_JIGGLE_BONES_ERROR_INVALID_HANDLE;
+    }
+
+    animation_jiggle_bones_internal_t* item = &g_jiggle_bones_ctx.items[handle.id];
+    animation_async_operation_t* op = &item->async_operations[0];
+
+    if (op->operation_id == 0) {
+        return ANIMATION_JIGGLE_BONES_ERROR_NONE; /* Never started */
+    }
+
+    /* Wait for completion */
+    pthread_mutex_lock(&op->completion_mutex);
+    while (!op->completed) {
+        pthread_cond_wait(&op->completion_cond, &op->completion_mutex);
+    }
+    int result = op->error_code;
+    pthread_mutex_unlock(&op->completion_mutex);
+
+    return result;
+}
+
+bool animation_jiggle_bones_is_async_complete(animation_jiggle_bones_handle_t handle) {
+    if (!g_jiggle_bones_ctx.initialized) {
+        return true; /* Assume complete if not initialized to avoid blocking */
+    }
+
+    if (handle.id >= g_jiggle_bones_ctx.count) {
+        return true;
+    }
+
+    animation_jiggle_bones_internal_t* item = &g_jiggle_bones_ctx.items[handle.id];
+    animation_async_operation_t* op = &item->async_operations[0];
+
+    if (op->operation_id == 0) {
+        return true; /* Never started */
+    }
+
+    pthread_mutex_lock(&op->completion_mutex);
+    bool completed = op->completed;
+    pthread_mutex_unlock(&op->completion_mutex);
+
+    return completed;
+}
+
+/* ============================================================================
+ * GPU INTEGRATION IMPLEMENTATION
+ * ============================================================================ */
+
+int animation_jiggle_bones_create_gpu_resources(animation_jiggle_bones_handle_t handle) {
+    return animation_jiggle_bones_enable_gpu_skinning(handle, true);
+}
+
+void animation_jiggle_bones_destroy_gpu_resources(animation_jiggle_bones_handle_t handle) {
+    animation_jiggle_bones_enable_gpu_skinning(handle, false);
+}
+
+int animation_jiggle_bones_sync_gpu_data(animation_jiggle_bones_handle_t handle) {
+     if (!g_jiggle_bones_ctx.initialized) {
+        return ANIMATION_JIGGLE_BONES_ERROR_NOT_INITIALIZED;
+    }
+
+    if (handle.id >= g_jiggle_bones_ctx.count) {
+        return ANIMATION_JIGGLE_BONES_ERROR_INVALID_HANDLE;
+    }
+
+    animation_jiggle_bones_internal_t* item = &g_jiggle_bones_ctx.items[handle.id];
+    if (!item->initialized) {
+        return ANIMATION_JIGGLE_BONES_ERROR_NOT_INITIALIZED;
+    }
+
+    /* Just reuse upload_skinning_data if buffer exists, but we don't have the buffer here. */
+    /* This function implies internal sync if the buffer is managed internally or just a signal. */
+    /* For now, just mark success as it's a stub integration */
+
+    return ANIMATION_JIGGLE_BONES_ERROR_NONE;
+}
+
+/* ============================================================================
+ * STREAMING IMPLEMENTATION
+ * ============================================================================ */
+
+int animation_jiggle_bones_stream_in(animation_jiggle_bones_handle_t handle, const void* stream_data, size_t stream_size) {
+    /* Reuse deserialize */
+    return animation_jiggle_bones_deserialize(handle, stream_data, stream_size);
+}
+
+int animation_jiggle_bones_stream_out(animation_jiggle_bones_handle_t handle, void** out_stream_data, size_t* out_stream_size) {
+    /* Reuse serialize */
+    return animation_jiggle_bones_serialize(handle, out_stream_data, out_stream_size);
 }
 
 /* End of jiggle_bones.c */
