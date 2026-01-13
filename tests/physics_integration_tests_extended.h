@@ -481,7 +481,7 @@ void physics_apply_impulse(PhysicsTestObject *object, const float impulse[3]);
  * @param obj2 Second object
  * @return True if objects are colliding
  */
-bool physics_check_collision(const PhysicsTestObject *obj1, const PhysicsTestObject *obj2);
+bool physics_test_check_collision(const PhysicsTestObject *obj1, const PhysicsTestObject *obj2);
 
 /**
  * Calculate object kinetic energy
