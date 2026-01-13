@@ -125,8 +125,11 @@ void gas_set_attribute_value(AbilitySystemComponent *comp, const char *name,
 
 // Abilities
 void gas_give_ability(AbilitySystemComponent *comp, GameplayAbility *ability);
+void gas_grant_ability(AbilitySystemComponent *comp, GameplayAbility *ability);
 bool gas_try_activate_ability(AbilitySystemComponent *comp,
                               const char *ability_name);
+bool gas_activate_ability(AbilitySystemComponent *comp, const char *ability_name);
+bool gas_can_activate(AbilitySystemComponent *comp, const char *ability_name);
 void gas_cancel_ability(AbilitySystemComponent *comp, const char *ability_name);
 
 // Effects
