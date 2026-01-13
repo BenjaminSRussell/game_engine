@@ -1,3 +1,10 @@
+/**
+ * @file mass_ecb.c
+ * @brief ECS Implementation
+ * @description Entity Component System implementation
+ * @date 2026-01-13
+ */
+
 #include "ecs/mass_ecb.h"
 #include "engine/include/core/logger.h"
 #include <stdlib.h>
