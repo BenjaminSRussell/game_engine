@@ -1,3 +1,10 @@
+/**
+ * @file graphics_debug_stubs.c
+ * @brief Frontend Implementation
+ * @description Frontend system implementation
+ * @date 2026-01-13
+ */
+
 // swift_bridge_stubs_part3.c
 // Additional stub implementations for Swift bridge functions - Part 3
 
