@@ -63,7 +63,7 @@ typedef struct {
 extern Profiler g_profiler;
 
 // Timer functions
-Timer *timer_create(const char *name);
+Timer *engine_timer_create(const char *name);
 void timer_destroy(Timer *timer);
 void timer_start(Timer *timer);
 void timer_stop(Timer *timer);
