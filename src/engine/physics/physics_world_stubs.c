@@ -193,6 +193,13 @@ PhysicsWorld *physics_world_create(PhysicsConfig config) {
   world->body_capacity = 1024; // Default capacity
   world->bodies =
       (RigidBody **)calloc(world->body_capacity, sizeof(RigidBody *));
+
+  // Initialize constraint storage (stub)
+  world->constraint_count = 0;
+  // world->constraints is a pointer to an array, we allocate it manually here for stub
+  // Note: real implementation might have a resizable array
+  world->constraints = (Constraint*)calloc(1024, sizeof(Constraint));
+
   world->gravity[0] = config.gravity.x;
   world->gravity[1] = config.gravity.y;
   world->gravity[2] = config.gravity.z;
@@ -243,6 +250,10 @@ void physics_world_free(PhysicsWorld *world) {
     free(world->bodies);
     world->bodies = NULL;
   }
+  if (world->constraints) {
+    free(world->constraints);
+    world->constraints = NULL;
+  }
   world->body_count = 0;
   world->body_capacity = 0;
 }
@@ -256,7 +267,23 @@ void physics_world_destroy(PhysicsWorld *world) {
     // ownership is shared or managed by caller/ECS.
     free(world->bodies);
   }
+  if (world->constraints) {
+      free(world->constraints);
+  }
   free(world);
+}
+
+void physics_world_add_constraint(PhysicsWorld* world, Constraint* constraint) {
+    if (!world || !constraint) return;
+    if (world->constraint_count >= 1024) return; // Simple stub limit
+
+    // Copy constraint to internal array
+    world->constraints[world->constraint_count] = *constraint;
+    // Update pointer/id if necessary?
+    // The passed constraint is likely transient or managed by caller.
+    // The world stores a copy in this stub implementation.
+
+    world->constraint_count++;
 }
 
 void physics_world_step(PhysicsWorld *world, f32 dt) {

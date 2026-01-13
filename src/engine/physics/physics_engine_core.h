@@ -23,6 +23,7 @@ PhysicsWorld *core_physics_world_create(PhysicsConfig config);
 void core_physics_world_destroy(PhysicsWorld *world);
 void core_physics_world_step(PhysicsWorld *world, float dt);
 RigidBody *physics_world_add_body(PhysicsWorld *world, RigidBody *body);
+void physics_world_add_constraint(PhysicsWorld *world, Constraint *constraint);
 bool core_physics_world_raycast(PhysicsWorld *world, const float *origin, const float *dir, float max_dist, RayHit *out_hit);
 
 // Shapes (implemented in core/physics_shapes.c)
