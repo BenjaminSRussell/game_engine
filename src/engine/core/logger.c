@@ -470,12 +470,12 @@ void logger_set_session_id(const char *session_id) {
 }
 
 void logger_log_session_info(void) {
-    LOG_INFO("Session ID: %s", g_logger.session_id);
+    LOG_INFO(LOG_CAT_GENERAL, "Session ID: %s", g_logger.session_id);
     
     struct tm *timeinfo = localtime(&g_logger.start_time);
     char time_str[64];
     strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", timeinfo);
-    LOG_INFO("Session start: %s", time_str);
+    LOG_INFO(LOG_CAT_GENERAL, "Session start: %s", time_str);
 }
 
 void logger_set_use_colors(bool enabled) {
@@ -573,12 +573,12 @@ void logger_hex_dump(const char *data, u32 length, const char *label) {
 }
 
 void logger_memory_usage_report(void) {
-    LOG_INFO("=== MEMORY USAGE REPORT ===");
+    LOG_INFO(LOG_CAT_MEMORY, "=== MEMORY USAGE REPORT ===");
     extern MemoryTracker g_memory_tracker;
-    LOG_INFO("Total allocated: %llu bytes", g_memory_tracker.total_allocated);
-    LOG_INFO("Total freed: %llu bytes", g_memory_tracker.total_freed);
-    LOG_INFO("Active allocations: %u", g_memory_tracker.count);
-    LOG_INFO("Memory leak estimate: %lld bytes", 
+    LOG_INFO(LOG_CAT_MEMORY, "Total allocated: %llu bytes", g_memory_tracker.total_allocated);
+    LOG_INFO(LOG_CAT_MEMORY, "Total freed: %llu bytes", g_memory_tracker.total_freed);
+    LOG_INFO(LOG_CAT_MEMORY, "Active allocations: %u", g_memory_tracker.count);
+    LOG_INFO(LOG_CAT_MEMORY, "Memory leak estimate: %lld bytes",
              g_memory_tracker.total_allocated - g_memory_tracker.total_freed);
 }
 
@@ -677,10 +677,10 @@ void logger_add_context_tag(const char *tag, const char *value) {
 }
 
 void logger_log_performance_stats(void) {
-    LOG_INFO("=== PERFORMANCE STATISTICS ===");
-    LOG_INFO("Session: %s", g_logger.session_id);
-    LOG_INFO("Log entries processed: %u", g_breadcrumb_index);
-    LOG_INFO("Current log level: %s", level_names[g_logger.level]);
+    LOG_INFO(LOG_CAT_GENERAL, "=== PERFORMANCE STATISTICS ===");
+    LOG_INFO(LOG_CAT_GENERAL, "Session: %s", g_logger.session_id);
+    LOG_INFO(LOG_CAT_GENERAL, "Log entries processed: %u", g_breadcrumb_index);
+    LOG_INFO(LOG_CAT_GENERAL, "Current log level: %s", level_names[g_logger.level]);
 }
 
 void logger_enable_json_output(bool enabled) {
@@ -689,10 +689,10 @@ void logger_enable_json_output(bool enabled) {
 
 void logger_performance_frame_stats(u64 frame_time_ms, u32 fps) {
     if (g_json_output) {
-        LOG_INFO("{\"event\":\"frame\",\"time_ms\":%llu,\"fps\":%u}", 
+        LOG_INFO(LOG_CAT_GENERAL, "{\"event\":\"frame\",\"time_ms\":%llu,\"fps\":%u}",
                  frame_time_ms, fps);
     } else {
-        LOG_DEBUG("Frame: %llums (%u FPS)", frame_time_ms, fps);
+        LOG_DEBUG(LOG_CAT_GENERAL, "Frame: %llums (%u FPS)", frame_time_ms, fps);
     }
 }
 
@@ -721,6 +721,6 @@ void logger_throttle_message(const char *key, u32 max_count) {
 void logger_set_semantic_version(const char *version) {
     if (version) {
         g_semantic_version = version;
-        LOG_INFO("Engine version: %s", version);
+        LOG_INFO(LOG_CAT_GENERAL, "Engine version: %s", version);
     }
 }

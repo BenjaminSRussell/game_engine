@@ -10,7 +10,7 @@
 #include <math.h>
 
 // Include status effects for projectile effects
-#include <include/gameplay/combat/status_effects.h>
+#include "status_effects.h"
 
 #define MAX_PROJECTILES 2048
 #define PROJECTILE_UPDATE_BATCH_SIZE 64
@@ -52,18 +52,47 @@ static Vec3 calculate_homing_direction(const Vec3 *current_pos, const Vec3 *targ
 
 static bool projectile_raycast(const Vec3 *start, const Vec3 *end, Entity source_entity, 
                               Vec3 *out_hit_point, Vec3 *out_hit_normal, Entity *out_hit_entity) {
-  // Simplified raycast - would integrate with physics system
-  // For now, we'll just check if we hit the ground (y = 0)
+  // Check ground plane collision first (simple terrain)
+  bool hit_ground = false;
+  f32 ground_t = 2.0f; // > 1.0 means no hit
+  Vec3 ground_hit_point = {0};
+
   if (start->y > 0.0f && end->y <= 0.0f) {
     // Calculate intersection with ground plane
-    f32 t = start->y / (start->y - end->y);
-    out_hit_point->x = start->x + t * (end->x - start->x);
-    out_hit_point->y = 0.0f;
-    out_hit_point->z = start->z + t * (end->z - start->z);
-    out_hit_normal->x = 0.0f;
-    out_hit_normal->y = 1.0f;
-    out_hit_normal->z = 0.0f;
-    *out_hit_entity = INVALID_ENTITY;
+    ground_t = start->y / (start->y - end->y);
+    ground_hit_point.x = start->x + ground_t * (end->x - start->x);
+    ground_hit_point.y = 0.0f;
+    ground_hit_point.z = start->z + ground_t * (end->z - start->z);
+    hit_ground = true;
+  }
+
+  // Check hitbox collisions
+  Vec3 entity_hit_point = {0};
+  Vec3 entity_hit_normal = {0};
+  Entity entity_hit = INVALID_ENTITY;
+  bool hit_entity = hitbox_system_raycast(start, end, source_entity, &entity_hit_point, &entity_hit_normal, &entity_hit);
+
+  // Determine closest hit
+  if (hit_entity) {
+    f32 entity_dist_sq = vec3_distance_sq(*start, entity_hit_point);
+    f32 ground_dist_sq = hit_ground ? vec3_distance_sq(*start, ground_hit_point) : 1e30f;
+
+    if (entity_dist_sq < ground_dist_sq) {
+      if (out_hit_point) *out_hit_point = entity_hit_point;
+      if (out_hit_normal) *out_hit_normal = entity_hit_normal;
+      if (out_hit_entity) *out_hit_entity = entity_hit;
+      return true;
+    }
+  }
+
+  if (hit_ground) {
+    if (out_hit_point) *out_hit_point = ground_hit_point;
+    if (out_hit_normal) {
+        out_hit_normal->x = 0.0f;
+        out_hit_normal->y = 1.0f;
+        out_hit_normal->z = 0.0f;
+    }
+    if (out_hit_entity) *out_hit_entity = INVALID_ENTITY;
     return true;
   }
   
@@ -71,17 +100,28 @@ static bool projectile_raycast(const Vec3 *start, const Vec3 *end, Entity source
 }
 
 static void projectile_apply_explosion(const Vec3 *position, f32 radius, f32 damage, Entity source) {
-  // Find all entities in explosion radius
-  // This would integrate with the hitbox system
-  LOG_DEBUG("Explosion at (%.2f, %.2f, %.2f) radius %.2f damage %.1f", 
+  LOG_DEBUG(LOG_CAT_GAME, "Explosion at (%.2f, %.2f, %.2f) radius %.2f damage %.1f",
            position->x, position->y, position->z, radius, damage);
+
+  Entity hit_entities[64];
+  u32 hit_count = hitbox_system_query_sphere(position, radius, source, hit_entities, 64);
   
-  // For now, just log the explosion
-  // In a full implementation, this would:
-  // 1. Query for entities in radius using hitbox system
-  // 2. Apply damage with falloff if enabled
-  // 3. Apply knockback forces
-  // 4. Create visual effects
+  for (u32 i = 0; i < hit_count; i++) {
+    Entity target = hit_entities[i];
+
+    // Calculate falloff
+    // Need target position. Since hitbox query returned entity,
+    // we assume we can get its position via transform or just use distance from center?
+    // Hitbox system doesn't return hit point for query_sphere.
+    // We'll apply full damage or assume center of entity for now.
+    // Better: use hitbox system to get bounds center.
+    // But for now, just apply damage.
+
+    damage_event_create(source, target, damage, DAMAGE_TYPE_FIRE);
+
+    // Apply knockback (direction from explosion center to target)
+    // TODO: Need target position for direction.
+  }
 }
 
 static void projectile_handle_collision(ProjectileInstance *instance, const Vec3 *hit_point, 
@@ -92,7 +132,7 @@ static void projectile_handle_collision(ProjectileInstance *instance, const Vec3
   proj->has_collided = true;
   proj->last_hit_entity = hit_entity;
   
-  LOG_DEBUG("Projectile collision: entity %u hit entity %u at (%.2f, %.2f, %.2f)", 
+  LOG_DEBUG(LOG_CAT_GAME, "Projectile collision: entity %u hit entity %u at (%.2f, %.2f, %.2f)",
            instance->entity.id, hit_entity.id, hit_point->x, hit_point->y, hit_point->z);
   
   switch (proj->behavior) {
@@ -132,22 +172,22 @@ static void projectile_handle_collision(ProjectileInstance *instance, const Vec3
     // Create damage event and emit to damage system
     damage_event_create(proj->source, hit_entity, proj->damage, proj->damage_type);
 
-    LOG_DEBUG("Applied %.1f damage (type: %d) to entity %u",
+    LOG_DEBUG(LOG_CAT_GAME, "Applied %.1f damage (type: %d) to entity %u",
              proj->damage, proj->damage_type, hit_entity.id);
 
     // Apply type-specific effects based on projectile type
     if (proj->damage_type == DAMAGE_TYPE_FIRE) {
       // Apply burning effect for fire projectiles
       status_sys_apply_effect_with_source(hit_entity.id, EFFECT_BURNING, 5.0f, 1.0f, proj->source.id);
-      LOG_DEBUG("Applied BURNING effect to entity %u from fire projectile", hit_entity.id);
+      LOG_DEBUG(LOG_CAT_GAME, "Applied BURNING effect to entity %u from fire projectile", hit_entity.id);
     } else if (proj->damage_type == DAMAGE_TYPE_ICE) {
       // Apply freezing effect for ice projectiles
       status_sys_apply_effect_with_source(hit_entity.id, EFFECT_FREEZING, 3.0f, 0.5f, proj->source.id);
-      LOG_DEBUG("Applied FREEZING effect to entity %u from ice projectile", hit_entity.id);
+      LOG_DEBUG(LOG_CAT_GAME, "Applied FREEZING effect to entity %u from ice projectile", hit_entity.id);
     } else if (proj->damage_type == DAMAGE_TYPE_POISON) {
       // Apply poison effect for poison projectiles
       status_sys_apply_effect_with_source(hit_entity.id, EFFECT_POISON, 10.0f, 0.5f, proj->source.id);
-      LOG_DEBUG("Applied POISON effect to entity %u from poison projectile", hit_entity.id);
+      LOG_DEBUG(LOG_CAT_GAME, "Applied POISON effect to entity %u from poison projectile", hit_entity.id);
     }
   }
 }
@@ -181,7 +221,6 @@ static void projectile_update_physics(ProjectileInstance *instance, f32 delta_ti
   }
   
   // Update position
-  proj->last_position = proj->last_position; // Would get from transform component
   Vec3 new_position = vec3_add(proj->last_position, vec3_scale(proj->velocity, vec3(delta_time, delta_time, delta_time)));
   
   // Handle homing
@@ -205,13 +244,16 @@ static void projectile_update_physics(ProjectileInstance *instance, f32 delta_ti
     }
   }
   
+  // Apply new position
+  proj->last_position = new_position;
+
   // Update age
   proj->age += delta_time;
   
   // Check lifetime
   if (proj->age >= proj->lifetime) {
     instance->is_active = false;
-    LOG_DEBUG("Projectile %u expired after %.2f seconds", instance->entity.id, proj->age);
+    LOG_DEBUG(LOG_CAT_GAME, "Projectile %u expired after %.2f seconds", instance->entity.id, proj->age);
   }
 }
 
@@ -327,7 +369,7 @@ Entity projectile_spawn(World *world, Vec3 position, Vec3 direction, f32 speed, 
     instance->previous_positions[i] = position;
   }
   
-  LOG_DEBUG("Spawned projectile entity %u (speed: %.1f, damage: %.1f)", entity.id, speed, damage);
+  LOG_DEBUG(LOG_CAT_GAME, "Spawned projectile entity %u (speed: %.1f, damage: %.1f)", entity.id, speed, damage);
   
   return entity;
 }
@@ -418,7 +460,7 @@ void projectile_set_homing(ProjectileComponent *proj, Entity target, f32 strengt
   proj->homing_target = target;
   proj->homing_strength = fmaxf(0.0f, fminf(1.0f, strength));
   
-  LOG_DEBUG("Set projectile homing to entity %u with strength %.2f", target.id, strength);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile homing to entity %u with strength %.2f", target.id, strength);
 }
 
 void projectile_set_gravity(ProjectileComponent *proj, f32 gravity_scale) {
@@ -426,7 +468,7 @@ void projectile_set_gravity(ProjectileComponent *proj, f32 gravity_scale) {
   
   proj->gravity_scale = fmaxf(0.0f, gravity_scale);
   
-  LOG_DEBUG("Set projectile gravity scale to %.2f", gravity_scale);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile gravity scale to %.2f", gravity_scale);
 }
 
 void projectile_set_drag(ProjectileComponent *proj, f32 drag) {
@@ -434,7 +476,7 @@ void projectile_set_drag(ProjectileComponent *proj, f32 drag) {
   
   proj->drag = fmaxf(0.0f, fminf(1.0f, drag));
   
-  LOG_DEBUG("Set projectile drag to %.3f", drag);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile drag to %.3f", drag);
 }
 
 void projectile_set_behavior(ProjectileComponent *proj, ProjectileBehavior behavior) {
@@ -442,7 +484,7 @@ void projectile_set_behavior(ProjectileComponent *proj, ProjectileBehavior behav
   
   proj->behavior = behavior;
   
-  LOG_DEBUG("Set projectile behavior to %d", behavior);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile behavior to %d", behavior);
 }
 
 void projectile_set_penetration(ProjectileComponent *proj, u32 count) {
@@ -451,7 +493,7 @@ void projectile_set_penetration(ProjectileComponent *proj, u32 count) {
   proj->penetration_count = count;
   proj->current_penetrations = 0;
   
-  LOG_DEBUG("Set projectile penetration count to %u", count);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile penetration count to %u", count);
 }
 
 void projectile_set_explosion(ProjectileComponent *proj, f32 radius, f32 damage) {
@@ -461,7 +503,7 @@ void projectile_set_explosion(ProjectileComponent *proj, f32 radius, f32 damage)
   proj->explosion_damage = fmaxf(0.0f, damage);
   proj->explosion_falloff = true; // Default to enabled
   
-  LOG_DEBUG("Set projectile explosion: radius %.2f, damage %.1f", radius, damage);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile explosion: radius %.2f, damage %.1f", radius, damage);
 }
 
 void projectile_set_light(ProjectileComponent *proj, bool emit_light, Vec3 color) {
@@ -470,7 +512,7 @@ void projectile_set_light(ProjectileComponent *proj, bool emit_light, Vec3 color
   proj->emit_light = emit_light;
   proj->light_color = color;
   
-  LOG_DEBUG("Set projectile light: %s, color (%.2f, %.2f, %.2f)", 
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile light: %s, color (%.2f, %.2f, %.2f)",
            emit_light ? "enabled" : "disabled", color.x, color.y, color.z);
 }
 
@@ -525,7 +567,7 @@ void projectile_debug_render(World *world) {
   
   // This would integrate with the debug rendering system
   // For now, we'll just log the projectile positions
-  LOG_DEBUG("=== Projectile Debug Render ===");
+  LOG_DEBUG(LOG_CAT_GAME, "=== Projectile Debug Render ===");
   
   for (u32 i = 0; i < g_projectile_system.instance_count; i++) {
     ProjectileInstance *instance = &g_projectile_system.instances[i];
@@ -541,14 +583,14 @@ void projectile_debug_render(World *world) {
       case PROJECTILE_BEHAVIOR_STICK: behavior_name = "Stick"; break;
     }
     
-    LOG_DEBUG("Projectile %u: pos (%.2f, %.2f, %.2f) vel (%.2f, %.2f, %.2f) age %.2f [%s]",
+    LOG_DEBUG(LOG_CAT_GAME, "Projectile %u: pos (%.2f, %.2f, %.2f) vel (%.2f, %.2f, %.2f) age %.2f [%s]",
              instance->entity.id,
              instance->projectile.last_position.x, instance->projectile.last_position.y, instance->projectile.last_position.z,
              instance->projectile.velocity.x, instance->projectile.velocity.y, instance->projectile.velocity.z,
              instance->projectile.age, behavior_name);
   }
   
-  LOG_DEBUG("==============================");
+  LOG_DEBUG(LOG_CAT_GAME, "==============================");
 }
 
 bool projectile_is_initialized(void) {

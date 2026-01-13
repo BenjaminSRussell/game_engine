@@ -19,6 +19,8 @@ void status_sys_update(float delta_time);
 
 void status_sys_apply_effect(uint64_t entity_id, StatusEffectType type,
                              float duration, float magnitude);
+void status_sys_apply_effect_with_source(uint64_t entity_id, StatusEffectType type,
+                                         float duration, float magnitude, uint64_t source_id);
 void status_sys_remove_effect(uint64_t entity_id, StatusEffectType type);
 void status_sys_clear_all_effects(uint64_t entity_id);
 
