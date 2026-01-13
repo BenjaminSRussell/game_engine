@@ -1,3 +1,10 @@
+/**
+ * @file sparse_set.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 #include <core/containers_advanced/sparse_set.h>
 
 #include <stdlib.h>
