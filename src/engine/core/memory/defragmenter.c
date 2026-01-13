@@ -71,6 +71,7 @@ typedef struct core_defragmenter_context {
     core_defragmenter_internal_t* items;
     uint32_t count;
     uint32_t capacity;
+    size_t total_data_size;
     void* allocator;
     bool initialized;
 } core_defragmenter_context_t;
@@ -94,8 +95,16 @@ static void core_defragmenter_cleanup_internal(core_defragmenter_internal_t* ite
     // TODO: Add thread-safe access patterns
     if (!item) return;
     if (item->data) {
+        if (item->data_size > 0) {
+            if (g_defragmenter_ctx.total_data_size >= item->data_size) {
+                g_defragmenter_ctx.total_data_size -= item->data_size;
+            } else {
+                g_defragmenter_ctx.total_data_size = 0;
+            }
+        }
         free(item->data);
         item->data = NULL;
+        item->data_size = 0;
     }
     item->initialized = false;
 }
@@ -121,6 +130,7 @@ int core_defragmenter_init(void) {
     }
 
     g_defragmenter_ctx.count = 0;
+    g_defragmenter_ctx.total_data_size = 0;
     g_defragmenter_ctx.initialized = true;
 
     return 0;
@@ -207,6 +217,32 @@ int core_defragmenter_update(core_defragmenter_handle_t handle, const void* data
         return -2;
     }
 
+    void* new_data = NULL;
+    if (data && size > 0) {
+        new_data = malloc(size);
+        if (!new_data) {
+            return -3; // Out of memory
+        }
+        memcpy(new_data, data, size);
+    }
+
+    if (item->data) {
+        free(item->data);
+        if (g_defragmenter_ctx.total_data_size >= item->data_size) {
+            g_defragmenter_ctx.total_data_size -= item->data_size;
+        } else {
+            g_defragmenter_ctx.total_data_size = 0;
+        }
+        item->data = NULL;
+        item->data_size = 0;
+    }
+
+    if (new_data) {
+        item->data = new_data;
+        item->data_size = size;
+        g_defragmenter_ctx.total_data_size += size;
+    }
+
     // TODO: Add defragmenter GPU integration
     // TODO: Implement defragmenter SIMD optimization
 
@@ -249,15 +285,33 @@ void core_defragmenter_mark_dirty(core_defragmenter_handle_t handle) {
     }
 }
 
-int core_defragmenter_process_pending(void) {
-    // TODO: Add defragmenter render graph node
-    // TODO: Implement batch processing
+// Callback for render graph integration
+static core_defragmenter_render_node_callback_t g_render_node_callback = NULL;
 
+void core_defragmenter_register_render_node_callback(core_defragmenter_render_node_callback_t callback) {
+    g_render_node_callback = callback;
+}
+
+int core_defragmenter_process_pending(void) {
+    if (g_render_node_callback) {
+        g_render_node_callback();
+    }
+
+    // Batch processing
+    const int batch_limit = 64; // Max items to process per call
     int processed = 0;
+
+    // Simple scan with batch limit.
+    // Optimization: Maintain a dirty list or start_index to avoid O(N) scan.
     for (uint32_t i = 0; i < g_defragmenter_ctx.count; i++) {
+        if (processed >= batch_limit) {
+            break;
+        }
+
         core_defragmenter_internal_t* item = &g_defragmenter_ctx.items[i];
         if (item->initialized && item->dirty) {
             // Process item
+            // (Defragmentation logic would go here: compact, realloc, etc.)
             item->dirty = false;
             processed++;
         }
@@ -271,14 +325,9 @@ uint32_t core_defragmenter_get_count(void) {
 }
 
 size_t core_defragmenter_get_memory_usage(void) {
-    // TODO: Implement memory tracking
     size_t total = sizeof(g_defragmenter_ctx);
     total += g_defragmenter_ctx.capacity * sizeof(core_defragmenter_internal_t);
-
-    for (uint32_t i = 0; i < g_defragmenter_ctx.count; i++) {
-        total += g_defragmenter_ctx.items[i].data_size;
-    }
-
+    total += g_defragmenter_ctx.total_data_size;
     return total;
 }
 
