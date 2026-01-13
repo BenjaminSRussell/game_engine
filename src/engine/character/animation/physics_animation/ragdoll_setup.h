@@ -26,12 +26,14 @@ typedef struct animation_ragdoll_setup_handle {
 } animation_ragdoll_setup_handle_t;
 
 typedef struct animation_ragdoll_setup_desc {
+    uint32_t skeleton_id;
     uint32_t flags;
     void* user_data;
 } animation_ragdoll_setup_desc_t;
 
 typedef struct animation_ragdoll_setup_info {
     uint32_t id;
+    uint32_t skeleton_id;
     uint32_t flags;
     bool initialized;
 } animation_ragdoll_setup_info_t;
