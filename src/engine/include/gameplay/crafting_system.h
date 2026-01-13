@@ -118,4 +118,15 @@ bool crafting_station_is_active(uint32_t station_id);
 // buffer_size: Size of buffer
 bool crafting_recipe_get_name(uint32_t recipe_id, char* buffer, uint32_t buffer_size);
 
+// Read the first ingredient, first result, station, time, and discovered flag.
+// Returns false if the recipe does not exist. Null out-pointers are skipped.
+bool crafting_recipe_get_primary(uint32_t recipe_id,
+                                uint32_t* ingredient_id,
+                                uint32_t* ingredient_quantity,
+                                uint32_t* result_id,
+                                uint32_t* result_quantity,
+                                uint32_t* station_type,
+                                uint32_t* crafting_time_ms,
+                                bool* discovered);
+
 #endif // CRAFTING_SYSTEM_H

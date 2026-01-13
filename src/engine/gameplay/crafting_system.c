@@ -1,5 +1,6 @@
-#include "crafting_system.h"
+#include "gameplay/crafting_system.h"
 #include "core/common/memory/allocator.h"
+#include "core/utils.h"
 #include "engine/include/core/logger.h"
 #include <string.h>
 #include <stdlib.h>
@@ -543,6 +544,43 @@ bool crafting_recipe_get_name(uint32_t recipe_id, char* buffer, uint32_t buffer_
 
     strncpy(buffer, recipe->name, buffer_size - 1);
     buffer[buffer_size - 1] = '\0';
+    return true;
+}
+
+bool crafting_recipe_get_primary(uint32_t recipe_id,
+                                uint32_t* ingredient_id,
+                                uint32_t* ingredient_quantity,
+                                uint32_t* result_id,
+                                uint32_t* result_quantity,
+                                uint32_t* station_type,
+                                uint32_t* crafting_time_ms,
+                                bool* discovered) {
+    const recipe_t* recipe = crafting_get_recipe(recipe_id);
+    if (!recipe) {
+        return false;
+    }
+
+    if (ingredient_id) {
+        *ingredient_id = recipe->ingredient_count > 0 ? recipe->ingredients[0].item_id : 0;
+    }
+    if (ingredient_quantity) {
+        *ingredient_quantity = recipe->ingredient_count > 0 ? recipe->ingredients[0].quantity : 0;
+    }
+    if (result_id) {
+        *result_id = recipe->result_count > 0 ? recipe->results[0].item_id : 0;
+    }
+    if (result_quantity) {
+        *result_quantity = recipe->result_count > 0 ? recipe->results[0].quantity : 0;
+    }
+    if (station_type) {
+        *station_type = recipe->required_station_type;
+    }
+    if (crafting_time_ms) {
+        *crafting_time_ms = recipe->crafting_time_ms;
+    }
+    if (discovered) {
+        *discovered = recipe->discovered;
+    }
     return true;
 }
 
