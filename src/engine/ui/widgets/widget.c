@@ -111,7 +111,7 @@ static bool widget_propagate_event(Widget* widget, UIEvent* event) {
 Widget* widget_create(const char* name) {
     Widget* widget = memory_alloc(sizeof(Widget));
     if (!widget) {
-        LOG_ERROR("Failed to allocate widget");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate widget");
         return NULL;
     }
     
@@ -139,7 +139,7 @@ Widget* widget_create(const char* name) {
     widget->needs_layout = true;
     widget->needs_redraw = true;
     
-    LOG_INFO("Created widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
+    LOG_INFO(LOG_CAT_GENERAL, "Created widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
     return widget;
 }
 
@@ -184,7 +184,7 @@ void widget_add_child(Widget* parent, Widget* child) {
         Widget** new_children = memory_realloc(parent->children, 
                                              new_capacity * sizeof(Widget*));
         if (!new_children) {
-            LOG_ERROR("Failed to resize children array");
+            LOG_ERROR(LOG_CAT_GENERAL, "Failed to resize children array");
             return;
         }
         
@@ -201,7 +201,7 @@ void widget_add_child(Widget* parent, Widget* child) {
     widget_invalidate_layout(parent);
     child->dirty = true;
     
-    LOG_INFO("Added child %s to parent %s", child->name, parent->name);
+    LOG_INFO(LOG_CAT_GENERAL, "Added child %s to parent %s", child->name, parent->name);
 }
 
 void widget_remove_child(Widget* parent, Widget* child) {
@@ -231,7 +231,7 @@ void widget_remove_child(Widget* parent, Widget* child) {
     // Invalidate layout
     widget_invalidate_layout(parent);
     
-    LOG_INFO("Removed child %s from parent %s", child->name, parent->name);
+    LOG_INFO(LOG_CAT_GENERAL, "Removed child %s from parent %s", child->name, parent->name);
 }
 
 void widget_remove_from_parent(Widget* widget) {
@@ -321,7 +321,7 @@ void widget_set_focused(Widget* widget, bool focused) {
             widget->state = WIDGET_STATE_NORMAL;
             
             // Emit focus loss event
-            UIEvent* event = ui_event_create(UI_EVENT_FOCUS_LOSS);
+            UIEvent* event = ui_event_create(UI_EVENT_FOCUS_LOST);
             if (event) {
                 widget_emit_event(widget, event);
                 ui_event_destroy(event);
@@ -337,7 +337,7 @@ void widget_add_event_handler(Widget* widget, UIEventType event_type, UIEventCal
     
     UIEventHandler* handler = memory_alloc(sizeof(UIEventHandler));
     if (!handler) {
-        LOG_ERROR("Failed to allocate event handler");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate event handler");
         return;
     }
     
@@ -349,7 +349,7 @@ void widget_add_event_handler(Widget* widget, UIEventType event_type, UIEventCal
     
     widget_add_handler_internal(widget, handler);
     
-    LOG_DEBUG("Added event handler for type %d to widget %s", event_type, widget->name);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Added event handler for type %d to widget %s", event_type, widget->name);
 }
 
 bool widget_handle_event(Widget* widget, UIEvent* event) {
@@ -485,6 +485,51 @@ void widget_release_focus(Widget* widget) {
     widget_set_focused(widget, false);
 }
 
+Vec2 widget_get_position(const Widget* widget) {
+    return widget ? widget->position : (Vec2){0,0};
+}
+
+Vec2 widget_get_size(const Widget* widget) {
+    return widget ? widget->size : (Vec2){0,0};
+}
+
+Rect widget_get_bounds(const Widget* widget) {
+    if (!widget) return (Rect){0,0,0,0};
+    Vec2 global_pos = widget_local_to_global(widget, (Vec2){0,0});
+    return (Rect){global_pos.x, global_pos.y, widget->size.x, widget->size.y};
+}
+
+Vec2 widget_get_content_position(const Widget* widget) {
+    if (!widget) return (Vec2){0,0};
+    return (Vec2){
+        widget->padding.left + widget->border.left,
+        widget->padding.top + widget->border.top
+    };
+}
+
+Vec2 widget_get_content_size(const Widget* widget) {
+    if (!widget) return (Vec2){0,0};
+    float h_margin = widget->padding.left + widget->padding.right + widget->border.left + widget->border.right;
+    float v_margin = widget->padding.top + widget->padding.bottom + widget->border.top + widget->border.bottom;
+    return (Vec2){
+        fmaxf(0.0f, widget->size.x - h_margin),
+        fmaxf(0.0f, widget->size.y - v_margin)
+    };
+}
+
+Rect widget_get_content_bounds(const Widget* widget) {
+    if (!widget) return (Rect){0,0,0,0};
+    Vec2 global_pos = widget_local_to_global(widget, (Vec2){0,0});
+    Vec2 content_pos = widget_get_content_position(widget);
+    Vec2 content_size = widget_get_content_size(widget);
+    return (Rect){
+        global_pos.x + content_pos.x,
+        global_pos.y + content_pos.y,
+        content_size.x,
+        content_size.y
+    };
+}
+
 /* ============================================================================
  * EVENT UTILITIES
  * ============================================================================ */
@@ -492,7 +537,7 @@ void widget_release_focus(Widget* widget) {
 UIEvent* ui_event_create(UIEventType type) {
     UIEvent* event = memory_alloc(sizeof(UIEvent));
     if (!event) {
-        LOG_ERROR("Failed to allocate UI event");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate UI event");
         return NULL;
     }
     
