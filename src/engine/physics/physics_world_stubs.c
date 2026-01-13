@@ -43,34 +43,51 @@ static void integrate_body(RigidBody *body, f32 dt, const Vec3 gravity) {
     return;
   }
 
-  // Apply Gravity
+  // 1. Core Force Integration (Linear)
   if (body->type == RIGID_BODY_DYNAMIC) {
     body->velocity[0] += gravity.x * dt;
     body->velocity[1] += gravity.y * dt;
     body->velocity[2] += gravity.z * dt;
   }
 
-  // Apply accumulated forces
   if (body->type == RIGID_BODY_DYNAMIC && body->inv_mass > 0.0f) {
     body->velocity[0] += (body->accumulated_force[0] * body->inv_mass) * dt;
     body->velocity[1] += (body->accumulated_force[1] * body->inv_mass) * dt;
     body->velocity[2] += (body->accumulated_force[2] * body->inv_mass) * dt;
   }
 
+  // 2. Core Torque Integration (Angular: ω' = ω + I⁻¹ * τ * dt)
+  if (body->type == RIGID_BODY_DYNAMIC) {
+    // Simplified: assume identity inertia for now or constant
+    body->angular_velocity[0] += body->accumulated_torque[0] * dt;
+    body->angular_velocity[1] += body->accumulated_torque[1] * dt;
+    body->angular_velocity[2] += body->accumulated_torque[2] * dt;
+  }
+
+  // Clear forces and torques
   body->accumulated_force[0] = 0.0f;
   body->accumulated_force[1] = 0.0f;
   body->accumulated_force[2] = 0.0f;
+  body->accumulated_torque[0] = 0.0f;
+  body->accumulated_torque[1] = 0.0f;
+  body->accumulated_torque[2] = 0.0f;
 
-  // Apply Damping
-  f32 linear_damping_factor = 1.0f - (body->linear_damping * dt);
-  if (linear_damping_factor < 0.0f)
-    linear_damping_factor = 0.0f;
+  // 3. Apply Damping
+  f32 l_damping = 1.0f - (body->linear_damping * dt);
+  if (l_damping < 0.0f)
+    l_damping = 0.0f;
+  body->velocity[0] *= l_damping;
+  body->velocity[1] *= l_damping;
+  body->velocity[2] *= l_damping;
 
-  body->velocity[0] *= linear_damping_factor;
-  body->velocity[1] *= linear_damping_factor;
-  body->velocity[2] *= linear_damping_factor;
+  f32 a_damping = 1.0f - (body->angular_damping * dt);
+  if (a_damping < 0.0f)
+    a_damping = 0.0f;
+  body->angular_velocity[0] *= a_damping;
+  body->angular_velocity[1] *= a_damping;
+  body->angular_velocity[2] *= a_damping;
 
-  // Retrieve contacts resolved by collision system
+  // 4. Retrieve contacts resolved by collision system
   ContactPoint contacts[16];
   u32 contact_count =
       collision_system_get_contacts_for_body(body->id, contacts, 16);
@@ -78,32 +95,22 @@ static void integrate_body(RigidBody *body, f32 dt, const Vec3 gravity) {
   // Apply collision response
   for (u32 i = 0; i < contact_count; i++) {
     ContactPoint *contact = &contacts[i];
-
-    // Calculate relative velocity along normal
     float velocity_dot_normal = body->velocity[0] * contact->normal[0] +
                                 body->velocity[1] * contact->normal[1] +
                                 body->velocity[2] * contact->normal[2];
 
-    // Only resolve if moving towards each other (or into static)
-    // Note: contact->normal should point OUT of the other body towards this
-    // body, or we assume it points A->B and check ID. collision_detection.c
-    // get_contacts logic handled normal flipping for us. So normal points AWAY
-    // from the surface we hit (towards us). So if velocity opposes normal, we
-    // are penetrating.
-
     if (velocity_dot_normal < 0.0f) {
       // Bounce
       float j = -(1.0f + body->restitution) * velocity_dot_normal;
-
       body->velocity[0] += j * contact->normal[0];
       body->velocity[1] += j * contact->normal[1];
       body->velocity[2] += j * contact->normal[2];
 
-      // Friction (simple)
+      // Friction
       body->velocity[0] *= (1.0f - body->friction);
       body->velocity[2] *= (1.0f - body->friction);
 
-      // Positional correction (Projection)
+      // Positional correction
       body->position[0] +=
           contact->normal[0] * contact->penetration_depth * 0.8f;
       body->position[1] +=
@@ -113,10 +120,25 @@ static void integrate_body(RigidBody *body, f32 dt, const Vec3 gravity) {
     }
   }
 
-  // Integrate Position
+  // 5. Integrate Position and Orientation
   body->position[0] += body->velocity[0] * dt;
   body->position[1] += body->velocity[1] * dt;
   body->position[2] += body->velocity[2] * dt;
+
+  // q' = q + 0.5 * ω_quat * q * dt
+  Vec3 angular_vel = {body->angular_velocity[0], body->angular_velocity[1],
+                      body->angular_velocity[2]};
+  if (vec3_length_squared(angular_vel) > 1e-6f) {
+    Vec3 rot_vec = vec3_scale(angular_vel, 0.5f * dt);
+    Quat rotation_change = quat_from_angular_velocity(&rot_vec);
+    Quat current_rot = {body->rotation[0], body->rotation[1], body->rotation[2],
+                        body->rotation[3]};
+    Quat new_rot = quat_normalize(quat_mul(current_rot, rotation_change));
+    body->rotation[0] = new_rot.x;
+    body->rotation[1] = new_rot.y;
+    body->rotation[2] = new_rot.z;
+    body->rotation[3] = new_rot.w;
+  }
 }
 
 // ... helper for raycast ...
@@ -279,6 +301,38 @@ void rigid_body_set_velocity(RigidBody *body, Vec3 velocity) {
   }
 }
 
+void physics_world_init(PhysicsWorld *world, const Vec3 *gravity) {
+  if (!world)
+    return;
+  if (gravity) {
+    world->gravity[0] = gravity->x;
+    world->gravity[1] = gravity->y;
+    world->gravity[2] = gravity->z;
+  } else {
+    world->gravity[0] = 0.0f;
+    world->gravity[1] = -9.81f;
+    world->gravity[2] = 0.0f;
+  }
+  world->timestep = 1.0f / 60.0f;
+  world->velocity_iterations = 8;
+  world->position_iterations = 3;
+}
+
+void physics_world_free(PhysicsWorld *world) { physics_world_destroy(world); }
+
+void physics_world_add_constraint(PhysicsWorld *world, Constraint *constraint) {
+  if (!world || !constraint)
+    return;
+  if (world->constraint_count < 1024) {
+    world->constraints[world->constraint_count++] = *constraint;
+  }
+}
+
+bool physics_world_raycast(PhysicsWorld *world, Vec3 origin, Vec3 direction,
+                           f32 max_distance, void *out_hit) {
+  return false; // stub
+}
+
 void rigid_body_set_mass(RigidBody *body, f32 mass) {
   if (body) {
     body->mass = mass;
@@ -291,11 +345,7 @@ void rigid_body_set_friction(RigidBody *body, f32 friction) {
     body->friction = friction;
 }
 
-void rigid_body_set_restitution(RigidBody *body, f32 restitution) {
-  if (body)
-    body->restitution = restitution;
-}
-
+// Property setters and getters
 void rigid_body_set_position(RigidBody *body, Vec3 position) {
   if (body) {
     body->position[0] = position.x;

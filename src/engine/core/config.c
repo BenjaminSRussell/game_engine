@@ -367,7 +367,7 @@ void config_save(const GameConfig *config, const char *filename) {
           config->mesh_generation_threads);
   fprintf(file, "multithreading=%s\n",
           config->multithreading ? "true" : "false");
-  fprintf(file, "world_seed=%llu\n", config->world_seed);
+  fprintf(file, "world_seed=%u\n", (u32)config->world_seed);
   fprintf(file, "generate_structures=%s\n",
           config->generate_structures ? "true" : "false");
   fprintf(file, "generate_caves=%s\n",

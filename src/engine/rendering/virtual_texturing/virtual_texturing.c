@@ -2,7 +2,7 @@
 // Virtual Texturing System - Mega-texture streaming for unlimited texture
 // detail
 
-#include "engine/include/core/logger.h"
+#include <core/logger.h>
 #include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -560,13 +560,13 @@ void virtual_texture_invalidate_tile(VirtualTexture *vt, uint32_t tile_x,
   if (!vt)
     return;
 
-  pthread_mutex_lock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_lock(&g_vt_system.vt_mutex);
 
   uint32_t tile_index =
       (tile_z * vt->tile_count_y + tile_y) * vt->tile_count_x + tile_x;
 
   if (tile_index >= vt->tile_count) {
-    pthread_mutex_unlock(&g_vt_system.vt_system.vt_mutex);
+    pthread_mutex_unlock(&g_vt_system.vt_mutex);
     return;
   }
 
@@ -574,7 +574,7 @@ void virtual_texture_invalidate_tile(VirtualTexture *vt, uint32_t tile_x,
 
   tile->is_dirty = true;
 
-  pthread_mutex_unlock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
   LOG_DEBUG("Invalidated tile (%u, %u, %u)", tile_x, tile_y, tile_z);
 }
@@ -585,12 +585,12 @@ void virtual_texture_set_streaming_parameters(VirtualTexture *vt,
   if (!vt)
     return;
 
-  pthread_mutex_lock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_lock(&g_vt_system.vt_mutex);
 
   vt->streaming_distance_threshold = distance_threshold;
   vt->streaming_priority = priority;
 
-  pthread_mutex_unlock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
   LOG_DEBUG("Updated streaming parameters: distance=%.1f, priority=%.1f",
             distance_threshold, priority);
@@ -669,13 +669,13 @@ void virtual_texture_clear_dirty_flags(VirtualTexture *vt) {
   if (!vt)
     return;
 
-  pthread_mutex_lock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_lock(&g_vt_system.vt_mutex);
 
   for (uint32_t i = 0; i < vt->tile_count; i++) {
     vt->tile_cache[i].is_dirty = false;
   }
 
-  pthread_mutex_unlock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
   LOG_DEBUG("Cleared all dirty flags for virtual texture '%s'", vt->name);
 }
@@ -729,14 +729,14 @@ void virtual_texture_set_default_parameters(uint32_t tile_size,
   if (!g_vt_system.initialized)
     return;
 
-  pthread_mutex_lock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_lock(&g_vt_system.vt_mutex);
 
   g_vt_system.default_tile_size = tile_size;
   g_vt_system.max_cache_size = cache_size;
   g_vt_system.streaming_distance_threshold = distance_threshold;
-  g_v_system.streaming_priority = priority;
+  g_vt_system.streaming_priority = priority;
 
-  pthread_mutex_unlock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
   LOG_INFO("VT default parameters updated: tile_size=%u, cache_size=%u, "
            "distance=%.1f, priority=%.1f",
@@ -749,7 +749,7 @@ void virtual_texture_get_system_stats(
   if (!g_vt_system.initialized)
     return;
 
-  pthread_mutex_lock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_lock(&g_vt_system.vt_mutex);
 
   if (total_textures)
     *total_textures = g_vt_system.texture_count;
@@ -764,7 +764,7 @@ void virtual_texture_get_system_stats(
   if (streamed_tiles)
     *streamed_tiles = g_vt_system.total_tiles_evicted;
 
-  pthread_mutex_unlock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
   LOG_INFO("VT system stats: textures=%u, memory=%.1f MB, used=%.1f MB, "
            "tiles=%u, cached=%u, streamed=%u",
