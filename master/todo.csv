@@ -7665,68 +7665,6 @@ TODO-7639,incode,In-code TODO,src/engine/assets/io/export/asset_export_processor
 TODO-7640,incode,In-code TODO,src/engine/assets/io/export/asset_export_processor.c,Implement scene file parsing (line 459),open
 TODO-7641,incode,In-code TODO,src/engine/assets/io/export/asset_export_processor.c,Implement cancellation support (line 460),open
 TODO-7642,incode,In-code TODO,src/engine/assets/io/export/asset_export_processor.c,Implement binary serialization (line 461),open
-TODO-7643,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement visibility buffer rendering (line 114),open
-TODO-7644,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add temporal stability for TAA integration (line 115),open
-TODO-7645,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement scene file parsing (line 122),open
-TODO-7646,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement async compute integration (line 123),open
-TODO-7647,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement format conversion (line 146),open
-TODO-7648,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add ray tracing hybrid rendering path (line 147),open
-TODO-7649,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add glTF/FBX import (line 148),open
-TODO-7650,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement hierarchical culling with GPU feedback (line 149),open
-TODO-7651,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement visibility buffer rendering (line 170),open
-TODO-7652,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement indirect rendering for GPU-driven pipelines (line 171),open
-TODO-7653,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add asset cache management (line 172),open
-TODO-7654,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add render graph node for automatic scheduling (line 173),open
-TODO-7655,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement asset bundling (line 194),open
-TODO-7656,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement hierarchical culling with GPU feedback (line 195),open
-TODO-7657,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add temporal stability for TAA integration (line 196),open
-TODO-7658,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add ray tracing hybrid rendering path (line 197),open
-TODO-7659,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add temporal stability for TAA integration (line 218),open
-TODO-7660,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add hot-reload file watching (line 219),open
-TODO-7661,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add variable rate shading support (line 220),open
-TODO-7662,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add asset cache management (line 221),open
-TODO-7663,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement asset bundling (line 242),open
-TODO-7664,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement async compute integration (line 243),open
-TODO-7665,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add asset streaming priority (line 244),open
-TODO-7666,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add variable rate shading support (line 245),open
-TODO-7667,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add render graph node for automatic scheduling (line 266),open
-TODO-7668,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add asset cache management (line 267),open
-TODO-7669,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add ray tracing hybrid rendering path (line 268),open
-TODO-7670,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add asset streaming priority (line 269),open
-TODO-7671,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement hierarchical culling with GPU feedback (line 290),open
-TODO-7672,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement visibility buffer rendering (line 291),open
-TODO-7673,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add hot-reload file watching (line 292),open
-TODO-7674,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add temporal stability for TAA integration (line 293),open
-TODO-7675,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement multi-draw indirect for batching (line 314),open
-TODO-7676,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add LZ4/ZSTD compression (line 315),open
-TODO-7677,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement async file loading (line 316),open
-TODO-7678,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement visibility buffer rendering (line 317),open
-TODO-7679,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add hot-reload file watching (line 338),open
-TODO-7680,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add asset streaming priority (line 339),open
-TODO-7681,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement asset bundling (line 340),open
-TODO-7682,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement visibility buffer rendering (line 341),open
-TODO-7683,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement async file loading (line 362),open
-TODO-7684,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add render graph node for automatic scheduling (line 363),open
-TODO-7685,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement indirect rendering for GPU-driven pipelines (line 364),open
-TODO-7686,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add variable rate shading support (line 365),open
-TODO-7687,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add ray tracing hybrid rendering path (line 378),open
-TODO-7688,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add mesh shader support for next-gen hardware (line 379),open
-TODO-7689,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add asset cache management (line 389),open
-TODO-7690,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement scene file parsing (line 390),open
-TODO-7691,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement asset bundling (line 400),open
-TODO-7692,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement async compute integration (line 401),open
-TODO-7693,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add ray tracing hybrid rendering path (line 411),open
-TODO-7694,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add mesh shader support for next-gen hardware (line 412),open
-TODO-7695,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement format conversion (line 422),open
-TODO-7696,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement multi-draw indirect for batching (line 423),open
-TODO-7697,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement asset bundling (line 437),open
-TODO-7698,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add glTF/FBX import (line 438),open
-TODO-7699,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add asset streaming priority (line 439),open
-TODO-7700,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement binary serialization (line 440),open
-TODO-7701,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement binary serialization (line 458),open
-TODO-7702,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add variable rate shading support (line 459),open
-TODO-7703,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Implement visibility buffer rendering (line 460),open
-TODO-7704,incode,In-code TODO,src/engine/assets/io/scene/scene_renderer.c,Add temporal stability for TAA integration (line 461),open
 TODO-7705,incode,In-code TODO,src/engine/assets/io/scene/processor_04.c,Implement cancellation support (line 114),open
 TODO-7706,incode,In-code TODO,src/engine/assets/io/scene/processor_04.c,Implement incremental processing for streaming (line 115),open
 TODO-7707,incode,In-code TODO,src/engine/assets/io/scene/processor_04.c,Implement scene file parsing (line 122),open
@@ -7849,68 +7787,6 @@ TODO-7823,incode,In-code TODO,src/engine/assets/io/scene/system_02.c,Add memory 
 TODO-7824,incode,In-code TODO,src/engine/assets/io/scene/system_02.c,Implement asset bundling (line 448),open
 TODO-7825,incode,In-code TODO,src/engine/assets/io/scene/system_02.c,Add cache-friendly data layouts for optimal performance (line 449),open
 TODO-7826,incode,In-code TODO,src/engine/assets/io/scene/system_02.c,Implement format conversion (line 450),open
-TODO-7827,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement scene file parsing (line 114),open
-TODO-7828,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement async file loading (line 115),open
-TODO-7829,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement binary serialization (line 122),open
-TODO-7830,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add multi-threaded batch processing support (line 123),open
-TODO-7831,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add asset cache management (line 146),open
-TODO-7832,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement asset bundling (line 147),open
-TODO-7833,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement binary serialization (line 148),open
-TODO-7834,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add comprehensive error handling with detailed error codes (line 149),open
-TODO-7835,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add multi-threaded batch processing support (line 170),open
-TODO-7836,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement async file loading (line 171),open
-TODO-7837,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add glTF/FBX import (line 172),open
-TODO-7838,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add memory budget tracking and automatic eviction policies (line 173),open
-TODO-7839,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement async initialization for non-blocking startup (line 194),open
-TODO-7840,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add LZ4/ZSTD compression (line 195),open
-TODO-7841,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement asset bundling (line 196),open
-TODO-7842,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add telemetry and performance counters for profiling (line 197),open
-TODO-7843,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement resource pooling for reduced allocation overhead (line 218),open
-TODO-7844,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add multi-threaded batch processing support (line 219),open
-TODO-7845,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement format conversion (line 220),open
-TODO-7846,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement serialization support for state persistence (line 221),open
-TODO-7847,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add validation layer integration for debugging builds (line 242),open
-TODO-7848,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add asset streaming priority (line 243),open
-TODO-7849,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement thread-safe initialization with proper memory barriers (line 244),open
-TODO-7850,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add multi-threaded batch processing support (line 245),open
-TODO-7851,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement scene file parsing (line 266),open
-TODO-7852,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement resource pooling for reduced allocation overhead (line 267),open
-TODO-7853,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add multi-threaded batch processing support (line 268),open
-TODO-7854,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add LZ4/ZSTD compression (line 269),open
-TODO-7855,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement thread-safe initialization with proper memory barriers (line 290),open
-TODO-7856,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement async file loading (line 291),open
-TODO-7857,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement binary serialization (line 292),open
-TODO-7858,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement scene file parsing (line 293),open
-TODO-7859,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add memory budget tracking and automatic eviction policies (line 314),open
-TODO-7860,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement scene file parsing (line 315),open
-TODO-7861,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement async initialization for non-blocking startup (line 316),open
-TODO-7862,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement hot-reload support for development iteration (line 317),open
-TODO-7863,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement scene file parsing (line 338),open
-TODO-7864,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement format conversion (line 339),open
-TODO-7865,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement thread-safe initialization with proper memory barriers (line 340),open
-TODO-7866,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement serialization support for state persistence (line 341),open
-TODO-7867,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add comprehensive error handling with detailed error codes (line 362),open
-TODO-7868,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement thread-safe initialization with proper memory barriers (line 363),open
-TODO-7869,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement hot-reload support for development iteration (line 364),open
-TODO-7870,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement format conversion (line 365),open
-TODO-7871,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement resource pooling for reduced allocation overhead (line 378),open
-TODO-7872,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add glTF/FBX import (line 379),open
-TODO-7873,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement async file loading (line 389),open
-TODO-7874,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add glTF/FBX import (line 390),open
-TODO-7875,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add comprehensive error handling with detailed error codes (line 400),open
-TODO-7876,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement async file loading (line 401),open
-TODO-7877,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement format conversion (line 411),open
-TODO-7878,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add telemetry and performance counters for profiling (line 412),open
-TODO-7879,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement async initialization for non-blocking startup (line 422),open
-TODO-7880,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement asset bundling (line 423),open
-TODO-7881,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add telemetry and performance counters for profiling (line 437),open
-TODO-7882,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement asset bundling (line 438),open
-TODO-7883,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement serialization support for state persistence (line 439),open
-TODO-7884,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement async file loading (line 440),open
-TODO-7885,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement asset bundling (line 458),open
-TODO-7886,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement binary serialization (line 459),open
-TODO-7887,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Add asset cache management (line 460),open
-TODO-7888,incode,In-code TODO,src/engine/assets/io/scene/scene_io_manager.c,Implement format conversion (line 461),open
 TODO-7889,incode,In-code TODO,src/engine/assets/io/scene/manager_01.c,Implement scene file parsing (line 114),open
 TODO-7890,incode,In-code TODO,src/engine/assets/io/scene/manager_01.c,Implement async file loading (line 115),open
 TODO-7891,incode,In-code TODO,src/engine/assets/io/scene/manager_01.c,Implement binary serialization (line 122),open
@@ -7973,68 +7849,6 @@ TODO-7947,incode,In-code TODO,src/engine/assets/io/scene/manager_01.c,Implement 
 TODO-7948,incode,In-code TODO,src/engine/assets/io/scene/manager_01.c,Implement binary serialization (line 459),open
 TODO-7949,incode,In-code TODO,src/engine/assets/io/scene/manager_01.c,Add asset cache management (line 460),open
 TODO-7950,incode,In-code TODO,src/engine/assets/io/scene/manager_01.c,Implement format conversion (line 461),open
-TODO-7951,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement cancellation support (line 114),open
-TODO-7952,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement incremental processing for streaming (line 115),open
-TODO-7953,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement scene file parsing (line 122),open
-TODO-7954,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement work stealing for load balancing (line 123),open
-TODO-7955,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add LZ4/ZSTD compression (line 146),open
-TODO-7956,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add asset cache management (line 147),open
-TODO-7957,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement SIMD-optimized processing paths (line 148),open
-TODO-7958,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement async file loading (line 149),open
-TODO-7959,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement format conversion (line 170),open
-TODO-7960,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add GPU compute shader fallback (line 171),open
-TODO-7961,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement SIMD-optimized processing paths (line 172),open
-TODO-7962,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement scene file parsing (line 173),open
-TODO-7963,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement binary serialization (line 194),open
-TODO-7964,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add cache-aware processing order (line 195),open
-TODO-7965,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement work stealing for load balancing (line 196),open
-TODO-7966,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add checkpointing for resumable operations (line 197),open
-TODO-7967,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add LZ4/ZSTD compression (line 218),open
-TODO-7968,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add asset cache management (line 219),open
-TODO-7969,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement asset bundling (line 220),open
-TODO-7970,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement SIMD-optimized processing paths (line 221),open
-TODO-7971,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement asset bundling (line 242),open
-TODO-7972,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add progress reporting for long operations (line 243),open
-TODO-7973,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add GPU compute shader fallback (line 244),open
-TODO-7974,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add cache-aware processing order (line 245),open
-TODO-7975,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add checkpointing for resumable operations (line 266),open
-TODO-7976,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add progress reporting for long operations (line 267),open
-TODO-7977,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement scene file parsing (line 268),open
-TODO-7978,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement work stealing for load balancing (line 269),open
-TODO-7979,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add checkpointing for resumable operations (line 290),open
-TODO-7980,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add glTF/FBX import (line 291),open
-TODO-7981,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add cache-aware processing order (line 292),open
-TODO-7982,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement compression during processing (line 293),open
-TODO-7983,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement binary serialization (line 314),open
-TODO-7984,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement format conversion (line 315),open
-TODO-7985,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement compression during processing (line 316),open
-TODO-7986,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add asset streaming priority (line 317),open
-TODO-7987,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add memory-mapped file support for large datasets (line 338),open
-TODO-7988,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement scene file parsing (line 339),open
-TODO-7989,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement work stealing for load balancing (line 340),open
-TODO-7990,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement cancellation support (line 341),open
-TODO-7991,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add GPU compute shader fallback (line 362),open
-TODO-7992,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add asset cache management (line 363),open
-TODO-7993,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement format conversion (line 364),open
-TODO-7994,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement work stealing for load balancing (line 365),open
-TODO-7995,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add progress reporting for long operations (line 378),open
-TODO-7996,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add asset cache management (line 379),open
-TODO-7997,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add glTF/FBX import (line 389),open
-TODO-7998,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement asset bundling (line 390),open
-TODO-7999,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement format conversion (line 400),open
-TODO-8000,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement compression during processing (line 401),open
-TODO-8001,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add asset cache management (line 411),open
-TODO-8002,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add memory-mapped file support for large datasets (line 412),open
-TODO-8003,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add cache-aware processing order (line 422),open
-TODO-8004,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement format conversion (line 423),open
-TODO-8005,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement format conversion (line 437),open
-TODO-8006,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement async file loading (line 438),open
-TODO-8007,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add hot-reload file watching (line 439),open
-TODO-8008,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add asset streaming priority (line 440),open
-TODO-8009,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add LZ4/ZSTD compression (line 458),open
-TODO-8010,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement compression during processing (line 459),open
-TODO-8011,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Add hot-reload file watching (line 460),open
-TODO-8012,incode,In-code TODO,src/engine/assets/io/scene/scene_processor.c,Implement binary serialization (line 461),open
 TODO-8013,incode,In-code TODO,src/engine/assets/io/scene/renderer_03.c,Implement visibility buffer rendering (line 114),open
 TODO-8014,incode,In-code TODO,src/engine/assets/io/scene/renderer_03.c,Add temporal stability for TAA integration (line 115),open
 TODO-8015,incode,In-code TODO,src/engine/assets/io/scene/renderer_03.c,Implement scene file parsing (line 122),open
@@ -8097,66 +7911,6 @@ TODO-8071,incode,In-code TODO,src/engine/assets/io/scene/renderer_03.c,Implement
 TODO-8072,incode,In-code TODO,src/engine/assets/io/scene/renderer_03.c,Add variable rate shading support (line 459),open
 TODO-8073,incode,In-code TODO,src/engine/assets/io/scene/renderer_03.c,Implement visibility buffer rendering (line 460),open
 TODO-8074,incode,In-code TODO,src/engine/assets/io/scene/renderer_03.c,Add temporal stability for TAA integration (line 461),open
-TODO-8075,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add memory defragmentation support (line 114),open
-TODO-8076,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add glTF/FBX import (line 115),open
-TODO-8077,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement binary serialization (line 122),open
-TODO-8078,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add dynamic LOD selection based on performance metrics (line 123),open
-TODO-8079,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add asset cache management (line 146),open
-TODO-8080,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement scene file parsing (line 147),open
-TODO-8081,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add asset streaming priority (line 148),open
-TODO-8082,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add memory defragmentation support (line 149),open
-TODO-8083,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add asset streaming priority (line 170),open
-TODO-8084,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement format conversion (line 171),open
-TODO-8085,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement scene file parsing (line 172),open
-TODO-8086,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add memory defragmentation support (line 173),open
-TODO-8087,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add memory defragmentation support (line 194),open
-TODO-8088,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add hot-reload file watching (line 195),open
-TODO-8089,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add cache-friendly data layouts for optimal performance (line 196),open
-TODO-8090,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add glTF/FBX import (line 197),open
-TODO-8091,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add asset cache management (line 218),open
-TODO-8092,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add GPU profiling markers for performance analysis (line 219),open
-TODO-8093,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add LZ4/ZSTD compression (line 220),open
-TODO-8094,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add dynamic LOD selection based on performance metrics (line 221),open
-TODO-8095,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement streaming support for large datasets (line 242),open
-TODO-8096,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add dynamic LOD selection based on performance metrics (line 243),open
-TODO-8097,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement scene file parsing (line 244),open
-TODO-8098,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add asset cache management (line 245),open
-TODO-8099,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement binary serialization (line 266),open
-TODO-8100,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add asset streaming priority (line 267),open
-TODO-8101,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement streaming support for large datasets (line 268),open
-TODO-8102,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add cache-friendly data layouts for optimal performance (line 269),open
-TODO-8103,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add frame graph integration for automatic resource management (line 290),open
-TODO-8104,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add GPU profiling markers for performance analysis (line 291),open
-TODO-8105,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement scene file parsing (line 292),open
-TODO-8106,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement streaming support for large datasets (line 293),open
-TODO-8107,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement GPU timeline synchronization (line 314),open
-TODO-8108,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add GPU profiling markers for performance analysis (line 315),open
-TODO-8109,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement scene file parsing (line 316),open
-TODO-8110,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add memory defragmentation support (line 317),open
-TODO-8111,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add frame graph integration for automatic resource management (line 338),open
-TODO-8112,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add asset cache management (line 339),open
-TODO-8113,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add GPU profiling markers for performance analysis (line 340),open
-TODO-8114,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement job system integration for parallel processing (line 341),open
-TODO-8115,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement async file loading (line 362),open
-TODO-8116,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement format conversion (line 363),open
-TODO-8117,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement binary serialization (line 364),open
-TODO-8118,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add asset streaming priority (line 365),open
-TODO-8119,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement asset bundling (line 378),open
-TODO-8120,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement SIMD optimization for batch operations (line 379),open
-TODO-8121,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement async file loading (line 389),open
-TODO-8122,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add asset cache management (line 390),open
-TODO-8123,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement SIMD optimization for batch operations (line 400),open
-TODO-8124,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement async file loading (line 401),open
-TODO-8125,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add glTF/FBX import (line 411),open
-TODO-8126,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add hot-reload file watching (line 412),open
-TODO-8127,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement streaming support for large datasets (line 426),open
-TODO-8128,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement fallback paths for unsupported hardware (line 427),open
-TODO-8129,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement job system integration for parallel processing (line 428),open
-TODO-8130,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add asset streaming priority (line 429),open
-TODO-8131,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add memory defragmentation support (line 447),open
-TODO-8132,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement asset bundling (line 448),open
-TODO-8133,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Add cache-friendly data layouts for optimal performance (line 449),open
-TODO-8134,incode,In-code TODO,src/engine/assets/io/scene/scene_io_system.c,Implement format conversion (line 450),open
 TODO-8135,incode,In-code TODO,src/engine/assets/io/caching/cache_processor.c,Implement scene file parsing (line 114),open
 TODO-8136,incode,In-code TODO,src/engine/assets/io/caching/cache_processor.c,Implement work stealing for load balancing (line 115),open
 TODO-8137,incode,In-code TODO,src/engine/assets/io/caching/cache_processor.c,Implement incremental processing for streaming (line 122),open
@@ -24264,68 +24018,6 @@ TODO-24141,todo_md,Master TODO,master/todo.md,Add LZ4/ZSTD compression (line 458
 TODO-24142,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 459) (src/engine/assets/io/export/asset_export_processor.c),open
 TODO-24143,todo_md,Master TODO,master/todo.md,Implement cancellation support (line 460) (src/engine/assets/io/export/asset_export_processor.c),open
 TODO-24144,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 461) (src/engine/assets/io/export/asset_export_processor.c),open
-TODO-24145,todo_md,Master TODO,master/todo.md,Implement visibility buffer rendering (line 114) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24146,todo_md,Master TODO,master/todo.md,Add temporal stability for TAA integration (line 115) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24147,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 122) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24148,todo_md,Master TODO,master/todo.md,Implement async compute integration (line 123) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24149,todo_md,Master TODO,master/todo.md,Implement format conversion (line 146) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24150,todo_md,Master TODO,master/todo.md,Add ray tracing hybrid rendering path (line 147) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24151,todo_md,Master TODO,master/todo.md,Add glTF/FBX import (line 148) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24152,todo_md,Master TODO,master/todo.md,Implement hierarchical culling with GPU feedback (line 149) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24153,todo_md,Master TODO,master/todo.md,Implement visibility buffer rendering (line 170) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24154,todo_md,Master TODO,master/todo.md,Implement indirect rendering for GPU-driven pipelines (line 171) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24155,todo_md,Master TODO,master/todo.md,Add asset cache management (line 172) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24156,todo_md,Master TODO,master/todo.md,Add render graph node for automatic scheduling (line 173) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24157,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 194) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24158,todo_md,Master TODO,master/todo.md,Implement hierarchical culling with GPU feedback (line 195) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24159,todo_md,Master TODO,master/todo.md,Add temporal stability for TAA integration (line 196) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24160,todo_md,Master TODO,master/todo.md,Add ray tracing hybrid rendering path (line 197) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24161,todo_md,Master TODO,master/todo.md,Add temporal stability for TAA integration (line 218) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24162,todo_md,Master TODO,master/todo.md,Add hot-reload file watching (line 219) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24163,todo_md,Master TODO,master/todo.md,Add variable rate shading support (line 220) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24164,todo_md,Master TODO,master/todo.md,Add asset cache management (line 221) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24165,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 242) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24166,todo_md,Master TODO,master/todo.md,Implement async compute integration (line 243) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24167,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 244) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24168,todo_md,Master TODO,master/todo.md,Add variable rate shading support (line 245) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24169,todo_md,Master TODO,master/todo.md,Add render graph node for automatic scheduling (line 266) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24170,todo_md,Master TODO,master/todo.md,Add asset cache management (line 267) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24171,todo_md,Master TODO,master/todo.md,Add ray tracing hybrid rendering path (line 268) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24172,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 269) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24173,todo_md,Master TODO,master/todo.md,Implement hierarchical culling with GPU feedback (line 290) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24174,todo_md,Master TODO,master/todo.md,Implement visibility buffer rendering (line 291) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24175,todo_md,Master TODO,master/todo.md,Add hot-reload file watching (line 292) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24176,todo_md,Master TODO,master/todo.md,Add temporal stability for TAA integration (line 293) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24177,todo_md,Master TODO,master/todo.md,Implement multi-draw indirect for batching (line 314) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24178,todo_md,Master TODO,master/todo.md,Add LZ4/ZSTD compression (line 315) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24179,todo_md,Master TODO,master/todo.md,Implement async file loading (line 316) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24180,todo_md,Master TODO,master/todo.md,Implement visibility buffer rendering (line 317) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24181,todo_md,Master TODO,master/todo.md,Add hot-reload file watching (line 338) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24182,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 339) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24183,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 340) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24184,todo_md,Master TODO,master/todo.md,Implement visibility buffer rendering (line 341) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24185,todo_md,Master TODO,master/todo.md,Implement async file loading (line 362) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24186,todo_md,Master TODO,master/todo.md,Add render graph node for automatic scheduling (line 363) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24187,todo_md,Master TODO,master/todo.md,Implement indirect rendering for GPU-driven pipelines (line 364) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24188,todo_md,Master TODO,master/todo.md,Add variable rate shading support (line 365) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24189,todo_md,Master TODO,master/todo.md,Add ray tracing hybrid rendering path (line 378) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24190,todo_md,Master TODO,master/todo.md,Add mesh shader support for next-gen hardware (line 379) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24191,todo_md,Master TODO,master/todo.md,Add asset cache management (line 389) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24192,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 390) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24193,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 400) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24194,todo_md,Master TODO,master/todo.md,Implement async compute integration (line 401) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24195,todo_md,Master TODO,master/todo.md,Add ray tracing hybrid rendering path (line 411) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24196,todo_md,Master TODO,master/todo.md,Add mesh shader support for next-gen hardware (line 412) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24197,todo_md,Master TODO,master/todo.md,Implement format conversion (line 422) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24198,todo_md,Master TODO,master/todo.md,Implement multi-draw indirect for batching (line 423) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24199,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 437) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24200,todo_md,Master TODO,master/todo.md,Add glTF/FBX import (line 438) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24201,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 439) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24202,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 440) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24203,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 458) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24204,todo_md,Master TODO,master/todo.md,Add variable rate shading support (line 459) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24205,todo_md,Master TODO,master/todo.md,Implement visibility buffer rendering (line 460) (src/engine/assets/io/scene/scene_renderer.c),open
-TODO-24206,todo_md,Master TODO,master/todo.md,Add temporal stability for TAA integration (line 461) (src/engine/assets/io/scene/scene_renderer.c),open
 TODO-24207,todo_md,Master TODO,master/todo.md,Implement cancellation support (line 114) (src/engine/assets/io/scene/processor_04.c),open
 TODO-24208,todo_md,Master TODO,master/todo.md,Implement incremental processing for streaming (line 115) (src/engine/assets/io/scene/processor_04.c),open
 TODO-24209,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 122) (src/engine/assets/io/scene/processor_04.c),open
@@ -24448,68 +24140,6 @@ TODO-24325,todo_md,Master TODO,master/todo.md,Add memory defragmentation support
 TODO-24326,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 448) (src/engine/assets/io/scene/system_02.c),open
 TODO-24327,todo_md,Master TODO,master/todo.md,Add cache-friendly data layouts for optimal performance (line 449) (src/engine/assets/io/scene/system_02.c),open
 TODO-24328,todo_md,Master TODO,master/todo.md,Implement format conversion (line 450) (src/engine/assets/io/scene/system_02.c),open
-TODO-24329,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 114) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24330,todo_md,Master TODO,master/todo.md,Implement async file loading (line 115) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24331,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 122) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24332,todo_md,Master TODO,master/todo.md,Add multi-threaded batch processing support (line 123) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24333,todo_md,Master TODO,master/todo.md,Add asset cache management (line 146) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24334,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 147) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24335,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 148) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24336,todo_md,Master TODO,master/todo.md,Add comprehensive error handling with detailed error codes (line 149) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24337,todo_md,Master TODO,master/todo.md,Add multi-threaded batch processing support (line 170) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24338,todo_md,Master TODO,master/todo.md,Implement async file loading (line 171) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24339,todo_md,Master TODO,master/todo.md,Add glTF/FBX import (line 172) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24340,todo_md,Master TODO,master/todo.md,Add memory budget tracking and automatic eviction policies (line 173) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24341,todo_md,Master TODO,master/todo.md,Implement async initialization for non-blocking startup (line 194) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24342,todo_md,Master TODO,master/todo.md,Add LZ4/ZSTD compression (line 195) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24343,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 196) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24344,todo_md,Master TODO,master/todo.md,Add telemetry and performance counters for profiling (line 197) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24345,todo_md,Master TODO,master/todo.md,Implement resource pooling for reduced allocation overhead (line 218) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24346,todo_md,Master TODO,master/todo.md,Add multi-threaded batch processing support (line 219) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24347,todo_md,Master TODO,master/todo.md,Implement format conversion (line 220) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24348,todo_md,Master TODO,master/todo.md,Implement serialization support for state persistence (line 221) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24349,todo_md,Master TODO,master/todo.md,Add validation layer integration for debugging builds (line 242) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24350,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 243) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24351,todo_md,Master TODO,master/todo.md,Implement thread-safe initialization with proper memory barriers (line 244) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24352,todo_md,Master TODO,master/todo.md,Add multi-threaded batch processing support (line 245) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24353,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 266) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24354,todo_md,Master TODO,master/todo.md,Implement resource pooling for reduced allocation overhead (line 267) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24355,todo_md,Master TODO,master/todo.md,Add multi-threaded batch processing support (line 268) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24356,todo_md,Master TODO,master/todo.md,Add LZ4/ZSTD compression (line 269) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24357,todo_md,Master TODO,master/todo.md,Implement thread-safe initialization with proper memory barriers (line 290) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24358,todo_md,Master TODO,master/todo.md,Implement async file loading (line 291) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24359,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 292) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24360,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 293) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24361,todo_md,Master TODO,master/todo.md,Add memory budget tracking and automatic eviction policies (line 314) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24362,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 315) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24363,todo_md,Master TODO,master/todo.md,Implement async initialization for non-blocking startup (line 316) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24364,todo_md,Master TODO,master/todo.md,Implement hot-reload support for development iteration (line 317) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24365,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 338) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24366,todo_md,Master TODO,master/todo.md,Implement format conversion (line 339) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24367,todo_md,Master TODO,master/todo.md,Implement thread-safe initialization with proper memory barriers (line 340) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24368,todo_md,Master TODO,master/todo.md,Implement serialization support for state persistence (line 341) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24369,todo_md,Master TODO,master/todo.md,Add comprehensive error handling with detailed error codes (line 362) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24370,todo_md,Master TODO,master/todo.md,Implement thread-safe initialization with proper memory barriers (line 363) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24371,todo_md,Master TODO,master/todo.md,Implement hot-reload support for development iteration (line 364) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24372,todo_md,Master TODO,master/todo.md,Implement format conversion (line 365) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24373,todo_md,Master TODO,master/todo.md,Implement resource pooling for reduced allocation overhead (line 378) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24374,todo_md,Master TODO,master/todo.md,Add glTF/FBX import (line 379) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24375,todo_md,Master TODO,master/todo.md,Implement async file loading (line 389) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24376,todo_md,Master TODO,master/todo.md,Add glTF/FBX import (line 390) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24377,todo_md,Master TODO,master/todo.md,Add comprehensive error handling with detailed error codes (line 400) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24378,todo_md,Master TODO,master/todo.md,Implement async file loading (line 401) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24379,todo_md,Master TODO,master/todo.md,Implement format conversion (line 411) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24380,todo_md,Master TODO,master/todo.md,Add telemetry and performance counters for profiling (line 412) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24381,todo_md,Master TODO,master/todo.md,Implement async initialization for non-blocking startup (line 422) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24382,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 423) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24383,todo_md,Master TODO,master/todo.md,Add telemetry and performance counters for profiling (line 437) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24384,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 438) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24385,todo_md,Master TODO,master/todo.md,Implement serialization support for state persistence (line 439) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24386,todo_md,Master TODO,master/todo.md,Implement async file loading (line 440) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24387,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 458) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24388,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 459) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24389,todo_md,Master TODO,master/todo.md,Add asset cache management (line 460) (src/engine/assets/io/scene/scene_io_manager.c),open
-TODO-24390,todo_md,Master TODO,master/todo.md,Implement format conversion (line 461) (src/engine/assets/io/scene/scene_io_manager.c),open
 TODO-24391,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 114) (src/engine/assets/io/scene/manager_01.c),open
 TODO-24392,todo_md,Master TODO,master/todo.md,Implement async file loading (line 115) (src/engine/assets/io/scene/manager_01.c),open
 TODO-24393,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 122) (src/engine/assets/io/scene/manager_01.c),open
@@ -24572,68 +24202,6 @@ TODO-24449,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 458
 TODO-24450,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 459) (src/engine/assets/io/scene/manager_01.c),open
 TODO-24451,todo_md,Master TODO,master/todo.md,Add asset cache management (line 460) (src/engine/assets/io/scene/manager_01.c),open
 TODO-24452,todo_md,Master TODO,master/todo.md,Implement format conversion (line 461) (src/engine/assets/io/scene/manager_01.c),open
-TODO-24453,todo_md,Master TODO,master/todo.md,Implement cancellation support (line 114) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24454,todo_md,Master TODO,master/todo.md,Implement incremental processing for streaming (line 115) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24455,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 122) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24456,todo_md,Master TODO,master/todo.md,Implement work stealing for load balancing (line 123) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24457,todo_md,Master TODO,master/todo.md,Add LZ4/ZSTD compression (line 146) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24458,todo_md,Master TODO,master/todo.md,Add asset cache management (line 147) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24459,todo_md,Master TODO,master/todo.md,Implement SIMD-optimized processing paths (line 148) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24460,todo_md,Master TODO,master/todo.md,Implement async file loading (line 149) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24461,todo_md,Master TODO,master/todo.md,Implement format conversion (line 170) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24462,todo_md,Master TODO,master/todo.md,Add GPU compute shader fallback (line 171) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24463,todo_md,Master TODO,master/todo.md,Implement SIMD-optimized processing paths (line 172) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24464,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 173) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24465,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 194) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24466,todo_md,Master TODO,master/todo.md,Add cache-aware processing order (line 195) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24467,todo_md,Master TODO,master/todo.md,Implement work stealing for load balancing (line 196) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24468,todo_md,Master TODO,master/todo.md,Add checkpointing for resumable operations (line 197) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24469,todo_md,Master TODO,master/todo.md,Add LZ4/ZSTD compression (line 218) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24470,todo_md,Master TODO,master/todo.md,Add asset cache management (line 219) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24471,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 220) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24472,todo_md,Master TODO,master/todo.md,Implement SIMD-optimized processing paths (line 221) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24473,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 242) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24474,todo_md,Master TODO,master/todo.md,Add progress reporting for long operations (line 243) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24475,todo_md,Master TODO,master/todo.md,Add GPU compute shader fallback (line 244) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24476,todo_md,Master TODO,master/todo.md,Add cache-aware processing order (line 245) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24477,todo_md,Master TODO,master/todo.md,Add checkpointing for resumable operations (line 266) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24478,todo_md,Master TODO,master/todo.md,Add progress reporting for long operations (line 267) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24479,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 268) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24480,todo_md,Master TODO,master/todo.md,Implement work stealing for load balancing (line 269) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24481,todo_md,Master TODO,master/todo.md,Add checkpointing for resumable operations (line 290) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24482,todo_md,Master TODO,master/todo.md,Add glTF/FBX import (line 291) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24483,todo_md,Master TODO,master/todo.md,Add cache-aware processing order (line 292) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24484,todo_md,Master TODO,master/todo.md,Implement compression during processing (line 293) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24485,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 314) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24486,todo_md,Master TODO,master/todo.md,Implement format conversion (line 315) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24487,todo_md,Master TODO,master/todo.md,Implement compression during processing (line 316) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24488,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 317) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24489,todo_md,Master TODO,master/todo.md,Add memory-mapped file support for large datasets (line 338) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24490,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 339) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24491,todo_md,Master TODO,master/todo.md,Implement work stealing for load balancing (line 340) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24492,todo_md,Master TODO,master/todo.md,Implement cancellation support (line 341) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24493,todo_md,Master TODO,master/todo.md,Add GPU compute shader fallback (line 362) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24494,todo_md,Master TODO,master/todo.md,Add asset cache management (line 363) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24495,todo_md,Master TODO,master/todo.md,Implement format conversion (line 364) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24496,todo_md,Master TODO,master/todo.md,Implement work stealing for load balancing (line 365) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24497,todo_md,Master TODO,master/todo.md,Add progress reporting for long operations (line 378) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24498,todo_md,Master TODO,master/todo.md,Add asset cache management (line 379) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24499,todo_md,Master TODO,master/todo.md,Add glTF/FBX import (line 389) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24500,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 390) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24501,todo_md,Master TODO,master/todo.md,Implement format conversion (line 400) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24502,todo_md,Master TODO,master/todo.md,Implement compression during processing (line 401) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24503,todo_md,Master TODO,master/todo.md,Add asset cache management (line 411) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24504,todo_md,Master TODO,master/todo.md,Add memory-mapped file support for large datasets (line 412) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24505,todo_md,Master TODO,master/todo.md,Add cache-aware processing order (line 422) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24506,todo_md,Master TODO,master/todo.md,Implement format conversion (line 423) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24507,todo_md,Master TODO,master/todo.md,Implement format conversion (line 437) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24508,todo_md,Master TODO,master/todo.md,Implement async file loading (line 438) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24509,todo_md,Master TODO,master/todo.md,Add hot-reload file watching (line 439) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24510,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 440) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24511,todo_md,Master TODO,master/todo.md,Add LZ4/ZSTD compression (line 458) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24512,todo_md,Master TODO,master/todo.md,Implement compression during processing (line 459) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24513,todo_md,Master TODO,master/todo.md,Add hot-reload file watching (line 460) (src/engine/assets/io/scene/scene_processor.c),open
-TODO-24514,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 461) (src/engine/assets/io/scene/scene_processor.c),open
 TODO-24515,todo_md,Master TODO,master/todo.md,Implement visibility buffer rendering (line 114) (src/engine/assets/io/scene/renderer_03.c),open
 TODO-24516,todo_md,Master TODO,master/todo.md,Add temporal stability for TAA integration (line 115) (src/engine/assets/io/scene/renderer_03.c),open
 TODO-24517,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 122) (src/engine/assets/io/scene/renderer_03.c),open
@@ -24696,66 +24264,6 @@ TODO-24573,todo_md,Master TODO,master/todo.md,Implement binary serialization (li
 TODO-24574,todo_md,Master TODO,master/todo.md,Add variable rate shading support (line 459) (src/engine/assets/io/scene/renderer_03.c),open
 TODO-24575,todo_md,Master TODO,master/todo.md,Implement visibility buffer rendering (line 460) (src/engine/assets/io/scene/renderer_03.c),open
 TODO-24576,todo_md,Master TODO,master/todo.md,Add temporal stability for TAA integration (line 461) (src/engine/assets/io/scene/renderer_03.c),open
-TODO-24577,todo_md,Master TODO,master/todo.md,Add memory defragmentation support (line 114) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24578,todo_md,Master TODO,master/todo.md,Add glTF/FBX import (line 115) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24579,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 122) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24580,todo_md,Master TODO,master/todo.md,Add dynamic LOD selection based on performance metrics (line 123) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24581,todo_md,Master TODO,master/todo.md,Add asset cache management (line 146) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24582,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 147) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24583,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 148) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24584,todo_md,Master TODO,master/todo.md,Add memory defragmentation support (line 149) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24585,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 170) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24586,todo_md,Master TODO,master/todo.md,Implement format conversion (line 171) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24587,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 172) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24588,todo_md,Master TODO,master/todo.md,Add memory defragmentation support (line 173) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24589,todo_md,Master TODO,master/todo.md,Add memory defragmentation support (line 194) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24590,todo_md,Master TODO,master/todo.md,Add hot-reload file watching (line 195) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24591,todo_md,Master TODO,master/todo.md,Add cache-friendly data layouts for optimal performance (line 196) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24592,todo_md,Master TODO,master/todo.md,Add glTF/FBX import (line 197) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24593,todo_md,Master TODO,master/todo.md,Add asset cache management (line 218) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24594,todo_md,Master TODO,master/todo.md,Add GPU profiling markers for performance analysis (line 219) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24595,todo_md,Master TODO,master/todo.md,Add LZ4/ZSTD compression (line 220) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24596,todo_md,Master TODO,master/todo.md,Add dynamic LOD selection based on performance metrics (line 221) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24597,todo_md,Master TODO,master/todo.md,Implement streaming support for large datasets (line 242) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24598,todo_md,Master TODO,master/todo.md,Add dynamic LOD selection based on performance metrics (line 243) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24599,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 244) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24600,todo_md,Master TODO,master/todo.md,Add asset cache management (line 245) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24601,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 266) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24602,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 267) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24603,todo_md,Master TODO,master/todo.md,Implement streaming support for large datasets (line 268) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24604,todo_md,Master TODO,master/todo.md,Add cache-friendly data layouts for optimal performance (line 269) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24605,todo_md,Master TODO,master/todo.md,Add frame graph integration for automatic resource management (line 290) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24606,todo_md,Master TODO,master/todo.md,Add GPU profiling markers for performance analysis (line 291) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24607,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 292) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24608,todo_md,Master TODO,master/todo.md,Implement streaming support for large datasets (line 293) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24609,todo_md,Master TODO,master/todo.md,Implement GPU timeline synchronization (line 314) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24610,todo_md,Master TODO,master/todo.md,Add GPU profiling markers for performance analysis (line 315) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24611,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 316) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24612,todo_md,Master TODO,master/todo.md,Add memory defragmentation support (line 317) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24613,todo_md,Master TODO,master/todo.md,Add frame graph integration for automatic resource management (line 338) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24614,todo_md,Master TODO,master/todo.md,Add asset cache management (line 339) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24615,todo_md,Master TODO,master/todo.md,Add GPU profiling markers for performance analysis (line 340) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24616,todo_md,Master TODO,master/todo.md,Implement job system integration for parallel processing (line 341) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24617,todo_md,Master TODO,master/todo.md,Implement async file loading (line 362) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24618,todo_md,Master TODO,master/todo.md,Implement format conversion (line 363) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24619,todo_md,Master TODO,master/todo.md,Implement binary serialization (line 364) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24620,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 365) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24621,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 378) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24622,todo_md,Master TODO,master/todo.md,Implement SIMD optimization for batch operations (line 379) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24623,todo_md,Master TODO,master/todo.md,Implement async file loading (line 389) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24624,todo_md,Master TODO,master/todo.md,Add asset cache management (line 390) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24625,todo_md,Master TODO,master/todo.md,Implement SIMD optimization for batch operations (line 400) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24626,todo_md,Master TODO,master/todo.md,Implement async file loading (line 401) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24627,todo_md,Master TODO,master/todo.md,Add glTF/FBX import (line 411) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24628,todo_md,Master TODO,master/todo.md,Add hot-reload file watching (line 412) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24629,todo_md,Master TODO,master/todo.md,Implement streaming support for large datasets (line 426) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24630,todo_md,Master TODO,master/todo.md,Implement fallback paths for unsupported hardware (line 427) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24631,todo_md,Master TODO,master/todo.md,Implement job system integration for parallel processing (line 428) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24632,todo_md,Master TODO,master/todo.md,Add asset streaming priority (line 429) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24633,todo_md,Master TODO,master/todo.md,Add memory defragmentation support (line 447) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24634,todo_md,Master TODO,master/todo.md,Implement asset bundling (line 448) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24635,todo_md,Master TODO,master/todo.md,Add cache-friendly data layouts for optimal performance (line 449) (src/engine/assets/io/scene/scene_io_system.c),open
-TODO-24636,todo_md,Master TODO,master/todo.md,Implement format conversion (line 450) (src/engine/assets/io/scene/scene_io_system.c),open
 TODO-24637,todo_md,Master TODO,master/todo.md,Implement scene file parsing (line 114) (src/engine/assets/io/caching/cache_processor.c),open
 TODO-24638,todo_md,Master TODO,master/todo.md,Implement work stealing for load balancing (line 115) (src/engine/assets/io/caching/cache_processor.c),open
 TODO-24639,todo_md,Master TODO,master/todo.md,Implement incremental processing for streaming (line 122) (src/engine/assets/io/caching/cache_processor.c),open

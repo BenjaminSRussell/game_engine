@@ -23,12 +23,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
 #include <pthread.h>
+#ifdef __linux__
 #include <sys/inotify.h>
+#endif
 #include <unistd.h>
-#include <errno.h>
-#include <time.h>
+#ifdef __AVX2__
 #include <immintrin.h>  // For SIMD intrinsics
+#endif
+#include <time.h>
 #include <sys/time.h>
 
 // Virtual texturing includes
@@ -89,10 +93,6 @@ typedef enum {
  * ============================================================================ */
 
 #define TEXTURE_TEXTURE_LOD_MAX_COUNT 4096
-#define TEXTURE_TEXTURE_LOD_ALIGNMENT 16
-#define TEXTURE_TEXTURE_LOD_MAX_MIP_LEVELS 16
-#define TEXTURE_TEXTURE_LOD_CACHE_SIZE 2048
-#define TEXTURE_TEXTURE_LOD_BATCH_SIZE 128
 #define TEXTURE_TEXTURE_LOD_WORKER_THREADS 8
 #define TEXTURE_TEXTURE_LOD_MEMORY_POOL_SIZE (128 * 1024 * 1024) // 128MB
 #define TEXTURE_TEXTURE_LOD_MAGIC_NUMBER 0x544C4F44 // "TLOD"
@@ -113,29 +113,6 @@ typedef enum texture_texture_lod_format {
     TEXTURE_TEXTURE_LOD_FORMAT_BGRA8 = 1
 } texture_texture_lod_format_t;
 
-typedef enum texture_texture_lod_error_code {
-    TEXTURE_TEXTURE_LOD_ERROR_NONE = 0,
-    TEXTURE_TEXTURE_LOD_ERROR_INVALID_ARGUMENT = -1,
-    TEXTURE_TEXTURE_LOD_ERROR_NOT_INITIALIZED = -2,
-    TEXTURE_TEXTURE_LOD_ERROR_CAPACITY = -3,
-    TEXTURE_TEXTURE_LOD_ERROR_OUT_OF_MEMORY = -4,
-    TEXTURE_TEXTURE_LOD_ERROR_INVALID_HANDLE = -5,
-    TEXTURE_TEXTURE_LOD_ERROR_INVALID_STATE = -6
-} texture_texture_lod_error_code_t;
-
-/* ============================================================================
- * TYPES
- * ============================================================================ */
-
-// Serialization data structures
-typedef struct texture_texture_lod_serialized_header {
-    uint32_t magic_number;        // "TLOD"
-    uint32_t version;             // Serialization format version
-    uint64_t timestamp;           // Serialization timestamp
-    uint32_t item_count;          // Number of serialized items
-    uint32_t data_size;           // Total serialized data size
-    uint64_t checksum;            // Data integrity checksum
-    uint32_t compression_type;    // Compression used (0=none, 1=lz4, 2=zstd)
     uint32_t reserved[3];         // Future expansion
 } texture_texture_lod_serialized_header_t;
 
@@ -162,6 +139,14 @@ typedef struct texture_texture_lod_serialized_item {
     uint32_t feature_flags;        // Additional feature flags
 } texture_texture_lod_serialized_item_t;
 
+/* ============================================================================
+ * PRIVATE FUNCTION DECLARATIONS
+ * ============================================================================ */
+
+static bool texture_texture_lod_compress_bc_astc(texture_texture_lod_internal_t* item, uint32_t format);
+static bool texture_texture_lod_init_virtual_texture(texture_texture_lod_internal_t* item);
+static bool texture_texture_lod_init_bindless(texture_texture_lod_internal_t* item);
+
 // Enhanced caching system
 typedef struct texture_texture_lod_cache_entry {
     uint32_t texture_id;          // Texture ID
@@ -171,6 +156,7 @@ typedef struct texture_texture_lod_cache_entry {
     uint64_t timestamp;           // Cache entry timestamp
     uint64_t last_access;         // Last access time
     uint32_t access_count;        // Access frequency
+
     bool valid;                   // Entry validity
     bool dirty;                   // Entry needs update
     uint32_t priority;            // Cache priority
@@ -317,6 +303,7 @@ typedef struct texture_texture_lod_memory_pool {
     uint32_t free_count;            // Number of free blocks
     uint32_t allocated_count;        // Number of allocated blocks
     size_t peak_usage;              // Peak memory usage
+    size_t current_usage;           // Current memory usage
     pthread_mutex_t pool_mutex;      // Pool access mutex
     bool initialized;                // Pool status
 } texture_texture_lod_memory_pool_t;
@@ -562,6 +549,15 @@ typedef struct texture_texture_lod_internal {
     } lod_system;
     
 } texture_texture_lod_internal_t;
+
+/* ============================================================================
+ * PRIVATE FUNCTION DECLARATIONS
+ * ============================================================================ */
+
+static bool texture_texture_lod_compress_bc_astc(texture_texture_lod_internal_t* item, uint32_t format);
+static bool texture_texture_lod_init_virtual_texture(texture_texture_lod_internal_t* item);
+static bool texture_texture_lod_init_bindless(texture_texture_lod_internal_t* item);
+static bool texture_texture_lod_init_texture_array(texture_texture_lod_internal_t* item, uint32_t layers);
 
 typedef struct texture_texture_lod_stats {
     uint64_t created;
@@ -855,7 +851,7 @@ static texture_texture_lod_internal_t* texture_texture_lod_stream_dequeue(void) 
 
 // Memory pool implementation
 static void* texture_texture_lod_pool_alloc(size_t size) {
-    if (!g_texture_lod_ctx.memory_pool_system.pool_initialized) {
+    if (!g_texture_lod_ctx.memory_pool_system.initialized) {
         return malloc(size);
     }
     
@@ -874,7 +870,7 @@ static void* texture_texture_lod_pool_alloc(size_t size) {
                     g_texture_lod_ctx.memory_pool_system.free_blocks[j + 1];
             }
             g_texture_lod_ctx.memory_pool_system.free_count--;
-            g_texture_lod_ctx.memory_pool_system.allocated_blocks++;
+            g_texture_lod_ctx.memory_pool_system.allocated_count++;
             g_texture_lod_ctx.memory_pool_system.current_usage += g_texture_lod_ctx.memory_pool_system.block_size;
             
             if (g_texture_lod_ctx.memory_pool_system.current_usage > g_texture_lod_ctx.memory_pool_system.peak_usage) {
@@ -909,7 +905,7 @@ static void texture_texture_lod_pool_free(void* ptr) {
             g_texture_lod_ctx.memory_pool_system.free_count++;
         }
         
-        g_texture_lod_ctx.memory_pool_system.allocated_blocks--;
+        g_texture_lod_ctx.memory_pool_system.allocated_count--;
         g_texture_lod_ctx.memory_pool_system.current_usage -= g_texture_lod_ctx.memory_pool_system.block_size;
         
         pthread_mutex_unlock(&g_texture_lod_ctx.memory_pool_system.pool_mutex);
@@ -1441,7 +1437,7 @@ int texture_texture_lod_init(void) {
                 g_texture_lod_ctx.memory_pool_system.free_blocks[i] = i;
             }
             g_texture_lod_ctx.memory_pool_system.free_count = g_texture_lod_ctx.memory_pool_system.total_blocks;
-            g_texture_lod_ctx.memory_pool_system.pool_initialized = true;
+            g_texture_lod_ctx.memory_pool_system.initialized = true;
         }
     }
 
@@ -1479,7 +1475,7 @@ int texture_texture_lod_init(void) {
     g_texture_lod_ctx.initialized = true;
     printf("Texture LOD System initialized\n");
     printf("  Memory Pool: %s (%zu bytes)\n", 
-           g_texture_lod_ctx.memory_pool_system.pool_initialized ? "Enabled" : "Disabled",
+           g_texture_lod_ctx.memory_pool_system.initialized ? "Enabled" : "Disabled",
            g_texture_lod_ctx.memory_pool_system.pool_size);
     printf("  Streaming: %s (%u capacity)\n", 
            g_texture_lod_ctx.streaming_system.streaming_active ? "Enabled" : "Disabled",
@@ -1524,8 +1520,8 @@ void texture_texture_lod_debug_print(void) {
     
     // Memory pool debug info
     printf("\n--- Memory Pool System ---\n");
-    printf("Pool Initialized: %s\n", g_texture_lod_ctx.memory_pool_system.pool_initialized ? "Yes" : "No");
-    if (g_texture_lod_ctx.memory_pool_system.pool_initialized) {
+    printf("Pool Initialized: %s\n", g_texture_lod_ctx.memory_pool_system.initialized ? "Yes" : "No");
+    if (g_texture_lod_ctx.memory_pool_system.initialized) {
         printf("Pool Size: %zu bytes\n", g_texture_lod_ctx.memory_pool_system.pool_size);
         printf("Block Size: %u bytes\n", g_texture_lod_ctx.memory_pool_system.block_size);
         printf("Total Blocks: %u\n", g_texture_lod_ctx.memory_pool_system.total_blocks);
@@ -2067,7 +2063,7 @@ int texture_texture_lod_process_pending(void) {
         
         // Apply memory pooling if enabled
         if (item->data_size > 0 && !item->cache_valid && 
-            g_texture_lod_ctx.memory_pool_system.pool_initialized) {
+            g_texture_lod_ctx.memory_pool_system.initialized) {
             
             // Try to allocate from pool
             void* pooled_data = texture_texture_lod_pool_alloc(item->data_size);

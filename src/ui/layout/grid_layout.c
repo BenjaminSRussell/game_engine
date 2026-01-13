@@ -13,7 +13,7 @@
 #include "core/memory.h"
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <math/math.h>
 
 #define MAX_GRID_SIZE 100
 #define LAYOUT_TOLERANCE 0.1f

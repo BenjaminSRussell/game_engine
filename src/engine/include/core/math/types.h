@@ -82,22 +82,45 @@ typedef u32 uintptr;
 #endif
 
 // ============================================================================
-// MATH VECTOR TYPES
+// SIMD-ENHANCED MATH VECTOR TYPES
 // ============================================================================
 
-// 2D Vector
-typedef struct {
-    f32 x, y;
+// SIMD feature detection and alignment
+#if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
+    #define UNIFIED_SIMD_SSE
+    #include <immintrin.h>
+    typedef __m128 simd_vec_t;
+#elif defined(__arm64__) || defined(__aarch64__) || defined(_M_ARM64)
+    #define UNIFIED_SIMD_NEON
+    #include <arm_neon.h>
+    typedef float32x4_t simd_vec_t;
+#endif
+
+// 2D Vector (SIMD-aligned when possible)
+typedef union ALIGN(16) vec2 {
+    struct { f32 x, y; };
+    f32 e[2];
+    #if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
+    simd_vec_t simd; // Only uses x,y components
+    #endif
 } vec2;
 
-// 3D Vector  
-typedef struct {
-    f32 x, y, z;
+// 3D Vector (SIMD-optimized with padding)
+typedef union ALIGN(16) vec3 {
+    struct { f32 x, y, z, _w; };
+    f32 e[4];
+    #if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
+    simd_vec_t simd;
+    #endif
 } vec3;
 
-// 4D Vector
-typedef struct {
-    f32 x, y, z, w;
+// 4D Vector (native SIMD)
+typedef union ALIGN(16) vec4 {
+    struct { f32 x, y, z, w; };
+    f32 e[4];
+    #if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
+    simd_vec_t simd;
+    #endif
 } vec4;
 
 // Integer vectors
@@ -114,26 +137,38 @@ typedef struct {
 } ivec4;
 
 // ============================================================================
-// MATRIX TYPES
+// SIMD-ENHANCED MATRIX TYPES
 // ============================================================================
 
-// 3x3 Matrix
-typedef struct {
+// 3x3 Matrix (row-major, SIMD-friendly)
+typedef union ALIGN(16) mat3 {
     f32 m[3][3];
+    f32 e[9];
+    #if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
+    simd_vec_t rows[3]; // Each row as SIMD vector
+    #endif
 } mat3;
 
-// 4x4 Matrix
-typedef struct {
+// 4x4 Matrix (row-major, SIMD-optimized)
+typedef union ALIGN(16) mat4 {
     f32 m[4][4];
+    f32 e[16];
+    #if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
+    simd_vec_t rows[4]; // Each row as SIMD vector
+    #endif
 } mat4;
 
 // ============================================================================
-// QUATERNION TYPES
+// SIMD-ENHANCED QUATERNION TYPES
 // ============================================================================
 
-// Quaternion
-typedef struct {
-    f32 x, y, z, w;
+// Quaternion (SIMD-compatible)
+typedef union ALIGN(16) quat {
+    struct { f32 x, y, z, w; };
+    f32 e[4];
+    #if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
+    simd_vec_t simd;
+    #endif
 } quat;
 
 // ============================================================================
@@ -635,6 +670,86 @@ typedef enum {
     SIMD_AVX2 = 32,
     SIMD_NEON_FEATURE = 64
 } SimdFeature;
+
+// SIMD utility functions
+static INLINE vec2 vec2_make(f32 x, f32 y) {
+    vec2 v = {{x, y}};
+    return v;
+}
+
+static INLINE vec3 vec3_make(f32 x, f32 y, f32 z) {
+    vec3 v = {{x, y, z, 0.0f}};
+    #if defined(UNIFIED_SIMD_SSE)
+        v.simd = _mm_setr_ps(x, y, z, 0.0f);
+    #elif defined(UNIFIED_SIMD_NEON)
+        f32 data[4] = {x, y, z, 0.0f};
+        v.simd = vld1q_f32(data);
+    #endif
+    return v;
+}
+
+static INLINE vec4 vec4_make(f32 x, f32 y, f32 z, f32 w) {
+    vec4 v = {{x, y, z, w}};
+    #if defined(UNIFIED_SIMD_SSE)
+        v.simd = _mm_setr_ps(x, y, z, w);
+    #elif defined(UNIFIED_SIMD_NEON)
+        f32 data[4] = {x, y, z, w};
+        v.simd = vld1q_f32(data);
+    #endif
+    return v;
+}
+
+static INLINE quat quat_make(f32 x, f32 y, f32 z, f32 w) {
+    quat q = {{x, y, z, w}};
+    #if defined(UNIFIED_SIMD_SSE)
+        q.simd = _mm_setr_ps(x, y, z, w);
+    #elif defined(UNIFIED_SIMD_NEON)
+        f32 data[4] = {x, y, z, w};
+        q.simd = vld1q_f32(data);
+    #endif
+    return q;
+}
+
+// SIMD vector operations (when available)
+#if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
+static INLINE vec3 vec3_add(vec3 a, vec3 b) {
+    vec3 result;
+    #if defined(UNIFIED_SIMD_SSE)
+        result.simd = _mm_add_ps(a.simd, b.simd);
+    #elif defined(UNIFIED_SIMD_NEON)
+        result.simd = vaddq_f32(a.simd, b.simd);
+    #endif
+    return result;
+}
+
+static INLINE vec3 vec3_sub(vec3 a, vec3 b) {
+    vec3 result;
+    #if defined(UNIFIED_SIMD_SSE)
+        result.simd = _mm_sub_ps(a.simd, b.simd);
+    #elif defined(UNIFIED_SIMD_NEON)
+        result.simd = vsubq_f32(a.simd, b.simd);
+    #endif
+    return result;
+}
+
+static INLINE f32 vec3_dot(vec3 a, vec3 b) {
+    #if defined(UNIFIED_SIMD_SSE)
+        __m128 mul = _mm_mul_ps(a.simd, b.simd);
+        __m128 shuf = _mm_movehdup_ps(mul);
+        __m128 sums = _mm_add_ps(mul, shuf);
+        shuf = _mm_movehl_ps(shuf, sums);
+        sums = _mm_add_ss(sums, shuf);
+        return _mm_cvtss_f32(sums);
+    #elif defined(UNIFIED_SIMD_NEON)
+        float32x4_t mul = vmulq_f32(a.simd, b.simd);
+        float32x2_t sum = vadd_f32(vget_low_f32(mul), vget_high_f32(mul));
+        sum = vpadd_f32(sum, sum);
+        return vget_lane_f32(sum, 0);
+    #else
+        return a.x * b.x + a.y * b.y + a.z * b.z;
+    #endif
+}
+#endif
 
 // Get available SIMD features at runtime
 SimdFeature simd_get_available_features(void);

@@ -13,7 +13,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "include/math/math.h"
+#include "engine/include/math/math.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -87,11 +87,6 @@ typedef struct {
     float bottom;
     float left;
 } BoxEdges;
-
-typedef struct {
-    float width;
-    float height;
-} Size;
 
 typedef struct {
     float x;

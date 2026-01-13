@@ -2,8 +2,8 @@
 //
 // Purpose: REDIRECTED TO UNIFIED MEMORY ALLOCATOR - CONSOLIDATED SYSTEM
 //
-#ifndef MEMORY_H
-#define MEMORY_H
+#ifndef CORE_MEMORY_H
+#define CORE_MEMORY_H
 
 // Redirect to the unified memory allocator that consolidates all memory systems
 #include "memory/unified_memory_allocator.h"
@@ -22,4 +22,22 @@
 // - Fragmentation analysis
 // - Hot-spot detection
 
-#endif // MEMORY_H
+// Global allocator instances for compatibility
+extern void *g_persistent_allocator;
+extern void *g_temp_allocator;
+
+// Additional compatibility macros for legacy code
+#define MALLOC_PERSISTENT(size) memory_alloc(size)
+#define REALLOC_PERSISTENT(ptr, size) memory_realloc(ptr, size)
+#define CALLOC_PERSISTENT(count, size) memory_calloc(count, size)
+
+// Allocator compatibility functions
+static inline void *allocator_alloc(void *allocator, size_t size) {
+    return memory_alloc(size);
+}
+
+static inline void allocator_free(void *allocator, void *ptr) {
+    memory_free(ptr);
+}
+
+#endif // CORE_MEMORY_H

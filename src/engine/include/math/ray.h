@@ -1,38 +1,38 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "vec3.h"
+#include "core/math/types.h"
 #include "plane.h"
 #include "aabb.h"
 #include <float.h>
 
 typedef struct {
-    Vec3 origin;
-    Vec3 direction; // Should be normalized
+    vec3 origin;
+    vec3 direction; // Should be normalized
 } Ray;
 
-static inline Ray ray_create(Vec3 origin, Vec3 direction) {
+static inline Ray ray_create(vec3 origin, vec3 direction) {
     Ray r;
     r.origin = origin;
     r.direction = vec3_normalize(direction);
     return r;
 }
 
-static inline Ray ray_from_points(Vec3 start, Vec3 end) {
+static inline Ray ray_from_points(vec3 start, vec3 end) {
     Ray r;
     r.origin = start;
     r.direction = vec3_normalize(vec3_sub(end, start));
     return r;
 }
 
-static inline Vec3 ray_at(Ray r, f32 t) {
+static inline vec3 ray_at(Ray r, f32 t) {
     return vec3_add(r.origin, vec3_mul(r.direction, t));
 }
 
 // Ray-Sphere intersection
 // Returns true if intersection occurs, stores distance in *t
-static inline bool ray_intersects_sphere(Ray r, Vec3 center, f32 radius, f32 *t) {
-    Vec3 oc = vec3_sub(r.origin, center);
+static inline bool ray_intersects_sphere(Ray r, vec3 center, f32 radius, f32 *t) {
+    vec3 oc = vec3_sub(r.origin, center);
     f32 b = vec3_dot(oc, r.direction);
     f32 c = vec3_dot(oc, oc) - radius * radius;
     f32 h = b * b - c;

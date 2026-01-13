@@ -5,7 +5,6 @@
 
 #include <ai/pathfinding/pathfinding_cache_advanced.h>
 #include <core/memory.h>
-#include <core/memory/unified_allocator.h>
 #include <core/logging/unified_logger.h>
 #include <string.h>
 #include <math.h>

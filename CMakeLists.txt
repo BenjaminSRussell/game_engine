@@ -104,17 +104,17 @@ include(cmake/sources.cmake)
 
 
 # --- Vulkan ---
-# --- Vulkan ---
-# find_package(Vulkan)
-# if(Vulkan_FOUND)
-#     file(GLOB_RECURSE VULKAN_SOURCES "src/engine/backend/vulkan/*.c")
-#     list(APPEND ENGINE_SOURCES ${VULKAN_SOURCES})
-#     add_definitions(-DVULKAN_BUILD)
-#     include_directories(${Vulkan_INCLUDE_DIRS})
-#     set(VULKAN_LIBS ${Vulkan_LIBRARIES})
-# else()
-#     message(STATUS "Vulkan not found, building without Vulkan renderer")
-# endif()
+find_package(Vulkan)
+if(Vulkan_FOUND)
+    file(GLOB_RECURSE VULKAN_SOURCES "src/engine/backend/vulkan/*.c")
+    list(APPEND ENGINE_SOURCES ${VULKAN_SOURCES})
+    add_definitions(-DVULKAN_BUILD)
+    include_directories(${Vulkan_INCLUDE_DIRS})
+    set(VULKAN_LIBS ${Vulkan_LIBRARIES})
+    message(STATUS "Vulkan found and enabled")
+else()
+    message(WARNING "Vulkan not found, building without Vulkan renderer")
+endif()
 
 # --- Libraries ---
 # TODO: Medium - Implement a more robust build options system (e.g., for enabling/disabling features like Vulkan, debugging, etc.).

@@ -85,7 +85,7 @@ static bool asset_loader_unload(u32 asset_id);
 // Initialize asset loader system
 bool asset_loader_init(u32 max_concurrent_loads, u32 cache_size_mb) {
     if (g_asset_system.initialized) {
-        LOG_WARN("Asset loader system already initialized");
+        LOG_WARN(LOG_CAT_GENERAL, "Asset loader system already initialized");
         return true;
     }
     
@@ -94,19 +94,19 @@ bool asset_loader_init(u32 max_concurrent_loads, u32 cache_size_mb) {
     // Initialize thread pool
     g_asset_system.thread_pool = thread_pool_create(max_concurrent_loads);
     if (!g_asset_system.thread_pool) {
-        LOG_ERROR("Failed to create asset loader thread pool");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to create asset loader thread pool");
         return false;
     }
     
     // Initialize mutexes
     if (pthread_mutex_init(&g_asset_system.cache_mutex, NULL) != 0) {
-        LOG_ERROR("Failed to initialize cache mutex");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to initialize cache mutex");
         thread_pool_destroy(g_asset_system.thread_pool);
         return false;
     }
     
     if (pthread_mutex_init(&g_asset_system.loader_mutex, NULL) != 0) {
-        LOG_ERROR("Failed to initialize loader mutex");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to initialize loader mutex");
         pthread_mutex_destroy(&g_asset_system.cache_mutex);
         thread_pool_destroy(g_asset_system.thread_pool);
         return false;
@@ -118,7 +118,7 @@ bool asset_loader_init(u32 max_concurrent_loads, u32 cache_size_mb) {
     g_asset_system.cache = (asset_cache_entry_t*)calloc(g_asset_system.cache_capacity, sizeof(asset_cache_entry_t));
     
     if (!g_asset_system.cache) {
-        LOG_ERROR("Failed to allocate asset cache");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate asset cache");
         pthread_mutex_destroy(&g_asset_system.cache_mutex);
         pthread_mutex_destroy(&g_asset_system.loader_mutex);
         thread_pool_destroy(g_asset_system.thread_pool);
@@ -128,7 +128,7 @@ bool asset_loader_init(u32 max_concurrent_loads, u32 cache_size_mb) {
     g_asset_system.next_asset_id = 1;
     g_asset_system.initialized = true;
     
-    LOG_INFO("Asset loader system initialized with %u workers, %u MB cache", 
+    LOG_INFO(LOG_CAT_GENERAL, "Asset loader system initialized with %u workers, %u MB cache", 
              max_concurrent_loads, cache_size_mb);
     return true;
 }
@@ -169,7 +169,7 @@ void asset_loader_shutdown(void) {
     
     memset(&g_asset_system, 0, sizeof(g_asset_system));
     
-    LOG_INFO("Asset loader system shutdown complete");
+    LOG_INFO(LOG_CAT_GENERAL, "Asset loader system shutdown complete");
 }
 
 // Register an asset loader
@@ -184,7 +184,7 @@ bool asset_loader_register(asset_type_t type, const asset_loader_interface_t* lo
     
     pthread_mutex_unlock(&g_asset_system.loader_mutex);
     
-    LOG_INFO("Registered asset loader for type %u", type);
+    LOG_INFO(LOG_CAT_GENERAL, "Registered asset loader for type %u", type);
     return true;
 }
 
@@ -256,7 +256,7 @@ static void asset_load_worker(void* task_data) {
     }
     
     if (!asset) {
-        LOG_ERROR("Asset handle not found for ID %u", task->asset_id);
+        LOG_ERROR(LOG_CAT_GENERAL, "Asset handle not found for ID %u", task->asset_id);
         if (task->callback) {
             task->callback(0, false, task->userdata);
         }
@@ -299,10 +299,10 @@ static void asset_load_worker(void* task_data) {
         asset->state = ASSET_STATE_LOADED;
         asset->ref_count = 1;
         
-        LOG_INFO("Successfully loaded asset '%s' (ID: %u, %u bytes)", task->path, asset->id, size);
+        LOG_INFO(LOG_CAT_GENERAL, "Successfully loaded asset '%s' (ID: %u, %u bytes)", task->path, asset->id, size);
     } else {
         asset->state = ASSET_STATE_ERROR;
-        LOG_ERROR("Failed to load asset '%s'", task->path);
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to load asset '%s'", task->path);
     }
     
     pthread_mutex_unlock(&asset->mutex);
@@ -324,7 +324,7 @@ u32 asset_loader_load_async(const char* path, void (*callback)(u32 asset_id, boo
     // Determine asset type
     asset_type_t type = determine_asset_type(path);
     if (type == ASSET_TYPE_UNKNOWN) {
-        LOG_ERROR("Unknown asset type for path '%s'", path);
+        LOG_ERROR(LOG_CAT_GENERAL, "Unknown asset type for path '%s'", path);
         return 0;
     }
     
@@ -357,7 +357,7 @@ u32 asset_loader_load_async(const char* path, void (*callback)(u32 asset_id, boo
     u32 slot = find_free_asset_slot();
     
     if (slot >= MAX_ASSET_LOADERS) {
-        LOG_ERROR("No free asset slots available");
+        LOG_ERROR(LOG_CAT_GENERAL, "No free asset slots available");
         pthread_mutex_unlock(&g_asset_system.loader_mutex);
         return 0;
     }
@@ -375,7 +375,7 @@ u32 asset_loader_load_async(const char* path, void (*callback)(u32 asset_id, boo
     asset->ref_count = 0;
     
     if (pthread_mutex_init(&asset->mutex, NULL) != 0) {
-        LOG_ERROR("Failed to initialize asset mutex");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to initialize asset mutex");
         pthread_mutex_unlock(&g_asset_system.loader_mutex);
         return 0;
     }
@@ -386,7 +386,7 @@ u32 asset_loader_load_async(const char* path, void (*callback)(u32 asset_id, boo
     // Create load task
     asset_load_task_t* task = (asset_load_task_t*)malloc(sizeof(asset_load_task_t));
     if (!task) {
-        LOG_ERROR("Failed to allocate load task");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate load task");
         return 0;
     }
     
@@ -400,7 +400,7 @@ u32 asset_loader_load_async(const char* path, void (*callback)(u32 asset_id, boo
     // Submit to thread pool
     thread_pool_submit(g_asset_system.thread_pool, asset_load_worker, task);
     
-    LOG_INFO("Submitted asset '%s' for async loading (ID: %u)", path, asset_id);
+    LOG_INFO(LOG_CAT_GENERAL, "Submitted asset '%s' for async loading (ID: %u)", path, asset_id);
     return asset_id;
 }
 
@@ -413,7 +413,7 @@ u32 asset_loader_load_sync(const char* path) {
     // Determine asset type
     asset_type_t type = determine_asset_type(path);
     if (type == ASSET_TYPE_UNKNOWN) {
-        LOG_ERROR("Unknown asset type for path '%s'", path);
+        LOG_ERROR(LOG_CAT_GENERAL, "Unknown asset type for path '%s'", path);
         return 0;
     }
     
@@ -442,7 +442,7 @@ u32 asset_loader_load_sync(const char* path) {
     u32 slot = find_free_asset_slot();
     
     if (slot >= MAX_ASSET_LOADERS) {
-        LOG_ERROR("No free asset slots available");
+        LOG_ERROR(LOG_CAT_GENERAL, "No free asset slots available");
         pthread_mutex_unlock(&g_asset_system.loader_mutex);
         return 0;
     }
@@ -460,7 +460,7 @@ u32 asset_loader_load_sync(const char* path) {
     asset->ref_count = 0;
     
     if (pthread_mutex_init(&asset->mutex, NULL) != 0) {
-        LOG_ERROR("Failed to initialize asset mutex");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to initialize asset mutex");
         pthread_mutex_unlock(&g_asset_system.loader_mutex);
         return 0;
     }
@@ -484,10 +484,10 @@ u32 asset_loader_load_sync(const char* path) {
             asset->state = ASSET_STATE_LOADED;
             asset->ref_count = 1;
             
-            LOG_INFO("Successfully loaded asset '%s' (ID: %u, %u bytes)", path, asset_id, size);
+            LOG_INFO(LOG_CAT_GENERAL, "Successfully loaded asset '%s' (ID: %u, %u bytes)", path, asset_id, size);
         } else {
             asset->state = ASSET_STATE_ERROR;
-            LOG_ERROR("Failed to load asset '%s'", path);
+            LOG_ERROR(LOG_CAT_GENERAL, "Failed to load asset '%s'", path);
         }
         
         pthread_mutex_unlock(&asset->mutex);
@@ -514,7 +514,7 @@ static bool asset_loader_unload(u32 asset_id) {
     }
     
     if (!asset) {
-        LOG_ERROR("Asset ID %u not found", asset_id);
+        LOG_ERROR(LOG_CAT_GENERAL, "Asset ID %u not found", asset_id);
         pthread_mutex_unlock(&g_asset_system.loader_mutex);
         return false;
     }
@@ -538,7 +538,7 @@ static bool asset_loader_unload(u32 asset_id) {
         asset->size_bytes = 0;
         asset->state = ASSET_STATE_UNLOADED;
         
-        LOG_INFO("Unloaded asset '%s' (ID: %u)", asset->path, asset_id);
+        LOG_INFO(LOG_CAT_GENERAL, "Unloaded asset '%s' (ID: %u)", asset->path, asset_id);
     }
     
     pthread_mutex_unlock(&asset->mutex);

@@ -54,13 +54,13 @@ float audio_calculate_distance(const float* pos1, const float* pos2) {
 // Audio world implementation
 AudioWorld* audio_world_create(uint32_t maxSources, uint32_t maxBuffers, uint32_t maxEffects) {
     if (maxSources == 0 || maxBuffers == 0 || maxEffects == 0) {
-        LOG_ERROR("Invalid parameters for audio world creation");
+        LOG_ERROR(LOG_CAT_GENERAL, "Invalid parameters for audio world creation");
         return NULL;
     }
     
     AudioWorld* world = malloc(sizeof(AudioWorld));
     if (!world) {
-        LOG_ERROR("Failed to allocate memory for audio world");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate memory for audio world");
         return NULL;
     }
     
@@ -73,7 +73,7 @@ AudioWorld* audio_world_create(uint32_t maxSources, uint32_t maxBuffers, uint32_
     world->streams = malloc(sizeof(AudioStream) * 16); // Default 16 streams
     
     if (!world->sources || !world->buffers || !world->effects || !world->streams) {
-        LOG_ERROR("Failed to allocate memory for audio components");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate memory for audio components");
         if (world->sources) free(world->sources);
         if (world->buffers) free(world->buffers);
         if (world->effects) free(world->effects);
@@ -111,7 +111,7 @@ AudioWorld* audio_world_create(uint32_t maxSources, uint32_t maxBuffers, uint32_
     
     // Initialize platform
     if (!audio_platform_init()) {
-        LOG_ERROR("Failed to initialize audio platform");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to initialize audio platform");
         free(world->sources);
         free(world->buffers);
         free(world->effects);
@@ -121,7 +121,7 @@ AudioWorld* audio_world_create(uint32_t maxSources, uint32_t maxBuffers, uint32_
     }
     
     world->isInitialized = true;
-    LOG_INFO("Audio world created with %u sources, %u buffers, %u effects", maxSources, maxBuffers, maxEffects);
+    LOG_INFO(LOG_CAT_GENERAL, "Audio world created with %u sources, %u buffers, %u effects", maxSources, maxBuffers, maxEffects);
     return world;
 }
 
@@ -158,7 +158,7 @@ void audio_world_destroy(AudioWorld* world) {
     audio_platform_shutdown();
     
     world->isInitialized = false;
-    LOG_INFO("Audio world destroyed");
+    LOG_INFO(LOG_CAT_GENERAL, "Audio world destroyed");
 }
 
 void audio_world_update(AudioWorld* world, float deltaTime) {
@@ -256,7 +256,7 @@ uint32_t audio_buffer_create(AudioWorld* world, const void* data, uint32_t size,
     if (!world || !data || size == 0) return 0;
     
     if (world->bufferCount >= world->maxBuffers) {
-        LOG_ERROR("Maximum number of audio buffers reached");
+        LOG_ERROR(LOG_CAT_GENERAL, "Maximum number of audio buffers reached");
         return 0;
     }
     
@@ -272,7 +272,7 @@ uint32_t audio_buffer_create(AudioWorld* world, const void* data, uint32_t size,
     // Copy audio data
     buffer->data = malloc(size);
     if (!buffer->data) {
-        LOG_ERROR("Failed to allocate memory for audio buffer data");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate memory for audio buffer data");
         return 0;
     }
     
@@ -312,13 +312,13 @@ uint32_t audio_buffer_create(AudioWorld* world, const void* data, uint32_t size,
     // Create platform buffer
     uint32_t platformBufferId = audio_platform_create_buffer(data, size, format, sampleRate);
     if (platformBufferId == 0) {
-        LOG_ERROR("Failed to create platform audio buffer");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to create platform audio buffer");
         free(buffer->data);
         return 0;
     }
     
     world->bufferCount++;
-    LOG_DEBUG("Created audio buffer %u with %u bytes", bufferId, size);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Created audio buffer %u with %u bytes", bufferId, size);
     return bufferId;
 }
 
@@ -335,7 +335,7 @@ void audio_buffer_destroy(AudioWorld* world, uint32_t bufferId) {
     // Destroy platform buffer
     audio_platform_destroy_buffer(bufferId);
     
-    LOG_DEBUG("Destroyed audio buffer %u", bufferId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Destroyed audio buffer %u", bufferId);
 }
 
 AudioBuffer* audio_buffer_get(AudioWorld* world, uint32_t bufferId) {
@@ -346,7 +346,7 @@ AudioBuffer* audio_buffer_get(AudioWorld* world, uint32_t bufferId) {
 // Source management
 uint32_t audio_source_create(AudioWorld* world) {
     if (!world || world->sourceCount >= world->maxSources) {
-        LOG_ERROR("Cannot create audio source: maximum sources reached");
+        LOG_ERROR(LOG_CAT_GENERAL, "Cannot create audio source: maximum sources reached");
         return 0;
     }
     
@@ -378,13 +378,13 @@ uint32_t audio_source_create(AudioWorld* world) {
     // Create platform source
     uint32_t platformSourceId = audio_platform_create_source();
     if (platformSourceId == 0) {
-        LOG_ERROR("Failed to create platform audio source");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to create platform audio source");
         return 0;
     }
     
     world->sourceCount++;
     world->mixer.activeVoices++;
-    LOG_DEBUG("Created audio source %u", sourceId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Created audio source %u", sourceId);
     return sourceId;
 }
 
@@ -405,7 +405,7 @@ void audio_source_destroy(AudioWorld* world, uint32_t sourceId) {
     source->isPaused = false;
     world->mixer.activeVoices--;
     
-    LOG_DEBUG("Destroyed audio source %u", sourceId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Destroyed audio source %u", sourceId);
 }
 
 AudioSource* audio_source_get(AudioWorld* world, uint32_t sourceId) {
@@ -422,7 +422,7 @@ void audio_source_set_buffer(AudioWorld* world, uint32_t sourceId, uint32_t buff
     // Set platform buffer
     audio_platform_source_set_buffer(sourceId, bufferId);
     
-    LOG_DEBUG("Set buffer %u for source %u", bufferId, sourceId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set buffer %u for source %u", bufferId, sourceId);
 }
 
 void audio_source_play(AudioWorld* world, uint32_t sourceId) {
@@ -435,7 +435,7 @@ void audio_source_play(AudioWorld* world, uint32_t sourceId) {
     // Play platform source
     audio_platform_source_play(sourceId);
     
-    LOG_DEBUG("Playing audio source %u", sourceId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Playing audio source %u", sourceId);
 }
 
 void audio_source_pause(AudioWorld* world, uint32_t sourceId) {
@@ -447,7 +447,7 @@ void audio_source_pause(AudioWorld* world, uint32_t sourceId) {
     // Pause platform source
     audio_platform_source_pause(sourceId);
     
-    LOG_DEBUG("Paused audio source %u", sourceId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Paused audio source %u", sourceId);
 }
 
 void audio_source_stop(AudioWorld* world, uint32_t sourceId) {
@@ -461,7 +461,7 @@ void audio_source_stop(AudioWorld* world, uint32_t sourceId) {
     // Stop platform source
     audio_platform_source_stop(sourceId);
     
-    LOG_DEBUG("Stopped audio source %u", sourceId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Stopped audio source %u", sourceId);
 }
 
 void audio_source_set_gain(AudioWorld* world, uint32_t sourceId, float gain) {
@@ -473,7 +473,7 @@ void audio_source_set_gain(AudioWorld* world, uint32_t sourceId, float gain) {
     // Set platform gain
     audio_platform_source_set_gain(sourceId, gain);
     
-    LOG_DEBUG("Set gain %.2f for source %u", gain, sourceId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set gain %.2f for source %u", gain, sourceId);
 }
 
 void audio_source_set_pitch(AudioWorld* world, uint32_t sourceId, float pitch) {
@@ -485,7 +485,7 @@ void audio_source_set_pitch(AudioWorld* world, uint32_t sourceId, float pitch) {
     // Set platform pitch
     audio_platform_source_set_pitch(sourceId, pitch);
     
-    LOG_DEBUG("Set pitch %.2f for source %u", pitch, sourceId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set pitch %.2f for source %u", pitch, sourceId);
 }
 
 void audio_source_set_position(AudioWorld* world, uint32_t sourceId, float x, float y, float z) {
@@ -499,7 +499,7 @@ void audio_source_set_position(AudioWorld* world, uint32_t sourceId, float x, fl
     // Set platform position
     audio_platform_source_set_position(sourceId, x, y, z);
     
-    LOG_DEBUG("Set position (%.2f, %.2f, %.2f) for source %u", x, y, z, sourceId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set position (%.2f, %.2f, %.2f) for source %u", x, y, z, sourceId);
 }
 
 void audio_source_set_velocity(AudioWorld* world, uint32_t sourceId, float vx, float vy, float vz) {
@@ -513,7 +513,7 @@ void audio_source_set_velocity(AudioWorld* world, uint32_t sourceId, float vx, f
     // Set platform velocity
     audio_platform_source_set_velocity(sourceId, vx, vy, vz);
     
-    LOG_DEBUG("Set velocity (%.2f, %.2f, %.2f) for source %u", vx, vy, vz, sourceId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set velocity (%.2f, %.2f, %.2f) for source %u", vx, vy, vz, sourceId);
 }
 
 // Mixer management
@@ -521,35 +521,35 @@ void audio_mixer_set_master_volume(AudioWorld* world, float volume) {
     if (!world) return;
     
     world->mixer.masterVolume = volume;
-    LOG_DEBUG("Set master volume to %.2f", volume);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set master volume to %.2f", volume);
 }
 
 void audio_mixer_set_music_volume(AudioWorld* world, float volume) {
     if (!world) return;
     
     world->mixer.musicVolume = volume;
-    LOG_DEBUG("Set music volume to %.2f", volume);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set music volume to %.2f", volume);
 }
 
 void audio_mixer_set_sfx_volume(AudioWorld* world, float volume) {
     if (!world) return;
     
     world->mixer.sfxVolume = volume;
-    LOG_DEBUG("Set SFX volume to %.2f", volume);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set SFX volume to %.2f", volume);
 }
 
 void audio_mixer_set_voice_volume(AudioWorld* world, float volume) {
     if (!world) return;
     
     world->mixer.voiceVolume = volume;
-    LOG_DEBUG("Set voice volume to %.2f", volume);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set voice volume to %.2f", volume);
 }
 
 void audio_mixer_set_ambient_volume(AudioWorld* world, float volume) {
     if (!world) return;
     
     world->mixer.ambientVolume = volume;
-    LOG_DEBUG("Set ambient volume to %.2f", volume);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set ambient volume to %.2f", volume);
 }
 
 // Voice management
@@ -595,7 +595,7 @@ void audio_voice_manager_steal_voice(AudioWorld* world, int32_t priority) {
     
     if (lowestPrioritySource > 0) {
         audio_source_stop(world, lowestPrioritySource);
-        LOG_DEBUG("Stole voice from source %u with priority %d", lowestPrioritySource, lowestPriority);
+        LOG_DEBUG(LOG_CAT_GENERAL, "Stole voice from source %u with priority %d", lowestPrioritySource, lowestPriority);
     }
 }
 
@@ -614,17 +614,17 @@ void audio_apply_doppler_effect(AudioWorld* world, uint32_t sourceId, float spee
     float newPitch = source->pitch * dopplerFactor;
     audio_source_set_pitch(world, sourceId, newPitch);
     
-    LOG_DEBUG("Applied Doppler effect to source %u: pitch %.2f", sourceId, newPitch);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Applied Doppler effect to source %u: pitch %.2f", sourceId, newPitch);
 }
 
 // Platform stubs (would be implemented per platform)
 bool audio_platform_init(void) {
-    LOG_INFO("Audio platform initialized");
+    LOG_INFO(LOG_CAT_GENERAL, "Audio platform initialized");
     return true;
 }
 
 void audio_platform_shutdown(void) {
-    LOG_INFO("Audio platform shutdown");
+    LOG_INFO(LOG_CAT_GENERAL, "Audio platform shutdown");
 }
 
 void audio_platform_update(void) {
@@ -687,7 +687,7 @@ uint32_t audio_effect_create(AudioWorld* world, AudioEffectType type) {
     if (!world) return 0;
     
     if (world->effectCount >= world->maxEffects) {
-        LOG_ERROR("Maximum number of audio effects reached");
+        LOG_ERROR(LOG_CAT_GENERAL, "Maximum number of audio effects reached");
         return 0;
     }
     
@@ -701,7 +701,7 @@ uint32_t audio_effect_create(AudioWorld* world, AudioEffectType type) {
     effect->enabled = true;
     
     world->effectCount++;
-    LOG_DEBUG("Created audio effect %u with type %d", effectId, type);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Created audio effect %u with type %d", effectId, type);
     return effectId;
 }
 
@@ -716,7 +716,7 @@ void audio_effect_destroy(AudioWorld* world, uint32_t effectId) {
     }
     
     effect->enabled = false;
-    LOG_DEBUG("Destroyed audio effect %u", effectId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Destroyed audio effect %u", effectId);
 }
 
 void audio_stream_destroy(AudioWorld* world, uint32_t streamId) {
@@ -738,7 +738,7 @@ void audio_stream_destroy(AudioWorld* world, uint32_t streamId) {
     }
     
     stream->isStreaming = false;
-    LOG_DEBUG("Destroyed audio stream %u", streamId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Destroyed audio stream %u", streamId);
 }
 
 void audio_stream_update(AudioWorld* world, uint32_t streamId) {
@@ -748,5 +748,5 @@ void audio_stream_update(AudioWorld* world, uint32_t streamId) {
     if (!stream->isStreaming) return;
     
     // Stub implementation - would handle streaming buffer updates
-    LOG_DEBUG("Updating audio stream %u", streamId);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Updating audio stream %u", streamId);
 }

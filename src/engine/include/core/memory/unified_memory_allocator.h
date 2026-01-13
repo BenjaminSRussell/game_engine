@@ -9,17 +9,40 @@
 // UNIFIED MEMORY ALLOCATOR - CONSOLIDATING ALL MEMORY SYSTEMS
 // ============================================================================
 
-// Memory allocation strategies
+// Memory allocation strategies (consolidated from all allocator types)
 typedef enum {
     MEMORY_STRATEGY_DEFAULT = 0,    // Use default malloc/free
-    MEMORY_STRATEGY_POOL,           // Use memory pools for small allocations
-    MEMORY_STRATEGY_STACK,          // Use stack allocator for temporary data
-    MEMORY_STRATEGY_ARENA,          // Use arena allocator for bulk allocations
-    MEMORY_STRATEGY_TRACKED,        // Use tracked allocations with debugging
+    MEMORY_STRATEGY_LINEAR,         // Linear allocator - fast, no free
+    MEMORY_STRATEGY_STACK,          // Stack allocator - LIFO
+    MEMORY_STRATEGY_POOL,           // Pool allocator - fixed-size blocks
+    MEMORY_STRATEGY_BUDDY,          // Buddy allocator - power-of-2 blocks
+    MEMORY_STRATEGY_ARENA,          // Arena allocator - multi-threaded
+    MEMORY_STRATEGY_TRACKED,        // Tracked allocations with debugging
+    MEMORY_STRATEGY_GPU,            // GPU memory management
+    MEMORY_STRATEGY_ALIGNED,        // Aligned allocator for SIMD
     MEMORY_STRATEGY_COUNT
 } MemoryStrategy;
 
-// Memory allocation flags
+// Memory tagging system (consolidated from all systems)
+typedef enum {
+    MEMORY_TAG_DEFAULT = 0,
+    MEMORY_TAG_RENDERER,
+    MEMORY_TAG_AUDIO,
+    MEMORY_TAG_PHYSICS,
+    MEMORY_TAG_AI,
+    MEMORY_TAG_ANIMATION,
+    MEMORY_TAG_TERRAIN,
+    MEMORY_TAG_ASSETS,
+    MEMORY_TAG_NETWORK,
+    MEMORY_TAG_UI,
+    MEMORY_TAG_TOOLS,
+    MEMORY_TAG_TEMP,
+    MEMORY_TAG_PERSISTENT,
+    MEMORY_TAG_GPU,
+    MEMORY_TAG_COUNT
+} MemoryTag;
+
+// Memory allocation flags (consolidated)
 typedef enum {
     MEMORY_FLAG_NONE = 0,
     MEMORY_FLAG_ZERO = 1 << 0,      // Zero-initialize memory
@@ -27,6 +50,7 @@ typedef enum {
     MEMORY_FLAG_GUARD = 1 << 2,     // Add guard pages for corruption detection
     MEMORY_FLAG_TRACK = 1 << 3,     // Track allocation for debugging
     MEMORY_FLAG_TEMP = 1 << 4,      // Temporary allocation (auto-cleanup)
+    MEMORY_FLAG_THREAD_LOCAL = 1 << 5, // Thread-local allocation
     MEMORY_FLAG_COUNT
 } MemoryFlags;
 

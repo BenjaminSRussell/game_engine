@@ -362,6 +362,14 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # UI subdirectory
     "src/engine/ui/*.c"
 
+    # UI Batch Rendering System - Geometry batching, text, effects, GPU integration
+    "src/engine/editor/ui/canvas/ui_batch.c"
+    "src/engine/editor/ui/canvas/ui_batch_gpu.c"
+    "src/engine/editor/ui/canvas/ui_batch_text.c"
+    "src/engine/editor/ui/canvas/ui_batch_effects.c"
+    "src/engine/editor/ui/canvas/ui_batch_optimize.c"
+    "src/engine/editor/ui/canvas/ui_batch_renderer.c"
+
     # Advanced Text Rendering System - COMPLETE IMPLEMENTATION (2026-01-12)
     "src/engine/rendering/text_rendering_advanced.c"
     
