@@ -150,10 +150,10 @@ int main(int argc, char* argv[]) {
     unified_logger_shutdown();
 
     if (total_errors == 0) {
-        printf("✅ Core Systems Thread Safety Verification PASSED\n");
+        printf(" Core Systems Thread Safety Verification PASSED\n");
         return 0;
     } else {
-        printf("❌ Core Systems Thread Safety Verification FAILED with %d errors\n", total_errors);
+        printf(" Core Systems Thread Safety Verification FAILED with %d errors\n", total_errors);
         return 1;
     }
 }

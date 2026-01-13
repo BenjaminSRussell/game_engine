@@ -3,14 +3,14 @@
 
 #include "../framebuffer.h"
 #include "../gpu_memory.h"
-#include "../lighting/lighting_system.c"
 #include "../render_pipeline.h"
 #include "../render_types.h"
-#include <core/logger.h>
+#include <core/logger.h>>
 #include <float.h>
 #include <math/mat4.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
+#include <physics/core/physics_types.h> // Assuming this has Vec3? Or math/vec3.h
 
 extern uint64_t get_time_nanos(void);
 #define nanos_to_ms(x) ((x) / 1000000.0f)

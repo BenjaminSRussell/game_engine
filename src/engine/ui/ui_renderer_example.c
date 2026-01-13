@@ -308,9 +308,9 @@ int main() {
     
     printf("\\nUI Rendering System Example completed successfully!\\n");
     printf("All three TODO features have been demonstrated:\\n");
-    printf("✓ TODO-0204: Antialiasing for UI elements - IMPLEMENTED\\n");
-    printf("✓ TODO-0205: GPU-driven UI rendering - IMPLEMENTED\\n");
-    printf("✓ TODO-0206: Z-order and depth sorting - IMPLEMENTED\\n");
+    printf(" TODO-0204: Antialiasing for UI elements - IMPLEMENTED\\n");
+    printf(" TODO-0205: GPU-driven UI rendering - IMPLEMENTED\\n");
+    printf(" TODO-0206: Z-order and depth sorting - IMPLEMENTED\\n");
     
     return 0;
 }

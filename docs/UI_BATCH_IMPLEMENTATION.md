@@ -259,47 +259,47 @@ Added to `cmake/sources.cmake`:
 
 ```
 src/engine/editor/ui/canvas/
-├── ui_batch.h              (Complete geometry batching API)
-├── ui_batch.c              (Core batching implementation)
-├── ui_batch_gpu.h          (GPU buffer management)
-├── ui_batch_gpu.c          (GPU integration)
-├── ui_batch_text.h         (Text rendering API)
-├── ui_batch_text.c         (SDF text implementation)
-├── ui_batch_effects.h      (Visual effects API)
-├── ui_batch_effects.c      (Effects implementation)
-├── ui_batch_optimize.h     (Optimization utilities)
-└── ui_batch_optimize.c     (SIMD, pooling, caching)
+ ui_batch.h              (Complete geometry batching API)
+ ui_batch.c              (Core batching implementation)
+ ui_batch_gpu.h          (GPU buffer management)
+ ui_batch_gpu.c          (GPU integration)
+ ui_batch_text.h         (Text rendering API)
+ ui_batch_text.c         (SDF text implementation)
+ ui_batch_effects.h      (Visual effects API)
+ ui_batch_effects.c      (Effects implementation)
+ ui_batch_optimize.h     (Optimization utilities)
+ ui_batch_optimize.c     (SIMD, pooling, caching)
 
 tests/
-└── ui_batch_test.c         (Comprehensive test suite)
+ ui_batch_test.c         (Comprehensive test suite)
 ```
 
 ## Key Achievements
 
-✅ **Complete Implementation**
+ **Complete Implementation**
 - All core functionality implemented
 - No stub placeholders
 - Production-ready code
 
-✅ **Performance Optimized**
+ **Performance Optimized**
 - SIMD acceleration where available
 - Memory pooling for allocation efficiency
 - Draw call merging (90%+ reduction)
 - Cache-friendly data structures
 
-✅ **Comprehensive API**
+ **Comprehensive API**
 - Geometry management
 - Text rendering with SDF
 - Visual effects
 - GPU integration
 - Memory optimization
 
-✅ **Well-Tested**
+ **Well-Tested**
 - 13+ test cases
 - Error handling throughout
 - Statistics and profiling support
 
-✅ **Documented**
+ **Documented**
 - Clear API documentation
 - Usage examples
 - Performance characteristics

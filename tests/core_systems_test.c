@@ -480,11 +480,11 @@ static void run_test_case(TestCase* test_case) {
     if (test_case->passed) {
         g_current_suite->passed_count++;
         g_total_passed++;
-        printf("  ✓ %s (%.2f ms)\n", test_case->name, test_case->execution_time_ms);
+        printf("   %s (%.2f ms)\n", test_case->name, test_case->execution_time_ms);
     } else {
         g_current_suite->failed_count++;
         g_total_failed++;
-        printf("  ✗ %s (%.2f ms)\n", test_case->name, test_case->execution_time_ms);
+        printf("   %s (%.2f ms)\n", test_case->name, test_case->execution_time_ms);
     }
     
     g_total_tests++;
@@ -565,9 +565,9 @@ int main(int argc, char* argv[]) {
     // Check if we met the coverage target
     double overall_coverage = (double)g_total_passed / g_total_tests * 100.0;
     if (overall_coverage >= 80.0) {
-        printf("✓ Coverage target met: %.1f%%\n", overall_coverage);
+        printf(" Coverage target met: %.1f%%\n", overall_coverage);
     } else {
-        printf("✗ Coverage target not met: %.1f%% (need 80%%+)\n", overall_coverage);
+        printf(" Coverage target not met: %.1f%% (need 80%%+)\n", overall_coverage);
     }
     
     // Generate coverage report

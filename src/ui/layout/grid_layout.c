@@ -211,8 +211,8 @@ static TrackLayout create_track_layout(const GridTrack* tracks, uint32_t track_c
 
 static void destroy_track_layout(TrackLayout* layout) {
     if (layout) {
-        if (layout->positions) memory_free(layout->positions);
-        if (layout->sizes) memory_free(layout->sizes);
+        if (layout->positions) free(layout->positions);
+        if (layout->sizes) free(layout->sizes);
         memset(layout, 0, sizeof(TrackLayout));
     }
 }
@@ -265,9 +265,9 @@ static void position_grid_items(GridContainer* container, const TrackLayout* col
  * ============================================================================ */
 
 GridContainer* grid_container_create(const char* name) {
-    GridContainer* container = memory_alloc(sizeof(GridContainer));
+    GridContainer* container = malloc(sizeof(GridContainer));
     if (!container) {
-        LOG_ERROR("Failed to allocate grid container");
+        fprintf(stderr, "Failed to allocate grid container\n");
         return NULL;
     }
     
@@ -289,7 +289,7 @@ GridContainer* grid_container_create(const char* name) {
     
     container->needs_layout = true;
     
-    LOG_INFO("Created grid container: %s", name ? name : "unnamed");
+    printf("Created grid container: %s\n", name ? name : "unnamed");
     return container;
 }
 
@@ -302,38 +302,38 @@ void grid_container_destroy(GridContainer* container) {
     }
     
     if (container->base.children) {
-        memory_free(container->base.children);
+        free(container->base.children);
     }
     
     if (container->config.columns) {
-        memory_free(container->config.columns);
+        free(container->config.columns);
     }
     
     if (container->config.rows) {
-        memory_free(container->config.rows);
+        free(container->config.rows);
     }
     
     if (container->layout.cells) {
-        memory_free(container->layout.cells);
+        free(container->layout.cells);
     }
     
     if (container->base.name) {
         free(container->base.name);
     }
     
-    memory_free(container);
+    free(container);
 }
 
 void grid_set_columns(GridContainer* container, const GridTrack* tracks, uint32_t count) {
     if (!container || !tracks || count == 0) return;
     
     if (container->config.columns) {
-        memory_free(container->config.columns);
+        free(container->config.columns);
     }
     
-    container->config.columns = memory_alloc(count * sizeof(GridTrack));
+    container->config.columns = malloc(count * sizeof(GridTrack));
     if (!container->config.columns) {
-        LOG_ERROR("Failed to allocate grid columns");
+        fprintf(stderr, "Failed to allocate grid columns\n");
         return;
     }
     
@@ -341,19 +341,19 @@ void grid_set_columns(GridContainer* container, const GridTrack* tracks, uint32_
     container->config.column_count = count;
     container->needs_layout = true;
     
-    LOG_INFO("Set %u grid columns", count);
+    printf("Set %u grid columns\n", count);
 }
 
 void grid_set_rows(GridContainer* container, const GridTrack* tracks, uint32_t count) {
     if (!container || !tracks || count == 0) return;
     
     if (container->config.rows) {
-        memory_free(container->config.rows);
+        free(container->config.rows);
     }
     
-    container->config.rows = memory_alloc(count * sizeof(GridTrack));
+    container->config.rows = malloc(count * sizeof(GridTrack));
     if (!container->config.rows) {
-        LOG_ERROR("Failed to allocate grid rows");
+        fprintf(stderr, "Failed to allocate grid rows\n");
         return;
     }
     
@@ -361,7 +361,7 @@ void grid_set_rows(GridContainer* container, const GridTrack* tracks, uint32_t c
     container->config.row_count = count;
     container->needs_layout = true;
     
-    LOG_INFO("Set %u grid rows", count);
+    printf("Set %u grid rows\n", count);
 }
 
 void grid_add_child(GridContainer* container, UIElement* child) {

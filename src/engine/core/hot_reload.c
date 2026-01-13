@@ -1,7 +1,7 @@
-#include <core/common.h>
-#include <core/logger.h>
+#include <common.h>
 #include <core/hashmap.h>
 #include <core/hot_reload.h>
+#include <core/logger.h>
 #include <dlfcn.h>
 #include <stdlib.h>
 #include <string.h>
@@ -88,7 +88,8 @@ HotReloadModule *hot_reload_register_module(const char *module_name,
 
   void *handle = dlopen(library_path, RTLD_NOW);
   if (!handle) {
-    LOG_ERROR(LOG_CAT_IO, "Failed to load module: %s (Error: %s)", library_path, dlerror());
+    LOG_ERROR(LOG_CAT_IO, "Failed to load module: %s (Error: %s)", library_path,
+              dlerror());
     return NULL;
   }
 
@@ -110,7 +111,8 @@ bool hot_reload_check_module(HotReloadModule *module) {
 
   time_t current_mod_time = get_file_modified_time(module->path);
   if (current_mod_time > module->last_modified) {
-    LOG_INFO(LOG_CAT_GENERAL, "Detected change in module: %s, reloading...", module->name);
+    LOG_INFO(LOG_CAT_GENERAL, "Detected change in module: %s, reloading...",
+             module->name);
 
     if (module->handle) {
       dlclose(module->handle);
@@ -122,10 +124,12 @@ bool hot_reload_check_module(HotReloadModule *module) {
     if (new_handle) {
       module->handle = new_handle;
       module->last_modified = current_mod_time;
-      LOG_INFO(LOG_CAT_GENERAL, "Module %s reloaded successfully", module->name);
+      LOG_INFO(LOG_CAT_GENERAL, "Module %s reloaded successfully",
+               module->name);
       return true;
     } else {
-      LOG_ERROR(LOG_CAT_IO, "Failed to reload module %s: %s", module->name, dlerror());
+      LOG_ERROR(LOG_CAT_IO, "Failed to reload module %s: %s", module->name,
+                dlerror());
       module->handle = NULL;
     }
   }

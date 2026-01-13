@@ -458,7 +458,7 @@ static void generate_comprehensive_report(void) {
     for (uint32_t i = 0; i < g_suite_count; i++) {
         TestSuite* suite = &g_suites[i];
         
-        printf("📋 %s\n", suite->name);
+        printf(" %s\n", suite->name);
         printf("   Tests: %u/%u passed (%.1f%%)\n", 
                suite->passed_count, suite->test_count,
                (float)suite->passed_count / suite->test_count * 100.0f);
@@ -467,7 +467,7 @@ static void generate_comprehensive_report(void) {
         for (uint32_t j = 0; j < suite->test_count; j++) {
             TestResult* test = &suite->tests[j];
             printf("   %s [%s] %s\n", 
-                   test->passed ? "✅" : "❌",
+                   test->passed ? "" : "",
                    test->todo_id,
                    test->name);
             
@@ -495,14 +495,14 @@ static void generate_comprehensive_report(void) {
     
     // Status
     bool all_passed = (total_passed == total_tests);
-    printf("\n🎯 FINAL RESULT: %s\n", all_passed ? "✅ ALL TESTS PASSED" : "❌ SOME TESTS FAILED");
+    printf("\n FINAL RESULT: %s\n", all_passed ? " ALL TESTS PASSED" : " SOME TESTS FAILED");
     
     if (all_passed) {
-        printf("\n🚀 Integration verification completed successfully!\n");
+        printf("\n Integration verification completed successfully!\n");
         printf("   All TODO items have been implemented and verified.\n");
         printf("   The Minecraft v2 Engine is ready for production.\n");
     } else {
-        printf("\n⚠️  Integration verification completed with issues.\n");
+        printf("\n  Integration verification completed with issues.\n");
         printf("   Some TODO items need attention before production.\n");
     }
     

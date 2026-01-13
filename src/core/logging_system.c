@@ -82,10 +82,10 @@ bool logging_system_init(void) {
     g_logging_state.initialized = true;
     
     // Log initialization message
-    LOG_INFO("✓ Logging system initialized successfully");
+    LOG_INFO(" Logging system initialized successfully");
     LOG_INFO("Active channels: Console %s, File %s", 
-             (g_logging_state.active_channels & LOG_CHANNEL_CONSOLE) ? "✓" : "✗",
-             (g_logging_state.active_channels & LOG_CHANNEL_FILE) ? "✓" : "✗");
+             (g_logging_state.active_channels & LOG_CHANNEL_CONSOLE) ? "" : "",
+             (g_logging_state.active_channels & LOG_CHANNEL_FILE) ? "" : "");
     
     return true;
 }

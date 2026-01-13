@@ -781,9 +781,9 @@ static void run_physics_test_case(TestCase* test_case) {
     test_case->execution_time_ms = ((double)(end - start)) / CLOCKS_PER_SEC * 1000.0;
     
     if (test_case->passed) {
-        printf("  ✓ %s (%.2f ms)\n", test_case->name, test_case->execution_time_ms);
+        printf("   %s (%.2f ms)\n", test_case->name, test_case->execution_time_ms);
     } else {
-        printf("  ✗ %s (%.2f ms)\n", test_case->name, test_case->execution_time_ms);
+        printf("   %s (%.2f ms)\n", test_case->name, test_case->execution_time_ms);
     }
 }
 
@@ -851,9 +851,9 @@ int main(int argc, char* argv[]) {
     // Check if we met the coverage target
     double overall_coverage = (double)total_passed / total_tests * 100.0;
     if (overall_coverage >= 80.0) {
-        printf("✓ Coverage target met: %.1f%%\n", overall_coverage);
+        printf(" Coverage target met: %.1f%%\n", overall_coverage);
     } else {
-        printf("✗ Coverage target not met: %.1f%% (need 80%%+)\n", overall_coverage);
+        printf(" Coverage target not met: %.1f%% (need 80%%+)\n", overall_coverage);
     }
     
     return (total_failed == 0) ? 0 : 1;

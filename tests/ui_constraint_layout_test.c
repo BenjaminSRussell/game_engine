@@ -25,19 +25,19 @@ static void test_start(const char* test_name) {
 }
 
 static void test_pass(const char* message) {
-    printf("  ✓ PASS: %s\n", message);
+    printf("   PASS: %s\n", message);
 }
 
 static void test_fail(const char* message) {
-    printf("  ✗ FAIL: %s\n", message);
+    printf("   FAIL: %s\n", message);
 }
 
 static void assert_float_equal(float actual, float expected, float epsilon, const char* name) {
     float diff = actual > expected ? actual - expected : expected - actual;
     if (diff <= epsilon) {
-        printf("  ✓ %s: %.2f == %.2f\n", name, actual, expected);
+        printf("   %s: %.2f == %.2f\n", name, actual, expected);
     } else {
-        printf("  ✗ %s: %.2f != %.2f (diff: %.2f)\n", name, actual, expected, diff);
+        printf("   %s: %.2f != %.2f (diff: %.2f)\n", name, actual, expected, diff);
     }
 }
 
@@ -434,9 +434,9 @@ int main(int argc, char* argv[]) {
     (void)argc;
     (void)argv;
 
-    printf("╔════════════════════════════════════════════════════════════════╗\n");
-    printf("║   Constraint-Based UI Layout System - Comprehensive Test Suite ║\n");
-    printf("╚════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("   Constraint-Based UI Layout System - Comprehensive Test Suite \n");
+    printf("\n");
 
     /* Test Suite 1: Basic Constraint Creation */
     test_basic_constraint_creation();
@@ -476,9 +476,9 @@ int main(int argc, char* argv[]) {
     test_invalid_element_references();
     test_circular_dependencies();
 
-    printf("\n╔════════════════════════════════════════════════════════════════╗\n");
-    printf("║                    Test Suite Complete                         ║\n");
-    printf("╚════════════════════════════════════════════════════════════════╝\n");
+    printf("\n\n");
+    printf("                    Test Suite Complete                         \n");
+    printf("\n");
 
     return 0;
 }

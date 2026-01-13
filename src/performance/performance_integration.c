@@ -539,7 +539,7 @@ void performance_integration_print_summary(void) {
     // Check for performance issues
     bool has_issues = false;
     if (g_perf_state.max_frame_time > 16.67) {
-        printf("\n⚠️  PERFORMANCE ISSUES DETECTED:\n");
+        printf("\n  PERFORMANCE ISSUES DETECTED:\n");
         printf("  - Frame time exceeds 60 FPS threshold\n");
         has_issues = true;
     }
@@ -548,7 +548,7 @@ void performance_integration_print_summary(void) {
         CriticalPathStats *stats = &g_perf_state.critical_paths[i];
         if (stats->overhead_percentage > g_perf_state.config.profiling_overhead_threshold) {
             if (!has_issues) {
-                printf("\n⚠️  PERFORMANCE ISSUES DETECTED:\n");
+                printf("\n  PERFORMANCE ISSUES DETECTED:\n");
                 has_issues = true;
             }
             printf("  - %s overhead: %.2f%% (threshold: %.2f%%)\n", 
@@ -558,7 +558,7 @@ void performance_integration_print_summary(void) {
     }
     
     if (!has_issues) {
-        printf("\n✅ No performance issues detected\n");
+        printf("\n No performance issues detected\n");
     }
     
     printf("=====================================\n\n");

@@ -312,14 +312,14 @@ void quest_example_demonstrate_ui(void) {
     free(active_quests);
     
     printf("\n=== Quest UI Features ===\n");
-    printf("✓ Quest log window with quest list\n");
-    printf("✓ Quest details panel with objectives and rewards\n");
-    printf("✓ On-screen notifications for quest events\n");
-    printf("✓ Progress tracking and completion percentage\n");
-    printf("✓ Quest tracking system\n");
-    printf("✓ Integration with existing UI manager\n");
-    printf("✓ Configurable notification system\n");
-    printf("✓ Support for multiple quest states\n");
+    printf(" Quest log window with quest list\n");
+    printf(" Quest details panel with objectives and rewards\n");
+    printf(" On-screen notifications for quest events\n");
+    printf(" Progress tracking and completion percentage\n");
+    printf(" Quest tracking system\n");
+    printf(" Integration with existing UI manager\n");
+    printf(" Configurable notification system\n");
+    printf(" Support for multiple quest states\n");
     
     // Cleanup
     printf("\nCleaning up...\n");

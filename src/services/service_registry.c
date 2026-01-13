@@ -480,7 +480,7 @@ bool service_registry_check_all_services_health(char *buffer, size_t buffer_size
         written += snprintf(buffer + written, buffer_size - written,
                           "%-20s: %s\n",
                           current->name,
-                          is_healthy ? "✓ Healthy" : "✗ Unhealthy");
+                          is_healthy ? " Healthy" : " Unhealthy");
         
         if (!is_healthy) {
             all_healthy = false;

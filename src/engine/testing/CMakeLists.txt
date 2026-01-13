@@ -47,8 +47,8 @@ add_test(NAME AllTests COMMAND test_framework)
 
 # Set test properties
 set_tests_properties(AllTests PROPERTIES
-    PASS_REGULAR_EXPRESSION "🎉 All tests passed"
-    FAIL_REGULAR_EXPRESSION "❌ Tests failed"
+    PASS_REGULAR_EXPRESSION " All tests passed"
+    FAIL_REGULAR_EXPRESSION " Tests failed"
 )
 
 # Coverage configuration

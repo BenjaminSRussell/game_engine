@@ -79,10 +79,10 @@ int main(int argc, char *argv[]) {
     
     // Print final summary
     if (stats.all_passed) {
-        printf("\n🎉 All tests passed! (%u/%u)\n", stats.passed_tests, stats.total_tests);
+        printf("\n All tests passed! (%u/%u)\n", stats.passed_tests, stats.total_tests);
         return 0;
     } else {
-        printf("\n❌ Tests failed! (%u passed, %u failed, %u skipped, %u errors)\n", 
+        printf("\n Tests failed! (%u passed, %u failed, %u skipped, %u errors)\n", 
                stats.passed_tests, stats.failed_tests, stats.skipped_tests, stats.error_tests);
         return 1;
     }

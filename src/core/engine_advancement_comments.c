@@ -8,9 +8,9 @@
  * cutting-edge technology and innovative approaches.
  */
 
-// ============================================================================
-// RENDERING SYSTEM ADVANCEMENTS
-// ============================================================================
+/* ============================================================================
+ * RENDERING SYSTEM ADVANCEMENTS
+ * ============================================================================ */
 
 //  COMPLETED: RAY_TRACING_PIPELINE - Implement hardware-accelerated ray tracing
 // - BVH acceleration structure construction and updates

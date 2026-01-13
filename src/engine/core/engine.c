@@ -402,7 +402,7 @@ static bool engine_init_subsystems(Engine *engine) {
     LOG_ERROR("Failed to initialize memory allocator");
     critical_failure = true;
   } else {
-    LOG_INFO("✓ Memory Allocator initialized successfully");
+    LOG_INFO(" Memory Allocator initialized successfully");
   }
 
   // 2. Logging System (CRITICAL - must be second)
@@ -411,7 +411,7 @@ static bool engine_init_subsystems(Engine *engine) {
     LOG_ERROR("Failed to initialize logging system");
     critical_failure = true;
   } else {
-    LOG_INFO("✓ Logging System initialized successfully");
+    LOG_INFO(" Logging System initialized successfully");
   }
 
   // 3. Thread Pool (CRITICAL - must be third)
@@ -420,7 +420,7 @@ static bool engine_init_subsystems(Engine *engine) {
     LOG_ERROR("Failed to initialize thread pool");
     critical_failure = true;
   } else {
-    LOG_INFO("✓ Thread Pool initialized successfully");
+    LOG_INFO(" Thread Pool initialized successfully");
   }
 
   // 4. VFS
@@ -804,10 +804,10 @@ const char *engine_get_error_string(EngineError error) {
 
 static bool engine_validate_subsystem_init(const char *name, bool success, SubsystemValidationState *validation) {
   if (success) {
-    LOG_INFO("✓ %s initialized successfully", name);
+    LOG_INFO(" %s initialized successfully", name);
     return true;
   } else {
-    LOG_ERROR("✗ %s initialization failed", name);
+    LOG_ERROR(" %s initialization failed", name);
     return false;
   }
 }
@@ -817,21 +817,21 @@ static void engine_log_initialization_summary(const SubsystemValidationState *va
   
   // Critical systems
   LOG_INFO("Critical Systems:");
-  LOG_INFO("  VFS: %s", validation->vfs_initialized ? "✓" : "✗");
-  LOG_INFO("  Input: %s", validation->input_initialized ? "✓" : "✗");
-  LOG_INFO("  ECS: %s", validation->ecs_initialized ? "✓" : "✗");
-  LOG_INFO("  Asset Manager: %s", validation->assets_initialized ? "✓" : "✗");
-  LOG_INFO("  Renderer: %s", validation->renderer_initialized ? "✓" : "✗");
+  LOG_INFO("  VFS: %s", validation->vfs_initialized ? "" : "");
+  LOG_INFO("  Input: %s", validation->input_initialized ? "" : "");
+  LOG_INFO("  ECS: %s", validation->ecs_initialized ? "" : "");
+  LOG_INFO("  Asset Manager: %s", validation->assets_initialized ? "" : "");
+  LOG_INFO("  Renderer: %s", validation->renderer_initialized ? "" : "");
   
   // Non-critical systems
   LOG_INFO("Non-Critical Systems:");
-  LOG_INFO("  Physics: %s", validation->physics_initialized ? "✓" : "✗");
-  LOG_INFO("  Scene Manager: %s", validation->scene_manager_initialized ? "✓" : "✗");
-  LOG_INFO("  Audio: %s", validation->audio_initialized ? "✓" : "✗");
-  LOG_INFO("  Post Processing: %s", validation->post_processing_initialized ? "✓" : "✗");
-  LOG_INFO("  Perception System: %s", validation->perception_initialized ? "✓" : "✗");
-  LOG_INFO("  Memory System: %s", validation->memory_initialized ? "✓" : "✗");
-  LOG_INFO("  GOAP Planner: %s", validation->planner_initialized ? "✓" : "✗");
+  LOG_INFO("  Physics: %s", validation->physics_initialized ? "" : "");
+  LOG_INFO("  Scene Manager: %s", validation->scene_manager_initialized ? "" : "");
+  LOG_INFO("  Audio: %s", validation->audio_initialized ? "" : "");
+  LOG_INFO("  Post Processing: %s", validation->post_processing_initialized ? "" : "");
+  LOG_INFO("  Perception System: %s", validation->perception_initialized ? "" : "");
+  LOG_INFO("  Memory System: %s", validation->memory_initialized ? "" : "");
+  LOG_INFO("  GOAP Planner: %s", validation->planner_initialized ? "" : "");
   
   // Count successful initializations
   int critical_count = validation->vfs_initialized + validation->input_initialized + 

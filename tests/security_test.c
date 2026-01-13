@@ -24,7 +24,7 @@ void test_basic_validation() {
     assert(security_validate_filename("../../../etc/passwd") == false);
     assert(security_validate_filename("file<bad>.txt") == false);
     
-    printf("✓ Basic validation tests passed\n");
+    printf(" Basic validation tests passed\n");
 }
 
 void test_injection_detection() {
@@ -52,7 +52,7 @@ void test_injection_detection() {
     assert(security_validate_input("<script>alert('xss')</script>", &config, &result) == false);
     assert(result.detected_threats & SECURITY_THREAT_XSS);
     
-    printf("✓ Injection detection tests passed\n");
+    printf(" Injection detection tests passed\n");
 }
 
 void test_safe_string_operations() {
@@ -79,7 +79,7 @@ void test_safe_string_operations() {
     assert(security_sprintf_safe(buffer, sizeof(buffer), "Number: %d, String: %s", 42, "test") > 0);
     assert(strcmp(buffer, "Number: 42, String: test") == 0);
     
-    printf("✓ Safe string operation tests passed\n");
+    printf(" Safe string operation tests passed\n");
 }
 
 void test_player_security() {
@@ -111,7 +111,7 @@ void test_player_security() {
     assert(security_unban_player(1001) == true);
     assert(security_is_player_banned(1001) == false);
     
-    printf("✓ Player security tests passed\n");
+    printf(" Player security tests passed\n");
 }
 
 void test_statistics() {
@@ -128,7 +128,7 @@ void test_statistics() {
     printf("Blocked attempts: %llu\n", stats.blocked_attempts);
     printf("Log entries: %u\n", stats.log_entries);
     
-    printf("✓ Statistics tests passed\n");
+    printf(" Statistics tests passed\n");
 }
 
 int main() {
@@ -143,6 +143,6 @@ int main() {
     // Cleanup
     security_system_shutdown();
     
-    printf("\n✓ All security tests passed successfully!\n");
+    printf("\n All security tests passed successfully!\n");
     return 0;
 }

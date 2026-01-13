@@ -1328,9 +1328,9 @@ int io_bundling_processor_04_filter(io_bundling_processor_04_t* ctx, void* param
     for (int i = 0; i < 3; i++) {
         void* cached_data = io_bundling_processor_04_cache_get(priority_files[i]);
         if (cached_data) {
-            printf("  ✓ %s (cached)\n", priority_files[i]);
+            printf("   %s (cached)\n", priority_files[i]);
         } else {
-            printf("  ○ %s (not cached)\n", priority_files[i]);
+            printf("   %s (not cached)\n", priority_files[i]);
         }
     }
     

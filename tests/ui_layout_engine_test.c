@@ -17,7 +17,7 @@
 #define TEST_ASSERT(condition, message)                                        \
   do {                                                                         \
     if (!(condition)) {                                                        \
-      printf("❌ FAILED: %s\n", message);                                      \
+      printf(" FAILED: %s\n", message);                                      \
       printf("   at %s:%d\n", __FILE__, __LINE__);                             \
       return false;                                                            \
     }                                                                          \
@@ -33,9 +33,9 @@ static void run_test(const char *name, bool (*test_func)(void)) {
 
   bool result = test_func();
   if (result) {
-    printf("✓ PASSED\n");
+    printf(" PASSED\n");
   } else {
-    printf("❌ FAILED\n");
+    printf(" FAILED\n");
     g_all_tests_passed = false;
   }
 }
@@ -533,10 +533,10 @@ bool test_complete_layout_cycle(void) {
 
 int main(void) {
   printf("\n");
-  printf("╔═══════════════════════════════════════════════════════════╗\n");
-  printf("║        UI Layout Engine Test Suite                       ║\n");
-  printf("║    Testing TODO-0179, 0180, 0181, 0182                   ║\n");
-  printf("╚═══════════════════════════════════════════════════════════╝\n\n");
+  printf("\n");
+  printf("        UI Layout Engine Test Suite                       \n");
+  printf("    Testing TODO-0179, 0180, 0181, 0182                   \n");
+  printf("\n\n");
 
   printf("=== MEASURE PASS TESTS ===\n");
   run_test("Measure single element", test_measure_single_element);
@@ -571,14 +571,14 @@ int main(void) {
   run_test("Complete layout cycle", test_complete_layout_cycle);
 
   printf("\n");
-  printf("═══════════════════════════════════════════════════════════\n");
+  printf("\n");
   if (g_all_tests_passed) {
-    printf("✓ ALL TESTS PASSED\n");
-    printf("═══════════════════════════════════════════════════════════\n\n");
+    printf(" ALL TESTS PASSED\n");
+    printf("\n\n");
     return 0;
   } else {
-    printf("❌ SOME TESTS FAILED\n");
-    printf("═══════════════════════════════════════════════════════════\n\n");
+    printf(" SOME TESTS FAILED\n");
+    printf("\n\n");
     return 1;
   }
 }

@@ -6,30 +6,30 @@
  * Advanced 3D Rendering Engine
  *
  * All TODOs implemented:
- * ✅ Implement BC/ASTC compression
- * ✅ Add mipmap generation
- * ✅ Implement bindless textures
- * ✅ Add texture arrays
- * ✅ Implement feedback analysis
- * ✅ Implement format conversion
- * ✅ Add anisotropic filtering
- * ✅ Implement compression quality initialization
- * ✅ Add compression quality cleanup/shutdown
- * ✅ Implement compression quality validation
- * ✅ Add compression quality error handling
- * ✅ Implement compression quality serialization
- * ✅ Add compression quality performance counters
- * ✅ Implement compression quality hot-reload
- * ✅ Add compression quality thread safety
- * ✅ Add compression quality caching layer
- * ✅ Implement compression quality async operations
- * ✅ Add compression quality GPU integration
- * ✅ Implement compression quality SIMD optimization
- * ✅ Add compression quality batch processing
- * ✅ Add compression quality LOD support
- * ✅ Implement compression quality culling integration
- * ✅ Add compression quality render graph node
- * ✅ Add virtual texturing
+ *  Implement BC/ASTC compression
+ *  Add mipmap generation
+ *  Implement bindless textures
+ *  Add texture arrays
+ *  Implement feedback analysis
+ *  Implement format conversion
+ *  Add anisotropic filtering
+ *  Implement compression quality initialization
+ *  Add compression quality cleanup/shutdown
+ *  Implement compression quality validation
+ *  Add compression quality error handling
+ *  Implement compression quality serialization
+ *  Add compression quality performance counters
+ *  Implement compression quality hot-reload
+ *  Add compression quality thread safety
+ *  Add compression quality caching layer
+ *  Implement compression quality async operations
+ *  Add compression quality GPU integration
+ *  Implement compression quality SIMD optimization
+ *  Add compression quality batch processing
+ *  Add compression quality LOD support
+ *  Implement compression quality culling integration
+ *  Add compression quality render graph node
+ *  Add virtual texturing
  */
 
 #include "assets/textures/compression/compression_quality.h"

@@ -650,14 +650,14 @@ void print_validation_report(const ValidationReport *report) {
         ValidationResult *current = report->results;
         while (current) {
             if (!current->passed) {
-                printf("  ❌ %s: %s\n", current->rule_name, current->message);
+                printf("   %s: %s\n", current->rule_name, current->message);
             }
             current = current->next;
         }
     }
     
     if (report->critical_failures > 0) {
-        printf("\n⚠️  CRITICAL FAILURES DETECTED!\n");
+        printf("\n  CRITICAL FAILURES DETECTED!\n");
     }
     
     printf("=====================================\n\n");

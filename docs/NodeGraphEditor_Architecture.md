@@ -7,27 +7,27 @@ The NodeGraphEditor is a comprehensive visual scripting system built with SwiftU
 ## Architecture Overview
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    NodeGraphEditor                           │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
-│  │   UI Layer      │  │  Debug Layer    │  │  Data Layer      │ │
-│  │                 │  │                 │  │                 │ │
-│  │ • NodeView      │  │ • DebugManager   │  │ • GraphNode      │ │
-│  │ • PortView      │  │ • Breakpoints    │  │ • NodePort       │ │
-│  │ • Connection    │  │ • Performance    │  │ • GraphConnection│ │
-│  │ • Toolbar       │  │ • Variables      │  │ • GraphMetadata  │ │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
-│  │  Manager Layer  │  │  Utility Layer  │  │  Extension Layer│ │
-│  │                 │  │                 │  │                 │ │
-│  │ • NodeGraphMgr  │  │ • FuzzySearch    │  │ • NodeTypeExt    │ │
-│  │ • ConnectionMgr │  │ • SearchHistory  │  │ • PortTypeExt    │ │
-│  │ • ClipboardMgr  │  │ • PerformanceMgr │  │ • NodeCustomMgr  │ │
-│  │ • KeyboardShort │  │ • ValidationMgr  │  │ • DebugUtils     │ │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
-└─────────────────────────────────────────────────────────────┘
+
+                    NodeGraphEditor                           
+
+       
+     UI Layer          Debug Layer        Data Layer       
+                                                          
+   • NodeView         • DebugManager      • GraphNode       
+   • PortView         • Breakpoints       • NodePort        
+   • Connection       • Performance       • GraphConnection 
+   • Toolbar          • Variables         • GraphMetadata   
+       
+
+       
+    Manager Layer      Utility Layer      Extension Layer 
+                                                          
+   • NodeGraphMgr     • FuzzySearch       • NodeTypeExt     
+   • ConnectionMgr    • SearchHistory     • PortTypeExt     
+   • ClipboardMgr     • PerformanceMgr    • NodeCustomMgr   
+   • KeyboardShort    • ValidationMgr     • DebugUtils      
+       
+
 ```
 
 ## Core Components

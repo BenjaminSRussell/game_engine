@@ -169,7 +169,7 @@ ThreadPool* thread_pool_create(u32 thread_count) {
     }
 
     pool->initialized = true;
-    LOG_INFO("✓ Thread pool created with %u threads", thread_count);
+    LOG_INFO(" Thread pool created with %u threads", thread_count);
     return pool;
 }
 

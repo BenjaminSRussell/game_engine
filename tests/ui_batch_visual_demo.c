@@ -35,9 +35,9 @@ typedef struct demo_scene {
 } demo_scene_t;
 
 static void print_section(const char* title) {
-    fprintf(stdout, "\n╔════════════════════════════════════════════╗\n");
-    fprintf(stdout, "║ %s\n", title);
-    fprintf(stdout, "╚════════════════════════════════════════════╝\n\n");
+    fprintf(stdout, "\n\n");
+    fprintf(stdout, " %s\n", title);
+    fprintf(stdout, "\n\n");
 }
 
 /* ============================================================================
@@ -59,21 +59,21 @@ static int setup_scene(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to create main batch\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Main batch created (ID: %u)\n", scene->main_batch.id);
+    fprintf(stdout, "   Main batch created (ID: %u)\n", scene->main_batch.id);
 
     fprintf(stdout, "[2/5] Creating text batch...\n");
     if (ui_rendering_ui_batch_create(&scene->text_batch, &batch_desc) != 0) {
         fprintf(stderr, "ERROR: Failed to create text batch\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Text batch created (ID: %u)\n", scene->text_batch.id);
+    fprintf(stdout, "   Text batch created (ID: %u)\n", scene->text_batch.id);
 
     fprintf(stdout, "[3/5] Creating effects batch...\n");
     if (ui_rendering_ui_batch_create(&scene->effects_batch, &batch_desc) != 0) {
         fprintf(stderr, "ERROR: Failed to create effects batch\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Effects batch created (ID: %u)\n", scene->effects_batch.id);
+    fprintf(stdout, "   Effects batch created (ID: %u)\n", scene->effects_batch.id);
 
     /* Load fonts */
     fprintf(stdout, "[4/5] Loading fonts...\n");
@@ -87,7 +87,7 @@ static int setup_scene(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to create title font\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Title font loaded (32pt)\n");
+    fprintf(stdout, "   Title font loaded (32pt)\n");
 
     ui_batch_text_font_desc_t font_body_desc = {
         .font_name = "Arial",
@@ -99,7 +99,7 @@ static int setup_scene(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to create body font\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Body font loaded (14pt)\n");
+    fprintf(stdout, "   Body font loaded (14pt)\n");
 
     fprintf(stdout, "[5/5] Scene setup complete!\n");
     return 0;
@@ -129,7 +129,7 @@ static int render_geometry(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to add panel geometry\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Panel geometry added (4 vertices, 6 indices)\n");
+    fprintf(stdout, "   Panel geometry added (4 vertices, 6 indices)\n");
 
     fprintf(stdout, "[2/3] Adding button geometries...\n");
 
@@ -148,7 +148,7 @@ static int render_geometry(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to add button geometry\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Button geometry added (4 vertices, 6 indices)\n");
+    fprintf(stdout, "   Button geometry added (4 vertices, 6 indices)\n");
 
     fprintf(stdout, "[3/3] Submitting draw commands...\n");
 
@@ -184,7 +184,7 @@ static int render_geometry(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to add draw command\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Draw commands submitted (2 commands)\n");
+    fprintf(stdout, "   Draw commands submitted (2 commands)\n");
 
     return 0;
 }
@@ -214,7 +214,7 @@ static int render_text(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to add title text\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Title rendered: \"UI Batch Demo\"\n");
+    fprintf(stdout, "   Title rendered: \"UI Batch Demo\"\n");
 
     fprintf(stdout, "[2/3] Rendering body text...\n");
 
@@ -237,13 +237,13 @@ static int render_text(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to add body text\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Body text rendered\n");
+    fprintf(stdout, "   Body text rendered\n");
 
     fprintf(stdout, "[3/3] Text statistics:\n");
 
     float text_width, text_height;
     if (ui_batch_text_measure(scene->font_body, body_text, &text_width, &text_height) == 0) {
-        fprintf(stdout, "  ✓ Text dimensions: %.1f x %.1f pixels\n", text_width, text_height);
+        fprintf(stdout, "   Text dimensions: %.1f x %.1f pixels\n", text_width, text_height);
     }
 
     return 0;
@@ -265,7 +265,7 @@ static int render_effects(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to add gradient\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Linear gradient applied (45°, Blue → Purple)\n");
+    fprintf(stdout, "   Linear gradient applied (45°, Blue → Purple)\n");
 
     fprintf(stdout, "[2/3] Adding shadow effect...\n");
 
@@ -282,7 +282,7 @@ static int render_effects(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to add shadow\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Drop shadow applied (8px blur, 40%% opacity)\n");
+    fprintf(stdout, "   Drop shadow applied (8px blur, 40%% opacity)\n");
 
     fprintf(stdout, "[3/3] Adding glow effect...\n");
 
@@ -297,7 +297,7 @@ static int render_effects(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to add glow\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Glow effect applied (10px radius, 60%% intensity)\n");
+    fprintf(stdout, "   Glow effect applied (10px radius, 60%% intensity)\n");
 
     return 0;
 }
@@ -315,7 +315,7 @@ static int optimize_batches(demo_scene_t* scene) {
     ui_rendering_ui_batch_sort(scene->text_batch);
     ui_rendering_ui_batch_sort(scene->effects_batch);
 
-    fprintf(stdout, "  ✓ Z-order sorting complete\n");
+    fprintf(stdout, "   Z-order sorting complete\n");
 
     fprintf(stdout, "[2/3] Optimizing draw calls...\n");
 
@@ -323,7 +323,7 @@ static int optimize_batches(demo_scene_t* scene) {
     int merged_text = ui_rendering_ui_batch_optimize_draw_calls(scene->text_batch);
     int merged_effects = ui_rendering_ui_batch_optimize_draw_calls(scene->effects_batch);
 
-    fprintf(stdout, "  ✓ Merged commands: Main=%d, Text=%d, Effects=%d\n",
+    fprintf(stdout, "   Merged commands: Main=%d, Text=%d, Effects=%d\n",
             merged_main, merged_text, merged_effects);
 
     fprintf(stdout, "[3/3] Batch statistics:\n");
@@ -331,12 +331,12 @@ static int optimize_batches(demo_scene_t* scene) {
     ui_rendering_batch_stats_t stats;
     ui_rendering_ui_batch_get_stats(&stats);
 
-    fprintf(stdout, "  ✓ Total batches: %u\n", stats.total_batches);
-    fprintf(stdout, "  ✓ Total vertices: %u\n", stats.total_vertices);
-    fprintf(stdout, "  ✓ Total indices: %u\n", stats.total_indices);
-    fprintf(stdout, "  ✓ Total draw calls: %u\n", stats.total_draw_calls);
-    fprintf(stdout, "  ✓ Merged calls: %u\n", stats.merged_draw_calls);
-    fprintf(stdout, "  ✓ Memory usage: %.2f MB\n", stats.total_memory / (1024.0f * 1024.0f));
+    fprintf(stdout, "   Total batches: %u\n", stats.total_batches);
+    fprintf(stdout, "   Total vertices: %u\n", stats.total_vertices);
+    fprintf(stdout, "   Total indices: %u\n", stats.total_indices);
+    fprintf(stdout, "   Total draw calls: %u\n", stats.total_draw_calls);
+    fprintf(stdout, "   Merged calls: %u\n", stats.merged_draw_calls);
+    fprintf(stdout, "   Memory usage: %.2f MB\n", stats.total_memory / (1024.0f * 1024.0f));
 
     return 0;
 }
@@ -354,7 +354,7 @@ static int render_frames(demo_scene_t* scene) {
         fprintf(stderr, "ERROR: Failed to initialize renderer\n");
         return -1;
     }
-    fprintf(stdout, "  ✓ Renderer initialized\n");
+    fprintf(stdout, "   Renderer initialized\n");
 
     fprintf(stdout, "[2/2] Rendering frame...\n");
 
@@ -379,14 +379,14 @@ static int render_frames(demo_scene_t* scene) {
         return -1;
     }
 
-    fprintf(stdout, "  ✓ Frame rendered (%d batches)\n", batches_rendered);
+    fprintf(stdout, "   Frame rendered (%d batches)\n", batches_rendered);
 
     /* Get render stats */
     ui_batch_render_stats_t render_stats;
     if (ui_batch_renderer_get_stats(&render_stats) == 0) {
-        fprintf(stdout, "  ✓ Draw calls: %u\n", render_stats.draw_calls);
-        fprintf(stdout, "  ✓ Vertices: %u\n", render_stats.vertices_rendered);
-        fprintf(stdout, "  ✓ Triangles: %u\n", render_stats.triangles_rendered);
+        fprintf(stdout, "   Draw calls: %u\n", render_stats.draw_calls);
+        fprintf(stdout, "   Vertices: %u\n", render_stats.vertices_rendered);
+        fprintf(stdout, "   Triangles: %u\n", render_stats.triangles_rendered);
     }
 
     return 0;
@@ -403,18 +403,18 @@ static void cleanup_scene(demo_scene_t* scene) {
     ui_rendering_ui_batch_destroy(scene->main_batch);
     ui_rendering_ui_batch_destroy(scene->text_batch);
     ui_rendering_ui_batch_destroy(scene->effects_batch);
-    fprintf(stdout, "  ✓ Batches destroyed\n");
+    fprintf(stdout, "   Batches destroyed\n");
 
     fprintf(stdout, "[2/3] Destroying fonts...\n");
     ui_batch_text_destroy_font(scene->font_body);
     ui_batch_text_destroy_font(scene->font_title);
-    fprintf(stdout, "  ✓ Fonts destroyed\n");
+    fprintf(stdout, "   Fonts destroyed\n");
 
     fprintf(stdout, "[3/3] Shutting down systems...\n");
     ui_batch_renderer_shutdown();
     ui_rendering_ui_batch_shutdown();
     ui_batch_text_shutdown();
-    fprintf(stdout, "  ✓ Systems shutdown\n");
+    fprintf(stdout, "   Systems shutdown\n");
 }
 
 /* ============================================================================
@@ -423,10 +423,10 @@ static void cleanup_scene(demo_scene_t* scene) {
 
 int main(void) {
     fprintf(stdout, "\n");
-    fprintf(stdout, "╔══════════════════════════════════════════════════════╗\n");
-    fprintf(stdout, "║  UI BATCH RENDERING SYSTEM - VISUAL DEMO            ║\n");
-    fprintf(stdout, "║  Complete Pipeline: Geometry → Text → Effects → GPU ║\n");
-    fprintf(stdout, "╚══════════════════════════════════════════════════════╝\n");
+    fprintf(stdout, "\n");
+    fprintf(stdout, "  UI BATCH RENDERING SYSTEM - VISUAL DEMO            \n");
+    fprintf(stdout, "  Complete Pipeline: Geometry → Text → Effects → GPU \n");
+    fprintf(stdout, "\n");
 
     demo_scene_t scene = {0};
 
@@ -466,16 +466,16 @@ int main(void) {
 
     /* Success */
     fprintf(stdout, "\n");
-    fprintf(stdout, "╔══════════════════════════════════════════════════════╗\n");
-    fprintf(stdout, "║  ✓ VISUAL DEMO COMPLETE - PIPELINE VERIFIED        ║\n");
-    fprintf(stdout, "║  All systems working correctly end-to-end           ║\n");
-    fprintf(stdout, "╚══════════════════════════════════════════════════════╝\n\n");
+    fprintf(stdout, "\n");
+    fprintf(stdout, "   VISUAL DEMO COMPLETE - PIPELINE VERIFIED        \n");
+    fprintf(stdout, "  All systems working correctly end-to-end           \n");
+    fprintf(stdout, "\n\n");
 
     cleanup_scene(&scene);
     return 0;
 
 error:
-    fprintf(stderr, "\n✗ Demo failed - see errors above\n");
+    fprintf(stderr, "\n Demo failed - see errors above\n");
     cleanup_scene(&scene);
     return 1;
 }
