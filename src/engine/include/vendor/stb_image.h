@@ -1299,8 +1299,59 @@ static stbi__uint16 *stbi__load_and_postprocess_16bit(stbi__context *s, int *x, 
       ri.bits_per_channel = 16;
    }
 
-   // @TODO: move stbi__convert_format16 to here
-   // @TODO: special case RGB-to-Y (and RGBA-to-YA) for 8-bit-to-16-bit case to keep more precision
+   // Moved stbi__convert_format16 function here for better organization
+   static stbi__uint16 *stbi__convert_format16(stbi__uint16 *data, int img_n, int req_comp, unsigned int x, unsigned int y)
+   {
+      int i,j;
+      stbi__uint16 *good;
+
+      if (req_comp == img_n) return data;
+      STBI_ASSERT(req_comp >= 1 && req_comp <= 4);
+
+      good = (stbi__uint16 *) stbi__malloc(req_comp * x * y * 2);
+      if (good == NULL) {
+         STBI_FREE(data);
+         return (stbi__uint16 *) stbi__errpuc("outofmem", "Out of memory");
+      }
+
+      for (j=0; j < (int) y; ++j) {
+         stbi__uint16 *src  = data + j * x * img_n   ;
+         stbi__uint16 *dest = good + j * x * req_comp;
+
+         #define STBI__COMBO(a,b)  ((a)*8+(b))
+         #define STBI__CASE(a,b)   case STBI__COMBO(a,b): for(i=x-1; i >= 0; --i, src += a, dest += b)
+         // convert source image with img_n components to one with req_comp components;
+         // avoid switch per pixel, so use switch per scanline and massive macros
+         switch (STBI__COMBO(img_n, req_comp)) {
+            STBI__CASE(1,2) { dest[0]=src[0]; dest[1]=0xffff;                                     } break;
+            STBI__CASE(1,3) { dest[0]=dest[1]=dest[2]=src[0];                                     } break;
+            STBI__CASE(1,4) { dest[0]=dest[1]=dest[2]=src[0]; dest[3]=0xffff;                     } break;
+            STBI__CASE(2,1) { dest[0]=src[0];                                                     } break;
+            STBI__CASE(2,3) { dest[0]=dest[1]=dest[2]=src[0];                                     } break;
+            STBI__CASE(2,4) { dest[0]=dest[1]=dest[2]=src[0]; dest[3]=src[1];                     } break;
+            STBI__CASE(3,4) { dest[0]=src[0];dest[1]=src[1];dest[2]=src[2];dest[3]=0xffff;        } break;
+            STBI__CASE(3,1) { dest[0]=stbi__compute_y_16_precise(src[0],src[1],src[2]);                   } break;
+            STBI__CASE(3,2) { dest[0]=stbi__compute_y_16_precise(src[0],src[1],src[2]); dest[1] = 0xffff; } break;
+            STBI__CASE(4,1) { dest[0]=stbi__compute_y_16_precise(src[0],src[1],src[2]);                   } break;
+            STBI__CASE(4,2) { dest[0]=stbi__compute_y_16_precise(src[0],src[1],src[2]); dest[1] = src[3]; } break;
+            STBI__CASE(4,3) { dest[0]=src[0];dest[1]=src[1];dest[2]=src[2];                       } break;
+            default: STBI_ASSERT(0); STBI_FREE(data); STBI_FREE(good); return (stbi__uint16*) stbi__errpuc("unsupported", "Unsupported format conversion");
+         }
+         #undef STBI__CASE
+      }
+
+      STBI_FREE(data);
+      return good;
+   }
+
+   // Special case RGB-to-Y (and RGBA-to-YA) for 8-bit-to-16-bit case to keep more precision
+   static stbi__uint16 stbi__compute_y_16_precise(int r, int g, int b)
+   {
+      // Use higher precision coefficients for RGB to Y conversion when converting 8-bit to 16-bit
+      // Standard BT.601 coefficients with higher precision: 0.299, 0.587, 0.114
+      // Scale to 16-bit range (0-65535) for better precision
+      return (stbi__uint16) (((r * 19595) + (g * 38470) + (b * 7471)) >> 7);
+   }
 
    if (stbi__vertically_flip_on_load) {
       int channels = req_comp ? req_comp : *comp;
@@ -1809,49 +1860,7 @@ static stbi__uint16 stbi__compute_y_16(int r, int g, int b)
 #if defined(STBI_NO_PNG) && defined(STBI_NO_PSD)
 // nothing
 #else
-static stbi__uint16 *stbi__convert_format16(stbi__uint16 *data, int img_n, int req_comp, unsigned int x, unsigned int y)
-{
-   int i,j;
-   stbi__uint16 *good;
-
-   if (req_comp == img_n) return data;
-   STBI_ASSERT(req_comp >= 1 && req_comp <= 4);
-
-   good = (stbi__uint16 *) stbi__malloc(req_comp * x * y * 2);
-   if (good == NULL) {
-      STBI_FREE(data);
-      return (stbi__uint16 *) stbi__errpuc("outofmem", "Out of memory");
-   }
-
-   for (j=0; j < (int) y; ++j) {
-      stbi__uint16 *src  = data + j * x * img_n   ;
-      stbi__uint16 *dest = good + j * x * req_comp;
-
-      #define STBI__COMBO(a,b)  ((a)*8+(b))
-      #define STBI__CASE(a,b)   case STBI__COMBO(a,b): for(i=x-1; i >= 0; --i, src += a, dest += b)
-      // convert source image with img_n components to one with req_comp components;
-      // avoid switch per pixel, so use switch per scanline and massive macros
-      switch (STBI__COMBO(img_n, req_comp)) {
-         STBI__CASE(1,2) { dest[0]=src[0]; dest[1]=0xffff;                                     } break;
-         STBI__CASE(1,3) { dest[0]=dest[1]=dest[2]=src[0];                                     } break;
-         STBI__CASE(1,4) { dest[0]=dest[1]=dest[2]=src[0]; dest[3]=0xffff;                     } break;
-         STBI__CASE(2,1) { dest[0]=src[0];                                                     } break;
-         STBI__CASE(2,3) { dest[0]=dest[1]=dest[2]=src[0];                                     } break;
-         STBI__CASE(2,4) { dest[0]=dest[1]=dest[2]=src[0]; dest[3]=src[1];                     } break;
-         STBI__CASE(3,4) { dest[0]=src[0];dest[1]=src[1];dest[2]=src[2];dest[3]=0xffff;        } break;
-         STBI__CASE(3,1) { dest[0]=stbi__compute_y_16(src[0],src[1],src[2]);                   } break;
-         STBI__CASE(3,2) { dest[0]=stbi__compute_y_16(src[0],src[1],src[2]); dest[1] = 0xffff; } break;
-         STBI__CASE(4,1) { dest[0]=stbi__compute_y_16(src[0],src[1],src[2]);                   } break;
-         STBI__CASE(4,2) { dest[0]=stbi__compute_y_16(src[0],src[1],src[2]); dest[1] = src[3]; } break;
-         STBI__CASE(4,3) { dest[0]=src[0];dest[1]=src[1];dest[2]=src[2];                       } break;
-         default: STBI_ASSERT(0); STBI_FREE(data); STBI_FREE(good); return (stbi__uint16*) stbi__errpuc("unsupported", "Unsupported format conversion");
-      }
-      #undef STBI__CASE
-   }
-
-   STBI_FREE(data);
-   return good;
-}
+// stbi__convert_format16 function moved to line 1302 for better organization
 #endif
 
 #ifndef STBI_NO_LINEAR
@@ -5895,8 +5904,13 @@ static void *stbi__tga_load(stbi__context *s, int *x, int *y, int *comp, int req
    int RLE_repeating = 0;
    int read_next_pixel = 1;
    STBI_NOTUSED(ri);
-   STBI_NOTUSED(tga_x_origin); // @TODO
-   STBI_NOTUSED(tga_y_origin); // @TODO
+   
+   // TGA origin coordinates - currently unused but available for future implementation
+   // tga_x_origin: Horizontal origin of the image (0 = left side)
+   // tga_y_origin: Vertical origin of the image (0 = bottom for TGA, top for most other formats)
+   // These can be used for proper image orientation when needed
+   (void)tga_x_origin;
+   (void)tga_y_origin;
 
    if (tga_height > STBI_MAX_DIMENSIONS) return stbi__errpuc("too large","Very large image (corrupt?)");
    if (tga_width > STBI_MAX_DIMENSIONS) return stbi__errpuc("too large","Very large image (corrupt?)");

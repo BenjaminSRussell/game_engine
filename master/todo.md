@@ -698,6 +698,8 @@ Each agent should start with the Primary tasks and then pull from the full CSV l
 - Low priority: Editor tools, debug optimizations, networking, AI
 - Estimated effort: 4-6 weeks for full completion
 - Completed cloth simulation core features (constraints, collisions, tearing, serialization, etc.) in `src/engine/character/cloth/cloth_simulation.c` and Vulkan/Metal backend integration in `src/engine/character/cloth/simulation_cloth/cloth_tearing.c`
+- Added public cloth simulation APIs for creation/configuration and collider setup in `src/engine/character/cloth/cloth_simulation.h` and `src/engine/character/cloth/cloth_simulation.c`
+- Implemented cloth constraints memory tracking, validation, hot-reload hooks, resource state tracking, serialization, caching, async updates, backend routing, and performance counters in `src/engine/character/cloth/simulation_cloth/cloth_constraints.c`
 
 ### Engineering Audit - Phase 4 Completion Summary > NEXT STEPS FOR CONTINUED DEVELOPMENT > Phase 5: Implementation & Optimization (Recommended)
 - [ ] Implement unified type system (core/math/types.h) (AUDIT_PHASE_4_COMPLETION_SUMMARY.md)

@@ -44,6 +44,26 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <pthread.h>
+#include <time.h>
+#include <math.h>
+#include <sys/inotify.h>
+#include <unistd.h>
+#include <errno.h>
+#include <immintrin.h>
+#include <fcntl.h>
+
+/* GPU Backend Includes */
+#ifdef ENABLE_VULKAN
+#include <vulkan/vulkan.h>
+#endif
+#ifdef ENABLE_METAL
+#include <Metal/Metal.h>
+#endif
+#ifdef ENABLE_D3D12
+#include <d3d12.h>
+#include <dxgi.h>
+#endif
 
 /* ============================================================================
  * CONSTANTS
@@ -52,10 +72,120 @@
 #define CLOTH_SYSTEM_CLOTH_WIND_MAX_COUNT 4096
 #define CLOTH_SYSTEM_CLOTH_WIND_DEFAULT_CAPACITY 256
 #define CLOTH_SYSTEM_CLOTH_WIND_ALIGNMENT 16
+#define CLOTH_SYSTEM_CLOTH_WIND_MAGIC_NUMBER 0x434C5754  // "CLWT"
+#define CLOTH_SYSTEM_CLOTH_WIND_VERSION 1
+#define CLOTH_SYSTEM_CLOTH_WIND_CACHE_SIZE 1024
+#define CLOTH_SYSTEM_CLOTH_WIND_MAX_ASYNC_OPERATIONS 64
+#define CLOTH_SYSTEM_CLOTH_WIND_MEMORY_BUDGET (512 * 1024 * 1024)  // 512MB
+#define CLOTH_SYSTEM_CLOTH_WIND_BATCH_SIZE 32
+#define CLOTH_SYSTEM_CLOTH_WIND_LOD_LEVELS 4
+#define CLOTH_SYSTEM_CLOTH_WIND_SIMD_WIDTH 8
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
+
+/* Error Codes */
+typedef enum {
+    CLOTH_WIND_ERROR_NONE = 0,
+    CLOTH_WIND_ERROR_INVALID_PARAM = -1,
+    CLOTH_WIND_ERROR_NOT_INITIALIZED = -2,
+    CLOTH_WIND_ERROR_OUT_OF_MEMORY = -3,
+    CLOTH_WIND_ERROR_ALREADY_EXISTS = -4,
+    CLOTH_WIND_ERROR_NOT_FOUND = -5,
+    CLOTH_WIND_ERROR_INVALID_HANDLE = -6,
+    CLOTH_WIND_ERROR_OPERATION_FAILED = -7,
+    CLOTH_WIND_ERROR_GPU_INIT_FAILED = -8,
+    CLOTH_WIND_ERROR_THREADING_ERROR = -9,
+    CLOTH_WIND_ERROR_VALIDATION_FAILED = -10
+} cloth_wind_error_t;
+
+/* GPU Backend Types */
+typedef enum {
+    CLOTH_WIND_BACKEND_NONE = 0,
+    CLOTH_WIND_BACKEND_VULKAN = 1,
+    CLOTH_WIND_BACKEND_METAL = 2,
+    CLOTH_WIND_BACKEND_D3D12 = 3
+} cloth_wind_backend_t;
+
+/* SIMD Operations */
+typedef struct {
+    __m256 direction;
+    __m256 strength;
+    __m256 turbulence;
+    __m256 damping;
+} cloth_wind_simd_data_t;
+
+/* Cache Entry */
+typedef struct {
+    uint32_t id;
+    uint64_t hash;
+    void* data;
+    size_t size;
+    uint64_t last_access;
+    bool valid;
+} cloth_wind_cache_entry_t;
+
+/* Async Operation */
+typedef struct {
+    uint32_t id;
+    bool active;
+    pthread_t thread;
+    void (*callback)(void* user_data);
+    void* user_data;
+    cloth_wind_error_t result;
+} cloth_wind_async_op_t;
+
+/* LOD Data */
+typedef struct {
+    float distance;
+    uint32_t quality;
+    bool enabled;
+} cloth_wind_lod_level_t;
+
+/* Performance Counters */
+typedef struct {
+    uint64_t total_operations;
+    uint64_t cache_hits;
+    uint64_t cache_misses;
+    uint64_t gpu_operations;
+    uint64_t simd_operations;
+    uint64_t async_operations;
+    double total_time;
+    uint64_t memory_allocated;
+    uint64_t memory_freed;
+} cloth_wind_perf_counters_t;
+
+/* Validation Layer */
+typedef struct {
+    bool enabled;
+    uint32_t error_count;
+    uint32_t warning_count;
+    char last_error[256];
+    char last_warning[256];
+} cloth_wind_validation_t;
+
+/* GPU Context */
+typedef struct {
+    cloth_wind_backend_t backend;
+    bool initialized;
+    void* device;
+    void* command_queue;
+    void* compute_pipeline;
+    void* buffer;
+    size_t buffer_size;
+} cloth_wind_gpu_context_t;
+
+/* Render Graph Node */
+typedef struct {
+    uint32_t id;
+    char name[64];
+    bool enabled;
+    void (*execute)(void* user_data);
+    void* user_data;
+    uint32_t dependencies[8];
+    uint32_t dependency_count;
+} cloth_wind_render_node_t;
 
 typedef struct cloth_system_cloth_wind_internal {
     uint32_t id;
@@ -65,6 +195,17 @@ typedef struct cloth_system_cloth_wind_internal {
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
+    
+    /* Extended fields */
+    cloth_wind_gpu_context_t gpu_ctx;
+    cloth_wind_simd_data_t simd_data;
+    cloth_wind_lod_level_t lod_levels[CLOTH_SYSTEM_CLOTH_WIND_LOD_LEVELS];
+    uint64_t creation_time;
+    uint64_t last_update_time;
+    uint32_t update_count;
+    bool gpu_enabled;
+    bool simd_enabled;
+    bool async_enabled;
 } cloth_system_cloth_wind_internal_t;
 
 typedef struct cloth_system_cloth_wind_context {
@@ -73,6 +214,37 @@ typedef struct cloth_system_cloth_wind_context {
     uint32_t capacity;
     void* allocator;
     bool initialized;
+    
+    /* Extended fields */
+    pthread_mutex_t mutex;
+    pthread_mutex_t cache_mutex;
+    pthread_mutex_t async_mutex;
+    cloth_wind_cache_entry_t cache[CLOTH_SYSTEM_CLOTH_WIND_CACHE_SIZE];
+    cloth_wind_async_op_t async_ops[CLOTH_SYSTEM_CLOTH_WIND_MAX_ASYNC_OPERATIONS];
+    cloth_wind_perf_counters_t perf_counters;
+    cloth_wind_validation_t validation;
+    cloth_wind_gpu_context_t global_gpu_ctx;
+    cloth_wind_render_node_t render_nodes[16];
+    uint32_t render_node_count;
+    
+    /* Hot-reload */
+    int inotify_fd;
+    int watch_descriptor;
+    pthread_t file_watcher_thread;
+    bool file_watcher_running;
+    void (*reload_callback)(uint32_t id, void* user_data);
+    void* reload_user_data;
+    
+    /* Resource tracking */
+    size_t memory_usage;
+    size_t memory_budget;
+    uint32_t active_operations;
+    bool resource_tracking_enabled;
+    
+    /* State tracking */
+    uint32_t state_version;
+    uint64_t last_state_change;
+    bool state_dirty;
 } cloth_system_cloth_wind_context_t;
 
 static cloth_system_cloth_wind_context_t g_cloth_wind_ctx = {0};

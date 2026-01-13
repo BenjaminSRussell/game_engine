@@ -220,9 +220,40 @@ void metal_pool_cleanup(metal_resource_pool_t* pool, uint32_t max_age_frames) {
     
     pool->current_frame++;
     
-    // Simple cleanup: if not used for N frames, destroy
-    // TODO: Implement actual cleanup logic here
-    // For now we just keep them until pool destroy
+    // Actual cleanup logic: destroy resources not used for N frames
+    u32 buffers_freed = 0;
+    u32 textures_freed = 0;
+    
+    // Cleanup unused buffers
+    for (u32 i = 0; i < pool->buffer_count; i++) {
+        if (pool->buffers[i].buffer && !pool->buffers[i].in_use) {
+            u32 age = pool->current_frame - pool->buffers[i].last_used_frame;
+            if (age > max_age_frames) {
+                metal_buffer_destroy(pool->buffers[i].buffer);
+                pool->buffers[i].buffer = NULL;
+                pool->buffers[i].in_use = false;
+                buffers_freed++;
+            }
+        }
+    }
+    
+    // Cleanup unused textures
+    for (u32 i = 0; i < pool->texture_count; i++) {
+        if (pool->textures[i].texture && !pool->textures[i].in_use) {
+            u32 age = pool->current_frame - pool->textures[i].last_used_frame;
+            if (age > max_age_frames) {
+                metal_texture_destroy(pool->textures[i].texture);
+                pool->textures[i].texture = NULL;
+                pool->textures[i].in_use = false;
+                textures_freed++;
+            }
+        }
+    }
+    
+    // Update statistics
+    pool->stats.buffers_freed += buffers_freed;
+    pool->stats.textures_freed += textures_freed;
+    pool->stats.total_cleanups++;
 }
 
 metal_pool_stats_t metal_pool_get_stats(metal_resource_pool_t* pool) {

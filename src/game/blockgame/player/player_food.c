@@ -95,7 +95,7 @@ bool player_start_eating(Player *player, u32 slot_index,
   player_trigger_action_animation(player, SPIRIT_ANIM_INTERACT,
                                   player->eating_state.eat_duration);
 
-  LOG_DEBUG("Player started eating %s (duration: %.2fs)", item->base.name,
+  LOG_DEBUG(LOG_CAT_GAME, "Player started eating %s (duration: %.2fs)", item->base.name,
             item->properties.food.eat_duration);
 
   if (g_audio_system) {
@@ -128,7 +128,7 @@ void player_update_eating(Player *player, struct World *world, f32 delta_time,
       // Create a simple burst effect using SVG particles
       // Note: This would need a proper emitter setup in a real implementation
       // For now, we'll just log the effect
-      LOG_INFO("Food particle effect at position (%.2f, %.2f, %.2f)", pos.x, pos.y, pos.z);
+      LOG_INFO(LOG_CAT_GAME, "Food particle effect at position (%.2f, %.2f, %.2f)", pos.x, pos.y, pos.z);
     }
   }
 
@@ -140,7 +140,7 @@ void player_update_eating(Player *player, struct World *world, f32 delta_time,
   // Cancel eating if player is moving too fast (sprinting/flying)
   if (player->is_sprinting || player->is_flying) {
     player_cancel_eating(player);
-    LOG_DEBUG("Eating cancelled - player is moving too fast");
+    LOG_DEBUG(LOG_CAT_GAME, "Eating cancelled - player is moving too fast");
   }
 }
 
@@ -194,7 +194,7 @@ void player_finish_eating(Player *player, const ItemRegistry *item_registry) {
   f32 actual_hunger_restored = player->hunger - start_hunger;
   f32 actual_saturation_gained = player->saturation - start_saturation;
 
-  LOG_INFO("Player ate %s: +%.1f hunger (actual), +%.1f saturation (actual)",
+  LOG_INFO(LOG_CAT_GAME, "Player ate %s: +%.1f hunger (actual), +%.1f saturation (actual)",
            item->base.name, actual_hunger_restored, actual_saturation_gained);
 
   // Update food stats
@@ -213,11 +213,11 @@ void player_finish_eating(Player *player, const ItemRegistry *item_registry) {
       if (food->effect_id == 0) {
         status_effect_add(&player->status_effects, STATUS_EFFECT_POISON, 30.0f,
                           1.0f);
-        LOG_INFO("Food effect applied: Poison");
+        LOG_INFO(LOG_CAT_GAME, "Food effect applied: Poison");
       } else if (food->effect_id == 1) {
         status_effect_add(&player->status_effects, STATUS_EFFECT_REGENERATION,
                           5.0f, 2.0f);
-        LOG_INFO("Food effect applied: Regeneration II");
+        LOG_INFO(LOG_CAT_GAME, "Food effect applied: Regeneration II");
       }
     }
   }
@@ -236,7 +236,7 @@ void player_finish_eating(Player *player, const ItemRegistry *item_registry) {
   if (consumed_item_id == ITEM_MILK_BUCKET) {
     status_effects_clear(&player->status_effects);
     inventory_add_item(&player->inventory, ITEM_BUCKET, 1);
-    LOG_INFO("Player drank Milk: All status effects cleared, bucket returned");
+    LOG_INFO(LOG_CAT_GAME, "Player drank Milk: All status effects cleared, bucket returned");
   }
 
   // Clear eating state
@@ -250,7 +250,7 @@ void player_cancel_eating(Player *player) {
     return;
 
   if (player->eating_state.is_eating) {
-    LOG_DEBUG("Eating cancelled");
+    LOG_DEBUG(LOG_CAT_GAME, "Eating cancelled");
     memset(&player->eating_state, 0, sizeof(EatingState));
     player->action_anim_timer = 0.0f;
   }
@@ -296,7 +296,7 @@ void player_update_inventory_spoilage(Player *player, f32 delta_time,
       // Convert to spoiled food
       slot->item_id = ITEM_SPOILED_FOOD;
       slot->spoil_progress = 0.0f;
-      LOG_DEBUG("Item in slot %d has spoiled", i);
+      LOG_DEBUG(LOG_CAT_GAME, "Item in slot %d has spoiled", i);
     }
   }
 }

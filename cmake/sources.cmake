@@ -362,6 +362,12 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # UI subdirectory
     "src/engine/ui/*.c"
 
+    # Advanced Text Rendering System - COMPLETE IMPLEMENTATION (2026-01-12)
+    "src/engine/rendering/text_rendering_advanced.c"
+    
+    # Text processing and UI text systems
+    "src/engine/ui/text/*.c"
+
     # Gameplay and Combat systems - CRITICAL PATH IMPLEMENTATIONS (2026-01-12)
     "src/engine/gameplay/inventory/item_db.c"
     "src/engine/gameplay/combat/damage_system.c"

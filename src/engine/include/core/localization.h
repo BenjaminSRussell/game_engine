@@ -182,6 +182,7 @@ typedef struct FontAtlas {
   uint32_t height;
   Glyph *glyphs;
   uint32_t glyph_count;
+  uint32_t glyph_capacity;
   void *glyph_map; // codepoint -> glyph index
   float line_height;
   float ascender;

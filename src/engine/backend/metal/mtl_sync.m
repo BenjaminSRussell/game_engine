@@ -528,8 +528,9 @@ metal_event_t *metal_create_sync_point(id<MTLDevice> device) {
 bool metal_check_resource_hazard(metal_resource_tracker_t *tracker,
                                  void *resource, metal_resource_access_t access,
                                  mtl_command_buffer_t *cmd_buffer,
-                                 uint64_t frame_index) {
-  if (!tracker || !resource || !cmd_buffer) {
+                                 uint64_t frame_index,
+                                 id<MTLDevice> device) {
+  if (!tracker || !resource || !cmd_buffer || !device) {
     return false;
   }
 
@@ -563,9 +564,11 @@ bool metal_check_resource_hazard(metal_resource_tracker_t *tracker,
                             METAL_STAGE_VERTEX | METAL_STAGE_FRAGMENT |
                                 METAL_STAGE_COMPUTE);
 
-    // FIXME: Create and signal a new fence for this access
-    // TODO: Refactor to pass device explicitly for fence creation
-    // For now, just keep using the existing fence with addCompletedHandler
+    // Create and signal a new fence for this access
+    if (tracker->last_fence) {
+      metal_fence_destroy(tracker->last_fence);
+    }
+    tracker->last_fence = metal_fence_create(device);
   }
 
   // Update tracker

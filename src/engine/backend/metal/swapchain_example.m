@@ -75,8 +75,51 @@ void swapchain_usage_example(NSView *view) {
         id<MTLCommandBuffer> cmd =
             (__bridge id<MTLCommandBuffer>)metal_create_command_buffer(device);
 
-        // TODO: Render to drawable_texture
-        // ... create render pass, encoder, etc ...
+        // Render to drawable_texture
+        if (drawable_texture) {
+            // Create render pass descriptor
+            MTLRenderPassDescriptor *renderPassDesc = [MTLRenderPassDescriptor renderPassDescriptor];
+            MTLRenderPassColorAttachmentDescriptor *colorAttachment = renderPassDesc.colorAttachments[0];
+            
+            colorAttachment.texture = drawable_texture;
+            colorAttachment.loadAction = MTLLoadActionClear;
+            colorAttachment.storeAction = MTLStoreActionStore;
+            colorAttachment.clearColor = MTLClearColorMake(0.1, 0.2, 0.3, 1.0);
+            
+            // Create command encoder
+            id<MTLRenderCommandEncoder> renderEncoder = [cmd renderCommandEncoderWithDescriptor:renderPassDesc];
+            
+            // Set viewport
+            MTLViewport viewport = {
+                0.0, 0.0,
+                (double)drawable_texture.width,
+                (double)drawable_texture.height,
+                0.0, 1.0
+            };
+            [renderEncoder setViewport:viewport];
+            
+            // Simple triangle rendering
+            struct {
+                float position[4];
+                float color[4];
+            } vertices[] = {
+                {{ 0.0,  0.5, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}},  // Top - Red
+                {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}},  // Bottom Left - Green
+                {{ 0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0}}   // Bottom Right - Blue
+            };
+            
+            // Create vertex buffer (simplified - in real code this would be cached)
+            id<MTLBuffer> vertexBuffer = [device newBufferWithBytes:vertices
+                                                                         length:sizeof(vertices)
+                                                                        options:MTLResourceStorageModeShared];
+            
+            // Set vertex buffer and draw
+            [renderEncoder setVertexBuffer:vertexBuffer offset:0 atIndex:0];
+            [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:3];
+            
+            // End encoding
+            [renderEncoder endEncoding];
+        }
 
         // Present drawable
         metal_swapchain_present(swapchain, cmd);

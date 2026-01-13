@@ -61,6 +61,12 @@ struct ContentView: View {
                 }
             case "terrain":
                 TerrainEditorView()
+            case "weather":
+                WeatherPanel()
+            case "city":
+                CityGenerationPanel()
+            case "ecosystem":
+                EcosystemPanel()
             case "world_building":
                 WorldBuildingPanel()
             case "skeleton":
@@ -216,6 +222,9 @@ private struct PremiumSidebar: View {
                     }
                     
                      SidebarSection(title: "SYSTEMS") {
+                        SidebarItem(icon: "cloud.sun.fill", title: "Weather", value: "weather", selectedTab: $selectedTab)
+                        SidebarItem(icon: "building.2.fill", title: "City Generator", value: "city", selectedTab: $selectedTab)
+                        SidebarItem(icon: "leaf.fill", title: "Ecosystem", value: "ecosystem", selectedTab: $selectedTab)
                         SidebarItem(icon: "globe.americas.fill", title: "World Building", value: "world_building", selectedTab: $selectedTab)
                         SidebarItem(icon: "mountain.2.fill", title: "Terrain", value: "terrain", selectedTab: $selectedTab)
                         SidebarItem(icon: "rectangle.3.group.fill", title: "UI Editor", value: "uieditor", selectedTab: $selectedTab)

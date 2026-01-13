@@ -431,7 +431,8 @@ bool metal_check_resource_hazard(
     void* resource,
     metal_resource_access_t access,
     mtl_command_buffer_t* cmd_buffer,
-    uint64_t frame_index
+    uint64_t frame_index,
+    id<MTLDevice> device
 );
 
 /**

@@ -2834,22 +2834,6 @@ TODO-28290,todo_md,Master TODO,master/todo.md,Implement Metal backend (line 86) 
 TODO-28291,todo_md,Master TODO,master/todo.md,Implement D3D12 backend (line 93) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
 TODO-28292,todo_md,Master TODO,master/todo.md,Add thread-safe access patterns (line 94) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
 TODO-28293,todo_md,Master TODO,master/todo.md,Implement proper error handling with error codes (line 108) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28294,todo_md,Master TODO,master/todo.md,Add memory tracking and leak detection (line 109) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28295,todo_md,Master TODO,master/todo.md,Implement hot-reload support (line 110) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28296,todo_md,Master TODO,master/todo.md,Add validation layer integration (line 111) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28297,todo_md,Master TODO,master/todo.md,Implement resource state tracking (line 130) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28299,todo_md,Master TODO,master/todo.md,Implement cloth constraints initialization (line 132) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28300,todo_md,Master TODO,master/todo.md,Add cloth constraints cleanup/shutdown (line 133) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28301,todo_md,Master TODO,master/todo.md,Implement cloth constraints validation (line 151) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28302,todo_md,Master TODO,master/todo.md,Add cloth constraints error handling (line 152) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28303,todo_md,Master TODO,master/todo.md,Implement cloth constraints serialization (line 153) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28306,todo_md,Master TODO,master/todo.md,Add cloth constraints performance counters (line 185) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28307,todo_md,Master TODO,master/todo.md,Implement cloth constraints hot-reload (line 186) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28308,todo_md,Master TODO,master/todo.md,Add cloth constraints thread safety (line 196) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28310,todo_md,Master TODO,master/todo.md,Add cloth constraints caching layer (line 198) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28311,todo_md,Master TODO,master/todo.md,Implement cloth constraints async operations (line 199) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28312,todo_md,Master TODO,master/todo.md,Add cloth constraints GPU integration (line 210) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
-TODO-28313,todo_md,Master TODO,master/todo.md,Implement cloth constraints SIMD optimization (line 211) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
 TODO-28314,todo_md,Master TODO,master/todo.md,Add cloth constraints batch processing (line 218) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
 TODO-28315,todo_md,Master TODO,master/todo.md,Implement cloth constraints streaming support (line 226) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
 TODO-28316,todo_md,Master TODO,master/todo.md,Add cloth constraints LOD support (line 227) (src/engine/character/cloth/simulation_cloth/cloth_constraints.c),open
@@ -5164,3 +5148,36 @@ TODO-32710,todo_md,Master TODO,master/todo.md,"High - Securely store player data
 TODO-32711,todo_md,Master TODO,master/todo.md,"High - Implement measures to protect against common exploits, such as cheating and griefing. (line 3) (assets/assets/code/todo_security.c)",open
 TODO-32727,todo_md,Master TODO,master/todo.md,"Medium - Implement a variety of quest objectives, such as fetching items, killing mobs, and exploring specific locations. (line 4) (assets/assets/code/todo_quests.c)",open
 TODO-32729,,,,,
+TODO-32730,todo_md,Infrastructure,main,Refactor monolithic_main.c (123KB) - Split into initialization/cleanup/event_loop/profiling modules,open
+TODO-32731,todo_md,Infrastructure,main,Refactor gamestate_main.c (116KB) - Split into initialization/update/render/serialization modules,open
+TODO-32732,todo_md,Infrastructure,main,Refactor bundling/manager_01.c (110KB) - Split into creation/io/optimization/streaming modules,open
+TODO-32733,todo_md,Infrastructure,main,Refactor compression/processor_04.c (106KB) - Split into core/batch/async/memory modules,open
+TODO-32734,todo_md,Infrastructure,main,Refactor caching/processor_04.c (106KB) - Split into cache/strategy/eviction/persistence modules,open
+TODO-32735,todo_md,GPU Compute,engine,Implement GPU compute shader pipeline for compression processing,open
+TODO-32736,todo_md,GPU Compute,engine,Implement GPU-accelerated texture compression with realtime feedback,open
+TODO-32737,todo_md,GPU Compute,engine,Optimize GPU memory management with buddy allocation strategy,open
+TODO-32738,todo_md,GPU Compute,engine,Implement GPU profiling and debugging tools with counters and events,open
+TODO-32739,todo_md,AI/ML Integration,engine,Implement neural network-based texture compression optimization,open
+TODO-32740,todo_md,AI/ML Integration,engine,Implement ML-based pathfinding prediction for NPCs,open
+TODO-32741,todo_md,AI/ML Integration,engine,Implement behavior prediction system for dynamic NPC adaptation,open
+TODO-32742,todo_md,AI/ML Integration,engine,Implement procedural content generation using generative models,open
+TODO-32743,todo_md,Advanced Physics,engine,Implement GPU cloth simulation with compute shaders,open
+TODO-32744,todo_md,Advanced Physics,engine,Implement destruction system with Voronoi-based fracturing,open
+TODO-32745,todo_md,Advanced Physics,engine,Implement high-performance fluid dynamics simulation,open
+TODO-32746,todo_md,Advanced Physics,engine,Implement deformable body physics with constraint solving,open
+TODO-32747,todo_md,Modern Graphics,engine,Implement Nanite-style geometry system for automatic LOD generation,open
+TODO-32748,todo_md,Modern Graphics,engine,Implement virtual shadow maps with dynamic atlas management,open
+TODO-32749,todo_md,Modern Graphics,engine,Implement hierarchical Z-buffer for occlusion culling,open
+TODO-32750,todo_md,Modern Graphics,engine,Implement mesh shading pipeline with amplification shaders,open
+TODO-32751,todo_md,Multiplayer,engine,Implement client-side prediction system for smooth gameplay,open
+TODO-32752,todo_md,Multiplayer,engine,Implement entity interpolation for networked objects,open
+TODO-32753,todo_md,Multiplayer,engine,Implement bandwidth-adaptive streaming for large worlds,open
+TODO-32754,todo_md,Multiplayer,engine,Implement P2P hybrid networking architecture,open
+TODO-32755,todo_md,Developer Tools,engine,Implement enhanced profiling system with GPU/CPU breakdown,open
+TODO-32756,todo_md,Developer Tools,engine,Implement GPU memory debugger with allocation tracking,open
+TODO-32757,todo_md,Developer Tools,engine,Implement dependency graph visualization for modules,open
+TODO-32758,todo_md,Developer Tools,engine,Implement module interaction analyzer for optimization,open
+TODO-32759,todo_md,Infrastructure,main,Extract helper functions from monolithic_main.c initialization,open
+TODO-32760,todo_md,Infrastructure,main,Extract helper functions from gamestate_main.c update loop,open
+TODO-32761,todo_md,Infrastructure,main,Create internal API boundaries for refactored modules,open
+TODO-32762,todo_md,Infrastructure,main,Update CMakeLists.txt for new modular structure,open

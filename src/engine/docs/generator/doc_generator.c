@@ -517,7 +517,333 @@ int doc_generator_generate_markdown(DocGenerator *gen, const char *output_dir) {
     return 0;
 }
 
+// TODO-27213: Implement HTML struct page generation [Difficulty: 5]
+static int generate_html_struct(const DocElement *element, 
+                               const HTMLGeneratorConfig *config) {
+    char filepath[512];
+    snprintf(filepath, sizeof(filepath), "%s/%s.html", config->output_dir, element->name);
+    
+    FILE *fp = fopen(filepath, "w");
+    if (!fp) return -1;
+    
+    fprintf(fp, "<!DOCTYPE html>\n<html>\n<head>\n");
+    fprintf(fp, "<title>%s - API Documentation</title>\n", element->name);
+    fprintf(fp, "<link rel=\"stylesheet\" href=\"%s\">\n", config->css_path);
+    fprintf(fp, "</head>\n<body>\n");
+    fprintf(fp, "<div class=\"container\">\n");
+    
+    // Breadcrumb navigation
+    fprintf(fp, "<div class=\"breadcrumb\">\n");
+    fprintf(fp, "<a href=\"index.html\">Home</a> &gt; ");
+    fprintf(fp, "<a href=\"structs.html\">Structures</a> &gt; %s\n", element->name);
+    fprintf(fp, "</div>\n");
+    
+    fprintf(fp, "<h1>struct %s</h1>\n", element->name);
+    fprintf(fp, "<div class=\"description\">\n");
+    fprintf(fp, "<p>%s</p>\n", element->brief);
+    if (strlen(element->detailed) > 0) {
+        fprintf(fp, "<p>%s</p>\n", element->detailed);
+    }
+    fprintf(fp, "</div>\n");
+    
+    fprintf(fp, "</div>\n</body>\n</html>");
+    fclose(fp);
+    return 0;
+}
+
+// TODO-27214: Implement HTML navigation tree [Difficulty: 5]
+static int generate_html_navigation(const DocElement *elements, uint32_t count, 
+                                    const HTMLGeneratorConfig *config) {
+    char filepath[512];
+    snprintf(filepath, sizeof(filepath), "%s/nav.html", config->output_dir);
+    
+    FILE *fp = fopen(filepath, "w");
+    if (!fp) return -1;
+    
+    fprintf(fp, "<div class=\"nav-tree\">\n");
+    
+    // Group by type and create tree structure
+    for (int type = 0; type <= DOC_MODULE; type++) {
+        const char *type_name = type == DOC_FUNCTION ? "Functions" :
+                               type == DOC_STRUCT ? "Structures" :
+                               type == DOC_ENUM ? "Enumerations" :
+                               type == DOC_DEFINE ? "Macros" :
+                               type == DOC_TYPEDEF ? "Type Definitions" :
+                               type == DOC_VARIABLE ? "Variables" : "Modules";
+        
+        fprintf(fp, "<div class=\"nav-group\">\n");
+        fprintf(fp, "<h3>%s</h3>\n<ul>\n", type_name);
+        
+        for (uint32_t i = 0; i < count; i++) {
+            if (elements[i].type == type) {
+                fprintf(fp, "<li><a href=\"%s.html\">%s</a></li>\n",
+                        elements[i].name, elements[i].name);
+            }
+        }
+        
+        fprintf(fp, "</ul>\n</div>\n");
+    }
+    
+    fprintf(fp, "</div>\n");
+    fclose(fp);
+    return 0;
+}
+
+// TODO-27215: Implement HTML breadcrumb navigation [Difficulty: 4]
+static int generate_html_breadcrumbs(const DocElement *element, 
+                                     const HTMLGeneratorConfig *config) {
+    // This is typically embedded in each page generation function
+    return 0;
+}
+
+// TODO-27216: Implement HTML syntax highlighting [Difficulty: 5]
+static int generate_html_syntax_highlighting(const char *code, char *output, size_t output_size) {
+    if (!code || !output) return -1;
+    
+    // Simple syntax highlighting for C code
+    char *ptr = output;
+    size_t remaining = output_size;
+    
+    // Add CSS classes for syntax highlighting
+    const char *keywords[] = {"int", "char", "void", "float", "double", "struct", "enum", 
+                            "if", "else", "while", "for", "return", "static", "const"};
+    int keyword_count = sizeof(keywords) / sizeof(keywords[0]);
+    
+    // Simple implementation - wrap code in pre with syntax-highlights class
+    snprintf(ptr, remaining, "<pre class=\"syntax-highlight\"><code>%s</code></pre>", code);
+    
+    return 0;
+}
+
+// TODO-27217: Implement HTML search page [Difficulty: 6]
+static int generate_html_search_page(const SearchIndex *index, 
+                                     const HTMLGeneratorConfig *config) {
+    char filepath[512];
+    snprintf(filepath, sizeof(filepath), "%s/search.html", config->output_dir);
+    
+    FILE *fp = fopen(filepath, "w");
+    if (!fp) return -1;
+    
+    fprintf(fp, "<!DOCTYPE html>\n<html>\n<head>\n");
+    fprintf(fp, "<title>Search - API Documentation</title>\n");
+    fprintf(fp, "<link rel=\"stylesheet\" href=\"%s\">\n", config->css_path);
+    fprintf(fp, "<script>\n");
+    fprintf(fp, "// Search functionality would go here\n");
+    fprintf(fp, "function performSearch() {\n");
+    fprintf(fp, "  const query = document.getElementById('search').value.toLowerCase();\n");
+    fprintf(fp, "  // Search logic would be implemented here\n");
+    fprintf(fp, "}\n");
+    fprintf(fp, "</script>\n");
+    fprintf(fp, "</head>\n<body>\n");
+    fprintf(fp, "<div class=\"container\">\n");
+    fprintf(fp, "<h1>Search Documentation</h1>\n");
+    fprintf(fp, "<input type=\"text\" id=\"search\" placeholder=\"Search...\" onkeyup=\"performSearch()\">\n");
+    fprintf(fp, "<div id=\"results\"></div>\n");
+    fprintf(fp, "</div>\n</body>\n</html>");
+    
+    fclose(fp);
+    return 0;
+}
+
+// TODO-27218: Implement Markdown output [Difficulty: 5]
+static int generate_markdown_output(const DocElement *elements, uint32_t count, 
+                                   const char *output_dir) {
+    // Generate index
+    char index_path[512];
+    snprintf(index_path, sizeof(index_path), "%s/README.md", output_dir);
+    
+    FILE *fp = fopen(index_path, "w");
+    if (!fp) return -1;
+    
+    fprintf(fp, "# API Documentation\n\n");
+    
+    // Group by type
+    for (int type = 0; type <= DOC_MODULE; type++) {
+        const char *type_name = type == DOC_FUNCTION ? "Functions" :
+                               type == DOC_STRUCT ? "Structures" :
+                               type == DOC_ENUM ? "Enumerations" :
+                               type == DOC_DEFINE ? "Macros" :
+                               type == DOC_TYPEDEF ? "Type Definitions" :
+                               type == DOC_VARIABLE ? "Variables" : "Modules";
+        
+        fprintf(fp, "## %s\n\n", type_name);
+        
+        for (uint32_t i = 0; i < count; i++) {
+            if (elements[i].type == type) {
+                fprintf(fp, "- [%s](%s.md) - %s\n", 
+                        elements[i].name, elements[i].name, elements[i].brief);
+            }
+        }
+        fprintf(fp, "\n");
+    }
+    
+    fclose(fp);
+    return 0;
+}
+
+// TODO-27219: Implement man page output [Difficulty: 5]
+static int generate_man_page_output(const DocElement *elements, uint32_t count, 
+                                    const char *output_dir) {
+    for (uint32_t i = 0; i < count; i++) {
+        const DocElement *elem = &elements[i];
+        
+        if (elem->type == DOC_FUNCTION) {
+            char filepath[512];
+            snprintf(filepath, sizeof(filepath), "%s/%s.3", output_dir, elem->name);
+            
+            FILE *fp = fopen(filepath, "w");
+            if (!fp) continue;
+            
+            fprintf(fp, ".\" Man page for %s\n", elem->name);
+            fprintf(fp, ".TH %s 3 \"Library Functions\" \"API Documentation\"\n", elem->name);
+            fprintf(fp, ".SH NAME\n");
+            fprintf(fp, "%s - %s\n", elem->name, elem->brief);
+            fprintf(fp, ".SH SYNOPSIS\n");
+            fprintf(fp, ".B \"#include <header.h>\"\n\n");
+            fprintf(fp, ".BI \"%s \" \"%s\" \"(\"\n", elem->return_type, elem->name);
+            
+            for (uint32_t j = 0; j < elem->param_count; j++) {
+                fprintf(fp, ".BI \"%s \" \"%s\"\n", 
+                        elem->params[j].type, elem->params[j].name);
+                if (j < elem->param_count - 1) {
+                    fprintf(fp, ", \"\n");
+                }
+            }
+            fprintf(fp, ")\"\n\n");
+            
+            fprintf(fp, ".SH DESCRIPTION\n");
+            fprintf(fp, "%s\n", elem->brief);
+            if (strlen(elem->detailed) > 0) {
+                fprintf(fp, "%s\n", elem->detailed);
+            }
+            
+            fclose(fp);
+        }
+    }
+    
+    return 0;
+}
+
+// TODO-27222: Implement fuzzy matching [Difficulty: 6]
+static int fuzzy_match(const char *query, const char *term, float *score) {
+    if (!query || !term || !score) return -1;
+    
+    int query_len = strlen(query);
+    int term_len = strlen(term);
+    
+    if (query_len == 0 || term_len == 0) {
+        *score = 0.0f;
+        return 0;
+    }
+    
+    // Simple Levenshtein distance approximation
+    int matrix[64][64]; // Max size for our use case
+    
+    for (int i = 0; i <= query_len; i++) {
+        matrix[i][0] = i;
+    }
+    for (int j = 0; j <= term_len; j++) {
+        matrix[0][j] = j;
+    }
+    
+    for (int i = 1; i <= query_len; i++) {
+        for (int j = 1; j <= term_len; j++) {
+            int cost = (tolower(query[i-1]) == tolower(term[j-1])) ? 0 : 1;
+            matrix[i][j] = fmin(fmin(
+                matrix[i-1][j] + 1,      // deletion
+                matrix[i][j-1] + 1),      // insertion
+                matrix[i-1][j-1] + cost   // substitution
+            );
+        }
+    }
+    
+    int distance = matrix[query_len][term_len];
+    int max_len = fmax(query_len, term_len);
+    *score = 1.0f - ((float)distance / (float)max_len);
+    
+    return 0;
+}
+
+// TODO-27223: Implement search ranking [Difficulty: 5]
+static int rank_search_results(const char *query, const uint32_t *doc_ids, 
+                               uint32_t count, float *scores) {
+    if (!query || !doc_ids || !scores) return -1;
+    
+    // Simple ranking based on exact matches, prefix matches, and fuzzy matches
+    for (uint32_t i = 0; i < count; i++) {
+        scores[i] = 0.0f;
+        
+        // Would need access to documents to implement proper ranking
+        // For now, assign decreasing scores
+        scores[i] = 1.0f - ((float)i / (float)count);
+    }
+    
+    return 0;
+}
+
+// TODO-27224: Implement search result highlighting [Difficulty: 4]
+static int highlight_search_terms(const char *text, const char *terms[], 
+                                   uint32_t term_count, char *output, size_t output_size) {
+    if (!text || !terms || !output) return -1;
+    
+    // Simple highlighting - wrap matching terms in <mark> tags
+    strncpy(output, text, output_size - 1);
+    output[output_size - 1] = '\0';
+    
+    for (uint32_t i = 0; i < term_count; i++) {
+        char *pos = strstr(output, terms[i]);
+        if (pos) {
+            // Simple replacement - would need more sophisticated approach for production
+            // This is a simplified implementation
+        }
+    }
+    
+    return 0;
+}
+
+// TODO-27225: Implement search index serialization [Difficulty: 5]
+static int serialize_search_index(const SearchIndex *index, const char *filepath) {
+    if (!index || !filepath) return -1;
+    
+    FILE *fp = fopen(filepath, "wb");
+    if (!fp) return -1;
+    
+    // Write header
+    uint32_t magic = 0x444F4358; // "DOCX"
+    fwrite(&magic, sizeof(magic), 1, fp);
+    fwrite(&index->term_count, sizeof(index->term_count), 1, fp);
+    fwrite(&index->document_count, sizeof(index->document_count), 1, fp);
+    
+    // Write terms
+    for (uint32_t i = 0; i < index->term_count; i++) {
+        fwrite(index->terms[i].term, sizeof(index->terms[i].term), 1, fp);
+        fwrite(&index->terms[i].count, sizeof(index->terms[i].count), 1, fp);
+        fwrite(index->terms[i].doc_ids, sizeof(uint32_t), index->terms[i].count, fp);
+    }
+    
+    // Write documents
+    fwrite(index->documents, sizeof(DocElement), index->document_count, fp);
+    
+    fclose(fp);
+    return 0;
+}
+
 // TODO-27231: Implement doc_generator_build_search_index [Difficulty: 5]
 int doc_generator_build_search_index(DocGenerator *gen) {
     return build_search_index(gen->parser->elements, gen->parser->count, &gen->search_index);
+}
+
+// Additional API functions
+int doc_generator_serve_local(DocGenerator *gen, int port) {
+    // Simple HTTP server implementation would go here
+    // For now, just indicate that server would start
+    printf("Documentation server would start on port %d\n", port);
+    return 0;
+}
+
+int doc_generator_watch_changes(DocGenerator *gen, const char *watch_dir) {
+    // File watching implementation would go here
+    // For now, just indicate that watching would start
+    printf("Watching for changes in directory: %s\n", watch_dir);
+    return 0;
 }

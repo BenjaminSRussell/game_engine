@@ -44,6 +44,32 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <pthread.h>
+#include <errno.h>
+#include <time.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#include <d3d12.h>
+#endif
+
+#ifdef __linux__
+#include <sys/inotify.h>
+#include <unistd.h>
+#endif
+#include <pthread.h>
+#include <sys/inotify.h>
+#include <unistd.h>
+#include <immintrin.h>
+#include <vulkan/vulkan.h>
+#include <Metal/Metal.h>
+#include <d3d12.h>
+#include <time.h>
+#include <pthread.h>
+#include <sys/inotify.h>
+#include <unistd.h>
+#include <errno.h>
+#include <time.h>
 
 /* ============================================================================
  * CONSTANTS
@@ -54,6 +80,30 @@
 #define CLOTH_SYSTEM_CLOTH_TEARING_ALIGNMENT 16
 #define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_VULKAN (1u << 0)
 #define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_METAL (1u << 1)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_D3D12 (1u << 2)
+
+/* Error codes */
+#define CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE 0
+#define CLOTH_SYSTEM_CLOTH_TEARING_ERROR_INVALID_PARAM -1
+#define CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NOT_INITIALIZED -2
+#define CLOTH_SYSTEM_CLOTH_TEARING_ERROR_OUT_OF_MEMORY -3
+#define CLOTH_SYSTEM_CLOTH_TEARING_ERROR_BACKEND_FAILED -4
+#define CLOTH_SYSTEM_CLOTH_TEARING_ERROR_THREADING -5
+#define CLOTH_SYSTEM_CLOTH_TEARING_ERROR_VALIDATION -6
+#define CLOTH_SYSTEM_CLOTH_TEARING_ERROR_SERIALIZATION -7
+#define CLOTH_SYSTEM_CLOTH_TEARING_ERROR_HOT_RELOAD -8
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_D3D12 (1u << 2)
+#define CLOTH_SYSTEM_CLOTH_TEARING_CACHE_SIZE 1024
+#define CLOTH_SYSTEM_CLOTH_TEARING_MAX_ASYNC_OPERATIONS 64
+#define CLOTH_SYSTEM_CLOTH_TEARING_MAX_BATCH_SIZE 128
+#define CLOTH_SYSTEM_CLOTH_TEARING_MAX_LOD_LEVELS 8
+#define CLOTH_SYSTEM_CLOTH_TEARING_MEMORY_POOL_SIZE (16 * 1024 * 1024)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_D3D12 (1u << 2)
+#define CLOTH_SYSTEM_CLOTH_TEARING_MAGIC_NUMBER 0x54454152  /* 'TEAR' */
+#define CLOTH_SYSTEM_CLOTH_TEARING_VERSION 1
+#define CLOTH_SYSTEM_CLOTH_TEARING_MAX_WATCHES 128
+#define CLOTH_SYSTEM_CLOTH_TEARING_CACHE_SIZE 64
+#define CLOTH_SYSTEM_CLOTH_TEARING_MAX_ASYNC_OPS 32
 
 /* ============================================================================
  * TYPES
@@ -62,13 +112,54 @@
 typedef enum cloth_system_cloth_tearing_backend {
     CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_CPU = 0,
     CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_VULKAN,
-    CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_METAL
+    CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_METAL,
+    CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_D3D12
 } cloth_system_cloth_tearing_backend_t;
+
+typedef enum cloth_system_cloth_tearing_error {
+    CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE = 0,
+    CLOTH_SYSTEM_CLOTH_TEARING_ERROR_INVALID_PARAM = -1,
+    CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NOT_INITIALIZED = -2,
+    CLOTH_SYSTEM_CLOTH_TEARING_ERROR_OUT_OF_MEMORY = -3,
+    CLOTH_SYSTEM_CLOTH_TEARING_ERROR_BACKEND_FAILED = -4,
+    CLOTH_SYSTEM_CLOTH_TEARING_ERROR_VALIDATION_FAILED = -5,
+    CLOTH_SYSTEM_CLOTH_TEARING_ERROR_SERIALIZATION_FAILED = -6,
+    CLOTH_SYSTEM_CLOTH_TEARING_ERROR_THREAD_SAFETY_VIOLATION = -7
+} cloth_system_cloth_tearing_error_t;
 
 typedef struct cloth_system_cloth_tearing_backend_ctx {
     uint32_t version;
     uint64_t last_frame;
+#ifdef _WIN32
+    ID3D12Device* d3d12_device;
+    ID3D12CommandQueue* d3d12_queue;
+#endif
+    void* vulkan_instance;
+    void* metal_device;
 } cloth_system_cloth_tearing_backend_ctx_t;
+
+typedef struct cloth_system_cloth_tearing_memory_stats {
+    size_t total_allocated;
+    size_t peak_usage;
+    uint32_t allocation_count;
+    uint32_t leak_count;
+} cloth_system_cloth_tearing_memory_stats_t;
+
+typedef struct cloth_system_cloth_tearing_performance_counters {
+    uint64_t frames_processed;
+    uint64_t tears_detected;
+    uint64_t tears_processed;
+    double avg_processing_time;
+    uint64_t last_update_time;
+} cloth_system_cloth_tearing_performance_counters_t;
+
+typedef struct cloth_system_cloth_tearing_hot_reload {
+    bool enabled;
+    int file_watch_fd;
+    pthread_t watch_thread;
+    bool watch_thread_running;
+    char watch_directory[256];
+} cloth_system_cloth_tearing_hot_reload_t;
 
 typedef struct cloth_system_cloth_tearing_internal {
     uint32_t id;
@@ -80,6 +171,19 @@ typedef struct cloth_system_cloth_tearing_internal {
     uint64_t frame_updated;
     cloth_system_cloth_tearing_backend_t backend;
     cloth_system_cloth_tearing_backend_ctx_t* backend_ctx;
+    
+    /* Extended features */
+    pthread_mutex_t mutex;
+    bool thread_safe;
+    cloth_system_cloth_tearing_cache_entry_t* cache;
+    uint32_t cache_size;
+    cloth_system_cloth_tearing_async_operation_t* async_ops;
+    uint32_t async_ops_count;
+    void* gpu_buffer;
+    size_t gpu_buffer_size;
+    uint32_t lod_level;
+    bool culling_enabled;
+    bool render_graph_node;
 } cloth_system_cloth_tearing_internal_t;
 
 typedef struct cloth_system_cloth_tearing_context {
@@ -88,6 +192,14 @@ typedef struct cloth_system_cloth_tearing_context {
     uint32_t capacity;
     void* allocator;
     bool initialized;
+    pthread_mutex_t mutex;
+    cloth_system_cloth_tearing_memory_stats_t memory_stats;
+    cloth_system_cloth_tearing_performance_counters_t perf_counters;
+    cloth_system_cloth_tearing_hot_reload_t hot_reload;
+    bool hot_reload_enabled;
+    bool validation_enabled;
+    size_t total_memory_allocated;
+    size_t peak_memory_usage;
 } cloth_system_cloth_tearing_context_t;
 
 static cloth_system_cloth_tearing_context_t g_cloth_tearing_ctx = {0};
@@ -103,7 +215,107 @@ static cloth_system_cloth_tearing_backend_t cloth_system_cloth_tearing_select_ba
     if (flags & CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_METAL) {
         return CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_METAL;
     }
+    if (flags & CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_D3D12) {
+        return CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_D3D12;
+    }
     return CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_CPU;
+}
+
+static const char* cloth_system_cloth_tearing_error_string(cloth_system_cloth_tearing_error_t error) {
+    switch (error) {
+        case CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE: return "Success";
+        case CLOTH_SYSTEM_CLOTH_TEARING_ERROR_INVALID_PARAM: return "Invalid parameter";
+        case CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NOT_INITIALIZED: return "Not initialized";
+        case CLOTH_SYSTEM_CLOTH_TEARING_ERROR_OUT_OF_MEMORY: return "Out of memory";
+        case CLOTH_SYSTEM_CLOTH_TEARING_ERROR_BACKEND_FAILED: return "Backend failed";
+        case CLOTH_SYSTEM_CLOTH_TEARING_ERROR_VALIDATION_FAILED: return "Validation failed";
+        case CLOTH_SYSTEM_CLOTH_TEARING_ERROR_SERIALIZATION_FAILED: return "Serialization failed";
+        case CLOTH_SYSTEM_CLOTH_TEARING_ERROR_THREAD_SAFETY_VIOLATION: return "Thread safety violation";
+        default: return "Unknown error";
+    }
+}
+
+static uint32_t cloth_system_cloth_tearing_calculate_checksum(const void* data, size_t size) {
+    const uint8_t* bytes = (const uint8_t*)data;
+    uint32_t checksum = 0;
+    for (size_t i = 0; i < size; i++) {
+        checksum = ((checksum << 1) | (checksum >> 31)) ^ bytes[i];
+    }
+    return checksum;
+}
+
+static void* cloth_system_cloth_tearing_async_worker_thread(void* arg) {
+    cloth_system_cloth_tearing_async_operation_t* op = (cloth_system_cloth_tearing_async_operation_t*)arg;
+    if (!op) return NULL;
+    
+    /* Simulate async processing */
+    usleep(1000); /* 1ms delay */
+    
+    if (op->callback) {
+        op->callback(op->output_data, op->user_data);
+    }
+    
+    op->active = false;
+    return NULL;
+}
+
+static int cloth_system_cloth_tearing_init_cache(cloth_system_cloth_tearing_internal_t* item) {
+    if (!item) return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_INVALID_PARAM;
+    
+    item->cache = calloc(CLOTH_SYSTEM_CLOTH_TEARING_CACHE_SIZE, sizeof(cloth_system_cloth_tearing_cache_entry_t));
+    if (!item->cache) {
+        return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_OUT_OF_MEMORY;
+    }
+    
+    item->cache_size = CLOTH_SYSTEM_CLOTH_TEARING_CACHE_SIZE;
+    return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE;
+}
+
+static void cloth_system_cloth_tearing_cleanup_cache(cloth_system_cloth_tearing_internal_t* item) {
+    if (!item || !item->cache) return;
+    
+    for (uint32_t i = 0; i < item->cache_size; i++) {
+        if (item->cache[i].data) {
+            free(item->cache[i].data);
+            item->cache[i].data = NULL;
+        }
+    }
+    
+    free(item->cache);
+    item->cache = NULL;
+    item->cache_size = 0;
+}
+
+static int cloth_system_cloth_tearing_init_async_ops(cloth_system_cloth_tearing_internal_t* item) {
+    if (!item) return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_INVALID_PARAM;
+    
+    item->async_ops = calloc(CLOTH_SYSTEM_CLOTH_TEARING_MAX_ASYNC_OPS, sizeof(cloth_system_cloth_tearing_async_operation_t));
+    if (!item->async_ops) {
+        return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_OUT_OF_MEMORY;
+    }
+    
+    item->async_ops_count = CLOTH_SYSTEM_CLOTH_TEARING_MAX_ASYNC_OPS;
+    return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE;
+}
+
+static void cloth_system_cloth_tearing_cleanup_async_ops(cloth_system_cloth_tearing_internal_t* item) {
+    if (!item || !item->async_ops) return;
+    
+    for (uint32_t i = 0; i < item->async_ops_count; i++) {
+        if (item->async_ops[i].active) {
+            pthread_join(item->async_ops[i].thread, NULL);
+        }
+        if (item->async_ops[i].input_data) {
+            free(item->async_ops[i].input_data);
+        }
+        if (item->async_ops[i].output_data) {
+            free(item->async_ops[i].output_data);
+        }
+    }
+    
+    free(item->async_ops);
+    item->async_ops = NULL;
+    item->async_ops_count = 0;
 }
 
 static int cloth_system_cloth_tearing_backend_init(cloth_system_cloth_tearing_internal_t* item, cloth_system_cloth_tearing_backend_t backend) {

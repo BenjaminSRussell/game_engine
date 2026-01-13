@@ -107,7 +107,46 @@ void skeleton_update(Skeleton *skel, Transform *local_transforms) {
 
     // Calculate world transform
     if (skel->bones[i].parent_id >= 0) {
-      // TODO: Multiply with parent transform
+      // Multiply with parent transform
+      int parent_id = skel->bones[i].parent_id;
+      
+      // Transform multiplication: world = parent_world * local
+      // Position: world_pos = parent_world_pos + (parent_world_rot * local_pos)
+      float parent_world_pos[3] = {
+        skel->bones[parent_id].world_transform.position[0],
+        skel->bones[parent_id].world_transform.position[1],
+        skel->bones[parent_id].world_transform.position[2]
+      };
+      
+      float parent_world_rot[4] = {
+        skel->bones[parent_id].world_transform.rotation[0],
+        skel->bones[parent_id].world_transform.rotation[1],
+        skel->bones[parent_id].world_transform.rotation[2],
+        skel->bones[parent_id].world_transform.rotation[3]
+      };
+      
+      float local_pos[3] = {
+        local_transforms[i].position[0],
+        local_transforms[i].position[1],
+        local_transforms[i].position[2]
+      };
+      
+      // Rotate local position by parent rotation
+      float rotated_pos[3];
+      quaternion_multiply_vector(parent_world_rot, local_pos, rotated_pos);
+      
+      // Add parent position
+      skel->bones[i].world_transform.position[0] = parent_world_pos[0] + rotated_pos[0];
+      skel->bones[i].world_transform.position[1] = parent_world_pos[1] + rotated_pos[1];
+      skel->bones[i].world_transform.position[2] = parent_world_pos[2] + rotated_pos[2];
+      
+      // Combine rotations: world_rot = parent_world_rot * local_rot
+      quaternion_multiply(parent_world_rot, local_transforms[i].rotation, skel->bones[i].world_transform.rotation);
+      
+      // Combine scales: world_scale = parent_world_scale * local_scale
+      skel->bones[i].world_transform.scale[0] = skel->bones[parent_id].world_transform.scale[0] * local_transforms[i].scale[0];
+      skel->bones[i].world_transform.scale[1] = skel->bones[parent_id].world_transform.scale[1] * local_transforms[i].scale[1];
+      skel->bones[i].world_transform.scale[2] = skel->bones[parent_id].world_transform.scale[2] * local_transforms[i].scale[2];
     } else {
       skel->bones[i].world_transform = local_transforms[i];
     }

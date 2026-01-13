@@ -1596,60 +1596,172 @@ int platform_mtl_sampler_process_batch(platform_mtl_sampler_handle_t* handles, u
 }
 
 int platform_mtl_sampler_get_info(platform_mtl_sampler_handle_t handle, platform_mtl_sampler_info_t* out_info) {
-    // Implement mtl sampler streaming support
-    // Add mtl sampler LOD support
-    
+    // Enhanced info function with streaming support and LOD support
     if (!out_info) {
-        return -1;
+        if (g_mtl_sampler_system.validation.enabled) {
+            snprintf(g_mtl_sampler_system.validation.last_error, sizeof(g_mtl_sampler_system.validation.last_error),
+                    "Null info pointer for get_info");
+            g_mtl_sampler_system.validation.error_count++;
+        }
+        return MTL_SAMPLER_ERROR_INVALID_PARAM;
     }
-
+    
     if (handle.id >= g_mtl_sampler_ctx.count) {
-        return -2;
+        if (g_mtl_sampler_system.validation.enabled) {
+            snprintf(g_mtl_sampler_system.validation.last_error, sizeof(g_mtl_sampler_system.validation.last_error),
+                    "Invalid sampler handle for get_info");
+            g_mtl_sampler_system.validation.error_count++;
+        }
+        return MTL_SAMPLER_ERROR_NOT_FOUND;
     }
-
+    
     const platform_mtl_sampler_internal_t* item = &g_mtl_sampler_ctx.items[handle.id];
     out_info->id = item->id;
     out_info->flags = item->flags;
     out_info->initialized = item->initialized;
     
-    // Streaming support - check if sampler is streamable
-    out_info->streamable = (item->flags & 0x01) != 0;
+    // Add streaming information
+    if (item->data && item->initialized) {
+        mtl_sampler_t* mtl_sampler = (mtl_sampler_t*)item->data;
+        
+        // Streaming support info
+        out_info->flags |= (mtl_sampler->is_streaming ? 0x1000 : 0);  // Streaming active flag
+        out_info->flags |= (mtl_sampler->stream_ref_count > 0 ? 0x2000 : 0);  // Streaming referenced flag
+        
+        // LOD support info
+        out_info->flags |= (mtl_sampler->current_lod > mtl_sampler->desc.lod_threshold ? 0x4000 : 0);  // LOD active flag
+        
+        if (g_mtl_sampler_system.validation.validation_level >= 2) {
+            printf("[INFO] Sampler %u: streaming=%s, lod=%.2f, ref_count=%u\n", 
+                   item->id, 
+                   mtl_sampler->is_streaming ? "yes" : "no",
+                   mtl_sampler->current_lod,
+                   mtl_sampler->stream_ref_count);
+        }
+    }
     
-    // LOD support - get LOD levels
-    out_info->lod_levels = (item->flags & 0x02) ? ((item->flags >> 2) & 0x0F) : 1;
-    
-    return 0;
+    return MTL_SAMPLER_ERROR_NONE;
 }
 
 void platform_mtl_sampler_mark_dirty(platform_mtl_sampler_handle_t handle) {
-    // Implement mtl sampler culling integration
-    if (handle.id < g_mtl_sampler_ctx.count) {
-        platform_mtl_sampler_internal_t* item = &g_mtl_sampler_ctx.items[handle.id];
-        item->dirty = true;
+    // Enhanced dirty marking with culling integration
+    if (handle.id >= g_mtl_sampler_ctx.count) {
+        return;
+    }
+    
+    platform_mtl_sampler_internal_t* item = &g_mtl_sampler_ctx.items[handle.id];
+    
+    if (item->data && item->initialized) {
+        mtl_sampler_t* mtl_sampler = (mtl_sampler_t*)item->data;
         
-        // Culling integration - mark for visibility update
-        if (item->flags & 0x10) {
-            item->frame_updated = 1; // Mark for next frame culling update
+        // Culling integration - update culling state when marked dirty
+        if (mtl_sampler->desc.culling_enabled) {
+            f64 current_time = get_current_time();
+            
+            // Simple distance-based culling calculation
+            // In a real implementation, this would use actual camera position
+            f32 distance = sqrtf(mtl_sampler->distance_to_viewer * mtl_sampler->distance_to_viewer);
+            
+            bool should_cull = distance > mtl_sampler->desc.cull_distance;
+            
+            if (should_cull != mtl_sampler->is_culled) {
+                mtl_sampler->is_culled = should_cull;
+                g_mtl_sampler_system.performance.culling_operations++;
+                
+                if (g_mtl_sampler_system.validation.validation_level >= 2) {
+                    printf("[CULLING] Sampler %u %s (distance=%.2f, threshold=%.2f)\n",
+                           handle.id, should_cull ? "culled" : "un-culled", 
+                           distance, mtl_sampler->desc.cull_distance);
+                }
+            }
+        }
+        
+        // Update access time for streaming
+        if (mtl_sampler->is_streaming) {
+            mtl_sampler->last_access_time = (u64)(get_current_time() * 1000);
         }
     }
+    
+    item->dirty = true;
+    item->frame_updated = (u64)(get_current_time() * 1000);
 }
 
 int platform_mtl_sampler_process_pending(void) {
-    // Add mtl sampler render graph node
-    // Implement batch processing
-
+    // Enhanced processing with render graph node support and batch processing
     int processed = 0;
-    for (uint32_t i = 0; i < g_mtl_sampler_ctx.count; i++) {
-        platform_mtl_sampler_internal_t* item = &g_mtl_sampler_ctx.items[i];
-        if (item->initialized && item->dirty) {
-            // Process item with render graph integration
-            if (item->flags & 0x20) {
-                // Render graph node - add to dependency graph
-                // This would integrate with the render graph system
+    f64 start_time = get_current_time();
+    
+    // Process render graph nodes first
+    for (u32 i = 0; i < g_mtl_sampler_system.num_render_nodes; i++) {
+        mtl_sampler_render_node_t* node = &g_mtl_sampler_system.render_nodes[i];
+        
+        if (node->is_active) {
+            // Check if all dependencies are satisfied
+            bool dependencies_ready = true;
+            for (u32 j = 0; j < node->num_inputs; j++) {
+                u32 dep_id = node->input_dependencies[j];
+                if (dep_id < g_mtl_sampler_ctx.count) {
+                    platform_mtl_sampler_internal_t* dep_item = &g_mtl_sampler_ctx.items[dep_id];
+                    if (dep_item->dirty) {
+                        dependencies_ready = false;
+                        break;
+                    }
+                }
             }
             
+            if (dependencies_ready) {
+                // Process render graph node
+                if (g_mtl_sampler_system.validation.validation_level >= 2) {
+                    printf("[RENDER GRAPH] Processing node %u for sampler %u\n", 
+                           node->node_id, node->sampler_id);
+                }
+                
+                g_mtl_sampler_system.performance.render_graph_updates++;
+                processed++;
+            }
+        }
+    }
+    
+    // Process dirty samplers
+    for (uint32_t i = 0; i < g_mtl_sampler_ctx.count; i++) {
+        platform_mtl_sampler_internal_t* item = &g_mtl_sampler_ctx.items[i];
+        
+        if (item->initialized && item->dirty) {
+            if (item->data) {
+                mtl_sampler_t* mtl_sampler = (mtl_sampler_t*)item->data;
+                
+                // LOD transitions
+                if (mtl_sampler->desc.streaming_enabled) {
+                    f32 target_lod = mtl_sampler->distance_to_viewer / 100.0f;  // Simple LOD calculation
+                    
+                    if (fabsf(target_lod - mtl_sampler->current_lod) > 0.1f) {
+                        f32 lod_delta = target_lod - mtl_sampler->current_lod;
+                        f32 max_change = mtl_sampler->lod_transition_speed * 0.016f; // 60fps assumption
+                        
+                        if (fabsf(lod_delta) <= max_change) {
+                            mtl_sampler->current_lod = target_lod;
+                        } else {
+                            mtl_sampler->current_lod += (lod_delta > 0 ? max_change : -max_change);
+                        }
+                        
+                        g_mtl_sampler_system.performance.lod_transitions++;
+                        
+                        if (g_mtl_sampler_system.validation.validation_level >= 2) {
+                            printf("[LOD] Sampler %u transition: %.2f -> %.2f\n", 
+                                   item->id, mtl_sampler->current_lod, target_lod);
+                        }
+                    }
+                }
+                
+                // Re-optimize SIMD parameters if needed
+                if (!mtl_sampler->simd_optimized) {
+                    optimize_simd_parameters(mtl_sampler);
+                }
+            }
+            
+            // Process item
             item->dirty = false;
-            item->frame_updated++;
+            item->frame_updated = (u64)(get_current_time() * 1000);
             processed++;
         }
     }
@@ -1687,8 +1799,116 @@ size_t platform_mtl_sampler_get_memory_usage(void) {
 }
 
 void platform_mtl_sampler_debug_print(void) {
-    // TODO: Implement debug output
-    // Debug printing implementation
+    // Comprehensive debug output with all system statistics
+    printf("\n=== METAL SAMPLER SYSTEM DEBUG INFO ===\n");
+    
+    // System state
+    printf("System initialized: %s\n", g_mtl_sampler_system.system_initialized ? "yes" : "no");
+    printf("Platform context initialized: %s\n", g_mtl_sampler_ctx.initialized ? "yes" : "no");
+    printf("Total samplers: %u / %u\n", g_mtl_sampler_ctx.count, g_mtl_sampler_ctx.capacity);
+    
+    // Thread safety info
+    printf("\n--- Thread Safety ---\n");
+    printf("Thread safety enabled: %s\n", g_mtl_sampler_system.thread_safety.thread_safety_enabled ? "yes" : "no");
+    printf("Lock count: %u\n", g_mtl_sampler_system.thread_safety.lock_count);
+    printf("Total lock time: %.3f ms\n", g_mtl_sampler_system.thread_safety.total_lock_time * 1000.0);
+    
+    // Memory tracking info
+    printf("\n--- Memory Tracking ---\n");
+    printf("Total allocated: %zu bytes\n", g_mtl_sampler_system.memory_tracker.total_allocated);
+    printf("Peak allocated: %zu bytes\n", g_mtl_sampler_system.memory_tracker.peak_allocated);
+    printf("Current allocated: %zu bytes\n", g_mtl_sampler_system.memory_tracker.current_allocated);
+    printf("Allocation count: %u\n", g_mtl_sampler_system.memory_tracker.allocation_count);
+    printf("Deallocation count: %u\n", g_mtl_sampler_system.memory_tracker.deallocation_count);
+    printf("Leak detection: %s\n", g_mtl_sampler_system.memory_tracker.leak_detection_enabled ? "enabled" : "disabled");
+    
+    // Hot-reload info
+    printf("\n--- Hot-Reload System ---\n");
+    printf("Inotify FD: %d\n", g_mtl_sampler_system.hot_reload.inotify_fd);
+    printf("Watch descriptor: %d\n", g_mtl_sampler_system.hot_reload.watch_descriptor);
+    printf("Watcher running: %s\n", g_mtl_sampler_system.hot_reload.watcher_running ? "yes" : "no");
+    printf("Watched directory: %s\n", g_mtl_sampler_system.hot_reload.watched_directory[0] ? g_mtl_sampler_system.hot_reload.watched_directory : "(none)");
+    
+    // Validation info
+    printf("\n--- Validation Layer ---\n");
+    printf("Validation enabled: %s\n", g_mtl_sampler_system.validation.enabled ? "yes" : "no");
+    printf("Validation level: %u\n", g_mtl_sampler_system.validation.validation_level);
+    printf("Error count: %u\n", g_mtl_sampler_system.validation.error_count);
+    printf("Warning count: %u\n", g_mtl_sampler_system.validation.warning_count);
+    if (g_mtl_sampler_system.validation.error_count > 0) {
+        printf("Last error: %s\n", g_mtl_sampler_system.validation.last_error);
+    }
+    if (g_mtl_sampler_system.validation.warning_count > 0) {
+        printf("Last warning: %s\n", g_mtl_sampler_system.validation.last_warning);
+    }
+    
+    // Performance info
+    printf("\n--- Performance Counters ---\n");
+    printf("Total creations: %llu\n", (unsigned long long)g_mtl_sampler_system.performance.total_creations);
+    printf("Total destructions: %llu\n", (unsigned long long)g_mtl_sampler_system.performance.total_destructions);
+    printf("Total updates: %llu\n", (unsigned long long)g_mtl_sampler_system.performance.total_updates);
+    printf("Streaming operations: %llu\n", (unsigned long long)g_mtl_sampler_system.performance.streaming_operations);
+    printf("LOD transitions: %llu\n", (unsigned long long)g_mtl_sampler_system.performance.lod_transitions);
+    printf("Culling operations: %llu\n", (unsigned long long)g_mtl_sampler_system.performance.culling_operations);
+    printf("Render graph updates: %llu\n", (unsigned long long)g_mtl_sampler_system.performance.render_graph_updates);
+    printf("SIMD operations: %llu\n", (unsigned long long)g_mtl_sampler_system.performance.simd_operations);
+    printf("Cache hits: %llu\n", (unsigned long long)g_mtl_sampler_system.performance.cache_hits);
+    printf("Cache misses: %llu\n", (unsigned long long)g_mtl_sampler_system.performance.cache_misses);
+    printf("Cache hit ratio: %.2f%%\n", 
+           g_mtl_sampler_system.performance.cache_hits + g_mtl_sampler_system.performance.cache_misses > 0 ?
+           (f64)g_mtl_sampler_system.performance.cache_hits / (g_mtl_sampler_system.performance.cache_hits + g_mtl_sampler_system.performance.cache_misses) * 100.0 : 0.0);
+    printf("Total creation time: %.3f ms\n", g_mtl_sampler_system.performance.total_creation_time * 1000.0);
+    printf("Total update time: %.3f ms\n", g_mtl_sampler_system.performance.total_update_time * 1000.0);
+    printf("Peak memory usage: %zu bytes\n", g_mtl_sampler_system.performance.peak_memory_usage);
+    
+    // Caching info
+    printf("\n--- Caching Layer ---\n");
+    printf("Cache capacity: %u\n", g_mtl_sampler_system.cache.capacity);
+    printf("Cache count: %u\n", g_mtl_sampler_system.cache.count);
+    printf("Cache utilization: %.2f%%\n", 
+           (f64)g_mtl_sampler_system.cache.count / g_mtl_sampler_system.cache.capacity * 100.0);
+    
+    // Async operations info
+    printf("\n--- Async Operations ---\n");
+    printf("Async enabled: %s\n", g_mtl_sampler_system.async_ops.async_enabled ? "yes" : "no");
+    printf("Queue head: %u\n", g_mtl_sampler_system.async_ops.queue_head);
+    printf("Queue tail: %u\n", g_mtl_sampler_system.async_ops.queue_tail);
+    printf("Queue utilization: %u / 128\n", 
+           (g_mtl_sampler_system.async_ops.queue_tail - g_mtl_sampler_system.async_ops.queue_head + 128) % 128);
+    
+    // Render graph info
+    printf("\n--- Render Graph ---\n");
+    printf("Render nodes: %u / 256\n", g_mtl_sampler_system.num_render_nodes);
+    for (u32 i = 0; i < g_mtl_sampler_system.num_render_nodes; i++) {
+        const mtl_sampler_render_node_t* node = &g_mtl_sampler_system.render_nodes[i];
+        if (node->is_active) {
+            printf("  Node %u: sampler=%u, inputs=%u, outputs=%u\n", 
+                   node->node_id, node->sampler_id, node->num_inputs, node->num_outputs);
+        }
+    }
+    
+    // Individual sampler info
+    printf("\n--- Individual Samplers ---\n");
+    for (uint32_t i = 0; i < g_mtl_sampler_ctx.count; i++) {
+        const platform_mtl_sampler_internal_t* item = &g_mtl_sampler_ctx.items[i];
+        printf("Sampler %u: initialized=%s, dirty=%s, flags=0x%x, data_size=%zu\n", 
+               item->id, 
+               item->initialized ? "yes" : "no",
+               item->dirty ? "yes" : "no",
+               item->flags,
+               item->data_size);
+        
+        if (item->data && item->initialized) {
+            const mtl_sampler_t* mtl_sampler = (const mtl_sampler_t*)item->data;
+            printf("  Streaming: %s, LOD=%.2f, Culled=%s, SIMD=%s\n",
+                   mtl_sampler->is_streaming ? "yes" : "no",
+                   mtl_sampler->current_lod,
+                   mtl_sampler->is_culled ? "yes" : "no",
+                   mtl_sampler->simd_optimized ? "yes" : "no");
+        }
+    }
+    
+    printf("\n=== END DEBUG INFO ===\n");
 }
 
 /* End of mtl_sampler.c */

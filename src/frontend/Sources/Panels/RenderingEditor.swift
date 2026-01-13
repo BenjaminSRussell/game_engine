@@ -221,6 +221,76 @@ struct ShaderList: View {
     }
 }
 
+struct RenderDebuggerView: View {
+    @State private var selectedPass: String = "Final"
+    @State private var showGBuffer: Bool = false
+    
+    let renderPasses = ["Final", "Albedo", "Normal", "Depth", "Roughness", "Metallic", "Ambient Occlusion", "Shadow Map"]
+    
+    var body: some View {
+        VStack(spacing: DesignSystem.Spacing.md) {
+            EditorCollapsibleSection("Render Passes", isExpanded: true) {
+                Picker("View Pass", selection: $selectedPass) {
+                    ForEach(renderPasses, id: \.self) { pass in
+                        Text(pass).tag(pass)
+                    }
+                }
+                
+                Toggle("Show G-Buffer", isOn: $showGBuffer)
+                    .toggleStyle(EditorToggleStyle())
+            }
+            
+            EditorCollapsibleSection("Pipeline Statistics", isExpanded: true) {
+                 HStack {
+                     VStack(alignment: .leading) {
+                         Text("Draw Calls: 1240")
+                         Text("Triangles: 2.4M")
+                         Text("Shaders Bound: 45")
+                     }
+                     Spacer()
+                     VStack(alignment: .leading) {
+                         Text("VRAM: 4.2 GB")
+                         Text("GPU Time: 14.5 ms")
+                         Text("CPU Time: 8.2 ms")
+                     }
+                 }
+                 .font(.caption.monospaced())
+            }
+            
+            // Preview Area
+            VStack {
+                Text("Pass Preview: \(selectedPass)")
+                    .font(DesignSystem.Typography.smallBold)
+                
+                ZStack {
+                    Color.black
+                    if showGBuffer {
+                         // Grid layout for G-Buffers
+                        VStack(spacing: 2) {
+                            HStack(spacing: 2) {
+                                Color.red.overlay(Text("Albedo").foregroundColor(.white))
+                                Color.blue.overlay(Text("Normal").foregroundColor(.white))
+                            }
+                            HStack(spacing: 2) {
+                                Color.gray.overlay(Text("Roughness").foregroundColor(.white))
+                                Color.white.overlay(Text("Depth").foregroundColor(.black))
+                            }
+                        }
+                    } else {
+                        // Single pass view
+                        Color.gray.opacity(0.2)
+                        Image(systemName: "photo")
+                             .font(.largeTitle)
+                             .foregroundColor(.white)
+                    }
+                }
+                .aspectRatio(16/9, contentMode: .fit)
+                .cornerRadius(4)
+            }
+        }
+    }
+}
+
 // Helper for EditorToggleStyle if not defined elsewhere, or use standard
 struct EditorToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
