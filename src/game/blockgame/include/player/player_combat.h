@@ -63,7 +63,34 @@ typedef struct {
   f32 last_damage_amount;
   WeaponType weapon_override;
   bool has_weapon_override;
+  
+  // Advanced combat features
+  CombatStance stance;
+  f32 damage_multiplier;
+  f32 defense_multiplier;
+  f32 speed_multiplier;
 } PlayerCombatState;
+
+// Combat buff system
+#define MAX_COMBAT_BUFFS 8
+
+typedef enum {
+  COMBAT_BUFF_NONE = 0,
+  COMBAT_BUFF_DAMAGE_BOOST,
+  COMBAT_BUFF_DEFENSE_BOOST,
+  COMBAT_BUFF_SPEED_BOOST,
+  COMBAT_BUFF_STAMINA_REGEN,
+  COMBAT_BUFF_HEALTH_REGEN,
+  COMBAT_BUFF_CRITICAL_CHANCE,
+  COMBAT_BUFF_COOLDOWN_REDUCTION
+} CombatBuffType;
+
+typedef struct {
+  CombatBuffType type;
+  f32 duration;
+  f32 magnitude;
+  f32 time_remaining;
+} CombatBuff;
 
 typedef struct {
   u32 attacks;
@@ -71,6 +98,8 @@ typedef struct {
   u32 crits;
   u32 blocks;
   u32 dodges;
+  u32 counter_attacks;
+  u32 finishers;
   f32 damage_dealt;
   f32 damage_taken;
 } PlayerCombatStats;
@@ -98,6 +127,14 @@ typedef enum {
   COMBAT_ACTION_COUNT
 } CombatActionType;
 
+// Combat stances
+typedef enum {
+  COMBAT_STANCE_BALANCED = 0,
+  COMBAT_STANCE_AGGRESSIVE,
+  COMBAT_STANCE_DEFENSIVE,
+  COMBAT_STANCE_COUNT
+} CombatStance;
+
 // Initialize player combat system
 void player_combat_init(PlayerCombatState *combat);
 
@@ -119,5 +156,19 @@ void player_combat_clear_weapon_override(PlayerCombatState *combat);
 const PlayerCombatStats *player_combat_get_stats(void);
 void player_combat_reset_stats(void);
 void player_combat_set_callbacks(const PlayerCombatCallbacks *callbacks);
+
+// Advanced combat mechanics
+void player_counter_attack(struct PlayerSystem *system);
+void player_perform_finisher(struct PlayerSystem *system);
+bool player_can_perform_finisher(PlayerCombatState *combat);
+
+// Combat stance system
+void player_set_combat_stance(PlayerCombatState *combat, CombatStance stance);
+CombatStance player_get_combat_stance(PlayerCombatState *combat);
+
+// Combat buff system
+void player_apply_combat_buff(PlayerCombatState *combat, CombatBuffType type, f32 duration, f32 magnitude);
+void player_update_combat_buffs(PlayerCombatState *combat, f32 delta_time);
+f32 player_get_combat_buff_multiplier(PlayerCombatState *combat, CombatBuffType type);
 
 #endif // PLAYER_COMBAT_H

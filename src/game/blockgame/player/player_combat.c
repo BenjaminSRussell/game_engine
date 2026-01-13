@@ -71,6 +71,12 @@ void player_combat_init(PlayerCombatState *combat) {
   combat->dodge_timer = 0.0f;
   combat->weapon_override = WEAPON_TYPE_SWORD;
   combat->has_weapon_override = false;
+  
+  // Initialize advanced combat features
+  combat->stance = COMBAT_STANCE_BALANCED;
+  combat->damage_multiplier = 1.0f;
+  combat->defense_multiplier = 1.0f;
+  combat->speed_multiplier = 1.0f;
 }
 
 void player_attack(PlayerSystem *system, CombatActionType type) {
@@ -496,4 +502,161 @@ void player_combat_set_callbacks(const PlayerCombatCallbacks *callbacks) {
     return;
   }
   g_combat_callbacks = *callbacks;
+}
+
+// Advanced combat mechanics
+void player_counter_attack(PlayerSystem *system) {
+    if (!system || !system->player)
+        return;
+    
+    PlayerComponent *p = system->player;
+    PlayerCombatState *combat = &p->combat_state;
+    
+    // Can only counter after a perfect block
+    if (combat->perfect_block_window <= 0.0f) {
+        return;
+    }
+    
+    // Counter attack is faster and more powerful
+    combat->attack_cooldown = 0.2f; // Very fast recovery
+    combat->perfect_block_window = 0.0f; // Consume the perfect block
+    
+    // Perform a guaranteed critical hit with bonus damage
+    player_attack(system, COMBAT_ACTION_MELEE);
+    
+    // Log the counter attack
+    g_combat_stats.counter_attacks++;
+    LOG_INFO("Player performed a counter attack!");
+}
+
+void player_perform_finisher(PlayerSystem *system) {
+    if (!system || !system->player)
+        return;
+    
+    PlayerComponent *p = system->player;
+    PlayerCombatState *combat = &p->combat_state;
+    
+    // Finisher requires high combo count
+    if (combat->combo_count < 5) {
+        return;
+    }
+    
+    // Consume the combo
+    combat->combo_count = 0;
+    combat->combo_timer = 0.0f;
+    combat->combo_score = 0;
+    
+    // Perform a powerful finishing move
+    combat->attack_cooldown = 1.5f; // Long recovery
+    combat->is_attacking = true;
+    
+    // Massive damage with visual effects
+    f32 finisher_damage = 50.0f;
+    combat->last_damage_amount = finisher_damage;
+    combat->damage_timer = 1.0f;
+    
+    g_combat_stats.finishers++;
+    g_combat_stats.damage_dealt += finisher_damage;
+    
+    player_combat_emit_sound(system, SOUND_THUNDER_01, "player_finisher", 1.0f);
+    LOG_INFO("Player performed a finisher move! Damage: %.1f", finisher_damage);
+}
+
+bool player_can_perform_finisher(PlayerCombatState *combat) {
+    if (!combat)
+        return false;
+    
+    return combat->combo_count >= 5 && combat->attack_cooldown <= 0.0f;
+}
+
+void player_set_combat_stance(PlayerCombatState *combat, CombatStance stance) {
+    if (!combat)
+        return;
+    
+    combat->stance = stance;
+    
+    // Apply stance modifiers
+    switch (stance) {
+        case COMBAT_STANCE_AGGRESSIVE:
+            combat->damage_multiplier = 1.2f;
+            combat->defense_multiplier = 0.8f;
+            combat->speed_multiplier = 1.1f;
+            break;
+        case COMBAT_STANCE_DEFENSIVE:
+            combat->damage_multiplier = 0.8f;
+            combat->defense_multiplier = 1.3f;
+            combat->speed_multiplier = 0.9f;
+            break;
+        case COMBAT_STANCE_BALANCED:
+        default:
+            combat->damage_multiplier = 1.0f;
+            combat->defense_multiplier = 1.0f;
+            combat->speed_multiplier = 1.0f;
+            break;
+    }
+}
+
+CombatStance player_get_combat_stance(PlayerCombatState *combat) {
+    if (!combat)
+        return COMBAT_STANCE_BALANCED;
+    
+    return combat->stance;
+}
+
+void player_apply_combat_buff(PlayerCombatState *combat, CombatBuffType type, f32 duration, f32 magnitude) {
+    if (!combat)
+        return;
+    
+    // Find an empty buff slot or replace the oldest
+    u32 slot = 0;
+    for (u32 i = 0; i < MAX_COMBAT_BUFFS; i++) {
+        if (combat->buffs[i].type == COMBAT_BUFF_NONE || combat->buffs[i].duration <= 0.0f) {
+            slot = i;
+            break;
+        }
+        if (combat->buffs[i].duration < combat->buffs[slot].duration) {
+            slot = i;
+        }
+    }
+    
+    // Apply the buff
+    combat->buffs[slot].type = type;
+    combat->buffs[slot].duration = duration;
+    combat->buffs[slot].magnitude = magnitude;
+    combat->buffs[slot].time_remaining = duration;
+    
+    LOG_INFO("Applied combat buff: type=%d, duration=%.2f, magnitude=%.2f", type, duration, magnitude);
+}
+
+void player_update_combat_buffs(PlayerCombatState *combat, f32 delta_time) {
+    if (!combat)
+        return;
+    
+    for (u32 i = 0; i < MAX_COMBAT_BUFFS; i++) {
+        if (combat->buffs[i].duration > 0.0f) {
+            combat->buffs[i].time_remaining -= delta_time;
+            
+            if (combat->buffs[i].time_remaining <= 0.0f) {
+                // Expired buff
+                LOG_INFO("Combat buff expired: type=%d", combat->buffs[i].type);
+                combat->buffs[i].type = COMBAT_BUFF_NONE;
+                combat->buffs[i].duration = 0.0f;
+                combat->buffs[i].magnitude = 0.0f;
+                combat->buffs[i].time_remaining = 0.0f;
+            }
+        }
+    }
+}
+
+f32 player_get_combat_buff_multiplier(PlayerCombatState *combat, CombatBuffType type) {
+    if (!combat)
+        return 1.0f;
+    
+    f32 multiplier = 1.0f;
+    for (u32 i = 0; i < MAX_COMBAT_BUFFS; i++) {
+        if (combat->buffs[i].type == type && combat->buffs[i].time_remaining > 0.0f) {
+            multiplier *= combat->buffs[i].magnitude;
+        }
+    }
+    return multiplier;
 }
