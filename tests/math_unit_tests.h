@@ -11,9 +11,12 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "src/engine/math/vec3.h"
-#include "src/engine/math/quat.h"
-#include "src/engine/math/mat4.h"
+#include <stdio.h> // For snprintf
+
+// Use explicit paths to Public API headers to avoid conflict with internal headers in src/engine/math/
+#include "src/engine/include/math/vec3.h"
+#include "src/engine/include/math/quat.h"
+#include "src/engine/include/math/mat4.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -52,12 +55,12 @@ typedef struct MathTestResults {
 
 #define MATH_ASSERT_FLOAT_EQ(expected, actual, tolerance) \
     do { \
-        float diff = (expected) - (actual); \
-        if (diff < 0) diff = -diff; \
-        if (diff > (tolerance)) { \
+        float _diff = (expected) - (actual); \
+        if (_diff < 0) _diff = -_diff; \
+        if (_diff > (tolerance)) { \
             snprintf(current_error, sizeof(current_error), \
                     "FLOAT_EQ failed: expected %.6f, got %.6f (diff %.6f, tolerance %.6f) at %s:%d", \
-                    (expected), (actual), diff, (tolerance), __FILE__, __LINE__); \
+                    (expected), (actual), _diff, (tolerance), __FILE__, __LINE__); \
             return false; \
         } \
     } while(0)
@@ -399,19 +402,19 @@ float math_random_float(float min, float max);
  * @param max Maximum value per component
  * @return Random vec3
  */
-vec3_t math_random_vec3(float min, float max);
+Vec3 math_random_vec3(float min, float max);
 
 /**
  * Generate random quaternion
  * @return Random quaternion
  */
-quat_t math_random_quat(void);
+Quat math_random_quat(void);
 
 /**
  * Generate random matrix
  * @return Random matrix
  */
-mat4_t math_random_mat4(void);
+Mat4 math_random_mat4(void);
 
 /**
  * Check if two floats are approximately equal
@@ -429,7 +432,7 @@ bool math_approximately_equal(float a, float b, float tolerance);
  * @param tolerance Tolerance
  * @return True if approximately equal
  */
-bool math_vec3_approximately_equal(vec3_t a, vec3_t b, float tolerance);
+bool math_vec3_approximately_equal(Vec3 a, Vec3 b, float tolerance);
 
 /**
  * Check if two quaternions are approximately equal
@@ -438,7 +441,7 @@ bool math_vec3_approximately_equal(vec3_t a, vec3_t b, float tolerance);
  * @param tolerance Tolerance
  * @return True if approximately equal
  */
-bool math_quat_approximately_equal(quat_t a, quat_t b, float tolerance);
+bool math_quat_approximately_equal(Quat a, Quat b, float tolerance);
 
 /**
  * Check if two matrices are approximately equal
@@ -447,7 +450,7 @@ bool math_quat_approximately_equal(quat_t a, quat_t b, float tolerance);
  * @param tolerance Tolerance
  * @return True if approximately equal
  */
-bool math_mat4_approximately_equal(mat4_t a, mat4_t b, float tolerance);
+bool math_mat4_approximately_equal(Mat4 a, Mat4 b, float tolerance);
 
 // ========================================
 // Benchmark Functions
