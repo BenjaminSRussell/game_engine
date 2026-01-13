@@ -4,11 +4,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Forward declaration
+bool gas_can_activate(AbilitySystemComponent *comp, const char *ability_name);
+
 AbilitySystemComponent *gas_create_component(void *owner) {
   AbilitySystemComponent *comp = calloc(1, sizeof(AbilitySystemComponent));
   comp->owner_actor = owner;
   comp->attribute_set = calloc(1, sizeof(AttributeSet));
-  LOG_INFO("GAS Component created");
+  LOG_INFO(LOG_CAT_GAME, "GAS Component created");
   return comp;
 }
 
@@ -28,6 +31,12 @@ bool gas_try_activate_ability(AbilitySystemComponent *comp,
       if (comp->abilities[i].ability->can_activate(comp->owner_actor,
                                                    &comp->abilities[i])) {
         comp->abilities[i].is_active = true;
+
+        // Apply cooldown if exists
+        if (comp->abilities[i].ability->cooldown_effect) {
+             comp->abilities[i].cooldown_remaining = comp->abilities[i].ability->cooldown_effect->duration;
+        }
+
         comp->abilities[i].ability->on_activate(comp->owner_actor,
                                                 &comp->abilities[i]);
         return true;
@@ -47,7 +56,7 @@ void gas_destroy_component(AbilitySystemComponent *comp) {
   }
 
   free(comp);
-  LOG_INFO("GAS Component destroyed");
+  LOG_INFO(LOG_CAT_GAME, "GAS Component destroyed");
 }
 
 void gas_update(AbilitySystemComponent *comp, f32 delta_time) {
@@ -58,23 +67,29 @@ void gas_update(AbilitySystemComponent *comp, f32 delta_time) {
   for (u32 i = 0; i < comp->ability_count; i++) {
     if (comp->abilities[i].cooldown_remaining > 0.0f) {
       comp->abilities[i].cooldown_remaining -= delta_time;
+      if (comp->abilities[i].cooldown_remaining < 0.0f) {
+        comp->abilities[i].cooldown_remaining = 0.0f;
+      }
     }
   }
 
-  LOG_DEBUG("Updated GAS component: %u abilities", comp->ability_count);
+  LOG_DEBUG(LOG_CAT_GAME, "Updated GAS component: %u abilities", comp->ability_count);
 }
 
-void gas_add_attribute(AbilitySystemComponent *comp, const char *attribute_name, f32 value) {
+void gas_add_attribute(AbilitySystemComponent *comp, const char *attribute_name, f32 value, f32 max) {
   // Add a new attribute to the ability system component
   if (!comp || !attribute_name) return;
 
   if (comp->attribute_set && comp->attribute_set->attribute_count < 32) {
     strncpy(comp->attribute_set->attributes[comp->attribute_set->attribute_count].name,
-           attribute_name, 63);
-    comp->attribute_set->attributes[comp->attribute_set->attribute_count].value = value;
+           attribute_name, 31);
+    comp->attribute_set->attributes[comp->attribute_set->attribute_count].name[31] = '\0';
+    comp->attribute_set->attributes[comp->attribute_set->attribute_count].base_value = value;
+    comp->attribute_set->attributes[comp->attribute_set->attribute_count].current_value = value;
+    comp->attribute_set->attributes[comp->attribute_set->attribute_count].max_value = max;
     comp->attribute_set->attribute_count++;
 
-    LOG_DEBUG("Added attribute '%s' with value %.2f", attribute_name, value);
+    LOG_DEBUG(LOG_CAT_GAME, "Added attribute '%s' with value %.2f", attribute_name, value);
   }
 }
 
@@ -84,8 +99,9 @@ void gas_set_attribute_value(AbilitySystemComponent *comp, const char *attribute
 
   for (u32 i = 0; i < comp->attribute_set->attribute_count; i++) {
     if (strcmp(comp->attribute_set->attributes[i].name, attribute_name) == 0) {
-      comp->attribute_set->attributes[i].value = value;
-      LOG_DEBUG("Set attribute '%s' to %.2f", attribute_name, value);
+      comp->attribute_set->attributes[i].base_value = value;
+      comp->attribute_set->attributes[i].current_value = value;
+      LOG_DEBUG(LOG_CAT_GAME, "Set attribute '%s' to %.2f", attribute_name, value);
       return;
     }
   }
@@ -97,7 +113,7 @@ f32 gas_get_attribute_value(AbilitySystemComponent *comp, const char *attribute_
 
   for (u32 i = 0; i < comp->attribute_set->attribute_count; i++) {
     if (strcmp(comp->attribute_set->attributes[i].name, attribute_name) == 0) {
-      return comp->attribute_set->attributes[i].value;
+      return comp->attribute_set->attributes[i].current_value;
     }
   }
 
@@ -109,7 +125,7 @@ void gas_grant_ability(AbilitySystemComponent *comp, GameplayAbility *ability) {
   if (!comp || !ability) return;
 
   gas_give_ability(comp, ability);
-  LOG_INFO("Granted ability '%s' to entity", ability->name);
+  LOG_INFO(LOG_CAT_GAME, "Granted ability '%s' to entity", ability->name);
 }
 
 bool gas_activate_ability(AbilitySystemComponent *comp, const char *ability_name) {
@@ -117,7 +133,7 @@ bool gas_activate_ability(AbilitySystemComponent *comp, const char *ability_name
   if (!comp || !ability_name) return false;
 
   if (!gas_can_activate(comp, ability_name)) {
-    LOG_WARN("Cannot activate ability '%s' - prerequisites not met", ability_name);
+    LOG_WARN(LOG_CAT_GAME, "Cannot activate ability '%s' - prerequisites not met", ability_name);
     return false;
   }
 
@@ -132,14 +148,14 @@ bool gas_can_activate(AbilitySystemComponent *comp, const char *ability_name) {
     if (strcmp(comp->abilities[i].ability->name, ability_name) == 0) {
       // Check cooldown
       if (comp->abilities[i].cooldown_remaining > 0.0f) {
-        LOG_DEBUG("Ability '%s' on cooldown for %.2f seconds", ability_name,
+        LOG_DEBUG(LOG_CAT_GAME, "Ability '%s' on cooldown for %.2f seconds", ability_name,
                  comp->abilities[i].cooldown_remaining);
         return false;
       }
 
       // Check if already active
       if (comp->abilities[i].is_active) {
-        LOG_DEBUG("Ability '%s' already active", ability_name);
+        LOG_DEBUG(LOG_CAT_GAME, "Ability '%s' already active", ability_name);
         return false;
       }
 
@@ -147,6 +163,6 @@ bool gas_can_activate(AbilitySystemComponent *comp, const char *ability_name) {
     }
   }
 
-  LOG_WARN("Ability '%s' not found", ability_name);
+  LOG_WARN(LOG_CAT_GAME, "Ability '%s' not found", ability_name);
   return false;
 }
