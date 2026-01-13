@@ -1,3 +1,10 @@
+/**
+ * @file entity_hierarchy.c
+ * @brief ECS Implementation
+ * @description Entity Component System implementation
+ * @date 2026-01-13
+ */
+
 #include "ecs/entity_hierarchy.h"
 #include "engine/include/core/logger.h"
 #include <string.h>
