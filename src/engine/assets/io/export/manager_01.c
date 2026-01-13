@@ -195,75 +195,6 @@ typedef struct format_converter {
                         void** dst_data, size_t* dst_size);
 } format_converter_t;
 
-/*
- * IO_EXPORT_MANAGER_01 - Core data structure
- * Manages state and resources for manager_01 operations
- */
-typedef struct io_export_manager_01 {
-    uint32_t id;
-    uint32_t flags;
-    void* internal_data;
-    void* user_data;
-    size_t data_size;
-    bool is_initialized;
-    bool is_dirty;
-    uint32_t reference_count;
-    uint64_t last_update_frame;
-    void* allocator;
-    
-    // Resource pooling
-    io_export_resource_pool_t resource_pool;
-    
-    // Async operations
-    io_export_async_operation_t async_ops[IO_EXPORT_MANAGER_01_MAX_ASYNC_OPERATIONS];
-    uint32_t async_op_count;
-    pthread_mutex_t async_mutex;
-    
-    // Scene data
-    io_export_scene_t* current_scene;
-    
-    // Format conversion
-    io_export_format_converter_t format_converters[16];
-    uint32_t converter_count;
-    
-    // Serialization
-    io_export_serialization_header_t serialization_header;
-    
-    // Memory tracking
-    io_export_memory_tracker_t memory_tracker;
-    
-    // Hot-reload
-    io_export_file_watcher_t file_watcher;
-    
-    // Telemetry
-    io_export_telemetry_t telemetry;
-    
-    // Compression
-    bool compression_enabled;
-    uint32_t compression_level;
-} io_export_manager_01_t;
-
-typedef struct io_export_manager_01_desc {
-    uint32_t flags;
-    size_t initial_capacity;
-    void* user_data;
-    void* allocator;
-} io_export_manager_01_desc_t;
-
-typedef struct io_export_manager_01_stats {
-    uint64_t total_allocations;
-    uint64_t active_count;
-    uint64_t peak_count;
-    size_t memory_used;
-    size_t memory_peak;
-    double avg_process_time_ms;
-    uint64_t async_operations_count;
-    uint64_t hot_reload_events;
-    uint64_t compression_ratio;
-    uint64_t telemetry_samples;
-    double telemetry_avg_time;
-} io_export_manager_01_stats_t;
-
 // Resource pool for reduced allocation overhead
 typedef struct io_export_resource_pool {
     void* resources[IO_EXPORT_MANAGER_01_RESOURCE_POOL_SIZE];
@@ -341,6 +272,7 @@ typedef struct io_export_memory_tracker {
     uint32_t allocation_count;
     bool eviction_enabled;
     float eviction_threshold;
+    void* owner;
 } io_export_memory_tracker_t;
 
 // Hot-reload file watching
@@ -365,6 +297,75 @@ typedef struct io_export_telemetry {
     uint64_t error_count;
 } io_export_telemetry_t;
 
+/*
+ * IO_EXPORT_MANAGER_01 - Core data structure
+ * Manages state and resources for manager_01 operations
+ */
+typedef struct io_export_manager_01 {
+    uint32_t id;
+    uint32_t flags;
+    void* internal_data;
+    void* user_data;
+    size_t data_size;
+    bool is_initialized;
+    bool is_dirty;
+    uint32_t reference_count;
+    uint64_t last_update_frame;
+    void* allocator;
+
+    // Resource pooling
+    io_export_resource_pool_t resource_pool;
+
+    // Async operations
+    io_export_async_operation_t async_ops[IO_EXPORT_MANAGER_01_MAX_ASYNC_OPERATIONS];
+    uint32_t async_op_count;
+    pthread_mutex_t async_mutex;
+
+    // Scene data
+    io_export_scene_t* current_scene;
+
+    // Format conversion
+    io_export_format_converter_t format_converters[16];
+    uint32_t converter_count;
+
+    // Serialization
+    io_export_serialization_header_t serialization_header;
+
+    // Memory tracking
+    io_export_memory_tracker_t memory_tracker;
+
+    // Hot-reload
+    io_export_file_watcher_t file_watcher;
+
+    // Telemetry
+    io_export_telemetry_t telemetry;
+
+    // Compression
+    bool compression_enabled;
+    uint32_t compression_level;
+} io_export_manager_01_t;
+
+typedef struct io_export_manager_01_desc {
+    uint32_t flags;
+    size_t initial_capacity;
+    void* user_data;
+    void* allocator;
+} io_export_manager_01_desc_t;
+
+typedef struct io_export_manager_01_stats {
+    uint64_t total_allocations;
+    uint64_t active_count;
+    uint64_t peak_count;
+    size_t memory_used;
+    size_t memory_peak;
+    double avg_process_time_ms;
+    uint64_t async_operations_count;
+    uint64_t hot_reload_events;
+    uint64_t compression_ratio;
+    uint64_t telemetry_samples;
+    double telemetry_avg_time;
+} io_export_manager_01_stats_t;
+
 
 /* ============================================================================
  * STATIC VARIABLES
@@ -384,10 +385,10 @@ static int io_export_manager_01_validate_internal(io_export_manager_01_t* ctx);
 static int io_export_manager_01_cleanup_internal(io_export_manager_01_t* ctx);
 
 // Resource pooling functions
-static void* io_export_resource_pool_alloc(io_export_resource_pool_t* pool);
-static void io_export_resource_pool_free(io_export_resource_pool_t* pool, void* resource);
+static void* io_export_resource_pool_alloc(io_export_manager_01_t* ctx);
+static void io_export_resource_pool_free(io_export_manager_01_t* ctx, void* resource);
 static int io_export_resource_pool_init(io_export_resource_pool_t* pool, size_t resource_size);
-static void io_export_resource_pool_cleanup(io_export_resource_pool_t* pool);
+static void io_export_resource_pool_cleanup(io_export_manager_01_t* ctx);
 
 // Async file loading functions
 static void* io_export_async_load_thread(void* arg);
@@ -412,7 +413,7 @@ static int io_export_serialize_state(io_export_manager_01_t* ctx, void** buffer,
 static int io_export_deserialize_state(io_export_manager_01_t* ctx, const void* buffer, size_t buffer_size);
 
 // Memory tracking functions
-static int io_export_memory_tracker_init(io_export_memory_tracker_t* tracker, size_t budget);
+static int io_export_memory_tracker_init(io_export_memory_tracker_t* tracker, size_t budget, void* owner);
 static void* io_export_memory_alloc_tracked(io_export_memory_tracker_t* tracker, size_t size);
 static void io_export_memory_free_tracked(io_export_memory_tracker_t* tracker, void* ptr, size_t size);
 static void io_export_memory_evict_if_needed(io_export_memory_tracker_t* tracker);
@@ -488,7 +489,7 @@ static int io_export_manager_01_cleanup_internal(io_export_manager_01_t* ctx) {
     }
     
     // Cleanup resource pool
-    io_export_resource_pool_cleanup(&ctx->resource_pool);
+    io_export_resource_pool_cleanup(ctx);
     
     // Cleanup file watcher
     io_export_file_watcher_cleanup(&ctx->file_watcher);
@@ -523,7 +524,7 @@ int io_export_manager_01_init(io_export_manager_01_t* ctx, void* params) {
     pthread_mutex_init(&ctx->async_mutex, NULL);
 
     // Initialize memory tracker
-    if (io_export_memory_tracker_init(&ctx->memory_tracker, IO_EXPORT_MANAGER_01_MEMORY_BUDGET_DEFAULT) != IO_EXPORT_ERROR_NONE) {
+    if (io_export_memory_tracker_init(&ctx->memory_tracker, IO_EXPORT_MANAGER_01_MEMORY_BUDGET_DEFAULT, ctx) != IO_EXPORT_ERROR_NONE) {
         return IO_EXPORT_ERROR_OUT_OF_MEMORY;
     }
 
@@ -579,7 +580,7 @@ int io_export_manager_01_shutdown(io_export_manager_01_t* ctx, void* params) {
     io_export_manager_01_cleanup_internal(ctx);
 
     // Implement resource pooling cleanup
-    io_export_resource_pool_cleanup(&ctx->resource_pool);
+    io_export_resource_pool_cleanup(ctx);
 
     // Implement format conversion cleanup
     ctx->converter_count = 0;
@@ -897,7 +898,7 @@ int io_export_manager_01_flush(io_export_manager_01_t* ctx, void* params) {
 
     // Implement resource pooling for reduced allocation overhead
     // Flush resource pool - return all resources to pool
-    io_export_resource_pool_cleanup(&ctx->resource_pool);
+    io_export_resource_pool_cleanup(ctx);
     io_export_resource_pool_init(&ctx->resource_pool, 1024);
 
     // Add asset cache management
@@ -1067,6 +1068,244 @@ int io_export_manager_01_module_shutdown(void) {
 
     s_manager_01_initialized = false;
     return 0;
+}
+
+/* ============================================================================
+ * STATIC FUNCTION IMPLEMENTATIONS
+ * ============================================================================ */
+
+static int io_export_resource_pool_init(io_export_resource_pool_t* pool, size_t resource_size) {
+    if (!pool) return IO_EXPORT_ERROR_INVALID_PARAM;
+    memset(pool, 0, sizeof(io_export_resource_pool_t));
+    pool->resource_size = resource_size;
+
+    pthread_mutexattr_t attr;
+    pthread_mutexattr_init(&attr);
+    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+    pthread_mutex_init(&pool->pool_mutex, &attr);
+    pthread_mutexattr_destroy(&attr);
+
+    return IO_EXPORT_ERROR_NONE;
+}
+
+// We need a context to free tracked memory, but the pool doesn't store it.
+// Assuming for now cleanup uses standard free or we modify struct to hold context.
+// However, since resource_pool is embedded in manager, we can use container_of if needed,
+// but for simplicity we will rely on the fact that pool cleanup is done at shutdown where tracking matters less,
+// OR better yet, we pass context to init/alloc/free.
+// Since we can't change init signature easily without changing all calls, let's assume cleanup
+// just frees memory. If we want to be strict, we should track it.
+// The `io_export_resource_pool_alloc` is called with `pool`.
+// I will modify `io_export_resource_pool_alloc` to take `io_export_memory_tracker_t*` if available?
+// The current signature is `static void* io_export_resource_pool_alloc(io_export_resource_pool_t* pool);`.
+// I can't easily pass the tracker without changing the signature.
+// But `io_export_resource_pool` is a member of `io_export_manager_01_t`.
+// I can use a hack or just change the signature.
+// The signature is static, so I can change it.
+// I will update the forward declaration and call sites.
+
+// Forward declaration update is needed.
+// But I will first implement it here assuming I will update the signature.
+
+static void io_export_resource_pool_cleanup(io_export_manager_01_t* ctx) {
+    if (!ctx) return;
+    io_export_resource_pool_t* pool = &ctx->resource_pool;
+    pthread_mutex_lock(&pool->pool_mutex);
+    for (int i = 0; i < IO_EXPORT_MANAGER_01_RESOURCE_POOL_SIZE; ++i) {
+        if (pool->resources[i]) {
+            // Use tracked free to keep statistics consistent
+            io_export_memory_free_tracked(&ctx->memory_tracker, pool->resources[i], pool->resource_size);
+            pool->resources[i] = NULL;
+        }
+    }
+    pthread_mutex_unlock(&pool->pool_mutex);
+    pthread_mutex_destroy(&pool->pool_mutex);
+}
+
+// Helper to get tracker from pool if possible, or we change signature.
+// Let's change signature of alloc to take manager or tracker.
+// Call sites: `manager_01.c` only? Yes, static function.
+// Calls: `io_export_manager_01_update` (planned usage?), `io_export_manager_01_flush`.
+// Wait, `alloc` is not called in the current code I have visible except in my own code if I added it?
+// The existing code has `io_export_resource_pool_alloc` forward declared.
+// I will change it to `static void* io_export_resource_pool_alloc(io_export_manager_01_t* ctx);`
+
+static void* io_export_resource_pool_alloc(io_export_manager_01_t* ctx) {
+    if (!ctx) return NULL;
+    io_export_resource_pool_t* pool = &ctx->resource_pool;
+    void* ptr = NULL;
+    pthread_mutex_lock(&pool->pool_mutex);
+
+    // Check for free slot
+    int free_index = -1;
+    for (int i = 0; i < IO_EXPORT_MANAGER_01_RESOURCE_POOL_SIZE; ++i) {
+        if (!pool->in_use[i]) {
+            free_index = i;
+            break;
+        }
+    }
+
+    if (free_index >= 0) {
+        if (!pool->resources[free_index]) {
+            // Allocate using tracked memory
+            pool->resources[free_index] = io_export_memory_alloc_tracked(&ctx->memory_tracker, pool->resource_size);
+        }
+
+        if (pool->resources[free_index]) {
+            pool->in_use[free_index] = true;
+            ptr = pool->resources[free_index];
+            memset(ptr, 0, pool->resource_size);
+
+            // Update next_free hint (simple optimization)
+            pool->next_free = free_index + 1;
+        }
+    }
+
+    pthread_mutex_unlock(&pool->pool_mutex);
+    return ptr;
+}
+
+static void io_export_resource_pool_free(io_export_manager_01_t* ctx, void* resource) {
+    if (!ctx || !resource) return;
+    io_export_resource_pool_t* pool = &ctx->resource_pool;
+    pthread_mutex_lock(&pool->pool_mutex);
+    for (int i = 0; i < IO_EXPORT_MANAGER_01_RESOURCE_POOL_SIZE; ++i) {
+        if (pool->resources[i] == resource) {
+            pool->in_use[i] = false;
+            // Update next_free to point to this newly freed slot if it's earlier
+            if ((uint32_t)i < pool->next_free) {
+                pool->next_free = i;
+            }
+            break;
+        }
+    }
+    pthread_mutex_unlock(&pool->pool_mutex);
+}
+
+static int io_export_file_watcher_init(io_export_file_watcher_t* watcher) {
+    if (!watcher) return IO_EXPORT_ERROR_INVALID_PARAM;
+    memset(watcher, 0, sizeof(io_export_file_watcher_t));
+    return IO_EXPORT_ERROR_NONE;
+}
+
+static void io_export_file_watcher_cleanup(io_export_file_watcher_t* watcher) {
+    if (!watcher) return;
+    // Cleanup logic
+}
+
+static int io_export_memory_tracker_init(io_export_memory_tracker_t* tracker, size_t budget, void* owner) {
+    if (!tracker) return IO_EXPORT_ERROR_INVALID_PARAM;
+    tracker->total_budget = budget;
+    tracker->current_usage = 0;
+    tracker->peak_usage = 0;
+    tracker->allocation_count = 0;
+    tracker->eviction_enabled = true;
+    tracker->eviction_threshold = 0.9f;
+    tracker->owner = owner;
+    return IO_EXPORT_ERROR_NONE;
+}
+
+static void* io_export_memory_alloc_tracked(io_export_memory_tracker_t* tracker, size_t size) {
+    if (!tracker) return NULL;
+
+    // Check budget
+    if (tracker->current_usage + size > tracker->total_budget) {
+        if (tracker->eviction_enabled) {
+            io_export_memory_evict_if_needed(tracker);
+            if (tracker->current_usage + size > tracker->total_budget) {
+                return NULL;
+            }
+        } else {
+            return NULL;
+        }
+    }
+
+    void* ptr = malloc(size);
+    if (ptr) {
+        tracker->current_usage += size;
+        if (tracker->current_usage > tracker->peak_usage) {
+            tracker->peak_usage = tracker->current_usage;
+        }
+        tracker->allocation_count++;
+    }
+    return ptr;
+}
+
+static void io_export_memory_free_tracked(io_export_memory_tracker_t* tracker, void* ptr, size_t size) {
+    if (!tracker || !ptr) return;
+    free(ptr);
+    if (tracker->current_usage >= size) {
+        tracker->current_usage -= size;
+    } else {
+        tracker->current_usage = 0;
+    }
+    if (tracker->allocation_count > 0) {
+        tracker->allocation_count--;
+    }
+}
+
+static void io_export_memory_evict_if_needed(io_export_memory_tracker_t* tracker) {
+    if (!tracker || !tracker->eviction_enabled) return;
+
+    // Check if we are above threshold
+    if (tracker->current_usage > tracker->total_budget * tracker->eviction_threshold) {
+        if (tracker->owner) {
+            io_export_manager_01_t* manager = (io_export_manager_01_t*)tracker->owner;
+
+            // Attempt to free unused resources from the pool
+            pthread_mutex_lock(&manager->resource_pool.pool_mutex);
+            for (int i = 0; i < IO_EXPORT_MANAGER_01_RESOURCE_POOL_SIZE; ++i) {
+                // If resource is allocated but not currently in use, free it to reclaim memory
+                if (!manager->resource_pool.in_use[i] && manager->resource_pool.resources[i]) {
+                    // Use tracked free to update the tracker
+                    io_export_memory_free_tracked(tracker, manager->resource_pool.resources[i], manager->resource_pool.resource_size);
+                    manager->resource_pool.resources[i] = NULL;
+
+                    // If we dropped below threshold, we can stop
+                    if (tracker->current_usage <= tracker->total_budget * tracker->eviction_threshold) {
+                        break;
+                    }
+                }
+            }
+            pthread_mutex_unlock(&manager->resource_pool.pool_mutex);
+        }
+    }
+}
+
+static int io_export_serialize_state(io_export_manager_01_t* ctx, void** buffer, size_t* buffer_size) {
+    // Stub implementation
+    if (buffer) *buffer = NULL;
+    if (buffer_size) *buffer_size = 0;
+    return IO_EXPORT_ERROR_NONE;
+}
+
+static io_export_scene_t* io_export_parse_gltf_scene(const char* file_path) {
+    // Stub
+    return NULL;
+}
+
+static io_export_scene_t* io_export_parse_fbx_scene(const char* file_path) {
+    // Stub
+    return NULL;
+}
+
+static void io_export_scene_free(io_export_scene_t* scene) {
+    // Stub
+}
+
+static void io_export_telemetry_record_operation(io_export_telemetry_t* telemetry, double time_ms, size_t memory_bytes) {
+    if (!telemetry) return;
+    telemetry->operation_count++;
+    telemetry->total_time_ms += time_ms;
+    telemetry->total_memory_transferred += memory_bytes;
+    if (memory_bytes > 0) {
+        telemetry->memory_operations++;
+    }
+}
+
+static void io_export_telemetry_reset(io_export_telemetry_t* telemetry) {
+    if (!telemetry) return;
+    memset(telemetry, 0, sizeof(io_export_telemetry_t));
 }
 
 /* End of io_export_manager_01.c */
