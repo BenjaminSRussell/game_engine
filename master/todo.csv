@@ -32767,7 +32767,5 @@ TODO-32644,todo_md,Master TODO,master/todo.md,"High - Implement a quest manager 
 TODO-32645,todo_md,Master TODO,master/todo.md,"High - Create a UI for displaying and tracking quests, including a quest log and on-screen notifications. (line 3) (assets/assets/code/todo_quests.c)",open
 TODO-32646,todo_md,Master TODO,master/todo.md,"Medium - Implement a variety of quest objectives, such as fetching items, killing mobs, and exploring specific locations. (line 4) (assets/assets/code/todo_quests.c)",open
 TODO-32647,todo_md,Master TODO,master/todo.md,"Medium - Create a system for rewarding players for completing quests, such as giving them items, experience, or currency. (line 5) (assets/assets/code/todo_quests.c)",open
-MAT-001,implementation,Materials > System,Jules-Materials,Material System,completed
-MAT-002,implementation,Materials > Editor,Jules-Materials,Shader Editor,completed
-MAT-003,implementation,Materials > Compilation,Jules-Materials,Shader Compilation,completed
-MAT-004,implementation,Materials > Properties,Jules-Materials,Material Properties,completed
+ANIM-001,feature,Animation,Jules-Animation,Skeletal Animation System,completed
+ANIM-002,feature,Animation,Jules-Animation,Animation State Machine,completed
