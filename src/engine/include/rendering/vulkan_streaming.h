@@ -1,7 +1,7 @@
-#ifndef VULKAN_STREAMING_H
-#define VULKAN_STREAMING_H
+#pragma once
 
-#include <include/rendering/vulkan.h>
+#include <stdbool.h>
+#include <vulkan/vulkan.h>
 
 #ifdef VULKAN_BUILD
 
