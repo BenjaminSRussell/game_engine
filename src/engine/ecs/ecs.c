@@ -114,7 +114,7 @@ void ecs_world_init(World *world, u32 max_entities, u32 max_components,
 
   g_ecs_world = world;
 
-  LOG_INFO("[ECS] World Initialized (Capacity: %d entities)", max_entities);
+  LOG_INFO(LOG_CAT_GENERAL, "[ECS] World Initialized (Capacity: %d entities)", max_entities);
 }
 
 void ecs_world_free(World *world) {
@@ -183,7 +183,7 @@ Entity ecs_create_entity(World *world) {
     id = ed->free_entity_ids[--ed->free_count];
   } else {
     if (ed->next_entity_id >= ed->capacity) {
-      LOG_ERROR("[ECS] Error: Max entities reached");
+      LOG_ERROR(LOG_CAT_GENERAL, "[ECS] Error: Max entities reached");
       return (Entity){0, 0};
     }
     id = ed->next_entity_id++;
@@ -814,12 +814,12 @@ WorldStats ecs_world_get_stats(World *world) {
 }
 
 bool ecs_world_save(World *world, const char *path) {
-  LOG_INFO("[ECS] Saving world to %s (Stub)", path);
+  LOG_INFO(LOG_CAT_GENERAL, "[ECS] Saving world to %s (Stub)", path);
   return true;
 }
 
 bool ecs_world_load(World *world, const char *path) {
-  LOG_INFO("[ECS] Loading world from %s (Stub)", path);
+  LOG_INFO(LOG_CAT_GENERAL, "[ECS] Loading world from %s (Stub)", path);
   return true;
 }
 

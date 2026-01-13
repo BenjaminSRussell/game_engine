@@ -10,7 +10,7 @@
 #include <math.h>
 
 // Include status effects for projectile effects
-#include <include/gameplay/combat/status_effects.h>
+#include <gameplay/combat/status_effects.h>
 
 #define MAX_PROJECTILES 2048
 #define PROJECTILE_UPDATE_BATCH_SIZE 64
@@ -73,7 +73,7 @@ static bool projectile_raycast(const Vec3 *start, const Vec3 *end, Entity source
 static void projectile_apply_explosion(const Vec3 *position, f32 radius, f32 damage, Entity source) {
   // Find all entities in explosion radius
   // This would integrate with the hitbox system
-  LOG_DEBUG("Explosion at (%.2f, %.2f, %.2f) radius %.2f damage %.1f", 
+  LOG_DEBUG(LOG_CAT_GAME, "Explosion at (%.2f, %.2f, %.2f) radius %.2f damage %.1f",
            position->x, position->y, position->z, radius, damage);
   
   // For now, just log the explosion
@@ -92,8 +92,8 @@ static void projectile_handle_collision(ProjectileInstance *instance, const Vec3
   proj->has_collided = true;
   proj->last_hit_entity = hit_entity;
   
-  LOG_DEBUG("Projectile collision: entity %u hit entity %u at (%.2f, %.2f, %.2f)", 
-           instance->entity.id, hit_entity.id, hit_point->x, hit_point->y, hit_point->z);
+  LOG_DEBUG(LOG_CAT_GAME, "Projectile collision: entity %u hit entity %u at (%.2f, %.2f, %.2f)",
+           (u32)instance->entity.id, (u32)hit_entity.id, hit_point->x, hit_point->y, hit_point->z);
   
   switch (proj->behavior) {
     case PROJECTILE_BEHAVIOR_DESTROY:
@@ -112,7 +112,7 @@ static void projectile_handle_collision(ProjectileInstance *instance, const Vec3
     case PROJECTILE_BEHAVIOR_BOUNCE:
       // Reflect velocity
       Vec3 reflected = vec3_reflect(proj->velocity, *hit_normal);
-      proj->velocity = vec3_scale(reflected, vec3(0.8f, 0.8f, 0.8f)); // Energy loss on bounce
+      proj->velocity = vec3_scale(reflected, vec3_create(0.8f, 0.8f, 0.8f)); // Energy loss on bounce
       break;
       
     case PROJECTILE_BEHAVIOR_EXPLODE:
@@ -132,23 +132,25 @@ static void projectile_handle_collision(ProjectileInstance *instance, const Vec3
     // Create damage event and emit to damage system
     damage_event_create(proj->source, hit_entity, proj->damage, proj->damage_type);
 
-    LOG_DEBUG("Applied %.1f damage (type: %d) to entity %u",
-             proj->damage, proj->damage_type, hit_entity.id);
+    LOG_DEBUG(LOG_CAT_GAME, "Applied %.1f damage (type: %d) to entity %u",
+             proj->damage, proj->damage_type, (u32)hit_entity.id);
 
     // Apply type-specific effects based on projectile type
+    /* Disabled status effects until system linked
     if (proj->damage_type == DAMAGE_TYPE_FIRE) {
       // Apply burning effect for fire projectiles
       status_sys_apply_effect_with_source(hit_entity.id, EFFECT_BURNING, 5.0f, 1.0f, proj->source.id);
-      LOG_DEBUG("Applied BURNING effect to entity %u from fire projectile", hit_entity.id);
+      LOG_DEBUG(LOG_CAT_GAME, "Applied BURNING effect to entity %u from fire projectile", (u32)hit_entity.id);
     } else if (proj->damage_type == DAMAGE_TYPE_ICE) {
       // Apply freezing effect for ice projectiles
       status_sys_apply_effect_with_source(hit_entity.id, EFFECT_FREEZING, 3.0f, 0.5f, proj->source.id);
-      LOG_DEBUG("Applied FREEZING effect to entity %u from ice projectile", hit_entity.id);
+      LOG_DEBUG(LOG_CAT_GAME, "Applied FREEZING effect to entity %u from ice projectile", (u32)hit_entity.id);
     } else if (proj->damage_type == DAMAGE_TYPE_POISON) {
       // Apply poison effect for poison projectiles
       status_sys_apply_effect_with_source(hit_entity.id, EFFECT_POISON, 10.0f, 0.5f, proj->source.id);
-      LOG_DEBUG("Applied POISON effect to entity %u from poison projectile", hit_entity.id);
+      LOG_DEBUG(LOG_CAT_GAME, "Applied POISON effect to entity %u from poison projectile", (u32)hit_entity.id);
     }
+    */
   }
 }
 
@@ -163,26 +165,26 @@ static void projectile_update_physics(ProjectileInstance *instance, f32 delta_ti
   
   // Apply gravity
   if (proj->gravity_scale > 0.0f) {
-    Vec3 gravity_force = vec3_scale(g_projectile_system.gravity, vec3(proj->gravity_scale, proj->gravity_scale, proj->gravity_scale));
-    proj->velocity = vec3_add(proj->velocity, vec3_scale(gravity_force, vec3(delta_time, delta_time, delta_time)));
+    Vec3 gravity_force = vec3_scale(g_projectile_system.gravity, vec3_create(proj->gravity_scale, proj->gravity_scale, proj->gravity_scale));
+    proj->velocity = vec3_add(proj->velocity, vec3_scale(gravity_force, vec3_create(delta_time, delta_time, delta_time)));
   }
   
   // Apply drag
   if (proj->drag > 0.0f) {
     f32 drag_factor = 1.0f - (proj->drag * delta_time);
     drag_factor = fmaxf(0.0f, drag_factor);
-    proj->velocity = vec3_scale(proj->velocity, vec3(drag_factor, drag_factor, drag_factor));
+    proj->velocity = vec3_scale(proj->velocity, vec3_create(drag_factor, drag_factor, drag_factor));
   }
   
   // Clamp to max speed
   f32 current_speed = vec3_length(proj->velocity);
   if (current_speed > proj->max_speed) {
-    proj->velocity = vec3_scale(vec3_normalize(proj->velocity), vec3(proj->max_speed, proj->max_speed, proj->max_speed));
+    proj->velocity = vec3_scale(vec3_normalize(proj->velocity), vec3_create(proj->max_speed, proj->max_speed, proj->max_speed));
   }
   
   // Update position
   proj->last_position = proj->last_position; // Would get from transform component
-  Vec3 new_position = vec3_add(proj->last_position, vec3_scale(proj->velocity, vec3(delta_time, delta_time, delta_time)));
+  Vec3 new_position = vec3_add(proj->last_position, vec3_scale(proj->velocity, vec3_create(delta_time, delta_time, delta_time)));
   
   // Handle homing
   if (proj->is_homing && proj->homing_target.id != 0 && proj->age >= proj->homing_delay) {
@@ -191,7 +193,7 @@ static void projectile_update_physics(ProjectileInstance *instance, f32 delta_ti
     
     Vec3 homing_dir = calculate_homing_direction(&proj->last_position, &target_position, 
                                                  &proj->velocity, proj->homing_strength);
-    proj->velocity = vec3_scale(homing_dir, vec3(current_speed, current_speed, current_speed));
+    proj->velocity = vec3_scale(homing_dir, vec3_create(current_speed, current_speed, current_speed));
   }
   
   // Perform raycast collision detection
@@ -211,7 +213,7 @@ static void projectile_update_physics(ProjectileInstance *instance, f32 delta_ti
   // Check lifetime
   if (proj->age >= proj->lifetime) {
     instance->is_active = false;
-    LOG_DEBUG("Projectile %u expired after %.2f seconds", instance->entity.id, proj->age);
+    LOG_DEBUG(LOG_CAT_GAME, "Projectile %u expired after %.2f seconds", (u32)instance->entity.id, proj->age);
   }
 }
 
@@ -238,7 +240,7 @@ static void projectile_remove_instance(u32 index) {
 // Public API
 bool projectile_system_init(World *world) {
   if (g_projectile_system.is_initialized) {
-    LOG_WARN("Projectile system already initialized");
+    LOG_WARN(LOG_CAT_GAME, "Projectile system already initialized");
     return true;
   }
   
@@ -247,7 +249,7 @@ bool projectile_system_init(World *world) {
   g_projectile_system.current_time = 0.0;
   g_projectile_system.gravity = (Vec3){0.0f, PROJECTILE_DEFAULT_GRAVITY, 0.0f};
   
-  LOG_INFO("Projectile system initialized");
+  LOG_INFO(LOG_CAT_GAME, "Projectile system initialized");
   return true;
 }
 
@@ -257,7 +259,7 @@ void projectile_system_shutdown(void) {
   memset(&g_projectile_system, 0, sizeof(ProjectileSystem));
   g_projectile_system.is_initialized = false;
   
-  LOG_INFO("Projectile system shutdown");
+  LOG_INFO(LOG_CAT_GAME, "Projectile system shutdown");
 }
 
 void projectile_system_update(World *world, f32 delta_time) {
@@ -293,7 +295,7 @@ Entity projectile_spawn(World *world, Vec3 position, Vec3 direction, f32 speed, 
   
   // Normalize direction and apply speed
   direction = vec3_normalize(direction);
-  Vec3 velocity = vec3_scale(direction, vec3(speed, speed, speed));
+  Vec3 velocity = vec3_scale(direction, vec3_create(speed, speed, speed));
   
   // Create projectile component
   ProjectileComponent proj = projectile_create(velocity, 5.0f); // 5 second default lifetime
@@ -327,7 +329,7 @@ Entity projectile_spawn(World *world, Vec3 position, Vec3 direction, f32 speed, 
     instance->previous_positions[i] = position;
   }
   
-  LOG_DEBUG("Spawned projectile entity %u (speed: %.1f, damage: %.1f)", entity.id, speed, damage);
+  LOG_DEBUG(LOG_CAT_GAME, "Spawned projectile entity %u (speed: %.1f, damage: %.1f)", (u32)entity.id, speed, damage);
   
   return entity;
 }
@@ -418,7 +420,7 @@ void projectile_set_homing(ProjectileComponent *proj, Entity target, f32 strengt
   proj->homing_target = target;
   proj->homing_strength = fmaxf(0.0f, fminf(1.0f, strength));
   
-  LOG_DEBUG("Set projectile homing to entity %u with strength %.2f", target.id, strength);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile homing to entity %u with strength %.2f", (u32)target.id, strength);
 }
 
 void projectile_set_gravity(ProjectileComponent *proj, f32 gravity_scale) {
@@ -426,7 +428,7 @@ void projectile_set_gravity(ProjectileComponent *proj, f32 gravity_scale) {
   
   proj->gravity_scale = fmaxf(0.0f, gravity_scale);
   
-  LOG_DEBUG("Set projectile gravity scale to %.2f", gravity_scale);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile gravity scale to %.2f", gravity_scale);
 }
 
 void projectile_set_drag(ProjectileComponent *proj, f32 drag) {
@@ -434,7 +436,7 @@ void projectile_set_drag(ProjectileComponent *proj, f32 drag) {
   
   proj->drag = fmaxf(0.0f, fminf(1.0f, drag));
   
-  LOG_DEBUG("Set projectile drag to %.3f", drag);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile drag to %.3f", drag);
 }
 
 void projectile_set_behavior(ProjectileComponent *proj, ProjectileBehavior behavior) {
@@ -442,7 +444,7 @@ void projectile_set_behavior(ProjectileComponent *proj, ProjectileBehavior behav
   
   proj->behavior = behavior;
   
-  LOG_DEBUG("Set projectile behavior to %d", behavior);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile behavior to %d", behavior);
 }
 
 void projectile_set_penetration(ProjectileComponent *proj, u32 count) {
@@ -451,7 +453,7 @@ void projectile_set_penetration(ProjectileComponent *proj, u32 count) {
   proj->penetration_count = count;
   proj->current_penetrations = 0;
   
-  LOG_DEBUG("Set projectile penetration count to %u", count);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile penetration count to %u", count);
 }
 
 void projectile_set_explosion(ProjectileComponent *proj, f32 radius, f32 damage) {
@@ -461,7 +463,7 @@ void projectile_set_explosion(ProjectileComponent *proj, f32 radius, f32 damage)
   proj->explosion_damage = fmaxf(0.0f, damage);
   proj->explosion_falloff = true; // Default to enabled
   
-  LOG_DEBUG("Set projectile explosion: radius %.2f, damage %.1f", radius, damage);
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile explosion: radius %.2f, damage %.1f", radius, damage);
 }
 
 void projectile_set_light(ProjectileComponent *proj, bool emit_light, Vec3 color) {
@@ -470,7 +472,7 @@ void projectile_set_light(ProjectileComponent *proj, bool emit_light, Vec3 color
   proj->emit_light = emit_light;
   proj->light_color = color;
   
-  LOG_DEBUG("Set projectile light: %s, color (%.2f, %.2f, %.2f)", 
+  LOG_DEBUG(LOG_CAT_GAME, "Set projectile light: %s, color (%.2f, %.2f, %.2f)",
            emit_light ? "enabled" : "disabled", color.x, color.y, color.z);
 }
 
@@ -525,7 +527,7 @@ void projectile_debug_render(World *world) {
   
   // This would integrate with the debug rendering system
   // For now, we'll just log the projectile positions
-  LOG_DEBUG("=== Projectile Debug Render ===");
+  LOG_DEBUG(LOG_CAT_GAME, "=== Projectile Debug Render ===");
   
   for (u32 i = 0; i < g_projectile_system.instance_count; i++) {
     ProjectileInstance *instance = &g_projectile_system.instances[i];
@@ -541,14 +543,14 @@ void projectile_debug_render(World *world) {
       case PROJECTILE_BEHAVIOR_STICK: behavior_name = "Stick"; break;
     }
     
-    LOG_DEBUG("Projectile %u: pos (%.2f, %.2f, %.2f) vel (%.2f, %.2f, %.2f) age %.2f [%s]",
-             instance->entity.id,
+    LOG_DEBUG(LOG_CAT_GAME, "Projectile %u: pos (%.2f, %.2f, %.2f) vel (%.2f, %.2f, %.2f) age %.2f [%s]",
+             (u32)instance->entity.id,
              instance->projectile.last_position.x, instance->projectile.last_position.y, instance->projectile.last_position.z,
              instance->projectile.velocity.x, instance->projectile.velocity.y, instance->projectile.velocity.z,
              instance->projectile.age, behavior_name);
   }
   
-  LOG_DEBUG("==============================");
+  LOG_DEBUG(LOG_CAT_GAME, "==============================");
 }
 
 bool projectile_is_initialized(void) {

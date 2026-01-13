@@ -10,6 +10,8 @@
 #include <string.h>
 #include <math.h>
 
+#define MAX_HITBOXES 1024
+
 // TimerComponent implementation for hitbox timing
 typedef struct {
   f32 duration;
@@ -20,7 +22,7 @@ typedef struct {
 } TimerComponent;
 
 // Timer management functions
-TimerComponent* timer_create(f32 duration, bool loops) {
+TimerComponent* hitbox_timer_create(f32 duration, bool loops) {
   TimerComponent* timer = malloc(sizeof(TimerComponent));
   if (timer) {
     timer->duration = duration;
@@ -91,7 +93,6 @@ typedef struct {
 
 static HitboxHitTracker g_hitbox_trackers[MAX_HITBOXES] = {0};
 
-#define MAX_HITBOXES 1024
 #define HITBOX_QUERY_BUFFER_SIZE 256
 #define HITBOX_COLLISION_THRESHOLD 0.001f
 
@@ -154,7 +155,7 @@ static bool capsule_vs_sphere(const Vec3 *capsule_center, f32 capsule_radius, f3
   Vec3 ap = vec3_sub(*sphere_center, capsule_bottom);
   
   f32 t = fmaxf(0.0f, fminf(1.0f, vec3_dot(ap, ab) / vec3_dot(ab, ab)));
-  Vec3 closest_point = vec3_add(capsule_bottom, vec3_scale(ab, vec3(t, t, t)));
+  Vec3 closest_point = vec3_add(capsule_bottom, vec3_scale(ab, vec3_create(t, t, t)));
   
   Vec3 diff = vec3_sub(*sphere_center, closest_point);
   f32 distance_sq = vec3_dot(diff, diff);
@@ -270,7 +271,7 @@ static bool hitbox_check_collision(const HitboxInstance *a, const HitboxInstance
           collision = sphere_vs_sphere(&a->hitbox.world_position, a->hitbox.data.sphere.radius,
                                       &b->hitbox.world_position, b->hitbox.data.sphere.radius);
           if (collision) {
-            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), vec3(0.5f, 0.5f, 0.5f));
+            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), vec3_create(0.5f, 0.5f, 0.5f));
             Vec3 normal = vec3_normalize(vec3_sub(b->hitbox.world_position, a->hitbox.world_position));
             contact_normal = normal;
             penetration_depth = a->hitbox.data.sphere.radius + b->hitbox.data.sphere.radius - 
@@ -319,7 +320,7 @@ static bool hitbox_check_collision(const HitboxInstance *a, const HitboxInstance
           collision = box_vs_box(&a->hitbox.world_position, &a->hitbox.data.box.half_extents,
                                  &b->hitbox.world_position, &b->hitbox.data.box.half_extents);
           if (collision) {
-            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), vec3(0.5f, 0.5f, 0.5f));
+            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), vec3_create(0.5f, 0.5f, 0.5f));
             Vec3 normal = vec3_normalize(vec3_sub(b->hitbox.world_position, a->hitbox.world_position));
             contact_normal = normal;
             penetration_depth = 1.0f; // Simplified
@@ -370,7 +371,7 @@ static bool hitbox_check_collision(const HitboxInstance *a, const HitboxInstance
           collision = sphere_vs_sphere(&a->hitbox.world_position, a->hitbox.data.capsule.radius,
                                       &b->hitbox.world_position, b->hitbox.data.capsule.radius);
           if (collision) {
-            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), vec3(0.5f, 0.5f, 0.5f));
+            contact_point = vec3_scale(vec3_add(a->hitbox.world_position, b->hitbox.world_position), vec3_create(0.5f, 0.5f, 0.5f));
             Vec3 normal = vec3_normalize(vec3_sub(b->hitbox.world_position, a->hitbox.world_position));
             contact_normal = normal;
             penetration_depth = a->hitbox.data.capsule.radius + b->hitbox.data.capsule.radius - 
@@ -396,7 +397,7 @@ static bool hitbox_check_collision(const HitboxInstance *a, const HitboxInstance
 // Public API
 bool hitbox_system_init(World *world) {
   if (g_hitbox_system.is_initialized) {
-    LOG_WARN("Hitbox system already initialized");
+    LOG_WARN(LOG_CAT_GAME, "Hitbox system already initialized");
     return true;
   }
   
@@ -404,7 +405,7 @@ bool hitbox_system_init(World *world) {
   g_hitbox_system.is_initialized = true;
   g_hitbox_system.current_time = 0.0;
   
-  LOG_INFO("Hitbox system initialized");
+  LOG_INFO(LOG_CAT_GAME, "Hitbox system initialized");
   return true;
 }
 
@@ -414,7 +415,7 @@ void hitbox_system_shutdown(void) {
   memset(&g_hitbox_system, 0, sizeof(HitboxSystem));
   g_hitbox_system.is_initialized = false;
   
-  LOG_INFO("Hitbox system shutdown");
+  LOG_INFO(LOG_CAT_GAME, "Hitbox system shutdown");
 }
 
 void hitbox_system_update(World *world, f32 delta_time) {
@@ -464,26 +465,30 @@ void hitbox_system_update(World *world, f32 delta_time) {
 void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b, const HitboxCollision *collision) {
   if (!world || !a || !b || !collision) return;
 
-  LOG_DEBUG("Hitbox collision: entity %u hit entity %u", a->entity.id, b->entity.id);
+  LOG_DEBUG(LOG_CAT_GAME, "Hitbox collision: entity %u hit entity %u", (u32)a->entity.id, (u32)b->entity.id);
 
   // Apply damage if this is a trigger hitbox (e.g., attack hitbox)
   if (a->hitbox.is_trigger) {
     // Check if this hitbox has already hit target b
     if (!hitbox_has_hit_entity(a->entity, b->entity)) {
+      // Get damage component
+      DamageComponent* dmg = ecs_get_component(world, a->entity, DAMAGE_COMPONENT_ID);
+
       // Calculate damage with multiplier
-      f32 base_damage = 10.0f;
+      f32 base_damage = dmg ? dmg->base_damage : 10.0f;
       f32 final_damage = base_damage * a->hitbox.damage_multiplier;
+      DamageType type = dmg ? dmg->damage_type : DAMAGE_TYPE_PHYSICAL;
 
       // Create damage event from hitbox owner to target
-      Entity source = a->entity;
+      Entity source = dmg ? dmg->source_entity : a->entity;
       Entity target = b->entity;
-      damage_event_create(source, target, final_damage, DAMAGE_TYPE_PHYSICAL);
+      damage_event_create(source, target, final_damage, type);
 
       // Mark that this hitbox has hit target b
       hitbox_mark_hit_entity(a->entity, b->entity);
 
-      LOG_DEBUG("Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
-               a->entity.id, final_damage, b->entity.id, a->hitbox.damage_multiplier);
+      LOG_DEBUG(LOG_CAT_GAME, "Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
+               (u32)a->entity.id, final_damage, (u32)b->entity.id, a->hitbox.damage_multiplier);
     }
   }
 
@@ -491,20 +496,24 @@ void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b,
   if (b->hitbox.is_trigger) {
     // Check if this hitbox has already hit target a
     if (!hitbox_has_hit_entity(b->entity, a->entity)) {
+      // Get damage component
+      DamageComponent* dmg = ecs_get_component(world, b->entity, DAMAGE_COMPONENT_ID);
+
       // Calculate damage with multiplier
-      f32 base_damage = 10.0f;
+      f32 base_damage = dmg ? dmg->base_damage : 10.0f;
       f32 final_damage = base_damage * b->hitbox.damage_multiplier;
+      DamageType type = dmg ? dmg->damage_type : DAMAGE_TYPE_PHYSICAL;
 
       // Create damage event from hitbox owner to target
-      Entity source = b->entity;
+      Entity source = dmg ? dmg->source_entity : b->entity;
       Entity target = a->entity;
-      damage_event_create(source, target, final_damage, DAMAGE_TYPE_PHYSICAL);
+      damage_event_create(source, target, final_damage, type);
 
       // Mark that this hitbox has hit target a
       hitbox_mark_hit_entity(b->entity, a->entity);
 
-      LOG_DEBUG("Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
-               b->entity.id, final_damage, a->entity.id, b->hitbox.damage_multiplier);
+      LOG_DEBUG(LOG_CAT_GAME, "Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
+               (u32)b->entity.id, final_damage, (u32)a->entity.id, b->hitbox.damage_multiplier);
     }
   }
 }
@@ -543,8 +552,8 @@ Entity hitbox_create_temporary(World *world, Vec3 position, Vec3 direction, f32 
   // Add timer component for automatic destruction
   // TODO: Implement TimerComponent
   
-  LOG_DEBUG("Created temporary hitbox entity %u (range: %.2f, duration: %.2f)", 
-           entity.id, range, duration);
+  LOG_DEBUG(LOG_CAT_GAME, "Created temporary hitbox entity %u (range: %.2f, duration: %.2f)",
+           (u32)entity.id, range, duration);
   
   return entity;
 }
@@ -601,7 +610,7 @@ void hitbox_activate(HitboxComponent *hitbox) {
   hitbox->active = true;
   hitbox->last_update_time = g_hitbox_system.current_time;
   
-  LOG_DEBUG("Activated hitbox");
+  LOG_DEBUG(LOG_CAT_GAME, "Activated hitbox");
 }
 
 void hitbox_deactivate(HitboxComponent *hitbox) {
