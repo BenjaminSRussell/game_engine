@@ -1,3 +1,10 @@
+/**
+ * @file swift_bridge_old.c
+ * @brief System Implementation
+ * @description System implementation
+ * @date 2026-01-13
+ */
+
 #include "voxelforge_bridge.h"
 #include <stdio.h>
 #include <stdlib.h>
