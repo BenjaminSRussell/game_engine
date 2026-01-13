@@ -4,10 +4,21 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-// Network address structure
+// Network address type. IPv4 stays 0 so zero-initialized addresses remain IPv4.
+typedef enum {
+  NET_ADDR_IPV4 = 0,
+  NET_ADDR_IPV6 = 1
+} NetAddressType;
+
+// Network address structure. host and ip4 alias the first four bytes.
 typedef struct {
-  uint32_t host; // IPv4 address in network byte order
-  uint16_t port; // Port in network byte order
+  union {
+    uint32_t host; // IPv4 address in network byte order (legacy access)
+    uint32_t ip4;
+    uint8_t ip6[16];
+  };
+  uint16_t port; // Port in host byte order (socket layer applies htons)
+  uint8_t type;  // NetAddressType
 } NetAddress;
 
 // Packet types
@@ -35,6 +46,8 @@ typedef enum {
   PACKET_TYPE_ACK = 20,
   PACKET_TYPE_FRAGMENT = 21,
   PACKET_TYPE_SNAPSHOT_ACK = 22,
+  // Transport ACK/fragment/snapshot ACK stay 20/21/22. RPC ACKs use a free id.
+  PACKET_TYPE_RPC_ACK = 23,
 
   PACKET_TYPE_COUNT
 } PacketType;
