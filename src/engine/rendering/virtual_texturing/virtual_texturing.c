@@ -10,8 +10,11 @@
 #include <string.h>
 
 #include "../render_pipeline.h"
+#include <math/vec3.h>
+#include <pthread.h>
 
 extern uint64_t get_time_nanos(void);
+void virtual_texture_destroy(void *vt);
 
 // ============================================================================
 // Virtual Texturing Types
@@ -49,6 +52,10 @@ typedef struct {
   uint32_t cache_misses;
   uint64_t total_memory_usage;
   float streaming_time_ms;
+
+  uint32_t tile_count; // Total tiles
+  Vec3 world_origin;
+  float streaming_distance_threshold;
 
   char name[256];
   bool initialized;
@@ -262,27 +269,32 @@ static void update_streaming_queue(VirtualTexture *vt,
   // Add tiles near camera to streaming queue
   for (uint32_t z = 0; z < vt->tile_count_z; z++) {
     for (uint32_t y = 0; y < vt->tile_count_y; y++) {
-      for (uint32_t x = 0; x < vt->tile_count_x; x++) {
-        float tile_center_x = (float)x * vt->tile_size + vt->world_origin.x;
-        float tile_center_y = (float)y * vt->tile_size + vt->world_origin.y;
-        float tile_center_z = (float)z * vt->tile_size + vt->world_origin.z;
+      for (uint32_t x = 0; x < vt->tile_count_x;                float ox = ((float*)&vt->world_origin)[0];
+                float oy = ((float*)&vt->world_origin)[1];
+                float oz = ((float*)&vt->world_origin)[2];
+                float tile_center_x = (float)x * vt->tile_size + ox;
+                float tile_center_y = (float)y * vt->tile_size + oy;
+                float tile_center_z = (float)z * vt->tile_size + oz;
 
         float distance = sqrtf(
             (tile_center_x - camera_pos[0]) * (tile_center_x - camera_pos[0]) +
             (tile_center_y - camera_pos[1]) * (tile_center_y - camera_pos[1]) +
             (tile_center_z - camera_pos[2]) * (tile_center_z - camera_pos[2]));
 
-        if (distance < vt->streaming_distance_threshold) {
-          // Add to streaming queue
-          if (vt->stream_queue_size < vt->stream_queue_capacity) {
-            vt->stream_queue[vt->stream_queue_size++] = tile_index;
-          }
+                if (distance < vt->streaming_distance_threshold) {
+        // Add to streaming queue
+        if (vt->stream_queue_size < vt->stream_queue_capacity) {
+          uint32_t tile_index =
+              (z * vt->tile_count_y + y) * vt->tile_count_x + x;
+          vt->stream_queue[vt->stream_queue_size++] = tile_index;
         }
-      }
+                }
     }
   }
+}
 
-  LOG_DEBUG("Updated streaming queue: %u tiles", vt->stream_queue_size);
+LOG_DEBUG(LOG_CAT_RENDERER, "Updated streaming queue: %u tiles",
+          vt->stream_queue_size);
 }
 
 static void process_streaming_queue(VirtualTexture *vt) {
@@ -294,7 +306,11 @@ static void process_streaming_queue(VirtualTexture *vt) {
   // Process tiles in streaming queue
   for (uint32_t i = 0; i < vt->stream_queue_size; i++) {
     uint32_t tile_index = vt->stream_queue[i];
-    load_tile(vt, 0, 0, 0); // Simplified - should use actual tile coordinates
+    // Extract x, y, z from tile_index
+    uint32_t tile_x = tile_index % vt->tile_count_x;
+    uint32_t tile_y = (tile_index / vt->tile_count_x) % vt->tile_count_y;
+    uint32_t tile_z = tile_index / (vt->tile_count_x * vt->tile_count_y);
+    load_tile(vt, tile_x, tile_y, tile_z);
   }
 
   uint64_t end_time = get_time_nanos();
@@ -302,7 +318,7 @@ static void process_streaming_queue(VirtualTexture *vt) {
 
   vt->stream_queue_size = 0;
 
-  LOG_DEBUG("Processed streaming queue: %u tiles in %.2f ms",
+  LOG_DEBUG(LOG_CAT_RENDERER, "Processed streaming queue: %u tiles in %.2f ms",
             vt->streaming_time_ms);
 }
 
@@ -329,17 +345,16 @@ bool virtual_texture_system_init(uint32_t max_textures,
   g_vt_system.total_memory_budget =
       cache_size * default_tile_size * default_tile_size * 4; // RGBA8 format
 
-  g_vt_system.textures = calloc(max_textures, sizeof(VirtualTexture *));
+  // g_vt_system.textures is a fixed array, no allocation needed
+  // g_vt_system.textures = calloc(max_textures, sizeof(VirtualTexture*)); //
+  // ERROR: array type
 
-  if (!g_vt_system.textures) {
-    LOG_ERROR(LOG_CAT_RENDERER, "Failed to allocate virtual texture array");
-    return false;
-  }
+  // if (!g_vt_system.textures) { ... }
 
   if (pthread_mutex_init(&g_vt_system.vt_mutex, NULL) != 0) {
     LOG_ERROR(LOG_CAT_RENDERER, "Failed to initialize virtual texture mutex");
-    free(g_vt_system.textures);
-    free(g_vt_system.textures);
+    // free(g_vt_system.textures); // This was incorrect, g_vt_system.textures
+    // is a static array free(g_vt_system.textures); // Duplicate free
     return false;
   }
 
@@ -356,7 +371,7 @@ void virtual_texture_system_shutdown(void) {
   if (!g_vt_system.initialized)
     return;
 
-  LOG_INFO("Shutting down virtual texture system");
+  LOG_INFO(LOG_CAT_RENDERER, "Shutting down virtual texture system");
 
   // Destroy all virtual textures
   for (uint32_t i = 0; i < g_vt_system.texture_count; i++) {
@@ -367,12 +382,13 @@ void virtual_texture_system_shutdown(void) {
   }
 
   // Cleanup
-  free(g_vt_system.textures);
+  // free(g_vt_system.textures); // This was incorrect, g_vt_system.textures is
+  // a static array
   pthread_mutex_destroy(&g_vt_system.vt_mutex);
 
   memset(&g_vt_system, 0, sizeof(VirtualTextureSystem));
 
-  LOG_INFO("Virtual texture system shutdown complete");
+  LOG_INFO(LOG_CAT_RENDERER, "Virtual texture system shutdown complete");
 }
 
 VirtualTexture *virtual_texture_create(const char *name, uint32_t virtual_width,
@@ -416,6 +432,9 @@ VirtualTexture *virtual_texture_create(const char *name, uint32_t virtual_width,
   uint32_t total_tiles = vt->tile_count_x * vt->tile_count_y * vt->tile_count_z;
   vt->total_memory_usage =
       total_tiles * tile_size * tile_size * 4; // RGBA8 format
+
+  vt->tile_count = total_tiles;
+  vt->streaming_distance_threshold = 100.0f; // Default
 
   // Allocate tile cache
   vt->tile_cache = calloc(cache_size, sizeof(VirtualTile));

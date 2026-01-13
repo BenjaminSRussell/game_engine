@@ -138,7 +138,6 @@ typedef struct texture_texture_lod_serialized_item {
  * PRIVATE FUNCTION DECLARATIONS
  * ============================================================================ */
 
-
 // Enhanced caching system
 typedef struct texture_texture_lod_cache_entry {
     uint32_t texture_id;          // Texture ID
