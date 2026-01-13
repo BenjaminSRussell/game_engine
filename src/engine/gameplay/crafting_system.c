@@ -77,6 +77,7 @@ static crafting_system_t g_crafting = {0};
 static bool recipe_can_be_crafted(const recipe_t* recipe, uint32_t player_id);
 static void consume_ingredients(const recipe_t* recipe, uint32_t player_id);
 static void give_results(const recipe_t* recipe, uint32_t player_id);
+static uint32_t get_current_time_ms(void);
 
 bool crafting_init(void) {
     if (g_crafting.initialized) {
@@ -530,6 +531,22 @@ bool crafting_discover_recipe(uint32_t recipe_id) {
     return false;
 }
 
+bool crafting_station_is_active(uint32_t station_id) {
+    const crafting_station_t* station = crafting_get_station(station_id);
+    return station ? station->is_active : false;
+}
+
+bool crafting_recipe_get_name(uint32_t recipe_id, char* buffer, uint32_t buffer_size) {
+    const recipe_t* recipe = crafting_get_recipe(recipe_id);
+    if (!recipe || !buffer || buffer_size == 0) {
+        return false;
+    }
+
+    strncpy(buffer, recipe->name, buffer_size - 1);
+    buffer[buffer_size - 1] = '\0';
+    return true;
+}
+
 // Helper functions (these would typically interact with inventory/system)
 static bool recipe_can_be_crafted(const recipe_t* recipe, uint32_t player_id) {
     // This would check player's inventory for required ingredients
@@ -580,7 +597,7 @@ static void give_results(const recipe_t* recipe, uint32_t player_id) {
     }
 }
 
-uint32_t get_current_time_ms(void) {
+static uint32_t get_current_time_ms(void) {
     // Placeholder - would typically use platform-specific time function
     static uint32_t counter = 0;
     return counter += 16;  // Simulate 60 FPS
