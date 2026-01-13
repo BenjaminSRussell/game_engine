@@ -1,147 +1,130 @@
 #ifndef UI_ANIMATION_H
 #define UI_ANIMATION_H
 
+#include "include/math/math.h"
+#include "include/math/vec2.h"
+#include "include/math/vec4.h"
 #include <stdbool.h>
-#include <stdint.h>
-#include "../core/math.h"
 
-// Animation error codes
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// Easing types
 typedef enum {
-    UI_ANIM_SUCCESS = 0,
-    UI_ANIM_ERROR_INIT_FAILED,
-    UI_ANIM_ERROR_OUT_OF_MEMORY,
-    UI_ANIM_ERROR_INVALID_PARAMETER,
-    UI_ANIM_ERROR_CAPACITY_EXCEEDED
-} UIAnimationError;
+    UI_EASE_LINEAR,
+    UI_EASE_IN_QUAD,
+    UI_EASE_OUT_QUAD,
+    UI_EASE_IN_OUT_QUAD,
+    UI_EASE_IN_CUBIC,
+    UI_EASE_OUT_CUBIC,
+    UI_EASE_IN_OUT_CUBIC,
+    UI_EASE_IN_ELASTIC,
+    UI_EASE_OUT_ELASTIC,
+    UI_EASE_IN_OUT_ELASTIC,
+    UI_EASE_IN_BOUNCE,
+    UI_EASE_OUT_BOUNCE,
+    UI_EASE_IN_OUT_BOUNCE
+} UIEasingType;
 
-// Easing types for smooth animations
+// Properties that can be animated
 typedef enum {
-    EASING_LINEAR = 0,
-    EASING_IN_QUAD, EASING_OUT_QUAD, EASING_IN_OUT_QUAD,
-    EASING_IN_CUBIC, EASING_OUT_CUBIC, EASING_IN_OUT_CUBIC,
-    EASING_IN_SINE, EASING_OUT_SINE, EASING_IN_OUT_SINE,
-    EASING_IN_EXPO, EASING_OUT_EXPO, EASING_IN_OUT_EXPO,
-    EASING_IN_BACK, EASING_OUT_BACK, EASING_IN_OUT_BACK,
-    EASING_IN_BOUNCE, EASING_OUT_BOUNCE, EASING_IN_OUT_BOUNCE,
-    EASING_IN_ELASTIC, EASING_OUT_ELASTIC, EASING_IN_OUT_ELASTIC,
-    EASING_TYPE_COUNT
-} EasingType;
+    UI_ANIM_OPACITY,
+    UI_ANIM_POSITION_X,
+    UI_ANIM_POSITION_Y,
+    UI_ANIM_POSITION,
+    UI_ANIM_WIDTH,
+    UI_ANIM_HEIGHT,
+    UI_ANIM_SIZE,
+    UI_ANIM_BACKGROUND_COLOR,
+    UI_ANIM_TEXT_COLOR,
+    UI_ANIM_BORDER_COLOR
+} UIAnimationProperty;
 
-// Forward declarations
-typedef struct UITween UITween;
-typedef struct UIKeyframe UIKeyframe;
-typedef struct UIKeyframeAnimation UIKeyframeAnimation;
+// Transition types for screens
+typedef enum {
+    UI_TRANSITION_FADE,
+    UI_TRANSITION_SLIDE_LEFT,
+    UI_TRANSITION_SLIDE_RIGHT,
+    UI_TRANSITION_SLIDE_UP,
+    UI_TRANSITION_SLIDE_DOWN,
+    UI_TRANSITION_ZOOM,
+    UI_TRANSITION_NONE
+} UITransitionType;
 
-// Easing function pointer
-typedef float (*EasingFunction)(float t);
+typedef struct Widget Widget;
+typedef struct UIAnimation UIAnimation;
+typedef void (*UIAnimationCallback)(UIAnimation* anim, void* user_data);
 
-// Tween callback functions
-typedef void (*TweenUpdateCallback)(UITween *tween, float progress);
-typedef void (*TweenCompleteCallback)(UITween *tween);
+struct UIAnimation {
+    Widget* target;
+    UIAnimationProperty property;
+    UIEasingType easing;
 
-// Keyframe animation callback functions
-typedef void (*KeyframeCompleteCallback)(UIKeyframeAnimation *animation);
+    // Storage for start/end values
+    union {
+        struct { float start; float end; } f;
+        struct { Vec2 start; Vec2 end; } v2;
+        struct { Vec4 start; Vec4 end; } v4;
+    } values;
 
-// Tween structure for simple property animations
-struct UITween {
-    // Timing
     float duration;
-    float current_time;
-    bool is_active;
-    EasingFunction easing_func;
-    
-    // Target properties
-    vec2 *target_position;
-    vec2 start_position;
-    vec2 end_position;
-    
-    vec2 *target_scale;
-    vec2 start_scale;
-    vec2 end_scale;
-    
-    float *target_rotation;
-    float start_rotation;
-    float end_rotation;
-    
-    vec4 *target_color;
-    vec4 start_color;
-    vec4 end_color;
-    
-    float *target_alpha;
-    float start_alpha;
-    float end_alpha;
-    
-    // Callbacks
-    TweenUpdateCallback on_update;
-    TweenCompleteCallback on_complete;
-};
+    float elapsed;
+    float delay;
 
-// Keyframe structure for complex animations
-struct UIKeyframe {
-    float time;
-    vec2 position;
-    vec2 scale;
-    float rotation;
-    vec4 color;
-    float alpha;
-    EasingType easing_type;
-};
-
-// Keyframe animation structure
-struct UIKeyframeAnimation {
-    // Timing
-    float duration;
-    float current_time;
-    bool is_active;
+    bool is_playing;
+    bool is_finished;
     bool loop;
-    
-    // Keyframes
-    UIKeyframe *keyframes;
-    uint32_t keyframe_count;
-    uint32_t keyframe_capacity;
-    
-    // Target properties
-    vec2 *target_position;
-    vec2 *target_scale;
-    float *target_rotation;
-    vec4 *target_color;
-    float *target_alpha;
-    
-    // Callback
-    KeyframeCompleteCallback on_complete;
+    bool ping_pong; // If true, reverses direction on loop
+    bool reverse;   // Internal state for ping-pong
+    bool auto_destroy; // If true, automatically destroyed when finished
+
+    UIAnimationCallback on_complete;
+    void* user_data;
+
+    UIAnimation* next; // Linked list
 };
 
-// Animation statistics
-typedef struct {
-    uint32_t active_tweens;
-    uint32_t active_keyframe_anims;
-    uint32_t animations_updated;
-    uint32_t tweens_completed;
-    uint32_t keyframes_processed;
-    float global_time_scale;
-    bool is_paused;
-} UIAnimationStats;
-
-// Core animation system functions
-int ui_animation_init(void);
+// --- System ---
+void ui_animation_init(void);
 void ui_animation_shutdown(void);
 void ui_animation_update(float delta_time);
 
-// Tween creation and management
-UITween* ui_animation_create_tween(float duration, EasingType easing_type);
+// --- Creation & Management ---
+UIAnimation* ui_animation_create(Widget* target, UIAnimationProperty property, float duration);
+void ui_animation_destroy(UIAnimation* anim);
+void ui_animation_destroy_all(void);
 
-// Keyframe animation creation and management
-UIKeyframeAnimation* ui_animation_create_keyframe_animation(float duration, bool loop);
+// --- Configuration ---
+void ui_animation_set_float(UIAnimation* anim, float start, float end);
+void ui_animation_set_vec2(UIAnimation* anim, Vec2 start, Vec2 end);
+void ui_animation_set_vec4(UIAnimation* anim, Vec4 start, Vec4 end);
+void ui_animation_set_easing(UIAnimation* anim, UIEasingType easing);
+void ui_animation_set_delay(UIAnimation* anim, float delay);
+void ui_animation_set_loop(UIAnimation* anim, bool loop, bool ping_pong);
+void ui_animation_set_callback(UIAnimation* anim, UIAnimationCallback callback, void* user_data);
 
-// Global animation control
-void ui_animation_set_global_time_scale(float scale);
-void ui_animation_pause(void);
-void ui_animation_resume(void);
+// --- Control ---
+void ui_animation_play(UIAnimation* anim);
+void ui_animation_stop(UIAnimation* anim); // Stops and resets
+void ui_animation_pause(UIAnimation* anim);
+void ui_animation_resume(UIAnimation* anim);
+void ui_animation_cancel(UIAnimation* anim); // Stops and destroys
 
-// Statistics and debugging
-UIAnimationStats ui_animation_get_stats(void);
+// --- Helpers ---
+// Create and play an opacity fade animation
+UIAnimation* ui_animate_fade(Widget* widget, float target_opacity, float duration, UIEasingType easing);
+// Create and play a move animation
+UIAnimation* ui_animate_move(Widget* widget, Vec2 target_pos, float duration, UIEasingType easing);
+// Create and play a resize animation
+UIAnimation* ui_animate_resize(Widget* widget, Vec2 target_size, float duration, UIEasingType easing);
 
-// Easing function access
-EasingFunction ui_get_easing_function(EasingType type);
+// --- Screen Transitions ---
+// Animate transition between two screen widgets
+void ui_transition_screen(Widget* current_screen, Widget* next_screen, UITransitionType type, float duration);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // UI_ANIMATION_H
