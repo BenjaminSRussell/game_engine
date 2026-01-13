@@ -623,7 +623,7 @@ void shadow_mapping_render_shadows(const Light *lights, uint32_t light_count,
                                   light->radius);
 
       // Calculate spot light projection matrix
-      float angle = light->spot_angle * 0.5f;
+      float angle = light->outer_angle * 0.5f;
       float tan_angle = tanf(angle);
       calculate_ortho_matrix(cascade->proj_matrix, -light->radius * tan_angle,
                              light->radius * tan_angle,
