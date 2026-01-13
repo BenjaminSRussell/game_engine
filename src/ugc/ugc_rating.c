@@ -1,3 +1,10 @@
+/**
+ * @file ugc_rating.c
+ * @brief System Implementation
+ * @description System implementation
+ * @date 2026-01-13
+ */
+
 #include "ugc_rating.h"
 #include <stdio.h>
 
