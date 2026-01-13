@@ -83,4 +83,4 @@ void texture_texture_lod_debug_print(void);
 }
 #endif
 
-#endif /* TEXTURE_TEXTURE_LOD_H */
+#endif // TEXTURE_TEXTURE_LOD_H
