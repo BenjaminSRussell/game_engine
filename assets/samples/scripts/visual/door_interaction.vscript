@@ -1,0 +1,185 @@
+{
+  "visual_script": {
+    "name": "door_interaction",
+    "version": "1.0",
+    "description": "Visual script for interactive door",
+    
+    "variables": [
+      {
+        "name": "is_open",
+        "type": "bool",
+        "default": false,
+        "exposed": true
+      },
+      {
+        "name": "open_angle",
+        "type": "float",
+        "default": 90.0,
+        "exposed": true
+      },
+      {
+        "name": "open_speed",
+        "type": "float",
+        "default": 2.0,
+        "exposed": true
+      },
+      {
+        "name": "current_angle",
+        "type": "float",
+        "default": 0.0,
+        "exposed": false
+      }
+    ],
+    
+    "nodes": [
+      {
+        "id": "event_interact",
+        "type": "event",
+        "event_name": "OnInteract",
+        "position": [100, 100],
+        "outputs": ["execute"]
+      },
+      {
+        "id": "branch_is_open",
+        "type": "branch",
+        "position": [300, 100],
+        "inputs": ["execute", "condition"],
+        "outputs": ["true", "false"]
+      },
+      {
+        "id": "get_is_open",
+        "type": "get_variable",
+        "variable_name": "is_open",
+        "position": [250, 200],
+        "outputs": ["value"]
+      },
+      {
+        "id": "close_door",
+        "type": "function",
+        "function_name": "CloseDoor",
+        "position": [500, 50],
+        "inputs": ["execute"],
+        "outputs": ["execute"]
+      },
+      {
+        "id": "open_door",
+        "type": "function",
+        "function_name": "OpenDoor",
+        "position": [500, 150],
+        "inputs": ["execute"],
+        "outputs": ["execute"]
+      },
+      {
+        "id": "play_sound_open",
+        "type": "play_audio",
+        "audio_clip": "sounds/doors/door_open.wav",
+        "position": [700, 150],
+        "inputs": ["execute"],
+        "outputs": ["execute"]
+      },
+      {
+        "id": "play_sound_close",
+        "type": "play_audio",
+        "audio_clip": "sounds/doors/door_close.wav",
+        "position": [700, 50],
+        "inputs": ["execute"],
+        "outputs": ["execute"]
+      },
+      {
+        "id": "set_is_open_true",
+        "type": "set_variable",
+        "variable_name": "is_open",
+        "position": [900, 150],
+        "inputs": ["execute", "value"],
+        "outputs": ["execute"]
+      },
+      {
+        "id": "set_is_open_false",
+        "type": "set_variable",
+        "variable_name": "is_open",
+        "position": [900, 50],
+        "inputs": ["execute", "value"],
+        "outputs": ["execute"]
+      },
+      {
+        "id": "const_true",
+        "type": "constant",
+        "value_type": "bool",
+        "value": true,
+        "position": [850, 200],
+        "outputs": ["value"]
+      },
+      {
+        "id": "const_false",
+        "type": "constant",
+        "value_type": "bool",
+        "value": false,
+        "position": [850, 100],
+        "outputs": ["value"]
+      }
+    ],
+    
+    "connections": [
+      {
+        "from_node": "event_interact",
+        "from_port": "execute",
+        "to_node": "branch_is_open",
+        "to_port": "execute"
+      },
+      {
+        "from_node": "get_is_open",
+        "from_port": "value",
+        "to_node": "branch_is_open",
+        "to_port": "condition"
+      },
+      {
+        "from_node": "branch_is_open",
+        "from_port": "true",
+        "to_node": "close_door",
+        "to_port": "execute"
+      },
+      {
+        "from_node": "branch_is_open",
+        "from_port": "false",
+        "to_node": "open_door",
+        "to_port": "execute"
+      },
+      {
+        "from_node": "close_door",
+        "from_port": "execute",
+        "to_node": "play_sound_close",
+        "to_port": "execute"
+      },
+      {
+        "from_node": "open_door",
+        "from_port": "execute",
+        "to_node": "play_sound_open",
+        "to_port": "execute"
+      },
+      {
+        "from_node": "play_sound_close",
+        "from_port": "execute",
+        "to_node": "set_is_open_false",
+        "to_port": "execute"
+      },
+      {
+        "from_node": "play_sound_open",
+        "from_port": "execute",
+        "to_node": "set_is_open_true",
+        "to_port": "execute"
+      },
+      {
+        "from_node": "const_false",
+        "from_port": "value",
+        "to_node": "set_is_open_false",
+        "to_port": "value"
+      },
+      {
+        "from_node": "const_true",
+        "from_port": "value",
+        "to_node": "set_is_open_true",
+        "to_port": "value"
+      }
+    ]
+  }
+}

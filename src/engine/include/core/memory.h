@@ -1,78 +1,28 @@
 // include/core/memory.h
 //
-// Purpose: Defines a comprehensive memory management and tracking system for
-// the game engine. This header provides tools for monitoring memory
-// allocations, optimizing memory usage through object pooling and stack
-// allocation, and debugging memory-related issues like leaks. It centralizes
-// memory operations, offering a safer and more performant alternative to raw
-// `malloc`/`free`.
-//
-// Public APIs:
-// - `MemoryAlloc`: Internal structure to track individual allocations (pointer,
-// size, file, line).
-// - `MemoryTracker`: Global structure to manage all tracked allocations,
-// total/peak usage, and active count.
-// - `g_memory_tracker`: An external global instance of the `MemoryTracker`.
-// - `memory_tracker_init`, `memory_tracker_shutdown`: Lifecycle functions for
-// the memory tracker.
-// - `memory_alloc`, `memory_calloc`, `memory_realloc`, `memory_free`:
-// Instrumented allocation/deallocation functions.
-// - `MALLOC`, `CALLOC`, `REALLOC`, `FREE`: Convenience macros to automatically
-// pass file and line information.
-// - `memory_tracker_report`: Generates a detailed report of current memory
-// allocations.
-// - `ObjectPool`: Structure for managing a pool of fixed-size objects for fast
-// allocation/deallocation.
-// - `object_pool_create`, `object_pool_destroy`, `object_pool_allocate`,
-// `object_pool_free`: API for object pool management.
-// - `StackAllocator`: Structure for managing a stack-based memory allocator for
-// temporary data.
-// - `stack_allocator_create`, `stack_allocator_destroy`,
-// `stack_allocator_alloc`, `stack_allocator_reset`,
-// `stack_allocator_end_frame`: API for stack allocator management.
-// - `memory_check_leaks`, `memory_dump_allocations`: Functions for detecting
-// and reporting memory leaks.
-// - `memory_get_total_used`, `memory_get_peak_used`, `memory_print_stats`:
-// Functions for querying and printing memory usage statistics.
-// - `memory_named_region_begin`, `memory_named_region_end`: For profiling
-// memory usage in specific code sections.
-//
-// Ownership: The `MemoryTracker` manages the metadata for all instrumented
-// allocations. `ObjectPool` and `StackAllocator` instances directly own their
-// respective memory blocks. Users are responsible for properly initializing and
-// shutting down these systems.
-//
-// Invariants:
-// - All allocations should go through the `MALLOC`/`CALLOC`/`REALLOC` macros to
-// enable tracking.
-// - Every `MALLOC`/`CALLOC`/`REALLOC` must have a corresponding `FREE` to
-// prevent leaks.
-// - `ObjectPool` and `StackAllocator` are designed for specific use cases
-// (fixed-size objects, temporary data)
-//   and should be used appropriately.
-// - The `g_memory_tracker` should be initialized once at application start and
-// shut down at exit.
+// Purpose: REDIRECTED TO UNIFIED MEMORY ALLOCATOR - CONSOLIDATED SYSTEM
 //
 #ifndef MEMORY_H
 #define MEMORY_H
 
-#include "../common.h"
-#include <stdint.h>
+// Redirect to the unified memory allocator that consolidates all memory systems
+#include "memory/unified_memory_allocator.h"
 
-// Memory tagging system
-typedef enum {
-  MEMORY_TAG_DEFAULT = 0,
-  MEMORY_TAG_TEMP,
-  MEMORY_TAG_PERSISTENT,
-  MEMORY_TAG_ASSET,
-  MEMORY_TAG_RENDERER,
-  MEMORY_TAG_AUDIO,
-  MEMORY_TAG_PHYSICS,
-  MEMORY_TAG_AI,
-  MEMORY_TAG_NETWORK,
-  MEMORY_TAG_UI,
-  MEMORY_TAG_GAMEPLAY,
-  MEMORY_TAG_GEOMETRY,
+// Note: All memory management functionality has been consolidated into unified_memory_allocator.h
+// This header is kept for backwards compatibility only
+
+// Legacy compatibility - all existing code continues to work
+// The unified allocator provides:
+// - Memory tracking and leak detection
+// - Memory pools for performance
+// - Stack allocators for temporary data
+// - Arena allocators for bulk allocations
+// - Guard pages and canaries for corruption detection
+// - Statistics and monitoring
+// - Fragmentation analysis
+// - Hot-spot detection
+
+#endif // MEMORY_H
   MEMORY_TAG_COUNT
 } MemoryTag;
 

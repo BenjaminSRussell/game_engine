@@ -1,0 +1,121 @@
+{
+  "behavior_tree": {
+    "name": "villager_wander",
+    "version": "1.0",
+    "description": "Simple wander behavior for peaceful NPCs",
+    
+    "root": {
+      "type": "selector",
+      "name": "root",
+      "children": [
+        {
+          "type": "sequence",
+          "name": "flee_from_danger",
+          "children": [
+            {
+              "type": "condition",
+              "name": "is_enemy_nearby",
+              "function": "bt_condition_is_enemy_nearby",
+              "params": {
+                "detection_radius": 10.0
+              }
+            },
+            {
+              "type": "action",
+              "name": "flee",
+              "function": "bt_action_flee_from_target",
+              "params": {
+                "flee_speed": 6.0,
+                "flee_distance": 20.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "sequence",
+          "name": "find_food_if_hungry",
+          "children": [
+            {
+              "type": "condition",
+              "name": "is_hungry",
+              "function": "bt_condition_is_hungry",
+              "params": {
+                "hunger_threshold": 0.3
+              }
+            },
+            {
+              "type": "action",
+              "name": "find_food",
+              "function": "bt_action_find_food",
+              "params": {
+                "search_radius": 30.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "sequence",
+          "name": "daytime_work",
+          "children": [
+            {
+              "type": "condition",
+              "name": "is_daytime",
+              "function": "bt_condition_is_daytime"
+            },
+            {
+              "type": "action",
+              "name": "patrol",
+              "function": "bt_action_patrol",
+              "params": {
+                "patrol_points": [
+                  [15.0, 0.0, 10.0],
+                  [-20.0, 0.0, 5.0],
+                  [0.0, 0.0, -15.0],
+                  [10.0, 0.0, 8.0]
+                ],
+                "wait_time_at_point": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "sequence",
+          "name": "nighttime_rest",
+          "children": [
+            {
+              "type": "condition",
+              "name": "is_nighttime",
+              "function": "bt_condition_is_nighttime"
+            },
+            {
+              "type": "action",
+              "name": "rest",
+              "function": "bt_action_rest",
+              "params": {
+                "rest_location": [5.0, 0.0, 8.0]
+              }
+            }
+          ]
+        },
+        {
+          "type": "action",
+          "name": "wander",
+          "function": "bt_action_wander",
+          "params": {
+            "wander_radius": 15.0,
+            "wander_speed": 2.0,
+            "wander_interval": 5.0
+          }
+        }
+      ]
+    },
+    
+    "blackboard": {
+      "has_target": false,
+      "is_alerted": false,
+      "is_hungry": false,
+      "is_thirsty": false,
+      "health_percentage": 1.0
+    }
+  }
+}

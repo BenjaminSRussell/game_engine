@@ -1,0 +1,161 @@
+{
+  "input_mapping": {
+    "name": "default_controls",
+    "version": "1.0",
+    "description": "Default keyboard and mouse controls",
+    
+    "axes": [
+      {
+        "name": "Horizontal",
+        "type": "keyboard_composite",
+        "positive_key": "D",
+        "negative_key": "A",
+        "deadzone": 0.1,
+        "sensitivity": 3.0,
+        "snap": true,
+        "invert": false
+      },
+      {
+        "name": "Vertical",
+        "type": "keyboard_composite",
+        "positive_key": "W",
+        "negative_key": "S",
+        "deadzone": 0.1,
+        "sensitivity": 3.0,
+        "snap": true,
+        "invert": false
+      },
+      {
+        "name": "MouseX",
+        "type": "mouse_delta",
+        "axis": "x",
+        "sensitivity": 2.0,
+        "invert": false,
+        "smoothing": 0.1
+      },
+      {
+        "name": "MouseY",
+        "type": "mouse_delta",
+        "axis": "y",
+        "sensitivity": 2.0,
+        "invert": false,
+        "smoothing": 0.1
+      },
+      {
+        "name": "MouseScroll",
+        "type": "mouse_scroll",
+        "sensitivity": 1.0
+      }
+    ],
+    
+    "actions": [
+      {
+        "name": "Jump",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "Space" },
+          { "device": "gamepad", "button": "A" }
+        ]
+      },
+      {
+        "name": "Sprint",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "LeftShift" },
+          { "device": "gamepad", "button": "LeftStick" }
+        ]
+      },
+      {
+        "name": "Crouch",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "LeftControl" },
+          { "device": "gamepad", "button": "B" }
+        ]
+      },
+      {
+        "name": "Interact",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "E" },
+          { "device": "gamepad", "button": "X" }
+        ]
+      },
+      {
+        "name": "Attack",
+        "type": "button",
+        "bindings": [
+          { "device": "mouse", "button": "Left" },
+          { "device": "gamepad", "button": "RightTrigger" }
+        ]
+      },
+      {
+        "name": "UseItem",
+        "type": "button",
+        "bindings": [
+          { "device": "mouse", "button": "Right" },
+          { "device": "gamepad", "button": "LeftTrigger" }
+        ]
+      },
+      {
+        "name": "Inventory",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "I" },
+          { "device": "gamepad", "button": "Y" }
+        ]
+      },
+      {
+        "name": "Map",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "M" },
+          { "device": "gamepad", "button": "Back" }
+        ]
+      },
+      {
+        "name": "Pause",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "Escape" },
+          { "device": "gamepad", "button": "Start" }
+        ]
+      },
+      {
+        "name": "QuickSlot1",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "1" }
+        ]
+      },
+      {
+        "name": "QuickSlot2",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "2" }
+        ]
+      },
+      {
+        "name": "QuickSlot3",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "3" }
+        ]
+      },
+      {
+        "name": "QuickSlot4",
+        "type": "button",
+        "bindings": [
+          { "device": "keyboard", "key": "4" }
+        ]
+      }
+    ],
+    
+    "gamepad": {
+      "deadzone_left_stick": 0.15,
+      "deadzone_right_stick": 0.15,
+      "trigger_threshold": 0.1,
+      "vibration_enabled": true
+    }
+  }
+}

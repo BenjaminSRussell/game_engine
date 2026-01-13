@@ -347,6 +347,14 @@ src/engine/backend/metal/metal_mesh_bridge.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/metal_mesh_bridge.c.o
 .PHONY : src/engine/backend/metal/metal_mesh_bridge.c.o
 
+src/engine/backend/metal/metal_mesh_bridge_2.o: src/engine/backend/metal/metal_mesh_bridge_2.c.o
+.PHONY : src/engine/backend/metal/metal_mesh_bridge_2.o
+
+# target to build an object file
+src/engine/backend/metal/metal_mesh_bridge_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/metal_mesh_bridge_2.c.o
+.PHONY : src/engine/backend/metal/metal_mesh_bridge_2.c.o
+
 src/engine/backend/metal/mtl_argument_buffer.o: src/engine/backend/metal/mtl_argument_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_argument_buffer.o
 
@@ -354,6 +362,14 @@ src/engine/backend/metal/mtl_argument_buffer.o: src/engine/backend/metal/mtl_arg
 src/engine/backend/metal/mtl_argument_buffer.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_argument_buffer.c.o
+
+src/engine/backend/metal/mtl_argument_buffer_2.o: src/engine/backend/metal/mtl_argument_buffer_2.c.o
+.PHONY : src/engine/backend/metal/mtl_argument_buffer_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_argument_buffer_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer_2.c.o
+.PHONY : src/engine/backend/metal/mtl_argument_buffer_2.c.o
 
 src/engine/backend/metal/mtl_buffer.o: src/engine/backend/metal/mtl_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_buffer.o
@@ -363,6 +379,14 @@ src/engine/backend/metal/mtl_buffer.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_buffer.c.o
 
+src/engine/backend/metal/mtl_buffer_2.o: src/engine/backend/metal/mtl_buffer_2.c.o
+.PHONY : src/engine/backend/metal/mtl_buffer_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_buffer_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer_2.c.o
+.PHONY : src/engine/backend/metal/mtl_buffer_2.c.o
+
 src/engine/backend/metal/mtl_command.o: src/engine/backend/metal/mtl_command.c.o
 .PHONY : src/engine/backend/metal/mtl_command.o
 
@@ -370,6 +394,14 @@ src/engine/backend/metal/mtl_command.o: src/engine/backend/metal/mtl_command.c.o
 src/engine/backend/metal/mtl_command.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.c.o
 .PHONY : src/engine/backend/metal/mtl_command.c.o
+
+src/engine/backend/metal/mtl_command_2.o: src/engine/backend/metal/mtl_command_2.c.o
+.PHONY : src/engine/backend/metal/mtl_command_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_command_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_2.c.o
+.PHONY : src/engine/backend/metal/mtl_command_2.c.o
 
 src/engine/backend/metal/mtl_command_buffer.o: src/engine/backend/metal/mtl_command_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_command_buffer.o
@@ -379,6 +411,14 @@ src/engine/backend/metal/mtl_command_buffer.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_command_buffer.c.o
 
+src/engine/backend/metal/mtl_command_buffer_2.o: src/engine/backend/metal/mtl_command_buffer_2.c.o
+.PHONY : src/engine/backend/metal/mtl_command_buffer_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_command_buffer_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer_2.c.o
+.PHONY : src/engine/backend/metal/mtl_command_buffer_2.c.o
+
 src/engine/backend/metal/mtl_command_graph.o: src/engine/backend/metal/mtl_command_graph.c.o
 .PHONY : src/engine/backend/metal/mtl_command_graph.o
 
@@ -386,6 +426,14 @@ src/engine/backend/metal/mtl_command_graph.o: src/engine/backend/metal/mtl_comma
 src/engine/backend/metal/mtl_command_graph.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.c.o
 .PHONY : src/engine/backend/metal/mtl_command_graph.c.o
+
+src/engine/backend/metal/mtl_command_graph_2.o: src/engine/backend/metal/mtl_command_graph_2.c.o
+.PHONY : src/engine/backend/metal/mtl_command_graph_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_command_graph_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph_2.c.o
+.PHONY : src/engine/backend/metal/mtl_command_graph_2.c.o
 
 src/engine/backend/metal/mtl_device.o: src/engine/backend/metal/mtl_device.c.o
 .PHONY : src/engine/backend/metal/mtl_device.o
@@ -395,6 +443,14 @@ src/engine/backend/metal/mtl_device.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.c.o
 .PHONY : src/engine/backend/metal/mtl_device.c.o
 
+src/engine/backend/metal/mtl_device_2.o: src/engine/backend/metal/mtl_device_2.c.o
+.PHONY : src/engine/backend/metal/mtl_device_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_device_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_2.c.o
+.PHONY : src/engine/backend/metal/mtl_device_2.c.o
+
 src/engine/backend/metal/mtl_device_caps.o: src/engine/backend/metal/mtl_device_caps.c.o
 .PHONY : src/engine/backend/metal/mtl_device_caps.o
 
@@ -402,6 +458,14 @@ src/engine/backend/metal/mtl_device_caps.o: src/engine/backend/metal/mtl_device_
 src/engine/backend/metal/mtl_device_caps.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.c.o
 .PHONY : src/engine/backend/metal/mtl_device_caps.c.o
+
+src/engine/backend/metal/mtl_device_caps_2.o: src/engine/backend/metal/mtl_device_caps_2.c.o
+.PHONY : src/engine/backend/metal/mtl_device_caps_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_device_caps_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps_2.c.o
+.PHONY : src/engine/backend/metal/mtl_device_caps_2.c.o
 
 src/engine/backend/metal/mtl_encoder.o: src/engine/backend/metal/mtl_encoder.c.o
 .PHONY : src/engine/backend/metal/mtl_encoder.o
@@ -411,6 +475,14 @@ src/engine/backend/metal/mtl_encoder.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.c.o
 .PHONY : src/engine/backend/metal/mtl_encoder.c.o
 
+src/engine/backend/metal/mtl_encoder_2.o: src/engine/backend/metal/mtl_encoder_2.c.o
+.PHONY : src/engine/backend/metal/mtl_encoder_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_encoder_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder_2.c.o
+.PHONY : src/engine/backend/metal/mtl_encoder_2.c.o
+
 src/engine/backend/metal/mtl_frame_sync.o: src/engine/backend/metal/mtl_frame_sync.c.o
 .PHONY : src/engine/backend/metal/mtl_frame_sync.o
 
@@ -418,6 +490,14 @@ src/engine/backend/metal/mtl_frame_sync.o: src/engine/backend/metal/mtl_frame_sy
 src/engine/backend/metal/mtl_frame_sync.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.c.o
 .PHONY : src/engine/backend/metal/mtl_frame_sync.c.o
+
+src/engine/backend/metal/mtl_frame_sync_2.o: src/engine/backend/metal/mtl_frame_sync_2.c.o
+.PHONY : src/engine/backend/metal/mtl_frame_sync_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_frame_sync_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync_2.c.o
+.PHONY : src/engine/backend/metal/mtl_frame_sync_2.c.o
 
 src/engine/backend/metal/mtl_hazard_tracking.o: src/engine/backend/metal/mtl_hazard_tracking.c.o
 .PHONY : src/engine/backend/metal/mtl_hazard_tracking.o
@@ -427,6 +507,14 @@ src/engine/backend/metal/mtl_hazard_tracking.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.c.o
 .PHONY : src/engine/backend/metal/mtl_hazard_tracking.c.o
 
+src/engine/backend/metal/mtl_hazard_tracking_2.o: src/engine/backend/metal/mtl_hazard_tracking_2.c.o
+.PHONY : src/engine/backend/metal/mtl_hazard_tracking_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_hazard_tracking_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking_2.c.o
+.PHONY : src/engine/backend/metal/mtl_hazard_tracking_2.c.o
+
 src/engine/backend/metal/mtl_indirect_command.o: src/engine/backend/metal/mtl_indirect_command.c.o
 .PHONY : src/engine/backend/metal/mtl_indirect_command.o
 
@@ -434,6 +522,14 @@ src/engine/backend/metal/mtl_indirect_command.o: src/engine/backend/metal/mtl_in
 src/engine/backend/metal/mtl_indirect_command.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.c.o
 .PHONY : src/engine/backend/metal/mtl_indirect_command.c.o
+
+src/engine/backend/metal/mtl_indirect_command_2.o: src/engine/backend/metal/mtl_indirect_command_2.c.o
+.PHONY : src/engine/backend/metal/mtl_indirect_command_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_indirect_command_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command_2.c.o
+.PHONY : src/engine/backend/metal/mtl_indirect_command_2.c.o
 
 src/engine/backend/metal/mtl_memory_heap.o: src/engine/backend/metal/mtl_memory_heap.c.o
 .PHONY : src/engine/backend/metal/mtl_memory_heap.o
@@ -443,6 +539,14 @@ src/engine/backend/metal/mtl_memory_heap.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.c.o
 .PHONY : src/engine/backend/metal/mtl_memory_heap.c.o
 
+src/engine/backend/metal/mtl_memory_heap_2.o: src/engine/backend/metal/mtl_memory_heap_2.c.o
+.PHONY : src/engine/backend/metal/mtl_memory_heap_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_memory_heap_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap_2.c.o
+.PHONY : src/engine/backend/metal/mtl_memory_heap_2.c.o
+
 src/engine/backend/metal/mtl_parallel_encoder.o: src/engine/backend/metal/mtl_parallel_encoder.c.o
 .PHONY : src/engine/backend/metal/mtl_parallel_encoder.o
 
@@ -450,6 +554,14 @@ src/engine/backend/metal/mtl_parallel_encoder.o: src/engine/backend/metal/mtl_pa
 src/engine/backend/metal/mtl_parallel_encoder.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.c.o
 .PHONY : src/engine/backend/metal/mtl_parallel_encoder.c.o
+
+src/engine/backend/metal/mtl_parallel_encoder_2.o: src/engine/backend/metal/mtl_parallel_encoder_2.c.o
+.PHONY : src/engine/backend/metal/mtl_parallel_encoder_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_parallel_encoder_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder_2.c.o
+.PHONY : src/engine/backend/metal/mtl_parallel_encoder_2.c.o
 
 src/engine/backend/metal/mtl_render_pass.o: src/engine/backend/metal/mtl_render_pass.c.o
 .PHONY : src/engine/backend/metal/mtl_render_pass.o
@@ -459,6 +571,14 @@ src/engine/backend/metal/mtl_render_pass.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.c.o
 .PHONY : src/engine/backend/metal/mtl_render_pass.c.o
 
+src/engine/backend/metal/mtl_render_pass_2.o: src/engine/backend/metal/mtl_render_pass_2.c.o
+.PHONY : src/engine/backend/metal/mtl_render_pass_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_render_pass_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass_2.c.o
+.PHONY : src/engine/backend/metal/mtl_render_pass_2.c.o
+
 src/engine/backend/metal/mtl_resource_pool.o: src/engine/backend/metal/mtl_resource_pool.c.o
 .PHONY : src/engine/backend/metal/mtl_resource_pool.o
 
@@ -466,6 +586,14 @@ src/engine/backend/metal/mtl_resource_pool.o: src/engine/backend/metal/mtl_resou
 src/engine/backend/metal/mtl_resource_pool.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.c.o
 .PHONY : src/engine/backend/metal/mtl_resource_pool.c.o
+
+src/engine/backend/metal/mtl_resource_pool_2.o: src/engine/backend/metal/mtl_resource_pool_2.c.o
+.PHONY : src/engine/backend/metal/mtl_resource_pool_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_resource_pool_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool_2.c.o
+.PHONY : src/engine/backend/metal/mtl_resource_pool_2.c.o
 
 src/engine/backend/metal/mtl_sampler.o: src/engine/backend/metal/mtl_sampler.c.o
 .PHONY : src/engine/backend/metal/mtl_sampler.o
@@ -483,6 +611,14 @@ src/engine/backend/metal/mtl_statistics.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.c.o
 .PHONY : src/engine/backend/metal/mtl_statistics.c.o
 
+src/engine/backend/metal/mtl_statistics_2.o: src/engine/backend/metal/mtl_statistics_2.c.o
+.PHONY : src/engine/backend/metal/mtl_statistics_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_statistics_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics_2.c.o
+.PHONY : src/engine/backend/metal/mtl_statistics_2.c.o
+
 src/engine/backend/metal/mtl_swapchain.o: src/engine/backend/metal/mtl_swapchain.c.o
 .PHONY : src/engine/backend/metal/mtl_swapchain.o
 
@@ -490,6 +626,14 @@ src/engine/backend/metal/mtl_swapchain.o: src/engine/backend/metal/mtl_swapchain
 src/engine/backend/metal/mtl_swapchain.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.c.o
 .PHONY : src/engine/backend/metal/mtl_swapchain.c.o
+
+src/engine/backend/metal/mtl_swapchain_2.o: src/engine/backend/metal/mtl_swapchain_2.c.o
+.PHONY : src/engine/backend/metal/mtl_swapchain_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_swapchain_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain_2.c.o
+.PHONY : src/engine/backend/metal/mtl_swapchain_2.c.o
 
 src/engine/backend/metal/mtl_sync_example.o: src/engine/backend/metal/mtl_sync_example.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_example.o
@@ -507,6 +651,14 @@ src/engine/backend/metal/mtl_sync_manager.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_manager.c.o
 
+src/engine/backend/metal/mtl_sync_manager_2.o: src/engine/backend/metal/mtl_sync_manager_2.c.o
+.PHONY : src/engine/backend/metal/mtl_sync_manager_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_sync_manager_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager_2.c.o
+.PHONY : src/engine/backend/metal/mtl_sync_manager_2.c.o
+
 src/engine/backend/metal/mtl_sync_primitives.o: src/engine/backend/metal/mtl_sync_primitives.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_primitives.o
 
@@ -523,6 +675,14 @@ src/engine/backend/metal/mtl_texture.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.c.o
 .PHONY : src/engine/backend/metal/mtl_texture.c.o
 
+src/engine/backend/metal/mtl_texture_2.o: src/engine/backend/metal/mtl_texture_2.c.o
+.PHONY : src/engine/backend/metal/mtl_texture_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_texture_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture_2.c.o
+.PHONY : src/engine/backend/metal/mtl_texture_2.c.o
+
 src/engine/backend/metal/mtl_transfer.o: src/engine/backend/metal/mtl_transfer.c.o
 .PHONY : src/engine/backend/metal/mtl_transfer.o
 
@@ -530,6 +690,118 @@ src/engine/backend/metal/mtl_transfer.o: src/engine/backend/metal/mtl_transfer.c
 src/engine/backend/metal/mtl_transfer.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.c.o
 .PHONY : src/engine/backend/metal/mtl_transfer.c.o
+
+src/engine/backend/metal/mtl_transfer_2.o: src/engine/backend/metal/mtl_transfer_2.c.o
+.PHONY : src/engine/backend/metal/mtl_transfer_2.o
+
+# target to build an object file
+src/engine/backend/metal/mtl_transfer_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer_2.c.o
+.PHONY : src/engine/backend/metal/mtl_transfer_2.c.o
+
+src/engine/backend/metal/old/metal_backend.o: src/engine/backend/metal/old/metal_backend.c.o
+.PHONY : src/engine/backend/metal/old/metal_backend.o
+
+# target to build an object file
+src/engine/backend/metal/old/metal_backend.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_backend.c.o
+.PHONY : src/engine/backend/metal/old/metal_backend.c.o
+
+src/engine/backend/metal/old/metal_backend.i: src/engine/backend/metal/old/metal_backend.c.i
+.PHONY : src/engine/backend/metal/old/metal_backend.i
+
+# target to preprocess a source file
+src/engine/backend/metal/old/metal_backend.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_backend.c.i
+.PHONY : src/engine/backend/metal/old/metal_backend.c.i
+
+src/engine/backend/metal/old/metal_backend.s: src/engine/backend/metal/old/metal_backend.c.s
+.PHONY : src/engine/backend/metal/old/metal_backend.s
+
+# target to generate assembly for a file
+src/engine/backend/metal/old/metal_backend.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_backend.c.s
+.PHONY : src/engine/backend/metal/old/metal_backend.c.s
+
+src/engine/backend/metal/old/metal_backend_2.o: src/engine/backend/metal/old/metal_backend_2.c.o
+.PHONY : src/engine/backend/metal/old/metal_backend_2.o
+
+# target to build an object file
+src/engine/backend/metal/old/metal_backend_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_backend_2.c.o
+.PHONY : src/engine/backend/metal/old/metal_backend_2.c.o
+
+src/engine/backend/metal/old/metal_backend_2.i: src/engine/backend/metal/old/metal_backend_2.c.i
+.PHONY : src/engine/backend/metal/old/metal_backend_2.i
+
+# target to preprocess a source file
+src/engine/backend/metal/old/metal_backend_2.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_backend_2.c.i
+.PHONY : src/engine/backend/metal/old/metal_backend_2.c.i
+
+src/engine/backend/metal/old/metal_backend_2.s: src/engine/backend/metal/old/metal_backend_2.c.s
+.PHONY : src/engine/backend/metal/old/metal_backend_2.s
+
+# target to generate assembly for a file
+src/engine/backend/metal/old/metal_backend_2.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_backend_2.c.s
+.PHONY : src/engine/backend/metal/old/metal_backend_2.c.s
+
+src/engine/backend/metal/simple_metal_test.o: src/engine/backend/metal/simple_metal_test.c.o
+.PHONY : src/engine/backend/metal/simple_metal_test.o
+
+# target to build an object file
+src/engine/backend/metal/simple_metal_test.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/simple_metal_test.c.o
+.PHONY : src/engine/backend/metal/simple_metal_test.c.o
+
+src/engine/backend/metal/tests/mtl_resource_tests.o: src/engine/backend/metal/tests/mtl_resource_tests.c.o
+.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.o
+
+# target to build an object file
+src/engine/backend/metal/tests/mtl_resource_tests.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.c.o
+.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.c.o
+
+src/engine/backend/metal/tests/mtl_resource_tests.i: src/engine/backend/metal/tests/mtl_resource_tests.c.i
+.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.i
+
+# target to preprocess a source file
+src/engine/backend/metal/tests/mtl_resource_tests.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.c.i
+.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.c.i
+
+src/engine/backend/metal/tests/mtl_resource_tests.s: src/engine/backend/metal/tests/mtl_resource_tests.c.s
+.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.s
+
+# target to generate assembly for a file
+src/engine/backend/metal/tests/mtl_resource_tests.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_resource_tests.c.s
+.PHONY : src/engine/backend/metal/tests/mtl_resource_tests.c.s
+
+src/engine/backend/metal/tests/mtl_voxel_test.o: src/engine/backend/metal/tests/mtl_voxel_test.c.o
+.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.o
+
+# target to build an object file
+src/engine/backend/metal/tests/mtl_voxel_test.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_voxel_test.c.o
+.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.c.o
+
+src/engine/backend/metal/tests/mtl_voxel_test.i: src/engine/backend/metal/tests/mtl_voxel_test.c.i
+.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.i
+
+# target to preprocess a source file
+src/engine/backend/metal/tests/mtl_voxel_test.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_voxel_test.c.i
+.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.c.i
+
+src/engine/backend/metal/tests/mtl_voxel_test.s: src/engine/backend/metal/tests/mtl_voxel_test.c.s
+.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.s
+
+# target to generate assembly for a file
+src/engine/backend/metal/tests/mtl_voxel_test.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/tests/mtl_voxel_test.c.s
+.PHONY : src/engine/backend/metal/tests/mtl_voxel_test.c.s
 
 src/engine/backend/opengl_backend.o: src/engine/backend/opengl_backend.c.o
 .PHONY : src/engine/backend/opengl_backend.o
@@ -723,29 +995,29 @@ src/engine/core/config.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/config.c.s
 .PHONY : src/engine/core/config.c.s
 
-src/engine/core/engine.o: src/engine/core/engine.c.o
-.PHONY : src/engine/core/engine.o
+src/engine/core/hot_reload.o: src/engine/core/hot_reload.c.o
+.PHONY : src/engine/core/hot_reload.o
 
 # target to build an object file
-src/engine/core/engine.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/engine.c.o
-.PHONY : src/engine/core/engine.c.o
+src/engine/core/hot_reload.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/hot_reload.c.o
+.PHONY : src/engine/core/hot_reload.c.o
 
-src/engine/core/engine.i: src/engine/core/engine.c.i
-.PHONY : src/engine/core/engine.i
+src/engine/core/hot_reload.i: src/engine/core/hot_reload.c.i
+.PHONY : src/engine/core/hot_reload.i
 
 # target to preprocess a source file
-src/engine/core/engine.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/engine.c.i
-.PHONY : src/engine/core/engine.c.i
+src/engine/core/hot_reload.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/hot_reload.c.i
+.PHONY : src/engine/core/hot_reload.c.i
 
-src/engine/core/engine.s: src/engine/core/engine.c.s
-.PHONY : src/engine/core/engine.s
+src/engine/core/hot_reload.s: src/engine/core/hot_reload.c.s
+.PHONY : src/engine/core/hot_reload.s
 
 # target to generate assembly for a file
-src/engine/core/engine.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/engine.c.s
-.PHONY : src/engine/core/engine.c.s
+src/engine/core/hot_reload.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/hot_reload.c.s
+.PHONY : src/engine/core/hot_reload.c.s
 
 src/engine/core/legacy/hot_reload.o: src/engine/core/legacy/hot_reload.c.o
 .PHONY : src/engine/core/legacy/hot_reload.o
@@ -771,30 +1043,6 @@ src/engine/core/legacy/hot_reload.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/legacy/hot_reload.c.s
 .PHONY : src/engine/core/legacy/hot_reload.c.s
 
-src/engine/core/legacy/logger.o: src/engine/core/legacy/logger.c.o
-.PHONY : src/engine/core/legacy/logger.o
-
-# target to build an object file
-src/engine/core/legacy/logger.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/legacy/logger.c.o
-.PHONY : src/engine/core/legacy/logger.c.o
-
-src/engine/core/legacy/logger.i: src/engine/core/legacy/logger.c.i
-.PHONY : src/engine/core/legacy/logger.i
-
-# target to preprocess a source file
-src/engine/core/legacy/logger.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/legacy/logger.c.i
-.PHONY : src/engine/core/legacy/logger.c.i
-
-src/engine/core/legacy/logger.s: src/engine/core/legacy/logger.c.s
-.PHONY : src/engine/core/legacy/logger.s
-
-# target to generate assembly for a file
-src/engine/core/legacy/logger.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/legacy/logger.c.s
-.PHONY : src/engine/core/legacy/logger.c.s
-
 src/engine/core/legacy/memory_allocator.o: src/engine/core/legacy/memory_allocator.c.o
 .PHONY : src/engine/core/legacy/memory_allocator.o
 
@@ -818,54 +1066,6 @@ src/engine/core/legacy/memory_allocator.s: src/engine/core/legacy/memory_allocat
 src/engine/core/legacy/memory_allocator.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/legacy/memory_allocator.c.s
 .PHONY : src/engine/core/legacy/memory_allocator.c.s
-
-src/engine/core/memory/unified_allocator.o: src/engine/core/memory/unified_allocator.c.o
-.PHONY : src/engine/core/memory/unified_allocator.o
-
-# target to build an object file
-src/engine/core/memory/unified_allocator.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/unified_allocator.c.o
-.PHONY : src/engine/core/memory/unified_allocator.c.o
-
-src/engine/core/memory/unified_allocator.i: src/engine/core/memory/unified_allocator.c.i
-.PHONY : src/engine/core/memory/unified_allocator.i
-
-# target to preprocess a source file
-src/engine/core/memory/unified_allocator.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/unified_allocator.c.i
-.PHONY : src/engine/core/memory/unified_allocator.c.i
-
-src/engine/core/memory/unified_allocator.s: src/engine/core/memory/unified_allocator.c.s
-.PHONY : src/engine/core/memory/unified_allocator.s
-
-# target to generate assembly for a file
-src/engine/core/memory/unified_allocator.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/memory/unified_allocator.c.s
-.PHONY : src/engine/core/memory/unified_allocator.c.s
-
-src/engine/core/misc_stubs.o: src/engine/core/misc_stubs.c.o
-.PHONY : src/engine/core/misc_stubs.o
-
-# target to build an object file
-src/engine/core/misc_stubs.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/misc_stubs.c.o
-.PHONY : src/engine/core/misc_stubs.c.o
-
-src/engine/core/misc_stubs.i: src/engine/core/misc_stubs.c.i
-.PHONY : src/engine/core/misc_stubs.i
-
-# target to preprocess a source file
-src/engine/core/misc_stubs.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/misc_stubs.c.i
-.PHONY : src/engine/core/misc_stubs.c.i
-
-src/engine/core/misc_stubs.s: src/engine/core/misc_stubs.c.s
-.PHONY : src/engine/core/misc_stubs.s
-
-# target to generate assembly for a file
-src/engine/core/misc_stubs.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/misc_stubs.c.s
-.PHONY : src/engine/core/misc_stubs.c.s
 
 src/engine/core/monolithic_main.o: src/engine/core/monolithic_main.c.o
 .PHONY : src/engine/core/monolithic_main.o
@@ -939,54 +1139,6 @@ src/engine/core/profiling/profiler.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/profiling/profiler.c.s
 .PHONY : src/engine/core/profiling/profiler.c.s
 
-src/engine/core/resource/vfs.o: src/engine/core/resource/vfs.c.o
-.PHONY : src/engine/core/resource/vfs.o
-
-# target to build an object file
-src/engine/core/resource/vfs.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/resource/vfs.c.o
-.PHONY : src/engine/core/resource/vfs.c.o
-
-src/engine/core/resource/vfs.i: src/engine/core/resource/vfs.c.i
-.PHONY : src/engine/core/resource/vfs.i
-
-# target to preprocess a source file
-src/engine/core/resource/vfs.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/resource/vfs.c.i
-.PHONY : src/engine/core/resource/vfs.c.i
-
-src/engine/core/resource/vfs.s: src/engine/core/resource/vfs.c.s
-.PHONY : src/engine/core/resource/vfs.s
-
-# target to generate assembly for a file
-src/engine/core/resource/vfs.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/resource/vfs.c.s
-.PHONY : src/engine/core/resource/vfs.c.s
-
-src/engine/core/resource/vfs_async.o: src/engine/core/resource/vfs_async.c.o
-.PHONY : src/engine/core/resource/vfs_async.o
-
-# target to build an object file
-src/engine/core/resource/vfs_async.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/resource/vfs_async.c.o
-.PHONY : src/engine/core/resource/vfs_async.c.o
-
-src/engine/core/resource/vfs_async.i: src/engine/core/resource/vfs_async.c.i
-.PHONY : src/engine/core/resource/vfs_async.i
-
-# target to preprocess a source file
-src/engine/core/resource/vfs_async.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/resource/vfs_async.c.i
-.PHONY : src/engine/core/resource/vfs_async.c.i
-
-src/engine/core/resource/vfs_async.s: src/engine/core/resource/vfs_async.c.s
-.PHONY : src/engine/core/resource/vfs_async.s
-
-# target to generate assembly for a file
-src/engine/core/resource/vfs_async.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/resource/vfs_async.c.s
-.PHONY : src/engine/core/resource/vfs_async.c.s
-
 src/engine/core/simd/simd_math_neon.o: src/engine/core/simd/simd_math_neon.c.o
 .PHONY : src/engine/core/simd/simd_math_neon.o
 
@@ -1059,30 +1211,6 @@ src/engine/core/swift_bridge_wrapper.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/swift_bridge_wrapper.c.s
 .PHONY : src/engine/core/swift_bridge_wrapper.c.s
 
-src/engine/core/sync/thread_pool.o: src/engine/core/sync/thread_pool.c.o
-.PHONY : src/engine/core/sync/thread_pool.o
-
-# target to build an object file
-src/engine/core/sync/thread_pool.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/sync/thread_pool.c.o
-.PHONY : src/engine/core/sync/thread_pool.c.o
-
-src/engine/core/sync/thread_pool.i: src/engine/core/sync/thread_pool.c.i
-.PHONY : src/engine/core/sync/thread_pool.i
-
-# target to preprocess a source file
-src/engine/core/sync/thread_pool.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/sync/thread_pool.c.i
-.PHONY : src/engine/core/sync/thread_pool.c.i
-
-src/engine/core/sync/thread_pool.s: src/engine/core/sync/thread_pool.c.s
-.PHONY : src/engine/core/sync/thread_pool.s
-
-# target to generate assembly for a file
-src/engine/core/sync/thread_pool.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/sync/thread_pool.c.s
-.PHONY : src/engine/core/sync/thread_pool.c.s
-
 src/engine/core/thread_pool.o: src/engine/core/thread_pool.c.o
 .PHONY : src/engine/core/thread_pool.o
 
@@ -1106,6 +1234,30 @@ src/engine/core/thread_pool.s: src/engine/core/thread_pool.c.s
 src/engine/core/thread_pool.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/thread_pool.c.s
 .PHONY : src/engine/core/thread_pool.c.s
+
+src/engine/core/threading/job.o: src/engine/core/threading/job.c.o
+.PHONY : src/engine/core/threading/job.o
+
+# target to build an object file
+src/engine/core/threading/job.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/threading/job.c.o
+.PHONY : src/engine/core/threading/job.c.o
+
+src/engine/core/threading/job.i: src/engine/core/threading/job.c.i
+.PHONY : src/engine/core/threading/job.i
+
+# target to preprocess a source file
+src/engine/core/threading/job.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/threading/job.c.i
+.PHONY : src/engine/core/threading/job.c.i
+
+src/engine/core/threading/job.s: src/engine/core/threading/job.c.s
+.PHONY : src/engine/core/threading/job.s
+
+# target to generate assembly for a file
+src/engine/core/threading/job.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/threading/job.c.s
+.PHONY : src/engine/core/threading/job.c.s
 
 src/engine/core/utils.o: src/engine/core/utils.c.o
 .PHONY : src/engine/core/utils.o
@@ -1418,6 +1570,54 @@ src/engine/effects/destruction/fracture_system.s: src/engine/effects/destruction
 src/engine/effects/destruction/fracture_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/destruction/fracture_system.c.s
 .PHONY : src/engine/effects/destruction/fracture_system.c.s
+
+src/engine/effects/gpu_particles/spawn_compute.o: src/engine/effects/gpu_particles/spawn_compute.c.o
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.o
+
+# target to build an object file
+src/engine/effects/gpu_particles/spawn_compute.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/spawn_compute.c.o
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.c.o
+
+src/engine/effects/gpu_particles/spawn_compute.i: src/engine/effects/gpu_particles/spawn_compute.c.i
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.i
+
+# target to preprocess a source file
+src/engine/effects/gpu_particles/spawn_compute.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/spawn_compute.c.i
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.c.i
+
+src/engine/effects/gpu_particles/spawn_compute.s: src/engine/effects/gpu_particles/spawn_compute.c.s
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.s
+
+# target to generate assembly for a file
+src/engine/effects/gpu_particles/spawn_compute.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/spawn_compute.c.s
+.PHONY : src/engine/effects/gpu_particles/spawn_compute.c.s
+
+src/engine/effects/gpu_particles/update_compute.o: src/engine/effects/gpu_particles/update_compute.c.o
+.PHONY : src/engine/effects/gpu_particles/update_compute.o
+
+# target to build an object file
+src/engine/effects/gpu_particles/update_compute.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/update_compute.c.o
+.PHONY : src/engine/effects/gpu_particles/update_compute.c.o
+
+src/engine/effects/gpu_particles/update_compute.i: src/engine/effects/gpu_particles/update_compute.c.i
+.PHONY : src/engine/effects/gpu_particles/update_compute.i
+
+# target to preprocess a source file
+src/engine/effects/gpu_particles/update_compute.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/update_compute.c.i
+.PHONY : src/engine/effects/gpu_particles/update_compute.c.i
+
+src/engine/effects/gpu_particles/update_compute.s: src/engine/effects/gpu_particles/update_compute.c.s
+.PHONY : src/engine/effects/gpu_particles/update_compute.s
+
+# target to generate assembly for a file
+src/engine/effects/gpu_particles/update_compute.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/effects/gpu_particles/update_compute.c.s
+.PHONY : src/engine/effects/gpu_particles/update_compute.c.s
 
 src/engine/effects/svg_particles/svg_particle_renderer.o: src/engine/effects/svg_particles/svg_particle_renderer.c.o
 .PHONY : src/engine/effects/svg_particles/svg_particle_renderer.o
@@ -2330,6 +2530,30 @@ src/engine/environment/landscape/grass/landscape_grass/grass_lod.s: src/engine/e
 src/engine/environment/landscape/grass/landscape_grass/grass_lod.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/environment/landscape/grass/landscape_grass/grass_lod.c.s
 .PHONY : src/engine/environment/landscape/grass/landscape_grass/grass_lod.c.s
+
+src/engine/environment/landscape/landscape_spline.o: src/engine/environment/landscape/landscape_spline.c.o
+.PHONY : src/engine/environment/landscape/landscape_spline.o
+
+# target to build an object file
+src/engine/environment/landscape/landscape_spline.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/environment/landscape/landscape_spline.c.o
+.PHONY : src/engine/environment/landscape/landscape_spline.c.o
+
+src/engine/environment/landscape/landscape_spline.i: src/engine/environment/landscape/landscape_spline.c.i
+.PHONY : src/engine/environment/landscape/landscape_spline.i
+
+# target to preprocess a source file
+src/engine/environment/landscape/landscape_spline.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/environment/landscape/landscape_spline.c.i
+.PHONY : src/engine/environment/landscape/landscape_spline.c.i
+
+src/engine/environment/landscape/landscape_spline.s: src/engine/environment/landscape/landscape_spline.c.s
+.PHONY : src/engine/environment/landscape/landscape_spline.s
+
+# target to generate assembly for a file
+src/engine/environment/landscape/landscape_spline.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/environment/landscape/landscape_spline.c.s
+.PHONY : src/engine/environment/landscape/landscape_spline.c.s
 
 src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_blending.o: src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_blending.c.o
 .PHONY : src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_blending.o
@@ -3746,6 +3970,30 @@ src/engine/environment/vegetation/vegetation_interaction.s: src/engine/environme
 src/engine/environment/vegetation/vegetation_interaction.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/environment/vegetation/vegetation_interaction.c.s
 .PHONY : src/engine/environment/vegetation/vegetation_interaction.c.s
+
+src/engine/environment/weather/weather_stub.o: src/engine/environment/weather/weather_stub.c.o
+.PHONY : src/engine/environment/weather/weather_stub.o
+
+# target to build an object file
+src/engine/environment/weather/weather_stub.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/environment/weather/weather_stub.c.o
+.PHONY : src/engine/environment/weather/weather_stub.c.o
+
+src/engine/environment/weather/weather_stub.i: src/engine/environment/weather/weather_stub.c.i
+.PHONY : src/engine/environment/weather/weather_stub.i
+
+# target to preprocess a source file
+src/engine/environment/weather/weather_stub.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/environment/weather/weather_stub.c.i
+.PHONY : src/engine/environment/weather/weather_stub.c.i
+
+src/engine/environment/weather/weather_stub.s: src/engine/environment/weather/weather_stub.c.s
+.PHONY : src/engine/environment/weather/weather_stub.s
+
+# target to generate assembly for a file
+src/engine/environment/weather/weather_stub.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/environment/weather/weather_stub.c.s
+.PHONY : src/engine/environment/weather/weather_stub.c.s
 
 src/engine/environment/weather_stub.o: src/engine/environment/weather_stub.c.o
 .PHONY : src/engine/environment/weather_stub.o
@@ -7747,6 +7995,30 @@ src/engine/lighting/sources/rect_light.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/lighting/sources/rect_light.c.s
 .PHONY : src/engine/lighting/sources/rect_light.c.s
 
+src/engine/lighting/sources/sky_light.o: src/engine/lighting/sources/sky_light.c.o
+.PHONY : src/engine/lighting/sources/sky_light.o
+
+# target to build an object file
+src/engine/lighting/sources/sky_light.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/lighting/sources/sky_light.c.o
+.PHONY : src/engine/lighting/sources/sky_light.c.o
+
+src/engine/lighting/sources/sky_light.i: src/engine/lighting/sources/sky_light.c.i
+.PHONY : src/engine/lighting/sources/sky_light.i
+
+# target to preprocess a source file
+src/engine/lighting/sources/sky_light.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/lighting/sources/sky_light.c.i
+.PHONY : src/engine/lighting/sources/sky_light.c.i
+
+src/engine/lighting/sources/sky_light.s: src/engine/lighting/sources/sky_light.c.s
+.PHONY : src/engine/lighting/sources/sky_light.s
+
+# target to generate assembly for a file
+src/engine/lighting/sources/sky_light.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/lighting/sources/sky_light.c.s
+.PHONY : src/engine/lighting/sources/sky_light.c.s
+
 src/engine/lighting/sources/sphere_light.o: src/engine/lighting/sources/sphere_light.c.o
 .PHONY : src/engine/lighting/sources/sphere_light.o
 
@@ -8323,6 +8595,30 @@ src/engine/math/quat.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/math/quat.c.s
 .PHONY : src/engine/math/quat.c.s
 
+src/engine/network/bandwidth/bandwidth_throttler.o: src/engine/network/bandwidth/bandwidth_throttler.c.o
+.PHONY : src/engine/network/bandwidth/bandwidth_throttler.o
+
+# target to build an object file
+src/engine/network/bandwidth/bandwidth_throttler.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/bandwidth/bandwidth_throttler.c.o
+.PHONY : src/engine/network/bandwidth/bandwidth_throttler.c.o
+
+src/engine/network/bandwidth/bandwidth_throttler.i: src/engine/network/bandwidth/bandwidth_throttler.c.i
+.PHONY : src/engine/network/bandwidth/bandwidth_throttler.i
+
+# target to preprocess a source file
+src/engine/network/bandwidth/bandwidth_throttler.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/bandwidth/bandwidth_throttler.c.i
+.PHONY : src/engine/network/bandwidth/bandwidth_throttler.c.i
+
+src/engine/network/bandwidth/bandwidth_throttler.s: src/engine/network/bandwidth/bandwidth_throttler.c.s
+.PHONY : src/engine/network/bandwidth/bandwidth_throttler.s
+
+# target to generate assembly for a file
+src/engine/network/bandwidth/bandwidth_throttler.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/bandwidth/bandwidth_throttler.c.s
+.PHONY : src/engine/network/bandwidth/bandwidth_throttler.c.s
+
 src/engine/network/bandwidth_throttler.o: src/engine/network/bandwidth_throttler.c.o
 .PHONY : src/engine/network/bandwidth_throttler.o
 
@@ -8401,6 +8697,7 @@ src/engine/network/content_sharing_system_2.o: src/engine/network/content_sharin
 # target to build an object file
 src/engine/network/content_sharing_system_2.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.o
 .PHONY : src/engine/network/content_sharing_system_2.c.o
 
 src/engine/network/content_sharing_system_2.i: src/engine/network/content_sharing_system_2.c.i
@@ -8409,6 +8706,7 @@ src/engine/network/content_sharing_system_2.i: src/engine/network/content_sharin
 # target to preprocess a source file
 src/engine/network/content_sharing_system_2.c.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.i
 .PHONY : src/engine/network/content_sharing_system_2.c.i
 
 src/engine/network/content_sharing_system_2.s: src/engine/network/content_sharing_system_2.c.s
@@ -8416,6 +8714,7 @@ src/engine/network/content_sharing_system_2.s: src/engine/network/content_sharin
 
 # target to generate assembly for a file
 src/engine/network/content_sharing_system_2.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.s
 .PHONY : src/engine/network/content_sharing_system_2.c.s
 
@@ -8731,6 +9030,30 @@ src/engine/network/multiplayer/core_batch_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/multiplayer/core_batch_impl.c.s
 .PHONY : src/engine/network/multiplayer/core_batch_impl.c.s
 
+src/engine/network/multiplayer/network_impl.o: src/engine/network/multiplayer/network_impl.c.o
+.PHONY : src/engine/network/multiplayer/network_impl.o
+
+# target to build an object file
+src/engine/network/multiplayer/network_impl.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/multiplayer/network_impl.c.o
+.PHONY : src/engine/network/multiplayer/network_impl.c.o
+
+src/engine/network/multiplayer/network_impl.i: src/engine/network/multiplayer/network_impl.c.i
+.PHONY : src/engine/network/multiplayer/network_impl.i
+
+# target to preprocess a source file
+src/engine/network/multiplayer/network_impl.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/multiplayer/network_impl.c.i
+.PHONY : src/engine/network/multiplayer/network_impl.c.i
+
+src/engine/network/multiplayer/network_impl.s: src/engine/network/multiplayer/network_impl.c.s
+.PHONY : src/engine/network/multiplayer/network_impl.s
+
+# target to generate assembly for a file
+src/engine/network/multiplayer/network_impl.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/multiplayer/network_impl.c.s
+.PHONY : src/engine/network/multiplayer/network_impl.c.s
+
 src/engine/network/multiplayer_impl.o: src/engine/network/multiplayer_impl.c.o
 .PHONY : src/engine/network/multiplayer_impl.o
 
@@ -8826,6 +9149,54 @@ src/engine/network/network_replication.s: src/engine/network/network_replication
 src/engine/network/network_replication.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/network_replication.c.s
 .PHONY : src/engine/network/network_replication.c.s
+
+src/engine/network/optimization/interest_management.o: src/engine/network/optimization/interest_management.c.o
+.PHONY : src/engine/network/optimization/interest_management.o
+
+# target to build an object file
+src/engine/network/optimization/interest_management.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/optimization/interest_management.c.o
+.PHONY : src/engine/network/optimization/interest_management.c.o
+
+src/engine/network/optimization/interest_management.i: src/engine/network/optimization/interest_management.c.i
+.PHONY : src/engine/network/optimization/interest_management.i
+
+# target to preprocess a source file
+src/engine/network/optimization/interest_management.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/optimization/interest_management.c.i
+.PHONY : src/engine/network/optimization/interest_management.c.i
+
+src/engine/network/optimization/interest_management.s: src/engine/network/optimization/interest_management.c.s
+.PHONY : src/engine/network/optimization/interest_management.s
+
+# target to generate assembly for a file
+src/engine/network/optimization/interest_management.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/optimization/interest_management.c.s
+.PHONY : src/engine/network/optimization/interest_management.c.s
+
+src/engine/network/p2p/nat_punchthrough.o: src/engine/network/p2p/nat_punchthrough.c.o
+.PHONY : src/engine/network/p2p/nat_punchthrough.o
+
+# target to build an object file
+src/engine/network/p2p/nat_punchthrough.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/p2p/nat_punchthrough.c.o
+.PHONY : src/engine/network/p2p/nat_punchthrough.c.o
+
+src/engine/network/p2p/nat_punchthrough.i: src/engine/network/p2p/nat_punchthrough.c.i
+.PHONY : src/engine/network/p2p/nat_punchthrough.i
+
+# target to preprocess a source file
+src/engine/network/p2p/nat_punchthrough.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/p2p/nat_punchthrough.c.i
+.PHONY : src/engine/network/p2p/nat_punchthrough.c.i
+
+src/engine/network/p2p/nat_punchthrough.s: src/engine/network/p2p/nat_punchthrough.c.s
+.PHONY : src/engine/network/p2p/nat_punchthrough.s
+
+# target to generate assembly for a file
+src/engine/network/p2p/nat_punchthrough.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/p2p/nat_punchthrough.c.s
+.PHONY : src/engine/network/p2p/nat_punchthrough.c.s
 
 src/engine/network/packet.o: src/engine/network/packet.c.o
 .PHONY : src/engine/network/packet.o
@@ -9451,6 +9822,30 @@ src/engine/network/transport/udp_socket.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/transport/udp_socket.c.s
 .PHONY : src/engine/network/transport/udp_socket.c.s
 
+src/engine/networking/bandwidth/bandwidth_throttler.o: src/engine/networking/bandwidth/bandwidth_throttler.c.o
+.PHONY : src/engine/networking/bandwidth/bandwidth_throttler.o
+
+# target to build an object file
+src/engine/networking/bandwidth/bandwidth_throttler.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/bandwidth/bandwidth_throttler.c.o
+.PHONY : src/engine/networking/bandwidth/bandwidth_throttler.c.o
+
+src/engine/networking/bandwidth/bandwidth_throttler.i: src/engine/networking/bandwidth/bandwidth_throttler.c.i
+.PHONY : src/engine/networking/bandwidth/bandwidth_throttler.i
+
+# target to preprocess a source file
+src/engine/networking/bandwidth/bandwidth_throttler.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/bandwidth/bandwidth_throttler.c.i
+.PHONY : src/engine/networking/bandwidth/bandwidth_throttler.c.i
+
+src/engine/networking/bandwidth/bandwidth_throttler.s: src/engine/networking/bandwidth/bandwidth_throttler.c.s
+.PHONY : src/engine/networking/bandwidth/bandwidth_throttler.s
+
+# target to generate assembly for a file
+src/engine/networking/bandwidth/bandwidth_throttler.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/bandwidth/bandwidth_throttler.c.s
+.PHONY : src/engine/networking/bandwidth/bandwidth_throttler.c.s
+
 src/engine/networking/bandwidth_throttler.o: src/engine/networking/bandwidth_throttler.c.o
 .PHONY : src/engine/networking/bandwidth_throttler.o
 
@@ -9738,6 +10133,78 @@ src/engine/networking/nat_punchthrough.s: src/engine/networking/nat_punchthrough
 src/engine/networking/nat_punchthrough.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/nat_punchthrough.c.s
 .PHONY : src/engine/networking/nat_punchthrough.c.s
+
+src/engine/networking/network_replication.o: src/engine/networking/network_replication.c.o
+.PHONY : src/engine/networking/network_replication.o
+
+# target to build an object file
+src/engine/networking/network_replication.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/network_replication.c.o
+.PHONY : src/engine/networking/network_replication.c.o
+
+src/engine/networking/network_replication.i: src/engine/networking/network_replication.c.i
+.PHONY : src/engine/networking/network_replication.i
+
+# target to preprocess a source file
+src/engine/networking/network_replication.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/network_replication.c.i
+.PHONY : src/engine/networking/network_replication.c.i
+
+src/engine/networking/network_replication.s: src/engine/networking/network_replication.c.s
+.PHONY : src/engine/networking/network_replication.s
+
+# target to generate assembly for a file
+src/engine/networking/network_replication.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/network_replication.c.s
+.PHONY : src/engine/networking/network_replication.c.s
+
+src/engine/networking/optimization/interest_management.o: src/engine/networking/optimization/interest_management.c.o
+.PHONY : src/engine/networking/optimization/interest_management.o
+
+# target to build an object file
+src/engine/networking/optimization/interest_management.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/optimization/interest_management.c.o
+.PHONY : src/engine/networking/optimization/interest_management.c.o
+
+src/engine/networking/optimization/interest_management.i: src/engine/networking/optimization/interest_management.c.i
+.PHONY : src/engine/networking/optimization/interest_management.i
+
+# target to preprocess a source file
+src/engine/networking/optimization/interest_management.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/optimization/interest_management.c.i
+.PHONY : src/engine/networking/optimization/interest_management.c.i
+
+src/engine/networking/optimization/interest_management.s: src/engine/networking/optimization/interest_management.c.s
+.PHONY : src/engine/networking/optimization/interest_management.s
+
+# target to generate assembly for a file
+src/engine/networking/optimization/interest_management.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/optimization/interest_management.c.s
+.PHONY : src/engine/networking/optimization/interest_management.c.s
+
+src/engine/networking/p2p/nat_punchthrough.o: src/engine/networking/p2p/nat_punchthrough.c.o
+.PHONY : src/engine/networking/p2p/nat_punchthrough.o
+
+# target to build an object file
+src/engine/networking/p2p/nat_punchthrough.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/p2p/nat_punchthrough.c.o
+.PHONY : src/engine/networking/p2p/nat_punchthrough.c.o
+
+src/engine/networking/p2p/nat_punchthrough.i: src/engine/networking/p2p/nat_punchthrough.c.i
+.PHONY : src/engine/networking/p2p/nat_punchthrough.i
+
+# target to preprocess a source file
+src/engine/networking/p2p/nat_punchthrough.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/p2p/nat_punchthrough.c.i
+.PHONY : src/engine/networking/p2p/nat_punchthrough.c.i
+
+src/engine/networking/p2p/nat_punchthrough.s: src/engine/networking/p2p/nat_punchthrough.c.s
+.PHONY : src/engine/networking/p2p/nat_punchthrough.s
+
+# target to generate assembly for a file
+src/engine/networking/p2p/nat_punchthrough.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/networking/p2p/nat_punchthrough.c.s
+.PHONY : src/engine/networking/p2p/nat_punchthrough.c.s
 
 src/engine/networking/replication/delta_compression.o: src/engine/networking/replication/delta_compression.c.o
 .PHONY : src/engine/networking/replication/delta_compression.o
@@ -10195,198 +10662,6 @@ src/engine/physics/demos/physics_demo_framework.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/physics_demos.dir/build.make CMakeFiles/physics_demos.dir/src/engine/physics/demos/physics_demo_framework.c.s
 .PHONY : src/engine/physics/demos/physics_demo_framework.c.s
 
-src/engine/platform/input/action_mapper_impl.o: src/engine/platform/input/action_mapper_impl.c.o
-.PHONY : src/engine/platform/input/action_mapper_impl.o
-
-# target to build an object file
-src/engine/platform/input/action_mapper_impl.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/action_mapper_impl.c.o
-.PHONY : src/engine/platform/input/action_mapper_impl.c.o
-
-src/engine/platform/input/action_mapper_impl.i: src/engine/platform/input/action_mapper_impl.c.i
-.PHONY : src/engine/platform/input/action_mapper_impl.i
-
-# target to preprocess a source file
-src/engine/platform/input/action_mapper_impl.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/action_mapper_impl.c.i
-.PHONY : src/engine/platform/input/action_mapper_impl.c.i
-
-src/engine/platform/input/action_mapper_impl.s: src/engine/platform/input/action_mapper_impl.c.s
-.PHONY : src/engine/platform/input/action_mapper_impl.s
-
-# target to generate assembly for a file
-src/engine/platform/input/action_mapper_impl.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/action_mapper_impl.c.s
-.PHONY : src/engine/platform/input/action_mapper_impl.c.s
-
-src/engine/platform/input/controls.o: src/engine/platform/input/controls.c.o
-.PHONY : src/engine/platform/input/controls.o
-
-# target to build an object file
-src/engine/platform/input/controls.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/controls.c.o
-.PHONY : src/engine/platform/input/controls.c.o
-
-src/engine/platform/input/controls.i: src/engine/platform/input/controls.c.i
-.PHONY : src/engine/platform/input/controls.i
-
-# target to preprocess a source file
-src/engine/platform/input/controls.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/controls.c.i
-.PHONY : src/engine/platform/input/controls.c.i
-
-src/engine/platform/input/controls.s: src/engine/platform/input/controls.c.s
-.PHONY : src/engine/platform/input/controls.s
-
-# target to generate assembly for a file
-src/engine/platform/input/controls.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/controls.c.s
-.PHONY : src/engine/platform/input/controls.c.s
-
-src/engine/platform/input/gamepad.o: src/engine/platform/input/gamepad.c.o
-.PHONY : src/engine/platform/input/gamepad.o
-
-# target to build an object file
-src/engine/platform/input/gamepad.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/gamepad.c.o
-.PHONY : src/engine/platform/input/gamepad.c.o
-
-src/engine/platform/input/gamepad.i: src/engine/platform/input/gamepad.c.i
-.PHONY : src/engine/platform/input/gamepad.i
-
-# target to preprocess a source file
-src/engine/platform/input/gamepad.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/gamepad.c.i
-.PHONY : src/engine/platform/input/gamepad.c.i
-
-src/engine/platform/input/gamepad.s: src/engine/platform/input/gamepad.c.s
-.PHONY : src/engine/platform/input/gamepad.s
-
-# target to generate assembly for a file
-src/engine/platform/input/gamepad.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/gamepad.c.s
-.PHONY : src/engine/platform/input/gamepad.c.s
-
-src/engine/platform/input/input.o: src/engine/platform/input/input.c.o
-.PHONY : src/engine/platform/input/input.o
-
-# target to build an object file
-src/engine/platform/input/input.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input.c.o
-.PHONY : src/engine/platform/input/input.c.o
-
-src/engine/platform/input/input.i: src/engine/platform/input/input.c.i
-.PHONY : src/engine/platform/input/input.i
-
-# target to preprocess a source file
-src/engine/platform/input/input.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input.c.i
-.PHONY : src/engine/platform/input/input.c.i
-
-src/engine/platform/input/input.s: src/engine/platform/input/input.c.s
-.PHONY : src/engine/platform/input/input.s
-
-# target to generate assembly for a file
-src/engine/platform/input/input.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input.c.s
-.PHONY : src/engine/platform/input/input.c.s
-
-src/engine/platform/input/input_factory.o: src/engine/platform/input/input_factory.c.o
-.PHONY : src/engine/platform/input/input_factory.o
-
-# target to build an object file
-src/engine/platform/input/input_factory.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_factory.c.o
-.PHONY : src/engine/platform/input/input_factory.c.o
-
-src/engine/platform/input/input_factory.i: src/engine/platform/input/input_factory.c.i
-.PHONY : src/engine/platform/input/input_factory.i
-
-# target to preprocess a source file
-src/engine/platform/input/input_factory.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_factory.c.i
-.PHONY : src/engine/platform/input/input_factory.c.i
-
-src/engine/platform/input/input_factory.s: src/engine/platform/input/input_factory.c.s
-.PHONY : src/engine/platform/input/input_factory.s
-
-# target to generate assembly for a file
-src/engine/platform/input/input_factory.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_factory.c.s
-.PHONY : src/engine/platform/input/input_factory.c.s
-
-src/engine/platform/input/input_impl.o: src/engine/platform/input/input_impl.c.o
-.PHONY : src/engine/platform/input/input_impl.o
-
-# target to build an object file
-src/engine/platform/input/input_impl.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_impl.c.o
-.PHONY : src/engine/platform/input/input_impl.c.o
-
-src/engine/platform/input/input_impl.i: src/engine/platform/input/input_impl.c.i
-.PHONY : src/engine/platform/input/input_impl.i
-
-# target to preprocess a source file
-src/engine/platform/input/input_impl.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_impl.c.i
-.PHONY : src/engine/platform/input/input_impl.c.i
-
-src/engine/platform/input/input_impl.s: src/engine/platform/input/input_impl.c.s
-.PHONY : src/engine/platform/input/input_impl.s
-
-# target to generate assembly for a file
-src/engine/platform/input/input_impl.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_impl.c.s
-.PHONY : src/engine/platform/input/input_impl.c.s
-
-src/engine/platform/input/input_system.o: src/engine/platform/input/input_system.c.o
-.PHONY : src/engine/platform/input/input_system.o
-
-# target to build an object file
-src/engine/platform/input/input_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_system.c.o
-.PHONY : src/engine/platform/input/input_system.c.o
-
-src/engine/platform/input/input_system.i: src/engine/platform/input/input_system.c.i
-.PHONY : src/engine/platform/input/input_system.i
-
-# target to preprocess a source file
-src/engine/platform/input/input_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_system.c.i
-.PHONY : src/engine/platform/input/input_system.c.i
-
-src/engine/platform/input/input_system.s: src/engine/platform/input/input_system.c.s
-.PHONY : src/engine/platform/input/input_system.s
-
-# target to generate assembly for a file
-src/engine/platform/input/input_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_system.c.s
-.PHONY : src/engine/platform/input/input_system.c.s
-
-src/engine/platform/input/input_system_impl.o: src/engine/platform/input/input_system_impl.c.o
-.PHONY : src/engine/platform/input/input_system_impl.o
-
-# target to build an object file
-src/engine/platform/input/input_system_impl.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_system_impl.c.o
-.PHONY : src/engine/platform/input/input_system_impl.c.o
-
-src/engine/platform/input/input_system_impl.i: src/engine/platform/input/input_system_impl.c.i
-.PHONY : src/engine/platform/input/input_system_impl.i
-
-# target to preprocess a source file
-src/engine/platform/input/input_system_impl.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_system_impl.c.i
-.PHONY : src/engine/platform/input/input_system_impl.c.i
-
-src/engine/platform/input/input_system_impl.s: src/engine/platform/input/input_system_impl.c.s
-.PHONY : src/engine/platform/input/input_system_impl.s
-
-# target to generate assembly for a file
-src/engine/platform/input/input_system_impl.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/input/input_system_impl.c.s
-.PHONY : src/engine/platform/input/input_system_impl.c.s
-
 src/engine/platform/time_system.o: src/engine/platform/time_system.c.o
 .PHONY : src/engine/platform/time_system.o
 
@@ -10410,6 +10685,30 @@ src/engine/platform/time_system.s: src/engine/platform/time_system.c.s
 src/engine/platform/time_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/time_system.c.s
 .PHONY : src/engine/platform/time_system.c.s
+
+src/engine/platform/window/window.o: src/engine/platform/window/window.c.o
+.PHONY : src/engine/platform/window/window.o
+
+# target to build an object file
+src/engine/platform/window/window.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/window/window.c.o
+.PHONY : src/engine/platform/window/window.c.o
+
+src/engine/platform/window/window.i: src/engine/platform/window/window.c.i
+.PHONY : src/engine/platform/window/window.i
+
+# target to preprocess a source file
+src/engine/platform/window/window.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/window/window.c.i
+.PHONY : src/engine/platform/window/window.c.i
+
+src/engine/platform/window/window.s: src/engine/platform/window/window.c.s
+.PHONY : src/engine/platform/window/window.s
+
+# target to generate assembly for a file
+src/engine/platform/window/window.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/platform/window/window.c.s
+.PHONY : src/engine/platform/window/window.c.s
 
 src/engine/postprocess/ambient_occlusion/ao_blur.o: src/engine/postprocess/ambient_occlusion/ao_blur.c.o
 .PHONY : src/engine/postprocess/ambient_occlusion/ao_blur.o
@@ -14619,6 +14918,30 @@ src/engine/shading/library/stylized/cel_shading.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/stylized/cel_shading.c.s
 .PHONY : src/engine/shading/library/stylized/cel_shading.c.s
 
+src/engine/shading/library/vfx/particle_shaders.o: src/engine/shading/library/vfx/particle_shaders.c.o
+.PHONY : src/engine/shading/library/vfx/particle_shaders.o
+
+# target to build an object file
+src/engine/shading/library/vfx/particle_shaders.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.o
+.PHONY : src/engine/shading/library/vfx/particle_shaders.c.o
+
+src/engine/shading/library/vfx/particle_shaders.i: src/engine/shading/library/vfx/particle_shaders.c.i
+.PHONY : src/engine/shading/library/vfx/particle_shaders.i
+
+# target to preprocess a source file
+src/engine/shading/library/vfx/particle_shaders.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.i
+.PHONY : src/engine/shading/library/vfx/particle_shaders.c.i
+
+src/engine/shading/library/vfx/particle_shaders.s: src/engine/shading/library/vfx/particle_shaders.c.s
+.PHONY : src/engine/shading/library/vfx/particle_shaders.s
+
+# target to generate assembly for a file
+src/engine/shading/library/vfx/particle_shaders.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/shading/library/vfx/particle_shaders.c.s
+.PHONY : src/engine/shading/library/vfx/particle_shaders.c.s
+
 src/engine/shading/special/absorption.o: src/engine/shading/special/absorption.c.o
 .PHONY : src/engine/shading/special/absorption.o
 
@@ -14931,6 +15254,30 @@ src/engine/tools/analytics.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics.c.s
 .PHONY : src/engine/tools/analytics.c.s
 
+src/engine/tools/analytics/telemetry.o: src/engine/tools/analytics/telemetry.c.o
+.PHONY : src/engine/tools/analytics/telemetry.o
+
+# target to build an object file
+src/engine/tools/analytics/telemetry.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.o
+.PHONY : src/engine/tools/analytics/telemetry.c.o
+
+src/engine/tools/analytics/telemetry.i: src/engine/tools/analytics/telemetry.c.i
+.PHONY : src/engine/tools/analytics/telemetry.i
+
+# target to preprocess a source file
+src/engine/tools/analytics/telemetry.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.i
+.PHONY : src/engine/tools/analytics/telemetry.c.i
+
+src/engine/tools/analytics/telemetry.s: src/engine/tools/analytics/telemetry.c.s
+.PHONY : src/engine/tools/analytics/telemetry.s
+
+# target to generate assembly for a file
+src/engine/tools/analytics/telemetry.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics/telemetry.c.s
+.PHONY : src/engine/tools/analytics/telemetry.c.s
+
 src/engine/tools/analytics_dashboard.o: src/engine/tools/analytics_dashboard.c.o
 .PHONY : src/engine/tools/analytics_dashboard.o
 
@@ -14954,6 +15301,30 @@ src/engine/tools/analytics_dashboard.s: src/engine/tools/analytics_dashboard.c.s
 src/engine/tools/analytics_dashboard.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard.c.s
 .PHONY : src/engine/tools/analytics_dashboard.c.s
+
+src/engine/tools/analytics_dashboard_2.o: src/engine/tools/analytics_dashboard_2.c.o
+.PHONY : src/engine/tools/analytics_dashboard_2.o
+
+# target to build an object file
+src/engine/tools/analytics_dashboard_2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.o
+.PHONY : src/engine/tools/analytics_dashboard_2.c.o
+
+src/engine/tools/analytics_dashboard_2.i: src/engine/tools/analytics_dashboard_2.c.i
+.PHONY : src/engine/tools/analytics_dashboard_2.i
+
+# target to preprocess a source file
+src/engine/tools/analytics_dashboard_2.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.i
+.PHONY : src/engine/tools/analytics_dashboard_2.c.i
+
+src/engine/tools/analytics_dashboard_2.s: src/engine/tools/analytics_dashboard_2.c.s
+.PHONY : src/engine/tools/analytics_dashboard_2.s
+
+# target to generate assembly for a file
+src/engine/tools/analytics_dashboard_2.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.s
+.PHONY : src/engine/tools/analytics_dashboard_2.c.s
 
 src/engine/tools/asset_browser/asset_view.o: src/engine/tools/asset_browser/asset_view.c.o
 .PHONY : src/engine/tools/asset_browser/asset_view.o
@@ -15099,6 +15470,30 @@ src/engine/tools/asset_editor/3d/model_editor.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/asset_editor/3d/model_editor.c.s
 .PHONY : src/engine/tools/asset_editor/3d/model_editor.c.s
 
+src/engine/tools/asset_editor/asset_editor.o: src/engine/tools/asset_editor/asset_editor.c.o
+.PHONY : src/engine/tools/asset_editor/asset_editor.o
+
+# target to build an object file
+src/engine/tools/asset_editor/asset_editor.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.o
+.PHONY : src/engine/tools/asset_editor/asset_editor.c.o
+
+src/engine/tools/asset_editor/asset_editor.i: src/engine/tools/asset_editor/asset_editor.c.i
+.PHONY : src/engine/tools/asset_editor/asset_editor.i
+
+# target to preprocess a source file
+src/engine/tools/asset_editor/asset_editor.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.i
+.PHONY : src/engine/tools/asset_editor/asset_editor.c.i
+
+src/engine/tools/asset_editor/asset_editor.s: src/engine/tools/asset_editor/asset_editor.c.s
+.PHONY : src/engine/tools/asset_editor/asset_editor.s
+
+# target to generate assembly for a file
+src/engine/tools/asset_editor/asset_editor.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/asset_editor/asset_editor.c.s
+.PHONY : src/engine/tools/asset_editor/asset_editor.c.s
+
 src/engine/tools/asset_editor/management/import_export.o: src/engine/tools/asset_editor/management/import_export.c.o
 .PHONY : src/engine/tools/asset_editor/management/import_export.o
 
@@ -15243,6 +15638,30 @@ src/engine/tools/console/command_processor.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/console/command_processor.c.s
 .PHONY : src/engine/tools/console/command_processor.c.s
 
+src/engine/tools/console/console.o: src/engine/tools/console/console.c.o
+.PHONY : src/engine/tools/console/console.o
+
+# target to build an object file
+src/engine/tools/console/console.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/console/console.c.o
+.PHONY : src/engine/tools/console/console.c.o
+
+src/engine/tools/console/console.i: src/engine/tools/console/console.c.i
+.PHONY : src/engine/tools/console/console.i
+
+# target to preprocess a source file
+src/engine/tools/console/console.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/console/console.c.i
+.PHONY : src/engine/tools/console/console.c.i
+
+src/engine/tools/console/console.s: src/engine/tools/console/console.c.s
+.PHONY : src/engine/tools/console/console.s
+
+# target to generate assembly for a file
+src/engine/tools/console/console.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/console/console.c.s
+.PHONY : src/engine/tools/console/console.c.s
+
 src/engine/tools/debug/bug_reporter.o: src/engine/tools/debug/bug_reporter.c.o
 .PHONY : src/engine/tools/debug/bug_reporter.o
 
@@ -15362,6 +15781,30 @@ src/engine/tools/hot_reload.s: src/engine/tools/hot_reload.c.s
 src/engine/tools/hot_reload.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/hot_reload.c.s
 .PHONY : src/engine/tools/hot_reload.c.s
+
+src/engine/tools/hot_reload/hot_reload_impl.o: src/engine/tools/hot_reload/hot_reload_impl.c.o
+.PHONY : src/engine/tools/hot_reload/hot_reload_impl.o
+
+# target to build an object file
+src/engine/tools/hot_reload/hot_reload_impl.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.o
+.PHONY : src/engine/tools/hot_reload/hot_reload_impl.c.o
+
+src/engine/tools/hot_reload/hot_reload_impl.i: src/engine/tools/hot_reload/hot_reload_impl.c.i
+.PHONY : src/engine/tools/hot_reload/hot_reload_impl.i
+
+# target to preprocess a source file
+src/engine/tools/hot_reload/hot_reload_impl.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.i
+.PHONY : src/engine/tools/hot_reload/hot_reload_impl.c.i
+
+src/engine/tools/hot_reload/hot_reload_impl.s: src/engine/tools/hot_reload/hot_reload_impl.c.s
+.PHONY : src/engine/tools/hot_reload/hot_reload_impl.s
+
+# target to generate assembly for a file
+src/engine/tools/hot_reload/hot_reload_impl.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/hot_reload/hot_reload_impl.c.s
+.PHONY : src/engine/tools/hot_reload/hot_reload_impl.c.s
 
 src/engine/tools/hot_reload_impl.o: src/engine/tools/hot_reload_impl.c.o
 .PHONY : src/engine/tools/hot_reload_impl.o
@@ -16299,6 +16742,30 @@ src/engine/ui/widgets/widget.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/widget.c.s
 .PHONY : src/engine/ui/widgets/widget.c.s
 
+src/engine/vendor/cgltf/cgltf_impl.o: src/engine/vendor/cgltf/cgltf_impl.c.o
+.PHONY : src/engine/vendor/cgltf/cgltf_impl.o
+
+# target to build an object file
+src/engine/vendor/cgltf/cgltf_impl.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/vendor/cgltf/cgltf_impl.c.o
+.PHONY : src/engine/vendor/cgltf/cgltf_impl.c.o
+
+src/engine/vendor/cgltf/cgltf_impl.i: src/engine/vendor/cgltf/cgltf_impl.c.i
+.PHONY : src/engine/vendor/cgltf/cgltf_impl.i
+
+# target to preprocess a source file
+src/engine/vendor/cgltf/cgltf_impl.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/vendor/cgltf/cgltf_impl.c.i
+.PHONY : src/engine/vendor/cgltf/cgltf_impl.c.i
+
+src/engine/vendor/cgltf/cgltf_impl.s: src/engine/vendor/cgltf/cgltf_impl.c.s
+.PHONY : src/engine/vendor/cgltf/cgltf_impl.s
+
+# target to generate assembly for a file
+src/engine/vendor/cgltf/cgltf_impl.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/vendor/cgltf/cgltf_impl.c.s
+.PHONY : src/engine/vendor/cgltf/cgltf_impl.c.s
+
 src/engine/vendor/lua/lapi.o: src/engine/vendor/lua/lapi.c.o
 .PHONY : src/engine/vendor/lua/lapi.o
 
@@ -17066,6 +17533,30 @@ src/engine/vendor/lua/lzio.s: src/engine/vendor/lua/lzio.c.s
 src/engine/vendor/lua/lzio.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/vendor/lua/lzio.c.s
 .PHONY : src/engine/vendor/lua/lzio.c.s
+
+src/engine/vendor/stb_image/stb_image_impl.o: src/engine/vendor/stb_image/stb_image_impl.c.o
+.PHONY : src/engine/vendor/stb_image/stb_image_impl.o
+
+# target to build an object file
+src/engine/vendor/stb_image/stb_image_impl.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/vendor/stb_image/stb_image_impl.c.o
+.PHONY : src/engine/vendor/stb_image/stb_image_impl.c.o
+
+src/engine/vendor/stb_image/stb_image_impl.i: src/engine/vendor/stb_image/stb_image_impl.c.i
+.PHONY : src/engine/vendor/stb_image/stb_image_impl.i
+
+# target to preprocess a source file
+src/engine/vendor/stb_image/stb_image_impl.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/vendor/stb_image/stb_image_impl.c.i
+.PHONY : src/engine/vendor/stb_image/stb_image_impl.c.i
+
+src/engine/vendor/stb_image/stb_image_impl.s: src/engine/vendor/stb_image/stb_image_impl.c.s
+.PHONY : src/engine/vendor/stb_image/stb_image_impl.s
+
+# target to generate assembly for a file
+src/engine/vendor/stb_image/stb_image_impl.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/vendor/stb_image/stb_image_impl.c.s
+.PHONY : src/engine/vendor/stb_image/stb_image_impl.c.s
 
 src/game/blockgame/api.o: src/game/blockgame/api.c.o
 .PHONY : src/game/blockgame/api.o
@@ -19729,29 +20220,63 @@ help:
 	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.i"
 	@echo "... src/engine/assets/system/asset_system/loading/asset_loader.s"
 	@echo "... src/engine/backend/metal/metal_mesh_bridge.o"
+	@echo "... src/engine/backend/metal/metal_mesh_bridge_2.o"
 	@echo "... src/engine/backend/metal/mtl_argument_buffer.o"
+	@echo "... src/engine/backend/metal/mtl_argument_buffer_2.o"
 	@echo "... src/engine/backend/metal/mtl_buffer.o"
+	@echo "... src/engine/backend/metal/mtl_buffer_2.o"
 	@echo "... src/engine/backend/metal/mtl_command.o"
+	@echo "... src/engine/backend/metal/mtl_command_2.o"
 	@echo "... src/engine/backend/metal/mtl_command_buffer.o"
+	@echo "... src/engine/backend/metal/mtl_command_buffer_2.o"
 	@echo "... src/engine/backend/metal/mtl_command_graph.o"
+	@echo "... src/engine/backend/metal/mtl_command_graph_2.o"
 	@echo "... src/engine/backend/metal/mtl_device.o"
+	@echo "... src/engine/backend/metal/mtl_device_2.o"
 	@echo "... src/engine/backend/metal/mtl_device_caps.o"
+	@echo "... src/engine/backend/metal/mtl_device_caps_2.o"
 	@echo "... src/engine/backend/metal/mtl_encoder.o"
+	@echo "... src/engine/backend/metal/mtl_encoder_2.o"
 	@echo "... src/engine/backend/metal/mtl_frame_sync.o"
+	@echo "... src/engine/backend/metal/mtl_frame_sync_2.o"
 	@echo "... src/engine/backend/metal/mtl_hazard_tracking.o"
+	@echo "... src/engine/backend/metal/mtl_hazard_tracking_2.o"
 	@echo "... src/engine/backend/metal/mtl_indirect_command.o"
+	@echo "... src/engine/backend/metal/mtl_indirect_command_2.o"
 	@echo "... src/engine/backend/metal/mtl_memory_heap.o"
+	@echo "... src/engine/backend/metal/mtl_memory_heap_2.o"
 	@echo "... src/engine/backend/metal/mtl_parallel_encoder.o"
+	@echo "... src/engine/backend/metal/mtl_parallel_encoder_2.o"
 	@echo "... src/engine/backend/metal/mtl_render_pass.o"
+	@echo "... src/engine/backend/metal/mtl_render_pass_2.o"
 	@echo "... src/engine/backend/metal/mtl_resource_pool.o"
+	@echo "... src/engine/backend/metal/mtl_resource_pool_2.o"
 	@echo "... src/engine/backend/metal/mtl_sampler.o"
 	@echo "... src/engine/backend/metal/mtl_statistics.o"
+	@echo "... src/engine/backend/metal/mtl_statistics_2.o"
 	@echo "... src/engine/backend/metal/mtl_swapchain.o"
+	@echo "... src/engine/backend/metal/mtl_swapchain_2.o"
 	@echo "... src/engine/backend/metal/mtl_sync_example.o"
 	@echo "... src/engine/backend/metal/mtl_sync_manager.o"
+	@echo "... src/engine/backend/metal/mtl_sync_manager_2.o"
 	@echo "... src/engine/backend/metal/mtl_sync_primitives.o"
 	@echo "... src/engine/backend/metal/mtl_texture.o"
+	@echo "... src/engine/backend/metal/mtl_texture_2.o"
 	@echo "... src/engine/backend/metal/mtl_transfer.o"
+	@echo "... src/engine/backend/metal/mtl_transfer_2.o"
+	@echo "... src/engine/backend/metal/old/metal_backend.o"
+	@echo "... src/engine/backend/metal/old/metal_backend.i"
+	@echo "... src/engine/backend/metal/old/metal_backend.s"
+	@echo "... src/engine/backend/metal/old/metal_backend_2.o"
+	@echo "... src/engine/backend/metal/old/metal_backend_2.i"
+	@echo "... src/engine/backend/metal/old/metal_backend_2.s"
+	@echo "... src/engine/backend/metal/simple_metal_test.o"
+	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.o"
+	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.i"
+	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.s"
+	@echo "... src/engine/backend/metal/tests/mtl_voxel_test.o"
+	@echo "... src/engine/backend/metal/tests/mtl_voxel_test.i"
+	@echo "... src/engine/backend/metal/tests/mtl_voxel_test.s"
 	@echo "... src/engine/backend/opengl_backend.o"
 	@echo "... src/engine/backend/opengl_backend.i"
 	@echo "... src/engine/backend/opengl_backend.s"
@@ -19776,24 +20301,15 @@ help:
 	@echo "... src/engine/core/config.o"
 	@echo "... src/engine/core/config.i"
 	@echo "... src/engine/core/config.s"
-	@echo "... src/engine/core/engine.o"
-	@echo "... src/engine/core/engine.i"
-	@echo "... src/engine/core/engine.s"
+	@echo "... src/engine/core/hot_reload.o"
+	@echo "... src/engine/core/hot_reload.i"
+	@echo "... src/engine/core/hot_reload.s"
 	@echo "... src/engine/core/legacy/hot_reload.o"
 	@echo "... src/engine/core/legacy/hot_reload.i"
 	@echo "... src/engine/core/legacy/hot_reload.s"
-	@echo "... src/engine/core/legacy/logger.o"
-	@echo "... src/engine/core/legacy/logger.i"
-	@echo "... src/engine/core/legacy/logger.s"
 	@echo "... src/engine/core/legacy/memory_allocator.o"
 	@echo "... src/engine/core/legacy/memory_allocator.i"
 	@echo "... src/engine/core/legacy/memory_allocator.s"
-	@echo "... src/engine/core/memory/unified_allocator.o"
-	@echo "... src/engine/core/memory/unified_allocator.i"
-	@echo "... src/engine/core/memory/unified_allocator.s"
-	@echo "... src/engine/core/misc_stubs.o"
-	@echo "... src/engine/core/misc_stubs.i"
-	@echo "... src/engine/core/misc_stubs.s"
 	@echo "... src/engine/core/monolithic_main.o"
 	@echo "... src/engine/core/monolithic_main.i"
 	@echo "... src/engine/core/monolithic_main.s"
@@ -19803,12 +20319,6 @@ help:
 	@echo "... src/engine/core/profiling/profiler.o"
 	@echo "... src/engine/core/profiling/profiler.i"
 	@echo "... src/engine/core/profiling/profiler.s"
-	@echo "... src/engine/core/resource/vfs.o"
-	@echo "... src/engine/core/resource/vfs.i"
-	@echo "... src/engine/core/resource/vfs.s"
-	@echo "... src/engine/core/resource/vfs_async.o"
-	@echo "... src/engine/core/resource/vfs_async.i"
-	@echo "... src/engine/core/resource/vfs_async.s"
 	@echo "... src/engine/core/simd/simd_math_neon.o"
 	@echo "... src/engine/core/simd/simd_math_neon.i"
 	@echo "... src/engine/core/simd/simd_math_neon.s"
@@ -19818,12 +20328,12 @@ help:
 	@echo "... src/engine/core/swift_bridge_wrapper.o"
 	@echo "... src/engine/core/swift_bridge_wrapper.i"
 	@echo "... src/engine/core/swift_bridge_wrapper.s"
-	@echo "... src/engine/core/sync/thread_pool.o"
-	@echo "... src/engine/core/sync/thread_pool.i"
-	@echo "... src/engine/core/sync/thread_pool.s"
 	@echo "... src/engine/core/thread_pool.o"
 	@echo "... src/engine/core/thread_pool.i"
 	@echo "... src/engine/core/thread_pool.s"
+	@echo "... src/engine/core/threading/job.o"
+	@echo "... src/engine/core/threading/job.i"
+	@echo "... src/engine/core/threading/job.s"
 	@echo "... src/engine/core/utils.o"
 	@echo "... src/engine/core/utils.i"
 	@echo "... src/engine/core/utils.s"
@@ -19863,6 +20373,12 @@ help:
 	@echo "... src/engine/effects/destruction/fracture_system.o"
 	@echo "... src/engine/effects/destruction/fracture_system.i"
 	@echo "... src/engine/effects/destruction/fracture_system.s"
+	@echo "... src/engine/effects/gpu_particles/spawn_compute.o"
+	@echo "... src/engine/effects/gpu_particles/spawn_compute.i"
+	@echo "... src/engine/effects/gpu_particles/spawn_compute.s"
+	@echo "... src/engine/effects/gpu_particles/update_compute.o"
+	@echo "... src/engine/effects/gpu_particles/update_compute.i"
+	@echo "... src/engine/effects/gpu_particles/update_compute.s"
 	@echo "... src/engine/effects/svg_particles/svg_particle_renderer.o"
 	@echo "... src/engine/effects/svg_particles/svg_particle_renderer.i"
 	@echo "... src/engine/effects/svg_particles/svg_particle_renderer.s"
@@ -19977,6 +20493,9 @@ help:
 	@echo "... src/engine/environment/landscape/grass/landscape_grass/grass_lod.o"
 	@echo "... src/engine/environment/landscape/grass/landscape_grass/grass_lod.i"
 	@echo "... src/engine/environment/landscape/grass/landscape_grass/grass_lod.s"
+	@echo "... src/engine/environment/landscape/landscape_spline.o"
+	@echo "... src/engine/environment/landscape/landscape_spline.i"
+	@echo "... src/engine/environment/landscape/landscape_spline.s"
 	@echo "... src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_blending.o"
 	@echo "... src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_blending.i"
 	@echo "... src/engine/environment/landscape/terrain/landscape/heightmaps/heightmap_blending.s"
@@ -20154,6 +20673,9 @@ help:
 	@echo "... src/engine/environment/vegetation/vegetation_interaction.o"
 	@echo "... src/engine/environment/vegetation/vegetation_interaction.i"
 	@echo "... src/engine/environment/vegetation/vegetation_interaction.s"
+	@echo "... src/engine/environment/weather/weather_stub.o"
+	@echo "... src/engine/environment/weather/weather_stub.i"
+	@echo "... src/engine/environment/weather/weather_stub.s"
 	@echo "... src/engine/environment/weather_stub.o"
 	@echo "... src/engine/environment/weather_stub.i"
 	@echo "... src/engine/environment/weather_stub.s"
@@ -20654,6 +21176,9 @@ help:
 	@echo "... src/engine/lighting/sources/rect_light.o"
 	@echo "... src/engine/lighting/sources/rect_light.i"
 	@echo "... src/engine/lighting/sources/rect_light.s"
+	@echo "... src/engine/lighting/sources/sky_light.o"
+	@echo "... src/engine/lighting/sources/sky_light.i"
+	@echo "... src/engine/lighting/sources/sky_light.s"
 	@echo "... src/engine/lighting/sources/sphere_light.o"
 	@echo "... src/engine/lighting/sources/sphere_light.i"
 	@echo "... src/engine/lighting/sources/sphere_light.s"
@@ -20726,6 +21251,9 @@ help:
 	@echo "... src/engine/math/quat.o"
 	@echo "... src/engine/math/quat.i"
 	@echo "... src/engine/math/quat.s"
+	@echo "... src/engine/network/bandwidth/bandwidth_throttler.o"
+	@echo "... src/engine/network/bandwidth/bandwidth_throttler.i"
+	@echo "... src/engine/network/bandwidth/bandwidth_throttler.s"
 	@echo "... src/engine/network/bandwidth_throttler.o"
 	@echo "... src/engine/network/bandwidth_throttler.i"
 	@echo "... src/engine/network/bandwidth_throttler.s"
@@ -20777,6 +21305,9 @@ help:
 	@echo "... src/engine/network/multiplayer/core_batch_impl.o"
 	@echo "... src/engine/network/multiplayer/core_batch_impl.i"
 	@echo "... src/engine/network/multiplayer/core_batch_impl.s"
+	@echo "... src/engine/network/multiplayer/network_impl.o"
+	@echo "... src/engine/network/multiplayer/network_impl.i"
+	@echo "... src/engine/network/multiplayer/network_impl.s"
 	@echo "... src/engine/network/multiplayer_impl.o"
 	@echo "... src/engine/network/multiplayer_impl.i"
 	@echo "... src/engine/network/multiplayer_impl.s"
@@ -20789,6 +21320,12 @@ help:
 	@echo "... src/engine/network/network_replication.o"
 	@echo "... src/engine/network/network_replication.i"
 	@echo "... src/engine/network/network_replication.s"
+	@echo "... src/engine/network/optimization/interest_management.o"
+	@echo "... src/engine/network/optimization/interest_management.i"
+	@echo "... src/engine/network/optimization/interest_management.s"
+	@echo "... src/engine/network/p2p/nat_punchthrough.o"
+	@echo "... src/engine/network/p2p/nat_punchthrough.i"
+	@echo "... src/engine/network/p2p/nat_punchthrough.s"
 	@echo "... src/engine/network/packet.o"
 	@echo "... src/engine/network/packet.i"
 	@echo "... src/engine/network/packet.s"
@@ -20867,6 +21404,9 @@ help:
 	@echo "... src/engine/network/transport/udp_socket.o"
 	@echo "... src/engine/network/transport/udp_socket.i"
 	@echo "... src/engine/network/transport/udp_socket.s"
+	@echo "... src/engine/networking/bandwidth/bandwidth_throttler.o"
+	@echo "... src/engine/networking/bandwidth/bandwidth_throttler.i"
+	@echo "... src/engine/networking/bandwidth/bandwidth_throttler.s"
 	@echo "... src/engine/networking/bandwidth_throttler.o"
 	@echo "... src/engine/networking/bandwidth_throttler.i"
 	@echo "... src/engine/networking/bandwidth_throttler.s"
@@ -20903,6 +21443,15 @@ help:
 	@echo "... src/engine/networking/nat_punchthrough.o"
 	@echo "... src/engine/networking/nat_punchthrough.i"
 	@echo "... src/engine/networking/nat_punchthrough.s"
+	@echo "... src/engine/networking/network_replication.o"
+	@echo "... src/engine/networking/network_replication.i"
+	@echo "... src/engine/networking/network_replication.s"
+	@echo "... src/engine/networking/optimization/interest_management.o"
+	@echo "... src/engine/networking/optimization/interest_management.i"
+	@echo "... src/engine/networking/optimization/interest_management.s"
+	@echo "... src/engine/networking/p2p/nat_punchthrough.o"
+	@echo "... src/engine/networking/p2p/nat_punchthrough.i"
+	@echo "... src/engine/networking/p2p/nat_punchthrough.s"
 	@echo "... src/engine/networking/replication/delta_compression.o"
 	@echo "... src/engine/networking/replication/delta_compression.i"
 	@echo "... src/engine/networking/replication/delta_compression.s"
@@ -20960,33 +21509,12 @@ help:
 	@echo "... src/engine/physics/demos/physics_demo_framework.o"
 	@echo "... src/engine/physics/demos/physics_demo_framework.i"
 	@echo "... src/engine/physics/demos/physics_demo_framework.s"
-	@echo "... src/engine/platform/input/action_mapper_impl.o"
-	@echo "... src/engine/platform/input/action_mapper_impl.i"
-	@echo "... src/engine/platform/input/action_mapper_impl.s"
-	@echo "... src/engine/platform/input/controls.o"
-	@echo "... src/engine/platform/input/controls.i"
-	@echo "... src/engine/platform/input/controls.s"
-	@echo "... src/engine/platform/input/gamepad.o"
-	@echo "... src/engine/platform/input/gamepad.i"
-	@echo "... src/engine/platform/input/gamepad.s"
-	@echo "... src/engine/platform/input/input.o"
-	@echo "... src/engine/platform/input/input.i"
-	@echo "... src/engine/platform/input/input.s"
-	@echo "... src/engine/platform/input/input_factory.o"
-	@echo "... src/engine/platform/input/input_factory.i"
-	@echo "... src/engine/platform/input/input_factory.s"
-	@echo "... src/engine/platform/input/input_impl.o"
-	@echo "... src/engine/platform/input/input_impl.i"
-	@echo "... src/engine/platform/input/input_impl.s"
-	@echo "... src/engine/platform/input/input_system.o"
-	@echo "... src/engine/platform/input/input_system.i"
-	@echo "... src/engine/platform/input/input_system.s"
-	@echo "... src/engine/platform/input/input_system_impl.o"
-	@echo "... src/engine/platform/input/input_system_impl.i"
-	@echo "... src/engine/platform/input/input_system_impl.s"
 	@echo "... src/engine/platform/time_system.o"
 	@echo "... src/engine/platform/time_system.i"
 	@echo "... src/engine/platform/time_system.s"
+	@echo "... src/engine/platform/window/window.o"
+	@echo "... src/engine/platform/window/window.i"
+	@echo "... src/engine/platform/window/window.s"
 	@echo "... src/engine/postprocess/ambient_occlusion/ao_blur.o"
 	@echo "... src/engine/postprocess/ambient_occlusion/ao_blur.i"
 	@echo "... src/engine/postprocess/ambient_occlusion/ao_blur.s"
@@ -21513,6 +22041,9 @@ help:
 	@echo "... src/engine/shading/library/stylized/cel_shading.o"
 	@echo "... src/engine/shading/library/stylized/cel_shading.i"
 	@echo "... src/engine/shading/library/stylized/cel_shading.s"
+	@echo "... src/engine/shading/library/vfx/particle_shaders.o"
+	@echo "... src/engine/shading/library/vfx/particle_shaders.i"
+	@echo "... src/engine/shading/library/vfx/particle_shaders.s"
 	@echo "... src/engine/shading/special/absorption.o"
 	@echo "... src/engine/shading/special/absorption.i"
 	@echo "... src/engine/shading/special/absorption.s"
@@ -21552,9 +22083,15 @@ help:
 	@echo "... src/engine/tools/analytics.o"
 	@echo "... src/engine/tools/analytics.i"
 	@echo "... src/engine/tools/analytics.s"
+	@echo "... src/engine/tools/analytics/telemetry.o"
+	@echo "... src/engine/tools/analytics/telemetry.i"
+	@echo "... src/engine/tools/analytics/telemetry.s"
 	@echo "... src/engine/tools/analytics_dashboard.o"
 	@echo "... src/engine/tools/analytics_dashboard.i"
 	@echo "... src/engine/tools/analytics_dashboard.s"
+	@echo "... src/engine/tools/analytics_dashboard_2.o"
+	@echo "... src/engine/tools/analytics_dashboard_2.i"
+	@echo "... src/engine/tools/analytics_dashboard_2.s"
 	@echo "... src/engine/tools/asset_browser/asset_view.o"
 	@echo "... src/engine/tools/asset_browser/asset_view.i"
 	@echo "... src/engine/tools/asset_browser/asset_view.s"
@@ -21573,6 +22110,9 @@ help:
 	@echo "... src/engine/tools/asset_editor/3d/model_editor.o"
 	@echo "... src/engine/tools/asset_editor/3d/model_editor.i"
 	@echo "... src/engine/tools/asset_editor/3d/model_editor.s"
+	@echo "... src/engine/tools/asset_editor/asset_editor.o"
+	@echo "... src/engine/tools/asset_editor/asset_editor.i"
+	@echo "... src/engine/tools/asset_editor/asset_editor.s"
 	@echo "... src/engine/tools/asset_editor/management/import_export.o"
 	@echo "... src/engine/tools/asset_editor/management/import_export.i"
 	@echo "... src/engine/tools/asset_editor/management/import_export.s"
@@ -21591,6 +22131,9 @@ help:
 	@echo "... src/engine/tools/console/command_processor.o"
 	@echo "... src/engine/tools/console/command_processor.i"
 	@echo "... src/engine/tools/console/command_processor.s"
+	@echo "... src/engine/tools/console/console.o"
+	@echo "... src/engine/tools/console/console.i"
+	@echo "... src/engine/tools/console/console.s"
 	@echo "... src/engine/tools/debug/bug_reporter.o"
 	@echo "... src/engine/tools/debug/bug_reporter.i"
 	@echo "... src/engine/tools/debug/bug_reporter.s"
@@ -21606,6 +22149,9 @@ help:
 	@echo "... src/engine/tools/hot_reload.o"
 	@echo "... src/engine/tools/hot_reload.i"
 	@echo "... src/engine/tools/hot_reload.s"
+	@echo "... src/engine/tools/hot_reload/hot_reload_impl.o"
+	@echo "... src/engine/tools/hot_reload/hot_reload_impl.i"
+	@echo "... src/engine/tools/hot_reload/hot_reload_impl.s"
 	@echo "... src/engine/tools/hot_reload_impl.o"
 	@echo "... src/engine/tools/hot_reload_impl.i"
 	@echo "... src/engine/tools/hot_reload_impl.s"
@@ -21723,6 +22269,9 @@ help:
 	@echo "... src/engine/ui/widgets/widget.o"
 	@echo "... src/engine/ui/widgets/widget.i"
 	@echo "... src/engine/ui/widgets/widget.s"
+	@echo "... src/engine/vendor/cgltf/cgltf_impl.o"
+	@echo "... src/engine/vendor/cgltf/cgltf_impl.i"
+	@echo "... src/engine/vendor/cgltf/cgltf_impl.s"
 	@echo "... src/engine/vendor/lua/lapi.o"
 	@echo "... src/engine/vendor/lua/lapi.i"
 	@echo "... src/engine/vendor/lua/lapi.s"
@@ -21819,6 +22368,9 @@ help:
 	@echo "... src/engine/vendor/lua/lzio.o"
 	@echo "... src/engine/vendor/lua/lzio.i"
 	@echo "... src/engine/vendor/lua/lzio.s"
+	@echo "... src/engine/vendor/stb_image/stb_image_impl.o"
+	@echo "... src/engine/vendor/stb_image/stb_image_impl.i"
+	@echo "... src/engine/vendor/stb_image/stb_image_impl.s"
 	@echo "... src/game/blockgame/api.o"
 	@echo "... src/game/blockgame/api.i"
 	@echo "... src/game/blockgame/api.s"

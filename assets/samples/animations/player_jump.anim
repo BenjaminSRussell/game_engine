@@ -1,0 +1,130 @@
+{
+  "animation": {
+    "name": "player_jump",
+    "version": "1.0",
+    "type": "skeletal",
+    "duration": 0.8,
+    "framerate": 30,
+    "looping": false,
+    "skeleton": "characters/player_skeleton",
+    
+    "tracks": [
+      {
+        "bone": "root",
+        "transform_type": "translation",
+        "interpolation": "cubic",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0] },
+          { "time": 0.1, "value": [0.0, -0.05, 0.0] },
+          { "time": 0.2, "value": [0.0, 0.0, 0.0] },
+          { "time": 0.4, "value": [0.0, 0.5, 0.0] },
+          { "time": 0.6, "value": [0.0, 0.3, 0.0] },
+          { "time": 0.8, "value": [0.0, 0.0, 0.0] }
+        ]
+      },
+      {
+        "bone": "leg_upper_l",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.1, "value": [0.3, 0.0, 0.0, 0.954] },
+          { "time": 0.2, "value": [-0.2, 0.0, 0.0, 0.98] },
+          { "time": 0.5, "value": [-0.1, 0.0, 0.0, 0.995] },
+          { "time": 0.8, "value": [0.0, 0.0, 0.0, 1.0] }
+        ]
+      },
+      {
+        "bone": "leg_upper_r",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.1, "value": [0.3, 0.0, 0.0, 0.954] },
+          { "time": 0.2, "value": [-0.2, 0.0, 0.0, 0.98] },
+          { "time": 0.5, "value": [-0.1, 0.0, 0.0, 0.995] },
+          { "time": 0.8, "value": [0.0, 0.0, 0.0, 1.0] }
+        ]
+      },
+      {
+        "bone": "leg_lower_l",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.1, "value": [0.5, 0.0, 0.0, 0.866] },
+          { "time": 0.2, "value": [0.3, 0.0, 0.0, 0.954] },
+          { "time": 0.5, "value": [0.4, 0.0, 0.0, 0.916] },
+          { "time": 0.7, "value": [0.3, 0.0, 0.0, 0.954] },
+          { "time": 0.8, "value": [0.0, 0.0, 0.0, 1.0] }
+        ]
+      },
+      {
+        "bone": "leg_lower_r",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.1, "value": [0.5, 0.0, 0.0, 0.866] },
+          { "time": 0.2, "value": [0.3, 0.0, 0.0, 0.954] },
+          { "time": 0.5, "value": [0.4, 0.0, 0.0, 0.916] },
+          { "time": 0.7, "value": [0.3, 0.0, 0.0, 0.954] },
+          { "time": 0.8, "value": [0.0, 0.0, 0.0, 1.0] }
+        ]
+      },
+      {
+        "bone": "arm_upper_l",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.1, 0.995] },
+          { "time": 0.2, "value": [-0.5, 0.0, 0.2, 0.831] },
+          { "time": 0.5, "value": [-0.3, 0.0, 0.15, 0.937] },
+          { "time": 0.8, "value": [0.0, 0.0, 0.1, 0.995] }
+        ]
+      },
+      {
+        "bone": "arm_upper_r",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, -0.1, 0.995] },
+          { "time": 0.2, "value": [-0.5, 0.0, -0.2, 0.831] },
+          { "time": 0.5, "value": [-0.3, 0.0, -0.15, 0.937] },
+          { "time": 0.8, "value": [0.0, 0.0, -0.1, 0.995] }
+        ]
+      },
+      {
+        "bone": "spine_01",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.1, "value": [0.05, 0.0, 0.0, 0.999] },
+          { "time": 0.2, "value": [-0.1, 0.0, 0.0, 0.995] },
+          { "time": 0.5, "value": [-0.05, 0.0, 0.0, 0.999] },
+          { "time": 0.8, "value": [0.0, 0.0, 0.0, 1.0] }
+        ]
+      }
+    ],
+    
+    "events": [
+      { "time": 0.0, "name": "jump_start", "data": {} },
+      { "time": 0.2, "name": "jump_apex_enter", "data": {} },
+      { "time": 0.6, "name": "jump_apex_exit", "data": {} },
+      { "time": 0.8, "name": "land", "data": { "force": 1.0 } }
+    ],
+    
+    "blend_settings": {
+      "in_time": 0.05,
+      "out_time": 0.1,
+      "additive": false
+    },
+    
+    "root_motion": {
+      "enabled": false,
+      "speed_multiplier": 1.0,
+      "extract_rotation": false
+    }
+  }
+}

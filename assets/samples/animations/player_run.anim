@@ -1,0 +1,141 @@
+{
+  "animation": {
+    "name": "player_run",
+    "version": "1.0",
+    "type": "skeletal",
+    "duration": 0.6,
+    "framerate": 30,
+    "looping": true,
+    "skeleton": "characters/player_skeleton",
+    
+    "tracks": [
+      {
+        "bone": "root",
+        "transform_type": "translation",
+        "interpolation": "cubic",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0] },
+          { "time": 0.15, "value": [0.0, 0.12, 0.0] },
+          { "time": 0.3, "value": [0.0, 0.0, 0.0] },
+          { "time": 0.45, "value": [0.0, 0.12, 0.0] },
+          { "time": 0.6, "value": [0.0, 0.0, 0.0] }
+        ]
+      },
+      {
+        "bone": "leg_upper_l",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.5, 0.0, 0.0, 0.866] },
+          { "time": 0.15, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.3, "value": [-0.5, 0.0, 0.0, 0.866] },
+          { "time": 0.45, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.6, "value": [0.5, 0.0, 0.0, 0.866] }
+        ]
+      },
+      {
+        "bone": "leg_upper_r",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [-0.5, 0.0, 0.0, 0.866] },
+          { "time": 0.15, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.3, "value": [0.5, 0.0, 0.0, 0.866] },
+          { "time": 0.45, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.6, "value": [-0.5, 0.0, 0.0, 0.866] }
+        ]
+      },
+      {
+        "bone": "leg_lower_l",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.15, "value": [0.4, 0.0, 0.0, 0.916] },
+          { "time": 0.3, "value": [0.7, 0.0, 0.0, 0.714] },
+          { "time": 0.45, "value": [0.3, 0.0, 0.0, 0.954] },
+          { "time": 0.6, "value": [0.0, 0.0, 0.0, 1.0] }
+        ]
+      },
+      {
+        "bone": "leg_lower_r",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.7, 0.0, 0.0, 0.714] },
+          { "time": 0.15, "value": [0.3, 0.0, 0.0, 0.954] },
+          { "time": 0.3, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.45, "value": [0.4, 0.0, 0.0, 0.916] },
+          { "time": 0.6, "value": [0.7, 0.0, 0.0, 0.714] }
+        ]
+      },
+      {
+        "bone": "arm_upper_l",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [-0.4, 0.0, 0.0, 0.916] },
+          { "time": 0.3, "value": [0.4, 0.0, 0.0, 0.916] },
+          { "time": 0.6, "value": [-0.4, 0.0, 0.0, 0.916] }
+        ]
+      },
+      {
+        "bone": "arm_upper_r",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.4, 0.0, 0.0, 0.916] },
+          { "time": 0.3, "value": [-0.4, 0.0, 0.0, 0.916] },
+          { "time": 0.6, "value": [0.4, 0.0, 0.0, 0.916] }
+        ]
+      },
+      {
+        "bone": "arm_lower_l",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.5, 0.0, 0.0, 0.866] },
+          { "time": 0.3, "value": [0.3, 0.0, 0.0, 0.954] },
+          { "time": 0.6, "value": [0.5, 0.0, 0.0, 0.866] }
+        ]
+      },
+      {
+        "bone": "arm_lower_r",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.3, 0.0, 0.0, 0.954] },
+          { "time": 0.3, "value": [0.5, 0.0, 0.0, 0.866] },
+          { "time": 0.6, "value": [0.3, 0.0, 0.0, 0.954] }
+        ]
+      },
+      {
+        "bone": "spine_01",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.05, 0.03, 0.0, 0.998] },
+          { "time": 0.3, "value": [0.05, -0.03, 0.0, 0.998] },
+          { "time": 0.6, "value": [0.05, 0.03, 0.0, 0.998] }
+        ]
+      }
+    ],
+    
+    "events": [
+      { "time": 0.0, "name": "footstep", "data": { "foot": "left", "intensity": 1.2 } },
+      { "time": 0.3, "name": "footstep", "data": { "foot": "right", "intensity": 1.2 } }
+    ],
+    
+    "blend_settings": {
+      "in_time": 0.1,
+      "out_time": 0.1,
+      "additive": false
+    },
+    
+    "root_motion": {
+      "enabled": true,
+      "speed_multiplier": 2.5,
+      "extract_rotation": false
+    }
+  }
+}

@@ -1,0 +1,488 @@
+{
+    "scene": {
+        "name": "sample_village",
+        "version": "1.0",
+        "description": "A small sample village scene for engine pipeline testing",
+        "settings": {
+            "ambient_light": [
+                0.3,
+                0.35,
+                0.4
+            ],
+            "fog_enabled": true,
+            "fog_color": [
+                0.7,
+                0.8,
+                0.9
+            ],
+            "fog_density": 0.005,
+            "fog_start": 50.0,
+            "fog_end": 200.0,
+            "skybox": "samples/skyboxes/day_clear.hdr",
+            "gravity": [
+                0.0,
+                -9.81,
+                0.0
+            ]
+        },
+        "sun": {
+            "direction": [
+                -0.5,
+                -0.8,
+                -0.3
+            ],
+            "color": [
+                1.0,
+                0.95,
+                0.85
+            ],
+            "intensity": 1.2,
+            "cast_shadows": true,
+            "shadow_distance": 100.0,
+            "shadow_cascades": 4
+        },
+        "entities": [
+            {
+                "id": "terrain",
+                "name": "Village Terrain",
+                "type": "terrain",
+                "transform": {
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "components": {
+                    "terrain": {
+                        "heightmap": "samples/levels/terrain/village_heightmap.png",
+                        "size": [
+                            256,
+                            32,
+                            256
+                        ],
+                        "material": "samples/materials/terrain_grass.mat"
+                    }
+                }
+            },
+            {
+                "id": "player_spawn",
+                "name": "Player Spawn Point",
+                "type": "spawn_point",
+                "transform": {
+                    "position": [
+                        0.0,
+                        5.0,
+                        0.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "components": {
+                    "spawn_point": {
+                        "team": "player",
+                        "priority": 1
+                    }
+                }
+            },
+            {
+                "id": "house_01",
+                "name": "Village House 1",
+                "type": "static_mesh",
+                "transform": {
+                    "position": [
+                        15.0,
+                        0.0,
+                        10.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.38,
+                        0.0,
+                        0.92
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "components": {
+                    "mesh": {
+                        "model": "models/environment/basic_house.obj",
+                        "materials": [
+                            "materials/M_Grass.mat"
+                        ]
+                    },
+                    "collider": {
+                        "type": "mesh",
+                        "convex": false
+                    }
+                }
+            },
+            {
+                "id": "house_02",
+                "name": "Village House 2",
+                "type": "static_mesh",
+                "transform": {
+                    "position": [
+                        -20.0,
+                        0.0,
+                        5.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        -0.2,
+                        0.0,
+                        0.98
+                    ],
+                    "scale": [
+                        1.2,
+                        1.0,
+                        1.2
+                    ]
+                },
+                "components": {
+                    "mesh": {
+                        "model": "models/environment/basic_house.obj",
+                        "materials": [
+                            "materials/M_Grass.mat"
+                        ]
+                    },
+                    "collider": {
+                        "type": "mesh",
+                        "convex": false
+                    }
+                }
+            },
+            {
+                "id": "tree_01",
+                "name": "Oak Tree 1",
+                "type": "static_mesh",
+                "transform": {
+                    "position": [
+                        8.0,
+                        0.0,
+                        -5.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "components": {
+                    "mesh": {
+                        "model": "models/environment/oak_tree.obj",
+                        "materials": [
+                            "materials/M_Grass.mat"
+                        ]
+                    },
+                    "collider": {
+                        "type": "capsule",
+                        "radius": 0.5,
+                        "height": 2.0
+                    }
+                }
+            },
+            {
+                "id": "tree_02",
+                "name": "Oak Tree 2",
+                "type": "static_mesh",
+                "transform": {
+                    "position": [
+                        -12.0,
+                        0.0,
+                        15.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.7,
+                        0.0,
+                        0.71
+                    ],
+                    "scale": [
+                        1.2,
+                        1.3,
+                        1.2
+                    ]
+                },
+                "components": {
+                    "mesh": {
+                        "model": "models/environment/oak_tree.obj",
+                        "materials": [
+                            "materials/M_Grass.mat"
+                        ]
+                    },
+                    "collider": {
+                        "type": "capsule",
+                        "radius": 0.6,
+                        "height": 2.5
+                    }
+                }
+            },
+            {
+                "id": "tree_03",
+                "name": "Oak Tree 3",
+                "type": "static_mesh",
+                "transform": {
+                    "position": [
+                        25.0,
+                        0.0,
+                        -10.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.3,
+                        0.0,
+                        0.95
+                    ],
+                    "scale": [
+                        0.9,
+                        0.9,
+                        0.9
+                    ]
+                },
+                "components": {
+                    "mesh": {
+                        "model": "models/environment/oak_tree.obj",
+                        "materials": [
+                            "materials/M_Grass.mat"
+                        ]
+                    }
+                }
+            },
+            {
+                "id": "npc_villager_01",
+                "name": "Sample Villager",
+                "type": "character",
+                "transform": {
+                    "position": [
+                        5.0,
+                        0.0,
+                        8.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "components": {
+                    "mesh": {
+                        "model": "assets/models/characters/villager.gltf",
+                        "materials": []
+                    },
+                    "animator": {
+                        "controller": "samples/animations/villager_controller.anim_tree",
+                        "default_animation": "idle"
+                    },
+                    "ai": {
+                        "behavior_tree": "ai/villager_wander.bt",
+                        "wander_radius": 10.0
+                    },
+                    "collider": {
+                        "type": "capsule",
+                        "radius": 0.4,
+                        "height": 1.8
+                    }
+                }
+            },
+            {
+                "id": "point_light_01",
+                "name": "Torch Light 1",
+                "type": "light",
+                "transform": {
+                    "position": [
+                        16.0,
+                        3.0,
+                        9.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "components": {
+                    "light": {
+                        "type": "point",
+                        "color": [
+                            1.0,
+                            0.8,
+                            0.4
+                        ],
+                        "intensity": 10.0,
+                        "range": 15.0,
+                        "cast_shadows": true,
+                        "shadow_resolution": 512
+                    }
+                }
+            },
+            {
+                "id": "point_light_02",
+                "name": "Torch Light 2",
+                "type": "light",
+                "transform": {
+                    "position": [
+                        -19.0,
+                        3.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "components": {
+                    "light": {
+                        "type": "point",
+                        "color": [
+                            1.0,
+                            0.8,
+                            0.4
+                        ],
+                        "intensity": 10.0,
+                        "range": 15.0,
+                        "cast_shadows": true,
+                        "shadow_resolution": 512
+                    }
+                }
+            },
+            {
+                "id": "ambient_sound",
+                "name": "Ambient Wind",
+                "type": "audio_source",
+                "transform": {
+                    "position": [
+                        0.0,
+                        10.0,
+                        0.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "components": {
+                    "audio": {
+                        "clip": "sounds/ambient/wind_light.wav",
+                        "volume": 0.3,
+                        "loop": true,
+                        "spatial": false,
+                        "play_on_start": true
+                    }
+                }
+            },
+            {
+                "id": "particle_leaves",
+                "name": "Falling Leaves",
+                "type": "particle_system",
+                "transform": {
+                    "position": [
+                        0.0,
+                        20.0,
+                        0.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "components": {
+                    "particle_system": {
+                        "preset": "samples/particles/falling_leaves.particle",
+                        "play_on_start": true
+                    }
+                }
+            }
+        ],
+        "triggers": [
+            {
+                "id": "village_enter",
+                "name": "Village Entry Trigger",
+                "shape": "box",
+                "position": [
+                    0.0,
+                    2.0,
+                    -30.0
+                ],
+                "size": [
+                    20.0,
+                    4.0,
+                    5.0
+                ],
+                "events": {
+                    "on_enter": "show_village_welcome",
+                    "on_exit": null
+                }
+            }
+        ],
+        "navigation": {
+            "navmesh": "samples/levels/terrain/village_navmesh.nav",
+            "agent_radius": 0.5,
+            "agent_height": 1.8,
+            "max_slope": 45.0,
+            "step_height": 0.4
+        }
+    }
+}

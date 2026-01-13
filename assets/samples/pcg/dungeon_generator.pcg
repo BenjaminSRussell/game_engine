@@ -1,0 +1,126 @@
+{
+  "pcg_graph": {
+    "name": "dungeon_generator",
+    "version": "1.0",
+    "description": "Procedural dungeon generation graph",
+    
+    "parameters": {
+      "seed": 12345,
+      "num_rooms": { "min": 8, "max": 15 },
+      "room_size": { "min": 5, "max": 12 },
+      "corridor_width": 2,
+      "treasure_room_chance": 0.15,
+      "enemy_spawn_density": 0.3
+    },
+    
+    "nodes": [
+      {
+        "id": "grid_layout",
+        "type": "grid_generator",
+        "params": {
+          "grid_size": [50, 50],
+          "cell_size": 1.0
+        },
+        "outputs": ["grid"]
+      },
+      {
+        "id": "room_placement",
+        "type": "room_placer",
+        "inputs": ["grid"],
+        "params": {
+          "placement_method": "random_non_overlapping",
+          "min_spacing": 2
+        },
+        "outputs": ["rooms", "grid_updated"]
+      },
+      {
+        "id": "corridor_generator",
+        "type": "corridor_builder",
+        "inputs": ["rooms", "grid_updated"],
+        "params": {
+          "pathfinding": "manhattan",
+          "allow_diagonal": false
+        },
+        "outputs": ["corridors", "grid_final"]
+      },
+      {
+        "id": "wall_generator",
+        "type": "wall_builder",
+        "inputs": ["grid_final"],
+        "params": {
+          "wall_thickness": 1,
+          "wall_height": 3.0
+        },
+        "outputs": ["walls"]
+      },
+      {
+        "id": "door_placement",
+        "type": "door_placer",
+        "inputs": ["rooms", "corridors"],
+        "params": {
+          "door_prefab": "prefabs/doors/wooden_door.prefab"
+        },
+        "outputs": ["doors"]
+      },
+      {
+        "id": "treasure_placement",
+        "type": "treasure_spawner",
+        "inputs": ["rooms"],
+        "params": {
+          "treasure_types": [
+            { "prefab": "prefabs/items/chest_common.prefab", "weight": 0.6 },
+            { "prefab": "prefabs/items/chest_rare.prefab", "weight": 0.3 },
+            { "prefab": "prefabs/items/chest_epic.prefab", "weight": 0.1 }
+          ]
+        },
+        "outputs": ["treasures"]
+      },
+      {
+        "id": "enemy_spawner",
+        "type": "enemy_spawner",
+        "inputs": ["rooms", "corridors"],
+        "params": {
+          "enemy_types": [
+            { "prefab": "prefabs/enemies/zombie.prefab", "weight": 0.5 },
+            { "prefab": "prefabs/enemies/skeleton.prefab", "weight": 0.3 },
+            { "prefab": "prefabs/enemies/creeper.prefab", "weight": 0.2 }
+          ],
+          "avoid_start_room": true
+        },
+        "outputs": ["enemies"]
+      },
+      {
+        "id": "lighting_placer",
+        "type": "light_placer",
+        "inputs": ["rooms", "corridors"],
+        "params": {
+          "light_prefab": "prefabs/lights/torch.prefab",
+          "spacing": 5.0,
+          "wall_offset": 0.5
+        },
+        "outputs": ["lights"]
+      },
+      {
+        "id": "mesh_combiner",
+        "type": "mesh_combiner",
+        "inputs": ["walls", "grid_final"],
+        "params": {
+          "optimize": true,
+          "generate_uvs": true
+        },
+        "outputs": ["combined_mesh"]
+      },
+      {
+        "id": "final_assembly",
+        "type": "scene_assembler",
+        "inputs": ["combined_mesh", "doors", "treasures", "enemies", "lights"],
+        "outputs": ["scene"]
+      }
+    ],
+    
+    "output": {
+      "type": "scene",
+      "export_path": "generated/dungeons/dungeon_{seed}.scene"
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "localization": {
+    "language": "en_US",
+    "version": "1.0",
+    "locale_name": "English (US)",
+    
+    "strings": {
+      "ui.main_menu.title": "VOXELFORGE ENGINE",
+      "ui.main_menu.play": "Play Game",
+      "ui.main_menu.options": "Options",
+      "ui.main_menu.credits": "Credits",
+      "ui.main_menu.quit": "Quit to Desktop",
+      
+      "ui.pause_menu.title": "Game Paused",
+      "ui.pause_menu.resume": "Resume",
+      "ui.pause_menu.save": "Save Game",
+      "ui.pause_menu.load": "Load Game",
+      "ui.pause_menu.settings": "Settings",
+      "ui.pause_menu.main_menu": "Main Menu",
+      
+      "quest.village_welcome.title": "Welcome to the Village",
+      "quest.village_welcome.description": "Help the villagers by completing a series of introductory tasks.",
+      "quest.village_welcome.objective.talk_to_elder": "Speak with the Village Elder",
+      "quest.village_welcome.objective.collect_wood": "Collect {0} pieces of wood",
+      "quest.village_welcome.objective.craft_pickaxe": "Craft a wooden pickaxe",
+      "quest.village_welcome.objective.mine_stone": "Mine {0} stone blocks",
+      "quest.village_welcome.objective.defeat_zombies": "Defeat {0} zombies (Optional)",
+      
+      "item.sword_wood.name": "Wooden Sword",
+      "item.sword_wood.description": "A basic weapon carved from wood.",
+      "item.pickaxe_wood.name": "Wooden Pickaxe",
+      "item.pickaxe_wood.description": "A simple tool for mining stone and ores.",
+      "item.bread.name": "Bread",
+      "item.bread.description": "Restores 5 hunger points.",
+      
+      "block.grass.name": "Grass Block",
+      "block.dirt.name": "Dirt",
+      "block.stone.name": "Stone",
+      "block.wood.name": "Oak Wood",
+      
+      "dialogue.elder.greeting": "Welcome to our humble village, traveler.",
+      "dialogue.elder.quest_offer": "We could use someone with your skills. Will you help us?",
+      "dialogue.elder.quest_accept": "Thank you, brave soul!",
+      "dialogue.elder.quest_decline": "I understand. The offer stands if you change your mind.",
+      
+      "notification.quest_started": "Quest Started: {0}",
+      "notification.quest_completed": "Quest Completed: {0}",
+      "notification.quest_failed": "Quest Failed: {0}",
+      "notification.objective_completed": "Objective Completed: {0}",
+      "notification.item_received": "Received: {0} x{1}",
+      "notification.achievement_unlocked": "Achievement Unlocked: {0}",
+      
+      "tooltip.health": "Health: {0}/{1}",
+      "tooltip.hunger": "Hunger: {0}/{1}",
+      "tooltip.experience": "Experience: {0}/{1}",
+      "tooltip.level": "Level {0}",
+      
+      "error.save_failed": "Failed to save game. Please try again.",
+      "error.load_failed": "Failed to load game. Save file may be corrupted.",
+      "error.network_disconnected": "Lost connection to server.",
+      "error.insufficient_resources": "Insufficient resources to craft this item."
+    },
+    
+    "plurals": {
+      "item_count": {
+        "zero": "No items",
+        "one": "1 item",
+        "other": "{0} items"
+      }
+    },
+    
+    "date_format": "MM/DD/YYYY",
+    "time_format": "h:mm A",
+    "number_format": {
+      "decimal_separator": ".",
+      "thousands_separator": ",",
+      "currency_symbol": "$"
+    }
+  }
+}

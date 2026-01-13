@@ -4,11 +4,13 @@
 // Provides hierarchical caching, path prediction, and dynamic optimization
 
 #include <ai/pathfinding/pathfinding_cache_advanced.h>
+#include <core/memory.h>
 #include <core/memory/unified_allocator.h>
 #include <core/logging/unified_logger.h>
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
+#include <float.h>
 
 // ============================================================================
 // CONSTANTS AND CONFIGURATION
@@ -25,6 +27,11 @@
 #endif
 #define ADVANCED_CACHE_MAX_AGE 30.0f  // seconds
 #define ADVANCED_CACHE_PREDICTION_FRAMES 10
+
+// Helper function for clamping values
+static inline f32 clamp(f32 value, f32 min, f32 max) {
+    return value < min ? min : (value > max ? max : value);
+}
 
 // ============================================================================
 // INTERNAL STRUCTURES
@@ -49,6 +56,7 @@ typedef struct AdvancedCachedPath {
     u32 region_start;
     u32 region_goal;
     f32 creation_time;
+    f32 computation_time;
     f32 last_access_time;
     u32 access_count;
     u32 prediction_success_count;
@@ -129,7 +137,7 @@ static u32 find_or_create_region(vec3 position) {
         region->radius = 10.0f;  // Default region radius
         region->path_count = 0;
         region->path_capacity = 32;
-        region->path_indices = allocator_alloc(g_persistent_allocator, region->path_capacity * sizeof(u32), alignof(u32));
+        region->path_indices = allocator_alloc(g_persistent_allocator, region->path_capacity * sizeof(u32));
         region->last_access_time = g_advanced_cache->current_time;
         
         return region_idx;
@@ -156,7 +164,7 @@ static u32 find_or_create_region(vec3 position) {
     region->radius = 10.0f;
     region->path_count = 0;
     region->path_capacity = 32;
-    region->path_indices = allocator_alloc(g_persistent_allocator, region->path_capacity * sizeof(u32), alignof(u32));
+    region->path_indices = allocator_alloc(g_persistent_allocator, region->path_capacity * sizeof(u32));
     region->last_access_time = g_advanced_cache->current_time;
     
     return lru_idx;

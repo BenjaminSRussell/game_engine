@@ -127,10 +127,7 @@ void pathfinding_cache_advanced_set_prediction_threshold(f32 threshold);
     pathfinding_cache_advanced_store(start, goal, waypoints, count, 0.0f)
 
 // Check if advanced cache is available
-static inline bool pathfinding_cache_advanced_is_available(void) {
-    extern void* g_advanced_cache;  // Forward declaration
-    return g_advanced_cache != NULL;
-}
+bool pathfinding_cache_advanced_is_available(void);
 
 #ifdef __cplusplus
 }

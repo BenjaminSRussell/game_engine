@@ -1,0 +1,100 @@
+{
+  "quest": {
+    "id": "quest_village_welcome",
+    "name": "Welcome to the Village",
+    "description": "Help the villagers by completing a series of introductory tasks.",
+    "version": "1.0",
+    
+    "metadata": {
+      "category": "main",
+      "difficulty": "easy",
+      "recommended_level": 1,
+      "rewards_xp": 100,
+      "rewards_gold": 50
+    },
+    
+    "prerequisites": {
+      "quests": [],
+      "level": 1,
+      "items": []
+    },
+    
+    "objectives": [
+      {
+        "id": "talk_to_elder",
+        "type": "talk",
+        "description": "Speak with the Village Elder",
+        "target": "npc_village_elder",
+        "required_count": 1,
+        "optional": false
+      },
+      {
+        "id": "collect_wood",
+        "type": "collect",
+        "description": "Collect 10 pieces of wood",
+        "target": "item_wood",
+        "required_count": 10,
+        "optional": false
+      },
+      {
+        "id": "craft_pickaxe",
+        "type": "craft",
+        "description": "Craft a wooden pickaxe",
+        "target": "item_pickaxe_wood",
+        "required_count": 1,
+        "optional": false
+      },
+      {
+        "id": "mine_stone",
+        "type": "mine",
+        "description": "Mine 20 stone blocks",
+        "target": "block_stone",
+        "required_count": 20,
+        "optional": false
+      },
+      {
+        "id": "defeat_zombies",
+        "type": "kill",
+        "description": "Defeat 5 zombies (Optional)",
+        "target": "mob_zombie",
+        "required_count": 5,
+        "optional": true
+      }
+    ],
+    
+    "rewards": {
+      "experience": 100,
+      "gold": 50,
+      "items": [
+        {
+          "id": "item_sword_iron",
+          "count": 1
+        },
+        {
+          "id": "item_bread",
+          "count": 5
+        }
+      ],
+      "unlocks": [
+        "quest_mining_expedition"
+      ]
+    },
+    
+    "completion": {
+      "require_all_objectives": false,
+      "minimum_objectives": 4,
+      "auto_complete": false,
+      "return_to_npc": "npc_village_elder"
+    },
+    
+    "time_limit": null,
+    "repeatable": false,
+    
+    "dialogue": {
+      "on_accept": "Welcome, traveler! Our village needs your help. Can you assist us?",
+      "on_progress": "You're doing great! Keep up the good work.",
+      "on_complete": "Excellent work! You've helped our village tremendously. Here's your reward.",
+      "on_decline": "I understand. Come back if you change your mind."
+    }
+  }
+}

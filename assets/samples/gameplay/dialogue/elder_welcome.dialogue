@@ -1,0 +1,159 @@
+{
+  "dialogue": {
+    "id": "dialogue_elder_welcome",
+    "version": "1.0",
+    "speaker": "npc_village_elder",
+    "title": "Village Elder",
+    
+    "nodes": [
+      {
+        "id": "start",
+        "type": "text",
+        "speaker_name": "Village Elder",
+        "text": "Welcome to our humble village, traveler. What brings you to these parts?",
+        "animation": "talking_friendly",
+        "audio": "dialogue/elder/welcome_01.wav",
+        "choices": [
+          {
+            "text": "I'm just passing through.",
+            "next_node": "passing_through",
+            "conditions": []
+          },
+          {
+            "text": "I heard you need help.",
+            "next_node": "offer_help",
+            "conditions": []
+          },
+          {
+            "text": "Tell me about the village.",
+            "next_node": "about_village",
+            "conditions": []
+          },
+          {
+            "text": "Goodbye.",
+            "next_node": "end",
+            "conditions": []
+          }
+        ]
+      },
+      {
+        "id": "passing_through",
+        "type": "text",
+        "speaker_name": "Village Elder",
+        "text": "I see. Well, if you change your mind, we could use someone with your skills.",
+        "animation": "talking_neutral",
+        "audio": "dialogue/elder/passing_through.wav",
+        "choices": [
+          {
+            "text": "What kind of help do you need?",
+            "next_node": "offer_help"
+          },
+          {
+            "text": "I'll keep that in mind. Goodbye.",
+            "next_node": "end"
+          }
+        ]
+      },
+      {
+        "id": "offer_help",
+        "type": "text",
+        "speaker_name": "Village Elder",
+        "text": "Ah, wonderful! We've been having trouble with monsters at night. Could you help defend the village?",
+        "animation": "talking_happy",
+        "audio": "dialogue/elder/offer_help.wav",
+        "choices": [
+          {
+            "text": "I'll help you. [Accept Quest]",
+            "next_node": "accept_quest",
+            "conditions": [],
+            "actions": [
+              {
+                "type": "start_quest",
+                "quest_id": "quest_village_defense"
+              }
+            ]
+          },
+          {
+            "text": "That sounds dangerous. Maybe later.",
+            "next_node": "decline_quest"
+          }
+        ]
+      },
+      {
+        "id": "accept_quest",
+        "type": "text",
+        "speaker_name": "Village Elder",
+        "text": "Thank you, brave soul! May fortune favor you in your endeavors.",
+        "animation": "talking_grateful",
+        "audio": "dialogue/elder/accept_quest.wav",
+        "choices": [
+          {
+            "text": "[Continue]",
+            "next_node": "end"
+          }
+        ]
+      },
+      {
+        "id": "decline_quest",
+        "type": "text",
+        "speaker_name": "Village Elder",
+        "text": "I understand. The offer stands if you change your mind.",
+        "animation": "talking_neutral",
+        "audio": "dialogue/elder/decline_quest.wav",
+        "choices": [
+          {
+            "text": "[Continue]",
+            "next_node": "end"
+          }
+        ]
+      },
+      {
+        "id": "about_village",
+        "type": "text",
+        "speaker_name": "Village Elder",
+        "text": "Our village has stood here for generations. We're simple folk, farming and trading with nearby settlements. Lately, though, monsters have been causing trouble...",
+        "animation": "talking_worried",
+        "audio": "dialogue/elder/about_village.wav",
+        "choices": [
+          {
+            "text": "What kind of monsters?",
+            "next_node": "about_monsters"
+          },
+          {
+            "text": "I see. Goodbye.",
+            "next_node": "end"
+          }
+        ]
+      },
+      {
+        "id": "about_monsters",
+        "type": "text",
+        "speaker_name": "Village Elder",
+        "text": "Zombies and skeletons, mostly. They come at night and attack anyone outside. We need someone to help protect us.",
+        "animation": "talking_worried",
+        "audio": "dialogue/elder/about_monsters.wav",
+        "choices": [
+          {
+            "text": "I can help with that.",
+            "next_node": "offer_help"
+          },
+          {
+            "text": "Good luck with that. Goodbye.",
+            "next_node": "end"
+          }
+        ]
+      },
+      {
+        "id": "end",
+        "type": "end"
+      }
+    ],
+    
+    "flags": {
+      "can_interrupt": false,
+      "auto_advance": false,
+      "show_speaker_portrait": true,
+      "camera_mode": "dialogue_camera"
+    }
+  }
+}

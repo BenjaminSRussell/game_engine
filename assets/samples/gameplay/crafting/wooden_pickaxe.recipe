@@ -1,0 +1,42 @@
+{
+  "crafting_recipe": {
+    "id": "recipe_wooden_pickaxe",
+    "name": "Wooden Pickaxe",
+    "description": "A basic tool for mining stone and ores",
+    "category": "tools",
+    "tier": 1,
+    
+    "crafting_time": 2.0,
+    "requires_station": false,
+    "crafting_station": null,
+    
+    "ingredients": [
+      {
+        "item_id": "item_wood_plank",
+        "count": 3
+      },
+      {
+        "item_id": "item_stick",
+        "count": 2
+      }
+    ],
+    
+    "output": {
+      "item_id": "item_pickaxe_wood",
+      "count": 1,
+      "durability": 60
+    },
+    
+    "unlock_conditions": {
+      "level": 1,
+      "required_recipes": [],
+      "required_achievements": []
+    },
+    
+    "pattern": [
+      ["wood", "wood", "wood"],
+      ["", "stick", ""],
+      ["", "stick", ""]
+    ]
+  }
+}

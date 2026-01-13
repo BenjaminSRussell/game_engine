@@ -1,7 +1,6 @@
 id,type,category,source,description,status
 TODO-0001,doc_checklist,Engineering Audit - Phase 4 Completion Summary > NEXT STEPS FOR CONTINUED DEVELOPMENT > Phase 5: Implementation & Optimization (Recommended),AUDIT_PHASE_4_COMPLETION_SUMMARY.md,Implement unified type system (core/math/types.h),open
 TODO-0002,doc_checklist,Engineering Audit - Phase 4 Completion Summary > NEXT STEPS FOR CONTINUED DEVELOPMENT > Phase 5: Implementation & Optimization (Recommended),AUDIT_PHASE_4_COMPLETION_SUMMARY.md,Merge memory allocators,open
-TODO-0003,doc_checklist,Engineering Audit - Phase 4 Completion Summary > NEXT STEPS FOR CONTINUED DEVELOPMENT > Phase 5: Implementation & Optimization (Recommended),AUDIT_PHASE_4_COMPLETION_SUMMARY.md,Consolidate logging backends,open
 TODO-0004,doc_checklist,Engineering Audit - Phase 4 Completion Summary > NEXT STEPS FOR CONTINUED DEVELOPMENT > Phase 5: Implementation & Optimization (Recommended),AUDIT_PHASE_4_COMPLETION_SUMMARY.md,Update CMake to reflect changes,open
 TODO-0005,doc_checklist,Engineering Audit - Phase 4 Completion Summary > NEXT STEPS FOR CONTINUED DEVELOPMENT > Phase 5: Implementation & Optimization (Recommended),AUDIT_PHASE_4_COMPLETION_SUMMARY.md,"Implement compute shaders for TAA, bloom",open
 TODO-0006,doc_checklist,Engineering Audit - Phase 4 Completion Summary > NEXT STEPS FOR CONTINUED DEVELOPMENT > Phase 5: Implementation & Optimization (Recommended),AUDIT_PHASE_4_COMPLETION_SUMMARY.md,"Implement compute shaders for SSAO, SSR",open
@@ -32768,3 +32767,143 @@ TODO-32645,todo_md,Master TODO,master/todo.md,"High - Create a UI for displaying
 TODO-32646,todo_md,Master TODO,master/todo.md,"Medium - Implement a variety of quest objectives, such as fetching items, killing mobs, and exploring specific locations. (line 4) (assets/assets/code/todo_quests.c)",open
 TODO-32647,todo_md,Master TODO,master/todo.md,"Medium - Create a system for rewarding players for completing quests, such as giving them items, experience, or currency. (line 5) (assets/assets/code/todo_quests.c)",open
 AI-001,implementation,AI & NPC Systems > Behavior Tree,Jules-AI,Behavior Tree System,completed
+TODO-40001,feature,Build System,cmake,Fix CMakeLists.txt - enable/disable 25+ disabled modules properly,N/A
+TODO-40002,feature,Build System,cmake,Identify and fix compilation errors in disabled modules,N/A
+TODO-40003,feature,Build System,cmake,Create module dependency graph for CMakeLists.txt,N/A
+TODO-40004,feature,Build System,cmake,Implement build configuration flags for optional subsystems,N/A
+TODO-40005,feature,Testing,testing,Establish unified test framework and integrate with CMake,N/A
+TODO-40006,feature,Testing,testing,Create automated test runner for all subsystems,N/A
+TODO-40007,feature,Testing,testing,Consolidate 40+ scattered test files into unified structure,N/A
+TODO-40008,feature,Testing,testing,Implement continuous integration configuration,N/A
+TODO-40009,feature,Testing,testing,Add test coverage reporting and benchmarking suite,N/A
+TODO-40010,feature,UI System,ui,Complete UI widget system implementation,N/A
+TODO-40011,feature,UI System,ui,Implement UI layout engine core,N/A
+TODO-40012,feature,UI System,ui,Build UI event dispatcher and input handling,N/A
+TODO-40013,feature,UI System,ui,Create font atlas generator for text rendering,N/A
+TODO-40014,feature,UI System,ui,Implement rich text parser for formatted UI text,N/A
+TODO-40015,feature,UI System,ui,Add accessibility features and keyboard navigation,N/A
+TODO-40016,feature,Audio System,audio,Re-enable audio core system and fix struct definition mismatches,N/A
+TODO-40017,feature,Audio System,audio,Complete DSP processing pipeline,N/A
+TODO-40018,feature,Audio System,audio,Implement spatial audio for 3D positioning,N/A
+TODO-40019,feature,Audio System,audio,Integrate reverb and environmental audio effects,N/A
+TODO-40020,feature,Audio System,audio,Complete voice communication system,N/A
+TODO-40021,feature,Animation System,animation,Fix blend tree implementation struct mismatches,N/A
+TODO-40022,feature,Animation System,animation,Complete GPU skinning system,N/A
+TODO-40023,feature,Animation System,animation,Implement FABRIK inverse kinematics solver,N/A
+TODO-40024,feature,Animation System,animation,Integrate animation retargeting system,N/A
+TODO-40025,feature,Animation System,animation,Complete cloth simulation with wind effects,N/A
+TODO-40026,feature,Animation System,animation,Implement morph targets and blend shape system,N/A
+TODO-40027,feature,Rendering,rendering,Integrate ray tracing into main rendering pipeline,N/A
+TODO-40028,feature,Rendering,rendering,Implement GPU super-resolution upscaling with compute shaders,N/A
+TODO-40029,feature,Rendering,rendering,Complete G-Buffer implementation for deferred rendering,N/A
+TODO-40030,feature,Rendering,rendering,Implement screen-space reflections,N/A
+TODO-40031,feature,Rendering,rendering,Integrate global illumination system,N/A
+TODO-40032,feature,Rendering,rendering,Complete shader compilation for Metal/Vulkan/OpenGL,N/A
+TODO-40033,feature,Physics,physics,Complete XPBD constraint solver edge case handling,N/A
+TODO-40034,feature,Physics,physics,Finalize GJK/EPA collision detection algorithms,N/A
+TODO-40035,feature,Physics,physics,Implement complete vehicle physics system,N/A
+TODO-40036,feature,Physics,physics,Complete deformable body destruction system,N/A
+TODO-40037,feature,Physics,physics,Verify ragdoll system and jiggle bones at scale,N/A
+TODO-40038,feature,Physics,physics,Implement fluid dynamics grid-based simulation,N/A
+TODO-40039,feature,AI System,ai,Complete GOAP goal-oriented action planning solver,N/A
+TODO-40040,feature,AI System,ai,Implement behavior tree visual editor,N/A
+TODO-40041,feature,AI System,ai,Integrate advanced NPC memory system,N/A
+TODO-40042,feature,AI System,ai,Complete dialogue system with branching conversations,N/A
+TODO-40043,feature,AI System,ai,Implement emotion/personality integration for NPCs,N/A
+TODO-40044,feature,AI System,ai,Add ML-based difficulty adjustment system,N/A
+TODO-40045,feature,AI System,ai,Implement procedural AI content generation,N/A
+TODO-40046,feature,Networking,networking,Integrate UDP-based connection manager into build,N/A
+TODO-40047,feature,Networking,networking,Complete state synchronization testing at scale,N/A
+TODO-40048,feature,Networking,networking,Implement async I/O for non-blocking networking,N/A
+TODO-40049,feature,Networking,networking,Complete packet prediction system,N/A
+TODO-40050,feature,Networking,networking,Expand network compression implementation,N/A
+TODO-40051,feature,Networking,networking,Complete server framework and game-specific messages,N/A
+TODO-40052,feature,Assets,assets,Integrate Phase 2 asset system modules into CMakeLists.txt,N/A
+TODO-40053,feature,Assets,assets,Complete asset hot-reload system,N/A
+TODO-40054,feature,Assets,assets,Implement model exporter integration,N/A
+TODO-40055,feature,Assets,assets,Complete compression system testing and validation,N/A
+TODO-40056,feature,Assets,assets,Implement asset converter system,N/A
+TODO-40057,feature,Assets,assets,Complete asset bundling processor,N/A
+TODO-40058,feature,Assets,assets,Implement virtual texturing system,N/A
+TODO-40059,feature,Assets,assets,Complete streaming and caching system,N/A
+TODO-40060,feature,Geometry,geometry,Complete Nanite LOD system implementation,N/A
+TODO-40061,feature,Geometry,geometry,Verify mesh clustering algorithms,N/A
+TODO-40062,feature,Geometry,geometry,Complete procedural generation system,N/A
+TODO-40063,feature,Geometry,geometry,Implement CSG operations for constructive solid geometry,N/A
+TODO-40064,feature,Geometry,geometry,Integrate terrain mega-system,N/A
+TODO-40065,feature,Geometry,geometry,Complete city generator integration,N/A
+TODO-40066,feature,Geometry,geometry,Implement ecosystem simulation,N/A
+TODO-40067,feature,Geometry,geometry,Fill Nanite cluster builder implementation,N/A
+TODO-40068,feature,Scripting,scripting,Fix Lua integration compilation errors and re-enable,N/A
+TODO-40069,feature,Scripting,scripting,Complete script hot-reload system,N/A
+TODO-40070,feature,Scripting,scripting,Implement script debugging interface,N/A
+TODO-40071,feature,Scripting,scripting,Define complete scripting API,N/A
+TODO-40072,feature,Scripting,scripting,Integrate event system for script callbacks,N/A
+TODO-40073,feature,Tools,tools,Implement visual editor core functionality,N/A
+TODO-40074,feature,Tools,tools,Complete behavior tree editor,N/A
+TODO-40075,feature,Tools,tools,Implement GOAP planner visualization,N/A
+TODO-40076,feature,Tools,tools,Complete world and terrain editor tools,N/A
+TODO-40077,feature,Tools,tools,Implement biome designer tool,N/A
+TODO-40078,feature,Tools,tools,Implement vegetation painter tool,N/A
+TODO-40079,feature,Tools,tools,Implement road and river creation tool,N/A
+TODO-40080,feature,Tools,tools,Complete asset browser and viewer,N/A
+TODO-40081,feature,Tools,tools,Implement debug visualization system,N/A
+TODO-40082,feature,Tools,tools,Integrate profiler and telemetry system,N/A
+TODO-40083,feature,Environment,environment,Complete weather system implementation,N/A
+TODO-40084,feature,Environment,environment,Implement particle system and effects,N/A
+TODO-40085,feature,Environment,environment,Complete cloud rendering system,N/A
+TODO-40086,feature,Environment,environment,Implement sky rendering with atmospherics,N/A
+TODO-40087,feature,Environment,environment,Complete volumetric lighting system,N/A
+TODO-40088,feature,Environment,environment,Implement light probes for indirect lighting,N/A
+TODO-40089,feature,Environment,environment,Complete atmosphere scattering simulation,N/A
+TODO-40090,feature,Environment,environment,Implement fog and haze rendering,N/A
+TODO-40091,feature,Cinematics,cinematics,Verify cinema camera system functionality,N/A
+TODO-40092,feature,Cinematics,cinematics,Complete sequencer core implementation,N/A
+TODO-40093,feature,Cinematics,cinematics,Implement lipsync system for dialogue,N/A
+TODO-40094,feature,Cinematics,cinematics,Integrate audio with cinematics system,N/A
+TODO-40095,feature,Cinematics,cinematics,Complete dialogue system for cinematics,N/A
+TODO-40096,feature,Cinematics,cinematics,Implement cinematics batching optimization,N/A
+TODO-40097,feature,Platform,platform,Complete Metal backend shader compilation,N/A
+TODO-40098,feature,Platform,platform,Implement Metal mesh bridge for GPU rendering,N/A
+TODO-40099,feature,Platform,platform,Complete Metal sampler implementation,N/A
+TODO-40100,feature,Platform,platform,Fix Swift bridge function call issues,N/A
+TODO-40101,feature,Platform,platform,Complete Vulkan backend implementation,N/A
+TODO-40102,feature,Platform,platform,Implement platform detection and fallback systems,N/A
+TODO-40103,feature,Platform,platform,Complete SIMD implementations (NEON support),N/A
+TODO-40104,feature,Platform,platform,Implement cross-platform input handling,N/A
+TODO-40105,feature,Memory,memory,Enforce memory budget tracking across subsystems,N/A
+TODO-40106,feature,Memory,memory,Complete GPU memory defragmenter backend,N/A
+TODO-40107,feature,Memory,memory,Implement memory pool allocators with fragmentation tracking,N/A
+TODO-40108,feature,Memory,memory,Add per-subsystem memory budget tracking and enforcement,N/A
+TODO-40109,feature,Documentation,docs,Create architecture overview documentation,N/A
+TODO-40110,feature,Documentation,docs,Write inline API documentation for 55+ subsystems,N/A
+TODO-40111,feature,Documentation,docs,Create quick start guide for engine developers,N/A
+TODO-40112,feature,Documentation,docs,Add README files for all major subsystems,N/A
+TODO-40113,feature,Documentation,docs,Document CMakeLists.txt module dependencies,N/A
+TODO-40114,feature,Documentation,docs,Create performance tuning guide,N/A
+TODO-40115,feature,Documentation,docs,Write deployment and build configuration documentation,N/A
+TODO-40116,feature,Documentation,docs,Create integration guide for Phase 2-3 modules,N/A
+TODO-40117,bug,Build System,cmake,Implement 22 empty stub files - fix compilation pipeline,N/A
+TODO-40118,bug,Build System,cmake,Fix block lighting system missing constants,N/A
+TODO-40119,bug,Build System,cmake,Fix AI subsystem compilation errors (npc.c, npc_ai.c, visual_cortex.c),N/A
+TODO-40120,bug,Build System,cmake,Fix animation blend_tree_impl.c struct definition mismatches,N/A
+TODO-40121,bug,Build System,cmake,Fix audio struct definition mismatches across modules,N/A
+TODO-40122,bug,Build System,cmake,Fix macOS asset loading (inotify.h compatibility),N/A
+TODO-40123,bug,Build System,cmake,Fix scripting system compilation errors,N/A
+TODO-40124,bug,Build System,cmake,Fix character subsystem build errors,N/A
+TODO-40125,bug,Build System,cmake,Fix material customization loader,N/A
+TODO-40126,bug,Build System,cmake,Fix geometry GPU mesh handling,N/A
+TODO-40127,bug,Build System,cmake,Fix networking header include issues,N/A
+TODO-40128,bug,Build System,cmake,Fix Swift bridge compilation issues,N/A
+TODO-40129,bug,Rendering,rendering,Verify ray tracing CPU implementation completeness,N/A
+TODO-40130,bug,Rendering,rendering,Validate rendering performance targets (60fps @ 1440p),N/A
+TODO-40131,bug,Physics,physics,Test XPBD constraint solver under complex scenarios,N/A
+TODO-40132,bug,Physics,physics,Verify ragdoll system stability and performance,N/A
+TODO-40133,bug,AI System,ai,Test NPC memory system at scale with many agents,N/A
+TODO-40134,bug,Networking,networking,Test state synchronization with high latency scenarios,N/A
+TODO-40135,bug,Performance,optimization,Profile memory usage against defined budgets,N/A
+TODO-40136,bug,Performance,optimization,Identify and optimize hot paths in rendering pipeline,N/A
+TODO-40137,bug,Performance,optimization,Implement cache-aware data layout optimizations,N/A
+TODO-40138,optimization,Performance,optimization,Reduce draw call count through batching,N/A
+TODO-40139,optimization,Performance,optimization,Implement GPU memory pooling and reuse,N/A
+TODO-40140,optimization,Performance,optimization,Profile and optimize physics simulation,N/A

@@ -1,0 +1,97 @@
+{
+  "layout": {
+    "name": "main_menu",
+    "version": "1.0",
+    "root": {
+      "type": "panel",
+      "id": "root_panel",
+      "rect": {
+        "x": 0, "y": 0,
+        "width": "100%", "height": "100%"
+      },
+      "style": {
+        "background_color": [0.0, 0.0, 0.0, 0.8]
+      },
+      "children": [
+        {
+          "type": "image",
+          "id": "logo",
+          "rect": {
+            "anchor": "top_center",
+            "x": 0, "y": 100,
+            "width": 512, "height": 128
+          },
+          "properties": {
+            "image": "textures/ui/logo.png",
+            "preserve_aspect": true
+          }
+        },
+        {
+          "type": "vertical_box",
+          "id": "menu_buttons",
+          "rect": {
+            "anchor": "center",
+            "x": 0, "y": 50,
+            "width": 300, "height": 400
+          },
+          "properties": {
+            "spacing": 20
+          },
+          "children": [
+            {
+              "type": "button",
+              "id": "btn_play",
+              "style": "styles/button_primary.style",
+              "text": "PLAY GAME",
+              "events": {
+                "on_click": "game_start"
+              }
+            },
+            {
+              "type": "button",
+              "id": "btn_options",
+              "style": "styles/button_secondary.style",
+              "text": "OPTIONS",
+              "events": {
+                "on_click": "menu_options"
+              }
+            },
+            {
+              "type": "button",
+              "id": "btn_credits",
+              "style": "styles/button_secondary.style",
+              "text": "CREDITS",
+              "events": {
+                "on_click": "menu_credits"
+              }
+            },
+            {
+              "type": "button",
+              "id": "btn_quit",
+              "style": "styles/button_danger.style",
+              "text": "QUIT TO DESKTOP",
+              "events": {
+                "on_click": "game_quit"
+              }
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "version_text",
+          "rect": {
+            "anchor": "bottom_right",
+            "x": -20, "y": -20,
+            "width": 100, "height": 20
+          },
+          "properties": {
+            "text": "v0.9.5-beta",
+            "font": "fonts/roboto_small.font",
+            "color": [0.6, 0.6, 0.6, 1.0],
+            "align": "right"
+          }
+        }
+      ]
+    }
+  }
+}

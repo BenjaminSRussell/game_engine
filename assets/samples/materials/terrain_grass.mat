@@ -1,0 +1,21 @@
+{
+  "material": {
+    "name": "terrain_grass",
+    "parent": "M_PBR_Standard",
+    "parameters": {
+      "BaseColor": [0.4, 0.8, 0.3],
+      "Roughness": 0.9,
+      "Metallic": 0.0,
+      "AO": 1.0,
+      "UVScale": [10.0, 10.0]
+    },
+    "textures": {
+      "NormalMap": "textures/blocks/grass_normal.png",
+      "RoughnessMap": "textures/blocks/grass_roughness.png",
+      "MetallicMap": null,
+      "AOMap": null
+    },
+    "features": ["NORMAL_MAP", "TILED_TEXTURE"],
+    "quality": "HIGH"
+  }
+}

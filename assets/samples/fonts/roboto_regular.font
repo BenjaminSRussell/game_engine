@@ -1,0 +1,26 @@
+{
+  "font": {
+    "name": "Roboto Regular",
+    "family": "Roboto",
+    "style": "Regular",
+    "size": 32,
+    "texture": "fonts/roboto_regular_atlas.png",
+    "padding": [2, 2, 2, 2],
+    "spacing": [0, 0],
+    "line_height": 38,
+    "base": 26,
+    
+    "atlas_width": 512,
+    "atlas_height": 512,
+    
+    "characters": {
+      "range": [32, 126], 
+      "special": [160, 8211, 8212, 8216, 8217, 8220, 8221]
+    },
+    
+    "sdf": {
+      "enabled": true,
+      "spread": 8.0
+    }
+  }
+}

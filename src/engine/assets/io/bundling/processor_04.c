@@ -36,6 +36,7 @@
 #include <pthread.h>
 #include <time.h>
 #include <math.h>
+#include <immintrin.h>
 
 #include "assets/io/bundling/processor_04.h"
 #include "include/core/types.h"
@@ -213,6 +214,28 @@ static bool s_processor_04_workers_running = false;
 static io_bundling_processor_04_progress_t s_processor_04_progress = {0};
 static uint32_t s_processor_04_next_id = 1;
 
+// SIMD optimization
+static bool s_processor_04_simd_available = false;
+static void* s_processor_04_simd_buffer = NULL;
+
+// Format conversion
+typedef struct {
+    uint32_t from_format;
+    uint32_t to_format;
+    int (*convert_func)(const void*, void**);
+} format_converter_t;
+static format_converter_t s_processor_04_format_converters[IO_BUNDLING_PROCESSOR_04_MAX_CONVERTERS];
+
+// Asset streaming priority
+static void* s_processor_04_priority_queue[IO_BUNDLING_PROCESSOR_04_MAX_QUEUE_SIZE];
+static uint32_t s_processor_04_priority_queue_head = 0;
+static uint32_t s_processor_04_priority_queue_tail = 0;
+static uint32_t s_processor_04_priority_queue_count = 0;
+
+// Checkpointing for resumable operations
+static bool s_processor_04_cancel_all_operations = false;
+static io_bundling_processor_04_async_task_t s_processor_04_operations[IO_BUNDLING_PROCESSOR_04_MAX_OPERATIONS];
+
 /* ============================================================================
  * FORWARD DECLARATIONS
  * ============================================================================ */
@@ -247,6 +270,7 @@ static io_bundling_processor_04_async_task_t* io_bundling_processor_04_dequeue_t
 static void io_bundling_processor_04_update_progress(uint32_t current, uint32_t total, const char* file_name);
 static int io_bundling_processor_04_parse_scene_file(const char* file_path, io_bundling_processor_04_scene_data_t* scene_data);
 static int io_bundling_processor_04_create_bundle(const char* bundle_name, const void** assets, size_t asset_count, io_bundling_processor_04_bundle_t* bundle);
+static void io_bundling_processor_04_register_converter(uint32_t from_format, uint32_t to_format, int (*convert_func)(const void*, void**));
 static void io_bundling_processor_04_watch_file_changes(const char* directory);
 static uint32_t io_bundling_processor_04_calculate_priority(const char* file_path, size_t file_size);
 static bool io_bundling_processor_04_gpu_compute_available(void);
@@ -734,10 +758,20 @@ static int io_bundling_processor_04_cache_add(const char* file_path, void* data,
     s_processor_04_cache[slot].priority = priority;
     s_processor_04_cache[slot].access_count = 1;
     s_processor_04_cache[slot].is_compressed = false;
-    
-    s_processor_04_stats.cache_hits++;
-    
     return 0;
+}
+
+static void io_bundling_processor_04_register_converter(uint32_t from_format, uint32_t to_format, int (*convert_func)(const void*, void**)) {
+    for (int i = 0; i < IO_BUNDLING_PROCESSOR_04_MAX_CONVERTERS; i++) {
+        if (s_processor_04_format_converters[i].convert_func == NULL) {
+            s_processor_04_format_converters[i].from_format = from_format;
+            s_processor_04_format_converters[i].to_format = to_format;
+            s_processor_04_format_converters[i].convert_func = convert_func;
+            printf("Registered format converter: %u -> %u at slot %d\n", from_format, to_format, i);
+            return;
+        }
+    }
+    printf("Warning: Could not register format converter %u -> %u, no available slots\n", from_format, to_format);
 }
 
 static void* io_bundling_processor_04_cache_get(const char* file_path) {
@@ -1677,15 +1711,48 @@ int io_bundling_processor_04_debug_print(io_bundling_processor_04_t* ctx) {
 int io_bundling_processor_04_module_init(void) {
     // Implement SIMD-optimized processing paths
     // Initialize SIMD support if available
+#ifdef __SSE2__
+    s_processor_04_simd_available = true;
+    printf("SIMD (SSE2) support detected and enabled\n");
+#else
+    s_processor_04_simd_available = false;
+    printf("SIMD support not available, using scalar fallback\n");
+#endif
     
     // Implement format conversion
     // Initialize format conversion libraries
+    for (int i = 0; i < IO_BUNDLING_PROCESSOR_04_MAX_CONVERTERS; i++) {
+        s_processor_04_format_converters[i].from_format = 0;
+        s_processor_04_format_converters[i].to_format = 0;
+        s_processor_04_format_converters[i].convert_func = NULL;
+    }
+    
+    // Register built-in converters
+    io_bundling_processor_04_register_converter(IO_BUNDLING_PROCESSOR_04_FORMAT_GLB, 
+                                               IO_BUNDLING_PROCESSOR_04_FORMAT_OBJ, 
+                                               io_bundling_processor_04_convert_glb_to_obj);
+    io_bundling_processor_04_register_converter(IO_BUNDLING_PROCESSOR_04_FORMAT_FBX, 
+                                               IO_BUNDLING_PROCESSOR_04_FORMAT_OBJ, 
+                                               io_bundling_processor_04_convert_fbx_to_obj);
     
     // Implement SIMD-optimized processing paths
     // Set up SIMD processing contexts
+    if (s_processor_04_simd_available) {
+        // Initialize SIMD-aligned buffers
+        s_processor_04_simd_buffer = aligned_alloc(16, IO_BUNDLING_PROCESSOR_04_SIMD_BUFFER_SIZE);
+        if (s_processor_04_simd_buffer) {
+            printf("SIMD processing buffer allocated (%zu bytes)\n", IO_BUNDLING_PROCESSOR_04_SIMD_BUFFER_SIZE);
+        }
+    }
     
     // Add asset streaming priority
     // Initialize priority queues
+    for (int i = 0; i < IO_BUNDLING_PROCESSOR_04_MAX_QUEUE_SIZE; i++) {
+        s_processor_04_priority_queue[i] = NULL;
+    }
+    s_processor_04_priority_queue_head = 0;
+    s_processor_04_priority_queue_tail = 0;
+    s_processor_04_priority_queue_count = 0;
 
     if (s_processor_04_initialized) {
         return 0;  // Already initialized
@@ -1728,15 +1795,36 @@ int io_bundling_processor_04_module_init(void) {
 int io_bundling_processor_04_module_shutdown(void) {
     // Add cache-aware processing order
     // Flush cache in priority order
+    for (int i = 0; i < IO_BUNDLING_PROCESSOR_04_CACHE_SIZE; i++) {
+        if (s_processor_04_cache[i].data) {
+            free(s_processor_04_cache[i].data);
+            s_processor_04_cache[i].data = NULL;
+            s_processor_04_cache[i].size = 0;
+        }
+    }
+    printf("Cache flushed: %d entries cleared\n", IO_BUNDLING_PROCESSOR_04_CACHE_SIZE);
     
     // Add checkpointing for resumable operations
     // Save operation state for resumption
+    for (int i = 0; i < IO_BUNDLING_PROCESSOR_04_MAX_OPERATIONS; i++) {
+        if (s_processor_04_operations[i].checkpoint_data) {
+            free(s_processor_04_operations[i].checkpoint_data);
+            s_processor_04_operations[i].checkpoint_data = NULL;
+        }
+    }
+    printf("Operation checkpoints cleared\n");
     
     // Implement cancellation support
     // Cancel all pending operations
+    s_processor_04_cancel_all_operations = true;
+    printf("All pending operations cancelled\n");
     
     // Implement format conversion
     // Cleanup format conversion resources
+    for (int i = 0; i < IO_BUNDLING_PROCESSOR_04_MAX_CONVERTERS; i++) {
+        s_processor_04_format_converters[i].convert_func = NULL;
+    }
+    printf("Format conversion resources cleaned up\n");
 
     if (!s_processor_04_initialized) {
         return 0;  // Already shut down

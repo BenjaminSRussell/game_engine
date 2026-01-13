@@ -1,0 +1,108 @@
+{
+  "prefab": {
+    "name": "tree_oak",
+    "version": "1.0",
+    "description": "Oak tree entity prefab",
+    
+    "transform": {
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, 0.0, 0.0, 1.0],
+      "scale": [1.0, 1.0, 1.0]
+    },
+    
+    "components": [
+      {
+        "type": "MeshRenderer",
+        "enabled": true,
+        "properties": {
+          "model": "models/environment/oak_tree.obj",
+          "materials": [
+            "materials/tree_bark.mat",
+            "materials/tree_leaves.mat"
+          ],
+          "cast_shadows": true,
+          "receive_shadows": true,
+          "lod_bias": 1.0
+        }
+      },
+      {
+        "type": "Collider",
+        "enabled": true,
+        "properties": {
+          "type": "capsule",
+          "radius": 0.5,
+          "height": 8.0,
+          "offset": [0.0, 4.0, 0.0],
+          "is_trigger": false
+        }
+      },
+      {
+        "type": "Health",
+        "enabled": true,
+        "properties": {
+          "max_health": 50,
+          "current_health": 50,
+          "regeneration_rate": 0.0,
+          "destructible": true
+        }
+      },
+      {
+        "type": "AudioSource",
+        "enabled": true,
+        "properties": {
+          "audio_clip": "sounds/ambient/tree_rustle.wav",
+          "volume": 0.3,
+          "loop": true,
+          "spatial": true,
+          "min_distance": 5.0,
+          "max_distance": 20.0,
+          "play_on_start": true
+        }
+      },
+      {
+        "type": "ParticleSystem",
+        "enabled": true,
+        "properties": {
+          "preset": "samples/particles/falling_leaves.particle",
+          "play_on_start": true,
+          "emission_rate_multiplier": 0.5
+        }
+      },
+      {
+        "type": "Script",
+        "enabled": true,
+        "properties": {
+          "script": "scripts/objects/tree.lua",
+          "variables": {
+            "wood_drop_count": { "type": "int", "value": 3 },
+            "sapling_drop_chance": { "type": "float", "value": 0.2 }
+          }
+        }
+      }
+    ],
+    
+    "children": [
+      {
+        "name": "collision_marker",
+        "transform": {
+          "position": [0.0, 2.0, 0.0],
+          "rotation": [0.0, 0.0, 0.0, 1.0],
+          "scale": [0.1, 0.1, 0.1]
+        },
+        "components": [
+          {
+            "type": "DebugGizmo",
+            "enabled": false,
+            "properties": {
+              "type": "sphere",
+              "color": [0.0, 1.0, 0.0, 0.5]
+            }
+          }
+        ]
+      }
+    ],
+    
+    "tags": ["environment", "destructible", "tree"],
+    "layer": "default"
+  }
+}

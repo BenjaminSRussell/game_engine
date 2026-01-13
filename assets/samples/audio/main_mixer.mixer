@@ -1,0 +1,115 @@
+{
+  "audio_mixer": {
+    "name": "main_mixer",
+    "version": "1.0",
+    "description": "Main audio mixer configuration",
+    
+    "master": {
+      "volume": 1.0,
+      "mute": false
+    },
+    
+    "groups": [
+      {
+        "name": "music",
+        "volume": 0.7,
+        "mute": false,
+        "parent": "master",
+        "effects": [
+          {
+            "type": "lowpass_filter",
+            "enabled": false,
+            "cutoff_frequency": 10000.0,
+            "resonance": 1.0
+          },
+          {
+            "type": "compressor",
+            "enabled": true,
+            "threshold": -10.0,
+            "ratio": 4.0,
+            "attack": 0.01,
+            "release": 0.1
+          }
+        ]
+      },
+      {
+        "name": "sfx",
+        "volume": 0.8,
+        "mute": false,
+        "parent": "master",
+        "effects": [
+          {
+            "type": "reverb",
+            "enabled": true,
+            "room_size": 0.5,
+            "damping": 0.5,
+            "wet_level": 0.2,
+            "dry_level": 0.8
+          }
+        ]
+      },
+      {
+        "name": "ambient",
+        "volume": 0.5,
+        "mute": false,
+        "parent": "master",
+        "effects": []
+      },
+      {
+        "name": "dialogue",
+        "volume": 1.0,
+        "mute": false,
+        "parent": "master",
+        "effects": [
+          {
+            "type": "compressor",
+            "enabled": true,
+            "threshold": -20.0,
+            "ratio": 6.0,
+            "attack": 0.005,
+            "release": 0.05
+          },
+          {
+            "type": "eq",
+            "enabled": true,
+            "bands": [
+              { "frequency": 200.0, "gain": -3.0, "q": 1.0 },
+              { "frequency": 3000.0, "gain": 2.0, "q": 1.0 },
+              { "frequency": 8000.0, "gain": 1.0, "q": 1.0 }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ui",
+        "volume": 0.6,
+        "mute": false,
+        "parent": "master",
+        "effects": []
+      }
+    ],
+    
+    "spatial_audio": {
+      "enabled": true,
+      "doppler_factor": 1.0,
+      "rolloff_mode": "logarithmic",
+      "reference_distance": 1.0,
+      "max_distance": 100.0,
+      "attenuation_model": "inverse_distance"
+    },
+    
+    "occlusion": {
+      "enabled": true,
+      "max_occlusion": 0.8,
+      "lowpass_cutoff_min": 500.0,
+      "lowpass_cutoff_max": 22000.0
+    },
+    
+    "surround": {
+      "enabled": true,
+      "speaker_mode": "7.1",
+      "lfe_enabled": true,
+      "height_channels": true
+    }
+  }
+}

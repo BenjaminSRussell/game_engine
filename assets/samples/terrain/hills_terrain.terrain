@@ -1,0 +1,100 @@
+{
+  "terrain": {
+    "name": "hills_terrain",
+    "version": "1.0",
+    "description": "Rolling hills terrain with vegetation",
+    
+    "dimensions": {
+      "width": 512,
+      "height": 256,
+      "depth": 512,
+      "tile_size": 1.0
+    },
+    
+    "heightmap": {
+      "source": "samples/terrain/heightmaps/hills_512.png",
+      "encoding": "grayscale_16bit",
+      "height_scale": 100.0,
+      "height_offset": 0.0
+    },
+    
+    "layers": [
+      {
+        "name": "grass",
+        "height_range": [0.0, 0.6],
+        "slope_range": [0.0, 30.0],
+        "material": "materials/terrain/grass.mat",
+        "density": 1.0
+      },
+      {
+        "name": "rock",
+        "height_range": [0.4, 1.0],
+        "slope_range": [25.0, 90.0],
+        "material": "materials/terrain/rock.mat",
+        "density": 1.0
+      },
+      {
+        "name": "snow",
+        "height_range": [0.8, 1.0],
+        "slope_range": [0.0, 45.0],
+        "material": "materials/terrain/snow.mat",
+        "density": 1.0
+      }
+    ],
+    
+    "vegetation": {
+      "enabled": true,
+      "density": 0.5,
+      "rules": [
+        {
+          "prefab": "prefabs/vegetation/grass_patch.prefab",
+          "height_range": [0.0, 0.4],
+          "slope_max": 25.0,
+          "density": 100.0,
+          "scale_variation": [0.8, 1.2]
+        },
+        {
+          "prefab": "prefabs/vegetation/oak_tree.prefab",
+          "height_range": [0.1, 0.5],
+          "slope_max": 20.0,
+          "density": 5.0,
+          "scale_variation": [0.9, 1.3],
+          "min_distance": 3.0
+        },
+        {
+          "prefab": "prefabs/vegetation/pine_tree.prefab",
+          "height_range": [0.5, 0.9],
+          "slope_max": 35.0,
+          "density": 8.0,
+          "scale_variation": [0.8, 1.1]
+        }
+      ]
+    },
+    
+    "lod": {
+      "enabled": true,
+      "levels": [
+        { "distance": 0.0, "resolution": 1.0 },
+        { "distance": 50.0, "resolution": 0.5 },
+        { "distance": 100.0, "resolution": 0.25 },
+        { "distance": 200.0, "resolution": 0.125 }
+      ]
+    },
+    
+    "physics": {
+      "collision_enabled": true,
+      "collision_resolution": 2.0,
+      "physics_material": {
+        "friction": 0.8,
+        "restitution": 0.1
+      }
+    },
+    
+    "streaming": {
+      "enabled": true,
+      "tile_size": 64,
+      "load_radius": 3,
+      "unload_radius": 5
+    }
+  }
+}

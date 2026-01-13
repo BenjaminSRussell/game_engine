@@ -1,0 +1,110 @@
+{
+  "save_data": {
+    "version": "1.0",
+    "save_name": "player_save_slot_1",
+    "timestamp": "2026-01-13T11:00:00Z",
+    "play_time_seconds": 3600,
+    
+    "player": {
+      "name": "TestPlayer",
+      "level": 5,
+      "experience": 1250,
+      "health": 100,
+      "max_health": 100,
+      "hunger": 15,
+      "max_hunger": 20,
+      "position": [10.5, 64.0, -8.3],
+      "rotation": [0.0, 0.707, 0.0, 0.707],
+      "spawn_point": [0.0, 65.0, 0.0]
+    },
+    
+    "inventory": {
+      "slots": 36,
+      "items": [
+        {
+          "slot": 0,
+          "item_id": "item_sword_iron",
+          "count": 1,
+          "durability": 200,
+          "metadata": {}
+        },
+        {
+          "slot": 1,
+          "item_id": "item_pickaxe_diamond",
+          "count": 1,
+          "durability": 1500,
+          "metadata": {
+            "enchantments": [
+              { "id": "efficiency", "level": 3 },
+              { "id": "unbreaking", "level": 2 }
+            ]
+          }
+        },
+        {
+          "slot": 8,
+          "item_id": "item_bread",
+          "count": 16,
+          "metadata": {}
+        },
+        {
+          "slot": 9,
+          "item_id": "block_stone",
+          "count": 64,
+          "metadata": {}
+        }
+      ]
+    },
+    
+    "quests": {
+      "active": [
+        {
+          "quest_id": "quest_village_welcome",
+          "started_at": "2026-01-13T10:30:00Z",
+          "objectives": [
+            { "id": "talk_to_elder", "progress": 1, "completed": true },
+            { "id": "collect_wood", "progress": 10, "completed": true },
+            { "id": "craft_pickaxe", "progress": 1, "completed": true },
+            { "id": "mine_stone", "progress": 15, "completed": false },
+            { "id": "defeat_zombies", "progress": 2, "completed": false }
+          ]
+        }
+      ],
+      "completed": [],
+      "failed": []
+    },
+    
+    "world": {
+      "seed": 1234567890,
+      "name": "MyWorld",
+      "difficulty": "normal",
+      "game_mode": "survival",
+      "time_of_day": 6000,
+      "weather": "clear"
+    },
+    
+    "achievements": {
+      "unlocked": [
+        "first_tree",
+        "craft_pickaxe",
+        "mine_stone",
+        "kill_zombie"
+      ]
+    },
+    
+    "settings": {
+      "graphics_quality": "high",
+      "render_distance": 12,
+      "vsync": true,
+      "fullscreen": true
+    },
+    
+    "statistics": {
+      "blocks_mined": 450,
+      "blocks_placed": 320,
+      "distance_walked": 5280.5,
+      "jumps": 234,
+      "enemies_killed": 18,
+      "deaths": 2
+    }
+  }
+}

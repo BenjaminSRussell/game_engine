@@ -1,0 +1,167 @@
+{
+  "cinematic_sequence": {
+    "name": "intro_cutscene",
+    "version": "1.0",
+    "description": "Opening cinematic for the game",
+    "duration": 30.0,
+    "framerate": 60,
+    
+    "camera_track": {
+      "type": "animated",
+      "keyframes": [
+        {
+          "time": 0.0,
+          "position": [100.0, 50.0, 100.0],
+          "rotation": [0.1, 0.7, 0.0, 0.7],
+          "fov": 60.0,
+          "interpolation": "smooth"
+        },
+        {
+          "time": 5.0,
+          "position": [50.0, 30.0, 50.0],
+          "rotation": [0.0, 0.38, 0.0, 0.92],
+          "fov": 55.0,
+          "interpolation": "smooth"
+        },
+        {
+          "time": 10.0,
+          "position": [0.0, 10.0, 30.0],
+          "rotation": [0.0, 0.0, 0.0, 1.0],
+          "fov": 50.0,
+          "interpolation": "smooth"
+        },
+        {
+          "time": 15.0,
+          "position": [-20.0, 5.0, 10.0],
+          "rotation": [0.05, -0.2, 0.0, 0.98],
+          "fov": 45.0,
+          "interpolation": "smooth"
+        },
+        {
+          "time": 20.0,
+          "position": [0.0, 3.0, 5.0],
+          "rotation": [0.0, 0.0, 0.0, 1.0],
+          "fov": 50.0,
+          "interpolation": "smooth"
+        },
+        {
+          "time": 30.0,
+          "position": [0.0, 1.8, 0.5],
+          "rotation": [0.0, 0.0, 0.0, 1.0],
+          "fov": 60.0,
+          "interpolation": "smooth"
+        }
+      ]
+    },
+    
+    "audio_tracks": [
+      {
+        "name": "music",
+        "audio_file": "music/intro_theme.mp3",
+        "start_time": 0.0,
+        "volume": 0.7,
+        "fade_in": 2.0,
+        "fade_out": 3.0
+      },
+      {
+        "name": "narrator",
+        "audio_file": "dialogue/narrator/intro_01.wav",
+        "start_time": 2.0,
+        "volume": 1.0
+      },
+      {
+        "name": "ambient",
+        "audio_file": "sounds/ambient/wind_light.wav",
+        "start_time": 0.0,
+        "volume": 0.3,
+        "loop": true
+      }
+    ],
+    
+    "subtitle_track": [
+      {
+        "start_time": 2.0,
+        "end_time": 6.0,
+        "text": "Long ago, in a land of blocks and adventure...",
+        "speaker": "Narrator"
+      },
+      {
+        "start_time": 7.0,
+        "end_time": 12.0,
+        "text": "Heroes arose to defend the realm from the forces of darkness.",
+        "speaker": "Narrator"
+      },
+      {
+        "start_time": 13.0,
+        "end_time": 18.0,
+        "text": "But the greatest threat was yet to come...",
+        "speaker": "Narrator"
+      }
+    ],
+    
+    "events": [
+      {
+        "time": 0.0,
+        "type": "show_logo",
+        "params": {
+          "logo_texture": "textures/ui/studio_logo.png",
+          "duration": 3.0,
+          "fade": true
+        }
+      },
+      {
+        "time": 5.0,
+        "type": "spawn_entity",
+        "params": {
+          "entity_prefab": "prefabs/characters/hero.prefab",
+          "position": [0.0, 0.0, 50.0]
+        }
+      },
+      {
+        "time": 10.0,
+        "type": "play_animation",
+        "params": {
+          "target": "hero",
+          "animation": "walk",
+          "blend_time": 0.3
+        }
+      },
+      {
+        "time": 20.0,
+        "type": "weather_change",
+        "params": {
+          "weather_preset": "environment/weather/rainy_day.weather",
+          "transition_time": 5.0
+        }
+      },
+      {
+        "time": 25.0,
+        "type": "fade_to_black",
+        "params": {
+          "duration": 2.0
+        }
+      },
+      {
+        "time": 30.0,
+        "type": "load_level",
+        "params": {
+          "level": "levels/main_game.level"
+        }
+      }
+    ],
+    
+    "post_processing": {
+      "profile": "postprocess/cinematic_profile.pp",
+      "overrides": []
+    },
+    
+    "letterbox": {
+      "enabled": true,
+      "aspect_ratio": "2.35:1",
+      "color": [0.0, 0.0, 0.0, 1.0]
+    },
+    
+    "skippable": true,
+    "skip_key": "Escape"
+  }
+}

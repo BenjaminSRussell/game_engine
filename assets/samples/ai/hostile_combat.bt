@@ -1,0 +1,116 @@
+{
+  "behavior_tree": {
+    "name": "hostile_combat",
+    "version": "1.0",
+    "description": "Aggressive combat behavior for hostile NPCs",
+    
+    "root": {
+      "type": "selector",
+      "name": "root",
+      "children": [
+        {
+          "type": "sequence",
+          "name": "engage_combat",
+          "children": [
+            {
+              "type": "condition",
+              "name": "has_target",
+              "function": "bt_condition_has_target"
+            },
+            {
+              "type": "condition",
+              "name": "can_see_target",
+              "function": "bt_condition_can_see_target",
+              "params": {
+                "view_distance": 30.0,
+                "view_angle": 120.0
+              }
+            },
+            {
+              "type": "selector",
+              "name": "combat_actions",
+              "children": [
+                {
+                  "type": "sequence",
+                  "name": "flee_if_low_health",
+                  "children": [
+                    {
+                      "type": "condition",
+                      "name": "is_health_low",
+                      "function": "bt_condition_is_health_low",
+                      "params": {
+                        "health_threshold": 0.25
+                      }
+                    },
+                    {
+                      "type": "action",
+                      "name": "flee",
+                      "function": "bt_action_flee_from_target",
+                      "params": {
+                        "flee_speed": 8.0,
+                        "flee_distance": 40.0
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "action",
+                  "name": "attack",
+                  "function": "bt_action_attack_target",
+                  "params": {
+                    "attack_range": 2.0,
+                    "attack_damage": 10.0,
+                    "attack_cooldown": 1.5
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "sequence",
+          "name": "search_for_target",
+          "children": [
+            {
+              "type": "condition",
+              "name": "is_alerted",
+              "function": "bt_condition_custom",
+              "params": {
+                "blackboard_key": "is_alerted",
+                "expected_value": true
+              }
+            },
+            {
+              "type": "action",
+              "name": "chase_last_known_position",
+              "function": "bt_action_chase_target",
+              "params": {
+                "chase_speed": 5.0,
+                "give_up_distance": 50.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "action",
+          "name": "patrol_idle",
+          "function": "bt_action_patrol",
+          "params": {
+            "patrol_points": [
+              [0.0, 0.0, 0.0],
+              [10.0, 0.0, 10.0],
+              [-10.0, 0.0, 10.0]
+            ],
+            "wait_time_at_point": 5.0
+          }
+        }
+      ]
+    },
+    
+    "blackboard": {
+      "has_target": false,
+      "is_alerted": false,
+      "health_percentage": 1.0
+    }
+  }
+}

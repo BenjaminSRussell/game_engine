@@ -62,9 +62,9 @@ typedef struct World {
 } World;
 typedef struct Entity Entity;
 typedef struct Component Component;
-typedef struct System System;
-typedef struct Query Query;
-typedef struct Archetype Archetype;
+typedef struct ECSSystem System;
+typedef struct ECSQuery Query;
+typedef struct ECSArchetype Archetype;
 
 // Component type registration
 typedef u32 ComponentType;
@@ -102,12 +102,12 @@ typedef struct {
   u8 data[ARCHETYPE_CHUNK_SIZE];
   u32 entity_count;
   u32 capacity;
-  Archetype *archetype;
+  ECSArchetype *archetype;
   struct Chunk *next_chunk;
 } ECSChunk;
 
 // Archetype - defines component composition
-struct Archetype {
+struct ECSArchetype {
   ComponentType *component_types;
   u32 component_count;
   u32 total_component_size;
@@ -115,7 +115,7 @@ struct Archetype {
   u32 chunk_count;
   u32 entity_capacity;
   u32 entity_count;
-  struct Archetype *next; // For archetype graph traversal
+  struct ECSArchetype *next; // For archetype graph traversal
 };
 
 // Query description for component filtering
@@ -130,7 +130,7 @@ typedef struct {
 } QueryDesc;
 
 // Query result iterator
-struct Query {
+struct ECSQuery {
   Archetype **matching_archetypes;
   u32 archetype_count;
   u32 current_archetype;
@@ -153,7 +153,7 @@ typedef struct {
 typedef void (*SystemFunc)(SystemContext *context);
 
 // System scheduling and execution
-struct System {
+struct ECSSystem {
   const char *name;
   SystemFunc execute;
   QueryDesc query;

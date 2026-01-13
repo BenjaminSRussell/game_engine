@@ -1,0 +1,241 @@
+{
+    "physics_scene": {
+        "name": "physics_test",
+        "version": "1.0",
+        "description": "Test scene for physics simulation",
+        "settings": {
+            "gravity": [
+                0.0,
+                -9.81,
+                0.0
+            ],
+            "timestep": 0.016666,
+            "solver_iterations": 8,
+            "collision_detection": "continuous"
+        },
+        "objects": [
+            {
+                "name": "ground_plane",
+                "transform": {
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        100.0,
+                        1.0,
+                        100.0
+                    ]
+                },
+                "rigidbody": {
+                    "type": "static",
+                    "mass": 0.0
+                },
+                "collider": {
+                    "type": "box",
+                    "size": [
+                        100.0,
+                        1.0,
+                        100.0
+                    ]
+                },
+                "material": {
+                    "friction": 0.6,
+                    "restitution": 0.3,
+                    "density": 1.0
+                }
+            },
+            {
+                "name": "falling_cube",
+                "transform": {
+                    "position": [
+                        0.0,
+                        10.0,
+                        0.0
+                    ],
+                    "rotation": [
+                        0.1,
+                        0.2,
+                        0.1,
+                        0.97
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "rigidbody": {
+                    "type": "dynamic",
+                    "mass": 10.0,
+                    "linear_damping": 0.05,
+                    "angular_damping": 0.05
+                },
+                "collider": {
+                    "type": "box",
+                    "size": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "material": {
+                    "friction": 0.5,
+                    "restitution": 0.4
+                }
+            },
+            {
+                "name": "sphere_stack_1",
+                "transform": {
+                    "position": [
+                        5.0,
+                        2.0,
+                        0.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "rigidbody": {
+                    "type": "dynamic",
+                    "mass": 5.0
+                },
+                "collider": {
+                    "type": "sphere",
+                    "radius": 0.5
+                },
+                "material": {
+                    "friction": 0.7,
+                    "restitution": 0.6
+                }
+            },
+            {
+                "name": "ragdoll_test",
+                "transform": {
+                    "position": [
+                        -5.0,
+                        5.0,
+                        0.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "rigidbody": {
+                    "type": "dynamic",
+                    "mass": 70.0,
+                    "center_of_mass": [
+                        0.0,
+                        0.9,
+                        0.0
+                    ]
+                },
+                "colliders": [
+                    {
+                        "name": "head",
+                        "type": "sphere",
+                        "radius": 0.15,
+                        "offset": [
+                            0.0,
+                            1.6,
+                            0.0
+                        ]
+                    },
+                    {
+                        "name": "torso",
+                        "type": "capsule",
+                        "radius": 0.2,
+                        "height": 0.6,
+                        "offset": [
+                            0.0,
+                            1.2,
+                            0.0
+                        ]
+                    },
+                    {
+                        "name": "pelvis",
+                        "type": "box",
+                        "size": [
+                            0.3,
+                            0.2,
+                            0.25
+                        ],
+                        "offset": [
+                            0.0,
+                            0.9,
+                            0.0
+                        ]
+                    }
+                ],
+                "joints": [
+                    {
+                        "name": "neck",
+                        "type": "ball_socket",
+                        "body_a": "head",
+                        "body_b": "torso",
+                        "anchor": [
+                            0.0,
+                            1.5,
+                            0.0
+                        ],
+                        "limits": {
+                            "swing_1": 30.0,
+                            "swing_2": 30.0,
+                            "twist": 45.0
+                        }
+                    }
+                ]
+            }
+        ],
+        "constraints": [
+            {
+                "type": "hinge",
+                "name": "door_hinge",
+                "body_a": "door",
+                "body_b": "door_frame",
+                "anchor": [
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                "axis": [
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                "limits": [
+                    -90.0,
+                    90.0
+                ],
+                "motor": {
+                    "enabled": false,
+                    "target_velocity": 0.0,
+                    "max_force": 100.0
+                }
+            }
+        ]
+    }
+}

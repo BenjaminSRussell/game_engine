@@ -1,0 +1,78 @@
+{
+  "animation": {
+    "name": "player_idle",
+    "version": "1.0",
+    "type": "skeletal",
+    "duration": 2.0,
+    "framerate": 30,
+    "looping": true,
+    "skeleton": "characters/player_skeleton",
+    
+    "tracks": [
+      {
+        "bone": "root",
+        "transform_type": "translation",
+        "interpolation": "linear",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0] },
+          { "time": 1.0, "value": [0.0, 0.02, 0.0] },
+          { "time": 2.0, "value": [0.0, 0.0, 0.0] }
+        ]
+      },
+      {
+        "bone": "spine_01",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.5, "value": [0.0, 0.0, 0.017, 0.999] },
+          { "time": 1.0, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 1.5, "value": [0.0, 0.0, -0.017, 0.999] },
+          { "time": 2.0, "value": [0.0, 0.0, 0.0, 1.0] }
+        ]
+      },
+      {
+        "bone": "head",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.0, 1.0] },
+          { "time": 0.75, "value": [0.0, 0.05, 0.0, 0.999] },
+          { "time": 1.5, "value": [0.0, -0.03, 0.0, 0.999] },
+          { "time": 2.0, "value": [0.0, 0.0, 0.0, 1.0] }
+        ]
+      },
+      {
+        "bone": "arm_upper_l",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, 0.05, 0.999] },
+          { "time": 1.0, "value": [0.0, 0.0, 0.03, 0.999] },
+          { "time": 2.0, "value": [0.0, 0.0, 0.05, 0.999] }
+        ]
+      },
+      {
+        "bone": "arm_upper_r",
+        "transform_type": "rotation",
+        "interpolation": "slerp",
+        "keyframes": [
+          { "time": 0.0, "value": [0.0, 0.0, -0.05, 0.999] },
+          { "time": 1.0, "value": [0.0, 0.0, -0.03, 0.999] },
+          { "time": 2.0, "value": [0.0, 0.0, -0.05, 0.999] }
+        ]
+      }
+    ],
+    
+    "events": [
+      { "time": 0.0, "name": "breath_in", "data": {} },
+      { "time": 1.0, "name": "breath_out", "data": {} }
+    ],
+    
+    "blend_settings": {
+      "in_time": 0.2,
+      "out_time": 0.2,
+      "additive": false
+    }
+  }
+}

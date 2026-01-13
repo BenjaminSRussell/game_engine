@@ -2,7 +2,6 @@
 
 #include "../math/types.h"
 #include <stddef.h>
-#include "../memory.h"
 
 // ============================================================================
 // UNIFIED MEMORY ALLOCATOR SYSTEM
@@ -17,6 +16,21 @@ typedef enum {
     ALLOCATOR_STRATEGY_TRACKED,        // General purpose with leak detection
     ALLOCATOR_STRATEGY_COUNT
 } AllocatorStrategy;
+
+// Memory tagging system
+typedef enum {
+    MEMORY_TAG_RENDERER = 0,
+    MEMORY_TAG_AUDIO = 1,
+    MEMORY_TAG_PHYSICS = 2,
+    MEMORY_TAG_AI = 3,
+    MEMORY_TAG_ANIMATION = 4,
+    MEMORY_TAG_TERRAIN = 5,
+    MEMORY_TAG_ASSETS = 6,
+    MEMORY_TAG_NETWORK = 7,
+    MEMORY_TAG_UI = 8,
+    MEMORY_TAG_TOOLS = 9,
+    MEMORY_TAG_COUNT
+} MemoryTag;
 
 // Forward declarations
 typedef struct Allocator Allocator;
@@ -335,5 +349,3 @@ typedef enum {
 
 void allocator_set_boundary_check(Allocator* allocator, BoundaryCheckMode mode);
 bool allocator_check_boundaries(Allocator* allocator);
-
-#endif // UNIFIED_MEMORY_ALLOCATOR_H

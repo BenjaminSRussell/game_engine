@@ -1,0 +1,85 @@
+{
+  "network_config": {
+    "name": "multiplayer_config",
+    "version": "1.0",
+    "description": "Network configuration for multiplayer gameplay",
+    
+    "server": {
+      "max_players": 16,
+      "port": 7777,
+      "tick_rate": 30,
+      "timeout": 10.0,
+      "enable_encryption": true,
+      "enable_compression": true,
+      "bandwidth_limit_mbps": 10.0
+    },
+    
+    "replication": {
+      "strategy": "relevance_based",
+      "update_frequency": 30,
+      "priority_levels": 5,
+      
+      "entity_relevance": {
+        "max_distance": 100.0,
+        "use_visibility": true,
+        "owner_always_relevant": true
+      },
+      
+      "replicated_components": [
+        {
+          "component": "Transform",
+          "mode": "full",
+          "frequency": 30,
+          "interpolation": "linear",
+          "priority": "high"
+        },
+        {
+          "component": "Rigidbody",
+          "mode": "state_sync",
+          "frequency": 20,
+          "interpolation": "cubic",
+          "priority": "high"
+        },
+        {
+          "component": "Health",
+          "mode": "delta",
+          "frequency": 10,
+          "interpolation": "none",
+          "priority": "medium"
+        },
+        {
+          "component": "Inventory",
+          "mode": "on_change",
+          "frequency": 0,
+          "reliable": true,
+          "priority": "low"
+        }
+      ]
+    },
+    
+    "voice_chat": {
+      "enabled": true,
+      "codec": "opus",
+      "sample_rate": 48000,
+      "bitrate": 64000,
+      "spatial_audio": true,
+      "max_distance": 50.0,
+      "push_to_talk": false
+    },
+    
+    "anti_cheat": {
+      "enabled": true,
+      "server_authoritative": true,
+      "validate_movement": true,
+      "validate_actions": true,
+      "kick_threshold": 10
+    },
+    
+    "matchmaking": {
+      "enabled": true,
+      "region_preference": "auto",
+      "skill_based": false,
+      "max_ping": 150
+    }
+  }
+}

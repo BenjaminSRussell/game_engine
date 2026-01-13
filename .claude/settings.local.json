@@ -38,7 +38,9 @@
       "Bash( test -f \"/Users/benjaminrussell/Desktop/Minecraft v2/README.md\")",
       "Bash(__NEW_LINE_13c17923101e8925__ cd \"/Users/benjaminrussell/Desktop/Minecraft v2\")",
       "Bash(__NEW_LINE_775106d132bfada2__ cd \"/Users/benjaminrussell/Desktop/Minecraft v2\")",
-      "Bash(__NEW_LINE_ff0920d82c7a9478__ echo \"=== FINAL ORGANIZATION STATUS ===\")"
+      "Bash(__NEW_LINE_ff0920d82c7a9478__ echo \"=== FINAL ORGANIZATION STATUS ===\")",
+      "Bash(do grep -l \"stub\\\\|STUB\\\\|Not implemented\\\\|unimplemented\" \"$f\")",
+      "Bash(done)"
     ]
   }
 }

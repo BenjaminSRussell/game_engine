@@ -1,0 +1,76 @@
+#version 450
+
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct Particle {
+    vec4 position; // xyz, w=size
+    vec4 velocity; // xyz, w=lifetime
+    vec4 color;
+    vec4 rotation; // x=angle, y=speed, zw=padding
+    vec4 age;      // x=age, yzw=padding
+};
+
+layout(std430, binding = 0) buffer ParticleBuffer {
+    Particle particles[];
+};
+
+layout(std430, binding = 1) buffer DeadList {
+    uint dead_indices[];
+};
+
+layout(std430, binding = 2) buffer AliveList {
+    uint alive_indices[];
+};
+
+layout(std430, binding = 3) buffer CounterBuffer {
+    uint active_count;
+    uint dead_count;
+    uint spawn_count;
+    uint alive_count_render; // For indirect draw
+};
+
+uniform float dt;
+uniform vec3 gravity;
+
+void main() {
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= active_count) return; // Note: this needs indirect dispatch size handling
+
+    // In a real system, we'd iterate over an existing 'alive' list or check all particles.
+    // Iterating all MAX_PARTICLES is slow.
+    // Let's assume we check all for simplicity in V1, or use indirect dispatch from previous frame.
+    
+    // For this generic implementation, let's assume we process a dense list or check a flag.
+    // But SoA/dense packing is harder without two buffers.
+    // We'll stick to: 'idx' is the particle index directly if we don't have compaction.
+    
+    Particle p = particles[idx];
+    
+    // Check if active
+    if (p.velocity.w > 0.0) { // lifetime > 0
+        p.age.x += dt;
+        
+        if (p.age.x >= p.velocity.w) {
+            // Die
+            p.velocity.w = -1.0; // Mark dead
+            
+            // Add to dead list
+            uint dead_idx = atomicAdd(dead_count, 1);
+            dead_indices[dead_idx] = idx;
+        } else {
+            // Update physics
+            vec3 vel = p.velocity.xyz;
+            vel += gravity * dt;
+            p.velocity.xyz = vel;
+            
+            p.position.xyz += vel * dt;
+            
+            // Write back
+            particles[idx] = p;
+            
+            // Add to alive list for rendering
+            uint alive_idx = atomicAdd(alive_count_render, 1);
+            alive_indices[alive_idx] = idx;
+        }
+    }
+}

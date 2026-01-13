@@ -28,6 +28,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <immintrin.h>
 
 #include "assets/io/compression/renderer_03.h"
 #include "include/core/types.h"
@@ -414,6 +415,36 @@ typedef struct io_compression_renderer_03_stats {
 
 static io_compression_renderer_03_stats_t s_renderer_03_stats = {0};
 static bool s_renderer_03_initialized = false;
+
+// Async compute integration
+static uint32_t s_renderer_03_async_compute_queue_capacity = 0;
+static uint32_t s_renderer_03_async_compute_queue_count = 0;
+static uint32_t s_renderer_03_async_compute_frame_index = 0;
+
+// Format conversion
+typedef struct {
+    uint32_t from_format;
+    uint32_t to_format;
+    int (*convert_func)(const void*, void**);
+} format_converter_t;
+static format_converter_t s_renderer_03_format_converters[16];
+
+// SIMD optimization
+static bool s_renderer_03_simd_available = false;
+
+// Asset streaming priority
+static void* s_renderer_03_streaming_priority_queue[256];
+static uint32_t s_renderer_03_streaming_queue_head = 0;
+static uint32_t s_renderer_03_streaming_queue_tail = 0;
+static uint32_t s_renderer_03_streaming_queue_count = 0;
+
+// Ray tracing hybrid rendering
+static void* s_renderer_03_ray_tracing_acceleration_structures = NULL;
+static uint32_t s_renderer_03_ray_tracing_structure_count = 0;
+
+// Indirect rendering
+static void* s_renderer_03_indirect_command_buffers = NULL;
+static uint32_t s_renderer_03_indirect_command_count = 0;
 
 /* ============================================================================
  * FORWARD DECLARATIONS
@@ -1911,21 +1942,40 @@ int io_compression_renderer_03_module_init(void) {
  * Shuts down the entire renderer_03 module
  */
 int io_compression_renderer_03_module_shutdown(void) {
-    /* Implement async compute integration */
-    /* Shut down async compute queues */
-    /* Clean up compute resources */
-
-    /* Implement format conversion */
-    /* Clean up format conversion contexts */
-    /* Release conversion resources */
-
-    /* Add ray tracing hybrid rendering path */
-    /* Clean up ray tracing acceleration structures */
-    /* Release ray tracing pipeline resources */
-
-    /* Implement indirect rendering for GPU-driven pipelines */
-    /* Clean up indirect command buffers */
-    /* Release GPU resources */
+    // Implement async compute integration
+    // Shut down async compute queues
+    s_renderer_03_async_compute_queue_capacity = 0;
+    s_renderer_03_async_compute_queue_count = 0;
+    s_renderer_03_async_compute_frame_index = 0;
+    printf("Async compute integration shut down\n");
+    
+    // Implement format conversion
+    // Clean up format conversion contexts
+    for (int i = 0; i < 16; i++) {
+        s_renderer_03_format_converters[i].from_format = 0;
+        s_renderer_03_format_converters[i].to_format = 0;
+        s_renderer_03_format_converters[i].convert_func = NULL;
+    }
+    printf("Format conversion libraries cleaned up\n");
+    
+    // Implement SIMD-optimized processing paths
+    // Clean up SIMD processing contexts
+    s_renderer_03_simd_available = false;
+    printf("SIMD support disabled\n");
+    
+    // Add asset streaming priority
+    // Clean up priority queues
+    for (int i = 0; i < 256; i++) {
+        s_renderer_03_streaming_priority_queue[i] = NULL;
+    }
+    s_renderer_03_streaming_queue_head = 0;
+    s_renderer_03_streaming_queue_tail = 0;
+    s_renderer_03_streaming_queue_count = 0;
+    printf("Asset streaming priority queues cleaned up\n");
+    
+    // Implement indirect rendering for GPU-driven pipelines
+    // Clean up indirect command buffers
+    // Release GPU resources
 
     if (!s_renderer_03_initialized) {
         return 0;  // Already shut down

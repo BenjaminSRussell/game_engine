@@ -1,0 +1,23 @@
+{
+  "material": {
+    "name": "leaf_material",
+    "parent": "M_PBR_Translucent",
+    "parameters": {
+      "BaseColor": [1.0, 1.0, 1.0],
+      "Roughness": 0.6,
+      "Metallic": 0.0,
+      "AO": 1.0,
+      "Opacity": 1.0
+    },
+    "textures": {
+      "AlbedoMap": "textures/particles/leaf.png",
+      "NormalMap": null,
+      "RoughnessMap": null,
+      "MetallicMap": null,
+      "AOMap": null,
+      "OpacityMap": "textures/particles/leaf_alpha.png"
+    },
+    "features": ["TRANSLUCENT", "ALPHA_CUTOFF", "TWO_SIDED"],
+    "quality": "MEDIUM"
+  }
+}
