@@ -111,7 +111,6 @@ typedef enum texture_texture_lod_format {
     TEXTURE_TEXTURE_LOD_FORMAT_BGRA8 = 1
 } texture_texture_lod_format_t;
 
-
 typedef struct texture_texture_lod_serialized_item {
     uint32_t id;                 // Texture ID
     uint32_t flags;               // Feature flags
