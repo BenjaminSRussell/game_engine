@@ -1,7 +1,13 @@
-// src/core/config_system.c
-//
-// Purpose: Configuration system implementation
-//
+/*
+ * config_system.c
+ * Configuration system implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides configuration management with file monitoring and hot-reload
+ */
+
 #include "../include/core/config_system.h"
 #include "../include/core/logger.h"
 #include <stdlib.h>
