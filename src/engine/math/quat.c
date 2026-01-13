@@ -132,3 +132,33 @@ Quat quat_slerp(Quat a, Quat b, f32 t) {
     };
     return result;
 }
+
+Quat quat_normalize(Quat q) {
+    f32 len = sqrtf(q.w*q.w + q.x*q.x + q.y*q.y + q.z*q.z);
+    if (len < EPSILON) return quat_identity();
+    f32 inv_len = 1.0f / len;
+    Quat r;
+    r.w = q.w * inv_len;
+    r.x = q.x * inv_len;
+    r.y = q.y * inv_len;
+    r.z = q.z * inv_len;
+    return r;
+}
+
+Quat quat_nlerp(Quat a, Quat b, f32 t) {
+    // Check dot product for shortest path
+    f32 dot = a.w*b.w + a.x*b.x + a.y*b.y + a.z*b.z;
+    if (dot < 0.0f) {
+        b.w = -b.w;
+        b.x = -b.x;
+        b.y = -b.y;
+        b.z = -b.z;
+    }
+
+    Quat r;
+    r.w = a.w + (b.w - a.w) * t;
+    r.x = a.x + (b.x - a.x) * t;
+    r.y = a.y + (b.y - a.y) * t;
+    r.z = a.z + (b.z - a.z) * t;
+    return quat_normalize(r);
+}
