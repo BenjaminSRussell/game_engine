@@ -2,6 +2,7 @@
 
 #include "../math/types.h"
 #include <stddef.h>
+#include "../memory.h"
 
 // ============================================================================
 // UNIFIED MEMORY ALLOCATOR SYSTEM
