@@ -9,8 +9,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CGLTF_IMPLEMENTATION
-#include "vendor/cgltf.h"
+#include "gltf_loader.h"
+#include "include/vendor/stb_image.h"
+#include "assets/system/asset_system/import/fbx_importer.h"
 
 #include <core/asset_importers.h>
 #include <core/logger.h>
@@ -81,11 +82,24 @@ static void map_insert(const char *path, int asset_index) {
 
 // Format Loaders
 static void *load_texture(const char *path, size_t *size) {
+  int width, height, channels;
+  // Flip vertically to match standard texture coordinates
+  stbi_set_flip_vertically_on_load(1);
+
+  unsigned char *data = stbi_load(path, &width, &height, &channels, STBI_rgb_alpha);
+  if (data) {
+    *size = width * height * 4;
+    LOG_INFO("Loaded texture: %s (%dx%d)", path, width, height);
+    return data;
+  }
+
+  LOG_WARN("Failed to load texture: %s, using fallback", path);
+
   // Generate checkerboard texture if file doesn't exist
   // 64x64 RGBA
-  int width = 64;
-  int height = 64;
-  int channels = 4;
+  width = 64;
+  height = 64;
+  channels = 4;
   *size = width * height * channels;
   uint8_t *pixels = (uint8_t *)malloc(*size);
 
@@ -110,41 +124,59 @@ static void *load_texture(const char *path, size_t *size) {
   return pixels;
 }
 
-static mesh_t *load_mesh_gltf(const char *path) {
-  cgltf_options options = {0};
-  cgltf_data *data = NULL;
-  cgltf_result result = cgltf_parse_file(&options, path, &data);
-
-  if (result != cgltf_result_success) {
-    LOG_ERROR("Failed to parse GLTF: %s", path);
+static mesh_t *load_mesh_gltf_wrapper(const char *path) {
+  GLTFLoadResult result = gltf_load(path);
+  if (!result.success || result.mesh_count == 0) {
+    LOG_ERROR("Failed to load GLTF: %s", path);
+    gltf_free(&result);
     return NULL;
   }
 
-  result = cgltf_load_buffers(&options, data, path);
-  if (result != cgltf_result_success) {
-    cgltf_free(data);
+  // Convert the first mesh to engine mesh_t format
+  // This is a simplification; in reality we might want all meshes
+  GLTFMesh *src_mesh = &result.meshes[0];
+  mesh_t *mesh = (mesh_t *)malloc(sizeof(mesh_t));
+  if (!mesh) {
+    gltf_free(&result);
     return NULL;
   }
 
-  // Convert first mesh primitive to our Mesh format
-  // Simplification: Just take first node with a mesh
-  // Real impl would iterate scene
+  memset(mesh, 0, sizeof(mesh_t));
 
-  mesh_t *mesh = NULL; // Placeholder
+  mesh->vertex_count = src_mesh->vertex_count;
+  // Use vertex_t from geometry/geometry_types.h for consistency with mesh_t
+  mesh->vertices = (vertex_t *)malloc(mesh->vertex_count * sizeof(vertex_t));
+  // Since GLTFMesh uses Vertex (rendering/mesh.h), we need manual conversion if types differ.
+  // Assuming basic compatibility for now or direct cast if layout is same.
+  // Actually, mesh_t uses vertex_t which has Vec3 position, Vec3 normal, Vec2 uv, Vec4 tangent.
+  // Vertex in rendering/mesh.h has Vec3 position, Vec3 normal, Vec2 uv, u32 ao, u32 light...
+  // They are different. We must convert.
 
-  // ... Extraction logic would go here ...
-  // For now, logging validity
-  LOG_INFO("GLTF Loaded: %s (%u meshes)", path, data->meshes_count);
+  for (u32 i = 0; i < mesh->vertex_count; i++) {
+      mesh->vertices[i].position = src_mesh->vertices[i].position;
+      mesh->vertices[i].normal = src_mesh->vertices[i].normal;
+      mesh->vertices[i].uv = src_mesh->vertices[i].uv;
+      mesh->vertices[i].tangent = vec4(0, 0, 0, 1); // Default tangent
+  }
 
-  cgltf_free(data);
-  return mesh_create_cube(1.0f); // Fallback until extraction logic is full
+  mesh->index_count = src_mesh->index_count;
+  mesh->indices = (uint32_t *)malloc(mesh->index_count * sizeof(uint32_t));
+  memcpy(mesh->indices, src_mesh->indices, mesh->index_count * sizeof(uint32_t));
+
+  // Calculate bounds?
+  // mesh_calculate_bounds(mesh);
+
+  gltf_free(&result);
+  return mesh;
 }
 
 static void *load_mesh(const char *path, size_t *size) {
   mesh_t *mesh = NULL;
 
   if (strstr(path, ".gltf") || strstr(path, ".glb")) {
-    mesh = load_mesh_gltf(path);
+    mesh = load_mesh_gltf_wrapper(path);
+  } else if (strstr(path, ".fbx") || strstr(path, ".FBX")) {
+    mesh = asset_system_fbx_load_mesh_direct(path);
   } else if (strstr(path, "cube")) {
     mesh = mesh_create_cube(1.0f);
   } else if (strstr(path, "sphere")) {

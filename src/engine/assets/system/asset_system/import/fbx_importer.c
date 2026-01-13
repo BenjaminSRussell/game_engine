@@ -9,6 +9,7 @@
  */
 
 #include "assets/system/asset_system/import/fbx_importer.h"
+#include <geometry/geometry_types.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -30,10 +31,16 @@
  * MATH TYPES
  * ============================================================================ */
 
-typedef struct vec2 { float x, y; } vec2_t;
-typedef struct vec3 { float x, y, z; } vec3_t;
-typedef struct vec4 { float x, y, z, w; } vec4_t;
-typedef struct mat4 { float m[16]; } mat4_t;
+// Use engine types directly via includes in headers, but if not available:
+// Assuming math/vec2.h, etc. are included in fbx_importer.h or earlier
+#include <math/vec2.h>
+#include <math/vec3.h>
+#include <math/vec4.h>
+#include <math/mat4.h>
+
+// If typedefs exist, we use them.
+// Note: vec2_t, vec3_t, vec4_t, mat4_t are already defined in math headers
+typedef Mat4 mat4_t;
 
 /* ============================================================================
  * FBX TYPES
@@ -606,6 +613,95 @@ size_t asset_system_fbx_importer_get_memory_usage(void) {
 
 void asset_system_fbx_importer_debug_print(void) {
     // Debug output
+}
+
+mesh_t* asset_system_fbx_load_mesh_direct(const char* path) {
+    if (!path) return NULL;
+
+    // Ensure system is initialized
+    if (!g_fbx_ctx.initialized) {
+        asset_system_fbx_importer_init();
+    }
+
+    asset_system_fbx_importer_handle_t handle;
+    asset_system_fbx_importer_desc_t desc = {0};
+
+    if (asset_system_fbx_importer_create(&handle, &desc) != 0) {
+        return NULL;
+    }
+
+    if (asset_system_fbx_importer_load(handle, path) != 0) {
+        asset_system_fbx_importer_destroy(handle);
+        return NULL;
+    }
+
+    asset_system_fbx_importer_internal_t* item = &g_fbx_ctx.items[handle.id];
+
+    // For now, we only extract the first mesh if available
+    // In a real implementation, we would likely merge all meshes or return a scene
+    if (item->data.mesh_count == 0) {
+        asset_system_fbx_importer_destroy(handle);
+        return NULL;
+    }
+
+    fbx_mesh_t* src_mesh = &item->data.meshes[0];
+
+    mesh_t* mesh = (mesh_t*)malloc(sizeof(mesh_t));
+    if (!mesh) {
+        asset_system_fbx_importer_destroy(handle);
+        return NULL;
+    }
+    memset(mesh, 0, sizeof(mesh_t));
+
+    // Convert vertices
+    // Note: src_mesh uses float array for positions (3 floats per vertex)
+    mesh->vertex_count = src_mesh->position_count;
+    mesh->vertices = (vertex_t*)malloc(mesh->vertex_count * sizeof(vertex_t));
+
+    for (uint32_t i = 0; i < mesh->vertex_count; i++) {
+        mesh->vertices[i].position = vec3(
+            src_mesh->positions[i * 3 + 0],
+            src_mesh->positions[i * 3 + 1],
+            src_mesh->positions[i * 3 + 2]
+        );
+
+        if (i < src_mesh->normal_count) {
+            mesh->vertices[i].normal = vec3(
+                src_mesh->normals[i * 3 + 0],
+                src_mesh->normals[i * 3 + 1],
+                src_mesh->normals[i * 3 + 2]
+            );
+        } else {
+            mesh->vertices[i].normal = vec3(0, 1, 0);
+        }
+
+        if (i < src_mesh->uv_count) {
+            mesh->vertices[i].uv = vec2(
+                src_mesh->uvs[i * 2 + 0],
+                src_mesh->uvs[i * 2 + 1]
+            );
+        } else {
+            mesh->vertices[i].uv = vec2(0, 0);
+        }
+
+        mesh->vertices[i].tangent = vec4(0, 0, 0, 1);
+    }
+
+    // Convert indices
+    mesh->index_count = src_mesh->polygon_index_count;
+    mesh->indices = (uint32_t*)malloc(mesh->index_count * sizeof(uint32_t));
+
+    for (uint32_t i = 0; i < mesh->index_count; i++) {
+        int32_t index = src_mesh->polygon_indices[i];
+        // FBX uses negative indices to mark end of polygon (xor with -1)
+        if (index < 0) {
+            index = index ^ -1;
+        }
+        mesh->indices[i] = (uint32_t)index;
+    }
+
+    asset_system_fbx_importer_destroy(handle);
+    return mesh;
 }
 
 /* End of fbx_importer.c */

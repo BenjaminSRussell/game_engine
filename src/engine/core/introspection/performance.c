@@ -65,7 +65,7 @@ static f64 internal_get_time(void) {
     return ts.tv_sec + ts.tv_nsec / 1e9;
 }
 
-Timer *engine_timer_create(const char *name) {
+Timer *perf_timer_create(const char *name) {
     Timer *timer = (Timer *)malloc(sizeof(Timer));
     if (!timer) return NULL;
     
@@ -230,8 +230,9 @@ f32 frame_stats_get_fps(void) {
     return g_frame_stats.fps;
 }
 
+#include <errno.h>
+
 void logger_errno_context(int err_code) {
-    extern int errno;
     const char *err_str = strerror(err_code ? err_code : errno);
     LOG_ERROR("System error [%d]: %s", err_code ? err_code : errno, err_str);
 }
