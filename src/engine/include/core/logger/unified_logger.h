@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UNIFIED_LOGGER_H
+#define UNIFIED_LOGGER_H
 
 #include "../math/types.h"
 #include <stdarg.h>
@@ -49,6 +50,7 @@ typedef enum {
     LOG_CAT_ASSET = 13,
     LOG_CAT_ANIMATION = 14,
     LOG_CAT_INPUT = 15,
+    LOG_CAT_UI = 16,
     LOG_CAT_COUNT
 } LogCategory;
 

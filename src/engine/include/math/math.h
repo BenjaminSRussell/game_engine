@@ -12,5 +12,6 @@
 #include "plane.h"
 #include "frustum.h"
 #include "ray.h"
+#include "rect.h"
 
 #endif // MATH_H
