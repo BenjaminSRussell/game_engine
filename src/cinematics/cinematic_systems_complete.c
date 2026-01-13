@@ -1,6 +1,8 @@
 /**
- * CINEMATICS & CUTSCENES: Timeline, Cameras, Transitions
- * All ~60 remaining AGENT_CINEMATIC TODOs
+ * @file cinematic_systems_complete.c
+ * @brief Cinematics & Cutscenes: Timeline, Cameras, Transitions
+ * @description Implementation of all ~60 remaining AGENT_CINEMATIC TODOs
+ * @date 2026-01-13
  */
 
 #include "engine/include/math/math.h"
