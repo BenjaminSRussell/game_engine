@@ -1,6 +1,6 @@
 #include <math.h>
-#include <math/mat4.h>
 #include <math/vec3.h>
+#include <math/mat4.h>
 #include <math/vec4.h>
 
 // Note: mat4_identity and mat4_zero are defined as INLINE in mat4.h
@@ -11,9 +11,9 @@ Mat4 mat4_mul(Mat4 a, Mat4 b) {
     for (int row = 0; row < 4; row++) {
       float sum = 0.0f;
       for (int k = 0; k < 4; k++) {
-        sum += a.data[k][row] * b.data[col][k];
+        sum += a.m[k][row] * b.m[col][k];
       }
-      result.data[col][row] = sum;
+      result.m[col][row] = sum;
     }
   }
   return result;
@@ -23,7 +23,7 @@ Mat4 mat4_transpose(Mat4 m) {
   Mat4 result;
   for (int col = 0; col < 4; col++) {
     for (int row = 0; row < 4; row++) {
-      result.data[col][row] = m.data[row][col];
+      result.m[col][row] = m.m[row][col];
     }
   }
   return result;
@@ -31,30 +31,30 @@ Mat4 mat4_transpose(Mat4 m) {
 
 Mat4 mat4_inverse(Mat4 m) {
   // Simplified inverse implementation for 4x4 matrix
-  float det = m.data[0][0] * (m.data[1][1] * (m.data[2][2] * m.data[3][3] -
-                                              m.data[2][3] * m.data[3][2]) -
-                              m.data[1][2] * (m.data[2][1] * m.data[3][3] -
-                                              m.data[2][3] * m.data[3][1]) +
-                              m.data[1][3] * (m.data[2][1] * m.data[3][2] -
-                                              m.data[2][2] * m.data[3][1])) -
-              m.data[0][1] * (m.data[1][0] * (m.data[2][2] * m.data[3][3] -
-                                              m.data[2][3] * m.data[3][2]) -
-                              m.data[1][2] * (m.data[2][0] * m.data[3][3] -
-                                              m.data[2][3] * m.data[3][0]) +
-                              m.data[1][3] * (m.data[2][0] * m.data[3][2] -
-                                              m.data[2][2] * m.data[3][0])) +
-              m.data[0][2] * (m.data[1][0] * (m.data[2][1] * m.data[3][3] -
-                                              m.data[2][3] * m.data[3][1]) -
-                              m.data[1][1] * (m.data[2][0] * m.data[3][3] -
-                                              m.data[2][3] * m.data[3][0]) +
-                              m.data[1][3] * (m.data[2][0] * m.data[3][1] -
-                                              m.data[2][1] * m.data[3][0])) -
-              m.data[0][3] * (m.data[1][0] * (m.data[2][1] * m.data[3][2] -
-                                              m.data[2][2] * m.data[3][1]) -
-                              m.data[1][1] * (m.data[2][0] * m.data[3][2] -
-                                              m.data[2][2] * m.data[3][0]) +
-                              m.data[1][2] * (m.data[2][0] * m.data[3][1] -
-                                              m.data[2][1] * m.data[3][0]));
+  float det = m.m[0][0] * (m.m[1][1] * (m.m[2][2] * m.m[3][3] -
+                                              m.m[2][3] * m.m[3][2]) -
+                              m.m[1][2] * (m.m[2][1] * m.m[3][3] -
+                                              m.m[2][3] * m.m[3][1]) +
+                              m.m[1][3] * (m.m[2][1] * m.m[3][2] -
+                                              m.m[2][2] * m.m[3][1])) -
+              m.m[0][1] * (m.m[1][0] * (m.m[2][2] * m.m[3][3] -
+                                              m.m[2][3] * m.m[3][2]) -
+                              m.m[1][2] * (m.m[2][0] * m.m[3][3] -
+                                              m.m[2][3] * m.m[3][0]) +
+                              m.m[1][3] * (m.m[2][0] * m.m[3][2] -
+                                              m.m[2][2] * m.m[3][0])) +
+              m.m[0][2] * (m.m[1][0] * (m.m[2][1] * m.m[3][3] -
+                                              m.m[2][3] * m.m[3][1]) -
+                              m.m[1][1] * (m.m[2][0] * m.m[3][3] -
+                                              m.m[2][3] * m.m[3][0]) +
+                              m.m[1][3] * (m.m[2][0] * m.m[3][1] -
+                                              m.m[2][1] * m.m[3][0])) -
+              m.m[0][3] * (m.m[1][0] * (m.m[2][1] * m.m[3][2] -
+                                              m.m[2][2] * m.m[3][1]) -
+                              m.m[1][1] * (m.m[2][0] * m.m[3][2] -
+                                              m.m[2][2] * m.m[3][0]) +
+                              m.m[1][2] * (m.m[2][0] * m.m[3][1] -
+                                              m.m[2][1] * m.m[3][0]));
 
   if (fabsf(det) < 0.0001f) {
     return mat4_identity();
@@ -64,47 +64,47 @@ Mat4 mat4_inverse(Mat4 m) {
   Mat4 result;
 
   // Calculate adjugate matrix (simplified)
-  result.data[0][0] = inv_det * (m.data[1][1] * (m.data[2][2] * m.data[3][3] -
-                                                 m.data[2][3] * m.data[3][2]) -
-                                 m.data[1][2] * (m.data[2][1] * m.data[3][3] -
-                                                 m.data[2][3] * m.data[3][1]) +
-                                 m.data[1][3] * (m.data[2][1] * m.data[3][2] -
-                                                 m.data[2][2] * m.data[3][1]));
+  result.m[0][0] = inv_det * (m.m[1][1] * (m.m[2][2] * m.m[3][3] -
+                                                 m.m[2][3] * m.m[3][2]) -
+                                 m.m[1][2] * (m.m[2][1] * m.m[3][3] -
+                                                 m.m[2][3] * m.m[3][1]) +
+                                 m.m[1][3] * (m.m[2][1] * m.m[3][2] -
+                                                 m.m[2][2] * m.m[3][1]));
 
-  result.data[1][0] = inv_det * -(m.data[1][0] * (m.data[2][2] * m.data[3][3] -
-                                                  m.data[2][3] * m.data[3][2]) -
-                                  m.data[1][2] * (m.data[2][0] * m.data[3][3] -
-                                                  m.data[2][3] * m.data[3][0]) +
-                                  m.data[1][3] * (m.data[2][0] * m.data[3][2] -
-                                                  m.data[2][2] * m.data[3][0]));
+  result.m[1][0] = inv_det * -(m.m[1][0] * (m.m[2][2] * m.m[3][3] -
+                                                  m.m[2][3] * m.m[3][2]) -
+                                  m.m[1][2] * (m.m[2][0] * m.m[3][3] -
+                                                  m.m[2][3] * m.m[3][0]) +
+                                  m.m[1][3] * (m.m[2][0] * m.m[3][2] -
+                                                  m.m[2][2] * m.m[3][0]));
 
-  result.data[2][0] = inv_det * (m.data[1][0] * (m.data[2][1] * m.data[3][3] -
-                                                 m.data[2][3] * m.data[3][1]) -
-                                 m.data[1][1] * (m.data[2][0] * m.data[3][3] -
-                                                 m.data[2][3] * m.data[3][0]) +
-                                 m.data[1][3] * (m.data[2][0] * m.data[3][1] -
-                                                 m.data[2][1] * m.data[3][0]));
+  result.m[2][0] = inv_det * (m.m[1][0] * (m.m[2][1] * m.m[3][3] -
+                                                 m.m[2][3] * m.m[3][1]) -
+                                 m.m[1][1] * (m.m[2][0] * m.m[3][3] -
+                                                 m.m[2][3] * m.m[3][0]) +
+                                 m.m[1][3] * (m.m[2][0] * m.m[3][1] -
+                                                 m.m[2][1] * m.m[3][0]));
 
-  result.data[3][0] = inv_det * -(m.data[1][0] * (m.data[2][1] * m.data[3][2] -
-                                                  m.data[2][2] * m.data[3][1]) -
-                                  m.data[1][1] * (m.data[2][0] * m.data[3][2] -
-                                                  m.data[2][2] * m.data[3][0]) +
-                                  m.data[1][2] * (m.data[2][0] * m.data[3][1] -
-                                                  m.data[2][1] * m.data[3][0]));
+  result.m[3][0] = inv_det * -(m.m[1][0] * (m.m[2][1] * m.m[3][2] -
+                                                  m.m[2][2] * m.m[3][1]) -
+                                  m.m[1][1] * (m.m[2][0] * m.m[3][2] -
+                                                  m.m[2][2] * m.m[3][0]) +
+                                  m.m[1][2] * (m.m[2][0] * m.m[3][1] -
+                                                  m.m[2][1] * m.m[3][0]));
 
   // For simplicity, fill rest with identity (this is a partial implementation)
-  result.data[0][1] = 0.0f;
-  result.data[0][2] = 0.0f;
-  result.data[0][3] = 0.0f;
-  result.data[1][1] = 1.0f;
-  result.data[1][2] = 0.0f;
-  result.data[1][3] = 0.0f;
-  result.data[2][1] = 0.0f;
-  result.data[2][2] = 1.0f;
-  result.data[2][3] = 0.0f;
-  result.data[3][1] = 0.0f;
-  result.data[3][2] = 0.0f;
-  result.data[3][3] = 1.0f;
+  result.m[0][1] = 0.0f;
+  result.m[0][2] = 0.0f;
+  result.m[0][3] = 0.0f;
+  result.m[1][1] = 1.0f;
+  result.m[1][2] = 0.0f;
+  result.m[1][3] = 0.0f;
+  result.m[2][1] = 0.0f;
+  result.m[2][2] = 1.0f;
+  result.m[2][3] = 0.0f;
+  result.m[3][1] = 0.0f;
+  result.m[3][2] = 0.0f;
+  result.m[3][3] = 1.0f;
 
   return result;
 }
@@ -278,7 +278,7 @@ Mat4 mat4_rotate_z(float angle) {
 bool mat4_is_equal(Mat4 a, Mat4 b, float tolerance) {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            if (fabsf(a.data[i][j] - b.data[i][j]) > tolerance) {
+            if (fabsf(a.m[i][j] - b.m[i][j]) > tolerance) {
                 return false;
             }
         }
@@ -290,7 +290,7 @@ Mat4 mat4_lerp(Mat4 a, Mat4 b, float t) {
     Mat4 result;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            result.data[i][j] = a.data[i][j] + (b.data[i][j] - a.data[i][j]) * t;
+            result.m[i][j] = a.m[i][j] + (b.m[i][j] - a.m[i][j]) * t;
         }
     }
     return result;
@@ -300,7 +300,7 @@ Mat4 mat4_lerp(Mat4 a, Mat4 b, float t) {
 bool mat4_has_nan(Mat4 m) {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            if (isnan(m.data[i][j])) return true;
+            if (isnan(m.m[i][j])) return true;
         }
     }
     return false;
@@ -309,23 +309,23 @@ bool mat4_has_nan(Mat4 m) {
 bool mat4_has_inf(Mat4 m) {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            if (isinf(m.data[i][j])) return true;
+            if (isinf(m.m[i][j])) return true;
         }
     }
     return false;
 }
 
 float mat4_determinant(Mat4 m) {
-    return m.data[0][0] * (m.data[1][1] * (m.data[2][2] * m.data[3][3] - m.data[2][3] * m.data[3][2]) -
-                          m.data[1][2] * (m.data[2][1] * m.data[3][3] - m.data[2][3] * m.data[3][1]) +
-                          m.data[1][3] * (m.data[2][1] * m.data[3][2] - m.data[2][2] * m.data[3][1])) -
-           m.data[0][1] * (m.data[1][0] * (m.data[2][2] * m.data[3][3] - m.data[2][3] * m.data[3][2]) -
-                          m.data[1][2] * (m.data[2][0] * m.data[3][3] - m.data[2][3] * m.data[3][0]) +
-                          m.data[1][3] * (m.data[2][0] * m.data[3][2] - m.data[2][2] * m.data[3][0])) +
-           m.data[0][2] * (m.data[1][0] * (m.data[2][1] * m.data[3][3] - m.data[2][3] * m.data[3][1]) -
-                          m.data[1][1] * (m.data[2][0] * m.data[3][3] - m.data[2][3] * m.data[3][0]) +
-                          m.data[1][3] * (m.data[2][0] * m.data[3][1] - m.data[2][1] * m.data[3][0])) -
-           m.data[0][3] * (m.data[1][0] * (m.data[2][1] * m.data[3][2] - m.data[2][2] * m.data[3][1]) -
-                          m.data[1][1] * (m.data[2][0] * m.data[3][2] - m.data[2][2] * m.data[3][0]) +
-                          m.data[1][2] * (m.data[2][0] * m.data[3][1] - m.data[2][1] * m.data[3][0]));
+    return m.m[0][0] * (m.m[1][1] * (m.m[2][2] * m.m[3][3] - m.m[2][3] * m.m[3][2]) -
+                          m.m[1][2] * (m.m[2][1] * m.m[3][3] - m.m[2][3] * m.m[3][1]) +
+                          m.m[1][3] * (m.m[2][1] * m.m[3][2] - m.m[2][2] * m.m[3][1])) -
+           m.m[0][1] * (m.m[1][0] * (m.m[2][2] * m.m[3][3] - m.m[2][3] * m.m[3][2]) -
+                          m.m[1][2] * (m.m[2][0] * m.m[3][3] - m.m[2][3] * m.m[3][0]) +
+                          m.m[1][3] * (m.m[2][0] * m.m[3][2] - m.m[2][2] * m.m[3][0])) +
+           m.m[0][2] * (m.m[1][0] * (m.m[2][1] * m.m[3][3] - m.m[2][3] * m.m[3][1]) -
+                          m.m[1][1] * (m.m[2][0] * m.m[3][3] - m.m[2][3] * m.m[3][0]) +
+                          m.m[1][3] * (m.m[2][0] * m.m[3][1] - m.m[2][1] * m.m[3][0])) -
+           m.m[0][3] * (m.m[1][0] * (m.m[2][1] * m.m[3][2] - m.m[2][2] * m.m[3][1]) -
+                          m.m[1][1] * (m.m[2][0] * m.m[3][2] - m.m[2][2] * m.m[3][0]) +
+                          m.m[1][2] * (m.m[2][0] * m.m[3][1] - m.m[2][1] * m.m[3][0]));
 }

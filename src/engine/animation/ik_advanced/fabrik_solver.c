@@ -41,8 +41,8 @@ static Vec3 rotate_point_around_axis(const Vec3* point, const Vec3* axis_origin,
     float sin_angle = sinf(angle);
     
     Vec3 term1 = vec3_mul(p, cos_angle);
-    Vec3 term2 = vec3_mul(vec3_cross(&k, &p), sin_angle);
-    Vec3 term3 = vec3_mul(k, vec3_dot(&k, &p) * (1.0f - cos_angle));
+    Vec3 term2 = vec3_mul(vec3_cross(k, p), sin_angle);
+    Vec3 term3 = vec3_mul(k, vec3_dot(k, p) * (1.0f - cos_angle));
     
     return vec3_add(*axis_origin, vec3_add(vec3_add(term1, term2), term3));
 }
@@ -58,14 +58,14 @@ static void apply_joint_constraints(FabrikChain* chain, int joint_index) {
                                          chain->joints[joint_index-1].position));
     Vec3 bone2 = vec3_normalize(vec3_sub(chain->joints[joint_index+1].position, 
                                          chain->joints[joint_index].position));
-    float angle = acosf(fmaxf(-1.0f, fminf(1.0f, vec3_dot(&bone1, &bone2))));
+    float angle = acosf(fmaxf(-1.0f, fminf(1.0f, vec3_dot(bone1, bone2))));
     float angle_deg = angle * 180.0f / M_PI;
     
     // Enforce angle constraints
     if (angle_deg < chain->joints[joint_index].min_angle) {
         // Rotate to minimum angle
         float rotation_needed = (chain->joints[joint_index].min_angle - angle_deg) * M_PI / 180.0f;
-        Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
+        Vec3 axis = vec3_normalize(vec3_cross(bone1, bone2));
         chain->joints[joint_index+1].position = rotate_point_around_axis(
             &chain->joints[joint_index+1].position,
             &chain->joints[joint_index].position,
@@ -73,7 +73,7 @@ static void apply_joint_constraints(FabrikChain* chain, int joint_index) {
     } else if (angle_deg > chain->joints[joint_index].max_angle) {
         // Rotate to maximum angle
         float rotation_needed = (angle_deg - chain->joints[joint_index].max_angle) * M_PI / 180.0f;
-        Vec3 axis = vec3_normalize(vec3_cross(&bone1, &bone2));
+        Vec3 axis = vec3_normalize(vec3_cross(bone1, bone2));
         chain->joints[joint_index+1].position = rotate_point_around_axis(
             &chain->joints[joint_index+1].position,
             &chain->joints[joint_index].position,
@@ -109,7 +109,7 @@ uint32_t fabrik_create_chain(const Vec3* positions, uint32_t joint_count) {
         
         if (i > 0) {
             Vec3 bone = vec3_sub(positions[i], positions[i-1]);
-            chain->bone_lengths[i-1] = vec3_length(&bone);
+            chain->bone_lengths[i-1] = vec3_length(bone);
             chain->total_length += chain->bone_lengths[i-1];
         }
     }
@@ -124,7 +124,7 @@ void fabrik_solve(uint32_t chain_id, const Vec3* target, int iterations) {
     if (chain->joint_count < 2) return;
     
     // Check if target is reachable
-    float target_distance = vec3_distance(&chain->joints[0].position, target);
+    float target_distance = vec3_distance(chain->joints[0].position, *target);
     if (target_distance > chain->total_length) {
         // Target unreachable - stretch towards it
         Vec3 direction = vec3_normalize(vec3_sub(*target, chain->joints[0].position));
@@ -162,7 +162,7 @@ void fabrik_solve(uint32_t chain_id, const Vec3* target, int iterations) {
         }
         
         // Check convergence
-        float end_error = vec3_distance(&chain->joints[chain->joint_count - 1].position, target);
+        float end_error = vec3_distance(chain->joints[chain->joint_count - 1].position, *target);
         if (end_error < FABRIK_TOLERANCE) {
             break;
         }
@@ -199,7 +199,7 @@ void fabrik_set_joint_position(uint32_t chain_id, uint32_t joint_index, const Ve
     // Recalculate bone lengths if this isn't the root joint
     if (joint_index > 0) {
         Vec3 bone = vec3_sub(*position, g_chains[chain_id].joints[joint_index - 1].position);
-        g_chains[chain_id].bone_lengths[joint_index - 1] = vec3_length(&bone);
+        g_chains[chain_id].bone_lengths[joint_index - 1] = vec3_length(bone);
         
         // Recalculate total length
         g_chains[chain_id].total_length = 0.0f;
