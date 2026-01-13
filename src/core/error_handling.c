@@ -1,4 +1,13 @@
-// error_handling.c - Standardized Error Handling Implementation
+/*
+ * error_handling.c
+ * Standardized error handling implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides comprehensive error management with recovery strategies and statistics
+ */
+
 #include "error_handling.h"
 #include <stdlib.h>
 #include <string.h>

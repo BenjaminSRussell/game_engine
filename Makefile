@@ -225,14 +225,6 @@ src/engine/backend/metal/metal_mesh_bridge.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/metal_mesh_bridge.c.o
 .PHONY : src/engine/backend/metal/metal_mesh_bridge.c.o
 
-src/engine/backend/metal/metal_mesh_bridge_2.o: src/engine/backend/metal/metal_mesh_bridge_2.c.o
-.PHONY : src/engine/backend/metal/metal_mesh_bridge_2.o
-
-# target to build an object file
-src/engine/backend/metal/metal_mesh_bridge_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/metal_mesh_bridge_2.c.o
-.PHONY : src/engine/backend/metal/metal_mesh_bridge_2.c.o
-
 src/engine/backend/metal/mtl_argument_buffer.o: src/engine/backend/metal/mtl_argument_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_argument_buffer.o
 
@@ -240,14 +232,6 @@ src/engine/backend/metal/mtl_argument_buffer.o: src/engine/backend/metal/mtl_arg
 src/engine/backend/metal/mtl_argument_buffer.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_argument_buffer.c.o
-
-src/engine/backend/metal/mtl_argument_buffer_2.o: src/engine/backend/metal/mtl_argument_buffer_2.c.o
-.PHONY : src/engine/backend/metal/mtl_argument_buffer_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_argument_buffer_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_argument_buffer_2.c.o
-.PHONY : src/engine/backend/metal/mtl_argument_buffer_2.c.o
 
 src/engine/backend/metal/mtl_buffer.o: src/engine/backend/metal/mtl_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_buffer.o
@@ -257,14 +241,6 @@ src/engine/backend/metal/mtl_buffer.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_buffer.c.o
 
-src/engine/backend/metal/mtl_buffer_2.o: src/engine/backend/metal/mtl_buffer_2.c.o
-.PHONY : src/engine/backend/metal/mtl_buffer_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_buffer_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_buffer_2.c.o
-.PHONY : src/engine/backend/metal/mtl_buffer_2.c.o
-
 src/engine/backend/metal/mtl_command.o: src/engine/backend/metal/mtl_command.c.o
 .PHONY : src/engine/backend/metal/mtl_command.o
 
@@ -272,14 +248,6 @@ src/engine/backend/metal/mtl_command.o: src/engine/backend/metal/mtl_command.c.o
 src/engine/backend/metal/mtl_command.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command.c.o
 .PHONY : src/engine/backend/metal/mtl_command.c.o
-
-src/engine/backend/metal/mtl_command_2.o: src/engine/backend/metal/mtl_command_2.c.o
-.PHONY : src/engine/backend/metal/mtl_command_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_command_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_2.c.o
-.PHONY : src/engine/backend/metal/mtl_command_2.c.o
 
 src/engine/backend/metal/mtl_command_buffer.o: src/engine/backend/metal/mtl_command_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_command_buffer.o
@@ -289,14 +257,6 @@ src/engine/backend/metal/mtl_command_buffer.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer.c.o
 .PHONY : src/engine/backend/metal/mtl_command_buffer.c.o
 
-src/engine/backend/metal/mtl_command_buffer_2.o: src/engine/backend/metal/mtl_command_buffer_2.c.o
-.PHONY : src/engine/backend/metal/mtl_command_buffer_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_command_buffer_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_buffer_2.c.o
-.PHONY : src/engine/backend/metal/mtl_command_buffer_2.c.o
-
 src/engine/backend/metal/mtl_command_graph.o: src/engine/backend/metal/mtl_command_graph.c.o
 .PHONY : src/engine/backend/metal/mtl_command_graph.o
 
@@ -304,14 +264,6 @@ src/engine/backend/metal/mtl_command_graph.o: src/engine/backend/metal/mtl_comma
 src/engine/backend/metal/mtl_command_graph.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph.c.o
 .PHONY : src/engine/backend/metal/mtl_command_graph.c.o
-
-src/engine/backend/metal/mtl_command_graph_2.o: src/engine/backend/metal/mtl_command_graph_2.c.o
-.PHONY : src/engine/backend/metal/mtl_command_graph_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_command_graph_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_command_graph_2.c.o
-.PHONY : src/engine/backend/metal/mtl_command_graph_2.c.o
 
 src/engine/backend/metal/mtl_device.o: src/engine/backend/metal/mtl_device.c.o
 .PHONY : src/engine/backend/metal/mtl_device.o
@@ -321,14 +273,6 @@ src/engine/backend/metal/mtl_device.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device.c.o
 .PHONY : src/engine/backend/metal/mtl_device.c.o
 
-src/engine/backend/metal/mtl_device_2.o: src/engine/backend/metal/mtl_device_2.c.o
-.PHONY : src/engine/backend/metal/mtl_device_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_device_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_2.c.o
-.PHONY : src/engine/backend/metal/mtl_device_2.c.o
-
 src/engine/backend/metal/mtl_device_caps.o: src/engine/backend/metal/mtl_device_caps.c.o
 .PHONY : src/engine/backend/metal/mtl_device_caps.o
 
@@ -336,14 +280,6 @@ src/engine/backend/metal/mtl_device_caps.o: src/engine/backend/metal/mtl_device_
 src/engine/backend/metal/mtl_device_caps.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps.c.o
 .PHONY : src/engine/backend/metal/mtl_device_caps.c.o
-
-src/engine/backend/metal/mtl_device_caps_2.o: src/engine/backend/metal/mtl_device_caps_2.c.o
-.PHONY : src/engine/backend/metal/mtl_device_caps_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_device_caps_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_device_caps_2.c.o
-.PHONY : src/engine/backend/metal/mtl_device_caps_2.c.o
 
 src/engine/backend/metal/mtl_encoder.o: src/engine/backend/metal/mtl_encoder.c.o
 .PHONY : src/engine/backend/metal/mtl_encoder.o
@@ -353,14 +289,6 @@ src/engine/backend/metal/mtl_encoder.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder.c.o
 .PHONY : src/engine/backend/metal/mtl_encoder.c.o
 
-src/engine/backend/metal/mtl_encoder_2.o: src/engine/backend/metal/mtl_encoder_2.c.o
-.PHONY : src/engine/backend/metal/mtl_encoder_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_encoder_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_encoder_2.c.o
-.PHONY : src/engine/backend/metal/mtl_encoder_2.c.o
-
 src/engine/backend/metal/mtl_frame_sync.o: src/engine/backend/metal/mtl_frame_sync.c.o
 .PHONY : src/engine/backend/metal/mtl_frame_sync.o
 
@@ -368,14 +296,6 @@ src/engine/backend/metal/mtl_frame_sync.o: src/engine/backend/metal/mtl_frame_sy
 src/engine/backend/metal/mtl_frame_sync.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync.c.o
 .PHONY : src/engine/backend/metal/mtl_frame_sync.c.o
-
-src/engine/backend/metal/mtl_frame_sync_2.o: src/engine/backend/metal/mtl_frame_sync_2.c.o
-.PHONY : src/engine/backend/metal/mtl_frame_sync_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_frame_sync_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_frame_sync_2.c.o
-.PHONY : src/engine/backend/metal/mtl_frame_sync_2.c.o
 
 src/engine/backend/metal/mtl_hazard_tracking.o: src/engine/backend/metal/mtl_hazard_tracking.c.o
 .PHONY : src/engine/backend/metal/mtl_hazard_tracking.o
@@ -385,14 +305,6 @@ src/engine/backend/metal/mtl_hazard_tracking.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking.c.o
 .PHONY : src/engine/backend/metal/mtl_hazard_tracking.c.o
 
-src/engine/backend/metal/mtl_hazard_tracking_2.o: src/engine/backend/metal/mtl_hazard_tracking_2.c.o
-.PHONY : src/engine/backend/metal/mtl_hazard_tracking_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_hazard_tracking_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_hazard_tracking_2.c.o
-.PHONY : src/engine/backend/metal/mtl_hazard_tracking_2.c.o
-
 src/engine/backend/metal/mtl_indirect_command.o: src/engine/backend/metal/mtl_indirect_command.c.o
 .PHONY : src/engine/backend/metal/mtl_indirect_command.o
 
@@ -400,14 +312,6 @@ src/engine/backend/metal/mtl_indirect_command.o: src/engine/backend/metal/mtl_in
 src/engine/backend/metal/mtl_indirect_command.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command.c.o
 .PHONY : src/engine/backend/metal/mtl_indirect_command.c.o
-
-src/engine/backend/metal/mtl_indirect_command_2.o: src/engine/backend/metal/mtl_indirect_command_2.c.o
-.PHONY : src/engine/backend/metal/mtl_indirect_command_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_indirect_command_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_indirect_command_2.c.o
-.PHONY : src/engine/backend/metal/mtl_indirect_command_2.c.o
 
 src/engine/backend/metal/mtl_memory_heap.o: src/engine/backend/metal/mtl_memory_heap.c.o
 .PHONY : src/engine/backend/metal/mtl_memory_heap.o
@@ -417,14 +321,6 @@ src/engine/backend/metal/mtl_memory_heap.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap.c.o
 .PHONY : src/engine/backend/metal/mtl_memory_heap.c.o
 
-src/engine/backend/metal/mtl_memory_heap_2.o: src/engine/backend/metal/mtl_memory_heap_2.c.o
-.PHONY : src/engine/backend/metal/mtl_memory_heap_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_memory_heap_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_memory_heap_2.c.o
-.PHONY : src/engine/backend/metal/mtl_memory_heap_2.c.o
-
 src/engine/backend/metal/mtl_parallel_encoder.o: src/engine/backend/metal/mtl_parallel_encoder.c.o
 .PHONY : src/engine/backend/metal/mtl_parallel_encoder.o
 
@@ -432,14 +328,6 @@ src/engine/backend/metal/mtl_parallel_encoder.o: src/engine/backend/metal/mtl_pa
 src/engine/backend/metal/mtl_parallel_encoder.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder.c.o
 .PHONY : src/engine/backend/metal/mtl_parallel_encoder.c.o
-
-src/engine/backend/metal/mtl_parallel_encoder_2.o: src/engine/backend/metal/mtl_parallel_encoder_2.c.o
-.PHONY : src/engine/backend/metal/mtl_parallel_encoder_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_parallel_encoder_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_parallel_encoder_2.c.o
-.PHONY : src/engine/backend/metal/mtl_parallel_encoder_2.c.o
 
 src/engine/backend/metal/mtl_render_pass.o: src/engine/backend/metal/mtl_render_pass.c.o
 .PHONY : src/engine/backend/metal/mtl_render_pass.o
@@ -449,14 +337,6 @@ src/engine/backend/metal/mtl_render_pass.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass.c.o
 .PHONY : src/engine/backend/metal/mtl_render_pass.c.o
 
-src/engine/backend/metal/mtl_render_pass_2.o: src/engine/backend/metal/mtl_render_pass_2.c.o
-.PHONY : src/engine/backend/metal/mtl_render_pass_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_render_pass_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_render_pass_2.c.o
-.PHONY : src/engine/backend/metal/mtl_render_pass_2.c.o
-
 src/engine/backend/metal/mtl_resource_pool.o: src/engine/backend/metal/mtl_resource_pool.c.o
 .PHONY : src/engine/backend/metal/mtl_resource_pool.o
 
@@ -464,14 +344,6 @@ src/engine/backend/metal/mtl_resource_pool.o: src/engine/backend/metal/mtl_resou
 src/engine/backend/metal/mtl_resource_pool.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool.c.o
 .PHONY : src/engine/backend/metal/mtl_resource_pool.c.o
-
-src/engine/backend/metal/mtl_resource_pool_2.o: src/engine/backend/metal/mtl_resource_pool_2.c.o
-.PHONY : src/engine/backend/metal/mtl_resource_pool_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_resource_pool_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_resource_pool_2.c.o
-.PHONY : src/engine/backend/metal/mtl_resource_pool_2.c.o
 
 src/engine/backend/metal/mtl_sampler.o: src/engine/backend/metal/mtl_sampler.c.o
 .PHONY : src/engine/backend/metal/mtl_sampler.o
@@ -489,14 +361,6 @@ src/engine/backend/metal/mtl_statistics.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics.c.o
 .PHONY : src/engine/backend/metal/mtl_statistics.c.o
 
-src/engine/backend/metal/mtl_statistics_2.o: src/engine/backend/metal/mtl_statistics_2.c.o
-.PHONY : src/engine/backend/metal/mtl_statistics_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_statistics_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_statistics_2.c.o
-.PHONY : src/engine/backend/metal/mtl_statistics_2.c.o
-
 src/engine/backend/metal/mtl_swapchain.o: src/engine/backend/metal/mtl_swapchain.c.o
 .PHONY : src/engine/backend/metal/mtl_swapchain.o
 
@@ -504,14 +368,6 @@ src/engine/backend/metal/mtl_swapchain.o: src/engine/backend/metal/mtl_swapchain
 src/engine/backend/metal/mtl_swapchain.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain.c.o
 .PHONY : src/engine/backend/metal/mtl_swapchain.c.o
-
-src/engine/backend/metal/mtl_swapchain_2.o: src/engine/backend/metal/mtl_swapchain_2.c.o
-.PHONY : src/engine/backend/metal/mtl_swapchain_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_swapchain_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_swapchain_2.c.o
-.PHONY : src/engine/backend/metal/mtl_swapchain_2.c.o
 
 src/engine/backend/metal/mtl_sync_example.o: src/engine/backend/metal/mtl_sync_example.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_example.o
@@ -529,14 +385,6 @@ src/engine/backend/metal/mtl_sync_manager.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_manager.c.o
 
-src/engine/backend/metal/mtl_sync_manager_2.o: src/engine/backend/metal/mtl_sync_manager_2.c.o
-.PHONY : src/engine/backend/metal/mtl_sync_manager_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_sync_manager_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_sync_manager_2.c.o
-.PHONY : src/engine/backend/metal/mtl_sync_manager_2.c.o
-
 src/engine/backend/metal/mtl_sync_primitives.o: src/engine/backend/metal/mtl_sync_primitives.c.o
 .PHONY : src/engine/backend/metal/mtl_sync_primitives.o
 
@@ -553,14 +401,6 @@ src/engine/backend/metal/mtl_texture.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture.c.o
 .PHONY : src/engine/backend/metal/mtl_texture.c.o
 
-src/engine/backend/metal/mtl_texture_2.o: src/engine/backend/metal/mtl_texture_2.c.o
-.PHONY : src/engine/backend/metal/mtl_texture_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_texture_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_texture_2.c.o
-.PHONY : src/engine/backend/metal/mtl_texture_2.c.o
-
 src/engine/backend/metal/mtl_transfer.o: src/engine/backend/metal/mtl_transfer.c.o
 .PHONY : src/engine/backend/metal/mtl_transfer.o
 
@@ -568,14 +408,6 @@ src/engine/backend/metal/mtl_transfer.o: src/engine/backend/metal/mtl_transfer.c
 src/engine/backend/metal/mtl_transfer.c.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer.c.o
 .PHONY : src/engine/backend/metal/mtl_transfer.c.o
-
-src/engine/backend/metal/mtl_transfer_2.o: src/engine/backend/metal/mtl_transfer_2.c.o
-.PHONY : src/engine/backend/metal/mtl_transfer_2.o
-
-# target to build an object file
-src/engine/backend/metal/mtl_transfer_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/mtl_transfer_2.c.o
-.PHONY : src/engine/backend/metal/mtl_transfer_2.c.o
 
 src/engine/backend/metal/old/metal_backend.o: src/engine/backend/metal/old/metal_backend.c.o
 .PHONY : src/engine/backend/metal/old/metal_backend.o
@@ -600,30 +432,6 @@ src/engine/backend/metal/old/metal_backend.s: src/engine/backend/metal/old/metal
 src/engine/backend/metal/old/metal_backend.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_backend.c.s
 .PHONY : src/engine/backend/metal/old/metal_backend.c.s
-
-src/engine/backend/metal/old/metal_backend_2.o: src/engine/backend/metal/old/metal_backend_2.c.o
-.PHONY : src/engine/backend/metal/old/metal_backend_2.o
-
-# target to build an object file
-src/engine/backend/metal/old/metal_backend_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_backend_2.c.o
-.PHONY : src/engine/backend/metal/old/metal_backend_2.c.o
-
-src/engine/backend/metal/old/metal_backend_2.i: src/engine/backend/metal/old/metal_backend_2.c.i
-.PHONY : src/engine/backend/metal/old/metal_backend_2.i
-
-# target to preprocess a source file
-src/engine/backend/metal/old/metal_backend_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_backend_2.c.i
-.PHONY : src/engine/backend/metal/old/metal_backend_2.c.i
-
-src/engine/backend/metal/old/metal_backend_2.s: src/engine/backend/metal/old/metal_backend_2.c.s
-.PHONY : src/engine/backend/metal/old/metal_backend_2.s
-
-# target to generate assembly for a file
-src/engine/backend/metal/old/metal_backend_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/metal/old/metal_backend_2.c.s
-.PHONY : src/engine/backend/metal/old/metal_backend_2.c.s
 
 src/engine/backend/metal/simple_metal_test.o: src/engine/backend/metal/simple_metal_test.c.o
 .PHONY : src/engine/backend/metal/simple_metal_test.o
@@ -1089,30 +897,6 @@ src/engine/backend/vulkan/vk_framebuffer.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_framebuffer.c.s
 .PHONY : src/engine/backend/vulkan/vk_framebuffer.c.s
 
-src/engine/backend/vulkan/vk_framebuffer_2.o: src/engine/backend/vulkan/vk_framebuffer_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_framebuffer_2.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_framebuffer_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_framebuffer_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_framebuffer_2.c.o
-
-src/engine/backend/vulkan/vk_framebuffer_2.i: src/engine/backend/vulkan/vk_framebuffer_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_framebuffer_2.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_framebuffer_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_framebuffer_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_framebuffer_2.c.i
-
-src/engine/backend/vulkan/vk_framebuffer_2.s: src/engine/backend/vulkan/vk_framebuffer_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_framebuffer_2.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_framebuffer_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_framebuffer_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_framebuffer_2.c.s
-
 src/engine/backend/vulkan/vk_graphics_pipeline.o: src/engine/backend/vulkan/vk_graphics_pipeline.c.o
 .PHONY : src/engine/backend/vulkan/vk_graphics_pipeline.o
 
@@ -1136,30 +920,6 @@ src/engine/backend/vulkan/vk_graphics_pipeline.s: src/engine/backend/vulkan/vk_g
 src/engine/backend/vulkan/vk_graphics_pipeline.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_graphics_pipeline.c.s
 .PHONY : src/engine/backend/vulkan/vk_graphics_pipeline.c.s
-
-src/engine/backend/vulkan/vk_graphics_pipeline_2.o: src/engine/backend/vulkan/vk_graphics_pipeline_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline_2.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_graphics_pipeline_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_graphics_pipeline_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline_2.c.o
-
-src/engine/backend/vulkan/vk_graphics_pipeline_2.i: src/engine/backend/vulkan/vk_graphics_pipeline_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline_2.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_graphics_pipeline_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_graphics_pipeline_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline_2.c.i
-
-src/engine/backend/vulkan/vk_graphics_pipeline_2.s: src/engine/backend/vulkan/vk_graphics_pipeline_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline_2.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_graphics_pipeline_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_graphics_pipeline_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_graphics_pipeline_2.c.s
 
 src/engine/backend/vulkan/vk_instance.o: src/engine/backend/vulkan/vk_instance.c.o
 .PHONY : src/engine/backend/vulkan/vk_instance.o
@@ -1257,30 +1017,6 @@ src/engine/backend/vulkan/vk_pipeline_cache.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline_cache.c.s
 .PHONY : src/engine/backend/vulkan/vk_pipeline_cache.c.s
 
-src/engine/backend/vulkan/vk_pipeline_cache_2.o: src/engine/backend/vulkan/vk_pipeline_cache_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache_2.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_pipeline_cache_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline_cache_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache_2.c.o
-
-src/engine/backend/vulkan/vk_pipeline_cache_2.i: src/engine/backend/vulkan/vk_pipeline_cache_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache_2.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_pipeline_cache_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline_cache_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache_2.c.i
-
-src/engine/backend/vulkan/vk_pipeline_cache_2.s: src/engine/backend/vulkan/vk_pipeline_cache_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache_2.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_pipeline_cache_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_pipeline_cache_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_pipeline_cache_2.c.s
-
 src/engine/backend/vulkan/vk_render_pass.o: src/engine/backend/vulkan/vk_render_pass.c.o
 .PHONY : src/engine/backend/vulkan/vk_render_pass.o
 
@@ -1305,30 +1041,6 @@ src/engine/backend/vulkan/vk_render_pass.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_render_pass.c.s
 .PHONY : src/engine/backend/vulkan/vk_render_pass.c.s
 
-src/engine/backend/vulkan/vk_render_pass_2.o: src/engine/backend/vulkan/vk_render_pass_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_render_pass_2.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_render_pass_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_render_pass_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_render_pass_2.c.o
-
-src/engine/backend/vulkan/vk_render_pass_2.i: src/engine/backend/vulkan/vk_render_pass_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_render_pass_2.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_render_pass_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_render_pass_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_render_pass_2.c.i
-
-src/engine/backend/vulkan/vk_render_pass_2.s: src/engine/backend/vulkan/vk_render_pass_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_render_pass_2.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_render_pass_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_render_pass_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_render_pass_2.c.s
-
 src/engine/backend/vulkan/vk_shader.o: src/engine/backend/vulkan/vk_shader.c.o
 .PHONY : src/engine/backend/vulkan/vk_shader.o
 
@@ -1352,30 +1064,6 @@ src/engine/backend/vulkan/vk_shader.s: src/engine/backend/vulkan/vk_shader.c.s
 src/engine/backend/vulkan/vk_shader.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_shader.c.s
 .PHONY : src/engine/backend/vulkan/vk_shader.c.s
-
-src/engine/backend/vulkan/vk_shader_2.o: src/engine/backend/vulkan/vk_shader_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_shader_2.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_shader_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_shader_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_shader_2.c.o
-
-src/engine/backend/vulkan/vk_shader_2.i: src/engine/backend/vulkan/vk_shader_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_shader_2.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_shader_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_shader_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_shader_2.c.i
-
-src/engine/backend/vulkan/vk_shader_2.s: src/engine/backend/vulkan/vk_shader_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_shader_2.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_shader_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_shader_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_shader_2.c.s
 
 src/engine/backend/vulkan/vk_swapchain.o: src/engine/backend/vulkan/vk_swapchain.c.o
 .PHONY : src/engine/backend/vulkan/vk_swapchain.o
@@ -1448,30 +1136,6 @@ src/engine/backend/vulkan/vk_texture.s: src/engine/backend/vulkan/vk_texture.c.s
 src/engine/backend/vulkan/vk_texture.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_texture.c.s
 .PHONY : src/engine/backend/vulkan/vk_texture.c.s
-
-src/engine/backend/vulkan/vk_texture_2.o: src/engine/backend/vulkan/vk_texture_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_texture_2.o
-
-# target to build an object file
-src/engine/backend/vulkan/vk_texture_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_texture_2.c.o
-.PHONY : src/engine/backend/vulkan/vk_texture_2.c.o
-
-src/engine/backend/vulkan/vk_texture_2.i: src/engine/backend/vulkan/vk_texture_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_texture_2.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vk_texture_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_texture_2.c.i
-.PHONY : src/engine/backend/vulkan/vk_texture_2.c.i
-
-src/engine/backend/vulkan/vk_texture_2.s: src/engine/backend/vulkan/vk_texture_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_texture_2.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vk_texture_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vk_texture_2.c.s
-.PHONY : src/engine/backend/vulkan/vk_texture_2.c.s
 
 src/engine/backend/vulkan/vk_validation.o: src/engine/backend/vulkan/vk_validation.c.o
 .PHONY : src/engine/backend/vulkan/vk_validation.o
@@ -1928,6 +1592,126 @@ src/engine/core/hot_reload.s: src/engine/core/hot_reload.c.s
 src/engine/core/hot_reload.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/hot_reload.c.s
 .PHONY : src/engine/core/hot_reload.c.s
+
+src/engine/core/initialization/platform/desktop/desktop_init.o: src/engine/core/initialization/platform/desktop/desktop_init.c.o
+.PHONY : src/engine/core/initialization/platform/desktop/desktop_init.o
+
+# target to build an object file
+src/engine/core/initialization/platform/desktop/desktop_init.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/platform/desktop/desktop_init.c.o
+.PHONY : src/engine/core/initialization/platform/desktop/desktop_init.c.o
+
+src/engine/core/initialization/platform/desktop/desktop_init.i: src/engine/core/initialization/platform/desktop/desktop_init.c.i
+.PHONY : src/engine/core/initialization/platform/desktop/desktop_init.i
+
+# target to preprocess a source file
+src/engine/core/initialization/platform/desktop/desktop_init.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/platform/desktop/desktop_init.c.i
+.PHONY : src/engine/core/initialization/platform/desktop/desktop_init.c.i
+
+src/engine/core/initialization/platform/desktop/desktop_init.s: src/engine/core/initialization/platform/desktop/desktop_init.c.s
+.PHONY : src/engine/core/initialization/platform/desktop/desktop_init.s
+
+# target to generate assembly for a file
+src/engine/core/initialization/platform/desktop/desktop_init.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/platform/desktop/desktop_init.c.s
+.PHONY : src/engine/core/initialization/platform/desktop/desktop_init.c.s
+
+src/engine/core/initialization/platform/desktop/window_system.o: src/engine/core/initialization/platform/desktop/window_system.c.o
+.PHONY : src/engine/core/initialization/platform/desktop/window_system.o
+
+# target to build an object file
+src/engine/core/initialization/platform/desktop/window_system.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/platform/desktop/window_system.c.o
+.PHONY : src/engine/core/initialization/platform/desktop/window_system.c.o
+
+src/engine/core/initialization/platform/desktop/window_system.i: src/engine/core/initialization/platform/desktop/window_system.c.i
+.PHONY : src/engine/core/initialization/platform/desktop/window_system.i
+
+# target to preprocess a source file
+src/engine/core/initialization/platform/desktop/window_system.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/platform/desktop/window_system.c.i
+.PHONY : src/engine/core/initialization/platform/desktop/window_system.c.i
+
+src/engine/core/initialization/platform/desktop/window_system.s: src/engine/core/initialization/platform/desktop/window_system.c.s
+.PHONY : src/engine/core/initialization/platform/desktop/window_system.s
+
+# target to generate assembly for a file
+src/engine/core/initialization/platform/desktop/window_system.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/platform/desktop/window_system.c.s
+.PHONY : src/engine/core/initialization/platform/desktop/window_system.c.s
+
+src/engine/core/initialization/private/error_recovery.o: src/engine/core/initialization/private/error_recovery.c.o
+.PHONY : src/engine/core/initialization/private/error_recovery.o
+
+# target to build an object file
+src/engine/core/initialization/private/error_recovery.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/private/error_recovery.c.o
+.PHONY : src/engine/core/initialization/private/error_recovery.c.o
+
+src/engine/core/initialization/private/error_recovery.i: src/engine/core/initialization/private/error_recovery.c.i
+.PHONY : src/engine/core/initialization/private/error_recovery.i
+
+# target to preprocess a source file
+src/engine/core/initialization/private/error_recovery.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/private/error_recovery.c.i
+.PHONY : src/engine/core/initialization/private/error_recovery.c.i
+
+src/engine/core/initialization/private/error_recovery.s: src/engine/core/initialization/private/error_recovery.c.s
+.PHONY : src/engine/core/initialization/private/error_recovery.s
+
+# target to generate assembly for a file
+src/engine/core/initialization/private/error_recovery.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/private/error_recovery.c.s
+.PHONY : src/engine/core/initialization/private/error_recovery.c.s
+
+src/engine/core/initialization/private/init_sequence.o: src/engine/core/initialization/private/init_sequence.c.o
+.PHONY : src/engine/core/initialization/private/init_sequence.o
+
+# target to build an object file
+src/engine/core/initialization/private/init_sequence.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/private/init_sequence.c.o
+.PHONY : src/engine/core/initialization/private/init_sequence.c.o
+
+src/engine/core/initialization/private/init_sequence.i: src/engine/core/initialization/private/init_sequence.c.i
+.PHONY : src/engine/core/initialization/private/init_sequence.i
+
+# target to preprocess a source file
+src/engine/core/initialization/private/init_sequence.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/private/init_sequence.c.i
+.PHONY : src/engine/core/initialization/private/init_sequence.c.i
+
+src/engine/core/initialization/private/init_sequence.s: src/engine/core/initialization/private/init_sequence.c.s
+.PHONY : src/engine/core/initialization/private/init_sequence.s
+
+# target to generate assembly for a file
+src/engine/core/initialization/private/init_sequence.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/private/init_sequence.c.s
+.PHONY : src/engine/core/initialization/private/init_sequence.c.s
+
+src/engine/core/initialization/private/subsystem_manager.o: src/engine/core/initialization/private/subsystem_manager.c.o
+.PHONY : src/engine/core/initialization/private/subsystem_manager.o
+
+# target to build an object file
+src/engine/core/initialization/private/subsystem_manager.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/private/subsystem_manager.c.o
+.PHONY : src/engine/core/initialization/private/subsystem_manager.c.o
+
+src/engine/core/initialization/private/subsystem_manager.i: src/engine/core/initialization/private/subsystem_manager.c.i
+.PHONY : src/engine/core/initialization/private/subsystem_manager.i
+
+# target to preprocess a source file
+src/engine/core/initialization/private/subsystem_manager.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/private/subsystem_manager.c.i
+.PHONY : src/engine/core/initialization/private/subsystem_manager.c.i
+
+src/engine/core/initialization/private/subsystem_manager.s: src/engine/core/initialization/private/subsystem_manager.c.s
+.PHONY : src/engine/core/initialization/private/subsystem_manager.s
+
+# target to generate assembly for a file
+src/engine/core/initialization/private/subsystem_manager.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/core/initialization/private/subsystem_manager.c.s
+.PHONY : src/engine/core/initialization/private/subsystem_manager.c.s
 
 src/engine/core/legacy/hot_reload.o: src/engine/core/legacy/hot_reload.c.o
 .PHONY : src/engine/core/legacy/hot_reload.o
@@ -9601,33 +9385,6 @@ src/engine/network/content_sharing_system.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system.c.s
 .PHONY : src/engine/network/content_sharing_system.c.s
 
-src/engine/network/content_sharing_system_2.o: src/engine/network/content_sharing_system_2.c.o
-.PHONY : src/engine/network/content_sharing_system_2.o
-
-# target to build an object file
-src/engine/network/content_sharing_system_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.o
-.PHONY : src/engine/network/content_sharing_system_2.c.o
-
-src/engine/network/content_sharing_system_2.i: src/engine/network/content_sharing_system_2.c.i
-.PHONY : src/engine/network/content_sharing_system_2.i
-
-# target to preprocess a source file
-src/engine/network/content_sharing_system_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.i
-.PHONY : src/engine/network/content_sharing_system_2.c.i
-
-src/engine/network/content_sharing_system_2.s: src/engine/network/content_sharing_system_2.c.s
-.PHONY : src/engine/network/content_sharing_system_2.s
-
-# target to generate assembly for a file
-src/engine/network/content_sharing_system_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/content_sharing_system_2.c.s
-.PHONY : src/engine/network/content_sharing_system_2.c.s
-
 src/engine/network/core/client_prediction.o: src/engine/network/core/client_prediction.c.o
 .PHONY : src/engine/network/core/client_prediction.o
 
@@ -10539,30 +10296,6 @@ src/engine/network/server_performance_tracker.s: src/engine/network/server_perfo
 src/engine/network/server_performance_tracker.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/server_performance_tracker.c.s
 .PHONY : src/engine/network/server_performance_tracker.c.s
-
-src/engine/network/server_performance_tracker_2.o: src/engine/network/server_performance_tracker_2.c.o
-.PHONY : src/engine/network/server_performance_tracker_2.o
-
-# target to build an object file
-src/engine/network/server_performance_tracker_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/server_performance_tracker_2.c.o
-.PHONY : src/engine/network/server_performance_tracker_2.c.o
-
-src/engine/network/server_performance_tracker_2.i: src/engine/network/server_performance_tracker_2.c.i
-.PHONY : src/engine/network/server_performance_tracker_2.i
-
-# target to preprocess a source file
-src/engine/network/server_performance_tracker_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/server_performance_tracker_2.c.i
-.PHONY : src/engine/network/server_performance_tracker_2.c.i
-
-src/engine/network/server_performance_tracker_2.s: src/engine/network/server_performance_tracker_2.c.s
-.PHONY : src/engine/network/server_performance_tracker_2.s
-
-# target to generate assembly for a file
-src/engine/network/server_performance_tracker_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/network/server_performance_tracker_2.c.s
-.PHONY : src/engine/network/server_performance_tracker_2.c.s
 
 src/engine/network/socket.o: src/engine/network/socket.c.o
 .PHONY : src/engine/network/socket.o
@@ -16236,30 +15969,6 @@ src/engine/tools/analytics_dashboard.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard.c.s
 .PHONY : src/engine/tools/analytics_dashboard.c.s
 
-src/engine/tools/analytics_dashboard_2.o: src/engine/tools/analytics_dashboard_2.c.o
-.PHONY : src/engine/tools/analytics_dashboard_2.o
-
-# target to build an object file
-src/engine/tools/analytics_dashboard_2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.o
-.PHONY : src/engine/tools/analytics_dashboard_2.c.o
-
-src/engine/tools/analytics_dashboard_2.i: src/engine/tools/analytics_dashboard_2.c.i
-.PHONY : src/engine/tools/analytics_dashboard_2.i
-
-# target to preprocess a source file
-src/engine/tools/analytics_dashboard_2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.i
-.PHONY : src/engine/tools/analytics_dashboard_2.c.i
-
-src/engine/tools/analytics_dashboard_2.s: src/engine/tools/analytics_dashboard_2.c.s
-.PHONY : src/engine/tools/analytics_dashboard_2.s
-
-# target to generate assembly for a file
-src/engine/tools/analytics_dashboard_2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/tools/analytics_dashboard_2.c.s
-.PHONY : src/engine/tools/analytics_dashboard_2.c.s
-
 src/engine/tools/asset_browser/asset_view.o: src/engine/tools/asset_browser/asset_view.c.o
 .PHONY : src/engine/tools/asset_browser/asset_view.o
 
@@ -17748,6 +17457,54 @@ src/engine/ui/ui_widgets.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/ui_widgets.c.s
 .PHONY : src/engine/ui/ui_widgets.c.s
 
+src/engine/ui/widgets/button.o: src/engine/ui/widgets/button.c.o
+.PHONY : src/engine/ui/widgets/button.o
+
+# target to build an object file
+src/engine/ui/widgets/button.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/button.c.o
+.PHONY : src/engine/ui/widgets/button.c.o
+
+src/engine/ui/widgets/button.i: src/engine/ui/widgets/button.c.i
+.PHONY : src/engine/ui/widgets/button.i
+
+# target to preprocess a source file
+src/engine/ui/widgets/button.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/button.c.i
+.PHONY : src/engine/ui/widgets/button.c.i
+
+src/engine/ui/widgets/button.s: src/engine/ui/widgets/button.c.s
+.PHONY : src/engine/ui/widgets/button.s
+
+# target to generate assembly for a file
+src/engine/ui/widgets/button.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/button.c.s
+.PHONY : src/engine/ui/widgets/button.c.s
+
+src/engine/ui/widgets/combobox.o: src/engine/ui/widgets/combobox.c.o
+.PHONY : src/engine/ui/widgets/combobox.o
+
+# target to build an object file
+src/engine/ui/widgets/combobox.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/combobox.c.o
+.PHONY : src/engine/ui/widgets/combobox.c.o
+
+src/engine/ui/widgets/combobox.i: src/engine/ui/widgets/combobox.c.i
+.PHONY : src/engine/ui/widgets/combobox.i
+
+# target to preprocess a source file
+src/engine/ui/widgets/combobox.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/combobox.c.i
+.PHONY : src/engine/ui/widgets/combobox.c.i
+
+src/engine/ui/widgets/combobox.s: src/engine/ui/widgets/combobox.c.s
+.PHONY : src/engine/ui/widgets/combobox.s
+
+# target to generate assembly for a file
+src/engine/ui/widgets/combobox.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/combobox.c.s
+.PHONY : src/engine/ui/widgets/combobox.c.s
+
 src/engine/ui/widgets/dialog.o: src/engine/ui/widgets/dialog.c.o
 .PHONY : src/engine/ui/widgets/dialog.o
 
@@ -17771,6 +17528,54 @@ src/engine/ui/widgets/dialog.s: src/engine/ui/widgets/dialog.c.s
 src/engine/ui/widgets/dialog.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/dialog.c.s
 .PHONY : src/engine/ui/widgets/dialog.c.s
+
+src/engine/ui/widgets/scroll_view.o: src/engine/ui/widgets/scroll_view.c.o
+.PHONY : src/engine/ui/widgets/scroll_view.o
+
+# target to build an object file
+src/engine/ui/widgets/scroll_view.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/scroll_view.c.o
+.PHONY : src/engine/ui/widgets/scroll_view.c.o
+
+src/engine/ui/widgets/scroll_view.i: src/engine/ui/widgets/scroll_view.c.i
+.PHONY : src/engine/ui/widgets/scroll_view.i
+
+# target to preprocess a source file
+src/engine/ui/widgets/scroll_view.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/scroll_view.c.i
+.PHONY : src/engine/ui/widgets/scroll_view.c.i
+
+src/engine/ui/widgets/scroll_view.s: src/engine/ui/widgets/scroll_view.c.s
+.PHONY : src/engine/ui/widgets/scroll_view.s
+
+# target to generate assembly for a file
+src/engine/ui/widgets/scroll_view.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/scroll_view.c.s
+.PHONY : src/engine/ui/widgets/scroll_view.c.s
+
+src/engine/ui/widgets/text_field.o: src/engine/ui/widgets/text_field.c.o
+.PHONY : src/engine/ui/widgets/text_field.o
+
+# target to build an object file
+src/engine/ui/widgets/text_field.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/text_field.c.o
+.PHONY : src/engine/ui/widgets/text_field.c.o
+
+src/engine/ui/widgets/text_field.i: src/engine/ui/widgets/text_field.c.i
+.PHONY : src/engine/ui/widgets/text_field.i
+
+# target to preprocess a source file
+src/engine/ui/widgets/text_field.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/text_field.c.i
+.PHONY : src/engine/ui/widgets/text_field.c.i
+
+src/engine/ui/widgets/text_field.s: src/engine/ui/widgets/text_field.c.s
+.PHONY : src/engine/ui/widgets/text_field.s
+
+# target to generate assembly for a file
+src/engine/ui/widgets/text_field.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/ui/widgets/text_field.c.s
+.PHONY : src/engine/ui/widgets/text_field.c.s
 
 src/engine/ui/widgets/ui_button.o: src/engine/ui/widgets/ui_button.c.o
 .PHONY : src/engine/ui/widgets/ui_button.o
@@ -18660,978 +18465,6 @@ src/engine/vendor/stb_image/stb_image_impl.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/vendor/stb_image/stb_image_impl.c.s
 .PHONY : src/engine/vendor/stb_image/stb_image_impl.c.s
 
-src/game/blockgame/api.o: src/game/blockgame/api.c.o
-.PHONY : src/game/blockgame/api.o
-
-# target to build an object file
-src/game/blockgame/api.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/api.c.o
-.PHONY : src/game/blockgame/api.c.o
-
-src/game/blockgame/api.i: src/game/blockgame/api.c.i
-.PHONY : src/game/blockgame/api.i
-
-# target to preprocess a source file
-src/game/blockgame/api.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/api.c.i
-.PHONY : src/game/blockgame/api.c.i
-
-src/game/blockgame/api.s: src/game/blockgame/api.c.s
-.PHONY : src/game/blockgame/api.s
-
-# target to generate assembly for a file
-src/game/blockgame/api.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/api.c.s
-.PHONY : src/game/blockgame/api.c.s
-
-src/game/blockgame/block/block.o: src/game/blockgame/block/block.c.o
-.PHONY : src/game/blockgame/block/block.o
-
-# target to build an object file
-src/game/blockgame/block/block.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/block.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/block.c.o
-.PHONY : src/game/blockgame/block/block.c.o
-
-src/game/blockgame/block/block.i: src/game/blockgame/block/block.c.i
-.PHONY : src/game/blockgame/block/block.i
-
-# target to preprocess a source file
-src/game/blockgame/block/block.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/block.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/block.c.i
-.PHONY : src/game/blockgame/block/block.c.i
-
-src/game/blockgame/block/block.s: src/game/blockgame/block/block.c.s
-.PHONY : src/game/blockgame/block/block.s
-
-# target to generate assembly for a file
-src/game/blockgame/block/block.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/block.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/block.c.s
-.PHONY : src/game/blockgame/block/block.c.s
-
-src/game/blockgame/block/block_states.o: src/game/blockgame/block/block_states.c.o
-.PHONY : src/game/blockgame/block/block_states.o
-
-# target to build an object file
-src/game/blockgame/block/block_states.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/block_states.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/block_states.c.o
-.PHONY : src/game/blockgame/block/block_states.c.o
-
-src/game/blockgame/block/block_states.i: src/game/blockgame/block/block_states.c.i
-.PHONY : src/game/blockgame/block/block_states.i
-
-# target to preprocess a source file
-src/game/blockgame/block/block_states.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/block_states.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/block_states.c.i
-.PHONY : src/game/blockgame/block/block_states.c.i
-
-src/game/blockgame/block/block_states.s: src/game/blockgame/block/block_states.c.s
-.PHONY : src/game/blockgame/block/block_states.s
-
-# target to generate assembly for a file
-src/game/blockgame/block/block_states.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/block_states.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/block_states.c.s
-.PHONY : src/game/blockgame/block/block_states.c.s
-
-src/game/blockgame/block/falling_blocks.o: src/game/blockgame/block/falling_blocks.c.o
-.PHONY : src/game/blockgame/block/falling_blocks.o
-
-# target to build an object file
-src/game/blockgame/block/falling_blocks.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/falling_blocks.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/falling_blocks.c.o
-.PHONY : src/game/blockgame/block/falling_blocks.c.o
-
-src/game/blockgame/block/falling_blocks.i: src/game/blockgame/block/falling_blocks.c.i
-.PHONY : src/game/blockgame/block/falling_blocks.i
-
-# target to preprocess a source file
-src/game/blockgame/block/falling_blocks.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/falling_blocks.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/falling_blocks.c.i
-.PHONY : src/game/blockgame/block/falling_blocks.c.i
-
-src/game/blockgame/block/falling_blocks.s: src/game/blockgame/block/falling_blocks.c.s
-.PHONY : src/game/blockgame/block/falling_blocks.s
-
-# target to generate assembly for a file
-src/game/blockgame/block/falling_blocks.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/falling_blocks.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/falling_blocks.c.s
-.PHONY : src/game/blockgame/block/falling_blocks.c.s
-
-src/game/blockgame/block/interaction.o: src/game/blockgame/block/interaction.c.o
-.PHONY : src/game/blockgame/block/interaction.o
-
-# target to build an object file
-src/game/blockgame/block/interaction.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/interaction.c.o
-.PHONY : src/game/blockgame/block/interaction.c.o
-
-src/game/blockgame/block/interaction.i: src/game/blockgame/block/interaction.c.i
-.PHONY : src/game/blockgame/block/interaction.i
-
-# target to preprocess a source file
-src/game/blockgame/block/interaction.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/interaction.c.i
-.PHONY : src/game/blockgame/block/interaction.c.i
-
-src/game/blockgame/block/interaction.s: src/game/blockgame/block/interaction.c.s
-.PHONY : src/game/blockgame/block/interaction.s
-
-# target to generate assembly for a file
-src/game/blockgame/block/interaction.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/block/interaction.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/interaction.c.s
-.PHONY : src/game/blockgame/block/interaction.c.s
-
-src/game/blockgame/block/liquid_blocks.o: src/game/blockgame/block/liquid_blocks.c.o
-.PHONY : src/game/blockgame/block/liquid_blocks.o
-
-# target to build an object file
-src/game/blockgame/block/liquid_blocks.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/liquid_blocks.c.o
-.PHONY : src/game/blockgame/block/liquid_blocks.c.o
-
-src/game/blockgame/block/liquid_blocks.i: src/game/blockgame/block/liquid_blocks.c.i
-.PHONY : src/game/blockgame/block/liquid_blocks.i
-
-# target to preprocess a source file
-src/game/blockgame/block/liquid_blocks.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/liquid_blocks.c.i
-.PHONY : src/game/blockgame/block/liquid_blocks.c.i
-
-src/game/blockgame/block/liquid_blocks.s: src/game/blockgame/block/liquid_blocks.c.s
-.PHONY : src/game/blockgame/block/liquid_blocks.s
-
-# target to generate assembly for a file
-src/game/blockgame/block/liquid_blocks.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/liquid_blocks.c.s
-.PHONY : src/game/blockgame/block/liquid_blocks.c.s
-
-src/game/blockgame/block/mining.o: src/game/blockgame/block/mining.c.o
-.PHONY : src/game/blockgame/block/mining.o
-
-# target to build an object file
-src/game/blockgame/block/mining.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/mining.c.o
-.PHONY : src/game/blockgame/block/mining.c.o
-
-src/game/blockgame/block/mining.i: src/game/blockgame/block/mining.c.i
-.PHONY : src/game/blockgame/block/mining.i
-
-# target to preprocess a source file
-src/game/blockgame/block/mining.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/mining.c.i
-.PHONY : src/game/blockgame/block/mining.c.i
-
-src/game/blockgame/block/mining.s: src/game/blockgame/block/mining.c.s
-.PHONY : src/game/blockgame/block/mining.s
-
-# target to generate assembly for a file
-src/game/blockgame/block/mining.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/mining.c.s
-.PHONY : src/game/blockgame/block/mining.c.s
-
-src/game/blockgame/block/water_bucket.o: src/game/blockgame/block/water_bucket.c.o
-.PHONY : src/game/blockgame/block/water_bucket.o
-
-# target to build an object file
-src/game/blockgame/block/water_bucket.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/water_bucket.c.o
-.PHONY : src/game/blockgame/block/water_bucket.c.o
-
-src/game/blockgame/block/water_bucket.i: src/game/blockgame/block/water_bucket.c.i
-.PHONY : src/game/blockgame/block/water_bucket.i
-
-# target to preprocess a source file
-src/game/blockgame/block/water_bucket.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/water_bucket.c.i
-.PHONY : src/game/blockgame/block/water_bucket.c.i
-
-src/game/blockgame/block/water_bucket.s: src/game/blockgame/block/water_bucket.c.s
-.PHONY : src/game/blockgame/block/water_bucket.s
-
-# target to generate assembly for a file
-src/game/blockgame/block/water_bucket.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/water_bucket.c.s
-.PHONY : src/game/blockgame/block/water_bucket.c.s
-
-src/game/blockgame/block/water_physics.o: src/game/blockgame/block/water_physics.c.o
-.PHONY : src/game/blockgame/block/water_physics.o
-
-# target to build an object file
-src/game/blockgame/block/water_physics.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/water_physics.c.o
-.PHONY : src/game/blockgame/block/water_physics.c.o
-
-src/game/blockgame/block/water_physics.i: src/game/blockgame/block/water_physics.c.i
-.PHONY : src/game/blockgame/block/water_physics.i
-
-# target to preprocess a source file
-src/game/blockgame/block/water_physics.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/water_physics.c.i
-.PHONY : src/game/blockgame/block/water_physics.c.i
-
-src/game/blockgame/block/water_physics.s: src/game/blockgame/block/water_physics.c.s
-.PHONY : src/game/blockgame/block/water_physics.s
-
-# target to generate assembly for a file
-src/game/blockgame/block/water_physics.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block/water_physics.c.s
-.PHONY : src/game/blockgame/block/water_physics.c.s
-
-src/game/blockgame/block_game_module.o: src/game/blockgame/block_game_module.c.o
-.PHONY : src/game/blockgame/block_game_module.o
-
-# target to build an object file
-src/game/blockgame/block_game_module.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block_game_module.c.o
-.PHONY : src/game/blockgame/block_game_module.c.o
-
-src/game/blockgame/block_game_module.i: src/game/blockgame/block_game_module.c.i
-.PHONY : src/game/blockgame/block_game_module.i
-
-# target to preprocess a source file
-src/game/blockgame/block_game_module.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block_game_module.c.i
-.PHONY : src/game/blockgame/block_game_module.c.i
-
-src/game/blockgame/block_game_module.s: src/game/blockgame/block_game_module.c.s
-.PHONY : src/game/blockgame/block_game_module.s
-
-# target to generate assembly for a file
-src/game/blockgame/block_game_module.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block_game_module.c.s
-.PHONY : src/game/blockgame/block_game_module.c.s
-
-src/game/blockgame/block_registry_global.o: src/game/blockgame/block_registry_global.c.o
-.PHONY : src/game/blockgame/block_registry_global.o
-
-# target to build an object file
-src/game/blockgame/block_registry_global.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block_registry_global.c.o
-.PHONY : src/game/blockgame/block_registry_global.c.o
-
-src/game/blockgame/block_registry_global.i: src/game/blockgame/block_registry_global.c.i
-.PHONY : src/game/blockgame/block_registry_global.i
-
-# target to preprocess a source file
-src/game/blockgame/block_registry_global.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block_registry_global.c.i
-.PHONY : src/game/blockgame/block_registry_global.c.i
-
-src/game/blockgame/block_registry_global.s: src/game/blockgame/block_registry_global.c.s
-.PHONY : src/game/blockgame/block_registry_global.s
-
-# target to generate assembly for a file
-src/game/blockgame/block_registry_global.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/block_registry_global.c.s
-.PHONY : src/game/blockgame/block_registry_global.c.s
-
-src/game/blockgame/chunk/chunk.o: src/game/blockgame/chunk/chunk.c.o
-.PHONY : src/game/blockgame/chunk/chunk.o
-
-# target to build an object file
-src/game/blockgame/chunk/chunk.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/chunk/chunk.c.o
-.PHONY : src/game/blockgame/chunk/chunk.c.o
-
-src/game/blockgame/chunk/chunk.i: src/game/blockgame/chunk/chunk.c.i
-.PHONY : src/game/blockgame/chunk/chunk.i
-
-# target to preprocess a source file
-src/game/blockgame/chunk/chunk.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/chunk/chunk.c.i
-.PHONY : src/game/blockgame/chunk/chunk.c.i
-
-src/game/blockgame/chunk/chunk.s: src/game/blockgame/chunk/chunk.c.s
-.PHONY : src/game/blockgame/chunk/chunk.s
-
-# target to generate assembly for a file
-src/game/blockgame/chunk/chunk.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/chunk/chunk.c.s
-.PHONY : src/game/blockgame/chunk/chunk.c.s
-
-src/game/blockgame/chunk/chunk_buffers.o: src/game/blockgame/chunk/chunk_buffers.c.o
-.PHONY : src/game/blockgame/chunk/chunk_buffers.o
-
-# target to build an object file
-src/game/blockgame/chunk/chunk_buffers.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/chunk/chunk_buffers.c.o
-.PHONY : src/game/blockgame/chunk/chunk_buffers.c.o
-
-src/game/blockgame/chunk/chunk_buffers.i: src/game/blockgame/chunk/chunk_buffers.c.i
-.PHONY : src/game/blockgame/chunk/chunk_buffers.i
-
-# target to preprocess a source file
-src/game/blockgame/chunk/chunk_buffers.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/chunk/chunk_buffers.c.i
-.PHONY : src/game/blockgame/chunk/chunk_buffers.c.i
-
-src/game/blockgame/chunk/chunk_buffers.s: src/game/blockgame/chunk/chunk_buffers.c.s
-.PHONY : src/game/blockgame/chunk/chunk_buffers.s
-
-# target to generate assembly for a file
-src/game/blockgame/chunk/chunk_buffers.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/chunk/chunk_buffers.c.s
-.PHONY : src/game/blockgame/chunk/chunk_buffers.c.s
-
-src/game/blockgame/chunk/chunk_manager_optimized.o: src/game/blockgame/chunk/chunk_manager_optimized.c.o
-.PHONY : src/game/blockgame/chunk/chunk_manager_optimized.o
-
-# target to build an object file
-src/game/blockgame/chunk/chunk_manager_optimized.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/chunk/chunk_manager_optimized.c.o
-.PHONY : src/game/blockgame/chunk/chunk_manager_optimized.c.o
-
-src/game/blockgame/chunk/chunk_manager_optimized.i: src/game/blockgame/chunk/chunk_manager_optimized.c.i
-.PHONY : src/game/blockgame/chunk/chunk_manager_optimized.i
-
-# target to preprocess a source file
-src/game/blockgame/chunk/chunk_manager_optimized.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/chunk/chunk_manager_optimized.c.i
-.PHONY : src/game/blockgame/chunk/chunk_manager_optimized.c.i
-
-src/game/blockgame/chunk/chunk_manager_optimized.s: src/game/blockgame/chunk/chunk_manager_optimized.c.s
-.PHONY : src/game/blockgame/chunk/chunk_manager_optimized.s
-
-# target to generate assembly for a file
-src/game/blockgame/chunk/chunk_manager_optimized.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/chunk/chunk_manager_optimized.c.s
-.PHONY : src/game/blockgame/chunk/chunk_manager_optimized.c.s
-
-src/game/blockgame/combat/combat_animations.o: src/game/blockgame/combat/combat_animations.c.o
-.PHONY : src/game/blockgame/combat/combat_animations.o
-
-# target to build an object file
-src/game/blockgame/combat/combat_animations.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/combat_animations.c.o
-.PHONY : src/game/blockgame/combat/combat_animations.c.o
-
-src/game/blockgame/combat/combat_animations.i: src/game/blockgame/combat/combat_animations.c.i
-.PHONY : src/game/blockgame/combat/combat_animations.i
-
-# target to preprocess a source file
-src/game/blockgame/combat/combat_animations.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/combat_animations.c.i
-.PHONY : src/game/blockgame/combat/combat_animations.c.i
-
-src/game/blockgame/combat/combat_animations.s: src/game/blockgame/combat/combat_animations.c.s
-.PHONY : src/game/blockgame/combat/combat_animations.s
-
-# target to generate assembly for a file
-src/game/blockgame/combat/combat_animations.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/combat_animations.c.s
-.PHONY : src/game/blockgame/combat/combat_animations.c.s
-
-src/game/blockgame/combat/combat_system.o: src/game/blockgame/combat/combat_system.c.o
-.PHONY : src/game/blockgame/combat/combat_system.o
-
-# target to build an object file
-src/game/blockgame/combat/combat_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/combat_system.c.o
-.PHONY : src/game/blockgame/combat/combat_system.c.o
-
-src/game/blockgame/combat/combat_system.i: src/game/blockgame/combat/combat_system.c.i
-.PHONY : src/game/blockgame/combat/combat_system.i
-
-# target to preprocess a source file
-src/game/blockgame/combat/combat_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/combat_system.c.i
-.PHONY : src/game/blockgame/combat/combat_system.c.i
-
-src/game/blockgame/combat/combat_system.s: src/game/blockgame/combat/combat_system.c.s
-.PHONY : src/game/blockgame/combat/combat_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/combat/combat_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/combat_system.c.s
-.PHONY : src/game/blockgame/combat/combat_system.c.s
-
-src/game/blockgame/combat/damage_calc.o: src/game/blockgame/combat/damage_calc.c.o
-.PHONY : src/game/blockgame/combat/damage_calc.o
-
-# target to build an object file
-src/game/blockgame/combat/damage_calc.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/damage_calc.c.o
-.PHONY : src/game/blockgame/combat/damage_calc.c.o
-
-src/game/blockgame/combat/damage_calc.i: src/game/blockgame/combat/damage_calc.c.i
-.PHONY : src/game/blockgame/combat/damage_calc.i
-
-# target to preprocess a source file
-src/game/blockgame/combat/damage_calc.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/damage_calc.c.i
-.PHONY : src/game/blockgame/combat/damage_calc.c.i
-
-src/game/blockgame/combat/damage_calc.s: src/game/blockgame/combat/damage_calc.c.s
-.PHONY : src/game/blockgame/combat/damage_calc.s
-
-# target to generate assembly for a file
-src/game/blockgame/combat/damage_calc.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/damage_calc.c.s
-.PHONY : src/game/blockgame/combat/damage_calc.c.s
-
-src/game/blockgame/combat/damage_system.o: src/game/blockgame/combat/damage_system.c.o
-.PHONY : src/game/blockgame/combat/damage_system.o
-
-# target to build an object file
-src/game/blockgame/combat/damage_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/damage_system.c.o
-.PHONY : src/game/blockgame/combat/damage_system.c.o
-
-src/game/blockgame/combat/damage_system.i: src/game/blockgame/combat/damage_system.c.i
-.PHONY : src/game/blockgame/combat/damage_system.i
-
-# target to preprocess a source file
-src/game/blockgame/combat/damage_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/damage_system.c.i
-.PHONY : src/game/blockgame/combat/damage_system.c.i
-
-src/game/blockgame/combat/damage_system.s: src/game/blockgame/combat/damage_system.c.s
-.PHONY : src/game/blockgame/combat/damage_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/combat/damage_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/damage_system.c.s
-.PHONY : src/game/blockgame/combat/damage_system.c.s
-
-src/game/blockgame/combat/equipment.o: src/game/blockgame/combat/equipment.c.o
-.PHONY : src/game/blockgame/combat/equipment.o
-
-# target to build an object file
-src/game/blockgame/combat/equipment.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/equipment.c.o
-.PHONY : src/game/blockgame/combat/equipment.c.o
-
-src/game/blockgame/combat/equipment.i: src/game/blockgame/combat/equipment.c.i
-.PHONY : src/game/blockgame/combat/equipment.i
-
-# target to preprocess a source file
-src/game/blockgame/combat/equipment.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/equipment.c.i
-.PHONY : src/game/blockgame/combat/equipment.c.i
-
-src/game/blockgame/combat/equipment.s: src/game/blockgame/combat/equipment.c.s
-.PHONY : src/game/blockgame/combat/equipment.s
-
-# target to generate assembly for a file
-src/game/blockgame/combat/equipment.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/equipment.c.s
-.PHONY : src/game/blockgame/combat/equipment.c.s
-
-src/game/blockgame/combat/equipment_system.o: src/game/blockgame/combat/equipment_system.c.o
-.PHONY : src/game/blockgame/combat/equipment_system.o
-
-# target to build an object file
-src/game/blockgame/combat/equipment_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/equipment_system.c.o
-.PHONY : src/game/blockgame/combat/equipment_system.c.o
-
-src/game/blockgame/combat/equipment_system.i: src/game/blockgame/combat/equipment_system.c.i
-.PHONY : src/game/blockgame/combat/equipment_system.i
-
-# target to preprocess a source file
-src/game/blockgame/combat/equipment_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/equipment_system.c.i
-.PHONY : src/game/blockgame/combat/equipment_system.c.i
-
-src/game/blockgame/combat/equipment_system.s: src/game/blockgame/combat/equipment_system.c.s
-.PHONY : src/game/blockgame/combat/equipment_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/combat/equipment_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/equipment_system.c.s
-.PHONY : src/game/blockgame/combat/equipment_system.c.s
-
-src/game/blockgame/combat/projectile.o: src/game/blockgame/combat/projectile.c.o
-.PHONY : src/game/blockgame/combat/projectile.o
-
-# target to build an object file
-src/game/blockgame/combat/projectile.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/projectile.c.o
-.PHONY : src/game/blockgame/combat/projectile.c.o
-
-src/game/blockgame/combat/projectile.i: src/game/blockgame/combat/projectile.c.i
-.PHONY : src/game/blockgame/combat/projectile.i
-
-# target to preprocess a source file
-src/game/blockgame/combat/projectile.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/projectile.c.i
-.PHONY : src/game/blockgame/combat/projectile.c.i
-
-src/game/blockgame/combat/projectile.s: src/game/blockgame/combat/projectile.c.s
-.PHONY : src/game/blockgame/combat/projectile.s
-
-# target to generate assembly for a file
-src/game/blockgame/combat/projectile.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/projectile.c.s
-.PHONY : src/game/blockgame/combat/projectile.c.s
-
-src/game/blockgame/combat/shield.o: src/game/blockgame/combat/shield.c.o
-.PHONY : src/game/blockgame/combat/shield.o
-
-# target to build an object file
-src/game/blockgame/combat/shield.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/shield.c.o
-.PHONY : src/game/blockgame/combat/shield.c.o
-
-src/game/blockgame/combat/shield.i: src/game/blockgame/combat/shield.c.i
-.PHONY : src/game/blockgame/combat/shield.i
-
-# target to preprocess a source file
-src/game/blockgame/combat/shield.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/shield.c.i
-.PHONY : src/game/blockgame/combat/shield.c.i
-
-src/game/blockgame/combat/shield.s: src/game/blockgame/combat/shield.c.s
-.PHONY : src/game/blockgame/combat/shield.s
-
-# target to generate assembly for a file
-src/game/blockgame/combat/shield.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/combat/shield.c.s
-.PHONY : src/game/blockgame/combat/shield.c.s
-
-src/game/blockgame/crafting/brewing.o: src/game/blockgame/crafting/brewing.c.o
-.PHONY : src/game/blockgame/crafting/brewing.o
-
-# target to build an object file
-src/game/blockgame/crafting/brewing.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/brewing.c.o
-.PHONY : src/game/blockgame/crafting/brewing.c.o
-
-src/game/blockgame/crafting/brewing.i: src/game/blockgame/crafting/brewing.c.i
-.PHONY : src/game/blockgame/crafting/brewing.i
-
-# target to preprocess a source file
-src/game/blockgame/crafting/brewing.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/brewing.c.i
-.PHONY : src/game/blockgame/crafting/brewing.c.i
-
-src/game/blockgame/crafting/brewing.s: src/game/blockgame/crafting/brewing.c.s
-.PHONY : src/game/blockgame/crafting/brewing.s
-
-# target to generate assembly for a file
-src/game/blockgame/crafting/brewing.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/brewing.c.s
-.PHONY : src/game/blockgame/crafting/brewing.c.s
-
-src/game/blockgame/crafting/crafting_table.o: src/game/blockgame/crafting/crafting_table.c.o
-.PHONY : src/game/blockgame/crafting/crafting_table.o
-
-# target to build an object file
-src/game/blockgame/crafting/crafting_table.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/crafting_table.c.o
-.PHONY : src/game/blockgame/crafting/crafting_table.c.o
-
-src/game/blockgame/crafting/crafting_table.i: src/game/blockgame/crafting/crafting_table.c.i
-.PHONY : src/game/blockgame/crafting/crafting_table.i
-
-# target to preprocess a source file
-src/game/blockgame/crafting/crafting_table.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/crafting_table.c.i
-.PHONY : src/game/blockgame/crafting/crafting_table.c.i
-
-src/game/blockgame/crafting/crafting_table.s: src/game/blockgame/crafting/crafting_table.c.s
-.PHONY : src/game/blockgame/crafting/crafting_table.s
-
-# target to generate assembly for a file
-src/game/blockgame/crafting/crafting_table.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/crafting_table.c.s
-.PHONY : src/game/blockgame/crafting/crafting_table.c.s
-
-src/game/blockgame/crafting/enchanting.o: src/game/blockgame/crafting/enchanting.c.o
-.PHONY : src/game/blockgame/crafting/enchanting.o
-
-# target to build an object file
-src/game/blockgame/crafting/enchanting.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/enchanting.c.o
-.PHONY : src/game/blockgame/crafting/enchanting.c.o
-
-src/game/blockgame/crafting/enchanting.i: src/game/blockgame/crafting/enchanting.c.i
-.PHONY : src/game/blockgame/crafting/enchanting.i
-
-# target to preprocess a source file
-src/game/blockgame/crafting/enchanting.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/enchanting.c.i
-.PHONY : src/game/blockgame/crafting/enchanting.c.i
-
-src/game/blockgame/crafting/enchanting.s: src/game/blockgame/crafting/enchanting.c.s
-.PHONY : src/game/blockgame/crafting/enchanting.s
-
-# target to generate assembly for a file
-src/game/blockgame/crafting/enchanting.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/enchanting.c.s
-.PHONY : src/game/blockgame/crafting/enchanting.c.s
-
-src/game/blockgame/crafting/furnace.o: src/game/blockgame/crafting/furnace.c.o
-.PHONY : src/game/blockgame/crafting/furnace.o
-
-# target to build an object file
-src/game/blockgame/crafting/furnace.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/furnace.c.o
-.PHONY : src/game/blockgame/crafting/furnace.c.o
-
-src/game/blockgame/crafting/furnace.i: src/game/blockgame/crafting/furnace.c.i
-.PHONY : src/game/blockgame/crafting/furnace.i
-
-# target to preprocess a source file
-src/game/blockgame/crafting/furnace.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/furnace.c.i
-.PHONY : src/game/blockgame/crafting/furnace.c.i
-
-src/game/blockgame/crafting/furnace.s: src/game/blockgame/crafting/furnace.c.s
-.PHONY : src/game/blockgame/crafting/furnace.s
-
-# target to generate assembly for a file
-src/game/blockgame/crafting/furnace.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/furnace.c.s
-.PHONY : src/game/blockgame/crafting/furnace.c.s
-
-src/game/blockgame/crafting/recipe_manager.o: src/game/blockgame/crafting/recipe_manager.c.o
-.PHONY : src/game/blockgame/crafting/recipe_manager.o
-
-# target to build an object file
-src/game/blockgame/crafting/recipe_manager.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/recipe_manager.c.o
-.PHONY : src/game/blockgame/crafting/recipe_manager.c.o
-
-src/game/blockgame/crafting/recipe_manager.i: src/game/blockgame/crafting/recipe_manager.c.i
-.PHONY : src/game/blockgame/crafting/recipe_manager.i
-
-# target to preprocess a source file
-src/game/blockgame/crafting/recipe_manager.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/recipe_manager.c.i
-.PHONY : src/game/blockgame/crafting/recipe_manager.c.i
-
-src/game/blockgame/crafting/recipe_manager.s: src/game/blockgame/crafting/recipe_manager.c.s
-.PHONY : src/game/blockgame/crafting/recipe_manager.s
-
-# target to generate assembly for a file
-src/game/blockgame/crafting/recipe_manager.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/recipe_manager.c.s
-.PHONY : src/game/blockgame/crafting/recipe_manager.c.s
-
-src/game/blockgame/crafting/recipe_registry.o: src/game/blockgame/crafting/recipe_registry.c.o
-.PHONY : src/game/blockgame/crafting/recipe_registry.o
-
-# target to build an object file
-src/game/blockgame/crafting/recipe_registry.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/recipe_registry.c.o
-.PHONY : src/game/blockgame/crafting/recipe_registry.c.o
-
-src/game/blockgame/crafting/recipe_registry.i: src/game/blockgame/crafting/recipe_registry.c.i
-.PHONY : src/game/blockgame/crafting/recipe_registry.i
-
-# target to preprocess a source file
-src/game/blockgame/crafting/recipe_registry.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/recipe_registry.c.i
-.PHONY : src/game/blockgame/crafting/recipe_registry.c.i
-
-src/game/blockgame/crafting/recipe_registry.s: src/game/blockgame/crafting/recipe_registry.c.s
-.PHONY : src/game/blockgame/crafting/recipe_registry.s
-
-# target to generate assembly for a file
-src/game/blockgame/crafting/recipe_registry.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/recipe_registry.c.s
-.PHONY : src/game/blockgame/crafting/recipe_registry.c.s
-
-src/game/blockgame/crafting/recipe_system.o: src/game/blockgame/crafting/recipe_system.c.o
-.PHONY : src/game/blockgame/crafting/recipe_system.o
-
-# target to build an object file
-src/game/blockgame/crafting/recipe_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/recipe_system.c.o
-.PHONY : src/game/blockgame/crafting/recipe_system.c.o
-
-src/game/blockgame/crafting/recipe_system.i: src/game/blockgame/crafting/recipe_system.c.i
-.PHONY : src/game/blockgame/crafting/recipe_system.i
-
-# target to preprocess a source file
-src/game/blockgame/crafting/recipe_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/recipe_system.c.i
-.PHONY : src/game/blockgame/crafting/recipe_system.c.i
-
-src/game/blockgame/crafting/recipe_system.s: src/game/blockgame/crafting/recipe_system.c.s
-.PHONY : src/game/blockgame/crafting/recipe_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/crafting/recipe_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/recipe_system.c.s
-.PHONY : src/game/blockgame/crafting/recipe_system.c.s
-
-src/game/blockgame/crafting/resource_processing.o: src/game/blockgame/crafting/resource_processing.c.o
-.PHONY : src/game/blockgame/crafting/resource_processing.o
-
-# target to build an object file
-src/game/blockgame/crafting/resource_processing.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/resource_processing.c.o
-.PHONY : src/game/blockgame/crafting/resource_processing.c.o
-
-src/game/blockgame/crafting/resource_processing.i: src/game/blockgame/crafting/resource_processing.c.i
-.PHONY : src/game/blockgame/crafting/resource_processing.i
-
-# target to preprocess a source file
-src/game/blockgame/crafting/resource_processing.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/resource_processing.c.i
-.PHONY : src/game/blockgame/crafting/resource_processing.c.i
-
-src/game/blockgame/crafting/resource_processing.s: src/game/blockgame/crafting/resource_processing.c.s
-.PHONY : src/game/blockgame/crafting/resource_processing.s
-
-# target to generate assembly for a file
-src/game/blockgame/crafting/resource_processing.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/crafting/resource_processing.c.s
-.PHONY : src/game/blockgame/crafting/resource_processing.c.s
-
-src/game/blockgame/game.o: src/game/blockgame/game.c.o
-.PHONY : src/game/blockgame/game.o
-
-# target to build an object file
-src/game/blockgame/game.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/game.c.o
-.PHONY : src/game/blockgame/game.c.o
-
-src/game/blockgame/game.i: src/game/blockgame/game.c.i
-.PHONY : src/game/blockgame/game.i
-
-# target to preprocess a source file
-src/game/blockgame/game.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/game.c.i
-.PHONY : src/game/blockgame/game.c.i
-
-src/game/blockgame/game.s: src/game/blockgame/game.c.s
-.PHONY : src/game/blockgame/game.s
-
-# target to generate assembly for a file
-src/game/blockgame/game.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/game.c.s
-.PHONY : src/game/blockgame/game.c.s
-
-src/game/blockgame/game_hooks.o: src/game/blockgame/game_hooks.c.o
-.PHONY : src/game/blockgame/game_hooks.o
-
-# target to build an object file
-src/game/blockgame/game_hooks.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/game_hooks.c.o
-.PHONY : src/game/blockgame/game_hooks.c.o
-
-src/game/blockgame/game_hooks.i: src/game/blockgame/game_hooks.c.i
-.PHONY : src/game/blockgame/game_hooks.i
-
-# target to preprocess a source file
-src/game/blockgame/game_hooks.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/game_hooks.c.i
-.PHONY : src/game/blockgame/game_hooks.c.i
-
-src/game/blockgame/game_hooks.s: src/game/blockgame/game_hooks.c.s
-.PHONY : src/game/blockgame/game_hooks.s
-
-# target to generate assembly for a file
-src/game/blockgame/game_hooks.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/game_hooks.c.s
-.PHONY : src/game/blockgame/game_hooks.c.s
-
-src/game/blockgame/inventory/inventory.o: src/game/blockgame/inventory/inventory.c.o
-.PHONY : src/game/blockgame/inventory/inventory.o
-
-# target to build an object file
-src/game/blockgame/inventory/inventory.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.o
-.PHONY : src/game/blockgame/inventory/inventory.c.o
-
-src/game/blockgame/inventory/inventory.i: src/game/blockgame/inventory/inventory.c.i
-.PHONY : src/game/blockgame/inventory/inventory.i
-
-# target to preprocess a source file
-src/game/blockgame/inventory/inventory.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.i
-.PHONY : src/game/blockgame/inventory/inventory.c.i
-
-src/game/blockgame/inventory/inventory.s: src/game/blockgame/inventory/inventory.c.s
-.PHONY : src/game/blockgame/inventory/inventory.s
-
-# target to generate assembly for a file
-src/game/blockgame/inventory/inventory.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/inventory.c.s
-.PHONY : src/game/blockgame/inventory/inventory.c.s
-
-src/game/blockgame/inventory/item_registry.o: src/game/blockgame/inventory/item_registry.c.o
-.PHONY : src/game/blockgame/inventory/item_registry.o
-
-# target to build an object file
-src/game/blockgame/inventory/item_registry.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.o
-.PHONY : src/game/blockgame/inventory/item_registry.c.o
-
-src/game/blockgame/inventory/item_registry.i: src/game/blockgame/inventory/item_registry.c.i
-.PHONY : src/game/blockgame/inventory/item_registry.i
-
-# target to preprocess a source file
-src/game/blockgame/inventory/item_registry.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.i
-.PHONY : src/game/blockgame/inventory/item_registry.c.i
-
-src/game/blockgame/inventory/item_registry.s: src/game/blockgame/inventory/item_registry.c.s
-.PHONY : src/game/blockgame/inventory/item_registry.s
-
-# target to generate assembly for a file
-src/game/blockgame/inventory/item_registry.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/inventory/item_registry.c.s
-.PHONY : src/game/blockgame/inventory/item_registry.c.s
-
-src/game/blockgame/modding/mod_api.o: src/game/blockgame/modding/mod_api.c.o
-.PHONY : src/game/blockgame/modding/mod_api.o
-
-# target to build an object file
-src/game/blockgame/modding/mod_api.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/modding/mod_api.c.o
-.PHONY : src/game/blockgame/modding/mod_api.c.o
-
-src/game/blockgame/modding/mod_api.i: src/game/blockgame/modding/mod_api.c.i
-.PHONY : src/game/blockgame/modding/mod_api.i
-
-# target to preprocess a source file
-src/game/blockgame/modding/mod_api.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/modding/mod_api.c.i
-.PHONY : src/game/blockgame/modding/mod_api.c.i
-
-src/game/blockgame/modding/mod_api.s: src/game/blockgame/modding/mod_api.c.s
-.PHONY : src/game/blockgame/modding/mod_api.s
-
-# target to generate assembly for a file
-src/game/blockgame/modding/mod_api.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/modding/mod_api.c.s
-.PHONY : src/game/blockgame/modding/mod_api.c.s
-
-src/game/blockgame/modding/mod_loader.o: src/game/blockgame/modding/mod_loader.c.o
-.PHONY : src/game/blockgame/modding/mod_loader.o
-
-# target to build an object file
-src/game/blockgame/modding/mod_loader.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/modding/mod_loader.c.o
-.PHONY : src/game/blockgame/modding/mod_loader.c.o
-
-src/game/blockgame/modding/mod_loader.i: src/game/blockgame/modding/mod_loader.c.i
-.PHONY : src/game/blockgame/modding/mod_loader.i
-
-# target to preprocess a source file
-src/game/blockgame/modding/mod_loader.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/modding/mod_loader.c.i
-.PHONY : src/game/blockgame/modding/mod_loader.c.i
-
-src/game/blockgame/modding/mod_loader.s: src/game/blockgame/modding/mod_loader.c.s
-.PHONY : src/game/blockgame/modding/mod_loader.s
-
-# target to generate assembly for a file
-src/game/blockgame/modding/mod_loader.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/modding/mod_loader.c.s
-.PHONY : src/game/blockgame/modding/mod_loader.c.s
-
-src/game/blockgame/mode.o: src/game/blockgame/mode.c.o
-.PHONY : src/game/blockgame/mode.o
-
-# target to build an object file
-src/game/blockgame/mode.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/mode.c.o
-.PHONY : src/game/blockgame/mode.c.o
-
-src/game/blockgame/mode.i: src/game/blockgame/mode.c.i
-.PHONY : src/game/blockgame/mode.i
-
-# target to preprocess a source file
-src/game/blockgame/mode.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/mode.c.i
-.PHONY : src/game/blockgame/mode.c.i
-
-src/game/blockgame/mode.s: src/game/blockgame/mode.c.s
-.PHONY : src/game/blockgame/mode.s
-
-# target to generate assembly for a file
-src/game/blockgame/mode.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/mode.c.s
-.PHONY : src/game/blockgame/mode.c.s
-
-src/game/blockgame/ore/ore_generation.o: src/game/blockgame/ore/ore_generation.c.o
-.PHONY : src/game/blockgame/ore/ore_generation.o
-
-# target to build an object file
-src/game/blockgame/ore/ore_generation.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ore/ore_generation.c.o
-.PHONY : src/game/blockgame/ore/ore_generation.c.o
-
-src/game/blockgame/ore/ore_generation.i: src/game/blockgame/ore/ore_generation.c.i
-.PHONY : src/game/blockgame/ore/ore_generation.i
-
-# target to preprocess a source file
-src/game/blockgame/ore/ore_generation.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ore/ore_generation.c.i
-.PHONY : src/game/blockgame/ore/ore_generation.c.i
-
-src/game/blockgame/ore/ore_generation.s: src/game/blockgame/ore/ore_generation.c.s
-.PHONY : src/game/blockgame/ore/ore_generation.s
-
-# target to generate assembly for a file
-src/game/blockgame/ore/ore_generation.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ore/ore_generation.c.s
-.PHONY : src/game/blockgame/ore/ore_generation.c.s
-
-src/game/blockgame/player/experience_system.o: src/game/blockgame/player/experience_system.c.o
-.PHONY : src/game/blockgame/player/experience_system.o
-
-# target to build an object file
-src/game/blockgame/player/experience_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/experience_system.c.o
-.PHONY : src/game/blockgame/player/experience_system.c.o
-
-src/game/blockgame/player/experience_system.i: src/game/blockgame/player/experience_system.c.i
-.PHONY : src/game/blockgame/player/experience_system.i
-
-# target to preprocess a source file
-src/game/blockgame/player/experience_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/experience_system.c.i
-.PHONY : src/game/blockgame/player/experience_system.c.i
-
-src/game/blockgame/player/experience_system.s: src/game/blockgame/player/experience_system.c.s
-.PHONY : src/game/blockgame/player/experience_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/experience_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/experience_system.c.s
-.PHONY : src/game/blockgame/player/experience_system.c.s
-
-src/game/blockgame/player/food_spoilage.o: src/game/blockgame/player/food_spoilage.c.o
-.PHONY : src/game/blockgame/player/food_spoilage.o
-
-# target to build an object file
-src/game/blockgame/player/food_spoilage.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/food_spoilage.c.o
-.PHONY : src/game/blockgame/player/food_spoilage.c.o
-
-src/game/blockgame/player/food_spoilage.i: src/game/blockgame/player/food_spoilage.c.i
-.PHONY : src/game/blockgame/player/food_spoilage.i
-
-# target to preprocess a source file
-src/game/blockgame/player/food_spoilage.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/food_spoilage.c.i
-.PHONY : src/game/blockgame/player/food_spoilage.c.i
-
-src/game/blockgame/player/food_spoilage.s: src/game/blockgame/player/food_spoilage.c.s
-.PHONY : src/game/blockgame/player/food_spoilage.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/food_spoilage.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/food_spoilage.c.s
-.PHONY : src/game/blockgame/player/food_spoilage.c.s
-
 src/game/blockgame/player/player.o: src/game/blockgame/player/player.c.o
 .PHONY : src/game/blockgame/player/player.o
 
@@ -19680,1641 +18513,6 @@ src/game/blockgame/player/player_combat.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_combat.c.s
 .PHONY : src/game/blockgame/player/player_combat.c.s
 
-src/game/blockgame/player/player_damage.o: src/game/blockgame/player/player_damage.c.o
-.PHONY : src/game/blockgame/player/player_damage.o
-
-# target to build an object file
-src/game/blockgame/player/player_damage.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_damage.c.o
-.PHONY : src/game/blockgame/player/player_damage.c.o
-
-src/game/blockgame/player/player_damage.i: src/game/blockgame/player/player_damage.c.i
-.PHONY : src/game/blockgame/player/player_damage.i
-
-# target to preprocess a source file
-src/game/blockgame/player/player_damage.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_damage.c.i
-.PHONY : src/game/blockgame/player/player_damage.c.i
-
-src/game/blockgame/player/player_damage.s: src/game/blockgame/player/player_damage.c.s
-.PHONY : src/game/blockgame/player/player_damage.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/player_damage.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_damage.c.s
-.PHONY : src/game/blockgame/player/player_damage.c.s
-
-src/game/blockgame/player/player_food.o: src/game/blockgame/player/player_food.c.o
-.PHONY : src/game/blockgame/player/player_food.o
-
-# target to build an object file
-src/game/blockgame/player/player_food.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.o
-.PHONY : src/game/blockgame/player/player_food.c.o
-
-src/game/blockgame/player/player_food.i: src/game/blockgame/player/player_food.c.i
-.PHONY : src/game/blockgame/player/player_food.i
-
-# target to preprocess a source file
-src/game/blockgame/player/player_food.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.i
-.PHONY : src/game/blockgame/player/player_food.c.i
-
-src/game/blockgame/player/player_food.s: src/game/blockgame/player/player_food.c.s
-.PHONY : src/game/blockgame/player/player_food.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/player_food.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_food.c.s
-.PHONY : src/game/blockgame/player/player_food.c.s
-
-src/game/blockgame/player/player_movement_enhancements.o: src/game/blockgame/player/player_movement_enhancements.c.o
-.PHONY : src/game/blockgame/player/player_movement_enhancements.o
-
-# target to build an object file
-src/game/blockgame/player/player_movement_enhancements.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_movement_enhancements.c.o
-.PHONY : src/game/blockgame/player/player_movement_enhancements.c.o
-
-src/game/blockgame/player/player_movement_enhancements.i: src/game/blockgame/player/player_movement_enhancements.c.i
-.PHONY : src/game/blockgame/player/player_movement_enhancements.i
-
-# target to preprocess a source file
-src/game/blockgame/player/player_movement_enhancements.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_movement_enhancements.c.i
-.PHONY : src/game/blockgame/player/player_movement_enhancements.c.i
-
-src/game/blockgame/player/player_movement_enhancements.s: src/game/blockgame/player/player_movement_enhancements.c.s
-.PHONY : src/game/blockgame/player/player_movement_enhancements.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/player_movement_enhancements.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_movement_enhancements.c.s
-.PHONY : src/game/blockgame/player/player_movement_enhancements.c.s
-
-src/game/blockgame/player/player_movement_physics.o: src/game/blockgame/player/player_movement_physics.c.o
-.PHONY : src/game/blockgame/player/player_movement_physics.o
-
-# target to build an object file
-src/game/blockgame/player/player_movement_physics.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_movement_physics.c.o
-.PHONY : src/game/blockgame/player/player_movement_physics.c.o
-
-src/game/blockgame/player/player_movement_physics.i: src/game/blockgame/player/player_movement_physics.c.i
-.PHONY : src/game/blockgame/player/player_movement_physics.i
-
-# target to preprocess a source file
-src/game/blockgame/player/player_movement_physics.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_movement_physics.c.i
-.PHONY : src/game/blockgame/player/player_movement_physics.c.i
-
-src/game/blockgame/player/player_movement_physics.s: src/game/blockgame/player/player_movement_physics.c.s
-.PHONY : src/game/blockgame/player/player_movement_physics.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/player_movement_physics.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/player_movement_physics.c.s
-.PHONY : src/game/blockgame/player/player_movement_physics.c.s
-
-src/game/blockgame/player/spell_combination.o: src/game/blockgame/player/spell_combination.c.o
-.PHONY : src/game/blockgame/player/spell_combination.o
-
-# target to build an object file
-src/game/blockgame/player/spell_combination.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_combination.c.o
-.PHONY : src/game/blockgame/player/spell_combination.c.o
-
-src/game/blockgame/player/spell_combination.i: src/game/blockgame/player/spell_combination.c.i
-.PHONY : src/game/blockgame/player/spell_combination.i
-
-# target to preprocess a source file
-src/game/blockgame/player/spell_combination.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_combination.c.i
-.PHONY : src/game/blockgame/player/spell_combination.c.i
-
-src/game/blockgame/player/spell_combination.s: src/game/blockgame/player/spell_combination.c.s
-.PHONY : src/game/blockgame/player/spell_combination.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/spell_combination.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spell_combination.c.s
-.PHONY : src/game/blockgame/player/spell_combination.c.s
-
-src/game/blockgame/player/spirit_model.o: src/game/blockgame/player/spirit_model.c.o
-.PHONY : src/game/blockgame/player/spirit_model.o
-
-# target to build an object file
-src/game/blockgame/player/spirit_model.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spirit_model.c.o
-.PHONY : src/game/blockgame/player/spirit_model.c.o
-
-src/game/blockgame/player/spirit_model.i: src/game/blockgame/player/spirit_model.c.i
-.PHONY : src/game/blockgame/player/spirit_model.i
-
-# target to preprocess a source file
-src/game/blockgame/player/spirit_model.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spirit_model.c.i
-.PHONY : src/game/blockgame/player/spirit_model.c.i
-
-src/game/blockgame/player/spirit_model.s: src/game/blockgame/player/spirit_model.c.s
-.PHONY : src/game/blockgame/player/spirit_model.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/spirit_model.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/spirit_model.c.s
-.PHONY : src/game/blockgame/player/spirit_model.c.s
-
-src/game/blockgame/player/status_effects.o: src/game/blockgame/player/status_effects.c.o
-.PHONY : src/game/blockgame/player/status_effects.o
-
-# target to build an object file
-src/game/blockgame/player/status_effects.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/status_effects.c.o
-.PHONY : src/game/blockgame/player/status_effects.c.o
-
-src/game/blockgame/player/status_effects.i: src/game/blockgame/player/status_effects.c.i
-.PHONY : src/game/blockgame/player/status_effects.i
-
-# target to preprocess a source file
-src/game/blockgame/player/status_effects.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/status_effects.c.i
-.PHONY : src/game/blockgame/player/status_effects.c.i
-
-src/game/blockgame/player/status_effects.s: src/game/blockgame/player/status_effects.c.s
-.PHONY : src/game/blockgame/player/status_effects.s
-
-# target to generate assembly for a file
-src/game/blockgame/player/status_effects.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/player/status_effects.c.s
-.PHONY : src/game/blockgame/player/status_effects.c.s
-
-src/game/blockgame/queue.o: src/game/blockgame/queue.c.o
-.PHONY : src/game/blockgame/queue.o
-
-# target to build an object file
-src/game/blockgame/queue.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/queue.c.o
-.PHONY : src/game/blockgame/queue.c.o
-
-src/game/blockgame/queue.i: src/game/blockgame/queue.c.i
-.PHONY : src/game/blockgame/queue.i
-
-# target to preprocess a source file
-src/game/blockgame/queue.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/queue.c.i
-.PHONY : src/game/blockgame/queue.c.i
-
-src/game/blockgame/queue.s: src/game/blockgame/queue.c.s
-.PHONY : src/game/blockgame/queue.s
-
-# target to generate assembly for a file
-src/game/blockgame/queue.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/queue.c.s
-.PHONY : src/game/blockgame/queue.c.s
-
-src/game/blockgame/save/save.o: src/game/blockgame/save/save.c.o
-.PHONY : src/game/blockgame/save/save.o
-
-# target to build an object file
-src/game/blockgame/save/save.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/save/save.c.o
-.PHONY : src/game/blockgame/save/save.c.o
-
-src/game/blockgame/save/save.i: src/game/blockgame/save/save.c.i
-.PHONY : src/game/blockgame/save/save.i
-
-# target to preprocess a source file
-src/game/blockgame/save/save.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/save/save.c.i
-.PHONY : src/game/blockgame/save/save.c.i
-
-src/game/blockgame/save/save.s: src/game/blockgame/save/save.c.s
-.PHONY : src/game/blockgame/save/save.s
-
-# target to generate assembly for a file
-src/game/blockgame/save/save.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/save/save.c.s
-.PHONY : src/game/blockgame/save/save.c.s
-
-src/game/blockgame/survival/hunger.o: src/game/blockgame/survival/hunger.c.o
-.PHONY : src/game/blockgame/survival/hunger.o
-
-# target to build an object file
-src/game/blockgame/survival/hunger.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/survival/hunger.c.o
-.PHONY : src/game/blockgame/survival/hunger.c.o
-
-src/game/blockgame/survival/hunger.i: src/game/blockgame/survival/hunger.c.i
-.PHONY : src/game/blockgame/survival/hunger.i
-
-# target to preprocess a source file
-src/game/blockgame/survival/hunger.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/survival/hunger.c.i
-.PHONY : src/game/blockgame/survival/hunger.c.i
-
-src/game/blockgame/survival/hunger.s: src/game/blockgame/survival/hunger.c.s
-.PHONY : src/game/blockgame/survival/hunger.s
-
-# target to generate assembly for a file
-src/game/blockgame/survival/hunger.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/survival/hunger.c.s
-.PHONY : src/game/blockgame/survival/hunger.c.s
-
-src/game/blockgame/survival_system.o: src/game/blockgame/survival_system.c.o
-.PHONY : src/game/blockgame/survival_system.o
-
-# target to build an object file
-src/game/blockgame/survival_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/survival_system.c.o
-.PHONY : src/game/blockgame/survival_system.c.o
-
-src/game/blockgame/survival_system.i: src/game/blockgame/survival_system.c.i
-.PHONY : src/game/blockgame/survival_system.i
-
-# target to preprocess a source file
-src/game/blockgame/survival_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/survival_system.c.i
-.PHONY : src/game/blockgame/survival_system.c.i
-
-src/game/blockgame/survival_system.s: src/game/blockgame/survival_system.c.s
-.PHONY : src/game/blockgame/survival_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/survival_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/survival_system.c.s
-.PHONY : src/game/blockgame/survival_system.c.s
-
-src/game/blockgame/systems/progression.o: src/game/blockgame/systems/progression.c.o
-.PHONY : src/game/blockgame/systems/progression.o
-
-# target to build an object file
-src/game/blockgame/systems/progression.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/systems/progression.c.o
-.PHONY : src/game/blockgame/systems/progression.c.o
-
-src/game/blockgame/systems/progression.i: src/game/blockgame/systems/progression.c.i
-.PHONY : src/game/blockgame/systems/progression.i
-
-# target to preprocess a source file
-src/game/blockgame/systems/progression.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/systems/progression.c.i
-.PHONY : src/game/blockgame/systems/progression.c.i
-
-src/game/blockgame/systems/progression.s: src/game/blockgame/systems/progression.c.s
-.PHONY : src/game/blockgame/systems/progression.s
-
-# target to generate assembly for a file
-src/game/blockgame/systems/progression.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/systems/progression.c.s
-.PHONY : src/game/blockgame/systems/progression.c.s
-
-src/game/blockgame/tech/energy_system.o: src/game/blockgame/tech/energy_system.c.o
-.PHONY : src/game/blockgame/tech/energy_system.o
-
-# target to build an object file
-src/game/blockgame/tech/energy_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech/energy_system.c.o
-.PHONY : src/game/blockgame/tech/energy_system.c.o
-
-src/game/blockgame/tech/energy_system.i: src/game/blockgame/tech/energy_system.c.i
-.PHONY : src/game/blockgame/tech/energy_system.i
-
-# target to preprocess a source file
-src/game/blockgame/tech/energy_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech/energy_system.c.i
-.PHONY : src/game/blockgame/tech/energy_system.c.i
-
-src/game/blockgame/tech/energy_system.s: src/game/blockgame/tech/energy_system.c.s
-.PHONY : src/game/blockgame/tech/energy_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/tech/energy_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech/energy_system.c.s
-.PHONY : src/game/blockgame/tech/energy_system.c.s
-
-src/game/blockgame/tech/solar_energy.o: src/game/blockgame/tech/solar_energy.c.o
-.PHONY : src/game/blockgame/tech/solar_energy.o
-
-# target to build an object file
-src/game/blockgame/tech/solar_energy.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech/solar_energy.c.o
-.PHONY : src/game/blockgame/tech/solar_energy.c.o
-
-src/game/blockgame/tech/solar_energy.i: src/game/blockgame/tech/solar_energy.c.i
-.PHONY : src/game/blockgame/tech/solar_energy.i
-
-# target to preprocess a source file
-src/game/blockgame/tech/solar_energy.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech/solar_energy.c.i
-.PHONY : src/game/blockgame/tech/solar_energy.c.i
-
-src/game/blockgame/tech/solar_energy.s: src/game/blockgame/tech/solar_energy.c.s
-.PHONY : src/game/blockgame/tech/solar_energy.s
-
-# target to generate assembly for a file
-src/game/blockgame/tech/solar_energy.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech/solar_energy.c.s
-.PHONY : src/game/blockgame/tech/solar_energy.c.s
-
-src/game/blockgame/tech/tech_machines.o: src/game/blockgame/tech/tech_machines.c.o
-.PHONY : src/game/blockgame/tech/tech_machines.o
-
-# target to build an object file
-src/game/blockgame/tech/tech_machines.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech/tech_machines.c.o
-.PHONY : src/game/blockgame/tech/tech_machines.c.o
-
-src/game/blockgame/tech/tech_machines.i: src/game/blockgame/tech/tech_machines.c.i
-.PHONY : src/game/blockgame/tech/tech_machines.i
-
-# target to preprocess a source file
-src/game/blockgame/tech/tech_machines.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech/tech_machines.c.i
-.PHONY : src/game/blockgame/tech/tech_machines.c.i
-
-src/game/blockgame/tech/tech_machines.s: src/game/blockgame/tech/tech_machines.c.s
-.PHONY : src/game/blockgame/tech/tech_machines.s
-
-# target to generate assembly for a file
-src/game/blockgame/tech/tech_machines.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech/tech_machines.c.s
-.PHONY : src/game/blockgame/tech/tech_machines.c.s
-
-src/game/blockgame/tech_crafting_impl.o: src/game/blockgame/tech_crafting_impl.c.o
-.PHONY : src/game/blockgame/tech_crafting_impl.o
-
-# target to build an object file
-src/game/blockgame/tech_crafting_impl.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech_crafting_impl.c.o
-.PHONY : src/game/blockgame/tech_crafting_impl.c.o
-
-src/game/blockgame/tech_crafting_impl.i: src/game/blockgame/tech_crafting_impl.c.i
-.PHONY : src/game/blockgame/tech_crafting_impl.i
-
-# target to preprocess a source file
-src/game/blockgame/tech_crafting_impl.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech_crafting_impl.c.i
-.PHONY : src/game/blockgame/tech_crafting_impl.c.i
-
-src/game/blockgame/tech_crafting_impl.s: src/game/blockgame/tech_crafting_impl.c.s
-.PHONY : src/game/blockgame/tech_crafting_impl.s
-
-# target to generate assembly for a file
-src/game/blockgame/tech_crafting_impl.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/tech_crafting_impl.c.s
-.PHONY : src/game/blockgame/tech_crafting_impl.c.s
-
-src/game/blockgame/ui/crafting_ui.o: src/game/blockgame/ui/crafting_ui.c.o
-.PHONY : src/game/blockgame/ui/crafting_ui.o
-
-# target to build an object file
-src/game/blockgame/ui/crafting_ui.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/crafting_ui.c.o
-.PHONY : src/game/blockgame/ui/crafting_ui.c.o
-
-src/game/blockgame/ui/crafting_ui.i: src/game/blockgame/ui/crafting_ui.c.i
-.PHONY : src/game/blockgame/ui/crafting_ui.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/crafting_ui.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/crafting_ui.c.i
-.PHONY : src/game/blockgame/ui/crafting_ui.c.i
-
-src/game/blockgame/ui/crafting_ui.s: src/game/blockgame/ui/crafting_ui.c.s
-.PHONY : src/game/blockgame/ui/crafting_ui.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/crafting_ui.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/crafting_ui.c.s
-.PHONY : src/game/blockgame/ui/crafting_ui.c.s
-
-src/game/blockgame/ui/dialog_integration.o: src/game/blockgame/ui/dialog_integration.c.o
-.PHONY : src/game/blockgame/ui/dialog_integration.o
-
-# target to build an object file
-src/game/blockgame/ui/dialog_integration.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/dialog_integration.c.o
-.PHONY : src/game/blockgame/ui/dialog_integration.c.o
-
-src/game/blockgame/ui/dialog_integration.i: src/game/blockgame/ui/dialog_integration.c.i
-.PHONY : src/game/blockgame/ui/dialog_integration.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/dialog_integration.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/dialog_integration.c.i
-.PHONY : src/game/blockgame/ui/dialog_integration.c.i
-
-src/game/blockgame/ui/dialog_integration.s: src/game/blockgame/ui/dialog_integration.c.s
-.PHONY : src/game/blockgame/ui/dialog_integration.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/dialog_integration.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/dialog_integration.c.s
-.PHONY : src/game/blockgame/ui/dialog_integration.c.s
-
-src/game/blockgame/ui/floating_text.o: src/game/blockgame/ui/floating_text.c.o
-.PHONY : src/game/blockgame/ui/floating_text.o
-
-# target to build an object file
-src/game/blockgame/ui/floating_text.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/floating_text.c.o
-.PHONY : src/game/blockgame/ui/floating_text.c.o
-
-src/game/blockgame/ui/floating_text.i: src/game/blockgame/ui/floating_text.c.i
-.PHONY : src/game/blockgame/ui/floating_text.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/floating_text.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/floating_text.c.i
-.PHONY : src/game/blockgame/ui/floating_text.c.i
-
-src/game/blockgame/ui/floating_text.s: src/game/blockgame/ui/floating_text.c.s
-.PHONY : src/game/blockgame/ui/floating_text.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/floating_text.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/floating_text.c.s
-.PHONY : src/game/blockgame/ui/floating_text.c.s
-
-src/game/blockgame/ui/hotbar.o: src/game/blockgame/ui/hotbar.c.o
-.PHONY : src/game/blockgame/ui/hotbar.o
-
-# target to build an object file
-src/game/blockgame/ui/hotbar.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hotbar.c.o
-.PHONY : src/game/blockgame/ui/hotbar.c.o
-
-src/game/blockgame/ui/hotbar.i: src/game/blockgame/ui/hotbar.c.i
-.PHONY : src/game/blockgame/ui/hotbar.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/hotbar.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hotbar.c.i
-.PHONY : src/game/blockgame/ui/hotbar.c.i
-
-src/game/blockgame/ui/hotbar.s: src/game/blockgame/ui/hotbar.c.s
-.PHONY : src/game/blockgame/ui/hotbar.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/hotbar.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hotbar.c.s
-.PHONY : src/game/blockgame/ui/hotbar.c.s
-
-src/game/blockgame/ui/hud_bars.o: src/game/blockgame/ui/hud_bars.c.o
-.PHONY : src/game/blockgame/ui/hud_bars.o
-
-# target to build an object file
-src/game/blockgame/ui/hud_bars.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_bars.c.o
-.PHONY : src/game/blockgame/ui/hud_bars.c.o
-
-src/game/blockgame/ui/hud_bars.i: src/game/blockgame/ui/hud_bars.c.i
-.PHONY : src/game/blockgame/ui/hud_bars.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/hud_bars.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_bars.c.i
-.PHONY : src/game/blockgame/ui/hud_bars.c.i
-
-src/game/blockgame/ui/hud_bars.s: src/game/blockgame/ui/hud_bars.c.s
-.PHONY : src/game/blockgame/ui/hud_bars.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/hud_bars.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_bars.c.s
-.PHONY : src/game/blockgame/ui/hud_bars.c.s
-
-src/game/blockgame/ui/hud_debug.o: src/game/blockgame/ui/hud_debug.c.o
-.PHONY : src/game/blockgame/ui/hud_debug.o
-
-# target to build an object file
-src/game/blockgame/ui/hud_debug.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_debug.c.o
-.PHONY : src/game/blockgame/ui/hud_debug.c.o
-
-src/game/blockgame/ui/hud_debug.i: src/game/blockgame/ui/hud_debug.c.i
-.PHONY : src/game/blockgame/ui/hud_debug.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/hud_debug.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_debug.c.i
-.PHONY : src/game/blockgame/ui/hud_debug.c.i
-
-src/game/blockgame/ui/hud_debug.s: src/game/blockgame/ui/hud_debug.c.s
-.PHONY : src/game/blockgame/ui/hud_debug.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/hud_debug.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_debug.c.s
-.PHONY : src/game/blockgame/ui/hud_debug.c.s
-
-src/game/blockgame/ui/hud_logging.o: src/game/blockgame/ui/hud_logging.c.o
-.PHONY : src/game/blockgame/ui/hud_logging.o
-
-# target to build an object file
-src/game/blockgame/ui/hud_logging.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_logging.c.o
-.PHONY : src/game/blockgame/ui/hud_logging.c.o
-
-src/game/blockgame/ui/hud_logging.i: src/game/blockgame/ui/hud_logging.c.i
-.PHONY : src/game/blockgame/ui/hud_logging.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/hud_logging.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_logging.c.i
-.PHONY : src/game/blockgame/ui/hud_logging.c.i
-
-src/game/blockgame/ui/hud_logging.s: src/game/blockgame/ui/hud_logging.c.s
-.PHONY : src/game/blockgame/ui/hud_logging.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/hud_logging.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_logging.c.s
-.PHONY : src/game/blockgame/ui/hud_logging.c.s
-
-src/game/blockgame/ui/hud_main.o: src/game/blockgame/ui/hud_main.c.o
-.PHONY : src/game/blockgame/ui/hud_main.o
-
-# target to build an object file
-src/game/blockgame/ui/hud_main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_main.c.o
-.PHONY : src/game/blockgame/ui/hud_main.c.o
-
-src/game/blockgame/ui/hud_main.i: src/game/blockgame/ui/hud_main.c.i
-.PHONY : src/game/blockgame/ui/hud_main.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/hud_main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_main.c.i
-.PHONY : src/game/blockgame/ui/hud_main.c.i
-
-src/game/blockgame/ui/hud_main.s: src/game/blockgame/ui/hud_main.c.s
-.PHONY : src/game/blockgame/ui/hud_main.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/hud_main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_main.c.s
-.PHONY : src/game/blockgame/ui/hud_main.c.s
-
-src/game/blockgame/ui/hud_overlay.o: src/game/blockgame/ui/hud_overlay.c.o
-.PHONY : src/game/blockgame/ui/hud_overlay.o
-
-# target to build an object file
-src/game/blockgame/ui/hud_overlay.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_overlay.c.o
-.PHONY : src/game/blockgame/ui/hud_overlay.c.o
-
-src/game/blockgame/ui/hud_overlay.i: src/game/blockgame/ui/hud_overlay.c.i
-.PHONY : src/game/blockgame/ui/hud_overlay.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/hud_overlay.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_overlay.c.i
-.PHONY : src/game/blockgame/ui/hud_overlay.c.i
-
-src/game/blockgame/ui/hud_overlay.s: src/game/blockgame/ui/hud_overlay.c.s
-.PHONY : src/game/blockgame/ui/hud_overlay.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/hud_overlay.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_overlay.c.s
-.PHONY : src/game/blockgame/ui/hud_overlay.c.s
-
-src/game/blockgame/ui/hud_renderer.o: src/game/blockgame/ui/hud_renderer.c.o
-.PHONY : src/game/blockgame/ui/hud_renderer.o
-
-# target to build an object file
-src/game/blockgame/ui/hud_renderer.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_renderer.c.o
-.PHONY : src/game/blockgame/ui/hud_renderer.c.o
-
-src/game/blockgame/ui/hud_renderer.i: src/game/blockgame/ui/hud_renderer.c.i
-.PHONY : src/game/blockgame/ui/hud_renderer.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/hud_renderer.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_renderer.c.i
-.PHONY : src/game/blockgame/ui/hud_renderer.c.i
-
-src/game/blockgame/ui/hud_renderer.s: src/game/blockgame/ui/hud_renderer.c.s
-.PHONY : src/game/blockgame/ui/hud_renderer.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/hud_renderer.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_renderer.c.s
-.PHONY : src/game/blockgame/ui/hud_renderer.c.s
-
-src/game/blockgame/ui/hud_spell_cooldown.o: src/game/blockgame/ui/hud_spell_cooldown.c.o
-.PHONY : src/game/blockgame/ui/hud_spell_cooldown.o
-
-# target to build an object file
-src/game/blockgame/ui/hud_spell_cooldown.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_spell_cooldown.c.o
-.PHONY : src/game/blockgame/ui/hud_spell_cooldown.c.o
-
-src/game/blockgame/ui/hud_spell_cooldown.i: src/game/blockgame/ui/hud_spell_cooldown.c.i
-.PHONY : src/game/blockgame/ui/hud_spell_cooldown.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/hud_spell_cooldown.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_spell_cooldown.c.i
-.PHONY : src/game/blockgame/ui/hud_spell_cooldown.c.i
-
-src/game/blockgame/ui/hud_spell_cooldown.s: src/game/blockgame/ui/hud_spell_cooldown.c.s
-.PHONY : src/game/blockgame/ui/hud_spell_cooldown.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/hud_spell_cooldown.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_spell_cooldown.c.s
-.PHONY : src/game/blockgame/ui/hud_spell_cooldown.c.s
-
-src/game/blockgame/ui/hud_tooltip.o: src/game/blockgame/ui/hud_tooltip.c.o
-.PHONY : src/game/blockgame/ui/hud_tooltip.o
-
-# target to build an object file
-src/game/blockgame/ui/hud_tooltip.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_tooltip.c.o
-.PHONY : src/game/blockgame/ui/hud_tooltip.c.o
-
-src/game/blockgame/ui/hud_tooltip.i: src/game/blockgame/ui/hud_tooltip.c.i
-.PHONY : src/game/blockgame/ui/hud_tooltip.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/hud_tooltip.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_tooltip.c.i
-.PHONY : src/game/blockgame/ui/hud_tooltip.c.i
-
-src/game/blockgame/ui/hud_tooltip.s: src/game/blockgame/ui/hud_tooltip.c.s
-.PHONY : src/game/blockgame/ui/hud_tooltip.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/hud_tooltip.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/hud_tooltip.c.s
-.PHONY : src/game/blockgame/ui/hud_tooltip.c.s
-
-src/game/blockgame/ui/inventory_ui.o: src/game/blockgame/ui/inventory_ui.c.o
-.PHONY : src/game/blockgame/ui/inventory_ui.o
-
-# target to build an object file
-src/game/blockgame/ui/inventory_ui.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/inventory_ui.c.o
-.PHONY : src/game/blockgame/ui/inventory_ui.c.o
-
-src/game/blockgame/ui/inventory_ui.i: src/game/blockgame/ui/inventory_ui.c.i
-.PHONY : src/game/blockgame/ui/inventory_ui.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/inventory_ui.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/inventory_ui.c.i
-.PHONY : src/game/blockgame/ui/inventory_ui.c.i
-
-src/game/blockgame/ui/inventory_ui.s: src/game/blockgame/ui/inventory_ui.c.s
-.PHONY : src/game/blockgame/ui/inventory_ui.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/inventory_ui.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/inventory_ui.c.s
-.PHONY : src/game/blockgame/ui/inventory_ui.c.s
-
-src/game/blockgame/ui/main_menu.o: src/game/blockgame/ui/main_menu.c.o
-.PHONY : src/game/blockgame/ui/main_menu.o
-
-# target to build an object file
-src/game/blockgame/ui/main_menu.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/main_menu.c.o
-.PHONY : src/game/blockgame/ui/main_menu.c.o
-
-src/game/blockgame/ui/main_menu.i: src/game/blockgame/ui/main_menu.c.i
-.PHONY : src/game/blockgame/ui/main_menu.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/main_menu.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/main_menu.c.i
-.PHONY : src/game/blockgame/ui/main_menu.c.i
-
-src/game/blockgame/ui/main_menu.s: src/game/blockgame/ui/main_menu.c.s
-.PHONY : src/game/blockgame/ui/main_menu.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/main_menu.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/main_menu.c.s
-.PHONY : src/game/blockgame/ui/main_menu.c.s
-
-src/game/blockgame/ui/menu.o: src/game/blockgame/ui/menu.c.o
-.PHONY : src/game/blockgame/ui/menu.o
-
-# target to build an object file
-src/game/blockgame/ui/menu.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/menu.c.o
-.PHONY : src/game/blockgame/ui/menu.c.o
-
-src/game/blockgame/ui/menu.i: src/game/blockgame/ui/menu.c.i
-.PHONY : src/game/blockgame/ui/menu.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/menu.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/menu.c.i
-.PHONY : src/game/blockgame/ui/menu.c.i
-
-src/game/blockgame/ui/menu.s: src/game/blockgame/ui/menu.c.s
-.PHONY : src/game/blockgame/ui/menu.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/menu.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/menu.c.s
-.PHONY : src/game/blockgame/ui/menu.c.s
-
-src/game/blockgame/ui/menu_renderer.o: src/game/blockgame/ui/menu_renderer.c.o
-.PHONY : src/game/blockgame/ui/menu_renderer.o
-
-# target to build an object file
-src/game/blockgame/ui/menu_renderer.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/menu_renderer.c.o
-.PHONY : src/game/blockgame/ui/menu_renderer.c.o
-
-src/game/blockgame/ui/menu_renderer.i: src/game/blockgame/ui/menu_renderer.c.i
-.PHONY : src/game/blockgame/ui/menu_renderer.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/menu_renderer.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/menu_renderer.c.i
-.PHONY : src/game/blockgame/ui/menu_renderer.c.i
-
-src/game/blockgame/ui/menu_renderer.s: src/game/blockgame/ui/menu_renderer.c.s
-.PHONY : src/game/blockgame/ui/menu_renderer.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/menu_renderer.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/menu_renderer.c.s
-.PHONY : src/game/blockgame/ui/menu_renderer.c.s
-
-src/game/blockgame/ui/menu_systems_complete.o: src/game/blockgame/ui/menu_systems_complete.c.o
-.PHONY : src/game/blockgame/ui/menu_systems_complete.o
-
-# target to build an object file
-src/game/blockgame/ui/menu_systems_complete.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/menu_systems_complete.c.o
-.PHONY : src/game/blockgame/ui/menu_systems_complete.c.o
-
-src/game/blockgame/ui/menu_systems_complete.i: src/game/blockgame/ui/menu_systems_complete.c.i
-.PHONY : src/game/blockgame/ui/menu_systems_complete.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/menu_systems_complete.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/menu_systems_complete.c.i
-.PHONY : src/game/blockgame/ui/menu_systems_complete.c.i
-
-src/game/blockgame/ui/menu_systems_complete.s: src/game/blockgame/ui/menu_systems_complete.c.s
-.PHONY : src/game/blockgame/ui/menu_systems_complete.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/menu_systems_complete.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/menu_systems_complete.c.s
-.PHONY : src/game/blockgame/ui/menu_systems_complete.c.s
-
-src/game/blockgame/ui/pause_menu.o: src/game/blockgame/ui/pause_menu.c.o
-.PHONY : src/game/blockgame/ui/pause_menu.o
-
-# target to build an object file
-src/game/blockgame/ui/pause_menu.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/pause_menu.c.o
-.PHONY : src/game/blockgame/ui/pause_menu.c.o
-
-src/game/blockgame/ui/pause_menu.i: src/game/blockgame/ui/pause_menu.c.i
-.PHONY : src/game/blockgame/ui/pause_menu.i
-
-# target to preprocess a source file
-src/game/blockgame/ui/pause_menu.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/pause_menu.c.i
-.PHONY : src/game/blockgame/ui/pause_menu.c.i
-
-src/game/blockgame/ui/pause_menu.s: src/game/blockgame/ui/pause_menu.c.s
-.PHONY : src/game/blockgame/ui/pause_menu.s
-
-# target to generate assembly for a file
-src/game/blockgame/ui/pause_menu.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/ui/pause_menu.c.s
-.PHONY : src/game/blockgame/ui/pause_menu.c.s
-
-src/game/blockgame/utils.o: src/game/blockgame/utils.c.o
-.PHONY : src/game/blockgame/utils.o
-
-# target to build an object file
-src/game/blockgame/utils.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/utils.c.o
-.PHONY : src/game/blockgame/utils.c.o
-
-src/game/blockgame/utils.i: src/game/blockgame/utils.c.i
-.PHONY : src/game/blockgame/utils.i
-
-# target to preprocess a source file
-src/game/blockgame/utils.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/utils.c.i
-.PHONY : src/game/blockgame/utils.c.i
-
-src/game/blockgame/utils.s: src/game/blockgame/utils.c.s
-.PHONY : src/game/blockgame/utils.s
-
-# target to generate assembly for a file
-src/game/blockgame/utils.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/utils.c.s
-.PHONY : src/game/blockgame/utils.c.s
-
-src/game/blockgame/vfx/gpu_pipeline_setup.o: src/game/blockgame/vfx/gpu_pipeline_setup.c.o
-.PHONY : src/game/blockgame/vfx/gpu_pipeline_setup.o
-
-# target to build an object file
-src/game/blockgame/vfx/gpu_pipeline_setup.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/gpu_pipeline_setup.c.o
-.PHONY : src/game/blockgame/vfx/gpu_pipeline_setup.c.o
-
-src/game/blockgame/vfx/gpu_pipeline_setup.i: src/game/blockgame/vfx/gpu_pipeline_setup.c.i
-.PHONY : src/game/blockgame/vfx/gpu_pipeline_setup.i
-
-# target to preprocess a source file
-src/game/blockgame/vfx/gpu_pipeline_setup.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/gpu_pipeline_setup.c.i
-.PHONY : src/game/blockgame/vfx/gpu_pipeline_setup.c.i
-
-src/game/blockgame/vfx/gpu_pipeline_setup.s: src/game/blockgame/vfx/gpu_pipeline_setup.c.s
-.PHONY : src/game/blockgame/vfx/gpu_pipeline_setup.s
-
-# target to generate assembly for a file
-src/game/blockgame/vfx/gpu_pipeline_setup.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/gpu_pipeline_setup.c.s
-.PHONY : src/game/blockgame/vfx/gpu_pipeline_setup.c.s
-
-src/game/blockgame/vfx/particle_system.o: src/game/blockgame/vfx/particle_system.c.o
-.PHONY : src/game/blockgame/vfx/particle_system.o
-
-# target to build an object file
-src/game/blockgame/vfx/particle_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/particle_system.c.o
-.PHONY : src/game/blockgame/vfx/particle_system.c.o
-
-src/game/blockgame/vfx/particle_system.i: src/game/blockgame/vfx/particle_system.c.i
-.PHONY : src/game/blockgame/vfx/particle_system.i
-
-# target to preprocess a source file
-src/game/blockgame/vfx/particle_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/particle_system.c.i
-.PHONY : src/game/blockgame/vfx/particle_system.c.i
-
-src/game/blockgame/vfx/particle_system.s: src/game/blockgame/vfx/particle_system.c.s
-.PHONY : src/game/blockgame/vfx/particle_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/vfx/particle_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/particle_system.c.s
-.PHONY : src/game/blockgame/vfx/particle_system.c.s
-
-src/game/blockgame/vfx/post_processing.o: src/game/blockgame/vfx/post_processing.c.o
-.PHONY : src/game/blockgame/vfx/post_processing.o
-
-# target to build an object file
-src/game/blockgame/vfx/post_processing.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/post_processing.c.o
-.PHONY : src/game/blockgame/vfx/post_processing.c.o
-
-src/game/blockgame/vfx/post_processing.i: src/game/blockgame/vfx/post_processing.c.i
-.PHONY : src/game/blockgame/vfx/post_processing.i
-
-# target to preprocess a source file
-src/game/blockgame/vfx/post_processing.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/post_processing.c.i
-.PHONY : src/game/blockgame/vfx/post_processing.c.i
-
-src/game/blockgame/vfx/post_processing.s: src/game/blockgame/vfx/post_processing.c.s
-.PHONY : src/game/blockgame/vfx/post_processing.s
-
-# target to generate assembly for a file
-src/game/blockgame/vfx/post_processing.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/post_processing.c.s
-.PHONY : src/game/blockgame/vfx/post_processing.c.s
-
-src/game/blockgame/vfx/status_effect_visuals.o: src/game/blockgame/vfx/status_effect_visuals.c.o
-.PHONY : src/game/blockgame/vfx/status_effect_visuals.o
-
-# target to build an object file
-src/game/blockgame/vfx/status_effect_visuals.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/status_effect_visuals.c.o
-.PHONY : src/game/blockgame/vfx/status_effect_visuals.c.o
-
-src/game/blockgame/vfx/status_effect_visuals.i: src/game/blockgame/vfx/status_effect_visuals.c.i
-.PHONY : src/game/blockgame/vfx/status_effect_visuals.i
-
-# target to preprocess a source file
-src/game/blockgame/vfx/status_effect_visuals.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/status_effect_visuals.c.i
-.PHONY : src/game/blockgame/vfx/status_effect_visuals.c.i
-
-src/game/blockgame/vfx/status_effect_visuals.s: src/game/blockgame/vfx/status_effect_visuals.c.s
-.PHONY : src/game/blockgame/vfx/status_effect_visuals.s
-
-# target to generate assembly for a file
-src/game/blockgame/vfx/status_effect_visuals.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/status_effect_visuals.c.s
-.PHONY : src/game/blockgame/vfx/status_effect_visuals.c.s
-
-src/game/blockgame/vfx/vfx_optimization.o: src/game/blockgame/vfx/vfx_optimization.c.o
-.PHONY : src/game/blockgame/vfx/vfx_optimization.o
-
-# target to build an object file
-src/game/blockgame/vfx/vfx_optimization.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/vfx_optimization.c.o
-.PHONY : src/game/blockgame/vfx/vfx_optimization.c.o
-
-src/game/blockgame/vfx/vfx_optimization.i: src/game/blockgame/vfx/vfx_optimization.c.i
-.PHONY : src/game/blockgame/vfx/vfx_optimization.i
-
-# target to preprocess a source file
-src/game/blockgame/vfx/vfx_optimization.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/vfx_optimization.c.i
-.PHONY : src/game/blockgame/vfx/vfx_optimization.c.i
-
-src/game/blockgame/vfx/vfx_optimization.s: src/game/blockgame/vfx/vfx_optimization.c.s
-.PHONY : src/game/blockgame/vfx/vfx_optimization.s
-
-# target to generate assembly for a file
-src/game/blockgame/vfx/vfx_optimization.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/vfx_optimization.c.s
-.PHONY : src/game/blockgame/vfx/vfx_optimization.c.s
-
-src/game/blockgame/vfx/visual_effects.o: src/game/blockgame/vfx/visual_effects.c.o
-.PHONY : src/game/blockgame/vfx/visual_effects.o
-
-# target to build an object file
-src/game/blockgame/vfx/visual_effects.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/visual_effects.c.o
-.PHONY : src/game/blockgame/vfx/visual_effects.c.o
-
-src/game/blockgame/vfx/visual_effects.i: src/game/blockgame/vfx/visual_effects.c.i
-.PHONY : src/game/blockgame/vfx/visual_effects.i
-
-# target to preprocess a source file
-src/game/blockgame/vfx/visual_effects.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/visual_effects.c.i
-.PHONY : src/game/blockgame/vfx/visual_effects.c.i
-
-src/game/blockgame/vfx/visual_effects.s: src/game/blockgame/vfx/visual_effects.c.s
-.PHONY : src/game/blockgame/vfx/visual_effects.s
-
-# target to generate assembly for a file
-src/game/blockgame/vfx/visual_effects.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/vfx/visual_effects.c.s
-.PHONY : src/game/blockgame/vfx/visual_effects.c.s
-
-src/game/blockgame/weather/environmental_effects.o: src/game/blockgame/weather/environmental_effects.c.o
-.PHONY : src/game/blockgame/weather/environmental_effects.o
-
-# target to build an object file
-src/game/blockgame/weather/environmental_effects.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/environmental_effects.c.o
-.PHONY : src/game/blockgame/weather/environmental_effects.c.o
-
-src/game/blockgame/weather/environmental_effects.i: src/game/blockgame/weather/environmental_effects.c.i
-.PHONY : src/game/blockgame/weather/environmental_effects.i
-
-# target to preprocess a source file
-src/game/blockgame/weather/environmental_effects.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/environmental_effects.c.i
-.PHONY : src/game/blockgame/weather/environmental_effects.c.i
-
-src/game/blockgame/weather/environmental_effects.s: src/game/blockgame/weather/environmental_effects.c.s
-.PHONY : src/game/blockgame/weather/environmental_effects.s
-
-# target to generate assembly for a file
-src/game/blockgame/weather/environmental_effects.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/environmental_effects.c.s
-.PHONY : src/game/blockgame/weather/environmental_effects.c.s
-
-src/game/blockgame/weather/seasonal_system.o: src/game/blockgame/weather/seasonal_system.c.o
-.PHONY : src/game/blockgame/weather/seasonal_system.o
-
-# target to build an object file
-src/game/blockgame/weather/seasonal_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/seasonal_system.c.o
-.PHONY : src/game/blockgame/weather/seasonal_system.c.o
-
-src/game/blockgame/weather/seasonal_system.i: src/game/blockgame/weather/seasonal_system.c.i
-.PHONY : src/game/blockgame/weather/seasonal_system.i
-
-# target to preprocess a source file
-src/game/blockgame/weather/seasonal_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/seasonal_system.c.i
-.PHONY : src/game/blockgame/weather/seasonal_system.c.i
-
-src/game/blockgame/weather/seasonal_system.s: src/game/blockgame/weather/seasonal_system.c.s
-.PHONY : src/game/blockgame/weather/seasonal_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/weather/seasonal_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/seasonal_system.c.s
-.PHONY : src/game/blockgame/weather/seasonal_system.c.s
-
-src/game/blockgame/weather/weather.o: src/game/blockgame/weather/weather.c.o
-.PHONY : src/game/blockgame/weather/weather.o
-
-# target to build an object file
-src/game/blockgame/weather/weather.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather.c.o
-.PHONY : src/game/blockgame/weather/weather.c.o
-
-src/game/blockgame/weather/weather.i: src/game/blockgame/weather/weather.c.i
-.PHONY : src/game/blockgame/weather/weather.i
-
-# target to preprocess a source file
-src/game/blockgame/weather/weather.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather.c.i
-.PHONY : src/game/blockgame/weather/weather.c.i
-
-src/game/blockgame/weather/weather.s: src/game/blockgame/weather/weather.c.s
-.PHONY : src/game/blockgame/weather/weather.s
-
-# target to generate assembly for a file
-src/game/blockgame/weather/weather.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather.c.s
-.PHONY : src/game/blockgame/weather/weather.c.s
-
-src/game/blockgame/weather/weather_audio.o: src/game/blockgame/weather/weather_audio.c.o
-.PHONY : src/game/blockgame/weather/weather_audio.o
-
-# target to build an object file
-src/game/blockgame/weather/weather_audio.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_audio.c.o
-.PHONY : src/game/blockgame/weather/weather_audio.c.o
-
-src/game/blockgame/weather/weather_audio.i: src/game/blockgame/weather/weather_audio.c.i
-.PHONY : src/game/blockgame/weather/weather_audio.i
-
-# target to preprocess a source file
-src/game/blockgame/weather/weather_audio.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_audio.c.i
-.PHONY : src/game/blockgame/weather/weather_audio.c.i
-
-src/game/blockgame/weather/weather_audio.s: src/game/blockgame/weather/weather_audio.c.s
-.PHONY : src/game/blockgame/weather/weather_audio.s
-
-# target to generate assembly for a file
-src/game/blockgame/weather/weather_audio.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_audio.c.s
-.PHONY : src/game/blockgame/weather/weather_audio.c.s
-
-src/game/blockgame/weather/weather_particles.o: src/game/blockgame/weather/weather_particles.c.o
-.PHONY : src/game/blockgame/weather/weather_particles.o
-
-# target to build an object file
-src/game/blockgame/weather/weather_particles.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/weather/weather_particles.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_particles.c.o
-.PHONY : src/game/blockgame/weather/weather_particles.c.o
-
-src/game/blockgame/weather/weather_particles.i: src/game/blockgame/weather/weather_particles.c.i
-.PHONY : src/game/blockgame/weather/weather_particles.i
-
-# target to preprocess a source file
-src/game/blockgame/weather/weather_particles.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/weather/weather_particles.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_particles.c.i
-.PHONY : src/game/blockgame/weather/weather_particles.c.i
-
-src/game/blockgame/weather/weather_particles.s: src/game/blockgame/weather/weather_particles.c.s
-.PHONY : src/game/blockgame/weather/weather_particles.s
-
-# target to generate assembly for a file
-src/game/blockgame/weather/weather_particles.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/game/blockgame/weather/weather_particles.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/weather/weather_particles.c.s
-.PHONY : src/game/blockgame/weather/weather_particles.c.s
-
-src/game/blockgame/world/biome_features.o: src/game/blockgame/world/biome_features.c.o
-.PHONY : src/game/blockgame/world/biome_features.o
-
-# target to build an object file
-src/game/blockgame/world/biome_features.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_features.c.o
-.PHONY : src/game/blockgame/world/biome_features.c.o
-
-src/game/blockgame/world/biome_features.i: src/game/blockgame/world/biome_features.c.i
-.PHONY : src/game/blockgame/world/biome_features.i
-
-# target to preprocess a source file
-src/game/blockgame/world/biome_features.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_features.c.i
-.PHONY : src/game/blockgame/world/biome_features.c.i
-
-src/game/blockgame/world/biome_features.s: src/game/blockgame/world/biome_features.c.s
-.PHONY : src/game/blockgame/world/biome_features.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/biome_features.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_features.c.s
-.PHONY : src/game/blockgame/world/biome_features.c.s
-
-src/game/blockgame/world/biome_generator.o: src/game/blockgame/world/biome_generator.c.o
-.PHONY : src/game/blockgame/world/biome_generator.o
-
-# target to build an object file
-src/game/blockgame/world/biome_generator.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_generator.c.o
-.PHONY : src/game/blockgame/world/biome_generator.c.o
-
-src/game/blockgame/world/biome_generator.i: src/game/blockgame/world/biome_generator.c.i
-.PHONY : src/game/blockgame/world/biome_generator.i
-
-# target to preprocess a source file
-src/game/blockgame/world/biome_generator.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_generator.c.i
-.PHONY : src/game/blockgame/world/biome_generator.c.i
-
-src/game/blockgame/world/biome_generator.s: src/game/blockgame/world/biome_generator.c.s
-.PHONY : src/game/blockgame/world/biome_generator.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/biome_generator.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_generator.c.s
-.PHONY : src/game/blockgame/world/biome_generator.c.s
-
-src/game/blockgame/world/biome_system.o: src/game/blockgame/world/biome_system.c.o
-.PHONY : src/game/blockgame/world/biome_system.o
-
-# target to build an object file
-src/game/blockgame/world/biome_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_system.c.o
-.PHONY : src/game/blockgame/world/biome_system.c.o
-
-src/game/blockgame/world/biome_system.i: src/game/blockgame/world/biome_system.c.i
-.PHONY : src/game/blockgame/world/biome_system.i
-
-# target to preprocess a source file
-src/game/blockgame/world/biome_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_system.c.i
-.PHONY : src/game/blockgame/world/biome_system.c.i
-
-src/game/blockgame/world/biome_system.s: src/game/blockgame/world/biome_system.c.s
-.PHONY : src/game/blockgame/world/biome_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/biome_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_system.c.s
-.PHONY : src/game/blockgame/world/biome_system.c.s
-
-src/game/blockgame/world/biome_transitions.o: src/game/blockgame/world/biome_transitions.c.o
-.PHONY : src/game/blockgame/world/biome_transitions.o
-
-# target to build an object file
-src/game/blockgame/world/biome_transitions.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_transitions.c.o
-.PHONY : src/game/blockgame/world/biome_transitions.c.o
-
-src/game/blockgame/world/biome_transitions.i: src/game/blockgame/world/biome_transitions.c.i
-.PHONY : src/game/blockgame/world/biome_transitions.i
-
-# target to preprocess a source file
-src/game/blockgame/world/biome_transitions.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_transitions.c.i
-.PHONY : src/game/blockgame/world/biome_transitions.c.i
-
-src/game/blockgame/world/biome_transitions.s: src/game/blockgame/world/biome_transitions.c.s
-.PHONY : src/game/blockgame/world/biome_transitions.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/biome_transitions.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/biome_transitions.c.s
-.PHONY : src/game/blockgame/world/biome_transitions.c.s
-
-src/game/blockgame/world/cave_generation.o: src/game/blockgame/world/cave_generation.c.o
-.PHONY : src/game/blockgame/world/cave_generation.o
-
-# target to build an object file
-src/game/blockgame/world/cave_generation.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/cave_generation.c.o
-.PHONY : src/game/blockgame/world/cave_generation.c.o
-
-src/game/blockgame/world/cave_generation.i: src/game/blockgame/world/cave_generation.c.i
-.PHONY : src/game/blockgame/world/cave_generation.i
-
-# target to preprocess a source file
-src/game/blockgame/world/cave_generation.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/cave_generation.c.i
-.PHONY : src/game/blockgame/world/cave_generation.c.i
-
-src/game/blockgame/world/cave_generation.s: src/game/blockgame/world/cave_generation.c.s
-.PHONY : src/game/blockgame/world/cave_generation.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/cave_generation.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/cave_generation.c.s
-.PHONY : src/game/blockgame/world/cave_generation.c.s
-
-src/game/blockgame/world/dungeon_generation.o: src/game/blockgame/world/dungeon_generation.c.o
-.PHONY : src/game/blockgame/world/dungeon_generation.o
-
-# target to build an object file
-src/game/blockgame/world/dungeon_generation.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/dungeon_generation.c.o
-.PHONY : src/game/blockgame/world/dungeon_generation.c.o
-
-src/game/blockgame/world/dungeon_generation.i: src/game/blockgame/world/dungeon_generation.c.i
-.PHONY : src/game/blockgame/world/dungeon_generation.i
-
-# target to preprocess a source file
-src/game/blockgame/world/dungeon_generation.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/dungeon_generation.c.i
-.PHONY : src/game/blockgame/world/dungeon_generation.c.i
-
-src/game/blockgame/world/dungeon_generation.s: src/game/blockgame/world/dungeon_generation.c.s
-.PHONY : src/game/blockgame/world/dungeon_generation.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/dungeon_generation.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/dungeon_generation.c.s
-.PHONY : src/game/blockgame/world/dungeon_generation.c.s
-
-src/game/blockgame/world/generator.o: src/game/blockgame/world/generator.c.o
-.PHONY : src/game/blockgame/world/generator.o
-
-# target to build an object file
-src/game/blockgame/world/generator.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/generator.c.o
-.PHONY : src/game/blockgame/world/generator.c.o
-
-src/game/blockgame/world/generator.i: src/game/blockgame/world/generator.c.i
-.PHONY : src/game/blockgame/world/generator.i
-
-# target to preprocess a source file
-src/game/blockgame/world/generator.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/generator.c.i
-.PHONY : src/game/blockgame/world/generator.c.i
-
-src/game/blockgame/world/generator.s: src/game/blockgame/world/generator.c.s
-.PHONY : src/game/blockgame/world/generator.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/generator.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/generator.c.s
-.PHONY : src/game/blockgame/world/generator.c.s
-
-src/game/blockgame/world/generator_basic.o: src/game/blockgame/world/generator_basic.c.o
-.PHONY : src/game/blockgame/world/generator_basic.o
-
-# target to build an object file
-src/game/blockgame/world/generator_basic.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/generator_basic.c.o
-.PHONY : src/game/blockgame/world/generator_basic.c.o
-
-src/game/blockgame/world/generator_basic.i: src/game/blockgame/world/generator_basic.c.i
-.PHONY : src/game/blockgame/world/generator_basic.i
-
-# target to preprocess a source file
-src/game/blockgame/world/generator_basic.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/generator_basic.c.i
-.PHONY : src/game/blockgame/world/generator_basic.c.i
-
-src/game/blockgame/world/generator_basic.s: src/game/blockgame/world/generator_basic.c.s
-.PHONY : src/game/blockgame/world/generator_basic.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/generator_basic.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/generator_basic.c.s
-.PHONY : src/game/blockgame/world/generator_basic.c.s
-
-src/game/blockgame/world/loot_tables.o: src/game/blockgame/world/loot_tables.c.o
-.PHONY : src/game/blockgame/world/loot_tables.o
-
-# target to build an object file
-src/game/blockgame/world/loot_tables.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/loot_tables.c.o
-.PHONY : src/game/blockgame/world/loot_tables.c.o
-
-src/game/blockgame/world/loot_tables.i: src/game/blockgame/world/loot_tables.c.i
-.PHONY : src/game/blockgame/world/loot_tables.i
-
-# target to preprocess a source file
-src/game/blockgame/world/loot_tables.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/loot_tables.c.i
-.PHONY : src/game/blockgame/world/loot_tables.c.i
-
-src/game/blockgame/world/loot_tables.s: src/game/blockgame/world/loot_tables.c.s
-.PHONY : src/game/blockgame/world/loot_tables.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/loot_tables.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/loot_tables.c.s
-.PHONY : src/game/blockgame/world/loot_tables.c.s
-
-src/game/blockgame/world/noise.o: src/game/blockgame/world/noise.c.o
-.PHONY : src/game/blockgame/world/noise.o
-
-# target to build an object file
-src/game/blockgame/world/noise.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/noise.c.o
-.PHONY : src/game/blockgame/world/noise.c.o
-
-src/game/blockgame/world/noise.i: src/game/blockgame/world/noise.c.i
-.PHONY : src/game/blockgame/world/noise.i
-
-# target to preprocess a source file
-src/game/blockgame/world/noise.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/noise.c.i
-.PHONY : src/game/blockgame/world/noise.c.i
-
-src/game/blockgame/world/noise.s: src/game/blockgame/world/noise.c.s
-.PHONY : src/game/blockgame/world/noise.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/noise.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/noise.c.s
-.PHONY : src/game/blockgame/world/noise.c.s
-
-src/game/blockgame/world/plant_generation.o: src/game/blockgame/world/plant_generation.c.o
-.PHONY : src/game/blockgame/world/plant_generation.o
-
-# target to build an object file
-src/game/blockgame/world/plant_generation.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/plant_generation.c.o
-.PHONY : src/game/blockgame/world/plant_generation.c.o
-
-src/game/blockgame/world/plant_generation.i: src/game/blockgame/world/plant_generation.c.i
-.PHONY : src/game/blockgame/world/plant_generation.i
-
-# target to preprocess a source file
-src/game/blockgame/world/plant_generation.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/plant_generation.c.i
-.PHONY : src/game/blockgame/world/plant_generation.c.i
-
-src/game/blockgame/world/plant_generation.s: src/game/blockgame/world/plant_generation.c.s
-.PHONY : src/game/blockgame/world/plant_generation.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/plant_generation.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/plant_generation.c.s
-.PHONY : src/game/blockgame/world/plant_generation.c.s
-
-src/game/blockgame/world/plant_varieties.o: src/game/blockgame/world/plant_varieties.c.o
-.PHONY : src/game/blockgame/world/plant_varieties.o
-
-# target to build an object file
-src/game/blockgame/world/plant_varieties.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/plant_varieties.c.o
-.PHONY : src/game/blockgame/world/plant_varieties.c.o
-
-src/game/blockgame/world/plant_varieties.i: src/game/blockgame/world/plant_varieties.c.i
-.PHONY : src/game/blockgame/world/plant_varieties.i
-
-# target to preprocess a source file
-src/game/blockgame/world/plant_varieties.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/plant_varieties.c.i
-.PHONY : src/game/blockgame/world/plant_varieties.c.i
-
-src/game/blockgame/world/plant_varieties.s: src/game/blockgame/world/plant_varieties.c.s
-.PHONY : src/game/blockgame/world/plant_varieties.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/plant_varieties.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/plant_varieties.c.s
-.PHONY : src/game/blockgame/world/plant_varieties.c.s
-
-src/game/blockgame/world/plant_vfx.o: src/game/blockgame/world/plant_vfx.c.o
-.PHONY : src/game/blockgame/world/plant_vfx.o
-
-# target to build an object file
-src/game/blockgame/world/plant_vfx.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/plant_vfx.c.o
-.PHONY : src/game/blockgame/world/plant_vfx.c.o
-
-src/game/blockgame/world/plant_vfx.i: src/game/blockgame/world/plant_vfx.c.i
-.PHONY : src/game/blockgame/world/plant_vfx.i
-
-# target to preprocess a source file
-src/game/blockgame/world/plant_vfx.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/plant_vfx.c.i
-.PHONY : src/game/blockgame/world/plant_vfx.c.i
-
-src/game/blockgame/world/plant_vfx.s: src/game/blockgame/world/plant_vfx.c.s
-.PHONY : src/game/blockgame/world/plant_vfx.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/plant_vfx.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/plant_vfx.c.s
-.PHONY : src/game/blockgame/world/plant_vfx.c.s
-
-src/game/blockgame/world/rail_system.o: src/game/blockgame/world/rail_system.c.o
-.PHONY : src/game/blockgame/world/rail_system.o
-
-# target to build an object file
-src/game/blockgame/world/rail_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/rail_system.c.o
-.PHONY : src/game/blockgame/world/rail_system.c.o
-
-src/game/blockgame/world/rail_system.i: src/game/blockgame/world/rail_system.c.i
-.PHONY : src/game/blockgame/world/rail_system.i
-
-# target to preprocess a source file
-src/game/blockgame/world/rail_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/rail_system.c.i
-.PHONY : src/game/blockgame/world/rail_system.c.i
-
-src/game/blockgame/world/rail_system.s: src/game/blockgame/world/rail_system.c.s
-.PHONY : src/game/blockgame/world/rail_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/rail_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/rail_system.c.s
-.PHONY : src/game/blockgame/world/rail_system.c.s
-
-src/game/blockgame/world/settlement_generation.o: src/game/blockgame/world/settlement_generation.c.o
-.PHONY : src/game/blockgame/world/settlement_generation.o
-
-# target to build an object file
-src/game/blockgame/world/settlement_generation.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/settlement_generation.c.o
-.PHONY : src/game/blockgame/world/settlement_generation.c.o
-
-src/game/blockgame/world/settlement_generation.i: src/game/blockgame/world/settlement_generation.c.i
-.PHONY : src/game/blockgame/world/settlement_generation.i
-
-# target to preprocess a source file
-src/game/blockgame/world/settlement_generation.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/settlement_generation.c.i
-.PHONY : src/game/blockgame/world/settlement_generation.c.i
-
-src/game/blockgame/world/settlement_generation.s: src/game/blockgame/world/settlement_generation.c.s
-.PHONY : src/game/blockgame/world/settlement_generation.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/settlement_generation.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/settlement_generation.c.s
-.PHONY : src/game/blockgame/world/settlement_generation.c.s
-
-src/game/blockgame/world/structures.o: src/game/blockgame/world/structures.c.o
-.PHONY : src/game/blockgame/world/structures.o
-
-# target to build an object file
-src/game/blockgame/world/structures.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/structures.c.o
-.PHONY : src/game/blockgame/world/structures.c.o
-
-src/game/blockgame/world/structures.i: src/game/blockgame/world/structures.c.i
-.PHONY : src/game/blockgame/world/structures.i
-
-# target to preprocess a source file
-src/game/blockgame/world/structures.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/structures.c.i
-.PHONY : src/game/blockgame/world/structures.c.i
-
-src/game/blockgame/world/structures.s: src/game/blockgame/world/structures.c.s
-.PHONY : src/game/blockgame/world/structures.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/structures.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/structures.c.s
-.PHONY : src/game/blockgame/world/structures.c.s
-
-src/game/blockgame/world/tree_generation.o: src/game/blockgame/world/tree_generation.c.o
-.PHONY : src/game/blockgame/world/tree_generation.o
-
-# target to build an object file
-src/game/blockgame/world/tree_generation.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/tree_generation.c.o
-.PHONY : src/game/blockgame/world/tree_generation.c.o
-
-src/game/blockgame/world/tree_generation.i: src/game/blockgame/world/tree_generation.c.i
-.PHONY : src/game/blockgame/world/tree_generation.i
-
-# target to preprocess a source file
-src/game/blockgame/world/tree_generation.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/tree_generation.c.i
-.PHONY : src/game/blockgame/world/tree_generation.c.i
-
-src/game/blockgame/world/tree_generation.s: src/game/blockgame/world/tree_generation.c.s
-.PHONY : src/game/blockgame/world/tree_generation.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/tree_generation.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/tree_generation.c.s
-.PHONY : src/game/blockgame/world/tree_generation.c.s
-
-src/game/blockgame/world/tree_varieties.o: src/game/blockgame/world/tree_varieties.c.o
-.PHONY : src/game/blockgame/world/tree_varieties.o
-
-# target to build an object file
-src/game/blockgame/world/tree_varieties.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/tree_varieties.c.o
-.PHONY : src/game/blockgame/world/tree_varieties.c.o
-
-src/game/blockgame/world/tree_varieties.i: src/game/blockgame/world/tree_varieties.c.i
-.PHONY : src/game/blockgame/world/tree_varieties.i
-
-# target to preprocess a source file
-src/game/blockgame/world/tree_varieties.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/tree_varieties.c.i
-.PHONY : src/game/blockgame/world/tree_varieties.c.i
-
-src/game/blockgame/world/tree_varieties.s: src/game/blockgame/world/tree_varieties.c.s
-.PHONY : src/game/blockgame/world/tree_varieties.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/tree_varieties.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/tree_varieties.c.s
-.PHONY : src/game/blockgame/world/tree_varieties.c.s
-
-src/game/blockgame/world/voxel_world_data.o: src/game/blockgame/world/voxel_world_data.c.o
-.PHONY : src/game/blockgame/world/voxel_world_data.o
-
-# target to build an object file
-src/game/blockgame/world/voxel_world_data.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/voxel_world_data.c.o
-.PHONY : src/game/blockgame/world/voxel_world_data.c.o
-
-src/game/blockgame/world/voxel_world_data.i: src/game/blockgame/world/voxel_world_data.c.i
-.PHONY : src/game/blockgame/world/voxel_world_data.i
-
-# target to preprocess a source file
-src/game/blockgame/world/voxel_world_data.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/voxel_world_data.c.i
-.PHONY : src/game/blockgame/world/voxel_world_data.c.i
-
-src/game/blockgame/world/voxel_world_data.s: src/game/blockgame/world/voxel_world_data.c.s
-.PHONY : src/game/blockgame/world/voxel_world_data.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/voxel_world_data.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/voxel_world_data.c.s
-.PHONY : src/game/blockgame/world/voxel_world_data.c.s
-
-src/game/blockgame/world/water_integration.o: src/game/blockgame/world/water_integration.c.o
-.PHONY : src/game/blockgame/world/water_integration.o
-
-# target to build an object file
-src/game/blockgame/world/water_integration.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_integration.c.o
-.PHONY : src/game/blockgame/world/water_integration.c.o
-
-src/game/blockgame/world/water_integration.i: src/game/blockgame/world/water_integration.c.i
-.PHONY : src/game/blockgame/world/water_integration.i
-
-# target to preprocess a source file
-src/game/blockgame/world/water_integration.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_integration.c.i
-.PHONY : src/game/blockgame/world/water_integration.c.i
-
-src/game/blockgame/world/water_integration.s: src/game/blockgame/world/water_integration.c.s
-.PHONY : src/game/blockgame/world/water_integration.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/water_integration.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_integration.c.s
-.PHONY : src/game/blockgame/world/water_integration.c.s
-
-src/game/blockgame/world/water_physics.o: src/game/blockgame/world/water_physics.c.o
-.PHONY : src/game/blockgame/world/water_physics.o
-
-# target to build an object file
-src/game/blockgame/world/water_physics.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_physics.c.o
-.PHONY : src/game/blockgame/world/water_physics.c.o
-
-src/game/blockgame/world/water_physics.i: src/game/blockgame/world/water_physics.c.i
-.PHONY : src/game/blockgame/world/water_physics.i
-
-# target to preprocess a source file
-src/game/blockgame/world/water_physics.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_physics.c.i
-.PHONY : src/game/blockgame/world/water_physics.c.i
-
-src/game/blockgame/world/water_physics.s: src/game/blockgame/world/water_physics.c.s
-.PHONY : src/game/blockgame/world/water_physics.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/water_physics.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_physics.c.s
-.PHONY : src/game/blockgame/world/water_physics.c.s
-
-src/game/blockgame/world/water_system.o: src/game/blockgame/world/water_system.c.o
-.PHONY : src/game/blockgame/world/water_system.o
-
-# target to build an object file
-src/game/blockgame/world/water_system.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_system.c.o
-.PHONY : src/game/blockgame/world/water_system.c.o
-
-src/game/blockgame/world/water_system.i: src/game/blockgame/world/water_system.c.i
-.PHONY : src/game/blockgame/world/water_system.i
-
-# target to preprocess a source file
-src/game/blockgame/world/water_system.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_system.c.i
-.PHONY : src/game/blockgame/world/water_system.c.i
-
-src/game/blockgame/world/water_system.s: src/game/blockgame/world/water_system.c.s
-.PHONY : src/game/blockgame/world/water_system.s
-
-# target to generate assembly for a file
-src/game/blockgame/world/water_system.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Game.dir/build.make CMakeFiles/Game.dir/src/game/blockgame/world/water_system.c.s
-.PHONY : src/game/blockgame/world/water_system.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -21332,56 +18530,32 @@ help:
 	@echo "... Game"
 	@echo "... physics_demos"
 	@echo "... src/engine/backend/metal/metal_mesh_bridge.o"
-	@echo "... src/engine/backend/metal/metal_mesh_bridge_2.o"
 	@echo "... src/engine/backend/metal/mtl_argument_buffer.o"
-	@echo "... src/engine/backend/metal/mtl_argument_buffer_2.o"
 	@echo "... src/engine/backend/metal/mtl_buffer.o"
-	@echo "... src/engine/backend/metal/mtl_buffer_2.o"
 	@echo "... src/engine/backend/metal/mtl_command.o"
-	@echo "... src/engine/backend/metal/mtl_command_2.o"
 	@echo "... src/engine/backend/metal/mtl_command_buffer.o"
-	@echo "... src/engine/backend/metal/mtl_command_buffer_2.o"
 	@echo "... src/engine/backend/metal/mtl_command_graph.o"
-	@echo "... src/engine/backend/metal/mtl_command_graph_2.o"
 	@echo "... src/engine/backend/metal/mtl_device.o"
-	@echo "... src/engine/backend/metal/mtl_device_2.o"
 	@echo "... src/engine/backend/metal/mtl_device_caps.o"
-	@echo "... src/engine/backend/metal/mtl_device_caps_2.o"
 	@echo "... src/engine/backend/metal/mtl_encoder.o"
-	@echo "... src/engine/backend/metal/mtl_encoder_2.o"
 	@echo "... src/engine/backend/metal/mtl_frame_sync.o"
-	@echo "... src/engine/backend/metal/mtl_frame_sync_2.o"
 	@echo "... src/engine/backend/metal/mtl_hazard_tracking.o"
-	@echo "... src/engine/backend/metal/mtl_hazard_tracking_2.o"
 	@echo "... src/engine/backend/metal/mtl_indirect_command.o"
-	@echo "... src/engine/backend/metal/mtl_indirect_command_2.o"
 	@echo "... src/engine/backend/metal/mtl_memory_heap.o"
-	@echo "... src/engine/backend/metal/mtl_memory_heap_2.o"
 	@echo "... src/engine/backend/metal/mtl_parallel_encoder.o"
-	@echo "... src/engine/backend/metal/mtl_parallel_encoder_2.o"
 	@echo "... src/engine/backend/metal/mtl_render_pass.o"
-	@echo "... src/engine/backend/metal/mtl_render_pass_2.o"
 	@echo "... src/engine/backend/metal/mtl_resource_pool.o"
-	@echo "... src/engine/backend/metal/mtl_resource_pool_2.o"
 	@echo "... src/engine/backend/metal/mtl_sampler.o"
 	@echo "... src/engine/backend/metal/mtl_statistics.o"
-	@echo "... src/engine/backend/metal/mtl_statistics_2.o"
 	@echo "... src/engine/backend/metal/mtl_swapchain.o"
-	@echo "... src/engine/backend/metal/mtl_swapchain_2.o"
 	@echo "... src/engine/backend/metal/mtl_sync_example.o"
 	@echo "... src/engine/backend/metal/mtl_sync_manager.o"
-	@echo "... src/engine/backend/metal/mtl_sync_manager_2.o"
 	@echo "... src/engine/backend/metal/mtl_sync_primitives.o"
 	@echo "... src/engine/backend/metal/mtl_texture.o"
-	@echo "... src/engine/backend/metal/mtl_texture_2.o"
 	@echo "... src/engine/backend/metal/mtl_transfer.o"
-	@echo "... src/engine/backend/metal/mtl_transfer_2.o"
 	@echo "... src/engine/backend/metal/old/metal_backend.o"
 	@echo "... src/engine/backend/metal/old/metal_backend.i"
 	@echo "... src/engine/backend/metal/old/metal_backend.s"
-	@echo "... src/engine/backend/metal/old/metal_backend_2.o"
-	@echo "... src/engine/backend/metal/old/metal_backend_2.i"
-	@echo "... src/engine/backend/metal/old/metal_backend_2.s"
 	@echo "... src/engine/backend/metal/simple_metal_test.o"
 	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.o"
 	@echo "... src/engine/backend/metal/tests/mtl_resource_tests.i"
@@ -21440,15 +18614,9 @@ help:
 	@echo "... src/engine/backend/vulkan/vk_framebuffer.o"
 	@echo "... src/engine/backend/vulkan/vk_framebuffer.i"
 	@echo "... src/engine/backend/vulkan/vk_framebuffer.s"
-	@echo "... src/engine/backend/vulkan/vk_framebuffer_2.o"
-	@echo "... src/engine/backend/vulkan/vk_framebuffer_2.i"
-	@echo "... src/engine/backend/vulkan/vk_framebuffer_2.s"
 	@echo "... src/engine/backend/vulkan/vk_graphics_pipeline.o"
 	@echo "... src/engine/backend/vulkan/vk_graphics_pipeline.i"
 	@echo "... src/engine/backend/vulkan/vk_graphics_pipeline.s"
-	@echo "... src/engine/backend/vulkan/vk_graphics_pipeline_2.o"
-	@echo "... src/engine/backend/vulkan/vk_graphics_pipeline_2.i"
-	@echo "... src/engine/backend/vulkan/vk_graphics_pipeline_2.s"
 	@echo "... src/engine/backend/vulkan/vk_instance.o"
 	@echo "... src/engine/backend/vulkan/vk_instance.i"
 	@echo "... src/engine/backend/vulkan/vk_instance.s"
@@ -21461,21 +18629,12 @@ help:
 	@echo "... src/engine/backend/vulkan/vk_pipeline_cache.o"
 	@echo "... src/engine/backend/vulkan/vk_pipeline_cache.i"
 	@echo "... src/engine/backend/vulkan/vk_pipeline_cache.s"
-	@echo "... src/engine/backend/vulkan/vk_pipeline_cache_2.o"
-	@echo "... src/engine/backend/vulkan/vk_pipeline_cache_2.i"
-	@echo "... src/engine/backend/vulkan/vk_pipeline_cache_2.s"
 	@echo "... src/engine/backend/vulkan/vk_render_pass.o"
 	@echo "... src/engine/backend/vulkan/vk_render_pass.i"
 	@echo "... src/engine/backend/vulkan/vk_render_pass.s"
-	@echo "... src/engine/backend/vulkan/vk_render_pass_2.o"
-	@echo "... src/engine/backend/vulkan/vk_render_pass_2.i"
-	@echo "... src/engine/backend/vulkan/vk_render_pass_2.s"
 	@echo "... src/engine/backend/vulkan/vk_shader.o"
 	@echo "... src/engine/backend/vulkan/vk_shader.i"
 	@echo "... src/engine/backend/vulkan/vk_shader.s"
-	@echo "... src/engine/backend/vulkan/vk_shader_2.o"
-	@echo "... src/engine/backend/vulkan/vk_shader_2.i"
-	@echo "... src/engine/backend/vulkan/vk_shader_2.s"
 	@echo "... src/engine/backend/vulkan/vk_swapchain.o"
 	@echo "... src/engine/backend/vulkan/vk_swapchain.i"
 	@echo "... src/engine/backend/vulkan/vk_swapchain.s"
@@ -21485,9 +18644,6 @@ help:
 	@echo "... src/engine/backend/vulkan/vk_texture.o"
 	@echo "... src/engine/backend/vulkan/vk_texture.i"
 	@echo "... src/engine/backend/vulkan/vk_texture.s"
-	@echo "... src/engine/backend/vulkan/vk_texture_2.o"
-	@echo "... src/engine/backend/vulkan/vk_texture_2.i"
-	@echo "... src/engine/backend/vulkan/vk_texture_2.s"
 	@echo "... src/engine/backend/vulkan/vk_validation.o"
 	@echo "... src/engine/backend/vulkan/vk_validation.i"
 	@echo "... src/engine/backend/vulkan/vk_validation.s"
@@ -21545,6 +18701,21 @@ help:
 	@echo "... src/engine/core/hot_reload.o"
 	@echo "... src/engine/core/hot_reload.i"
 	@echo "... src/engine/core/hot_reload.s"
+	@echo "... src/engine/core/initialization/platform/desktop/desktop_init.o"
+	@echo "... src/engine/core/initialization/platform/desktop/desktop_init.i"
+	@echo "... src/engine/core/initialization/platform/desktop/desktop_init.s"
+	@echo "... src/engine/core/initialization/platform/desktop/window_system.o"
+	@echo "... src/engine/core/initialization/platform/desktop/window_system.i"
+	@echo "... src/engine/core/initialization/platform/desktop/window_system.s"
+	@echo "... src/engine/core/initialization/private/error_recovery.o"
+	@echo "... src/engine/core/initialization/private/error_recovery.i"
+	@echo "... src/engine/core/initialization/private/error_recovery.s"
+	@echo "... src/engine/core/initialization/private/init_sequence.o"
+	@echo "... src/engine/core/initialization/private/init_sequence.i"
+	@echo "... src/engine/core/initialization/private/init_sequence.s"
+	@echo "... src/engine/core/initialization/private/subsystem_manager.o"
+	@echo "... src/engine/core/initialization/private/subsystem_manager.i"
+	@echo "... src/engine/core/initialization/private/subsystem_manager.s"
 	@echo "... src/engine/core/legacy/hot_reload.o"
 	@echo "... src/engine/core/legacy/hot_reload.i"
 	@echo "... src/engine/core/legacy/hot_reload.s"
@@ -22504,9 +19675,6 @@ help:
 	@echo "... src/engine/network/content_sharing_system.o"
 	@echo "... src/engine/network/content_sharing_system.i"
 	@echo "... src/engine/network/content_sharing_system.s"
-	@echo "... src/engine/network/content_sharing_system_2.o"
-	@echo "... src/engine/network/content_sharing_system_2.i"
-	@echo "... src/engine/network/content_sharing_system_2.s"
 	@echo "... src/engine/network/core/client_prediction.o"
 	@echo "... src/engine/network/core/client_prediction.i"
 	@echo "... src/engine/network/core/client_prediction.s"
@@ -22621,9 +19789,6 @@ help:
 	@echo "... src/engine/network/server_performance_tracker.o"
 	@echo "... src/engine/network/server_performance_tracker.i"
 	@echo "... src/engine/network/server_performance_tracker.s"
-	@echo "... src/engine/network/server_performance_tracker_2.o"
-	@echo "... src/engine/network/server_performance_tracker_2.i"
-	@echo "... src/engine/network/server_performance_tracker_2.s"
 	@echo "... src/engine/network/socket.o"
 	@echo "... src/engine/network/socket.i"
 	@echo "... src/engine/network/socket.s"
@@ -23333,9 +20498,6 @@ help:
 	@echo "... src/engine/tools/analytics_dashboard.o"
 	@echo "... src/engine/tools/analytics_dashboard.i"
 	@echo "... src/engine/tools/analytics_dashboard.s"
-	@echo "... src/engine/tools/analytics_dashboard_2.o"
-	@echo "... src/engine/tools/analytics_dashboard_2.i"
-	@echo "... src/engine/tools/analytics_dashboard_2.s"
 	@echo "... src/engine/tools/asset_browser/asset_view.o"
 	@echo "... src/engine/tools/asset_browser/asset_view.i"
 	@echo "... src/engine/tools/asset_browser/asset_view.s"
@@ -23522,9 +20684,21 @@ help:
 	@echo "... src/engine/ui/ui_widgets.o"
 	@echo "... src/engine/ui/ui_widgets.i"
 	@echo "... src/engine/ui/ui_widgets.s"
+	@echo "... src/engine/ui/widgets/button.o"
+	@echo "... src/engine/ui/widgets/button.i"
+	@echo "... src/engine/ui/widgets/button.s"
+	@echo "... src/engine/ui/widgets/combobox.o"
+	@echo "... src/engine/ui/widgets/combobox.i"
+	@echo "... src/engine/ui/widgets/combobox.s"
 	@echo "... src/engine/ui/widgets/dialog.o"
 	@echo "... src/engine/ui/widgets/dialog.i"
 	@echo "... src/engine/ui/widgets/dialog.s"
+	@echo "... src/engine/ui/widgets/scroll_view.o"
+	@echo "... src/engine/ui/widgets/scroll_view.i"
+	@echo "... src/engine/ui/widgets/scroll_view.s"
+	@echo "... src/engine/ui/widgets/text_field.o"
+	@echo "... src/engine/ui/widgets/text_field.i"
+	@echo "... src/engine/ui/widgets/text_field.s"
 	@echo "... src/engine/ui/widgets/ui_button.o"
 	@echo "... src/engine/ui/widgets/ui_button.i"
 	@echo "... src/engine/ui/widgets/ui_button.s"
@@ -23636,336 +20810,12 @@ help:
 	@echo "... src/engine/vendor/stb_image/stb_image_impl.o"
 	@echo "... src/engine/vendor/stb_image/stb_image_impl.i"
 	@echo "... src/engine/vendor/stb_image/stb_image_impl.s"
-	@echo "... src/game/blockgame/api.o"
-	@echo "... src/game/blockgame/api.i"
-	@echo "... src/game/blockgame/api.s"
-	@echo "... src/game/blockgame/block/block.o"
-	@echo "... src/game/blockgame/block/block.i"
-	@echo "... src/game/blockgame/block/block.s"
-	@echo "... src/game/blockgame/block/block_states.o"
-	@echo "... src/game/blockgame/block/block_states.i"
-	@echo "... src/game/blockgame/block/block_states.s"
-	@echo "... src/game/blockgame/block/falling_blocks.o"
-	@echo "... src/game/blockgame/block/falling_blocks.i"
-	@echo "... src/game/blockgame/block/falling_blocks.s"
-	@echo "... src/game/blockgame/block/interaction.o"
-	@echo "... src/game/blockgame/block/interaction.i"
-	@echo "... src/game/blockgame/block/interaction.s"
-	@echo "... src/game/blockgame/block/liquid_blocks.o"
-	@echo "... src/game/blockgame/block/liquid_blocks.i"
-	@echo "... src/game/blockgame/block/liquid_blocks.s"
-	@echo "... src/game/blockgame/block/mining.o"
-	@echo "... src/game/blockgame/block/mining.i"
-	@echo "... src/game/blockgame/block/mining.s"
-	@echo "... src/game/blockgame/block/water_bucket.o"
-	@echo "... src/game/blockgame/block/water_bucket.i"
-	@echo "... src/game/blockgame/block/water_bucket.s"
-	@echo "... src/game/blockgame/block/water_physics.o"
-	@echo "... src/game/blockgame/block/water_physics.i"
-	@echo "... src/game/blockgame/block/water_physics.s"
-	@echo "... src/game/blockgame/block_game_module.o"
-	@echo "... src/game/blockgame/block_game_module.i"
-	@echo "... src/game/blockgame/block_game_module.s"
-	@echo "... src/game/blockgame/block_registry_global.o"
-	@echo "... src/game/blockgame/block_registry_global.i"
-	@echo "... src/game/blockgame/block_registry_global.s"
-	@echo "... src/game/blockgame/chunk/chunk.o"
-	@echo "... src/game/blockgame/chunk/chunk.i"
-	@echo "... src/game/blockgame/chunk/chunk.s"
-	@echo "... src/game/blockgame/chunk/chunk_buffers.o"
-	@echo "... src/game/blockgame/chunk/chunk_buffers.i"
-	@echo "... src/game/blockgame/chunk/chunk_buffers.s"
-	@echo "... src/game/blockgame/chunk/chunk_manager_optimized.o"
-	@echo "... src/game/blockgame/chunk/chunk_manager_optimized.i"
-	@echo "... src/game/blockgame/chunk/chunk_manager_optimized.s"
-	@echo "... src/game/blockgame/combat/combat_animations.o"
-	@echo "... src/game/blockgame/combat/combat_animations.i"
-	@echo "... src/game/blockgame/combat/combat_animations.s"
-	@echo "... src/game/blockgame/combat/combat_system.o"
-	@echo "... src/game/blockgame/combat/combat_system.i"
-	@echo "... src/game/blockgame/combat/combat_system.s"
-	@echo "... src/game/blockgame/combat/damage_calc.o"
-	@echo "... src/game/blockgame/combat/damage_calc.i"
-	@echo "... src/game/blockgame/combat/damage_calc.s"
-	@echo "... src/game/blockgame/combat/damage_system.o"
-	@echo "... src/game/blockgame/combat/damage_system.i"
-	@echo "... src/game/blockgame/combat/damage_system.s"
-	@echo "... src/game/blockgame/combat/equipment.o"
-	@echo "... src/game/blockgame/combat/equipment.i"
-	@echo "... src/game/blockgame/combat/equipment.s"
-	@echo "... src/game/blockgame/combat/equipment_system.o"
-	@echo "... src/game/blockgame/combat/equipment_system.i"
-	@echo "... src/game/blockgame/combat/equipment_system.s"
-	@echo "... src/game/blockgame/combat/projectile.o"
-	@echo "... src/game/blockgame/combat/projectile.i"
-	@echo "... src/game/blockgame/combat/projectile.s"
-	@echo "... src/game/blockgame/combat/shield.o"
-	@echo "... src/game/blockgame/combat/shield.i"
-	@echo "... src/game/blockgame/combat/shield.s"
-	@echo "... src/game/blockgame/crafting/brewing.o"
-	@echo "... src/game/blockgame/crafting/brewing.i"
-	@echo "... src/game/blockgame/crafting/brewing.s"
-	@echo "... src/game/blockgame/crafting/crafting_table.o"
-	@echo "... src/game/blockgame/crafting/crafting_table.i"
-	@echo "... src/game/blockgame/crafting/crafting_table.s"
-	@echo "... src/game/blockgame/crafting/enchanting.o"
-	@echo "... src/game/blockgame/crafting/enchanting.i"
-	@echo "... src/game/blockgame/crafting/enchanting.s"
-	@echo "... src/game/blockgame/crafting/furnace.o"
-	@echo "... src/game/blockgame/crafting/furnace.i"
-	@echo "... src/game/blockgame/crafting/furnace.s"
-	@echo "... src/game/blockgame/crafting/recipe_manager.o"
-	@echo "... src/game/blockgame/crafting/recipe_manager.i"
-	@echo "... src/game/blockgame/crafting/recipe_manager.s"
-	@echo "... src/game/blockgame/crafting/recipe_registry.o"
-	@echo "... src/game/blockgame/crafting/recipe_registry.i"
-	@echo "... src/game/blockgame/crafting/recipe_registry.s"
-	@echo "... src/game/blockgame/crafting/recipe_system.o"
-	@echo "... src/game/blockgame/crafting/recipe_system.i"
-	@echo "... src/game/blockgame/crafting/recipe_system.s"
-	@echo "... src/game/blockgame/crafting/resource_processing.o"
-	@echo "... src/game/blockgame/crafting/resource_processing.i"
-	@echo "... src/game/blockgame/crafting/resource_processing.s"
-	@echo "... src/game/blockgame/game.o"
-	@echo "... src/game/blockgame/game.i"
-	@echo "... src/game/blockgame/game.s"
-	@echo "... src/game/blockgame/game_hooks.o"
-	@echo "... src/game/blockgame/game_hooks.i"
-	@echo "... src/game/blockgame/game_hooks.s"
-	@echo "... src/game/blockgame/inventory/inventory.o"
-	@echo "... src/game/blockgame/inventory/inventory.i"
-	@echo "... src/game/blockgame/inventory/inventory.s"
-	@echo "... src/game/blockgame/inventory/item_registry.o"
-	@echo "... src/game/blockgame/inventory/item_registry.i"
-	@echo "... src/game/blockgame/inventory/item_registry.s"
-	@echo "... src/game/blockgame/modding/mod_api.o"
-	@echo "... src/game/blockgame/modding/mod_api.i"
-	@echo "... src/game/blockgame/modding/mod_api.s"
-	@echo "... src/game/blockgame/modding/mod_loader.o"
-	@echo "... src/game/blockgame/modding/mod_loader.i"
-	@echo "... src/game/blockgame/modding/mod_loader.s"
-	@echo "... src/game/blockgame/mode.o"
-	@echo "... src/game/blockgame/mode.i"
-	@echo "... src/game/blockgame/mode.s"
-	@echo "... src/game/blockgame/ore/ore_generation.o"
-	@echo "... src/game/blockgame/ore/ore_generation.i"
-	@echo "... src/game/blockgame/ore/ore_generation.s"
-	@echo "... src/game/blockgame/player/experience_system.o"
-	@echo "... src/game/blockgame/player/experience_system.i"
-	@echo "... src/game/blockgame/player/experience_system.s"
-	@echo "... src/game/blockgame/player/food_spoilage.o"
-	@echo "... src/game/blockgame/player/food_spoilage.i"
-	@echo "... src/game/blockgame/player/food_spoilage.s"
 	@echo "... src/game/blockgame/player/player.o"
 	@echo "... src/game/blockgame/player/player.i"
 	@echo "... src/game/blockgame/player/player.s"
 	@echo "... src/game/blockgame/player/player_combat.o"
 	@echo "... src/game/blockgame/player/player_combat.i"
 	@echo "... src/game/blockgame/player/player_combat.s"
-	@echo "... src/game/blockgame/player/player_damage.o"
-	@echo "... src/game/blockgame/player/player_damage.i"
-	@echo "... src/game/blockgame/player/player_damage.s"
-	@echo "... src/game/blockgame/player/player_food.o"
-	@echo "... src/game/blockgame/player/player_food.i"
-	@echo "... src/game/blockgame/player/player_food.s"
-	@echo "... src/game/blockgame/player/player_movement_enhancements.o"
-	@echo "... src/game/blockgame/player/player_movement_enhancements.i"
-	@echo "... src/game/blockgame/player/player_movement_enhancements.s"
-	@echo "... src/game/blockgame/player/player_movement_physics.o"
-	@echo "... src/game/blockgame/player/player_movement_physics.i"
-	@echo "... src/game/blockgame/player/player_movement_physics.s"
-	@echo "... src/game/blockgame/player/spell_combination.o"
-	@echo "... src/game/blockgame/player/spell_combination.i"
-	@echo "... src/game/blockgame/player/spell_combination.s"
-	@echo "... src/game/blockgame/player/spirit_model.o"
-	@echo "... src/game/blockgame/player/spirit_model.i"
-	@echo "... src/game/blockgame/player/spirit_model.s"
-	@echo "... src/game/blockgame/player/status_effects.o"
-	@echo "... src/game/blockgame/player/status_effects.i"
-	@echo "... src/game/blockgame/player/status_effects.s"
-	@echo "... src/game/blockgame/queue.o"
-	@echo "... src/game/blockgame/queue.i"
-	@echo "... src/game/blockgame/queue.s"
-	@echo "... src/game/blockgame/save/save.o"
-	@echo "... src/game/blockgame/save/save.i"
-	@echo "... src/game/blockgame/save/save.s"
-	@echo "... src/game/blockgame/survival/hunger.o"
-	@echo "... src/game/blockgame/survival/hunger.i"
-	@echo "... src/game/blockgame/survival/hunger.s"
-	@echo "... src/game/blockgame/survival_system.o"
-	@echo "... src/game/blockgame/survival_system.i"
-	@echo "... src/game/blockgame/survival_system.s"
-	@echo "... src/game/blockgame/systems/progression.o"
-	@echo "... src/game/blockgame/systems/progression.i"
-	@echo "... src/game/blockgame/systems/progression.s"
-	@echo "... src/game/blockgame/tech/energy_system.o"
-	@echo "... src/game/blockgame/tech/energy_system.i"
-	@echo "... src/game/blockgame/tech/energy_system.s"
-	@echo "... src/game/blockgame/tech/solar_energy.o"
-	@echo "... src/game/blockgame/tech/solar_energy.i"
-	@echo "... src/game/blockgame/tech/solar_energy.s"
-	@echo "... src/game/blockgame/tech/tech_machines.o"
-	@echo "... src/game/blockgame/tech/tech_machines.i"
-	@echo "... src/game/blockgame/tech/tech_machines.s"
-	@echo "... src/game/blockgame/tech_crafting_impl.o"
-	@echo "... src/game/blockgame/tech_crafting_impl.i"
-	@echo "... src/game/blockgame/tech_crafting_impl.s"
-	@echo "... src/game/blockgame/ui/crafting_ui.o"
-	@echo "... src/game/blockgame/ui/crafting_ui.i"
-	@echo "... src/game/blockgame/ui/crafting_ui.s"
-	@echo "... src/game/blockgame/ui/dialog_integration.o"
-	@echo "... src/game/blockgame/ui/dialog_integration.i"
-	@echo "... src/game/blockgame/ui/dialog_integration.s"
-	@echo "... src/game/blockgame/ui/floating_text.o"
-	@echo "... src/game/blockgame/ui/floating_text.i"
-	@echo "... src/game/blockgame/ui/floating_text.s"
-	@echo "... src/game/blockgame/ui/hotbar.o"
-	@echo "... src/game/blockgame/ui/hotbar.i"
-	@echo "... src/game/blockgame/ui/hotbar.s"
-	@echo "... src/game/blockgame/ui/hud_bars.o"
-	@echo "... src/game/blockgame/ui/hud_bars.i"
-	@echo "... src/game/blockgame/ui/hud_bars.s"
-	@echo "... src/game/blockgame/ui/hud_debug.o"
-	@echo "... src/game/blockgame/ui/hud_debug.i"
-	@echo "... src/game/blockgame/ui/hud_debug.s"
-	@echo "... src/game/blockgame/ui/hud_logging.o"
-	@echo "... src/game/blockgame/ui/hud_logging.i"
-	@echo "... src/game/blockgame/ui/hud_logging.s"
-	@echo "... src/game/blockgame/ui/hud_main.o"
-	@echo "... src/game/blockgame/ui/hud_main.i"
-	@echo "... src/game/blockgame/ui/hud_main.s"
-	@echo "... src/game/blockgame/ui/hud_overlay.o"
-	@echo "... src/game/blockgame/ui/hud_overlay.i"
-	@echo "... src/game/blockgame/ui/hud_overlay.s"
-	@echo "... src/game/blockgame/ui/hud_renderer.o"
-	@echo "... src/game/blockgame/ui/hud_renderer.i"
-	@echo "... src/game/blockgame/ui/hud_renderer.s"
-	@echo "... src/game/blockgame/ui/hud_spell_cooldown.o"
-	@echo "... src/game/blockgame/ui/hud_spell_cooldown.i"
-	@echo "... src/game/blockgame/ui/hud_spell_cooldown.s"
-	@echo "... src/game/blockgame/ui/hud_tooltip.o"
-	@echo "... src/game/blockgame/ui/hud_tooltip.i"
-	@echo "... src/game/blockgame/ui/hud_tooltip.s"
-	@echo "... src/game/blockgame/ui/inventory_ui.o"
-	@echo "... src/game/blockgame/ui/inventory_ui.i"
-	@echo "... src/game/blockgame/ui/inventory_ui.s"
-	@echo "... src/game/blockgame/ui/main_menu.o"
-	@echo "... src/game/blockgame/ui/main_menu.i"
-	@echo "... src/game/blockgame/ui/main_menu.s"
-	@echo "... src/game/blockgame/ui/menu.o"
-	@echo "... src/game/blockgame/ui/menu.i"
-	@echo "... src/game/blockgame/ui/menu.s"
-	@echo "... src/game/blockgame/ui/menu_renderer.o"
-	@echo "... src/game/blockgame/ui/menu_renderer.i"
-	@echo "... src/game/blockgame/ui/menu_renderer.s"
-	@echo "... src/game/blockgame/ui/menu_systems_complete.o"
-	@echo "... src/game/blockgame/ui/menu_systems_complete.i"
-	@echo "... src/game/blockgame/ui/menu_systems_complete.s"
-	@echo "... src/game/blockgame/ui/pause_menu.o"
-	@echo "... src/game/blockgame/ui/pause_menu.i"
-	@echo "... src/game/blockgame/ui/pause_menu.s"
-	@echo "... src/game/blockgame/utils.o"
-	@echo "... src/game/blockgame/utils.i"
-	@echo "... src/game/blockgame/utils.s"
-	@echo "... src/game/blockgame/vfx/gpu_pipeline_setup.o"
-	@echo "... src/game/blockgame/vfx/gpu_pipeline_setup.i"
-	@echo "... src/game/blockgame/vfx/gpu_pipeline_setup.s"
-	@echo "... src/game/blockgame/vfx/particle_system.o"
-	@echo "... src/game/blockgame/vfx/particle_system.i"
-	@echo "... src/game/blockgame/vfx/particle_system.s"
-	@echo "... src/game/blockgame/vfx/post_processing.o"
-	@echo "... src/game/blockgame/vfx/post_processing.i"
-	@echo "... src/game/blockgame/vfx/post_processing.s"
-	@echo "... src/game/blockgame/vfx/status_effect_visuals.o"
-	@echo "... src/game/blockgame/vfx/status_effect_visuals.i"
-	@echo "... src/game/blockgame/vfx/status_effect_visuals.s"
-	@echo "... src/game/blockgame/vfx/vfx_optimization.o"
-	@echo "... src/game/blockgame/vfx/vfx_optimization.i"
-	@echo "... src/game/blockgame/vfx/vfx_optimization.s"
-	@echo "... src/game/blockgame/vfx/visual_effects.o"
-	@echo "... src/game/blockgame/vfx/visual_effects.i"
-	@echo "... src/game/blockgame/vfx/visual_effects.s"
-	@echo "... src/game/blockgame/weather/environmental_effects.o"
-	@echo "... src/game/blockgame/weather/environmental_effects.i"
-	@echo "... src/game/blockgame/weather/environmental_effects.s"
-	@echo "... src/game/blockgame/weather/seasonal_system.o"
-	@echo "... src/game/blockgame/weather/seasonal_system.i"
-	@echo "... src/game/blockgame/weather/seasonal_system.s"
-	@echo "... src/game/blockgame/weather/weather.o"
-	@echo "... src/game/blockgame/weather/weather.i"
-	@echo "... src/game/blockgame/weather/weather.s"
-	@echo "... src/game/blockgame/weather/weather_audio.o"
-	@echo "... src/game/blockgame/weather/weather_audio.i"
-	@echo "... src/game/blockgame/weather/weather_audio.s"
-	@echo "... src/game/blockgame/weather/weather_particles.o"
-	@echo "... src/game/blockgame/weather/weather_particles.i"
-	@echo "... src/game/blockgame/weather/weather_particles.s"
-	@echo "... src/game/blockgame/world/biome_features.o"
-	@echo "... src/game/blockgame/world/biome_features.i"
-	@echo "... src/game/blockgame/world/biome_features.s"
-	@echo "... src/game/blockgame/world/biome_generator.o"
-	@echo "... src/game/blockgame/world/biome_generator.i"
-	@echo "... src/game/blockgame/world/biome_generator.s"
-	@echo "... src/game/blockgame/world/biome_system.o"
-	@echo "... src/game/blockgame/world/biome_system.i"
-	@echo "... src/game/blockgame/world/biome_system.s"
-	@echo "... src/game/blockgame/world/biome_transitions.o"
-	@echo "... src/game/blockgame/world/biome_transitions.i"
-	@echo "... src/game/blockgame/world/biome_transitions.s"
-	@echo "... src/game/blockgame/world/cave_generation.o"
-	@echo "... src/game/blockgame/world/cave_generation.i"
-	@echo "... src/game/blockgame/world/cave_generation.s"
-	@echo "... src/game/blockgame/world/dungeon_generation.o"
-	@echo "... src/game/blockgame/world/dungeon_generation.i"
-	@echo "... src/game/blockgame/world/dungeon_generation.s"
-	@echo "... src/game/blockgame/world/generator.o"
-	@echo "... src/game/blockgame/world/generator.i"
-	@echo "... src/game/blockgame/world/generator.s"
-	@echo "... src/game/blockgame/world/generator_basic.o"
-	@echo "... src/game/blockgame/world/generator_basic.i"
-	@echo "... src/game/blockgame/world/generator_basic.s"
-	@echo "... src/game/blockgame/world/loot_tables.o"
-	@echo "... src/game/blockgame/world/loot_tables.i"
-	@echo "... src/game/blockgame/world/loot_tables.s"
-	@echo "... src/game/blockgame/world/noise.o"
-	@echo "... src/game/blockgame/world/noise.i"
-	@echo "... src/game/blockgame/world/noise.s"
-	@echo "... src/game/blockgame/world/plant_generation.o"
-	@echo "... src/game/blockgame/world/plant_generation.i"
-	@echo "... src/game/blockgame/world/plant_generation.s"
-	@echo "... src/game/blockgame/world/plant_varieties.o"
-	@echo "... src/game/blockgame/world/plant_varieties.i"
-	@echo "... src/game/blockgame/world/plant_varieties.s"
-	@echo "... src/game/blockgame/world/plant_vfx.o"
-	@echo "... src/game/blockgame/world/plant_vfx.i"
-	@echo "... src/game/blockgame/world/plant_vfx.s"
-	@echo "... src/game/blockgame/world/rail_system.o"
-	@echo "... src/game/blockgame/world/rail_system.i"
-	@echo "... src/game/blockgame/world/rail_system.s"
-	@echo "... src/game/blockgame/world/settlement_generation.o"
-	@echo "... src/game/blockgame/world/settlement_generation.i"
-	@echo "... src/game/blockgame/world/settlement_generation.s"
-	@echo "... src/game/blockgame/world/structures.o"
-	@echo "... src/game/blockgame/world/structures.i"
-	@echo "... src/game/blockgame/world/structures.s"
-	@echo "... src/game/blockgame/world/tree_generation.o"
-	@echo "... src/game/blockgame/world/tree_generation.i"
-	@echo "... src/game/blockgame/world/tree_generation.s"
-	@echo "... src/game/blockgame/world/tree_varieties.o"
-	@echo "... src/game/blockgame/world/tree_varieties.i"
-	@echo "... src/game/blockgame/world/tree_varieties.s"
-	@echo "... src/game/blockgame/world/voxel_world_data.o"
-	@echo "... src/game/blockgame/world/voxel_world_data.i"
-	@echo "... src/game/blockgame/world/voxel_world_data.s"
-	@echo "... src/game/blockgame/world/water_integration.o"
-	@echo "... src/game/blockgame/world/water_integration.i"
-	@echo "... src/game/blockgame/world/water_integration.s"
-	@echo "... src/game/blockgame/world/water_physics.o"
-	@echo "... src/game/blockgame/world/water_physics.i"
-	@echo "... src/game/blockgame/world/water_physics.s"
-	@echo "... src/game/blockgame/world/water_system.o"
-	@echo "... src/game/blockgame/world/water_system.i"
-	@echo "... src/game/blockgame/world/water_system.s"
 .PHONY : help
 
 
