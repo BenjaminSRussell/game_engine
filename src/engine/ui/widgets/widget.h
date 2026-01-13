@@ -27,6 +27,25 @@ typedef struct Widget Widget;
 typedef struct UIEvent UIEvent;
 typedef struct UIEventHandler UIEventHandler;
 
+typedef struct {
+    float top;
+    float right;
+    float bottom;
+    float left;
+} BoxEdges;
+
+typedef struct {
+    float width;
+    float height;
+} Size;
+
+typedef struct {
+  float x;
+  float y;
+  float width;
+  float height;
+} Rect;
+
 // Event types
 typedef enum {
     UI_EVENT_NONE,
@@ -238,6 +257,7 @@ struct Widget {
 
 /* Widget Management */
 Widget* widget_create(const char* name);
+bool widget_init(Widget* widget, const char* name);
 void widget_destroy(Widget* widget);
 void widget_add_child(Widget* parent, Widget* child);
 void widget_remove_child(Widget* parent, Widget* child);
