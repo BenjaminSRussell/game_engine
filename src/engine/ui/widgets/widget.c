@@ -8,8 +8,8 @@
  */
 
 #include "widget.h"
-#include "engine/include/core/logger.h"
-#include "engine/include/core/memory.h"
+#include "core/logger.h"
+#include "core/memory.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -108,17 +108,12 @@ static bool widget_propagate_event(Widget* widget, UIEvent* event) {
  * PUBLIC API
  * ============================================================================ */
 
-Widget* widget_create(const char* name) {
-    Widget* widget = memory_alloc(sizeof(Widget));
-    if (!widget) {
-        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate widget");
-        return NULL;
-    }
+bool widget_init(Widget* widget, const char* name) {
+    if (!widget) return false;
     
     memset(widget, 0, sizeof(Widget));
     
     widget->id = g_widget_id_counter++;
-    widget->max_size = (Vec2){1e9f, 1e9f};
     widget->name = name ? strdup(name) : strdup("Widget");
     widget->visible = true;
     widget->enabled = true;
@@ -140,7 +135,22 @@ Widget* widget_create(const char* name) {
     widget->needs_layout = true;
     widget->needs_redraw = true;
     
-    LOG_INFO(LOG_CAT_GENERAL, "Created widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
+    LOG_INFO(LOG_CAT_UI, "Initialized widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
+    return true;
+}
+
+Widget* widget_create(const char* name) {
+    Widget* widget = memory_alloc(sizeof(Widget));
+    if (!widget) {
+        LOG_ERROR(LOG_CAT_UI, "Failed to allocate widget");
+        return NULL;
+    }
+
+    if (!widget_init(widget, name)) {
+        memory_free(widget);
+        return NULL;
+    }
+
     return widget;
 }
 
@@ -185,7 +195,7 @@ void widget_add_child(Widget* parent, Widget* child) {
         Widget** new_children = memory_realloc(parent->children, 
                                              new_capacity * sizeof(Widget*));
         if (!new_children) {
-            LOG_ERROR(LOG_CAT_GENERAL, "Failed to resize children array");
+            LOG_ERROR(LOG_CAT_UI, "Failed to resize children array");
             return;
         }
         
@@ -202,7 +212,7 @@ void widget_add_child(Widget* parent, Widget* child) {
     widget_invalidate_layout(parent);
     child->dirty = true;
     
-    LOG_INFO(LOG_CAT_GENERAL, "Added child %s to parent %s", child->name, parent->name);
+    LOG_INFO(LOG_CAT_UI, "Added child %s to parent %s", child->name, parent->name);
 }
 
 void widget_remove_child(Widget* parent, Widget* child) {
@@ -232,7 +242,7 @@ void widget_remove_child(Widget* parent, Widget* child) {
     // Invalidate layout
     widget_invalidate_layout(parent);
     
-    LOG_INFO(LOG_CAT_GENERAL, "Removed child %s from parent %s", child->name, parent->name);
+    LOG_INFO(LOG_CAT_UI, "Removed child %s from parent %s", child->name, parent->name);
 }
 
 void widget_remove_from_parent(Widget* widget) {
@@ -333,12 +343,22 @@ void widget_set_focused(Widget* widget, bool focused) {
     }
 }
 
+void widget_set_state(Widget* widget, WidgetState state) {
+    if (!widget) return;
+
+    if (widget->state != state) {
+        widget->state = state;
+        widget->dirty = true;
+        widget_invalidate_redraw(widget);
+    }
+}
+
 void widget_add_event_handler(Widget* widget, UIEventType event_type, UIEventCallback callback, void* user_data) {
     if (!widget || !callback) return;
     
     UIEventHandler* handler = memory_alloc(sizeof(UIEventHandler));
     if (!handler) {
-        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate event handler");
+        LOG_ERROR(LOG_CAT_UI, "Failed to allocate event handler");
         return;
     }
     
@@ -350,7 +370,43 @@ void widget_add_event_handler(Widget* widget, UIEventType event_type, UIEventCal
     
     widget_add_handler_internal(widget, handler);
     
-    LOG_DEBUG(LOG_CAT_GENERAL, "Added event handler for type %d to widget %s", event_type, widget->name);
+    LOG_DEBUG(LOG_CAT_UI, "Added event handler for type %d to widget %s", event_type, widget->name);
+}
+
+void widget_remove_event_handler(Widget* widget, UIEventHandler* handler) {
+    if (!widget || !handler) return;
+
+    widget_remove_handler_internal(widget, handler);
+    memory_free(handler);
+}
+
+void widget_remove_all_event_handlers(Widget* widget, UIEventType event_type) {
+    if (!widget) return;
+
+    UIEventHandler* current = widget->event_handlers;
+    UIEventHandler* prev = NULL;
+
+    while (current) {
+        bool remove = (event_type == UI_EVENT_NONE) || (current->event_type == event_type);
+
+        if (remove) {
+            UIEventHandler* next = current->next;
+
+            if (prev) {
+                prev->next = next;
+            } else {
+                widget->event_handlers = next;
+            }
+
+            memory_free(current);
+            widget->handler_count--;
+
+            current = next;
+        } else {
+            prev = current;
+            current = current->next;
+        }
+    }
 }
 
 bool widget_handle_event(Widget* widget, UIEvent* event) {
@@ -493,7 +549,7 @@ void widget_release_focus(Widget* widget) {
 UIEvent* ui_event_create(UIEventType type) {
     UIEvent* event = memory_alloc(sizeof(UIEvent));
     if (!event) {
-        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate UI event");
+        LOG_ERROR(LOG_CAT_UI, "Failed to allocate UI event");
         return NULL;
     }
     
@@ -586,30 +642,5 @@ void widget_print_hierarchy(const Widget* widget, int depth) {
     // Print children
     for (uint32_t i = 0; i < widget->child_count; i++) {
         widget_print_hierarchy(widget->children[i], depth + 1);
-    }
-}
-
-void widget_remove_event_handler(Widget* widget, UIEventHandler* handler) {
-    if (!widget || !handler) return;
-    widget_remove_handler_internal(widget, handler);
-    memory_free(handler);
-}
-
-void widget_remove_all_event_handlers(Widget* widget, UIEventType event_type) {
-    if (!widget) return;
-
-    UIEventHandler* current = widget->event_handlers;
-    while (current) {
-        UIEventHandler* next = current->next;
-
-        if (event_type == UI_EVENT_NONE || current->event_type == event_type) {
-            widget_remove_handler_internal(widget, current);
-            memory_free(current);
-            // Since remove_internal unlinks, and we have next, we are safe.
-            // Note: remove_internal might be slow (O(N)), making this O(N^2).
-            // But usually N is small.
-        }
-
-        current = next;
     }
 }

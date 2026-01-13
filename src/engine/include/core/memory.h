@@ -1,15 +1,36 @@
+// include/core/memory.h
+//
+// Purpose: REDIRECTED TO UNIFIED MEMORY ALLOCATOR - CONSOLIDATED SYSTEM
+//
 #ifndef MEMORY_H
 #define MEMORY_H
 
 #include "math/types.h"
+#include <stdbool.h>
 
-// Memory tags for tracking allocation sources
+// Memory tags for tracking allocation types
 typedef enum {
     MEMORY_TAG_UNKNOWN,
+    MEMORY_TAG_ARRAY,
+    MEMORY_TAG_LINEAR_ALLOCATOR,
+    MEMORY_TAG_DARRAY,
+    MEMORY_TAG_DICT,
+    MEMORY_TAG_RING_QUEUE,
+    MEMORY_TAG_BST,
+    MEMORY_TAG_STRING,
+    MEMORY_TAG_APPLICATION,
+    MEMORY_TAG_JOB,
+    MEMORY_TAG_TEXTURE,
+    MEMORY_TAG_MATERIAL_INSTANCE,
+    MEMORY_TAG_RENDERER,
+    MEMORY_TAG_GAME,
+    MEMORY_TAG_TRANSFORM,
+    MEMORY_TAG_ENTITY,
+    MEMORY_TAG_ENTITY_NODE,
+    MEMORY_TAG_SCENE,
     MEMORY_TAG_TEMP,
     MEMORY_TAG_PERSISTENT,
     MEMORY_TAG_ASSET,
-    MEMORY_TAG_RENDERER,
     MEMORY_TAG_AUDIO,
     MEMORY_TAG_PHYSICS,
     MEMORY_TAG_AI,
@@ -17,14 +38,26 @@ typedef enum {
     MEMORY_TAG_UI,
     MEMORY_TAG_GAMEPLAY,
     MEMORY_TAG_GEOMETRY,
-    MEMORY_TAG_CUSTOM,
+
     MEMORY_TAG_COUNT
 } MemoryTag;
 
 // Redirect to the unified memory allocator that consolidates all memory systems
 #include "memory/unified_memory_allocator.h"
 
-// Legacy types (kept for compatibility)
+// Note: All memory management functionality has been consolidated into unified_memory_allocator.h
+// This header is kept for backwards compatibility only
+
+// Legacy compatibility - all existing code continues to work
+// The unified allocator provides:
+// - Memory tracking and leak detection
+// - Memory pools for performance
+// - Stack allocators for temporary data
+// - Arena allocators for bulk allocations
+// - Guard pages and canaries for corruption detection
+// - Statistics and monitoring
+// - Fragmentation analysis
+// - Hot-spot detection
 
 // Advanced allocation tracking with stack traces
 typedef struct {
@@ -69,14 +102,6 @@ extern MemoryTracker g_memory_tracker;
 void memory_tracker_init(u32 initial_capacity);
 void memory_tracker_shutdown(void);
 
-// declarations matched by unified macros
-#ifndef memory_alloc
-void *memory_alloc(u32 size, const char *file, u32 line);
-void *memory_calloc(u32 count, u32 size, const char *file, u32 line);
-void *memory_realloc(void *ptr, u32 new_size, const char *file, u32 line);
-void memory_free(void *ptr);
-#endif
-
 void memory_tracker_report(void);
 
 // Memory limits
@@ -86,59 +111,22 @@ u64 memory_get_limit(void);
 bool memory_is_enforcement_enabled(void);
 bool memory_check_limit(u64 requested_size);
 
-// Convenience macros
-#ifndef MALLOC
-#define MALLOC(size) memory_alloc(size, __FILE__, __LINE__)
-#endif
-#ifndef CALLOC
-#define CALLOC(count, size) memory_calloc(count, size, __FILE__, __LINE__)
-#endif
-#ifndef REALLOC
-#define REALLOC(ptr, size) memory_realloc(ptr, size, __FILE__, __LINE__)
-#endif
-#ifndef FREE
-#define FREE(ptr) memory_free(ptr)
-#endif
-
 // Legacy aliases
 #define core_alloc(size) MALLOC(size)
 #define core_realloc(ptr, size) REALLOC(ptr, size)
 #define core_free(ptr) FREE(ptr)
 
-// ObjectPool legacy type - typedef to MemoryPool to match unified macros
-typedef MemoryPool ObjectPool;
+// Object pool for fast allocation/deallocation
+typedef struct {
+  void *objects;
+  bool *free_list;
+  u32 object_size;
+  u32 capacity;
+  u32 count;
+} ObjectPool;
 
-// declarations removed to avoid conflict with macros in unified_memory_allocator.h
-/*
-ObjectPool *object_pool_create(u32 object_size, u32 capacity);
-void object_pool_destroy(ObjectPool *pool);
-void *object_pool_allocate(ObjectPool *pool);
-void object_pool_free(ObjectPool *pool, void *object);
 void object_pool_reset(ObjectPool *pool);
 u32 object_pool_get_available(ObjectPool *pool);
-*/
-
-// StackAllocator legacy type - already defined in unified_memory_allocator.h
-// typedef StackAllocator StackAllocator;
-
-// declarations removed to avoid conflict with macros
-/*
-typedef struct {
-  void *base;
-  u32 size;
-  u32 offset;
-  u32 frame_offset;
-  u32 peak_usage;
-} StackAllocator;
-*/
-
-// Add missing macros for stack allocator legacy support
-#ifndef stack_allocator_marker
-#define stack_allocator_marker(stack) unified_memory_stack_marker(stack)
-#endif
-#ifndef stack_allocator_rollback
-#define stack_allocator_rollback(stack, marker) unified_memory_stack_rollback(stack, marker)
-#endif
 
 // Linear allocator for ultra-fast per-frame allocations
 typedef struct {
@@ -174,26 +162,6 @@ typedef struct {
   u32 free_blocks;
 } BuddyAllocator;
 
-// Custom allocator interface
-typedef struct Allocator Allocator;
-typedef struct {
-  void *(*alloc)(Allocator *allocator, u32 size, u32 alignment);
-  void *(*realloc)(Allocator *allocator, void *ptr, u32 new_size);
-  void (*free)(Allocator *allocator, void *ptr);
-  void (*reset)(Allocator *allocator);
-  u64 (*get_usage)(Allocator *allocator);
-  u64 (*get_capacity)(Allocator *allocator);
-  void (*get_stats)(Allocator *allocator, char *buffer, u32 buffer_size);
-} AllocatorVTable;
-
-typedef struct Allocator {
-  const AllocatorVTable *vtable;
-  const char *name;
-  MemoryTag tag;
-  Allocator *fallback; // Fallback allocator
-  void *impl;          // Implementation-specific data
-} Allocator;
-
 // Memory profiler visualization data
 typedef struct {
   u64 timestamp;
@@ -211,7 +179,9 @@ typedef struct {
   bool recording;
 } MemoryProfiler;
 
-// PoolStats, ModuleStats
+// StackAllocator API provided by allocator_stack.h
+
+// Memory statistics and pool management
 typedef struct {
   u32 pool_id;
   u32 object_size;
@@ -271,16 +241,7 @@ u64 memory_get_tag_limit(MemoryTag tag);
 void memory_print_tag_stats(void);
 void *memory_alloc_tagged(u32 size, MemoryTag tag, const char *file, u32 line);
 
-// Custom allocator interface
-Allocator *allocator_create_custom(const AllocatorVTable *vtable,
-                                   const char *name, MemoryTag tag,
-                                   Allocator *fallback);
-void allocator_destroy(Allocator *allocator);
-void *allocator_alloc(Allocator *allocator, u32 size, u32 alignment);
-void allocator_free(Allocator *allocator, void *ptr);
-void allocator_reset(Allocator *allocator);
-void allocator_get_stats(Allocator *allocator, char *buffer, u32 buffer_size);
-
+/*
 // Memory profiler visualization
 void memory_profiler_init(u32 max_snapshots);
 void memory_profiler_shutdown(void);
@@ -297,11 +258,13 @@ void memory_capture_stack_trace(void **buffer, u32 max_depth, u32 *out_depth);
 char **memory_resolve_stack_trace(void **addresses, u32 depth);
 void memory_free_resolved_stack_trace(char **symbols);
 
-// Enhanced allocation macros with tagging
-// unified_memory_allocator.h defined these. We can undef if needed, or leave them.
-// But we should avoid redefinition warnings if possible.
-
+// ============================================================================
 // Vulkan Memory Integration
+// ============================================================================
+// Unified memory tracking for Vulkan driver allocations via
+// VkAllocationCallbacks
+
+// Vulkan allocator context for tracking driver allocations
 typedef struct {
   u64 driver_allocations_count;
   u64 driver_allocated_bytes;
@@ -311,7 +274,14 @@ typedef struct {
   bool enabled;
 } VulkanAllocatorStats;
 
+// Initialize Vulkan allocation system (internal)
+// Callbacks are exposed via memory_get_vulkan_callbacks()
+
+// Get VkAllocationCallbacks structure (opaque pointer to avoid Vulkan
+// dependency in this header)
 void *memory_get_vulkan_callbacks(void);
+
+// Vulkan allocator statistics
 void memory_get_vulkan_stats(VulkanAllocatorStats *stats);
 void memory_print_vulkan_stats(void);
 

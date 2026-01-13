@@ -13,8 +13,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "math/math.h"
-#include "math/rect.h"
+#include "include/math/math.h"
+#include "include/math/rect.h"
+#include "../layout/flexbox_layout.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,12 +28,6 @@ extern "C" {
 typedef struct Widget Widget;
 typedef struct UIEvent UIEvent;
 typedef struct UIEventHandler UIEventHandler;
-
-typedef struct {
-    float top, right, bottom, left;
-} BoxEdges;
-
-typedef Vec2 Size;
 
 // Event types
 typedef enum {
@@ -244,6 +239,7 @@ struct Widget {
  * ============================================================================ */
 
 /* Widget Management */
+bool widget_init(Widget* widget, const char* name);
 Widget* widget_create(const char* name);
 void widget_destroy(Widget* widget);
 void widget_add_child(Widget* parent, Widget* child);

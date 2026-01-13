@@ -1,8 +1,8 @@
 #ifndef MATH_RECT_H
 #define MATH_RECT_H
 
-#include "engine/include/common.h"
-#include "math/vec2.h"
+#include <common.h>
+#include "vec2.h"
 #include <stdbool.h>
 
 typedef struct Rect {
