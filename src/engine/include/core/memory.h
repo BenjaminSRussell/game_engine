@@ -22,7 +22,19 @@
 // - Fragmentation analysis
 // - Hot-spot detection
 
-#endif // MEMORY_H
+typedef enum {
+  MEMORY_TAG_UNKNOWN,
+  MEMORY_TAG_TEMP,
+  MEMORY_TAG_PERSISTENT,
+  MEMORY_TAG_ASSET,
+  MEMORY_TAG_RENDERER,
+  MEMORY_TAG_AUDIO,
+  MEMORY_TAG_PHYSICS,
+  MEMORY_TAG_AI,
+  MEMORY_TAG_NETWORK,
+  MEMORY_TAG_UI,
+  MEMORY_TAG_GAMEPLAY,
+  MEMORY_TAG_GEOMETRY,
   MEMORY_TAG_COUNT
 } MemoryTag;
 
@@ -68,10 +80,10 @@ extern MemoryTracker g_memory_tracker;
 // Memory tracking
 void memory_tracker_init(u32 initial_capacity);
 void memory_tracker_shutdown(void);
-void *memory_alloc(u32 size, const char *file, u32 line);
-void *memory_calloc(u32 count, u32 size, const char *file, u32 line);
-void *memory_realloc(void *ptr, u32 new_size, const char *file, u32 line);
-void memory_free(void *ptr);
+// void *memory_alloc(u32 size, const char *file, u32 line);
+// void *memory_calloc(u32 count, u32 size, const char *file, u32 line);
+// void *memory_realloc(void *ptr, u32 new_size, const char *file, u32 line);
+// void memory_free(void *ptr);
 void memory_tracker_report(void);
 
 // Memory limits
@@ -93,29 +105,29 @@ bool memory_check_limit(u64 requested_size);
 #define core_free(ptr) FREE(ptr)
 
 // Object pool for fast allocation/deallocation
-typedef struct {
-  void *objects;
-  bool *free_list;
-  u32 object_size;
-  u32 capacity;
-  u32 count;
-} ObjectPool;
+// typedef struct {
+//   void *objects;
+//   bool *free_list;
+//   u32 object_size;
+//   u32 capacity;
+//   u32 count;
+// } ObjectPool;
 
-ObjectPool *object_pool_create(u32 object_size, u32 capacity);
-void object_pool_destroy(ObjectPool *pool);
-void *object_pool_allocate(ObjectPool *pool);
-void object_pool_free(ObjectPool *pool, void *object);
-void object_pool_reset(ObjectPool *pool);
-u32 object_pool_get_available(ObjectPool *pool);
+// ObjectPool *object_pool_create(u32 object_size, u32 capacity);
+// void object_pool_destroy(ObjectPool *pool);
+// void *object_pool_allocate(ObjectPool *pool);
+// void object_pool_free(ObjectPool *pool, void *object);
+// void object_pool_reset(ObjectPool *pool);
+// u32 object_pool_get_available(ObjectPool *pool);
 
 // Stack allocator for temporary allocations
-typedef struct {
-  void *base;
-  u32 size;
-  u32 offset;
-  u32 frame_offset;
-  u32 peak_usage;
-} StackAllocator;
+// typedef struct {
+//   void *base;
+//   u32 size;
+//   u32 offset;
+//   u32 frame_offset;
+//   u32 peak_usage;
+// } StackAllocator;
 
 // Linear allocator for ultra-fast per-frame allocations
 typedef struct {
@@ -318,4 +330,4 @@ void *memory_get_vulkan_callbacks(void);
 void memory_get_vulkan_stats(VulkanAllocatorStats *stats);
 void memory_print_vulkan_stats(void);
 
-#endif
+#endif // MEMORY_H

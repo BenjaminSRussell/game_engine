@@ -48,6 +48,26 @@ typedef enum {
     POSITION_FIXED
 } LayoutPosition;
 
+// Basic geometric types
+typedef struct {
+    float top;
+    float right;
+    float bottom;
+    float left;
+} BoxEdges;
+
+typedef struct {
+    float width;
+    float height;
+} Size;
+
+typedef struct {
+    float x;
+    float y;
+    float width;
+    float height;
+} Rect;
+
 // Size constraints
 typedef struct {
     float min_width;

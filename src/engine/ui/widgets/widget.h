@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "include/math/math.h"
+#include "ui/ui_types.h"
 
 #ifdef __cplusplus
 extern "C" {

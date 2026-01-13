@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "include/math/math.h"
+#include "ui/ui_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -81,17 +82,7 @@ typedef enum {
 } AlignContent;
 
 // Box model dimensions
-typedef struct {
-    float top;
-    float right;
-    float bottom;
-    float left;
-} BoxEdges;
-
-typedef struct {
-    float width;
-    float height;
-} Size;
+// BoxEdges and Size moved to ui_types.h
 
 typedef struct {
     float x;
