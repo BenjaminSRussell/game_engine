@@ -4,12 +4,31 @@
 // Provides hierarchical caching, path prediction, and dynamic optimization
 
 #include <ai/pathfinding/pathfinding_cache_advanced.h>
-#include "engine/include/core/memory.h"
-#include <core/logging/unified_logger.h>
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
 #include <float.h>
+
+// Local vec3 definition to avoid conflicts
+typedef struct {
+    f32 x, y, z;
+} vec3;
+
+// Local vec3 functions
+static inline f32 vec3_distance_squared(vec3 a, vec3 b) {
+    f32 dx = a.x - b.x;
+    f32 dy = a.y - b.y;
+    f32 dz = a.z - b.z;
+    return dx * dx + dy * dy + dz * dz;
+}
+
+static inline f32 vec3_distance(vec3 a, vec3 b) {
+    return sqrtf(vec3_distance_squared(a, b));
+}
+
+static inline bool vec3_within_tolerance(vec3 a, vec3 b, f32 tolerance) {
+    return vec3_distance_squared(a, b) <= (tolerance * tolerance);
+}
 
 // ============================================================================
 // CONSTANTS AND CONFIGURATION

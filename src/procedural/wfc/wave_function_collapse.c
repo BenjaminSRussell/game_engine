@@ -1,3 +1,11 @@
+/*
+ * wave_function_collapse.c
+ * Wave Function Collapse algorithm implementation
+ *
+ * Part of the Procedural Generation subsystem
+ * Advanced 3D Rendering Engine
+ */
+
 #include "wave_function_collapse.h"
 #include <stdlib.h>
 #include <string.h>
