@@ -1,3 +1,13 @@
+/*
+ * json.c
+ * JSON parsing and serialization implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides complete JSON parsing, generation, and manipulation functionality
+ */
+
 #include <core/json.h>
 #include "engine/include/core/logger.h"
 #include <ctype.h>

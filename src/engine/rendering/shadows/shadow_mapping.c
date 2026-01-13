@@ -11,7 +11,6 @@
 #include <math/mat4.h>
 #include <math/vec3.h>
 #include <math/vec4.h>
-#include <physics/core/physics_types.h> // Assuming this has Vec3? Or math/vec3.h
 
 extern uint64_t get_time_nanos(void);
 #define nanos_to_ms(x) ((x) / 1000000.0f)
