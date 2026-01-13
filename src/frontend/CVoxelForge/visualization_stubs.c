@@ -1,3 +1,10 @@
+/**
+ * @file visualization_stubs.c
+ * @brief Frontend Implementation
+ * @description Frontend system implementation
+ * @date 2026-01-13
+ */
+
 // swift_bridge_stubs_part5.c
 // Final stub implementations for Swift bridge functions - Part 5
 
