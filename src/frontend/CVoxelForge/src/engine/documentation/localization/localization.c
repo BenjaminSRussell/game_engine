@@ -1,3 +1,10 @@
+/**
+ * @file localization.c
+ * @brief System Implementation
+ * @description System implementation
+ * @date 2026-01-13
+ */
+
 #include "engine/documentation/localization/localization.h"
 #include <stdlib.h>
 #include <string.h>
