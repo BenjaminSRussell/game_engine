@@ -158,7 +158,7 @@ bool npc_ai_assign_custom_tree(NPCAISystem *system, Entity entity,
                               BehaviorTree *tree);
 
 // AI update and control
-void npc_ai_system_update(NPCAISystem *system, f32 delta_time);
+void npc_ai_update(NPCAISystem *system, f32 delta_time);
 void npc_ai_update_single(NPCAISystem *system, NPCAIContext *context, f32 delta_time);
 void npc_ai_interrupt(NPCAISystem *system, Entity entity, const char *reason);
 
