@@ -46,7 +46,7 @@ static size_t write_callback(void *contents, size_t size, size_t nmemb,
 static bool make_http_request(const char *url, const char *method,
                               const char *data, char *response,
                               size_t response_size) {
-  // TODO(Jules): Implement proper URL encoding in make_http_request.
+  // TODO: Implement proper URL encoding
   CURL *curl = curl_easy_init();
   if (!curl) {
     LOG_ERROR("Failed to initialize CURL");
