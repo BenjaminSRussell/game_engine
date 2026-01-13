@@ -1,7 +1,13 @@
-// src/core/engine_core.c
-//
-// Implementation of the engine core abstraction layer
-//
+/*
+ * engine_core.c
+ * Engine core abstraction layer implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides core engine functionality and configuration management
+ */
+
 #include "core/engine_core.h"
 #include "cinematics/audio/audio_system.h"
 #include "engine/include/core/logger.h"
