@@ -22,7 +22,7 @@
 #include <core/logger.h>
 #include <effects/vfx/particle_system.h>
 #include <math/mat4.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <math/vec3.h>
 #include <rendering/renderer.h>
 #include <stdlib.h>

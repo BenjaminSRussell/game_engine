@@ -443,7 +443,7 @@ Light *lighting_create_light(const char *name, LightType type) {
 
   g_lighting_system.lights[g_lighting_system.light_count++] = light;
 
-  LOG_DEBUG(LOG_CAT_RENDERER, "Created light: %s (type: %d)", name, (int)type);
+  LOG_DEBUG("Created light: %s (type: %d)", name, (int)type);
   return light;
 }
 
@@ -468,7 +468,7 @@ void lighting_destroy_light(Light *light) {
   }
 
   free(light);
-  LOG_DEBUG(LOG_CAT_RENDERER, "Destroyed light: %s", light->name);
+  LOG_DEBUG("Destroyed light: %s", light->name);
 }
 
 void lighting_set_light_position(Light *light, float x, float y, float z) {
@@ -523,8 +523,7 @@ void lighting_set_light_shadow_mode(Light *light, LightShadowMode mode) {
 
   if (mode != LIGHT_SHADOW_MODE_NONE && !light->shadow_map) {
     // TODO: Create shadow map texture
-    LOG_DEBUG(LOG_CAT_RENDERER, "Created shadow map for light: %s",
-              light->name);
+    LOG_DEBUG("Created shadow map for light: %s", light->name);
   }
 }
 

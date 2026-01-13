@@ -2,7 +2,7 @@
 #define RENDERING_VEC2_H
 
 #include "include/common.h"
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 typedef struct vec2 {
     float x, y;

@@ -38,8 +38,7 @@
 #include <stdint.h>
 #include <string.h>
 #undef PI
-#undef TWO_PI
-#include <../../include/vendor/miniaudio.h>
+#include <vendor/miniaudio.h>
 #ifndef PI
 #define PI 3.14159265358979323846f
 #endif

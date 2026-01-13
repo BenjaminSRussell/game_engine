@@ -5,14 +5,15 @@
 #include <audio/audio_occlusion_raycast.h>
 #include <audio/audio_system.h>
 #include <audio/underwater_filter.h>
-#include <common.h>
+#include <core/common.h>
 #include <core/logger.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
+#include <math/vec3.h>
 #include <physics/block_physics.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <../../include/vendor/miniaudio.h>
+#include <vendor/miniaudio.h>
 
 #define AUDIO_UPDATE_RATE 0.016f // ~60 FPS
 
@@ -85,10 +86,10 @@ void audio_manager_init(AudioManager *manager, u32 max_channels) {
   audio_effects_init(&manager->effects_system, &manager->audio_system.engine);
 
   // Set default game state
-  manager->player_position = vec3_create(0.0f, 64.0f, 0.0f);
-  manager->player_velocity = vec3_create(0.0f, 0.0f, 0.0f);
-  manager->player_forward = vec3_create(0.0f, 0.0f, -1.0f);
-  manager->player_up = vec3_create(0.0f, 1.0f, 0.0f);
+  manager->player_position = vec3(0.0f, 64.0f, 0.0f);
+  manager->player_velocity = vec3(0.0f, 0.0f, 0.0f);
+  manager->player_forward = vec3(0.0f, 0.0f, -1.0f);
+  manager->player_up = vec3(0.0f, 1.0f, 0.0f);
   manager->time_of_day = 0.5f;       // Noon
   manager->weather_intensity = 0.0f; // Clear weather
   manager->in_combat = false;
@@ -119,6 +120,8 @@ void audio_manager_init(AudioManager *manager, u32 max_channels) {
   // Update timing
   manager->accumulated_time = 0.0f;
   manager->update_rate = AUDIO_UPDATE_RATE;
+
+         max_channels);
 }
 
 void audio_manager_free(AudioManager *manager) {
@@ -549,6 +552,8 @@ void audio_manager_set_performance_mode(AudioManager *manager, bool enabled) {
     audio_manager_enable_effects(manager, true);
     manager->audio_system.max_channels = 32;
   }
+
+         enabled ? "enabled" : "disabled");
 }
 
 void audio_manager_get_statistics(AudioManager *manager, u32 *total_sounds,

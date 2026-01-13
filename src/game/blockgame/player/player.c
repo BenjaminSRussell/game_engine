@@ -20,7 +20,7 @@
 #include <platform/input/controls.h>
 #include <inventory/inventory.h>
 #include <math.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <math/quat.h>
 #include <math/vec2.h>
 #include <math/vec3.h>

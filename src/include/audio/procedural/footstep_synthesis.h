@@ -2,7 +2,7 @@
 #define AUDIO_PROCEDURAL_FOOTSTEP_H
 
 #include "include/common.h"
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 #define MAX_FOOTSTEP_LAYERS 4
 #define MAX_SURFACE_TYPES 16

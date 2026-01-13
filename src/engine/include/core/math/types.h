@@ -483,8 +483,6 @@ typedef enum {
 // CONSTANTS
 // ============================================================================
 
-#ifndef PI_MACROS_DEFINED
-#define PI_MACROS_DEFINED
 #define PI 3.14159265358979323846f
 #define PI_2 1.57079632679489661923f
 #define PI_4 0.78539816339744830962f
@@ -492,7 +490,6 @@ typedef enum {
 #define INV_PI 0.31830988618379067154f
 #define SQRT_2 1.41421356237309504880f
 #define SQRT_3 1.73205080756887729353f
-#endif
 #define EPSILON 1e-6f
 #define DEG_TO_RAD (PI / 180.0f)
 #define RAD_TO_DEG (180.0f / PI)
@@ -680,7 +677,6 @@ static INLINE vec2 vec2_make(f32 x, f32 y) {
     return v;
 }
 
-#if !defined(VEC3_H)
 static INLINE vec3 vec3_make(f32 x, f32 y, f32 z) {
     vec3 v = {{x, y, z, 0.0f}};
     #if defined(UNIFIED_SIMD_SSE)
@@ -691,7 +687,6 @@ static INLINE vec3 vec3_make(f32 x, f32 y, f32 z) {
     #endif
     return v;
 }
-#endif
 
 static INLINE vec4 vec4_make(f32 x, f32 y, f32 z, f32 w) {
     vec4 v = {{x, y, z, w}};
@@ -716,7 +711,8 @@ static INLINE quat quat_make(f32 x, f32 y, f32 z, f32 w) {
 }
 
 // SIMD vector operations (when available)
-#if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON) && !defined(VEC3_H)
+#if !defined(VEC3_H)
+#if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
 static INLINE vec3 vec3_add(vec3 a, vec3 b) {
     vec3 result;
     #if defined(UNIFIED_SIMD_SSE)
@@ -726,10 +722,7 @@ static INLINE vec3 vec3_add(vec3 a, vec3 b) {
     #endif
     return result;
 }
-#endif
 
-#if !defined(VEC3_H)
-#if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
 static INLINE vec3 vec3_sub(vec3 a, vec3 b) {
     vec3 result;
     #if defined(UNIFIED_SIMD_SSE)
@@ -765,3 +758,5 @@ static INLINE f32 vec3_dot(vec3 a, vec3 b) {
 // Get available SIMD features at runtime
 SimdFeature simd_get_available_features(void);
 bool simd_is_feature_supported(SimdFeature feature);
+
+// End of types.h

@@ -8,7 +8,7 @@
 #ifndef MEDIEVAL_VILLAGE_H
 #define MEDIEVAL_VILLAGE_H
 
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include "../../include/core/entity.h"
 #include "include/rendering/mesh.h"
 #include "include/physics/physics.h"

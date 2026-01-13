@@ -1,6 +1,6 @@
 // Physics Demo: Newton's Cradle - Conservation of momentum
 #include "physics_demo_framework.c"
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <stdlib.h>
 
 static RigidBody* balls[5];

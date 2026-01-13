@@ -4,7 +4,7 @@
  * All ~55 AGENT_AI utility TODOs
  */
 
-#include <include/math/math.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
 

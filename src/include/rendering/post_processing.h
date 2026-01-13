@@ -13,7 +13,7 @@
 #ifndef POST_PROCESSING_H
 #define POST_PROCESSING_H
 
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #ifdef VULKAN_BUILD
 #include "include/rendering/vulkan.h"
 #include <vulkan/vulkan.h>

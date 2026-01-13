@@ -266,35 +266,37 @@ static void update_streaming_queue(VirtualTexture *vt,
   // Clear current queue
   vt->stream_queue_size = 0;
 
+  float ox = ((float *)&vt->world_origin)[0];
+  float oy = ((float *)&vt->world_origin)[1];
+  float oz = ((float *)&vt->world_origin)[2];
+
   // Add tiles near camera to streaming queue
   for (uint32_t z = 0; z < vt->tile_count_z; z++) {
     for (uint32_t y = 0; y < vt->tile_count_y; y++) {
-      for (uint32_t x = 0; x < vt->tile_count_x;                float ox = ((float*)&vt->world_origin)[0];
-                float oy = ((float*)&vt->world_origin)[1];
-                float oz = ((float*)&vt->world_origin)[2];
-                float tile_center_x = (float)x * vt->tile_size + ox;
-                float tile_center_y = (float)y * vt->tile_size + oy;
-                float tile_center_z = (float)z * vt->tile_size + oz;
+      for (uint32_t x = 0; x < vt->tile_count_x; x++) {
+        float tile_center_x = (float)x * vt->tile_size + ox;
+        float tile_center_y = (float)y * vt->tile_size + oy;
+        float tile_center_z = (float)z * vt->tile_size + oz;
 
         float distance = sqrtf(
             (tile_center_x - camera_pos[0]) * (tile_center_x - camera_pos[0]) +
             (tile_center_y - camera_pos[1]) * (tile_center_y - camera_pos[1]) +
             (tile_center_z - camera_pos[2]) * (tile_center_z - camera_pos[2]));
 
-                if (distance < vt->streaming_distance_threshold) {
-        // Add to streaming queue
-        if (vt->stream_queue_size < vt->stream_queue_capacity) {
-          uint32_t tile_index =
-              (z * vt->tile_count_y + y) * vt->tile_count_x + x;
-          vt->stream_queue[vt->stream_queue_size++] = tile_index;
+        if (distance < vt->streaming_distance_threshold) {
+          // Add to streaming queue
+          if (vt->stream_queue_size < vt->stream_queue_capacity) {
+            uint32_t tile_index =
+                (z * vt->tile_count_y + y) * vt->tile_count_x + x;
+            vt->stream_queue[vt->stream_queue_size++] = tile_index;
+          }
         }
-                }
+      }
     }
   }
-}
 
-LOG_DEBUG(LOG_CAT_RENDERER, "Updated streaming queue: %u tiles",
-          vt->stream_queue_size);
+  LOG_DEBUG(LOG_CAT_RENDERER, "Updated streaming queue: %u tiles",
+            vt->stream_queue_size);
 }
 
 static void process_streaming_queue(VirtualTexture *vt) {
@@ -454,7 +456,7 @@ VirtualTexture *virtual_texture_create(const char *name, uint32_t virtual_width,
 
   // Add to system
   g_vt_system.textures[g_vt_system.texture_count++] = vt;
-  g_vt_system.total_memory += vt->total_memory_usage;
+  g_vt_system.total_allocated_memory += vt->total_memory_usage;
 
   pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
@@ -470,7 +472,7 @@ void virtual_texture_destroy(VirtualTexture *vt) {
   if (!vt)
     return;
 
-  pthread_mutex_lock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_lock(&g_vt_system.vt_mutex);
 
   // Remove from system
   for (uint32_t i = 0; i < g_vt_system.texture_count; i++) {
@@ -488,20 +490,23 @@ void virtual_texture_destroy(VirtualTexture *vt) {
   free(vt->page_table);
 
   // Free original data
-  free(vt->name);
+  // free(vt->name); // Name is array, not ptr
 
   free(vt);
 
-  pthread_mutex_unlock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  LOG_DEBUG("Destroyed virtual texture: %s", vt->name);
+  // LOG_DEBUG(LOG_CAT_RENDERER, "Destroyed virtual texture: %s", vt->name); //
+  // vt is freed! use name before free defined earlier? Since vt is freed,
+  // accessing name is safe? No.
+  LOG_DEBUG(LOG_CAT_RENDERER, "Destroyed virtual texture");
 }
 
 void virtual_texture_update(VirtualTexture *vt, const float *camera_pos) {
   if (!vt || !camera_pos)
     return;
 
-  pthread_mutex_lock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_lock(&g_vt_system.vt_mutex);
 
   // Update streaming queue based on camera position
   update_streaming_queue(vt, camera_pos);
@@ -512,9 +517,10 @@ void virtual_texture_update(VirtualTexture *vt, const float *camera_pos) {
   // Update page table
   update_page_table(vt);
 
-  pthread_mutex_unlock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  LOG_DEBUG("Updated virtual texture '%s': %u cached, %u streaming",
+  LOG_DEBUG(LOG_CAT_RENDERER,
+            "Updated virtual texture '%s': %u cached, %u streaming", vt->name,
             vt->cache_hits, vt->stream_queue_size);
 }
 
@@ -524,30 +530,29 @@ void virtual_texture_get_tile(VirtualTexture *vt, uint32_t tile_x,
   if (!vt || !texture_handle)
     return;
 
-  pthread_mutex_lock(&g_vt_system.vt_system.vt_mutex);
+  pthread_mutex_lock(&g_vt_system.vt_mutex);
 
   uint32_t tile_index =
       (tile_z * vt->tile_count_y + tile_y) * vt->tile_count_x + tile_x;
 
-  if (tile_index >= vt->tile_count) {
-    *texture_handle = NULL;
-    pthread_mutex_unlock(&g_vt_system.vt_system.vt_mutex);
-    return;
-  }
+  *texture_handle = NULL;
+  pthread_mutex_unlock(&g_vt_system.vt_mutex);
+  return;
+}
 
-  VirtualTile *tile = &vt->tile_cache[tile_index];
+VirtualTile *tile = &vt->tile_cache[tile_index];
 
-  if (!tile->is_loaded) {
-    load_tile(vt, tile_x, tile_y, tile_z);
-  }
+if (!tile->is_loaded) {
+  load_tile(vt, tile_x, tile_y, tile_z);
+}
 
-  *texture_handle =
-      tile->physical_index ? (void *)(uintptr_t)tile->physical_index : NULL;
+*texture_handle =
+    tile->physical_index ? (void *)(uintptr_t)tile->physical_index : NULL;
 
-  pthread_mutex_unlock(&g_vt_system.vt_system.vt_mutex);
+pthread_mutex_unlock(&g_vt_system.vt_mutex);
 
-  LOG_DEBUG("Retrieved tile (%u, %u, %u): %s", tile_x, tile_y, tile_z,
-            tile->is_loaded ? "loaded" : "not loaded");
+LOG_DEBUG(LOG_CAT_RENDERER, "Retrieved tile (%u, %u, %u): %s", tile_x, tile_y,
+          tile_z, tile->is_loaded ? "loaded" : "not loaded");
 }
 
 void virtual_texture_invalidate_tile(VirtualTexture *vt, uint32_t tile_x,

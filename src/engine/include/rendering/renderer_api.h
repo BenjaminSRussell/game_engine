@@ -17,7 +17,7 @@
 #define ENGINE_RENDERER_H
 
 #include <common.h>
-#include "math/math.h"
+#include "engine/include/math/math.h"
 
 // Forward declarations
 typedef struct Renderer Renderer;

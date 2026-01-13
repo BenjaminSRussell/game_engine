@@ -36,7 +36,7 @@
 #include <core/logger.h>
 #include <core/memory.h>
 #include <math/vec3.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <stdlib.h>
 #include <string.h>
 #include <game/blockgame/include/chunk/chunk.h>

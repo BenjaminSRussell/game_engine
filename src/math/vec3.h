@@ -15,7 +15,7 @@
 #endif
 
 // vec3_t is padded to 4 floats for SIMD efficiency
-typedef union __attribute__((aligned(16))) vec3 {
+typedef union ALIGN(16) vec3 {
     struct { float x, y, z, _w; };
     float e[4];
     simd_vec3_t simd;

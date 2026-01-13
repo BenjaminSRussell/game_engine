@@ -8,7 +8,7 @@
 #ifndef SCIFI_STATION_H
 #define SCIFI_STATION_H
 
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include "../../include/core/entity.h"
 #include "include/rendering/mesh.h"
 #include "include/physics/physics.h"

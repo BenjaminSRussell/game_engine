@@ -34,25 +34,6 @@ typedef struct texture_texture_lod_info {
     uint32_t id;
     uint32_t flags;
     bool initialized;
-    uint32_t width;
-    uint32_t height;
-    uint32_t mip_levels;
-    uint32_t format;
-    float lod_bias;
-    bool streaming_enabled;
-    uint32_t streaming_priority;
-    float streaming_bandwidth;
-    bool compression_enabled;
-    uint32_t compression_format;
-    float compression_ratio;
-    bool virtual_enabled;
-    uint32_t virtual_page_width;
-    uint32_t virtual_page_height;
-    bool bindless_enabled;
-    uint64_t bindless_handle;
-    bool array_enabled;
-    uint32_t array_layers;
-    bool feedback_enabled;
 } texture_texture_lod_info_t;
 
 /* ============================================================================

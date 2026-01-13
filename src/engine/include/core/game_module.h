@@ -17,7 +17,7 @@
 #define ENGINE_GAME_MODULE_H
 
 #include "include/common.h"
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 // Forward declarations
 typedef struct Engine Engine;

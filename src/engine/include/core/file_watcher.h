@@ -1,7 +1,7 @@
 #ifndef FILE_WATCHER_H
 #define FILE_WATCHER_H
 
-#include "include/common.h"
+#include <common.h>
 
 typedef enum {
   FILE_EVENT_CREATED,

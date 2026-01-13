@@ -4,7 +4,7 @@
 
 #include "physics/physics.h"
 #include "rendering/renderer.h"
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include <stdbool.h>
 
 // Demo function types

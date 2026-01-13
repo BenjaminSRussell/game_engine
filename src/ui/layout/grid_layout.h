@@ -15,23 +15,6 @@
 #include <stddef.h>
 #include "engine/include/math/math.h"
 
-// Forward declarations and basic types
-typedef struct UIElement UIElement;
-
-// Box edges for layout
-typedef struct {
-    float top;
-    float right;
-    float bottom;
-    float left;
-} BoxEdges;
-
-// Size structure
-typedef struct {
-    float width;
-    float height;
-} Size;
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -39,6 +22,8 @@ extern "C" {
 /* ============================================================================
  * TYPES
  * ============================================================================ */
+
+typedef struct UIElement UIElement;
 typedef struct GridContainer GridContainer;
 
 // Grid track sizing
@@ -144,20 +129,6 @@ typedef struct {
     float x;
     float y;
 } Position;
-
-// Size type
-typedef struct {
-    float width;
-    float height;
-} Size;
-
-// Box model dimensions
-typedef struct {
-    float top;
-    float right;
-    float bottom;
-    float left;
-} BoxEdges;
 
 // Grid layout result
 typedef struct {

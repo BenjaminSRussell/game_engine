@@ -4,7 +4,7 @@
 #include "voxel_renderer_metal.h"
 #include "core/logger.h"
 #include "core/memory.h"
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include <stdlib.h>
 #include <string.h>
 

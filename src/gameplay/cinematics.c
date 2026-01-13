@@ -2,7 +2,7 @@
 #include <common.h>
 #include <core/logger.h>
 #include <math.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <math/vec3.h>
 #include <stdbool.h>
 #include <stdlib.h>

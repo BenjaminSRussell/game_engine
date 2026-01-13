@@ -15,23 +15,6 @@
 #include <stddef.h>
 #include "engine/include/math/math.h"
 
-// Forward declarations and basic types
-typedef struct UIElement UIElement;
-
-// Box edges for layout
-typedef struct {
-    float top;
-    float right;
-    float bottom;
-    float left;
-} BoxEdges;
-
-// Size structure
-typedef struct {
-    float width;
-    float height;
-} Size;
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -39,6 +22,8 @@ extern "C" {
 /* ============================================================================
  * TYPES
  * ============================================================================ */
+
+typedef struct UIElement UIElement;
 typedef struct FlexboxContainer FlexboxContainer;
 
 // Flex direction
@@ -95,8 +80,18 @@ typedef enum {
     ALIGN_CONTENT_SPACE_AROUND
 } AlignContent;
 
+// Box model dimensions
+typedef struct {
+    float top;
+    float right;
+    float bottom;
+    float left;
+} BoxEdges;
 
-
+typedef struct {
+    float x;
+    float y;
+} Position;
 
 // Flex item properties
 typedef struct {

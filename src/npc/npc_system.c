@@ -1,6 +1,9 @@
 /*
- * NPC System
+ * npc_system.c
  * Basic Non-Player Character system for VoxelForge
+ *
+ * Part of the NPC subsystem
+ * Advanced 3D Rendering Engine
  */
 
 #include "npc/npc_system.h"

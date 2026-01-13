@@ -1,23 +1,15 @@
 // src/engine/rendering/shadows/shadow_mapping.c
 // Shadow Mapping System - Cascaded shadow maps and PCF filtering
 
-#include "../framebuffer.h"
-#include "../gpu_memory.h"
+#include <core/logger.h>
+#include <math.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "../lighting/lighting_system.c"
 #include "../render_pipeline.h"
-#include "../render_types.h"
-#include <core/logger.h>
-#include <float.h>
-#include <math/mat4.h>
-#include <math/vec3.h>
-#include <math/vec4.h>
-
-extern uint64_t get_time_nanos(void);
-#define nanos_to_ms(x) ((x) / 1000000.0f)
-#define TEXTURE_FORMAT_DEPTH32F TEX_FORMAT_D32F
-extern void texture_configure_depth(void *texture, int w, int h, int fmt);
-
-void shadow_mapping_shutdown(void);
 
 // Declarations for missing renderer functions
 extern void renderer_set_viewport(int x, int y, int w, int h);
@@ -32,60 +24,6 @@ extern void renderer_end_shadow_pass(void);
 extern void renderer_set_cube_map_face(int face);
 extern void shader_bind_texture(void *shader, void *tex, uint32_t slot);
 #define RENDERER_CULL_FRONT 0
-
-// Math helpers
-static void matrix_multiply(float *out, const float *a, const float *b) {
-  Mat4 ma, mb;
-  memcpy(ma.m, a, sizeof(float) * 16);
-  memcpy(mb.m, b, sizeof(float) * 16);
-  Mat4 res = mat4_mul(ma, mb);
-  memcpy(out, res.m, sizeof(float) * 16);
-}
-
-static void matrix_inverse(float *out, const float *in) {
-  Mat4 m;
-  memcpy(m.m, in, sizeof(float) * 16);
-  Mat4 res = mat4_inverse(m);
-  memcpy(out, res.m, sizeof(float) * 16);
-}
-
-static void matrix_vector_multiply(float *out, const float *m, const float *v) {
-  Mat4 mat;
-  Vec4 vec;
-  memcpy(mat.m, m, sizeof(float) * 16);
-  memcpy(&vec, v, sizeof(float) * 4);
-  Vec4 res = mat4_mul_vec4(mat, vec);
-  memcpy(out, &res, sizeof(float) * 4);
-}
-
-static void vector_normalize(float *v) {
-  Vec3 vec;
-  memcpy((float *)&vec, v, sizeof(float) * 3);
-  // vec3.h only exposes _optimized versions or we assume regular ones exist.
-  // Based on header reading, only _optimized were visible in some sections.
-  // If _optimized is not standard, we might need manual implementation.
-  // But header analysis suggested _optimized is the public API for SIMD.
-  // If not, we fallback to simple math.
-  // Let's use simple math to be safe and avoid header issues.
-  float len = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-  if (len > FLT_MIN) {
-    float inv = 1.0f / len;
-    v[0] *= inv;
-    v[1] *= inv;
-    v[2] *= inv;
-  }
-}
-
-static void vector_cross(float *out, const float *a, const float *b) {
-  // Manual implementation to avoid header dependency hell
-  out[0] = a[1] * b[2] - a[2] * b[1];
-  out[1] = a[2] * b[0] - a[0] * b[2];
-  out[2] = a[0] * b[1] - a[1] * b[0];
-}
-
-static float vector_dot(const float *a, const float *b) {
-  return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-}
 
 // ============================================================================
 // Shadow Mapping Types
@@ -295,8 +233,7 @@ static void calculate_cascade_matrices(ShadowCascade *cascade,
 
     // Transform to light space
     float light_space_pos[4];
-    float corner_4d[4] = {corner[0], corner[1], corner[2], 1.0f};
-    matrix_vector_multiply(light_space_pos, cascade->view_matrix, corner_4d);
+    matrix_vector_multiply(light_space_pos, cascade->view_matrix, corner);
 
     for (int j = 0; j < 3; j++) {
       if (light_space_pos[j] < min_bounds[j])
@@ -461,11 +398,9 @@ bool shadow_mapping_init(uint32_t cascade_count, uint32_t cascade_size,
     cascade->cascade_index = i;
 
     // Create depth texture and framebuffer
-    // Create depth texture
     GPUMemoryAllocation alloc = gpu_memory_allocate(
         MEMORY_POOL_TEXTURE, cascade_size * cascade_size * 4, "shadow_depth");
-    cascade->depth_texture =
-        alloc.metal_buffer; // Assuming metal_buffer is the handle
+    cascade->depth_texture = alloc.metal_buffer;
     if (!cascade->depth_texture) {
       LOG_ERROR(LOG_CAT_RENDERER, "Failed to create shadow depth texture");
       shadow_mapping_shutdown();
@@ -490,7 +425,6 @@ bool shadow_mapping_init(uint32_t cascade_count, uint32_t cascade_size,
 
   // Create shadow atlas for point lights
   if (atlas_size > 0) {
-    // Create shadow atlas texture
     // Create shadow atlas texture
     GPUMemoryAllocation alloc = gpu_memory_allocate(
         MEMORY_POOL_TEXTURE, atlas_size * atlas_size * 4, "shadow_atlas");
@@ -538,8 +472,7 @@ void shadow_mapping_shutdown(void) {
     }
     // Destroy depth texture
     if (cascade->depth_texture) {
-      // gpu_memory_free(cascade->depth_texture); // TODO: pass correct
-      // allocation struct cascade->depth_texture = NULL;
+      gpu_memory_deallocate(cascade->depth_texture);
       cascade->depth_texture = NULL;
     }
   }
@@ -548,14 +481,13 @@ void shadow_mapping_shutdown(void) {
 
   // Destroy shadow atlas
   if (g_shadow_system.shadow_atlas) {
-    // gpu_memory_free(g_shadow_system.shadow_atlas);
-    // g_shadow_system.shadow_atlas = NULL;
+    gpu_memory_deallocate(g_shadow_system.shadow_atlas);
     g_shadow_system.shadow_atlas = NULL;
   }
 
   memset(&g_shadow_system, 0, sizeof(ShadowMappingSystem));
 
-  LOG_INFO(LOG_CAT_RENDERER, "Shadow mapping system shutdown");
+  LOG_INFO("Shadow mapping system shutdown");
 }
 
 void shadow_mapping_render_shadows(const Light *lights, uint32_t light_count,
@@ -633,7 +565,7 @@ void shadow_mapping_render_shadows(const Light *lights, uint32_t light_count,
                                   light->radius);
 
       // Calculate spot light projection matrix
-      float angle = light->outer_angle * 0.5f;
+      float angle = light->spot_angle * 0.5f;
       float tan_angle = tanf(angle);
       calculate_ortho_matrix(cascade->proj_matrix, -light->radius * tan_angle,
                              light->radius * tan_angle,

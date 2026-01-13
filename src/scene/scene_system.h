@@ -9,7 +9,7 @@
 #define SCENE_SYSTEM_H
 
 #include <common.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <stdbool.h>
 #include <stdint.h>
 

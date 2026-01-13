@@ -2,7 +2,7 @@
 #define ANALYTICS_DASHBOARD_H
 
 #include <core/types.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <stdbool.h>
 #include <stddef.h>
 

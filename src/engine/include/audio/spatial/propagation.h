@@ -2,7 +2,7 @@
 #define SPATIAL_PROPAGATION_H
 
 #include <common.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------
 // MATERIAL PROPERTIES FOR SOUND PROPAGATION

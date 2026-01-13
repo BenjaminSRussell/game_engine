@@ -56,6 +56,7 @@
 // System constants
 #define TEXTURE_TEXTURE_LOD_DEFAULT_CAPACITY 1024
 #define TEXTURE_TEXTURE_LOD_MAX_MIP_LEVELS 16
+#define TEXTURE_TEXTURE_LOD_MEMORY_POOL_SIZE (128 * 1024 * 1024) // 128MB
 #define TEXTURE_TEXTURE_LOD_BATCH_SIZE 64
 #define TEXTURE_TEXTURE_LOD_CACHE_SIZE 256
 #define TEXTURE_TEXTURE_LOD_ALIGNMENT 64
@@ -93,6 +94,7 @@ typedef enum {
 
 #define TEXTURE_TEXTURE_LOD_MAX_COUNT 4096
 #define TEXTURE_TEXTURE_LOD_WORKER_THREADS 8
+#define TEXTURE_TEXTURE_LOD_MEMORY_POOL_SIZE (128 * 1024 * 1024) // 128MB
 #define TEXTURE_TEXTURE_LOD_MAGIC_NUMBER 0x544C4F44 // "TLOD"
 #define TEXTURE_TEXTURE_LOD_VERSION 1
 #define TEXTURE_TEXTURE_LOD_MAX_ANISOTROPY 16.0f
@@ -110,6 +112,7 @@ typedef enum texture_texture_lod_format {
     TEXTURE_TEXTURE_LOD_FORMAT_RGBA8 = 0,
     TEXTURE_TEXTURE_LOD_FORMAT_BGRA8 = 1
 } texture_texture_lod_format_t;
+
 
 typedef struct texture_texture_lod_serialized_item {
     uint32_t id;                 // Texture ID
@@ -137,6 +140,7 @@ typedef struct texture_texture_lod_serialized_item {
 /* ============================================================================
  * PRIVATE FUNCTION DECLARATIONS
  * ============================================================================ */
+
 
 // Enhanced caching system
 typedef struct texture_texture_lod_cache_entry {
@@ -593,14 +597,6 @@ typedef struct texture_texture_lod_context {
         uint64_t decompression_operations;
         uint64_t bindless_operations;
         uint64_t array_operations;
-        uint64_t created;
-        uint64_t destroyed;
-        uint64_t updated;
-        uint64_t async_enqueued;
-        uint64_t bytes_uploaded;
-        uint64_t hot_reloads;
-        uint64_t serialized;
-        bool async_enabled;
         uint64_t feedback_samples;
         uint64_t serialization_operations;
         uint64_t deserialization_operations;
@@ -760,6 +756,8 @@ typedef struct texture_texture_lod_context {
 static texture_texture_lod_context_t g_texture_lod_ctx = {0};
 static texture_texture_lod_error_code_t g_texture_lod_ctx_last_error = TEXTURE_TEXTURE_LOD_ERROR_NONE;
 static bool g_texture_lod_ctx_mutex_initialized = false;
+static bool g_texture_lod_ctx_async_enabled = true;
+static uint64_t g_texture_lod_ctx.system_state.frame_counter = 0;
 
 // Render graph node
 typedef struct texture_lod_render_node {
@@ -1146,14 +1144,15 @@ static void texture_texture_lod_update_feedback(texture_texture_lod_internal_t* 
 static void texture_texture_lod_apply_gpu_upload(texture_texture_lod_internal_t* item) {
     if (!item || item->data_size == 0) {
         return;
-
     }
+
     item->gpu_resident = true;
     g_texture_lod_ctx.stats.bytes_uploaded += item->data_size;
     item->frame_updated = ++g_texture_lod_ctx.system_state.frame_counter;
 }
 
 static bool texture_texture_lod_validate(const texture_texture_lod_internal_t* item) {
+    if (!item) return false;
     if (!item->initialized) return false;
     if (item->width == 0 || item->height == 0) return false;
     if (item->mip_levels == 0 || item->mip_levels > TEXTURE_TEXTURE_LOD_MAX_MIP_LEVELS) return false;
@@ -1277,6 +1276,39 @@ static bool texture_texture_lod_init_texture_array(texture_texture_lod_internal_
 }
 
 // Feedback analysis implementation
+    if (!item) return;
+    
+    item->feedback.access_count++;
+    item->feedback.last_access_time = time(NULL);
+    
+    // Update feedback buffer
+    item->feedback.feedback_buffer[item->feedback.feedback_index] = lod_level;
+    item->feedback.feedback_index = (item->feedback.feedback_index + 1) % FEEDBACK_BUFFER_SIZE;
+    
+    // Update history
+    item->feedback.feedback_history[item->feedback.history_index] = lod_level;
+    item->feedback.history_index = (item->feedback.history_index + 1) % FEEDBACK_HISTORY_SIZE;
+    
+    // Calculate average LOD and variance
+    float sum = 0.0f;
+    float sum_sq = 0.0f;
+    uint32_t count = 0;
+    
+    for (uint32_t i = 0; i < FEEDBACK_HISTORY_SIZE; i++) {
+        if (item->feedback.feedback_history[i] > 0) {
+            sum += item->feedback.feedback_history[i];
+            sum_sq += item->feedback.feedback_history[i] * item->feedback.feedback_history[i];
+            count++;
+        }
+    }
+    
+    if (count > 0) {
+        item->feedback.average_lod = sum / count;
+        item->feedback.lod_variance = (sum_sq / count) - (item->feedback.average_lod * item->feedback.average_lod);
+    }
+    
+    g_texture_lod_ctx.stats.feedback_samples++;
+}
 
 static void texture_texture_lod_apply_pending_locked(texture_texture_lod_internal_t* item) {
     if (!item || !item->pending_data) {
@@ -1346,8 +1378,6 @@ static float texture_texture_lod_simd_calculate(const texture_texture_lod_intern
         float lod = log2f(max_derivative * fmaxf(item->width, item->height));
         return fmaxf(0.0f, fminf(lod + item->lod_bias, (float)item->mip_levels - 1.0f));
     }
-}
-#ifdef __AVX2__
     
     // SIMD implementation using AVX2
     const __m256 uv_vec = _mm256_set_ps(u, v, dudx, dvdx, dudy, dvdy, 0.0f, 0.0f);
@@ -1370,7 +1400,6 @@ static float texture_texture_lod_simd_calculate(const texture_texture_lod_intern
     
     return fmaxf(0.0f, fminf(lod + item->lod_bias, (float)item->mip_levels - 1.0f));
 }
-#endif
 
 /* ============================================================================
  * PUBLIC API
@@ -1443,7 +1472,7 @@ int texture_texture_lod_init(void) {
     g_texture_lod_ctx.system_state.frame_counter = 0;
     
     // Initialize async system
-    g_texture_lod_ctx.system_state.async_enabled = true;
+    g_texture_lod_ctx_async_enabled = true;
 
     g_texture_lod_ctx.initialized = true;
     printf("Texture LOD System initialized\n");
@@ -1488,7 +1517,7 @@ void texture_texture_lod_debug_print(void) {
     printf("=== Texture LOD System Debug Info ===\n");
     printf("Initialized: %s\n", g_texture_lod_ctx.initialized ? "Yes" : "No");
     printf("Count: %u / %u\n", g_texture_lod_ctx.count, g_texture_lod_ctx.capacity);
-    printf("Async enabled: %s\n", g_texture_lod_ctx.system_state.async_enabled ? "Yes" : "No");
+    printf("Async enabled: %s\n", g_texture_lod_ctx.async_enabled ? "Yes" : "No");
     printf("Frame counter: %lu\n", g_texture_lod_ctx.system_state.frame_counter);
     
     // Memory pool debug info
@@ -1543,8 +1572,8 @@ void texture_texture_lod_debug_print(void) {
             printf("  Streaming: %s\n", item->streaming.streaming_active ? "Active" : "Inactive");
             printf("  GPU Resident: %s\n", item->streaming.gpu_resident ? "Yes" : "No");
             printf("  Residency Priority: %u\n", item->streaming.residency_priority);
-                    printf("LOD: %.2f, Bias: %.2f, Anisotropy: %.2f, Feedback: %.2f\n",
-                    item->lod_bias, item->anisotropy, item->feedback_score);
+            printf("  Mipmaps Generated: %s\n", item->mipmap.mipmaps_generated ? "Yes" : "No");
+            printf("  Memory Pooled: %s\n", item->memory_pool.pooled ? "Yes" : "No");
             printf("  Compressed: %s\n", item->compressed ? "Yes" : "No");
             if (item->compressed) {
                 printf("  Compression Ratio: %.2f%%\n", item->compression.compression_ratio * 100.0f);
@@ -1741,14 +1770,14 @@ int texture_texture_lod_update(texture_texture_lod_handle_t handle, const void* 
     g_texture_lod_ctx.stats.updated++;
     g_texture_lod_ctx.stats.async_enqueued++;
 
-    if (!g_texture_lod_ctx.system_state.async_enabled) {
+    if (!g_texture_lod_ctx.async_enabled) {
         texture_texture_lod_apply_pending_locked(item);
     }
     texture_texture_lod_unlock();
     return 0;
 }
 
-bool texture_texture_lod_serialize_item_public(texture_texture_lod_handle_t handle, void* buffer, size_t buffer_size, size_t* out_size) {
+bool texture_texture_lod_serialize_item(texture_texture_lod_handle_t handle, void* buffer, size_t buffer_size, size_t* out_size) {
     // Implement texture lod serialization
     if (handle.id >= g_texture_lod_ctx.count) {
         texture_texture_lod_set_error(TEXTURE_TEXTURE_LOD_ERROR_INVALID_HANDLE, "Invalid texture LOD handle for serialization");
@@ -1837,7 +1866,7 @@ bool texture_texture_lod_serialize_item_public(texture_texture_lod_handle_t hand
     return true; // Success
 }
 
-bool texture_texture_lod_validate_public(texture_texture_lod_handle_t handle) {
+bool texture_texture_lod_validate(texture_texture_lod_handle_t handle) {
     if (handle.id >= g_texture_lod_ctx.count) {
         texture_texture_lod_set_error(TEXTURE_TEXTURE_LOD_ERROR_INVALID_HANDLE, "Invalid texture LOD handle for validation");
         return false;

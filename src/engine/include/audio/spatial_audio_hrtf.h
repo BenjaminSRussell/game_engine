@@ -2,7 +2,7 @@
 #define SPATIAL_AUDIO_HRTF_H
 
 #include <common.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------
 // HRTF (HEAD-RELATED TRANSFER FUNCTION) SYSTEM

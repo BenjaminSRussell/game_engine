@@ -8,9 +8,9 @@
 #include "vec2.h"
 #include "vec3.h"
 #include "vec4.h"
-// aabb.h excluded due to Vec3/vec3 conflicts - include separately when needed
-// plane.h excluded due to Vec3/vec3 conflicts - include separately when needed
-// frustum.h excluded due to plane.h conflicts - include separately when needed
-// ray.h excluded due to Vec3/vec3 conflicts - include separately when needed
+#include "aabb.h"
+#include "plane.h"
+#include "frustum.h"
+#include "ray.h"
 
 #endif // MATH_H

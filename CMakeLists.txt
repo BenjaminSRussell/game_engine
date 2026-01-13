@@ -102,14 +102,6 @@ endif()
 # Engine Sources
 include(cmake/sources.cmake)
 
-# Include unified core systems from Phase 5 - TEMPORARILY DISABLED
-# include(cmake/new_systems.cmake)
-
-# Add unified core systems to engine sources - TEMPORARILY DISABLED
-# list(APPEND ENGINE_SOURCES ${CORE_TYPES_SOURCES})
-# list(APPEND ENGINE_SOURCES ${CORE_MEMORY_SOURCES})
-# list(APPEND ENGINE_SOURCES ${CORE_LOGGING_SOURCES})
-
 
 # --- Vulkan ---
 find_package(Vulkan)

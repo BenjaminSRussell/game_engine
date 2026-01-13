@@ -2,7 +2,7 @@
 #define SPATIAL_AUDIO_OCCLUSION_H
 
 #include <common.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------
 // MATERIAL TYPES FOR OCCLUSION

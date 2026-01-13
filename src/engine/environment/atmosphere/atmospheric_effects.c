@@ -3,7 +3,7 @@
 
 #include "atmospheric_effects.h"
 #include "include/core/logger.h"
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

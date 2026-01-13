@@ -3,7 +3,7 @@
 
 #include "voxel_renderer.h"
 #include "core/logger.h"
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include <stdlib.h>
 
 // Demo world generation

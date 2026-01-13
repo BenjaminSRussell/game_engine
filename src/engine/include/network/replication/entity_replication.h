@@ -2,7 +2,7 @@
 
 #include <core/memory.h>
 #include <core/types.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 #include "network/replication/delta_compression.h"
 

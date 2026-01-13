@@ -2,7 +2,7 @@
 #define SPATIAL_REVERB_ZONES_H
 
 #include <common.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------
 // REVERB ROOM TYPES

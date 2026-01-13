@@ -60,7 +60,6 @@ typedef struct World World;
 #include "../rendering/lod_system.h"
 #include "resource/asset_instance.h"
 #include "resource/vfs/vfs.h"
-#include <include/rendering/lod_system.h>
 
 // Forward declarations
 typedef struct AssetManager AssetManager;

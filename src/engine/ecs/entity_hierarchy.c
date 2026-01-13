@@ -20,11 +20,11 @@ static struct {
 
 void entity_hierarchy_init(void) {
     memset(&hierarchy_state, 0, sizeof(hierarchy_state));
-    LOG_INFO("Entity Hierarchy System Initialized");
+    LOG_INFO(LOG_CAT_GENERAL, "Entity Hierarchy System Initialized");
 }
 
 void entity_hierarchy_shutdown(void) {
-    LOG_INFO("Entity Hierarchy System Shutdown");
+    LOG_INFO(LOG_CAT_GENERAL, "Entity Hierarchy System Shutdown");
 }
 
 static EntityNode* get_or_create_node(uint64_t entity_id) {
@@ -61,13 +61,13 @@ static EntityNode* get_node(uint64_t entity_id) {
 
 void entity_set_parent(uint64_t entity_id, uint64_t parent_id) {
     if (entity_id == parent_id) {
-        LOG_WARN("Cannot set entity %llu as its own parent", (unsigned long long)entity_id);
+        LOG_WARN(LOG_CAT_GENERAL, "Cannot set entity %llu as its own parent", (unsigned long long)entity_id);
         return;
     }
     
     // Check for circular dependency
     if (entity_is_ancestor_of(entity_id, parent_id)) {
-        LOG_WARN("Circular hierarchy detected, cannot set parent");
+        LOG_WARN(LOG_CAT_GENERAL, "Circular hierarchy detected, cannot set parent");
         return;
     }
     
@@ -93,9 +93,9 @@ void entity_set_parent(uint64_t entity_id, uint64_t parent_id) {
     if (parent_node->child_count < MAX_CHILDREN_PER_ENTITY) {
         parent_node->children[parent_node->child_count++] = entity_id;
         entity_node->parent_id = parent_id;
-        LOG_INFO("Entity %llu now child of %llu", (unsigned long long)entity_id, (unsigned long long)parent_id);
+        LOG_INFO(LOG_CAT_GENERAL, "Entity %llu now child of %llu", (unsigned long long)entity_id, (unsigned long long)parent_id);
     } else {
-        LOG_WARN("Parent entity %llu has max children", (unsigned long long)parent_id);
+        LOG_WARN(LOG_CAT_GENERAL, "Parent entity %llu has max children", (unsigned long long)parent_id);
     }
 }
 
@@ -119,7 +119,7 @@ void entity_detach(uint64_t entity_id) {
     }
     
     node->parent_id = 0;
-    LOG_INFO("Entity %llu detached from parent", (unsigned long long)entity_id);
+    LOG_INFO(LOG_CAT_GENERAL, "Entity %llu detached from parent", (unsigned long long)entity_id);
 }
 
 bool entity_has_parent(uint64_t entity_id) {

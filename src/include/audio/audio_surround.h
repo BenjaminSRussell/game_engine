@@ -2,7 +2,7 @@
 #define AUDIO_SURROUND_H
 
 #include <common.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------
 // 7.1.2 SURROUND SOUND CONFIGURATION

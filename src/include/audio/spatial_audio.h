@@ -2,7 +2,7 @@
 #define SPATIAL_AUDIO_H
 
 #include <common.h>
-#include "math/math.h"
+#include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------
 // SPATIAL AUDIO SYSTEM - COMPREHENSIVE ENHANCEMENTS

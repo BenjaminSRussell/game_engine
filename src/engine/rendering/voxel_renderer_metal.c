@@ -4,7 +4,7 @@
 #include "voxel_renderer_metal.h"
 #include "core/logger.h"
 #include "core/memory.h"
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -559,10 +559,10 @@ void voxel_renderer_metal_update(VoxelRendererMetal *renderer, float delta_time)
 }
 
 // Get Metal-specific statistics
-void voxel_renderer_metal_get_stats(VoxelRendererMetal *renderer, u32 *gpu_time, u32 *cpu_time, u32 *draw_calls) {
+void voxel_renderer_metal_get_stats(VoxelRendererMetal *renderer, u32 *gpu_time, u32 *gpu_time, u32 *draw_calls) {
     if (!renderer) return;
     
     if (gpu_time) *gpu_time = renderer->gpu_mesh_generation_time;
-    if (cpu_time) *cpu_time = renderer->cpu_mesh_generation_time;
+    if (gpu_time) *gpu_time = renderer->cpu_mesh_generation_time;
     if (draw_calls) *draw_calls = renderer->metal_draw_calls;
 }

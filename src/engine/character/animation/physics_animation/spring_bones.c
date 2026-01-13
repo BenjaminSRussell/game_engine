@@ -13,7 +13,7 @@
 #include <animation/skeleton_system.h>
 #include <core/types.h>
 #include <math.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <math/quat.h>
 #include <math/vec3.h>
 #include <stdbool.h>

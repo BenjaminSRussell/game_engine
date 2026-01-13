@@ -13,7 +13,7 @@
 #include "character_templates.h"
 #include <core/logger.h>
 #include <core/memory.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>

@@ -18,7 +18,7 @@
 #include <ecs/components/transform.h>
 #include <ecs/components/health.h>
 #include <math.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <string.h>
 
 // Behavior templates with balanced parameters

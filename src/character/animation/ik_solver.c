@@ -1,5 +1,5 @@
 #include <character/animation/animation_system.h>
-#include "math/math.h"
+#include "engine/include/math/math.h"
 
 // Simple CCD (Cyclic Coordinate Descent) IK Solver
 void animation_solve_ik(Skeleton *skeleton, IKChain *chain) {

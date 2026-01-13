@@ -2,7 +2,7 @@
 #define AUDIO_SYNTHESIS_H
 
 #include <common.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------
 // WAVEFORM GENERATORS

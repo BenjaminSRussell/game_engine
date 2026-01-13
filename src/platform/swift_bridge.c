@@ -7,7 +7,7 @@
 #include "core/logger.h"
 #include "core/engine.h"
 #include "core/types.h"
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include "rendering/renderer.h"
 #include "audio/audio_system.h"
 // #include "physics/physics_world.h" // Disabled due to missing header

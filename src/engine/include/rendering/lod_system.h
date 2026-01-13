@@ -27,7 +27,7 @@
 
 #include <common.h>
 #include <math/vec3.h>
-#include <include/rendering/mesh.h>
+#include <rendering/mesh.h>
 
 #ifdef __cplusplus
 extern "C" {

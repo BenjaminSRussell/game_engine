@@ -85,7 +85,7 @@ bool test_measure_with_children(void) {
   ui_layout_measure(engine, parent, 800.0f, 600.0f);
 
   /* Parent should be sized to contain children (vertical stack) */
-  TEST_ASSERT(parent->measure_result.desired_width >= 200.0f,
+  TEST_ASSERT(element->measure_result.desired_width >= 200.0f,
               "Parent width too small for children");
   TEST_ASSERT(parent->measure_result.desired_height >= 175.0f,
               "Parent height too small for children");

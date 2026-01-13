@@ -1,7 +1,7 @@
 // src/engine/animation/ik_solver.c - Inverse Kinematics Solver
 // Matches actual Bone/Skeleton types from animation_system.h
 
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include <animation/animation_system.h>
 // animation/ik_solver.c
 // Advanced Inverse Kinematics (IK) and Full-Body IK (FBIK) implementation.

@@ -1,7 +1,7 @@
 #include "animation_synthesis.h"
 #include <core/logger.h>
 #include <core/time_system.h>
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>

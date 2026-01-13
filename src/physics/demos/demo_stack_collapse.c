@@ -2,7 +2,7 @@
 #include "physics_demo_framework.h"
 #include "physics/physics.h"
 #include "platform/input/input.h"
-#include "math/math.h"
+#include "engine/include/math/math.h"
 #include <stdlib.h>
 
 static RigidBody* boxes[20];

@@ -6,7 +6,7 @@
 #include <core/threading/mutex.h>
 #include <core/time_system.h>
 #include <ecs/ecs.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 #include <math/vec3.h>
 #include <physics/physics.h>
 

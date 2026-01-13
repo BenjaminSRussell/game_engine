@@ -8,7 +8,7 @@
 
 #include <common.h>
 #include <ecs/ecs.h>
-#include <math/math.h>
+#include "engine/include/math/math.h"
 
 // ============================================================================
 // SYSTEM LIFECYCLE
