@@ -1,3 +1,10 @@
+/**
+ * @file unified_engine.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 // src/core/unified_engine.c
 //
 // Purpose: Unified engine implementation integrating all systems
