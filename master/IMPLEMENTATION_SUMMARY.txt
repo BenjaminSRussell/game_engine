@@ -57,19 +57,19 @@ CRITICAL BUGS FIXED
    Status:  FIXED
    Solution: Platform-specific conditional in CMake
    
-🟠 BUG-004: Voxel renderer incomplete (sprite/text/UI)
+ BUG-004: Voxel renderer incomplete (sprite/text/UI)
    Status:  FIXED
    Solution: Proper implementations with validation + logging
 
  BUG-003: Computer crashes during rendering
-   Status: ⏳ NEEDS INVESTIGATION
+   Status:  NEEDS INVESTIGATION
    Solution: Added logging, ASAN instructions in guides
    
-🟠 BUG-005: Post-processing not implemented
-   Status: ⏳ TODO (8-10 hours estimated)
+ BUG-005: Post-processing not implemented
+   Status:  TODO (8-10 hours estimated)
    
-🟡 BUG-006: Duplicate Vulkan files (7 _alt files)
-   Status: ⏳ TODO (30 min estimated)
+ BUG-006: Duplicate Vulkan files (7 _alt files)
+   Status:  TODO (30 min estimated)
    
 Other Bugs: See BUG_TRACKING_RENDERING.md for details
 
@@ -166,15 +166,15 @@ FEATURE STATUS:
    Voxel rendering:       Working (chunks visible)
    Block highlighting:    Working
    Physics debug viz:     Working
-  ⏳ Sprite rendering:      Framework (not yet implemented)
-  ⏳ Text rendering:        Framework (not yet implemented)
-  ⏳ UI rendering:          Framework (not yet implemented)
-  ⏹ Post-processing:       Not implemented
-  ⏹ TAA:                   Not implemented
-  ⏹ SSAO:                  Not implemented
-  ⏹ SSR:                   Not implemented
-  ⏹ GPU-driven rendering:  Not implemented
-  ⏹ Material LOD:          Not implemented
+   Sprite rendering:      Framework (not yet implemented)
+   Text rendering:        Framework (not yet implemented)
+   UI rendering:          Framework (not yet implemented)
+   Post-processing:       Not implemented
+   TAA:                   Not implemented
+   SSAO:                  Not implemented
+   SSR:                   Not implemented
+   GPU-driven rendering:  Not implemented
+   Material LOD:          Not implemented
 
 ================================================================================
 KEY FILES MODIFIED
@@ -198,22 +198,22 @@ DOCUMENTATION NAVIGATION
 ================================================================================
 
 For Quick Fixes:
-  → RENDERING_FIXES_QUICK_START.md
+  -> RENDERING_FIXES_QUICK_START.md
 
 For Deep Understanding:
-  → RENDERING_IMPLEMENTATION_GUIDE.md
+  -> RENDERING_IMPLEMENTATION_GUIDE.md
 
 For Debugging:
-  → BUG_TRACKING_RENDERING.md
+  -> BUG_TRACKING_RENDERING.md
 
 For Project Planning:
-  → MASTER_IMPLEMENTATION_CHECKLIST.md
+  -> MASTER_IMPLEMENTATION_CHECKLIST.md
 
 For Current Status:
-  → RENDERING_IMPLEMENTATION_STATUS.md
+  -> RENDERING_IMPLEMENTATION_STATUS.md
 
 For Navigation Help:
-  → RENDERING_DOCUMENTATION_INDEX.md
+  -> RENDERING_DOCUMENTATION_INDEX.md
 
 ================================================================================
 SUCCESS CRITERIA - PHASE 1
