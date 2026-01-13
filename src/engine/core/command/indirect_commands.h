@@ -18,6 +18,16 @@ extern "C" {
 #endif
 
 /* ============================================================================
+ * ERROR CODES
+ * ============================================================================ */
+#define CORE_INDIRECT_ERROR_NONE 0
+#define CORE_INDIRECT_ERROR_INVALID_ARGS -1
+#define CORE_INDIRECT_ERROR_NOT_INITIALIZED -2
+#define CORE_INDIRECT_ERROR_OUT_OF_MEMORY -3
+#define CORE_INDIRECT_ERROR_INVALID_HANDLE -4
+#define CORE_INDIRECT_ERROR_INVALID_STATE -5
+
+/* ============================================================================
  * TYPES
  * ============================================================================ */
 
@@ -54,6 +64,7 @@ bool core_indirect_commands_is_valid(core_indirect_commands_handle_t handle);
 int core_indirect_commands_get_info(core_indirect_commands_handle_t handle, core_indirect_commands_info_t* out_info);
 void core_indirect_commands_mark_dirty(core_indirect_commands_handle_t handle);
 int core_indirect_commands_process_pending(void);
+int core_indirect_commands_reload(core_indirect_commands_handle_t handle);
 
 /* Statistics */
 uint32_t core_indirect_commands_get_count(void);
