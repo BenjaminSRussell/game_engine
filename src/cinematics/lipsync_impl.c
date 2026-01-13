@@ -1,7 +1,8 @@
 /**
- * LIPSYNC & FACIAL ANIMATION
- * AGENT_CINEMA_2 - Wave 5
- * Phoneme mapping and facial blending
+ * @file lipsync_impl.c
+ * @brief Lipsync & Facial Animation
+ * @description AGENT_CINEMA_2 - Wave 5: Phoneme mapping and facial blending
+ * @date 2026-01-13
  */
 
 #include <stdlib.h>

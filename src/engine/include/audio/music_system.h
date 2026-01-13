@@ -1,7 +1,7 @@
 #ifndef MUSIC_SYSTEM_H
 #define MUSIC_SYSTEM_H
 
-#include <audio/audio_system.h>
+#include "include/audio/audio_system.h"
 #include <common.h>
 #include <math/vec3.h>
 

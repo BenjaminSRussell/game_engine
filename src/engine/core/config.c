@@ -51,7 +51,7 @@
 // Game configuration defaults and load/store helpers.
 // Roadmap: docs/CONFIG_ROADMAP.md.
 #include <config/config.h>
-#include "engine/include/core/logger.h"
+#include <core/logger.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -134,11 +134,11 @@ void config_set_defaults(GameConfig *config) {
 
 static inline u32 clamp_u32(u32 value, u32 min, u32 max, const char *name) {
   if (value < min) {
-    LOG_WARN(LOG_CAT_GENERAL, "Config %s=%u below minimum %u, clamping", name, value, min);
+    LOG_WARN("Config %s=%u below minimum %u, clamping", name, value, min);
     return min;
   }
   if (value > max) {
-    LOG_WARN(LOG_CAT_GENERAL, "Config %s=%u above maximum %u, clamping", name, value, max);
+    LOG_WARN("Config %s=%u above maximum %u, clamping", name, value, max);
     return max;
   }
   return value;
@@ -146,11 +146,11 @@ static inline u32 clamp_u32(u32 value, u32 min, u32 max, const char *name) {
 
 static inline f32 clamp_f32(f32 value, f32 min, f32 max, const char *name) {
   if (value < min) {
-    LOG_WARN(LOG_CAT_GENERAL, "Config %s=%.2f below minimum %.2f, clamping", name, value, min);
+    LOG_WARN("Config %s=%.2f below minimum %.2f, clamping", name, value, min);
     return min;
   }
   if (value > max) {
-    LOG_WARN(LOG_CAT_GENERAL, "Config %s=%.2f above maximum %.2f, clamping", name, value, max);
+    LOG_WARN("Config %s=%.2f above maximum %.2f, clamping", name, value, max);
     return max;
   }
   return value;

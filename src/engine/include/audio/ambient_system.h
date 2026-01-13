@@ -3,7 +3,7 @@
 
 #include <common.h>
 #include <math/vec3.h>
-#include <audio/audio_system.h>
+#include "include/audio/audio_system.h"
 
 // Ambient sound types
 typedef enum {

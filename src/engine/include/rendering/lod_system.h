@@ -25,9 +25,9 @@
 #ifndef LOD_SYSTEM_H
 #define LOD_SYSTEM_H
 
-#include "engine/include/common.h"
+#include <common.h>
 #include <math/vec3.h>
-#include <rendering/mesh.h>
+#include <include/rendering/mesh.h>
 
 #ifdef __cplusplus
 extern "C" {

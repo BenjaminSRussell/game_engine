@@ -41,7 +41,7 @@
 #ifndef MAT4_H
 #define MAT4_H
 
-#include "../common.h"
+#include "engine/include/common.h""
 #include "vec2.h"
 #include "vec3.h"
 #include "vec4.h"

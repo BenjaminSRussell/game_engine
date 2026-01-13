@@ -8,28 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Type definitions
-typedef struct PhysicsWorld PhysicsWorld;
-typedef struct Collider Collider;
-typedef struct CombatSystem CombatSystem;
-typedef struct NPCSystem NPCSystem;
-typedef struct World World;
-typedef struct Entity {
-  unsigned int id;
-} Entity;
-typedef struct BlockState {
-  int id;
-} BlockState;
-typedef struct ChunkManager ChunkManager;
-typedef struct GameConfig {
-  int window_width;
-  int window_height;
-  int chunk_render_distance;
-  bool vsync;
-  bool fullscreen;
-  float fov;
-  float mouse_sensitivity;
-} GameConfig;
+#include <core/config.h>
 
 // Global game configuration
 static GameConfig g_default_config = {.window_width = 1280,

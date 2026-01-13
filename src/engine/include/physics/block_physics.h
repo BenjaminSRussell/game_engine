@@ -51,7 +51,7 @@
 
 #include "block/block.h"
 #include "chunk/chunk.h"
-#include "engine/include/common.h"
+#include "common.h"
 #include "math/vec3.h"
 #include "../physics/physics_engine_core.h"
 

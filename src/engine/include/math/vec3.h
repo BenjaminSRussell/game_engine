@@ -72,10 +72,12 @@ typedef struct {
 typedef enum { VEC3_PRECISION_SINGLE, VEC3_PRECISION_DOUBLE } Vec3Precision;
 
 // Optimized 3D vector with SIMD-friendly alignment
-#include "../core/math/types.h"
+typedef union __attribute__((aligned(16))) {
+  struct {
+    f32 x, y, z;
+  };
 
-// Alias Vec3 to the unified vec3 type from types.h
-typedef vec3 Vec3;
+} Vec3;
 
 typedef Vec3 vec3_t;
 
@@ -85,29 +87,19 @@ INLINE Vec3 vec3_create(f32 x, f32 y, f32 z) {
   return v;
 }
 
-#define vec3 vec3_create
-
 INLINE Vec3 vec3_zero(void) { return vec3_create(0.0f, 0.0f, 0.0f); }
 
 INLINE Vec3 vec3_one(void) { return vec3_create(1.0f, 1.0f, 1.0f); }
 
-#ifndef VEC3_FUNCTIONS_DEFINED
-#ifndef TYPES_DEFINED_VEC_OPS
 INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
   return vec3_create(a.x + b.x, a.y + b.y, a.z + b.z);
 }
-#endif
 
-#ifndef TYPES_DEFINED_VEC_OPS
 INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
   return vec3_create(a.x - b.x, a.y - b.y, a.z - b.z);
 }
-#endif
-#endif
 
-INLINE Vec3 vec3_mul(Vec3 v, f32 s) {
-  return vec3_create(v.x * s, v.y * s, v.z * s);
-}
+INLINE Vec3 vec3_mul(Vec3 v, f32 s) { return vec3_create(v.x * s, v.y * s, v.z * s); }
 
 INLINE Vec3 vec3_div(Vec3 v, f32 s) {
   f32 inv = 1.0f / s;
@@ -118,15 +110,13 @@ INLINE Vec3 vec3_scale(Vec3 a, Vec3 b) {
   return vec3_create(a.x * b.x, a.y * b.y, a.z * b.z);
 }
 
-#ifndef TYPES_DEFINED_VEC_OPS
 INLINE f32 vec3_dot(Vec3 a, Vec3 b) {
   return a.x * b.x + a.y * b.y + a.z * b.z;
 }
-#endif
 
 INLINE Vec3 vec3_cross(Vec3 a, Vec3 b) {
   return vec3_create(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z,
-                     a.x * b.y - a.y * b.x);
+              a.x * b.y - a.y * b.x);
 }
 
 INLINE f32 vec3_length_sq(Vec3 v) { return vec3_dot(v, v); }
