@@ -1,3 +1,10 @@
+/**
+ * @file sample_app.m
+ * @brief System Implementation
+ * @description System implementation
+ * @date 2026-01-13
+ */
+
 #import <Cocoa/Cocoa.h>
 #import <Metal/Metal.h>
 #import <MetalKit/MetalKit.h>
