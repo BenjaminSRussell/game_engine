@@ -113,6 +113,9 @@ int network_client_send(PacketType type, const void* data, size_t data_size);
 bool network_client_is_connected(void);
 uint32_t network_client_get_id(void);
 
+// Failover configuration
+void network_client_add_backup(const char* address, uint16_t port);
+
 // Network update
 int network_update(float delta_time);
 
