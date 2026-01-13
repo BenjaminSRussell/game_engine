@@ -16,6 +16,8 @@ typedef void (*RPCHandler)(uint32_t sender_id, void *data, uint32_t size);
 // Core RPC functions
 void rpc_init(void);
 void rpc_shutdown(void);
+void rpc_update(float delta_time);
+
 void rpc_register(const char *name, RPCHandler handler);
 bool rpc_dispatch(const char *name, uint32_t sender_id, void *data, uint32_t size);
 
@@ -27,6 +29,7 @@ void rpc_broadcast(const char *name, void *data, uint32_t size);
 void rpc_send_to_client(uint32_t client_id, const char *name, void *data, uint32_t size);
 
 // Packet processing
-void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t packet_size);
+// last_processed_id: pointer to storage for last processed RPC ID for this sender (for duplicate detection). Can be NULL.
+void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t packet_size, uint16_t *last_processed_id);
 
 #endif // RPC_SYSTEM_H

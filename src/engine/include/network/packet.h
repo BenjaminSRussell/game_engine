@@ -7,6 +7,13 @@
 #include <stdint.h>
 
 #define MAX_PACKET_SIZE 1400 // Typical MTU is 1500, leave room for headers
+#define MAX_FRAGMENTS 32
+#define MAX_LARGE_PACKET_SIZE (MAX_PACKET_SIZE * MAX_FRAGMENTS)
+
+// Packet Flags (renamed to avoid conflict with core/math/types.h)
+#define NET_PACKET_FLAG_RELIABLE    (1 << 0)
+#define NET_PACKET_FLAG_COMPRESSED  (1 << 1)
+#define NET_PACKET_FLAG_FRAGMENT    (1 << 2)
 
 typedef struct {
   uint8_t buffer[MAX_PACKET_SIZE];
@@ -14,6 +21,26 @@ typedef struct {
   uint16_t read_pos;
   uint16_t length;
 } Packet;
+
+// Fragmentation Header
+typedef struct {
+    uint16_t packet_id;
+    uint16_t fragment_index;
+    uint16_t fragment_count;
+    uint32_t total_size;
+} FragmentHeader;
+
+// Reassembly Buffer
+typedef struct {
+    uint16_t packet_id;
+    uint32_t received_mask;
+    uint16_t fragments_received;
+    uint16_t total_fragments;
+    uint32_t total_size;
+    uint8_t buffer[MAX_LARGE_PACKET_SIZE];
+    bool active;
+    float timeout;
+} FragmentBuffer;
 
 // Initialize a packet for writing
 void packet_init_write(Packet *packet, uint8_t type, uint8_t flags);
@@ -48,8 +75,27 @@ bool packet_read_bytes(Packet *packet, void *buffer, uint16_t size);
 
 // Header access
 PacketHeader packet_get_header(const Packet *packet);
+bool packet_read_fragment_header(Packet *packet, FragmentHeader *header);
 
 // Finalize packet for sending (updates length and data size)
 uint16_t packet_finalize(Packet *packet);
+
+// Fragmentation
+// Split data into multiple packets
+// returns number of fragments generated, or 0 on error
+uint16_t packet_fragment_data(const void *data, uint32_t size, uint8_t type, uint8_t flags, Packet *fragments, uint16_t max_fragments);
+
+// Reassemble a fragment into the buffer
+// Returns true if the packet is complete.
+bool packet_reassemble_fragment(FragmentBuffer *buffer, const Packet *fragment);
+
+// Compression
+// Compress packet payload. Returns true if compression was successful and size reduced.
+// If successful, NET_PACKET_FLAG_COMPRESSED is set in header.
+bool packet_compress(Packet *packet);
+
+// Decompress packet payload. Returns true if decompression was successful.
+// NET_PACKET_FLAG_COMPRESSED flag is cleared.
+bool packet_decompress(Packet *packet);
 
 #endif // PACKET_H
