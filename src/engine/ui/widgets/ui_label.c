@@ -69,7 +69,7 @@ static void ui_label_render_impl(Widget* widget) {
     // 3. Handle word wrapping and ellipsis
     // 4. Apply text color and format
 
-    LOG_DEBUG("Label render: pos=(%.1f, %.1f) size=(%.1f, %.1f) text=%s",
+    LOG_DEBUG(LOG_CAT_GENERAL, "Label render: pos=(%.1f, %.1f) size=(%.1f, %.1f) text=%s",
              pos.x, pos.y, size.x, size.y, label->text ? label->text : "");
 }
 
@@ -126,8 +126,8 @@ static Size ui_label_measure_impl(Widget* widget, float available_width, float a
     text_height += 2.0f;
 
     return (Size){
-        .width = fminf(text_width, available_width > 0 ? available_width : 500.0f),
-        .height = fminf(text_height, available_height > 0 ? available_height : 100.0f)
+        .x = fminf(text_width, available_width > 0 ? available_width : 500.0f),
+        .y = fminf(text_height, available_height > 0 ? available_height : 100.0f)
     };
 }
 
@@ -151,7 +151,7 @@ static void ui_label_destroy_impl(Widget* widget) {
 UILabel* ui_label_create(const char* name, const char* text) {
     UILabel* label = memory_alloc(sizeof(UILabel));
     if (!label) {
-        LOG_ERROR("Failed to allocate UI label");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate UI label");
         return NULL;
     }
 
@@ -203,7 +203,7 @@ UILabel* ui_label_create(const char* name, const char* text) {
     // Default size
     widget_set_size(&label->base, (Vec2){200.0f, 20.0f});
 
-    LOG_INFO("Created UI label: %s with text '%s'", name ? name : "unnamed", text ? text : "");
+    LOG_INFO(LOG_CAT_GENERAL, "Created UI label: %s with text '%s'", name ? name : "unnamed", text ? text : "");
     return label;
 }
 
@@ -387,5 +387,5 @@ Vec2 ui_label_get_content_size(UILabel* label, float max_width) {
     if (!label) return (Vec2){0, 0};
 
     Size measured = ui_label_measure_impl(&label->base, max_width, 0);
-    return (Vec2){measured.width, measured.height};
+    return (Vec2){measured.x, measured.y};
 }
