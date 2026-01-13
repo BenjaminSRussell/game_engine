@@ -113,8 +113,6 @@ typedef enum texture_texture_lod_format {
     TEXTURE_TEXTURE_LOD_FORMAT_BGRA8 = 1
 } texture_texture_lod_format_t;
 
-    uint32_t reserved[3];         // Future expansion
-} texture_texture_lod_serialized_header_t;
 
 typedef struct texture_texture_lod_serialized_item {
     uint32_t id;                 // Texture ID
@@ -143,9 +141,6 @@ typedef struct texture_texture_lod_serialized_item {
  * PRIVATE FUNCTION DECLARATIONS
  * ============================================================================ */
 
-static bool texture_texture_lod_compress_bc_astc(texture_texture_lod_internal_t* item, uint32_t format);
-static bool texture_texture_lod_init_virtual_texture(texture_texture_lod_internal_t* item);
-static bool texture_texture_lod_init_bindless(texture_texture_lod_internal_t* item);
 
 // Enhanced caching system
 typedef struct texture_texture_lod_cache_entry {
@@ -455,6 +450,8 @@ typedef struct texture_texture_lod_internal {
         uint32_t stream_queue_position;
         bool stream_requested;
         uint64_t total_bytes_streamed;
+        uint32_t residency_priority;
+        bool gpu_resident;
     } streaming;
     
     // Memory pool system
@@ -548,6 +545,12 @@ typedef struct texture_texture_lod_internal {
         bool lod_smooth_transitions;
     } lod_system;
     
+    uint64_t data_hash;
+    uint64_t pending_hash;
+    size_t serialized_size;
+    float feedback_score;
+    void* cache_data;
+    bool cache_valid;
 } texture_texture_lod_internal_t;
 
 /* ============================================================================
@@ -754,7 +757,7 @@ static texture_texture_lod_context_t g_texture_lod_ctx = {0};
 static texture_texture_lod_error_code_t g_texture_lod_ctx_last_error = TEXTURE_TEXTURE_LOD_ERROR_NONE;
 static bool g_texture_lod_ctx_mutex_initialized = false;
 static bool g_texture_lod_ctx_async_enabled = true;
-static uint64_t g_texture_lod_ctx_frame_counter = 0;
+static uint64_t g_texture_lod_ctx.system_state.frame_counter = 0;
 
 // Render graph node
 typedef struct texture_lod_render_node {
@@ -951,7 +954,7 @@ static int texture_texture_lod_process_batch(texture_texture_lod_internal_t** ba
         
         // Update item status
         item->dirty = false;
-        item->frame_updated = ++g_texture_lod_ctx.frame_counter;
+        item->frame_updated = ++g_texture_lod_ctx.system_state.frame_counter;
     }
     
     return processed;
@@ -1145,7 +1148,7 @@ static void texture_texture_lod_apply_gpu_upload(texture_texture_lod_internal_t*
 
     item->gpu_resident = true;
     g_texture_lod_ctx.stats.bytes_uploaded += item->data_size;
-    item->frame_updated = ++g_texture_lod_ctx.frame_counter;
+    item->frame_updated = ++g_texture_lod_ctx.system_state.frame_counter;
 }
 
 static bool texture_texture_lod_validate(const texture_texture_lod_internal_t* item) {
@@ -1273,7 +1276,6 @@ static bool texture_texture_lod_init_texture_array(texture_texture_lod_internal_
 }
 
 // Feedback analysis implementation
-static void texture_texture_lod_update_feedback(texture_texture_lod_internal_t* item, float lod_level) {
     if (!item) return;
     
     item->feedback.access_count++;
@@ -1340,8 +1342,8 @@ static void texture_texture_lod_apply_pending_locked(texture_texture_lod_interna
 static void* texture_texture_lod_file_watch_thread(void* arg) {
     char buffer[4096];
     
-    while (g_texture_lod_ctx.file_watch_active) {
-        ssize_t length = read(g_texture_lod_ctx.inotify_fd, buffer, sizeof(buffer));
+    while (g_texture_lod_ctx.hot_reload_system.file_watch_active) {
+        ssize_t length = read(g_texture_lod_ctx.hot_reload_system.inotify_fd, buffer, sizeof(buffer));
         if (length > 0) {
             // Process file events
             for (char* ptr = buffer; ptr < buffer + length; ) {
@@ -1368,7 +1370,7 @@ static void* texture_texture_lod_file_watch_thread(void* arg) {
 static float texture_texture_lod_simd_calculate(const texture_texture_lod_internal_t* item, 
                                               float u, float v, float dudx, float dvdx, 
                                               float dudy, float dvdy) {
-    if (!g_texture_lod_ctx.simd_available) {
+    if (!g_texture_lod_ctx.simd_system.simd_available) {
         // Fallback to scalar calculation
         float dx = sqrtf(dudx * dudx + dvdx * dvdx);
         float dy = sqrtf(dudy * dudy + dvdy * dvdy);
@@ -1467,7 +1469,7 @@ int texture_texture_lod_init(void) {
     memset(&g_texture_lod_ctx.stats, 0, sizeof(g_texture_lod_ctx.stats));
     
     // Initialize frame counter
-    g_texture_lod_ctx_frame_counter = 0;
+    g_texture_lod_ctx.system_state.frame_counter = 0;
     
     // Initialize async system
     g_texture_lod_ctx_async_enabled = true;
@@ -1516,7 +1518,7 @@ void texture_texture_lod_debug_print(void) {
     printf("Initialized: %s\n", g_texture_lod_ctx.initialized ? "Yes" : "No");
     printf("Count: %u / %u\n", g_texture_lod_ctx.count, g_texture_lod_ctx.capacity);
     printf("Async enabled: %s\n", g_texture_lod_ctx.async_enabled ? "Yes" : "No");
-    printf("Frame counter: %lu\n", g_texture_lod_ctx.frame_counter);
+    printf("Frame counter: %lu\n", g_texture_lod_ctx.system_state.frame_counter);
     
     // Memory pool debug info
     printf("\n--- Memory Pool System ---\n");
@@ -2208,8 +2210,8 @@ void texture_texture_lod_debug_print(void) {
     printf("Initialized: %s\n", g_texture_lod_ctx.initialized ? "Yes" : "No");
     printf("LOD Count: %u / %u\n", g_texture_lod_ctx.count, g_texture_lod_ctx.capacity);
     printf("GPU Available: %s\n", g_texture_lod_ctx.gpu_available ? "Yes" : "No");
-    printf("SIMD Available: %s\n", g_texture_lod_ctx.simd_available ? "Yes" : "No");
-    printf("File Watch Active: %s\n", g_texture_lod_ctx.file_watch_active ? "Yes" : "No");
+    printf("SIMD Available: %s\n", g_texture_lod_ctx.simd_system.simd_available ? "Yes" : "No");
+    printf("File Watch Active: %s\n", g_texture_lod_ctx.hot_reload_system.file_watch_active ? "Yes" : "No");
     printf("Batch Queue Size: %u / %u\n", g_texture_lod_ctx.batch_count, TEXTURE_TEXTURE_LOD_BATCH_SIZE);
     
     printf("\n=== Performance Statistics ===\n");

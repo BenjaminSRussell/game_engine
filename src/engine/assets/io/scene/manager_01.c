@@ -98,9 +98,10 @@
 #define IO_SCENE_FORMAT_CUSTOM 5
 
 /* Compression types */
-#define IO_SCENE_COMPRESSION_NONE 0
-#define IO_SCENE_COMPRESSION_LZ4 1
-#define IO_SCENE_COMPRESSION_ZSTD 2
+#define IO_SCENE_MANAGER_01_COMPRESSION_NONE 0
+#define IO_SCENE_MANAGER_01_COMPRESSION_LZ4 1
+#define IO_SCENE_MANAGER_01_COMPRESSION_ZSTD 2
+#define IO_SCENE_MANAGER_01_COMPRESSION_AUTO 255
 
 /* Memory budget defaults */
 #define IO_SCENE_DEFAULT_MEMORY_BUDGET (512 * 1024 * 1024) /* 512MB */
@@ -311,6 +312,22 @@ typedef struct telemetry_data {
   uint64_t last_update_time;
 } telemetry_data_t;
 
+/* Asset bundle descriptor */
+typedef struct io_scene_asset_bundle {
+  uint32_t id;
+  char name[256];
+  uint32_t version;
+  uint64_t size_compressed;
+  uint64_t size_uncompressed;
+  uint32_t asset_count;
+  uint32_t compression_type;
+  uint32_t checksum;
+  time_t created_time;
+  time_t modified_time;
+  void *data;
+  void *compressed_data; /* Added for compatibility */
+} io_scene_asset_bundle_t;
+
 /*
  * IO_SCENE_MANAGER_01 - Core data structure
  * Manages state and resources for manager_01 operations
@@ -370,8 +387,11 @@ typedef struct io_scene_manager_01 {
   size_t compression_workspace_size;
 
   /* Asset bundles */
-  void *asset_bundles[IO_SCENE_MANAGER_01_MAX_BUNDLES];
+  /* Asset bundles */
+  io_scene_asset_bundle_t asset_bundles[IO_SCENE_MANAGER_01_MAX_BUNDLES];
+
   uint32_t bundle_count;
+  uint32_t bundle_capacity;
   pthread_mutex_t bundle_mutex;
 
   /* Serialization */
@@ -417,20 +437,7 @@ typedef struct io_scene_manager_01_stats {
   double cache_hit_ratio;
 } io_scene_manager_01_stats_t;
 
-/* Asset bundle descriptor */
-typedef struct io_scene_asset_bundle {
-  uint32_t id;
-  char name[256];
-  uint32_t version;
-  uint64_t size_compressed;
-  uint64_t size_uncompressed;
-  uint32_t asset_count;
-  uint32_t compression_type;
-  uint32_t checksum;
-  time_t created_time;
-  time_t modified_time;
-  void *data;
-} io_scene_asset_bundle_t;
+/* io_scene_asset_bundle_t moved up */
 
 /* Async operation descriptor */
 typedef struct io_scene_async_operation {
@@ -665,134 +672,6 @@ static int io_scene_manager_01_cleanup_internal(io_scene_manager_01_t *ctx) {
 
   ctx->is_dirty = false;
   return IO_SCENE_MANAGER_01_ERROR_NONE;
-}
-
-/*
- * Scene parsing helper functions
- */
-static int parse_gltf_scene(scene_parser_t *parser, const void *data,
-                            size_t size) {
-  // Mock glTF parsing implementation
-  // In a real implementation, this would use cgltf or similar library
-
-  parser->is_parsed = true;
-  parser->node_count = 10; // Mock values
-  parser->mesh_count = 5;
-  parser->material_count = 3;
-  parser->texture_count = 8;
-  parser->data_size = size;
-
-  // Allocate mock scene data
-  parser->scene_data = malloc(sizeof(scene_data_t));
-  if (parser->scene_data) {
-    scene_data_t *scene = (scene_data_t *)parser->scene_data;
-    scene->node_count = parser->node_count;
-    scene->mesh_count = parser->mesh_count;
-    scene->material_count = parser->material_count;
-    scene->texture_count = parser->texture_count;
-
-    // Mock node data
-    scene->nodes = malloc(parser->node_count * sizeof(scene_node_t));
-    if (scene->nodes) {
-      for (uint32_t i = 0; i < parser->node_count; i++) {
-        scene->nodes[i].id = i;
-        snprintf(scene->nodes[i].name, sizeof(scene->nodes[i].name), "Node_%u",
-                 i);
-        // Identity matrix
-        memset(scene->nodes[i].transform, 0, 16 * sizeof(float));
-        scene->nodes[i].transform[0] = scene->nodes[i].transform[5] =
-            scene->nodes[i].transform[10] = scene->nodes[i].transform[15] =
-                1.0f;
-        scene->nodes[i].mesh_id = i % parser->mesh_count;
-        scene->nodes[i].material_id = i % parser->material_count;
-        scene->nodes[i].parent_id = (i > 0) ? i - 1 : 0;
-        scene->nodes[i].children = NULL;
-        scene->nodes[i].child_count = 0;
-      }
-    }
-
-    // Mock mesh data
-    scene->meshes = malloc(parser->mesh_count * sizeof(scene_mesh_t));
-    if (scene->meshes) {
-      for (uint32_t i = 0; i < parser->mesh_count; i++) {
-        scene->meshes[i].id = i;
-        snprintf(scene->meshes[i].name, sizeof(scene->meshes[i].name),
-                 "Mesh_%u", i);
-        scene->meshes[i].vertex_count = 100;
-        scene->meshes[i].index_count = 300;
-        scene->meshes[i].vertices =
-            malloc(scene->meshes[i].vertex_count * 3 * sizeof(float));
-        scene->meshes[i].indices =
-            malloc(scene->meshes[i].index_count * sizeof(uint32_t));
-        scene->meshes[i].normals =
-            malloc(scene->meshes[i].vertex_count * 3 * sizeof(float));
-        scene->meshes[i].texcoords =
-            malloc(scene->meshes[i].vertex_count * 2 * sizeof(float));
-        scene->meshes[i].tangents =
-            malloc(scene->meshes[i].vertex_count * 4 * sizeof(float));
-      }
-    }
-
-    // Mock material data
-    scene->materials =
-        malloc(parser->material_count * sizeof(scene_material_t));
-    if (scene->materials) {
-      for (uint32_t i = 0; i < parser->material_count; i++) {
-        scene->materials[i].id = i;
-        snprintf(scene->materials[i].name, sizeof(scene->materials[i].name),
-                 "Material_%u", i);
-        scene->materials[i].base_color[0] = 0.8f;
-        scene->materials[i].base_color[1] = 0.8f;
-        scene->materials[i].base_color[2] = 0.8f;
-        scene->materials[i].base_color[3] = 1.0f;
-        scene->materials[i].metallic = 0.1f;
-        scene->materials[i].roughness = 0.5f;
-        scene->materials[i].emissive[0] = scene->materials[i].emissive[1] =
-            scene->materials[i].emissive[2] = 0.0f;
-        scene->materials[i].albedo_texture_id = i % parser->texture_count;
-        scene->materials[i].normal_texture_id = (i + 1) % parser->texture_count;
-        scene->materials[i].metallic_roughness_texture_id =
-            (i + 2) % parser->texture_count;
-      }
-    }
-
-    // Mock texture data
-    scene->textures = malloc(parser->texture_count * sizeof(scene_texture_t));
-    if (scene->textures) {
-      for (uint32_t i = 0; i < parser->texture_count; i++) {
-        scene->textures[i].id = i;
-        snprintf(scene->textures[i].name, sizeof(scene->textures[i].name),
-                 "Texture_%u", i);
-        snprintf(scene->textures[i].filename,
-                 sizeof(scene->textures[i].filename), "texture_%u.png", i);
-        scene->textures[i].width = 512;
-        scene->textures[i].height = 512;
-        scene->textures[i].channels = 4;
-        scene->textures[i].data_size = scene->textures[i].width *
-                                       scene->textures[i].height *
-                                       scene->textures[i].channels;
-        scene->textures[i].data = malloc(scene->textures[i].data_size);
-        if (scene->textures[i].data) {
-          memset(scene->textures[i].data, 128,
-                 scene->textures[i].data_size); // Gray texture
-        }
-      }
-    }
-
-    snprintf(
-        scene->metadata, sizeof(scene->metadata),
-        "Mock scene data with %u nodes, %u meshes, %u materials, %u textures",
-        parser->node_count, parser->mesh_count, parser->material_count,
-        parser->texture_count);
-  }
-
-  return 0;
-}
-
-static int parse_fbx_scene(scene_parser_t *parser, const void *data,
-                           size_t size) {
-  // Mock FBX parsing - similar to glTF but with different format specifics
-  return parse_gltf_scene(parser, data, size); // Reuse mock implementation
 }
 
 static int parse_gltf_json(const char *filename, scene_data_t **scene) {
@@ -1649,16 +1528,21 @@ static int serialize_to_binary(io_scene_manager_01_t *ctx, void **data,
 static int create_asset_bundle(io_scene_manager_01_t *ctx, const char *name,
                                void *data, size_t size,
                                uint8_t compression_type) {
+  // Initialize capacity if needed (should be done in init, but safe guard here)
+  if (ctx->bundle_capacity == 0)
+    ctx->bundle_capacity = IO_SCENE_MANAGER_01_MAX_BUNDLES;
+
   if (ctx->bundle_count >= ctx->bundle_capacity) {
     return -1; // Capacity exceeded
   }
 
-  asset_bundle_t *bundle = &ctx->asset_bundles[ctx->bundle_count];
+  io_scene_asset_bundle_t *bundle = &ctx->asset_bundles[ctx->bundle_count];
   strncpy(bundle->name, name, sizeof(bundle->name) - 1);
   bundle->name[sizeof(bundle->name) - 1] = '\0';
 
   bundle->version = 1;
-  bundle->size = size;
+  bundle->size_uncompressed = size;
+
   bundle->asset_count = 1;
   bundle->compression_type = compression_type;
   bundle->data = malloc(size);
@@ -1670,6 +1554,7 @@ static int create_asset_bundle(io_scene_manager_01_t *ctx, const char *name,
 
   // Compress if requested
   if (compression_type == 1) { // LZ4
+#ifdef USE_LZ4
     int compressed_size = LZ4_compressBound(size);
     bundle->compressed_data = malloc(compressed_size);
     if (bundle->compressed_data) {
@@ -1677,14 +1562,18 @@ static int create_asset_bundle(io_scene_manager_01_t *ctx, const char *name,
                                         (char *)bundle->compressed_data, size,
                                         compressed_size);
       if (result > 0) {
-        bundle->compressed_size = result;
+        bundle->size_compressed = result;
       } else {
         free(bundle->compressed_data);
         bundle->compressed_data = NULL;
-        bundle->compression_type = 0;
+        return -1;
       }
     }
+#else
+    return -1; // LZ4 not enabled
+#endif
   } else if (compression_type == 2) { // ZSTD
+#ifdef USE_ZSTD
     size_t compressed_size = ZSTD_compressBound(size);
     bundle->compressed_data = malloc(compressed_size);
     if (bundle->compressed_data) {
@@ -1695,9 +1584,12 @@ static int create_asset_bundle(io_scene_manager_01_t *ctx, const char *name,
       } else {
         free(bundle->compressed_data);
         bundle->compressed_data = NULL;
-        bundle->compression_type = 0;
+        return -1;
       }
     }
+#else
+    return -1; // ZSTD not enabled
+#endif
   }
 
   ctx->bundle_count++;

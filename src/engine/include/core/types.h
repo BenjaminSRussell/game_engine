@@ -2,4 +2,4 @@
 
 // Include the unified type system from math/types.h
 // This file is deprecated - use core/math/types.h instead
-#include "core/math/types.h"
+#include "math/types.h"

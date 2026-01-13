@@ -1691,30 +1691,6 @@ src/engine/backend/vulkan/vulkan_buffers.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers.c.s
 .PHONY : src/engine/backend/vulkan/vulkan_buffers.c.s
 
-src/engine/backend/vulkan/vulkan_buffers_alt.o: src/engine/backend/vulkan/vulkan_buffers_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_buffers_alt.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_buffers_alt.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_buffers_alt.c.o
-
-src/engine/backend/vulkan/vulkan_buffers_alt.i: src/engine/backend/vulkan/vulkan_buffers_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_buffers_alt.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_buffers_alt.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_buffers_alt.c.i
-
-src/engine/backend/vulkan/vulkan_buffers_alt.s: src/engine/backend/vulkan/vulkan_buffers_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_buffers_alt.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_buffers_alt.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_buffers_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_buffers_alt.c.s
-
 src/engine/backend/vulkan/vulkan_capabilities.o: src/engine/backend/vulkan/vulkan_capabilities.c.o
 .PHONY : src/engine/backend/vulkan/vulkan_capabilities.o
 
@@ -1738,30 +1714,6 @@ src/engine/backend/vulkan/vulkan_capabilities.s: src/engine/backend/vulkan/vulka
 src/engine/backend/vulkan/vulkan_capabilities.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities.c.s
 .PHONY : src/engine/backend/vulkan/vulkan_capabilities.c.s
-
-src/engine/backend/vulkan/vulkan_capabilities_alt.o: src/engine/backend/vulkan/vulkan_capabilities_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities_alt.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_capabilities_alt.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities_alt.c.o
-
-src/engine/backend/vulkan/vulkan_capabilities_alt.i: src/engine/backend/vulkan/vulkan_capabilities_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities_alt.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_capabilities_alt.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities_alt.c.i
-
-src/engine/backend/vulkan/vulkan_capabilities_alt.s: src/engine/backend/vulkan/vulkan_capabilities_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities_alt.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_capabilities_alt.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_capabilities_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_capabilities_alt.c.s
 
 src/engine/backend/vulkan/vulkan_dispatch.o: src/engine/backend/vulkan/vulkan_dispatch.c.o
 .PHONY : src/engine/backend/vulkan/vulkan_dispatch.o
@@ -1811,30 +1763,6 @@ src/engine/backend/vulkan/vulkan_framebuffer.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer.c.s
 .PHONY : src/engine/backend/vulkan/vulkan_framebuffer.c.s
 
-src/engine/backend/vulkan/vulkan_framebuffer_alt.o: src/engine/backend/vulkan/vulkan_framebuffer_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer_alt.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_framebuffer_alt.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer_alt.c.o
-
-src/engine/backend/vulkan/vulkan_framebuffer_alt.i: src/engine/backend/vulkan/vulkan_framebuffer_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer_alt.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_framebuffer_alt.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer_alt.c.i
-
-src/engine/backend/vulkan/vulkan_framebuffer_alt.s: src/engine/backend/vulkan/vulkan_framebuffer_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer_alt.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_framebuffer_alt.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_framebuffer_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_framebuffer_alt.c.s
-
 src/engine/backend/vulkan/vulkan_image.o: src/engine/backend/vulkan/vulkan_image.c.o
 .PHONY : src/engine/backend/vulkan/vulkan_image.o
 
@@ -1858,30 +1786,6 @@ src/engine/backend/vulkan/vulkan_image.s: src/engine/backend/vulkan/vulkan_image
 src/engine/backend/vulkan/vulkan_image.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image.c.s
 .PHONY : src/engine/backend/vulkan/vulkan_image.c.s
-
-src/engine/backend/vulkan/vulkan_image_alt.o: src/engine/backend/vulkan/vulkan_image_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_image_alt.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_image_alt.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_image_alt.c.o
-
-src/engine/backend/vulkan/vulkan_image_alt.i: src/engine/backend/vulkan/vulkan_image_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_image_alt.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_image_alt.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_image_alt.c.i
-
-src/engine/backend/vulkan/vulkan_image_alt.s: src/engine/backend/vulkan/vulkan_image_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_image_alt.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_image_alt.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_image_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_image_alt.c.s
 
 src/engine/backend/vulkan/vulkan_impl.o: src/engine/backend/vulkan/vulkan_impl.c.o
 .PHONY : src/engine/backend/vulkan/vulkan_impl.o
@@ -1955,30 +1859,6 @@ src/engine/backend/vulkan/vulkan_pipeline.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline.c.s
 .PHONY : src/engine/backend/vulkan/vulkan_pipeline.c.s
 
-src/engine/backend/vulkan/vulkan_pipeline_alt.o: src/engine/backend/vulkan/vulkan_pipeline_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_alt.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_pipeline_alt.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_alt.c.o
-
-src/engine/backend/vulkan/vulkan_pipeline_alt.i: src/engine/backend/vulkan/vulkan_pipeline_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_alt.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_pipeline_alt.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_alt.c.i
-
-src/engine/backend/vulkan/vulkan_pipeline_alt.s: src/engine/backend/vulkan/vulkan_pipeline_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_alt.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_pipeline_alt.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_pipeline_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_pipeline_alt.c.s
-
 src/engine/backend/vulkan/vulkan_pipeline_cache.o: src/engine/backend/vulkan/vulkan_pipeline_cache.c.o
 .PHONY : src/engine/backend/vulkan/vulkan_pipeline_cache.o
 
@@ -2051,30 +1931,6 @@ src/engine/backend/vulkan/vulkan_render.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render.c.s
 .PHONY : src/engine/backend/vulkan/vulkan_render.c.s
 
-src/engine/backend/vulkan/vulkan_render_alt.o: src/engine/backend/vulkan/vulkan_render_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_render_alt.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_render_alt.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_render_alt.c.o
-
-src/engine/backend/vulkan/vulkan_render_alt.i: src/engine/backend/vulkan/vulkan_render_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_render_alt.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_render_alt.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_render_alt.c.i
-
-src/engine/backend/vulkan/vulkan_render_alt.s: src/engine/backend/vulkan/vulkan_render_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_render_alt.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_render_alt.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_render_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_render_alt.c.s
-
 src/engine/backend/vulkan/vulkan_streaming.o: src/engine/backend/vulkan/vulkan_streaming.c.o
 .PHONY : src/engine/backend/vulkan/vulkan_streaming.o
 
@@ -2122,30 +1978,6 @@ src/engine/backend/vulkan/vulkan_surface.s: src/engine/backend/vulkan/vulkan_sur
 src/engine/backend/vulkan/vulkan_surface.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface.c.s
 .PHONY : src/engine/backend/vulkan/vulkan_surface.c.s
-
-src/engine/backend/vulkan/vulkan_surface_alt.o: src/engine/backend/vulkan/vulkan_surface_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_surface_alt.o
-
-# target to build an object file
-src/engine/backend/vulkan/vulkan_surface_alt.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_alt.c.o
-.PHONY : src/engine/backend/vulkan/vulkan_surface_alt.c.o
-
-src/engine/backend/vulkan/vulkan_surface_alt.i: src/engine/backend/vulkan/vulkan_surface_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_surface_alt.i
-
-# target to preprocess a source file
-src/engine/backend/vulkan/vulkan_surface_alt.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_alt.c.i
-.PHONY : src/engine/backend/vulkan/vulkan_surface_alt.c.i
-
-src/engine/backend/vulkan/vulkan_surface_alt.s: src/engine/backend/vulkan/vulkan_surface_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_surface_alt.s
-
-# target to generate assembly for a file
-src/engine/backend/vulkan/vulkan_surface_alt.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/src/engine/backend/vulkan/vulkan_surface_alt.c.s
-.PHONY : src/engine/backend/vulkan/vulkan_surface_alt.c.s
 
 src/engine/backend/vulkan_backend.o: src/engine/backend/vulkan_backend.c.o
 .PHONY : src/engine/backend/vulkan_backend.o
@@ -21804,30 +21636,18 @@ help:
 	@echo "... src/engine/backend/vulkan/vulkan_buffers.o"
 	@echo "... src/engine/backend/vulkan/vulkan_buffers.i"
 	@echo "... src/engine/backend/vulkan/vulkan_buffers.s"
-	@echo "... src/engine/backend/vulkan/vulkan_buffers_alt.o"
-	@echo "... src/engine/backend/vulkan/vulkan_buffers_alt.i"
-	@echo "... src/engine/backend/vulkan/vulkan_buffers_alt.s"
 	@echo "... src/engine/backend/vulkan/vulkan_capabilities.o"
 	@echo "... src/engine/backend/vulkan/vulkan_capabilities.i"
 	@echo "... src/engine/backend/vulkan/vulkan_capabilities.s"
-	@echo "... src/engine/backend/vulkan/vulkan_capabilities_alt.o"
-	@echo "... src/engine/backend/vulkan/vulkan_capabilities_alt.i"
-	@echo "... src/engine/backend/vulkan/vulkan_capabilities_alt.s"
 	@echo "... src/engine/backend/vulkan/vulkan_dispatch.o"
 	@echo "... src/engine/backend/vulkan/vulkan_dispatch.i"
 	@echo "... src/engine/backend/vulkan/vulkan_dispatch.s"
 	@echo "... src/engine/backend/vulkan/vulkan_framebuffer.o"
 	@echo "... src/engine/backend/vulkan/vulkan_framebuffer.i"
 	@echo "... src/engine/backend/vulkan/vulkan_framebuffer.s"
-	@echo "... src/engine/backend/vulkan/vulkan_framebuffer_alt.o"
-	@echo "... src/engine/backend/vulkan/vulkan_framebuffer_alt.i"
-	@echo "... src/engine/backend/vulkan/vulkan_framebuffer_alt.s"
 	@echo "... src/engine/backend/vulkan/vulkan_image.o"
 	@echo "... src/engine/backend/vulkan/vulkan_image.i"
 	@echo "... src/engine/backend/vulkan/vulkan_image.s"
-	@echo "... src/engine/backend/vulkan/vulkan_image_alt.o"
-	@echo "... src/engine/backend/vulkan/vulkan_image_alt.i"
-	@echo "... src/engine/backend/vulkan/vulkan_image_alt.s"
 	@echo "... src/engine/backend/vulkan/vulkan_impl.o"
 	@echo "... src/engine/backend/vulkan/vulkan_impl.i"
 	@echo "... src/engine/backend/vulkan/vulkan_impl.s"
@@ -21837,9 +21657,6 @@ help:
 	@echo "... src/engine/backend/vulkan/vulkan_pipeline.o"
 	@echo "... src/engine/backend/vulkan/vulkan_pipeline.i"
 	@echo "... src/engine/backend/vulkan/vulkan_pipeline.s"
-	@echo "... src/engine/backend/vulkan/vulkan_pipeline_alt.o"
-	@echo "... src/engine/backend/vulkan/vulkan_pipeline_alt.i"
-	@echo "... src/engine/backend/vulkan/vulkan_pipeline_alt.s"
 	@echo "... src/engine/backend/vulkan/vulkan_pipeline_cache.o"
 	@echo "... src/engine/backend/vulkan/vulkan_pipeline_cache.i"
 	@echo "... src/engine/backend/vulkan/vulkan_pipeline_cache.s"
@@ -21849,18 +21666,12 @@ help:
 	@echo "... src/engine/backend/vulkan/vulkan_render.o"
 	@echo "... src/engine/backend/vulkan/vulkan_render.i"
 	@echo "... src/engine/backend/vulkan/vulkan_render.s"
-	@echo "... src/engine/backend/vulkan/vulkan_render_alt.o"
-	@echo "... src/engine/backend/vulkan/vulkan_render_alt.i"
-	@echo "... src/engine/backend/vulkan/vulkan_render_alt.s"
 	@echo "... src/engine/backend/vulkan/vulkan_streaming.o"
 	@echo "... src/engine/backend/vulkan/vulkan_streaming.i"
 	@echo "... src/engine/backend/vulkan/vulkan_streaming.s"
 	@echo "... src/engine/backend/vulkan/vulkan_surface.o"
 	@echo "... src/engine/backend/vulkan/vulkan_surface.i"
 	@echo "... src/engine/backend/vulkan/vulkan_surface.s"
-	@echo "... src/engine/backend/vulkan/vulkan_surface_alt.o"
-	@echo "... src/engine/backend/vulkan/vulkan_surface_alt.i"
-	@echo "... src/engine/backend/vulkan/vulkan_surface_alt.s"
 	@echo "... src/engine/backend/vulkan_backend.o"
 	@echo "... src/engine/backend/vulkan_backend.i"
 	@echo "... src/engine/backend/vulkan_backend.s"
