@@ -71,13 +71,8 @@ typedef struct {
 // Vector precision enum
 typedef enum { VEC3_PRECISION_SINGLE, VEC3_PRECISION_DOUBLE } Vec3Precision;
 
-// Optimized 3D vector with SIMD-friendly alignment
-typedef union __attribute__((aligned(16))) {
-  struct {
-    f32 x, y, z;
-  };
-
-} Vec3;
+// Use unified type from core/math/types.h
+typedef vec3 Vec3;
 
 typedef Vec3 vec3_t;
 

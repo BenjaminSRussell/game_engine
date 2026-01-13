@@ -36,12 +36,8 @@
 #include <common.h>
 #include <math.h>
 
-typedef union {
-  struct {
-    f32 x, y;
-  };
-
-} K_ALIGN(8) Vec2;
+// Use unified type from core/math/types.h
+typedef vec2 Vec2;
 
 typedef Vec2 vec2_t;
 

@@ -3,11 +3,8 @@
 
 #include <common.h>
 
-typedef struct {
-  f32 x, y, z, w;
-} Vec4;
-
-typedef Vec4 vec4_t;
+// Use unified type from core/math/types.h
+typedef vec4 Vec4;
 
 static inline Vec4 vec4_create(f32 x, f32 y, f32 z, f32 w) {
   Vec4 v = {x, y, z, w};

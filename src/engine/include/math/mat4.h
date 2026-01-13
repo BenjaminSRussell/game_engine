@@ -67,24 +67,8 @@ typedef struct {
   f64 total_operation_time;
 } Mat4Statistics;
 
-// Matrix decomposition structure
-typedef struct {
-  Vec3 translation;
-  Vec3 rotation; // Euler angles in radians
-  Vec3 scale;
-} Mat4Decomposition;
-
-// Column-major 4x4 matrix (OpenGL style)
-typedef union Mat4 {
-  f32 m[16];
-  f32 data[4][4];
-  struct {
-    f32 m00, m10, m20, m30;
-    f32 m01, m11, m21, m31;
-    f32 m02, m12, m22, m32;
-    f32 m03, m13, m23, m33;
-  };
-} K_ALIGN(16) Mat4;
+// Use unified type from core/math/types.h
+typedef mat4 Mat4;
 
 INLINE Mat4 mat4_identity(void) {
   Mat4 m = {0};
