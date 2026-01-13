@@ -1,3 +1,13 @@
+/*
+ * file_watcher.c
+ * File system monitoring implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides file watching capabilities for hot-reload and development iteration
+ */
+
 #include "core/file_watcher.h"
 #include <stdlib.h>
 
