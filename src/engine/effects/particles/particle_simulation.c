@@ -4,16 +4,20 @@
  * Uses engine's Vec3 type for consistency
  */
 
-#include "particle_simulation.h"
+#include "effects/particles/particle_simulation.h"
+#include "effects/particles/particle_types.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <stdio.h>
+#include <float.h> // For FLT_MAX
 
-// Simple logging macros for compatibility
-#define log_error(fmt, ...) printf("[ERROR] " fmt "\n", ##__VA_ARGS__)
-#define log_info(fmt, ...) printf("[INFO] " fmt "\n", ##__VA_ARGS__)
-#define log_warn(fmt, ...) printf("[WARN] " fmt "\n", ##__VA_ARGS__)
+// Use core logger
+#include "core/logger.h"
+
+// Macros to replace printf logging with core logging
+#define log_error(fmt, ...) LOG_ERROR(fmt, ##__VA_ARGS__)
+#define log_info(fmt, ...) LOG_INFO(fmt, ##__VA_ARGS__)
+#define log_warn(fmt, ...) LOG_WARN(fmt, ##__VA_ARGS__)
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,8 +43,9 @@ static void update_particle_physics(
                        params->drag_coefficient, params->delta_time);
     
     // Update position based on velocity
-    Vec3 new_position = vec3_add(particle->position, 
-                                vec3_mul(particle->velocity, params->delta_time));
+    // vec3_mul (scalar mult) from vec3.h
+    Vec3 velocity_step = vec3_mul(particle->velocity, params->delta_time);
+    Vec3 new_position = vec3_add(particle->position, velocity_step);
     particle->position = new_position;
     
     // Update age
@@ -295,6 +300,7 @@ void particle_apply_gravity(
     }
     
     // Apply gravity acceleration to velocity
+    // vec3_mul (scalar mult) from vec3.h
     Vec3 gravity_impulse = vec3_mul(gravity, delta_time);
     particle->velocity = vec3_add(particle->velocity, gravity_impulse);
 }
@@ -313,6 +319,7 @@ void particle_apply_wind(
     Vec3 velocity_diff = vec3_sub(wind_velocity, particle->velocity);
     
     // Apply wind force (simplified drag model)
+    // vec3_mul (scalar mult) from vec3.h
     Vec3 wind_force = vec3_mul(velocity_diff, drag_coefficient * delta_time);
     particle->velocity = vec3_add(particle->velocity, wind_force);
 }
@@ -362,8 +369,8 @@ bool particle_sphere_collision(
     
     // Position correction (push particle outside sphere)
     float penetration = sphere_radius - distance;
-    particle->position = vec3_add(particle->position, 
-                                 vec3_mul(normal, penetration + 0.001f));
+    Vec3 offset = vec3_mul(normal, penetration + 0.001f);
+    particle->position = vec3_add(particle->position, offset);
     
     // Velocity reflection
     float velocity_dot_normal = vec3_dot(particle->velocity, normal);
@@ -423,8 +430,8 @@ bool particle_box_collision(
     }
     
     // Position correction
-    particle->position = vec3_add(particle->position, 
-                                 vec3_mul(normal, min_distance + 0.001f));
+    Vec3 offset = vec3_mul(normal, min_distance + 0.001f);
+    particle->position = vec3_add(particle->position, offset);
     
     // Velocity reflection
     float velocity_dot_normal = vec3_dot(particle->velocity, normal);
