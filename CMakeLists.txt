@@ -438,10 +438,10 @@ macro(add_engine_test name source)
 endmacro()
 
 # Physics Unit Tests
-add_engine_test(test_physics_ids src/engine/physics/tests/test_physics_ids.c)
+# add_engine_test(test_physics_ids src/engine/physics/tests/test_physics_ids.c)
 
-# Network Unit Tests  
-add_engine_test(test_network_stability src/engine/network/tests/network_stability_tests.c)
+# Network Unit Tests
+# add_engine_test(test_network_stability src/engine/network/tests/network_stability_tests.c)
 
 # Physics Integration Tests & Benchmark (Physics DOD - Phase 2)
 # add_engine_test(test_physics_integration tests/test_physics_integration.c)

@@ -585,6 +585,19 @@ static int cloth_system_cloth_constraints_cache_store(uint64_t hash, const void*
     return CLOTH_CONSTRAINTS_SUCCESS;
 }
 
+static cloth_system_cloth_constraints_backend_t cloth_system_cloth_constraints_select_backend(uint32_t flags) {
+    if (flags & CLOTH_SYSTEM_CLOTH_CONSTRAINTS_FLAG_BACKEND_VULKAN) {
+        return CLOTH_SYSTEM_CLOTH_CONSTRAINTS_BACKEND_VULKAN;
+    }
+    if (flags & CLOTH_SYSTEM_CLOTH_CONSTRAINTS_FLAG_BACKEND_METAL) {
+        return CLOTH_SYSTEM_CLOTH_CONSTRAINTS_BACKEND_METAL;
+    }
+    if (flags & CLOTH_SYSTEM_CLOTH_CONSTRAINTS_FLAG_BACKEND_D3D12) {
+        return CLOTH_SYSTEM_CLOTH_CONSTRAINTS_BACKEND_D3D12;
+    }
+    return CLOTH_SYSTEM_CLOTH_CONSTRAINTS_BACKEND_CPU;
+}
+
 static int cloth_system_cloth_constraints_backend_init(cloth_system_cloth_constraints_internal_t* item) {
     if (!item) return -1;
     if (item->backend == CLOTH_SYSTEM_CLOTH_CONSTRAINTS_BACKEND_CPU) {
@@ -1099,17 +1112,89 @@ size_t cloth_system_cloth_constraints_get_memory_usage(void) {
 }
 
 void cloth_system_cloth_constraints_debug_print(void) {
-    // TODO: Implement debug output
-    fprintf(stderr,
-            "cloth_constraints: items=%u capacity=%u allocated=%zu peak=%zu updates=%llu cache_hits=%llu async_submits=%llu processed=%llu\n",
-            g_cloth_constraints_ctx.count,
-            g_cloth_constraints_ctx.capacity,
-            g_cloth_constraints_ctx.allocated_bytes,
-            g_cloth_constraints_ctx.peak_bytes,
-            (unsigned long long)g_cloth_constraints_ctx.total_updates,
-            (unsigned long long)g_cloth_constraints_ctx.total_cache_hits,
-            (unsigned long long)g_cloth_constraints_ctx.total_async_submits,
-            (unsigned long long)g_cloth_constraints_ctx.total_processed);
+    cloth_system_cloth_constraints_lock();
+    
+    printf("=== Cloth Constraints System Debug Information ===\n");
+    printf("System State: %s\n", g_cloth_constraints_ctx.initialized ? "INITIALIZED" : "NOT INITIALIZED");
+    printf("Active Backend: %s\n", 
+           g_cloth_constraints_ctx.active_backend == CLOTH_CONSTRAINTS_BACKEND_VULKAN ? "Vulkan" :
+           g_cloth_constraints_ctx.active_backend == CLOTH_CONSTRAINTS_BACKEND_METAL ? "Metal" :
+           g_cloth_constraints_ctx.active_backend == CLOTH_CONSTRAINTS_BACKEND_D3D12 ? "D3D12" : "CPU");
+    printf("SIMD Level: %s\n",
+           g_cloth_constraints_ctx.simd_level == CLOTH_CONSTRAINTS_SIMD_AVX512 ? "AVX512" :
+           g_cloth_constraints_ctx.simd_level == CLOTH_CONSTRAINTS_SIMD_AVX2 ? "AVX2" :
+           g_cloth_constraints_ctx.simd_level == CLOTH_CONSTRAINTS_SIMD_AVX ? "AVX" :
+           g_cloth_constraints_ctx.simd_level == CLOTH_CONSTRAINTS_SIMD_SSE4_1 ? "SSE4.1" :
+           g_cloth_constraints_ctx.simd_level == CLOTH_CONSTRAINTS_SIMD_SSE2 ? "SSE2" : "None");
+    
+    printf("\nConstraint Management:\n");
+    printf("  Active Constraints: %u / %u\n", g_cloth_constraints_ctx.count, g_cloth_constraints_ctx.capacity);
+    printf("  Dirty Constraints: %u\n", g_cloth_constraints_ctx.dirty_constraints);
+    printf("  Current Frame: %llu\n", (unsigned long long)g_cloth_constraints_ctx.current_frame);
+    
+    printf("\nMemory Usage:\n");
+    printf("  Total Allocated: %zu bytes\n", g_cloth_constraints_ctx.total_allocated);
+    printf("  Peak Memory Usage: %zu bytes\n", g_cloth_constraints_ctx.peak_memory_usage);
+    printf("  Memory Pool Used: %zu / %zu bytes (%.1f%%)\n", 
+           g_cloth_constraints_ctx.memory_pool.used, 
+           g_cloth_constraints_ctx.memory_pool.size,
+           (float)g_cloth_constraints_ctx.memory_pool.used / g_cloth_constraints_ctx.memory_pool.size * 100.0f);
+    
+    printf("\nCache Performance:\n");
+    printf("  Cache Size: %u / %u entries\n", g_cloth_constraints_ctx.cache_size, CLOTH_SYSTEM_CLOTH_CONSTRAINTS_CACHE_SIZE);
+    printf("  Cache Hits: %llu\n", (unsigned long long)g_cloth_constraints_ctx.cache_hits);
+    printf("  Cache Misses: %llu\n", (unsigned long long)g_cloth_constraints_ctx.cache_misses);
+    printf("  Hit Rate: %.2f%%\n", 
+           (g_cloth_constraints_ctx.cache_hits + g_cloth_constraints_ctx.cache_misses) > 0 ?
+           (float)g_cloth_constraints_ctx.cache_hits / (g_cloth_constraints_ctx.cache_hits + g_cloth_constraints_ctx.cache_misses) * 100.0f : 0.0f);
+    
+    printf("\nAsync Operations:\n");
+    printf("  Active Operations: %u / %u\n", 
+           g_cloth_constraints_ctx.async_operation_count, CLOTH_SYSTEM_CLOTH_CONSTRAINTS_MAX_ASYNC_OPERATIONS);
+    printf("  Total Async Submissions: %llu\n", (unsigned long long)g_cloth_constraints_ctx.total_async_submits);
+    
+    printf("\nLOD System:\n");
+    printf("  Active LOD Levels: %u / %u\n", 
+           g_cloth_constraints_ctx.active_lod_count, CLOTH_SYSTEM_CLOTH_CONSTRAINTS_MAX_LOD_LEVELS);
+    printf("  LOD Bias: %.2f\n", g_cloth_constraints_ctx.lod_bias);
+    
+    printf("\nPerformance Counters:\n");
+    pthread_mutex_lock(&g_cloth_constraints_ctx.performance_mutex);
+    printf("  Constraints Processed: %llu\n", (unsigned long long)g_cloth_constraints_ctx.performance.constraints_processed);
+    printf("  Constraints Validated: %llu\n", (unsigned long long)g_cloth_constraints_ctx.performance.constraints_validated);
+    printf("  GPU Operations: %llu\n", (unsigned long long)g_cloth_constraints_ctx.performance.gpu_operations);
+    printf("  SIMD Operations: %llu\n", (unsigned long long)g_cloth_constraints_ctx.performance.simd_operations);
+    printf("  Batch Operations: %llu\n", (unsigned long long)g_cloth_constraints_ctx.performance.batch_operations);
+    printf("  Total Processing Time: %.3f ms\n", g_cloth_constraints_ctx.performance.total_processing_time * 1000.0);
+    printf("  Average Processing Time: %.3f ms\n", g_cloth_constraints_ctx.performance.average_processing_time * 1000.0);
+    pthread_mutex_unlock(&g_cloth_constraints_ctx.performance_mutex);
+    
+    printf("\nValidation Layer:\n");
+    pthread_mutex_lock(&g_cloth_constraints_ctx.validation.mutex);
+    printf("  Validation Enabled: %s\n", g_cloth_constraints_ctx.validation.enabled ? "Yes" : "No");
+    printf("  Error Count: %u\n", g_cloth_constraints_ctx.validation.error_count);
+    printf("  Warning Count: %u\n", g_cloth_constraints_ctx.validation.warning_count);
+    if (g_cloth_constraints_ctx.validation.error_count > 0) {
+        printf("  Last Error: %s\n", g_cloth_constraints_ctx.validation.last_error);
+    }
+    if (g_cloth_constraints_ctx.validation.warning_count > 0) {
+        printf("  Last Warning: %s\n", g_cloth_constraints_ctx.validation.last_warning);
+    }
+    pthread_mutex_unlock(&g_cloth_constraints_ctx.validation.mutex);
+    
+    printf("\nHot-Reload System:\n");
+    printf("  Hot-Reload Enabled: %s\n", g_cloth_constraints_ctx.hot_reload_enabled ? "Yes" : "No");
+    if (g_cloth_constraints_ctx.hot_reload_enabled) {
+        printf("  Watch Descriptor: %d\n", g_cloth_constraints_ctx.hot_reload.watch_descriptor);
+        printf("  Inotify FD: %d\n", g_cloth_constraints_ctx.hot_reload.inotify_fd);
+    }
+    
+    printf("\nRender Graph Integration:\n");
+    printf("  Render Nodes: %u / 32\n", g_cloth_constraints_ctx.render_node_count);
+    
+    printf("===============================================\n");
+    
+    cloth_system_cloth_constraints_unlock();
 }
 
 /* End of cloth_constraints.c */

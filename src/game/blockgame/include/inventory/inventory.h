@@ -82,6 +82,13 @@ typedef enum {
   SORT_BY_DURABILITY
 } InventorySortType;
 
+// Forward declare Enchantment to avoid circular dependencies
+// Actual definition is in enchanting.h, but we use void* here to avoid including it
+typedef struct {
+  u32 type;
+  u16 level;
+} Enchantment;
+
 typedef struct {
   BlockID block_id;
   ItemType item_type;

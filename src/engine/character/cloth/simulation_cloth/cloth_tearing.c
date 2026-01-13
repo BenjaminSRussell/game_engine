@@ -84,6 +84,15 @@
 #define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_VULKAN (1u << 0)
 #define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_METAL (1u << 1)
 #define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_D3D12 (1u << 2)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_THREAD_SAFE (1u << 3)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_SIMD_OPTIMIZATION (1u << 4)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_ASYNC_OPERATIONS (1u << 5)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_GPU_INTEGRATION (1u << 6)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BATCH_PROCESSING (1u << 7)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_STREAMING_SUPPORT (1u << 8)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_LOD_SUPPORT (1u << 9)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_CULLING_INTEGRATION (1u << 10)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_RENDER_GRAPH_NODE (1u << 11)
 
 /* Error codes */
 #define CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE 0
@@ -631,16 +640,6 @@ int cloth_system_cloth_tearing_init(void) {
     }
     
     /* Initialize memory tracking */
-    memset(&g_cloth_tearing_ctx.memory_stats, 0, sizeof(g_cloth_tearing_ctx.memory_stats));
-    g_cloth_tearing_ctx.total_memory_allocated = 0;
-    g_cloth_tearing_ctx.peak_memory_usage = 0;
-    
-    /* Initialize performance counters */
-    memset(&g_cloth_tearing_ctx.perf_counters, 0, sizeof(g_cloth_tearing_ctx.perf_counters));
-    
-    /* Initialize hot-reload */
-    memset(&g_cloth_tearing_ctx.hot_reload, 0, sizeof(g_cloth_tearing_ctx.hot_reload));
-    g_cloth_tearing_ctx.hot_reload.file_watch_fd = -1;
     
     g_cloth_tearing_ctx.capacity = CLOTH_SYSTEM_CLOTH_TEARING_DEFAULT_CAPACITY;
     g_cloth_tearing_ctx.items = calloc(g_cloth_tearing_ctx.capacity, sizeof(cloth_system_cloth_tearing_internal_t));
@@ -648,10 +647,6 @@ int cloth_system_cloth_tearing_init(void) {
         pthread_mutex_destroy(&g_cloth_tearing_ctx.mutex);
         return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_OUT_OF_MEMORY;
     }
-    
-    /* Update memory tracking */
-    g_cloth_tearing_ctx.memory_stats.total_allocated += g_cloth_tearing_ctx.capacity * sizeof(cloth_system_cloth_tearing_internal_t);
-    g_cloth_tearing_ctx.memory_stats.allocation_count++;
     
     g_cloth_tearing_ctx.count = 0;
     g_cloth_tearing_ctx.initialized = true;
@@ -668,18 +663,30 @@ void cloth_system_cloth_tearing_shutdown(void) {
     
     pthread_mutex_lock(&g_cloth_tearing_ctx.mutex);
     
-    /* Shutdown hot-reload system */
-    cloth_system_cloth_tearing_shutdown_hot_reload(&g_cloth_tearing_ctx);
-    
     /* Cleanup all items */
     for (uint32_t i = 0; i < g_cloth_tearing_ctx.count; i++) {
-        cloth_system_cloth_tearing_cleanup_internal(&g_cloth_tearing_ctx.items[i]);
+        cloth_system_cloth_tearing_internal_t* item = &g_cloth_tearing_ctx.items[i];
+        
+        if (item->thread_safe) {
+            pthread_mutex_destroy(&item->mutex);
+        }
+        
+        cloth_system_cloth_tearing_cleanup_cache(item);
+        cloth_system_cloth_tearing_cleanup_async_operations(item);
+        
+        if (item->gpu_buffer) {
+            free(item->gpu_buffer);
+            item->gpu_buffer = NULL;
+        }
+        
+        if (item->data) {
+            free(item->data);
+            item->data = NULL;
+        }
+        
+        cloth_system_cloth_tearing_backend_shutdown(item);
     }
     
-    /* Update memory tracking for cleanup */
-    g_cloth_tearing_ctx.memory_stats.total_allocated -= g_cloth_tearing_ctx.capacity * sizeof(cloth_system_cloth_tearing_internal_t);
-    
-    /* Cleanup resources */
     free(g_cloth_tearing_ctx.items);
     g_cloth_tearing_ctx.items = NULL;
     g_cloth_tearing_ctx.count = 0;
@@ -700,22 +707,17 @@ int cloth_system_cloth_tearing_create(cloth_system_cloth_tearing_handle_t* out_h
         return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NOT_INITIALIZED;
     }
     
-    /* Thread safety */
-    if (pthread_mutex_lock(&g_cloth_tearing_ctx.mutex) != 0) {
-        return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_THREADING;
-    }
-    
-    int result = CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE;
+    pthread_mutex_lock(&g_cloth_tearing_ctx.mutex);
     
     if (g_cloth_tearing_ctx.count >= g_cloth_tearing_ctx.capacity) {
-        result = CLOTH_SYSTEM_CLOTH_TEARING_ERROR_OUT_OF_MEMORY;
-        goto cleanup;
+        pthread_mutex_unlock(&g_cloth_tearing_ctx.mutex);
+        return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_OUT_OF_MEMORY;
     }
     
     uint32_t index = g_cloth_tearing_ctx.count++;
     cloth_system_cloth_tearing_internal_t* item = &g_cloth_tearing_ctx.items[index];
     
-    /* Initialize item */
+    /* Initialize basic properties */
     memset(item, 0, sizeof(cloth_system_cloth_tearing_internal_t));
     item->id = index;
     item->flags = desc->flags;
@@ -726,15 +728,18 @@ int cloth_system_cloth_tearing_create(cloth_system_cloth_tearing_handle_t* out_h
     item->render_graph_node = false;
     
     /* Initialize thread safety */
-    if (pthread_mutex_init(&item->mutex, NULL) != 0) {
-        result = CLOTH_SYSTEM_CLOTH_TEARING_ERROR_THREADING;
-        g_cloth_tearing_ctx.count--;
-        goto cleanup;
+    item->thread_safe = false;
+    if (desc->flags & CLOTH_SYSTEM_CLOTH_TEARING_FLAG_THREAD_SAFE) {
+        if (pthread_mutex_init(&item->mutex, NULL) != 0) {
+            g_cloth_tearing_ctx.count--;
+            pthread_mutex_unlock(&g_cloth_tearing_ctx.mutex);
+            return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_THREAD_SAFETY_VIOLATION;
+        }
+        item->thread_safe = true;
     }
-    item->thread_safe = true;
     
     /* Initialize backend */
-    result = cloth_system_cloth_tearing_backend_init(item, item->backend);
+    int result = cloth_system_cloth_tearing_backend_init(item, item->backend);
     if (result != CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE) {
         pthread_mutex_destroy(&item->mutex);
         g_cloth_tearing_ctx.count--;
@@ -834,12 +839,11 @@ int cloth_system_cloth_tearing_update(cloth_system_cloth_tearing_handle_t handle
         return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_VALIDATION_FAILED;
     }
     
-    /* Thread safety for item */
     if (item->thread_safe) {
         pthread_mutex_lock(&item->mutex);
     }
     
-    int result = CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE;
+    int result = CLOTH_SYSTEM_CLOTH_TEARING_SUCCESS;
     
     /* Update data */
     if (data && size > 0) {
@@ -847,43 +851,85 @@ int cloth_system_cloth_tearing_update(cloth_system_cloth_tearing_handle_t handle
             void* new_data = realloc(item->data, size);
             if (!new_data) {
                 result = CLOTH_SYSTEM_CLOTH_TEARING_ERROR_OUT_OF_MEMORY;
-                goto cleanup_item;
+                goto cleanup;
             }
             item->data = new_data;
             item->data_size = size;
             
             /* Update memory tracking */
-            g_cloth_tearing_ctx.memory_stats.total_allocated += size - item->data_size;
+            g_cloth_tearing_ctx.memory_stats.total_allocated += (size - item->data_size);
+            g_cloth_tearing_ctx.memory_stats.allocation_count++;
         }
         memcpy(item->data, data, size);
     }
     
     item->frame_updated++;
     
-    /* Backend update */
-    result = cloth_system_cloth_tearing_backend_update(item, data, size);
-    if (result != CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE) {
-        goto cleanup_item;
+    /* Check cache first */
+    uint64_t data_hash = cloth_system_cloth_tearing_calculate_checksum(data, size);
+    uint32_t cache_index = data_hash % item->cache_size;
+    
+    if (item->cache[cache_index].valid && 
+        item->cache[cache_index].hash == data_hash &&
+        item->cache[cache_index].size == size) {
+        /* Cache hit */
+        item->cache[cache_index].last_access = time(NULL);
+        item->cache[cache_index].access_count++;
+        g_cloth_tearing_ctx.perf_counters.cache_hits++;
+    } else {
+        /* Cache miss - update cache */
+        if (item->cache[cache_index].data) {
+            free(item->cache[cache_index].data);
+        }
+        item->cache[cache_index].data = malloc(size);
+        if (item->cache[cache_index].data) {
+            memcpy(item->cache[cache_index].data, data, size);
+            item->cache[cache_index].hash = data_hash;
+            item->cache[cache_index].size = size;
+            item->cache[cache_index].last_access = time(NULL);
+            item->cache[cache_index].valid = true;
+            item->cache[cache_index].access_count = 1;
+        }
+        g_cloth_tearing_ctx.perf_counters.cache_misses++;
+    }
+    
+    /* Apply SIMD optimization if enabled */
+    if (item->flags & CLOTH_SYSTEM_CLOTH_TEARING_FLAG_SIMD_OPTIMIZATION) {
+        cloth_system_cloth_tearing_simd_optimization(item);
+    }
+    
+    /* Update backend */
+    if (cloth_system_cloth_tearing_backend_update(item, data, size) != CLOTH_SYSTEM_CLOTH_TEARING_SUCCESS) {
+        result = CLOTH_SYSTEM_CLOTH_TEARING_ERROR_GPU_OPERATION_FAILED;
+        goto cleanup;
     }
     
     /* Update performance counters */
-    uint64_t current_time = (uint64_t)time(NULL) * 1000;
-    if (g_cloth_tearing_ctx.perf_counters.last_update_time > 0) {
-        double processing_time = (double)(current_time - g_cloth_tearing_ctx.perf_counters.last_update_time);
-        g_cloth_tearing_ctx.perf_counters.avg_processing_time = 
-            (g_cloth_tearing_ctx.perf_counters.avg_processing_time * 0.9) + (processing_time * 0.1);
-    }
-    g_cloth_tearing_ctx.perf_counters.last_update_time = current_time;
     g_cloth_tearing_ctx.perf_counters.frames_processed++;
+    g_cloth_tearing_ctx.perf_counters.tears_detected++;
+    
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+    
+    /* Process cloth tearing detection */
+    /* TODO: Actual tearing detection algorithm would go here */
+    
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    double processing_time = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+    
+    g_cloth_tearing_ctx.perf_counters.tears_processed++;
+    g_cloth_tearing_ctx.perf_counters.total_processing_time += processing_time;
+    g_cloth_tearing_ctx.perf_counters.avg_processing_time = 
+        g_cloth_tearing_ctx.perf_counters.total_processing_time / g_cloth_tearing_ctx.perf_counters.tears_processed;
     
     item->dirty = true;
     
-cleanup_item:
+cleanup:
     if (item->thread_safe) {
         pthread_mutex_unlock(&item->mutex);
     }
-    
     pthread_mutex_unlock(&g_cloth_tearing_ctx.mutex);
+    
     return result;
 }
 
@@ -898,11 +944,8 @@ bool cloth_system_cloth_tearing_is_valid(cloth_system_cloth_tearing_handle_t han
     
     pthread_mutex_lock(&g_cloth_tearing_ctx.mutex);
     
-    cloth_system_cloth_tearing_internal_t* item = &g_cloth_tearing_ctx.items[handle.id];
-    bool valid = item->initialized && cloth_system_cloth_tearing_validate(item);
-    
-    pthread_mutex_unlock(&g_cloth_tearing_ctx.mutex);
-    return valid;
+    const cloth_system_cloth_tearing_internal_t* item = &g_cloth_tearing_ctx.items[handle.id];
+    return cloth_system_cloth_tearing_validate(item);
 }
 
 int cloth_system_cloth_tearing_get_info(cloth_system_cloth_tearing_handle_t handle, cloth_system_cloth_tearing_info_t* out_info) {
@@ -1071,197 +1114,6 @@ void cloth_system_cloth_tearing_debug_print(void) {
     printf("=====================================\n");
     
     pthread_mutex_unlock(&g_cloth_tearing_ctx.mutex);
-}
-
-/* End of cloth_tearing.c */
-    
-    const cloth_system_cloth_tearing_internal_t* item = &g_cloth_tearing_ctx.items[handle.id];
-    return cloth_system_cloth_tearing_validate(item);
-}
-
-int cloth_system_cloth_tearing_get_info(cloth_system_cloth_tearing_handle_t handle, cloth_system_cloth_tearing_info_t* out_info) {
-    if (!out_info) {
-        return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_INVALID_PARAM;
-    }
-    
-    if (!g_cloth_tearing_ctx.initialized) {
-        return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NOT_INITIALIZED;
-    }
-    
-    if (handle.id >= g_cloth_tearing_ctx.count) {
-        return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_INVALID_PARAM;
-    }
-    
-    const cloth_system_cloth_tearing_internal_t* item = &g_cloth_tearing_ctx.items[handle.id];
-    out_info->id = item->id;
-    out_info->flags = item->flags;
-    out_info->initialized = item->initialized;
-    
-    return CLOTH_SYSTEM_CLOTH_TEARING_ERROR_NONE;
-}
-
-void cloth_system_cloth_tearing_mark_dirty(cloth_system_cloth_tearing_handle_t handle) {
-    if (!g_cloth_tearing_ctx.initialized) {
-        return;
-    }
-    
-    if (handle.id >= g_cloth_tearing_ctx.count) {
-        return;
-    }
-    
-    cloth_system_cloth_tearing_internal_t* item = &g_cloth_tearing_ctx.items[handle.id];
-    
-    /* Thread safety */
-    if (item->thread_safe) {
-        pthread_mutex_lock(&item->mutex);
-    }
-    
-    item->dirty = true;
-    
-    /* Culling integration */
-    if (item->culling_enabled) {
-        /* Mark for culling re-evaluation */
-    }
-    
-    if (item->thread_safe) {
-        pthread_mutex_unlock(&item->mutex);
-    }
-}
-
-int cloth_system_cloth_tearing_process_pending(void) {
-    if (!g_cloth_tearing_ctx.initialized) {
-        return 0;
-    }
-
-    int processed = 0;
-    uint64_t start_time = clock();
-    
-    /* Thread safety */
-    if (pthread_mutex_lock(&g_cloth_tearing_ctx.global_mutex) != 0) {
-        return 0;
-    }
-    
-    for (uint32_t i = 0; i < g_cloth_tearing_ctx.count; i++) {
-        cloth_system_cloth_tearing_internal_t* item = &g_cloth_tearing_ctx.items[i];
-        
-        if (item->initialized && item->dirty) {
-            /* Thread safety for item */
-            if (item->thread_safe) {
-                if (pthread_mutex_lock(&item->mutex) != 0) {
-                    continue;
-                }
-            }
-            
-            /* Process item based on backend */
-            if (item->backend == CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_VULKAN ||
-                item->backend == CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_METAL ||
-                item->backend == CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_D3D12) {
-                /* GPU processing - dispatch compute shader */
-                cloth_system_cloth_tearing_backend_update(item, item->data, item->data_size);
-            } else {
-                /* CPU processing - simulate tearing */
-                usleep(100); // Simulate processing time
-                /* Process as render graph node */
-            }
-            
-            /* LOD-based processing */
-            switch (item->lod_level) {
-                case 0: /* Full quality */
-                    /* Full processing */
-                    break;
-                case 1: /* Medium quality */
-                    /* Reduced processing */
-                    break;
-                case 2: /* Low quality */
-                    /* Minimal processing */
-                    break;
-                default:
-                    break;
-            }
-            
-            item->dirty = false;
-            processed++;
-            
-            if (item->thread_safe) {
-                pthread_mutex_unlock(&item->mutex);
-            }
-        }
-    }
-    
-    pthread_mutex_unlock(&g_cloth_tearing_ctx.global_mutex);
-    return processed;
-}
-
-uint32_t cloth_system_cloth_tearing_get_count(void) {
-    if (!g_cloth_tearing_ctx.initialized) {
-        return 0;
-    }
-    
-    return g_cloth_tearing_ctx.count;
-}
-
-size_t cloth_system_cloth_tearing_get_memory_usage(void) {
-    size_t total = sizeof(g_cloth_tearing_ctx);
-    total += g_cloth_tearing_ctx.capacity * sizeof(cloth_system_cloth_tearing_internal_t);
-
-    for (uint32_t i = 0; i < g_cloth_tearing_ctx.count; i++) {
-        cloth_system_cloth_tearing_internal_t* item = &g_cloth_tearing_ctx.items[i];
-        total += item->data_size;
-        if (item->cache) {
-            total += item->cache_size * sizeof(cloth_system_cloth_tearing_cache_entry_t);
-                }
-            }
-        }
-        
-        if (item->async_ops) {
-            for (uint32_t j = 0; j < item->async_ops_count; j++) {
-                total += item->async_ops[j].input_size;
-                total += item->async_ops[j].output_size;
-            }
-        }
-    }
-    
-    return total;
-}
-
-void cloth_system_cloth_tearing_debug_print(void) {
-    if (!g_cloth_tearing_ctx.initialized) {
-        printf("Cloth tearing system not initialized\n");
-        return;
-    }
-    
-    printf("=== Cloth Tearing System Debug Info ===\n");
-    printf("Initialized: %s\n", g_cloth_tearing_ctx.initialized ? "Yes" : "No");
-    printf("Count: %u / %u\n", g_cloth_tearing_ctx.count, g_cloth_tearing_ctx.capacity);
-    printf("Hot-reload enabled: %s\n", g_cloth_tearing_ctx.hot_reload_enabled ? "Yes" : "No");
-    printf("Validation enabled: %s\n", g_cloth_tearing_ctx.validation_enabled ? "Yes" : "No");
-    printf("File watches: %u\n", g_cloth_tearing_ctx.file_watch_count);
-    printf("Total memory allocated: %zu bytes\n", g_cloth_tearing_ctx.total_memory_allocated);
-    printf("Peak memory usage: %zu bytes\n", g_cloth_tearing_ctx.peak_memory_usage);
-    
-    printf("\n=== Performance Counters ===\n");
-    printf("Tears created: %lu\n", g_cloth_tearing_ctx.performance.tears_created);
-    printf("Tears processed: %lu\n", g_cloth_tearing_ctx.performance.tears_processed);
-    printf("Validation calls: %lu\n", g_cloth_tearing_ctx.performance.validation_calls);
-    printf("Serialization calls: %lu\n", g_cloth_tearing_ctx.performance.serialization_calls);
-    printf("Cache hits: %lu\n", g_cloth_tearing_ctx.performance.cache_hits);
-    printf("Cache misses: %lu\n", g_cloth_tearing_ctx.performance.cache_misses);
-    printf("Async operations: %lu\n", g_cloth_tearing_ctx.performance.async_operations);
-    printf("GPU operations: %lu\n", g_cloth_tearing_ctx.performance.gpu_operations);
-    printf("Total processing time: %.6f seconds\n", g_cloth_tearing_ctx.performance.total_processing_time);
-    printf("Average processing time: %.6f seconds\n", g_cloth_tearing_ctx.performance.average_processing_time);
-    
-    printf("\n=== Item Details ===\n");
-    for (uint32_t i = 0; i < g_cloth_tearing_ctx.count; i++) {
-        const cloth_system_cloth_tearing_internal_t* item = &g_cloth_tearing_ctx.items[i];
-        printf("Item %u: backend=%d, thread_safe=%s, dirty=%s, lod=%u\n",
-               item->id, item->backend,
-               item->thread_safe ? "Yes" : "No",
-               item->dirty ? "Yes" : "No",
-               item->lod_level);
-    }
-    
-    printf("=== End Debug Info ===\n");
 }
 
 /* End of cloth_tearing.c */
