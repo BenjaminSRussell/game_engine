@@ -1,8 +1,8 @@
 /**
- * =================================================================================================
- *                              AUDIO SYSTEM IMPLEMENTATION
- *                                      Agent: AGENT_CINEMA_2
- * =================================================================================================
+ * @file audio_system_impl.c
+ * @brief Audio System Implementation
+ * @description Agent: AGENT_CINEMA_2 - Audio system for cinematics
+ * @date 2026-01-13
  */
 
 #include "cinematics/audio/audio_system.h"
