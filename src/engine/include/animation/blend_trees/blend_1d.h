@@ -10,10 +10,19 @@
 extern "C" {
 #endif
 
+typedef struct BlendSpace1D BlendSpace1D;
+struct Pose;
+struct AnimationClip;
+
 /**
- * Initialize 1D blend system.
+ * Create a new 1D blend space.
  */
-void blend_1d_init(void);
+BlendSpace1D* blend_1d_create(void);
+
+/**
+ * Destroy a 1D blend space.
+ */
+void blend_1d_destroy(BlendSpace1D* blend);
 
 /**
  * Add animation clip at a specific threshold in the 1D blend space.
@@ -22,16 +31,17 @@ void blend_1d_init(void);
  * @param clip      The animation clip to add
  * @param threshold The parameter threshold where this clip is fully active
  */
-void blend_1d_add_clip(void *blend, void *clip, float threshold);
+void blend_1d_add_clip(BlendSpace1D *blend, struct AnimationClip *clip, float threshold);
 
 /**
  * Evaluate 1D blend and output the resulting pose.
  * 
  * @param blend       The blend space handle
+ * @param time        The current playback time
  * @param parameter   The current parameter value
  * @param output_pose Output pose buffer
  */
-void blend_1d_evaluate(void *blend, float parameter, void *output_pose);
+void blend_1d_evaluate(BlendSpace1D *blend, float time, float parameter, struct Pose *output_pose);
 
 #ifdef __cplusplus
 }
