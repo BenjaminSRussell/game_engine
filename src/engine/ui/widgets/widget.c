@@ -111,7 +111,7 @@ static bool widget_propagate_event(Widget* widget, UIEvent* event) {
 Widget* widget_create(const char* name) {
     Widget* widget = memory_alloc(sizeof(Widget));
     if (!widget) {
-        LOG_ERROR("Failed to allocate widget");
+        LOGE("Failed to allocate widget");
         return NULL;
     }
     
@@ -139,7 +139,7 @@ Widget* widget_create(const char* name) {
     widget->needs_layout = true;
     widget->needs_redraw = true;
     
-    LOG_INFO("Created widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
+    LOGI("Created widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
     return widget;
 }
 
@@ -184,7 +184,7 @@ void widget_add_child(Widget* parent, Widget* child) {
         Widget** new_children = memory_realloc(parent->children, 
                                              new_capacity * sizeof(Widget*));
         if (!new_children) {
-            LOG_ERROR("Failed to resize children array");
+            LOGE("Failed to resize children array");
             return;
         }
         
@@ -201,7 +201,7 @@ void widget_add_child(Widget* parent, Widget* child) {
     widget_invalidate_layout(parent);
     child->dirty = true;
     
-    LOG_INFO("Added child %s to parent %s", child->name, parent->name);
+    LOGI("Added child %s to parent %s", child->name, parent->name);
 }
 
 void widget_remove_child(Widget* parent, Widget* child) {
@@ -231,7 +231,7 @@ void widget_remove_child(Widget* parent, Widget* child) {
     // Invalidate layout
     widget_invalidate_layout(parent);
     
-    LOG_INFO("Removed child %s from parent %s", child->name, parent->name);
+    LOGI("Removed child %s from parent %s", child->name, parent->name);
 }
 
 void widget_remove_from_parent(Widget* widget) {
@@ -321,7 +321,7 @@ void widget_set_focused(Widget* widget, bool focused) {
             widget->state = WIDGET_STATE_NORMAL;
             
             // Emit focus loss event
-            UIEvent* event = ui_event_create(UI_EVENT_FOCUS_LOSS);
+            UIEvent* event = ui_event_create(UI_EVENT_FOCUS_LOST);
             if (event) {
                 widget_emit_event(widget, event);
                 ui_event_destroy(event);
@@ -337,7 +337,7 @@ void widget_add_event_handler(Widget* widget, UIEventType event_type, UIEventCal
     
     UIEventHandler* handler = memory_alloc(sizeof(UIEventHandler));
     if (!handler) {
-        LOG_ERROR("Failed to allocate event handler");
+        LOGE("Failed to allocate event handler");
         return;
     }
     
@@ -349,7 +349,7 @@ void widget_add_event_handler(Widget* widget, UIEventType event_type, UIEventCal
     
     widget_add_handler_internal(widget, handler);
     
-    LOG_DEBUG("Added event handler for type %d to widget %s", event_type, widget->name);
+    LOGD("Added event handler for type %d to widget %s", event_type, widget->name);
 }
 
 bool widget_handle_event(Widget* widget, UIEvent* event) {
@@ -492,7 +492,7 @@ void widget_release_focus(Widget* widget) {
 UIEvent* ui_event_create(UIEventType type) {
     UIEvent* event = memory_alloc(sizeof(UIEvent));
     if (!event) {
-        LOG_ERROR("Failed to allocate UI event");
+        LOGE("Failed to allocate UI event");
         return NULL;
     }
     
@@ -585,5 +585,27 @@ void widget_print_hierarchy(const Widget* widget, int depth) {
     // Print children
     for (uint32_t i = 0; i < widget->child_count; i++) {
         widget_print_hierarchy(widget->children[i], depth + 1);
+    }
+}
+
+void widget_remove_event_handler(Widget* widget, UIEventHandler* handler) {
+    if (!widget || !handler) return;
+    widget_remove_handler_internal(widget, handler);
+    memory_free(handler);
+}
+
+void widget_remove_all_event_handlers(Widget* widget, UIEventType event_type) {
+    if (!widget) return;
+
+    UIEventHandler* current = widget->event_handlers;
+    while (current) {
+        UIEventHandler* next = current->next;
+
+        if (event_type == UI_EVENT_NONE || current->event_type == event_type) {
+            widget_remove_handler_internal(widget, current);
+            memory_free(current);
+        }
+
+        current = next;
     }
 }
