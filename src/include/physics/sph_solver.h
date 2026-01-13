@@ -1,7 +1,7 @@
 #ifndef SPH_SOLVER_H
 #define SPH_SOLVER_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 #include <stdbool.h>
 

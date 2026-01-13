@@ -1,7 +1,7 @@
 #ifndef AUDIO_SURROUND_H
 #define AUDIO_SURROUND_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/math/math.h"
 
 // -------------------------------------------------------------------------------------------------

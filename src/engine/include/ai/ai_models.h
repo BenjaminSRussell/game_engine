@@ -1,7 +1,7 @@
 #ifndef AI_MODELS_H
 #define AI_MODELS_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <stdbool.h>
 
 typedef enum {

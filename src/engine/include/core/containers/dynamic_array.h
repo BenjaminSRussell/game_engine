@@ -1,7 +1,7 @@
 #ifndef CORE_CONTAINERS_DYNAMIC_ARRAY_H
 #define CORE_CONTAINERS_DYNAMIC_ARRAY_H
 
-#include "common.h"
+#include "engine/include/common.h"
 #include <stdbool.h>
 
 typedef struct DynamicArray {

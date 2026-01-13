@@ -4,7 +4,7 @@
 #include "../assets/assets/code/todo_quests.c"
 #include "engine/include/ui/ui_manager.h"
 #include "engine/include/ui/ui_system.h"
-#include "common.h"
+#include "engine/include/common.h"
 #include <time.h>
 
 // Quest UI configuration

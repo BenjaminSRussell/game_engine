@@ -1,7 +1,7 @@
 // environment/atmosphere/sky/atmosphere_rendering.c
 // High-fidelity Atmosphere Rendering and Scattering implementation.
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 #include <platform/sky_api_bridge.h>
 #include <stdbool.h>

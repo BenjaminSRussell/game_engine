@@ -1,7 +1,7 @@
 #ifndef DAMAGE_CALC_H
 #define DAMAGE_CALC_H
 
-#include "common.h"
+#include "engine/include/common.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,7 +1,7 @@
 #ifndef GAME_UTILS_H
 #define GAME_UTILS_H
 
-#include "common.h"
+#include "engine/include/common.h"
 
 #ifdef __cplusplus
 extern "C" {

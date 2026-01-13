@@ -22,7 +22,7 @@
 // movement.
 // TODO: Add support for networked IK synchronization (IK-Target replication).
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <stdlib.h>
 
 // =============================================================================

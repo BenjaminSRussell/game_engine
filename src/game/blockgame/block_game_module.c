@@ -14,7 +14,7 @@
 // TODO: Add proper error handling and recovery
 // TODO: Optimize performance for engine integration
 //
-#include <common.h>
+#include "engine/include/common.h"
 #include <core/asset_manager.h>
 #include <core/engine.h>
 #include <core/engine_core.h>

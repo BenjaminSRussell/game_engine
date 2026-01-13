@@ -1,7 +1,7 @@
 #ifndef MATH_RECT_H
 #define MATH_RECT_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "math/vec2.h"
 #include <stdbool.h>
 

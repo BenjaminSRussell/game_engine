@@ -19,7 +19,7 @@
 // TODO: Implement a query language (SPARQL-lite) for memory retrieval.
 // TODO: Add support for emotion-weighted memory priority.
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/core/memory.h"
 #include <include/math/math.h>
 #include <stdlib.h>

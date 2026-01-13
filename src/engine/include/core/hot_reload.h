@@ -1,7 +1,7 @@
 #ifndef ENGINE_HOT_RELOAD_H
 #define ENGINE_HOT_RELOAD_H
 
-#include "common.h"
+#include "engine/include/common.h"
 #include <stdbool.h>
 
 typedef enum {

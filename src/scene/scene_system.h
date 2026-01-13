@@ -8,7 +8,7 @@
 #ifndef SCENE_SYSTEM_H
 #define SCENE_SYSTEM_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/math/math.h"
 #include <stdbool.h>
 #include <stdint.h>

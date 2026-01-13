@@ -1,7 +1,7 @@
 #ifndef BLENDER_BRIDGE_H
 #define BLENDER_BRIDGE_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,5 +1,5 @@
 #include <character/eyes/eye_rendering/eye_rendering.h>
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 
 // Simulated corno-iris interface refraction/caustics facade

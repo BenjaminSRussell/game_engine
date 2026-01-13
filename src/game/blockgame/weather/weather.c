@@ -9,7 +9,7 @@
 // Weather customization options (clear skies mode, constant weather)
 // Weather particle effects optimization (LOD for distant weather)
 // Weather sound effects blending for smooth transitions
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/core/logger.h"
 #include <math.h>
 #include "engine/include/math/math.h"

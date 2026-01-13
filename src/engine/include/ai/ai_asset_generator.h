@@ -14,7 +14,7 @@
 #ifndef AI_ASSET_GENERATOR_H
 #define AI_ASSET_GENERATOR_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 #include <math/mat4.h>
 

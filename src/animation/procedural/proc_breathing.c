@@ -1,5 +1,5 @@
 #include <animation/animation_types.h>
-#include <common.h>
+#include "engine/include/common.h"
 #include <math.h>
 
 typedef struct {

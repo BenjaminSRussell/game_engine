@@ -2,7 +2,7 @@
 #define AUDIO_LOADER_H
 
 #include <../../include/vendor/miniaudio.h>
-#include <common.h>
+#include "engine/include/common.h"
 
 // Forward declarations
 struct AssetManager;

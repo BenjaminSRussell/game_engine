@@ -4,7 +4,7 @@
 #ifndef GRAPHICS_API_BRIDGE_H
 #define GRAPHICS_API_BRIDGE_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include "include/assets/gltf_loader.h"

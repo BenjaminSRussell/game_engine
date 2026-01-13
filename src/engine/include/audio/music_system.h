@@ -2,7 +2,7 @@
 #define MUSIC_SYSTEM_H
 
 #include "include/audio/audio_system.h"
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 
 // Music mood types for dynamic selection

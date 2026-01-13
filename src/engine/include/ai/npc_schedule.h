@@ -28,7 +28,7 @@
 #include <ai/npc_types.h>
 #include <ecs/ecs.h>
 #include <math/vec3.h>
-#include <common.h>
+#include "engine/include/common.h"
 
 #ifdef __cplusplus
 extern "C" {

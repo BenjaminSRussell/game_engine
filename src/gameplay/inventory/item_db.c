@@ -6,7 +6,7 @@
 #include "include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
-#include <common.h>
+#include "engine/include/common.h"
 
 // ============================================================================
 // INTERNAL DATA STRUCTURES

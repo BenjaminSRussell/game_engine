@@ -19,7 +19,7 @@
 #ifndef PARTICLE_SYSTEM_GPU_H
 #define PARTICLE_SYSTEM_GPU_H
 
-#include "common.h"
+#include "engine/include/common.h"
 #include "math/vec3.h"
 #include "math/vec4.h"
 #include "rendering/vulkan.h"

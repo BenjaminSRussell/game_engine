@@ -1,3 +1,11 @@
+/*
+ * dynamic_city.c
+ * Dynamic city generation algorithms
+ *
+ * Part of the Procedural Generation subsystem
+ * Advanced 3D Rendering Engine
+ */
+
 #include "dynamic_city.h"
 #include <stdlib.h>
 #include <string.h>

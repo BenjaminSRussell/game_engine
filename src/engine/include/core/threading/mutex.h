@@ -1,7 +1,7 @@
 #ifndef CORE_MUTEX_H
 #define CORE_MUTEX_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <stdbool.h>
 #include <stddef.h>
 

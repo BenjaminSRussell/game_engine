@@ -1,5 +1,5 @@
 #include "../include/ui/hotbar.h"
-#include "common.h"
+#include "engine/include/common.h"
 #include "engine/include/core/logger.h"
 #include "../include/inventory/inventory.h"
 #include <string.h>

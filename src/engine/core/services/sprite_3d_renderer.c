@@ -4,7 +4,7 @@
 // for 2.5D sprite-based rendering (like Puffpals-style games).
 //
 #include <chunk/chunk.h>
-#include <common.h>
+#include "engine/include/common.h"
 #include <include/rendering/mesh.h>
 #include <player/player.h>
 #include <rendering/camera.h>
