@@ -5,6 +5,9 @@
 #ifndef UNIFIED_LOGGER_H
 #define UNIFIED_LOGGER_H
 
+#ifndef UNIFIED_LOGGER_H
+#define UNIFIED_LOGGER_H
+
 #include "../math/types.h"
 #include <stdarg.h>
 #include <stdbool.h>
