@@ -172,6 +172,10 @@ void widget_destroy(Widget* widget) {
         free(widget->text);
     }
     
+    if (widget->tooltip_text) {
+        free(widget->tooltip_text);
+    }
+
     memory_free(widget);
 }
 
@@ -640,4 +644,192 @@ void widget_print_hierarchy(const Widget* widget, int depth) {
     for (uint32_t i = 0; i < widget->child_count; i++) {
         widget_print_hierarchy(widget->children[i], depth + 1);
     }
+}
+
+/* ============================================================================
+ * MISSING IMPLEMENTATIONS ADDED BY JULES
+ * ============================================================================ */
+
+Vec2 widget_get_position(const Widget* widget) {
+    if (!widget) return (Vec2){0,0};
+    return widget->position;
+}
+
+Vec2 widget_get_size(const Widget* widget) {
+    if (!widget) return (Vec2){0,0};
+    return widget->size;
+}
+
+void widget_set_min_size(Widget* widget, Vec2 min_size) {
+    if (!widget) return;
+    widget->min_size = min_size;
+}
+
+void widget_set_max_size(Widget* widget, Vec2 max_size) {
+    if (!widget) return;
+    widget->max_size = max_size;
+}
+
+void widget_set_preferred_size(Widget* widget, Vec2 preferred_size) {
+    if (!widget) return;
+    widget->preferred_size = preferred_size;
+}
+
+void widget_set_margins(Widget* widget, BoxEdges margins) {
+    if (!widget) return;
+    widget->margin = margins;
+    widget_invalidate_layout(widget);
+}
+
+void widget_set_padding(Widget* widget, BoxEdges padding) {
+    if (!widget) return;
+    widget->padding = padding;
+    widget_invalidate_layout(widget);
+}
+
+void widget_set_border(Widget* widget, BoxEdges border, float width) {
+    if (!widget) return;
+    widget->border = border;
+    widget->border_width = width;
+    widget_invalidate_redraw(widget);
+}
+
+bool widget_is_visible(const Widget* widget) {
+    if (!widget) return false;
+    return widget->visible;
+}
+
+bool widget_is_enabled(const Widget* widget) {
+    if (!widget) return false;
+    return widget->enabled;
+}
+
+bool widget_is_focused(const Widget* widget) {
+    if (!widget) return false;
+    return widget->focused;
+}
+
+bool widget_is_hover(const Widget* widget) {
+    if (!widget) return false;
+    return widget->state == WIDGET_STATE_HOVER;
+}
+
+WidgetState widget_get_state(const Widget* widget) {
+    if (!widget) return WIDGET_STATE_NORMAL;
+    return widget->state;
+}
+
+void widget_set_state(Widget* widget, WidgetState state) {
+    if (!widget) return;
+    widget->state = state;
+    widget_invalidate_redraw(widget);
+}
+
+void widget_set_background_color(Widget* widget, Vec4 color) {
+    if (!widget) return;
+    widget->background_color = color;
+    widget_invalidate_redraw(widget);
+}
+
+void widget_set_border_color(Widget* widget, Vec4 color) {
+    if (!widget) return;
+    widget->border_color = color;
+    widget_invalidate_redraw(widget);
+}
+
+void widget_set_text_color(Widget* widget, Vec4 color) {
+    if (!widget) return;
+    widget->text_color = color;
+    widget_invalidate_redraw(widget);
+}
+
+void widget_set_opacity(Widget* widget, float opacity) {
+    if (!widget) return;
+    widget->opacity = opacity;
+    widget_invalidate_redraw(widget);
+}
+
+void widget_set_border_width(Widget* widget, float width) {
+    if (!widget) return;
+    widget->border_width = width;
+    widget_invalidate_redraw(widget);
+}
+
+void widget_set_corner_radius(Widget* widget, float radius) {
+    if (!widget) return;
+    widget->corner_radius = radius;
+    widget_invalidate_redraw(widget);
+}
+
+Vec2 widget_get_content_position(const Widget* widget) {
+    if (!widget) return (Vec2){0,0};
+    return (Vec2){
+        widget->padding.left + widget->border.left,
+        widget->padding.top + widget->border.top
+    };
+}
+
+Vec2 widget_get_content_size(const Widget* widget) {
+    if (!widget) return (Vec2){0,0};
+    float w = widget->size.x - (widget->padding.left + widget->padding.right + widget->border.left + widget->border.right);
+    float h = widget->size.y - (widget->padding.top + widget->padding.bottom + widget->border.top + widget->border.bottom);
+    return (Vec2){fmaxf(0.0f, w), fmaxf(0.0f, h)};
+}
+
+Widget* widget_get_child(const Widget* widget, uint32_t index) {
+    if (!widget || index >= widget->child_count) return NULL;
+    return widget->children[index];
+}
+
+uint32_t widget_get_child_count(const Widget* widget) {
+    if (!widget) return 0;
+    return widget->child_count;
+}
+
+Widget* widget_find_child(const Widget* widget, const char* name) {
+    if (!widget || !name) return NULL;
+    for (uint32_t i = 0; i < widget->child_count; i++) {
+        if (widget->children[i]->name && strcmp(widget->children[i]->name, name) == 0) {
+            return widget->children[i];
+        }
+        // Recursive search? Usually find_child implies direct child.
+    }
+    return NULL;
+}
+
+Widget* widget_find_by_id(const Widget* widget, uint32_t id) {
+    if (!widget) return NULL;
+    if (widget->id == id) return (Widget*)widget;
+
+    for (uint32_t i = 0; i < widget->child_count; i++) {
+        Widget* found = widget_find_by_id(widget->children[i], id);
+        if (found) return found;
+    }
+    return NULL;
+}
+
+bool widget_needs_layout(const Widget* widget) {
+    if (!widget) return false;
+    return widget->needs_layout;
+}
+
+bool widget_needs_redraw(const Widget* widget) {
+    if (!widget) return false;
+    return widget->needs_redraw;
+}
+
+void widget_layout(Widget* widget, float available_width, float available_height) {
+    if (!widget) return;
+    if (widget->layout) {
+        widget->layout(widget, available_width, available_height);
+    }
+}
+
+Rect widget_get_bounds(const Widget* widget) {
+    if (!widget) return (Rect){0};
+    return (Rect){widget->position.x, widget->position.y, widget->size.x, widget->size.y};
+}
+
+const char* widget_type_name(const Widget* widget) {
+    return "Widget"; // Placeholder
 }

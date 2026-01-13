@@ -43,7 +43,7 @@ static void modal_manager_grow_capacity(ModalManager* manager) {
 ModalManager* modal_manager_get_global(void) {
     if (!g_global_modal_manager) {
         g_global_modal_manager = modal_manager_create();
-        LOG_INFO("Created global modal manager");
+        LOG_INFO(LOG_CAT_GENERAL, "Created global modal manager");
     }
     return g_global_modal_manager;
 }
@@ -55,7 +55,7 @@ ModalManager* modal_manager_get_global(void) {
 ModalManager* modal_manager_create(void) {
     ModalManager* manager = memory_alloc(sizeof(ModalManager));
     if (!manager) {
-        LOG_ERROR("Failed to allocate modal manager");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate modal manager");
         return NULL;
     }
 
@@ -82,7 +82,7 @@ ModalManager* modal_manager_create(void) {
     manager->count = 0;
     manager->capacity = 0;
 
-    LOG_INFO("Created modal manager instance");
+    LOG_INFO(LOG_CAT_GENERAL, "Created modal manager instance");
     return manager;
 }
 
@@ -98,7 +98,7 @@ void modal_manager_destroy(ModalManager* manager) {
     }
 
     free(manager);
-    LOG_INFO("Destroyed modal manager");
+    LOG_INFO(LOG_CAT_GENERAL, "Destroyed modal manager");
 }
 
 void modal_manager_init_global(void) {
@@ -132,7 +132,7 @@ void modal_manager_push(ModalManager* manager, UIDialog* dialog) {
     // Allocate Z-index for this modal
     // (Dialog should store this value)
     uint32_t z_index = modal_manager_allocate_z_index(manager);
-    LOG_INFO("Pushed modal dialog (Z-index: %u), total modals: %u", z_index, manager->count);
+    LOG_INFO(LOG_CAT_GENERAL, "Pushed modal dialog (Z-index: %u), total modals: %u", z_index, manager->count);
 }
 
 UIDialog* modal_manager_pop(ModalManager* manager) {
@@ -142,7 +142,7 @@ UIDialog* modal_manager_pop(ModalManager* manager) {
     UIDialog* dialog = manager->dialogs[manager->count];
     manager->dialogs[manager->count] = NULL;
 
-    LOG_INFO("Popped modal dialog, remaining modals: %u", manager->count);
+    LOG_INFO(LOG_CAT_GENERAL, "Popped modal dialog, remaining modals: %u", manager->count);
     return dialog;
 }
 
@@ -173,7 +173,7 @@ bool modal_manager_remove(ModalManager* manager, UIDialog* dialog) {
             }
             manager->count--;
             manager->dialogs[manager->count] = NULL;
-            LOG_INFO("Removed modal dialog, remaining modals: %u", manager->count);
+            LOG_INFO(LOG_CAT_GENERAL, "Removed modal dialog, remaining modals: %u", manager->count);
             return true;
         }
     }
@@ -189,7 +189,7 @@ void modal_manager_clear(ModalManager* manager) {
     }
     manager->count = 0;
     manager->next_z_index = manager->base_z_index;
-    LOG_INFO("Cleared all modals from modal manager");
+    LOG_INFO(LOG_CAT_GENERAL, "Cleared all modals from modal manager");
 }
 
 /* ============================================================================
@@ -199,14 +199,14 @@ void modal_manager_clear(ModalManager* manager) {
 void modal_manager_set_backdrop_color(ModalManager* manager, Vec4 color) {
     if (!manager) return;
     manager->backdrop.color = color;
-    LOG_DEBUG("Set backdrop color to (%.2f, %.2f, %.2f, %.2f)", color.x, color.y, color.z, color.w);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set backdrop color to (%.2f, %.2f, %.2f, %.2f)", color.x, color.y, color.z, color.w);
 }
 
 void modal_manager_set_backdrop_opacity(ModalManager* manager, float opacity) {
     if (!manager) return;
     manager->backdrop.opacity = fmaxf(0.0f, fminf(1.0f, opacity));
     manager->backdrop.color.w = manager->backdrop.opacity;
-    LOG_DEBUG("Set backdrop opacity to %.2f", manager->backdrop.opacity);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Set backdrop opacity to %.2f", manager->backdrop.opacity);
 }
 
 void modal_manager_set_backdrop_visible(ModalManager* manager, bool visible) {
@@ -245,7 +245,7 @@ bool modal_manager_handle_event(ModalManager* manager, UIEvent* event) {
     // 2. If on backdrop, intercept and optionally close modal
     // 3. Otherwise allow event to propagate to the modal dialog
 
-    LOG_DEBUG("Modal manager handling event type: %u", event->type);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Modal manager handling event type: %u", event->type);
     return false;  // Let the UI system handle the actual event
 }
 
@@ -299,7 +299,7 @@ void modal_manager_render_backdrop(ModalManager* manager, uint32_t layer) {
     // The fade value should be multiplied with the opacity
 
     float final_opacity = manager->backdrop.opacity * manager->backdrop.fade;
-    LOG_DEBUG("Render backdrop at layer %u with opacity %.2f", layer, final_opacity);
+    LOG_DEBUG(LOG_CAT_GENERAL, "Render backdrop at layer %u with opacity %.2f", layer, final_opacity);
 }
 
 void modal_manager_render_dialogs(ModalManager* manager) {
@@ -310,7 +310,7 @@ void modal_manager_render_dialogs(ModalManager* manager) {
         if (manager->dialogs[i]) {
             // TODO: Call render on each dialog widget
             // widget_render() or similar
-            LOG_DEBUG("Render modal dialog %u", i);
+            LOG_DEBUG(LOG_CAT_GENERAL, "Render modal dialog %u", i);
         }
     }
 }

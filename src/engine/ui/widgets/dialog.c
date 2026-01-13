@@ -7,6 +7,7 @@
 #include "dialog.h"
 #include "ui_button.h"
 #include "ui_label.h"
+#include "text_field.h"
 #include "../modal_manager.h"
 #include "engine/include/core/logger.h"
 #include "engine/include/core/memory.h"
@@ -22,10 +23,17 @@ static void dialog_render_impl(Widget* widget) {
     if (!widget || !widget_is_visible(widget)) return;
     UIDialog* dialog = (UIDialog*)widget;
 
-    // TODO: Implement actual rendering
-    // Render dialog background, title bar, content, buttons, shadow
-    LOG_DEBUG("Dialog render: %s (fade=%.2f)", dialog->title ? dialog->title : "Dialog",
-             dialog->fade_progress);
+    // In a real implementation, we would issue draw commands here:
+    // 1. Draw Shadow
+    // 2. Draw Background (using dialog->content_bg_color, corner_radius)
+    // 3. Draw Title Bar (using dialog->title_bg_color)
+    // 4. Draw Title Text
+
+    // For now we assume child widgets (title_bar, content, buttons) render themselves
+    // via the widget hierarchy traversal.
+
+    // Just logging for debug
+    // LOG_DEBUG(LOG_CAT_GENERAL, "Dialog render: %s (fade=%.2f)", dialog->title ? dialog->title : "Dialog", dialog->fade_progress);
 }
 
 static void dialog_layout_impl(Widget* widget, float available_width, float available_height) {
@@ -137,6 +145,13 @@ static void dialog_on_button_click(UIButton* button, void* user_data) {
 
     if (button == (UIButton*)dialog->ok_button) {
         result = DIALOG_RESULT_OK;
+
+        // For prompt dialogs, save the input text
+        if (dialog->type == DIALOG_TYPE_PROMPT && dialog->text_input) {
+            const char* text = text_field_get_text(dialog->text_input);
+            if (dialog->prompt_result) free(dialog->prompt_result);
+            dialog->prompt_result = text ? strdup(text) : strdup("");
+        }
     } else if (button == (UIButton*)dialog->cancel_button) {
         result = DIALOG_RESULT_CANCEL;
     } else if (button == (UIButton*)dialog->yes_button) {
@@ -212,7 +227,7 @@ static void dialog_create_buttons(UIDialog* dialog) {
 UIDialog* dialog_create(const char* name, const char* title, const char* message, DialogType type) {
     UIDialog* dialog = memory_alloc(sizeof(UIDialog));
     if (!dialog) {
-        LOG_ERROR("Failed to allocate dialog");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate dialog");
         return NULL;
     }
 
@@ -322,7 +337,7 @@ UIDialog* dialog_create(const char* name, const char* title, const char* message
     // Default size
     widget_set_size(&dialog->base, (Vec2){400.0f, 300.0f});
 
-    LOG_INFO("Created dialog: %s (type=%d, modal=%d)", title ? title : "unnamed", type, dialog->is_modal);
+    LOG_INFO(LOG_CAT_GENERAL, "Created dialog: %s (type=%d, modal=%d)", title ? title : "unnamed", type, dialog->is_modal);
     return dialog;
 }
 
@@ -450,7 +465,7 @@ void dialog_show(UIDialog* dialog) {
         }
     }
 
-    LOG_INFO("Showed dialog: %s", dialog->title ? dialog->title : "unnamed");
+    LOG_INFO(LOG_CAT_GENERAL, "Showed dialog: %s", dialog->title ? dialog->title : "unnamed");
 }
 
 void dialog_hide(UIDialog* dialog) {
@@ -585,11 +600,25 @@ UIDialog* dialog_error(const char* title, const char* message) {
 UIDialog* dialog_prompt(const char* title, const char* message, const char* default_text) {
     UIDialog* dialog = dialog_create("Prompt", title, message, DIALOG_TYPE_PROMPT);
     if (dialog) {
-        // TODO: Add text input widget to content container
         if (default_text) {
             dialog->prompt_result = strdup(default_text);
         } else {
             dialog->prompt_result = strdup("");
+        }
+
+        // Add text input widget
+        Widget* text_field = text_field_create("PromptInput", default_text);
+        if (text_field) {
+            widget_set_size(text_field, (Vec2){300.0f, 30.0f});
+            text_field_set_placeholder(text_field, "Enter value...");
+
+            if (dialog->content_container) {
+                widget_add_child(dialog->content_container, text_field);
+            }
+            dialog->text_input = text_field;
+
+            // Focus the text field
+            widget_request_focus(text_field);
         }
     }
     return dialog;

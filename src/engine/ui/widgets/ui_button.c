@@ -53,7 +53,7 @@ static void ui_button_render_impl(Widget* widget) {
     // 3. Render text centered
     // 4. Optionally render icon
 
-    LOG_DEBUG("Button render: pos=(%.1f, %.1f) size=(%.1f, %.1f) text=%s",
+    LOG_DEBUG(LOG_CAT_GENERAL, "Button render: pos=(%.1f, %.1f) size=(%.1f, %.1f) text=%s",
              pos.x, pos.y, size.x, size.y, button->text ? button->text : "");
 }
 
@@ -196,8 +196,8 @@ static Size ui_button_measure_impl(Widget* widget, float available_width, float 
     text_height += 8.0f;
 
     return (Size){
-        .width = fminf(text_width, available_width > 0 ? available_width : 200.0f),
-        .height = fminf(text_height, available_height > 0 ? available_height : 40.0f)
+        .x = fminf(text_width, available_width > 0 ? available_width : 200.0f),
+        .y = fminf(text_height, available_height > 0 ? available_height : 40.0f)
     };
 }
 
@@ -221,7 +221,7 @@ static void ui_button_destroy_impl(Widget* widget) {
 UIButton* ui_button_create(const char* name, const char* text) {
     UIButton* button = memory_alloc(sizeof(UIButton));
     if (!button) {
-        LOG_ERROR("Failed to allocate UI button");
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate UI button");
         return NULL;
     }
 
@@ -274,7 +274,7 @@ UIButton* ui_button_create(const char* name, const char* text) {
     widget_set_size(&button->base, (Vec2){100.0f, 32.0f});
     widget_set_min_size(&button->base, (Vec2){60.0f, 24.0f});
 
-    LOG_INFO("Created UI button: %s with text '%s'", name ? name : "unnamed", text ? text : "");
+    LOG_INFO(LOG_CAT_GENERAL, "Created UI button: %s with text '%s'", name ? name : "unnamed", text ? text : "");
     return button;
 }
 
