@@ -1,3 +1,10 @@
+/**
+ * @file asset_render_system.c
+ * @brief ECS Implementation
+ * @description Entity Component System implementation
+ * @date 2026-01-13
+ */
+
 #include "ecs/systems/asset_render_system.h"
 #include "ecs/ecs.h"
 #include "ecs/component_ids.h"
