@@ -1,3 +1,10 @@
+/**
+ * @file game_loop.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 /*
  * game_loop.c
  * Fixed timestep game loop implementation
