@@ -23,7 +23,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <core/gpu_acceleration.h>
 #include <ecs/ecs.h>
 #include <math/mat4.h>

@@ -23,7 +23,7 @@
 #ifndef RAY_TRACING_H
 #define RAY_TRACING_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "include/rendering/vulkan.h"
 #include <math/vec3.h>
 

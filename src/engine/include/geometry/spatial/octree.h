@@ -41,7 +41,7 @@
 #define OCTREE_H
 
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 
 // Axis-aligned bounding box

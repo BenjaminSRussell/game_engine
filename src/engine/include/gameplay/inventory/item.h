@@ -13,7 +13,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include <common.h>
+#include "engine/include/common.h"
 
 // Item categories
 typedef enum {

@@ -5,7 +5,7 @@
 #ifndef GPU_PIPELINE_SETUP_H
 #define GPU_PIPELINE_SETUP_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <include/rendering/vulkan.h>
 
 typedef struct {

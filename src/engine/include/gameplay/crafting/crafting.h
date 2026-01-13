@@ -9,7 +9,7 @@
 
 #include "gameplay/inventory/inventory.h"
 #include "gameplay/inventory/item.h"
-#include <common.h>
+#include "engine/include/common.h"
 
 // Recipe types
 typedef enum {

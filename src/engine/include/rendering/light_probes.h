@@ -1,7 +1,7 @@
 #ifndef LIGHT_PROBES_H
 #define LIGHT_PROBES_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 
 // Light probe for SH coefficients

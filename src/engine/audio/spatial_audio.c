@@ -9,7 +9,7 @@
  */
 
 #include <audio/audio_engine_types.h>
-#include <common.h>
+#include "engine/include/common.h"
 #include <math.h>
 #include "engine/include/math/math.h"
 #include <stdbool.h>

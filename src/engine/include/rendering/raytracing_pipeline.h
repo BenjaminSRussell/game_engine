@@ -13,7 +13,7 @@
 #ifndef RAYTRACING_PIPELINE_H
 #define RAYTRACING_PIPELINE_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "include/rendering/vulkan.h"
 
 #ifdef __cplusplus

@@ -18,7 +18,7 @@
 #ifndef SPRITE_RENDERER_2_5D_H
 #define SPRITE_RENDERER_2_5D_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 #include <math/vec2.h>
 #include <math/mat4.h>

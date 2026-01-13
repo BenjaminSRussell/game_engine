@@ -23,7 +23,7 @@
 #ifndef VISUAL_EFFECTS_H
 #define VISUAL_EFFECTS_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 #include <math/vec4.h>
 #include "include/effects/vfx/particle_system.h"

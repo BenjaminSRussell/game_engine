@@ -2,7 +2,7 @@
 #ifndef SVG_IMPORTER_H
 #define SVG_IMPORTER_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec2.h>
 #include <math/vec3.h>
 #include <math/vec4.h>

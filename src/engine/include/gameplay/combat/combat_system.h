@@ -6,7 +6,7 @@
 #ifndef COMBAT_SYSTEM_H
 #define COMBAT_SYSTEM_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <ecs/ecs.h>
 #include "engine/include/math/math.h"
 

@@ -3,7 +3,7 @@
 #ifndef VULKAN_CAPABILITIES_H
 #define VULKAN_CAPABILITIES_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "include/rendering/vulkan.h"
 
 #ifdef __cplusplus

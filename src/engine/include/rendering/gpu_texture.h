@@ -6,7 +6,7 @@
 #ifndef GPU_TEXTURE_H
 #define GPU_TEXTURE_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "include/rendering/texture_system.h"
 #include "include/rendering/vulkan.h"
 

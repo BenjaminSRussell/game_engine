@@ -6,7 +6,7 @@
 #ifndef PHYSICS_CONSOLIDATED_H
 #define PHYSICS_CONSOLIDATED_H
 
-#include "common.h"
+#include "engine/include/common.h"
 #include "math/vec3.h"
 #include "math/quat.h"
 #include "ecs/ecs.h"

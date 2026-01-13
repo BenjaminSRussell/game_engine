@@ -3,7 +3,7 @@
 #ifndef NANITE_CLUSTER_H
 #define NANITE_CLUSTER_H
 
-#include "common.h"
+#include "engine/include/common.h"
 #include "math/bounds.h"
 #include "math/mat4.h"
 #include "math/vec2.h"

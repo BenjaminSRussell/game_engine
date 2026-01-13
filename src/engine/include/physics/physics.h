@@ -5,7 +5,7 @@
 #ifndef ENGINE_PHYSICS_H
 #define ENGINE_PHYSICS_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/quat.h>
 #include <math/vec3.h>
 

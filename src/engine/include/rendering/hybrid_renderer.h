@@ -6,7 +6,7 @@
 #ifndef HYBRID_RENDERER_H
 #define HYBRID_RENDERER_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "include/rendering/vulkan.h"
 #include <math/mat4.h>
 

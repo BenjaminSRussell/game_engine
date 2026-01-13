@@ -1,5 +1,5 @@
 #include "ai/npc/prebuilt/npc_patrol.h"
-#include "common.h"
+#include "engine/include/common.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>

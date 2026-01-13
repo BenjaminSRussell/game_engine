@@ -9,7 +9,7 @@
 //  COMPLETED: Add pipeline documentation system.
 //  COMPLETED: Implement pipeline optimization suggestions.
 //  COMPLETED: Add pipeline hot-reload system.
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/core/logger.h"
 #include <math/mat4.h>
 #include <rendering/mesh.h>

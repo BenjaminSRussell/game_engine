@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include "engine/include/common.h"
 
 typedef struct HandDrawnConfig {
     bool enable_wobble;

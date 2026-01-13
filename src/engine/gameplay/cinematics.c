@@ -1,5 +1,5 @@
 // cinematics.c - Implementation
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/core/logger.h"
 #include <math.h>
 #include "engine/include/math/math.h"

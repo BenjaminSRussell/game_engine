@@ -16,7 +16,7 @@
 #ifndef ENGINE_RENDERER_H
 #define ENGINE_RENDERER_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/math/math.h"
 
 // Forward declarations

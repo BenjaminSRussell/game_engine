@@ -29,7 +29,7 @@
 #ifndef PARTICLE_SYSTEM_H
 #define PARTICLE_SYSTEM_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <include/rendering/vulkan.h>
 #include <math/vec3.h>
 #include <math/vec4.h>

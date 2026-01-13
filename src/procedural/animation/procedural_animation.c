@@ -1,3 +1,11 @@
+/*
+ * procedural_animation.c
+ * Procedural animation generation algorithms
+ *
+ * Part of the Procedural Generation subsystem
+ * Advanced 3D Rendering Engine
+ */
+
 #include "procedural_animation.h"
 #include <stdlib.h>
 #include <string.h>

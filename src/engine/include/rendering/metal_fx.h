@@ -6,7 +6,7 @@
 #ifndef METAL_FX_H
 #define METAL_FX_H
 
-#include "common.h"
+#include "engine/include/common.h"
 #include <Metal/Metal.h>
 
 #ifdef __OBJC__

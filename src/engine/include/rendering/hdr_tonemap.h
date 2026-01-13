@@ -8,7 +8,7 @@
 #ifndef HDR_TONEMAP_H
 #define HDR_TONEMAP_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec4.h>
 
 // Tone mapping algorithms

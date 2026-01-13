@@ -1,7 +1,7 @@
 #ifndef ANIMATION_SYSTEM_H
 #define ANIMATION_SYSTEM_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include "math/vec3.h"
 #include <math/quat.h>
 

@@ -16,7 +16,7 @@
 #ifndef MODEL_ANIMATOR_H
 #define MODEL_ANIMATOR_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 #include <math/quat.h>
 #include <math/mat4.h>

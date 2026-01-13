@@ -10,7 +10,7 @@
 // VULKAN-FB-008: Add framebuffer documentation system
 // VULKAN-FB-009: Implement framebuffer optimization suggestions
 // VULKAN-FB-010: Add framebuffer memory leak detection
-#include <common.h>
+#include "engine/include/common.h"
 #include "engine/include/core/logger.h"
 #include <limits.h>
 #include <rendering/vulkan.h>

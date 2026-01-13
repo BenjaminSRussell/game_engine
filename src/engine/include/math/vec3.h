@@ -91,6 +91,7 @@ INLINE Vec3 vec3_zero(void) { return vec3_create(0.0f, 0.0f, 0.0f); }
 
 INLINE Vec3 vec3_one(void) { return vec3_create(1.0f, 1.0f, 1.0f); }
 
+#ifndef VEC3_FUNCTIONS_DEFINED
 INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
   return vec3_create(a.x + b.x, a.y + b.y, a.z + b.z);
 }
@@ -98,6 +99,7 @@ INLINE Vec3 vec3_add(Vec3 a, Vec3 b) {
 INLINE Vec3 vec3_sub(Vec3 a, Vec3 b) {
   return vec3_create(a.x - b.x, a.y - b.y, a.z - b.z);
 }
+#endif
 
 INLINE Vec3 vec3_mul(Vec3 v, f32 s) { return vec3_create(v.x * s, v.y * s, v.z * s); }
 

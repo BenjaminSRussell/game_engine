@@ -18,7 +18,7 @@
 #ifndef MATERIAL_REFLECTION_H
 #define MATERIAL_REFLECTION_H
 
-#include <common.h>
+#include "engine/include/common.h"
 #include <math/vec3.h>
 #include <math/vec4.h>
 
