@@ -6,6 +6,19 @@
 
 // Include animation state machine header
 #include "include/animation/state_machines/anim_state_machine.h"
+#include "include/core/logger/unified_logger.h"
+#include <stdarg.h>
+
+// Mock Logger
+void unified_logger_log(LogLevel level, LogCategory category, const char *file,
+                        int line, const char *function, const char *format, ...) {
+    // Silent mock or print if needed
+    // va_list args;
+    // va_start(args, format);
+    // vprintf(format, args);
+    // printf("\n");
+    // va_end(args);
+}
 
 // Define helper macros if not available (since we are linking against the .c file directly probably)
 // or we will compile them together.
@@ -193,6 +206,120 @@ bool test_events(void) {
     return true;
 }
 
+// Test 5: Sub-state Machines
+bool test_sub_machines(void) {
+    AnimStateMachine* sm = anim_state_machine_create("ParentSM");
+    AnimStateMachine* sub = anim_state_machine_create("SubSM");
+
+    // Setup Sub: Idle -> Walk (after 0.5s)
+    u32 sub_idle = anim_sm_add_state(sub, "SubIdle");
+    u32 sub_walk = anim_sm_add_state(sub, "SubWalk");
+    u32 t_sub = anim_sm_add_transition(sub, sub_idle, sub_walk, 0.1f);
+    anim_sm_add_condition_state_time(sub, t_sub, 0.5f, ANIM_COND_GREATER);
+
+    // Setup Parent: State A (with Sub) -> State B
+    u32 s_A = anim_sm_add_state(sm, "A");
+    anim_sm_set_state_sub_machine(sm, s_A, sub);
+
+    u32 s_B = anim_sm_add_state(sm, "B");
+
+    // Transition A -> B trigger
+    u32 p_trig = anim_sm_add_parameter_trigger(sm, "Next");
+    u32 t_AB = anim_sm_add_transition(sm, s_A, s_B, 0.1f);
+    anim_sm_add_condition_trigger(sm, t_AB, p_trig);
+
+    // Transition B -> A trigger
+    u32 t_BA = anim_sm_add_transition(sm, s_B, s_A, 0.1f);
+    anim_sm_add_condition_trigger(sm, t_BA, p_trig);
+
+    // Start in A
+    anim_sm_update(sm, 0.1f);
+
+    // Run for 0.6s -> Sub should be in Walk
+    anim_sm_update(sm, 0.6f);
+    TEST_ASSERT(anim_sm_get_current_state(sub, 0) == sub_walk, "Sub should be in Walk");
+
+    // Trigger transition to B
+    anim_sm_set_trigger(sm, p_trig);
+    anim_sm_update(sm, 0.15f); // Start transition
+    anim_sm_update(sm, 0.15f); // Finish transition
+    TEST_ASSERT(anim_sm_get_current_state(sm, 0) == s_B, "Parent should be in B");
+
+    // Now go back to A
+    anim_sm_set_trigger(sm, p_trig);
+    anim_sm_update(sm, 0.15f); // Start transition back to A
+
+    // When entering A, sub-machine should be RESET (back to Idle)
+    TEST_ASSERT(anim_sm_get_current_state(sub, 0) == sub_idle, "Sub should be reset to Idle upon re-entry");
+
+    anim_state_machine_destroy(sm);
+    anim_state_machine_destroy(sub);
+    return true;
+}
+
+// Test 6: Timeouts and Time Remaining
+bool test_timeouts(void) {
+    AnimStateMachine* sm = anim_state_machine_create("TimeoutSM");
+    u32 s_1 = anim_sm_add_state(sm, "State1");
+    // Default length is 1.0s
+
+    u32 s_2 = anim_sm_add_state(sm, "State2");
+
+    // Transition when time remaining < 0.2s
+    u32 t_12 = anim_sm_add_transition(sm, s_1, s_2, 0.1f);
+    anim_sm_add_condition_time_remaining(sm, t_12, 0.2f, ANIM_COND_LESS);
+
+    anim_sm_update(sm, 0.5f); // Time 0.5, Remaining 0.5. > 0.2. No trigger.
+    TEST_ASSERT(anim_sm_get_current_state(sm, 0) == s_1, "Should stay in State1");
+
+    anim_sm_update(sm, 0.4f); // Time 0.9. Remaining 0.1. <= 0.2. Trigger!
+
+    TEST_ASSERT(anim_sm_get_current_state(sm, 0) == s_2, "Should transition to State2 due to time remaining");
+
+    anim_state_machine_destroy(sm);
+    return true;
+}
+
+// Test 7: Blending Data
+bool test_blending(void) {
+    AnimStateMachine* sm = anim_state_machine_create("BlendSM");
+    u32 s_A = anim_sm_add_state(sm, "A");
+    u32 s_B = anim_sm_add_state(sm, "B");
+
+    u32 p_trig = anim_sm_add_parameter_trigger(sm, "Go");
+
+    u32 t_AB = anim_sm_add_transition(sm, s_A, s_B, 1.0f); // 1.0s duration
+
+    anim_sm_add_condition_trigger(sm, t_AB, p_trig);
+
+    anim_sm_update(sm, 0.1f); // Setup
+    anim_sm_set_trigger(sm, p_trig);
+    anim_sm_update(sm, 0.1f); // Start transition (time is 0 at end of this frame)
+    anim_sm_update(sm, 0.1f); // Advance transition (time becomes 0.1)
+
+    TEST_ASSERT(anim_sm_get_current_state(sm, 0) == s_B, "Current state is B");
+
+    AnimBlendState blend_states[4];
+    AnimBlendData data = { .states = blend_states, .count = 4 };
+
+    anim_sm_get_blend_data(sm, 0, &data);
+
+    TEST_ASSERT(data.count == 2, "Should have 2 states blending");
+
+    // Find B
+    bool found_B = false;
+    for(u32 i=0; i<data.count; i++) {
+        if(data.states[i].state_id == s_B) {
+            TEST_ASSERT_FLOAT_EQ(data.states[i].weight, 0.1f, 0.001f, "Weight for B should be 0.1");
+            found_B = true;
+        }
+    }
+    TEST_ASSERT(found_B, "Should find state B in blend data");
+
+    anim_state_machine_destroy(sm);
+    return true;
+}
+
 int main(void) {
     printf("Animation State Machine Unit Tests\n");
     printf("==================================\n\n");
@@ -201,6 +328,9 @@ int main(void) {
     add_test("Parameters", test_parameters);
     add_test("Transitions", test_transitions);
     add_test("Events & Notifies", test_events);
+    add_test("Sub-Machines", test_sub_machines);
+    add_test("Timeouts", test_timeouts);
+    add_test("Blending", test_blending);
 
     for (u32 i = 0; i < g_test_count; i++) {
         printf("Running Test %u: %s... ", i + 1, g_tests[i].test_name);
