@@ -107,7 +107,7 @@ void unified_logger_shutdown(void) {
     pthread_mutex_lock(&g_unified_logger.mutex);
 
     // Flush any remaining buffer entries
-    if (g_unified_logger.use_buffering && g_unified_logger.buffer_pos > 0) {
+    if (g_unified_logger.config.use_buffering && g_unified_logger.buffer_pos > 0) {
         unified_logger_flush();
     }
 
@@ -147,7 +147,7 @@ void unified_logger_flush(void) {
 
             // Write formatted log entry
             if (g_unified_logger.config.use_colors) {
-                fprintf(g_unified_logger.log_file, "%s[%s] %s [%s] %s:%d %s(): %s%s\n",
+                fprintf(g_unified_logger.log_file, "%s[%s] [%s] %s:%d %s(): %s%s\n",
                         level_colors[entry->level],
                         level_strings[entry->level],
                         category_strings[entry->category],
@@ -242,7 +242,7 @@ void unified_logger_log(LogLevel level, LogCategory category, const char* file, 
         strftime(timestamp_str, sizeof(timestamp_str), "%H:%M:%S", tm_info);
 
         if (g_unified_logger.config.use_colors) {
-            printf("%s[%s] %s [%s] %s%s\n",
+            printf("%s[%s] [%s] %s%s\n",
                    level_colors[level],
                    level_strings[level],
                    category_strings[category],
@@ -354,7 +354,7 @@ void unified_logger_log_structured(LogLevel level, LogCategory category, const c
     // Output to console with JSON formatting
     if (g_unified_logger.config.enabled_channels & LOG_CHANNEL_CONSOLE) {
         if (g_unified_logger.config.use_colors) {
-            printf("%s[%s] %s [%s] %s%s\n",
+            printf("%s[%s] [%s] %s%s\n",
                    level_colors[level],
                    level_strings[level],
                    category_strings[category],
@@ -385,10 +385,13 @@ void unified_logger_rotate(void) {
 
     // Create backup filename
     char backup_path[512];
+    char time_str[64];
     time_t now = time(NULL);
     struct tm* tm_info = localtime(&now);
-    strftime(backup_path, sizeof(backup_path), "%s.%Y%m%d_%H%M%S", 
-             g_unified_logger.config.log_file_path, tm_info);
+
+    strftime(time_str, sizeof(time_str), ".%Y%m%d_%H%M%S", tm_info);
+    snprintf(backup_path, sizeof(backup_path), "%s%s",
+             g_unified_logger.config.log_file_path, time_str);
 
     // Rename current log file
     rename(g_unified_logger.config.log_file_path, backup_path);

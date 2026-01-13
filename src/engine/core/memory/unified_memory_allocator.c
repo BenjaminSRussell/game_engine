@@ -99,9 +99,9 @@ void unified_memory_shutdown(void) {
     pthread_mutex_lock(&g_allocator.stacks_mutex);
     StackAllocator* stack = g_allocator.stacks;
     while (stack) {
-        StackAllocator* next = stack;
-        stack = (StackAllocator*)next; // Simple linked list traversal
-        unified_memory_stack_destroy(next);
+        StackAllocator* next = stack->next;
+        unified_memory_stack_destroy(stack);
+        stack = next;
     }
     pthread_mutex_unlock(&g_allocator.stacks_mutex);
 
@@ -109,9 +109,9 @@ void unified_memory_shutdown(void) {
     pthread_mutex_lock(&g_allocator.arenas_mutex);
     ArenaAllocator* arena = g_allocator.arenas;
     while (arena) {
-        ArenaAllocator* next = arena;
-        arena = (ArenaAllocator*)next; // Simple linked list traversal
-        unified_memory_arena_destroy(next);
+        ArenaAllocator* next = arena->next;
+        unified_memory_arena_destroy(arena);
+        arena = next;
     }
     pthread_mutex_unlock(&g_allocator.arenas_mutex);
 
@@ -284,7 +284,7 @@ void unified_memory_free(void* ptr, const char* file, int line, const char* func
 
     // Check canaries if enabled
     if (g_allocator.policy.enable_canaries) {
-        u64* front_canary = (u64*)((u8*)metadata - sizeof(u64));
+        u64* front_canary = (u64*)((u8*)metadata + sizeof(AllocationMetadata));
         u64* back_canary = (u64*)((u8*)metadata + metadata->actual_size - sizeof(u64));
         
         if (!check_canary(front_canary, sizeof(u64)) || !check_canary(back_canary, sizeof(u64))) {
@@ -510,6 +510,138 @@ void unified_memory_stack_reset(StackAllocator* stack) {
 }
 
 // ============================================================================
+// ARENA ALLOCATOR FUNCTIONS
+// ============================================================================
+
+ArenaAllocator* unified_memory_arena_create(size_t initial_block_size) {
+    if (!g_allocator.initialized) return NULL;
+
+    ArenaAllocator* arena = malloc(sizeof(ArenaAllocator));
+    if (!arena) return NULL;
+
+    memset(arena, 0, sizeof(ArenaAllocator));
+
+    // Initial block
+    if (initial_block_size == 0) initial_block_size = 4096;
+
+    arena->block_count = 1;
+    arena->blocks = malloc(sizeof(void*));
+    arena->block_sizes = malloc(sizeof(size_t));
+
+    if (!arena->blocks || !arena->block_sizes) {
+        if (arena->blocks) free(arena->blocks);
+        if (arena->block_sizes) free(arena->block_sizes);
+        free(arena);
+        return NULL;
+    }
+
+    arena->blocks[0] = malloc(initial_block_size);
+    arena->block_sizes[0] = initial_block_size;
+
+    if (!arena->blocks[0]) {
+        free(arena->blocks);
+        free(arena->block_sizes);
+        free(arena);
+        return NULL;
+    }
+
+    arena->current_block = 0;
+    arena->current_offset = 0;
+
+    pthread_mutex_init(&arena->mutex, NULL);
+    arena->initialized = true;
+
+    // Add to global arena list
+    pthread_mutex_lock(&g_allocator.arenas_mutex);
+    arena->next = g_allocator.arenas;
+    g_allocator.arenas = arena;
+    pthread_mutex_unlock(&g_allocator.arenas_mutex);
+
+    return arena;
+}
+
+void unified_memory_arena_destroy(ArenaAllocator* arena) {
+    if (!arena) return;
+
+    pthread_mutex_lock(&arena->mutex);
+
+    if (arena->blocks) {
+        for (u32 i = 0; i < arena->block_count; i++) {
+            if (arena->blocks[i]) free(arena->blocks[i]);
+        }
+        free(arena->blocks);
+    }
+    if (arena->block_sizes) free(arena->block_sizes);
+
+    arena->initialized = false;
+
+    pthread_mutex_unlock(&arena->mutex);
+    pthread_mutex_destroy(&arena->mutex);
+
+    free(arena);
+}
+
+void* unified_memory_arena_alloc(ArenaAllocator* arena, size_t size, MemoryFlags flags) {
+    if (!arena || !arena->initialized) return NULL;
+
+    pthread_mutex_lock(&arena->mutex);
+
+    // Align size
+    size = (size + 15) & ~15;
+
+    // Check if fits in current block
+    if (arena->current_offset + size > arena->block_sizes[arena->current_block]) {
+        // Simple expansion
+        size_t new_block_size = arena->block_sizes[arena->current_block] * 2;
+        if (new_block_size < size) new_block_size = size * 2;
+
+        void** new_blocks = realloc(arena->blocks, (arena->block_count + 1) * sizeof(void*));
+        size_t* new_sizes = realloc(arena->block_sizes, (arena->block_count + 1) * sizeof(size_t));
+
+        if (!new_blocks || !new_sizes) {
+            pthread_mutex_unlock(&arena->mutex);
+            return NULL;
+        }
+
+        arena->blocks = new_blocks;
+        arena->block_sizes = new_sizes;
+
+        arena->blocks[arena->block_count] = malloc(new_block_size);
+        arena->block_sizes[arena->block_count] = new_block_size;
+
+        if (!arena->blocks[arena->block_count]) {
+            pthread_mutex_unlock(&arena->mutex);
+            return NULL;
+        }
+
+        arena->current_block++;
+        arena->block_count++;
+        arena->current_offset = 0;
+    }
+
+    void* ptr = (u8*)arena->blocks[arena->current_block] + arena->current_offset;
+    arena->current_offset += size;
+    arena->total_allocated += size;
+
+    if (flags & MEMORY_FLAG_ZERO) {
+        memset(ptr, 0, size);
+    }
+
+    pthread_mutex_unlock(&arena->mutex);
+    return ptr;
+}
+
+void unified_memory_arena_reset(ArenaAllocator* arena) {
+    if (!arena || !arena->initialized) return;
+
+    pthread_mutex_lock(&arena->mutex);
+    arena->current_block = 0;
+    arena->current_offset = 0;
+    arena->total_allocated = 0;
+    pthread_mutex_unlock(&arena->mutex);
+}
+
+// ============================================================================
 // UTILITY FUNCTIONS
 // ============================================================================
 
@@ -645,7 +777,7 @@ static void* allocate_with_guard_pages(size_t size) {
 
 static void free_with_guard_pages(void* ptr, size_t size) {
     void* actual_ptr = (u8*)ptr - GUARD_PAGE_SIZE;
-    size_t total_size = size + 2 * GUARD_PAGE_SIZE;
+    // size_t total_size = size + 2 * GUARD_PAGE_SIZE;
     
     // Restore protection before freeing
     mprotect(actual_ptr, GUARD_PAGE_SIZE, PROT_READ | PROT_WRITE);

@@ -55,7 +55,7 @@ typedef enum {
 } MemoryFlags;
 
 // Memory allocation metadata
-typedef struct {
+typedef struct AllocationMetadata {
     void* ptr;
     size_t size;
     size_t actual_size;             // Including headers and alignment
@@ -105,6 +105,7 @@ typedef struct StackAllocator {
     void* markers[64];              // Stack markers for rollback
     u32 marker_count;
     bool initialized;
+    struct StackAllocator* next; // Added next pointer for linked list
 } StackAllocator;
 
 // Arena allocator structure
@@ -117,6 +118,7 @@ typedef struct ArenaAllocator {
     size_t total_allocated;
     pthread_mutex_t mutex;
     bool initialized;
+    struct ArenaAllocator* next; // Added next pointer for linked list
 } ArenaAllocator;
 
 // Memory statistics
