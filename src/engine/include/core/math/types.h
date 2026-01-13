@@ -726,7 +726,7 @@ static INLINE quat quat_make(f32 x, f32 y, f32 z, f32 w) {
 }
 
 // SIMD vector operations (when available)
-#if !defined(VEC3_H)
+#if !defined(VEC3_H) && 0
 #if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
 static INLINE vec3 vec3_add(vec3 a, vec3 b) {
   vec3 result;
@@ -740,7 +740,7 @@ static INLINE vec3 vec3_add(vec3 a, vec3 b) {
 #endif
 #endif
 
-#if !defined(VEC3_H)
+#if !defined(VEC3_H) && 0
 #if defined(UNIFIED_SIMD_SSE) || defined(UNIFIED_SIMD_NEON)
 static INLINE vec3 vec3_sub(vec3 a, vec3 b) {
   vec3 result;
@@ -754,7 +754,7 @@ static INLINE vec3 vec3_sub(vec3 a, vec3 b) {
 #endif
 #endif
 
-#if !defined(VEC3_H)
+#if !defined(VEC3_H) && 0
 static INLINE f32 vec3_dot(vec3 a, vec3 b) {
 #if defined(UNIFIED_SIMD_SSE)
   __m128 mul = _mm_mul_ps(a.simd, b.simd);
