@@ -3,9 +3,9 @@
 // Purpose: Advanced pathfinding caching and optimization system
 // Provides hierarchical caching, path prediction, and dynamic optimization
 
-#include "pathfinding/pathfinding_cache_advanced.h"
-#include "core/memory/unified_allocator.h"
-#include "core/logging/unified_logger.h"
+#include <ai/pathfinding/pathfinding_cache_advanced.h>
+#include <core/memory/unified_allocator.h>
+#include <core/logging/unified_logger.h>
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>

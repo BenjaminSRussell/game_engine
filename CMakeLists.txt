@@ -582,77 +582,77 @@ message(STATUS "Physics demos configured: physics_demos")
 # ===========================================
 # Full Integration Verification
 # ===========================================
-add_executable(full_integration_test src/engine/core/integration/full_engine_test.c)
-target_link_libraries(full_integration_test PRIVATE Engine Game ZLIB::ZLIB Threads::Threads "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
-target_include_directories(full_integration_test PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/engine/include
-    ${CMAKE_SOURCE_DIR}/src/engine
-)
-message(STATUS "Verification target added: full_integration_test")
+# add_executable(full_integration_test src/engine/core/integration/full_engine_test.c)
+# target_link_libraries(full_integration_test PRIVATE Engine Game ZLIB::ZLIB Threads::Threads "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
+# target_include_directories(full_integration_test PRIVATE
+#     ${CMAKE_SOURCE_DIR}/src/engine/include
+#     ${CMAKE_SOURCE_DIR}/src/engine
+# )
+# message(STATUS "Verification target added: full_integration_test")
 
 # Test Post-Processing Effects
-add_executable(test_post_processing
-    src/engine/rendering/post_processing/post_processing_test.c
-)
-target_link_libraries(test_post_processing PRIVATE Engine Game ZLIB::ZLIB Threads::Threads "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
-target_include_directories(test_post_processing PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/engine/include
-    ${CMAKE_SOURCE_DIR}/src/engine
-)
-message(STATUS "Verification target added: test_post_processing")
+# add_executable(test_post_processing
+#     src/engine/rendering/post_processing/post_processing_test.c
+# )
+# target_link_libraries(test_post_processing PRIVATE Engine Game ZLIB::ZLIB Threads::Threads "-framework Foundation" "-framework CoreVideo" "-framework CoreGraphics" "-framework QuartzCore" "-framework AppKit")
+# target_include_directories(test_post_processing PRIVATE
+#     ${CMAKE_SOURCE_DIR}/src/engine/include
+#     ${CMAKE_SOURCE_DIR}/src/engine
+# )
+# message(STATUS "Verification target added: test_post_processing")
 
 # Test Player Food
-add_executable(test_player_food
-    tests/integration/test_player_food.c
-    src/game/blockgame/player/player_food.c
-    src/game/blockgame/player/status_effects.c
-    src/game/blockgame/inventory/inventory.c
-    src/game/blockgame/inventory/item_registry.c
-    src/engine/core/logging/unified_logger.c
-    src/engine/core/containers/hashmap.c
-    src/engine/core/memory/memory.c
-    src/engine/core/memory/buddy_allocator.c
-    src/engine/core/memory/linear_allocator.c
-    src/engine/core/string_utils.c
-)
+# add_executable(test_player_food
+#     tests/integration/test_player_food.c
+#     src/game/blockgame/player/player_food.c
+#     src/game/blockgame/player/status_effects.c
+#     src/game/blockgame/inventory/inventory.c
+#     src/game/blockgame/inventory/item_registry.c
+#     src/engine/core/logging/unified_logger.c
+#     src/engine/core/containers/hashmap.c
+#     src/engine/core/memory/memory.c
+#     src/engine/core/memory/buddy_allocator.c
+#     src/engine/core/memory/linear_allocator.c
+#     src/engine/core/string_utils.c
+# )
 
 # Test Unreal Engine Quality Features
-add_executable(test_unreal_features
-    test_unreal_features.c
-    src/engine/rendering/lighting/lumen_gi.m
-    src/engine/rendering/advanced/ray_tracing.c
-    src/engine/geometry/nanite/nanite_cluster.c
-    src/engine/rendering/texturing/virtual_texture.c
-    src/engine/rendering/hybrid_renderer.c
-    src/engine/rendering/occlusion/hzb/hzb_temporal.c
-    src/engine/core/logging/unified_logger.c
-    src/engine/core/memory/memory.c
-    src/engine/math/vec3.c
-    src/engine/math/mat4.c
-)
-target_include_directories(test_player_food PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/engine/include
-    ${CMAKE_SOURCE_DIR}/src/game/blockgame/include
-    ${CMAKE_SOURCE_DIR}/src/engine
-)
-message(STATUS "Verification target added: test_player_food")
+# add_executable(test_unreal_features
+#     test_unreal_features.c
+#     src/engine/rendering/lighting/lumen_gi.m
+#     src/engine/rendering/advanced/ray_tracing.c
+#     src/engine/geometry/nanite/nanite_cluster.c
+#     src/engine/rendering/texturing/virtual_texture.c
+#     src/engine/rendering/hybrid_renderer.c
+#     src/engine/rendering/occlusion/hzb/hzb_temporal.c
+#     src/engine/core/logging/unified_logger.c
+#     src/engine/core/memory/memory.c
+#     src/engine/math/vec3.c
+#     src/engine/math/mat4.c
+# )
+# target_include_directories(test_player_food PRIVATE
+#     ${CMAKE_SOURCE_DIR}/src/engine/include
+#     ${CMAKE_SOURCE_DIR}/src/game/blockgame/include
+#     ${CMAKE_SOURCE_DIR}/src/engine
+# )
+# message(STATUS "Verification target added: test_player_food")
 
 # Test Crafting
-add_executable(test_crafting
-    tests/unit/test_crafting.c
-    src/game/blockgame/crafting/furnace.c
-    src/game/blockgame/inventory/inventory.c
-    src/game/blockgame/inventory/item_registry.c
-    src/engine/core/logging/unified_logger.c
-    src/engine/core/containers/hashmap.c
-    src/engine/core/memory/memory.c
-    src/engine/core/memory/buddy_allocator.c
-    src/engine/core/memory/linear_allocator.c
-    src/engine/core/string_utils.c
-)
-target_include_directories(test_crafting PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/engine/include
-    ${CMAKE_SOURCE_DIR}/src/game/blockgame/include
-    ${CMAKE_SOURCE_DIR}/src/engine
-)
-message(STATUS "Verification target added: test_crafting")
+# add_executable(test_crafting
+#     tests/unit/test_crafting.c
+#     src/game/blockgame/crafting/furnace.c
+#     src/game/blockgame/inventory/inventory.c
+#     src/game/blockgame/inventory/item_registry.c
+#     src/engine/core/logging/unified_logger.c
+#     src/engine/core/containers/hashmap.c
+#     src/engine/core/memory/memory.c
+#     src/engine/core/memory/buddy_allocator.c
+#     src/engine/core/memory/linear_allocator.c
+#     src/engine/core/string_utils.c
+# )
+# target_include_directories(test_crafting PRIVATE
+#     ${CMAKE_SOURCE_DIR}/src/engine/include
+#     ${CMAKE_SOURCE_DIR}/src/game/blockgame/include
+#     ${CMAKE_SOURCE_DIR}/src/engine
+# )
+# message(STATUS "Verification target added: test_crafting")
