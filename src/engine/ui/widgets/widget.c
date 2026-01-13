@@ -11,6 +11,7 @@
 #include "core/logger.h"
 #include "core/memory.h"
 #include <math.h>
+#include <float.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -117,12 +118,9 @@ static bool widget_propagate_event(Widget *widget, UIEvent *event) {
  * ============================================================================
  */
 
-Widget *widget_create(const char *name) {
-  Widget *widget = memory_alloc(sizeof(Widget));
-  if (!widget) {
-    LOG_ERROR("Failed to allocate widget");
-    return NULL;
-  }
+bool widget_init(Widget *widget, const char *name) {
+  if (!widget)
+    return false;
 
   memset(widget, 0, sizeof(Widget));
 
@@ -134,20 +132,35 @@ Widget *widget_create(const char *name) {
   widget->hoverable = true;
   widget->focusable = false;
   widget->draggable = false;
+  /* Zero max_size would clamp every widget_set_size call to empty. */
+  widget->max_size = (Vec2){FLT_MAX, FLT_MAX};
 
-  // Default visual properties
   widget->background_color = (Vec4){0.0f, 0.0f, 0.0f, 0.0f};
   widget->border_color = (Vec4){0.0f, 0.0f, 0.0f, 1.0f};
   widget->text_color = (Vec4){1.0f, 1.0f, 1.0f, 1.0f};
   widget->opacity = 1.0f;
 
-  // Default state
   widget->state = WIDGET_STATE_NORMAL;
   widget->focus_navigation = UI_FOCUS_NAV_TAB;
 
   widget->dirty = true;
   widget->needs_layout = true;
   widget->needs_redraw = true;
+
+  return true;
+}
+
+Widget *widget_create(const char *name) {
+  Widget *widget = memory_alloc(sizeof(Widget));
+  if (!widget) {
+    LOG_ERROR("Failed to allocate widget");
+    return NULL;
+  }
+
+  if (!widget_init(widget, name)) {
+    memory_free(widget);
+    return NULL;
+  }
 
   LOG_INFO("Created widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
   return widget;
