@@ -1,3 +1,10 @@
+/**
+ * @file world_partition.c
+ * @brief ECS Implementation
+ * @description Entity Component System implementation
+ * @date 2026-01-13
+ */
+
 // src/engine/world/world_partition.c
 #include "include/world/world_partition.h"
 #include "include/core/logger.h"
