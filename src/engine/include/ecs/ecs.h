@@ -98,11 +98,13 @@ struct Entity {
 // Archetype chunk for cache-friendly storage
 #define ARCHETYPE_CHUNK_SIZE 16384 // 16KB chunks for optimal cache usage
 
+struct ECSArchetype; // Forward declaration
+
 typedef struct {
   u8 data[ARCHETYPE_CHUNK_SIZE];
   u32 entity_count;
   u32 capacity;
-  ECSArchetype *archetype;
+  struct ECSArchetype *archetype;
   struct Chunk *next_chunk;
 } ECSChunk;
 
