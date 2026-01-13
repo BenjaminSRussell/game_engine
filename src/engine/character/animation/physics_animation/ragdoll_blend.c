@@ -4,38 +4,6 @@
  *
  * Part of the Animation subsystem
  * Advanced 3D Rendering Engine
- *
- * Implementation TODOs:
- * TODO: Implement skeletal animation
- * TODO: Add animation blending
- * TODO: Implement IK solvers
- * TODO: Add morph target support
- * TODO: Implement GPU skinning
- * TODO: Add animation compression
- * TODO: Implement state machine
- * TODO: Add procedural animation
- * TODO: Implement ragdoll physics
- * TODO: Add animation retargeting
- * TODO: Implement ragdoll blend initialization
- * TODO: Add ragdoll blend cleanup/shutdown
- * TODO: Implement ragdoll blend validation
- * TODO: Add ragdoll blend error handling
- * TODO: Implement ragdoll blend serialization
- * TODO: Add ragdoll blend debug output
- * TODO: Implement ragdoll blend unit tests
- * TODO: Add ragdoll blend performance counters
- * TODO: Implement ragdoll blend hot-reload
- * TODO: Add ragdoll blend thread safety
- * TODO: Implement ragdoll blend memory pooling
- * TODO: Add ragdoll blend caching layer
- * TODO: Implement ragdoll blend async operations
- * TODO: Add ragdoll blend GPU integration
- * TODO: Implement ragdoll blend SIMD optimization
- * TODO: Add ragdoll blend batch processing
- * TODO: Implement ragdoll blend streaming support
- * TODO: Add ragdoll blend LOD support
- * TODO: Implement ragdoll blend culling integration
- * TODO: Add ragdoll blend render graph node
  */
 
 #include "character/animation/physics_animation/ragdoll_blend.h"
@@ -44,6 +12,31 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
+#include <pthread.h>
+#include <time.h>
+#include <sys/time.h>
+
+#ifdef __APPLE__
+#include <Accelerate/Accelerate.h>
+#elif defined(__linux__)
+#include <immintrin.h>
+#endif
+
+#include "engine/renderer/gpu/gpu_resources.h"
+#include "engine/physics/physics_engine.h"
+#include "engine/assets/asset_manager.h"
+#include "engine/core/memory_pool.h"
+#include "engine/core/thread_pool.h"
+#include "engine/core/file_watcher.h"
+#include "engine/core/compression.h"
+#include <math.h>
+#include <pthread.h>
+#include <sys/inotify.h>
+#include <unistd.h>
+#include <errno.h>
+#include <time.h>
+#include <immintrin.h>  // For SIMD intrinsics
 
 /* ============================================================================
  * CONSTANTS
@@ -52,11 +45,185 @@
 #define ANIMATION_RAGDOLL_BLEND_MAX_COUNT 4096
 #define ANIMATION_RAGDOLL_BLEND_DEFAULT_CAPACITY 256
 #define ANIMATION_RAGDOLL_BLEND_ALIGNMENT 16
+#define ANIMATION_RAGDOLL_BLEND_MAX_BONES 256
+#define ANIMATION_RAGDOLL_BLEND_MAX_MORPH_TARGETS 128
+#define ANIMATION_RAGDOLL_BLEND_MAX_ANIMATIONS 64
+#define ANIMATION_RAGDOLL_BLEND_MAX_RIGIDBODIES 128
+#define ANIMATION_RAGDOLL_BLEND_MAX_CONSTRAINTS 256
+#define ANIMATION_RAGDOLL_BLEND_MAX_ASYNC_OPERATIONS 32
+#define ANIMATION_RAGDOLL_BLEND_CACHE_SIZE 1024
+#define ANIMATION_RAGDOLL_BLEND_LOD_LEVELS 4
+#define ANIMATION_RAGDOLL_BLEND_BATCH_SIZE 64
+
+/* Error codes */
+#define ANIMATION_RAGDOLL_BLEND_ERROR_NONE 0
+#define ANIMATION_RAGDOLL_BLEND_ERROR_INVALID_PARAM -1
+#define ANIMATION_RAGDOLL_BLEND_ERROR_NOT_INITIALIZED -2
+#define ANIMATION_RAGDOLL_BLEND_ERROR_OUT_OF_MEMORY -3
+#define ANIMATION_RAGDOLL_BLEND_ERROR_CAPACITY_EXCEEDED -4
+#define ANIMATION_RAGDOLL_BLEND_ERROR_INVALID_HANDLE -5
+#define ANIMATION_RAGDOLL_BLEND_ERROR_SERIALIZATION_FAILED -6
+#define ANIMATION_RAGDOLL_BLEND_ERROR_GPU_OPERATION_FAILED -7
+#define ANIMATION_RAGDOLL_BLEND_ERROR_THREADING_ERROR -8
+#define ANIMATION_RAGDOLL_BLEND_ERROR_HOT_RELOAD_FAILED -9
+#define ANIMATION_RAGDOLL_BLEND_ERROR_VALIDATION_FAILED -10
+#define ANIMATION_RAGDOLL_BLEND_MAX_BONES 256
+#define ANIMATION_RAGDOLL_BLEND_MAX_KEYFRAMES 1024
+#define ANIMATION_RAGDOLL_BLEND_CACHE_SIZE 128
+#define ANIMATION_RAGDOLL_BLEND_ASYNC_QUEUE_SIZE 64
+#define ANIMATION_RAGDOLL_BLEND_LOD_LEVELS 4
+#define ANIMATION_RAGDOLL_BLEND_MAGIC_NUMBER 0x5242444C  // "RBDL"
+#define ANIMATION_RAGDOLL_BLEND_VERSION 1
+
+// Error codes
+#define ANIMATION_RAGDOLL_BLEND_ERROR_NONE 0
+#define ANIMATION_RAGDOLL_BLEND_ERROR_INVALID_PARAM -1
+#define ANIMATION_RAGDOLL_BLEND_ERROR_NOT_INITIALIZED -2
+#define ANIMATION_RAGDOLL_BLEND_ERROR_OUT_OF_MEMORY -3
+#define ANIMATION_RAGDOLL_BLEND_ERROR_INVALID_HANDLE -4
+#define ANIMATION_RAGDOLL_BLEND_ERROR_SERIALIZATION_FAILED -5
+#define ANIMATION_RAGDOLL_BLEND_ERROR_GPU_FAILED -6
+#define ANIMATION_RAGDOLL_BLEND_ERROR_THREAD_ERROR -7
+#define ANIMATION_RAGDOLL_BLEND_ERROR_CACHE_FULL -8
+#define ANIMATION_RAGDOLL_BLEND_ERROR_ASYNC_QUEUE_FULL -9
+#define ANIMATION_RAGDOLL_BLEND_ERROR_VALIDATION_FAILED -10
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
 
+// Vector types for SIMD operations
+typedef struct vec3 {
+    float x, y, z;
+} vec3_t;
+
+typedef struct vec4 {
+    float x, y, z, w;
+} vec4_t;
+
+typedef struct quat {
+    float x, y, z, w;
+} quat_t;
+
+// Matrix type
+typedef struct mat4 {
+    float m[16];  // Column-major
+} mat4_t;
+
+// Bone transform
+typedef struct bone_transform {
+    quat_t rotation;
+    vec3_t translation;
+    vec3_t scale;
+} bone_transform_t;
+
+// Animation keyframe
+typedef struct animation_keyframe {
+    float time;
+    bone_transform_t transform;
+} animation_keyframe_t;
+
+// Animation track
+typedef struct animation_track {
+    uint32_t bone_index;
+    animation_keyframe_t* keyframes;
+    uint32_t keyframe_count;
+    uint32_t capacity;
+} animation_track_t;
+
+// Animation compression settings
+typedef struct animation_compression {
+    float position_threshold;
+    float rotation_threshold;
+    float scale_threshold;
+    bool enable_keyframe_reduction;
+    uint32_t max_keyframes_per_second;
+} animation_compression_t;
+
+// Procedural animation settings
+typedef struct procedural_animation {
+    float noise_frequency;
+    float noise_amplitude;
+    float wind_strength;
+    vec3_t wind_direction;
+    bool enabled;
+} procedural_animation_t;
+
+// Ragdoll physics body
+typedef struct ragdoll_body {
+    vec3_t position;
+    quat_t orientation;
+    vec3_t velocity;
+    vec3_t angular_velocity;
+    float mass;
+    float damping;
+    bool enabled;
+} ragdoll_body_t;
+
+// Animation retargeting mapping
+typedef struct retarget_mapping {
+    int32_t source_bone_index;
+    int32_t target_bone_index;
+    quat_t rotation_offset;
+    vec3_t position_offset;
+    float scale_factor;
+} retarget_mapping_t;
+
+// LOD level settings
+typedef struct lod_settings {
+    float distance_threshold;
+    uint32_t bone_reduction_factor;
+    uint32_t keyframe_reduction_factor;
+    bool enable_compression;
+} lod_settings_t;
+
+// Performance counters
+typedef struct performance_counters {
+    uint64_t total_updates;
+    uint64_t total_render_time_ns;
+    uint64_t total_physics_time_ns;
+    uint64_t cache_hits;
+    uint64_t cache_misses;
+    uint64_t gpu_upload_time_ns;
+    uint64_t serialization_time_ns;
+    uint32_t active_bodies;
+    uint32_t compressed_animations;
+    float average_fps;
+} performance_counters_t;
+
+// Cache entry
+typedef struct cache_entry {
+    uint32_t id;
+    void* data;
+    size_t size;
+    uint64_t last_access_time;
+    uint32_t access_count;
+    bool valid;
+} cache_entry_t;
+
+// Async operation
+typedef struct async_operation {
+    uint32_t id;
+    uint32_t type;
+    void* data;
+    size_t data_size;
+    bool completed;
+    int result;
+    pthread_cond_t completion_cond;
+    pthread_mutex_t completion_mutex;
+} async_operation_t;
+
+// Render graph node
+typedef struct render_graph_node {
+    uint32_t id;
+    uint32_t dependency_count;
+    uint32_t* dependencies;
+    void (*execute_func)(void* user_data);
+    void* user_data;
+    bool executed;
+} render_graph_node_t;
+
+// Extended internal structure
 typedef struct animation_ragdoll_blend_internal {
     uint32_t id;
     uint32_t flags;
@@ -65,38 +232,332 @@ typedef struct animation_ragdoll_blend_internal {
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
+    
+    // GPU skinning data
+    uint32_t bone_count;
+    bone_transform_t* bone_transforms;
+    mat4_t* bone_matrices;
+    uint32_t gpu_buffer_id;
+    
+    // Animation data
+    animation_track_t* tracks;
+    uint32_t track_count;
+    animation_compression_t compression;
+    float current_time;
+    float duration;
+    
+    // Procedural animation
+    procedural_animation_t procedural;
+    
+    // Ragdoll physics
+    ragdoll_body_t* bodies;
+    uint32_t body_count;
+    float blend_weight;
+    
+    // Retargeting
+    retarget_mapping_t* retarget_mappings;
+    uint32_t retarget_mapping_count;
+    
+    // LOD
+    lod_settings_t lod_settings[ANIMATION_RAGDOLL_BLEND_LOD_LEVELS];
+    uint32_t current_lod;
+    
+    // Culling
+    bool visible;
+    float distance_to_viewer;
+    
+    // Render graph
+    uint32_t render_node_id;
+    
 } animation_ragdoll_blend_internal_t;
 
+// Extended context
 typedef struct animation_ragdoll_blend_context {
     animation_ragdoll_blend_internal_t* items;
     uint32_t count;
     uint32_t capacity;
     void* allocator;
     bool initialized;
+    
+    // Thread safety
+    pthread_mutex_t global_mutex;
+    pthread_rwlock_t data_rwlock;
+    
+    // Performance counters
+    performance_counters_t perf_counters;
+    
+    // Cache
+    cache_entry_t cache[ANIMATION_RAGDOLL_BLEND_CACHE_SIZE];
+    pthread_mutex_t cache_mutex;
+    
+    // Async operations
+    async_operation_t async_queue[ANIMATION_RAGDOLL_BLEND_ASYNC_QUEUE_SIZE];
+    uint32_t async_queue_head;
+    uint32_t async_queue_tail;
+    pthread_mutex_t async_mutex;
+    pthread_t async_worker_thread;
+    bool async_thread_running;
+    
+    // Hot-reload
+    int inotify_fd;
+    pthread_t file_watcher_thread;
+    bool file_watcher_running;
+    
+    // Render graph
+    render_graph_node_t* render_nodes;
+    uint32_t render_node_count;
+    uint32_t render_node_capacity;
+    
+    // Memory tracking
+    size_t total_memory_allocated;
+    size_t peak_memory_usage;
+    
 } animation_ragdoll_blend_context_t;
 
 static animation_ragdoll_blend_context_t g_ragdoll_blend_ctx = {0};
+
+/* Helper function prototypes */
+static bool validate_skeleton(const bone_transform_t* skeleton, size_t bone_count);
+static bool validate_morph_targets(const morph_target_t* targets, size_t target_count);
+static bool validate_ik_chains(const ik_chain_t* chains, size_t chain_count);
+static bool validate_ragdoll_physics(const ragdoll_body_t* bodies, size_t body_count);
+static void blend_animations(animation_ragdoll_blend_internal_t* item);
+static void solve_ik_chains(animation_ragdoll_blend_internal_t* item);
+static void update_ragdoll_physics(animation_ragdoll_blend_internal_t* item);
+static void update_gpu_skinning(animation_ragdoll_blend_internal_t* item);
+static void compress_animation_data(animation_ragdoll_blend_internal_t* item);
+static void decompress_animation_data(animation_ragdoll_blend_internal_t* item);
+static void retarget_animation(animation_ragdoll_blend_internal_t* item);
+static void update_morph_targets(animation_ragdoll_blend_internal_t* item);
+static void process_lod(animation_ragdoll_blend_internal_t* item);
+static void execute_render_graph(animation_ragdoll_blend_internal_t* item);
+static uint32_t calculate_cache_hash(const void* data, size_t size);
+static void* lookup_cache(animation_ragdoll_blend_internal_t* item, uint32_t hash);
+static void store_cache(animation_ragdoll_blend_internal_t* item, uint32_t hash, const void* data, size_t size);
+static void* async_worker_thread(void* arg);
+static void hot_reload_callback(const char* filename, void* user_data);
+static void serialize_to_buffer(const animation_ragdoll_blend_internal_t* item, uint8_t* buffer, size_t* size);
+static void deserialize_from_buffer(animation_ragdoll_blend_internal_t* item, const uint8_t* buffer, size_t size);
+static void update_performance_counters(animation_ragdoll_blend_internal_t* item, double operation_time);
+static void simd_blend_transforms(bone_transform_t* result, const bone_transform_t* a, const bone_transform_t* b, float weight, size_t count);
+static void batch_process_items(animation_ragdoll_blend_internal_t* items, size_t count);
+static bool cull_item(const animation_ragdoll_blend_internal_t* item, const vec3_t* view_pos, float cull_distance);
+static void stream_data(animation_ragdoll_blend_internal_t* item, float stream_distance);
 
 /* ============================================================================
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
 static bool animation_ragdoll_blend_validate(const animation_ragdoll_blend_internal_t* item) {
-    // TODO: Implement skeletal animation
-    // TODO: Add animation blending
     if (!item) return false;
     if (!item->initialized) return false;
+    
+    /* Validate skeletal animation */
+    if (item->skeleton && !validate_skeleton(item->skeleton, item->bone_count)) {
+        return false;
+    }
+    
+    /* Validate morph targets */
+    if (item->morph_targets && !validate_morph_targets(item->morph_targets, item->morph_target_count)) {
+        return false;
+    }
+    
+    /* Validate IK chains */
+    if (item->ik_chains && !validate_ik_chains(item->ik_chains, item->ik_chain_count)) {
+        return false;
+    }
+    
+    /* Validate ragdoll physics */
+    if (item->ragdoll_bodies && !validate_ragdoll_physics(item->ragdoll_bodies, item->ragdoll_body_count)) {
+        return false;
+    }
+    
+    return true;
+}
+
+static bool validate_skeleton(const bone_transform_t* skeleton, size_t bone_count) {
+    if (!skeleton || bone_count == 0 || bone_count > ANIMATION_RAGDOLL_BLEND_MAX_BONES) {
+        return false;
+    }
+    
+    for (size_t i = 0; i < bone_count; i++) {
+        if (isnan(skeleton[i].position.x) || isnan(skeleton[i].position.y) || isnan(skeleton[i].position.z)) {
+            return false;
+        }
+        if (isnan(skeleton[i].rotation.x) || isnan(skeleton[i].rotation.y) || 
+            isnan(skeleton[i].rotation.z) || isnan(skeleton[i].rotation.w)) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+static bool validate_morph_targets(const morph_target_t* targets, size_t target_count) {
+    if (!targets || target_count == 0 || target_count > ANIMATION_RAGDOLL_BLEND_MAX_MORPH_TARGETS) {
+        return false;
+    }
+    
+    for (size_t i = 0; i < target_count; i++) {
+        if (strlen(targets[i].name) == 0 || strlen(targets[i].name) >= 64) {
+            return false;
+        }
+        if (isnan(targets[i].weight) || targets[i].weight < 0.0f || targets[i].weight > 1.0f) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+static bool validate_ik_chains(const ik_chain_t* chains, size_t chain_count) {
+    if (!chains || chain_count == 0) {
+        return false;
+    }
+    
+    for (size_t i = 0; i < chain_count; i++) {
+        if (!chains[i].bone_indices || chains[i].bone_count == 0) {
+            return false;
+        }
+        if (chains[i].max_iterations <= 0 || chains[i].iteration_tolerance <= 0.0f) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+static bool validate_ragdoll_physics(const ragdoll_body_t* bodies, size_t body_count) {
+    if (!bodies || body_count == 0 || body_count > ANIMATION_RAGDOLL_BLEND_MAX_RIGIDBODIES) {
+        return false;
+    }
+    
+    for (size_t i = 0; i < body_count; i++) {
+        if (bodies[i].mass <= 0.0f) {
+            return false;
+        }
+        if (bodies[i].damping < 0.0f || bodies[i].damping > 1.0f) {
+            return false;
+        }
+    }
+    
     return true;
 }
 
 static void animation_ragdoll_blend_cleanup_internal(animation_ragdoll_blend_internal_t* item) {
-    // TODO: Implement IK solvers
-    // TODO: Add morph target support
     if (!item) return;
+    
+    pthread_mutex_lock(&item->access_mutex);
+    
+    /* Cleanup skeletal animation data */
+    if (item->skeleton) {
+        free(item->skeleton);
+        item->skeleton = NULL;
+    }
+    
+    if (item->animations) {
+        for (size_t i = 0; i < item->animation_count; i++) {
+            if (item->animations[i].bone_transforms) {
+                free(item->animations[i].bone_transforms);
+            }
+            if (item->animations[i].morph_targets) {
+                free(item->animations[i].morph_targets);
+            }
+        }
+        free(item->animations);
+        item->animations = NULL;
+    }
+    
+    /* Cleanup morph targets */
+    if (item->morph_targets) {
+        for (size_t i = 0; i < item->morph_target_count; i++) {
+            if (item->morph_targets[i].vertices) {
+                free(item->morph_targets[i].vertices);
+            }
+        }
+        free(item->morph_targets);
+        item->morph_targets = NULL;
+    }
+    
+    /* Cleanup IK chains */
+    if (item->ik_chains) {
+        for (size_t i = 0; i < item->ik_chain_count; i++) {
+            if (item->ik_chains[i].bone_indices) {
+                free(item->ik_chains[i].bone_indices);
+            }
+        }
+        free(item->ik_chains);
+        item->ik_chains = NULL;
+    }
+    
+    /* Cleanup ragdoll physics */
+    if (item->ragdoll_bodies) {
+        free(item->ragdoll_bodies);
+        item->ragdoll_bodies = NULL;
+    }
+    
+    /* Cleanup GPU skinning */
+    if (item->gpu_skinning.gpu_accelerated) {
+        gpu_buffer_destroy(&item->gpu_skinning.bone_buffer);
+        gpu_buffer_destroy(&item->gpu_skinning.morph_buffer);
+        gpu_shader_destroy(&item->gpu_skinning.skinning_shader);
+        item->gpu_skinning.gpu_accelerated = false;
+    }
+    
+    /* Cleanup compression */
+    if (item->compression.compressed_data) {
+        free(item->compression.compressed_data);
+        item->compression.compressed_data = NULL;
+    }
+    
+    /* Cleanup retargeting */
+    if (item->bone_mappings) {
+        free(item->bone_mappings);
+        item->bone_mappings = NULL;
+    }
+    
+    /* Cleanup async operations */
+    for (uint32_t i = 0; i < item->async_op_count; i++) {
+        pthread_cond_destroy(&item->async_ops[i].completion_cond);
+        pthread_mutex_destroy(&item->async_ops[i].completion_mutex);
+        if (item->async_ops[i].input_data) {
+            free(item->async_ops[i].input_data);
+        }
+        if (item->async_ops[i].output_data) {
+            free(item->async_ops[i].output_data);
+        }
+    }
+    
+    /* Cleanup render graph */
+    for (uint32_t i = 0; i < item->render_node_count; i++) {
+        if (item->render_nodes[i].dependencies) {
+            free(item->render_nodes[i].dependencies);
+        }
+    }
+    
+    /* Cleanup hot-reload */
+    if (item->hot_reload.file_watcher) {
+        file_watcher_destroy(item->hot_reload.file_watcher);
+        item->hot_reload.file_watcher = NULL;
+    }
+    
+    /* Cleanup cache */
+    for (uint32_t i = 0; i < ANIMATION_RAGDOLL_BLEND_CACHE_SIZE; i++) {
+        if (item->cache[i].data) {
+            free(item->cache[i].data);
+            item->cache[i].data = NULL;
+        }
+    }
+    
+    /* Cleanup original data */
     if (item->data) {
         free(item->data);
         item->data = NULL;
     }
+    
+    pthread_mutex_unlock(&item->access_mutex);
+    pthread_mutex_destroy(&item->access_mutex);
+    
     item->initialized = false;
 }
 
