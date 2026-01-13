@@ -9,6 +9,7 @@
 #ifndef GEOMETRY_MESH_LOADER_H
 #define GEOMETRY_MESH_LOADER_H
 
+#include "geometry/mesh.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -122,6 +123,16 @@ bool geometry_mesh_loader_is_valid(geometry_mesh_loader_handle_t handle);
 int geometry_mesh_loader_get_info(geometry_mesh_loader_handle_t handle, geometry_mesh_loader_info_t* out_info);
 void geometry_mesh_loader_mark_dirty(geometry_mesh_loader_handle_t handle);
 int geometry_mesh_loader_process_pending(void);
+
+/* Loading Functions */
+
+/**
+ * Loads a mesh from an OBJ file synchronously.
+ *
+ * @param filename Path to the OBJ file.
+ * @return Pointer to the created mesh, or NULL on failure.
+ */
+mesh_t* mesh_load_obj(const char* filename);
 
 /* Async Loading */
 int geometry_mesh_loader_load_async(
