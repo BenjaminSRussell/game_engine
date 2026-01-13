@@ -1,3 +1,10 @@
+/**
+ * @file asset_validator.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 /*
  * asset_validator.c
  * Asset validation and verification implementation
