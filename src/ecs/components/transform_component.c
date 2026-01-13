@@ -1,3 +1,10 @@
+/**
+ * @file transform_component.c
+ * @brief ECS Implementation
+ * @description Entity Component System implementation
+ * @date 2026-01-13
+ */
+
 #include "ecs/components/transform.h"
 #include "ecs/ecs.h"
 #include <string.h>
