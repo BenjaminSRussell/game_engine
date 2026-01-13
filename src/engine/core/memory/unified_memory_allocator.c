@@ -109,9 +109,9 @@ void unified_memory_shutdown(void) {
     pthread_mutex_lock(&g_allocator.arenas_mutex);
     ArenaAllocator* arena = g_allocator.arenas;
     while (arena) {
-        ArenaAllocator* next = arena;
-        arena = (ArenaAllocator*)next; // Simple linked list traversal
-        unified_memory_arena_destroy(next);
+        ArenaAllocator* next = arena->next;
+        unified_memory_arena_destroy(arena);
+        arena = next;
     }
     pthread_mutex_unlock(&g_allocator.arenas_mutex);
 
@@ -662,4 +662,67 @@ static void setup_canary(void* ptr, size_t size) {
 static bool check_canary(void* ptr, size_t size) {
     u64* canary = (u64*)ptr;
     return *canary == CANARY_VALUE;
+}
+
+// ============================================================================
+// ARENA ALLOCATOR FUNCTIONS
+// ============================================================================
+
+ArenaAllocator* unified_memory_arena_create(size_t initial_block_size) {
+    if (!g_allocator.initialized) return NULL;
+
+    ArenaAllocator* arena = malloc(sizeof(ArenaAllocator));
+    if (!arena) return NULL;
+
+    memset(arena, 0, sizeof(ArenaAllocator));
+    // Implementation stub - simplified for test
+
+    pthread_mutex_init(&arena->mutex, NULL);
+    arena->initialized = true;
+
+    // Add to global arena list
+    pthread_mutex_lock(&g_allocator.arenas_mutex);
+    arena->next = g_allocator.arenas;
+    g_allocator.arenas = arena;
+    pthread_mutex_unlock(&g_allocator.arenas_mutex);
+
+    return arena;
+}
+
+void unified_memory_arena_destroy(ArenaAllocator* arena) {
+    if (!arena) return;
+
+    // Unlink from global list
+    pthread_mutex_lock(&g_allocator.arenas_mutex);
+    if (g_allocator.arenas == arena) {
+        g_allocator.arenas = arena->next;
+    } else {
+        ArenaAllocator* current = g_allocator.arenas;
+        while (current) {
+            if (current->next == arena) {
+                current->next = arena->next;
+                break;
+            }
+            current = current->next;
+        }
+    }
+    pthread_mutex_unlock(&g_allocator.arenas_mutex);
+
+    pthread_mutex_lock(&arena->mutex);
+    // Cleanup blocks - stub
+    arena->initialized = false;
+    pthread_mutex_unlock(&arena->mutex);
+    pthread_mutex_destroy(&arena->mutex);
+
+    free(arena);
+}
+
+void* unified_memory_arena_alloc(ArenaAllocator* arena, size_t size, MemoryFlags flags) {
+    if (!arena || !arena->initialized) return NULL;
+    return malloc(size); // Stub
+}
+
+void unified_memory_arena_reset(ArenaAllocator* arena) {
+    if (!arena || !arena->initialized) return;
+    // Stub
 }
