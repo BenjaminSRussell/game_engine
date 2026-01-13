@@ -97,25 +97,115 @@
  * IO_SCENE_RENDERER_03 - Core data structure
  * Manages state and resources for renderer_03 operations
  */
-/* Mock context structures for advanced rendering features */
+/*
+ * Internal Data Structures
+ */
+typedef struct asset_bundle {
+  uint32_t id;
+  char name[256];
+  uint8_t *data;
+  size_t data_size;
+  size_t compressed_size;
+  uint32_t asset_count;
+  uint64_t timestamp;
+  uint32_t checksum;
+} asset_bundle_t;
+
+typedef struct io_scene_renderer_03_stats {
+  uint64_t total_allocations;
+  uint64_t active_count;
+  uint64_t peak_count;
+  size_t memory_used;
+  size_t memory_peak;
+  double avg_process_time_ms;
+
+  // Advanced rendering statistics
+  uint64_t ray_tracing_rays_cast;
+  uint64_t mesh_shader_draw_calls;
+  uint64_t vrs_tiles_shaded;
+  uint64_t visibility_buffer_primitives;
+  uint64_t taa_samples_accumulated;
+  uint64_t asset_bundles_created;
+  uint64_t async_compute_dispatches;
+  double compression_ratio;
+  uint64_t scene_files_parsed;
+} io_scene_renderer_03_stats_t;
+
 typedef struct async_compute_context {
-  int dummy;
+  pthread_t worker_thread;
+  pthread_mutex_t mutex;
+  pthread_cond_t condition;
+  bool should_exit;
+  uint32_t queue_capacity;
+  uint32_t queue_size;
+  void **work_queue;
+  uint64_t dispatch_count;
 } async_compute_context_t;
+
 typedef struct ray_tracing_context {
-  int dummy;
+  void *acceleration_structure;
+  void *ray_generation_shader;
+  void *miss_shader;
+  void *closest_hit_shader;
+  uint32_t max_ray_depth;
+  float ray_bias;
+  uint32_t samples_per_pixel;
+  bool enable_denoising;
 } ray_tracing_context_t;
+
 typedef struct mesh_shader_context {
-  int dummy;
+  void *mesh_shader;
+  void *amplification_shader;
+  uint32_t max_meshlets;
+  uint32_t max_primitives_per_meshlet;
+  bool enable_gpu_culling;
 } mesh_shader_context_t;
+
 typedef struct vrs_context {
-  int dummy;
+  uint32_t tile_width;
+  uint32_t tile_height;
+  uint8_t *shading_rate_map;
+  uint32_t map_width;
+  uint32_t map_height;
+  bool adaptive_vrs;
 } vrs_context_t;
+
 typedef struct visibility_buffer_context {
-  int dummy;
+  void *surface_id_buffer;
+  void *depth_buffer;
+  uint32_t buffer_width;
+  uint32_t buffer_height;
+  bool enable_hierarchical_z;
 } visibility_buffer_context_t;
+
 typedef struct taa_context {
-  int dummy;
+  void *history_buffer;
+  void *velocity_buffer;
+  uint32_t history_frame_count;
+  float velocity_scale;
+  bool enable_neighbor_clamping;
+  bool enable_variance_clamping;
 } taa_context_t;
+
+typedef struct scene_parser {
+#ifdef USE_CGLTF
+  cgltf_data *gltf_data;
+#else
+  void *gltf_data;
+#endif
+  char current_file[512];
+  uint32_t node_count;
+  uint32_t mesh_count;
+  uint32_t material_count;
+  uint32_t texture_count;
+} scene_parser_t;
+
+// Format converter registry
+typedef struct format_converter {
+  char from_extension[16];
+  char to_extension[16];
+  int (*convert_func)(const void *input, void **output, size_t *output_size);
+} format_converter_t;
 
 typedef struct io_scene_renderer_03 {
   uint32_t flags;
@@ -152,124 +242,6 @@ typedef struct io_scene_renderer_03 {
   pthread_t file_watch_thread;
   bool file_watch_active;
 } io_scene_renderer_03_t;
-
-typedef struct io_scene_renderer_03_desc {
-  uint32_t flags;
-  size_t initial_capacity;
-  void *user_data;
-  void *allocator;
-} io_scene_renderer_03_desc_t;
-
-typedef struct io_scene_renderer_03_stats {
-  uint64_t total_allocations;
-  uint64_t active_count;
-  uint64_t peak_count;
-  size_t memory_used;
-  size_t memory_peak;
-  double avg_process_time_ms;
-
-  // Advanced rendering statistics
-  uint64_t ray_tracing_rays_cast;
-  uint64_t mesh_shader_draw_calls;
-  uint64_t vrs_tiles_shaded;
-  uint64_t visibility_buffer_primitives;
-  uint64_t taa_samples_accumulated;
-  uint64_t asset_bundles_created;
-  uint64_t async_compute_dispatches;
-  double compression_ratio;
-  uint64_t scene_files_parsed;
-} io_scene_renderer_03_stats_t;
-
-// Asset bundle structure
-typedef struct asset_bundle {
-  uint32_t id;
-  char name[256];
-  uint8_t *data;
-  size_t data_size;
-  size_t compressed_size;
-  uint32_t asset_count;
-  uint64_t timestamp;
-  uint32_t checksum;
-} asset_bundle_t;
-
-// Async compute context
-typedef struct async_compute_context {
-  pthread_t worker_thread;
-  pthread_mutex_t mutex;
-  pthread_cond_t condition;
-  bool should_exit;
-  uint32_t queue_capacity;
-  uint32_t queue_size;
-  void **work_queue;
-  uint64_t dispatch_count;
-} async_compute_context_t;
-
-// Ray tracing context
-typedef struct ray_tracing_context {
-  void *acceleration_structure;
-  void *ray_generation_shader;
-  void *miss_shader;
-  void *closest_hit_shader;
-  uint32_t max_ray_depth;
-  float ray_bias;
-  uint32_t samples_per_pixel;
-  bool enable_denoising;
-} ray_tracing_context_t;
-
-// Mesh shader context
-typedef struct mesh_shader_context {
-  void *mesh_shader;
-  void *amplification_shader;
-  uint32_t max_meshlets;
-  uint32_t max_primitives_per_meshlet;
-  bool enable_gpu_culling;
-} mesh_shader_context_t;
-
-// Variable rate shading context
-typedef struct vrs_context {
-  uint32_t tile_width;
-  uint32_t tile_height;
-  uint8_t *shading_rate_map;
-  uint32_t map_width;
-  uint32_t map_height;
-  bool adaptive_vrs;
-} vrs_context_t;
-
-// Visibility buffer context
-typedef struct visibility_buffer_context {
-  void *surface_id_buffer;
-  void *depth_buffer;
-  uint32_t buffer_width;
-  uint32_t buffer_height;
-  bool enable_hierarchical_z;
-} visibility_buffer_context_t;
-
-// TAA context
-typedef struct taa_context {
-  void *history_buffer;
-  void *velocity_buffer;
-  uint32_t history_frame_count;
-  float velocity_scale;
-  bool enable_neighbor_clamping;
-  bool enable_variance_clamping;
-} taa_context_t;
-
-// Scene parser context
-typedef struct scene_parser {
-  cgltf_data *gltf_data;
-  char current_file[512];
-  uint32_t node_count;
-  uint32_t mesh_count;
-  uint32_t material_count;
-  uint32_t texture_count;
-} scene_parser_t;
-
-// Format converter registry
-typedef struct format_converter {
-  char from_extension[16];
-  char to_extension[16];
-  int (*convert_func)(const void *input, void **output, size_t *output_size);
-} format_converter_t;
 
 /* ============================================================================
  * STATIC VARIABLES
@@ -409,7 +381,9 @@ static int io_scene_renderer_03_cleanup_internal(io_scene_renderer_03_t *ctx) {
   // Implement scene file parsing cleanup
   if (ctx->scene_parser) {
     if (ctx->scene_parser->gltf_data) {
+#ifdef USE_CGLTF
       cgltf_free(ctx->scene_parser->gltf_data);
+#endif
       ctx->scene_parser->gltf_data = NULL;
     }
     free(ctx->scene_parser);

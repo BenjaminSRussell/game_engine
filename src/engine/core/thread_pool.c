@@ -5,7 +5,7 @@
 
 #include <core/thread_pool.h>
 #include <core/logging_system.h>
-#include <core/memory_allocator.h>
+#include <core/memory/unified_memory_allocator.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -94,7 +94,7 @@ ThreadPool* thread_pool_create(u32 thread_count) {
         thread_count = DEFAULT_THREAD_COUNT;
     }
 
-    ThreadPool* pool = (ThreadPool*)MEMORY_ALLOCATE(sizeof(ThreadPool));
+    ThreadPool* pool = (ThreadPool*)MALLOC(sizeof(ThreadPool));
     if (!pool) {
         LOG_ERROR("Failed to allocate thread pool");
         return NULL;
@@ -111,14 +111,14 @@ ThreadPool* thread_pool_create(u32 thread_count) {
 #else
     if (pthread_mutex_init(&pool->queue_mutex, NULL) != 0) {
         LOG_ERROR("Failed to initialize queue mutex");
-        MEMORY_DEALLOCATE(pool);
+        FREE(pool);
         return NULL;
     }
     
     if (pthread_cond_init(&pool->queue_condition, NULL) != 0) {
         LOG_ERROR("Failed to initialize condition variable");
         pthread_mutex_destroy(&pool->queue_mutex);
-        MEMORY_DEALLOCATE(pool);
+        FREE(pool);
         return NULL;
     }
     
@@ -126,13 +126,13 @@ ThreadPool* thread_pool_create(u32 thread_count) {
         LOG_ERROR("Failed to initialize stats mutex");
         pthread_mutex_destroy(&pool->queue_mutex);
         pthread_cond_destroy(&pool->queue_condition);
-        MEMORY_DEALLOCATE(pool);
+        FREE(pool);
         return NULL;
     }
 #endif
 
     // Create threads
-    pool->threads = (ThreadData*)MEMORY_ALLOCATE(sizeof(ThreadData) * thread_count);
+    pool->threads = (ThreadData*)MALLOC(sizeof(ThreadData) * thread_count);
     if (!pool->threads) {
         LOG_ERROR("Failed to allocate thread data");
 #ifdef _WIN32
@@ -143,7 +143,7 @@ ThreadPool* thread_pool_create(u32 thread_count) {
         pthread_cond_destroy(&pool->queue_condition);
         pthread_mutex_destroy(&pool->stats_mutex);
 #endif
-        MEMORY_DEALLOCATE(pool);
+        FREE(pool);
         return NULL;
     }
 
@@ -224,8 +224,8 @@ void thread_pool_destroy(ThreadPool* pool) {
     LOG_INFO("Thread pool stats: Submitted: %llu, Completed: %llu, Failed: %llu",
              pool->total_jobs_submitted, pool->total_jobs_completed, pool->total_jobs_failed);
 
-    MEMORY_DEALLOCATE(pool->threads);
-    MEMORY_DEALLOCATE(pool);
+    FREE(pool->threads);
+    FREE(pool);
     LOG_INFO("Thread pool shutdown complete");
 }
 
@@ -235,7 +235,7 @@ u32 thread_pool_submit(ThreadPool* pool, JobFunction function, void* user_data, 
         return 0;
     }
 
-    Job* job = (Job*)MEMORY_ALLOCATE(sizeof(Job));
+    Job* job = (Job*)MALLOC(sizeof(Job));
     if (!job) {
         LOG_ERROR("Failed to allocate job");
         return 0;
@@ -265,7 +265,7 @@ u32 thread_pool_submit_with_dependencies(ThreadPool* pool, JobFunction function,
         return 0;
     }
 
-    Job* job = (Job*)MEMORY_ALLOCATE(sizeof(Job));
+    Job* job = (Job*)MALLOC(sizeof(Job));
     if (!job) {
         LOG_ERROR("Failed to allocate job with dependencies");
         return 0;
@@ -286,7 +286,7 @@ u32 thread_pool_submit_with_dependencies(ThreadPool* pool, JobFunction function,
 
     // Add dependencies
     if (dependency_count > 0 && dependency_ids) {
-        job->dependencies = (Job**)MEMORY_ALLOCATE(sizeof(Job*) * dependency_count);
+        job->dependencies = (Job**)MALLOC(sizeof(Job*) * dependency_count);
         if (job->dependencies) {
             job->dependency_count = dependency_count;
             // Note: In a full implementation, we'd need to look up jobs by ID
@@ -509,9 +509,9 @@ static bool check_job_dependencies(Job* job) {
 
 static void cleanup_job(Job* job) {
     if (job->dependencies) {
-        MEMORY_DEALLOCATE(job->dependencies);
+        FREE(job->dependencies);
     }
-    MEMORY_DEALLOCATE(job);
+    FREE(job);
 }
 
 // Global thread pool instance

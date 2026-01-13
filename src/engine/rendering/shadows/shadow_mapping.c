@@ -30,6 +30,7 @@ extern void renderer_set_shadow_matrices(
 extern void render_scene_shadow_casters(float *view_proj, int size);
 extern void renderer_end_shadow_pass(void);
 extern void renderer_set_cube_map_face(int face);
+extern void shader_bind_texture(void *shader, void *tex, uint32_t slot);
 #define RENDERER_CULL_FRONT 0
 
 // Math helpers
@@ -652,10 +653,10 @@ void shadow_mapping_render_shadows(const Light *lights, uint32_t light_count,
   uint64_t end_time = get_time_nanos();
   g_shadow_system.shadow_render_time_ms = nanos_to_ms(end_time - start_time);
 
-  LOG_DEBUG("Shadow rendering: %u casters, %u pixels, %.2f ms",
-            g_shadow_system.shadow_casters,
-            g_shadow_system.shadow_pixels_rendered,
-            g_shadow_system.shadow_render_time_ms);
+  LOG_DEBUG(
+      LOG_CAT_RENDERER, "Shadow rendering: %u casters, %u pixels, %.2f ms",
+      g_shadow_system.shadow_casters, g_shadow_system.shadow_pixels_rendered,
+      g_shadow_system.shadow_render_time_ms);
 }
 
 void shadow_mapping_bind_cascade_textures(void *shader, uint32_t start_slot) {
@@ -667,7 +668,8 @@ void shadow_mapping_bind_cascade_textures(void *shader, uint32_t start_slot) {
     ShadowCascade *cascade = &g_shadow_system.cascades[i];
     // Bind cascade->depth_texture to shader at slot start_slot + i
     shader_bind_texture(shader, cascade->depth_texture, start_slot + i);
-    LOG_DEBUG("Bound cascade %u to slot %u", i, start_slot + i);
+    LOG_DEBUG(LOG_CAT_RENDERER, "Bound cascade %u to slot %u", i,
+              start_slot + i);
   }
 }
 
@@ -680,7 +682,8 @@ void shadow_mapping_set_bias_parameters(float constant_bias, float normal_bias,
   g_shadow_system.normal_bias = normal_bias;
   g_shadow_system.slope_scale_bias = slope_scale_bias;
 
-  LOG_DEBUG("Shadow bias updated: constant=%.4f, normal=%.4f, slope=%.4f",
+  LOG_DEBUG(LOG_CAT_RENDERER,
+            "Shadow bias updated: constant=%.4f, normal=%.4f, slope=%.4f",
             constant_bias, normal_bias, slope_scale_bias);
 }
 
@@ -694,7 +697,8 @@ void shadow_mapping_set_filter_parameters(ShadowFilterType filter_type,
   g_shadow_system.pcf_radius = pcf_radius;
   g_shadow_system.pcf_samples = pcf_samples;
 
-  LOG_DEBUG("Shadow filter updated: type=%d, radius=%.2f, samples=%u",
+  LOG_DEBUG(LOG_CAT_RENDERER,
+            "Shadow filter updated: type=%d, radius=%.2f, samples=%u",
             (int)filter_type, pcf_radius, pcf_samples);
 }
 

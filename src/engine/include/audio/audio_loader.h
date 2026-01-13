@@ -1,7 +1,7 @@
 #ifndef AUDIO_LOADER_H
 #define AUDIO_LOADER_H
 
-#include <vendor/miniaudio.h>
+#include <../../include/vendor/miniaudio.h>
 #include <common.h>
 
 // Forward declarations

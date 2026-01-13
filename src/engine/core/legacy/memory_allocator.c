@@ -21,17 +21,17 @@ void memory_allocator_shutdown(void) {
 
 // Legacy allocation - redirects to unified system
 void* memory_allocate(size_t size, const char* file, int line) {
-    return unified_memory_alloc(size, MEMORY_STRATEGY_DEFAULT, MEMORY_FLAG_TRACK, file, line);
+    return unified_memory_alloc(size, MEMORY_STRATEGY_DEFAULT, MEMORY_FLAG_TRACK, file, line, __func__);
 }
 
 // Legacy reallocation - redirects to unified system
 void* memory_reallocate(void* ptr, size_t new_size, const char* file, int line) {
-    return unified_memory_realloc(ptr, new_size, MEMORY_STRATEGY_DEFAULT, MEMORY_FLAG_TRACK, file, line);
+    return unified_memory_realloc(ptr, new_size, MEMORY_FLAG_TRACK, file, line, __func__);
 }
 
 // Legacy deallocation - redirects to unified system
 void memory_deallocate(void* ptr) {
-    unified_memory_free(ptr);
+    unified_memory_free(ptr, __FILE__, __LINE__, __func__);
 }
 
 // Get memory statistics - redirects to unified system
