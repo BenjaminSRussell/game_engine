@@ -1,0 +1,53 @@
+#ifndef ENGINE_COMMON_H
+#define ENGINE_COMMON_H
+
+#include "core/logger.h"
+#include "core/types.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef ALIGN
+#undef ALIGN
+#endif
+
+#if defined(_MSC_VER)
+#define K_ALIGN(x) __declspec(align(x))
+#else
+#define K_ALIGN(x) __attribute__((aligned(x)))
+#endif
+
+#ifndef INLINE
+#if defined(_MSC_VER)
+#define INLINE __forceinline
+#else
+#define INLINE inline __attribute__((always_inline))
+#endif
+#endif
+
+#ifndef EPSILON
+#define EPSILON 0.000001f
+#endif
+
+#ifndef PI
+#define PI 3.14159265359f
+#endif
+
+#ifndef DEG_TO_RAD
+#define DEG_TO_RAD (PI / 180.0f)
+#endif
+
+#ifndef RAD_TO_DEG
+#define RAD_TO_DEG (180.0f / PI)
+#endif
+
+#ifndef MIN
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#endif
+
+#ifndef MAX
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#endif
+
+#endif // ENGINE_COMMON_H

@@ -356,6 +356,25 @@ static MTLSamplerAddressMode convert_address(mtl_sampler_address_t address) {
     }
 }
 
+// DONE: Add compare function for mtl sampler
+MTLCompareFunction mtl_sampler_get_compare_function(mtl_sampler_t* sampler) {
+    if (!sampler) {
+        return MTLCompareFunctionNever;
+    }
+    
+    switch (sampler->desc.compare_func) {
+        case 0: return MTLCompareFunctionNever;
+        case 1: return MTLCompareFunctionLess;
+        case 2: return MTLCompareFunctionEqual;
+        case 3: return MTLCompareFunctionLessEqual;
+        case 4: return MTLCompareFunctionGreater;
+        case 5: return MTLCompareFunctionNotEqual;
+        case 6: return MTLCompareFunctionGreaterEqual;
+        case 7: return MTLCompareFunctionAlways;
+        default: return MTLCompareFunctionNever;
+    }
+}
+
 // Create a sampler with default settings
 struct mtl_sampler* mtl_sampler_create(id<MTLDevice> device, const char* name) {
     f64 start_time = get_current_time();

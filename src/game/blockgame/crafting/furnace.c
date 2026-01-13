@@ -13,6 +13,7 @@
 // array.
 // calculations.
 #include <crafting/furnace.h>
+#include <core/logging/unified_logger.h>
 #include <inventory/inventory.h>
 #include <inventory/item_registry.h>
 #include <string.h>
@@ -86,8 +87,8 @@ void furnace_init(FurnaceState *furnace) {
   furnace->fuel_slot = 1;
   furnace->output_slot = 2;
   furnace->current_recipe = 0;
-  
-  LOG_DEBUG("Furnace initialized with default values");
+
+  LOG_DEBUG(LOG_CAT_GAME, "Furnace initialized with default values");
 }
 
 // Update furnace
@@ -131,7 +132,7 @@ void furnace_update(FurnaceState *furnace, Inventory *inventory,
             fuel_item->item_id = 0;
           }
         }
-        LOG_DEBUG("Furnace consumed fuel, burn time: %.2f", fuel_value);
+        LOG_DEBUG(LOG_CAT_GAME, "Furnace consumed fuel, burn time: %.2f", fuel_value);
       }
     }
   }
@@ -214,8 +215,8 @@ void furnace_update(FurnaceState *furnace, Inventory *inventory,
 
     // Reset progress
     furnace->smelt_progress = 0.0f;
-    
-    LOG_DEBUG("Furnace completed smelting, XP stored: %.2f", furnace->xp_stored);
+
+    LOG_DEBUG(LOG_CAT_GAME, "Furnace completed smelting, XP stored: %.2f", furnace->xp_stored);
   }
 }
 
@@ -259,8 +260,8 @@ f32 furnace_take_xp(FurnaceState *furnace) {
 
   f32 xp = furnace->xp_stored;
   furnace->xp_stored = 0.0f;
-  
-  LOG_DEBUG("Furnace XP extracted: %.2f", xp);
+
+  LOG_DEBUG(LOG_CAT_GAME, "Furnace XP extracted: %.2f", xp);
   return xp;
 }
 

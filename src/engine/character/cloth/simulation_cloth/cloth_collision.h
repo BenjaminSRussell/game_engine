@@ -60,6 +60,13 @@ uint32_t cloth_system_cloth_collision_get_count(void);
 size_t cloth_system_cloth_collision_get_memory_usage(void);
 void cloth_system_cloth_collision_debug_print(void);
 
+/* Serialization */
+int cloth_system_cloth_collision_serialize(cloth_system_cloth_collision_handle_t handle, void** out_data, size_t* out_size);
+int cloth_system_cloth_collision_deserialize(const void* data, size_t size, cloth_system_cloth_collision_handle_t* out_handle);
+
+/* Async Operations */
+int cloth_system_cloth_collision_update_async(cloth_system_cloth_collision_handle_t handle, const void* data, size_t size, void (*callback)(cloth_system_cloth_collision_handle_t, int));
+
 #ifdef __cplusplus
 }
 #endif

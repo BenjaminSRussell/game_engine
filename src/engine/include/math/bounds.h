@@ -28,15 +28,15 @@ static inline BoundingBox bounds_box_create(Vec3 min, Vec3 max) {
 }
 
 static inline Vec3 bounds_box_center(const BoundingBox *box) {
-  return vec3((box->min.x + box->max.x) * 0.5f,
-              (box->min.y + box->max.y) * 0.5f,
-              (box->min.z + box->max.z) * 0.5f);
+  return vec3_create((box->min.x + box->max.x) * 0.5f,
+                     (box->min.y + box->max.y) * 0.5f,
+                     (box->min.z + box->max.z) * 0.5f);
 }
 
 static inline Vec3 bounds_box_extents(const BoundingBox *box) {
-  return vec3((box->max.x - box->min.x) * 0.5f,
-              (box->max.y - box->min.y) * 0.5f,
-              (box->max.z - box->min.z) * 0.5f);
+  return vec3_create((box->max.x - box->min.x) * 0.5f,
+                     (box->max.y - box->min.y) * 0.5f,
+                     (box->max.z - box->min.z) * 0.5f);
 }
 
 // Bounding Sphere

@@ -1,6 +1,6 @@
 // src/engine/rendering/lighting/lumen_gi.m
 #include "include/rendering/lumen_gi.h"
-#include "include/core/logger.h"
+#include "include/core/logging/unified_logger.h"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,7 +25,7 @@ LumenGISystem *lumen_create(void) {
     // In real web/metal implementation, create 3D textures here
   }
 
-  LOG_INFO("Lumen GI System initialized with %d clipmap levels",
+  LOG_INFO(LOG_CAT_GRAPHICS, "Lumen GI System initialized with %d clipmap levels",
            LUMEN_CLIPMAP_LEVELS);
   return sys;
 }

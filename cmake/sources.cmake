@@ -12,8 +12,8 @@ file(GLOB_RECURSE ENGINE_SOURCES
     # "src/game/blockgame/block/lighting.c"
     "src/game/blockgame/block/interaction.c"
     
-    # AI subdirectory - including legacy implementations
-    "src/engine/ai/legacy/npc.c"
+    # AI subdirectory - using modern implementations
+    # "src/engine/ai/legacy/npc.c"  # Disabled: legacy directory doesn't exist, modern npc.c in src/engine/ai/ is used instead
     # "src/engine/ai/*.c"  # Disabled: too many errors in npc.c, npc_ai.c, and visual_cortex.c
     
     # AI pathfinding - advanced caching system

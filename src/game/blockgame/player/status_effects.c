@@ -1,5 +1,5 @@
 // Status Effect System Implementation
-#include <core/logger.h>
+#include <core/logging/unified_logger.h>
 #include <math.h>
 #include <player/status_effects.h>
 #include <string.h>
@@ -120,7 +120,7 @@ static bool status_effect_check_combination(StatusEffectManager *manager,
         manager->effects[i].type = STATUS_EFFECT_POISON;
         manager->effects[i].strength *= 3.0f;
         manager->effects[i].duration = fmax(manager->effects[i].duration, 5.0f);
-        LOG_INFO(
+        LOG_INFO(LOG_CAT_GAME,
             "Status effect combination: Poison + Fire = Explosive damage!");
         return true; // Combined, don't add new effect
       }
@@ -134,7 +134,7 @@ static bool status_effect_check_combination(StatusEffectManager *manager,
        existing_type == STATUS_EFFECT_SPEED)) {
     // Remove the opposing effect
     status_effect_remove(manager, existing_type);
-    LOG_INFO("Status effects canceled: Speed and Slowness cancel each other");
+    LOG_INFO(LOG_CAT_GAME, "Status effects canceled: Speed and Slowness cancel each other");
     return false; // Continue to add the new effect
   }
 
@@ -144,7 +144,7 @@ static bool status_effect_check_combination(StatusEffectManager *manager,
       (new_type == STATUS_EFFECT_WEAKNESS &&
        existing_type == STATUS_EFFECT_STRENGTH)) {
     status_effect_remove(manager, existing_type);
-    LOG_INFO(
+    LOG_INFO(LOG_CAT_GAME,
         "Status effects canceled: Strength and Weakness cancel each other");
     return false;
   }
@@ -159,7 +159,7 @@ bool status_effect_add(StatusEffectManager *manager, StatusEffectType type,
 
   // Check for resistance (immunity after exposure)
   if (status_effect_has_resistance(type)) {
-    LOG_DEBUG("Status effect %d resisted (immunity active)", type);
+    LOG_DEBUG(LOG_CAT_GAME, "Status effect %d resisted (immunity active)", type);
     return false; // Effect resisted
   }
 

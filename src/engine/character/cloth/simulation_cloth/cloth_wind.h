@@ -60,6 +60,10 @@ uint32_t cloth_system_cloth_wind_get_count(void);
 size_t cloth_system_cloth_wind_get_memory_usage(void);
 void cloth_system_cloth_wind_debug_print(void);
 
+/* Serialization */
+int cloth_system_cloth_wind_serialize(cloth_system_cloth_wind_handle_t handle, void** buffer, size_t* size);
+int cloth_system_cloth_wind_deserialize(cloth_system_cloth_wind_handle_t* out_handle, const void* buffer, size_t size);
+
 #ifdef __cplusplus
 }
 #endif
