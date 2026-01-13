@@ -1,3 +1,11 @@
+/*
+ * rule_based_generation.c
+ * Rule-based procedural generation system
+ *
+ * Part of the Procedural Generation subsystem
+ * Advanced 3D Rendering Engine
+ */
+
 #include "rule_based_generation.h"
 #include <stdlib.h>
 #include <string.h>
