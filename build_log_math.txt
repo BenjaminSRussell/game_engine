@@ -1,0 +1,71 @@
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_cache_advanced.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_complete.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/ai/pathfinding/pathfinding_optimizer.c.o
+[  0%] Building C object CMakeFiles/Engine.dir/src/engine/core/config.c.o
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/config.c:54:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger.h:9:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:3:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/../math/types.h:75:9: warning: 'ASSERT' macro redefined [-Wmacro-redefined]
+   75 | #define ASSERT(condition) \
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/config/../game_common.h:175:9: note: previous definition is here
+  175 | #define ASSERT(cond, msg) ((void)0)
+      |         ^
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/config.c:54:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger.h:9:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:3:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/../math/types.h:452:9: warning: 'PI_2' macro redefined [-Wmacro-redefined]
+  452 | #define PI_2 1.57079632679489661923f
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/config/../game_common.h:106:9: note: previous definition is here
+  106 | #define PI_2 (PI * 2.0f)
+      |         ^
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/config.c:54:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger.h:9:
+In file included from /Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:3:
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/../math/types.h:469:9: warning: 'CLAMP' macro redefined [-Wmacro-redefined]
+  469 | #define CLAMP(x, min, max) MIN(MAX((x), (min)), (max))
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/game/blockgame/include/config/../game_common.h:149:9: note: previous definition is here
+  149 | #define CLAMP(x, min, max) (MIN(MAX(x, min), max))
+      |         ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/config.c:137:14: error: incompatible pointer to integer conversion passing 'char[40]' to parameter of type 'LogCategory' [-Wint-conversion]
+  137 |     LOG_WARN("Config %s=%u below minimum %u, clamping", name, value, min);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:129:72: note: expanded from macro 'LOG_WARN'
+  129 | #define LOG_WARN(cat, format, ...)  unified_logger_log(LOG_LEVEL_WARN, cat, __FILE__, __LINE__, __func__, format, ##__VA_ARGS__)
+      |                                                                        ^~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:119:53: note: passing argument to parameter 'category' here
+  119 | void unified_logger_log(LogLevel level, LogCategory category, const char* file, int line, 
+      |                                                     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/config.c:141:14: error: incompatible pointer to integer conversion passing 'char[40]' to parameter of type 'LogCategory' [-Wint-conversion]
+  141 |     LOG_WARN("Config %s=%u above maximum %u, clamping", name, value, max);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:129:72: note: expanded from macro 'LOG_WARN'
+  129 | #define LOG_WARN(cat, format, ...)  unified_logger_log(LOG_LEVEL_WARN, cat, __FILE__, __LINE__, __func__, format, ##__VA_ARGS__)
+      |                                                                        ^~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:119:53: note: passing argument to parameter 'category' here
+  119 | void unified_logger_log(LogLevel level, LogCategory category, const char* file, int line, 
+      |                                                     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/config.c:149:14: error: incompatible pointer to integer conversion passing 'char[44]' to parameter of type 'LogCategory' [-Wint-conversion]
+  149 |     LOG_WARN("Config %s=%.2f below minimum %.2f, clamping", name, value, min);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:129:72: note: expanded from macro 'LOG_WARN'
+  129 | #define LOG_WARN(cat, format, ...)  unified_logger_log(LOG_LEVEL_WARN, cat, __FILE__, __LINE__, __func__, format, ##__VA_ARGS__)
+      |                                                                        ^~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:119:53: note: passing argument to parameter 'category' here
+  119 | void unified_logger_log(LogLevel level, LogCategory category, const char* file, int line, 
+      |                                                     ^
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/core/config.c:153:14: error: incompatible pointer to integer conversion passing 'char[44]' to parameter of type 'LogCategory' [-Wint-conversion]
+  153 |     LOG_WARN("Config %s=%.2f above maximum %.2f, clamping", name, value, max);
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:129:72: note: expanded from macro 'LOG_WARN'
+  129 | #define LOG_WARN(cat, format, ...)  unified_logger_log(LOG_LEVEL_WARN, cat, __FILE__, __LINE__, __func__, format, ##__VA_ARGS__)
+      |                                                                        ^~~
+/Users/benjaminrussell/Desktop/Minecraft v2/src/engine/include/core/logger/unified_logger.h:119:53: note: passing argument to parameter 'category' here
+  119 | void unified_logger_log(LogLevel level, LogCategory category, const char* file, int line, 
+      |                                                     ^
+3 warnings and 4 errors generated.
+make[2]: *** [CMakeFiles/Engine.dir/src/engine/core/config.c.o] Error 1
+make[1]: *** [CMakeFiles/Engine.dir/all] Error 2
+make: *** [all] Error 2

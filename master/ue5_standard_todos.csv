@@ -1,0 +1,21 @@
+id,type,category,source,description,status
+TODO-UE5-R001,feature,Rendering - Lumen GI,src/engine/rendering/advanced/global_illumination.c,Implement software ray-traced probe-based irradiance volumes for dynamic GI,open
+TODO-UE5-R002,feature,Rendering - Lumen GI,src/engine/lighting/probe_system.c,Create irradiance probe placement and update system with temporal stability,open
+TODO-UE5-R003,feature,Rendering - Nanite Geometry,src/engine/rendering/core/meshlet_system.c,Implement GPU-driven meshlet culling and LOD selection for virtualized geometry,open
+TODO-UE5-R004,feature,Rendering - Nanite Geometry,src/engine/rendering/streaming/mesh_streaming.c,Create async mesh cluster streaming with priority-based loading,open
+TODO-UE5-R005,feature,Rendering - Virtual Shadows,src/engine/lighting/virtual_shadow_maps.c,Implement tile-based virtual shadow map with clipmap hierarchy,open
+TODO-UE5-P001,feature,Physics - Async Threading,src/engine/physics/threading/async_physics.c,Implement asynchronous physics simulation on dedicated thread with double buffering,open
+TODO-UE5-P002,feature,Physics - Determinism,src/engine/physics/solver/deterministic_solver.c,Implement fixed-point deterministic physics for netcode replay support,open
+TODO-UE5-P003,feature,Physics - Fracture,src/engine/physics/destruction/fracture_mesh.c,Implement Voronoi-based fracture mesh generation for destruction,open
+TODO-UE5-P004,feature,Physics - Destruction,src/engine/physics/destruction/destruction_system.c,Create destruction manager with damage thresholds and debris physics,open
+TODO-UE5-P005,feature,Physics - Substepping,src/engine/physics/solver/physics_substepping.c,Implement configurable physics sub-stepping with 1-8 iterations per frame,open
+TODO-UE5-N001,net_mvp,Networking - Server Auth,src/engine/network/security/server_validation.c,Implement server-authoritative validation for all gameplay-critical actions,open
+TODO-UE5-N002,net_mvp,Networking - Relevancy,src/engine/network/optimization/relevancy_manager.c,Create distance and visibility-based entity relevancy filtering system,open
+TODO-UE5-N003,net_mvp,Networking - Net LOD,src/engine/network/optimization/network_lod.c,Implement network LOD system reducing update frequency for distant entities,open
+TODO-UE5-N004,net_prediction,Networking - Predictive Interp,src/engine/network/prediction/predictive_interpolation.c,Implement UE5-style predictive interpolation replication mode,open
+TODO-UE5-N005,net_mvp,Networking - Property Delta,src/engine/network/replication/property_delta.c,Create property-level delta compression with per-property dirty tracking,open
+TODO-UE5-A001,feature,Animation - Control Rig,src/engine/animation/control_rig/control_rig_runtime.c,Implement procedural Control Rig runtime for skeleton manipulation,open
+TODO-UE5-A002,feature,Animation - Montage,src/engine/animation/montage/montage_instance.c,Create Animation Montage playback system for attack sequences,open
+TODO-UE5-A003,feature,Animation - Notify,src/engine/animation/notify/notify_manager.c,Implement Animation Notify event dispatcher for gameplay triggers,open
+TODO-UE5-A004,feature,Animation - Additive,src/engine/animation/blending/additive_layer.c,Create additive animation blending for weapon recoil and breathing,open
+TODO-UE5-A005,feature,Animation - Root Motion,src/engine/animation/motion/root_motion_extractor.c,Implement root motion extraction and character movement integration,open
