@@ -1,4 +1,11 @@
 /**
+ * @file ecs.c
+ * @brief System Implementation
+ * @description System implementation
+ * @date 2026-01-13
+ */
+
+/**
  * ECS Implementation - Archetype-Based Entity Component System
  * Matches ecs.h API with safe internal state management
  */
