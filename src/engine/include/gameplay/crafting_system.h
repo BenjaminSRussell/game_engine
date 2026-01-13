@@ -4,6 +4,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define STATION_TYPE_NONE 0
+#define STATION_TYPE_WORKBENCH 1
+#define STATION_TYPE_FURNACE 2
+#define STATION_TYPE_CAMPFIRE 3
+
 // Forward declarations for opaque types
 typedef struct recipe recipe_t;
 typedef struct crafting_station crafting_station_t;
@@ -103,7 +108,14 @@ void crafting_get_recipes_by_station(uint32_t station_type, const recipe_t** rec
 // recipe_id: Recipe to discover
 bool crafting_discover_recipe(uint32_t recipe_id);
 
-// Utility function to get current time (placeholder)
-uint32_t get_current_time_ms(void);
+// Check if a station is currently active
+// station_id: Station to check
+bool crafting_station_is_active(uint32_t station_id);
+
+// Get recipe name
+// recipe_id: Recipe to check
+// buffer: Buffer to store name
+// buffer_size: Size of buffer
+bool crafting_recipe_get_name(uint32_t recipe_id, char* buffer, uint32_t buffer_size);
 
 #endif // CRAFTING_SYSTEM_H

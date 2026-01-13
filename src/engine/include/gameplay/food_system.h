@@ -72,6 +72,16 @@ bool food_consume_item(uint32_t player_id, uint32_t item_id, uint32_t quantity);
 // cooked_item_id: Resulting cooked food item
 bool food_cook_item(uint32_t player_id, uint32_t raw_item_id, uint32_t cooked_item_id);
 
+// Link a raw food item to its cooked version
+// raw_item_id: Raw food item
+// cooked_item_id: Cooked food item
+bool food_set_cooking_result(uint32_t raw_item_id, uint32_t cooked_item_id);
+
+// Register all cookable food items as furnace recipes in the crafting system
+// This iterates over all food items and if they require cooking and have a cooked result,
+// adds a recipe to the crafting system.
+void food_register_furnace_recipes(void);
+
 // Update nutrition status for a player
 // player_id: Player to update
 // delta_time: Time since last update in seconds
@@ -117,8 +127,5 @@ const food_item_t* food_get_item(uint32_t item_id);
 // items: Output array of food items
 // item_count: Output number of food items
 void food_get_all_items(const food_item_t** items, uint32_t* item_count);
-
-// Utility function to get current time (placeholder)
-uint32_t get_current_time_ms(void);
 
 #endif // FOOD_SYSTEM_H

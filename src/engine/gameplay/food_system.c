@@ -1,25 +1,17 @@
 #include "food_system.h"
+#include "gameplay/crafting_system.h"
 #include "core/common/memory/allocator.h"
 #include "engine/include/core/logger.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
+#define MAX_PLAYERS 1024
 #define MAX_FOOD_ITEMS 512
 #define MAX_FOOD_TYPES 64
 #define FOOD_NAME_LENGTH 32
 #define FOOD_DESCRIPTION_LENGTH 128
 #define MAX_NUTRIENTS 8
-
-typedef enum nutrient_type {
-    NUTRIENT_PROTEIN = 0,
-    NUTRIENT_CARBS,
-    NUTRIENT_FAT,
-    NUTRIENT_VITAMINS,
-    NUTRIENT_MINERALS,
-    NUTRIENT_WATER,
-    NUTRIENT_FIBER,
-    NUTRIENT_ANTIOXIDANTS
-} nutrient_type_t;
 
 typedef struct nutrient_value {
     nutrient_type_t type;
@@ -42,6 +34,7 @@ typedef struct food_item {
     
     uint32_t preparation_time_ms;
     bool requires_cooking;
+    uint32_t cooked_item_id;
     bool is_perishable;
     uint32_t spoil_time_ms;
     
@@ -55,6 +48,7 @@ typedef struct food_item {
 } food_item_t;
 
 typedef struct character_nutrition {
+    uint32_t player_id;
     float nutrient_levels[MAX_NUTRIENTS];
     float last_meal_time;
     float total_calories_consumed;
@@ -90,6 +84,9 @@ static character_nutrition_t* get_player_nutrition(uint32_t player_id);
 static void apply_nutrients(uint32_t player_id, const food_item_t* food);
 static void update_nutrition_status(uint32_t player_id, float delta_time);
 static float calculate_nutrition_bonus(const character_nutrition_t* nutrition);
+static float calculate_calories(const food_item_t* food);
+static uint32_t get_current_time_ms(void);
+static void register_furnace_recipe(food_item_t* food);
 
 bool food_system_init(void) {
     if (g_food_system.initialized) {
@@ -271,6 +268,76 @@ bool food_cook_item(uint32_t player_id, uint32_t raw_item_id, uint32_t cooked_it
     
     // This would typically remove raw item from inventory and add cooked item
     return true;
+}
+
+bool food_set_cooking_result(uint32_t raw_item_id, uint32_t cooked_item_id) {
+    if (!g_food_system.initialized) {
+        return false;
+    }
+
+    food_item_t* raw_food = get_food_item(raw_item_id);
+    if (!raw_food) {
+        return false;
+    }
+
+    raw_food->cooked_item_id = cooked_item_id;
+    log_debug("Set cooking result for %s (ID: %u) to ID: %u",
+             raw_food->name, raw_item_id, cooked_item_id);
+
+    // Automatically register furnace recipe if crafting system is available
+    if (raw_food->requires_cooking) {
+        register_furnace_recipe(raw_food);
+    }
+
+    return true;
+}
+
+void food_register_furnace_recipes(void) {
+    if (!g_food_system.initialized) {
+        return;
+    }
+
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < g_food_system.food_count; i++) {
+        food_item_t* food = &g_food_system.food_items[i];
+
+        // If food requires cooking and has a defined cooked version
+        if (food->requires_cooking && food->cooked_item_id != 0) {
+            register_furnace_recipe(food);
+            count++;
+        }
+    }
+
+    log_info("Registered %u furnace recipes from food system", count);
+}
+
+static void register_furnace_recipe(food_item_t* food) {
+    if (!food || !food->requires_cooking || food->cooked_item_id == 0) {
+        return;
+    }
+
+    char recipe_name[64];
+    snprintf(recipe_name, sizeof(recipe_name), "Cook %s", food->name);
+
+    // Register recipe in crafting system
+    // Use preparation_time_ms as crafting time
+    uint32_t recipe_id = crafting_add_recipe(
+        recipe_name,
+        food->preparation_time_ms > 0 ? food->preparation_time_ms : 5000,
+        STATION_TYPE_FURNACE,
+        0, // No skill requirement for now
+        10.0f // Some XP reward
+    );
+
+    if (recipe_id != 0) {
+        // Add ingredient (1x Raw Food)
+        crafting_add_recipe_ingredient(recipe_id, food->item_id, 1, true);
+
+        // Add result (1x Cooked Food)
+        crafting_add_recipe_result(recipe_id, food->cooked_item_id, 1, 1.0f);
+
+        log_debug("Registered furnace recipe: %s", recipe_name);
+    }
 }
 
 void food_update_player(uint32_t player_id, float delta_time) {
@@ -505,7 +572,7 @@ static float calculate_calories(const food_item_t* food) {
     return calories;
 }
 
-uint32_t get_current_time_ms(void) {
+static uint32_t get_current_time_ms(void) {
     // Placeholder - would typically use platform-specific time function
     static uint32_t counter = 0;
     return counter += 16;  // Simulate 60 FPS
