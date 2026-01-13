@@ -1,3 +1,10 @@
+/**
+ * @file occlusion_vfx_stubs.c
+ * @brief Frontend Implementation
+ * @description Frontend system implementation
+ * @date 2026-01-13
+ */
+
 // swift_bridge_stubs.c
 // Stub implementations for Swift bridge functions
 // These provide default behavior until full implementations are ready
