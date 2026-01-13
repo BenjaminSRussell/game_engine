@@ -47,3 +47,10 @@ bool vec3_is_equal(Vec3 a, Vec3 b, float tolerance) {
 Vec3 vec3_face_forward(Vec3 n, Vec3 i, Vec3 n_ref) {
     return vec3_dot(n_ref, i) < 0.0f ? n : vec3_mul(n, -1.0f);
 }
+
+Vec3 vec3_orthogonal(Vec3 v, Vec3 reference) {
+    // Project v onto reference to find the parallel component
+    Vec3 parallel = vec3_project(v, reference);
+    // Subtract parallel component to get orthogonal component
+    return vec3_sub(v, parallel);
+}

@@ -1,24 +1,6 @@
 #include <math/quat.h>
 #include <math.h>
 
-// Helper
-static f32 clampf(f32 v, f32 min, f32 max) {
-    if (v < min) return min;
-    if (v > max) return max;
-    return v;
-}
-
-Quat quat_from_axis_angle(Vec3 axis, f32 angle) {
-    f32 half_angle = angle * 0.5f;
-    f32 s = sinf(half_angle);
-    Quat q;
-    q.w = cosf(half_angle);
-    q.x = axis.x * s;
-    q.y = axis.y * s;
-    q.z = axis.z * s;
-    return q;
-}
-
 Quat quat_from_euler(f32 pitch, f32 yaw, f32 roll) {
     f32 cy = cosf(yaw * 0.5f);
     f32 sy = sinf(yaw * 0.5f);
@@ -35,20 +17,14 @@ Quat quat_from_euler(f32 pitch, f32 yaw, f32 roll) {
     return q;
 }
 
-Quat quat_mul(Quat a, Quat b) {
-    Quat q;
-    q.w = a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z;
-    q.x = a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y;
-    q.y = a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x;
-    q.z = a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w;
-    return q;
-}
-
 Vec3 quat_rotate_vec3(Quat q, Vec3 v) {
     // Extract vector part of quaternion
     Vec3 u = {q.x, q.y, q.z};
+
+    // Extract scalar part of quaternion
     f32 s = q.w;
 
+    // Do the math
     // 2.0f * dot(u, v) * u
     f32 dot_uv = u.x * v.x + u.y * v.y + u.z * v.z;
     Vec3 term1 = {2.0f * dot_uv * u.x, 2.0f * dot_uv * u.y, 2.0f * dot_uv * u.z};
@@ -66,6 +42,7 @@ Vec3 quat_rotate_vec3(Quat q, Vec3 v) {
     };
     Vec3 term3 = {2.0f * s * cross_uv.x, 2.0f * s * cross_uv.y, 2.0f * s * cross_uv.z};
 
+    // Result
     Vec3 result = {
         term1.x + term2.x + term3.x,
         term1.y + term2.y + term3.y,
@@ -74,61 +51,114 @@ Vec3 quat_rotate_vec3(Quat q, Vec3 v) {
     return result;
 }
 
+Quat quat_from_axis_angle(Vec3 axis, f32 angle) {
+    f32 half_angle = angle * 0.5f;
+    f32 s = sinf(half_angle);
+    Quat q;
+    q.w = cosf(half_angle);
+    q.x = axis.x * s;
+    q.y = axis.y * s;
+    q.z = axis.z * s;
+    return q;
+}
+
 Mat4 quat_to_mat4(Quat q) {
-    Mat4 m = mat4_identity();
-    f32 x = q.x, y = q.y, z = q.z, w = q.w;
-    f32 x2 = x + x, y2 = y + y, z2 = z + z;
-    f32 xx = x * x2, xy = x * y2, xz = x * z2;
-    f32 yy = y * y2, yz = y * z2, zz = z * z2;
-    f32 wx = w * x2, wy = w * y2, wz = w * z2;
+    Mat4 m;
+    f32 xx = q.x * q.x;
+    f32 yy = q.y * q.y;
+    f32 zz = q.z * q.z;
+    f32 xy = q.x * q.y;
+    f32 xz = q.x * q.z;
+    f32 yz = q.y * q.z;
+    f32 wx = q.w * q.x;
+    f32 wy = q.w * q.y;
+    f32 wz = q.w * q.z;
 
-    m.m00 = 1.0f - (yy + zz);
-    m.m10 = xy + wz;
-    m.m20 = xz - wy;
+    m.m00 = 1.0f - 2.0f * (yy + zz);
+    m.m01 = 2.0f * (xy - wz);
+    m.m02 = 2.0f * (xz + wy);
+    m.m03 = 0.0f;
 
-    m.m01 = xy - wz;
-    m.m11 = 1.0f - (xx + zz);
-    m.m21 = yz + wx;
+    m.m10 = 2.0f * (xy + wz);
+    m.m11 = 1.0f - 2.0f * (xx + zz);
+    m.m12 = 2.0f * (yz - wx);
+    m.m13 = 0.0f;
 
-    m.m02 = xz + wy;
-    m.m12 = yz - wx;
-    m.m22 = 1.0f - (xx + yy);
+    m.m20 = 2.0f * (xz - wy);
+    m.m21 = 2.0f * (yz + wx);
+    m.m22 = 1.0f - 2.0f * (xx + yy);
+    m.m23 = 0.0f;
+
+    m.m30 = 0.0f;
+    m.m31 = 0.0f;
+    m.m32 = 0.0f;
+    m.m33 = 1.0f;
 
     return m;
 }
 
 Quat quat_slerp(Quat a, Quat b, f32 t) {
-    f32 cosTheta = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+    // Slerp implementation
+    f32 dot = a.w * b.w + a.x * b.x + a.y * b.y + a.z * b.z;
 
-    if (cosTheta < 0.0f) {
-        b.x = -b.x; b.y = -b.y; b.z = -b.z; b.w = -b.w;
-        cosTheta = -cosTheta;
+    if (dot < 0.0f) {
+        b.w = -b.w;
+        b.x = -b.x;
+        b.y = -b.y;
+        b.z = -b.z;
+        dot = -dot;
     }
 
-    if (cosTheta > 0.9995f) {
-        // Linear interpolation
-        Quat result = {
-            a.w + t * (b.w - a.w),
-            a.x + t * (b.x - a.x),
-            a.y + t * (b.y - a.y),
-            a.z + t * (b.z - a.z)
-        };
+    const f32 DOT_THRESHOLD = 0.9995f;
+    if (dot > DOT_THRESHOLD) {
+        // Linear interpolation for small angles
+        Quat result;
+        result.w = a.w + (b.w - a.w) * t;
+        result.x = a.x + (b.x - a.x) * t;
+        result.y = a.y + (b.y - a.y) * t;
+        result.z = a.z + (b.z - a.z) * t;
         // Normalize
-        f32 len = sqrtf(result.w*result.w + result.x*result.x + result.y*result.y + result.z*result.z);
-        result.w /= len; result.x /= len; result.y /= len; result.z /= len;
+        f32 len = sqrtf(result.w * result.w + result.x * result.x + result.y * result.y + result.z * result.z);
+        result.w /= len;
+        result.x /= len;
+        result.y /= len;
+        result.z /= len;
         return result;
     }
 
-    f32 angle = acosf(clampf(cosTheta, -1.0f, 1.0f));
-    f32 sinAngle = sinf(angle);
-    f32 t1 = sinf((1.0f - t) * angle) / sinAngle;
-    f32 t2 = sinf(t * angle) / sinAngle;
+    f32 theta_0 = acosf(dot);
+    f32 theta = theta_0 * t;
+    f32 sin_theta = sinf(theta);
+    f32 sin_theta_0 = sinf(theta_0);
 
-    Quat result = {
-        a.w * t1 + b.w * t2,
-        a.x * t1 + b.x * t2,
-        a.y * t1 + b.y * t2,
-        a.z * t1 + b.z * t2
-    };
+    f32 s0 = cosf(theta) - dot * sin_theta / sin_theta_0;
+    f32 s1 = sin_theta / sin_theta_0;
+
+    Quat result;
+    result.w = s0 * a.w + s1 * b.w;
+    result.x = s0 * a.x + s1 * b.x;
+    result.y = s0 * a.y + s1 * b.y;
+    result.z = s0 * a.z + s1 * b.z;
     return result;
+}
+
+Quat quat_mul(Quat a, Quat b) {
+    Quat res;
+    res.w = a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z;
+    res.x = a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y;
+    res.y = a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x;
+    res.z = a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w;
+    return res;
+}
+
+Quat quat_normalize(Quat q) {
+    f32 len_sq = q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z;
+    if (len_sq < 0.0001f) return (Quat){.w=1, .x=0, .y=0, .z=0};
+    f32 len = sqrtf(len_sq);
+    Quat res;
+    res.w = q.w / len;
+    res.x = q.x / len;
+    res.y = q.y / len;
+    res.z = q.z / len;
+    return res;
 }
