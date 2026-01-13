@@ -28,6 +28,7 @@
 #include <player/player.h>
 #include <player/player_combat.h>
 #include <player/player_magic.h>
+#include <player/player_movement_enhancements.h>
 #include <player/player_vehicle.h>
 #include <player/spirit_model.h>
 #include <player/status_effects.h>
@@ -148,6 +149,9 @@ void player_system_init(PlayerSystem *system, InputState *input,
   system->combat_system = combat_system;
   system->audio_system = audio_system;
   system->interpolation_alpha = 1.0f;
+  
+  // Initialize movement enhancements system
+  player_movement_enhancements_init_system(system);
 }
 
 void player_system_free(PlayerSystem *system) {
@@ -636,6 +640,9 @@ void player_update(PlayerSystem *system, f32 delta_time) {
 
     // Update movement
     player_update_movement(system, delta_time);
+
+    // Update movement enhancements
+    player_movement_enhancements_update_system(system, delta_time);
 
     // Update physics
     player_update_physics(system, delta_time);
@@ -1614,17 +1621,35 @@ void player_jump(PlayerSystem *system) {
   }
 
   p->is_jumping = true;
+  
+  // Record jump action in movement statistics
+  PlayerMovementStats* stats = player_get_movement_stats(system);
+  if (stats) {
+    player_movement_stats_record_action(stats, "jump");
+  }
 }
 
 void player_sprint(PlayerSystem *system, bool enable) {
   if (system->player) {
     system->player->is_sprinting = enable;
+    
+    // Record sprint action in movement statistics
+    PlayerMovementStats* stats = player_get_movement_stats(system);
+    if (stats && enable) {
+      player_movement_stats_record_action(stats, "sprint");
+    }
   }
 }
 
 void player_crouch(PlayerSystem *system, bool enable) {
   if (system->player) {
     system->player->is_crouching = enable;
+    
+    // Record crouch action in movement statistics
+    PlayerMovementStats* stats = player_get_movement_stats(system);
+    if (stats && enable) {
+      player_movement_stats_record_action(stats, "crouch");
+    }
     system->player->camera_offset.y = enable ? 1.3f : 1.6f;
     system->player->camera_height = enable ? 1.3f : 1.6f;
   }
@@ -1634,6 +1659,13 @@ void player_fly(PlayerSystem *system, bool enable) {
   if (system->player && system->game_mode &&
       system->game_mode->mode == GAME_MODE_CREATIVE) {
     system->player->is_flying = enable;
+    
+    // Record flight action in movement statistics
+    PlayerMovementStats* stats = player_get_movement_stats(system);
+    if (stats && enable) {
+      player_movement_stats_record_action(stats, "flight");
+    }
+    
     if (system->player->physics_body) {
       Vec3 vel = rigid_body_get_velocity(system->player->physics_body);
       vel.y = 0.0f;
@@ -2149,6 +2181,59 @@ void player_apply_suffocation_damage(PlayerComponent *p, struct World *world, Ch
      (void)chunks; (void)blocks; (void)audio; (void)camera;
      // Check if head is inside a solid block - strictly usage logic would be here
      internal_apply_damage(p, 1.0f * dt, world);
+}
+
+// Movement Enhancements System Implementation
+
+void player_movement_enhancements_init_system(PlayerSystem *system) {
+    if (!system || !system->player)
+        return;
+    
+    player_movement_enhancements_init(&system->player->movement_enhancements);
+    LOG_INFO("Player movement enhancements system initialized");
+}
+
+void player_movement_enhancements_update_system(PlayerSystem *system, f32 delta_time) {
+    if (!system || !system->player)
+        return;
+    
+    player_movement_enhancements_update(&system->player->movement_enhancements, system, delta_time);
+}
+
+void player_movement_enhancements_free_system(PlayerSystem *system) {
+    if (!system || !system->player)
+        return;
+    
+    player_movement_enhancements_free(&system->player->movement_enhancements);
+    LOG_INFO("Player movement enhancements system freed");
+}
+
+PlayerMovementEnhancements* player_get_movement_enhancements(PlayerSystem *system) {
+    if (!system || !system->player)
+        return NULL;
+    
+    return &system->player->movement_enhancements;
+}
+
+PlayerMovementStats* player_get_movement_stats(PlayerSystem *system) {
+    if (!system || !system->player)
+        return NULL;
+    
+    return &system->player->movement_enhancements.stats;
+}
+
+PlayerMovementProfile* player_get_movement_profile(PlayerSystem *system) {
+    if (!system || !system->player)
+        return NULL;
+    
+    return &system->player->movement_enhancements.profile;
+}
+
+PlayerMovementAccessibility* player_get_movement_accessibility(PlayerSystem *system) {
+    if (!system || !system->player)
+        return NULL;
+    
+    return &system->player->movement_enhancements.accessibility;
 }
 
 void player_update_damage_systems(f32 dt) {

@@ -90,11 +90,12 @@ typedef struct WildlifeSpecies {
   ItemID loot_table_id;
 } WildlifeSpecies;
 
-// TODO(AGENT_WORLD_2): Implement species_database_init [Difficulty: 4]
-// TODO(AGENT_WORLD_2): Implement species_register [Difficulty: 4]
-// TODO(AGENT_WORLD_2): Implement species_get [Difficulty: 3]
-// TODO(AGENT_WORLD_2): Implement species_find_by_biome [Difficulty: 4]
-// TODO(AGENT_WORLD_2): Implement species_load_json [Difficulty: 5]
+/* Species Database Functions */
+bool species_database_init(uint32_t initial_capacity);
+bool species_register(const WildlifeSpecies *species);
+const WildlifeSpecies* species_get(uint32_t species_id);
+uint32_t species_find_by_biome(uint32_t biome_id, const WildlifeSpecies** results, uint32_t max_results);
+bool species_load_json(const char* json_data);
 
 /* =================================================================================================
  *                                    CREATURE INSTANCES

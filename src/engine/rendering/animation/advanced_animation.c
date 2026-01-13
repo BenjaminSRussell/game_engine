@@ -259,6 +259,44 @@ static void update_animation_track(AnimationTrack *track, float dt) {
     }
 }
 
+static void quaternion_slerp(const float *q1, const float *q2, float t, float *result) {
+    // Calculate dot product
+    float dot = q1[0] * q2[0] + q1[1] * q2[1] + q1[2] * q2[2] + q1[3] * q2[3];
+    
+    // If quaternions are nearly parallel, use linear interpolation
+    if (fabsf(dot) > 0.9995f) {
+        result[0] = q1[0] + t * (q2[0] - q1[0]);
+        result[1] = q1[1] + t * (q2[1] - q1[1]);
+        result[2] = q1[2] + t * (q2[2] - q1[2]);
+        result[3] = q1[3] + t * (q2[3] - q1[3]);
+        quaternion_normalize(result);
+        return;
+    }
+    
+    // Clamp dot product to valid range
+    dot = fmaxf(-1.0f, fminf(1.0f, dot));
+    
+    // Calculate angle between quaternions
+    float theta = acosf(dot);
+    float sin_theta = sinf(theta);
+    
+    // Calculate interpolation factors
+    float factor1 = sinf((1.0f - t) * theta) / sin_theta;
+    float factor2 = sinf(t * theta) / sin_theta;
+    
+    // Interpolate
+    result[0] = factor1 * q1[0] + factor2 * q2[0];
+    result[1] = factor1 * q1[1] + factor2 * q2[1];
+    result[2] = factor1 * q1[2] + factor2 * q2[2];
+    result[3] = factor1 * q1[3] + factor2 * q2[3];
+    
+    quaternion_normalize(result);
+}
+
+// ============================================================================
+// Animation Track Implementation
+// ============================================================================
+
 static void interpolate_keyframes(const AnimationKeyframe *keyframe1, const AnimationKeyframe *keyframe2, 
                                 float t, AnimationKeyframe *result) {
     // Linear interpolation for position
@@ -271,9 +309,7 @@ static void interpolate_keyframes(const AnimationKeyframe *keyframe1, const Anim
     memcpy(q1, keyframe1->rotation, 4 * sizeof(float));
     memcpy(q2, keyframe2->rotation, 4 * sizeof(float));
     
-    // TODO: Implement proper spherical linear interpolation
-    quaternion_multiply(q1, q2, q_result);
-    quaternion_normalize(q_result);
+    quaternion_slerp(q1, q2, t, q_result);
     memcpy(result->rotation, q_result, 4 * sizeof(float));
     
     // Linear interpolation for scale
@@ -328,10 +364,43 @@ bool animation_system_init(uint32_t max_animations, uint32_t max_bones, uint32_t
         return false;
     }
     
-    // TODO: Create GPU resources
-    // g_animation_system.bone_buffer = create_buffer(max_bones * 16 * sizeof(float));
-    // g_animation_system.animation_buffer = create_buffer(max_animations * sizeof(AnimationData));
-    // g_animation_system.morph_buffer = create_buffer(max_morph_targets * 256 * sizeof(float));
+    // Create GPU resources
+    extern void* create_gpu_buffer(size_t size);
+    extern void destroy_gpu_buffer(void* buffer);
+    
+    if (enable_gpu_skinning) {
+        g_animation_system.bone_buffer = create_gpu_buffer(max_bones * 16 * sizeof(float));
+        if (!g_animation_system.bone_buffer) {
+            LOG_ERROR("Failed to create bone buffer");
+            free(g_animation_system.bone_matrices);
+            free(g_animation_system.inverse_bind_matrices);
+            free(g_animation_system.bone_names);
+            return false;
+        }
+    }
+    
+    g_animation_system.animation_buffer = create_gpu_buffer(max_animations * sizeof(AnimationTrack));
+    if (!g_animation_system.animation_buffer) {
+        LOG_ERROR("Failed to create animation buffer");
+        if (g_animation_system.bone_buffer) destroy_gpu_buffer(g_animation_system.bone_buffer);
+        free(g_animation_system.bone_matrices);
+        free(g_animation_system.inverse_bind_matrices);
+        free(g_animation_system.bone_names);
+        return false;
+    }
+    
+    if (enable_morphing) {
+        g_animation_system.morph_buffer = create_gpu_buffer(max_morph_targets * 256 * sizeof(float));
+        if (!g_animation_system.morph_buffer) {
+            LOG_ERROR("Failed to create morph buffer");
+            if (g_animation_system.bone_buffer) destroy_gpu_buffer(g_animation_system.bone_buffer);
+            destroy_gpu_buffer(g_animation_system.animation_buffer);
+            free(g_animation_system.bone_matrices);
+            free(g_animation_system.inverse_bind_matrices);
+            free(g_animation_system.bone_names);
+            return false;
+        }
+    }
     
     g_animation_system.initialized = true;
     LOG_INFO("Animation system initialized (max_animations: %u, max_bones: %u, max_morph_targets: %u, gpu_skinning: %s, morphing: %s)",
@@ -355,10 +424,19 @@ void animation_system_shutdown(void) {
     free(g_animation_system.morph_weights);
     free(g_animation_system.morph_targets);
     
-    // TODO: Destroy GPU resources
-    // destroy_buffer(g_animation_system.bone_buffer);
-    // destroy_buffer(g_animation_system.animation_buffer);
-    // destroy_buffer(g_animation_system.morph_buffer);
+    // Destroy GPU resources
+    if (g_animation_system.bone_buffer) {
+        destroy_gpu_buffer(g_animation_system.bone_buffer);
+        g_animation_system.bone_buffer = NULL;
+    }
+    if (g_animation_system.animation_buffer) {
+        destroy_gpu_buffer(g_animation_system.animation_buffer);
+        g_animation_system.animation_buffer = NULL;
+    }
+    if (g_animation_system.morph_buffer) {
+        destroy_gpu_buffer(g_animation_system.morph_buffer);
+        g_animation_system.morph_buffer = NULL;
+    }
     
     memset(&g_animation_system, 0, sizeof(AnimationSystem));
     
@@ -437,13 +515,83 @@ void animation_system_update(AnimationSystem *animation, float dt) {
     
     // Update bone matrices if skeletal animation
     if (animation->has_skeletal_animation) {
-        // TODO: Update bone matrices from animation tracks
+        for (uint32_t bone_idx = 0; bone_idx < animation->bone_count; bone_idx++) {
+            float bone_matrix[16] = {0};
+            
+            // Initialize to identity matrix
+            bone_matrix[0] = bone_matrix[5] = bone_matrix[10] = bone_matrix[15] = 1.0f;
+            
+            // Find animation track for this bone
+            for (uint32_t track_idx = 0; track_idx < animation->track_count; track_idx++) {
+                AnimationTrack *track = &animation->tracks[track_idx];
+                if (!track->is_playing || track->keyframe_count < 2) continue;
+                
+                // Get interpolated keyframe
+                AnimationKeyframe interpolated;
+                interpolate_keyframes(&track->keyframes[track->current_keyframe],
+                                  &track->keyframes[track->next_keyframe],
+                                  track->interpolation_factor, &interpolated);
+                
+                // Create transformation matrix from keyframe
+                float rotation_matrix[16];
+                quaternion_to_matrix(interpolated.rotation, rotation_matrix);
+                
+                float translation_matrix[16];
+                matrix_translate(rotation_matrix, interpolated.position, translation_matrix);
+                
+                float scale_matrix[16];
+                matrix_scale(translation_matrix, interpolated.scale, scale_matrix);
+                
+                // Multiply with inverse bind matrix
+                float *inverse_bind = &animation->inverse_bind_matrices[bone_idx * 16];
+                matrix_multiply_4x4(scale_matrix, inverse_bind, bone_matrix);
+                
+                break; // Assume one track per bone for simplicity
+            }
+            
+            // Update bone matrix
+            memcpy(&animation->bone_matrices[bone_idx * 16], bone_matrix, 16 * sizeof(float));
+        }
+        
+        // Upload to GPU if enabled
+        if (animation->enable_gpu_skinning && g_animation_system.bone_buffer) {
+            extern void update_gpu_buffer(void* buffer, const void* data, size_t size);
+            update_gpu_buffer(g_animation_system.bone_buffer, animation->bone_matrices, 
+                            animation->bone_count * 16 * sizeof(float));
+        }
+        
         animation->bones_animated = animation->bone_count;
     }
     
     // Update morph weights if morph animation
     if (animation->has_morph_animation) {
-        // TODO: Update morph weights from animation tracks
+        // Reset all morph weights
+        memset(animation->morph_weights, 0, animation->morph_target_count * sizeof(float));
+        
+        // Update weights from animation tracks
+        for (uint32_t track_idx = 0; track_idx < animation->track_count; track_idx++) {
+            AnimationTrack *track = &animation->tracks[track_idx];
+            if (!track->is_playing || track->keyframe_count < 2) continue;
+            
+            // Get interpolated keyframe
+            AnimationKeyframe interpolated;
+            interpolate_keyframes(&track->keyframes[track->current_keyframe],
+                              &track->keyframes[track->next_keyframe],
+                              track->interpolation_factor, &interpolated);
+            
+            // Use position.x as morph weight (simplified)
+            if (track_idx < animation->morph_target_count) {
+                animation->morph_weights[track_idx] = interpolated.position[0];
+            }
+        }
+        
+        // Upload to GPU if enabled
+        if (animation->enable_morphing && g_animation_system.morph_buffer) {
+            extern void update_gpu_buffer(void* buffer, const void* data, size_t size);
+            update_gpu_buffer(g_animation_system.morph_buffer, animation->morph_weights,
+                            animation->morph_target_count * sizeof(float));
+        }
+        
         animation->morph_targets_animated = animation->morph_target_count;
     }
     

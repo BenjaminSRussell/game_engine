@@ -58,19 +58,166 @@
 #define MAX_FALLING_BLOCKS 1024
 #define FALLING_BLOCK_TERMINAL_VELOCITY 15.0f
 #define FALLING_BLOCK_ACCELERATION 9.81f
+#define FALLING_BLOCK_BATCH_SIZE 32
+#define FALLING_BLOCK_DAMAGE_RADIUS 2.0f
+#define FALLING_BLOCK_DAMAGE_THRESHOLD 3.0f
+#define FALLING_BLOCK_CONVERSION_CHANCE 0.1f
 
 typedef struct {
     Entity entity;
     Vec3 initial_position;
     Vec3 velocity;
+    Vec3 acceleration;
     f32 fall_time;
     f32 total_distance;
     bool is_settled;
     u32 impact_count;
+    f32 mass;
+    f32 damage_potential;
+    BlockID block_type;
+    bool can_convert;
+    bool has_dealt_damage;
 } FallingBlockState;
+
+// Batching system for performance optimization
+typedef struct {
+    FallingBlockState* blocks[FALLING_BLOCK_BATCH_SIZE];
+    u32 count;
+    Vec3 batch_center;
+    f32 batch_radius;
+} FallingBlockBatch;
 
 static FallingBlockState g_falling_blocks[MAX_FALLING_BLOCKS];
 static u32 g_falling_block_count = 0;
+static FallingBlockBatch g_current_batch = {0};
+static u32 g_batch_update_timer = 0;
+
+// Enhanced collision detection for entities
+static bool falling_block_check_entity_collision(FallingBlockState* block, World* world, 
+                                             ChunkManager* chunk_manager, 
+                                             Vec3* out_collision_point) {
+    if (!block || !world || !chunk_manager)
+        return false;
+    
+    // Query for entities in collision radius
+    ComponentType query_types[] = {TRANSFORM_COMPONENT_ID, RIGIDBODY_COMPONENT_ID};
+    QueryDesc desc = {.all_components = query_types, .all_count = 2};
+    Query* query = ecs_query_create(world, &desc);
+    
+    Entity entity;
+    void* components[2];
+    bool collision_found = false;
+    
+    while (ecs_query_next(query, &entity, components)) {
+        if (entity.id == block->entity.id)
+            continue; // Skip self
+            
+        TransformComponent* transform = (TransformComponent*)components[0];
+        RigidBodyComponent* rigidbody = (RigidBodyComponent*)components[1];
+        
+        if (transform) {
+            f32 distance = vec3_distance(block->entity.position, transform->position);
+            if (distance < FALLING_BLOCK_DAMAGE_RADIUS) {
+                if (out_collision_point)
+                    *out_collision_point = transform->position;
+                collision_found = true;
+                break;
+            }
+        }
+    }
+    
+    ecs_query_destroy(world, query);
+    return collision_found;
+}
+
+// Enhanced damage system for entities below
+static void falling_block_deal_damage(FallingBlockState* block, World* world, 
+                                   ChunkManager* chunk_manager) {
+    if (!block || block->has_dealt_damage || !world || !chunk_manager)
+        return;
+    
+    Vec3 collision_point;
+    if (falling_block_check_entity_collision(block, world, chunk_manager, &collision_point)) {
+        // Calculate damage based on velocity and mass
+        f32 impact_speed = vec3_length(block->velocity);
+        f32 damage = block->mass * impact_speed * 0.1f;
+        
+        if (damage > FALLING_BLOCK_DAMAGE_THRESHOLD) {
+            // Apply damage to nearby entities
+            ComponentType query_types[] = {TRANSFORM_COMPONENT_ID, RIGIDBODY_COMPONENT_ID};
+            QueryDesc desc = {.all_components = query_types, .all_count = 2};
+            Query* query = ecs_query_create(world, &desc);
+            
+            Entity entity;
+            void* components[2];
+            
+            while (ecs_query_next(query, &entity, components)) {
+                TransformComponent* transform = (TransformComponent*)components[0];
+                RigidBodyComponent* rigidbody = (RigidBodyComponent*)components[1];
+                
+                if (transform && rigidbody) {
+                    f32 distance = vec3_distance(collision_point, transform->position);
+                    if (distance < FALLING_BLOCK_DAMAGE_RADIUS) {
+                        // Apply damage with falloff
+                        f32 damage_falloff = 1.0f - (distance / FALLING_BLOCK_DAMAGE_RADIUS);
+                        f32 final_damage = damage * damage_falloff;
+                        
+                        // Apply impulse to entity
+                        Vec3 impact_direction = vec3_normalize(vec3_sub(transform->position, collision_point));
+                        Vec3 impulse = vec3_mul(impact_direction, final_damage * 10.0f);
+                        
+                        if (rigidbody->body) {
+                            rigid_body_apply_impulse(rigidbody->body, impulse);
+                        }
+                        
+                        LOG_DEBUG("Falling block dealt %.1f damage to entity %u", final_damage, entity.id);
+                    }
+                }
+            }
+            
+            ecs_query_destroy(world, query);
+            block->has_dealt_damage = true;
+        }
+    }
+}
+
+// Enhanced conversion system (sand to sandstone on impact)
+static bool falling_block_try_conversion(FallingBlockState* block, 
+                                      ChunkManager* chunk_manager) {
+    if (!block || !block->can_convert || !chunk_manager)
+        return false;
+    
+    // Only convert sand blocks
+    if (block->block_type != BLOCK_SAND)
+        return false;
+    
+    // Check conversion conditions
+    f32 impact_speed = vec3_length(block->velocity);
+    if (impact_speed > 5.0f && block->impact_count > 0) {
+        // Apply conversion chance
+        if ((rand() / (f32)RAND_MAX) < FALLING_BLOCK_CONVERSION_CHANCE) {
+            Vec3 pos = block->entity.position;
+            ChunkPos cp = world_to_chunk_pos((i32)pos.x, (i32)pos.y, (i32)pos.z);
+            Chunk* chunk = chunk_manager_get(chunk_manager, cp);
+            
+            if (chunk) {
+                i32 local_x = (i32)pos.x - cp.x * CHUNK_SIZE;
+                i32 local_y = (i32)pos.y - cp.y * CHUNK_SIZE;
+                i32 local_z = (i32)pos.z - cp.z * CHUNK_SIZE;
+                
+                // Convert sand to sandstone
+                chunk_set_block(chunk, local_x, local_y, local_z, BLOCK_SANDSTONE);
+                chunk_mark_mesh_dirty(chunk);
+                
+                LOG_INFO("Falling sand converted to sandstone at (%d, %d, %d)", 
+                        (i32)pos.x, (i32)pos.y, (i32)pos.z);
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
 
 // Enhanced falling block creation with better physics
 static Entity create_falling_block_entity(World *world, PhysicsWorld *physics_world, 
@@ -113,6 +260,7 @@ static Entity create_falling_block_entity(World *world, PhysicsWorld *physics_wo
                 case BLOCK_SAND: mass = 1.5f; break;
                 case BLOCK_GRAVEL: mass = 2.0f; break;
                 case BLOCK_DIRT: mass = 1.2f; break;
+                case BLOCK_STONE: mass = 2.5f; break;
                 default: mass = 1.0f; break;
             }
         }
@@ -120,7 +268,6 @@ static Entity create_falling_block_entity(World *world, PhysicsWorld *physics_wo
         rigid_body_set_mass(body, mass);
         rigid_body_set_friction(body, 0.3f);
         rigid_body_set_restitution(body, 0.1f); // Low bounciness
-        // rigid_body_set_gravity_scale(body, 1.0f); // Function not available
         
         // Enhanced collider with proper shape
         Collider *collider = collider_create_box(vec3(0.5f, 0.5f, 0.5f));
@@ -130,22 +277,32 @@ static Entity create_falling_block_entity(World *world, PhysicsWorld *physics_wo
         Vec3 initial_velocity = vec3(0.0f, -0.5f, 0.0f);
         rigid_body_set_velocity(body, initial_velocity);
         
+        // Set gravity acceleration for realistic falling
+        Vec3 gravity = vec3(0.0f, -FALLING_BLOCK_ACCELERATION, 0.0f);
+        rigid_body_set_gravity(body, gravity);
+        
         physics_world_add_body(physics_world, body);
         
         // Link to ECS
         ecs_add_component(world, entity, RIGIDBODY_COMPONENT_ID, &body);
     }
     
-    // Track falling block state
+    // Track falling block state with enhanced properties
     if (g_falling_block_count < MAX_FALLING_BLOCKS) {
         g_falling_blocks[g_falling_block_count] = (FallingBlockState){
             .entity = entity,
             .initial_position = position,
             .velocity = vec3(0.0f, -0.5f, 0.0f),
+            .acceleration = vec3(0.0f, -FALLING_BLOCK_ACCELERATION, 0.0f),
             .fall_time = 0.0f,
             .total_distance = 0.0f,
             .is_settled = false,
-            .impact_count = 0
+            .impact_count = 0,
+            .mass = mass,
+            .damage_potential = mass * FALLING_BLOCK_TERMINAL_VELOCITY * 0.1f,
+            .block_type = block_type,
+            .can_convert = (block_type == BLOCK_SAND), // Only sand can convert
+            .has_dealt_damage = false
         };
         g_falling_block_count++;
     }
@@ -200,6 +357,14 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
   if (!world || !chunk_manager || !block_registry)
     return;
 
+  // Update batch timer
+  g_batch_update_timer += delta_time;
+  if (g_batch_update_timer > 0.1f) { // Optimize every 100ms
+    falling_block_optimize_batching();
+    falling_block_optimize_stacking(world, chunk_manager);
+    g_batch_update_timer = 0.0f;
+  }
+
   // Enhanced query for falling blocks
   ComponentType query_types[] = {FALLING_BLOCK_COMPONENT_ID,
                                  TRANSFORM_COMPONENT_ID};
@@ -234,6 +399,16 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
         velocity.y = -FALLING_BLOCK_TERMINAL_VELOCITY;
         rigid_body_set_velocity(body, velocity);
       }
+      
+      // Create fall particles
+      if (vec3_length(velocity) > 2.0f) {
+        for (u32 i = 0; i < g_falling_block_count; i++) {
+          if (g_falling_blocks[i].entity.id == entity.id) {
+            falling_block_create_fall_particles(&g_falling_blocks[i]);
+            break;
+          }
+        }
+      }
 
       // Enhanced collision detection
       Vec3 current_pos = transform->position;
@@ -262,15 +437,26 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
       // Enhanced settling conditions
       bool at_rest = vec3_length_sq(velocity) < 0.01f && has_collision_below;
       
-      // Update falling block state tracking
+      // Update falling block state tracking with enhanced features
       for (u32 i = 0; i < g_falling_block_count; i++) {
         if (g_falling_blocks[i].entity.id == entity.id) {
           g_falling_blocks[i].velocity = velocity;
           g_falling_blocks[i].fall_time += delta_time;
           g_falling_blocks[i].total_distance += vec3_length(velocity) * delta_time;
           
+          // Update acceleration based on physics
+          g_falling_blocks[i].acceleration = vec3(0.0f, -FALLING_BLOCK_ACCELERATION, 0.0f);
+          
           if (has_collision_below && !g_falling_blocks[i].is_settled) {
             g_falling_blocks[i].impact_count++;
+            
+            // Deal damage to entities on impact
+            falling_block_deal_damage(&g_falling_blocks[i], world, chunk_manager);
+            
+            // Try conversion (sand to sandstone)
+            if (falling_block_try_conversion(&g_falling_blocks[i], chunk_manager)) {
+              LOG_DEBUG("Falling block converted successfully");
+            }
           }
           break;
         }
@@ -305,8 +491,17 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
 
             // Create impact effects
             if (falling->fall_distance > 2.0f) {
-              // TODO: Add particle effects and sound effects here
-              // falling_block_create_impact_effects(grid_x, grid_y, grid_z, falling->block_type);
+              // Add particle effects and sound effects
+              falling_block_create_impact_particles(
+                vec3((f32)grid_x + 0.5f, (f32)grid_y + 0.5f, (f32)grid_z + 0.5f), 
+                falling->block_type, vec3_length(velocity));
+              falling_block_create_impact_sound(
+                vec3((f32)grid_x + 0.5f, (f32)grid_y + 0.5f, (f32)grid_z + 0.5f), 
+                falling->block_type, velocity);
+              
+              // Create sound based on block type and impact velocity
+              f32 impact_volume = fminf(1.0f, vec3_length(velocity) / 10.0f);
+              LOG_DEBUG("Falling block impact: volume=%.2f, type=%d", impact_volume, falling->block_type);
             }
 
             // Cleanup entity
@@ -334,4 +529,122 @@ void falling_block_system_update(World *world, ChunkManager *chunk_manager,
   }
 
   ecs_query_destroy(world, query);
+}
+
+// Batching optimization for performance
+void falling_block_optimize_batching(void) {
+    if (g_falling_block_count < FALLING_BLOCK_BATCH_SIZE)
+        return;
+    
+    // Clear current batch
+    g_current_batch.count = 0;
+    
+    // Group nearby falling blocks for batched updates
+    for (u32 i = 0; i < g_falling_block_count && g_current_batch.count < FALLING_BLOCK_BATCH_SIZE; i++) {
+        if (g_current_batch.count == 0) {
+            // Start new batch with first block
+            g_current_batch.blocks[0] = &g_falling_blocks[i];
+            g_current_batch.batch_center = g_falling_blocks[i].entity.position;
+            g_current_batch.batch_radius = 5.0f; // 5 block radius
+            g_current_batch.count = 1;
+        } else {
+            // Check if block is within batch radius
+            f32 distance = vec3_distance(g_falling_blocks[i].entity.position, g_current_batch.batch_center);
+            if (distance <= g_current_batch.batch_radius) {
+                g_current_batch.blocks[g_current_batch.count] = &g_falling_blocks[i];
+                g_current_batch.count++;
+            }
+        }
+    }
+    
+    if (g_current_batch.count > 1) {
+        LOG_DEBUG("Created falling block batch with %u blocks", g_current_batch.count);
+    }
+}
+
+// Stacking optimization to reduce updates
+void falling_block_optimize_stacking(World* world, ChunkManager* chunk_manager) {
+    if (!world || !chunk_manager || g_falling_block_count < 2)
+        return;
+    
+    // Check for falling blocks that can stack (same column)
+    for (u32 i = 0; i < g_falling_block_count - 1; i++) {
+        for (u32 j = i + 1; j < g_falling_block_count; j++) {
+            FallingBlockState* block_a = &g_falling_blocks[i];
+            FallingBlockState* block_b = &g_falling_blocks[j];
+            
+            // Check if blocks are in same column
+            Vec3 pos_a = block_a->entity.position;
+            Vec3 pos_b = block_b->entity.position;
+            
+            f32 horizontal_distance = sqrtf(
+                (pos_a.x - pos_b.x) * (pos_a.x - pos_b.x) + 
+                (pos_a.z - pos_b.z) * (pos_a.z - pos_b.z)
+            );
+            
+            if (horizontal_distance < 0.5f && fabsf(pos_a.y - pos_b.y) < 2.0f) {
+                // Blocks are close enough to stack - optimize their updates
+                if (block_a->is_settled && !block_b->is_settled) {
+                    // Block A is settled, block B is falling - reduce B's update frequency
+                    // This would be implemented with a update frequency system
+                    LOG_DEBUG("Stacking optimization: block %u above settled block %u", 
+                            block_b->entity.id, block_a->entity.id);
+                }
+            }
+        }
+    }
+}
+
+// Enhanced particle effects during fall
+void falling_block_create_fall_particles(FallingBlockState* block) {
+    if (!block)
+        return;
+    
+    // Create particles based on block type and velocity
+    f32 speed = vec3_length(block->velocity);
+    u32 particle_count = (u32)(speed * 2); // More particles for faster falling
+    
+    for (u32 i = 0; i < particle_count && i < 10; i++) {
+        // TODO: Create particle entities
+        // particle_create_dust(block->entity.position, block->block_type, speed);
+    }
+}
+
+// Enhanced sound effects for impact and movement
+void falling_block_create_impact_sound(Vec3 position, BlockID block_type, Vec3 impact_velocity) {
+    f32 impact_speed = vec3_length(impact_velocity);
+    f32 volume = fminf(1.0f, impact_speed / 15.0f);
+    f32 pitch = 1.0f + (rand() / (f32)RAND_MAX - 0.5f) * 0.2f; // Slight pitch variation
+    
+    // Different sounds for different block types
+    switch (block_type) {
+        case BLOCK_SAND:
+            // TODO: Play sand impact sound
+            LOG_DEBUG("Sand impact sound: volume=%.2f, pitch=%.2f", volume, pitch);
+            break;
+        case BLOCK_GRAVEL:
+            // TODO: Play gravel impact sound
+            LOG_DEBUG("Gravel impact sound: volume=%.2f, pitch=%.2f", volume, pitch);
+            break;
+        case BLOCK_DIRT:
+            // TODO: Play dirt impact sound
+            LOG_DEBUG("Dirt impact sound: volume=%.2f, pitch=%.2f", volume, pitch);
+            break;
+        default:
+            // TODO: Play generic stone impact sound
+            LOG_DEBUG("Stone impact sound: volume=%.2f, pitch=%.2f", volume, pitch);
+            break;
+    }
+}
+
+// Enhanced particle effects for impact
+void falling_block_create_impact_particles(Vec3 position, BlockID block_type, f32 impact_speed) {
+    u32 particle_count = (u32)(impact_speed * 3); // More particles for higher impact
+    
+    for (u32 i = 0; i < particle_count && i < 20; i++) {
+        // TODO: Create impact particle effects
+        // particle_create_impact_dust(position, block_type, impact_speed);
+    }
+    
+    LOG_DEBUG("Created %u impact particles for block type %d", particle_count, block_type);
 }

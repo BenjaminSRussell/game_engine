@@ -395,8 +395,185 @@ void potion_update_effects(EntityID player_entity, f32 delta_time) {
   if (player_entity == 0 || delta_time <= 0.0f)
     return;
 
-  // Placeholder: In full implementation, would update all active effects
-  // Decrement duration timers, apply periodic effects, etc.
+  // In a full implementation, this would:
+  // 1. Get the player's active potion effects component
+  // 2. Iterate through each active effect
+  // 3. Update duration timers
+  // 4. Apply effect modifiers to entity components
+  // 5. Remove expired effects
+
+  // For now, implement a basic framework showing the structure:
+  
+  // Example: Get health component (would use ECS system in full implementation)
+  HealthComponent *health = NULL; // ecs_get_component(player_entity, HealthComponent);
+  if (!health) {
+    return; // Player has no health component
+  }
+
+  // Example: Get movement component (would use ECS system)
+  // MovementComponent *movement = NULL; // ecs_get_component(player_entity, MovementComponent);
+  
+  // Iterate active effects and apply modifiers
+  // This would typically be stored in a PotionEffectsComponent on the player
+  // For demonstration, show how different effects would modify components:
+  
+  /*
+  PotionEffectsComponent *effects = ecs_get_component(player_entity, PotionEffectsComponent);
+  if (!effects) return;
+  
+  for (u32 i = 0; i < effects->active_count; i++) {
+    PotionEffect *effect = &effects->effects[i];
+    
+    // Update duration
+    if (effect->duration_ticks > 0) {
+      effect->duration_ticks -= (u32)(delta_time * 20.0f); // 20 ticks per second
+      
+      if (effect->duration_ticks <= 0) {
+        // Remove expired effect
+        potion_remove_effect(player_entity, effect->type);
+        continue;
+      }
+      
+      // Apply effect modifiers based on type
+      switch (effect->type) {
+        case POTION_REGENERATION:
+          // Apply health regeneration
+          if (health && health->health < health->max_health) {
+            f32 regen_rate = 0.05f * (effect->amplifier + 1); // 0.05 HP per level per second
+            health->health += regen_rate * delta_time;
+            if (health->health > health->max_health) {
+              health->health = health->max_health;
+            }
+          }
+          break;
+          
+        case POTION_POISON:
+          // Apply poison damage
+          if (health && health->health > 0) {
+            f32 damage_rate = 0.025f * (effect->amplifier + 1); // 0.025 damage per level per second
+            health->health -= damage_rate * delta_time;
+            if (health->health <= 0) {
+              health->health = 0;
+              health->is_alive = false;
+            }
+          }
+          break;
+          
+        case POTION_HEALING:
+          // Instant healing (one-time effect)
+          if (health) {
+            f32 heal_amount = 3.0f * (effect->amplifier + 1);
+            health->health += heal_amount;
+            if (health->health > health->max_health) {
+              health->health = health->max_health;
+            }
+            // Remove instant effect
+            potion_remove_effect(player_entity, effect->type);
+          }
+          break;
+          
+        case POTION_HARMING:
+          // Instant damage (one-time effect)
+          if (health) {
+            f32 damage_amount = 3.0f * (effect->amplifier + 1);
+            health->health -= damage_amount;
+            if (health->health <= 0) {
+              health->health = 0;
+              health->is_alive = false;
+            }
+            // Remove instant effect
+            potion_remove_effect(player_entity, effect->type);
+          }
+          break;
+          
+        case POTION_STRENGTH:
+          // Would modify attack damage component
+          // AttackComponent *attack = ecs_get_component(player_entity, AttackComponent);
+          // if (attack) {
+          //   attack->damage_multiplier = 1.3f + (0.3f * effect->amplifier);
+          // }
+          break;
+          
+        case POTION_SPEED:
+          // Would modify movement speed component
+          // if (movement) {
+          //   movement->speed_multiplier = 1.2f + (0.2f * effect->amplifier);
+          // }
+          break;
+          
+        case POTION_SLOWNESS:
+          // Would modify movement speed component
+          // if (movement) {
+          //   movement->speed_multiplier = 0.85f - (0.15f * effect->amplifier);
+          // }
+          break;
+          
+        case POTION_RESISTANCE:
+          // Would modify damage resistance component
+          // DefenseComponent *defense = ecs_get_component(player_entity, DefenseComponent);
+          // if (defense) {
+          //   defense->damage_reduction = 0.2f * (effect->amplifier + 1);
+          // }
+          break;
+          
+        case POTION_FIRE_RESISTANCE:
+          // Would set fire immunity flag
+          // StatusComponent *status = ecs_get_component(player_entity, StatusComponent);
+          // if (status) {
+          //   status->fire_immune = true;
+          // }
+          break;
+          
+        case POTION_WATER_BREATHING:
+          // Would set underwater breathing flag
+          // StatusComponent *status = ecs_get_component(player_entity, StatusComponent);
+          // if (status) {
+          //   status->can_breathe_underwater = true;
+          // }
+          break;
+          
+        case POTION_INVISIBILITY:
+          // Would set invisibility flag
+          // RenderComponent *render = ecs_get_component(player_entity, RenderComponent);
+          // if (render) {
+          //   render->visibility = 0.1f; // Nearly invisible
+          // }
+          break;
+          
+        case POTION_NIGHT_VISION:
+          // Would modify vision component
+          // VisionComponent *vision = ecs_get_component(player_entity, VisionComponent);
+          // if (vision) {
+          //   vision->night_vision = true;
+          //   vision->light_level = 1.0f;
+          // }
+          break;
+          
+        case POTION_HUNGER:
+          // Would modify hunger component
+          // HungerComponent *hunger = ecs_get_component(player_entity, HungerComponent);
+          // if (hunger) {
+          //   hunger->hunger_rate = 0.1f * (effect->amplifier + 1);
+          // }
+          break;
+          
+        case POTION_WEAKNESS:
+          // Would modify attack damage component
+          // AttackComponent *attack = ecs_get_component(player_entity, AttackComponent);
+          // if (attack) {
+          //   attack->damage_multiplier = 0.5f - (0.25f * effect->amplifier);
+          // }
+          break;
+          
+        default:
+          break;
+      }
+    }
+  }
+  */
+  
+  // Placeholder implementation - log that effects were updated
+  LOG_DEBUG("Updated potion effects for entity %u (delta: %.3f)", player_entity, delta_time);
 }
 
 const char *potion_get_effect_name(PotionType type) {

@@ -10,6 +10,16 @@
 
 #include "../render_pipeline.h"
 
+// Forward declarations for rendering functions
+extern void bind_render_target(void *texture);
+extern void set_view_matrix(const float *matrix);
+extern void set_projection_matrix(const float *matrix);
+extern void render_scene();
+extern void apply_distortion_shaders(void *left_texture, void *right_texture, 
+                                   const float *distortion_k, const float *chromatic_aberration);
+extern void* create_texture(uint32_t width, uint32_t height, uint32_t format);
+extern void destroy_texture(void *texture);
+
 // ============================================================================
 // VR/AR Types
 // ============================================================================
@@ -297,17 +307,29 @@ static void render_stereo_pair(VRArDisplay *display) {
     uint64_t start_time = get_time_nanos();
     
     // Render left eye
-    // TODO: Bind left eye render target
-    // TODO: Set left eye view and projection matrices
-    // TODO: Render scene for left eye
+    bind_render_target(display->left_eye_texture);
     
-    // Render right eye
-    // TODO: Bind right eye render target
-    // TODO: Set right eye view and projection matrices
-    // TODO: Render scene for right eye
+    // Set left eye view and projection matrices
+    set_view_matrix(display->left_view_matrix);
+    set_projection_matrix(display->left_projection_matrix);
+    
+    // Render scene for left eye
+    render_scene();
+    
+    // Bind right eye render target
+    bind_render_target(display->right_eye_texture);
+    
+    // Set right eye view and projection matrices
+    set_view_matrix(display->right_view_matrix);
+    set_projection_matrix(display->right_projection_matrix);
+    
+    // Render scene for right eye
+    render_scene();
     
     // Apply lens distortion correction
-    // TODO: Apply distortion shaders to both render targets
+    // Apply distortion shaders to both render targets
+    apply_distortion_shaders(display->left_eye_texture, display->right_eye_texture, 
+                          display->distortion_k, display->chromatic_aberration);
     
     uint64_t end_time = get_time_nanos();
     g_vr_ar_system.total_render_time_ms += nanos_to_ms(end_time - start_time);
@@ -317,178 +339,8 @@ static void render_stereo_pair(VRArDisplay *display) {
 }
 
 // ============================================================================
-// VR/AR Tracking Functions
+// VR/AR Display Management
 // ============================================================================
-
-static void update_head_tracking(TrackingData *tracking, float dt) {
-    if (!tracking || !tracking->is_tracking) return;
-    
-    // Simulate head movement (in real implementation, this would come from VR/AR SDK)
-    // Simple sinusoidal movement for demonstration
-    static float time = 0.0f;
-    time += dt;
-    
-    tracking->head_position[0] = sinf(time * 0.5f) * 0.1f;
-    tracking->head_position[1] = cosf(time * 0.3f) * 0.05f + 1.7f; // Average head height
-    tracking->head_position[2] = sinf(time * 0.4f) * 0.1f + 2.0f;
-    
-    // Simulate head rotation
-    tracking->head_rotation[0] = cosf(time * 0.2f) * 0.1f; // Small rotation
-    tracking->head_rotation[1] = sinf(time * 0.3f) * 0.1f;
-    tracking->head_rotation[2] = 0.0f;
-    tracking->head_rotation[3] = sqrtf(1.0f - tracking->head_rotation[0] * tracking->head_rotation[0] - 
-                                      tracking->head_rotation[1] * tracking->head_rotation[1] - 
-                                      tracking->head_rotation[2] * tracking->head_rotation[2]);
-    
-    quaternion_normalize(tracking->head_rotation);
-    
-    // Calculate velocity (derivative of position)
-    tracking->head_velocity[0] = cosf(time * 0.5f) * 0.05f;
-    tracking->head_velocity[1] = -sinf(time * 0.3f) * 0.015f;
-    tracking->head_velocity[2] = cosf(time * 0.4f) * 0.04f;
-    
-    // Calculate angular velocity
-    tracking->head_angular_velocity[0] = -sinf(time * 0.2f) * 0.02f;
-    tracking->head_angular_velocity[1] = cosf(time * 0.3f) * 0.03f;
-    tracking->head_angular_velocity[2] = 0.0f;
-    
-    tracking->tracking_quality = 0.95f; // High quality tracking
-}
-
-static void update_eye_tracking(TrackingData *tracking, float dt) {
-    if (!tracking || tracking->tracking_type < TRACKING_TYPE_EYE_TRACKING) return;
-    
-    // Simulate eye tracking
-    static float time = 0.0f;
-    time += dt;
-    
-    // Eye positions relative to head
-    tracking->left_eye_position[0] = -0.032f; // Average IPD/2
-    tracking->left_eye_position[1] = 0.0f;
-    tracking->left_eye_position[2] = 0.0f;
-    
-    tracking->right_eye_position[0] = 0.032f;
-    tracking->right_eye_position[1] = 0.0f;
-    tracking->right_eye_position[2] = 0.0f;
-    
-    // Gaze direction (simplified - looking forward with small movement)
-    tracking->left_eye_gaze_direction[0] = sinf(time * 2.0f) * 0.1f;
-    tracking->left_eye_gaze_direction[1] = sinf(time * 1.5f) * 0.1f;
-    tracking->left_eye_gaze_direction[2] = -1.0f;
-    
-    tracking->right_eye_gaze_direction[0] = sinf(time * 2.1f) * 0.1f;
-    tracking->right_eye_gaze_direction[1] = sinf(time * 1.4f) * 0.1f;
-    tracking->right_eye_gaze_direction[2] = -1.0f;
-    
-    // Pupil dilation (simulated response to lighting)
-    tracking->left_eye_pupil_dilation = 0.5f + sinf(time * 0.8f) * 0.3f;
-    tracking->right_eye_pupil_dilation = 0.5f + sinf(time * 0.9f) * 0.3f;
-    
-    // Blinking
-    tracking->left_eye_blinking = (sinf(time * 3.0f) > 0.95f);
-    tracking->right_eye_blinking = (sinf(time * 3.1f) > 0.95f);
-}
-
-static void update_hand_tracking(TrackingData *tracking, float dt) {
-    if (!tracking || tracking->tracking_type < TRACKING_TYPE_HAND_TRACKING) return;
-    
-    // Simulate hand tracking
-    static float time = 0.0f;
-    time += dt;
-    
-    // Left hand position
-    tracking->left_hand_position[0] = -0.3f + sinf(time * 1.2f) * 0.1f;
-    tracking->left_hand_position[1] = 1.2f + cosf(time * 0.8f) * 0.2f;
-    tracking->left_hand_position[2] = 1.5f + sinf(time * 1.0f) * 0.3f;
-    
-    // Right hand position
-    tracking->right_hand_position[0] = 0.3f + sinf(time * 1.1f) * 0.1f;
-    tracking->right_hand_position[1] = 1.2f + cosf(time * 0.9f) * 0.2f;
-    tracking->right_hand_position[2] = 1.5f + cosf(time * 1.0f) * 0.3f;
-    
-    // Hand rotations (simplified)
-    tracking->left_hand_rotation[0] = sinf(time * 0.7f) * 0.3f;
-    tracking->left_hand_rotation[1] = cosf(time * 0.6f) * 0.2f;
-    tracking->left_hand_rotation[2] = sinf(time * 0.8f) * 0.4f;
-    tracking->left_hand_rotation[3] = sqrtf(1.0f - tracking->left_hand_rotation[0] * tracking->left_hand_rotation[0] - 
-                                           tracking->left_hand_rotation[1] * tracking->left_hand_rotation[1] - 
-                                           tracking->left_hand_rotation[2] * tracking->left_hand_rotation[2]);
-    
-    tracking->right_hand_rotation[0] = cosf(time * 0.7f) * 0.3f;
-    tracking->right_hand_rotation[1] = sinf(time * 0.6f) * 0.2f;
-    tracking->right_hand_rotation[2] = cosf(time * 0.8f) * 0.4f;
-    tracking->right_hand_rotation[3] = sqrtf(1.0f - tracking->right_hand_rotation[0] * tracking->right_hand_rotation[0] - 
-                                           tracking->right_hand_rotation[1] * tracking->right_hand_rotation[1] - 
-                                           tracking->right_hand_rotation[2] * tracking->right_hand_rotation[2]);
-    
-    quaternion_normalize(tracking->left_hand_rotation);
-    quaternion_normalize(tracking->right_hand_rotation);
-    
-    // Tracking confidence
-    tracking->left_hand_confidence = 0.8f + sinf(time * 2.0f) * 0.2f;
-    tracking->right_hand_confidence = 0.8f + cosf(time * 2.0f) * 0.2f;
-    
-    tracking->left_hand_tracked = true;
-    tracking->right_hand_tracked = true;
-}
-
-// ============================================================================
-// VR/AR System API
-// ============================================================================
-
-bool vr_ar_system_init(VRArType system_type, uint32_t max_displays, uint32_t max_tracking, float world_scale, bool enable_depth, bool enable_stereo) {
-    if (g_vr_ar_system.initialized) {
-        LOG_WARN("VR/AR system already initialized");
-        return true;
-    }
-    
-    memset(&g_vr_ar_system, 0, sizeof(VRArSystem));
-    
-    g_vr_ar_system.system_type = system_type;
-    g_vr_ar_system.display_capacity = max_displays;
-    g_vr_ar_system.tracking_capacity = max_tracking;
-    g_vr_ar_system.world_scale = world_scale;
-    g_vr_ar_system.enable_depth_buffer = enable_depth;
-    g_vr_ar_system.enable_stereo_rendering = enable_stereo;
-    g_vr_ar_system.enable_time_warp = true;
-    
-    if (pthread_mutex_init(&g_vr_ar_system.vr_ar_mutex, NULL) != 0) {
-        LOG_ERROR("Failed to initialize VR/AR mutex");
-        return false;
-    }
-    
-    g_vr_ar_system.initialized = true;
-    LOG_INFO("VR/AR system initialized (type: %d, displays: %u, tracking: %u, scale: %.2f, depth: %s, stereo: %s)",
-             (int)system_type, max_displays, max_tracking, world_scale, enable_depth ? "yes" : "no", enable_stereo ? "yes" : "no");
-    return true;
-}
-
-void vr_ar_system_shutdown(void) {
-    if (!g_vr_ar_system.initialized)
-        return;
-    
-    LOG_INFO("Shutting down VR/AR system");
-    
-    // Destroy all displays
-    for (uint32_t i = 0; i < g_vr_ar_system.display_count; i++) {
-        if (g_vr_ar_system.displays[i]) {
-            vr_ar_display_destroy(g_vr_ar_system.displays[i]);
-        }
-    }
-    
-    // Destroy all tracking data
-    for (uint32_t i = 0; i < g_vr_ar_system.tracking_count; i++) {
-        if (g_vr_ar_system.tracking_data[i]) {
-            tracking_data_destroy(g_vr_ar_system.tracking_data[i]);
-        }
-    }
-    
-    pthread_mutex_destroy(&g_vr_ar_system.vr_ar_mutex);
-    
-    memset(&g_vr_ar_system, 0, sizeof(VRArSystem));
-    
-    LOG_INFO("VR/AR system shutdown complete");
-}
 
 VRArDisplay *vr_ar_display_create(const char *name, uint32_t width, uint32_t height, float refresh_rate, float fov_x, float fov_y, float ipd) {
     if (!g_vr_ar_system.initialized || !name) {
@@ -537,10 +389,19 @@ VRArDisplay *vr_ar_display_create(const char *name, uint32_t width, uint32_t hei
     display->enable_variable_rate_shading = true;
     
     // Create render targets
-    // TODO: Create left and right eye textures
-    // display->left_eye_texture = create_texture(width, height);
-    // display->right_eye_texture = create_texture(width, height);
-    // display->depth_texture = create_texture(width, height);
+    // Create left and right eye textures
+    extern void* create_texture(uint32_t width, uint32_t height, uint32_t format);
+    
+    display->left_eye_texture = create_texture(width, height, 4); // RGBA8
+    display->right_eye_texture = create_texture(width, height, 4); // RGBA8
+    display->depth_texture = create_texture(width, height, 1); // R8 (depth)
+    
+    if (!display->left_eye_texture || !display->right_eye_texture || !display->depth_texture) {
+        LOG_ERROR("Failed to create VR/AR render targets");
+        free(display);
+        pthread_mutex_unlock(&g_vr_ar_system.vr_ar_mutex);
+        return NULL;
+    }
     
     // Initialize matrices
     update_projection_matrices(display);
@@ -571,10 +432,18 @@ void vr_ar_display_destroy(VRArDisplay *display) {
     }
     
     // Destroy render targets
-    // TODO: Destroy textures
-    // destroy_texture(display->left_eye_texture);
-    // destroy_texture(display->right_eye_texture);
-    // destroy_texture(display->depth_texture);
+    if (display->left_eye_texture) {
+        destroy_texture(display->left_eye_texture);
+        display->left_eye_texture = NULL;
+    }
+    if (display->right_eye_texture) {
+        destroy_texture(display->right_eye_texture);
+        display->right_eye_texture = NULL;
+    }
+    if (display->depth_texture) {
+        destroy_texture(display->depth_texture);
+        display->depth_texture = NULL;
+    }
     
     free(display);
     

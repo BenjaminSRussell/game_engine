@@ -163,9 +163,22 @@ static void initialize_ddgi(GISystem *gi, uint32_t voxel_count_x, uint32_t voxel
     gi->ddgi.bias = 0.001f;
     gi->ddgi.temporal_alpha = 0.1f;
     
-    // TODO: Create irradiance and distance textures
-    // gi->ddgi.irradiance_texture = create_texture_3d(voxel_count_x, voxel_count_y, voxel_count_z, FORMAT_RGBA16F);
-    // gi->ddgi.distance_texture = create_texture_3d(voxel_count_x, voxel_count_y, voxel_count_z, FORMAT_R16F);
+    // Create irradiance and distance textures
+    gi->ddgi.irradiance_texture = create_texture_3d(voxel_count_x, voxel_count_y, voxel_count_z, FORMAT_RGBA16F);
+    gi->ddgi.distance_texture = create_texture_3d(voxel_count_x, voxel_count_y, voxel_count_z, FORMAT_R16F);
+    
+    if (!gi->ddgi.irradiance_texture || !gi->ddgi.distance_texture) {
+        LOG_ERROR("Failed to create DDGI textures");
+        free(gi->ddgi.voxels);
+        free(gi->ddgi.probe_positions);
+        gi->ddgi.voxels = NULL;
+        gi->ddgi.probe_positions = NULL;
+        return;
+    }
+    
+    // Initialize texture data
+    clear_texture_3d(gi->ddgi.irradiance_texture, (float[]){0.0f, 0.0f, 0.0f, 0.0f});
+    clear_texture_3d(gi->ddgi.distance_texture, (float[]){gi->ddgi.max_ray_distance});
     
     LOG_INFO("Initialized DDGI: %ux%ux%u voxels, %u probes", 
              voxel_count_x, voxel_count_y, voxel_count_z, gi->ddgi.probe_count);
@@ -176,17 +189,8 @@ static void update_ddgi_probes(GISystem *gi, const float *camera_pos, const floa
     
     uint64_t start_time = get_time_nanos();
     
-    // Update DDGI probes based on camera movement
-    // TODO: Implement actual DDGI update algorithm
-    // This would involve:
-    // 1. Trace rays from each probe position
-    // 2. Gather radiance and distance information
-    // 3. Update irradiance and distance textures
-    // 4. Apply temporal accumulation
-    
-    uint32_t probes_updated = 0;
-    uint32_t rays_traced = 0;
-    
+    // Implement actual DDGI update algorithm
+    // Trace rays from each probe position
     for (uint32_t i = 0; i < gi->ddgi.probe_count; i++) {
         const float3 *probe_pos = &gi->ddgi.probe_positions[i];
         
@@ -199,8 +203,49 @@ static void update_ddgi_probes(GISystem *gi, const float *camera_pos, const floa
         float distance = sqrtf(to_probe.x * to_probe.x + to_probe.y * to_probe.y + to_probe.z * to_probe.z);
         
         if (distance < gi->ddgi.max_ray_distance * 2.0f) {
-            // Update this probe
-            // TODO: Trace rays and update voxel data
+            // Trace rays and gather radiance
+            float3 total_radiance = {0.0f, 0.0f, 0.0f};
+            float total_distance = 0.0f;
+            uint32_t valid_rays = 0;
+            
+            for (uint32_t ray = 0; ray < gi->ddgi.rays_per_probe; ray++) {
+                // Generate ray direction using hemisphere sampling
+                float u = (float)rand() / RAND_MAX;
+                float v = (float)rand() / RAND_MAX;
+                
+                float theta = 2.0f * M_PI * u;
+                float phi = acosf(2.0f * v - 1.0f);
+                
+                float3 ray_dir = {
+                    sinf(phi) * cosf(theta),
+                    cosf(phi),
+                    sinf(phi) * sinf(theta)
+                };
+                
+                // Trace ray and get radiance
+                float3 radiance;
+                float ray_distance;
+                if (trace_ray_ddgi(probe_pos, &ray_dir, &radiance, &ray_distance)) {
+                    total_radiance.x += radiance.x;
+                    total_radiance.y += radiance.y;
+                    total_radiance.z += radiance.z;
+                    total_distance += ray_distance;
+                    valid_rays++;
+                }
+            }
+            
+            // Average the results
+            if (valid_rays > 0) {
+                float inv_valid_rays = 1.0f / (float)valid_rays;
+                total_radiance.x *= inv_valid_rays;
+                total_radiance.y *= inv_valid_rays;
+                total_radiance.z *= inv_valid_rays;
+                total_distance *= inv_valid_rays;
+                
+                // Update probe data
+                update_ddgi_probe(gi, i, &total_radiance, total_distance);
+            }
+            
             probes_updated++;
             rays_traced += gi->ddgi.rays_per_probe;
         }
@@ -278,14 +323,56 @@ static void initialize_restir(GISystem *gi, uint32_t reservoir_size, uint32_t te
     gi->restir.temporal_bias = 0.001f;
     gi->restir.alpha = 0.1f;
     
-    // TODO: Create reservoir buffer
-    // gi->restir.reservoir_buffer = create_buffer(reservoir_size * sizeof(Reservoir));
+    // Create reservoir buffer
+    gi->restir.reservoir_buffer = create_buffer(reservoir_size * sizeof(Reservoir));
+    if (!gi->restir.reservoir_buffer) {
+        LOG_ERROR("Failed to create ReSTIR reservoir buffer");
+        return;
+    }
     
-    // TODO: Create importance buffer
-    // gi->restir.importance_buffer = create_buffer(reservoir_size * sizeof(float));
+    // Initialize reservoirs
+    Reservoir *reservoirs = map_buffer(gi->restir.reservoir_buffer);
+    for (uint32_t i = 0; i < reservoir_size; i++) {
+        reservoirs[i].weight_sum = 0.0f;
+        reservoirs[i].sample_count = 0;
+        reservoirs[i].M = 0.0f;
+        reservoirs[i].light_index = UINT32_MAX;
+        reservoirs[i].random_hash = 0;
+    }
+    unmap_buffer(gi->restir.reservoir_buffer);
     
-    // TODO: Create history buffer
-    // gi->restir.history_buffer = create_buffer(reservoir_size * temporal_frames * sizeof(float4));
+    // Create importance buffer
+    gi->restir.importance_buffer = create_buffer(reservoir_size * sizeof(float));
+    if (!gi->restir.importance_buffer) {
+        LOG_ERROR("Failed to create ReSTIR importance buffer");
+        destroy_buffer(gi->restir.reservoir_buffer);
+        gi->restir.reservoir_buffer = NULL;
+        return;
+    }
+    
+    // Initialize importance values
+    float *importance = map_buffer(gi->restir.importance_buffer);
+    for (uint32_t i = 0; i < reservoir_size; i++) {
+        importance[i] = 1.0f; // Equal importance initially
+    }
+    unmap_buffer(gi->restir.importance_buffer);
+    
+    // Create history buffer
+    uint32_t history_size = reservoir_size * temporal_frames;
+    gi->restir.history_buffer = create_buffer(history_size * sizeof(float4));
+    if (!gi->restir.history_buffer) {
+        LOG_ERROR("Failed to create ReSTIR history buffer");
+        destroy_buffer(gi->restir.reservoir_buffer);
+        destroy_buffer(gi->restir.importance_buffer);
+        gi->restir.reservoir_buffer = NULL;
+        gi->restir.importance_buffer = NULL;
+        return;
+    }
+    
+    // Initialize history with zeros
+    float4 *history = map_buffer(gi->restir.history_buffer);
+    memset(history, 0, history_size * sizeof(float4));
+    unmap_buffer(gi->restir.history_buffer);
     
     LOG_INFO("Initialized ReSTIR: %u reservoirs, %u temporal frames", reservoir_size, temporal_frames);
 }
@@ -295,12 +382,39 @@ static void update_restir(GISystem *gi, const float *camera_pos, const float *vi
     
     uint64_t start_time = get_time_nanos();
     
-    // TODO: Implement ReSTIR update algorithm
-    // This would involve:
-    // 1. Generate importance samples
-    // 2. Update reservoirs with new samples
-    // 3. Apply temporal reuse
-    // 4. Spatial resampling
+    // Implement ReSTIR update algorithm
+    Reservoir *reservoirs = map_buffer(gi->restir.reservoir_buffer);
+    float *importance = map_buffer(gi->restir.importance_buffer);
+    float4 *history = map_buffer(gi->restir.history_buffer);
+    
+    // Generate new samples and update reservoirs
+    for (uint32_t i = 0; i < gi->restir.reservoir_size; i++) {
+        // Generate importance sample
+        float u = (float)rand() / RAND_MAX;
+        float v = (float)rand() / RAND_MAX;
+        
+        // Sample light source
+        LightSample sample = sample_light_source(u, v);
+        
+        // Calculate sample weight
+        float weight = calculate_sample_weight(&sample, importance[i]);
+        
+        // Update reservoir using temporal reuse
+        update_reservoir(&reservoirs[i], &sample, weight, gi->restir.temporal_bias);
+        
+        // Apply spatial resampling
+        if (gi->restir.spatial_radius > 0.0f) {
+            spatial_resample_reservoirs(gi, i, reservoirs, importance);
+        }
+        
+        // Update history
+        uint32_t history_index = (gi->restir.temporal_frames * i) + (gi->restir.temporal_frames - 1);
+        history[history_index] = (float4){sample.radiance.x, sample.radiance.y, sample.radiance.z, weight};
+    }
+    
+    unmap_buffer(gi->restir.reservoir_buffer);
+    unmap_buffer(gi->restir.importance_buffer);
+    unmap_buffer(gi->restir.history_buffer);
     
     uint64_t end_time = get_time_nanos();
     gi->gi_time_ms += nanos_to_ms(end_time - start_time);
@@ -352,14 +466,43 @@ bool gi_system_init(GIType type, uint32_t resolution, float update_rate, float i
             return false;
     }
     
-    // TODO: Create GI compute shader
-    // g_gi_system.gi_compute_shader = load_compute_shader("gi_compute");
+    // Create GI compute shader
+    g_gi_system.gi_compute_shader = load_compute_shader("global_illumination");
+    if (!g_gi_system.gi_compute_shader) {
+        LOG_ERROR("Failed to load GI compute shader");
+        return false;
+    }
     
-    // TODO: Create GI render target
-    // g_gi_system.gi_render_target = create_render_target(resolution, resolution, FORMAT_RGBA16F);
+    // Set compute shader constants
+    bind_compute_shader(g_gi_system.gi_compute_shader);
+    set_compute_uniform("gi_type", (int)type);
+    set_compute_uniform("gi_intensity", intensity);
+    set_compute_uniform("max_bounces", g_gi_system.max_bounces);
+    set_compute_uniform("gi_resolution", (int)resolution);
+    unbind_compute_shader();
     
-    // TODO: Create GI buffer
-    // g_gi_system.gi_buffer = create_buffer(sizeof(GIData));
+    // Create GI render target
+    g_gi_system.gi_render_target = create_render_target(resolution, resolution, FORMAT_RGBA16F);
+    if (!g_gi_system.gi_render_target) {
+        LOG_ERROR("Failed to create GI render target");
+        return false;
+    }
+    
+    // Create GI buffer
+    g_gi_system.gi_buffer = create_buffer(sizeof(GIData));
+    if (!g_gi_system.gi_buffer) {
+        LOG_ERROR("Failed to create GI buffer");
+        return false;
+    }
+    
+    // Initialize GI data
+    GIData *gi_data = map_buffer(g_gi_system.gi_buffer);
+    gi_data->gi_type = type;
+    gi_data->intensity = intensity;
+    gi_data->max_bounces = g_gi_system.max_bounces;
+    gi_data->resolution = resolution;
+    gi_data->update_rate = update_rate;
+    unmap_buffer(g_gi_system.gi_buffer);
     
     g_gi_system.initialized = true;
     LOG_INFO("Global illumination system initialized (type: %d, resolution: %u, update_rate: %.2f, intensity: %.2f)",
@@ -384,20 +527,43 @@ void gi_system_shutdown(void) {
         g_gi_system.ddgi.probe_positions = NULL;
     }
     
-    // TODO: Destroy textures
-    // if (g_gi_system.ddgi.irradiance_texture) destroy_texture(g_gi_system.ddgi.irradiance_texture);
-    // if (g_gi_system.ddgi.distance_texture) destroy_texture(g_gi_system.ddgi.distance_texture);
+    // Destroy textures
+    if (g_gi_system.ddgi.irradiance_texture) {
+        destroy_texture(g_gi_system.ddgi.irradiance_texture);
+        g_gi_system.ddgi.irradiance_texture = NULL;
+    }
+    if (g_gi_system.ddgi.distance_texture) {
+        destroy_texture(g_gi_system.ddgi.distance_texture);
+        g_gi_system.ddgi.distance_texture = NULL;
+    }
     
     // Cleanup ReSTIR
-    // TODO: Destroy buffers
-    // if (g_gi_system.restir.reservoir_buffer) destroy_buffer(g_g_gi_system.restir.reservoir_buffer);
-    // if (g_gi_system.restir.importance_buffer) destroy_buffer(g_gi_system.restir.importance_buffer);
-    // if (g_gi_system.restir.history_buffer) destroy_buffer(g_gi_system.restir.history_buffer);
+    if (g_gi_system.restir.reservoir_buffer) {
+        destroy_buffer(g_gi_system.restir.reservoir_buffer);
+        g_gi_system.restir.reservoir_buffer = NULL;
+    }
+    if (g_gi_system.restir.importance_buffer) {
+        destroy_buffer(g_gi_system.restir.importance_buffer);
+        g_gi_system.restir.importance_buffer = NULL;
+    }
+    if (g_gi_system.restir.history_buffer) {
+        destroy_buffer(g_gi_system.restir.history_buffer);
+        g_gi_system.restir.history_buffer = NULL;
+    }
+    if (g_gi_system.gi_buffer) {
+        destroy_buffer(g_gi_system.gi_buffer);
+        g_gi_system.gi_buffer = NULL;
+    }
     
-    // TODO: Destroy GPU resources
-    // if (g_gi_system.gi_compute_shader) destroy_shader(g_gi_system.gi_compute_shader);
-    // if (g_gi_system.gi_render_target) destroy_render_target(g_gi_system.gi_render_target);
-    // if (g_gi_system.gi_buffer) destroy_buffer(g_gi_system.gi_buffer);
+    // Destroy GPU resources
+    if (g_gi_system.gi_compute_shader) {
+        destroy_shader(g_gi_system.gi_compute_shader);
+        g_gi_system.gi_compute_shader = NULL;
+    }
+    if (g_gi_system.gi_render_target) {
+        destroy_render_target(g_gi_system.gi_render_target);
+        g_gi_system.gi_render_target = NULL;
+    }
     
     memset(&g_gi_system, 0, sizeof(GISystem));
     
@@ -447,15 +613,72 @@ float3 gi_system_sample_indirect_lighting(const float3 world_pos, const float3 n
         case GI_TYPE_DDGI:
         return sample_ddgi_irradiance(&g_gi_system, world_pos, normal);
             
-        case GI_TYPE_RESTIR:
             // TODO: Sample ReSTIR
+            Reservoir *reservoirs = map_buffer(g_gi_system.restir.reservoir_buffer);
+            uint32_t pixel_index = (uint32_t)(world_pos.x * g_gi_system.gi_resolution) + 
+                                 (uint32_t)(world_pos.z * g_gi_system.gi_resolution);
+            
+            if (pixel_index < g_gi_system.restir.reservoir_size) {
+                Reservoir *reservoir = &reservoirs[pixel_index];
+                if (reservoir->sample_count > 0) {
+                    // Sample from reservoir
+                    float u = (float)rand() / RAND_MAX;
+                    float weight_threshold = u * reservoir->weight_sum;
+                    
+                    float accumulated_weight = 0.0f;
+                    for (uint32_t i = 0; i < reservoir->sample_count; i++) {
+                        accumulated_weight += reservoir->weights[i];
+                        if (accumulated_weight >= weight_threshold) {
+                            // Return selected sample
+                            return reservoir->samples[i].radiance;
+                        }
+                    }
+                    
+                    // Fallback to first sample
+                    return reservoir->samples[0].radiance;
+                }
+            }
+            
+            unmap_buffer(g_gi_system.restir.reservoir_buffer);
             return (float3){0.0f, 0.0f, 0.0f};
             
         case GI_TYPE_HYBRID:
             // Combine DDGI and ReSTIR
             float3 ddgi_contribution = sample_ddgi_irradiance(&g_gi_system, world_pos, normal);
-            // float3 restir_contribution = sample_restir(&g_gi_system, world_pos, normal, view_dir);
-            return ddgi_contribution; // TODO: Add ReSTIR contribution
+            
+            // Add ReSTIR contribution
+            Reservoir *reservoirs = map_buffer(g_gi_system.restir.reservoir_buffer);
+            uint32_t pixel_index = (uint32_t)(world_pos.x * g_gi_system.gi_resolution) + 
+                                 (uint32_t)(world_pos.z * g_gi_system.gi_resolution);
+            
+            float3 restir_contribution = {0.0f, 0.0f, 0.0f};
+            if (pixel_index < g_gi_system.restir.reservoir_size) {
+                Reservoir *reservoir = &reservoirs[pixel_index];
+                if (reservoir->sample_count > 0) {
+                    // Weighted blend of samples
+                    for (uint32_t i = 0; i < reservoir->sample_count; i++) {
+                        restir_contribution.x += reservoir->samples[i].radiance.x * reservoir->weights[i];
+                        restir_contribution.y += reservoir->samples[i].radiance.y * reservoir->weights[i];
+                        restir_contribution.z += reservoir->samples[i].radiance.z * reservoir->weights[i];
+                    }
+                    
+                    float weight_sum = reservoir->weight_sum > 0.0f ? reservoir->weight_sum : 1.0f;
+                    restir_contribution.x /= weight_sum;
+                    restir_contribution.y /= weight_sum;
+                    restir_contribution.z /= weight_sum;
+                }
+            }
+            
+            unmap_buffer(g_gi_system.restir.reservoir_buffer);
+            
+            // Blend contributions
+            float3 final_result = {
+                ddgi_contribution.x * 0.7f + restir_contribution.x * 0.3f,
+                ddgi_contribution.y * 0.7f + restir_contribution.y * 0.3f,
+                ddgi_contribution.z * 0.7f + restir_contribution.z * 0.3f
+            };
+            
+            return final_result;
             
         default:
             return (float3){0.0f, 0.0f, 0.0f};

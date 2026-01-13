@@ -1,117 +1,169 @@
 // Screen-Space Reflections (SSR) Implementation
 // Efficient screen-space reflection algorithm with hierarchical ray marching
+#include "core/logging/unified_logger.h"
 #include "rendering/frame_graph/frame_graph.h"
-#include "core/logger.h"
+#include "rendering/post_processing/ssr_compute.h"
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 typedef struct SSRContext {
-    u32 width;
-    u32 height;
-    f32 max_distance;     // Maximum ray march distance (screen space)
-    f32 thickness;        // Thickness for ray-surface intersection testing
-    f32 edge_fade;        // Fade reflections near screen edges
-    u32 max_steps;        // Maximum ray march steps
-    bool enable_refine;   // Enable refinement/binary search
-    bool enable_fade;     // Enable edge fading
+  u32 width;
+  u32 height;
+  f32 max_distance; // Screen space pixel radius for reflections
+  f32 thickness;    // Surface thickness for intersection
+  u32 max_steps;    // Max ray march steps
+  f32 stride;       // Ray march initial stride
+
+  SSRComputeContext *compute_ctx; // Backend compute implementation
 } SSRContext;
 
 // Create SSR context
 SSRContext *ssr_create(u32 width, u32 height) {
-    SSRContext *ctx = malloc(sizeof(SSRContext));
-    if (!ctx) {
-        LOG_ERROR("Failed to allocate SSR context");
-        return NULL;
-    }
+  SSRContext *ctx = malloc(sizeof(SSRContext));
+  if (!ctx) {
+    LOG_ERROR(LOG_CAT_RENDERER, "Failed to allocate SSR context");
+    return NULL;
+  }
 
-    memset(ctx, 0, sizeof(SSRContext));
+  memset(ctx, 0, sizeof(SSRContext));
 
-    ctx->width = width;
-    ctx->height = height;
-    ctx->max_distance = 256.0f;   // Max 256 pixels of travel
-    ctx->thickness = 0.5f;        // Surface thickness for intersection
-    ctx->edge_fade = 0.1f;        // Fade at 10% from edges
-    ctx->max_steps = 128;         // 128 ray march steps max
-    ctx->enable_refine = true;    // Enable binary refinement
-    ctx->enable_fade = true;      // Enable edge fading
+  ctx->width = width;
+  ctx->height = height;
+  ctx->max_distance = 64.0f;
+  ctx->thickness = 0.5f;
+  ctx->max_steps = 32;
+  ctx->stride = 2.0f;
 
-    LOG_INFO("SSR context created: %ux%u", width, height);
-    return ctx;
+  // Create compute implementation
+  ctx->compute_ctx = ssr_compute_create(width, height);
+  if (!ctx->compute_ctx) {
+    LOG_ERROR(LOG_CAT_RENDERER, "Failed to create SSR compute implementation");
+    free(ctx);
+    return NULL;
+  }
+
+  LOG_INFO(LOG_CAT_RENDERER, "SSR context created: %ux%u", width, height);
+  return ctx;
 }
 
 // Destroy SSR context
 void ssr_destroy(SSRContext *ctx) {
-    if (!ctx) return;
-    free(ctx);
-    LOG_INFO("SSR context destroyed");
+  if (!ctx)
+    return;
+
+  if (ctx->compute_ctx) {
+    ssr_compute_destroy(ctx->compute_ctx);
+  }
+
+  free(ctx);
+  LOG_INFO(LOG_CAT_RENDERER, "SSR context destroyed");
+}
+
+// SSR pass execution callback
+typedef struct {
+  SSRContext *ctx;
+  RGResourceHandle scene_color;
+  RGResourceHandle normal_roughness;
+  RGResourceHandle depth_buffer;
+  RGResourceHandle output;
+} SSRPassData;
+
+static void ssr_execute_pass(RGPassContext *ctx, void *user_data) {
+  SSRPassData *data = (SSRPassData *)user_data;
+  if (!data || !data->ctx || !data->ctx->compute_ctx)
+    return;
+
+  // Get physical textures from render graph
+  TextureID scene_tex = rg_ctx_get_texture(ctx, data->scene_color);
+  TextureID normal_roughness_tex =
+      rg_ctx_get_texture(ctx, data->normal_roughness);
+  TextureID depth_tex = rg_ctx_get_texture(ctx, data->depth_buffer);
+
+  // Update compute settings from context
+  SSRComputeSettings settings = {.max_distance = data->ctx->max_distance,
+                                 .thickness = data->ctx->thickness,
+                                 .max_steps = data->ctx->max_steps,
+                                 .stride = data->ctx->stride,
+                                 .fade_distance = 25.0f};
+  ssr_compute_update_settings(data->ctx->compute_ctx, &settings);
+
+  // Process SSR using compute implementation
+  ssr_compute_process(data->ctx->compute_ctx, scene_tex, normal_roughness_tex,
+                      depth_tex);
+
+  LOG_DEBUG(LOG_CAT_RENDERER,
+            "SSR compute shader executed via ssr_compute_process");
 }
 
 // Add SSR pass to render graph
-RGResourceHandle ssr_add_to_graph(RenderGraph *rg,
-                                 SSRContext *ctx,
-                                 RGResourceHandle scene_color,
-                                 RGResourceHandle normal_roughness,
-                                 RGResourceHandle depth_buffer) {
-    if (!rg || !ctx) {
-        LOG_ERROR("Invalid render graph or SSR context");
-        return RG_INVALID_RESOURCE;
-    }
+RGResourceHandle ssr_add_to_graph(RenderGraph *rg, SSRContext *ctx,
+                                  RGResourceHandle scene_color,
+                                  RGResourceHandle normal_roughness,
+                                  RGResourceHandle depth_buffer) {
+  // Create SSR output texture resource in graph
+  RGTextureDesc ssr_desc = {.width = ctx->width,
+                            .height = ctx->height,
+                            .format = TEXTURE_FORMAT_RGBA16F,
+                            .usage =
+                                TEXTURE_USAGE_STORAGE | TEXTURE_USAGE_SAMPLED,
+                            .name = "SSR_Output"};
+  RGResourceHandle ssr_output = rg_create_texture(rg, &ssr_desc);
 
-    if (ctx->max_distance < 16.0f) ctx->max_distance = 16.0f;
-    if (ctx->max_distance > 512.0f) ctx->max_distance = 512.0f;
-    if (ctx->thickness < 0.01f) ctx->thickness = 0.01f;
-    if (ctx->thickness > 2.0f) ctx->thickness = 2.0f;
-    if (ctx->max_steps < 32) ctx->max_steps = 32;
-    if (ctx->max_steps > 256) ctx->max_steps = 256;
+  // Setup pass data
+  SSRPassData *pass_data = malloc(sizeof(SSRPassData));
+  if (pass_data) {
+    pass_data->ctx = ctx;
+    pass_data->scene_color = scene_color;
+    pass_data->normal_roughness = normal_roughness;
+    pass_data->depth_buffer = depth_buffer;
+    pass_data->output = ssr_output;
 
-    LOG_DEBUG("SSR pass added: max_distance=%.2f, thickness=%.2f, steps=%u",
-              ctx->max_distance, ctx->thickness, ctx->max_steps);
+    RGPassDesc pass_desc = {.name = "SSR",
+                            .execute = ssr_execute_pass,
+                            .user_data = pass_data,
+                            .queue_type = RG_QUEUE_COMPUTE_ASYNC,
+                            .priority = 85};
 
-    // Screen-Space Reflections algorithm:
-    // 1. For each pixel with reflective surface (low roughness)
-    // 2. Calculate reflection ray direction
-    // 3. Ray march through screen space depth pyramid (HZB)
-    // 4. Use binary refinement for better accuracy
-    // 5. Sample scene color at reflection position
-    // 6. Blend reflection with surface based on roughness
-    //
-    // Algorithm benefits:
-    // - No ray tracing hardware required
-    // - Works with deferred rendering
-    // - Temporally stable
-    // - Works on all platforms
-    //
-    // Algorithm limitations:
-    // - Only reflects visible geometry
-    // - Back-facing geometry not reflected
-    // - Requires depth pyramid (HZB) for efficiency
-    // - Performance scales with reflection complexity
+    RGPassHandle pass = rg_add_pass(rg, &pass_desc);
+    rg_pass_read(rg, pass, scene_color);
+    rg_pass_read(rg, pass, normal_roughness);
+    rg_pass_read(rg, pass, depth_buffer);
+    rg_pass_write(rg, pass, ssr_output);
 
-    // For now, return input as placeholder
-    // Real implementation would add compute shader to render graph
+    LOG_DEBUG(LOG_CAT_RENDERER, "SSR pass integrated into render graph");
+  }
 
-    return scene_color;  // TODO: Return SSR output
+  return ssr_output;
 }
 
 // Update SSR parameters
 void ssr_set_max_distance(SSRContext *ctx, f32 distance) {
-    if (!ctx) return;
-    if (distance < 16.0f) distance = 16.0f;
-    if (distance > 512.0f) distance = 512.0f;
-    ctx->max_distance = distance;
+  if (!ctx)
+    return;
+  if (distance < 16.0f)
+    distance = 16.0f;
+  if (distance > 512.0f)
+    distance = 512.0f;
+  ctx->max_distance = distance;
 }
 
 void ssr_set_thickness(SSRContext *ctx, f32 thickness) {
-    if (!ctx) return;
-    if (thickness < 0.01f) thickness = 0.01f;
-    if (thickness > 2.0f) thickness = 2.0f;
-    ctx->thickness = thickness;
+  if (!ctx)
+    return;
+  if (thickness < 0.01f)
+    thickness = 0.01f;
+  if (thickness > 2.0f)
+    thickness = 2.0f;
+  ctx->thickness = thickness;
 }
 
 void ssr_set_max_steps(SSRContext *ctx, u32 steps) {
-    if (!ctx) return;
-    if (steps < 32) steps = 32;
-    if (steps > 256) steps = 256;
-    ctx->max_steps = steps;
+  if (!ctx)
+    return;
+  if (steps < 32)
+    steps = 32;
+  if (steps > 256)
+    steps = 256;
+  ctx->max_steps = steps;
 }

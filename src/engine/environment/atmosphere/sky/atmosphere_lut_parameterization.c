@@ -194,10 +194,20 @@ simd_float2 atm_skyview_lut_encode(simd_float3 view_dir, float view_height,
   // (ViewZenith, ViewSunAzimuth). The Sun Zenith is constant for the whole LUT
   // (it's a slice of 4D). So u = relative azimuth.
 
-  float u = 0.5f; // TODO: Azimuth calculation requires project to plane
-  // Assuming view_dir.x and .z encode azimuth.
-  float azimuth = atan2f(view_dir.z, view_dir.x);
-  u = (azimuth + ATM_PI) / (2.0f * ATM_PI);
+  // u coord (Azimuth relative to sun direction)
+  // Project view direction onto horizontal plane perpendicular to up vector
+  simd_float3 up = {0, 1, 0};
+  simd_float3 view_horizontal = view_dir - simd_dot(view_dir, up) * up;
+  float view_horizontal_length = simd_length(view_horizontal);
+  
+  if (view_horizontal_length > 0.0001f) {
+    view_horizontal = view_horizontal / view_horizontal_length;
+    // Calculate azimuth angle in range [0, 2π]
+    float azimuth = atan2f(view_horizontal.z, view_horizontal.x);
+    u = (azimuth + ATM_PI) / (2.0f * ATM_PI);
+  } else {
+    u = 0.5f; // Looking straight up/down, azimuth is undefined
+  }
 
   return (simd_float2){u, v};
 }

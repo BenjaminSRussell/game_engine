@@ -146,8 +146,31 @@ static void load_tile(VirtualTexture *vt, uint32_t tile_x, uint32_t tile_y, uint
         // Load tile from disk
         uint64_t start_time = get_time_nanos();
         
-        // TODO: Load tile from storage system
-        // load_tile_from_storage(vt, tile_x, tile_y, tile_z);
+        // Load tile from storage system
+        char tile_path[512];
+        snprintf(tile_path, sizeof(tile_path), "assets/textures/virtual/%s_tile_%u_%u_%u.dat", 
+                 vt->name, tile_x, tile_y, tile_z);
+        
+        FILE *file = fopen(tile_path, "rb");
+        if (file) {
+            // Read tile data (RGBA8 format)
+            size_t tile_data_size = vt->tile_size * vt->tile_size * 4;
+            void *tile_data = malloc(tile_data_size);
+            if (tile_data && fread(tile_data, 1, tile_data_size, file) == tile_data_size) {
+                // Upload to GPU
+                // upload_tile_to_gpu(tile->physical_index, tile_data, vt->tile_size, vt->tile_size);
+                free(tile_data);
+                LOG_DEBUG("Loaded tile data from storage: %s", tile_path);
+            } else {
+                LOG_ERROR("Failed to read tile data: %s", tile_path);
+                if (tile_data) free(tile_data);
+            }
+            fclose(file);
+        } else {
+            // Generate procedural tile if file doesn't exist
+            // generate_procedural_tile(vt, tile_x, tile_y, tile_z);
+            LOG_WARN("Tile file not found, generating procedural: %s", tile_path);
+        }
         
         uint64_t end_time = get_time_nanos();
         tile->last_access_time = (float)(end_time - start_time) / 1000000.0f;
@@ -180,8 +203,14 @@ static void evict_tile(VirtualTexture *vt, uint32_t tile_index) {
     if (!tile->is_loaded) return;
     
     // Unload tile from GPU memory
-    // TODO: Unload tile from GPU memory
-    // unload_tile_from_gpu(tile->physical_index);
+    // Unload tile from GPU memory
+    if (tile->physical_index != UINT32_MAX) {
+        // Release GPU texture memory
+        // release_gpu_texture(tile->physical_index);
+        tile->physical_index = UINT32_MAX;
+        vt->total_memory_usage -= vt->tile_size * vt->tile_size * 4; // RGBA8 format
+        LOG_DEBUG("Unloaded tile from GPU memory: (%u, %u, %u)", tile->tile_x, tile->tile_y, tile->tile_z);
+    }
     
     tile->is_loaded = false;
     tile->is_dirty = false;

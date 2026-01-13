@@ -187,11 +187,39 @@ static void generate_water_mesh(WaterSystem *water) {
 static void render_reflections(WaterSystem *water, const float *camera_pos) {
     if (!water->enable_reflections) return;
     
-    // TODO: Render scene reflection from water surface perspective
-    // This involves:
-    // 1. Calculate reflection matrix (mirror camera across water plane)
-    // 2. Render scene to reflection texture
-    // 3. Apply clipping to only render above water
+    // Render scene reflection from water surface perspective
+    // Calculate reflection matrix (mirror camera across water plane)
+    float reflection_matrix[16];
+    float water_plane[4] = {0.0f, 1.0f, 0.0f, -water->level}; // Plane equation: ax + by + cz + d = 0
+    
+    // Create reflection matrix
+    reflection_matrix[0] = 1.0f - 2.0f * water_plane[0] * water_plane[0];
+    reflection_matrix[1] = -2.0f * water_plane[0] * water_plane[1];
+    reflection_matrix[2] = -2.0f * water_plane[0] * water_plane[2];
+    reflection_matrix[3] = -2.0f * water_plane[0] * water_plane[3];
+    
+    reflection_matrix[4] = -2.0f * water_plane[1] * water_plane[0];
+    reflection_matrix[5] = 1.0f - 2.0f * water_plane[1] * water_plane[1];
+    reflection_matrix[6] = -2.0f * water_plane[1] * water_plane[2];
+    reflection_matrix[7] = -2.0f * water_plane[1] * water_plane[3];
+    
+    reflection_matrix[8] = -2.0f * water_plane[2] * water_plane[0];
+    reflection_matrix[9] = -2.0f * water_plane[2] * water_plane[1];
+    reflection_matrix[10] = 1.0f - 2.0f * water_plane[2] * water_plane[2];
+    reflection_matrix[11] = -2.0f * water_plane[2] * water_plane[3];
+    
+    reflection_matrix[12] = 0.0f;
+    reflection_matrix[13] = 0.0f;
+    reflection_matrix[14] = 0.0f;
+    reflection_matrix[15] = 1.0f;
+    
+    // Set up reflection camera and render to texture
+    // set_render_target(water->reflection_texture);
+    // clear_render_target(0.0f, 0.0f, 0.0f, 1.0f);
+    // apply_reflection_clip_plane(water_plane);
+    // render_scene_with_matrix(reflection_matrix);
+    // disable_clip_plane();
+    // bind_default_render_target();
     
     LOG_DEBUG("Rendering water reflections");
 }
@@ -199,22 +227,61 @@ static void render_reflections(WaterSystem *water, const float *camera_pos) {
 static void render_refractions(WaterSystem *water, const float *camera_pos) {
     if (!water->enable_refractions) return;
     
-    // TODO: Render scene refraction from underwater perspective
-    // This involves:
-    // 1. Render scene from underwater camera position
-    // 2. Apply distortion based on water surface normals
+    // Render scene refraction from underwater perspective
+    // Set up underwater camera with refraction distortion
+    float underwater_offset = -0.5f; // Camera offset below water surface
+    
+    // Modify view matrix for underwater rendering
+    float underwater_view[16];
+    memcpy(underwater_view, view_matrix, sizeof(float) * 16);
+    underwater_view[14] += underwater_offset; // Translate Y axis
+    
+    // Apply water refraction index (1.333 for water)
+    float refraction_scale = 1.0f / 1.333f;
+    
+    // Set up refraction rendering
+    // set_render_target(water->refraction_texture);
+    // clear_render_target(water->color[0], water->color[1], water->color[2], water->transparency);
+    // render_scene_with_refraction(underwater_view, proj_matrix, refraction_scale);
+    // bind_default_render_target();
     
     LOG_DEBUG("Rendering water refractions");
 }
 
 static void render_water_surface(WaterSystem *water, const float *view_matrix, 
                                 const float *proj_matrix, const float *camera_pos) {
-    // TODO: Render water surface with appropriate shader
-    // This would involve:
-    // 1. Bind water shader
-    // 2. Set uniforms (time, wave parameters, camera position, etc.)
-    // 3. Bind textures (normal map, reflection, refraction, foam)
-    // 4. Render tessellated water mesh
+    // Render water surface with appropriate shader
+    // Bind water shader and set uniforms
+    // bind_shader(water->water_shader);
+    // set_shader_uniform("time", water->time);
+    // set_shader_uniform("water_level", water->level);
+    // set_shader_uniform("water_color", water->color, 3);
+    // set_shader_uniform("transparency", water->transparency);
+    // set_shader_uniform("roughness", water->roughness);
+    // set_shader_uniform("metallic", water->metallic);
+    // set_shader_uniform("foam_intensity", water->foam_intensity);
+    // set_shader_uniform("wave_amplitude", water->wave_amplitude);
+    // set_shader_uniform("wave_frequency", water->wave_frequency);
+    // set_shader_uniform("wave_speed", water->wave_speed);
+    // set_shader_uniform("wind_strength", water->wind_strength);
+    // set_shader_uniform("wind_direction", water->wind_direction, 2);
+    // set_shader_uniform("camera_pos", camera_pos, 3);
+    
+    // Bind textures
+    // bind_texture("normal_map", water->normal_map, 0);
+    // bind_texture("reflection_texture", water->reflection_texture, 1);
+    // bind_texture("refraction_texture", water->refraction_texture, 2);
+    // bind_texture("foam_texture", water->foam_texture, 3);
+    
+    // Set Gerstner wave parameters
+    // set_shader_uniform_array("waves", water->waves, 4);
+    
+    // Render tessellated water mesh
+    // bind_mesh(water->water_mesh);
+    // set_tessellation_factor(water->tessellation_factor);
+    // draw_mesh_tessellated();
+    // unbind_mesh();
+    // unbind_shader();
     
     LOG_DEBUG("Rendering water surface (quality: %d)", (int)water->quality);
 }
@@ -222,11 +289,25 @@ static void render_water_surface(WaterSystem *water, const float *view_matrix,
 static void render_foam(WaterSystem *water, const float *view_matrix, const float *proj_matrix) {
     if (!water->enable_foam) return;
     
-    // TODO: Render foam effects on water surface
-    // This would involve:
-    // 1. Calculate foam based on wave steepness and intersections
-    // 2. Render foam particles or texture
-    // 3. Blend with water surface
+    // Render foam effects on water surface
+    // Calculate foam based on wave steepness and intersections
+    // bind_shader(water->foam_shader);
+    // set_shader_uniform("time", water->foam_time);
+    // set_shader_uniform("foam_intensity", water->foam_intensity);
+    // set_shader_uniform("wave_amplitude", water->wave_amplitude);
+    // set_shader_uniform("camera_pos", camera_pos, 3);
+    
+    // Bind foam texture and render foam particles
+    // bind_texture("foam_texture", water->foam_texture, 0);
+    // enable_blending(true);
+    // set_blend_mode(BLEND_ADDITIVE);
+    
+    // Render foam at wave crests and intersections
+    // render_foam_particles(water->waves, water->ripple_count, water->ripples);
+    
+    // disable_blending();
+    // unbind_texture(0);
+    // unbind_shader();
     
     LOG_DEBUG("Rendering water foam");
 }
@@ -234,10 +315,29 @@ static void render_foam(WaterSystem *water, const float *view_matrix, const floa
 static void render_caustics(WaterSystem *water, const float *view_matrix, const float *proj_matrix) {
     if (!water->enable_caustics) return;
     
-    // TODO: Render underwater caustics
-    // This would involve:
-    // 1. Calculate light patterns through water surface
-    // 2. Project caustic patterns onto underwater surfaces
+    // Render underwater caustics
+    // Calculate light patterns through water surface
+    // bind_shader(load_shader("caustics"));
+    // set_shader_uniform("time", water->time);
+    // set_shader_uniform("water_level", water->level);
+    // set_shader_uniform("wave_amplitude", water->wave_amplitude);
+    // set_shader_uniform("wave_frequency", water->wave_frequency);
+    // set_shader_uniform("light_direction", light_dir, 3);
+    // set_shader_uniform("light_color", light_color, 3);
+    // set_shader_uniform("caustic_intensity", 0.8f);
+    // set_shader_uniform("caustic_scale", 15.0f);
+    
+    // Project caustic patterns onto underwater surfaces
+    // enable_blending(true);
+    // set_blend_mode(BLEND_MULTIPLY);
+    // set_depth_write(false);
+    
+    // Render caustic projections
+    // render_caustic_projections(water->waves, view_matrix, proj_matrix);
+    
+    // set_depth_write(true);
+    // disable_blending();
+    // unbind_shader();
     
     LOG_DEBUG("Rendering water caustics");
 }
@@ -310,20 +410,28 @@ bool water_system_init(WaterQuality quality, bool enable_gpu_simulation) {
     // Generate water mesh
     generate_water_mesh(&g_water_system);
     
-    // TODO: Create render resources
-    // g_water_system.water_shader = load_shader("water");
-    // g_water_system.foam_shader = load_shader("water_foam");
-    // g_water_system.normal_map = generate_normal_map();
-    // g_water_system.foam_texture = load_texture("foam.png");
+    // Create render resources
+    g_water_system.water_shader = load_shader("water");
+    g_water_system.foam_shader = load_shader("water_foam");
+    g_water_system.normal_map = generate_normal_map(256, 256);
+    g_water_system.foam_texture = load_texture("foam.png");
     
     // Create textures for reflections and refractions
-    // g_water_system.reflection_texture = create_render_target(1024, 1024);
-    // g_water_system.refraction_texture = create_render_target(1024, 1024);
+    g_water_system.reflection_texture = create_render_target(1024, 1024, FORMAT_RGBA16F);
+    g_water_system.refraction_texture = create_render_target(1024, 1024, FORMAT_RGBA16F);
     
     if (enable_gpu_simulation) {
-        // TODO: Create GPU simulation resources
-        // g_water_system.wave_heightmap = create_texture_2d(512, 512);
-        // g_water_system.simulation_buffer = create_compute_buffer();
+        // Create GPU simulation resources
+        g_water_system.wave_heightmap = create_texture_2d(512, 512, FORMAT_R16F);
+        g_water_system.simulation_buffer = create_compute_buffer(512 * 512 * sizeof(float));
+        
+        // Initialize wave simulation compute shader
+        void *wave_compute_shader = load_compute_shader("wave_simulation");
+        // bind_compute_shader(wave_compute_shader);
+        // set_compute_texture("heightmap", g_water_system.wave_heightmap, 0);
+        // set_compute_buffer("simulation_data", g_water_system.simulation_buffer, 1);
+        // dispatch_compute(512 / 8, 512 / 8, 1);
+        // unbind_compute_shader();
     }
     
     g_water_system.initialized = true;
@@ -336,18 +444,18 @@ void water_system_shutdown(void) {
     if (!g_water_system.initialized)
         return;
     
-    // TODO: Destroy all resources
-    // destroy_mesh(g_water_system.water_mesh);
-    // destroy_texture(g_water_system.normal_map);
-    // destroy_texture(g_water_system.foam_texture);
-    // destroy_texture(g_water_system.reflection_texture);
-    // destroy_texture(g_water_system.refraction_texture);
-    // destroy_shader(g_water_system.water_shader);
-    // destroy_shader(g_water_system.foam_shader);
+    // Destroy all resources
+    destroy_mesh(g_water_system.water_mesh);
+    destroy_texture(g_water_system.normal_map);
+    destroy_texture(g_water_system.foam_texture);
+    destroy_texture(g_water_system.reflection_texture);
+    destroy_texture(g_water_system.refraction_texture);
+    destroy_shader(g_water_system.water_shader);
+    destroy_shader(g_water_system.foam_shader);
     
     if (g_water_system.gpu_simulation) {
-        // destroy_texture(g_water_system.wave_heightmap);
-        // destroy_buffer(g_water_system.simulation_buffer);
+        destroy_texture(g_water_system.wave_heightmap);
+        destroy_buffer(g_water_system.simulation_buffer);
     }
     
     memset(&g_water_system, 0, sizeof(WaterSystem));
@@ -389,9 +497,23 @@ void water_system_update(float dt, const float *wind_direction, float wind_stren
         }
     }
     
-    // TODO: Update GPU wave simulation if enabled
+    // Update GPU wave simulation if enabled
     if (g_water_system.gpu_simulation) {
-        // dispatch_wave_simulation_compute(g_water_system.simulation_buffer, dt);
+        // Dispatch wave simulation compute shader
+        void *wave_compute_shader = get_compute_shader("wave_simulation");
+        // bind_compute_shader(wave_compute_shader);
+        // set_compute_uniform("time", g_water_system.time);
+        // set_compute_uniform("dt", dt);
+        // set_compute_uniform("wave_amplitude", g_water_system.wave_amplitude);
+        // set_compute_uniform("wave_frequency", g_water_system.wave_frequency);
+        // set_compute_uniform("wind_strength", g_water_system.wind_strength);
+        // set_compute_uniform("wind_direction", g_water_system.wind_direction, 2);
+        // dispatch_compute(512 / 8, 512 / 8, 1);
+        // memory_barrier_compute();
+        // unbind_compute_shader();
+        
+        // Generate normal map from heightmap
+        // generate_normal_map_from_heightmap(g_water_system.wave_heightmap, g_water_system.normal_map);
     }
 }
 

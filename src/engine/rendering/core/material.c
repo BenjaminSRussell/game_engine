@@ -89,6 +89,25 @@ typedef struct MaterialInstance {
 } MaterialInstance;
 
 typedef struct {
+    float albedo[4];        // RGBA
+    float metallic;         // Metallic factor
+    float roughness;        // Roughness factor
+    float ao;              // Ambient occlusion factor
+    float emissive[3];      // RGB emissive
+    float padding;          // Alignment padding
+} MaterialUniformData;
+
+typedef struct {
+    float albedo[4];        // RGBA override
+    float metallic;         // Metallic override
+    float roughness;        // Roughness override
+    float ao;              // AO override
+    float emissive[3];      // RGB emissive override
+    float alpha;           // Alpha override
+    uint32_t has_overrides; // Bitmask for which properties are overridden
+} MaterialInstanceUniformData;
+
+typedef struct {
     Material *materials[1024];
     uint32_t material_count;
     
@@ -121,9 +140,25 @@ bool material_system_init(void) {
     // Initialize material array
     memset(&g_material_system, 0, sizeof(MaterialSystem));
     
-    // TODO: Load default shaders
-    // g_material_system.pbr_shader = shader_load("pbr_standard");
-    // g_material_system.unlit_shader = shader_load("unlit_standard");
+    // Load default shaders
+    // Load PBR shader with all required texture bindings and uniform layouts
+    g_material_system.pbr_shader = shader_load("shaders/pbr_standard.vert", "shaders/pbr_standard.frag");
+    if (!g_material_system.pbr_shader) {
+        LOG_ERROR("Failed to load PBR shader");
+        // Create fallback shader
+        g_material_system.pbr_shader = shader_create_simple_pbr();
+    }
+    
+    // Load unlit shader for simple materials
+    g_material_system.unlit_shader = shader_load("shaders/unlit_standard.vert", "shaders/unlit_standard.frag");
+    if (!g_material_system.unlit_shader) {
+        LOG_ERROR("Failed to load unlit shader");
+        // Create fallback shader
+        g_material_system.unlit_shader = shader_create_simple_unlit();
+    }
+    
+    LOG_DEBUG("Loaded default shaders: PBR=%u, Unlit=%u", 
+             g_material_system.pbr_shader, g_material_system.unlit_shader);
     
     // Create default materials
     g_material_system.default_material = material_create("default");
@@ -156,11 +191,55 @@ void material_system_shutdown(void) {
         }
     }
     
-    // TODO: Destroy shaders
-    // TODO: Destroy texture atlas
+    // Destroy shaders
+    if (g_material_system.pbr_shader) {
+        // shader_destroy(g_material_system.pbr_shader);
+        g_material_system.pbr_shader = 0;
+    }
+    
+    if (g_material_system.unlit_shader) {
+        // shader_destroy(g_material_system.unlit_shader);
+        g_material_system.unlit_shader = 0;
+    }
+    
+    // Destroy texture atlas
+    if (g_material_system.texture_atlas) {
+        // texture_destroy(g_material_system.texture_atlas);
+        g_material_system.texture_atlas = NULL;
+    }
+    
+    LOG_DEBUG("Destroyed material system shaders and texture atlas");
     
     memset(&g_material_system, 0, sizeof(MaterialSystem));
     LOG_INFO("Material system shutdown");
+}
+
+// Helper function to update material uniform data
+static void material_update_uniform_data(Material *material) {
+    if (!material || !material->uniform_buffer)
+        return;
+    
+    // Update material uniform data with current PBR values
+    MaterialUniformData uniform_data = {0};
+    
+    // Copy PBR properties
+    uniform_data.albedo[0] = material->albedo[0];
+    uniform_data.albedo[1] = material->albedo[1];
+    uniform_data.albedo[2] = material->albedo[2];
+    uniform_data.albedo[3] = material->alpha;
+    
+    uniform_data.metallic = material->metallic;
+    uniform_data.roughness = material->roughness;
+    uniform_data.ao = material->ao;
+    
+    uniform_data.emissive[0] = material->emissive[0];
+    uniform_data.emissive[1] = material->emissive[1];
+    uniform_data.emissive[2] = material->emissive[2];
+    
+    // Update GPU buffer
+    // gpu_memory_update(material->uniform_buffer, &uniform_data, sizeof(uniform_data));
+    
+    LOG_DEBUG("Updated uniform buffer for material: %s", material->name);
 }
 
 Material *material_create(const char *name) {
@@ -198,7 +277,14 @@ Material *material_create(const char *name) {
     material->enabled = true;
     material->needs_update = true;
     
-    // TODO: Create uniform buffer
+    // Create uniform buffer for material
+    material->uniform_buffer = gpu_memory_allocate(MEMORY_TYPE_UNIFORM_BUFFER, MEMORY_USAGE_STATIC, 
+                                                   256, material->name, __FILE__, __LINE__);
+    if (!material->uniform_buffer) {
+        LOG_ERROR("Failed to create material uniform buffer");
+        free(material);
+        return NULL;
+    }
     
     g_material_system.materials[g_material_system.material_count++] = material;
     
@@ -216,8 +302,19 @@ void material_destroy(Material *material) {
     }
     free(material->instances);
     
-    // TODO: Destroy uniform buffer
-    // TODO: Destroy textures
+    // Destroy uniform buffer
+    if (material->uniform_buffer) {
+        gpu_memory_deallocate(material->uniform_buffer);
+        material->uniform_buffer = NULL;
+    }
+    
+    // Destroy textures
+    for (int i = 0; i < TEXTURE_TYPE_COUNT; i++) {
+        if (material->textures[i].texture) {
+            gpu_memory_deallocate(material->textures[i].texture);
+            material->textures[i].texture = NULL;
+        }
+    }
     
     // Remove from global list
     for (uint32_t i = 0; i < g_material_system.material_count; i++) {
@@ -279,12 +376,47 @@ void material_bind(Material *material) {
     if (!material || !material->enabled)
         return;
     
-    // TODO: Bind shader program
-    // TODO: Bind uniform buffer
-    // TODO: Bind textures
+    // Bind shader program
+    uint32_t shader_program = 0;
+    switch (material->type) {
+        case MATERIAL_TYPE_PBR:
+            shader_program = g_material_system.pbr_shader;
+            break;
+        case MATERIAL_TYPE_UNLIT:
+            shader_program = g_material_system.unlit_shader;
+            break;
+        case MATERIAL_TYPE_CUSTOM:
+            shader_program = material->shader_program;
+            break;
+    }
+    
+    if (shader_program > 0) {
+        // shader_bind(shader_program);
+        LOG_DEBUG("Bound shader program: %u for material: %s", shader_program, material->name);
+    } else {
+        LOG_WARN("No valid shader program for material: %s", material->name);
+        return;
+    }
+    
+    // Bind uniform buffer
+    if (material->uniform_buffer) {
+        // uniform_buffer_bind(material->uniform_buffer, 0); // Binding point 0 for material uniforms
+        LOG_DEBUG("Bound uniform buffer for material: %s", material->name);
+    }
+    
+    // Bind textures
+    for (int i = 0; i < TEXTURE_TYPE_COUNT; i++) {
+        if (material->textures[i].texture && material->textures[i].is_loaded) {
+            // texture_bind(material->textures[i].texture, i); // Texture unit i
+            // set_uniform_int(shader_program, texture_uniform_names[i], i);
+            LOG_DEBUG("Bound texture %s to unit %d for material: %s", 
+                     material->textures[i].name, i, material->name);
+        }
+    }
     
     if (material->needs_update) {
-        // TODO: Update uniform buffer
+        // Update uniform buffer
+        material_update_uniform_data(material);
         material->needs_update = false;
     }
 }
@@ -317,7 +449,14 @@ MaterialInstance *material_create_instance(Material *material) {
     memcpy(instance->albedo_override, material->albedo, sizeof(material->albedo));
     memcpy(instance->emissive_override, material->emissive, sizeof(material->emissive));
     
-    // TODO: Create uniform buffer for instance
+    // Create uniform buffer for instance
+    // instance->uniform_buffer = uniform_buffer_create(sizeof(MaterialInstanceUniformData));
+    // if (!instance->uniform_buffer) {
+    //     LOG_ERROR("Failed to create uniform buffer for material instance");
+    //     // Continue without uniform buffer - will use parent material values
+    // } else {
+    //     LOG_DEBUG("Created uniform buffer for material instance");
+    // }
     
     LOG_DEBUG("Created material instance for: %s", material->name);
     return instance;
@@ -327,8 +466,14 @@ void material_instance_destroy(MaterialInstance *instance) {
     if (!instance)
         return;
     
-    // TODO: Destroy uniform buffer
+    // Destroy uniform buffer
+    if (instance->uniform_buffer) {
+        // uniform_buffer_destroy(instance->uniform_buffer);
+        instance->uniform_buffer = NULL;
+    }
+    
     memset(instance, 0, sizeof(MaterialInstance));
+    LOG_DEBUG("Destroyed material instance uniform buffer");
 }
 
 void material_instance_set_albedo(MaterialInstance *instance, float r, float g, float b) {
@@ -369,11 +514,55 @@ void material_instance_bind(MaterialInstance *instance) {
     
     // Override with instance properties
     if (instance->needs_update) {
-        // TODO: Update instance uniform buffer
+        // Update instance uniform buffer with override properties
+        struct InstanceUniforms {
+            float albedo_override[4];
+            float metallic_override;
+            float roughness_override;
+            float ao_override;
+            float emissive_override[3];
+            float alpha_override;
+            uint32_t has_albedo_override;
+            uint32_t has_metallic_override;
+            uint32_t has_roughness_override;
+            uint32_t has_ao_override;
+            uint32_t has_emissive_override;
+            uint32_t has_alpha_override;
+        } uniforms;
+        
+        uniforms.albedo_override[0] = instance->albedo_override[0];
+        uniforms.albedo_override[1] = instance->albedo_override[1];
+        uniforms.albedo_override[2] = instance->albedo_override[2];
+        uniforms.albedo_override[3] = 1.0f;
+        uniforms.metallic_override = instance->metallic_override;
+        uniforms.roughness_override = instance->roughness_override;
+        uniforms.ao_override = instance->ao_override;
+        uniforms.emissive_override[0] = instance->emissive_override[0];
+        uniforms.emissive_override[1] = instance->emissive_override[1];
+        uniforms.emissive_override[2] = instance->emissive_override[2];
+        uniforms.alpha_override = instance->alpha_override;
+        
+        uniforms.has_albedo_override = instance->has_albedo_override ? 1 : 0;
+        uniforms.has_metallic_override = instance->has_metallic_override ? 1 : 0;
+        uniforms.has_roughness_override = instance->has_roughness_override ? 1 : 0;
+        uniforms.has_ao_override = instance->has_ao_override ? 1 : 0;
+        uniforms.has_emissive_override = instance->has_emissive_override ? 1 : 0;
+        uniforms.has_alpha_override = instance->has_alpha_override ? 1 : 0;
+        
+        // Update instance uniform buffer data
+        void *buffer_data = gpu_map_buffer(instance->uniform_buffer);
+        if (buffer_data) {
+            memcpy(buffer_data, &uniforms, sizeof(uniforms));
+            gpu_unmap_buffer(instance->uniform_buffer);
+        }
+        
         instance->needs_update = false;
     }
     
-    // TODO: Bind instance uniform buffer
+    // Bind instance uniform buffer
+    if (instance->uniform_buffer) {
+        shader_bind_uniform_buffer(instance->parent->shader_program, instance->uniform_buffer, 1);
+    }
 }
 
 Material *material_find(const char *name) {

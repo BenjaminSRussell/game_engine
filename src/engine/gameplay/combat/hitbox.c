@@ -10,6 +10,76 @@
 #include <string.h>
 #include <math.h>
 
+// TimerComponent implementation for hitbox timing
+typedef struct {
+  f32 duration;
+  f32 time_remaining;
+  bool is_active;
+  bool loops;
+  f32 elapsed_time;
+} TimerComponent;
+
+// Timer management functions
+TimerComponent* timer_create(f32 duration, bool loops) {
+  TimerComponent* timer = malloc(sizeof(TimerComponent));
+  if (timer) {
+    timer->duration = duration;
+    timer->time_remaining = duration;
+    timer->is_active = true;
+    timer->loops = loops;
+    timer->elapsed_time = 0.0f;
+  }
+  return timer;
+}
+
+void timer_update(TimerComponent* timer, f32 delta_time) {
+  if (!timer || !timer->is_active) return;
+  
+  timer->elapsed_time += delta_time;
+  timer->time_remaining -= delta_time;
+  
+  if (timer->time_remaining <= 0.0f) {
+    if (timer->loops) {
+      timer->time_remaining = timer->duration - timer->time_remaining;
+    } else {
+      timer->time_remaining = 0.0f;
+      timer->is_active = false;
+    }
+  }
+}
+
+void timer_reset(TimerComponent* timer) {
+  if (timer) {
+    timer->time_remaining = timer->duration;
+    timer->elapsed_time = 0.0f;
+    timer->is_active = true;
+  }
+}
+
+void timer_set_duration(TimerComponent* timer, f32 duration) {
+  if (timer) {
+    timer->duration = duration;
+    if (timer->time_remaining > duration) {
+      timer->time_remaining = duration;
+    }
+  }
+}
+
+f32 timer_get_progress(const TimerComponent* timer) {
+  if (!timer || timer->duration <= 0.0f) return 0.0f;
+  return 1.0f - (timer->time_remaining / timer->duration);
+}
+
+bool timer_is_expired(const TimerComponent* timer) {
+  return timer ? !timer->is_active && timer->time_remaining <= 0.0f : true;
+}
+
+void timer_destroy(TimerComponent* timer) {
+  if (timer) {
+    free(timer);
+  }
+}
+
 // Forward declarations - removed HitboxInstance since it's defined locally
 
 // Internal hit tracking for hitboxes to prevent double-hits

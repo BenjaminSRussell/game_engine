@@ -211,3 +211,32 @@ f32 processing_machine_get_energy(ProcessingMachine *machine) {
     return 0.0f;
   return machine->energy_available;
 }
+
+// Configure machine sides with validation
+void processing_machine_set_side(ProcessingMachine *machine, u8 side_index, MachineSideConfig config) {
+  if (!machine)
+    return;
+    
+  // Validate side_index (0-5)
+  if (side_index >= 6) {
+    LOG_WARN("Invalid side_index %u, must be 0-5 (Up, Down, North, South, East, West)", side_index);
+    return;
+  }
+  
+  machine->side_config[side_index] = config;
+  LOG_DEBUG("Machine side %u set to config %d", side_index, config);
+}
+
+// Get machine side configuration
+MachineSideConfig processing_machine_get_side(ProcessingMachine *machine, u8 side_index) {
+  if (!machine)
+    return MACHINE_SIDE_NONE;
+    
+  // Validate side_index (0-5)
+  if (side_index >= 6) {
+    LOG_WARN("Invalid side_index %u, must be 0-5 (Up, Down, North, South, East, West)", side_index);
+    return MACHINE_SIDE_NONE;
+  }
+  
+  return machine->side_config[side_index];
+}

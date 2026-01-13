@@ -60,6 +60,10 @@ uint32_t texture_cubemap_filtering_get_count(void);
 size_t texture_cubemap_filtering_get_memory_usage(void);
 void texture_cubemap_filtering_debug_print(void);
 
+/* Serialization */
+int texture_cubemap_filtering_serialize(texture_cubemap_filtering_handle_t handle, void* buffer, size_t buffer_size, size_t* out_size);
+int texture_cubemap_filtering_deserialize(const void* buffer, size_t buffer_size, texture_cubemap_filtering_handle_t* out_handle);
+
 #ifdef __cplusplus
 }
 #endif

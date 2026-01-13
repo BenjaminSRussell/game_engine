@@ -16,6 +16,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* =================================================================================================
  *                                    WEATHER TYPES
  * =================================================================================================
@@ -195,20 +199,17 @@ typedef struct TimeOfDaySystem {
   void (*on_noon)(void);
 } TimeOfDaySystem;
 
-// TODO(AGENT_WORLD_1): Implement time_of_day_init [Difficulty: 4]
-// TODO(AGENT_WORLD_1): Implement time_of_day_update [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement time_of_day_set_time [Difficulty: 4]
-// TODO(AGENT_WORLD_1): Implement time_of_day_add_preset [Difficulty: 4]
-// TODO(AGENT_WORLD_1): Implement time_of_day_interpolate [Difficulty: 6]
-// TODO(AGENT_WORLD_1): Implement time_of_day_calculate_sun_position
-// [Difficulty: 6]
-// TODO(AGENT_WORLD_1): Implement time_of_day_calculate_moon_position
-// [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement time_of_day_calculate_sky_colors [Difficulty:
-// 6]
-// TODO(AGENT_WORLD_1): Implement time_of_day_trigger_events [Difficulty: 4]
-// TODO(AGENT_WORLD_1): Implement time_of_day_serialize [Difficulty: 4]
-// TODO(AGENT_WORLD_1): Implement time_of_day_deserialize [Difficulty: 4]
+bool time_of_day_init(TimeOfDaySystem *system, float day_length_hours);
+void time_of_day_update(TimeOfDaySystem *system, float delta_time);
+void time_of_day_set_time(TimeOfDaySystem *system, float time);
+bool time_of_day_add_preset(TimeOfDaySystem *system, const char *name, float time, const TimeOfDaySettings *settings);
+void time_of_day_interpolate(TimeOfDaySystem *system, float time);
+void time_of_day_calculate_sun_position(float time, float *azimuth, float *elevation);
+void time_of_day_calculate_moon_position(float time, float moon_phase, float *azimuth, float *elevation);
+void time_of_day_calculate_sky_colors(float sun_elevation, float *zenith_color, float *horizon_color, float *ambient_color);
+void time_of_day_trigger_events(TimeOfDaySystem *system);
+bool time_of_day_serialize(const TimeOfDaySystem *system, char *buffer, size_t buffer_size);
+bool time_of_day_deserialize(TimeOfDaySystem *system, const char *buffer);
 
 /* =================================================================================================
  *                                    CLOUD SYSTEM
@@ -236,13 +237,18 @@ typedef struct VolumetricCloudSettings {
   int32_t light_march_steps;
 } VolumetricCloudSettings;
 
-// TODO(AGENT_WORLD_1): Implement cloud_ray_march [Difficulty: 8]
-// TODO(AGENT_WORLD_1): Implement cloud_density_sample [Difficulty: 6]
-// TODO(AGENT_WORLD_1): Implement cloud_light_march [Difficulty: 7]
-// TODO(AGENT_WORLD_1): Implement cloud_shape_noise [Difficulty: 6]
-// TODO(AGENT_WORLD_1): Implement cloud_weather_map [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement cloud_temporal_reprojection [Difficulty: 7]
-// TODO(AGENT_WORLD_1): Implement cloud_render [Difficulty: 8]
+float cloud_ray_march(const VolumetricCloudSettings *settings, const float *ray_start, const float *ray_dir, float max_distance, float *scattered_light);
+float cloud_density_sample(const VolumetricCloudSettings *settings, float x, float y, float z);
+float cloud_light_march(const VolumetricCloudSettings *settings, const float *start, const float *end, const float *light_dir);
+float cloud_shape_noise(const VolumetricCloudSettings *settings, float x, float y, float z);
+void cloud_weather_map(const VolumetricCloudSettings *settings, float time,
+                       float *out_map, uint32_t width, uint32_t height);
+void cloud_temporal_reprojection(const float *previous_map,
+                                 float *current_map, uint32_t width,
+                                 uint32_t height, float blend_factor);
+void cloud_render(const VolumetricCloudSettings *settings,
+                  const float *weather_map, uint32_t width, uint32_t height,
+                  float *out_rgba);
 
 /* =================================================================================================
  *                                    PRECIPITATION SYSTEM
@@ -253,6 +259,8 @@ typedef struct PrecipitationSystem {
   bool active;
   WeatherType type;
   float intensity;
+  float precipitation_amount;
+  float precipitation_rate;
 
   // GPU particles
   uint32_t particle_buffer;
@@ -277,14 +285,16 @@ typedef struct PrecipitationSystem {
   float splash_size;
 } PrecipitationSystem;
 
-// TODO(AGENT_WORLD_1): Implement precipitation_init [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement precipitation_update [Difficulty: 6]
-// TODO(AGENT_WORLD_1): Implement precipitation_emit [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement precipitation_simulate [Difficulty: 6]
-// TODO(AGENT_WORLD_1): Implement precipitation_render [Difficulty: 6]
-// TODO(AGENT_WORLD_1): Implement precipitation_collision [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement precipitation_splash [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement precipitation_accumulation [Difficulty: 6]
+void precipitation_init(PrecipitationSystem *system, WeatherType type);
+void precipitation_update(PrecipitationSystem *system, float delta_time);
+void precipitation_emit(PrecipitationSystem *system, uint32_t emit_count);
+void precipitation_simulate(PrecipitationSystem *system, float delta_time);
+void precipitation_render(PrecipitationSystem *system);
+void precipitation_collision(PrecipitationSystem *system, float ground_height);
+void precipitation_splash(PrecipitationSystem *system, uint32_t splash_count);
+float precipitation_accumulation(float current_accumulation,
+                                 const PrecipitationSystem *system,
+                                 float delta_time);
 
 /* =================================================================================================
  *                                    LIGHTNING SYSTEM
@@ -317,13 +327,14 @@ typedef struct LightningSystem {
   bool trigger_thunder;
 } LightningSystem;
 
-// TODO(AGENT_WORLD_1): Implement lightning_generate_bolt [Difficulty: 6]
-// TODO(AGENT_WORLD_1): Implement lightning_subdivide [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement lightning_render [Difficulty: 6]
-// TODO(AGENT_WORLD_1): Implement lightning_flash [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement lightning_thunder_delay [Difficulty: 4]
+bool lightning_generate_bolt(LightningSystem *system, const float start[3],
+                             const float end[3]);
+void lightning_subdivide(LightningBolt *bolt, float displacement);
+void lightning_render(LightningSystem *system);
+void lightning_flash(LightningBolt *bolt, float intensity, float duration);
+float lightning_thunder_delay(float distance);
 // TODO(AGENT_WORLD_1): Implement lightning_strike_at [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement lightning_damage [Difficulty: 4]
+float lightning_damage(float distance, float base_damage);
 
 /* =================================================================================================
  *                                    WEATHER MANAGER
@@ -353,17 +364,23 @@ typedef struct WeatherManager {
   uint32_t current_season;
 } WeatherManager;
 
-// TODO(AGENT_WORLD_1): Implement weather_manager_init [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement weather_manager_shutdown [Difficulty: 4]
-// TODO(AGENT_WORLD_1): Implement weather_manager_update [Difficulty: 6]
-// TODO(AGENT_WORLD_1): Implement weather_manager_set_weather [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement weather_manager_transition_to [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement weather_manager_random_weather [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement weather_manager_get_at_position [Difficulty:
-// 5]
+void weather_manager_init(WeatherManager *manager);
+void weather_manager_shutdown(WeatherManager *manager);
+void weather_manager_update(WeatherManager *manager, float delta_time);
+void weather_manager_set_weather(WeatherManager *manager, WeatherType type);
+void weather_manager_transition_to(WeatherManager *manager, WeatherType type,
+                                   float duration);
+WeatherType weather_manager_random_weather(WeatherManager *manager);
+bool weather_manager_get_at_position(const WeatherManager *manager,
+                                     const float position[3],
+                                     WeatherParameters *out_params);
 // TODO(AGENT_WORLD_1): Implement weather_manager_apply_to_rendering
 // [Difficulty: 6]
 // TODO(AGENT_WORLD_1): Implement weather_manager_serialize [Difficulty: 5]
 // TODO(AGENT_WORLD_1): Implement weather_manager_deserialize [Difficulty: 5]
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // WEATHER_SYSTEM_H

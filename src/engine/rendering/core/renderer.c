@@ -3,6 +3,7 @@
 
 #include <core/logger.h>
 #include <core/memory.h>
+#include <core/time_system.h>
 #include <core/window.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -37,6 +38,8 @@ typedef struct {
     RenderStats stats;
     bool vsync_enabled;
     uint32_t frame_index;
+    uint64_t frame_start_time_ns;
+    float total_frame_time_ms;
     
     // Render targets
     uint32_t width;
@@ -181,7 +184,7 @@ void renderer_destroy(Renderer *renderer) {
         
         if (renderer->stats.frames_rendered > 0) {
             LOG_INFO("  Average frame time: %.2f ms", 
-                    renderer->stats.frame_time_ms / renderer->stats.frames_rendered);
+                    renderer->total_frame_time_ms / renderer->stats.frames_rendered);
         }
     }
     
@@ -253,7 +256,10 @@ void renderer_begin_frame(Renderer *renderer) {
     renderer->stats.triangles_drawn = 0;
     
     // Begin frame timing
-    // TODO: Implement frame timing
+    renderer->stats.frame_time_ms = 0.0f;
+    renderer->stats.cpu_time_ms = 0.0f;
+    renderer->stats.gpu_time_ms = 0.0f;
+    renderer->frame_start_time_ns = get_time_nanos();
     
     renderer->frame_index++;
 }
@@ -263,7 +269,14 @@ void renderer_end_frame(Renderer *renderer) {
         return;
     
     // End frame timing
-    // TODO: Calculate frame times
+    if (renderer->frame_start_time_ns > 0) {
+        uint64_t current_time = get_time_nanos();
+        float frame_time_ms = nanos_to_ms(current_time - renderer->frame_start_time_ns);
+        renderer->stats.frame_time_ms = frame_time_ms;
+        renderer->stats.cpu_time_ms = frame_time_ms;
+        renderer->stats.gpu_time_ms = 0.0f;
+        renderer->total_frame_time_ms += frame_time_ms;
+    }
     
     renderer->stats.frames_rendered++;
     
@@ -284,20 +297,39 @@ void renderer_set_vsync(Renderer *renderer, bool enabled) {
     if (renderer->window) {
         window_set_vsync(renderer->window, enabled);
     }
+
+    LOG_INFO("VSync %s", enabled ? "enabled" : "disabled");
 }
 
 void renderer_resize(Renderer *renderer, uint32_t width, uint32_t height) {
     if (!renderer || width == 0 || height == 0)
         return;
     
+    uint32_t old_width = renderer->width;
+    uint32_t old_height = renderer->height;
+    
     renderer->width = width;
     renderer->height = height;
     
-    // Resize framebuffers
     if (renderer->main_framebuffer) {
-        // TODO: Implement framebuffer resize
-        LOG_INFO("Renderer resized to %ux%u", width, height);
+        if (!framebuffer_resize(renderer->main_framebuffer, width, height)) {
+            LOG_ERROR("Failed to resize main framebuffer to %ux%u", width, height);
+        }
     }
+    
+    if (renderer->gbuffer) {
+        if (!framebuffer_resize(renderer->gbuffer, width, height)) {
+            LOG_ERROR("Failed to resize gbuffer to %ux%u", width, height);
+        }
+    }
+    
+    LOG_INFO("Framebuffer resized from %ux%u to %ux%u", 
+             old_width, old_height, width, height);
+    
+    // Update projection matrices for new aspect ratio
+    // update_projection_matrices(renderer, width, height);
+    
+    LOG_INFO("Renderer resized to %ux%u", width, height);
 }
 
 void renderer_set_debug_mode(Renderer *renderer, bool enabled) {

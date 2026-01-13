@@ -88,6 +88,7 @@
 #include <player/player_vehicle.h>
 #include <player/spirit_model.h>
 #include <player/status_effects.h>
+#include <player/player_movement_enhancements.h>
 #include <rendering/camera.h>
 #include <ui/hotbar.h>
 
@@ -255,6 +256,9 @@ typedef struct PlayerComponent {
 
   // Health tracking
   f32 last_health;
+  
+  // Movement enhancements system
+  PlayerMovementEnhancements movement_enhancements;
 } PlayerComponent;
 
 typedef PlayerComponent Player;
@@ -390,5 +394,16 @@ void player_set_invert_y(PlayerSystem *system, bool invert);
 
 // Respawn
 void player_respawn(PlayerSystem *system, Vec3 position);
+
+// Movement enhancements
+void player_movement_enhancements_init_system(PlayerSystem *system);
+void player_movement_enhancements_update_system(PlayerSystem *system, f32 delta_time);
+void player_movement_enhancements_free_system(PlayerSystem *system);
+
+// Movement enhancement accessors
+PlayerMovementEnhancements* player_get_movement_enhancements(PlayerSystem *system);
+PlayerMovementStats* player_get_movement_stats(PlayerSystem *system);
+PlayerMovementProfile* player_get_movement_profile(PlayerSystem *system);
+PlayerMovementAccessibility* player_get_movement_accessibility(PlayerSystem *system);
 
 #endif // PLAYER_H

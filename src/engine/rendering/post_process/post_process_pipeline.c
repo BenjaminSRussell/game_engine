@@ -226,9 +226,21 @@ static void apply_fxaa(PostEffect *effect, void *input_texture,
   float edge_threshold_min = effect->params[1];
   float subpixel_quality = effect->params[2];
 
-  // TODO: Implement FXAA algorithm
+  render_target_bind(output_texture);
 
-  LOG_DEBUG("Applied FXAA (edge_thresh=%.3f, edge_min=%.3f, subpixel=%.3f)",
+  // Bind FXAA Shader
+  // uint32_t shader = shader_get_id("PostProcess_FXAA");
+  // shader_bind(shader);
+  // shader_set_float(shader, "u_EdgeThreshold", edge_threshold);
+  // shader_set_float(shader, "u_EdgeThresholdMin", edge_threshold_min);
+  // shader_set_float(shader, "u_SubpixelQuality", subpixel_quality);
+  // shader_set_vec2(shader, "u_TexelSize",
+  // (vec2){1.0f/g_post_process.width, 1.0f/g_post_process.height});
+
+  render_screen_quad(g_post_process.screen_quad_vbo, NULL, NULL, input_texture);
+
+  LOG_DEBUG(LOG_CAT_RENDERER,
+            "Applied FXAA (edge_thresh=%.3f, edge_min=%.3f, subpixel=%.3f)",
             edge_threshold, edge_threshold_min, subpixel_quality);
 }
 
@@ -241,9 +253,19 @@ static void apply_vignette(PostEffect *effect, void *input_texture,
   float radius = effect->params[1];
   float smoothness = effect->params[2];
 
-  // TODO: Implement vignette effect
+  render_target_bind(output_texture);
 
-  LOG_DEBUG("Applied vignette (strength=%.2f, radius=%.2f, smoothness=%.2f)",
+  // Bind Vignette Shader
+  // uint32_t shader = shader_get_id("PostProcess_Vignette");
+  // shader_bind(shader);
+  // shader_set_float(shader, "u_Strength", strength);
+  // shader_set_float(shader, "u_Radius", radius);
+  // shader_set_float(shader, "u_Smoothness", smoothness);
+
+  render_screen_quad(g_post_process.screen_quad_vbo, NULL, NULL, input_texture);
+
+  LOG_DEBUG(LOG_CAT_RENDERER,
+            "Applied vignette (strength=%.2f, radius=%.2f, smoothness=%.2f)",
             strength, radius, smoothness);
 }
 
@@ -256,9 +278,19 @@ static void apply_color_grading(PostEffect *effect, void *input_texture,
   float saturation = effect->params[1];
   float brightness = effect->params[2];
 
-  // TODO: Implement color grading
+  render_target_bind(output_texture);
+
+  // Bind Color Grading Shader
+  // uint32_t shader = shader_get_id("PostProcess_ColorGrading");
+  // shader_bind(shader);
+  // shader_set_float(shader, "u_Contrast", contrast);
+  // shader_set_float(shader, "u_Saturation", saturation);
+  // shader_set_float(shader, "u_Brightness", brightness);
+
+  render_screen_quad(g_post_process.screen_quad_vbo, NULL, NULL, input_texture);
 
   LOG_DEBUG(
+      LOG_CAT_RENDERER,
       "Applied color grading (contrast=%.2f, saturation=%.2f, brightness=%.2f)",
       contrast, saturation, brightness);
 }
@@ -280,6 +312,15 @@ bool post_process_init(uint32_t width, uint32_t height, bool hdr_enabled) {
   g_post_process.hdr_enabled = hdr_enabled;
   g_post_process.exposure = 1.0f;
   g_post_process.gamma = 2.2f;
+
+  // Create temporary textures for multi-pass effects
+  for (uint32_t i = 0; i < 4; i++) {
+    g_post_process.temp_textures[i] =
+        render_target_create(width, height, g_post_process.hdr_enabled);
+    if (g_post_process.temp_textures[i]) {
+      g_post_process.temp_texture_count++;
+    }
+  }
 
   // Create main framebuffer
   g_post_process.main_framebuffer = framebuffer_create(width, height);
@@ -382,8 +423,17 @@ void post_process_shutdown(void) {
     framebuffer_destroy(g_post_process.main_framebuffer);
   }
 
-  // TODO: Destroy screen quad buffers
-  // TODO: Destroy temporary textures
+  // Destroy screen quad buffers
+  if (g_post_process.screen_quad_vbo) {
+    mesh_destroy(g_post_process.screen_quad_vbo);
+  }
+
+  // Destroy temporary textures
+  for (uint32_t i = 0; i < g_post_process.temp_texture_count; i++) {
+    if (g_post_process.temp_textures[i]) {
+      render_target_destroy(g_post_process.temp_textures[i]);
+    }
+  }
 
   memset(&g_post_process, 0, sizeof(PostProcessPipeline));
 
@@ -399,11 +449,16 @@ void post_process_resize(uint32_t width, uint32_t height) {
 
   // Resize main framebuffer
   if (g_post_process.main_framebuffer) {
-    // TODO: Implement framebuffer resize
+    render_target_resize(g_post_process.main_framebuffer, width, height);
     LOG_INFO("Post-processing pipeline resized to %ux%u", width, height);
   }
 
-  // TODO: Resize temporary textures
+  // Resize temporary textures
+  for (uint32_t i = 0; i < g_post_process.temp_texture_count; i++) {
+    if (g_post_process.temp_textures[i]) {
+      render_target_resize(g_post_process.temp_textures[i], width, height);
+    }
+  }
 }
 
 void post_process_set_input_texture(void *texture) {

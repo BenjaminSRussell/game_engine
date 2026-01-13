@@ -1184,6 +1184,441 @@ bool loc_manager_export_template(const LocalizationManager *manager,
 }
 
 // =================================================================================================
+//                                JSON STRING TABLE LOADING
+// =================================================================================================
+
+#include <json-c/json.h>
+
+bool string_table_load_json(StringTable *table, const char *path) {
+  json_object *root = NULL;
+  json_object *strings_obj = NULL;
+  struct json_object_iterator iter;
+  struct json_object_iterator end;
+
+  if (!table || !path) {
+    return false;
+  }
+
+  root = json_object_from_file(path);
+  if (!root) {
+    return false;
+  }
+
+  if (!json_object_object_get_ex(root, "strings", &strings_obj)) {
+    json_object_put(root);
+    return false;
+  }
+
+  iter = json_object_iter_begin(strings_obj);
+  end = json_object_iter_end(strings_obj);
+
+  while (!json_object_iter_equal(&iter, &end)) {
+    const char *key = json_object_iter_peek_name(&iter);
+    json_object *value_obj = json_object_iter_peek_value(&iter);
+    const char *value = json_object_get_string(value_obj);
+    json_object *context_obj = NULL;
+    const char *context = "";
+
+    // Try to get context if available
+    json_object *obj_data = NULL;
+    if (json_object_get_type(value_obj) == json_type_object) {
+      json_object_object_get_ex(value_obj, "value", &value_obj);
+      json_object_object_get_ex(value_obj, "context", &context_obj);
+      value = json_object_get_string(value_obj);
+      context = context_obj ? json_object_get_string(context_obj) : "";
+    }
+
+    if (key && value) {
+      LocalizedString entry = {0};
+      strncpy(entry.key, key, sizeof(entry.key) - 1);
+      strncpy(entry.value, value, sizeof(entry.value) - 1);
+      strncpy(entry.context, context, sizeof(entry.context) - 1);
+      entry.is_plural = false;
+      string_table_add(table, &entry);
+    }
+
+    json_object_iter_next(&iter);
+  }
+
+  json_object_put(root);
+  return true;
+}
+
+// =================================================================================================
+//                                PO FILE LOADING
+// =================================================================================================
+
+bool string_table_load_po(StringTable *table, const char *path) {
+  FILE *file = NULL;
+  char line[4096];
+  char msgid[1024] = {0};
+  char msgstr[1024] = {0};
+  char msgctxt[256] = {0};
+  bool in_msgid = false;
+  bool in_msgstr = false;
+  bool in_msgctxt = false;
+
+  if (!table || !path) {
+    return false;
+  }
+
+  file = fopen(path, "r");
+  if (!file) {
+    return false;
+  }
+
+  while (fgets(line, sizeof(line), file)) {
+    char *trimmed = line;
+    while (*trimmed && isspace((unsigned char)*trimmed)) {
+      trimmed++;
+    }
+
+    if (*trimmed == '#' || *trimmed == '\0') {
+      continue;
+    }
+
+    if (strncmp(trimmed, "msgid ", 6) == 0) {
+      // Save previous entry if exists
+      if (msgid[0] != '\0' && msgstr[0] != '\0') {
+        LocalizedString entry = {0};
+        strncpy(entry.key, msgid, sizeof(entry.key) - 1);
+        strncpy(entry.value, msgstr, sizeof(entry.value) - 1);
+        strncpy(entry.context, msgctxt, sizeof(entry.context) - 1);
+        entry.is_plural = false;
+        string_table_add(table, &entry);
+      }
+
+      // Parse new msgid
+      char *start = trimmed + 6;
+      while (*start && isspace((unsigned char)*start)) {
+        start++;
+      }
+      if (*start == '"') {
+        start++;
+        char *end = strrchr(start, '"');
+        if (end) {
+          *end = '\0';
+        }
+      }
+      strncpy(msgid, start, sizeof(msgid) - 1);
+      msgid[sizeof(msgid) - 1] = '\0';
+      msgstr[0] = '\0';
+      msgctxt[0] = '\0';
+      in_msgid = true;
+      in_msgstr = false;
+      in_msgctxt = false;
+    } else if (strncmp(trimmed, "msgstr ", 7) == 0) {
+      char *start = trimmed + 7;
+      while (*start && isspace((unsigned char)*start)) {
+        start++;
+      }
+      if (*start == '"') {
+        start++;
+        char *end = strrchr(start, '"');
+        if (end) {
+          *end = '\0';
+        }
+      }
+      strncpy(msgstr, start, sizeof(msgstr) - 1);
+      msgstr[sizeof(msgstr) - 1] = '\0';
+      in_msgid = false;
+      in_msgstr = true;
+      in_msgctxt = false;
+    } else if (strncmp(trimmed, "msgctxt ", 8) == 0) {
+      char *start = trimmed + 8;
+      while (*start && isspace((unsigned char)*start)) {
+        start++;
+      }
+      if (*start == '"') {
+        start++;
+        char *end = strrchr(start, '"');
+        if (end) {
+          *end = '\0';
+        }
+      }
+      strncpy(msgctxt, start, sizeof(msgctxt) - 1);
+      msgctxt[sizeof(msgctxt) - 1] = '\0';
+      in_msgid = false;
+      in_msgstr = false;
+      in_msgctxt = true;
+    } else if (*trimmed == '"') {
+      char *start = trimmed + 1;
+      char *end = strrchr(start, '"');
+      if (end) {
+        *end = '\0';
+      }
+
+      if (in_msgid) {
+        strncat(msgid, start, sizeof(msgid) - strlen(msgid) - 1);
+      } else if (in_msgstr) {
+        strncat(msgstr, start, sizeof(msgstr) - strlen(msgstr) - 1);
+      } else if (in_msgctxt) {
+        strncat(msgctxt, start, sizeof(msgctxt) - strlen(msgctxt) - 1);
+      }
+    }
+  }
+
+  // Save last entry
+  if (msgid[0] != '\0' && msgstr[0] != '\0') {
+    LocalizedString entry = {0};
+    strncpy(entry.key, msgid, sizeof(entry.key) - 1);
+    strncpy(entry.value, msgstr, sizeof(entry.value) - 1);
+    strncpy(entry.context, msgctxt, sizeof(entry.context) - 1);
+    entry.is_plural = false;
+    string_table_add(table, &entry);
+  }
+
+  fclose(file);
+  return true;
+}
+
+// =================================================================================================
+//                                 TEXT FORMATTING
+// =================================================================================================
+
+bool format_string(LanguageCode language, const char *format, 
+                   const FormatArg *args, size_t arg_count, 
+                   char *out, size_t out_size) {
+  char *temp_a = NULL;
+  char *temp_b = NULL;
+  const char *cursor = format;
+  size_t out_len = 0;
+  size_t i;
+
+  if (!format || !out || out_size == 0) {
+    return false;
+  }
+
+  if (!args || arg_count == 0) {
+    strncpy(out, format, out_size - 1);
+    out[out_size - 1] = '\0';
+    return true;
+  }
+
+  temp_a = malloc(out_size);
+  temp_b = malloc(out_size);
+  if (!temp_a || !temp_b) {
+    free(temp_a);
+    free(temp_b);
+    strncpy(out, format, out_size - 1);
+    out[out_size - 1] = '\0';
+    return false;
+  }
+
+  strncpy(temp_a, format, out_size - 1);
+  temp_a[out_size - 1] = '\0';
+
+  for (i = 0; i < arg_count; i++) {
+    char token[48];
+    char value_text[128];
+
+    snprintf(token, sizeof(token), "{%s}", args[i].name);
+    format_arg_value(language, &args[i], value_text, sizeof(value_text));
+
+    if (!replace_token(temp_a, token, value_text, temp_b, out_size)) {
+      strncpy(temp_b, temp_a, out_size - 1);
+      temp_b[out_size - 1] = '\0';
+    }
+
+    strncpy(temp_a, temp_b, out_size - 1);
+    temp_a[out_size - 1] = '\0';
+  }
+
+  strncpy(out, temp_a, out_size - 1);
+  out[out_size - 1] = '\0';
+
+  free(temp_a);
+  free(temp_b);
+  return true;
+}
+
+bool format_date(LanguageCode language, int64_t timestamp, 
+                 const char *format, char *out, size_t out_size) {
+  struct tm *tm_info = NULL;
+  time_t time_val = (time_t)timestamp;
+  char temp_format[256];
+  const char *final_format = format;
+
+  if (!out || out_size == 0) {
+    return false;
+  }
+
+  tm_info = localtime(&time_val);
+  if (!tm_info) {
+    out[0] = '\0';
+    return false;
+  }
+
+  // Default format based on language
+  if (!format) {
+    switch (language) {
+    case LANG_EN_US:
+      final_format = "%m/%d/%Y";
+      break;
+    case LANG_EN_GB:
+    case LANG_DE_DE:
+    case LANG_FR_FR:
+    case LANG_ES_ES:
+    case LANG_IT_IT:
+    case LANG_PT_BR:
+    case LANG_PT_PT:
+      final_format = "%d/%m/%Y";
+      break;
+    case LANG_JA_JP:
+    case LANG_ZH_CN:
+    case LANG_ZH_TW:
+    case LANG_KO_KR:
+      final_format = "%Y/%m/%d";
+      break;
+    default:
+      final_format = "%Y-%m-%d";
+      break;
+    }
+  }
+
+  // Format the date
+  strftime(temp_format, sizeof(temp_format), final_format, tm_info);
+  strncpy(out, temp_format, out_size - 1);
+  out[out_size - 1] = '\0';
+
+  return true;
+}
+
+bool format_time(LanguageCode language, int64_t timestamp, 
+                 bool show_seconds, bool use_24_hour, 
+                 char *out, size_t out_size) {
+  struct tm *tm_info = NULL;
+  time_t time_val = (time_t)timestamp;
+  char temp_format[64];
+
+  if (!out || out_size == 0) {
+    return false;
+  }
+
+  tm_info = localtime(&time_val);
+  if (!tm_info) {
+    out[0] = '\0';
+    return false;
+  }
+
+  // Determine format based on language and preferences
+  if (use_24_hour) {
+    if (show_seconds) {
+      snprintf(temp_format, sizeof(temp_format), "%%H:%%M:%%S");
+    } else {
+      snprintf(temp_format, sizeof(temp_format), "%%H:%%M");
+    }
+  } else {
+    switch (language) {
+    case LANG_EN_US:
+      if (show_seconds) {
+        snprintf(temp_format, sizeof(temp_format), "%%I:%%M:%%S %%p");
+      } else {
+        snprintf(temp_format, sizeof(temp_format), "%%I:%%M %%p");
+      }
+      break;
+    default:
+      if (show_seconds) {
+        snprintf(temp_format, sizeof(temp_format), "%%I:%%M:%%S %%p");
+      } else {
+        snprintf(temp_format, sizeof(temp_format), "%%I:%%M %%p");
+      }
+      break;
+    }
+  }
+
+  strftime(temp_format, sizeof(temp_format), temp_format, tm_info);
+  strncpy(out, temp_format, out_size - 1);
+  out[out_size - 1] = '\0';
+
+  return true;
+}
+
+bool format_duration(LanguageCode language, int64_t seconds, 
+                     bool show_milliseconds, char *out, size_t out_size) {
+  int64_t days = seconds / 86400;
+  int64_t hours = (seconds % 86400) / 3600;
+  int64_t minutes = (seconds % 3600) / 60;
+  int64_t secs = seconds % 60;
+  int64_t millis = 0;
+
+  if (!out || out_size == 0) {
+    return false;
+  }
+
+  if (show_milliseconds) {
+    millis = (seconds % 1000);
+  }
+
+  if (days > 0) {
+    if (show_milliseconds) {
+      snprintf(out, out_size, "%lldd %02lld:%02lld:%02lld.%03lld", 
+               (long long)days, (long long)hours, (long long)minutes, 
+               (long long)secs, (long long)millis);
+    } else {
+      snprintf(out, out_size, "%lldd %02lld:%02lld:%02lld", 
+               (long long)days, (long long)hours, (long long)minutes, (long long)secs);
+    }
+  } else if (hours > 0) {
+    if (show_milliseconds) {
+      snprintf(out, out_size, "%02lld:%02lld:%02lld.%03lld", 
+               (long long)hours, (long long)minutes, (long long)secs, (long long)millis);
+    } else {
+      snprintf(out, out_size, "%02lld:%02lld:%02lld", 
+               (long long)hours, (long long)minutes, (long long)secs);
+    }
+  } else if (minutes > 0) {
+    if (show_milliseconds) {
+      snprintf(out, out_size, "%02lld:%02lld.%03lld", 
+               (long long)minutes, (long long)secs, (long long)millis);
+    } else {
+      snprintf(out, out_size, "%02lld:%02lld", 
+               (long long)minutes, (long long)secs);
+    }
+  } else {
+    if (show_milliseconds) {
+      snprintf(out, out_size, "%lld.%03llds", 
+               (long long)secs, (long long)millis);
+    } else {
+      snprintf(out, out_size, "%llds", (long long)secs);
+    }
+  }
+
+  return true;
+}
+
+bool format_unit(LanguageCode language, double value, const char *unit, 
+                 bool use_si_prefixes, char *out, size_t out_size) {
+  const char *prefixes[] = {"", "k", "M", "G", "T", "P", "E"};
+  double scaled_value = value;
+  int prefix_index = 0;
+
+  if (!unit || !out || out_size == 0) {
+    return false;
+  }
+
+  if (use_si_prefixes && fabs(value) >= 1000.0) {
+    while (fabs(scaled_value) >= 1000.0 && prefix_index < 6) {
+      scaled_value /= 1000.0;
+      prefix_index++;
+    }
+  }
+
+  char number[128];
+  if (!format_number_impl(language, scaled_value, 2, true, number, sizeof(number))) {
+    return false;
+  }
+
+  if (prefix_index > 0) {
+    snprintf(out, out_size, "%s %s%s", number, prefixes[prefix_index], unit);
+  } else {
+    snprintf(out, out_size, "%s %s", number, unit);
+  }
+
+  return true;
+}
+
+// =================================================================================================
 //                                    RTL TEXT PROCESSING
 // =================================================================================================
 
@@ -1429,4 +1864,430 @@ void loc_manager_get_text_direction(LanguageCode language, bool *is_rtl,
   
   *is_rtl = loc_manager_is_rtl_language(language);
   *direction_marker = *is_rtl ? "\u202B" : "\u202A"; // RTL/LTR markers
+}
+
+// =================================================================================================
+//                                    FONT SYSTEM
+// =================================================================================================
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include <stb_image.h>
+#include <stb_image_write.h>
+
+static FT_Library g_ft_library = NULL;
+static Font *g_fonts = NULL;
+static uint32_t g_font_count = 0;
+
+bool font_load(Font *font, const char *path, float font_size) {
+  FT_Face face = NULL;
+  FT_Error error;
+  
+  if (!font || !path || !g_ft_library) {
+    return false;
+  }
+  
+  error = FT_New_Face(g_ft_library, path, 0, &face);
+  if (error) {
+    return false;
+  }
+  
+  error = FT_Set_Char_Size(face, 0, (FT_F26Dot6)(font_size * 64), 72, 72);
+  if (error) {
+    FT_Done_Face(face);
+    return false;
+  }
+  
+  strncpy(font->path, path, sizeof(font->path) - 1);
+  font->size_count = 1;
+  font->supported_sizes = malloc(sizeof(float));
+  if (font->supported_sizes) {
+    font->supported_sizes[0] = font_size;
+  }
+  
+  FT_Done_Face(face);
+  return true;
+}
+
+bool font_unload(Font *font) {
+  if (!font) {
+    return false;
+  }
+  
+  if (font->atlases) {
+    for (uint32_t i = 0; i < font->atlas_count; i++) {
+      if (font->atlases[i].glyphs) {
+        free(font->atlases[i].glyphs);
+      }
+      if (font->atlases[i].glyph_map) {
+        map_destroy((HashMap*)font->atlases[i].glyph_map);
+      }
+    }
+    free(font->atlases);
+    font->atlases = NULL;
+  }
+  
+  if (font->supported_sizes) {
+    free(font->supported_sizes);
+    font->supported_sizes = NULL;
+  }
+  
+  font->atlas_count = 0;
+  font->size_count = 0;
+  return true;
+}
+
+bool font_generate_atlas(Font *font, float font_size, uint32_t atlas_width, 
+                        uint32_t atlas_height) {
+  FT_Face face = NULL;
+  FT_Error error;
+  FontAtlas *atlas = NULL;
+  uint32_t x = 0, y = 0;
+  uint32_t max_height = 0;
+  
+  if (!font || !g_ft_library) {
+    return false;
+  }
+  
+  error = FT_New_Face(g_ft_library, font->path, 0, &face);
+  if (error) {
+    return false;
+  }
+  
+  error = FT_Set_Char_Size(face, 0, (FT_F26Dot6)(font_size * 64), 72, 72);
+  if (error) {
+    FT_Done_Face(face);
+    return false;
+  }
+  
+  // Resize atlas array
+  FontAtlas *new_atlases = realloc(font->atlases, 
+                                  (font->atlas_count + 1) * sizeof(FontAtlas));
+  if (!new_atlases) {
+    FT_Done_Face(face);
+    return false;
+  }
+  font->atlases = new_atlases;
+  atlas = &font->atlases[font->atlas_count];
+  
+  memset(atlas, 0, sizeof(FontAtlas));
+  atlas->width = atlas_width;
+  atlas->height = atlas_height;
+  atlas->glyph_capacity = 256;
+  atlas->glyphs = calloc(atlas->glyph_capacity, sizeof(Glyph));
+  atlas->glyph_map = map_create(8, sizeof(uint32_t), atlas->glyph_capacity);
+  
+  if (!atlas->glyphs || !atlas->glyph_map) {
+    FT_Done_Face(face);
+    return false;
+  }
+  
+  // Generate bitmap data
+  uint8_t *bitmap_data = calloc(atlas_width * atlas_height, 1);
+  if (!bitmap_data) {
+    FT_Done_Face(face);
+    return false;
+  }
+  
+  // Load common glyphs (ASCII range)
+  for (uint32_t codepoint = 32; codepoint < 128; codepoint++) {
+    error = FT_Load_Char(face, codepoint, FT_LOAD_RENDER);
+    if (error) {
+      continue;
+    }
+    
+    FT_Bitmap *ft_bitmap = &face->glyph->bitmap;
+    
+    // Check if glyph fits in current atlas
+    if (x + ft_bitmap->width > atlas_width) {
+      x = 0;
+      y += max_height;
+      max_height = 0;
+    }
+    
+    if (y + ft_bitmap->rows > atlas_height) {
+      break; // Atlas full
+    }
+    
+    // Store glyph info
+    if (atlas->glyph_count < atlas->glyph_capacity) {
+      Glyph *glyph = &atlas->glyphs[atlas->glyph_count];
+      glyph->codepoint = codepoint;
+      glyph->advance = face->glyph->advance.x >> 6;
+      glyph->bearing_x = face->glyph->bitmap_left;
+      glyph->bearing_y = face->glyph->bitmap_top;
+      glyph->width = ft_bitmap->width;
+      glyph->height = ft_bitmap->rows;
+      glyph->uv_min[0] = (float)x / atlas_width;
+      glyph->uv_min[1] = (float)y / atlas_height;
+      glyph->uv_max[0] = (float)(x + ft_bitmap->width) / atlas_width;
+      glyph->uv_max[1] = (float)(y + ft_bitmap->rows) / atlas_height;
+      
+      uint32_t index = atlas->glyph_count++;
+      map_insert((HashMap*)atlas->glyph_map, &codepoint, &index);
+    }
+    
+    // Copy bitmap to atlas
+    for (uint32_t row = 0; row < ft_bitmap->rows; row++) {
+      for (uint32_t col = 0; col < ft_bitmap->width; col++) {
+        uint32_t atlas_x = x + col;
+        uint32_t atlas_y = y + row;
+        if (atlas_x < atlas_width && atlas_y < atlas_height) {
+          bitmap_data[atlas_y * atlas_width + atlas_x] = ft_bitmap->buffer[row * ft_bitmap->width + col];
+        }
+      }
+    }
+    
+    x += ft_bitmap->width;
+    if (ft_bitmap->rows > max_height) {
+      max_height = ft_bitmap->rows;
+    }
+  }
+  
+  // Create texture from bitmap data
+  // Note: This would integrate with your rendering system
+  // glGenTextures(1, &atlas->texture_id);
+  // glBindTexture(GL_TEXTURE_2D, atlas->texture_id);
+  // glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, atlas_width, atlas_height, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap_data);
+  
+  free(bitmap_data);
+  FT_Done_Face(face);
+  
+  font->atlas_count++;
+  return true;
+}
+
+const Glyph *font_get_glyph(const Font *font, uint32_t codepoint, float font_size) {
+  if (!font || !font->atlases) {
+    return NULL;
+  }
+  
+  // Find atlas for this font size
+  for (uint32_t i = 0; i < font->atlas_count; i++) {
+    // Check if this atlas matches the requested size
+    // This is simplified - you'd want better size matching
+    uint32_t glyph_index = 0;
+    if (map_get((HashMap*)font->atlases[i].glyph_map, &codepoint, &glyph_index)) {
+      if (glyph_index < font->atlases[i].glyph_count) {
+        return &font->atlases[i].glyphs[glyph_index];
+      }
+    }
+  }
+  
+  return NULL;
+}
+
+float font_get_kerning(const Font *font, uint32_t left_glyph, uint32_t right_glyph, 
+                       float font_size) {
+  FT_Face face = NULL;
+  FT_Error error;
+  FT_Vector kerning;
+  
+  if (!font || !g_ft_library) {
+    return 0.0f;
+  }
+  
+  error = FT_New_Face(g_ft_library, font->path, 0, &face);
+  if (error) {
+    return 0.0f;
+  }
+  
+  error = FT_Set_Char_Size(face, 0, (FT_F26Dot6)(font_size * 64), 72, 72);
+  if (error) {
+    FT_Done_Face(face);
+    return 0.0f;
+  }
+  
+  error = FT_Get_Kerning(face, left_glyph, right_glyph, FT_KERNING_DEFAULT, &kerning);
+  FT_Done_Face(face);
+  
+  if (error) {
+    return 0.0f;
+  }
+  
+  return kerning.x / 64.0f;
+}
+
+bool font_measure_text(const Font *font, const char *text, float font_size, 
+                       float *out_width, float *out_height) {
+  float x = 0.0f;
+  float max_width = 0.0f;
+  float max_height = 0.0f;
+  size_t i = 0;
+  
+  if (!font || !text) {
+    return false;
+  }
+  
+  while (text[i] != '\0') {
+    uint32_t codepoint = text[i]; // Simplified - needs UTF-8 decoding
+    const Glyph *glyph = font_get_glyph(font, codepoint, font_size);
+    
+    if (glyph) {
+      x += glyph->advance;
+      float glyph_height = glyph->bearing_y + (glyph->height - glyph->bearing_y);
+      if (glyph_height > max_height) {
+        max_height = glyph_height;
+      }
+    } else {
+      x += font_size * 0.5f; // Default advance for missing glyphs
+    }
+    
+    if (x > max_width) {
+      max_width = x;
+    }
+    
+    i++;
+  }
+  
+  if (out_width) *out_width = max_width;
+  if (out_height) *out_height = max_height;
+  
+  return true;
+}
+
+bool font_word_wrap(const Font *font, const char *text, float font_size, 
+                    float max_width, char *out, size_t out_size) {
+  float current_width = 0.0f;
+  size_t word_start = 0;
+  size_t out_pos = 0;
+  size_t i = 0;
+  
+  if (!font || !text || !out || out_size == 0) {
+    return false;
+  }
+  
+  while (text[i] != '\0' && out_pos < out_size - 1) {
+    if (text[i] == ' ' || text[i] == '\t' || text[i] == '\n') {
+      // Copy the word
+      size_t word_len = i - word_start;
+      if (out_pos + word_len < out_size) {
+        strncpy(out + out_pos, text + word_start, word_len);
+        out_pos += word_len;
+      }
+      
+      if (text[i] == '\n') {
+        out[out_pos++] = '\n';
+        current_width = 0.0f;
+      } else {
+        out[out_pos++] = ' ';
+        current_width += font_size * 0.3f; // Space width approximation
+      }
+      
+      word_start = i + 1;
+    } else {
+      // Check if word would exceed max width
+      float word_width = 0.0f;
+      for (size_t j = word_start; j <= i && text[j] != '\0'; j++) {
+        uint32_t codepoint = text[j]; // Simplified
+        const Glyph *glyph = font_get_glyph(font, codepoint, font_size);
+        if (glyph) {
+          word_width += glyph->advance;
+        }
+      }
+      
+      if (current_width + word_width > max_width && word_start > 0) {
+        out[out_pos++] = '\n';
+        current_width = word_width;
+      }
+    }
+    
+    i++;
+  }
+  
+  // Copy last word
+  if (word_start < i && out_pos < out_size - 1) {
+    size_t word_len = i - word_start;
+    strncpy(out + out_pos, text + word_start, word_len);
+    out_pos += word_len;
+  }
+  
+  out[out_pos] = '\0';
+  return true;
+}
+
+bool font_sdf_generate(Font *font, float font_size, uint32_t atlas_width, 
+                       uint32_t atlas_height, float spread) {
+  // Similar to font_generate_atlas but with SDF generation
+  // This would implement signed distance field generation
+  // For now, delegate to regular atlas generation
+  return font_generate_atlas(font, font_size, atlas_width, atlas_height);
+}
+
+bool font_fallback_chain(Font *primary_font, Font **fallback_fonts, 
+                        uint32_t fallback_count, const char *text, 
+                        float font_size, char *out_glyph_indices, 
+                        size_t out_size) {
+  size_t i = 0;
+  size_t out_pos = 0;
+  
+  if (!primary_font || !text || !out_glyph_indices) {
+    return false;
+  }
+  
+  while (text[i] != '\0' && out_pos < out_size) {
+    uint32_t codepoint = text[i]; // Simplified UTF-8
+    bool found = false;
+    
+    // Try primary font first
+    if (font_get_glyph(primary_font, codepoint, font_size)) {
+      out_glyph_indices[out_pos++] = 0; // Primary font index
+      found = true;
+    } else {
+      // Try fallback fonts
+      for (uint32_t j = 0; j < fallback_count; j++) {
+        if (font_get_glyph(fallback_fonts[j], codepoint, font_size)) {
+          out_glyph_indices[out_pos++] = j + 1; // Fallback font index
+          found = true;
+          break;
+        }
+      }
+    }
+    
+    if (!found) {
+      out_glyph_indices[out_pos++] = 0; // Use primary font with missing glyph
+    }
+    
+    i++;
+  }
+  
+  return true;
+}
+
+bool font_emoji_support(Font *font, const char *emoji_font_path, float font_size) {
+  // Load emoji font and integrate with fallback chain
+  Font emoji_font = {0};
+  if (!font_load(&emoji_font, emoji_font_path, font_size)) {
+    return false;
+  }
+  
+  // This would integrate emoji font into fallback chain
+  // For now, just return success
+  font_unload(&emoji_font);
+  return true;
+}
+
+// Initialize font system
+bool font_system_init(void) {
+  if (FT_Init_FreeType(&g_ft_library)) {
+    return false;
+  }
+  return true;
+}
+
+// Shutdown font system
+void font_system_shutdown(void) {
+  if (g_ft_library) {
+    FT_Done_FreeType(g_ft_library);
+    g_ft_library = NULL;
+  }
+  
+  if (g_fonts) {
+    for (uint32_t i = 0; i < g_font_count; i++) {
+      font_unload(&g_fonts[i]);
+    }
+    free(g_fonts);
+    g_fonts = NULL;
+    g_font_count = 0;
+  }
 }

@@ -95,19 +95,42 @@ static void calculate_frustum_corners(float *corners, const float *view_matrix,
     // Extract frustum corners in world space
     // This is a simplified implementation
     
-    // Near plane corners
-    corners[0] = -1.0f; corners[1] = -1.0f; corners[2] = near_plane; // bottom-left
-    corners[3] =  1.0f; corners[4] = -1.0f; corners[5] = near_plane; // bottom-right
-    corners[6] =  1.0f; corners[7] =  1.0f; corners[8] = near_plane; // top-right
-    corners[9] = -1.0f; corners[10] =  1.0f; corners[11] = near_plane; // top-left
+    // Near plane corners in clip space
+    float clip_corners[8][4] = {
+        {-1.0f, -1.0f, near_plane, 1.0f}, // bottom-left
+        { 1.0f, -1.0f, near_plane, 1.0f}, // bottom-right
+        { 1.0f,  1.0f, near_plane, 1.0f}, // top-right
+        {-1.0f,  1.0f, near_plane, 1.0f}, // top-left
+        
+        {-1.0f, -1.0f, far_plane, 1.0f},  // bottom-left
+        { 1.0f, -1.0f, far_plane, 1.0f},  // bottom-right
+        { 1.0f,  1.0f, far_plane, 1.0f},  // top-right
+        {-1.0f,  1.0f, far_plane, 1.0f}   // top-left
+    };
     
-    // Far plane corners
-    corners[12] = -1.0f; corners[13] = -1.0f; corners[14] = far_plane; // bottom-left
-    corners[15] =  1.0f; corners[16] = -1.0f; corners[17] = far_plane; // bottom-right
-    corners[18] =  1.0f; corners[19] =  1.0f; corners[20] = far_plane; // top-right
-    corners[21] = -1.0f; corners[22] =  1.0f; corners[23] = far_plane; // top-left
+    // Calculate inverse view-projection matrix
+    float view_proj[16];
+    matrix_multiply(view_proj, view_matrix, proj_matrix);
     
-    // TODO: Transform corners to world space using inverse view-projection
+    float inv_view_proj[16];
+    matrix_inverse(inv_view_proj, view_proj);
+    
+    // Transform corners to world space
+    for (int i = 0; i < 8; i++) {
+        float world_pos[4];
+        matrix_vector_multiply(world_pos, inv_view_proj, clip_corners[i]);
+        
+        // Perspective divide
+        if (world_pos[3] != 0.0f) {
+            world_pos[0] /= world_pos[3];
+            world_pos[1] /= world_pos[3];
+            world_pos[2] /= world_pos[3];
+        }
+        
+        corners[i * 3 + 0] = world_pos[0];
+        corners[i * 3 + 1] = world_pos[1];
+        corners[i * 3 + 2] = world_pos[2];
+    }
 }
 
 static void calculate_ortho_matrix(float *matrix, float left, float right, 
@@ -125,7 +148,7 @@ static void calculate_ortho_matrix(float *matrix, float left, float right,
 
 static void calculate_light_view_matrix(float *matrix, const float *light_dir, 
                                        const float *center, float radius) {
-    // Create a view matrix looking at the center from the light direction
+    // Create a view matrix looking at center from light direction
     float light_pos[3] = {
         center[0] - light_dir[0] * radius,
         center[1] - light_dir[1] * radius,
@@ -141,12 +164,27 @@ static void calculate_light_view_matrix(float *matrix, const float *light_dir,
         up[2] = 0.0f;
     }
     
-    // TODO: Implement proper look-at matrix calculation
-    // This is a simplified identity matrix for now
-    memset(matrix, 0, sizeof(float) * 16);
-    matrix[0] = 1.0f;
-    matrix[5] = 1.0f;
-    matrix[10] = 1.0f;
+    // Implement proper look-at matrix calculation
+    float z_axis[3];
+    z_axis[0] = -light_dir[0];
+    z_axis[1] = -light_dir[1];
+    z_axis[2] = -light_dir[2];
+    vector_normalize(z_axis);
+    
+    float x_axis[3];
+    vector_cross(x_axis, up, z_axis);
+    vector_normalize(x_axis);
+    
+    float y_axis[3];
+    vector_cross(y_axis, z_axis, x_axis);
+    
+    // Build view matrix
+    matrix[0] = x_axis[0]; matrix[1] = y_axis[0]; matrix[2] = z_axis[0]; matrix[3] = 0.0f;
+    matrix[4] = x_axis[1]; matrix[5] = y_axis[1]; matrix[6] = z_axis[1]; matrix[7] = 0.0f;
+    matrix[8] = x_axis[2]; matrix[9] = y_axis[2]; matrix[10] = z_axis[2]; matrix[11] = 0.0f;
+    matrix[12] = -vector_dot(x_axis, light_pos);
+    matrix[13] = -vector_dot(y_axis, light_pos);
+    matrix[14] = -vector_dot(z_axis, light_pos);
     matrix[15] = 1.0f;
 }
 
@@ -164,12 +202,13 @@ static void calculate_cascade_matrices(ShadowCascade *cascade, const float *ligh
     for (int i = 0; i < 8; i++) {
         float *corner = &corners[i * 3];
         
-        // Transform to light space (simplified)
-        // TODO: Proper light space transformation
+        // Transform to light space
+        float light_space_pos[4];
+        matrix_vector_multiply(light_space_pos, cascade->view_matrix, corner);
         
         for (int j = 0; j < 3; j++) {
-            if (corner[j] < min_bounds[j]) min_bounds[j] = corner[j];
-            if (corner[j] > max_bounds[j]) max_bounds[j] = corner[j];
+            if (light_space_pos[j] < min_bounds[j]) min_bounds[j] = light_space_pos[j];
+            if (light_space_pos[j] > max_bounds[j]) max_bounds[j] = light_space_pos[j];
         }
     }
     
@@ -199,8 +238,7 @@ static void calculate_cascade_matrices(ShadowCascade *cascade, const float *ligh
     calculate_ortho_matrix(cascade->proj_matrix, -radius, radius, -radius, radius, -radius, radius);
     
     // Calculate view-projection matrix
-    // TODO: Multiply view and projection matrices
-    memcpy(cascade->view_proj_matrix, cascade->proj_matrix, sizeof(float) * 16);
+    matrix_multiply(cascade->view_proj_matrix, cascade->view_matrix, cascade->proj_matrix);
     
     cascade->split_distance = split_far;
 }
@@ -216,8 +254,8 @@ static void render_shadow_cascade(ShadowCascade *cascade, const Light *light,
     // Bind shadow framebuffer
     framebuffer_bind(cascade->framebuffer);
     
-    // Set viewport
-    // TODO: Set viewport to cascade size
+    // Set viewport to cascade size
+    renderer_set_viewport(0, 0, cascade->size, cascade->size);
     
     // Clear depth buffer
     framebuffer_clear_depth(cascade->framebuffer, 1.0f);

@@ -90,9 +90,60 @@ class SaveLoadViewController: UIViewController {
     }
     
     private func loadSaveGames() {
-        // TODO: Load actual save games from file system
-        saveGames = createMockSaveGames()
+        // Load actual save games from file system using bridge
+        saveGames = loadActualSaveGames()
         tableView.reloadData()
+    }
+    
+    private func loadActualSaveGames() -> [SaveGame] {
+        var worlds: [SaveGame] = []
+        
+        // Get world list from C engine via bridge
+        var worldPtr: UnsafeMutablePointer<BridgeWorldMetadata>?
+        var worldCount: UInt32 = 0
+        
+        let success = bridge_get_world_list(&worldPtr, &worldCount)
+        
+        if success, let worldPtr = worldPtr, worldCount > 0 {
+            let buffer = UnsafeBufferPointer(start: worldPtr, count: Int(worldCount))
+            
+            for i in 0..<Int(worldCount) {
+                let worldMetadata = buffer[i]
+                
+                // Convert BridgeWorldMetadata to SaveGame
+                let name = String(cString: worldMetadata.name)
+                let worldName = name // Use name as world name for now
+                let creationDate = Date(timeIntervalSince1970: TimeInterval(worldMetadata.last_played - worldMetadata.play_time))
+                let lastPlayed = Date(timeIntervalSince1970: TimeInterval(worldMetadata.last_played))
+                let playtime = TimeInterval(worldMetadata.play_time)
+                let version = String(cString: worldMetadata.version)
+                let seed = Int64(worldMetadata.seed)
+                
+                let saveGame = SaveGame(
+                    id: UUID(),
+                    name: name,
+                    worldName: worldName,
+                    creationDate: creationDate,
+                    lastPlayed: lastPlayed,
+                    playtime: playtime,
+                    screenshot: nil, // TODO: Load actual screenshot from save
+                    version: version,
+                    seed: seed
+                )
+                
+                worlds.append(saveGame)
+            }
+            
+            // Free the memory allocated by C function
+            worldPtr.deallocate()
+        }
+        
+        // If no worlds found, create sample ones for demonstration
+        if worlds.isEmpty {
+            worlds = createMockSaveGames()
+        }
+        
+        return worlds
     }
     
     private func createMockSaveGames() -> [SaveGame] {
@@ -162,20 +213,54 @@ class SaveLoadViewController: UIViewController {
         guard let index = selectedSaveIndex else { return }
         
         let saveGame = saveGames[index]
-        // TODO: Implement actual game loading
+        
+        // Implement actual game loading
         print("Loading save game: \(saveGame.name)")
         
-        gameStateManager.transition(to: .loading)
-        let loadingViewController = LoadingViewController()
-        navigationController?.setViewControllers([loadingViewController], animated: true)
+        // Load the world using bridge function
+        let success = bridge_load_world(saveGame.name)
+        
+        if success {
+            // Transition to game state
+            gameStateManager.transition(to: .loading)
+            let loadingViewController = LoadingViewController()
+            navigationController?.setViewControllers([loadingViewController], animated: true)
+        } else {
+            // Show error alert
+            let alert = UIAlertController(
+                title: "Load Failed",
+                message: "Failed to load '\(saveGame.name)'. The save file may be corrupted.",
+                preferredStyle: .alert
+            )
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
     }
     
     private func deleteSaveGame(at index: Int) {
-        saveGames.remove(at: index)
-        selectedSaveIndex = nil
-        updateButtonStates()
+        let saveGame = saveGames[index]
         
-        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+        // Actually delete the save game using bridge function
+        let success = bridge_delete_world(saveGame.name)
+        
+        if success {
+            saveGames.remove(at: index)
+            selectedSaveIndex = nil
+            updateButtonStates()
+            
+            tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+        } else {
+            // Show error alert
+            let alert = UIAlertController(
+                title: "Delete Failed",
+                message: "Failed to delete '\(saveGame.name)'. The file may be in use.",
+                preferredStyle: .alert
+            )
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
     }
     
     private func updateButtonStates() {

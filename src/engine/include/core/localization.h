@@ -76,8 +76,8 @@ typedef struct StringTable {
   void *hash_map;
 } StringTable;
 
-// TODO(AGENT_DOCS_1): Implement string_table_load_json [Difficulty: 5]
-// TODO(AGENT_DOCS_1): Implement string_table_load_po [Difficulty: 6]
+bool string_table_load_json(StringTable *table, const char *path);
+bool string_table_load_po(StringTable *table, const char *path);
 
 StringTable *string_table_create(LanguageCode language,
                                  const char *language_name,
@@ -138,20 +138,27 @@ typedef struct FormatArg {
 #define FORMAT_ARG_FLOAT 1u
 #define FORMAT_ARG_STRING 2u
 
-// TODO(AGENT_DOCS_1): Implement format_string [Difficulty: 6]
+bool format_string(LanguageCode language, const char *format, 
+                   const FormatArg *args, size_t arg_count, 
+                   char *out, size_t out_size);
 bool format_number(LanguageCode language, double value, char *out,
                    size_t out_size);
 bool format_currency(LanguageCode language, double value,
                      const char *currency_symbol, bool currency_before,
                      char *out, size_t out_size);
-// TODO(AGENT_DOCS_1): Implement format_date [Difficulty: 6]
-// TODO(AGENT_DOCS_1): Implement format_time [Difficulty: 5]
-// TODO(AGENT_DOCS_1): Implement format_duration [Difficulty: 5]
+bool format_date(LanguageCode language, int64_t timestamp, 
+                 const char *format, char *out, size_t out_size);
+bool format_time(LanguageCode language, int64_t timestamp, 
+                 bool show_seconds, bool use_24_hour, 
+                 char *out, size_t out_size);
+bool format_duration(LanguageCode language, int64_t seconds, 
+                     bool show_milliseconds, char *out, size_t out_size);
 bool format_percentage(LanguageCode language, double value, char *out,
                        size_t out_size);
 bool format_ordinal(LanguageCode language, int64_t value, char *out,
                     size_t out_size);
-// TODO(AGENT_DOCS_1): Implement format_unit [Difficulty: 5]
+bool format_unit(LanguageCode language, double value, const char *unit, 
+                 bool use_si_prefixes, char *out, size_t out_size);
 
 /* =================================================================================================
  *                                    FONT SYSTEM
@@ -192,16 +199,28 @@ typedef struct Font {
   float sdf_spread;
 } Font;
 
-// TODO(AGENT_DOCS_1): Implement font_load [Difficulty: 6]
-// TODO(AGENT_DOCS_1): Implement font_unload [Difficulty: 4]
-// TODO(AGENT_DOCS_1): Implement font_generate_atlas [Difficulty: 7]
-// TODO(AGENT_DOCS_1): Implement font_get_glyph [Difficulty: 4]
-// TODO(AGENT_DOCS_1): Implement font_get_kerning [Difficulty: 5]
-// TODO(AGENT_DOCS_1): Implement font_measure_text [Difficulty: 5]
-// TODO(AGENT_DOCS_1): Implement font_word_wrap [Difficulty: 6]
-// TODO(AGENT_DOCS_1): Implement font_sdf_generate [Difficulty: 7]
-// TODO(AGENT_DOCS_1): Implement font_fallback_chain [Difficulty: 5]
-// TODO(AGENT_DOCS_1): Implement font_emoji_support [Difficulty: 6]
+bool font_load(Font *font, const char *path, float font_size);
+bool font_unload(Font *font);
+bool font_generate_atlas(Font *font, float font_size, uint32_t atlas_width, 
+                        uint32_t atlas_height);
+const Glyph *font_get_glyph(const Font *font, uint32_t codepoint, float font_size);
+float font_get_kerning(const Font *font, uint32_t left_glyph, uint32_t right_glyph, 
+                       float font_size);
+bool font_measure_text(const Font *font, const char *text, float font_size, 
+                       float *out_width, float *out_height);
+bool font_word_wrap(const Font *font, const char *text, float font_size, 
+                    float max_width, char *out, size_t out_size);
+bool font_sdf_generate(Font *font, float font_size, uint32_t atlas_width, 
+                       uint32_t atlas_height, float spread);
+bool font_fallback_chain(Font *primary_font, Font **fallback_fonts, 
+                        uint32_t fallback_count, const char *text, 
+                        float font_size, char *out_glyph_indices, 
+                        size_t out_size);
+bool font_emoji_support(Font *font, const char *emoji_font_path, float font_size);
+
+// Font system management
+bool font_system_init(void);
+void font_system_shutdown(void);
 
 /* =================================================================================================
  *                                    TEXT RENDERING

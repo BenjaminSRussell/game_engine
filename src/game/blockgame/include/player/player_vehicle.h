@@ -79,7 +79,23 @@ EntityID player_get_vehicle_entity(const PlayerSystem *system);
 
 // Vehicle damage and repair
 void player_vehicle_damage(PlayerSystem *system, f32 damage);
+void player_vehicle_damage_typed(PlayerSystem *system, f32 damage, VehicleDamageType damage_type);
 void player_vehicle_repair(PlayerSystem *system, f32 repair_amount);
 bool player_vehicle_is_destroyed(const PlayerSystem *system);
+
+// Vehicle fuel system
+void player_vehicle_update_fuel(PlayerSystem *system, f32 delta_time);
+bool player_vehicle_refuel(PlayerSystem *system, f32 fuel_amount);
+f32 player_vehicle_get_fuel_percentage(const PlayerSystem *system);
+
+// Vehicle damage types (for external use)
+typedef enum {
+    VEHICLE_DAMAGE_COLLISION = 0,
+    VEHICLE_DAMAGE_FALL,
+    VEHICLE_DAMAGE_EXPLOSION,
+    VEHICLE_DAMAGE_FIRE,
+    VEHICLE_DAMAGE_WATER,
+    VEHICLE_DAMAGE_COUNT
+} VehicleDamageType;
 
 #endif // PLAYER_VEHICLE_H

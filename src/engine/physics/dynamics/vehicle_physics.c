@@ -41,7 +41,7 @@ static bool vehicle_wheel_raycast(const VehiclePhysics *vehicle, u32 wheel_index
     const VehicleWheel *wheel = &vehicle->wheels[wheel_index];
     
     // Calculate wheel world position
-    Mat4 rotation_mat = mat4_rotate((Vec3){0.0f, 1.0f, 0.0f}, 0.0f); // TODO: Fix rotation from quat
+    Mat4 rotation_mat = mat4_from_quat(vehicle->rotation);
     Mat4 translation_mat = mat4_translate(vehicle->position);
     Mat4 chassis_transform = mat4_mul(translation_mat, rotation_mat);
     Vec3 wheel_world_pos = mat4_transform_point(chassis_transform, wheel->position);
@@ -84,7 +84,7 @@ static bool vehicle_wheel_raycast_multi(const VehiclePhysics *vehicle, u32 wheel
     result->count = 0;
     
     // Calculate wheel world position
-    Mat4 rotation_mat = mat4_rotate((Vec3){0.0f, 1.0f, 0.0f}, 0.0f); // TODO: Fix rotation from quat
+    Mat4 rotation_mat = mat4_from_quat(vehicle->rotation);
     Mat4 translation_mat = mat4_translate(vehicle->position);
     Mat4 chassis_transform = mat4_mul(translation_mat, rotation_mat);
     Vec3 wheel_world_pos = mat4_transform_point(chassis_transform, wheel->position);

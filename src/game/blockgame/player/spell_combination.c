@@ -18,13 +18,37 @@ void spell_combination_system_init(void) {
     recent_spell_count = 0;
     combination_timer = 0.0f;
 
-    // Define some combinations
+    // Define spell combinations
     SpellCombination fireball_lightning = {
         .spells = {SPELL_FIREBALL, SPELL_LIGHTNING},
         .spell_count = 2,
         .resulting_spell = SPELL_FIREBALL // Placeholder for a real combo spell
     };
     combinations[combination_count++] = fireball_lightning;
+    
+    // Add more combinations
+    SpellCombination heal_shield = {
+        .spells = {SPELL_HEAL, SPELL_SHIELD},
+        .spell_count = 2,
+        .resulting_spell = SPELL_HEAL // Placeholder - could be a buff spell
+    };
+    combinations[combination_count++] = heal_shield;
+    
+    SpellCombination fire_freeze = {
+        .spells = {SPELL_FIREBALL, SPELL_FREEZE},
+        .spell_count = 2,
+        .resulting_spell = SPELL_FREEZE // Placeholder - could be steam spell
+    };
+    combinations[combination_count++] = fire_freeze;
+    
+    SpellCombination triple_element = {
+        .spells = {SPELL_FIREBALL, SPELL_LIGHTNING, SPELL_FREEZE},
+        .spell_count = 3,
+        .resulting_spell = SPELL_LIGHTNING // Placeholder - ultimate elemental spell
+    };
+    combinations[combination_count++] = triple_element;
+    
+    LOG_INFO("Spell combination system initialized with %u combinations", combination_count);
 }
 
 void spell_combination_system_add_spell(PlayerMagicComponent* magic, SpellType spell) {
@@ -59,8 +83,24 @@ void spell_combination_system_update(PlayerMagicComponent* magic, f32 delta_time
                     recent_spell_count = 0;
                     combination_timer = 0.0f;
                     
-                    // TODO: Cast the resulting spell
-                    // player_cast_spell(magic->player_system, combo->resulting_spell, target);
+                    // Cast the resulting spell
+                    if (magic && magic->player_system) {
+                        // Use player's current look direction as target
+                        Vec3 target = {0}; // Default target
+                        
+                        // Try to get player's transform for better targeting
+                        // This would need access to the player's transform component
+                        // For now, we'll cast in a default direction
+                        
+                        bool cast_success = player_cast_spell(magic->player_system, combo->resulting_spell, target);
+                        if (cast_success) {
+                            LOG_INFO("Successfully cast combination spell: %d", combo->resulting_spell);
+                        } else {
+                            LOG_WARN("Failed to cast combination spell: %d", combo->resulting_spell);
+                        }
+                    } else {
+                        LOG_WARN("Cannot cast combination spell - invalid magic component or player system");
+                    }
                     break;
                 }
             }

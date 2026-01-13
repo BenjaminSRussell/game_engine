@@ -59,6 +59,9 @@ class GameViewController: UIViewController {
         setupHUD()
         setupTouchControls()
         
+        // Initialize external controllers
+        bridge_init_controllers()
+        
         // Create Metal view
         let metalView = MTKView(frame: view.bounds)
         metalView.device = MTLCreateSystemDefaultDevice()
@@ -93,6 +96,9 @@ class GameViewController: UIViewController {
         
         // Setup keyboard input
         setupKeyboardInput()
+        
+        // Setup controller update timer
+        setupControllerUpdates()
     }
     
     private func setupPauseOverlay() {
@@ -240,9 +246,53 @@ class GameViewController: UIViewController {
     }
     
     private func updateHUD() {
-        // TODO: Update HUD with actual game data from C engine
-        // For now, simulate some changes
-        gameHUD.updateDebugInfo(position: (x: 123.4, y: 64.0, z: -567.8), fps: 60, chunks: 49)
+        // Update HUD with actual game data from C engine
+        var playerData = BridgePlayerData()
+        let success = bridge_get_player_data(&playerData)
+        
+        if success {
+            // Update player stats
+            gameHUD.health = playerData.health
+            gameHUD.hunger = playerData.hunger
+            gameHUD.armor = playerData.armor
+            gameHUD.experience = playerData.experience
+            gameHUD.level = Int(playerData.level)
+            gameHUD.selectedSlot = Int(playerData.hotbar_selected_slot)
+            gameHUD.oxygen = playerData.oxygen
+            
+            // Update hotbar items
+            var hotbarItems: [HotbarItem] = []
+            for i in 0..<10 {
+                let itemName = UnsafeMutablePointer<CChar>.allocate(capacity: 64)
+                var count: UInt32 = 0
+                var maxStack: UInt32 = 0
+                
+                bridge_get_hotbar_items(UInt32(i), itemName, 64, &count, &maxStack)
+                
+                let name = String(cString: itemName)
+                itemName.deallocate()
+                
+                if count > 0 {
+                    let hotbarItem = HotbarItem(
+                        name: name,
+                        icon: "", // TODO: Load actual icon
+                        durability: maxStack > 1 ? Int(count) : nil,
+                        count: maxStack > 1 ? nil : Int(count)
+                    )
+                    hotbarItems.append(hotbarItem)
+                } else {
+                    hotbarItems.append(HotbarItem(name: "Empty", icon: "", durability: nil, count: nil))
+                }
+            }
+            gameHUD.hotbarItems = hotbarItems
+            
+            // Update debug info
+            gameHUD.updateDebugInfo(
+                position: (x: playerData.position_x, y: playerData.position_y, z: playerData.position_z),
+                fps: 60, // TODO: Get actual FPS from engine
+                chunks: 49 // TODO: Get actual chunk count from engine
+            )
+        }
     }
     
     private func setupTouchControls() {
@@ -330,6 +380,95 @@ class GameViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleKeyPress(_:)))
         tapGesture.numberOfTapsRequired = 1
         view.addGestureRecognizer(tapGesture)
+    }
+    
+    private func setupControllerUpdates() {
+        // Setup timer to update controller states
+        Timer.scheduledTimer(withTimeInterval: 1.0/60.0, repeats: true) { _ in
+            self.updateControllerInput()
+        }
+    }
+    
+    private func updateControllerInput() {
+        // Update controller states from bridge
+        bridge_update_controllers()
+        
+        let controllerCount = bridge_get_connected_controller_count()
+        
+        for i in 0..<controllerCount {
+            var controllerState = BridgeControllerState()
+            let isConnected = bridge_get_controller_state(UInt32(i), &controllerState)
+            
+            if isConnected {
+                // Map controller input to game actions
+                handleControllerInput(controllerState, playerIndex: i)
+            }
+        }
+    }
+    
+    private func handleControllerInput(_ state: BridgeControllerState, playerIndex: Int) {
+        // Movement
+        let moveForward = state.left_stick_y < -0.5
+        let moveBackward = state.left_stick_y > 0.5
+        let moveLeft = state.left_stick_x < -0.5
+        let moveRight = state.left_stick_x > 0.5
+        
+        // Look
+        let lookUp = state.right_stick_y < -0.5
+        let lookDown = state.right_stick_y > 0.5
+        let lookLeft = state.right_stick_x < -0.5
+        let lookRight = state.right_stick_x > 0.5
+        
+        // Actions
+        let jump = state.button_a
+        let attack = state.button_x
+        let interact = state.button_b
+        let sprint = state.right_trigger > 0.5
+        let sneak = state.left_trigger > 0.5
+        
+        // Send input to game engine
+        if moveForward {
+            game_engine_handle_movement(1.0, 0.0)
+        } else if moveBackward {
+            game_engine_handle_movement(-1.0, 0.0)
+        } else {
+            game_engine_handle_movement(0.0, 0.0)
+        }
+        
+        if moveLeft {
+            game_engine_handle_movement(0.0, -1.0)
+        } else if moveRight {
+            game_engine_handle_movement(0.0, 1.0)
+        } else {
+            game_engine_handle_movement(0.0, 0.0)
+        }
+        
+        if jump {
+            game_engine_handle_jump()
+        }
+        
+        if attack {
+            game_engine_handle_attack()
+        }
+        
+        if interact {
+            game_engine_handle_interact()
+        }
+        
+        game_engine_handle_sprint(sprint)
+        game_engine_handle_sneak(sneak)
+        
+        // Camera look (simplified - would need proper mapping)
+        if lookUp || lookDown || lookLeft || lookRight {
+            let pitch = lookUp ? -0.1f : (lookDown ? 0.1f : 0.0f)
+            let yaw = lookRight ? 0.1f : (lookLeft ? -0.1f : 0.0f)
+            game_engine_handle_motion(pitch, yaw)
+        }
+        
+        // Haptic feedback
+        if jump || attack {
+            bridge_set_controller_vibration(UInt32(playerIndex), 0.8, 0.2, 200)
+        }
     }
     
     @objc private func handleKeyPress(_ gesture: UITapGestureRecognizer) {

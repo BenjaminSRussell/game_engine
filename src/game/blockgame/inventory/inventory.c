@@ -13,9 +13,22 @@
 // Inventory drag-and-drop with visual feedback
 // Inventory undo/redo system for mistake recovery
 #include "../include/inventory/inventory.h"
-#include "../../engine/include/core/logger.h"
 #include <stdlib.h>
 #include <string.h>
+
+// Define logging macros if not already defined
+#ifndef LOG_INFO
+#define LOG_INFO(...) printf(__VA_ARGS__)
+#endif
+#ifndef LOG_WARN  
+#define LOG_WARN(...) printf(__VA_ARGS__)
+#endif
+#ifndef LOG_ERROR
+#define LOG_ERROR(...) printf(__VA_ARGS__)
+#endif
+#ifndef LOG_DEBUG
+#define LOG_DEBUG(...) printf(__VA_ARGS__)
+#endif
 
 static void inventory_mark_dirty(Inventory *inv) {
   if (inv) {
@@ -296,15 +309,22 @@ void inventory_sort(Inventory *inv) {
   if (!inv)
     return;
 
-  for (u32 i = 0; i < MAX_INVENTORY_SLOTS - 1; i++) {
-    for (u32 j = i + 1; j < MAX_INVENTORY_SLOTS; j++) {
-      if (inv->slots[i].item_id == 0 && inv->slots[j].item_id != 0) {
-        InventorySlot temp = inv->slots[i];
-        inv->slots[i] = inv->slots[j];
-        inv->slots[j] = temp;
-      }
+  // Use insertion sort for stable sorting
+  for (u32 i = 1; i < MAX_INVENTORY_SLOTS; i++) {
+    if (inv->slots[i].item_id == 0)
+      continue; // Skip empty slots, they'll naturally move to the end
+
+    InventorySlot key = inv->slots[i];
+    i32 j = i - 1;
+
+    // Move elements that are greater than key one position ahead
+    while (j >= 0 && inv->slots[j].item_id != 0 && inv->slots[j].item_id > key.item_id) {
+      inv->slots[j + 1] = inv->slots[j];
+      j--;
     }
+    inv->slots[j + 1] = key;
   }
+
   inventory_mark_dirty(inv);
   inventory_emit(inv, INVENTORY_EVENT_SORTED, 0, 0, UINT32_MAX);
 }
@@ -471,39 +491,114 @@ bool inventory_split_stack(Inventory *inv, u32 source_slot, u32 target_slot,
                            u16 amount) {
   if (!inv || source_slot >= MAX_INVENTORY_SLOTS ||
       target_slot >= MAX_INVENTORY_SLOTS) {
+    LOG_WARN("Invalid slot indices: source=%u, target=%u, max=%u", 
+             source_slot, target_slot, MAX_INVENTORY_SLOTS);
+    return false;
+  }
+
+  if (source_slot == target_slot) {
+    LOG_DEBUG("Source and target slots are the same: %u", source_slot);
     return false;
   }
 
   InventorySlot *source = &inv->slots[source_slot];
   InventorySlot *target = &inv->slots[target_slot];
 
-  if (source->item_id == 0 || amount == 0 || amount > source->count)
+  // Validate source slot has items
+  if (source->item_id == 0 || source->count == 0) {
+    LOG_DEBUG("Source slot %u is empty", source_slot);
     return false;
+  }
 
-  // Check if target slot is empty or can stack
-  if (target->item_id != 0 &&
-      !inventory_can_stack_items(source->item_id, target->item_id)) {
+  // Validate amount
+  if (amount == 0) {
+    LOG_DEBUG("Split amount is 0");
     return false;
+  }
+
+  if (amount > source->count) {
+    LOG_WARN("Split amount %u exceeds source count %u", amount, source->count);
+    return false;
+  }
+
+  // Check if target slot is empty or can stack with source
+  if (target->item_id != 0) {
+    if (!inventory_can_stack_items(source->item_id, target->item_id)) {
+      LOG_DEBUG("Target slot %u has incompatible item %u (source: %u)", 
+                target_slot, target->item_id, source->item_id);
+      return false;
+    }
   }
 
   u16 max_stack = inventory_get_max_stack_size(source->item_id);
-  u16 available_space = max_stack - target->count;
+  
+  // Calculate how much can actually be moved
+  u16 available_space = max_stack - (target->item_id == 0 ? 0 : target->count);
   u16 actual_move = (amount < available_space) ? amount : available_space;
+  
+  if (actual_move == 0) {
+    LOG_DEBUG("No space available in target slot %u", target_slot);
+    return false;
+  }
 
+  // Handle enchantment transfer for split operations
   if (target->item_id == 0) {
+    // Target is empty, create new slot with source properties
     target->item_id = source->item_id;
     target->count = actual_move;
     target->durability = source->durability;
+    
+    // Copy enchantments if we're taking the entire stack
+    if (actual_move == source->count && source->enchantments) {
+      target->enchantment_count = source->enchantment_count;
+      target->enchantment_capacity = source->enchantment_capacity;
+      
+      if (target->enchantment_count > 0) {
+        target->enchantments = malloc(sizeof(Enchantment) * target->enchantment_capacity);
+        if (target->enchantments) {
+          memcpy(target->enchantments, source->enchantments, 
+                 sizeof(Enchantment) * target->enchantment_count);
+        }
+      }
+    } else {
+      target->enchantments = NULL;
+      target->enchantment_count = 0;
+      target->enchantment_capacity = 0;
+    }
   } else {
+    // Target has items, just add to count
     target->count += actual_move;
   }
 
+  // Update source slot
   source->count -= actual_move;
+  
+  // Clear source slot if empty
   if (source->count == 0) {
     source->item_id = 0;
+    source->durability = 0.0f;
+    
+    // Free enchantments if source is now empty
+    if (source->enchantments) {
+      free(source->enchantments);
+      source->enchantments = NULL;
+      source->enchantment_count = 0;
+      source->enchantment_capacity = 0;
+    }
+  } else if (actual_move == source->count + actual_move) {
+    // We split the entire stack, clear enchantments from source
+    if (source->enchantments) {
+      free(source->enchantments);
+      source->enchantments = NULL;
+      source->enchantment_count = 0;
+      source->enchantment_capacity = 0;
+    }
   }
 
   inventory_mark_dirty(inv);
+  LOG_DEBUG("Split %u items from slot %u to slot %u (moved: %u)", 
+            amount, source_slot, target_slot, actual_move);
+  
   return true;
 }
 
@@ -546,45 +641,123 @@ void inventory_auto_stack(Inventory *inv) {
 bool inventory_move_item(Inventory *inv, u32 source_slot, u32 target_slot) {
   if (!inv || source_slot >= MAX_INVENTORY_SLOTS ||
       target_slot >= MAX_INVENTORY_SLOTS) {
+    LOG_WARN("Invalid slot indices: source=%u, target=%u, max=%u", 
+             source_slot, target_slot, MAX_INVENTORY_SLOTS);
     return false;
   }
 
-  if (source_slot == target_slot)
+  if (source_slot == target_slot) {
+    LOG_DEBUG("Source and target slots are the same: %u", source_slot);
     return true;
+  }
 
   InventorySlot *source = &inv->slots[source_slot];
   InventorySlot *target = &inv->slots[target_slot];
 
-  // If target is empty, just move
+  // Validate source has items
+  if (source->item_id == 0 || source->count == 0) {
+    LOG_DEBUG("Source slot %u is empty", source_slot);
+    return false;
+  }
+
+  // If target is empty, just move the entire stack
   if (target->item_id == 0) {
     *target = *source;
     memset(source, 0, sizeof(InventorySlot));
     inventory_mark_dirty(inv);
+    LOG_DEBUG("Moved entire stack from slot %u to empty slot %u", source_slot, target_slot);
     return true;
   }
 
-  // Try to stack if possible
-  if (inventory_merge_stacks(inv, source_slot, target_slot)) {
-    return true;
+  // Check if items can be stacked
+  if (inventory_can_stack_items(source->item_id, target->item_id)) {
+    // Try to merge stacks
+    u16 max_stack = inventory_get_max_stack_size(source->item_id);
+    u16 space_available = max_stack - target->count;
+    
+    if (space_available > 0) {
+      u16 move_amount = (source->count < space_available) ? 
+                       source->count : space_available;
+      
+      target->count += move_amount;
+      source->count -= move_amount;
+      
+      // Clear source if empty
+      if (source->count == 0) {
+        source->item_id = 0;
+        source->durability = 0.0f;
+        
+        // Transfer enchantments if entire stack moved
+        if (move_amount == source->count + move_amount && source->enchantments) {
+          // Merge enchantment arrays
+          u32 total_enchantments = target->enchantment_count + source->enchantment_count;
+          if (total_enchantments > 0) {
+            Enchantment *new_enchantments = realloc(target->enchantments, 
+                                               sizeof(Enchantment) * total_enchantments);
+            if (new_enchantments) {
+              // Copy source enchantments to target
+              memcpy(&new_enchantments[target->enchantment_count], 
+                     source->enchantments, 
+                     sizeof(Enchantment) * source->enchantment_count);
+              
+              target->enchantments = new_enchantments;
+              target->enchantment_count = total_enchantments;
+              target->enchantment_capacity = total_enchantments;
+            }
+          }
+          
+          // Clear source enchantments
+          free(source->enchantments);
+          source->enchantments = NULL;
+          source->enchantment_count = 0;
+          source->enchantment_capacity = 0;
+        }
+      }
+      
+      inventory_mark_dirty(inv);
+      LOG_DEBUG("Merged %u items from slot %u to slot %u", 
+                move_amount, source_slot, target_slot);
+      return true;
+    }
+    
+    // No space available, need to swap
+    LOG_DEBUG("Target slot %u is full, swapping", target_slot);
+  } else {
+    LOG_DEBUG("Items cannot stack: source=%u, target=%u", 
+              source->item_id, target->item_id);
   }
 
-  // Otherwise swap
+  // If we can't merge, perform atomic swap
   return inventory_swap_items(inv, source_slot, target_slot);
 }
 
 bool inventory_swap_items(Inventory *inv, u32 slot1, u32 slot2) {
   if (!inv || slot1 >= MAX_INVENTORY_SLOTS || slot2 >= MAX_INVENTORY_SLOTS) {
+    LOG_WARN("Invalid slot indices: slot1=%u, slot2=%u, max=%u", 
+             slot1, slot2, MAX_INVENTORY_SLOTS);
     return false;
   }
 
-  if (slot1 == slot2)
+  if (slot1 == slot2) {
+    LOG_DEBUG("Slots are the same: %u", slot1);
     return true;
+  }
 
-  InventorySlot temp = inv->slots[slot1];
-  inv->slots[slot1] = inv->slots[slot2];
-  inv->slots[slot2] = temp;
+  // Store original slots for logging and potential rollback
+  InventorySlot original_slot1 = inv->slots[slot1];
+  InventorySlot original_slot2 = inv->slots[slot2];
+
+  // Perform atomic swap
+  inv->slots[slot1] = original_slot2;
+  inv->slots[slot2] = original_slot1;
 
   inventory_mark_dirty(inv);
+  
+  LOG_DEBUG("Swapped slots %u and %u: slot1 had %u x %d, slot2 had %u x %d", 
+            slot1, slot2, 
+            original_slot1.item_id, original_slot1.count,
+            original_slot2.item_id, original_slot2.count);
+  
   return true;
 }
 
@@ -702,33 +875,106 @@ void inventory_debug_print(Inventory *inv) {
 }
 
 bool inventory_validate(Inventory *inv) {
-  if (!inv)
+  if (!inv) {
+    LOG_WARN("Inventory pointer is NULL");
     return false;
+  }
 
   u32 total_count = 0;
+  u32 non_empty_slots = 0;
+  bool has_errors = false;
 
   for (u32 i = 0; i < MAX_INVENTORY_SLOTS; i++) {
     InventorySlot *slot = &inv->slots[i];
 
+    // Debug check: ensure item_count > 0 implies item_id != 0 and vice versa
+    if (slot->item_id == 0 && slot->count > 0) {
+      LOG_ERROR("Slot %u: item_id is 0 but count is %u", i, slot->count);
+      has_errors = true;
+    }
+    
+    if (slot->item_id > 0 && slot->count == 0) {
+      LOG_ERROR("Slot %u: item_id is %u but count is 0", i, slot->item_id);
+      has_errors = true;
+    }
+
     if (slot->item_id != 0) {
+      non_empty_slots++;
+      
+      // Validate item_id range
+      if (slot->item_id > 65535) {
+        LOG_ERROR("Slot %u: item_id %u is out of valid range", i, slot->item_id);
+        has_errors = true;
+      }
+
       // Validate count
       u16 max_stack = inventory_get_max_stack_size(slot->item_id);
-      if (slot->count == 0 || slot->count > max_stack) {
-        LOG_WARN("Invalid item count %u in slot %u for item %u (max: %u)",
-                 slot->count, i, slot->item_id, max_stack);
-        return false;
+      if (slot->count == 0) {
+        LOG_ERROR("Slot %u: item_id %u has zero count", i, slot->item_id);
+        has_errors = true;
+      } else if (slot->count > max_stack) {
+        LOG_ERROR("Slot %u: item count %u exceeds max stack %u for item %u", 
+                  i, slot->count, max_stack, slot->item_id);
+        has_errors = true;
+      }
+
+      // Validate durability if applicable
+      if (slot->durability < 0.0f || slot->durability > 1.0f) {
+        LOG_ERROR("Slot %u: durability %.3f is out of range [0.0, 1.0]", 
+                  i, slot->durability);
+        has_errors = true;
+      }
+
+      // Validate enchantments
+      if (slot->enchantment_count > 0 && !slot->enchantments) {
+        LOG_ERROR("Slot %u: enchantment_count is %u but enchantments is NULL", 
+                  i, slot->enchantment_count);
+        has_errors = true;
+      }
+      
+      if (slot->enchantments && slot->enchantment_count == 0) {
+        LOG_ERROR("Slot %u: enchantments is not NULL but enchantment_count is 0", i);
+        has_errors = true;
+      }
+      
+      if (slot->enchantment_count > slot->enchantment_capacity) {
+        LOG_ERROR("Slot %u: enchantment_count %u exceeds capacity %u", 
+                  i, slot->enchantment_count, slot->enchantment_capacity);
+        has_errors = true;
       }
 
       total_count += slot->count;
+    } else {
+      // Empty slot should have all fields zeroed
+      if (slot->count != 0 || slot->durability != 0.0f || 
+          slot->enchantments != NULL || slot->enchantment_count != 0 || 
+          slot->enchantment_capacity != 0) {
+        LOG_ERROR("Slot %u: empty slot has non-zero fields", i);
+        has_errors = true;
+      }
     }
   }
 
+  // Validate total items count
   if (total_count != inv->total_items) {
-    LOG_WARN("Inventory total count mismatch: calculated %u, stored %u",
-             total_count, inv->total_items);
+    LOG_WARN("Inventory total count mismatch: calculated %u, stored %u", 
+              total_count, inv->total_items);
     inv->total_items = total_count; // Auto-correct
   }
 
+  // Validate selected hotbar index
+  if (inv->selected_hotbar >= MAX_INVENTORY_SLOTS) {
+    LOG_ERROR("Selected hotbar %u is out of range (max: %u)", 
+              inv->selected_hotbar, MAX_INVENTORY_SLOTS);
+    has_errors = true;
+  }
+
+  if (has_errors) {
+    LOG_ERROR("Inventory validation failed with %u non-empty slots", non_empty_slots);
+    return false;
+  }
+
+  LOG_DEBUG("Inventory validation passed: %u items in %u slots", total_count, non_empty_slots);
   return true;
 }
 
@@ -777,6 +1023,7 @@ void inventory_auto_sort(Inventory *inv, InventorySortType sort_type) {
   }
 
   inventory_mark_dirty(inv);
+  inventory_emit(inv, INVENTORY_EVENT_SORTED, 0, 0, UINT32_MAX);
   LOG_INFO("Inventory auto-sorted by type %d", sort_type);
 }
 
@@ -872,17 +1119,30 @@ u16 inventory_simulate_add(Inventory *inv, u32 item_id, u16 count) {
 
 u32 inventory_search_items(const Inventory *inv, u32 item_id,
                            InventorySearchResult *results, u32 max_results) {
-  if (!inv || !results || max_results == 0 || item_id == 0)
+  if (!inv || !results || max_results == 0)
     return 0;
 
   u32 found = 0;
   
-  for (u32 i = 0; i < MAX_INVENTORY_SLOTS && found < max_results; i++) {
-    if (inv->slots[i].item_id == item_id && inv->slots[i].count > 0) {
-      results[found].item_id = inv->slots[i].item_id;
-      results[found].count = inv->slots[i].count;
-      results[found].slot_index = i;
-      found++;
+  // If item_id is 0, search for all non-empty slots
+  if (item_id == 0) {
+    for (u32 i = 0; i < MAX_INVENTORY_SLOTS && found < max_results; i++) {
+      if (inv->slots[i].item_id > 0 && inv->slots[i].count > 0) {
+        results[found].item_id = inv->slots[i].item_id;
+        results[found].count = inv->slots[i].count;
+        results[found].slot_index = i;
+        found++;
+      }
+    }
+  } else {
+    // Search for specific item_id
+    for (u32 i = 0; i < MAX_INVENTORY_SLOTS && found < max_results; i++) {
+      if (inv->slots[i].item_id == item_id && inv->slots[i].count > 0) {
+        results[found].item_id = inv->slots[i].item_id;
+        results[found].count = inv->slots[i].count;
+        results[found].slot_index = i;
+        found++;
+      }
     }
   }
 
@@ -893,10 +1153,9 @@ void inventory_optimize_stacking(Inventory *inv) {
   if (!inv)
     return;
 
-  // Create a map of item_id to list of slot indices
-  // For this implementation, we'll use a simple approach
-  // by scanning for each item type and consolidating
+  bool optimized = false;
   
+  // First pass: consolidate split stacks of the same item
   for (u32 i = 0; i < MAX_INVENTORY_SLOTS; i++) {
     if (inv->slots[i].item_id == 0 || inv->slots[i].count == 0)
       continue;
@@ -904,65 +1163,274 @@ void inventory_optimize_stacking(Inventory *inv) {
     u32 item_id = inv->slots[i].item_id;
     u16 max_stack = inventory_get_max_stack_size(item_id);
     
-    // Find all other slots with the same item
+    // Skip if this slot is already full
+    if (inv->slots[i].count >= max_stack)
+      continue;
+    
+    // Find all other slots with the same item and merge them
     for (u32 j = i + 1; j < MAX_INVENTORY_SLOTS; j++) {
       if (inv->slots[j].item_id == item_id && inv->slots[j].count > 0) {
-        // Try to merge from slot j to slot i
-        u16 space = max_stack - inv->slots[i].count;
-        if (space > 0) {
-          u16 move = (inv->slots[j].count < space) ? inv->slots[j].count : space;
-          inv->slots[i].count += move;
-          inv->slots[j].count -= move;
+        // Calculate how much we can move to slot i
+        u16 space_available = max_stack - inv->slots[i].count;
+        if (space_available > 0) {
+          u16 move_amount = (inv->slots[j].count < space_available) ? 
+                          inv->slots[j].count : space_available;
           
+          inv->slots[i].count += move_amount;
+          inv->slots[j].count -= move_amount;
+          optimized = true;
+          
+          // Clear the source slot if it's now empty
           if (inv->slots[j].count == 0) {
             inv->slots[j].item_id = 0;
             inv->slots[j].durability = 0.0f;
+            
+            // Free enchantments if any
+            if (inv->slots[j].enchantments) {
+              free(inv->slots[j].enchantments);
+              inv->slots[j].enchantments = NULL;
+              inv->slots[j].enchantment_count = 0;
+              inv->slots[j].enchantment_capacity = 0;
+            }
           }
+          
+          // If slot i is now full, move to next slot
+          if (inv->slots[i].count >= max_stack)
+            break;
+        }
+      }
+    }
+  }
+  
+  // Second pass: compact inventory by moving items towards the beginning
+  // This helps with inventory organization and UI display
+  for (u32 i = 0; i < MAX_INVENTORY_SLOTS - 1; i++) {
+    if (inv->slots[i].item_id == 0 || inv->slots[i].count == 0) {
+      // Find the next non-empty slot
+      for (u32 j = i + 1; j < MAX_INVENTORY_SLOTS; j++) {
+        if (inv->slots[j].item_id > 0 && inv->slots[j].count > 0) {
+          // Move slot j to slot i
+          inv->slots[i] = inv->slots[j];
+          
+          // Clear slot j
+          inv->slots[j].item_id = 0;
+          inv->slots[j].count = 0;
+          inv->slots[j].durability = 0.0f;
+          inv->slots[j].enchantments = NULL;
+          inv->slots[j].enchantment_count = 0;
+          inv->slots[j].enchantment_capacity = 0;
+          
+          optimized = true;
+          break;
         }
       }
     }
   }
 
-  inventory_mark_dirty(inv);
-  LOG_DEBUG("Inventory stacking optimized");
+  if (optimized) {
+    inventory_mark_dirty(inv);
+    LOG_DEBUG("Inventory stacking optimized and compacted");
+  }
 }
 
 bool inventory_serialize(const Inventory *inv, char *buffer, u32 buffer_size) {
-  if (!inv || !buffer || buffer_size == 0)
+  if (!inv || !buffer || buffer_size == 0) {
+    LOG_WARN("Invalid parameters for inventory serialization");
     return false;
+  }
 
-  // Simple JSON-like serialization format
-  // Format: {"total_items":X,"selected_hotbar":Y,"slots":[{"item_id":...,"count":...,...},...]}
+  // Enhanced JSON serialization format with enchantments support
+  // Format: {"total_items":X,"selected_hotbar":Y,"slots":[...]}
   
   int written = snprintf(buffer, buffer_size,
     "{\"total_items\":%u,\"selected_hotbar\":%u,\"slots\":[",
     inv->total_items, inv->selected_hotbar);
   
-  if (written < 0 || written >= buffer_size)
+  if (written < 0 || written >= buffer_size) {
+    LOG_WARN("Buffer overflow during inventory serialization header");
     return false;
+  }
 
   bool first = true;
   for (u32 i = 0; i < MAX_INVENTORY_SLOTS; i++) {
     if (inv->slots[i].item_id != 0) {
       const char *prefix = first ? "" : ",";
-      int slot_written = snprintf(buffer + written, buffer_size - written,
-        "%s{\"item_id\":%u,\"count\":%u,\"durability\":%.2f,"
-        "\"spoil_progress\":%.2f,\"quality_modifier\":%.2f,"
-        "\"enchantment_count\":%u,\"is_favorite\":%s,\"is_locked\":%s}",
-        prefix, inv->slots[i].item_id, inv->slots[i].count,
+      
+      // Start slot object
+      int slot_start = snprintf(buffer + written, buffer_size - written,
+        "%s{\"index\":%u,\"item_id\":%u,\"count\":%u,"
+        "\"durability\":%.3f,\"spoil_progress\":%.3f,"
+        "\"quality_modifier\":%.3f,\"is_favorite\":%s,\"is_locked\":%s",
+        prefix, i, inv->slots[i].item_id, inv->slots[i].count,
         inv->slots[i].durability, inv->slots[i].spoil_progress,
-        inv->slots[i].quality_modifier, inv->slots[i].enchantment_count,
+        inv->slots[i].quality_modifier,
         inv->slots[i].is_favorite ? "true" : "false",
         inv->slots[i].is_locked ? "true" : "false");
       
-      if (slot_written < 0 || written + slot_written >= buffer_size)
+      if (slot_start < 0 || written + slot_start >= buffer_size) {
+        LOG_WARN("Buffer overflow during slot serialization");
         return false;
+      }
+      written += slot_start;
       
-      written += slot_written;
+      // Add enchantments if present
+      if (inv->slots[i].enchantment_count > 0 && inv->slots[i].enchantments) {
+        int enchant_start = snprintf(buffer + written, buffer_size - written,
+          ",\"enchantments\":[");
+        
+        if (enchant_start < 0 || written + enchant_start >= buffer_size) {
+          LOG_WARN("Buffer overflow during enchantments start");
+          return false;
+        }
+        written += enchant_start;
+        
+        bool first_enchant = true;
+        for (u32 e = 0; e < inv->slots[i].enchantment_count; e++) {
+          const char *enchant_prefix = first_enchant ? "" : ",";
+          Enchantment *enchant = &inv->slots[i].enchantments[e];
+          
+          int enchant_written = snprintf(buffer + written, buffer_size - written,
+            "%s{\"type\":%u,\"level\":%u,\"duration\":%u}",
+            enchant_prefix, enchant->type, enchant->level, enchant->duration);
+          
+          if (enchant_written < 0 || written + enchant_written >= buffer_size) {
+            LOG_WARN("Buffer overflow during enchantment serialization");
+            return false;
+          }
+          written += enchant_written;
+          first_enchant = false;
+        }
+        
+        int enchant_end = snprintf(buffer + written, buffer_size - written, "]");
+        if (enchant_end < 0 || written + enchant_end >= buffer_size) {
+          LOG_WARN("Buffer overflow during enchantments end");
+          return false;
+        }
+        written += enchant_end;
+      }
+      
+      // Close slot object
+      int slot_end = snprintf(buffer + written, buffer_size - written, "}");
+      if (slot_end < 0 || written + slot_end >= buffer_size) {
+        LOG_WARN("Buffer overflow during slot end");
+        return false;
+      }
+      written += slot_end;
       first = false;
     }
   }
 
+  // Close JSON structure
   int closing = snprintf(buffer + written, buffer_size - written, "]}");
-  return (closing > 0 && written + closing < buffer_size);
+  if (closing < 0 || written + closing >= buffer_size) {
+    LOG_WARN("Buffer overflow during JSON closing");
+    return false;
+  }
+
+  LOG_DEBUG("Inventory serialized successfully: %d bytes written", written + closing);
+  return true;
+}
+
+bool inventory_deserialize(Inventory *inv, const char *buffer, u32 buffer_size) {
+  if (!inv || !buffer || buffer_size == 0)
+    return false;
+
+  // Clear inventory first
+  inventory_free(inv);
+  inventory_init(inv);
+
+  // Simple JSON parsing - this is a basic implementation
+  // In production, use a proper JSON library
+  
+  // Parse total_items
+  const char *total_items_str = strstr(buffer, "\"total_items\":");
+  if (total_items_str) {
+    inv->total_items = (u32)atoi(total_items_str + 14);
+  }
+
+  // Parse selected_hotbar
+  const char *selected_hotbar_str = strstr(buffer, "\"selected_hotbar\":");
+  if (selected_hotbar_str) {
+    u32 hotbar = (u32)atoi(selected_hotbar_str + 18);
+    if (hotbar < MAX_HOTBAR_SLOTS) {
+      inv->selected_hotbar = hotbar;
+    }
+  }
+
+  // Parse slots array
+  const char *slots_start = strstr(buffer, "\"slots\":[");
+  if (!slots_start)
+    return false;
+
+  const char *slots_end = strstr(slots_start, "]}");
+  if (!slots_end)
+    return false;
+
+  const char *current = slots_start + 9; // Skip "\"slots\":["
+  u32 slot_index = 0;
+
+  while (current < slots_end && slot_index < MAX_INVENTORY_SLOTS) {
+    const char *item_start = strstr(current, "{\"item_id\":");
+    if (!item_start)
+      break;
+
+    const char *item_end = strstr(item_start, "}");
+    if (!item_end)
+      break;
+
+    // Parse item_id
+    const char *item_id_str = strstr(item_start, "\"item_id\":");
+    if (item_id_str) {
+      inv->slots[slot_index].item_id = (u32)atoi(item_id_str + 11);
+    }
+
+    // Parse count
+    const char *count_str = strstr(item_start, "\"count\":");
+    if (count_str) {
+      inv->slots[slot_index].count = (u16)atoi(count_str + 8);
+    }
+
+    // Parse durability
+    const char *durability_str = strstr(item_start, "\"durability\":");
+    if (durability_str) {
+      inv->slots[slot_index].durability = (f32)atof(durability_str + 13);
+    }
+
+    // Parse spoil_progress
+    const char *spoil_str = strstr(item_start, "\"spoil_progress\":");
+    if (spoil_str) {
+      inv->slots[slot_index].spoil_progress = (f32)atof(spoil_str + 16);
+    }
+
+    // Parse quality_modifier
+    const char *quality_str = strstr(item_start, "\"quality_modifier\":");
+    if (quality_str) {
+      inv->slots[slot_index].quality_modifier = (f32)atof(quality_str + 19);
+    }
+
+    // Parse enchantment_count
+    const char *ench_str = strstr(item_start, "\"enchantment_count\":");
+    if (ench_str) {
+      inv->slots[slot_index].enchantment_count = (u32)atoi(ench_str + 20);
+    }
+
+    // Parse is_favorite
+    const char *fav_str = strstr(item_start, "\"is_favorite\":");
+    if (fav_str) {
+      inv->slots[slot_index].is_favorite = (strncmp(fav_str + 14, "true", 4) == 0);
+    }
+
+    // Parse is_locked
+    const char *locked_str = strstr(item_start, "\"is_locked\":");
+    if (locked_str) {
+      inv->slots[slot_index].is_locked = (strncmp(locked_str + 12, "true", 4) == 0);
+    }
+
+    slot_index++;
+    current = item_end + 1;
+  }
+
+  inventory_mark_dirty(inv);
+  LOG_INFO("Inventory deserialized successfully");
+  return true;
 }

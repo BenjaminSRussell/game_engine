@@ -297,17 +297,20 @@ static void render_stereo_pair(VRArDisplay *display) {
     uint64_t start_time = get_time_nanos();
     
     // Render left eye
-    // TODO: Bind left eye render target
-    // TODO: Set left eye view and projection matrices
-    // TODO: Render scene for left eye
+    bind_render_target(display->left_eye_texture);
+    set_view_matrix(display->left_view_matrix);
+    set_projection_matrix(display->left_projection_matrix);
+    render_scene();
     
     // Render right eye
-    // TODO: Bind right eye render target
-    // TODO: Set right eye view and projection matrices
-    // TODO: Render scene for right eye
+    bind_render_target(display->right_eye_texture);
+    set_view_matrix(display->right_view_matrix);
+    set_projection_matrix(display->right_projection_matrix);
+    render_scene();
     
     // Apply lens distortion correction
-    // TODO: Apply distortion shaders to both render targets
+    apply_distortion_shaders(display->left_eye_texture, display->right_eye_texture, 
+                          display->distortion_k, display->chromatic_aberration);
     
     uint64_t end_time = get_time_nanos();
     g_vr_ar_system.total_render_time_ms += nanos_to_ms(end_time - start_time);
@@ -537,10 +540,20 @@ VRArDisplay *vr_ar_display_create(const char *name, uint32_t width, uint32_t hei
     display->enable_variable_rate_shading = true;
     
     // Create render targets
-    // TODO: Create left and right eye textures
-    // display->left_eye_texture = create_texture(width, height);
-    // display->right_eye_texture = create_texture(width, height);
-    // display->depth_texture = create_texture(width, height);
+    display->left_eye_texture = create_texture(width, height, TEXTURE_FORMAT_RGBA8);
+    display->right_eye_texture = create_texture(width, height, TEXTURE_FORMAT_RGBA8);
+    display->depth_texture = create_texture(width, height, TEXTURE_FORMAT_DEPTH24_STENCIL8);
+    
+    if (!display->left_eye_texture || !display->right_eye_texture || !display->depth_texture) {
+        LOG_ERROR("Failed to create VR/AR render targets");
+        // Cleanup partial allocation
+        if (display->left_eye_texture) destroy_texture(display->left_eye_texture);
+        if (display->right_eye_texture) destroy_texture(display->right_eye_texture);
+        if (display->depth_texture) destroy_texture(display->depth_texture);
+        free(display);
+        pthread_mutex_unlock(&g_vr_ar_system.vr_ar_mutex);
+        return NULL;
+    }
     
     // Initialize matrices
     update_projection_matrices(display);
@@ -571,10 +584,18 @@ void vr_ar_display_destroy(VRArDisplay *display) {
     }
     
     // Destroy render targets
-    // TODO: Destroy textures
-    // destroy_texture(display->left_eye_texture);
-    // destroy_texture(display->right_eye_texture);
-    // destroy_texture(display->depth_texture);
+    if (display->left_eye_texture) {
+        destroy_texture(display->left_eye_texture);
+        display->left_eye_texture = NULL;
+    }
+    if (display->right_eye_texture) {
+        destroy_texture(display->right_eye_texture);
+        display->right_eye_texture = NULL;
+    }
+    if (display->depth_texture) {
+        destroy_texture(display->depth_texture);
+        display->depth_texture = NULL;
+    }
     
     free(display);
     

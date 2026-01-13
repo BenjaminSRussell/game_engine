@@ -23,6 +23,211 @@
 #include <player/player_vehicle.h>
 #include <string.h>
 #include <physics/physics.h>
+#include <block/block.h>
+#include <chunk/chunk.h>
+
+// Vehicle damage and wear system
+#define VEHICLE_DAMAGE_WEAR_THRESHOLD 0.2f
+#define VEHICLE_MAX_WEAR_LEVELS 5
+#define VEHICLE_REPAIR_COOLDOWN 1.0f
+
+// Vehicle damage types
+typedef enum {
+    VEHICLE_DAMAGE_COLLISION = 0,
+    VEHICLE_DAMAGE_FALL,
+    VEHICLE_DAMAGE_EXPLOSION,
+    VEHICLE_DAMAGE_FIRE,
+    VEHICLE_DAMAGE_WATER,
+    VEHICLE_DAMAGE_COUNT
+} VehicleDamageType;
+
+// Vehicle wear appearance levels
+typedef struct {
+    f32 health_threshold;
+    const char* description;
+    u32 visual_effects; // Bitmask for visual effects
+} VehicleWearLevel;
+
+static VehicleWearLevel vehicle_wear_levels[VEHICLE_MAX_WEAR_LEVELS] = {
+    {0.8f, "Pristine", 0x00},
+    {0.6f, "Light Wear", 0x01},
+    {0.4f, "Moderate Wear", 0x03},
+    {0.2f, "Heavy Wear", 0x07},
+    {0.0f, "Critical Damage", 0x0F}
+};
+
+// Vehicle fuel system
+#define VEHICLE_FUEL_CONSUMPTION_RATE 0.1f
+#define VEHICLE_FUEL_LOW_THRESHOLD 0.2f
+#define VEHICLE_FUEL_CRITICAL_THRESHOLD 0.1f
+
+// Helper: Check if vehicle type requires fuel
+static bool vehicle_requires_fuel(VehicleType type) {
+    switch (type) {
+        case VEHICLE_TYPE_MINECART:
+            return true; // Minecarts can be powered
+        case VEHICLE_TYPE_BOAT:
+        case VEHICLE_TYPE_HORSE:
+        case VEHICLE_TYPE_PIG:
+        case VEHICLE_TYPE_LLAMA:
+        case VEHICLE_TYPE_CAMEL:
+        case VEHICLE_TYPE_STRIDER:
+        case VEHICLE_TYPE_CHAIR:
+        case VEHICLE_TYPE_BED:
+        default:
+            return false; // Natural vehicles don't require fuel
+    }
+}
+
+// Helper: Get fuel consumption rate for vehicle type
+static f32 vehicle_get_fuel_consumption(VehicleType type) {
+    switch (type) {
+        case VEHICLE_TYPE_MINECART:
+            return VEHICLE_FUEL_CONSUMPTION_RATE * 1.5f; // Minecarts use more fuel
+        default:
+            return 0.0f;
+    }
+}
+
+// Update vehicle fuel consumption
+void player_vehicle_update_fuel(PlayerSystem *system, f32 delta_time) {
+    if (!system || !system->player || delta_time <= 0.0f)
+        return;
+
+    if (!system->player->in_vehicle)
+        return;
+
+    VehicleState *vehicle = &system->player->vehicle_state;
+    if (!vehicle_requires_fuel(vehicle->type))
+        return;
+
+    if (!system->ecs_world)
+        return;
+
+    EntityID vehicle_entity = system->player->vehicle;
+    if (!ecs_entity_exists((World *)system->ecs_world, (Entity){vehicle_entity, 0}))
+        return;
+
+    VehicleComponent *vc = ecs_get_component((World *)system->ecs_world, 
+                                            (Entity){vehicle_entity, 0}, 
+                                            VEHICLE_COMPONENT_ID);
+    if (!vc || !vc->requires_fuel)
+        return;
+
+    // Only consume fuel when vehicle is moving
+    RigidBodyComponent *rbc = ecs_get_component((World *)system->ecs_world, 
+                                               (Entity){vehicle_entity, 0}, 
+                                               RIGIDBODY_COMPONENT_ID);
+    if (!rbc || !rbc->body)
+        return;
+
+    Vec3 velocity = rigid_body_get_velocity(rbc->body);
+    f32 speed = vec3_length(velocity);
+    
+    if (speed > 0.1f) { // Only consume fuel when moving
+        f32 consumption_rate = vehicle_get_fuel_consumption(vehicle->type);
+        f32 fuel_consumed = consumption_rate * speed * delta_time * 0.01f;
+        
+        vc->fuel_amount = fmaxf(0.0f, vc->fuel_amount - fuel_consumed);
+        
+        // Log fuel consumption
+        f32 fuel_percentage = vc->fuel_amount / vc->max_fuel;
+        if (fuel_percentage <= VEHICLE_FUEL_CRITICAL_THRESHOLD) {
+            LOG_WARN("Vehicle fuel critical: %.1f%%", fuel_percentage * 100.0f);
+        } else if (fuel_percentage <= VEHICLE_FUEL_LOW_THRESHOLD) {
+            LOG_INFO("Vehicle fuel low: %.1f%%", fuel_percentage * 100.0f);
+        }
+        
+        // Apply fuel penalties
+        if (vc->fuel_amount <= 0.0f) {
+            // Out of fuel - stop vehicle
+            Vec3 zero_vel = {0};
+            rigid_body_set_velocity(rbc->body, zero_vel);
+            vehicle->can_control = false;
+            LOG_WARN("Vehicle out of fuel!");
+        } else if (fuel_percentage <= VEHICLE_FUEL_CRITICAL_THRESHOLD) {
+            // Critical fuel - reduce performance
+            vehicle->control_influence = 0.3f;
+        } else if (fuel_percentage <= VEHICLE_FUEL_LOW_THRESHOLD) {
+            // Low fuel - slightly reduce performance
+            vehicle->control_influence = 0.7f;
+        } else {
+            vehicle->control_influence = 1.0f;
+        }
+    }
+}
+
+// Refuel vehicle
+bool player_vehicle_refuel(PlayerSystem *system, f32 fuel_amount) {
+    if (!system || !system->player || fuel_amount <= 0.0f)
+        return false;
+
+    if (!system->player->in_vehicle)
+        return false;
+
+    VehicleState *vehicle = &system->player->vehicle_state;
+    if (!vehicle_requires_fuel(vehicle->type))
+        return false;
+
+    if (!system->ecs_world)
+        return false;
+
+    EntityID vehicle_entity = system->player->vehicle;
+    if (!ecs_entity_exists((World *)system->ecs_world, (Entity){vehicle_entity, 0}))
+        return false;
+
+    VehicleComponent *vc = ecs_get_component((World *)system->ecs_world, 
+                                            (Entity){vehicle_entity, 0}, 
+                                            VEHICLE_COMPONENT_ID);
+    if (!vc || !vc->requires_fuel)
+        return false;
+
+    f32 old_fuel = vc->fuel_amount;
+    vc->fuel_amount = fminf(vc->max_fuel, vc->fuel_amount + fuel_amount);
+    f32 actual_refueled = vc->fuel_amount - old_fuel;
+    
+    if (actual_refueled > 0.0f) {
+        // Restore control if fuel was added
+        if (old_fuel <= 0.0f && vc->fuel_amount > 0.0f) {
+            vehicle->can_control = true;
+            LOG_INFO("Vehicle refueled and operational!");
+        }
+        
+        LOG_INFO("Vehicle refueled: %.1f (+%.1f/%.1f)", 
+                vc->fuel_amount, actual_refueled, vc->max_fuel);
+        return true;
+    }
+    
+    return false;
+}
+
+// Get vehicle fuel status
+f32 player_vehicle_get_fuel_percentage(const PlayerSystem *system) {
+    if (!system || !system->player)
+        return 0.0f;
+
+    if (!system->player->in_vehicle)
+        return 0.0f;
+
+    const VehicleState *vehicle = &system->player->vehicle_state;
+    if (!vehicle_requires_fuel(vehicle->type))
+        return 1.0f; // Non-fuel vehicles always have "full" fuel
+
+    if (!system->ecs_world)
+        return 0.0f;
+
+    EntityID vehicle_entity = system->player->vehicle;
+    if (!ecs_entity_exists((World *)system->ecs_world, (Entity){vehicle_entity, 0}))
+        return 0.0f;
+
+    const VehicleComponent *vc = ecs_get_component((World *)system->ecs_world, 
+                                                   (Entity){vehicle_entity, 0}, 
+                                                   VEHICLE_COMPONENT_ID);
+    if (!vc || !vc->requires_fuel || vc->max_fuel <= 0.0f)
+        return 1.0f;
+
+    return vc->fuel_amount / vc->max_fuel;
+}
 
 // Helper: Get seat position based on vehicle type
 static Vec3 vehicle_get_seat_offset(VehicleType type) {
@@ -192,6 +397,13 @@ bool player_mount_vehicle(PlayerSystem *system, EntityID vehicle_entity,
                     .speed = 10.0f,
                     .turn_speed = 90.0f,
                     .acceleration = 5.0f,
+                    .can_fly = false,
+                    .can_swim = false,
+                    .requires_fuel = vehicle_requires_fuel(type),
+                    .fuel_amount = vehicle_requires_fuel(type) ? 100.0f : 0.0f,
+                    .max_fuel = vehicle_requires_fuel(type) ? 100.0f : 0.0f,
+                    .inventory_slots = 0,
+                    .physics_body = NULL
                 };
                 ecs_add_component((World*)system->ecs_world, e, VEHICLE_COMPONENT_ID, &vc);
             }
@@ -318,6 +530,9 @@ void player_update_vehicle_control(PlayerSystem *system, f32 delta_time) {
           vehicle->seat_position);
     }
   }
+  
+  // Update fuel consumption
+  player_vehicle_update_fuel(system, delta_time);
 }
 
 void player_vehicle_apply_input(PlayerSystem *system, Vec3 move_input,
@@ -344,15 +559,76 @@ void player_vehicle_apply_input(PlayerSystem *system, Vec3 move_input,
             RigidBodyComponent* rbc = ecs_get_component((World*)system->ecs_world, e, RIGIDBODY_COMPONENT_ID);
 
             if (vc && rbc && rbc->body) {
+                Vec3 current_vel = rigid_body_get_velocity(rbc->body);
+                Vec3 current_pos = rigid_body_get_position(rbc->body);
                 Vec3 force = {0};
-                force.x = move_input.x * vc->speed * 100.0f;
-                force.z = move_input.z * vc->speed * 100.0f;
-
-                if (jump && vc->can_fly) {
-                    force.y = vc->speed * 100.0f;
+                
+                // Enhanced physics with realistic acceleration and friction
+                f32 speed_factor = vc->speed * vehicle_state->control_influence;
+                f32 acceleration = vc->acceleration;
+                
+                // Calculate target velocity based on input
+                Vec3 target_vel = {0};
+                target_vel.x = move_input.x * speed_factor;
+                target_vel.z = move_input.z * speed_factor;
+                
+                // Apply smooth acceleration
+                Vec3 vel_diff = vec3_sub(target_vel, current_vel);
+                vel_diff.y = 0; // Don't affect vertical movement with horizontal input
+                
+                f32 vel_diff_mag = vec3_length(vel_diff);
+                if (vel_diff_mag > 0.01f) {
+                    Vec3 accel_force = vec3_mul(vec3_normalize(vel_diff), acceleration * 100.0f);
+                    force = vec3_add(force, accel_force);
                 }
-
+                
+                // Enhanced turning physics
+                if (vec3_length_sq(move_input) > 0.01f) {
+                    Vec3 forward = vec3_normalize(vec3(current_vel.x, 0, current_vel.z));
+                    Vec3 desired_forward = vec3_normalize(move_input);
+                    
+                    // Calculate turning angle
+                    f32 turn_angle = atan2f(desired_forward.z, desired_forward.x) - atan2f(forward.z, forward.x);
+                    
+                    // Normalize angle to [-PI, PI]
+                    while (turn_angle > M_PI) turn_angle -= 2.0f * M_PI;
+                    while (turn_angle < -M_PI) turn_angle += 2.0f * M_PI;
+                    
+                    // Apply turning torque
+                    f32 turn_speed = vc->turn_speed * vehicle_state->control_influence;
+                    Vec3 torque = vec3(0, turn_angle * turn_speed * 10.0f, 0);
+                    rigid_body_apply_torque(rbc->body, torque);
+                }
+                
+                // Jump mechanics for vehicles that can fly
+                if (jump && vc->can_fly) {
+                    force.y = acceleration * 150.0f; // Stronger upward force for flight
+                }
+                
+                // Braking system
+                if (brake) {
+                    Vec3 brake_force = vec3_mul(current_vel, -acceleration * 200.0f);
+                    brake_force.y = 0; // Don't brake vertical movement
+                    force = vec3_add(force, brake_force);
+                }
+                
+                // Apply air resistance
+                Vec3 air_resistance = vec3_mul(current_vel, -5.0f);
+                air_resistance.y = 0; // Less air resistance on vertical movement
+                force = vec3_add(force, air_resistance);
+                
                 rigid_body_apply_force(rbc->body, force);
+                
+                // Enhanced ground detection for vehicles
+                Vec3 ground_check = vec3(current_pos.x, current_pos.y - 1.0f, current_pos.z);
+                bool on_ground = player_check_block_collision(system, ground_check, vec3(0.5f, 0.1f, 0.5f), NULL);
+                
+                // Apply ground friction
+                if (on_ground && vec3_length_sq(current_vel) > 0.01f) {
+                    Vec3 ground_friction = vec3_mul(current_vel, -vc->speed * 0.1f);
+                    ground_friction.y = 0;
+                    rigid_body_apply_force(rbc->body, ground_friction);
+                }
             }
         }
     }
@@ -400,13 +676,106 @@ void player_vehicle_damage(PlayerSystem *system, f32 damage) {
     return;
   }
 
-  // Query VehicleComponent from ECS and apply damage
-  // In real implementation: ecs_get_component(system->ecs_world,
-  // vehicle_entity, COMPONENT_VEHICLE);
-  LOG_INFO("Vehicle damaged for %.1f HP (vehicle: %u)", damage, vehicle_entity);
+  // Get VehicleComponent and apply damage
+  VehicleComponent *vc = ecs_get_component((World *)system->ecs_world, 
+                                          (Entity){vehicle_entity, 0}, 
+                                          VEHICLE_COMPONENT_ID);
+  if (!vc) {
+    LOG_WARN("Vehicle component not found");
+    return;
+  }
 
-  // If vehicle health drops to 0, destroy it
-  // This would trigger automatic dismount in player_update_vehicle_control
+  // Apply damage with wear system
+  f32 old_health = vc->health;
+  vc->health = fmaxf(0.0f, vc->health - damage);
+  
+  // Calculate wear level
+  u32 wear_level = 0;
+  for (u32 i = 0; i < VEHICLE_MAX_WEAR_LEVELS; i++) {
+    if (vc->health <= vehicle_wear_levels[i].health_threshold) {
+      wear_level = i;
+    }
+  }
+  
+  // Apply visual wear effects
+  u32 visual_effects = vehicle_wear_levels[wear_level].visual_effects;
+  
+  // Log damage with wear information
+  LOG_INFO("Vehicle damaged for %.1f HP (%.1f -> %.1f) - Wear: %s (effects: 0x%02X)", 
+           damage, old_health, vc->health, 
+           vehicle_wear_levels[wear_level].description, visual_effects);
+  
+  // Apply performance penalties based on wear
+  f32 performance_factor = 1.0f;
+  if (wear_level >= 2) { // Moderate wear or worse
+    performance_factor = 0.8f; // 20% speed reduction
+  }
+  if (wear_level >= 3) { // Heavy wear or worse
+    performance_factor = 0.6f; // 40% speed reduction
+  }
+  if (wear_level >= 4) { // Critical damage
+    performance_factor = 0.3f; // 70% speed reduction
+  }
+  
+  // Update vehicle performance based on wear
+  vc->speed = vc->speed * performance_factor;
+  vc->acceleration = vc->acceleration * performance_factor;
+  
+  // Create damage effects
+  if (damage > VEHICLE_DAMAGE_WEAR_THRESHOLD) {
+    // TODO: Create particle effects for significant damage
+    // vehicle_create_damage_particles(vehicle_entity, damage, wear_level);
+  }
+  
+  // Check if vehicle is destroyed
+  if (vc->health <= 0.0f) {
+    LOG_WARN("Vehicle destroyed!");
+    // TODO: Create explosion effects
+    // vehicle_create_destruction_effects(vehicle_entity);
+    
+    // Force dismount
+    player_dismount_vehicle(system);
+    
+    // Remove vehicle entity
+    ecs_destroy_entity((World *)system->ecs_world, (Entity){vehicle_entity, 0});
+  }
+}
+
+// Enhanced damage function with damage type
+void player_vehicle_damage_typed(PlayerSystem *system, f32 damage, VehicleDamageType damage_type) {
+  if (!system || !system->player || damage <= 0.0f)
+    return;
+
+  // Apply damage type multipliers
+  f32 modified_damage = damage;
+  switch (damage_type) {
+    case VEHICLE_DAMAGE_COLLISION:
+      modified_damage *= 1.0f; // Normal collision damage
+      break;
+    case VEHICLE_DAMAGE_FALL:
+      modified_damage *= 1.5f; // Fall damage is more severe
+      break;
+    case VEHICLE_DAMAGE_EXPLOSION:
+      modified_damage *= 2.0f; // Explosions are very damaging
+      break;
+    case VEHICLE_DAMAGE_FIRE:
+      modified_damage *= 0.5f; // Fire does less damage to metal vehicles
+      break;
+    case VEHICLE_DAMAGE_WATER:
+      // Water damage only applies to certain vehicle types
+      if (system->player->vehicle_state.type != VEHICLE_TYPE_BOAT &&
+          system->player->vehicle_state.type != VEHICLE_TYPE_STRIDER) {
+        modified_damage *= 0.1f; // Minimal water damage
+      } else {
+        modified_damage = 0.0f; // No water damage for water vehicles
+      }
+      break;
+    default:
+      break;
+  }
+  
+  LOG_DEBUG("Vehicle damage type %d: %.1f -> %.1f", damage_type, damage, modified_damage);
+  player_vehicle_damage(system, modified_damage);
 }
 
 void player_vehicle_repair(PlayerSystem *system, f32 repair_amount) {

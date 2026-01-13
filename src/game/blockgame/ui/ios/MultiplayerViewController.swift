@@ -210,8 +210,44 @@ class MultiplayerViewController: UIViewController {
     }
     
     private func loadServers() {
-        // TODO: Load actual servers from master server or LAN discovery
-        servers = createMockServers()
+        // Load actual servers from master server or LAN discovery
+        var serverPtr: UnsafeMutablePointer<BridgeServerInfo>?
+        var serverCount: UInt32 = 0
+        
+        let success = bridge_get_server_list(&serverPtr, &serverCount)
+        
+        if success, let serverPtr = serverPtr, serverCount > 0 {
+            let buffer = UnsafeBufferPointer(start: serverPtr, count: Int(serverCount))
+            
+            servers.removeAll()
+            
+            for i in 0..<Int(serverCount) {
+                let serverInfo = buffer[i]
+                
+                let server = Server(
+                    id: UUID(),
+                    name: String(cString: serverInfo.name),
+                    address: String(cString: serverInfo.address),
+                    port: Int(serverInfo.port),
+                    playerCount: Int(serverInfo.player_count),
+                    maxPlayers: Int(serverInfo.max_players),
+                    version: String(cString: serverInfo.version),
+                    ping: Int(serverInfo.ping),
+                    description: String(cString: serverInfo.description),
+                    isOnline: serverInfo.is_online,
+                    hasPassword: serverInfo.has_password
+                )
+                
+                servers.append(server)
+            }
+            
+            // Free memory allocated by C function
+            serverPtr.deallocate()
+        } else {
+            // Fallback to mock servers if bridge fails
+            servers = createMockServers()
+        }
+        
         tableView.reloadData()
     }
     
@@ -294,12 +330,17 @@ class MultiplayerViewController: UIViewController {
         
         let port = Int(portTextField.text ?? "25565") ?? 25565
         
-        // TODO: Implement actual server connection
-        print("Connecting to server: \(address):\(port)")
+        // Implement actual server connection
+        let success = bridge_connect_to_server(address, UInt32(port))
         
-        gameStateManager.transition(to: .loading)
-        let loadingViewController = LoadingViewController()
-        navigationController?.setViewControllers([loadingViewController], animated: true)
+        if success {
+            print("Successfully connected to server: \(address):\(port)")
+            gameStateManager.transition(to: .loading)
+            let loadingViewController = LoadingViewController()
+            navigationController?.setViewControllers([loadingViewController], animated: true)
+        } else {
+            showAlert(title: "Connection Failed", message: "Failed to connect to \(address):\(port). Please check the address and try again.")
+        }
     }
     
     @objc private func createServer() {
@@ -311,12 +352,17 @@ class MultiplayerViewController: UIViewController {
         let maxPlayers = Int(maxPlayersSlider.value)
         let password = passwordTextField.text ?? ""
         
-        // TODO: Implement actual server creation
-        print("Creating server: \(serverName) with \(maxPlayers) players")
+        // Implement actual server creation
+        let success = bridge_create_server(serverName, UInt32(maxPlayers), password)
         
-        gameStateManager.transition(to: .loading)
-        let loadingViewController = LoadingViewController()
-        navigationController?.setViewControllers([loadingViewController], animated: true)
+        if success {
+            print("Successfully created server: \(serverName) with \(maxPlayers) players")
+            gameStateManager.transition(to: .loading)
+            let loadingViewController = LoadingViewController()
+            navigationController?.setViewControllers([loadingViewController], animated: true)
+        } else {
+            showAlert(title: "Server Creation Failed", message: "Failed to create server '\(serverName)'. Please check your network settings and try again.")
+        }
     }
     
     private func showAlert(title: String, message: String) {
@@ -341,11 +387,17 @@ extension MultiplayerViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let server = servers[indexPath.row]
         if server.isOnline {
-            // TODO: Implement server connection
-            print("Connecting to server: \(server.name)")
-            gameStateManager.transition(to: .loading)
-            let loadingViewController = LoadingViewController()
-            navigationController?.setViewControllers([loadingViewController], animated: true)
+            // Implement server connection
+            let success = bridge_connect_to_server(server.address, UInt32(server.port))
+            
+            if success {
+                print("Successfully connected to server: \(server.name)")
+                gameStateManager.transition(to: .loading)
+                let loadingViewController = LoadingViewController()
+                navigationController?.setViewControllers([loadingViewController], animated: true)
+            } else {
+                showAlert(title: "Connection Failed", message: "Failed to connect to \(server.name). Please try again later.")
+            }
         } else {
             showAlert(title: "Server Offline", message: "This server is currently offline.")
         }

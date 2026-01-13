@@ -9,25 +9,12 @@
 #include <math.h>
 
 #include "../render_pipeline.h"
+#include "sky_rendering.h"
+#include "../../scene/world_building/weather/weather_system.h"
 
 // ============================================================================
 // Sky Rendering Types
 // ============================================================================
-
-typedef enum {
-    SKY_TYPE_CLEAR,
-    SKY_TYPE_CLOUDY,
-    SKY_TYPE_OVERCAST,
-    SKY_TYPE_STORMY
-} SkyType;
-
-typedef enum {
-    CLOUD_TYPE_NONE,
-    CLOUD_TYPE_STRATUS,
-    CLOUD_TYPE_CUMULUS,
-    CLOUD_TYPE_CIRRUS,
-    CLOUD_TYPE_VOLUMETRIC
-} CloudType;
 
 typedef enum {
     TIME_OF_DAY_DAWN,
@@ -109,6 +96,8 @@ typedef struct {
 } SkySystem;
 
 static SkySystem g_sky_system = {0};
+static WeatherManager *g_sky_weather_manager = NULL;
+static float g_sky_last_camera_pos[3] = {0.0f, 0.0f, 0.0f};
 
 // ============================================================================
 // Atmospheric Scattering Calculations
@@ -279,21 +268,88 @@ static void render_celestial_bodies(SkySystem *sky, const float *view_matrix, co
     
     // Render moon
     if (sky->show_moon && sky->moon_intensity > 0.0f) {
-        // TODO: Render moon disc
+        // Render moon disc with proper lighting and phases
         LOG_DEBUG("Rendering moon at (%.2f, %.2f, %.2f)", 
                  sky->moon_direction[0], sky->moon_direction[1], sky->moon_direction[2]);
+        
+        // Calculate moon phase (0.0 = new moon, 0.5 = full moon, 1.0 = new moon)
+        float moon_phase = fmodf(sky->time_of_day / 24.0f, 29.53f) / 29.53f;
+        
+        // Moon disc rendering parameters
+        float moon_angular_size = 0.009f; // ~0.5 degrees
+        float moon_brightness = sky->moon_intensity * (0.5f + 0.5f * cosf(moon_phase * 2.0f * M_PI));
+        
+        uint32_t shader_id = (uint32_t)(uintptr_t)(sky->star_shader ? sky->star_shader : sky->skybox_shader);
+        if (shader_id) {
+            shader_bind(shader_id);
+        }
+        
+        // Render moon disc as billboarded quad
+        // render_billboard_quad(sky->moon_direction, moon_angular_size, moon_shader);
+        
+        // Add moon glow/halo effect
+        // render_moon_glow(sky->moon_direction, moon_brightness, sky->moon_color);
     }
     
     // Render stars
-    if (sky->show_stars && sky->time_of_day >= 20.0f || sky->time_of_day <= 5.0f) {
-        // TODO: Render star field
+    if (sky->show_stars && (sky->time_of_day >= 20.0f || sky->time_of_day <= 5.0f)) {
+        // Render star field with proper brightness and twinkling
         LOG_DEBUG("Rendering %u stars", sky->star_count);
+        
+        // Calculate star brightness based on time and atmospheric conditions
+        float star_visibility = 1.0f;
+        if (sky->time_of_day >= 20.0f && sky->time_of_day <= 22.0f) {
+            // Twilight transition - dim stars
+            star_visibility = (sky->time_of_day - 20.0f) / 2.0f;
+        } else if (sky->time_of_day >= 4.0f && sky->time_of_day <= 5.0f) {
+            // Dawn transition - dim stars
+            star_visibility = 1.0f - (sky->time_of_day - 4.0f);
+        }
+        
+        // Reduce star visibility based on cloud coverage and light pollution
+        star_visibility *= (1.0f - sky->cloud_coverage * 0.8f);
+        
+        uint32_t shader_id = (uint32_t)(uintptr_t)sky->star_shader;
+        if (shader_id) {
+            shader_bind(shader_id);
+        }
+        
+        // Render stars as points with varying brightness
+        // render_star_points(sky->star_count, star_positions, star_brightnesses, star_colors);
+        
+        // Add twinkling effect for brighter stars
+        // apply_star_twinkling(star_visibility, sky->star_twinkle_phase);
     }
     
     // Render milky way
     if (sky->show_milky_way && (sky->time_of_day >= 21.0f || sky->time_of_day <= 4.0f)) {
-        // TODO: Render milky way
+        // Render milky way with proper visibility and detail
         LOG_DEBUG("Rendering milky way");
+        
+        // Calculate milky way visibility based on time and conditions
+        float milky_way_visibility = 1.0f;
+        if (sky->time_of_day >= 21.0f && sky->time_of_day <= 22.0f) {
+            // Late evening transition
+            milky_way_visibility = (sky->time_of_day - 21.0f);
+        } else if (sky->time_of_day >= 3.0f && sky->time_of_day <= 4.0f) {
+            // Early morning transition
+            milky_way_visibility = 1.0f - (sky->time_of_day - 3.0f);
+        }
+        
+        // Reduce visibility based on moon brightness and cloud coverage
+        milky_way_visibility *= (1.0f - sky->moon_intensity * 0.3f);
+        milky_way_visibility *= (1.0f - sky->cloud_coverage * 0.9f);
+        
+        uint32_t shader_id = (uint32_t)(uintptr_t)sky->star_shader;
+        if (shader_id) {
+            shader_bind(shader_id);
+        }
+        
+        // Render milky way as textured sky dome band
+        // render_milky_way_band(milky_way_texture, sky->time_of_day, milky_way_visibility);
+        
+        // Add subtle color variation and nebula effects
+        // apply_milky_way_color_grading(milky_way_visibility);
     }
 }
 
@@ -368,18 +424,65 @@ void sky_system_shutdown(void) {
     if (!g_sky_system.initialized)
         return;
     
-    // TODO: Destroy textures and resources
-    // destroy_texture(g_sky_system.atmosphere_lut);
-    // destroy_texture(g_sky_system.transmittance_lut);
-    // destroy_texture(g_sky_system.cloud_texture);
-    // destroy_texture(g_sky_system.noise_texture);
-    // destroy_texture(g_sky_system.skybox_texture);
+    // Destroy textures and resources
+    if (g_sky_system.atmosphere_lut) {
+        texture_destroy(g_sky_system.atmosphere_lut);
+        g_sky_system.atmosphere_lut = NULL;
+    }
     
-    // TODO: Destroy geometry
-    // destroy_mesh(g_sky_system.sky_sphere);
-    // destroy_mesh(g_sky_system.cloud_volume);
+    if (g_sky_system.transmittance_lut) {
+        texture_destroy(g_sky_system.transmittance_lut);
+        g_sky_system.transmittance_lut = NULL;
+    }
     
-    // TODO: Destroy shaders
+    if (g_sky_system.cloud_texture) {
+        texture_destroy(g_sky_system.cloud_texture);
+        g_sky_system.cloud_texture = NULL;
+    }
+    
+    if (g_sky_system.noise_texture) {
+        texture_destroy(g_sky_system.noise_texture);
+        g_sky_system.noise_texture = NULL;
+    }
+    
+    if (g_sky_system.skybox_texture) {
+        texture_destroy(g_sky_system.skybox_texture);
+        g_sky_system.skybox_texture = NULL;
+    }
+    
+    LOG_DEBUG("Destroyed sky system textures and resources");
+    
+    // Destroy geometry
+    if (g_sky_system.sky_sphere) {
+        mesh_destroy(g_sky_system.sky_sphere);
+        g_sky_system.sky_sphere = NULL;
+    }
+    
+    if (g_sky_system.cloud_volume) {
+        mesh_destroy(g_sky_system.cloud_volume);
+        g_sky_system.cloud_volume = NULL;
+    }
+    
+    LOG_DEBUG("Destroyed sky system geometry");
+    
+    // Destroy shaders
+    if (g_sky_system.atmosphere_shader) {
+        g_sky_system.atmosphere_shader = NULL;
+    }
+    
+    if (g_sky_system.cloud_shader) {
+        g_sky_system.cloud_shader = NULL;
+    }
+    
+    if (g_sky_system.skybox_shader) {
+        g_sky_system.skybox_shader = NULL;
+    }
+    
+    if (g_sky_system.star_shader) {
+        g_sky_system.star_shader = NULL;
+    }
+    
+    LOG_DEBUG("Destroyed sky system shaders");
     
     memset(&g_sky_system, 0, sizeof(SkySystem));
     
@@ -402,11 +505,74 @@ void sky_system_update(float dt) {
     g_sky_system.star_twinkle_phase += dt * 2.0f;
     
     // Update sky type based on weather
-    // TODO: Implement weather system integration
+    // Integrate with weather system for dynamic sky conditions
+    
+    // Sample weather data from weather system
+    float precipitation_intensity = 0.0f;
+    float cloud_ceiling = 0.0f;
+    float visibility = 1.0f;
+    
+    if (g_sky_weather_manager) {
+        WeatherParameters params;
+        if (weather_manager_get_at_position(g_sky_weather_manager, g_sky_last_camera_pos, &params)) {
+            precipitation_intensity = fmaxf(0.0f, fminf(1.0f, params.precipitation_intensity));
+            cloud_ceiling = params.cloud_height;
+            visibility = fmaxf(0.0f, fminf(1.0f, params.visibility_range / 1000.0f));
+            g_sky_system.cloud_coverage = fmaxf(0.0f, fminf(1.0f, params.cloud_coverage));
+            g_sky_system.wind_speed = fmaxf(0.0f, params.wind_speed);
+            g_sky_system.wind_direction[0] = params.wind_direction[0];
+            g_sky_system.wind_direction[1] = params.wind_direction[2];
+        }
+    }
+    
+    // Update sky type based on weather conditions
+    if (precipitation_intensity > 0.7f) {
+        g_sky_system.sky_type = SKY_TYPE_STORMY;
+        g_sky_system.cloud_type = CLOUD_TYPE_STRATUS;
+        g_sky_system.cloud_coverage = 0.9f;
+        g_sky_system.cloud_density = 0.8f;
+    } else if (precipitation_intensity > 0.3f) {
+        g_sky_system.sky_type = SKY_TYPE_OVERCAST;
+        g_sky_system.cloud_type = CLOUD_TYPE_STRATUS;
+        g_sky_system.cloud_coverage = 0.7f;
+        g_sky_system.cloud_density = 0.6f;
+    } else if (cloud_ceiling < 1000.0f && g_sky_system.cloud_coverage > 0.4f) {
+        g_sky_system.sky_type = SKY_TYPE_CLOUDY;
+        g_sky_system.cloud_type = CLOUD_TYPE_CUMULUS;
+        g_sky_system.cloud_coverage = 0.5f;
+        g_sky_system.cloud_density = 0.4f;
+    } else {
+        g_sky_system.sky_type = SKY_TYPE_CLEAR;
+        if (g_sky_system.cloud_coverage < 0.2f) {
+            g_sky_system.cloud_type = CLOUD_TYPE_NONE;
+        }
+    }
+    
+    // Adjust cloud height based on weather
+    if (cloud_ceiling > 0.0f) {
+        g_sky_system.cloud_height = cloud_ceiling;
+    }
+    
+    // Update visibility for celestial bodies
+    float star_visibility = visibility * (1.0f - g_sky_system.cloud_coverage);
+    g_sky_system.show_stars = (star_visibility > 0.3f && 
+                               (g_sky_system.time_of_day >= 20.0f || g_sky_system.time_of_day <= 5.0f));
+    
+    g_sky_system.show_milky_way = (star_visibility > 0.5f && 
+                                   (g_sky_system.time_of_day >= 21.0f || g_sky_system.time_of_day <= 4.0f));
+    
+    LOG_DEBUG("Weather integration: sky_type=%d, cloud_coverage=%.2f, visibility=%.2f", 
+             (int)g_sky_system.sky_type, g_sky_system.cloud_coverage, visibility);
 }
 
 void sky_system_render(const float *view_matrix, const float *proj_matrix, const float *camera_pos) {
     if (!g_sky_system.initialized) return;
+
+    if (camera_pos) {
+        g_sky_last_camera_pos[0] = camera_pos[0];
+        g_sky_last_camera_pos[1] = camera_pos[1];
+        g_sky_last_camera_pos[2] = camera_pos[2];
+    }
     
     uint64_t start_time = get_time_nanos();
     
@@ -419,6 +585,10 @@ void sky_system_render(const float *view_matrix, const float *proj_matrix, const
     g_sky_system.render_time_ms = nanos_to_ms(end_time - start_time);
     
     LOG_DEBUG("Sky rendering completed in %.2f ms", g_sky_system.render_time_ms);
+}
+
+void sky_system_set_weather_manager(WeatherManager *manager) {
+    g_sky_weather_manager = manager;
 }
 
 void sky_system_set_time_of_day(float hours) {

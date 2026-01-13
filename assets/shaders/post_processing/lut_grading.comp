@@ -1,0 +1,25 @@
+#version 450
+
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D input_tex;
+layout(binding = 1) uniform sampler3D lut_tex;
+layout(binding = 2, rgba8) writeonly uniform image2D output_tex;
+
+void main() {
+    ivec2 pos = ivec2(gl_GlobalInvocationID.xy);
+    ivec2 size = imageSize(output_tex);
+    
+    if (pos.x >= size.x || pos.y >= size.y) {
+        return;
+    }
+    
+    vec2 uv = (vec2(pos) + 0.5) / vec2(size);
+    vec4 color = texture(input_tex, uv);
+    
+    // LUT grading
+    // color.rgb is expected to be in [0, 1] range after tonemapping
+    vec3 graded = texture(lut_tex, color.rgb).rgb;
+    
+    imageStore(output_tex, pos, vec4(graded, color.a));
+}

@@ -11,6 +11,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
+#else
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <time.h>
+#endif
 
 /* =================================================================================================
  *                                    TYPES
@@ -59,6 +71,9 @@ typedef struct DocGenerator {
   DocModule *modules;
   uint32_t module_count;
   char output_dir[256];
+  bool server_running;
+  int server_socket;
+  int server_port;
 } DocGenerator;
 
 static DocGenerator g_doc_gen = {0};
@@ -429,9 +444,266 @@ void doc_generator_generate_markdown(void) {
     fprintf(f, "# Documentation\n\n## Modules\n\n");
 
     for (uint32_t i = 0; i < g_doc_gen.module_count; i++) {
-              g_doc_gen.modules[i].name);
+      fprintf(f, "- [%s](%s.md)\n", g_doc_gen.modules[i].name, g_doc_gen.modules[i].name);
     }
 
     fclose(f);
   }
+}
+
+/* =================================================================================================
+ *                                    HTTP SERVER
+ * =================================================================================================
+ */
+
+static void send_http_response(int client_socket, const char *status, 
+                             const char *content_type, const char *content, size_t content_length) {
+  char response[8192];
+  snprintf(response, sizeof(response),
+           "HTTP/1.1 %s\r\n"
+           "Content-Type: %s\r\n"
+           "Content-Length: %zu\r\n"
+           "Access-Control-Allow-Origin: *\r\n"
+           "Connection: close\r\n"
+           "\r\n",
+           status, content_type, content_length);
+  
+  send(client_socket, response, strlen(response), 0);
+  send(client_socket, content, content_length, 0);
+}
+
+static void send_file_response(int client_socket, const char *file_path) {
+  FILE *f = fopen(file_path, "rb");
+  if (!f) {
+    const char *not_found = "<html><body><h1>404 Not Found</h1></body></html>";
+    send_http_response(client_socket, "404 Not Found", "text/html", not_found, strlen(not_found));
+    return;
+  }
+
+  // Get file size
+  fseek(f, 0, SEEK_END);
+  long file_size = ftell(f);
+  fseek(f, 0, SEEK_SET);
+
+  // Determine content type
+  const char *content_type = "text/html";
+  if (strstr(file_path, ".css")) {
+    content_type = "text/css";
+  } else if (strstr(file_path, ".js")) {
+    content_type = "application/javascript";
+  } else if (strstr(file_path, ".png")) {
+    content_type = "image/png";
+  } else if (strstr(file_path, ".jpg") || strstr(file_path, ".jpeg")) {
+    content_type = "image/jpeg";
+  }
+
+  // Read and send file
+  char *buffer = malloc(file_size);
+  if (buffer) {
+    fread(buffer, 1, file_size, f);
+    send_http_response(client_socket, "200 OK", content_type, buffer, file_size);
+    free(buffer);
+  }
+
+  fclose(f);
+}
+
+static void handle_client_request(int client_socket) {
+  char buffer[4096];
+  ssize_t bytes_received = recv(client_socket, buffer, sizeof(buffer) - 1, 0);
+  
+  if (bytes_received <= 0) {
+    close(client_socket);
+    return;
+  }
+
+  buffer[bytes_received] = '\0';
+
+  // Parse HTTP request
+  char method[16], path[256], version[16];
+  sscanf(buffer, "%15s %255s %15s", method, path, version);
+
+  // Default to index.html for root
+  if (strcmp(path, "/") == 0) {
+    strcpy(path, "/index.html");
+  }
+
+  // Construct file path
+  char file_path[512];
+  snprintf(file_path, sizeof(file_path), "%s%s", g_doc_gen.output_dir, path);
+
+  // Remove leading slash if present
+  char *file_path_ptr = file_path;
+  if (file_path_ptr[0] == '/') {
+    file_path_ptr++;
+  }
+
+  send_file_response(client_socket, file_path_ptr);
+  close(client_socket);
+}
+
+// DONE: Implement doc_generator_serve_local
+bool doc_generator_serve_local(int port) {
+#ifdef _WIN32
+  WSADATA wsa_data;
+  if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0) {
+    return false;
+  }
+#endif
+
+  g_doc_gen.server_socket = socket(AF_INET, SOCK_STREAM, 0);
+  if (g_doc_gen.server_socket < 0) {
+    return false;
+  }
+
+  struct sockaddr_in server_addr;
+  memset(&server_addr, 0, sizeof(server_addr));
+  server_addr.sin_family = AF_INET;
+  server_addr.sin_addr.s_addr = INADDR_ANY;
+  server_addr.sin_port = htons(port);
+
+  if (bind(g_doc_gen.server_socket, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
+    close(g_doc_gen.server_socket);
+    return false;
+  }
+
+  if (listen(g_doc_gen.server_socket, 10) < 0) {
+    close(g_doc_gen.server_socket);
+    return false;
+  }
+
+  g_doc_gen.server_port = port;
+  g_doc_gen.server_running = true;
+
+  printf("Documentation server started on http://localhost:%d\n", port);
+  printf("Serving files from: %s\n", g_doc_gen.output_dir);
+
+  while (g_doc_gen.server_running) {
+    struct sockaddr_in client_addr;
+    socklen_t client_len = sizeof(client_addr);
+    
+    int client_socket = accept(g_doc_gen.server_socket, (struct sockaddr*)&client_addr, &client_len);
+    if (client_socket >= 0) {
+      handle_client_request(client_socket);
+    }
+  }
+
+  close(g_doc_gen.server_socket);
+#ifdef _WIN32
+  WSACleanup();
+#endif
+  return true;
+}
+
+// DONE: Implement doc_generator_watch_changes
+bool doc_generator_watch_changes(const char *directory) {
+#ifdef _WIN32
+  HANDLE dir_handle = CreateFileA(
+    directory,
+    FILE_LIST_DIRECTORY,
+    FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+    NULL,
+    OPEN_EXISTING,
+    FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED,
+    NULL
+  );
+
+  if (dir_handle == INVALID_HANDLE_VALUE) {
+    return false;
+  }
+
+  printf("Watching for changes in: %s\n", directory);
+  printf("Press Ctrl+C to stop watching...\n");
+
+  char buffer[4096];
+  DWORD bytes_returned;
+  
+  while (1) {
+    if (ReadDirectoryChangesW(
+      dir_handle,
+      buffer,
+      sizeof(buffer),
+      TRUE,
+      FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | 
+      FILE_NOTIFY_CHANGE_ATTRIBUTES | FILE_NOTIFY_CHANGE_SIZE |
+      FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_CREATION,
+      &bytes_returned,
+      NULL,
+      NULL)) {
+      
+      FILE_NOTIFY_INFORMATION *info = (FILE_NOTIFY_INFORMATION*)buffer;
+      while (1) {
+        if (info->Action == FILE_ACTION_MODIFIED || 
+            info->Action == FILE_ACTION_ADDED ||
+            info->Action == FILE_ACTION_REMOVED) {
+          
+          wchar_t filename[MAX_PATH];
+          wcsncpy(filename, info->FileName, info->FileNameLength / sizeof(wchar_t));
+          filename[info->FileNameLength / sizeof(wchar_t)] = L'\0';
+          
+          printf("File changed: %ls\n", filename);
+          printf("Regenerating documentation...\n");
+          
+          // Regenerate documentation
+          doc_generator_process_directory(directory);
+          doc_generator_generate_html();
+          doc_generator_generate_markdown();
+          
+          printf("Documentation updated.\n\n");
+        }
+        
+        if (info->NextEntryOffset == 0) {
+          break;
+        }
+        info = (FILE_NOTIFY_INFORMATION*)((char*)info + info->NextEntryOffset);
+      }
+    }
+  }
+
+  CloseHandle(dir_handle);
+#else
+  // Linux/macOS implementation using inotify
+  int inotify_fd = inotify_init();
+  if (inotify_fd < 0) {
+    return false;
+  }
+
+  int watch_desc = inotify_add_watch(inotify_fd, directory, 
+                                     IN_MODIFY | IN_CREATE | IN_DELETE | IN_MOVED_TO | IN_MOVED_FROM);
+  if (watch_desc < 0) {
+    close(inotify_fd);
+    return false;
+  }
+
+  printf("Watching for changes in: %s\n", directory);
+  printf("Press Ctrl+C to stop watching...\n");
+
+  char buffer[4096];
+  while (1) {
+    ssize_t length = read(inotify_fd, buffer, sizeof(buffer));
+    if (length > 0) {
+      int i = 0;
+      while (i < length) {
+        struct inotify_event *event = (struct inotify_event*)&buffer[i];
+        
+        if (event->len > 0) {
+          printf("File changed: %s\n", event->name);
+          printf("Regenerating documentation...\n");
+          
+          // Regenerate documentation
+          doc_generator_process_directory(directory);
+          doc_generator_generate_html();
+          doc_generator_generate_markdown();
+          
+          printf("Documentation updated.\n\n");
+        }
+        
+        i += sizeof(struct inotify_event) + event->len;
+      }
+    }
+  }
+
+  close(inotify_fd);
+#endif
+  return true;
 }

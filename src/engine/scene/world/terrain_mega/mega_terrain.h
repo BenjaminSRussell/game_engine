@@ -79,14 +79,18 @@ typedef struct TerrainChunk {
  * =================================================================================================
  */
 
+typedef void (*TerrainStreamingCallback)(uint32_t loading, uint32_t loaded);
+
 typedef struct TerrainStreamingState {
   float camera_position[3];
+  float camera_velocity[3];
   float load_radius;
   float unload_radius;
   uint32_t chunks_loading;
   uint32_t chunks_loaded;
   uint32_t max_chunks_per_frame;
   bool is_streaming;
+  TerrainStreamingCallback progress_callback;
 } TerrainStreamingState;
 
 // TODO(AGENT_WORLD_1): Implement async chunk loading [Difficulty: 6]
@@ -156,8 +160,9 @@ typedef struct ErosionSettings {
 // TODO(AGENT_WORLD_1): Implement hydraulic erosion simulation [Difficulty: 8]
 // TODO(AGENT_WORLD_1): Implement thermal erosion simulation [Difficulty: 7]
 // TODO(AGENT_WORLD_1): Implement GPU-accelerated erosion [Difficulty: 9]
-// TODO(AGENT_WORLD_1): Implement erosion preview [Difficulty: 5]
-// TODO(AGENT_WORLD_1): Implement erosion undo [Difficulty: 4]
+void terrain_erosion_preview(struct TerrainSystem *system,
+                             ErosionSettings *settings);
+void terrain_erosion_undo(struct TerrainSystem *system);
 
 /* =================================================================================================
  *                                    TERRAIN API

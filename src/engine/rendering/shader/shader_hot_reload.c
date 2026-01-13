@@ -150,7 +150,8 @@ static bool reload_shader(ShaderEntry *entry) {
     entry->last_modified = current_time;
     entry->needs_reload = false;
     
-    // TODO: Destroy old shader program
+    // Destroy old shader program
+    destroy_shader_program(old_program);
     
     LOG_INFO("Shader reloaded: %s (program %u -> %u)", entry->name, old_program, new_program);
     
@@ -218,8 +219,51 @@ bool shader_hot_reload_init(void) {
     // Create file system monitoring
     g_hot_reload_system.monitor_queue = dispatch_queue_create("shader.hot_reload", DISPATCH_QUEUE_SERIAL);
     
-    // TODO: Set up directory monitoring for shader directories
-    // This would require setting up FSEventStream for shader directories
+    // Set up directory monitoring for shader directories
+    CFMutableArrayRef paths = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
+    
+    // Add common shader directories
+    CFStringRef shaders_path = CFStringCreateWithCString(kCFAllocatorDefault, "assets/shaders", kCFStringEncodingUTF8);
+    CFStringRef vertex_path = CFStringCreateWithCString(kCFAllocatorDefault, "assets/shaders/vertex", kCFStringEncodingUTF8);
+    CFStringRef fragment_path = CFStringCreateWithCString(kCFAllocatorDefault, "assets/shaders/fragment", kCFStringEncodingUTF8);
+    CFStringRef compute_path = CFStringCreateWithCString(kCFAllocatorDefault, "assets/shaders/compute", kCFStringEncodingUTF8);
+    
+    if (shaders_path && CFURLWriteToFileSystemRepresentation(CFURLCreateWithFileSystemPath(kCFAllocatorDefault, shaders_path, kCFURLPOSIXPathStyle, true), NULL, 0)) {
+        CFArrayAppendValue(paths, shaders_path);
+    }
+    if (vertex_path && CFURLWriteToFileSystemRepresentation(CFURLCreateWithFileSystemPath(kCFAllocatorDefault, vertex_path, kCFURLPOSIXPathStyle, true), NULL, 0)) {
+        CFArrayAppendValue(paths, vertex_path);
+    }
+    if (fragment_path && CFURLWriteToFileSystemRepresentation(CFURLCreateWithFileSystemPath(kCFAllocatorDefault, fragment_path, kCFURLPOSIXPathStyle, true), NULL, 0)) {
+        CFArrayAppendValue(paths, fragment_path);
+    }
+    if (compute_path && CFURLWriteToFileSystemRepresentation(CFURLCreateWithFileSystemPath(kCFAllocatorDefault, compute_path, kCFURLPOSIXPathStyle, true), NULL, 0)) {
+        CFArrayAppendValue(paths, compute_path);
+    }
+    
+    g_hot_reload_system.dir_paths = paths;
+    
+    // Create file system event stream
+    FSEventStreamContext context = {0, NULL, NULL, NULL, NULL};
+    g_hot_reload_system.event_stream = FSEventStreamCreate(kCFAllocatorDefault,
+                                                         file_system_callback,
+                                                         &context,
+                                                         g_hot_reload_system.dir_paths,
+                                                         kFSEventStreamEventIdSinceNow,
+                                                         0.5, // latency in seconds
+                                                         kFSEventStreamCreateFlagFileEvents
+    );
+    
+    if (g_hot_reload_system.event_stream) {
+        FSEventStreamSetDispatchQueue(g_hot_reload_system.event_stream, g_hot_reload_system.monitor_queue);
+        FSEventStreamStart(g_hot_reload_system.event_stream);
+    }
+    
+    // Cleanup
+    if (shaders_path) CFRelease(shaders_path);
+    if (vertex_path) CFRelease(vertex_path);
+    if (fragment_path) CFRelease(fragment_path);
+    if (compute_path) CFRelease(compute_path);
 #endif
     
     g_hot_reload_system.initialized = true;
@@ -249,7 +293,7 @@ void shader_hot_reload_shutdown(void) {
     
     // Clean up shader entries
     for (uint32_t i = 0; i < g_hot_reload_system.shader_count; i++) {
-        // TODO: Destroy shader programs
+        destroy_shader_program(g_hot_reload_system.shaders[i].program_id);
     }
     
     free(g_hot_reload_system.shaders);

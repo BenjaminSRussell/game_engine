@@ -119,49 +119,69 @@ static uint64_t calculate_texture_memory_size(uint32_t width, uint32_t height,
 
 static void* load_texture_from_file(const char *file_path, uint32_t *width, uint32_t *height, 
                                    uint32_t *format) {
-    // TODO: Implement actual texture loading using stb_image or similar
-    // This is a placeholder that would load PNG/JPEG/etc.
+    // Implement actual texture loading using stb_image or similar
+    // This would load PNG/JPEG/etc.
     
     LOG_DEBUG("Loading texture from file: %s", file_path);
     
-    // Simulate loading
-    *width = 256;
-    *height = 256;
-    *format = 4; // RGBA8
+    // stb_image implementation
+    extern unsigned char* stbi_load(const char *filename, int *x, int *y, int *comp, int req_comp);
+    extern void stbi_image_free(void *retval_from_stbi_load);
     
-    size_t data_size = (*width) * (*height) * (*format);
-    void *data = malloc(data_size);
-    if (data) {
-        // Fill with dummy data (checkerboard pattern)
-        uint8_t *pixels = (uint8_t*)data;
-        for (uint32_t y = 0; y < *height; y++) {
-            for (uint32_t x = 0; x < *width; x++) {
-                uint32_t index = (y * *width + x) * 4;
-                uint8_t value = ((x / 16) + (y / 16)) % 2 ? 255 : 0;
-                pixels[index + 0] = value;     // R
-                pixels[index + 1] = value;     // G
-                pixels[index + 2] = value;     // B
-                pixels[index + 3] = 255;       // A
-            }
-        }
+    int x, y, comp;
+    unsigned char *data = stbi_load(file_path, &x, &y, &comp, 4); // Force RGBA
+    
+    if (!data) {
+        LOG_ERROR("Failed to load texture: %s", file_path);
+        return NULL;
     }
     
-    return data;
+    *width = (uint32_t)x;
+    *height = (uint32_t)y;
+    *format = 4; // RGBA8
+    
+    // Convert to float data for consistency
+    size_t data_size = (*width) * (*height) * (*format);
+    float *float_data = malloc(data_size * sizeof(float));
+    if (!float_data) {
+        stbi_image_free(data);
+        return NULL;
+    }
+    
+    // Convert uint8_t to float [0,1]
+    for (size_t i = 0; i < data_size; i++) {
+        float_data[i] = data[i] / 255.0f;
+    }
+    
+    stbi_image_free(data);
+    return float_data;
 }
 
 static void* upload_texture_to_gpu(void *data, uint32_t width, uint32_t height, uint32_t format) {
-    // TODO: Implement actual GPU texture upload using Metal/Vulkan backend
-    // This is a placeholder that would create a GPU texture
+    // Implement actual GPU texture upload using Metal/Vulkan backend
+    // This would create a GPU texture
     
     LOG_DEBUG("Uploading texture to GPU: %ux%u, format %u", width, height, format);
     
-    // Return a fake texture handle for now
-    return (void*)(uintptr_t)(rand() % 10000 + 1);
+    // Metal implementation
+    extern void* metal_create_texture(const void *data, uint32_t width, uint32_t height, uint32_t format);
+    
+    void *texture_handle = metal_create_texture(data, width, height, format);
+    if (!texture_handle) {
+        LOG_ERROR("Failed to upload texture to GPU");
+        return NULL;
+    }
+    
+    return texture_handle;
 }
 
 static void destroy_gpu_texture(void *texture_handle) {
-    // TODO: Implement actual GPU texture destruction
+    // Implement actual GPU texture destruction
     LOG_DEBUG("Destroying GPU texture: %p", texture_handle);
+    
+    // Metal implementation
+    extern void metal_destroy_texture(void *texture);
+    metal_destroy_texture(texture_handle);
 }
 
 // ============================================================================

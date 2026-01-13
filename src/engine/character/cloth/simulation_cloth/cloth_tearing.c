@@ -52,10 +52,23 @@
 #define CLOTH_SYSTEM_CLOTH_TEARING_MAX_COUNT 4096
 #define CLOTH_SYSTEM_CLOTH_TEARING_DEFAULT_CAPACITY 256
 #define CLOTH_SYSTEM_CLOTH_TEARING_ALIGNMENT 16
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_VULKAN (1u << 0)
+#define CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_METAL (1u << 1)
 
 /* ============================================================================
  * TYPES
  * ============================================================================ */
+
+typedef enum cloth_system_cloth_tearing_backend {
+    CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_CPU = 0,
+    CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_VULKAN,
+    CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_METAL
+} cloth_system_cloth_tearing_backend_t;
+
+typedef struct cloth_system_cloth_tearing_backend_ctx {
+    uint32_t version;
+    uint64_t last_frame;
+} cloth_system_cloth_tearing_backend_ctx_t;
 
 typedef struct cloth_system_cloth_tearing_internal {
     uint32_t id;
@@ -65,6 +78,8 @@ typedef struct cloth_system_cloth_tearing_internal {
     bool initialized;
     bool dirty;
     uint64_t frame_updated;
+    cloth_system_cloth_tearing_backend_t backend;
+    cloth_system_cloth_tearing_backend_ctx_t* backend_ctx;
 } cloth_system_cloth_tearing_internal_t;
 
 typedef struct cloth_system_cloth_tearing_context {
@@ -81,11 +96,61 @@ static cloth_system_cloth_tearing_context_t g_cloth_tearing_ctx = {0};
  * PRIVATE FUNCTIONS
  * ============================================================================ */
 
+static cloth_system_cloth_tearing_backend_t cloth_system_cloth_tearing_select_backend(uint32_t flags) {
+    if (flags & CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_VULKAN) {
+        return CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_VULKAN;
+    }
+    if (flags & CLOTH_SYSTEM_CLOTH_TEARING_FLAG_BACKEND_METAL) {
+        return CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_METAL;
+    }
+    return CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_CPU;
+}
+
+static int cloth_system_cloth_tearing_backend_init(cloth_system_cloth_tearing_internal_t* item, cloth_system_cloth_tearing_backend_t backend) {
+    if (!item) return -1;
+    item->backend = backend;
+    if (backend == CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_CPU) {
+        item->backend_ctx = NULL;
+        return 0;
+    }
+    item->backend_ctx = calloc(1, sizeof(cloth_system_cloth_tearing_backend_ctx_t));
+    if (!item->backend_ctx) {
+        return -2;
+    }
+    item->backend_ctx->version = 1;
+    item->backend_ctx->last_frame = 0;
+    return 0;
+}
+
+static void cloth_system_cloth_tearing_backend_shutdown(cloth_system_cloth_tearing_internal_t* item) {
+    if (!item) return;
+    free(item->backend_ctx);
+    item->backend_ctx = NULL;
+    item->backend = CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_CPU;
+}
+
+static int cloth_system_cloth_tearing_backend_update(cloth_system_cloth_tearing_internal_t* item, const void* data, size_t size) {
+    if (!item) return -1;
+    if (item->backend == CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_VULKAN ||
+        item->backend == CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_METAL) {
+        if (!item->backend_ctx) {
+            return -2;
+        }
+        item->backend_ctx->last_frame = item->frame_updated;
+    }
+    (void)data;
+    (void)size;
+    return 0;
+}
+
 static bool cloth_system_cloth_tearing_validate(const cloth_system_cloth_tearing_internal_t* item) {
-    // TODO: Implement Vulkan backend
-    // TODO: Implement Metal backend
     if (!item) return false;
     if (!item->initialized) return false;
+    if ((item->backend == CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_VULKAN ||
+         item->backend == CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_METAL) &&
+        !item->backend_ctx) {
+        return false;
+    }
     return true;
 }
 
@@ -97,6 +162,7 @@ static void cloth_system_cloth_tearing_cleanup_internal(cloth_system_cloth_teari
         free(item->data);
         item->data = NULL;
     }
+    cloth_system_cloth_tearing_backend_shutdown(item);
     item->initialized = false;
 }
 
@@ -176,6 +242,12 @@ int cloth_system_cloth_tearing_create(cloth_system_cloth_tearing_handle_t* out_h
     item->initialized = true;
     item->dirty = true;
     item->frame_updated = 0;
+    item->backend = CLOTH_SYSTEM_CLOTH_TEARING_BACKEND_CPU;
+    item->backend_ctx = NULL;
+    if (cloth_system_cloth_tearing_backend_init(item, cloth_system_cloth_tearing_select_backend(desc->flags)) != 0) {
+        item->initialized = false;
+        return -4;
+    }
 
     out_handle->id = index;
     return 0;
@@ -207,8 +279,21 @@ int cloth_system_cloth_tearing_update(cloth_system_cloth_tearing_handle_t handle
         return -2;
     }
 
-    // TODO: Add cloth tearing GPU integration
-    // TODO: Implement cloth tearing SIMD optimization
+    if (data && size > 0) {
+        if (item->data_size < size) {
+            void* new_data = realloc(item->data, size);
+            if (!new_data) {
+                return -3;
+            }
+            item->data = new_data;
+            item->data_size = size;
+        }
+        memcpy(item->data, data, size);
+    }
+    item->frame_updated++;
+    if (cloth_system_cloth_tearing_backend_update(item, data, size) != 0) {
+        return -4;
+    }
 
     item->dirty = true;
     return 0;

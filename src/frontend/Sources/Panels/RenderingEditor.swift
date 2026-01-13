@@ -57,6 +57,7 @@ struct RenderingEditorView: View {
                     Text("General").tag(0)
                     Text("Post Process").tag(1)
                     Text("Shaders").tag(2)
+                    Text("Debug").tag(3)
                 }
                 .pickerStyle(.segmented)
                 .frame(width: 300)
@@ -72,8 +73,10 @@ struct RenderingEditorView: View {
                         GeneralRenderSettings(manager: manager)
                     } else if selectedTab == 1 {
                         PostProcessSettings(manager: manager)
-                    } else {
+                    } else if selectedTab == 2 {
                         ShaderList()
+                    } else {
+                        RenderDebuggerView()
                     }
                 }
                 .padding(DesignSystem.Spacing.md)
