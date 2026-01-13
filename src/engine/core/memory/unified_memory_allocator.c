@@ -324,6 +324,50 @@ void unified_memory_free(void *ptr, const char *file, int line,
   pthread_mutex_unlock(&g_allocator.global_mutex);
 }
 
+void* unified_memory_realloc(void* ptr, size_t new_size, MemoryFlags flags,
+                           const char* file, int line, const char* function) {
+    if (!ptr) return unified_memory_alloc(new_size, MEMORY_STRATEGY_DEFAULT, flags, file, line, function);
+    if (new_size == 0) {
+        unified_memory_free(ptr, file, line, function);
+        return NULL;
+    }
+
+    if (!g_allocator.initialized) return realloc(ptr, new_size);
+
+    // Simple alloc-copy-free implementation
+    // We need to know the size of the old allocation to copy.
+
+    size_t old_size = 0;
+    AllocationMetadata* metadata = NULL;
+
+    // Try to find metadata
+    // We lock global mutex to ensure consistency while querying
+    pthread_mutex_lock(&g_allocator.global_mutex);
+    metadata = find_allocation(ptr);
+    if (metadata) {
+        old_size = metadata->size;
+    }
+    pthread_mutex_unlock(&g_allocator.global_mutex);
+
+    if (!metadata) {
+        // Not tracked, just use realloc
+        return realloc(ptr, new_size);
+    }
+
+    // Allocate new block
+    void* new_ptr = unified_memory_alloc(new_size, metadata->strategy, flags, file, line, function);
+    if (!new_ptr) return NULL;
+
+    // Copy data
+    size_t copy_size = (old_size < new_size) ? old_size : new_size;
+    memcpy(new_ptr, ptr, copy_size);
+
+    // Free old block
+    unified_memory_free(ptr, file, line, function);
+
+    return new_ptr;
+}
+
 // ============================================================================
 // MEMORY POOL FUNCTIONS
 // ============================================================================

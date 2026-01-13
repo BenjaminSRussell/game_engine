@@ -14,6 +14,7 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
+#include <float.h>
 
 // Global widget ID counter
 static uint32_t g_widget_id_counter = 1;
@@ -108,12 +109,8 @@ static bool widget_propagate_event(Widget* widget, UIEvent* event) {
  * PUBLIC API
  * ============================================================================ */
 
-Widget* widget_create(const char* name) {
-    Widget* widget = memory_alloc(sizeof(Widget));
-    if (!widget) {
-        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate widget");
-        return NULL;
-    }
+bool widget_init(Widget* widget, const char* name) {
+    if (!widget) return false;
     
     memset(widget, 0, sizeof(Widget));
     
@@ -126,6 +123,8 @@ Widget* widget_create(const char* name) {
     widget->focusable = false;
     widget->draggable = false;
     
+    widget->max_size = (Vec2){FLT_MAX, FLT_MAX};
+
     // Default visual properties
     widget->background_color = (Vec4){0.0f, 0.0f, 0.0f, 0.0f};
     widget->border_color = (Vec4){0.0f, 0.0f, 0.0f, 1.0f};
@@ -140,6 +139,21 @@ Widget* widget_create(const char* name) {
     widget->needs_layout = true;
     widget->needs_redraw = true;
     
+    return true;
+}
+
+Widget* widget_create(const char* name) {
+    Widget* widget = memory_alloc(sizeof(Widget));
+    if (!widget) {
+        LOG_ERROR(LOG_CAT_GENERAL, "Failed to allocate widget");
+        return NULL;
+    }
+
+    if (!widget_init(widget, name)) {
+        memory_free(widget);
+        return NULL;
+    }
+
     LOG_INFO(LOG_CAT_GENERAL, "Created widget: %s (ID: %u)", name ? name : "unnamed", widget->id);
     return widget;
 }
@@ -268,6 +282,117 @@ void widget_set_size(Widget* widget, Vec2 size) {
     }
 }
 
+void widget_set_min_size(Widget* widget, Vec2 min_size) {
+    if (!widget) return;
+    widget->min_size = min_size;
+    widget_invalidate_layout(widget);
+}
+
+void widget_set_max_size(Widget* widget, Vec2 max_size) {
+    if (!widget) return;
+    widget->max_size = max_size;
+    widget_invalidate_layout(widget);
+}
+
+void widget_set_preferred_size(Widget* widget, Vec2 preferred_size) {
+    if (!widget) return;
+    widget->preferred_size = preferred_size;
+    widget_invalidate_layout(widget);
+}
+
+void widget_set_margins(Widget* widget, BoxEdges margins) {
+    if (!widget) return;
+    widget->margin = margins;
+    widget_invalidate_layout(widget);
+}
+
+void widget_set_padding(Widget* widget, BoxEdges padding) {
+    if (!widget) return;
+    widget->padding = padding;
+    widget_invalidate_layout(widget);
+}
+
+void widget_set_border(Widget* widget, BoxEdges border, float width) {
+    if (!widget) return;
+    widget->border = border;
+    widget->border_width = width;
+    widget->needs_redraw = true;
+}
+
+Vec2 widget_get_position(const Widget* widget) {
+    return widget ? widget->position : (Vec2){0,0};
+}
+
+Vec2 widget_get_size(const Widget* widget) {
+    return widget ? widget->size : (Vec2){0,0};
+}
+
+Vec2 widget_get_content_position(const Widget* widget) {
+    if (!widget) return (Vec2){0,0};
+    return (Vec2){
+        widget->position.x + widget->padding.left + widget->border.left,
+        widget->position.y + widget->padding.top + widget->border.top
+    };
+}
+
+Vec2 widget_get_content_size(const Widget* widget) {
+    if (!widget) return (Vec2){0,0};
+    float h_padding = widget->padding.left + widget->padding.right + widget->border.left + widget->border.right;
+    float v_padding = widget->padding.top + widget->padding.bottom + widget->border.top + widget->border.bottom;
+    return (Vec2){
+        fmaxf(0.0f, widget->size.x - h_padding),
+        fmaxf(0.0f, widget->size.y - v_padding)
+    };
+}
+
+Rect widget_get_bounds(const Widget* widget) {
+    if (!widget) return (Rect){0,0,0,0};
+    return (Rect){widget->position.x, widget->position.y, widget->size.x, widget->size.y};
+}
+
+Rect widget_get_content_bounds(const Widget* widget) {
+    if (!widget) return (Rect){0,0,0,0};
+    Vec2 pos = widget_get_content_position(widget);
+    Vec2 size = widget_get_content_size(widget);
+    return (Rect){pos.x, pos.y, size.x, size.y};
+}
+
+void widget_set_background_color(Widget* widget, Vec4 color) {
+    if (!widget) return;
+    widget->background_color = color;
+    widget->needs_redraw = true;
+}
+
+void widget_set_border_color(Widget* widget, Vec4 color) {
+    if (!widget) return;
+    widget->border_color = color;
+    widget->needs_redraw = true;
+}
+
+void widget_set_text_color(Widget* widget, Vec4 color) {
+    if (!widget) return;
+    widget->text_color = color;
+    widget->needs_redraw = true;
+}
+
+void widget_set_opacity(Widget* widget, float opacity) {
+    if (!widget) return;
+    widget->opacity = opacity;
+    widget->needs_redraw = true;
+}
+
+void widget_set_border_width(Widget* widget, float width) {
+    if (!widget) return;
+    widget->border_width = width;
+    widget->needs_redraw = true;
+}
+
+void widget_set_corner_radius(Widget* widget, float radius) {
+    if (!widget) return;
+    widget->corner_radius = radius;
+    widget->needs_redraw = true;
+}
+
 void widget_set_text(Widget* widget, const char* text) {
     if (!widget) return;
 
@@ -325,6 +450,65 @@ void widget_set_enabled(Widget* widget, bool enabled) {
         
         widget->dirty = true;
     }
+}
+
+void widget_set_state(Widget* widget, WidgetState state) {
+    if (!widget) return;
+    if (widget->state != state) {
+        widget->state = state;
+        widget->needs_redraw = true;
+
+        // Handle state changes
+        if (state == WIDGET_STATE_DISABLED) {
+            widget->enabled = false;
+        } else if (!widget->enabled && state != WIDGET_STATE_DISABLED) {
+            widget->enabled = true;
+        }
+    }
+}
+
+bool widget_is_visible(const Widget* widget) {
+    return widget ? widget->visible : false;
+}
+
+bool widget_is_enabled(const Widget* widget) {
+    return widget ? widget->enabled : false;
+}
+
+bool widget_is_focused(const Widget* widget) {
+    return widget ? widget->focused : false;
+}
+
+bool widget_is_hover(const Widget* widget) {
+    return widget ? (widget->state == WIDGET_STATE_HOVER) : false;
+}
+
+WidgetState widget_get_state(const Widget* widget) {
+    return widget ? widget->state : WIDGET_STATE_NORMAL;
+}
+
+void widget_set_focusable(Widget* widget, bool focusable) {
+    if (!widget) return;
+    widget->focusable = focusable;
+}
+
+void widget_set_focus_navigation(Widget* widget, UIFocusNavigation navigation) {
+    if (!widget) return;
+    widget->focus_navigation = navigation;
+}
+
+void widget_set_focus_chain(Widget* widget, Widget* next, Widget* prev) {
+    if (!widget) return;
+    widget->focus_next = next;
+    widget->focus_prev = prev;
+}
+
+Widget* widget_get_next_focusable(const Widget* widget) {
+    return widget ? widget->focus_next : NULL;
+}
+
+Widget* widget_get_prev_focusable(const Widget* widget) {
+    return widget ? widget->focus_prev : NULL;
 }
 
 void widget_set_focused(Widget* widget, bool focused) {
