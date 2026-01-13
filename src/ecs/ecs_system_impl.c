@@ -1,4 +1,11 @@
 /**
+ * @file ecs_system_impl.c
+ * @brief ECS Implementation
+ * @description Entity Component System implementation
+ * @date 2026-01-13
+ */
+
+/**
  * =================================================================================================
  *                              ECS IMPLEMENTATION
  *                              Agent: AGENT_ECS_1
