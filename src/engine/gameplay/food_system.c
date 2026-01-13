@@ -1,60 +1,19 @@
-#include "food_system.h"
-#include "core/common/memory/allocator.h"
+#include "gameplay/food_system.h"
+#include "core/memory/allocator.h"
 #include "core/logger.h"
 #include <string.h>
 #include <stdlib.h>
 
 #define MAX_FOOD_ITEMS 512
 #define MAX_FOOD_TYPES 64
-#define FOOD_NAME_LENGTH 32
-#define FOOD_DESCRIPTION_LENGTH 128
-#define MAX_NUTRIENTS 8
+#define MAX_PLAYERS 64
 
-typedef enum nutrient_type {
-    NUTRIENT_PROTEIN = 0,
-    NUTRIENT_CARBS,
-    NUTRIENT_FAT,
-    NUTRIENT_VITAMINS,
-    NUTRIENT_MINERALS,
-    NUTRIENT_WATER,
-    NUTRIENT_FIBER,
-    NUTRIENT_ANTIOXIDANTS
-} nutrient_type_t;
-
-typedef struct nutrient_value {
-    nutrient_type_t type;
-    float amount;
-    float quality;  // 0.0 to 1.0, affects effectiveness
-} nutrient_value_t;
-
-typedef struct food_item {
-    uint32_t item_id;
-    char name[FOOD_NAME_LENGTH];
-    char description[FOOD_DESCRIPTION_LENGTH];
-    
-    nutrient_value_t nutrients[MAX_NUTRIENTS];
-    uint32_t nutrient_count;
-    
-    float health_restore;
-    float stamina_restore;
-    float hunger_reduction;
-    float thirst_reduction;
-    
-    uint32_t preparation_time_ms;
-    bool requires_cooking;
-    bool is_perishable;
-    uint32_t spoil_time_ms;
-    
-    uint32_t buff_id;
-    float buff_duration;
-    
-    float weight;
-    uint32_t stack_size;
-    
-    bool enabled;
-} food_item_t;
+// Legacy logging macros
+#define log_info(fmt, ...) LOG_INFO(LOG_CAT_GAME, fmt, ##__VA_ARGS__)
+#define log_debug(fmt, ...) LOG_DEBUG(LOG_CAT_GAME, fmt, ##__VA_ARGS__)
 
 typedef struct character_nutrition {
+    uint32_t player_id;
     float nutrient_levels[MAX_NUTRIENTS];
     float last_meal_time;
     float total_calories_consumed;
@@ -90,6 +49,7 @@ static character_nutrition_t* get_player_nutrition(uint32_t player_id);
 static void apply_nutrients(uint32_t player_id, const food_item_t* food);
 static void update_nutrition_status(uint32_t player_id, float delta_time);
 static float calculate_nutrition_bonus(const character_nutrition_t* nutrition);
+static float calculate_calories(const food_item_t* food);
 
 bool food_system_init(void) {
     if (g_food_system.initialized) {

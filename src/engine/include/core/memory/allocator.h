@@ -89,5 +89,3 @@ size_t allocator_get_total(Allocator *alloc);
 
 #define ALLOCATE_SINGLE(alloc, type) \
     (type *)allocator_allocate((alloc), sizeof(type), _Alignof(type))
-
-#endif /* ALLOCATOR_H */

@@ -16,8 +16,44 @@ typedef enum nutrient_type {
     NUTRIENT_ANTIOXIDANTS
 } nutrient_type_t;
 
+#define FOOD_NAME_LENGTH 32
+#define FOOD_DESCRIPTION_LENGTH 128
+#define MAX_NUTRIENTS 8
+
+typedef struct nutrient_value {
+    nutrient_type_t type;
+    float amount;
+    float quality;  // 0.0 to 1.0, affects effectiveness
+} nutrient_value_t;
+
+typedef struct food_item {
+    uint32_t item_id;
+    char name[FOOD_NAME_LENGTH];
+    char description[FOOD_DESCRIPTION_LENGTH];
+
+    nutrient_value_t nutrients[MAX_NUTRIENTS];
+    uint32_t nutrient_count;
+
+    float health_restore;
+    float stamina_restore;
+    float hunger_reduction;
+    float thirst_reduction;
+
+    uint32_t preparation_time_ms;
+    bool requires_cooking;
+    bool is_perishable;
+    uint32_t spoil_time_ms;
+
+    uint32_t buff_id;
+    float buff_duration;
+
+    float weight;
+    uint32_t stack_size;
+
+    bool enabled;
+} food_item_t;
+
 // Forward declarations for opaque types
-typedef struct food_item food_item_t;
 typedef struct character_nutrition character_nutrition_t;
 
 // Initialize the food system
