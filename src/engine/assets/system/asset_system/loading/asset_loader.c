@@ -1,6 +1,7 @@
-#include "core/logger.h"
-#include "core/memory.h"
-#include "core/sync/thread_pool.h"
+#include <core/logger.h>
+#include <core/logging_system.h>
+#include <core/memory.h>
+#include <core/sync/thread_pool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
