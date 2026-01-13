@@ -1,20 +1,20 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef CORE_CONFIG_H
+#define CORE_CONFIG_H
 
 #include "engine/include/common.h"
 
-// Unified game configuration structure
+// Configuration settings for the game
 typedef struct GameConfig {
   // Rendering
-  int window_width;
-  int window_height;
+  u32 window_width;
+  u32 window_height;
   bool vsync;
-  int max_fps;
-  float fov;
+  u32 max_fps;
+  f32 fov;
   bool fullscreen;
 
   // Graphics
-  int render_distance;
+  u32 render_distance;
   bool fancy_graphics;
   bool smooth_lighting;
   bool ambient_occlusion;
@@ -28,35 +28,44 @@ typedef struct GameConfig {
   bool multithreading;
 
   // World
-  u64 world_seed;
+  u32 world_seed;
   bool generate_structures;
   bool generate_caves;
   bool generate_ores;
 
   // Audio
-  float master_volume;
-  float music_volume;
-  float sfx_volume;
+  f32 master_volume;
+  f32 music_volume;
+  f32 sfx_volume;
 
   // Controls
-  float mouse_sensitivity;
-  float mouse_smoothing;
+  f32 mouse_sensitivity;
+  f32 mouse_smoothing;
   bool invert_mouse_y;
   bool toggle_sprint;
   bool toggle_crouch;
-  float movement_speed;
-  float sprint_multiplier;
-  float crouch_multiplier;
-  float jump_force;
-  float fly_speed;
-  float air_control;
-  float gravity;
-  float ground_check_distance;
-  float reach_distance_survival;
-  float reach_distance_creative;
-  float controller_deadzone;
-  float controller_sensitivity;
-  float controller_vibration;
+  f32 movement_speed;
+  f32 sprint_multiplier;
+  f32 crouch_multiplier;
+  f32 jump_force;
+  f32 fly_speed;
+  f32 air_control;
+  f32 gravity;
+  f32 ground_check_distance;
+  f32 reach_distance_survival;
+  f32 reach_distance_creative;
+  f32 controller_deadzone;
+  f32 controller_sensitivity;
+  f32 controller_vibration;
 } GameConfig;
 
-#endif // CONFIG_H
+// Configuration functions
+void config_set_defaults(GameConfig *config);
+void config_validate(GameConfig *config);
+void config_load(GameConfig *config, const char *filename);
+void config_save(const GameConfig *config, const char *filename);
+bool config_reload_if_modified(GameConfig *config, const char *filename,
+                               u64 *last_modified);
+void config_merge(GameConfig *base, const GameConfig *overrides);
+
+#endif // CORE_CONFIG_H

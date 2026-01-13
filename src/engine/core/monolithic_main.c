@@ -14,6 +14,8 @@
 #ifndef _WIN32
 #include <unistd.h>
 #endif
+#include "engine/include/common.h"
+#include "engine/include/core/logger.h"
 #include <audio/audio_system.h>
 #include <block/block.h>
 #include <block/block_states.h>
@@ -23,9 +25,7 @@
 #include <chunk/chunk_buffers.h>
 #include <combat/combat.h>
 #include <combat/combat_animations.h>
-#include "engine/include/common.h"
-#include <config/config.h>
-#include "engine/include/core/logger.h"
+#include <core/config.h>
 #include <core/memory/pool.h>
 #include <core/resource/vfs/vfs.h>
 #include <core/threading/job.h>
@@ -747,9 +747,10 @@ static void crash_handler(int signal) {
            ctime(&now), signal, g_crash_reporter.crash_count,
            g_game.in_game ? "In Game" : "In Menu", g_game.window_width,
            g_game.window_height,
-           g_game.renderer_type == RENDERER_TYPE_VOXEL   ? "Vulkan"
-           // No OpenGL renderer type defined, using fallback
-           : "Unknown",
+           g_game.renderer_type == RENDERER_TYPE_VOXEL
+               ? "Vulkan"
+               // No OpenGL renderer type defined, using fallback
+               : "Unknown",
            0.0f // Would need actual memory usage calculation
   );
 
@@ -1074,9 +1075,10 @@ static void renderer_debug_end_frame(f32 frame_time) {
            g_renderer_debug.max_frame_time * 1000.0f,
            g_renderer_debug.draw_calls, g_renderer_debug.triangles_rendered,
            (unsigned long long)g_renderer_debug.vertices_processed,
-           g_game.renderer_type == RENDERER_TYPE_VOXEL   ? "Vulkan"
-           // No OpenGL renderer type defined, using fallback
-           : "Unknown",
+           g_game.renderer_type == RENDERER_TYPE_VOXEL
+               ? "Vulkan"
+               // No OpenGL renderer type defined, using fallback
+               : "Unknown",
            g_game.window_width, g_game.window_height);
 }
 
@@ -1851,14 +1853,12 @@ static InitResult init_renderer(void) {
                         "Failed to create renderer instance"};
   }
 
-  RendererInitParams params = {
-      .window = g_game.window,
-      .width = g_game.window_width,
-      .height = g_game.window_height,
-      .type = RENDERER_TYPE_VOXEL,
-      .backend = backend,
-      .config = &g_game.config
-  };
+  RendererInitParams params = {.window = g_game.window,
+                               .width = g_game.window_width,
+                               .height = g_game.window_height,
+                               .type = RENDERER_TYPE_VOXEL,
+                               .backend = backend,
+                               .config = &g_game.config};
 
   if (!g_game.renderer->init(g_game.renderer, &params)) {
     return (InitResult){false, INIT_ERROR_RENDERER,
@@ -1874,13 +1874,15 @@ static InitResult init_renderer(void) {
 static InitResult init_vulkan_graphics_pipeline(void) {
   // Vulkan-specific - not used on macOS
   LOG_INFO("Skipping Vulkan graphics pipeline on Metal backend");
-  return (InitResult){true, INIT_SUCCESS, "Graphics pipeline skipped (Metal backend)"};
+  return (InitResult){true, INIT_SUCCESS,
+                      "Graphics pipeline skipped (Metal backend)"};
 }
 
 static InitResult init_vulkan_framebuffers(void) {
   // Vulkan-specific - not used on macOS
   LOG_INFO("Skipping Vulkan framebuffers on Metal backend");
-  return (InitResult){true, INIT_SUCCESS, "Framebuffers skipped (Metal backend)"};
+  return (InitResult){true, INIT_SUCCESS,
+                      "Framebuffers skipped (Metal backend)"};
 }
 
 static InitResult init_ray_tracing(void) {
@@ -1889,7 +1891,8 @@ static InitResult init_ray_tracing(void) {
     LOG_WARN("Ray tracing not supported on Metal backend, disabling");
     g_game.config.ray_tracing = false;
   }
-  return (InitResult){true, INIT_SUCCESS, "Ray tracing initialization complete"};
+  return (InitResult){true, INIT_SUCCESS,
+                      "Ray tracing initialization complete"};
 }
 
 static InitResult init_renderer_backend(void) {
@@ -1903,7 +1906,8 @@ static InitResult init_renderer_backend(void) {
   return (InitResult){true, INIT_SUCCESS, "Metal renderer ready"};
 #else
   LOG_WARN("Vulkan not built - renderer disabled");
-  return (InitResult){true, INIT_SUCCESS, "Renderer disabled (no Vulkan build)"};
+  return (InitResult){true, INIT_SUCCESS,
+                      "Renderer disabled (no Vulkan build)"};
 #endif
 #endif
 }
@@ -2837,8 +2841,8 @@ static void game_update(void) {
       plant_vfx_update(&g_game.plant_vfx, g_game.delta_time);
 
       // Update renderer ambient light from weather/time-of-day
-      // Note: This is Vulkan-specific, should be abstracted through renderer interface
-      // vulkan_set_ambient_light(
+      // Note: This is Vulkan-specific, should be abstracted through renderer
+      // interface vulkan_set_ambient_light(
       //     &g_game.renderer,
       //     weather_get_ambient_light_level(&g_game.weather_system));
 
@@ -2881,8 +2885,7 @@ static void game_update(void) {
       if (g_game.player_system.player) {
         furnace_update(&g_game.furnace_state,
                        &g_game.player_system.player->inventory,
-                       &g_game.item_registry,
-                       g_game.delta_time);
+                       &g_game.item_registry, g_game.delta_time);
       }
 
       // Update processing machine

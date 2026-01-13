@@ -146,11 +146,13 @@ void config_set_defaults(GameConfig *config) {
 
 static inline u32 clamp_u32(u32 value, u32 min, u32 max, const char *name) {
   if (value < min) {
-    LOG_WARN("Config %s=%u below minimum %u, clamping", name, value, min);
+    LOG_WARN(LOG_CAT_GENERAL, "Config %s=%u below minimum %u, clamping", name,
+             value, min);
     return min;
   }
   if (value > max) {
-    LOG_WARN("Config %s=%u above maximum %u, clamping", name, value, max);
+    LOG_WARN(LOG_CAT_GENERAL, "Config %s=%u above maximum %u, clamping", name,
+             value, max);
     return max;
   }
   return value;
@@ -158,11 +160,13 @@ static inline u32 clamp_u32(u32 value, u32 min, u32 max, const char *name) {
 
 static inline f32 clamp_f32(f32 value, f32 min, f32 max, const char *name) {
   if (value < min) {
-    LOG_WARN("Config %s=%.2f below minimum %.2f, clamping", name, value, min);
+    LOG_WARN(LOG_CAT_GENERAL, "Config %s=%.2f below minimum %.2f, clamping",
+             name, value, min);
     return min;
   }
   if (value > max) {
-    LOG_WARN("Config %s=%.2f above maximum %.2f, clamping", name, value, max);
+    LOG_WARN(LOG_CAT_GENERAL, "Config %s=%.2f above maximum %.2f, clamping",
+             name, value, max);
     return max;
   }
   return value;
@@ -363,7 +367,7 @@ void config_save(const GameConfig *config, const char *filename) {
           config->mesh_generation_threads);
   fprintf(file, "multithreading=%s\n",
           config->multithreading ? "true" : "false");
-  fprintf(file, "world_seed=%u\n", config->world_seed);
+  fprintf(file, "world_seed=%llu\n", config->world_seed);
   fprintf(file, "generate_structures=%s\n",
           config->generate_structures ? "true" : "false");
   fprintf(file, "generate_caves=%s\n",
