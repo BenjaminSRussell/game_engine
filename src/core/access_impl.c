@@ -1,4 +1,11 @@
 /**
+ * @file access_impl.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
+/**
  * ACCESSIBILITY FEATURES
  * Phase 3 Expansion
  * Text-to-speech, colorblind modes, UI scaling
