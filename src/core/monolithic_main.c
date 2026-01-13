@@ -1,16 +1,22 @@
-// Desktop entry point: initializes systems, windowing, and the main loop.
-// Roadmap: docs/CORE_MAIN_ROADMAP.md.
-// Error handling: IMPLEMENTED (rollback on failure).
-// Error dialogs: IMPLEMENTED (user-friendly messages, headless fallback).
-// Graceful shutdown: IMPLEMENTED (progress indicators for saving).
-// Initialization progress: IMPLEMENTED (progress bar/callback system).
-// Memory leak detection: IMPLEMENTED (leak detection and cleanup verification).
-// Unit tests: IMPLEMENTED (comprehensive initialization sequence tests).
-// Configuration validation: IMPLEMENTED (detailed error messages).
-// Platform backends: IMPLEMENTED (iOS, Android, Web, Desktop support).
-// Crash reporting: IMPLEMENTED (automatic error logging to file).
-// Hot-reload config: IMPLEMENTED (configuration files without restart).
-// workflow.
+/*
+ * monolithic_main.c
+ * Desktop entry point: initializes systems, windowing, and the main loop
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Roadmap: docs/CORE_MAIN_ROADMAP.md
+ * Error handling: IMPLEMENTED (rollback on failure)
+ * Error dialogs: IMPLEMENTED (user-friendly messages, headless fallback)
+ * Graceful shutdown: IMPLEMENTED (progress indicators for saving)
+ * Initialization progress: IMPLEMENTED (progress bar/callback system)
+ * Memory leak detection: IMPLEMENTED (leak detection and cleanup verification)
+ * Unit tests: IMPLEMENTED (comprehensive initialization sequence tests)
+ * Configuration validation: IMPLEMENTED (detailed error messages)
+ * Platform backends: IMPLEMENTED (iOS, Android, Web, Desktop support)
+ * Crash reporting: IMPLEMENTED (automatic error logging to file)
+ * Hot-reload config: IMPLEMENTED (configuration files without restart)
+ */
 #ifndef _WIN32
 #include <unistd.h>
 #endif
