@@ -1,3 +1,10 @@
+/**
+ * @file engine_stubs.c
+ * @brief Frontend Implementation
+ * @description Frontend system implementation
+ * @date 2026-01-13
+ */
+
 // Engine stub implementations for frontend linking
 // These provide minimal implementations to allow the frontend to build and test
 
