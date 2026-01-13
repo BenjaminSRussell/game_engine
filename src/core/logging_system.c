@@ -1,3 +1,10 @@
+/**
+ * @file logging_system.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 // src/engine/core/logging_system.c
 //
 // Purpose: Unified logging system for the engine core
