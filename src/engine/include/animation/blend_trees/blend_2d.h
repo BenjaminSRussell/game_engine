@@ -10,10 +10,19 @@
 extern "C" {
 #endif
 
+typedef struct BlendSpace2D BlendSpace2D;
+struct Pose;
+struct AnimationClip;
+
 /**
- * Initialize 2D blend system.
+ * Create a new 2D blend space.
  */
-void blend_2d_init(void);
+BlendSpace2D* blend_2d_create(void);
+
+/**
+ * Destroy a 2D blend space.
+ */
+void blend_2d_destroy(BlendSpace2D* blend);
 
 /**
  * Add animation clip at a specific 2D position in the blend space.
@@ -23,17 +32,18 @@ void blend_2d_init(void);
  * @param x     X position in blend space (e.g., movement speed)
  * @param y     Y position in blend space (e.g., direction)
  */
-void blend_2d_add_clip(void *blend, void *clip, float x, float y);
+void blend_2d_add_clip(BlendSpace2D *blend, struct AnimationClip *clip, float x, float y);
 
 /**
  * Evaluate 2D blend and output the resulting pose.
  * 
  * @param blend       The blend space handle
+ * @param time        The current playback time
  * @param param_x     Current X parameter value
  * @param param_y     Current Y parameter value
  * @param output_pose Output pose buffer
  */
-void blend_2d_evaluate(void *blend, float param_x, float param_y, void *output_pose);
+void blend_2d_evaluate(BlendSpace2D *blend, float time, float param_x, float param_y, struct Pose *output_pose);
 
 #ifdef __cplusplus
 }
