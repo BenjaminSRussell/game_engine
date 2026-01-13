@@ -29,6 +29,22 @@ light_t spot_light_create(simd_float3 position,
                          float outer_cone,
                          bool cast_shadows);
 
+/**
+ * Set IES profile for the spot light.
+ *
+ * @param light Pointer to the light
+ * @param ies_texture_id ID of the IES profile texture
+ */
+void spot_light_set_ies_profile(light_t* light, uint32_t ies_texture_id);
+
+/**
+ * Set source radius for soft shadows/specular.
+ *
+ * @param light Pointer to the light
+ * @param source_radius Radius of the light source geometry
+ */
+void spot_light_set_source_radius(light_t* light, float source_radius);
+
 #ifdef __cplusplus
 }
 #endif

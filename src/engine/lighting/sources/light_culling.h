@@ -26,11 +26,9 @@ typedef struct camera {
     float far;
 } camera_t;
 
-typedef enum light_type {
-    LIGHT_TYPE_DIRECTIONAL = 0,
-    LIGHT_TYPE_POINT = 1,
-    LIGHT_TYPE_SPOT = 2,
-} light_type_t;
+#include "lighting/light_types.h"
+
+typedef LightType light_type_t;
 
 typedef struct light {
     simd_float3 position;
@@ -43,6 +41,11 @@ typedef struct light {
     light_type_t type;
     bool cast_shadows;
     uint32_t shadow_map_index;
+
+    // IES / Soft Shadows extended data
+    uint32_t ies_texture_id;
+    float source_radius;
+    float source_length;
 } light_t;
 
 typedef struct light_system {
