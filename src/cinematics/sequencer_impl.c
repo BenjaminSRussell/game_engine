@@ -1,7 +1,8 @@
 /**
- * CINEMATIC SEQUENCER
- * AGENT_CINEMA_1 - Wave 5
- * Timeline-based cutscene editor and playback
+ * @file sequencer_impl.c
+ * @brief Cinematic Sequencer
+ * @description AGENT_CINEMA_1 - Wave 5: Timeline-based cutscene editor and playback
+ * @date 2026-01-13
  */
 
 #include <stdbool.h>
