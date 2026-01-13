@@ -202,6 +202,11 @@ void player_attack(PlayerSystem *system, CombatActionType type) {
       combat->hit_stun_timer = 0.2f;
       combat->last_damage_amount = base_damage;
       combat->combo_score += (u32)(base_damage * 10.0f);
+
+      // Play hit sound
+      if (system->audio_system) {
+        audio_play_sound(system->audio_system, SOUND_SWORD_HIT, hit_pos, 0.8f, SOUND_CATEGORY_PLAYER);
+      }
     }
   }
 
@@ -218,7 +223,17 @@ void player_attack(PlayerSystem *system, CombatActionType type) {
     g_combat_stats.crits++;
   }
 
-  player_combat_emit_sound(system, SOUND_SWORD_SWING, "player_attack", 0.7f);
+  // Choose sound based on weapon
+  SoundType attack_sound = SOUND_SWORD_SWING;
+  if (weapon == WEAPON_TYPE_BOW || weapon == WEAPON_TYPE_CROSSBOW) {
+    attack_sound = SOUND_BOW_FIRE;
+  } else if (weapon == WEAPON_TYPE_PICKAXE) {
+    // Maybe same as sword for now, or could use tool swing if available
+    attack_sound = SOUND_SWORD_SWING;
+  }
+
+  player_combat_emit_sound(system, attack_sound, "player_attack", 0.7f);
+
   if (g_combat_callbacks.on_attack) {
     g_combat_callbacks.on_attack(weapon, is_critical,
                                  g_combat_callbacks.user_data);

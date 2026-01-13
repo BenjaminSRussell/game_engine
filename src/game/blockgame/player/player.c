@@ -2147,7 +2147,13 @@ void player_damage_detailed(PlayerSystem *system, f32 damage, DamageType type) {
     if (health->health < 0) health->health = 0;
     
     // Play hurt sound
-    // if (system->audio_system) audio_play_sound(...)
+    if (system->audio_system) {
+        TransformComponent *transform = (TransformComponent *)ecs_get_component(
+            (World *)system->ecs_world, (Entity){system->player->entity_id, 0},
+            TRANSFORM_COMPONENT_ID);
+        Vec3 pos = transform ? transform->position : vec3_zero();
+        audio_play_sound(system->audio_system, SOUND_PLAYER_HURT, pos, 1.0f, SOUND_CATEGORY_PLAYER);
+    }
 }
 
 static void internal_apply_damage(PlayerComponent *p, f32 amount, void *ecs_world) {
