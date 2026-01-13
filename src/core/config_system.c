@@ -1,3 +1,10 @@
+/**
+ * @file config_system.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 /*
  * config_system.c
  * Configuration system implementation
