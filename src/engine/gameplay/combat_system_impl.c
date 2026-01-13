@@ -6,13 +6,20 @@
 #include "include/gameplay/combat/damage.h"
 #include "include/gameplay/combat/hitbox.h"
 #include "include/gameplay/combat/projectile.h"
+#include "include/ecs/components/transform.h"
+#include "include/gameplay/combat/combat_components.h"
+#include "combat/status_effects.h"
 #include <stdlib.h>
+#include <string.h>
 
 static World *combat_world = NULL;
+static Query *combo_query = NULL;
+static Query *area_query = NULL;
+static Query *target_query = NULL;
 
 bool combat_system_init(World *world) {
   if (!world) {
-    LOG_ERROR("Combat system: NULL world provided");
+    LOGE("Combat system: NULL world provided");
     return false;
   }
 
@@ -20,29 +27,50 @@ bool combat_system_init(World *world) {
 
   // Initialize subsystems
   if (!hitbox_system_init(world)) {
-    LOG_ERROR("Failed to initialize hitbox system");
+    LOGE("Failed to initialize hitbox system");
     return false;
   }
 
   damage_system_init(1024);
 
   if (!projectile_system_init(world)) {
-    LOG_ERROR("Failed to initialize projectile system");
+    LOGE("Failed to initialize projectile system");
     damage_system_shutdown();
     hitbox_system_shutdown();
     return false;
   }
 
-  LOG_INFO("Combat system initialized successfully");
+  status_sys_init();
+
+  // Initialize queries
+  combo_query = ecs_query_create(world, &ECS_QUERY_ALL(COMBO_COMPONENT_ID));
+  area_query = ecs_query_create(world, &ECS_QUERY_ALL(AREA_EFFECT_COMPONENT_ID, TRANSFORM_COMPONENT_ID));
+  target_query = ecs_query_create(world, &ECS_QUERY_ALL(TRANSFORM_COMPONENT_ID)); // Basic query for targets
+
+  LOGI("Combat system initialized successfully");
   return true;
 }
 
 void combat_system_shutdown(void) {
+  if (combo_query) {
+      ecs_query_destroy(combat_world, combo_query);
+      combo_query = NULL;
+  }
+  if (area_query) {
+      ecs_query_destroy(combat_world, area_query);
+      area_query = NULL;
+  }
+  if (target_query) {
+      ecs_query_destroy(combat_world, target_query);
+      target_query = NULL;
+  }
+
+  status_sys_shutdown();
   projectile_system_shutdown();
   damage_system_shutdown();
   hitbox_system_shutdown();
   combat_world = NULL;
-  LOG_INFO("Combat system shutdown");
+  LOGI("Combat system shutdown");
 }
 
 void combat_system_update(World *world, f32 delta_time) {
@@ -53,10 +81,11 @@ void combat_system_update(World *world, f32 delta_time) {
   combat_system_update_hitboxes(world, delta_time);
   projectile_system_update(world, delta_time);
   damage_system_process_events(world, delta_time);
+  status_sys_update(delta_time);
   
   // Update enhanced combat systems
   combat_process_combos(world, delta_time);
-  combat_update_status_effects(world, delta_time);
+  // combat_update_status_effects(world, delta_time); // Removed, using status_sys_update
   combat_process_area_effects(world, delta_time);
 }
 
@@ -72,7 +101,7 @@ Entity combat_create_melee_attack(World *world, Entity attacker, Vec3 position,
   Entity hitbox_entity =
       hitbox_create_temporary(world, position, direction, range, 0.5f);
   if (hitbox_entity.id == 0) {
-    LOG_ERROR("Failed to create melee hitbox");
+    LOGE("Failed to create melee hitbox");
     return INVALID_ENTITY;
   }
 
@@ -95,7 +124,7 @@ Entity combat_fire_projectile(World *world, Entity source, Vec3 position,
   Entity projectile =
       projectile_spawn(world, position, direction, speed, source, damage);
   if (projectile.id == 0) {
-    LOG_ERROR("Failed to create projectile");
+    LOGE("Failed to create projectile");
     return INVALID_ENTITY;
   }
 
@@ -118,14 +147,14 @@ Entity combat_create_ability_attack(World *world, Entity caster, Vec3 position,
   // Create ability effect entity
   Entity ability_entity = ecs_create_entity(world);
   if (ability_entity.id == 0) {
-    LOG_ERROR("Failed to create ability entity");
+    LOGE("Failed to create ability entity");
     return INVALID_ENTITY;
   }
 
   // Add transform component
   TransformComponent transform = {
       .position = position,
-      .rotation = quat_from_direction(direction),
+      .rotation = quat_identity(), // Stub
       .scale = (Vec3){1.0f, 1.0f, 1.0f}
   };
   ecs_add_component(world, ability_entity, TRANSFORM_COMPONENT_ID, &transform);
@@ -143,7 +172,7 @@ Entity combat_create_ability_attack(World *world, Entity caster, Vec3 position,
   // Add damage component
   DamageComponent dmg = {
       .base_damage = damage,
-      .damage_type = DAMAGE_TYPE_ABILITY,
+      .damage_type = DAMAGE_TYPE_MAGIC,
       .source_entity = caster,
       .damage_flags = DAMAGE_FLAG_MAGICAL | DAMAGE_FLAG_AREA_OF_EFFECT
   };
@@ -157,35 +186,10 @@ bool combat_apply_status_effect(World *world, Entity target, Entity source,
   if (!world)
     return false;
 
-  // Check if target has status component
-  StatusComponent* status = ecs_get_component(world, target, STATUS_COMPONENT_ID);
-  if (!status) {
-    // Create status component
-    StatusComponent new_status = {0};
-    status = &new_status;
-  }
+  // Use the unified status effects system
+  status_sys_apply_effect_with_source(target.id, (StatusEffectType)status_id, duration, 1.0f, source.id);
 
-  // Add new status effect
-  if (status->effect_count < MAX_STATUS_EFFECTS) {
-    StatusEffect* effect = &status->effects[status->effect_count];
-    effect->status_id = status_id;
-    effect->source_entity = source;
-    effect->duration = duration;
-    effect->remaining_time = duration;
-    effect->stack_count = 1;
-    effect->is_active = true;
-    
-    status->effect_count++;
-    
-    // Apply status component if it was newly created
-    if (status == &new_status) {
-      ecs_add_component(world, target, STATUS_COMPONENT_ID, &new_status);
-    }
-    
-    return true;
-  }
-
-  return false;
+  return true;
 }
 
 void combat_create_area_effect(World *world, Vec3 center, f32 radius,
@@ -196,7 +200,7 @@ void combat_create_area_effect(World *world, Vec3 center, f32 radius,
   // Create area effect entity
   Entity area_entity = ecs_create_entity(world);
   if (area_entity.id == 0) {
-    LOG_ERROR("Failed to create area effect entity");
+    LOGE("Failed to create area effect entity");
     return;
   }
 
@@ -234,11 +238,13 @@ bool combat_start_combo(World *world, Entity attacker, uint32_t combo_id) {
   if (!world)
     return false;
 
+  ComboComponent new_combo_storage = {0};
   // Get or create combo component
   ComboComponent* combo = ecs_get_component(world, attacker, COMBO_COMPONENT_ID);
+  bool is_new = false;
   if (!combo) {
-    ComboComponent new_combo = {0};
-    combo = &new_combo;
+    combo = &new_combo_storage;
+    is_new = true;
   }
 
   combo->current_combo = combo_id;
@@ -246,8 +252,8 @@ bool combat_start_combo(World *world, Entity attacker, uint32_t combo_id) {
   combo->combo_count = 0;
   combo->is_active = true;
 
-  if (combo == &new_combo) {
-    ecs_add_component(world, attacker, &new_combo);
+  if (is_new) {
+    ecs_add_component(world, attacker, COMBO_COMPONENT_ID, &new_combo_storage);
   }
 
   return true;
@@ -271,13 +277,16 @@ bool combat_advance_combo(World *world, Entity attacker, uint32_t attack_id) {
 }
 
 void combat_process_combos(World *world, f32 delta_time) {
-  if (!world)
+  if (!world || !combo_query)
     return;
 
-  // Iterate through all entities with combo components
-  Entity entity = {0};
-  while (ecs_iterate_entities(world, &entity)) {
-    ComboComponent* combo = ecs_get_component(world, entity, COMBO_COMPONENT_ID);
+  ecs_query_reset(combo_query);
+  Entity entity;
+  ComboComponent* combo;
+  void* components[1];
+
+  while (ecs_query_next(combo_query, &entity, components)) {
+    combo = (ComboComponent*)components[0];
     if (!combo || !combo->is_active)
       continue;
 
@@ -293,50 +302,22 @@ void combat_process_combos(World *world, f32 delta_time) {
 }
 
 void combat_update_status_effects(World *world, f32 delta_time) {
-  if (!world)
-    return;
-
-  // Iterate through all entities with status components
-  Entity entity = {0};
-  while (ecs_iterate_entities(world, &entity)) {
-    StatusComponent* status = ecs_get_component(world, entity, STATUS_COMPONENT_ID);
-    if (!status)
-      continue;
-
-    // Update all status effects
-    for (uint32_t i = 0; i < status->effect_count; i++) {
-      StatusEffect* effect = &status->effects[i];
-      if (!effect->is_active)
-        continue;
-
-      effect->remaining_time -= delta_time;
-      
-      // Apply status effect logic
-      if (effect->remaining_time <= 0.0f) {
-        effect->is_active = false;
-        // Remove expired effect
-        memmove(&status->effects[i], &status->effects[i + 1],
-                (status->effect_count - i - 1) * sizeof(StatusEffect));
-        status->effect_count--;
-        i--;  // Adjust index after removal
-      }
-    }
-  }
+    // Deprecated in favor of status_sys_update
 }
 
 void combat_process_area_effects(World *world, f32 delta_time) {
-  if (!world)
+  if (!world || !area_query || !target_query)
     return;
 
-  // Iterate through all area effect entities
-  Entity entity = {0};
-  while (ecs_iterate_entities(world, &entity)) {
-    AreaEffectComponent* area = ecs_get_component(world, entity, AREA_EFFECT_COMPONENT_ID);
-    if (!area)
-      continue;
+  ecs_query_reset(area_query);
+  Entity entity;
+  void* area_components[2];
 
-    TransformComponent* transform = ecs_get_component(world, entity, TRANSFORM_COMPONENT_ID);
-    if (!transform)
+  while (ecs_query_next(area_query, &entity, area_components)) {
+    AreaEffectComponent* area = (AreaEffectComponent*)area_components[0];
+    TransformComponent* transform = (TransformComponent*)area_components[1];
+
+    if (!area || !transform)
       continue;
 
     // Update area effect duration
@@ -344,27 +325,26 @@ void combat_process_area_effects(World *world, f32 delta_time) {
     
     if (area->duration > 0.0f) {
       // Apply damage to entities in area
-      Entity target = {0};
-      while (ecs_iterate_entities(world, &target)) {
+      ecs_query_reset(target_query);
+      Entity target;
+      void* target_components[1];
+
+      while (ecs_query_next(target_query, &target, target_components)) {
         if (target.id == entity.id || target.id == area->source_entity.id)
           continue;
 
-        TransformComponent* target_transform = ecs_get_component(world, target, TRANSFORM_COMPONENT_ID);
-        if (!target_transform)
-          continue;
+        TransformComponent* target_transform = (TransformComponent*)target_components[0];
 
         // Check if target is within area
         Vec3 distance = vec3_sub(target_transform->position, transform->position);
         if (vec3_length(distance) <= area->radius) {
           // Apply damage
-          DamageEvent damage_event = {
-              .target = target,
-              .source = area->source_entity,
-              .damage = area->damage_per_second * delta_time,
-              .damage_type = area->damage_type,
-              .flags = DAMAGE_FLAG_AREA_OF_EFFECT
-          };
-          damage_system_queue_event(world, &damage_event);
+          DamageEvent *damage_event = damage_event_create(area->source_entity, target,
+                                                        area->damage_per_second * delta_time,
+                                                        area->damage_type);
+          if (damage_event) {
+              damage_event->flags = DAMAGE_FLAG_AREA_OF_EFFECT;
+          }
         }
       }
     } else {

@@ -1,3 +1,6 @@
+#ifndef UNIFIED_LOGGER_H
+#define UNIFIED_LOGGER_H
+
 #pragma once
 
 #include "../math/types.h"

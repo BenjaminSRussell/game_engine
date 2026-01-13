@@ -20,7 +20,7 @@ typedef struct {
 } TimerComponent;
 
 // Timer management functions
-TimerComponent* timer_create(f32 duration, bool loops) {
+TimerComponent* hitbox_timer_create(f32 duration, bool loops) {
   TimerComponent* timer = malloc(sizeof(TimerComponent));
   if (timer) {
     timer->duration = duration;
@@ -82,6 +82,8 @@ void timer_destroy(TimerComponent* timer) {
 
 // Forward declarations - removed HitboxInstance since it's defined locally
 
+#define MAX_HITBOXES 1024
+
 // Internal hit tracking for hitboxes to prevent double-hits
 typedef struct {
   Entity hitbox_entity;
@@ -90,8 +92,6 @@ typedef struct {
 } HitboxHitTracker;
 
 static HitboxHitTracker g_hitbox_trackers[MAX_HITBOXES] = {0};
-
-#define MAX_HITBOXES 1024
 #define HITBOX_QUERY_BUFFER_SIZE 256
 #define HITBOX_COLLISION_THRESHOLD 0.001f
 
@@ -396,7 +396,7 @@ static bool hitbox_check_collision(const HitboxInstance *a, const HitboxInstance
 // Public API
 bool hitbox_system_init(World *world) {
   if (g_hitbox_system.is_initialized) {
-    LOG_WARN("Hitbox system already initialized");
+    LOGW("Hitbox system already initialized");
     return true;
   }
   
@@ -404,7 +404,7 @@ bool hitbox_system_init(World *world) {
   g_hitbox_system.is_initialized = true;
   g_hitbox_system.current_time = 0.0;
   
-  LOG_INFO("Hitbox system initialized");
+  LOGI("Hitbox system initialized");
   return true;
 }
 
@@ -414,7 +414,7 @@ void hitbox_system_shutdown(void) {
   memset(&g_hitbox_system, 0, sizeof(HitboxSystem));
   g_hitbox_system.is_initialized = false;
   
-  LOG_INFO("Hitbox system shutdown");
+  LOGI("Hitbox system shutdown");
 }
 
 void hitbox_system_update(World *world, f32 delta_time) {
@@ -464,7 +464,7 @@ void hitbox_system_update(World *world, f32 delta_time) {
 void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b, const HitboxCollision *collision) {
   if (!world || !a || !b || !collision) return;
 
-  LOG_DEBUG("Hitbox collision: entity %u hit entity %u", a->entity.id, b->entity.id);
+  LOGD("Hitbox collision: entity %u hit entity %u", a->entity.id, b->entity.id);
 
   // Apply damage if this is a trigger hitbox (e.g., attack hitbox)
   if (a->hitbox.is_trigger) {
@@ -482,7 +482,7 @@ void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b,
       // Mark that this hitbox has hit target b
       hitbox_mark_hit_entity(a->entity, b->entity);
 
-      LOG_DEBUG("Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
+      LOGD("Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
                a->entity.id, final_damage, b->entity.id, a->hitbox.damage_multiplier);
     }
   }
@@ -503,7 +503,7 @@ void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b,
       // Mark that this hitbox has hit target a
       hitbox_mark_hit_entity(b->entity, a->entity);
 
-      LOG_DEBUG("Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
+      LOGD("Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
                b->entity.id, final_damage, a->entity.id, b->hitbox.damage_multiplier);
     }
   }
@@ -543,7 +543,7 @@ Entity hitbox_create_temporary(World *world, Vec3 position, Vec3 direction, f32 
   // Add timer component for automatic destruction
   // TODO: Implement TimerComponent
   
-  LOG_DEBUG("Created temporary hitbox entity %u (range: %.2f, duration: %.2f)", 
+  LOGD("Created temporary hitbox entity %u (range: %.2f, duration: %.2f)",
            entity.id, range, duration);
   
   return entity;
@@ -601,7 +601,7 @@ void hitbox_activate(HitboxComponent *hitbox) {
   hitbox->active = true;
   hitbox->last_update_time = g_hitbox_system.current_time;
   
-  LOG_DEBUG("Activated hitbox");
+  LOGD("Activated hitbox");
 }
 
 void hitbox_deactivate(HitboxComponent *hitbox) {

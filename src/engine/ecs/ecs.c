@@ -114,7 +114,7 @@ void ecs_world_init(World *world, u32 max_entities, u32 max_components,
 
   g_ecs_world = world;
 
-  LOG_INFO("[ECS] World Initialized (Capacity: %d entities)", max_entities);
+  LOGI("[ECS] World Initialized (Capacity: %d entities)", max_entities);
 }
 
 void ecs_world_free(World *world) {
@@ -183,7 +183,7 @@ Entity ecs_create_entity(World *world) {
     id = ed->free_entity_ids[--ed->free_count];
   } else {
     if (ed->next_entity_id >= ed->capacity) {
-      LOG_ERROR("[ECS] Error: Max entities reached");
+      LOGE("[ECS] Error: Max entities reached");
       return (Entity){0, 0};
     }
     id = ed->next_entity_id++;
@@ -636,6 +636,14 @@ void ecs_query_destroy(World *world, Query *query) {
   if (query->component_offsets) free(query->component_offsets);
   free(query);
 }
+
+void ecs_query_reset(Query *query) {
+    if (!query) return;
+    query->current_archetype = 0;
+    query->current_entity = 0;
+    query->current_chunk = NULL;
+}
+
 bool ecs_query_next(Query *query, Entity *entity, void **components) {
   if (!query) return false;
   
@@ -814,12 +822,12 @@ WorldStats ecs_world_get_stats(World *world) {
 }
 
 bool ecs_world_save(World *world, const char *path) {
-  LOG_INFO("[ECS] Saving world to %s (Stub)", path);
+  LOGI("[ECS] Saving world to %s (Stub)", path);
   return true;
 }
 
 bool ecs_world_load(World *world, const char *path) {
-  LOG_INFO("[ECS] Loading world from %s (Stub)", path);
+  LOGI("[ECS] Loading world from %s (Stub)", path);
   return true;
 }
 
