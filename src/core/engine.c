@@ -1,7 +1,13 @@
-// src/engine/core/engine.c
-//
-// Purpose: Core engine implementation conforming to engine.h interface
-//
+/*
+ * engine.c
+ * Core engine implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Conforms to engine.h interface and manages all engine subsystems
+ */
+
 #include <core/engine.h>
 #include <core/game_loop.h>
 #include <core/game_module.h>
