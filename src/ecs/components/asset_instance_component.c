@@ -1,3 +1,10 @@
+/**
+ * @file asset_instance_component.c
+ * @brief ECS Implementation
+ * @description Entity Component System implementation
+ * @date 2026-01-13
+ */
+
 #include "ecs/components/asset_instance_component.h"
 #include "ecs/ecs.h"
 
