@@ -1,7 +1,13 @@
-// src/engine/core/game_loop.c
-//
-// Purpose: Fixed timestep game loop implementation
-//
+/*
+ * game_loop.c
+ * Fixed timestep game loop implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides high-resolution timing and fixed timestep game loop functionality
+ */
+
 #include "engine/include/core/logger.h"
 #include <core/game_loop.h>
 #include <string.h>
