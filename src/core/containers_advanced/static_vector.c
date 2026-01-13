@@ -1,3 +1,10 @@
+/**
+ * @file static_vector.c
+ * @brief Core Implementation
+ * @description Core system implementation
+ * @date 2026-01-13
+ */
+
 #include <core/containers_advanced/static_vector.h>
 
 #include <stdlib.h>
