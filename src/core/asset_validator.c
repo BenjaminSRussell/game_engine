@@ -1,3 +1,13 @@
+/*
+ * asset_validator.c
+ * Asset validation and verification implementation
+ *
+ * Part of the Core subsystem
+ * Advanced 3D Rendering Engine
+ * 
+ * Provides format validation, hash computation, and asset integrity checking
+ */
+
 #include <core/asset_validator.h>
 #include "engine/include/core/logger.h"
 #include <stdio.h>
