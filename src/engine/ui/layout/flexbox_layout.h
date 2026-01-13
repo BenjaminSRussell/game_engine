@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "include/math/math.h"
-#include "layout_profiling.h"
+#include "ui/ui_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -82,17 +82,7 @@ typedef enum {
 } AlignContent;
 
 // Box model dimensions
-typedef struct {
-    float top;
-    float right;
-    float bottom;
-    float left;
-} BoxEdges;
-
-typedef struct {
-    float width;
-    float height;
-} Size;
+// BoxEdges and Size moved to ui_types.h
 
 typedef struct {
     float x;
@@ -182,7 +172,6 @@ struct FlexboxContainer {
     // Performance tracking
     uint32_t layout_iterations;
     float layout_time_ms;
-    LayoutPerformanceStats stats;
 };
 
 /* ============================================================================
@@ -237,7 +226,6 @@ bool flexbox_is_wrap_reversed(FlexWrap wrap);
 void flexbox_enable_performance_profiling(bool enable);
 void flexbox_get_performance_stats(const FlexboxContainer* container, 
                                  uint32_t* iterations, float* time_ms);
-void flexbox_reset_performance_stats(FlexboxContainer* container);
 
 #ifdef __cplusplus
 }

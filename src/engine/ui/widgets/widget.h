@@ -14,8 +14,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "include/math/math.h"
-#include "include/math/rect.h"
-#include "../layout/flexbox_layout.h"
+#include "ui/ui_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -239,7 +238,6 @@ struct Widget {
  * ============================================================================ */
 
 /* Widget Management */
-bool widget_init(Widget* widget, const char* name);
 Widget* widget_create(const char* name);
 void widget_destroy(Widget* widget);
 void widget_add_child(Widget* parent, Widget* child);
