@@ -81,6 +81,9 @@ typedef union __attribute__((aligned(16))) {
 
 typedef Vec3 vec3_t;
 
+// Constructor macro
+#define vec3(x, y, z) vec3_create(x, y, z)
+
 // Vector operations (all inline for performance)
 INLINE Vec3 vec3_create(f32 x, f32 y, f32 z) {
   Vec3 v = {x, y, z};

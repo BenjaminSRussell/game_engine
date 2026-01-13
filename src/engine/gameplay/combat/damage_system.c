@@ -1,6 +1,9 @@
 // damage_system.c - Implementation
 #include <core/logger.h>
 #include <gameplay/combat/damage.h>
+#include <gameplay/combat/health.h>
+#include <core/transform.h>
+#include <ecs/component_ids.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,7 +17,7 @@ void damage_system_init(u32 max_events_per_frame) {
   g_damage_queue = (DamageEvent *)malloc(sizeof(DamageEvent) * g_max_events);
   g_event_count = 0;
 
-  LOG_INFO("Damage system initialized with capacity: %u", g_max_events);
+  LOG_INFO(LOG_CAT_GENERAL, "Damage system initialized with capacity: %u", g_max_events);
 }
 
 void damage_system_shutdown(void) {
@@ -25,7 +28,7 @@ void damage_system_shutdown(void) {
   g_max_events = 0;
   g_event_count = 0;
 
-  LOG_INFO("Damage system shutdown");
+  LOG_INFO(LOG_CAT_GENERAL, "Damage system shutdown");
 }
 
 DamageEvent *damage_event_create(Entity source, Entity target, f32 amount,
@@ -105,7 +108,7 @@ void damage_system_process_events(World *world, f64 delta_time) {
 
       Vec3 death_pos = transform ? transform->position : vec3(0, 0, 0);
 
-      LOG_INFO("Entity %u died at (%.1f, %.1f, %.1f) from damage type %d by entity %u",
+      LOG_INFO(LOG_CAT_GENERAL, "Entity %u died at (%.1f, %.1f, %.1f) from damage type %d by entity %u",
                event->target.id, death_pos.x, death_pos.y, death_pos.z,
                event->type, event->source.id);
 

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UNIFIED_LOGGER_H
+#define UNIFIED_LOGGER_H
 
 #include "../math/types.h"
 #include <stdarg.h>
@@ -168,10 +169,13 @@ void unified_logger_free_query_result(LogQueryResult* result);
 #define logger_get_stats unified_logger_get_stats
 
 // Legacy compatibility macros
-#define LOG(level, format, ...) LOG_DEBUG(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
-#define LOGE(format, ...) LOG_ERROR(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
-#define LOGW(format, ...) LOG_WARN(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
-#define LOGI(format, ...) LOG_INFO(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
-#define LOGD(format, ...) LOG_DEBUG(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
+// Note: These redefine explicit macros above if included after? No, preprocessor handles it.
+// The file ends here.
+// But wait, the file I read earlier HAD these at the end:
+// #define LOG(level, format, ...) LOG_DEBUG(LOG_CAT_GENERAL, format, ##__VA_ARGS__)
+// ...
+// This was in `logger.h`, NOT `unified_logger.h`!
+// `logger.h` defines `LOG` etc.
+// `unified_logger.h` defines `LOG_INFO` etc.
 
 #endif // UNIFIED_LOGGER_H

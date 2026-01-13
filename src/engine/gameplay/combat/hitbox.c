@@ -6,6 +6,7 @@
 #include <include/ecs/ecs.h>
 #include <include/math/vec3.h>
 #include <include/math/aabb.h>
+#include <include/math/ray.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -20,7 +21,7 @@ typedef struct {
 } TimerComponent;
 
 // Timer management functions
-TimerComponent* timer_create(f32 duration, bool loops) {
+TimerComponent* hitbox_timer_create(f32 duration, bool loops) {
   TimerComponent* timer = malloc(sizeof(TimerComponent));
   if (timer) {
     timer->duration = duration;
@@ -82,6 +83,8 @@ void timer_destroy(TimerComponent* timer) {
 
 // Forward declarations - removed HitboxInstance since it's defined locally
 
+#define MAX_HITBOXES 1024
+
 // Internal hit tracking for hitboxes to prevent double-hits
 typedef struct {
   Entity hitbox_entity;
@@ -90,8 +93,6 @@ typedef struct {
 } HitboxHitTracker;
 
 static HitboxHitTracker g_hitbox_trackers[MAX_HITBOXES] = {0};
-
-#define MAX_HITBOXES 1024
 #define HITBOX_QUERY_BUFFER_SIZE 256
 #define HITBOX_COLLISION_THRESHOLD 0.001f
 
@@ -112,6 +113,8 @@ typedef struct {
   u32 instance_count;
   bool is_initialized;
   f64 current_time;
+  World *world;
+  Query *query;
 } HitboxSystem;
 
 static HitboxSystem g_hitbox_system = {0};
@@ -396,25 +399,37 @@ static bool hitbox_check_collision(const HitboxInstance *a, const HitboxInstance
 // Public API
 bool hitbox_system_init(World *world) {
   if (g_hitbox_system.is_initialized) {
-    LOG_WARN("Hitbox system already initialized");
+    LOG_WARN(LOG_CAT_GENERAL, "Hitbox system already initialized");
     return true;
   }
   
   memset(&g_hitbox_system, 0, sizeof(HitboxSystem));
   g_hitbox_system.is_initialized = true;
   g_hitbox_system.current_time = 0.0;
+  g_hitbox_system.world = world;
+
+  ECSComponentID comp_id = HITBOX_COMPONENT_ID;
+  QueryDesc desc = {
+      .all_components = &comp_id,
+      .all_count = 1
+  };
+  g_hitbox_system.query = ecs_query_create(world, &desc);
   
-  LOG_INFO("Hitbox system initialized");
+  LOG_INFO(LOG_CAT_GENERAL, "Hitbox system initialized");
   return true;
 }
 
 void hitbox_system_shutdown(void) {
   if (!g_hitbox_system.is_initialized) return;
   
+  if (g_hitbox_system.query && g_hitbox_system.world) {
+      ecs_query_destroy(g_hitbox_system.world, g_hitbox_system.query);
+  }
+
   memset(&g_hitbox_system, 0, sizeof(HitboxSystem));
   g_hitbox_system.is_initialized = false;
   
-  LOG_INFO("Hitbox system shutdown");
+  LOG_INFO(LOG_CAT_GENERAL, "Hitbox system shutdown");
 }
 
 void hitbox_system_update(World *world, f32 delta_time) {
@@ -464,7 +479,7 @@ void hitbox_system_update(World *world, f32 delta_time) {
 void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b, const HitboxCollision *collision) {
   if (!world || !a || !b || !collision) return;
 
-  LOG_DEBUG("Hitbox collision: entity %u hit entity %u", a->entity.id, b->entity.id);
+  LOG_DEBUG(LOG_CAT_GAME, "Hitbox collision: entity %u hit entity %u", a->entity.id, b->entity.id);
 
   // Apply damage if this is a trigger hitbox (e.g., attack hitbox)
   if (a->hitbox.is_trigger) {
@@ -482,7 +497,7 @@ void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b,
       // Mark that this hitbox has hit target b
       hitbox_mark_hit_entity(a->entity, b->entity);
 
-      LOG_DEBUG("Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
+      LOG_DEBUG(LOG_CAT_GAME, "Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
                a->entity.id, final_damage, b->entity.id, a->hitbox.damage_multiplier);
     }
   }
@@ -503,7 +518,7 @@ void hitbox_handle_collision(World *world, HitboxInstance *a, HitboxInstance *b,
       // Mark that this hitbox has hit target a
       hitbox_mark_hit_entity(b->entity, a->entity);
 
-      LOG_DEBUG("Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
+      LOG_DEBUG(LOG_CAT_GAME, "Hitbox %u dealt %.1f damage to entity %u (multiplier: %.1f)",
                b->entity.id, final_damage, a->entity.id, b->hitbox.damage_multiplier);
     }
   }
@@ -543,7 +558,7 @@ Entity hitbox_create_temporary(World *world, Vec3 position, Vec3 direction, f32 
   // Add timer component for automatic destruction
   // TODO: Implement TimerComponent
   
-  LOG_DEBUG("Created temporary hitbox entity %u (range: %.2f, duration: %.2f)", 
+  LOG_DEBUG(LOG_CAT_GAME, "Created temporary hitbox entity %u (range: %.2f, duration: %.2f)",
            entity.id, range, duration);
   
   return entity;
@@ -611,4 +626,107 @@ void hitbox_deactivate(HitboxComponent *hitbox) {
 void hitbox_set_active(HitboxComponent *hitbox, bool active) {
   if (hitbox)
     hitbox->active = active;
+}
+
+// Raycast against all active hitboxes
+bool hitbox_system_raycast(const Vec3 *start, const Vec3 *end, Entity source_entity,
+                           Vec3 *out_hit_point, Vec3 *out_hit_normal, Entity *out_hit_entity) {
+  if (!g_hitbox_system.is_initialized || !g_hitbox_system.world) return false;
+
+  Ray r = ray_from_points(*start, *end);
+  f32 max_dist = vec3_distance(*start, *end);
+  f32 closest_t = max_dist;
+  bool hit_anything = false;
+
+  Query *query = g_hitbox_system.query;
+  if (!query) return false;
+
+  ecs_query_reset(query);
+
+  Entity entity;
+  void *components[1];
+
+  while (ecs_query_next(query, &entity, components)) {
+    HitboxComponent *hitbox = (HitboxComponent*)components[0];
+
+    if (!hitbox->active) continue;
+    if (entity.id == source_entity.id) continue;
+
+    f32 t = -1.0f;
+    bool hit = false;
+
+    switch (hitbox->shape) {
+      case HITBOX_SHAPE_SPHERE:
+        hit = ray_intersects_sphere(r, hitbox->world_position, hitbox->data.sphere.radius, &t);
+        break;
+      case HITBOX_SHAPE_BOX: {
+        AABB box;
+        box.min = vec3_sub(hitbox->world_position, hitbox->data.box.half_extents);
+        box.max = vec3_add(hitbox->world_position, hitbox->data.box.half_extents);
+        hit = ray_intersects_aabb(r, box, &t);
+        break;
+      }
+      case HITBOX_SHAPE_CAPSULE:
+        // Use bounding sphere for capsule for now
+        hit = ray_intersects_sphere(r, hitbox->world_position,
+              hitbox->data.capsule.radius + hitbox->data.capsule.height * 0.5f, &t);
+        break;
+      default:
+        break;
+    }
+
+    if (hit && t >= 0.0f && t < closest_t) {
+      closest_t = t;
+      hit_anything = true;
+      if (out_hit_point) *out_hit_point = ray_at(r, t);
+      if (out_hit_entity) *out_hit_entity = entity;
+      if (out_hit_normal) {
+         *out_hit_normal = vec3_normalize(vec3_sub(ray_at(r, t), hitbox->world_position));
+      }
+    }
+  }
+
+  return hit_anything;
+}
+
+u32 hitbox_system_query_sphere(const Vec3 *center, f32 radius, Entity source_entity,
+                               Entity *out_entities, u32 max_entities) {
+  if (!g_hitbox_system.is_initialized || !g_hitbox_system.world || !out_entities || max_entities == 0) return 0;
+
+  Query *query = g_hitbox_system.query;
+  if (!query) return 0;
+
+  ecs_query_reset(query);
+
+  Entity entity;
+  void *components[1];
+  u32 count = 0;
+
+  while (ecs_query_next(query, &entity, components)) {
+    HitboxComponent *hitbox = (HitboxComponent*)components[0];
+
+    if (!hitbox->active) continue;
+    if (entity.id == source_entity.id) continue;
+
+    bool collision = false;
+    switch (hitbox->shape) {
+      case HITBOX_SHAPE_SPHERE:
+        collision = sphere_vs_sphere(center, radius, &hitbox->world_position, hitbox->data.sphere.radius);
+        break;
+      case HITBOX_SHAPE_BOX:
+        collision = sphere_vs_box(center, radius, &hitbox->world_position, &hitbox->data.box.half_extents);
+        break;
+      case HITBOX_SHAPE_CAPSULE:
+        collision = capsule_vs_sphere(&hitbox->world_position, hitbox->data.capsule.radius,
+                                      hitbox->data.capsule.height, center, radius);
+        break;
+    }
+
+    if (collision) {
+      out_entities[count++] = entity;
+      if (count >= max_entities) break;
+    }
+  }
+
+  return count;
 }
