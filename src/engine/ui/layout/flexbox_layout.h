@@ -13,8 +13,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "include/math/math.h"
+// #include "include/math/math.h" // Removed to avoid conflict
 #include "ui/ui_types.h"
+#include "layout_profiling.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,82 +25,7 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
-typedef struct UIElement UIElement;
 typedef struct FlexboxContainer FlexboxContainer;
-
-// Flex direction
-typedef enum {
-    FLEX_DIRECTION_ROW,
-    FLEX_DIRECTION_ROW_REVERSE,
-    FLEX_DIRECTION_COLUMN,
-    FLEX_DIRECTION_COLUMN_REVERSE
-} FlexDirection;
-
-// Justify content (main axis alignment)
-typedef enum {
-    JUSTIFY_FLEX_START,
-    JUSTIFY_FLEX_END,
-    JUSTIFY_CENTER,
-    JUSTIFY_SPACE_BETWEEN,
-    JUSTIFY_SPACE_AROUND,
-    JUSTIFY_SPACE_EVENLY
-} JustifyContent;
-
-// Align items (cross axis alignment)
-typedef enum {
-    ALIGN_ITEMS_FLEX_START,
-    ALIGN_ITEMS_FLEX_END,
-    ALIGN_ITEMS_CENTER,
-    ALIGN_ITEMS_STRETCH,
-    ALIGN_ITEMS_BASELINE
-} AlignItems;
-
-// Align self (individual cross axis alignment)
-typedef enum {
-    ALIGN_SELF_AUTO,
-    ALIGN_SELF_FLEX_START,
-    ALIGN_SELF_FLEX_END,
-    ALIGN_SELF_CENTER,
-    ALIGN_SELF_STRETCH,
-    ALIGN_SELF_BASELINE
-} AlignSelf;
-
-// Flex wrap
-typedef enum {
-    FLEX_WRAP_NOWRAP,
-    FLEX_WRAP_WRAP,
-    FLEX_WRAP_WRAP_REVERSE
-} FlexWrap;
-
-// Align content (multi-line cross axis alignment)
-typedef enum {
-    ALIGN_CONTENT_FLEX_START,
-    ALIGN_CONTENT_FLEX_END,
-    ALIGN_CONTENT_CENTER,
-    ALIGN_CONTENT_STRETCH,
-    ALIGN_CONTENT_SPACE_BETWEEN,
-    ALIGN_CONTENT_SPACE_AROUND
-} AlignContent;
-
-// Box model dimensions
-// BoxEdges and Size moved to ui_types.h
-
-typedef struct {
-    float x;
-    float y;
-} Position;
-
-// Flex item properties
-typedef struct {
-    float grow;          // Flex grow factor
-    float shrink;        // Flex shrink factor
-    float basis;         // Flex basis (auto, content, or fixed)
-    AlignSelf align_self; // Individual alignment override
-    float min_width;     // Minimum width constraint
-    float max_width;     // Maximum width constraint
-    float min_height;    // Minimum height constraint
-    float max_height;    // Maximum height constraint
-} FlexItem;
 
 // Flexbox container configuration
 typedef struct {
@@ -118,47 +44,6 @@ typedef struct {
     Size preferred_size;
 } FlexboxConfig;
 
-// Layout result
-typedef struct {
-    Position position;
-    Size size;
-    bool visible;
-    float baseline_offset;
-} LayoutResult;
-
-// UI Element base structure
-struct UIElement {
-    uint32_t id;
-    char* name;
-    
-    // Layout properties
-    FlexItem flex_item;
-    LayoutResult layout;
-    
-    // Visual properties
-    BoxEdges margin;
-    BoxEdges padding;
-    BoxEdges border;
-    
-    Size min_size;
-    Size max_size;
-    Size preferred_size;
-    
-    // Hierarchy
-    UIElement* parent;
-    UIElement** children;
-    uint32_t child_count;
-    uint32_t child_capacity;
-    
-    // State
-    bool visible;
-    bool dirty;
-    bool measured;
-    
-    // User data
-    void* user_data;
-};
-
 // Flexbox container
 struct FlexboxContainer {
     UIElement base;
@@ -172,6 +57,7 @@ struct FlexboxContainer {
     // Performance tracking
     uint32_t layout_iterations;
     float layout_time_ms;
+    LayoutPerformanceStats stats;
 };
 
 /* ============================================================================

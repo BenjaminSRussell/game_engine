@@ -20,7 +20,8 @@ extern "C" {
 
 /* ============================================================================
  * TYPES AND ENUMERATIONS
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Invalidation flags indicating what changed */
 typedef enum {
@@ -51,7 +52,8 @@ typedef struct LayoutInvalidationSystem LayoutInvalidationSystem;
 
 /* ============================================================================
  * INVALIDATION ENTRY
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Tracks what was invalidated and why */
 typedef struct InvalidationEntry {
@@ -63,7 +65,8 @@ typedef struct InvalidationEntry {
 
 /* ============================================================================
  * INVALIDATION QUEUE
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Queue of pending invalidations to process */
 typedef struct InvalidationQueue {
@@ -75,7 +78,8 @@ typedef struct InvalidationQueue {
 
 /* ============================================================================
  * LAYOUT CACHE ENTRY
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Single cached layout result */
 typedef struct LayoutCacheEntry {
@@ -97,7 +101,8 @@ typedef struct LayoutCacheEntry {
 
 /* ============================================================================
  * CACHE LEVEL
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* One level of the multi-level cache hierarchy */
 typedef struct LayoutCacheLevel {
@@ -112,7 +117,8 @@ typedef struct LayoutCacheLevel {
 
 /* ============================================================================
  * INVALIDATION SYSTEM
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Main invalidation tracking and caching system */
 typedef struct LayoutInvalidationSystem {
@@ -143,6 +149,7 @@ typedef struct LayoutInvalidationSystem {
     /* Configuration */
     bool enable_aggressive_caching;  /* Cache more aggressively */
     bool enable_generation_tracking; /* Track element generations */
+    bool enable_debug;               /* Enable debug mode */
     uint32_t max_queue_size;
     uint32_t max_cache_entries;
     float cache_eviction_threshold;  /* When to evict old entries (0.0-1.0) */
@@ -150,7 +157,8 @@ typedef struct LayoutInvalidationSystem {
 
 /* ============================================================================
  * API - SYSTEM MANAGEMENT
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Create and destroy invalidation system */
 LayoutInvalidationSystem* layout_invalidation_create(void);
@@ -166,7 +174,8 @@ void layout_invalidation_set_max_cache_entries(LayoutInvalidationSystem* system,
 
 /* ============================================================================
  * API - ELEMENT TRACKING
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Register element for tracking */
 void layout_invalidation_register_element(LayoutInvalidationSystem* system,
@@ -186,7 +195,8 @@ void layout_invalidation_increment_generation(LayoutInvalidationSystem* system,
 
 /* ============================================================================
  * API - INVALIDATION
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Invalidate element with specific flags */
 void layout_invalidation_invalidate(LayoutInvalidationSystem* system,
@@ -213,7 +223,8 @@ bool layout_invalidation_has_flag(const LayoutInvalidationSystem* system,
 
 /* ============================================================================
  * API - QUEUE PROCESSING
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Get next pending invalidation from queue */
 bool layout_invalidation_dequeue(LayoutInvalidationSystem* system,
@@ -231,7 +242,8 @@ void layout_invalidation_queue_clear(LayoutInvalidationSystem* system);
 
 /* ============================================================================
  * API - CACHING
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Store layout in cache */
 void layout_invalidation_cache_layout(LayoutInvalidationSystem* system,
@@ -262,7 +274,8 @@ void layout_invalidation_cache_clear_level(LayoutInvalidationSystem* system,
 
 /* ============================================================================
  * API - BATCH OPERATIONS
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Begin batch invalidation (suppress immediate updates) */
 void layout_invalidation_begin_batch(LayoutInvalidationSystem* system);
@@ -278,7 +291,8 @@ void layout_invalidation_invalidate_batch(LayoutInvalidationSystem* system,
 
 /* ============================================================================
  * API - PERFORMANCE MONITORING
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Get cache statistics */
 void layout_invalidation_get_cache_stats(const LayoutInvalidationSystem* system,
@@ -300,7 +314,8 @@ uint32_t layout_invalidation_get_total_cache_entries(const LayoutInvalidationSys
 
 /* ============================================================================
  * API - DEBUGGING
- * ============================================================================ */
+ * ============================================================================
+ */
 
 /* Print system state */
 void layout_invalidation_print_state(const LayoutInvalidationSystem* system);

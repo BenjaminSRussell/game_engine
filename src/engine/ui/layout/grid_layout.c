@@ -8,13 +8,24 @@
  */
 
 #include "grid_layout.h"
-#include "flexbox_layout.h" // Reuse UIElement
+#include "flexbox_layout.h" // Required for ui_element_destroy and UIElement utilities
 #include "core/logger.h"
-#include "core/memory.h"
 #include "core/time_system.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <float.h>
+
+/* Use standard allocation to avoid conflicts with core headers during partial compilation */
+#ifndef core_alloc
+#define core_alloc(size) malloc(size)
+#endif
+#ifndef core_free
+#define core_free(ptr) free(ptr)
+#endif
+#ifndef core_realloc
+#define core_realloc(ptr, size) realloc(ptr, size)
+#endif
 
 #define MAX_GRID_SIZE 100
 #define LAYOUT_TOLERANCE 0.1f
@@ -24,7 +35,8 @@ static bool g_performance_profiling_enabled = false;
 
 /* ============================================================================
  * INTERNAL TYPES
- * ============================================================================ */
+ * ============================================================================
+ */
 
 typedef struct {
     float used_space;
@@ -42,7 +54,8 @@ typedef struct {
 
 /* ============================================================================
  * INTERNAL FUNCTIONS
- * ============================================================================ */
+ * ============================================================================
+ */
 
 static float resolve_track_size(const GridTrack* track, float container_size, float min_size, float max_size) {
     switch (track->type) {
@@ -225,20 +238,157 @@ static float get_main_margin(const BoxEdges* margins, bool horizontal) {
     }
 }
 
+static void mark_cells_occupied(bool* occupied, uint32_t cols, uint32_t rows,
+                              int32_t col_start, int32_t row_start,
+                              int32_t col_span, int32_t row_span) {
+    if (!occupied) return;
+    for (int32_t r = row_start; r < row_start + row_span; r++) {
+        for (int32_t c = col_start; c < col_start + col_span; c++) {
+            if (r >= 0 && r < (int32_t)rows && c >= 0 && c < (int32_t)cols) {
+                occupied[r * cols + c] = true;
+            }
+        }
+    }
+}
+
+static void find_next_empty(const bool* occupied, uint32_t cols, uint32_t rows,
+                          int32_t* current_col, int32_t* current_row,
+                          int32_t col_span, int32_t row_span) {
+    if (!occupied) return;
+
+    // Simple row-major search
+    while (*current_row < (int32_t)rows) {
+        bool fits = true;
+        // Check if span fits
+        if (*current_col + col_span > (int32_t)cols) {
+            *current_col = 0;
+            (*current_row)++;
+            continue;
+        }
+
+        for (int32_t r = 0; r < row_span; r++) {
+            for (int32_t c = 0; c < col_span; c++) {
+                int32_t idx = (*current_row + r) * cols + (*current_col + c);
+                if (idx >= (int32_t)(cols * rows) || occupied[idx]) {
+                    fits = false;
+                    break;
+                }
+            }
+            if (!fits) break;
+        }
+
+        if (fits) return;
+
+        (*current_col)++;
+        if (*current_col >= (int32_t)cols) {
+            *current_col = 0;
+            (*current_row)++;
+        }
+    }
+}
+
 static void position_grid_items(GridContainer* container, const TrackLayout* columns, 
                                const TrackLayout* rows) {
     float column_gap = container->config.column_gap;
     float row_gap = container->config.row_gap;
     
+    uint32_t cols = columns->count;
+    uint32_t row_count = rows->count;
+
+    LOGD("Positioning grid items: cols=%u rows=%u", cols, row_count);
+    for (uint32_t k = 0; k < cols; k++) {
+        LOGD("  Col %u: pos=%.2f size=%.2f", k, columns->positions[k], columns->sizes[k]);
+    }
+
+    // Track occupied cells for auto placement
+    // Allocation size: cols * rows.
+    // WARNING: If rows are implicit/infinite, this approach needs expansion.
+    // For now, limited to defined rows.
+    bool* occupied = core_alloc(cols * row_count * sizeof(bool));
+    if (occupied) {
+        memset(occupied, 0, cols * row_count * sizeof(bool));
+    }
+
+    int32_t auto_cursor_col = 0;
+    int32_t auto_cursor_row = 0;
+
+    // First pass: Place explicit items
+    for (uint32_t i = 0; i < container->base.child_count; i++) {
+        UIElement* child = container->base.children[i];
+        if (!child->visible) continue;
+
+        GridPlacement* gp = &child->grid_item;
+
+        // If explicit position
+        if (gp->column_position_type == GRID_POSITION_LINE && gp->row_position_type == GRID_POSITION_LINE) {
+            int32_t col_start = gp->column_position.line;
+            int32_t row_start = gp->row_position.line;
+            int32_t col_span = 1;
+            int32_t row_span = 1;
+
+            // TODO: Support span with explicit start
+
+            mark_cells_occupied(occupied, cols, row_count, col_start, row_start, col_span, row_span);
+        }
+    }
+
+    // Second pass: Position everyone
     for (uint32_t i = 0; i < container->base.child_count; i++) {
         UIElement* child = container->base.children[i];
         if (!child->visible) continue;
         
-        // Get grid placement (simplified - assume direct line positioning)
-        int32_t col_start = 0; // TODO: Get from child's grid placement
-        int32_t col_end = col_start + 1;
+        GridPlacement* gp = &child->grid_item;
+
+        int32_t col_start = 0;
         int32_t row_start = 0;
-        int32_t row_end = row_start + 1;
+        int32_t col_span = 1;
+        int32_t row_span = 1;
+
+        // Resolve spans
+        if (gp->column_position_type == GRID_POSITION_SPAN) {
+            col_span = gp->column_position.span;
+        }
+        if (gp->row_position_type == GRID_POSITION_SPAN) {
+            row_span = gp->row_position.span;
+        }
+
+        // Resolve position
+        if (gp->column_position_type == GRID_POSITION_LINE) {
+             col_start = gp->column_position.line;
+        } else {
+             // Auto column
+             // We need to find position later
+             col_start = -1;
+        }
+
+        if (gp->row_position_type == GRID_POSITION_LINE) {
+             row_start = gp->row_position.line;
+        } else {
+             // Auto row
+             row_start = -1;
+        }
+
+        // If fully auto or partial auto, find spot
+        if (col_start == -1 || row_start == -1) {
+            int32_t search_col = (col_start != -1) ? col_start : auto_cursor_col;
+            int32_t search_row = (row_start != -1) ? row_start : auto_cursor_row;
+
+            // If we have one dimension fixed, we iterate the other?
+            // Simplified: Use cursor for auto placement
+
+            find_next_empty(occupied, cols, row_count, &search_col, &search_row, col_span, row_span);
+            col_start = search_col;
+            row_start = search_row;
+
+            // Update cursor
+            // auto_cursor_col = col_start + col_span; // standard auto flow
+        }
+
+        // Mark occupied
+        mark_cells_occupied(occupied, cols, row_count, col_start, row_start, col_span, row_span);
+
+        int32_t col_end = col_start + col_span;
+        int32_t row_end = row_start + row_span;
         
         // Clamp to grid bounds
         col_start = fmaxf(0, fminf(col_start, (int32_t)columns->count - 1));
@@ -252,6 +402,9 @@ static void position_grid_items(GridContainer* container, const TrackLayout* col
         float cell_width = columns->positions[col_end - 1] + columns->sizes[col_end - 1] - cell_x;
         float cell_height = rows->positions[row_end - 1] + rows->sizes[row_end - 1] - cell_y;
         
+        LOGD("  Item %s: col=%d-%d row=%d-%d -> rect=%.2f,%.2f %.2fx%.2f",
+             child->name, col_start, col_end, row_start, row_end, cell_x, cell_y, cell_width, cell_height);
+
         // Add gaps
         if (col_end > col_start + 1) {
             cell_width += column_gap * (col_end - col_start - 1);
@@ -261,16 +414,20 @@ static void position_grid_items(GridContainer* container, const TrackLayout* col
         }
         
         // Apply alignment (simplified - stretch)
+        // TODO: Use justify_self/align_self
         child->layout.position.x = cell_x + child->margin.left;
         child->layout.position.y = cell_y + child->margin.top;
         child->layout.size.width = fmaxf(0.0f, cell_width - get_main_margin(&child->margin, true));
         child->layout.size.height = fmaxf(0.0f, cell_height - get_main_margin(&child->margin, false));
     }
+
+    if (occupied) core_free(occupied);
 }
 
 /* ============================================================================
  * PUBLIC API
- * ============================================================================ */
+ * ============================================================================
+ */
 
 GridContainer* grid_container_create(const char* name) {
     GridContainer* container = core_alloc(sizeof(GridContainer));
@@ -286,6 +443,7 @@ GridContainer* grid_container_create(const char* name) {
     container->base.name = name ? strdup(name) : strdup("GridContainer");
     container->base.visible = true;
     container->base.dirty = true;
+    container->base.layout_type = LAYOUT_TYPE_GRID;
     
     // Initialize default configuration
     container->config.column_gap = 0.0f;
@@ -400,79 +558,66 @@ void grid_add_child(GridContainer* container, UIElement* child) {
     container->needs_layout = true;
     child->dirty = true;
     
+    // Default grid placement (auto)
+    memset(&child->grid_item, 0, sizeof(GridPlacement));
+
     LOGI("Added child %s to grid container %s", child->name, container->base.name);
 }
 
-void grid_layout(GridContainer* container, float available_width, float available_height) {
-    if (!container || !container->needs_layout) return;
-    
-    uint64_t start_ns = 0;
-    if (g_performance_profiling_enabled) {
-        start_ns = get_time_nanos();
-    }
-    
-    container->available_width = available_width;
-    container->available_height = available_height;
-    
-    // Subtract container padding from available space
-    float inner_width = available_width - container->config.padding.left - container->config.padding.right;
-    float inner_height = available_height - container->config.padding.top - container->config.padding.bottom;
-    
-    inner_width = fmaxf(0.0f, inner_width);
-    inner_height = fmaxf(0.0f, inner_height);
-    
-    // Layout columns
-    TrackLayout column_layout = {0};
-    if (container->config.column_count > 0) {
-        column_layout = create_track_layout(container->config.columns, container->config.column_count,
-                                         inner_width, NULL, NULL);
-    }
-    
-    // Layout rows
-    TrackLayout row_layout = {0};
-    if (container->config.row_count > 0) {
-        row_layout = create_track_layout(container->config.rows, container->config.row_count,
-                                       inner_height, NULL, NULL);
-    }
-    
-    uint64_t measure_end_ns = 0;
-    if (g_performance_profiling_enabled) {
-        measure_end_ns = get_time_nanos();
-    }
+void grid_item_set_column(GridContainer* container, UIElement* child, int32_t column) {
+    if (!child) return;
+    child->grid_item.column_position_type = GRID_POSITION_LINE;
+    child->grid_item.column_position.line = column;
+    child->dirty = true;
+    if (container) container->needs_layout = true;
+}
 
-    // Position items in grid
-    if (column_layout.count > 0 && row_layout.count > 0) {
-        position_grid_items(container, &column_layout, &row_layout);
-    }
+void grid_item_set_column_span(GridContainer* container, UIElement* child, int32_t span) {
+    if (!child) return;
     
-    // Update container size
-    container->base.layout.size.width = column_layout.total_size + 
-                                      container->config.padding.left + container->config.padding.right;
-    container->base.layout.size.height = row_layout.total_size + 
-                                       container->config.padding.top + container->config.padding.bottom;
+    child->grid_item.column_position_type = GRID_POSITION_SPAN;
+    child->grid_item.column_position.span = span;
     
-    container->needs_layout = false;
-    container->base.dirty = false;
-    
-    // Update performance stats
-    if (g_performance_profiling_enabled) {
-        uint64_t end_ns = get_time_nanos();
-        uint64_t total_ns = end_ns - start_ns;
-        uint64_t measure_ns = measure_end_ns - start_ns;
-        uint64_t arrange_ns = end_ns - measure_end_ns;
+    child->dirty = true;
+    if (container) container->needs_layout = true;
+}
 
-        layout_profiling_update(&container->stats, total_ns, measure_ns, arrange_ns);
+void grid_item_set_row(GridContainer* container, UIElement* child, int32_t row) {
+    if (!child) return;
+    child->grid_item.row_position_type = GRID_POSITION_LINE;
+    child->grid_item.row_position.line = row;
+    child->dirty = true;
+    if (container) container->needs_layout = true;
+}
 
-        container->layout_time_ms = (float)total_ns / 1000000.0f;
-        container->layout_iterations = (uint32_t)container->stats.total_layout_count;
-    }
-    
-    // Cleanup
-    destroy_track_layout(&column_layout);
-    destroy_track_layout(&row_layout);
-    
-    LOGD("Grid layout completed for container %s: %.2fx%.2f",
-              container->base.name, container->base.layout.size.width, container->base.layout.size.height);
+void grid_item_set_row_span(GridContainer* container, UIElement* child, int32_t span) {
+    if (!child) return;
+    child->grid_item.row_position_type = GRID_POSITION_SPAN;
+    child->grid_item.row_position.span = span;
+    child->dirty = true;
+    if (container) container->needs_layout = true;
+}
+
+void grid_item_set_area(GridContainer* container, UIElement* child, const char* area_name) {
+    if (!child || !area_name) return;
+    child->grid_item.column_position_type = GRID_POSITION_AREA;
+    strncpy(child->grid_item.column_position.area.name, area_name, 63);
+    child->dirty = true;
+    if (container) container->needs_layout = true;
+}
+
+void grid_item_set_justify_self(GridContainer* container, UIElement* child, GridAlign align) {
+    if (!child) return;
+    child->grid_item.justify_self = align;
+    child->dirty = true;
+    if (container) container->needs_layout = true;
+}
+
+void grid_item_set_align_self(GridContainer* container, UIElement* child, GridAlign align) {
+    if (!child) return;
+    child->grid_item.align_self = align;
+    child->dirty = true;
+    if (container) container->needs_layout = true;
 }
 
 /* Utility Functions */
