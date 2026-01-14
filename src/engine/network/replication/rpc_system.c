@@ -30,14 +30,63 @@ void rpc_register(const char *name, RPCHandler handler) {
   g_rpc_count++;
 }
 
-bool rpc_dispatch(const char *name, uint32_t sender_id, void *data,
+void rpc_update(float delta_time) {
+  // Stub
+}
+
+void rpc_send_reliable(const char *name, void *data, uint32_t size) {
+  // Stub
+}
+
+uint32_t rpc_call(const char *name, Packet *params, RpcCallback callback, void *user_data) {
+  return 0;
+}
+
+void rpc_reply(uint32_t target_id, uint32_t request_id, Packet *results) {
+}
+
+void rpc_broadcast(const char *name, void *data, uint32_t size) {
+}
+
+void rpc_broadcast_reliable(const char *name, void *data, uint32_t size) {
+}
+
+void rpc_send_to_client(uint32_t client_id, const char *name, void *data, uint32_t size) {
+}
+
+void rpc_send_to_client_reliable(uint32_t client_id, const char *name, void *data, uint32_t size) {
+}
+
+void rpc_process_packet(uint32_t sender_id, const void *packet_data, uint16_t packet_size) {
+}
+
+void rpc_params_init(Packet *params) {
+    if (params) {
+        // Simple init
+        params->write_pos = 0;
+        params->length = 0;
+    }
+}
+
+void rpc_params_from_data(Packet *params, const void *data, uint32_t size) {
+}
+
+void rpc_init(void) {
+    g_rpc_count = 0;
+}
+
+void rpc_shutdown(void) {
+    g_rpc_count = 0;
+}
+
+bool rpc_dispatch(const char *name, uint32_t sender_id, uint32_t request_id, void *data,
                   uint32_t size) {
   if (!name)
     return false;
 
   for (uint32_t i = 0; i < g_rpc_count; i++) {
     if (strcmp(g_rpc_registry[i].name, name) == 0) {
-      g_rpc_registry[i].handler(sender_id, data, size);
+      g_rpc_registry[i].handler(sender_id, request_id, data, size);
       return true;
     }
   }
