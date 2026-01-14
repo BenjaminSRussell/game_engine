@@ -36,7 +36,9 @@ typedef enum {
     ANIM_COND_NOT_EQUALS,
     ANIM_COND_TRUE,
     ANIM_COND_FALSE,
-    ANIM_COND_TRIGGERED
+    ANIM_COND_TRIGGERED,
+    ANIM_COND_STATE_TIME,
+    ANIM_COND_TIME_REMAINING
 } AnimConditionType;
 
 // Blend modes for layers
@@ -45,6 +47,15 @@ typedef enum {
     ANIM_LAYER_BLEND_ADDITIVE,
     ANIM_LAYER_BLEND_MULTIPLY
 } AnimLayerBlendMode;
+
+// Transition blend curves
+typedef enum {
+    ANIM_BLEND_LINEAR,
+    ANIM_BLEND_EASE_IN,
+    ANIM_BLEND_EASE_OUT,
+    ANIM_BLEND_EASE_IN_OUT,
+    ANIM_BLEND_HERMITE
+} AnimBlendCurve;
 
 // Transition interruption sources
 typedef enum {
@@ -105,6 +116,8 @@ typedef struct AnimTransition {
 
     AnimTransitionCondition conditions[ANIM_MAX_CONDITIONS];
     u32 condition_count;
+
+    AnimBlendCurve blend_curve;
 
     AnimInterruptionSource interruption_source;
     i32 priority;
@@ -217,12 +230,28 @@ typedef struct AnimStateMachine {
 } AnimStateMachine;
 
 // =================================================================================================
+// Debug & Tools
+// =================================================================================================
+
+typedef struct {
+    u32 state_id;
+    f32 weight;
+    f32 normalized_time;
+} AnimBlendState;
+
+typedef struct {
+    AnimBlendState* states;
+    u32 count;
+} AnimBlendData;
+
+// =================================================================================================
 // API Functions
 // =================================================================================================
 
 // Creation & Destruction
 AnimStateMachine* anim_state_machine_create(const char* name);
 void anim_state_machine_destroy(AnimStateMachine* sm);
+void anim_sm_reset(AnimStateMachine* sm);
 
 // Parameters
 u32 anim_sm_add_parameter_float(AnimStateMachine* sm, const char* name, f32 default_value);
@@ -264,6 +293,8 @@ void anim_sm_add_condition_float(AnimStateMachine* sm, u32 transition_id, u32 pa
 void anim_sm_add_condition_int(AnimStateMachine* sm, u32 transition_id, u32 param_id, AnimConditionType type, i32 threshold);
 void anim_sm_add_condition_bool(AnimStateMachine* sm, u32 transition_id, u32 param_id, bool expected);
 void anim_sm_add_condition_trigger(AnimStateMachine* sm, u32 transition_id, u32 param_id);
+void anim_sm_add_condition_state_time(AnimStateMachine* sm, u32 transition_id, f32 time, AnimConditionType type);
+void anim_sm_add_condition_time_remaining(AnimStateMachine* sm, u32 transition_id, f32 time, AnimConditionType type);
 void anim_sm_add_condition_custom(AnimStateMachine* sm, u32 transition_id, AnimConditionCallback callback);
 
 // Layers
@@ -275,5 +306,9 @@ void anim_sm_update(AnimStateMachine* sm, f32 dt);
 void anim_sm_set_context(AnimStateMachine* sm, void* context);
 u32 anim_sm_get_current_state(AnimStateMachine* sm, u32 layer_id);
 f32 anim_sm_get_current_time(AnimStateMachine* sm, u32 layer_id);
+
+// Debug
+void anim_sm_get_debug_info(AnimStateMachine* sm, char* buffer, u32 buffer_size);
+void anim_sm_get_blend_data(AnimStateMachine* sm, u32 layer_id, AnimBlendData* out_data);
 
 #endif // ANIM_STATE_MACHINE_H
