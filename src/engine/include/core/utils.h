@@ -157,16 +157,14 @@ int array_bsearch(void *array, u32 count, u32 element_size, void *key,
                   int (*compare)(const void *, const void *));
 
 // Error handling
-typedef enum {
-  ERROR_NONE = 0,
-  ERROR_NULL_POINTER = 1,
-  ERROR_OUT_OF_MEMORY = 2,
-  ERROR_INVALID_ARGUMENT = 3,
-  ERROR_NOT_FOUND = 4,
-  ERROR_FILE_NOT_FOUND = 5,
-  ERROR_PERMISSION_DENIED = 6,
-  ERROR_UNKNOWN = 7
-} ErrorCode;
+#ifndef ERROR_HANDLING_H
+#include <core/error_handling.h>
+#endif
+
+// Mapping legacy ErrorCode to new error_code_t
+typedef error_code_t ErrorCode;
+// Define legacy error constants if needed, or map them
+#define ERROR_INVALID_ARGUMENT ERROR_INVALID_PARAMETER
 
 const char *error_code_to_string(ErrorCode code);
 

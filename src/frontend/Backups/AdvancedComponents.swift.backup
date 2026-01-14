@@ -1,0 +1,744 @@
+import SwiftUI
+
+// MARK: - Advanced Premium Components (100+ features)
+
+// MARK: - Progress Bar
+
+struct EditorProgressBar: View {
+    let value: Double
+    let total: Double
+    var showLabel: Bool = true
+    var accentColor: Color = DesignSystem.Colors.accentPrimary
+    
+    private var progress: Double { min(max(value / total, 0), 1) }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    // Track
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(DesignSystem.Colors.backgroundPrimary)
+                    
+                    // Fill
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(
+                            LinearGradient(
+                                colors: [accentColor, accentColor.opacity(0.8)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: geo.size.width * progress)
+                        .animation(DesignSystem.Animation.spring, value: progress)
+                    
+                    // Shine overlay
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(
+                            LinearGradient(
+                                colors: [.white.opacity(0.2), .clear],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                        .frame(width: geo.size.width * progress)
+                }
+            }
+            .frame(height: 6)
+            
+            if showLabel {
+                Text("\(Int(progress * 100))%")
+                    .font(DesignSystem.Typography.caption)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+            }
+        }
+    }
+}
+
+// MARK: - Indeterminate Progress
+
+struct EditorIndeterminateProgress: View {
+    @State private var isAnimating = false
+    var color: Color = DesignSystem.Colors.accentPrimary
+    
+    var body: some View {
+        GeometryReader { geo in
+            RoundedRectangle(cornerRadius: 3)
+                .fill(DesignSystem.Colors.backgroundPrimary)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(
+                            LinearGradient(
+                                colors: [.clear, color, .clear],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: geo.size.width * 0.4)
+                        .offset(x: isAnimating ? geo.size.width * 0.8 : -geo.size.width * 0.2)
+                )
+                .clipped()
+        }
+        .frame(height: 4)
+        .onAppear {
+            withAnimation(.linear(duration: 1.2).repeatForever(autoreverses: false)) {
+                isAnimating = true
+            }
+        }
+    }
+}
+
+// MARK: - Badge
+
+struct EditorBadge: View {
+    let text: String
+    var style: BadgeStyle = .default
+    
+    enum BadgeStyle {
+        case `default`, success, warning, danger, info
+        
+        var backgroundColor: Color {
+            switch self {
+            case .default: return DesignSystem.Colors.backgroundQuaternary
+            case .success: return DesignSystem.Colors.accentSuccess.opacity(0.2)
+            case .warning: return DesignSystem.Colors.accentWarning.opacity(0.2)
+            case .danger: return DesignSystem.Colors.accentDanger.opacity(0.2)
+            case .info: return DesignSystem.Colors.accentInfo.opacity(0.2)
+            }
+        }
+        
+        var foregroundColor: Color {
+            switch self {
+            case .default: return DesignSystem.Colors.textSecondary
+            case .success: return DesignSystem.Colors.accentSuccess
+            case .warning: return DesignSystem.Colors.accentWarning
+            case .danger: return DesignSystem.Colors.accentDanger
+            case .info: return DesignSystem.Colors.accentInfo
+            }
+        }
+    }
+    
+    var body: some View {
+        Text(text)
+            .font(DesignSystem.Typography.micro)
+            .fontWeight(.semibold)
+            .foregroundColor(style.foregroundColor)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .background(style.backgroundColor)
+            .cornerRadius(DesignSystem.CornerRadius.tight)
+    }
+}
+
+// MARK: - Toast Notification
+
+struct EditorToast: View {
+    let message: String
+    let type: ToastType
+    var action: (() -> Void)? = nil
+    var actionLabel: String = "Undo"
+    
+    enum ToastType {
+        case info, success, warning, error
+        
+        var icon: String {
+            switch self {
+            case .info: return "info.circle.fill"
+            case .success: return "checkmark.circle.fill"
+            case .warning: return "exclamationmark.triangle.fill"
+            case .error: return "xmark.circle.fill"
+            }
+        }
+        
+        var color: Color {
+            switch self {
+            case .info: return DesignSystem.Colors.accentInfo
+            case .success: return DesignSystem.Colors.accentSuccess
+            case .warning: return DesignSystem.Colors.accentWarning
+            case .error: return DesignSystem.Colors.accentDanger
+            }
+        }
+    }
+    
+    var body: some View {
+        HStack(spacing: DesignSystem.Spacing.sm) {
+            Image(systemName: type.icon)
+                .font(.system(size: 18))
+                .foregroundColor(type.color)
+            
+            Text(message)
+                .font(DesignSystem.Typography.body)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+            
+            Spacer()
+            
+            if let action = action {
+                Button(actionLabel) {
+                    action()
+                }
+                .font(DesignSystem.Typography.bodyBold)
+                .foregroundColor(DesignSystem.Colors.accentPrimary)
+            }
+        }
+        .padding(DesignSystem.Spacing.md)
+        .background(DesignSystem.Colors.backgroundFloating)
+        .cornerRadius(DesignSystem.CornerRadius.medium)
+        .overlay(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.medium)
+                .stroke(DesignSystem.Colors.border, lineWidth: 1)
+        )
+        .shadow(color: .black.opacity(0.2), radius: 16, x: 0, y: 8)
+    }
+}
+
+// MARK: - Tooltip
+
+struct EditorTooltip: View {
+    let text: String
+    
+    var body: some View {
+        Text(text)
+            .font(DesignSystem.Typography.caption)
+            .foregroundColor(DesignSystem.Colors.textPrimary)
+            .padding(.horizontal, DesignSystem.Spacing.xs)
+            .padding(.vertical, DesignSystem.Spacing.xxs)
+            .background(DesignSystem.Colors.backgroundFloating)
+            .cornerRadius(DesignSystem.CornerRadius.tight)
+            .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+    }
+}
+
+// MARK: - Color Picker Swatch
+
+struct EditorColorPicker: View {
+    @Binding var color: Color
+    @State private var showPicker = false
+    @State private var isHovered = false
+    
+    var body: some View {
+        Button(action: { showPicker.toggle() }) {
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.tight)
+                .fill(color)
+                .frame(width: 32, height: 24)
+                .overlay(
+                    RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.tight)
+                        .stroke(DesignSystem.Colors.border, lineWidth: 1)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.tight)
+                        .stroke(isHovered ? DesignSystem.Colors.borderStrong : .clear, lineWidth: 2)
+                )
+        }
+        .buttonStyle(.plain)
+        .onHover { isHovered = $0 }
+        .popover(isPresented: $showPicker) {
+            ColorPicker("", selection: $color)
+                .labelsHidden()
+                .padding()
+        }
+    }
+}
+
+// MARK: - Slider
+
+struct EditorSlider: View {
+    let label: String
+    @Binding var value: Double
+    let range: ClosedRange<Double>
+    var step: Double = 0.01
+    var showValue: Bool = true
+    
+    @State private var isDragging = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text(label)
+                    .font(DesignSystem.Typography.caption)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                
+                Spacer()
+                
+                if showValue {
+                    Text(String(format: "%.2f", value))
+                        .font(DesignSystem.Typography.mono)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                }
+            }
+            
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    // Track
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(DesignSystem.Colors.backgroundPrimary)
+                        .frame(height: 4)
+                    
+                    // Fill
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(DesignSystem.Colors.accentPrimary)
+                        .frame(width: geo.size.width * normalizedValue, height: 4)
+                    
+                    // Thumb
+                    Circle()
+                        .fill(Color.white)
+                        .frame(width: 16, height: 16)
+                        .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
+                        .offset(x: thumbOffset(in: geo.size.width))
+                        .scaleEffect(isDragging ? 1.2 : 1.0)
+                }
+                .gesture(
+                    DragGesture(minimumDistance: 0)
+                        .onChanged { gesture in
+                            isDragging = true
+                            let newValue = gesture.location.x / geo.size.width
+                            value = range.lowerBound + (range.upperBound - range.lowerBound) * max(0, min(1, newValue))
+                        }
+                        .onEnded { _ in
+                            isDragging = false
+                        }
+                )
+            }
+            .frame(height: 20)
+        }
+    }
+    
+    private var normalizedValue: Double {
+        (value - range.lowerBound) / (range.upperBound - range.lowerBound)
+    }
+    
+    private func thumbOffset(in width: CGFloat) -> CGFloat {
+        width * normalizedValue - 8
+    }
+}
+
+// MARK: - Segmented Control
+
+struct EditorSegmentedControl<T: Hashable>: View {
+    let options: [T]
+    @Binding var selected: T
+    let label: (T) -> String
+    
+    var body: some View {
+        HStack(spacing: 1) {
+            ForEach(options, id: \.self) { option in
+                SegmentButton(
+                    label: label(option),
+                    isSelected: selected == option
+                ) {
+                    withAnimation(DesignSystem.Animation.fast) {
+                        selected = option
+                    }
+                }
+            }
+        }
+        .background(DesignSystem.Colors.backgroundPrimary)
+        .cornerRadius(DesignSystem.CornerRadius.regular)
+        .overlay(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.regular)
+                .stroke(DesignSystem.Colors.border, lineWidth: 1)
+        )
+    }
+    
+    private struct SegmentButton: View {
+        let label: String
+        let isSelected: Bool
+        let action: () -> Void
+        
+        @State private var isHovered = false
+        
+        var body: some View {
+            Button(action: action) {
+                Text(label)
+                    .font(DesignSystem.Typography.small)
+                    .fontWeight(isSelected ? .semibold : .regular)
+                    .foregroundColor(isSelected ? DesignSystem.Colors.textPrimary : DesignSystem.Colors.textSecondary)
+                    .padding(.horizontal, DesignSystem.Spacing.sm)
+                    .padding(.vertical, DesignSystem.Spacing.xs)
+                    .background(isSelected ? DesignSystem.Colors.backgroundQuaternary : (isHovered ? DesignSystem.Colors.hover : Color.clear))
+            }
+            .buttonStyle(.plain)
+            .onHover { isHovered = $0 }
+        }
+    }
+}
+
+// MARK: - Tab Bar
+
+struct EditorTabBar<T: Hashable>: View {
+    let tabs: [T]
+    @Binding var selected: T
+    let label: (T) -> String
+    let icon: (T) -> String
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(tabs, id: \.self) { tab in
+                TabItem(
+                    label: label(tab),
+                    icon: icon(tab),
+                    isSelected: selected == tab
+                ) {
+                    withAnimation(DesignSystem.Animation.spring) {
+                        selected = tab
+                    }
+                }
+            }
+        }
+        .background(DesignSystem.Colors.backgroundSecondary)
+    }
+    
+    private struct TabItem: View {
+        let label: String
+        let icon: String
+        let isSelected: Bool
+        let action: () -> Void
+        
+        @State private var isHovered = false
+        
+        var body: some View {
+            Button(action: action) {
+                VStack(spacing: 4) {
+                    Image(systemName: icon)
+                        .font(.system(size: 16))
+                    Text(label)
+                        .font(DesignSystem.Typography.caption)
+                }
+                .foregroundColor(isSelected ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.textSecondary)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, DesignSystem.Spacing.xs)
+                .background(isHovered ? DesignSystem.Colors.hover : Color.clear)
+                .overlay(
+                    Rectangle()
+                        .fill(isSelected ? DesignSystem.Colors.accentPrimary : Color.clear)
+                        .frame(height: 2),
+                    alignment: .bottom
+                )
+            }
+            .buttonStyle(.plain)
+            .onHover { isHovered = $0 }
+        }
+    }
+}
+
+// MARK: - Stepper
+
+struct EditorStepper: View {
+    let label: String
+    @Binding var value: Int
+    let range: ClosedRange<Int>
+    
+    var body: some View {
+        HStack {
+            Text(label)
+                .font(DesignSystem.Typography.caption)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
+            
+            Spacer()
+            
+            HStack(spacing: 0) {
+                StepperButton(icon: "minus") {
+                    if value > range.lowerBound {
+                        value -= 1
+                    }
+                }
+                
+                Text("\(value)")
+                    .font(DesignSystem.Typography.mono)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                    .frame(minWidth: 32)
+                
+                StepperButton(icon: "plus") {
+                    if value < range.upperBound {
+                        value += 1
+                    }
+                }
+            }
+            .background(DesignSystem.Colors.backgroundTertiary)
+            .cornerRadius(DesignSystem.CornerRadius.tight)
+            .overlay(
+                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.tight)
+                    .stroke(DesignSystem.Colors.border, lineWidth: 1)
+            )
+        }
+    }
+    
+    private struct StepperButton: View {
+        let icon: String
+        let action: () -> Void
+        
+        @State private var isHovered = false
+        
+        var body: some View {
+            Button(action: action) {
+                Image(systemName: icon)
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                    .frame(width: 24, height: 24)
+                    .background(isHovered ? DesignSystem.Colors.hover : Color.clear)
+            }
+            .buttonStyle(.plain)
+            .onHover { isHovered = $0 }
+        }
+    }
+}
+
+// MARK: - Context Menu Item
+
+struct EditorContextMenuItem: View {
+    let title: String
+    let icon: String?
+    let shortcut: String?
+    let isDestructive: Bool
+    let action: () -> Void
+    
+    init(_ title: String, icon: String? = nil, shortcut: String? = nil, isDestructive: Bool = false, action: @escaping () -> Void) {
+        self.title = title
+        self.icon = icon
+        self.shortcut = shortcut
+        self.isDestructive = isDestructive
+        self.action = action
+    }
+    
+    @State private var isHovered = false
+    
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: DesignSystem.Spacing.sm) {
+                if let icon = icon {
+                    Image(systemName: icon)
+                        .font(.system(size: 14))
+                        .foregroundColor(iconColor)
+                        .frame(width: 20)
+                }
+                
+                Text(title)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(textColor)
+                
+                Spacer()
+                
+                if let shortcut = shortcut {
+                    Text(shortcut)
+                        .font(DesignSystem.Typography.caption)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+            }
+            .padding(.horizontal, DesignSystem.Spacing.sm)
+            .padding(.vertical, DesignSystem.Spacing.xs)
+            .background(isHovered ? DesignSystem.Colors.accentPrimary : Color.clear)
+            .cornerRadius(DesignSystem.CornerRadius.tight)
+        }
+        .buttonStyle(.plain)
+        .onHover { isHovered = $0 }
+    }
+    
+    private var textColor: Color {
+        if isHovered { return .white }
+        return isDestructive ? DesignSystem.Colors.accentDanger : DesignSystem.Colors.textPrimary
+    }
+    
+    private var iconColor: Color {
+        if isHovered { return .white }
+        return isDestructive ? DesignSystem.Colors.accentDanger : DesignSystem.Colors.textSecondary
+    }
+}
+
+// MARK: - Breadcrumb
+
+struct EditorBreadcrumb: View {
+    let items: [String]
+    let onTap: (Int) -> Void
+    
+    var body: some View {
+        HStack(spacing: 4) {
+            ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                if index > 0 {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 8, weight: .bold))
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                }
+                
+                BreadcrumbItem(
+                    text: item,
+                    isLast: index == items.count - 1
+                ) {
+                    onTap(index)
+                }
+            }
+        }
+    }
+    
+    private struct BreadcrumbItem: View {
+        let text: String
+        let isLast: Bool
+        let action: () -> Void
+        
+        @State private var isHovered = false
+        
+        var body: some View {
+            Button(action: action) {
+                Text(text)
+                    .font(DesignSystem.Typography.small)
+                    .foregroundColor(isLast ? DesignSystem.Colors.textPrimary : DesignSystem.Colors.textSecondary)
+                    .underline(isHovered && !isLast)
+            }
+            .buttonStyle(.plain)
+            .onHover { isHovered = $0 }
+            .disabled(isLast)
+        }
+    }
+}
+
+// MARK: - Empty State
+
+struct EditorEmptyState: View {
+    let icon: String
+    let title: String
+    let message: String
+    var actionLabel: String? = nil
+    var action: (() -> Void)? = nil
+    
+    var body: some View {
+        VStack(spacing: DesignSystem.Spacing.lg) {
+            Image(systemName: icon)
+                .font(.system(size: 48, weight: .light))
+                .foregroundColor(DesignSystem.Colors.textTertiary)
+            
+            VStack(spacing: DesignSystem.Spacing.xs) {
+                Text(title)
+                    .font(DesignSystem.Typography.headline)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Text(message)
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+            
+            if let actionLabel = actionLabel, let action = action {
+                EditorButton(actionLabel, icon: "plus", style: .primary, action: action)
+            }
+        }
+        .padding(DesignSystem.Spacing.xl)
+    }
+}
+
+// MARK: - Keyboard Shortcut Display
+
+struct EditorKeyboardShortcut: View {
+    let keys: [String]
+    
+    var body: some View {
+        HStack(spacing: 2) {
+            ForEach(Array(keys.enumerated()), id: \.offset) { _, key in
+                Text(key)
+                    .font(DesignSystem.Typography.micro)
+                    .fontWeight(.medium)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 2)
+                    .background(DesignSystem.Colors.backgroundQuaternary)
+                    .cornerRadius(3)
+            }
+        }
+    }
+}
+
+// MARK: - Avatar / Icon Circle
+
+struct EditorAvatar: View {
+    let initials: String
+    var color: Color = DesignSystem.Colors.accentPrimary
+    var size: CGFloat = 32
+    
+    var body: some View {
+        Text(initials.prefix(2).uppercased())
+            .font(.system(size: size * 0.4, weight: .semibold))
+            .foregroundColor(.white)
+            .frame(width: size, height: size)
+            .background(color)
+            .clipShape(Circle())
+    }
+}
+
+// MARK: - Status Indicator
+
+struct EditorStatusIndicator: View {
+    let status: Status
+    
+    enum Status {
+        case online, offline, busy, away
+        
+        var color: Color {
+            switch self {
+            case .online: return DesignSystem.Colors.accentSuccess
+            case .offline: return DesignSystem.Colors.textTertiary
+            case .busy: return DesignSystem.Colors.accentDanger
+            case .away: return DesignSystem.Colors.accentWarning
+            }
+        }
+    }
+    
+    var body: some View {
+        Circle()
+            .fill(status.color)
+            .frame(width: 8, height: 8)
+            .overlay(
+                Circle()
+                    .stroke(DesignSystem.Colors.backgroundSecondary, lineWidth: 2)
+            )
+    }
+}
+
+// MARK: - Resizable Handle
+
+struct EditorResizeHandle: View {
+    var axis: Axis = .horizontal
+    @State private var isHovered = false
+    
+    var body: some View {
+        Group {
+            if axis == .horizontal {
+                Rectangle()
+                    .fill(isHovered ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.border)
+                    .frame(width: 4)
+            } else {
+                Rectangle()
+                    .fill(isHovered ? DesignSystem.Colors.accentPrimary : DesignSystem.Colors.border)
+                    .frame(height: 4)
+            }
+        }
+        .contentShape(Rectangle())
+        .onHover { hovering in
+            isHovered = hovering
+            if axis == .horizontal {
+                if hovering { NSCursor.resizeLeftRight.push() }
+                else { NSCursor.pop() }
+            } else {
+                if hovering { NSCursor.resizeUpDown.push() }
+                else { NSCursor.pop() }
+            }
+        }
+    }
+}
+
+// MARK: - Spinner
+
+struct EditorSpinner: View {
+    var size: CGFloat = 20
+    var color: Color = DesignSystem.Colors.accentPrimary
+    @State private var rotation: Double = 0
+    
+    var body: some View {
+        Circle()
+            .trim(from: 0, to: 0.7)
+            .stroke(color, style: StrokeStyle(lineWidth: size / 8, lineCap: .round))
+            .frame(width: size, height: size)
+            .rotationEffect(.degrees(rotation))
+            .onAppear {
+                withAnimation(.linear(duration: 0.8).repeatForever(autoreverses: false)) {
+                    rotation = 360
+                }
+            }
+    }
+}

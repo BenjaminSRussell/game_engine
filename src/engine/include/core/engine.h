@@ -7,11 +7,11 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "core/types.h"
-#include "core/window.h"
 #include "core/config_loader.h"
 #include "core/gpu_acceleration.h" // Added for GPUBackend
-#include "engine/include/math/math_all.h"
+#include "core/types.h"
+#include "core/window.h"
+#include "math/math_all.h"
 
 // Forward declarations for engine subsystems
 typedef struct Engine Engine;
@@ -49,7 +49,7 @@ typedef struct {
   bool ray_tracing_enabled;
   f32 render_scale; // Resolution scale (0.5 - 2.0)
   f32 fov;
-  
+
   // Backend settings
   GPUBackend renderer_backend;
 

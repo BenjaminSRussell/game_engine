@@ -1,0 +1,7 @@
+module CVoxelForge {
+    header "voxelforge_bridge_clean.h"
+    export *
+    
+    link "Engine"
+    link "Game"
+}
