@@ -859,6 +859,21 @@ target_include_directories(test_network_lobby PRIVATE
 )
 add_test(NAME test_network_lobby COMMAND test_network_lobby)
 
+# Delta snapshots, ownership, relevancy, and snapshot ACKs.
+# Not add_engine_test: that macro links Engine, which does not build
+# (missing GLFW, then gpu_profiler.c). Compiles network_replication.c
+# directly and does not wrap RPC or entity-destroy payloads.
+add_executable(test_network_replication
+    tests/network_replication_test.c
+    src/engine/network/network_replication.c
+)
+target_include_directories(test_network_replication PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/engine/include
+    ${CMAKE_SOURCE_DIR}/src/engine
+    ${CMAKE_SOURCE_DIR}/src
+)
+add_test(NAME test_network_replication COMMAND test_network_replication)
+
 # ===========================================
 # G-Buffer & Deferred Rendering Tests
 # ===========================================

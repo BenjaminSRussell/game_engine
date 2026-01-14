@@ -1,20 +1,19 @@
 // network_replication.c - Network Replication System Implementation
-// TODO: REPLICATION - Implement delta compression for entity state updates
-// TODO: REPLICATION - Add entity prioritization based on relevance and distance
-// TODO: REPLICATION - Implement adaptive replication rate based on bandwidth
-// TODO: REPLICATION - Add replication for complex data types (arrays, structs)
-// TODO: REPLICATION - Implement replication conflict resolution
-#include <include/core/logger.h>
-#include <include/network/network_manager.h>
-#include <include/network/network_types.h>
-#include <stdlib.h>
+// Per-client delta snapshots, ownership, and distance relevancy.
+// network_server_* / network_client_send add the only PacketHeader.
+// Snapshot body byte 0 is flags. Entity destroy is a 4-byte id.
+#include "include/network/network_replication.h"
+#include "include/core/logger.h"
+#include "include/network/network_manager.h"
+#include "include/network/packet.h"
 #include <string.h>
 #include <time.h>
 
 #define MAX_REPLICATED_ENTITIES 1024
 #define MAX_REPLICATION_FIELDS 64
-#define REPLICATION_BUFFER_SIZE 8192
-#define SNAPSHOT_COMPRESSION_THRESHOLD 1024
+#define DEFAULT_RELEVANCY_DISTANCE 1000.0f
+#define MAX_CLIENT_TRACKING 64
+#define SNAPSHOT_BODY_PREFIX 7
 
 typedef struct {
   uint32_t entity_id;
@@ -23,17 +22,10 @@ typedef struct {
   uint8_t field_data[MAX_REPLICATION_FIELDS];
   bool changed;
   bool always_replicate;
+  uint32_t owner_id;
+  uint32_t version;
+  float position[3];
 } ReplicatedEntity;
-
-typedef struct {
-  uint32_t sequence_number;
-  uint32_t timestamp;
-  uint32_t entity_count;
-  ReplicatedEntity entities[MAX_REPLICATED_ENTITIES];
-  bool is_compressed;
-  uint32_t compressed_size;
-  uint8_t compressed_data[REPLICATION_BUFFER_SIZE];
-} ReplicationSnapshot;
 
 typedef struct {
   uint32_t entity_id;
@@ -43,444 +35,544 @@ typedef struct {
   bool is_new;
 } ClientEntityState;
 
+// known_versions advances only when that version's snapshot is ACKed.
+typedef struct {
+  uint32_t client_id;
+  bool active;
+  uint16_t last_sent_sequence;
+  uint16_t last_acked_sequence;
+  uint32_t known_versions[MAX_REPLICATED_ENTITIES];
+  uint32_t inflight_versions[MAX_REPLICATED_ENTITIES];
+  uint16_t inflight_sequences[MAX_REPLICATED_ENTITIES];
+} ReplicationClient;
+
 typedef struct {
   bool is_server;
   uint32_t replication_rate;
   bool compression_enabled;
   float replication_timer;
-
   uint32_t last_sequence_number;
-  ReplicationSnapshot last_snapshot;
-
   ReplicatedEntity server_entities[MAX_REPLICATED_ENTITIES];
   uint32_t server_entity_count;
-
+  ReplicationClient clients[MAX_CLIENT_TRACKING];
   ClientEntityState client_states[MAX_REPLICATED_ENTITIES];
   uint32_t client_state_count;
+  float relevancy_distance;
 } NetworkReplication;
 
-// Forward declarations
-void network_replication_server_update(void);
-void network_replication_client_update(void);
-void network_replication_create_snapshot(void);
-void network_replication_broadcast_snapshot(void);
-void network_replication_notify_destroy(uint32_t entity_id);
-void network_replication_compress_snapshot(ReplicationSnapshot *snapshot);
-bool network_replication_decompress_snapshot(ReplicationSnapshot *snapshot,
-                                             const uint8_t *compressed_data);
-void network_replication_apply_snapshot(const ReplicationSnapshot *snapshot);
-ClientEntityState *network_replication_get_client_state(uint32_t entity_id);
-ClientEntityState *network_replication_create_client_state(uint32_t entity_id);
-void network_replication_apply_entity_update(
-    ClientEntityState *client_state, const ReplicatedEntity *replicated_entity);
-
 static NetworkReplication g_replication = {0};
+
+static ReplicationClient *get_replication_client(uint32_t client_id);
+static void network_replication_notify_destroy(uint32_t entity_id);
+static void apply_replicated_entity(const ReplicatedEntity *entity,
+                                    uint16_t sequence, uint32_t timestamp);
+
+static uint32_t read_u32_be(const uint8_t *p) {
+  return ((uint32_t)p[0] << 24) | ((uint32_t)p[1] << 16) |
+         ((uint32_t)p[2] << 8) | (uint32_t)p[3];
+}
+
+static uint16_t read_u16_be(const uint8_t *p) {
+  return (uint16_t)(((uint16_t)p[0] << 8) | (uint16_t)p[1]);
+}
+
+static bool write_u8(uint8_t *buf, uint32_t cap, uint32_t *off, uint8_t v) {
+  if (*off + 1 > cap)
+    return false;
+  buf[(*off)++] = v;
+  return true;
+}
+
+static bool write_u16(uint8_t *buf, uint32_t cap, uint32_t *off, uint16_t v) {
+  if (*off + 2 > cap)
+    return false;
+  buf[(*off)++] = (uint8_t)((v >> 8) & 0xFF);
+  buf[(*off)++] = (uint8_t)(v & 0xFF);
+  return true;
+}
+
+static bool write_u32(uint8_t *buf, uint32_t cap, uint32_t *off, uint32_t v) {
+  if (*off + 4 > cap)
+    return false;
+  buf[(*off)++] = (uint8_t)((v >> 24) & 0xFF);
+  buf[(*off)++] = (uint8_t)((v >> 16) & 0xFF);
+  buf[(*off)++] = (uint8_t)((v >> 8) & 0xFF);
+  buf[(*off)++] = (uint8_t)(v & 0xFF);
+  return true;
+}
+
+static bool write_bytes(uint8_t *buf, uint32_t cap, uint32_t *off,
+                        const void *src, uint32_t n) {
+  if (*off + n > cap)
+    return false;
+  if (n > 0 && src)
+    memcpy(buf + *off, src, n);
+  *off += n;
+  return true;
+}
+
+static bool sequence_is_newer(uint16_t incoming, uint16_t prev) {
+  return incoming != prev && (uint16_t)(incoming - prev) < 32768;
+}
+
+static float dist_sq(const float a[3], const float b[3]) {
+  float dx = a[0] - b[0];
+  float dy = a[1] - b[1];
+  float dz = a[2] - b[2];
+  return dx * dx + dy * dy + dz * dz;
+}
+
+static ReplicationClient *get_replication_client(uint32_t client_id) {
+  for (uint32_t i = 0; i < MAX_CLIENT_TRACKING; i++) {
+    if (g_replication.clients[i].active &&
+        g_replication.clients[i].client_id == client_id) {
+      return &g_replication.clients[i];
+    }
+  }
+
+  for (uint32_t i = 0; i < MAX_CLIENT_TRACKING; i++) {
+    if (!g_replication.clients[i].active) {
+      memset(&g_replication.clients[i], 0, sizeof(g_replication.clients[i]));
+      g_replication.clients[i].active = true;
+      g_replication.clients[i].client_id = client_id;
+      return &g_replication.clients[i];
+    }
+  }
+
+  return NULL;
+}
+
+static void clear_client_slot(uint32_t index) {
+  for (uint32_t c = 0; c < MAX_CLIENT_TRACKING; c++) {
+    g_replication.clients[c].known_versions[index] = 0;
+    g_replication.clients[c].inflight_versions[index] = 0;
+    g_replication.clients[c].inflight_sequences[index] = 0;
+  }
+}
+
+static void move_client_slot(uint32_t dst, uint32_t src) {
+  for (uint32_t c = 0; c < MAX_CLIENT_TRACKING; c++) {
+    ReplicationClient *client = &g_replication.clients[c];
+    client->known_versions[dst] = client->known_versions[src];
+    client->inflight_versions[dst] = client->inflight_versions[src];
+    client->inflight_sequences[dst] = client->inflight_sequences[src];
+  }
+  clear_client_slot(src);
+}
+
+static void client_view_position(uint32_t client_id, float out[3]) {
+  out[0] = 0.0f;
+  out[1] = 0.0f;
+  out[2] = 0.0f;
+  if (client_id == 0)
+    return;
+
+  for (uint32_t i = 0; i < g_replication.server_entity_count; i++) {
+    ReplicatedEntity *entity = &g_replication.server_entities[i];
+    if (entity->owner_id == client_id) {
+      out[0] = entity->position[0];
+      out[1] = entity->position[1];
+      out[2] = entity->position[2];
+      return;
+    }
+  }
+}
+
+static bool entity_is_relevant(const ReplicatedEntity *entity,
+                               const float client_pos[3]) {
+  float limit;
+  if (entity->always_replicate)
+    return true;
+  limit = g_replication.relevancy_distance;
+  return dist_sq(entity->position, client_pos) <= limit * limit;
+}
+
+static bool write_entity_record(uint8_t *buf, uint32_t cap, uint32_t *off,
+                                const ReplicatedEntity *entity) {
+  uint32_t start = *off;
+  uint16_t data_size = entity->data_size;
+  if (data_size > MAX_REPLICATION_FIELDS)
+    data_size = MAX_REPLICATION_FIELDS;
+
+  if (!write_u32(buf, cap, off, entity->entity_id) ||
+      !write_u32(buf, cap, off, entity->owner_id) ||
+      !write_u32(buf, cap, off, entity->version) ||
+      !write_bytes(buf, cap, off, entity->position, sizeof(entity->position)) ||
+      !write_u32(buf, cap, off, entity->field_mask) ||
+      !write_u16(buf, cap, off, data_size) ||
+      (data_size > 0 &&
+       !write_bytes(buf, cap, off, entity->field_data, data_size))) {
+    *off = start;
+    return false;
+  }
+  return true;
+}
+
+static bool decode_entity_record(const uint8_t *data, uint32_t size,
+                                 ReplicatedEntity *out, uint32_t *consumed) {
+  uint16_t data_size;
+  if (size < 30)
+    return false;
+
+  memset(out, 0, sizeof(*out));
+  out->entity_id = read_u32_be(data);
+  out->owner_id = read_u32_be(data + 4);
+  out->version = read_u32_be(data + 8);
+  memcpy(out->position, data + 12, sizeof(out->position));
+  out->field_mask = read_u32_be(data + 24);
+  data_size = read_u16_be(data + 28);
+  if (data_size > MAX_REPLICATION_FIELDS)
+    return false;
+  if (size < 30u + data_size)
+    return false;
+  out->data_size = data_size;
+  if (data_size > 0)
+    memcpy(out->field_data, data + 30, data_size);
+  *consumed = 30u + data_size;
+  return true;
+}
 
 bool network_replication_init(bool is_server, uint32_t replication_rate,
                               bool enable_compression) {
   memset(&g_replication, 0, sizeof(NetworkReplication));
-
   g_replication.is_server = is_server;
   g_replication.replication_rate = replication_rate;
   g_replication.compression_enabled = enable_compression;
-  g_replication.replication_timer = 0.0f;
+  g_replication.relevancy_distance = DEFAULT_RELEVANCY_DISTANCE;
 
-  LOG_INFO(
-      "Network replication initialized (server: %s, rate: %u, compression: %s)",
-      is_server ? "yes" : "no", replication_rate,
-      enable_compression ? "yes" : "no");
-
+  LOG_INFO_CAT(LOG_CAT_NETWORK,
+               "Network replication initialized (server: %s, rate: %u, "
+               "compression: %s)",
+               is_server ? "yes" : "no", replication_rate,
+               enable_compression ? "yes" : "no");
   return true;
 }
 
 void network_replication_shutdown(void) {
   memset(&g_replication, 0, sizeof(NetworkReplication));
-  LOG_INFO("Network replication shutdown");
+  LOG_INFO_CAT(LOG_CAT_NETWORK, "Network replication shutdown");
 }
 
-void network_replication_update(float delta_time) {
-  g_replication.replication_timer += delta_time;
+void network_replication_server_update(void) {
+  uint32_t client_ids[MAX_CLIENTS];
+  int client_count;
+  uint16_t sequence;
+  uint32_t timestamp;
+  uint32_t payload_cap;
+  static uint8_t payload[MAX_PACKET_SIZE];
+  bool used[MAX_CLIENT_TRACKING];
 
-  if (g_replication.replication_timer >=
-      1.0f / g_replication.replication_rate) {
-    if (g_replication.is_server) {
-      network_replication_server_update();
-    } else {
-      network_replication_client_update();
+  if (!g_replication.is_server)
+    return;
+
+  client_count = network_server_get_clients(client_ids, MAX_CLIENTS);
+  if (client_count <= 0) {
+    for (uint32_t i = 0; i < MAX_CLIENT_TRACKING; i++)
+      g_replication.clients[i].active = false;
+    return;
+  }
+
+  g_replication.last_sequence_number++;
+  sequence = (uint16_t)g_replication.last_sequence_number;
+  timestamp = (uint32_t)time(NULL);
+  payload_cap = MAX_PACKET_SIZE - (uint32_t)sizeof(PacketHeader);
+  memset(used, 0, sizeof(used));
+
+  for (int c = 0; c < client_count; c++) {
+    uint32_t client_id = client_ids[c];
+    ReplicationClient *rep_client = get_replication_client(client_id);
+    float client_pos[3];
+    uint32_t off = 0;
+    bool any = false;
+    uint32_t slot;
+
+    if (!rep_client)
+      continue;
+
+    slot = (uint32_t)(rep_client - g_replication.clients);
+    if (slot < MAX_CLIENT_TRACKING)
+      used[slot] = true;
+
+    client_view_position(client_id, client_pos);
+    if (!write_u8(payload, payload_cap, &off,
+                  g_replication.compression_enabled ? 0x01 : 0x00) ||
+        !write_u16(payload, payload_cap, &off, sequence) ||
+        !write_u32(payload, payload_cap, &off, timestamp)) {
+      continue;
     }
+
+    for (uint32_t i = 0; i < g_replication.server_entity_count; i++) {
+      ReplicatedEntity *entity = &g_replication.server_entities[i];
+      if (!entity_is_relevant(entity, client_pos))
+        continue;
+      if (entity->version <= rep_client->known_versions[i])
+        continue;
+      if (!write_entity_record(payload, payload_cap, &off, entity))
+        break;
+      rep_client->inflight_versions[i] = entity->version;
+      rep_client->inflight_sequences[i] = sequence;
+      any = true;
+    }
+
+    if (!any)
+      continue;
+
+    rep_client->last_sent_sequence = sequence;
+    network_server_send_to_client(client_id, PACKET_TYPE_SNAPSHOT, payload, off);
+    LOG_DEBUG_CAT(LOG_CAT_NETWORK,
+                  "Sent snapshot %u to client %u (%u bytes)", sequence,
+                  client_id, off);
+  }
+
+  for (uint32_t i = 0; i < MAX_CLIENT_TRACKING; i++) {
+    if (!used[i])
+      g_replication.clients[i].active = false;
+  }
+}
+
+void network_replication_client_update(void) {}
+
+void network_replication_update(float delta_time) {
+  float interval;
+
+  if (g_replication.replication_rate == 0)
+    return;
+
+  g_replication.replication_timer += delta_time;
+  interval = 1.0f / (float)g_replication.replication_rate;
+  if (g_replication.replication_timer >= interval) {
+    if (g_replication.is_server)
+      network_replication_server_update();
+    else
+      network_replication_client_update();
     g_replication.replication_timer = 0.0f;
   }
 }
 
-void network_replication_server_update(void) {
-  // Create snapshot of current server state
-  network_replication_create_snapshot();
-
-  // Send snapshot to all clients
-  network_replication_broadcast_snapshot();
+void network_replication_set_relevancy_distance(float distance) {
+  g_replication.relevancy_distance = distance;
 }
 
-void network_replication_client_update(void) {
-  // Receive and process snapshots from server
-  // This would be called when packets are received
-}
-
-void network_replication_create_snapshot(void) {
+void network_replication_set_entity_position(uint32_t entity_id, float x,
+                                             float y, float z) {
   if (!g_replication.is_server)
     return;
 
-  ReplicationSnapshot *snapshot = &g_replication.last_snapshot;
-  memset(snapshot, 0, sizeof(ReplicationSnapshot));
-
-  snapshot->sequence_number = ++g_replication.last_sequence_number;
-  snapshot->timestamp = (uint32_t)(time(NULL) * 1000);
-  snapshot->entity_count = 0;
-
-  // Collect changed entities
   for (uint32_t i = 0; i < g_replication.server_entity_count; i++) {
     ReplicatedEntity *entity = &g_replication.server_entities[i];
-
-    if (entity->changed || entity->always_replicate) {
-      snapshot->entities[snapshot->entity_count++] = *entity;
-      entity->changed = false;
+    if (entity->entity_id != entity_id)
+      continue;
+    if (entity->position[0] == x && entity->position[1] == y &&
+        entity->position[2] == z) {
+      return;
     }
-  }
-
-  // Compress snapshot if enabled and large enough
-  if (g_replication.compression_enabled && snapshot->entity_count > 0) {
-    network_replication_compress_snapshot(snapshot);
-  }
-
-  LOG_DEBUG("Created replication snapshot %u with %u entities",
-            snapshot->sequence_number, snapshot->entity_count);
-}
-
-void network_replication_compress_snapshot(ReplicationSnapshot *snapshot) {
-  if (!snapshot || snapshot->entity_count == 0)
+    entity->position[0] = x;
+    entity->position[1] = y;
+    entity->position[2] = z;
+    entity->changed = true;
+    entity->version++;
     return;
-
-  // Simple run-length encoding compression
-  uint8_t *compressed_data = snapshot->compressed_data;
-  uint32_t compressed_size = 0;
-
-  for (uint32_t i = 0; i < snapshot->entity_count; i++) {
-    ReplicatedEntity *entity = &snapshot->entities[i];
-
-    // Write entity ID
-    compressed_data[compressed_size++] = (entity->entity_id >> 24) & 0xFF;
-    compressed_data[compressed_size++] = (entity->entity_id >> 16) & 0xFF;
-    compressed_data[compressed_size++] = (entity->entity_id >> 8) & 0xFF;
-    compressed_data[compressed_size++] = entity->entity_id & 0xFF;
-
-    // Write field mask
-    compressed_data[compressed_size++] = (entity->field_mask >> 24) & 0xFF;
-    compressed_data[compressed_size++] = (entity->field_mask >> 16) & 0xFF;
-    compressed_data[compressed_size++] = (entity->field_mask >> 8) & 0xFF;
-    compressed_data[compressed_size++] = entity->field_mask & 0xFF;
-
-    // Write data size
-    compressed_data[compressed_size++] = (entity->data_size >> 8) & 0xFF;
-    compressed_data[compressed_size++] = entity->data_size & 0xFF;
-
-    // Write field data
-    if (entity->data_size > 0 && entity->data_size <= MAX_REPLICATION_FIELDS) {
-      memcpy(&compressed_data[compressed_size], entity->field_data,
-             entity->data_size);
-      compressed_size += entity->data_size;
-    }
   }
-
-  snapshot->compressed_size = compressed_size;
-  snapshot->is_compressed = (compressed_size < REPLICATION_BUFFER_SIZE);
-
-  LOG_DEBUG("Compressed snapshot from %u entities to %u bytes",
-            snapshot->entity_count, compressed_size);
 }
 
-void network_replication_broadcast_snapshot(void) {
+void network_replication_set_owner(uint32_t entity_id, uint32_t client_id) {
   if (!g_replication.is_server)
     return;
 
-  ReplicationSnapshot *snapshot = &g_replication.last_snapshot;
+  for (uint32_t i = 0; i < g_replication.server_entity_count; i++) {
+    ReplicatedEntity *entity = &g_replication.server_entities[i];
+    if (entity->entity_id != entity_id)
+      continue;
+    if (entity->owner_id == client_id)
+      return;
+    entity->owner_id = client_id;
+    entity->changed = true;
+    entity->version++;
+    return;
+  }
+}
 
-  // Create packet
-  uint8_t packet_data[REPLICATION_BUFFER_SIZE];
-  uint32_t packet_size = 0;
-
-  // Write packet header
-  PacketHeader header = {.type = PACKET_TYPE_SNAPSHOT,
-                         .flags = snapshot->is_compressed ? 0x01 : 0x00,
-                         .sequence = (uint16_t)snapshot->sequence_number,
-                         .timestamp = snapshot->timestamp,
-                         .data_size = (uint16_t)snapshot->compressed_size};
-
-  memcpy(&packet_data[packet_size], &header, sizeof(PacketHeader));
-  packet_size += sizeof(PacketHeader);
-
-  // Write snapshot data
-  if (snapshot->is_compressed) {
-    memcpy(&packet_data[packet_size], snapshot->compressed_data,
-           snapshot->compressed_size);
-    packet_size += snapshot->compressed_size;
+uint32_t network_replication_get_owner(uint32_t entity_id) {
+  if (g_replication.is_server) {
+    for (uint32_t i = 0; i < g_replication.server_entity_count; i++) {
+      if (g_replication.server_entities[i].entity_id == entity_id)
+        return g_replication.server_entities[i].owner_id;
+    }
   } else {
-    // Write uncompressed entities
-    for (uint32_t i = 0; i < snapshot->entity_count; i++) {
-      ReplicatedEntity *entity = &snapshot->entities[i];
+    ClientEntityState *state = NULL;
+    for (uint32_t i = 0; i < g_replication.client_state_count; i++) {
+      if (g_replication.client_states[i].entity_id == entity_id) {
+        state = &g_replication.client_states[i];
+        break;
+      }
+    }
+    if (state)
+      return state->last_state.owner_id;
+  }
+  return 0;
+}
 
-      memcpy(&packet_data[packet_size], entity, sizeof(ReplicatedEntity));
-      packet_size += sizeof(ReplicatedEntity);
+void network_replication_process_ack(uint32_t client_id, uint16_t sequence) {
+  ReplicationClient *rep_client;
+
+  if (!g_replication.is_server)
+    return;
+
+  rep_client = get_replication_client(client_id);
+  if (!rep_client)
+    return;
+
+  rep_client->last_acked_sequence = sequence;
+  for (uint32_t i = 0; i < MAX_REPLICATED_ENTITIES; i++) {
+    if (rep_client->inflight_sequences[i] != sequence)
+      continue;
+    if (rep_client->inflight_versions[i] > rep_client->known_versions[i])
+      rep_client->known_versions[i] = rep_client->inflight_versions[i];
+  }
+}
+
+static void apply_replicated_entity(const ReplicatedEntity *entity,
+                                    uint16_t sequence, uint32_t timestamp) {
+  ClientEntityState *client_state = NULL;
+  bool newer;
+
+  for (uint32_t i = 0; i < g_replication.client_state_count; i++) {
+    if (g_replication.client_states[i].entity_id == entity->entity_id) {
+      client_state = &g_replication.client_states[i];
+      break;
     }
   }
 
-  // Send packet to all clients
-  network_server_broadcast(PACKET_TYPE_SNAPSHOT, packet_data, packet_size);
+  if (!client_state) {
+    if (g_replication.client_state_count >= MAX_REPLICATED_ENTITIES) {
+      LOG_WARN_CAT(LOG_CAT_NETWORK,
+                   "Client state array full, cannot create state for entity %u",
+                   entity->entity_id);
+      return;
+    }
+    client_state =
+        &g_replication.client_states[g_replication.client_state_count++];
+    memset(client_state, 0, sizeof(*client_state));
+    client_state->entity_id = entity->entity_id;
+    client_state->is_new = true;
+  }
 
-  LOG_DEBUG("Broadcasted snapshot %u (%u bytes) to all clients",
-            snapshot->sequence_number, packet_size);
+  newer = client_state->is_new ||
+          sequence_is_newer(sequence, (uint16_t)client_state->last_sequence);
+  if (!newer)
+    return;
+
+  client_state->is_new = false;
+  client_state->last_sequence = sequence;
+  client_state->last_timestamp = timestamp;
+  client_state->last_state = *entity;
+  LOG_DEBUG_CAT(LOG_CAT_NETWORK, "Entity %u updated (ver: %u, owner: %u)",
+                entity->entity_id, entity->version, entity->owner_id);
 }
 
 bool network_replication_process_snapshot(const uint8_t *packet_data,
                                           uint32_t packet_size) {
-  if (!packet_data || packet_size < sizeof(PacketHeader)) {
-    LOG_ERROR("Invalid snapshot packet data");
-    return false;
-  }
-
-  // Read packet header
   PacketHeader header;
-  memcpy(&header, packet_data, sizeof(PacketHeader));
+  const uint8_t *body;
+  uint32_t body_size;
+  uint8_t flags;
+  uint16_t sequence;
+  uint32_t timestamp;
+  uint32_t off;
+  ReplicatedEntity decoded[64];
+  uint32_t count = 0;
 
-  if (header.type != PACKET_TYPE_SNAPSHOT) {
-    LOG_ERROR("Packet is not a snapshot packet");
+  if (!packet_data || packet_size < sizeof(PacketHeader) + SNAPSHOT_BODY_PREFIX) {
+    LOG_ERROR_CAT(LOG_CAT_NETWORK, "Invalid snapshot packet data");
     return false;
   }
 
-  ReplicationSnapshot snapshot;
-  memset(&snapshot, 0, sizeof(ReplicationSnapshot));
+  memcpy(&header, packet_data, sizeof(PacketHeader));
+  if (header.type != PACKET_TYPE_SNAPSHOT) {
+    LOG_ERROR_CAT(LOG_CAT_NETWORK, "Packet is not a snapshot packet");
+    return false;
+  }
 
-  snapshot.sequence_number = header.sequence;
-  snapshot.timestamp = header.timestamp;
-  snapshot.is_compressed = (header.flags & 0x01) != 0;
-  snapshot.compressed_size = header.data_size;
+  body = packet_data + sizeof(PacketHeader);
+  body_size = packet_size - (uint32_t)sizeof(PacketHeader);
+  flags = body[0];
+  sequence = read_u16_be(body + 1);
+  timestamp = read_u32_be(body + 3);
+  off = SNAPSHOT_BODY_PREFIX;
 
-  const uint8_t *data_ptr = packet_data + sizeof(PacketHeader);
-
-  if (snapshot.is_compressed) {
-    // Decompress snapshot
-    if (!network_replication_decompress_snapshot(&snapshot, data_ptr)) {
-      LOG_ERROR("Failed to decompress snapshot %u", snapshot.sequence_number);
+  while (off < body_size) {
+    uint32_t consumed = 0;
+    if (count >= 64 ||
+        !decode_entity_record(body + off, body_size - off, &decoded[count],
+                              &consumed)) {
+      LOG_ERROR_CAT(LOG_CAT_NETWORK, "Failed to decode snapshot %u", sequence);
       return false;
     }
-  } else {
-    // Read uncompressed entities
-    snapshot.entity_count =
-        (packet_size - sizeof(PacketHeader)) / sizeof(ReplicatedEntity);
-
-    for (uint32_t i = 0; i < snapshot.entity_count; i++) {
-      memcpy(&snapshot.entities[i], data_ptr, sizeof(ReplicatedEntity));
-      data_ptr += sizeof(ReplicatedEntity);
-    }
+    off += consumed;
+    count++;
   }
 
-  // Apply snapshot to client state
-  network_replication_apply_snapshot(&snapshot);
+  for (uint32_t i = 0; i < count; i++)
+    apply_replicated_entity(&decoded[i], sequence, timestamp);
 
-  LOG_DEBUG("Processed snapshot %u with %u entities", snapshot.sequence_number,
-            snapshot.entity_count);
+  if (!g_replication.is_server) {
+    uint8_t ack[2];
+    ack[0] = (uint8_t)((sequence >> 8) & 0xFF);
+    ack[1] = (uint8_t)(sequence & 0xFF);
+    network_client_send(PACKET_TYPE_SNAPSHOT_ACK, ack, 2);
+  }
 
+  LOG_DEBUG_CAT(LOG_CAT_NETWORK,
+                "Processed snapshot %u with %u entities (flags 0x%02X)",
+                sequence, count, flags);
   return true;
 }
 
-bool network_replication_process_destroy(const uint8_t *packet_data, uint32_t packet_size) {
-  if (!packet_data || packet_size < sizeof(PacketHeader) + 4) {
+bool network_replication_process_destroy(const uint8_t *packet_data,
+                                         uint32_t packet_size) {
+  const uint8_t *data;
+  uint32_t entity_id;
+
+  if (!packet_data || packet_size < sizeof(PacketHeader) + 4)
     return false;
-  }
 
-  // Skip header
-  const uint8_t *data = packet_data + sizeof(PacketHeader);
+  data = packet_data + sizeof(PacketHeader);
+  entity_id = read_u32_be(data);
 
-  uint32_t entity_id = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-
-  // Remove from client states
   for (uint32_t i = 0; i < g_replication.client_state_count; i++) {
-    if (g_replication.client_states[i].entity_id == entity_id) {
-      // Remove
-      if (i < g_replication.client_state_count - 1) {
-        g_replication.client_states[i] =
-            g_replication.client_states[g_replication.client_state_count - 1];
-      }
-      g_replication.client_state_count--;
-      LOG_DEBUG("Processed destroy for entity %u", entity_id);
-      return true;
+    if (g_replication.client_states[i].entity_id != entity_id)
+      continue;
+    if (i < g_replication.client_state_count - 1) {
+      g_replication.client_states[i] =
+          g_replication.client_states[g_replication.client_state_count - 1];
     }
+    g_replication.client_state_count--;
+    LOG_DEBUG_CAT(LOG_CAT_NETWORK, "Processed destroy for entity %u", entity_id);
+    return true;
   }
 
   return false;
 }
 
-bool network_replication_decompress_snapshot(ReplicationSnapshot *snapshot,
-                                             const uint8_t *compressed_data) {
-  if (!snapshot || !compressed_data)
-    return false;
-
-  uint8_t *decompressed_data =
-      (uint8_t *)malloc(MAX_REPLICATED_ENTITIES * sizeof(ReplicatedEntity));
-  if (!decompressed_data) {
-    LOG_ERROR("Failed to allocate memory for decompression");
-    return false;
-  }
-
-  uint32_t decompressed_size = 0;
-  const uint8_t *read_ptr = compressed_data;
-
-  while (read_ptr < compressed_data + snapshot->compressed_size) {
-    if (decompressed_size >=
-        MAX_REPLICATED_ENTITIES * sizeof(ReplicatedEntity)) {
-      LOG_WARN("Decompression buffer overflow");
-      break;
-    }
-
-    ReplicatedEntity *entity =
-        (ReplicatedEntity *)&decompressed_data[decompressed_size];
-
-    // Read entity ID
-    entity->entity_id = (read_ptr[0] << 24) | (read_ptr[1] << 16) |
-                        (read_ptr[2] << 8) | read_ptr[3];
-    read_ptr += 4;
-
-    // Read field mask
-    entity->field_mask = (read_ptr[0] << 24) | (read_ptr[1] << 16) |
-                         (read_ptr[2] << 8) | read_ptr[3];
-    read_ptr += 4;
-
-    // Read data size
-    entity->data_size = (read_ptr[0] << 8) | read_ptr[1];
-    read_ptr += 2;
-
-    // Read field data
-    if (entity->data_size > 0 && entity->data_size <= MAX_REPLICATION_FIELDS) {
-      memcpy(entity->field_data, read_ptr, entity->data_size);
-      read_ptr += entity->data_size;
-    }
-
-    decompressed_size += sizeof(ReplicatedEntity);
-    snapshot->entity_count++;
-  }
-
-  // Copy decompressed entities to snapshot
-  for (uint32_t i = 0; i < snapshot->entity_count; i++) {
-    snapshot->entities[i] = ((ReplicatedEntity *)decompressed_data)[i];
-  }
-
-  free(decompressed_data);
-
-  LOG_DEBUG("Decompressed snapshot to %u entities", snapshot->entity_count);
-  return true;
-}
-
-void network_replication_apply_snapshot(const ReplicationSnapshot *snapshot) {
-  if (!snapshot)
-    return;
-
-  for (uint32_t i = 0; i < snapshot->entity_count; i++) {
-    const ReplicatedEntity *replicated_entity = &snapshot->entities[i];
-
-    // Find or create client state for this entity
-    ClientEntityState *client_state =
-        network_replication_get_client_state(replicated_entity->entity_id);
-
-    if (!client_state) {
-      // New entity, create client state
-      client_state =
-          network_replication_create_client_state(replicated_entity->entity_id);
-    }
-
-    if (client_state) {
-      // Check if this is newer than what we have
-      if (snapshot->sequence_number > client_state->last_sequence) {
-        // Apply the update
-        network_replication_apply_entity_update(client_state,
-                                                replicated_entity);
-
-        client_state->last_sequence = snapshot->sequence_number;
-        client_state->last_timestamp = snapshot->timestamp;
-        client_state->last_state = *replicated_entity;
-      }
-    }
-  }
-}
-
-ClientEntityState *network_replication_get_client_state(uint32_t entity_id) {
-  for (uint32_t i = 0; i < g_replication.client_state_count; i++) {
-    if (g_replication.client_states[i].entity_id == entity_id) {
-      return &g_replication.client_states[i];
-    }
-  }
-  return NULL;
-}
-
-ClientEntityState *network_replication_create_client_state(uint32_t entity_id) {
-  if (g_replication.client_state_count >= MAX_REPLICATED_ENTITIES) {
-    LOG_WARN("Client state array full, cannot create state for entity %u",
-             entity_id);
-    return NULL;
-  }
-
-  ClientEntityState *state =
-      &g_replication.client_states[g_replication.client_state_count++];
-  memset(state, 0, sizeof(ClientEntityState));
-
-  state->entity_id = entity_id;
-  state->last_sequence = 0;
-  state->last_timestamp = 0;
-  state->is_new = true;
-
-  LOG_DEBUG("Created client state for entity %u", entity_id);
-  return state;
-}
-
-void network_replication_apply_entity_update(
-    ClientEntityState *client_state,
-    const ReplicatedEntity *replicated_entity) {
-  if (!client_state || !replicated_entity)
-    return;
-
-  // Apply field updates based on field mask
-  uint32_t field_mask = replicated_entity->field_mask;
-
-  // This would integrate with the actual entity system
-  // For now, we'll just log the update
-  LOG_DEBUG("Applying update to entity %u (mask: 0x%08X, size: %u)",
-            replicated_entity->entity_id, field_mask,
-            replicated_entity->data_size);
-
-  // Mark entity as no longer new
-  if (client_state->is_new) {
-    client_state->is_new = false;
-    LOG_DEBUG("Entity %u is no longer new", replicated_entity->entity_id);
-  }
-}
-
 uint32_t network_replication_add_entity(uint32_t entity_id,
                                         bool always_replicate) {
+  ReplicatedEntity *entity;
+
   if (!g_replication.is_server ||
       g_replication.server_entity_count >= MAX_REPLICATED_ENTITIES) {
     return 0;
   }
 
-  ReplicatedEntity *entity =
-      &g_replication.server_entities[g_replication.server_entity_count++];
-  memset(entity, 0, sizeof(ReplicatedEntity));
-
+  entity = &g_replication.server_entities[g_replication.server_entity_count++];
+  memset(entity, 0, sizeof(*entity));
   entity->entity_id = entity_id;
-  entity->field_mask = 0;
-  entity->data_size = 0;
-  entity->changed = true;
   entity->always_replicate = always_replicate;
+  entity->changed = true;
+  entity->version = 1;
 
-  LOG_DEBUG("Added entity %u to replication (always_replicate: %s)", entity_id,
-            always_replicate ? "yes" : "no");
-
+  LOG_DEBUG_CAT(LOG_CAT_NETWORK,
+                "Added entity %u to replication (always_replicate: %s)",
+                entity_id, always_replicate ? "yes" : "no");
   return g_replication.server_entity_count;
 }
 
@@ -488,42 +580,39 @@ void network_replication_remove_entity(uint32_t entity_id) {
   if (!g_replication.is_server)
     return;
 
-  // Notify clients about destruction before removing
   network_replication_notify_destroy(entity_id);
 
-  // Find and remove entity
   for (uint32_t i = 0; i < g_replication.server_entity_count; i++) {
-    if (g_replication.server_entities[i].entity_id == entity_id) {
-      // Move last entity to this position
-      if (i < g_replication.server_entity_count - 1) {
-        g_replication.server_entities[i] =
-            g_replication
-                .server_entities[g_replication.server_entity_count - 1];
-      }
-      g_replication.server_entity_count--;
+    uint32_t last;
+    if (g_replication.server_entities[i].entity_id != entity_id)
+      continue;
 
-      LOG_DEBUG("Removed entity %u from replication", entity_id);
-      return;
+    last = g_replication.server_entity_count - 1;
+    if (i < last) {
+      g_replication.server_entities[i] = g_replication.server_entities[last];
+      move_client_slot(i, last);
+    } else {
+      clear_client_slot(i);
     }
+    g_replication.server_entity_count--;
+    LOG_DEBUG_CAT(LOG_CAT_NETWORK, "Removed entity %u from replication",
+                  entity_id);
+    return;
   }
 }
 
-void network_replication_notify_destroy(uint32_t entity_id) {
+static void network_replication_notify_destroy(uint32_t entity_id) {
+  uint8_t data[4];
+
   if (!g_replication.is_server)
     return;
 
-  uint8_t data[4];
-  data[0] = (entity_id >> 24) & 0xFF;
-  data[1] = (entity_id >> 16) & 0xFF;
-  data[2] = (entity_id >> 8) & 0xFF;
-  data[3] = entity_id & 0xFF;
-
-  // Header is handled by network_server_broadcast if using Packet logic?
-  // network_server_broadcast takes (Type, Data, Size).
-  // It builds the packet.
-
+  data[0] = (uint8_t)((entity_id >> 24) & 0xFF);
+  data[1] = (uint8_t)((entity_id >> 16) & 0xFF);
+  data[2] = (uint8_t)((entity_id >> 8) & 0xFF);
+  data[3] = (uint8_t)(entity_id & 0xFF);
   network_server_broadcast(PACKET_TYPE_ENTITY_DESTROY, data, 4);
-  LOG_DEBUG("Broadcasted destroy for entity %u", entity_id);
+  LOG_DEBUG_CAT(LOG_CAT_NETWORK, "Broadcasted destroy for entity %u", entity_id);
 }
 
 void network_replication_update_entity(uint32_t entity_id, uint32_t field_mask,
@@ -532,37 +621,37 @@ void network_replication_update_entity(uint32_t entity_id, uint32_t field_mask,
   if (!g_replication.is_server)
     return;
 
-  // Find entity
   for (uint32_t i = 0; i < g_replication.server_entity_count; i++) {
     ReplicatedEntity *entity = &g_replication.server_entities[i];
+    if (entity->entity_id != entity_id)
+      continue;
 
-    if (entity->entity_id == entity_id) {
-      entity->field_mask |= field_mask;
-
-      if (field_data && data_size > 0 && data_size <= MAX_REPLICATION_FIELDS) {
-        memcpy(entity->field_data, field_data, data_size);
-        entity->data_size = data_size;
-      }
-
-      entity->changed = true;
-
-      LOG_DEBUG("Updated entity %u (mask: 0x%08X, size: %u)", entity_id,
-                field_mask, data_size);
-      return;
+    entity->field_mask |= field_mask;
+    if (field_data && data_size > 0 && data_size <= MAX_REPLICATION_FIELDS) {
+      memcpy(entity->field_data, field_data, data_size);
+      entity->data_size = data_size;
     }
+    entity->changed = true;
+    entity->version++;
+    LOG_DEBUG_CAT(LOG_CAT_NETWORK,
+                  "Updated entity %u (mask: 0x%08X, size: %u)", entity_id,
+                  field_mask, data_size);
+    return;
   }
 
-  LOG_WARN("Entity %u not found for replication update", entity_id);
+  LOG_WARN_CAT(LOG_CAT_NETWORK, "Entity %u not found for replication update",
+               entity_id);
 }
 
 void network_replication_set_replication_rate(uint32_t rate) {
   g_replication.replication_rate = rate;
-  LOG_INFO("Set replication rate to %u Hz", rate);
+  LOG_INFO_CAT(LOG_CAT_NETWORK, "Set replication rate to %u Hz", rate);
 }
 
 void network_replication_set_compression_enabled(bool enabled) {
   g_replication.compression_enabled = enabled;
-  LOG_INFO("Set replication compression %s", enabled ? "enabled" : "disabled");
+  LOG_INFO_CAT(LOG_CAT_NETWORK, "Set replication compression %s",
+               enabled ? "enabled" : "disabled");
 }
 
 uint32_t network_replication_get_entity_count(void) {
@@ -579,14 +668,12 @@ uint32_t network_replication_get_last_sequence_number(void) {
 void network_replication_clear_all_entities(void) {
   if (g_replication.is_server) {
     g_replication.server_entity_count = 0;
-    memset(g_replication.server_entities, 0,
-           sizeof(g_replication.server_entities));
+    for (uint32_t i = 0; i < MAX_REPLICATED_ENTITIES; i++)
+      clear_client_slot(i);
   } else {
     g_replication.client_state_count = 0;
-    memset(g_replication.client_states, 0, sizeof(g_replication.client_states));
   }
-
-  LOG_INFO("Cleared all replicated entities");
+  LOG_INFO_CAT(LOG_CAT_NETWORK, "Cleared all replicated entities");
 }
 
 void network_replication_get_statistics(uint32_t *out_server_entities,
@@ -602,8 +689,3 @@ void network_replication_get_statistics(uint32_t *out_server_entities,
   if (out_compression_enabled)
     *out_compression_enabled = g_replication.compression_enabled;
 }
-
-// TODO: REPLICATION - Add replication bandwidth monitoring and throttling
-// TODO: REPLICATION - Implement replication debugging and visualization tools
-// TODO: REPLICATION - Add replication for entity creation/destruction events
-// TODO: REPLICATION - Implement replication rollback and state synchronization
