@@ -352,6 +352,9 @@ int network_update(float delta_time) {
     }
   }
 
+  // Handle RPC updates
+  rpc_update(delta_time);
+
   // Handle heartbeats
   g_network.last_heartbeat_sent += delta_time;
   if (g_network.last_heartbeat_sent >= HEARTBEAT_INTERVAL) {
