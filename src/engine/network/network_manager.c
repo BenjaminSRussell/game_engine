@@ -10,6 +10,7 @@
 #include "include/network/packet.h"
 #include "include/network/rpc_system.h"
 #include "include/network/socket.h"
+#include "include/network/network_replication.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -195,6 +196,21 @@ int network_server_send_to_client(uint32_t client_id, PacketType type,
 
 uint32_t network_server_get_client_count(void) {
   return g_network.client_count;
+}
+
+int network_server_get_clients(uint32_t *out_client_ids, size_t max_count) {
+  if (!out_client_ids || max_count == 0 || !g_network.is_running || !g_network.is_server) {
+    return 0;
+  }
+
+  uint32_t count = 0;
+  for (uint32_t i = 0; i < MAX_CLIENTS && count < max_count; i++) {
+    if (g_network.clients[i].connected) {
+      out_client_ids[count++] = g_network.clients[i].client_id;
+    }
+  }
+
+  return count;
 }
 
 // Client functions
@@ -458,6 +474,27 @@ static void network_server_handle_packet(const NetAddress *from,
     break;
   }
 
+  case PACKET_TYPE_SNAPSHOT_ACK: {
+    // Find client by address
+    uint32_t sender_id = 0;
+    for (uint32_t i = 0; i < MAX_CLIENTS; i++) {
+      if (g_network.clients[i].connected &&
+          g_network.clients[i].address.host == from->host &&
+          g_network.clients[i].address.port == from->port) {
+        sender_id = g_network.clients[i].client_id;
+        break;
+      }
+    }
+
+    if (sender_id > 0) {
+      uint16_t acked_sequence;
+      if (packet_read_u16((Packet *)packet, &acked_sequence)) {
+        network_replication_process_ack(sender_id, acked_sequence);
+      }
+    }
+    break;
+  }
+
   case PACKET_TYPE_HEARTBEAT: {
     // Update client heartbeat
     for (uint32_t i = 0; i < MAX_CLIENTS; i++) {
@@ -498,6 +535,11 @@ static void network_client_handle_packet(const NetAddress *from,
 
   case PACKET_TYPE_RPC: {
     rpc_process_packet(0, packet->buffer, packet->length);
+    break;
+  }
+
+  case PACKET_TYPE_SNAPSHOT: {
+    network_replication_process_snapshot(packet->buffer, packet->length);
     break;
   }
   }
