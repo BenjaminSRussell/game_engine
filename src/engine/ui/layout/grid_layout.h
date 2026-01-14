@@ -13,9 +13,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "include/math/math.h"
+// #include "include/math/math.h" // Removed
 #include "layout_profiling.h"
-#include "flexbox_layout.h"
+#include "ui/ui_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,67 +25,7 @@ extern "C" {
  * TYPES
  * ============================================================================ */
 
-typedef struct UIElement UIElement;
 typedef struct GridContainer GridContainer;
-
-// Grid track sizing
-typedef enum {
-    GRID_TRACK_AUTO,
-    GRID_TRACK_FIXED,
-    GRID_TRACK_PERCENT,
-    GRID_TRACK_FRACTION,
-    GRID_TRACK_MIN_CONTENT,
-    GRID_TRACK_MAX_CONTENT,
-    GRID_TRACK_MIN_MAX
-} GridTrackType;
-
-// Grid positioning
-typedef enum {
-    GRID_POSITION_AUTO,
-    GRID_POSITION_LINE,
-    GRID_POSITION_SPAN,
-    GRID_POSITION_AREA
-} GridPositionType;
-
-// Grid alignment
-typedef enum {
-    GRID_ALIGN_START,
-    GRID_ALIGN_END,
-    GRID_ALIGN_CENTER,
-    GRID_ALIGN_STRETCH
-} GridAlign;
-
-// Grid track definition
-typedef struct {
-    GridTrackType type;
-    float value;           // Fixed size, percentage, or fraction value
-    float min_value;      // For min-max sizing
-    float max_value;      // For min-max sizing
-} GridTrack;
-
-// Grid area definition
-typedef struct {
-    int32_t column_start;
-    int32_t column_end;
-    int32_t row_start;
-    int32_t row_end;
-    char name[64];        // Named grid area
-} GridArea;
-
-// Grid item placement
-typedef struct {
-    GridPositionType column_position_type;
-    GridPositionType row_position_type;
-    
-    union {
-        int32_t line;     // Line number
-        int32_t span;     // Span count
-        GridArea area;    // Named area
-    } column_position, row_position;
-    
-    GridAlign justify_self;  // Horizontal alignment within grid cell
-    GridAlign align_self;    // Vertical alignment within grid cell
-} GridPlacement;
 
 // Grid container configuration
 typedef struct {
