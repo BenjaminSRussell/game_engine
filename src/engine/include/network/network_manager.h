@@ -105,6 +105,7 @@ int network_server_stop(void);
 int network_server_broadcast(PacketType type, const void* data, size_t data_size);
 int network_server_send_to_client(uint32_t client_id, PacketType type, const void* data, size_t data_size);
 uint32_t network_server_get_client_count(void);
+int network_server_get_clients(uint32_t* out_client_ids, size_t max_count);
 
 // Client functions
 int network_client_connect(const char* server_address, uint16_t port, const char* username, const char* password);
